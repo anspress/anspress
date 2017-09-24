@@ -319,37 +319,37 @@ th.column-category {
 		width: 100%;
 	}
 }
-.ap-form-label {
-	display: block;
-	float: left;
-	width: 200px;
-	font-size: 0.97em !important;
-	font-weight: 600;
-	padding: 15px 20px;
-}
-.ap-form-fields-in {
-  margin-left: 250px;
-	padding: 15px 10px;
-	p.ap-field-desc {
-		padding: 0;
-		margin: 5px 0 0;
-		font-style: italic;
-		font-size: 14px;
-	}
+.ap-group-options {
 
-  label{
-    display: block;
-    margin-bottom: 10px;
-  }
 }
-.ap-form-control {
-	width: 95%;
+.ap-form-group {
+  margin-bottom: 15px;
+  border-bottom: solid 1px #eee;
+  padding-bottom: 15px;
+  display: flex;
+}
+.ap-form-label {
+  display: block;
+  left: 20px;
+  font-weight: 600;
+  font-size: 110%;
+  width: 18%;
+  min-width: 200px;
+}
+.ap-field-desc {
+  margin-top: 6px;
+}
+.ap-field-type-radio label{
+  display: block;
+  margin-bottom: 15px;
+}
+input[type="text"].ap-form-control {
+	min-width: 70%;
   padding: 5px 10px;
 }
-.nav-tab i{
-	margin-right: 5px;
+b.ap-base-slug {
+  color: red;
 }
-
 button.ap-submit-btn {
   background: #43caff;
   border-color: transparent transparent rgba(0, 0, 0, 0.2);
@@ -936,7 +936,52 @@ ul.ap-meta-list {
     display: table;
   }
 }
+.ap-tab-subs{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  a{
+    border-right: solid 1px #bebebe;
+    margin-right: 10px;
+    padding-right: 10px;
+    &:last-child{
+      border: none;
+    }
+  }
+}
+.ap-form-errors{
+  border-left: solid 3px #ff665c;
+  padding: 5px 5px 5px 10px;
+  margin-bottom: 15px;
+  background: #ffdedc;
+  i{
+    color: #F44336;
+    vertical-align: middle;
+    margin-right: 5px;
+    font-size: 16px;
+  }
+}
+.ap-field-errors{
+  border: solid 1px #ffe4e2;
+  display: table;
+  font-size: 12px;
+  margin-bottom: 5px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #fff0ef;
+  color: #F44336;
+  span{
+    margin-right: 5px;
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+}
 
+.ap-have-errors{
+  .ap-form-control, .ap-tag-wrap{
+    border-color: #f99991;
+  }
+}
 .metabox-holder {
   .divider {
     display: table;

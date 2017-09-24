@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPress options
+ * AnsPress options.
  *
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>

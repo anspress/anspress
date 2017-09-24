@@ -1798,7 +1798,7 @@ function ap_set_in_array( &$arr, $path, $val ) {
  * @return void
  *
  * @since unknown
- * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument.
+ * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument. Using new form class.
  */
 function ap_ask_form( $deprecated = null ) {
 	if ( ! is_null( $deprecated ) ) {
@@ -1823,7 +1823,21 @@ function ap_ask_form( $deprecated = null ) {
 		return;
 	}
 
-	anspress()->get_form( 'question' )->generate();
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'action',
+				'value' => 'ap_ajax',
+			),
+			array(
+				'name'  => 'ap_ajax_action',
+				'value' => 'form_question',
+			),
+		),
+	);
+
+	// Generate form.
+	anspress()->get_form( 'question' )->generate( $args );
 }
 
 /**
@@ -1911,12 +1925,25 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
  * @param  boolean $editing      true if post is being edited.
  * @return void
  * @since unknown
- * @since 4.1.0 Moved from includes\answer-form.php.
+ * @since 4.1.0 Moved from includes\answer-form.php. Using new Form class.
  */
 function ap_answer_form( $question_id, $editing = false ) {
 	if ( ! ap_user_can_answer( $question_id ) ) {
 		return;
 	}
 
-	anspress()->get_form( 'answer' )->generate();
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'action',
+				'value' => 'ap_ajax',
+			),
+			array(
+				'name'  => 'ap_ajax_action',
+				'value' => 'form_answer',
+			),
+		),
+	);
+
+	anspress()->get_form( 'answer' )->generate( $args );
 }

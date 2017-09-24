@@ -12,6 +12,7 @@
 
 namespace AnsPress\Form\Field;
 use AnsPress\Form\Field as Field;
+use PC;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,6 +54,23 @@ class Checkbox extends Field {
 	}
 
 	/**
+	 * Get POST (unsafe) value of a field.
+	 *
+	 * @return null|mixed
+	 */
+	public function unsafe_value() {
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), 0, $_REQUEST );
+
+		if ( $request_value ) {
+			return true;
+		}
+
+		if ( 0 === $request_value ) {
+			$this->value = false;
+		}
+	}
+
+	/**
 	 * Order of HTML markup.
 	 *
 	 * @return void
@@ -61,7 +79,7 @@ class Checkbox extends Field {
 		parent::html_order();
 
 		if ( ! $this->get( 'options' ) ) {
-			$this->output_order = [ 'wrapper_start', 'label', 'errors', 'field_markup', 'wrapper_end' ];
+			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
 		}
 	}
 

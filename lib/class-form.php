@@ -74,6 +74,8 @@ class Form {
 	 */
 	public $editing_id = false;
 
+	public $submitted = false;
+
 	/**
 	 * Initialize the class.
 	 *
@@ -98,10 +100,13 @@ class Form {
 	 * @return void
 	 */
 	public function prepare() {
+		if ( empty( $this->args['fields'] ) ) {
+			return;
+		}
+
 		$fields = ap_sort_array_by_order( $this->args['fields'] );
 
 		foreach ( (array) $fields as $field_name => $field_args ) {
-
 			if ( empty( $field_args['type'] ) ) {
 				$field_args['type'] = 'input';
 			}
@@ -130,8 +135,10 @@ class Form {
 			$this->prepare();
 		}
 
-		foreach ( (array) $this->fields as $field ) {
-			$html .= $field->output();
+		if ( ! empty( $this->fields ) ) {
+			foreach ( (array) $this->fields as $field ) {
+				$html .= $field->output();
+			}
 		}
 
 		return $html;
@@ -140,10 +147,23 @@ class Form {
 	/**
 	 * Generate form.
 	 *
+	 * @param array $form_args {
+	 * 		Form generate arguments.
+	 *
+	 * 		@type string $form_action   Custom form action url.
+	 * 		@type array  $hidden_fields Custom hidden input fields.
+	 * }
 	 * @return void
 	 */
-	public function generate() {
-		echo '<form id="' . $this->form_name . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" apform>';
+	public function generate( $form_args = [] ) {
+		$form_args = wp_parse_args( $form_args, array(
+			'form_action' => '',
+			'hidden_fields' => false,
+		) );
+
+		$action = ! empty( $form_args['form_action'] ) ? ' action="' . esc_url( $form_args['form_action'] ) . '"' : '';
+
+		echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" apform' . $action . '>'; // xss okay.
 
 		// Output form errors.
 		if ( $this->have_errors() ) {
@@ -156,13 +176,21 @@ class Form {
 
 		echo $this->generate_fields(); // xss okay.
 
-		echo '<input type="hidden" name="action" value="ap_ajax">';
-		echo '<input type="hidden" name="ap_ajax_action" value="' . esc_attr( $this->form_name ) . '">';
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
 		echo '<input type="submit" name="' . esc_attr( $this->form_name ) . '_submit" value="' . esc_html( $this->args['submit_label'] ) . '" class="ap-btn ap-btn-submit" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_nonce" value="' . esc_attr( wp_create_nonce( $this->form_name ) ) . '" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_submit" value="true" />';
+
+		// Add custom hidden fields.
+		if ( ! empty( $form_args['hidden_fields'] ) ) {
+			foreach ( $form_args['hidden_fields'] as $field ) {
+				echo '<input type="hidden" name="' . esc_attr( $field['name'] ) . '" value="' . esc_attr( $field['value'] ) . '" />';
+			}
+		}
+
 		echo '</form>';
+
+
 	}
 
 	/**
@@ -174,6 +202,7 @@ class Form {
 		$nonce = ap_isset_post_value( esc_attr( $this->form_name ) . '_nonce' );
 
 		if ( ap_isset_post_value( esc_attr( $this->form_name ) . '_submit' ) && wp_verify_nonce( $nonce, $this->form_name ) ) {
+			$this->submitted = true;
 			return true;
 		}
 
@@ -304,6 +333,12 @@ class Form {
 		}
 	}
 
+	/**
+	 * Get errors of all fields.
+	 *
+	 * @param false|array $fields Fields.
+	 * @return array
+	 */
 	public function get_fields_errors( $fields = false ) {
 		$errors = [];
 

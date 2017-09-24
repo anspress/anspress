@@ -71,7 +71,6 @@ class AnsPress_Admin {
 		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
 		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
-		anspress()->add_action( 'admin_post_anspress_options', __CLASS__, 'process_option_form' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
 		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
@@ -82,7 +81,6 @@ class AnsPress_Admin {
 	 */
 	public static function includes() {
 		require_once( 'functions.php' );
-		require_once( 'options-fields.php' );
 
 		new AP_license();
 	}
@@ -195,7 +193,7 @@ class AnsPress_Admin {
 		 */
 		do_action( 'ap_admin_menu' );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options & Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_admin_page' ) );
+		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
 		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'https://anspress.io/themes/' );
 
@@ -245,8 +243,8 @@ class AnsPress_Admin {
 	/**
 	 * Render the settings page for this plugin.
 	 */
-	public static function display_plugin_admin_page() {
-		include_once( 'views/admin.php' );
+	public static function display_plugin_options_page() {
+		include_once( 'views/options.php' );
 	}
 
 	/**
@@ -628,73 +626,6 @@ class AnsPress_Admin {
 			</script>';
 			// @codingStandardsIgnoreEnd
 		}
-	}
-
-	/**
-	 * Process AnsPress option form.
-	 *
-	 * @since 4.0.0
-	 */
-	public static function process_option_form() {
-		$redirect = admin_url( 'admin.php?page=anspress_options' );
-
-		if ( ap_isset_post_value( '__nonce' ) && ap_verify_nonce( 'nonce_option_form' ) && current_user_can( 'manage_options' ) ) {
-
-			$settings = get_option( 'anspress_opt', array() );
-			$groups   = ap_get_option_groups();
-			$active   = ap_sanitize_unslash( 'fields_group', 'request' );
-			$ap_active_section = ap_isset_post_value( 'ap_active_section', '' );
-
-			// If active is set.
-			if ( '' !== $active && '' !== $ap_active_section ) {
-
-				$default_opt = ap_default_options();
-
-				$i = 0;
-				// Check $_POST value against fields.
-				foreach ( (array) $groups[ $active ]['sections'] as $section_slug => $section ) {
-					if ( $section_slug === $ap_active_section ) {
-						foreach ( (array) $section['fields'] as $k => $f ) {
-
-							if ( ! isset( $f['name'] ) ) {
-								continue;
-							}
-
-							if ( isset( $f['type'] ) && 'textarea' === $f['type'] ) {
-								$value = esc_textarea( wp_unslash( ap_isset_post_value( $f['name'], '' ) ) );
-							} else {
-								$value = ap_sanitize_unslash( $f['name'], 'request' );
-							}
-
-							// If reset then get value from default option.
-							if ( ap_sanitize_unslash( 'reset', 'p' ) ) {
-								$value = $default_opt[ $f['name'] ];
-							}
-
-							// Set checkbox field value as 0 when empty.
-							if ( isset( $f['type'] ) && 'checkbox' === $f['type'] && empty( $value ) ) {
-								$value = '0';
-							}
-
-							if ( isset( $value ) ) {
-								$settings[ $f['name'] ] = $value;
-							} else {
-								unset( $settings[ $f['name'] ] );
-							}
-						}
-					}
-					$i++;
-				}
-
-				update_option( 'anspress_opt', $settings );
-				wp_cache_delete( 'anspress_opt', 'ap' );
-			}
-
-			flush_rewrite_rules();
-			$redirect = admin_url( 'admin.php?page=anspress_options&updated=true&option_page='. $active );
-		}
-
-		wp_safe_redirect( $redirect );
 	}
 
 	/**

@@ -65,7 +65,7 @@ class Group extends Field {
 	 * @return void
 	 */
 	protected function html_order() {
-		$this->output_order = [ 'wrapper_start', 'label', 'desc', 'errors', 'field_markup', 'wrapper_end' ];
+		$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'desc', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
 	}
 
 	/**

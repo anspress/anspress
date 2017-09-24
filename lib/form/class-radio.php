@@ -45,11 +45,7 @@ class Radio extends Field {
 		parent::prepare();
 
 		// Make sure checkbox value are sanitized.
-		if ( $this->get( 'options' ) ) {
-			$this->sanitize_cb = array_merge( [ 'array_remove_empty,text_field' ], $this->sanitize_cb );
-		} else {
-			$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
-		}
+		$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
 	}
 
 	/**
@@ -58,18 +54,15 @@ class Radio extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
-		if ( $this->get( 'options' ) ) {
-			$value = $this->value();
+		$value = $this->value();
 
+		if ( $this->get( 'options' ) ) {
 			foreach ( $this->get( 'options' ) as $val => $label ) {
-				$checked = checked( isset( $value[ $val ] ), 1, false );
+				$checked = checked( $value, $val, false );
 				$this->add_html( '<label>' );
-				$this->add_html( '<input type="radio" value="1" name="' . esc_attr( $this->field_name ) . '[' . $val . ']" id="' . sanitize_html_class( $this->field_name . $val ) . '" class="ap-form-control" ' . $checked . $this->custom_attr() . '/>' );
+				$this->add_html( '<input type="radio" value="' . esc_attr( $val ) . '" name="' . esc_attr( $this->field_name ) . '" id="' . sanitize_html_class( $this->field_name . $val ) . '" class="ap-form-control" ' . $checked . $this->custom_attr() . '/>' );
 				$this->add_html( $label . '</label>' );
 			}
-		} else {
-			$checked = checked( $this->value(), 1, false );
-			$this->add_html( '<input type="radio" value="1" ' . $checked . $this->common_attr() . $this->custom_attr() . '/>' );
 		}
 	}
 

@@ -11,7 +11,7 @@
  */
 
 namespace AnsPress\Form;
-
+use PC;
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -156,6 +156,16 @@ class Field {
 	}
 
 	/**
+	 * Get parent form.
+	 *
+	 * @return object
+	 */
+	public function form() {
+		$form_name = explode( '.', ap_to_dot_notation( $this->form_name ) );
+		return anspress()->get_form( $form_name[0] );
+	}
+
+	/**
 	 * Parse sanitization callbacks.
 	 *
 	 * @return void
@@ -227,13 +237,13 @@ class Field {
 	 * @return void
 	 */
 	protected function html_order() {
-		$this->output_order = [ 'wrapper_start', 'label', 'errors', 'field_markup', 'desc', 'wrapper_end' ];
+		$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
 	}
 
 	/**
 	 * Create field markup.
 	 *
-	 * @return void
+	 * @return null|string
 	 */
 	public function output() {
 		$this->html_order();
@@ -263,6 +273,21 @@ class Field {
 	}
 
 	/**
+	 * Check if request value is set.
+	 *
+	 * @return boolean
+	 */
+	public function isset_value() {
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+
+		if ( is_null( $request_value ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get value of a field.
 	 *
 	 * @return mixed
@@ -279,6 +304,24 @@ class Field {
 		}
 
 		return $this->get( 'value' );
+	}
+
+	/**
+	 * Field wrapper start.
+	 *
+	 * @return void
+	 */
+	protected function field_wrap_start() {
+		$this->add_html( '<div class="ap-field-group-w">' );
+	}
+
+	/**
+	 * Field wrapper end.
+	 *
+	 * @return void
+	 */
+	protected function field_wrap_end() {
+		$this->add_html( '</div>' );
 	}
 
 	/**
@@ -468,6 +511,8 @@ class Field {
 				$this->sanitized_value = $unsafe_value;
 			}
 		} // End if().
+
+		return $this->sanitized_value;
 	}
 
 	/**

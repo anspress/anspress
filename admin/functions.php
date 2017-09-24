@@ -12,7 +12,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-
 /**
  * Return number of flagged posts.
  *
