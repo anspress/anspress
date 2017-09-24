@@ -32,7 +32,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 			<div class="ap-bpsingle-desc no-overflow">
 				<a href="<?php the_permalink(); ?>" class="ap-bpsingle-published">
 					<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
-						<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+						<?php echo esc_html(sprintf( __('Posted %s', 'anspress-question-answer'), ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) )); ?>
 					</time>
 				</a>
 				<p><?php echo ap_truncate_chars( get_the_content(), 200 ); ?></p>
