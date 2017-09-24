@@ -51,7 +51,7 @@ class Answers_Query extends WP_Query {
 			'only_best_answer'         => false,
 			'ignore_selected_answer'   => false,
 			'post_status'   				   => [ 'publish' ],
-			'ap_order_by' 	           => 'active',
+			'ap_order_by' 	           => ap_opt( 'answers_sort' ),
 		);
 
 		if ( get_query_var( 'answer_id' ) ) {
