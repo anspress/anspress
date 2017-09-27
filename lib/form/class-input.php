@@ -126,7 +126,11 @@ class Input extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
-		$this->add_html( '<input type="' . esc_attr( $this->subtype ) . '" value="' . esc_attr( $this->value() ) . '"' . $this->common_attr() . $this->custom_attr() . '/>' );
+		if ( $this->get( 'html' ) ) {
+			$this->add_html( $this->get( 'html' ) );
+		} else {
+			$this->add_html( '<input type="' . esc_attr( $this->subtype ) . '" value="' . esc_attr( $this->value() ) . '"' . $this->common_attr() . $this->custom_attr() . '/>' );
+		}
 	}
 
 }

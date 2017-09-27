@@ -56,16 +56,16 @@ window.AnsPress = _.extend({
 	ajax: function(options){
 		var self = this;
 		options = _.defaults(options, {
-			async: false,
 			url: ajaxurl,
 			method: 'POST',
 		});
 
 		// Convert data to query string if object.
-		if(_.isObject(options.data))
-			options.data = jQuery.param(options.data);
+		if(_.isString(options.data))
+			options.data = $.apParseParams(options.data);
 
-		options.data = 'action=ap_ajax&' + options.data;
+		if(typeof options.data.action === 'undefined')
+			options.data.action = 'ap_ajax';
 
 		var success = options.success;
 		delete options.success;
@@ -605,12 +605,13 @@ _.templateSettings = {
 		return params;
 	};
 
-	var apSnackbarView = new AnsPress.views.Snackbar();
-	$('body').append(apSnackbarView.render().$el);
 
 })(jQuery);
 
 jQuery(document).ready(function($){
+	var apSnackbarView = new AnsPress.views.Snackbar();
+	$('body').append(apSnackbarView.render().$el);
+
 	$( document ).click(function (e) {
 		e.stopPropagation();
 		if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).closest('.open').is('.open') && !$(e.target).closest('form').is('form')) {
@@ -651,10 +652,13 @@ jQuery(document).ready(function($){
 	$('body').on('click', '[ap-ajax-btn]', function(e){
 		var self = this;
 		e.preventDefault();
+
 		if($(this).is('.loaded'))
 			return;
+
 		var self = $(this);
 		var query = JSON.parse(self.attr('ap-query'));
+
 		AnsPress.showLoading(self);
 		AnsPress.ajax({
 			data: query,

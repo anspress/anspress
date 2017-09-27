@@ -1545,10 +1545,11 @@ function ap_get_addons() {
 			'pro'   			=> 'Pro',
 		) );
 
-		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true : false;
+		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true: false;
 		$data['path']   = wp_normalize_path( $path );
-		$data['active'] = isset( $option[ $id ] ) ? true : false;
+		$data['active'] = isset( $option[ $id ] ) ? true: false;
 		$data['id']     = $id;
+		$data['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], $id ) ) );
 
 		if ( ! empty( $data['name'] ) ) {
 			$addons[ $id ] = $data;
@@ -1559,7 +1560,6 @@ function ap_get_addons() {
 
 	return $addons;
 }
-
 
 /**
  * Return all active addons.
@@ -1577,6 +1577,26 @@ function ap_get_active_addons() {
 	}
 
 	return $active_addons;
+}
+
+/**
+ * Return a single addon by file path.
+ *
+ * @param string $file Main file name of addon.
+ * @return array
+ * @since 4.1.0
+ */
+function ap_get_addon( $file ) {
+	$search = false;
+
+	foreach ( ap_get_addons() as $f => $addon ) {
+		if ( $f === $file ) {
+			$search = $addon;
+			break;
+		}
+	}
+
+	return $search;
 }
 
 /**

@@ -109,17 +109,20 @@ class AnsPress_Admin {
 			return;
 		}
 
-		wp_enqueue_script( 'anspress-common', ANSPRESS_URL . 'assets/js/min/common.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
+		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
 
 		if ( 'toplevel_page_anspress' === $page->base ) {
 			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		}
 
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js' , [ 'anspress-common' ], AP_VERSION, true );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js' , [ 'anspress-main' ], AP_VERSION, true );
 
 		?>
 			<script type="text/javascript">
 				currentQuestionID = '<?php the_ID(); ?>';
+				apTemplateUrl = '<?php echo ap_get_theme_url( 'js-template', false, false ); ?>';
+				aplang = {};
+				apShowComments  = false;
 			</script>
 		<?php
 
@@ -195,6 +198,8 @@ class AnsPress_Admin {
 		do_action( 'ap_admin_menu' );
 
 		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
+
+		add_submenu_page( 'anspress', __( 'AnsPress Add-ons', 'anspress-question-answer' ), __( 'Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_addons', array( __CLASS__, 'display_plugin_addons_page' ) );
 
 		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'https://anspress.io/themes/' );
 

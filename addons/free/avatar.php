@@ -48,15 +48,14 @@ class AnsPress_Avatar_Hook {
 			'avatar_force'  => false,
 		]);
 
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
+		anspress()->add_action( 'ap_form_addon-free/avatar.php', __CLASS__, 'option_form' );
 		anspress()->add_filter( 'pre_get_avatar_data', __CLASS__, 'get_avatar', 1000, 3 );
 		anspress()->add_action( 'wp_ajax_ap_clear_avatar_cache', __CLASS__, 'clear_avatar_cache' );
 	}
 
-	/**
-	 * Register Avatar options
-	 */
-	public static function load_options() {
+	public static function option_form() {
+		$opt = ap_opt();
+
 		ob_start();
 		?>
 			<script type="text/javascript">
@@ -78,31 +77,46 @@ class AnsPress_Avatar_Hook {
 			</script>
 		<?php
 		$js = ob_get_clean();
-		ap_register_option_section( 'addons', basename( __FILE__ ), __( 'Dynamic Avatar', 'anspress-question-answer' ), array(
-			array(
-				'name'              => 'clear_avatar_cache',
-				'type'              => 'custom',
-				'html' => '<label class="ap-form-label" for="avatar_font">' . __( 'Clear Cache', 'anspress-question-answer' ) . '</label><div class="ap-form-fields-in"><a id="ap-clear-avatar" href="#" class="button">' . __( 'Clear avatar cache', 'anspress-question-answer' ) . '</a></div>' .$js,
-			),
-			array(
-				'name'              => 'avatar_font',
-				'label'             => __( 'Font family', 'anspress-question-answer' ),
-				'description'       => __( 'Select font family for avatar letters.', 'anspress-question-answer' ),
-				'type'              => 'select',
-				'options'			=> array(
-					'calibri'         => 'Calibri',
-					'Pacifico'        => 'Pacifico',
-					'OpenSans'        => 'Open Sans',
-					'Glegoo-Bold'     => 'Glegoo Bold',
-					'DeliusSwashCaps' => 'Delius Swash Caps',
+
+		$form = array(
+			'submit_label' => __( 'Save add-on options', 'anspress-question-answer' ),
+			'fields' => array(
+				'clear_avatar_cache' => array(
+					'label' => __( 'Clear Cache', 'anspress-question-answer' ),
+					'html' => '<div class="ap-form-fields-in"><a id="ap-clear-avatar" href="#" class="button">' . __( 'Clear avatar cache', 'anspress-question-answer' ) . '</a></div>' .$js,
+				),
+				'avatar_font' => array(
+					'label'   => __( 'Font family', 'anspress-question-answer' ),
+					'desc'    => __( 'Select font family for avatar letters.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
+						'calibri'         => 'Calibri',
+						'Pacifico'        => 'Pacifico',
+						'OpenSans'        => 'Open Sans',
+						'Glegoo-Bold'     => 'Glegoo Bold',
+						'DeliusSwashCaps' => 'Delius Swash Caps',
+					),
+					'value' => $opt['avatar_font'],
+				),
+				'avatar_force' => array(
+					'label' => __( 'Force avatar', 'anspress-question-answer' ),
+					'desc'  => __( 'Show AnsPress avatars by default instead of gravatar fallback. Useful in localhost development.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['avatar_force'],
 				),
 			),
-			array(
-				'name'              => 'avatar_force',
-				'label'             => __( 'Force avatar', 'anspress-question-answer' ),
-				'description'       => __( 'Show AnsPress avatars by default instead of gravatar fallback. Useful in localhost development.', 'anspress-question-answer' ),
-				'type'              => 'checkbox',
-			),
+		);
+
+		return $form;
+	}
+
+	/**
+	 * Register Avatar options
+	 */
+	public static function load_options() {
+
+		ap_register_option_section( 'addons', basename( __FILE__ ), __( 'Dynamic Avatar', 'anspress-question-answer' ), array(
+
 		));
 	}
 

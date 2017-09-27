@@ -1,3 +1,5 @@
+@import "../templates/scss/variables";
+@import "../templates/scss/snackbar";
 #anspress {
   .ap-user-posts h3 {
     border-bottom: 2px solid #eee;
@@ -584,7 +586,7 @@ h3.ap-dash-title {
     font-size: 25px;
     font-weight: 600;
     margin-top: 25px;
-		margin-bottom: 10px;
+		margin-bottom: 30px;
     padding: 0;
   }
   .social-links {
@@ -1161,80 +1163,60 @@ ul.ap-meta-list {
   }
 }
 .ap-addon{
-  border: solid 2px #eee;
   display: inherit;
-  width: 280px;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 3px;
-  float: left;
-  height: 60px;
+  width: 235px;
+  border-bottom: solid 1px #eee;
+  a{
+    padding: 15px;
+    display: block;
+    color: #333;
+  }
+
+  &.active{
+    background: #ededed;
+    border-bottom: none;
+    font-weight: bold;
+  }
+  &s-list {
+    background: #fff;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 235px;
+    margin-right: 35px;
+  }
+  &-status{
+    font-weight: normal;
+    float: right;
+    font-size: 11px;
+    font-style: italic;
+    color: #8bc34a;
+  }
   &s{
-    &:before, &:after{
-      display: table;
-      content: " ";
-      clear: both;
+    display: flex;
+  }
+  &-options {
+    flex: 1;
+    background: #f7f7f7;
+    border-radius: 5px;
+    form, .ap-form-nofields{
+      padding: 30px;
     }
   }
   &-name{
-    i{
-      background: #FF5722;
-      color: #fff;
-      padding: 0px 4px;
-      text-transform: uppercase;
-      font-size: 10px;
-      font-style: normal;
-    }
-  }
-  &-cb{
-    float: left;
-    height: 60px;
-    display: block;
-    width: 60px;
-    background: #eee;
-    margin-right: 15px;
-    border-radius: 2px;
-    position: relative;
-
-    input{
-      position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      opacity: 0;
-      z-index: 9;
-
-      &:checked + .ap-addon-toggle{
-        background: #8bc34a;
-        &:before{
-          margin-left: 14px;
-        }
-      }
+    background: #fff;
+    margin: 0;
+    padding: 20px;
+    border-bottom: solid 1px #eee;
+    border-radius: 5px 5px 0;
+    p{
+      margin-bottom: 0;
     }
   }
   &-toggle{
-    background: #bdbdbd;
-    position: absolute;
-    display: block;
-    height: 16px;
-    width: 28px;
-    border-radius: 10px;
-    overflow: hidden;
-    top: 50%;
-    left: 50%;
-    margin-left: -14px;
-    margin-top: -8px;
-    &:before{
-      background: #fff;
-      content: ' ';
-      display: block;
-      height: 12px;
-      width: 12px;
-      border-radius: 6px;
-      margin-top: 2px;
-      margin-left: 2px;
-    }
+    float: right;
+    margin-top: 10px !important;
   }
 }
 .ap-events{

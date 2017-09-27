@@ -192,6 +192,65 @@ function ap_options_uac() {
 
 	$form = array(
 		'fields' => array(
+			'only_logged_in' => array(
+				'label' => __( 'Must be logged in', 'anspress-question-answer' ),
+				'desc'  => __( 'Force users to be logged in to see AnsPress contents?', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value'  => $opt['only_logged_in'],
+			),
+			'multiple_answers' => array(
+				'label' => __( 'Multiple answers', 'anspress-question-answer' ),
+				'desc'  => __( 'Allow users to submit multiple answer per question.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['multiple_answers'],
+			),
+			'disallow_op_to_answer' => array(
+				'label' => __( 'Asker can answer', 'anspress-question-answer' ),
+				'desc'  => __( 'Allow users to answer their own question.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['disallow_op_to_answer'],
+			),
+			'allow_anonymous' => array(
+				'label' => __( 'Allow anonymous', 'anspress-question-answer' ),
+				'desc'  => __( 'Allow non-logged in users to post question and answer.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['allow_anonymous'],
+			),
+			'only_admin_can_answer' => array(
+				'label' => __( 'Only admin can answer', 'anspress-question-answer' ),
+				'desc'  => __( 'Allow only admins to answer all question.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['only_admin_can_answer'],
+			),
+			'logged_in_can_see_ans' => array(
+				'label' => __( 'Must be logged in to view answers', 'anspress-question-answer' ),
+				'desc'  => __( 'Only registered users can view answers.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['logged_in_can_see_ans'],
+			),
+			'logged_in_can_see_comment' => array(
+				'label' => __( 'Must be logged in to view comments', 'anspress-question-answer' ),
+				'desc'  => __( 'Only registered users can view comments.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['logged_in_can_see_comment'],
+			),
+
+			'allow_upload' => array(
+				'label' => __( 'Allow image upload', 'anspress-question-answer' ),
+				'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
+				'type'  => 'checkbox',
+				'value' => $opt['allow_upload'],
+			),
+			'uploads_per_post' => array(
+				'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
+				'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
+				'value'  => $opt['uploads_per_post'],
+			),
+			'max_upload_size' => array(
+				'label' => __( 'Max upload size', 'anspress-question-answer' ),
+				'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
+				'value' => $opt['max_upload_size'],
+			),
 			'allow_private_posts' => array(
 				'label' => __( 'Allow private posts', 'anspress-question-answer' ),
 				'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),

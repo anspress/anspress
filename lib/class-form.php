@@ -156,8 +156,21 @@ class Form {
 	 * @return void
 	 */
 	public function generate( $form_args = [] ) {
+		// Dont do anything if no fields.
+		if ( empty( $this->args['fields'] ) ) {
+			echo '<p class="ap-form-nofields">';
+			printf(
+				// Translators: Placeholder contain form name.
+				esc_attr__( 'No fields found for form: %s', 'anspress-question-answer' ),
+				$this->form_name
+			);
+			echo '</p>';
+
+			return;
+		}
+
 		$form_args = wp_parse_args( $form_args, array(
-			'form_action' => '',
+			'form_action'   => '',
 			'hidden_fields' => false,
 		) );
 

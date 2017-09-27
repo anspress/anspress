@@ -32,7 +32,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
-		anspress()->add_action( 'wp_ajax_ap_toggle_addons', __CLASS__, 'ap_toggle_addons' );
+		anspress()->add_action( 'wp_ajax_ap_toggle_addon', __CLASS__, 'ap_toggle_addon' );
 		anspress()->add_action( 'wp_ajax_ap_migrator_4x', __CLASS__, 'ap_migrator_4x' );
 		anspress()->add_action( 'wp_ajax_anspress_recount', __CLASS__, 'anspress_recount' );
 	}
@@ -240,32 +240,29 @@ class AnsPress_Admin_Ajax {
 	/**
 	 * Toggle addons.
 	 */
-	public static function ap_toggle_addons() {
-		check_ajax_referer( 'ap-toggle-addons', '__nonce' );
+	public static function ap_toggle_addon() {
+		check_ajax_referer( 'toggle_addon', '__nonce' );
 
-		if ( ! is_super_admin( ) ) {
-			wp_die( '' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you do not have permission!', 'anspress-question-answer' ) ],
+			) );
 		}
 
-		$_REQUEST['option_page'] = 'addons';
-		$previous_addons = get_option( 'anspress_addons', [] );
-		$new_addons = array_flip( ap_isset_post_value( 'addon', [] ) );
-
-		if ( empty( $new_addons ) ) {
-			update_option( 'anspress_addons', [] );
+		$addon_id = ap_sanitize_unslash( 'addon_id', 'r' );
+		if ( ap_is_addon_active( $addon_id ) ) {
+			ap_deactivate_addon( $addon_id );
+		} else {
+			ap_activate_addon( $addon_id );
 		}
 
-		$addons = $previous_addons + $new_addons;
-
-		foreach ( (array) $addons as $file => $status ) {
-			if ( ! isset( $new_addons[ $file ] ) ) {
-				ap_deactivate_addon( $file );
-			} else {
-				ap_activate_addon( $file );
-			}
-		}
-
-		wp_die( );
+		ap_ajax_json( array(
+			'success'  => true,
+			'addon_id' => $addon_id,
+			'snackbar' => [ 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ],
+			'cb'       => 'toggleAddon',
+		) );
 	}
 
 
