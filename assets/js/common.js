@@ -761,8 +761,7 @@ jQuery(document).ready(function($){
     $(this).ajaxSubmit({
 			url: ajaxurl,
 			beforeSerialize: function() {
-
-				if(typeof tinymce !== undefined)
+				if(typeof tinymce !== 'undefined')
 					tinymce.triggerSave();
 
 				$('.ap-form-errors, .ap-field-errors').remove();

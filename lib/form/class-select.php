@@ -83,7 +83,7 @@ class Select extends Field {
 	 */
 	public function field_markup() {
 		$this->add_html( '<select' . $this->common_attr() . $this->custom_attr() . '>' );
-		$this->add_html( '<option>' . __( 'Select an option', 'anspress-question-answer' ) . '</option>' );
+		$this->add_html( '<option value="">' . __( 'Select an option', 'anspress-question-answer' ) . '</option>' );
 
 		foreach ( (array) $this->get_options() as $val => $label ) {
 			$selected = selected( $this->value(), $val, false );

@@ -172,11 +172,12 @@ class Form {
 		$form_args = wp_parse_args( $form_args, array(
 			'form_action'   => '',
 			'hidden_fields' => false,
+			'ajax_submit'   => true,
 		) );
 
 		$action = ! empty( $form_args['form_action'] ) ? ' action="' . esc_url( $form_args['form_action'] ) . '"' : '';
 
-		echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" apform' . $action . '>'; // xss okay.
+		echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
 
 		// Output form errors.
 		if ( $this->have_errors() ) {

@@ -14,8 +14,35 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-global $wpdb;
+/**
+ * Action hook triggered before loading addons page.
+ *
+ * @since 4.1.0
+ */
+do_action( 'ap_before_addons_page' );
 
+$form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
+$updated = false;
+
+// Process submit form.
+if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
+	$form = anspress()->get_form( $form_name );
+	$values = $form->get_values();
+
+	if ( ! $form->have_errors() ) {
+		$options = get_option( 'anspress_opt', [] );
+
+		foreach ( $values as $key => $opt ) {
+			$options[ $key ] = $opt['value'];
+		}
+
+		update_option( 'anspress_opt', $options );
+		wp_cache_delete( 'anspress_opt', 'ap' );
+		wp_cache_delete( 'anspress_opt', 'ap' );
+
+		$updated = true;
+	}
+}
 ?>
 
 <div id="anspress" class="wrap">
@@ -31,9 +58,22 @@ global $wpdb;
 
 	<div class="clear"></div>
 
+	<?php if ( true === $updated ) :   ?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( 'AnsPress option updated successfully!', 'anspress-question-answer' ); ?></p>
+		</div>
+	<?php endif; ?>
+
 	<div class="ap-addons" method="POST">
 		<div class="ap-addons-list">
 			<?php
+			/**
+			 * Action hook called before AnsPress addons list in wp-admin addons page.
+			 *
+			 * @since 4.1.0
+			 */
+			do_action( 'ap_before_addons_list' );
+
 			$i = 0;
 			$active = ap_isset_post_value( 'active_addon', '' );
 
@@ -56,10 +96,29 @@ global $wpdb;
 				</div>
 			<?php
 			$i++;
-			} ?>
+			}
+
+			/**
+			 * Action hook called after AnsPress addons list in wp-admin addons page.
+			 *
+			 * @since 4.1.0
+			 */
+			do_action( 'ap_after_addons_list' );
+
+			?>
 		</div>
 		<div class="ap-addon-options">
-			<?php $active_data = ap_get_addon( $active ); ?>
+			<?php
+			$active_data = ap_get_addon( $active );
+
+			/**
+			 * Action hook called before AnsPress addon option header in wp-admin addons page.
+			 *
+			 * @param array $active_data Active addon data.
+			 * @since 4.1.0
+			 */
+			do_action( 'ap_before_addon_header', $active_data );
+			?>
 			<?php
 				$args = wp_json_encode( array(
 					'action'   => 'ap_toggle_addon',
@@ -74,12 +133,48 @@ global $wpdb;
 				<p><?php echo esc_html( $active_data['description'] ); ?></p>
 			</h2>
 
+			<?php
+			/**
+			 * Action hook called after AnsPress addon header in wp-admin addons page.
+			 *
+			 * @param array $active_data Active addon data.
+			 * @since 4.1.0
+			 */
+			do_action( 'ap_after_addon_header', $active_data );
+			?>
+
 			<?php if ( ! $active_data['active'] ) : ?>
 				<p class="ap-form-nofields"><?php esc_attr_e( 'Please enable addon to view options.', 'anspress-question-answer' ); ?></p>
 			<?php else : ?>
+				<?php
+					$from_args = array(
+						'form_action' => admin_url( 'admin.php?page=anspress_addons&active_addon=' . $active ),
+						'ajax_submit' => false,
+					);
 
-				<?php anspress()->get_form( 'addon-' . $active_data['id'] )->generate(); ?>
+					/**
+					 * Filter AnsPress add-on options form.
+					 *
+					 * @param array $form_args Array for form arguments.
+					 * @since 4.1.0
+					 */
+					$form_args = apply_filters( 'ap_addon_form_args', $from_args );
+
+					$form_name = substr( $active_data['id'], 0, strrpos( $active_data['id'], '.' ) );
+					$form_name = str_replace( '/', '_', $form_name );
+					anspress()->get_form( 'addon-' . $form_name )->generate( $form_args );
+				?>
 			<?php endif; ?>
+
+			<?php
+			/**
+			 * Action hook called after AnsPress addon options in wp-admin addons page.
+			 *
+			 * @param array $active_data Active addon data.
+			 * @since 4.1.0
+			 */
+			do_action( 'ap_after_addon_options', $active_data );
+			?>
 		</div>
 	</div>
 

@@ -474,18 +474,23 @@ $updated = false;
 
 // Process submit form.
 if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
-	$values = anspress()->get_form( $form_name )->get_values();
+	$form = anspress()->get_form( $form_name );
+	$form->sanitize_validate();
 
-	$options = get_option( 'anspress_opt', [] );
+	if ( ! $form->have_errors() ) {
+		$values = anspress()->get_form( $form_name )->get_values();
 
-	foreach ( $values as $key => $opt ) {
-		$options[ $key ] = $opt['value'];
+		$options = get_option( 'anspress_opt', [] );
+
+		foreach ( $values as $key => $opt ) {
+			$options[ $key ] = $opt['value'];
+		}
+
+		update_option( 'anspress_opt', $options );
+		wp_cache_delete( 'anspress_opt', 'ap' );
+		wp_cache_delete( 'anspress_opt', 'ap' );
+		$updated = true;
 	}
-
-	update_option( 'anspress_opt', $options );
-	wp_cache_delete( 'anspress_opt', 'ap' );
-	wp_cache_delete( 'anspress_opt', 'ap' );
-	$updated = true;
 }
 
 ?>
@@ -571,6 +576,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 									<?php
 										anspress()->get_form( 'options_general_pages' )->generate( array(
 											'form_action' => $action_url . '#form_options_general_pages',
+											'ajax_submit' => false,
 										) );
 									?>
 								</div>
@@ -581,6 +587,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 									<?php
 										anspress()->get_form( 'options_general_layout' )->generate( array(
 											'form_action' => $action_url . '#form_options_general_layout',
+											'ajax_submit' => false,
 										) );
 									?>
 								</div>
@@ -592,6 +599,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 									<?php
 										anspress()->get_form( 'options_postscomments_posts' )->generate( array(
 											'form_action' => $action_url . '#form_options_postscomments_posts',
+											'ajax_submit' => false,
 										) );
 									?>
 								</div>
@@ -607,6 +615,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 									<?php
 										anspress()->get_form( 'options_uac' )->generate( array(
 											'form_action' => $action_url . '#form_options_uac',
+											'ajax_submit' => false,
 										) );
 									?>
 								</div>
