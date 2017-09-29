@@ -335,6 +335,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'lib/form/class-upload.php';
 			require_once ANSPRESS_DIR . 'lib/form/class-tags.php';
 			require_once ANSPRESS_DIR . 'lib/form/class-radio.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-textarea.php';
 			require_once ANSPRESS_DIR . 'lib/class-validate.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
