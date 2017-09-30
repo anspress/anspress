@@ -752,7 +752,6 @@ class AnsPress_Admin {
 						'post_type' => 'page',
 					),
 					'value' => $opt['base_page'],
-					'validate' => 'required,is_numeric',
 					'sanitize' => 'absint',
 				),
 				'ask_page_slug' => array(

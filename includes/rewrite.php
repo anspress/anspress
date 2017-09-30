@@ -105,16 +105,22 @@ class AnsPress_Rewrite {
 			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]&paged=$matches[#]',
 		);
 
-		$new_rules[ $question_placeholder . '/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=$matches[#]';
+		// Answer.
+		$new_rules[ $question_placeholder . '/answer/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=$matches[#]';
 
+		// Question.
 		$new_rules[ $question_placeholder . '/?$' ]  = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma;
 
+		// Search.
 		$new_rules[ $slug . ap_get_page_slug( 'search' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=$matches[#]';
 
+		// Ask with post parent.
 		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=$matches[#]';
 
+		// Ask.
 		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask';
 
+		// All other AnsPress pages.
 		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]';
 
 		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
