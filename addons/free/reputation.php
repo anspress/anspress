@@ -38,7 +38,7 @@ class AnsPress_Reputation_Hooks {
 			'user_page_slug_reputations'   => 'reputations',
 		]);
 
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options', 20 );
+		anspress()->add_action( 'ap_form_addon-free_reputation', __CLASS__, 'load_options', 20 );
 		anspress()->add_action( 'wp_ajax_ap_save_events', __CLASS__, 'ap_save_events' );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question', 10, 2 );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
@@ -72,22 +72,24 @@ class AnsPress_Reputation_Hooks {
 	 * Register reputation options
 	 */
 	public static function load_options() {
-		ap_register_option_group( 'reputation', __( 'Reputation', 'anspress-question-answer' ) );
-		ap_register_option_section( 'reputation', 'events', __( 'Events', 'anspress-question-answer' ), 'ap_option_events_view' );
+		$opt = ap_opt();
 
-		global $ap_option_tabs;
-
-		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
-			'name'  => 'user_page_title_reputations',
-			'label' => __( 'Reputations page title', 'anspress-question-answer' ),
-			'desc'  => __( 'Custom title for user profile reputations page', 'anspress-question-answer' ),
+		$form = array(
+			'fields' => array(
+				'user_page_title_reputations' => array(
+					'label' => __( 'Reputations page title', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom title for user profile reputations page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_title_reputations'],
+				),
+				'user_page_slug_reputations' => array(
+					'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_slug_reputations'],
+				),
+			),
 		);
 
-		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
-			'name'  => 'user_page_slug_reputations',
-			'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
-			'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
-		);
+		return $form;
 	}
 
 	/**
