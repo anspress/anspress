@@ -61,7 +61,7 @@ class AP_Form_Hooks {
 		if ( ap_opt( 'allow_private_posts' ) ) {
 			$form['fields']['is_private'] = array(
 				'type'  => 'checkbox',
-				'label'  => __( 'Is private?', 'anspress-question-answer' ),
+				'label' => __( 'Is private?', 'anspress-question-answer' ),
 				'desc'  => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
 			);
 		}

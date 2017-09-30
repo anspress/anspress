@@ -31,6 +31,18 @@ class Validate {
 	}
 
 	/**
+	 * Sanitize textarea value using sanitize_textarea_field.
+	 *
+	 * @param  null|string|array $value String or array to sanitize.
+	 * @return null|string|array
+	 */
+	public static function sanitize_textarea_field( $value = null ) {
+		if ( null !== $value ) {
+			return is_array( $value ) ? array_map( 'sanitize_textarea_field', $value ) : sanitize_textarea_field( $value );
+		}
+	}
+
+	/**
 	 * Sanitize field value using sanitize_title.
 	 *
 	 * @param  null|string|array $value String or array to sanitize.

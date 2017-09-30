@@ -46,7 +46,7 @@ class Textarea extends Field {
 
 		// Call parent prepare().
 		parent::prepare();
-		$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
+		$this->sanitize_cb = array_merge( [ 'textarea_field' ], $this->sanitize_cb );
 	}
 
 	/**

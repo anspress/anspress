@@ -591,38 +591,24 @@ function ap_current_page_url( $args ) {
  * @param array $array Array to order.
  * @return array
  * @since 2.0.0
- * @since 4.1.0 Keeps existing array keys.
+ * @since 4.1.0 Use `WP_List_Util` class for sorting.
  */
 function ap_sort_array_by_order( $array ) {
 	$new_array = [];
 
 	if ( ! empty( $array ) && is_array( $array ) ) {
-		foreach ( (array) $array as $k => $a ) {
-			if ( ! is_array( $a ) ) {
-				return;
+		$i = 1;
+		foreach ( $array as $k => $a ) {
+			if ( is_array( $a ) ) {
+				$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : $i;
 			}
 
-			$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : 10;
+			$i+=2;
 		}
 
-		uasort( $array, 'ap_sort_order_callback' );
-		return $array;
+		$util = new WP_List_Util( $array );
+		return $util->sort( 'order', 'ASC', true );
 	}
-}
-
-/**
- * Callback for @uses ap_sort_array_by_order.
- *
- * @param  array $a Array.
- * @param  array $b Array.
- * @return integer
- */
-function ap_sort_order_callback( $a, $b ) {
-	if ( $a['order'] == $b['order'] ) {
-		return 0;
-	}
-
-	return ( $a['order'] < $b['order'] ) ? -1 : 1;
 }
 
 /**

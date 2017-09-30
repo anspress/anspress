@@ -844,3 +844,22 @@ function ap_get_option_groups() {
 
 	return apply_filters( 'ap_get_option_groups', $ap_option_tabs );
 }
+
+
+/**
+ * Callback for @uses ap_sort_array_by_order.
+ *
+ * @param  array $a Array.
+ * @param  array $b Array.
+ * @return integer
+ * @deprecated 4.1.0 Using `WP_List_Util::sort`, hence this callback is not required anymore.
+ */
+function ap_sort_order_callback( $a, $b ) {
+	_deprecated_function( __FUNCTION__, '4.1.0' );
+
+	if ( $a['order'] == $b['order'] ) {
+		return 0;
+	}
+
+	return ( $a['order'] < $b['order'] ) ? -1 : 1;
+}

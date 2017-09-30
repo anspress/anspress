@@ -321,9 +321,7 @@ th.column-category {
 		width: 100%;
 	}
 }
-.ap-group-options {
 
-}
 .ap-form-group {
   margin-bottom: 15px;
   border-bottom: solid 1px #eee;
@@ -332,11 +330,12 @@ th.column-category {
 }
 .ap-form-label {
   display: block;
-  left: 20px;
   font-weight: 600;
   font-size: 110%;
-  width: 18%;
-  min-width: 200px;
+  flex-basis: 18%;
+}
+.ap-field-group-w {
+  flex: 1;
 }
 .ap-field-desc {
   margin-top: 6px;
@@ -348,6 +347,9 @@ th.column-category {
 input[type="text"].ap-form-control {
 	min-width: 70%;
   padding: 5px 10px;
+}
+textarea.ap-form-control{
+  width: 100%;
 }
 b.ap-base-slug {
   color: red;
@@ -1178,13 +1180,16 @@ ul.ap-meta-list {
     font-weight: bold;
   }
   &s-list {
-    background: #fff;
-    border: solid 1px #ddd;
-    border-radius: 5px;
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 235px;
     margin-right: 35px;
+  }
+  &s-listw {
+    background: #fff;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    overflow: hidden;
   }
   &-status{
     font-weight: normal;

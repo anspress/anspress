@@ -263,7 +263,7 @@ class AnsPress_Email_Hooks {
 				),
 				'edit_answer_email_body' => array(
 					'label' => __( 'Edit answer body', 'anspress-question-answer' ),
-					'type' => 'textarea',
+					'type'  => 'textarea',
 					'value' => $opt['edit_answer_email_body'],
 				),
 			),

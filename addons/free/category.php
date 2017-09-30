@@ -39,7 +39,7 @@ class AnsPress_Category {
 		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( __CLASS__, 'categories_page' ) );
 
 		anspress()->add_action( 'init', __CLASS__, 'register_question_categories', 1 );
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options' );
+		anspress()->add_action( 'ap_form_addon-free_category', __CLASS__, 'load_options' );
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'admin_enqueue_scripts' );
 		anspress()->add_action( 'ap_load_admin_assets', __CLASS__, 'ap_load_admin_assets' );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_category_menu' );
@@ -225,84 +225,76 @@ class AnsPress_Category {
 	 * Register Categories options
 	 */
 	public static function load_options() {
-		ap_register_option_section( 'addons', basename( __FILE__ ), __( 'Categories', 'anspress-question-answer' ), array(
-			array(
-				'name'              => 'form_category_orderby',
-				'label'             => __( 'Ask form category order', 'anspress-question-answer' ),
-				'description'       => __( 'Set how you want to order categories in form.', 'anspress-question-answer' ),
-				'type'              => 'select',
-				'options'			=> array(
-					'ID' 			=> __( 'ID', 'anspress-question-answer' ),
-					'name' 			=> __( 'Name', 'anspress-question-answer' ),
-					'slug' 			=> __( 'Slug', 'anspress-question-answer' ),
-					'count' 		=> __( 'Count', 'anspress-question-answer' ),
-					'term_group' 	=> __( 'Group', 'anspress-question-answer' ),
+		$opt = ap_opt();
+		$form = array(
+			'fields' => array(
+				'form_category_orderby' => array(
+					'label'             => __( 'Ask form category order', 'anspress-question-answer' ),
+					'description'       => __( 'Set how you want to order categories in form.', 'anspress-question-answer' ),
+					'type'              => 'select',
+					'options'			=> array(
+						'ID' 			       => __( 'ID', 'anspress-question-answer' ),
+						'name' 			     => __( 'Name', 'anspress-question-answer' ),
+						'slug' 			     => __( 'Slug', 'anspress-question-answer' ),
+						'count' 		     => __( 'Count', 'anspress-question-answer' ),
+						'term_group' 	   => __( 'Group', 'anspress-question-answer' ),
 					),
-			),
-
-			array(
-				'name'              => 'categories_page_orderby',
-				'label'             => __( 'Categries page order by', 'anspress-question-answer' ),
-				'description'       => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
-				'type'              => 'select',
-				'options'			=> array(
-					'ID' 			=> __( 'ID', 'anspress-question-answer' ),
-					'name' 			=> __( 'Name', 'anspress-question-answer' ),
-					'slug' 			=> __( 'Slug', 'anspress-question-answer' ),
-					'count' 		=> __( 'Count', 'anspress-question-answer' ),
-					'term_group' 	=> __( 'Group', 'anspress-question-answer' ),
-					),
-			),
-
-			array(
-				'name'              => 'categories_page_order',
-				'label'             => __( 'Categries page order', 'anspress-question-answer' ),
-				'description'       => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
-				'type'              => 'select',
-				'options'			=> array(
-					'ASC' 			=> __( 'Ascending', 'anspress-question-answer' ),
-					'DESC' 			=> __( 'Descending', 'anspress-question-answer' ),
+					'value' => $opt['form_category_orderby'],
 				),
-			),
+				'categories_page_orderby' => array(
+					'label'             => __( 'Categries page order by', 'anspress-question-answer' ),
+					'description'       => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
+					'type'              => 'select',
+					'options'			=> array(
+						'ID' 			       => __( 'ID', 'anspress-question-answer' ),
+						'name' 			     => __( 'Name', 'anspress-question-answer' ),
+						'slug' 			     => __( 'Slug', 'anspress-question-answer' ),
+						'count' 		     => __( 'Count', 'anspress-question-answer' ),
+						'term_group' 	   => __( 'Group', 'anspress-question-answer' ),
+					),
+					'value' => $opt['categories_page_orderby'],
+				),
+				'categories_page_order' => array(
+					'label'             => __( 'Categries page order', 'anspress-question-answer' ),
+					'description'       => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
+					'type'              => 'select',
+					'options'			=> array(
+						'ASC' 			=> __( 'Ascending', 'anspress-question-answer' ),
+						'DESC' 			=> __( 'Descending', 'anspress-question-answer' ),
+					),
+					'value' => $opt['categories_page_order'],
+				),
+				'categories_page_slug' => array(
+					'label' 	      => __( 'Categories page slug', 'anspress-question-answer' ),
+					'desc' 		      => __( 'Slug categories page', 'anspress-question-answer' ),
+					'value'         => $opt['categories_page_slug'],
+				),
+				'category_page_slug' => array(
+					'label' 	      => __( 'Category page slug', 'anspress-question-answer' ),
+					'desc' 		      => __( 'Slug for category page', 'anspress-question-answer' ),
+					'value'         => $opt['category_page_slug'],
+				),
+				'categories_page_title' => array(
+					'label' 	      => __( 'Categories title', 'anspress-question-answer' ),
+					'desc' 		      => __( 'Title of the categories page', 'anspress-question-answer' ),
+					'value'         => $opt['categories_page_title'],
+				),
+				'categories_per_page' => array(
+					'label'   => __( 'Category per page', 'anspress-question-answer' ),
+					'desc'    => __( 'Category to show per page', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['categories_per_page'],
+				),
+				'categories_image_height' => array(
+					'label' 	  => __( 'Categories image height', 'anspress-question-answer' ),
+					'desc' 		  => __( 'Image height in categories page', 'anspress-question-answer' ),
+					'subtype' 	=> 'number',
+					'value'     => $opt['categories_image_height'],
+				),
+			)
+		);
 
-			array(
-				'name' 		=> 'categories_page_slug',
-				'label' 	=> __( 'Categories page slug', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Slug categories page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
-
-			array(
-				'name' 		=> 'category_page_slug',
-				'label' 	=> __( 'Category page slug', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Slug for category page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
-
-			array(
-				'name' 		=> 'categories_page_title',
-				'label' 	=> __( 'Categories title', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Title of the categories page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' 		=> 'categories_per_page',
-				'label' 	=> __( 'Category per page', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Category to show per page', 'anspress-question-answer' ),
-				'type' 		=> 'number',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' 		=> 'categories_image_height',
-				'label' 	=> __( 'Categories image height', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Image height in categories page', 'anspress-question-answer' ),
-				'type' 		=> 'number',
-				'show_desc_tip' => false,
-			),
-		));
+		return $form;
 	}
 
 	/**
@@ -409,7 +401,7 @@ class AnsPress_Category {
 			'desc' 		 => __( 'Select a topic that best fits your question.', 'anspress-question-answer' ),
 			'type'     => 'select',
 			'options'  => 'terms',
-			'order'    => 8,
+			'order'    => 2,
 			'validate' => 'not_zero',
 		);
 

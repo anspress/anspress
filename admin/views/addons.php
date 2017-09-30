@@ -60,52 +60,54 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 	<?php if ( true === $updated ) :   ?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( 'AnsPress option updated successfully!', 'anspress-question-answer' ); ?></p>
+			<p><?php esc_html_e( 'Addon options updated successfully!', 'anspress-question-answer' ); ?></p>
 		</div>
 	<?php endif; ?>
 
 	<div class="ap-addons" method="POST">
 		<div class="ap-addons-list">
-			<?php
-			/**
-			 * Action hook called before AnsPress addons list in wp-admin addons page.
-			 *
-			 * @since 4.1.0
-			 */
-			do_action( 'ap_before_addons_list' );
-
-			$i = 0;
-			$active = ap_isset_post_value( 'active_addon', '' );
-
-			foreach ( (array) ap_get_addons() as $file => $data ) { ?>
+			<div class="ap-addons-listw">
 				<?php
+				/**
+				 * Action hook called before AnsPress addons list in wp-admin addons page.
+				 *
+				 * @since 4.1.0
+				 */
+				do_action( 'ap_before_addons_list' );
 
-				if ( '' === $active && 0 === $i ) {
-					$active = $data['id'];
+				$i = 0;
+				$active = ap_isset_post_value( 'active_addon', '' );
+
+				foreach ( (array) ap_get_addons() as $file => $data ) { ?>
+					<?php
+
+					if ( '' === $active && 0 === $i ) {
+						$active = $data['id'];
+					}
+
+					?>
+					<div class="ap-addon<?php echo $data['id'] === $active ? ' active' : ''; ?> ">
+						<a class="no-overflow" href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_addons&active_addon=' . $data['id'] ) ) ; ?>" data-id="<?php echo esc_attr( $data['id'] ); ?>">
+							<?php echo esc_attr( $data['name'] ); ?>
+							<?php if ( $data['active'] ) : ?>
+								<span class="ap-addon-status"><?php esc_attr_e( 'Active', 'anspress-question-answer' ); ?> </span>
+							<?php endif; ?>
+							<?php echo $data['pro'] ? '<i>pro</i>' : ''; ?>
+						</a>
+					</div>
+				<?php
+				$i++;
 				}
 
+				/**
+				 * Action hook called after AnsPress addons list in wp-admin addons page.
+				 *
+				 * @since 4.1.0
+				 */
+				do_action( 'ap_after_addons_list' );
+
 				?>
-				<div class="ap-addon<?php echo $data['id'] === $active ? ' active' : ''; ?> ">
-					<a class="no-overflow" href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_addons&active_addon=' . $data['id'] ) ) ; ?>" data-id="<?php echo esc_attr( $data['id'] ); ?>">
-						<?php echo esc_attr( $data['name'] ); ?>
-						<?php if ( $data['active'] ) : ?>
-							<span class="ap-addon-status"><?php esc_attr_e( 'Active', 'anspress-question-answer' ); ?> </span>
-						<?php endif; ?>
-						<?php echo $data['pro'] ? '<i>pro</i>' : ''; ?>
-					</a>
-				</div>
-			<?php
-			$i++;
-			}
-
-			/**
-			 * Action hook called after AnsPress addons list in wp-admin addons page.
-			 *
-			 * @since 4.1.0
-			 */
-			do_action( 'ap_after_addons_list' );
-
-			?>
+			</div>
 		</div>
 		<div class="ap-addon-options">
 			<?php
