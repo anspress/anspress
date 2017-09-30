@@ -36,7 +36,7 @@ class AnsPress_Tag {
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
 
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'option_fields', 20 );
+		anspress()->add_action( 'ap_form_addon-free_tag', __CLASS__, 'option_fields' );
 		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
 		anspress()->add_action( 'init', __CLASS__, 'register_question_tag', 1 );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_tags_menu' );
@@ -235,48 +235,47 @@ class AnsPress_Tag {
 	 * Register option fields.
 	 */
 	public static function option_fields() {
-		ap_register_option_section( 'addons', 'tags', __( 'Tag', 'anspress-question-answer' ), array(
-			array(
-				'name'              => 'tags_per_page',
-				'label'             => __( 'Tags to show', 'anspress-question-answer' ),
-				'description'       => __( 'Numbers of tags to show in tags page.', 'anspress-question-answer' ),
-				'type'              => 'number',
-			),
-			array(
-				'name'              => 'max_tags',
-				'label'             => __( 'Maximum tags', 'anspress-question-answer' ),
-				'description'       => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
-				'type'              => 'number',
-			),
-			array(
-				'name'              => 'min_tags',
-				'label'             => __( 'Minimum tags', 'anspress-question-answer' ),
-				'description'       => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
-				'type'              => 'number',
-			),
-			array(
-				'name' 		=> 'tags_page_title',
-				'label' 	=> __( 'Tags page title', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Title for tags page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' 		=> 'tags_page_slug',
-				'label' 	=> __( 'Tags page slug', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Slug tags page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
+		$opt = ap_opt();
 
-			array(
-				'name' 		=> 'tag_page_slug',
-				'label' 	=> __( 'Tag page slug', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Slug for tag page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
+		$form = array(
+			'fields' => array(
+				'tags_per_page' => array(
+					'label'       => __( 'Tags to show', 'anspress-question-answer' ),
+					'description' => __( 'Numbers of tags to show in tags page.', 'anspress-question-answer' ),
+					'subtype'     => 'number',
+					'value'       => $opt['tags_per_page'],
+				),
+				'max_tags' => array(
+					'label'             => __( 'Maximum tags', 'anspress-question-answer' ),
+					'description'       => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
+					'subtype'     => 'number',
+					'value'       => $opt['max_tags'],
+				),
+				'min_tags' => array(
+					'label'             => __( 'Minimum tags', 'anspress-question-answer' ),
+					'description'       => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
+					'subtype'     => 'number',
+					'value'       => $opt['min_tags'],
+				),
+				'tags_page_title' => array(
+					'label' 	=> __( 'Tags page title', 'anspress-question-answer' ),
+					'desc' 		=> __( 'Title for tags page', 'anspress-question-answer' ),
+					'value'   => $opt['tags_page_title'],
+				),
+				'tags_page_slug' => array(
+					'label' 	=> __( 'Tags page slug', 'anspress-question-answer' ),
+					'desc' 		=> __( 'Slug tags page', 'anspress-question-answer' ),
+					'value'   => $opt['tags_page_slug'],
+				),
+				'tag_page_slug' => array(
+					'label' 	=> __( 'Tag page slug', 'anspress-question-answer' ),
+					'desc' 		=> __( 'Slug for tag page', 'anspress-question-answer' ),
+					'value'   => $opt['tag_page_slug'],
+				),
 			),
-		));
+		);
+
+		return $form;
 	}
 
 
