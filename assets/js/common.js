@@ -93,27 +93,37 @@ window.AnsPress = _.extend({
 		var customClass = jQuery(elm).data('loadclass')||'';
 		var isText = jQuery(elm).is('input[type="text"]');
 		var uid = this.uniqueId();
-		var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
-		jQuery('body').append(el);
-		var offset = jQuery(elm).offset();
-		var height = jQuery(elm).outerHeight();
-		var width = isText ? 40 : jQuery(elm).outerWidth();
-		el.css({
-			top: offset.top,
-			left: isText ? offset.left + jQuery(elm).outerWidth() - 40 : offset.left,
-			height: height,
-			width: width
-		});
 
-		jQuery(elm).data('loading', '#apuid-' + uid);
-		return '#apuid-' + uid;
+		if(jQuery(elm).is('button')){
+			jQuery(elm).addClass('show-loading');
+			jQuery(elm).append('<span class="ap-loading-span"></span>');
+		} else {
+			var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
+			jQuery('body').append(el);
+			var offset = jQuery(elm).offset();
+			var height = jQuery(elm).outerHeight();
+			var width = isText ? 40 : jQuery(elm).outerWidth();
+			el.css({
+				top: offset.top,
+				left: isText ? offset.left + jQuery(elm).outerWidth() - 40 : offset.left,
+				height: height,
+				width: width
+			});
+
+			jQuery(elm).data('loading', '#apuid-' + uid);
+			return '#apuid-' + uid;
+		}
 	},
 
 	hideLoading: function(elm) {
-		if( 'all' == elm )
-				jQuery('.ap-loading-icon').hide();
-		else
-				jQuery(jQuery(elm).data('loading')).hide();
+		if(jQuery(elm).is('button')){
+			jQuery(elm).removeClass('show-loading');
+			jQuery(elm).find('.ap-loading-span').remove();
+		}else if( 'all' == elm ){
+			jQuery('.ap-loading-icon').hide();
+		}else{
+			jQuery(jQuery(elm).data('loading')).hide();
+		}
 	},
 	getUrlParam: function(key) {
 		var qs = jQuery.apParseParams(window.location.href);
@@ -754,9 +764,15 @@ jQuery(document).ready(function($){
 		$(this).removeClass('ap-have-errors');
 	});
 
+	$('body').on('click', 'button.show-loading', function(e){
+		e.preventDefault();
+	});
+
 	$('body').on( 'submit', '[apform]', function(e){
 		e.preventDefault();
 		var self = $(this);
+		var submitBtn = $(this).find('button[type="submit"]');
+		AnsPress.showLoading(submitBtn);
 
     $(this).ajaxSubmit({
 			url: ajaxurl,
@@ -768,6 +784,7 @@ jQuery(document).ready(function($){
 				$('.ap-have-errors').removeClass('ap-have-errors');
 			},
 			success: function(data) {
+				AnsPress.hideLoading(submitBtn);
 				data = AnsPress.ajaxResponse(data);
 				if(data.snackbar){
 					AnsPress.trigger('snackbar', data)

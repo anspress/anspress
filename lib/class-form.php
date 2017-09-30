@@ -190,7 +190,7 @@ class Form {
 		echo $this->generate_fields(); // xss okay.
 
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
-		echo '<input type="submit" name="' . esc_attr( $this->form_name ) . '_submit" value="' . esc_html( $this->args['submit_label'] ) . '" class="ap-btn ap-btn-submit" />';
+		echo '<button type="submit" class="ap-btn ap-btn-submit">' . esc_html( $this->args['submit_label'] ) . '</button>';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_nonce" value="' . esc_attr( wp_create_nonce( $this->form_name ) ) . '" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_submit" value="true" />';
 
@@ -202,8 +202,6 @@ class Form {
 		}
 
 		echo '</form>';
-
-
 	}
 
 	/**

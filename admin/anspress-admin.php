@@ -75,6 +75,7 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
 		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
+		anspress()->add_action( 'ap_register_options', __CLASS__, 'register_options' );
 	}
 
 	/**
@@ -709,5 +710,458 @@ class AnsPress_Admin {
 		}
 
 		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
+	}
+
+	/**
+	 * Register all AnsPress options.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function register_options() {
+		add_filter( 'ap_form_options_general_pages', [ __CLASS__, 'options_general_pages' ] );
+		add_filter( 'ap_form_options_general_layout', [ __CLASS__, 'options_general_layout' ] );
+		add_filter( 'ap_form_options_postscomments_posts', [ __CLASS__, 'options_postscomments_posts' ] );
+		add_filter( 'ap_form_options_uac', [ __CLASS__, 'options_uac' ] );
+	}
+
+	/**
+	 * Register AnsPress general pages options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_general_pages() {
+		$opt = ap_opt();
+		$form = array(
+			'submit_label' => __( 'Save Options', 'anspress-question-answer' ),
+			'fields' => array(
+				'author_credits' => array(
+					'label'    => __( 'Hide author credits', 'anspress-question-answer' ),
+					'desc'     => __( 'Hide link to AnsPress project site.', 'anspress-question-answer' ),
+					'type'     => 'checkbox',
+					'order'    => 0,
+					'value'    => $opt['author_credits'],
+				),
+				'base_page' => array(
+					'label'   => __( 'Questions page', 'anspress-question-answer' ),
+					'desc'    => __( 'Select page for displaying anspress.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => 'posts',
+					'posts_args' => array(
+						'post_type' => 'page',
+					),
+					'value' => $opt['base_page'],
+					'validate' => 'required,is_numeric',
+					'sanitize' => 'absint',
+				),
+				'ask_page_slug' => array(
+					'label' => __( 'Ask question page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Set a slug for ask question page.', 'anspress-question-answer' ),
+					'value' => $opt['ask_page_slug'],
+					'validate' => 'required',
+				),
+				'question_page_slug' => array(
+					'label' => __( 'Question slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Slug for single question page.', 'anspress-question-answer' ),
+					'value' => $opt['question_page_slug'],
+					'validate' => 'required',
+				),
+				'question_page_permalink' => array(
+					'label' => __( 'Question permalink', 'anspress-question-answer' ),
+					'desc'  => __( 'Select single question permalink structure.', 'anspress-question-answer' ),
+					'type'  => 'radio',
+					'options' => [
+						'question_perma_1' => home_url( '/' . ap_base_page_slug() ) . '/<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name/',
+						'question_perma_2' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name/',
+						'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213/',
+						'question_perma_4' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213/question-name/',
+					],
+					'value' => $opt['question_page_permalink'],
+					'validate' => 'required',
+				),
+
+				'base_page_title' => array(
+					'label'    => __( 'Base page title', 'anspress-question-answer' ),
+					'desc'     => __( 'Main questions list page title', 'anspress-question-answer' ),
+					'value'    => $opt['base_page_title'],
+					'validate' => 'required',
+				),
+				'ask_page_title' => array(
+					'label'    => __( 'Ask page title', 'anspress-question-answer' ),
+					'desc'     => __( 'Title of the ask page', 'anspress-question-answer' ),
+					'value'    => $opt['ask_page_title'],
+					'validate' => 'required',
+				),
+				'search_page_title' => array(
+					'label'    => __( 'Search page title', 'anspress-question-answer' ),
+					'desc'     => __( 'Title of the search page', 'anspress-question-answer' ),
+					'value'    => $opt['search_page_title'],
+					'validate' => 'required',
+				),
+				'author_page_title' => array(
+					'label'    => __( 'Author page title', 'anspress-question-answer' ),
+					'desc'     => __( 'Title of the author page', 'anspress-question-answer' ),
+					'value'    => $opt['author_page_title'],
+					'validate' => 'required',
+				),
+				'show_solved_prefix' => array(
+					'label'    => __( 'Show solved prefix', 'anspress-question-answer' ),
+					'desc'     => __( 'If an answer is selected for question then [solved] prefix will be added in title.', 'anspress-question-answer' ),
+					'type'     => 'checkbox',
+					'value'    => $opt['show_solved_prefix'],
+					'validate' => 'required',
+				),
+			),
+		);
+
+		return $form;
+	}
+
+	/**
+	 * Register AnsPress general layout options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_general_layout() {
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
+				'load_assets_in_anspress_only' => array(
+					'name'  => '',
+					'label' => __( 'Load assets in AnsPress page only?', 'anspress-question-answer' ),
+					'desc'  => __( 'Check this to load AnsPress JS and CSS on the AnsPress page only. Be careful, this might break layout.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['load_assets_in_anspress_only'],
+				),
+				'avatar_size_list' => array(
+					'label'   => __( 'List avatar size', 'anspress-question-answer' ),
+					'desc'    => __( 'User avatar size for questions list.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['avatar_size_list'],
+				),
+				'avatar_size_qquestion' => array(
+					'label'   => __( 'Question avatar size', 'anspress-question-answer' ),
+					'desc'    => __( 'User avatar size for question.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['avatar_size_qquestion'],
+				),
+				'avatar_size_qanswer' => array(
+					'label'   => __( 'Answer avatar size', 'anspress-question-answer' ),
+					'desc'    => __( 'User avatar size for answer.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['avatar_size_qanswer'],
+				),
+				'avatar_size_qcomment' => array(
+					'label'   => __( 'Comment avatar size', 'anspress-question-answer' ),
+					'desc'    => __( 'User avatar size for comments.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['avatar_size_qcomment'],
+				),
+				'question_per_page' => array(
+					'label'   => __( 'Questions per page', 'anspress-question-answer' ),
+					'desc'    => __( 'Questions to show per page.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['question_per_page'],
+				),
+				'answers_per_page' => array(
+					'label'   => __( 'Answers per page', 'anspress-question-answer' ),
+					'desc'    => __( 'Answers to show per page.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['answers_per_page'],
+				),
+			),
+		);
+
+		return $form;
+	}
+
+	/**
+	 * Register AnsPress user access control options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_uac() {
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
+				'only_logged_in' => array(
+					'label' => __( 'Must be logged in', 'anspress-question-answer' ),
+					'desc'  => __( 'Force users to be logged in to see AnsPress contents?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value'  => $opt['only_logged_in'],
+				),
+				'multiple_answers' => array(
+					'label' => __( 'Multiple answers', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow users to submit multiple answer per question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['multiple_answers'],
+				),
+				'disallow_op_to_answer' => array(
+					'label' => __( 'Asker can answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow users to answer their own question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disallow_op_to_answer'],
+				),
+				'allow_anonymous' => array(
+					'label' => __( 'Allow anonymous', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow non-logged in users to post question and answer.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['allow_anonymous'],
+				),
+				'only_admin_can_answer' => array(
+					'label' => __( 'Only admin can answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow only admins to answer all question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['only_admin_can_answer'],
+				),
+				'logged_in_can_see_ans' => array(
+					'label' => __( 'Must be logged in to view answers', 'anspress-question-answer' ),
+					'desc'  => __( 'Only registered users can view answers.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['logged_in_can_see_ans'],
+				),
+				'logged_in_can_see_comment' => array(
+					'label' => __( 'Must be logged in to view comments', 'anspress-question-answer' ),
+					'desc'  => __( 'Only registered users can view comments.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['logged_in_can_see_comment'],
+				),
+
+				'allow_upload' => array(
+					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['allow_upload'],
+				),
+				'uploads_per_post' => array(
+					'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
+					'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
+					'value'  => $opt['uploads_per_post'],
+				),
+				'max_upload_size' => array(
+					'label' => __( 'Max upload size', 'anspress-question-answer' ),
+					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
+					'value' => $opt['max_upload_size'],
+				),
+				'allow_private_posts' => array(
+					'label' => __( 'Allow private posts', 'anspress-question-answer' ),
+					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['allow_private_posts'],
+				),
+				'multiple_answers' => array(
+					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
+					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['multiple_answers'],
+				),
+				'new_question_status' => array(
+					'label'     => __( 'Status of new question', 'anspress-question-answer' ),
+					'desc'      => __( 'Default status of new question.', 'anspress-question-answer' ),
+					'type'      => 'select',
+					'options'   => array(
+						'publish'  => __( 'Publish', 'anspress-question-answer' ),
+						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+					),
+					'value'     => $opt['new_question_status'],
+				),
+				'edit_question_status' => array(
+					'label'     => __( 'Status of edited question', 'anspress-question-answer' ),
+					'desc'      => __( 'Default status of edited question.', 'anspress-question-answer' ),
+					'type'      => 'select',
+					'options'   => array(
+						'publish'  => __( 'Publish', 'anspress-question-answer' ),
+						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+					),
+					'value'     => $opt['edit_question_status'],
+				),
+				'new_answer_status' => array(
+					'label'     => __( 'Status of new answer', 'anspress-question-answer' ),
+					'desc'      => __( 'Default status of new answer.', 'anspress-question-answer' ),
+					'type'      => 'select',
+					'options'   => array(
+						'publish'  => __( 'Publish', 'anspress-question-answer' ),
+						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+					),
+					'value'     => $opt['new_answer_status'],
+				),
+				'edit_answer_status' => array(
+					'label'     => __( 'Status of edited answer', 'anspress-question-answer' ),
+					'desc'      => __( 'Default status of edited answer.', 'anspress-question-answer' ),
+					'type'      => 'select',
+					'options'   => array(
+						'publish'  => __( 'Publish', 'anspress-question-answer' ),
+						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+					),
+					'value'     => $opt['edit_answer_status'],
+				),
+				'anonymous_post_status' => array(
+					'label'     => __( 'Status of anonymous post', 'anspress-question-answer' ),
+					'desc'      => __( 'Default status of question or answer submitted by anonymous user.', 'anspress-question-answer' ),
+					'type'      => 'select',
+					'options'   => array(
+						'publish'  => __( 'Publish', 'anspress-question-answer' ),
+						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
+					),
+					'value'     => $opt['anonymous_post_status'],
+				),
+			),
+		);
+
+		return $form;
+	}
+
+	/**
+	 * Register AnsPress QA options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_postscomments_posts() {
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
+				'show_comments_default' => array(
+					'label' => __( 'Load comments', 'anspress-question-answer' ),
+					'desc'  => __( 'Show question and answer comments by default', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['show_comments_default'],
+				),
+				'comment_number' => array(
+					'label'   => __( 'Numbers of comments to show', 'anspress-question-answer' ),
+					'desc'    => __( 'Numbers of comments to load in each query?', 'anspress-question-answer' ),
+					'value'   => $opt['comment_number'],
+					'subtype' => 'number',
+				),
+				'duplicate_check' => array(
+					'label' => __( 'Check duplicate', 'anspress-question-answer' ),
+					'desc'  => __( 'Check for duplicate posts before posting', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['duplicate_check'],
+				),
+				'disable_q_suggestion' => array(
+					'label' => __( 'Disable question suggestion', 'anspress-question-answer' ),
+					'desc'  => __( 'Checking this will disable question suggestion in ask form', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_q_suggestion'],
+				),
+				'default_date_format' => array(
+					'label' => __( 'Show default date format', 'anspress-question-answer' ),
+					'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['default_date_format'],
+				),
+				'question_order_by' => array(
+					'label'   => __( 'Default question order', 'anspress-question-answer' ),
+					'desc'    => __( 'Order question list by default using selected', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
+						'voted'  => __( 'Voted', 'anspress-question-answer' ),
+						'active' => __( 'Active', 'anspress-question-answer' ),
+						'newest' => __( 'Newest', 'anspress-question-answer' ),
+						'oldest' => __( 'Oldest', 'anspress-question-answer' ),
+					),
+					'value' => $opt['question_order_by'],
+				),
+				'keep_stop_words' => array(
+					'label' => __( 'Keep stop words in question slug', 'anspress-question-answer' ),
+					'desc'  => __( 'AnsPress will not strip stop words in question slug.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['keep_stop_words'],
+				),
+				'minimum_qtitle_length' => array(
+					'label' => __( 'Minimum title length', 'anspress-question-answer' ),
+					'desc'  => __( 'Set minimum letters for a question title.', 'anspress-question-answer' ),
+					'subtype'  => 'number',
+					'value' => $opt['minimum_qtitle_length'],
+				),
+				'minimum_question_length' => array(
+					'label' => __( 'Minimum question content', 'anspress-question-answer' ),
+					'desc'  => __( 'Set minimum letters for a question contents.', 'anspress-question-answer' ),
+					'subtype'  => 'number',
+					'value' => $opt['minimum_question_length'],
+				),
+				'question_text_editor' => array(
+					'label' => __( 'Use text editor ?', 'anspress-question-answer' ),
+					'desc'  => __( 'Text editor as default.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['question_text_editor'],
+				),
+				'disable_comments_on_question' => array(
+					'label' => __( 'Disable comments', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable comments on questions.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_comments_on_question'],
+				),
+				'disable_voting_on_question' => array(
+					'label' => __( 'Disable voting', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable voting on questions.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_voting_on_question'],
+				),
+				'disable_down_vote_on_question' => array(
+					'label' => __( 'Disable down voting', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable down voting on questions.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_down_vote_on_question'],
+				),
+				'close_selected' => array(
+					'label' => __( 'Close question after selecting answer', 'anspress-question-answer' ),
+					'desc'  => __( 'If enabled this will prevent user to submit answer on solved question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['close_selected'],
+				),
+				'answers_sort' => array(
+					'label'   => __( 'Default answers order', 'anspress-question-answer' ),
+					'desc'    => __( 'Order answers by by default using selected', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
+						'voted'  => __( 'Voted', 'anspress-question-answer' ),
+						'active' => __( 'Active', 'anspress-question-answer' ),
+						'newest' => __( 'Newest', 'anspress-question-answer' ),
+						'oldest' => __( 'Oldest', 'anspress-question-answer' ),
+					),
+					'value' => $opt['answers_sort'],
+				),
+				'minimum_ans_length' => array(
+					'label'   => __( 'Minimum question content', 'anspress-question-answer' ),
+					'desc'    => __( 'Set minimum letters for a answer contents.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['minimum_ans_length'],
+				),
+				'answer_text_editor' => array(
+					'label' => __( 'Use text editor ?', 'anspress-question-answer' ),
+					'desc'  => __( 'Text editor as default.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['answer_text_editor'],
+				),
+				'disable_comments_on_answer' => array(
+					'label' => __( 'Disable comments', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable comments on answer.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_comments_on_answer'],
+				),
+				'disable_voting_on_answer' => array(
+					'label' => __( 'Disable voting', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable voting on answers.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_voting_on_answer'],
+				),
+				'disable_down_vote_on_answer' => array(
+					'label' => __( 'Disable down voting', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable down voting on answers.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['disable_down_vote_on_answer'],
+				),
+			),
+		);
+
+		return $form;
 	}
 }

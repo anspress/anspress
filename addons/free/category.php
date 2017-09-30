@@ -402,7 +402,7 @@ class AnsPress_Category {
 			'type'     => 'select',
 			'options'  => 'terms',
 			'order'    => 2,
-			'validate' => 'not_zero',
+			'validate' => 'required,not_zero',
 		);
 
 		// Add value when editing post.

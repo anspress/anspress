@@ -289,7 +289,23 @@ ul{
   text-align: left;
   width: 20px;
 }
-
+button.show-loading{
+	position: relative;
+	padding-right: 40px;
+}
+.ap-loading-span{
+	background-image: url(../images/loading.gif);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	display: block;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	right: 16px;
+	top: 50%;
+	margin-top: -8px;
+}
 .ap-loading-icon {
 	background: rgba(255, 255, 255, 0.89);
 	width: 40px;
