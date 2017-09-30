@@ -39,7 +39,7 @@ class AnsPress_Profile_Hooks {
 			'user_page_title_questions'   => __( 'Questions', 'anspress-question-answer' ),
 			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
+		anspress()->add_action( 'ap_form_addon-free_profile', __CLASS__, 'options' );
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
 		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
@@ -52,29 +52,34 @@ class AnsPress_Profile_Hooks {
 	 * Register profile options
 	 */
 	public static function options() {
+		$opt = ap_opt();
 
-		ap_register_option_section( 'addons', basename( __FILE__ ),  __( 'User Profile', 'anspress-question-answer' ), [
-			array(
-				'name'  => 'user_page_title_questions',
-				'label' => __( 'Questions page title', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom title for user profile questions page', 'anspress-question-answer' ),
+		$form = array(
+			'fields' => array(
+				'user_page_title_questions' => array(
+					'label' => __( 'Questions page title', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom title for user profile questions page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_title_questions'],
+				),
+				'user_page_slug_questions' => array(
+					'label' => __( 'Questions page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom slug for user profile questions page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_slug_questions'],
+				),
+				'user_page_title_answers' => array(
+					'label' => __( 'Answers page title', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom title for user profile answers page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_title_answers'],
+				),
+				'user_page_slug_answers' => array(
+					'label' => __( 'Answers page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom slug for user profile answers page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_slug_answers'],
+				),
 			),
-			array(
-				'name'  => 'user_page_slug_questions',
-				'label' => __( 'Questions page slug', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom slug for user profile questions page', 'anspress-question-answer' ),
-			),
-			array(
-				'name'  => 'user_page_title_answers',
-				'label' => __( 'Answers page title', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom title for user profile answers page', 'anspress-question-answer' ),
-			),
-			array(
-				'name'  => 'user_page_slug_answers',
-				'label' => __( 'Answers page slug', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom slug for user profile answers page', 'anspress-question-answer' ),
-			),
-		]);
+		);
+
+		return $form;
 	}
 
 	/**
