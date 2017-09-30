@@ -46,7 +46,7 @@ class AnsPress_reCcaptcha {
 			'recaptcha_method'  => 'post',
 		]);
 
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
+		anspress()->add_action( 'ap_form_addon-free_recaptcha', __CLASS__, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 	}
@@ -55,26 +55,34 @@ class AnsPress_reCcaptcha {
 	 * Register Categories options
 	 */
 	public static function options() {
-		// Register recpatcha options.
-		ap_register_option_section( 'addons', 'recpatcha',  __( 'reCaptcha', 'anspress-question-answer' ), [
-			array(
-				'name'  => 'recaptcha_site_key',
-				'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
-				'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
-			) ,
-			array(
-				'name'  => 'recaptcha_secret_key',
-				'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
-				'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
-			) ,
-			array(
-				'name'    => 'recaptcha_method',
-				'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
-				'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
-				'type'    => 'select',
-				'options' => [ 'curl' => 'CURL', 'post' => 'POST' ],
-			) ,
-		]);
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
+				'recaptcha_site_key' => array(
+					'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
+					'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
+					'value' => $opt['recaptcha_site_key'],
+				),
+				'recaptcha_secret_key' => array(
+					'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
+					'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
+					'value' => $opt['recaptcha_secret_key'],
+				),
+				'recaptcha_method' => array(
+					'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
+					'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
+						'curl' => 'CURL',
+						'post' => 'POST',
+					),
+					'value'   => $opt['recaptcha_method'],
+				),
+			),
+		);
+
+		return $form;
 	}
 
 	/**
