@@ -61,7 +61,7 @@ class AnsPress_Email_Hooks {
 		anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 		anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
 
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'register_option', 100 );
+		anspress()->add_filter( 'ap_form_addon-free_email', __CLASS__, 'register_option' );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'ap_after_new_question' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'ap_after_new_answer' );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
@@ -154,171 +154,122 @@ class AnsPress_Email_Hooks {
 	 * Register options
 	 */
 	public static function register_option() {
-		ap_register_option_group( 'email', __( 'Email', 'anspress-question-answer' ) );
+		$opt = ap_opt();
 
-		ap_register_option_section( 'email', 'admin_notify', __( 'Notify admin(s)', 'anspress-question-answer' ) , array(
-			array(
-				'name'          => 'notify_admin_email',
-				'label'         => __( 'Admin email', 'anspress-question-answer' ),
-				'desc'          => __( 'Enter email where admin notification should be sent', 'anspress-question-answer' ),
-				'type'          => 'text',
-				'show_desc_tip' => false,
+		$form = array(
+			'fields' => array(
+				'sep1' => array(
+					'html'    => '<h3>' . __( 'Admin Notification', 'anspress-question-answer' ) . '<p>' . __( 'Select types of notification which will be sent to admin. Users are notified by default for all activities.', 'anspress-question-answer' ) . '</p></h3>',
+				),
+				'notify_admin_email' => array(
+					'label'   => __( 'Admin email', 'anspress-question-answer' ),
+					'desc'    => __( 'Email where all admin notification will be sent.', 'anspress-question-answer' ),
+					'subtype' => 'email',
+					'value'   => $opt['notify_admin_email'],
+				),
+				'notify_admin_new_question' => array(
+					'label' => __( 'New question', 'anspress-question-answer' ),
+					'desc'  => __( 'Send new question notification to admin.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_new_question'],
+				),
+				'notify_admin_new_answer' => array(
+					'label' => __( 'New answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Send new answer notification to admin.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_new_answer'],
+				),
+				'notify_admin_new_comment' => array(
+					'label' => __( 'New comment', 'anspress-question-answer' ),
+					'desc'  => __( 'Send new comment notification to admin.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_new_comment'],
+				),
+				'notify_admin_edit_question' => array(
+					'label' => __( 'Edit question', 'anspress-question-answer' ),
+					'desc'  => __( 'Send notification to admin when question is edited.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_edit_question'],
+				),
+				'notify_admin_edit_answer' => array(
+					'label' => __( 'Edit answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Send email to admin when answer is edited.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_edit_answer'],
+				),
+				'notify_admin_trash_question' => array(
+					'label' => __( 'Delete question', 'anspress-question-answer' ),
+					'desc'  => __( 'Send email to admin when question is trashed.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_trash_question'],
+				),
+				'notify_admin_trash_answer' => array(
+					'label' => __( 'Delete answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Send email to admin when answer is trashed.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['notify_admin_trash_answer'],
+				),
+				'sep2' => array(
+					'html'    => '<h3>' . __( 'Email Templates', 'anspress-question-answer' ) . '<p>' . __( 'No HTML tags allowed in email template at the moment.', 'anspress-question-answer' ) . '</p></h3>',
+				),
+				'new_question_email_subject' => array(
+					'label' => __( 'New question subject', 'anspress-question-answer' ),
+					'value' => $opt['new_question_email_subject'],
+				),
+				'new_question_email_body' => array(
+					'label' => __( 'New question body', 'anspress-question-answer' ),
+					'type'  => 'textarea',
+					'value' => $opt['new_question_email_body'],
+				),
+				'new_answer_email_subject' => array(
+					'label' => __( 'New answer subject', 'anspress-question-answer' ),
+					'value' => $opt['new_answer_email_subject'],
+				),
+				'new_answer_email_body' => array(
+					'label' => __( 'New answer body', 'anspress-question-answer' ),
+					'type'  => 'textarea',
+					'value' => $opt['new_answer_email_body'],
+				),
+				'select_answer_email_subject' => array(
+					'label' => __( 'Select answer subject', 'anspress-question-answer' ),
+					'value' => $opt['select_answer_email_subject'],
+				),
+				'select_answer_email_body' => array(
+					'label' => __( 'Select answer body', 'anspress-question-answer' ),
+					'type'  => 'textarea',
+					'value' => $opt['select_answer_email_body'],
+				),
+				'new_comment_email_subject' => array(
+					'label' => __( 'New comment subject', 'anspress-question-answer' ),
+					'value' => $opt['new_comment_email_subject'],
+				),
+				'new_comment_email_body' => array(
+					'label' => __( 'New comment body', 'anspress-question-answer' ),
+					'type' => 'textarea',
+					'value' => $opt['new_comment_email_body'],
+				),
+				'edit_question_email_subject' => array(
+					'label' => __( 'Edit question subject', 'anspress-question-answer' ),
+					'value' => $opt['edit_question_email_subject'],
+				),
+				'edit_question_email_body' => array(
+					'label' => __( 'Edit question body', 'anspress-question-answer' ),
+					'type'  => 'textarea',
+					'value' => $opt['edit_question_email_body'],
+				),
+				'edit_answer_email_subject' => array(
+					'label' => __( 'Edit answer subject', 'anspress-question-answer' ),
+					'value' => $opt['edit_answer_email_subject'],
+				),
+				'edit_answer_email_body' => array(
+					'label' => __( 'Edit answer body', 'anspress-question-answer' ),
+					'type' => 'textarea',
+					'value' => $opt['edit_answer_email_body'],
+				),
 			),
-			array(
-				'name' => 'notify_admin_new_question',
-				'label' => __( 'New question', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin for every new question.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'notify_admin_new_answer',
-				'label' => __( 'New answer', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin for every new answer.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'notify_admin_new_comment',
-				'label' => __( 'New comment', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin for every new comment.', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'notify_admin_edit_question',
-				'label' => __( 'Edit question', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin when question is edited', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'notify_admin_edit_answer',
-				'label' => __( 'Edit answer', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin when answer is edited', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'notify_admin_trash_question',
-				'label' => __( 'Delete question', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin when question is trashed', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' => 'notify_admin_trash_answer',
-				'label' => __( 'Delete answer', 'anspress-question-answer' ),
-				'desc' => __( 'Send email to admin when asnwer is trashed', 'anspress-question-answer' ),
-				'type' => 'checkbox',
-				'show_desc_tip' => false,
-			),
-		));
+		);
 
-		ap_register_option_section( 'email', 'email_templates', __( 'Templates', 'anspress-question-answer' ) , array(
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'New question', 'anspress-question-answer' ) . '</span>',
-			),
-			array(
-				'name' => 'new_question_email_subject',
-				'label' => __( 'Subject', 'anspress-question-answer' ),
-				'type' => 'text',
-				'attr' => 'style="width:80%"',
-			),
-			array(
-				'name' => 'new_question_email_body',
-				'label' => __( 'Body', 'anspress-question-answer' ),
-				'type' => 'textarea',
-				'attr' => 'style="width:100%;min-height:200px"',
-			),
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'New Answer', 'anspress-question-answer' ) . '</span>',
-			),
-			array(
-				'name' => 'new_answer_email_subject',
-				'label' => __( 'Subject', 'anspress-question-answer' ),
-				'type' => 'text',
-				'attr' => 'style="width:80%"',
-			),
-			array(
-				'name' => 'new_answer_email_body',
-				'label' => __( 'Body', 'anspress-question-answer' ),
-				'type' => 'textarea',
-				'attr' => 'style="width:100%;min-height:200px"',
-			),
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Select Answer', 'anspress-question-answer' ) . '</span>',
-			),
-			array(
-				'name' => 'select_answer_email_subject',
-				'label' => __( 'Subject', 'anspress-question-answer' ),
-				'type' => 'text',
-				'attr' => 'style="width:80%"',
-			),
-			array(
-				'name' => 'select_answer_email_body',
-				'label' => __( 'Body', 'anspress-question-answer' ),
-				'type' => 'textarea',
-				'attr' => 'style="width:100%;min-height:200px"',
-			),
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'New comment', 'anspress-question-answer' ) . '</span>',
-			),
-			array(
-				'name' => 'new_comment_email_subject',
-				'label' => __( 'Subject', 'anspress-question-answer' ),
-				'type' => 'text',
-				'attr' => 'style="width:80%"',
-			),
-			array(
-				'name' => 'new_comment_email_body',
-				'label' => __( 'Body', 'anspress-question-answer' ),
-				'type' => 'textarea',
-				'attr' => 'style="width:100%;min-height:200px"',
-			),
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Edit question', 'anspress-question-answer' ) . '</span>',
-			),
-			array(
-				'name' => 'edit_question_email_subject',
-				'label' => __( 'Subject', 'anspress-question-answer' ),
-				'type' => 'text',
-				'attr' => 'style="width:80%"',
-			),
-			array(
-				'name' => 'edit_question_email_body',
-				'label' => __( 'Body', 'anspress-question-answer' ),
-				'type' => 'textarea',
-				'attr' => 'style="width:100%;min-height:200px"',
-			),
-			array(
-				'name' => '__sep',
-				'type' => 'custom',
-				'html' => '<span class="ap-form-separator">' . __( 'Edit answer', 'anspress-question-answer' ) . '</span>',
-			),
-			array(
-				'name' => 'edit_answer_email_subject',
-				'label' => __( 'Subject', 'anspress-question-answer' ),
-				'type' => 'text',
-				'attr' => 'style="width:80%"',
-			),
-			array(
-				'name' => 'edit_answer_email_body',
-				'label' => __( 'Body', 'anspress-question-answer' ),
-				'type' => 'textarea',
-				'attr' => 'style="width:100%;min-height:200px"',
-			),
-		));
+		return $form;
 	}
 
 	/**
