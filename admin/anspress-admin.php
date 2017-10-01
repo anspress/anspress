@@ -836,12 +836,6 @@ class AnsPress_Admin {
 					'value'    => $opt['base_page_title'],
 					'validate' => 'required',
 				),
-				'ask_page_title' => array(
-					'label'    => __( 'Ask page title', 'anspress-question-answer' ),
-					'desc'     => __( 'Title of the ask page', 'anspress-question-answer' ),
-					'value'    => $opt['ask_page_title'],
-					'validate' => 'required',
-				),
 				'search_page_title' => array(
 					'label'    => __( 'Search page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Title of the search page', 'anspress-question-answer' ),

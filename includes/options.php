@@ -107,7 +107,6 @@ function ap_default_options() {
 		'question_text_editor'					=> false,
 		'answer_text_editor'						=> false,
 		'base_page_title'								=> __( 'Questions', 'anspress-question-answer' ),
-		'ask_page_title'								=> __( 'Ask question', 'anspress-question-answer' ),
 		'search_page_title'							=> __( 'Search "%s"', 'anspress-question-answer' ),
 		'user_page_title'							  => __( '%s', 'anspress-question-answer' ),
 		'disable_comments_on_question' 	=> false,
