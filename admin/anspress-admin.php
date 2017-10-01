@@ -810,12 +810,6 @@ class AnsPress_Admin {
 					'value' => $opt['ask_page'],
 					'sanitize' => 'absint',
 				),
-				'ask_page_slug' => array(
-					'label' => __( 'Ask question page slug', 'anspress-question-answer' ),
-					'desc'  => __( 'Set a slug for ask question page.', 'anspress-question-answer' ),
-					'value' => $opt['ask_page_slug'],
-					'validate' => 'required',
-				),
 				'question_page_slug' => array(
 					'label' => __( 'Question slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Slug for single question page.', 'anspress-question-answer' ),
