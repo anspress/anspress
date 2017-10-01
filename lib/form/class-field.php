@@ -227,7 +227,7 @@ class Field {
 	 * @param string $html Html as string.
 	 * @return void
 	 */
-	protected function add_html( $html ) {
+	public function add_html( $html ) {
 		$this->html = $this->html . $html;
 	}
 
@@ -395,13 +395,28 @@ class Field {
 	}
 
 	/**
+	 * Field markup.
+	 *
+	 * @return void
+	 */
+	public function field_markup() {
+		/**
+		 * Action triggered before rendering field markup.
+		 *
+		 * @param object $field Field object passed by reference.
+		 * @since 4.1.0
+		 */
+		do_action_ref_array( 'ap_before_field_markup', [ $this ] );
+	}
+
+	/**
 	 * Output field description.
 	 *
 	 * @return void
 	 */
 	public function desc() {
 		if ( $this->get( 'desc' ) ) {
-			$this->add_html( '<div class="ap-field-desc">' . esc_html( $this->get( 'desc' ) ) . '</div>' );
+			$this->add_html( '<div class="ap-field-desc">' . wp_kses_post( $this->get( 'desc' ) ) . '</div>' );
 		}
 	}
 

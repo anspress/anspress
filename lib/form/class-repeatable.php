@@ -148,6 +148,8 @@ class Repeatable extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$this->add_html( '<div class="ap-fieldrepeatable-c" data-role="ap-repeatable" data-args="">' );
 		$this->add_html( $this->child->generate_fields() );
 
@@ -166,6 +168,9 @@ class Repeatable extends Field {
 		$this->add_html( '<input name="' . sanitize_title( $this->field_name ) . '-nonce" value="' . wp_create_nonce( $this->field_name . $this->total_items ) . '" type="hidden" />' );
 
 		$this->add_html( '</div>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }

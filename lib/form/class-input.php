@@ -135,11 +135,21 @@ class Input extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		if ( $this->get( 'html' ) ) {
 			$this->add_html( $this->get( 'html' ) );
 		} else {
 			$this->add_html( '<input type="' . esc_attr( $this->subtype ) . '" value="' . esc_attr( $this->value() ) . '"' . $this->common_attr() . $this->custom_attr() . '/>' );
 		}
+
+		/**
+		 * Action triggered after rendering field markup.
+		 *
+		 * @param object $field Field object passed by reference.
+		 * @since 4.1.0
+		 */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }

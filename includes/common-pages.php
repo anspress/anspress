@@ -19,7 +19,7 @@ class AnsPress_Common_Pages {
 	public static function register_common_pages() {
 		ap_register_page( 'base', ap_opt( 'base_page_title' ), [ __CLASS__, 'base_page' ] );
 		ap_register_page( 'question', __( 'Question', 'anspress-question-answer' ), [ __CLASS__, 'question_page' ], false );
-		ap_register_page( 'ask', __( 'Ask', 'anspress-question-answer' ), [ __CLASS__, 'ask_page' ] );
+		ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), [ __CLASS__, 'ask_page' ] );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), [ __CLASS__, 'search_page' ], false );
 		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), [ __CLASS__, 'edit_page' ], false );
 	}

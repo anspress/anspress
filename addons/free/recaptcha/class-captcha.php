@@ -88,6 +88,8 @@ class Captcha extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		if ( ap_opt( 'recaptcha_site_key' ) === '' ) {
 			$this->add_html( '<div class="ap-notice red">' . __( 'Unable to render captcha. Please add reCpatcha keys in AnsPress options.', 'anspress-question-answer' ) . '</div>' );
 
@@ -120,6 +122,9 @@ class Captcha extends Field {
 		<?php
 
 		$this->add_html( ob_get_clean() );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }

@@ -54,6 +54,8 @@ class Radio extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$value = $this->value();
 
 		if ( $this->get( 'options' ) ) {
@@ -64,6 +66,9 @@ class Radio extends Field {
 				$this->add_html( $label . '</label>' );
 			}
 		}
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }

@@ -74,6 +74,8 @@ class Editor extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$settings = array(
 			'textarea_rows' => 10,
 			'tinymce'           => array(
@@ -104,6 +106,9 @@ class Editor extends Field {
 		$this->add_html( ob_get_clean() );
 
 		$this->add_html( '</div>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 	/**

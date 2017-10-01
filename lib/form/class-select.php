@@ -82,6 +82,8 @@ class Select extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$this->add_html( '<select' . $this->common_attr() . $this->custom_attr() . '>' );
 		$this->add_html( '<option value="">' . __( 'Select an option', 'anspress-question-answer' ) . '</option>' );
 
@@ -91,5 +93,8 @@ class Select extends Field {
 		}
 
 		$this->add_html( '</select>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 }

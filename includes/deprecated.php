@@ -161,23 +161,17 @@ function ap_save_question( $args, $wp_error = false ) {
 		return false;
 	}
 
-	/**
-		 * This filter is documented in includes\class-form-hooks.php.
-		 */
+	/** This filter is documented in includes\class-form-hooks.php */
 	$args['post_content'] = apply_filters( 'ap_form_contents_filter', $args['post_content'] );
 
 	$args['post_name'] 	  = ap_remove_stop_words_post_name( $args['post_name'] );
 	$args['post_type'] 	  = 'question';
 
 	if ( isset( $args['ID'] ) ) {
-		/**
-		 * This filter is documented in includes\class-form-hooks.php.
-		 */
+		/** This filter is documented in includes\class-form-hooks.php */
 		$args = apply_filters( 'ap_pre_update_question', $args );
 	} else {
-		/**
-		 * This filter is documented in includes\class-form-hooks.php.
-		 */
+		/** This filter is documented in includes\class-form-hooks.php */
 		$args = apply_filters( 'ap_pre_insert_question', $args );
 	}
 
@@ -490,9 +484,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 		);
 	}
 
-	/**
-	 * This filter is documented in includes/class-form-hooks.php.
-	 */
+	/** This filter is documented in includes/class-form-hooks.php */
 	$fields = apply_filters( 'ap_answer_form_fields', array( 'fields' => $fields ), $editing );
 	return $fields['fields'];
 }

@@ -55,8 +55,13 @@ class Textarea extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$this->add_html( '<textarea' . $this->common_attr() . $this->custom_attr() . '>' );
 		$this->add_html( esc_textarea( $this->value() ) );
 		$this->add_html( '</textarea>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 }

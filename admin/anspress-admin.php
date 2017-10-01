@@ -57,6 +57,7 @@ class AnsPress_Admin {
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'anspress-question-answer.php' );
 		anspress()->add_filter( 'plugin_action_links_' . $plugin_basename, __CLASS__, 'add_action_links' );
 		anspress()->add_action( 'save_post', __CLASS__, 'ans_parent_post', 10, 2 );
+		anspress()->add_action( 'trashed_post', __CLASS__, 'trashed_post', 10, 2 );
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'enqueue_admin_styles' );
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'enqueue_admin_scripts' );
 		anspress()->add_action( 'admin_menu', __CLASS__, 'add_plugin_admin_menu' );
@@ -76,6 +77,7 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
 		anspress()->add_action( 'ap_register_options', __CLASS__, 'register_options' );
+		anspress()->add_action( 'ap_after_field_markup', __CLASS__, 'page_select_field_opt' );
 	}
 
 	/**
@@ -393,20 +395,37 @@ class AnsPress_Admin {
 		global $pagenow;
 
 		if ( ! in_array( $pagenow, [ 'post.php', 'post-new.php' ], true ) ) {
-			return $post->ID;
+			return;
 		}
 
 		if ( ! current_user_can( 'edit_post', $post->ID ) ) {
-			return $post->ID;
+			return;
 		}
 
 		if ( 'answer' === $post->post_type ) {
 			$parent_q = (int) ap_sanitize_unslash( 'post_parent', 'p' );
 			if ( empty( $parent_q ) ) {
-				return $post->ID;
+				return;
 			} else {
 				global $wpdb;
 				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) ); // db call ok, cache ok.
+			}
+		}
+	}
+
+	/**
+	 * Delete page check transient after AnsPress pages are deleted.
+	 *
+	 * @param integer $post_id Page ID.
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function trashed_post( $post_id ) {
+		$_post = get_post( $post_id );
+
+		if ( 'page' === $_post->post_type ) {
+			if ( in_array( $_post->ID, [ ap_opt( 'base_page' ), ap_opt('ask_page') ], true ) ) {
+				delete_transient( 'ap_pages_check' );
 			}
 		}
 	}
@@ -435,7 +454,7 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Redirect to cusotm post location for error message.
+	 * Redirect to custom post location for error message.
 	 *
 	 * @param String $location redirect url.
 	 * @return string
@@ -466,13 +485,8 @@ class AnsPress_Admin {
 	public static function render_menu( $object, $args ) {
 		global $nav_menu_selected_id;
 		$menu_items = ap_menu_obejct();
-		$db_fields = false;
 
-		// if ( false ) {
-		// 	$db_fields = array( 'parent' => 'parent', 'id' => 'post_parent' );
-		// }
-
-		$walker = new Walker_Nav_Menu_Checklist( $db_fields );
+		$walker = new Walker_Nav_Menu_Checklist( false );
 		$removed_args = array(
 			'action',
 			'customlink-tab',
@@ -671,11 +685,11 @@ class AnsPress_Admin {
 				'button'  => ' <a class="button" href="' . admin_url( 'admin.php?page=anspress_upgrade' ) . '">' . __( 'Upgrade now', 'anspress-question-answer' ) . '</a>',
 				'show'    => ( get_option( 'ap_update_helper', false ) && 'admin_page_anspress_upgrade' !== $page->base && $have_updates ),
 			],
-			'upgrade' => [
+			'missing_pages' => [
 				'type'    => 'error',
-				'message' => __( 'AnsPress base page does not exists. AnsPress require a base page to work properly.', 'anspress-question-answer' ),
+				'message' => __( 'AnsPress pages does not exists.', 'anspress-question-answer' ),
 				'button'  => ' <a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">' . __( 'Set automatically', 'anspress-question-answer' ) . '</a> ' . __( 'Or', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Set existing page as base page', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( ! ap_get_post( ap_opt( 'base_page' ) ) ),
+				'show'    => ( ! self::check_pages_exists() ),
 			],
 		);
 
@@ -685,6 +699,34 @@ class AnsPress_Admin {
 				printf( '<div class="%1$s"><p>%2$s%3$s</p></div>', esc_attr( $class ), esc_html( $msg['message'] ), $msg['button'] );
 			}
 		}
+	}
+
+	/**
+	 * Check if AnsPress pages are exists.
+	 *
+	 * @return boolean
+	 * @since 4.1.0
+	 */
+	private static function check_pages_exists() {
+		$cache = get_transient( 'ap_pages_check' );
+
+		//if ( false === $cache ) {
+			$args = array(
+				'post__in'  => [ ap_opt( 'base_page' ), ap_opt( 'ask_page' ) ],
+				'post_type' => 'page',
+			);
+
+			$pages = get_posts( $args );
+			if ( count( $pages ) < 2 ) {
+				$cache = '0';
+				set_transient( 'ap_pages_check', '0', HOUR_IN_SECONDS );
+			} else {
+				set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
+				$cache = '1';
+			}
+		//}
+
+		return '0' === $cache ? false : true;
 	}
 
 	/**
@@ -707,6 +749,7 @@ class AnsPress_Admin {
 		if ( current_user_can( 'manage_options' ) ) {
 			ap_create_base_page();
 			flush_rewrite_rules();
+			delete_transient( 'ap_pages_check' );
 		}
 
 		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
@@ -744,14 +787,27 @@ class AnsPress_Admin {
 					'value'    => $opt['author_credits'],
 				),
 				'base_page' => array(
-					'label'   => __( 'Questions page', 'anspress-question-answer' ),
-					'desc'    => __( 'Select page for displaying anspress.', 'anspress-question-answer' ),
+					'label'   => __( 'Archives page', 'anspress-question-answer' ),
+					'desc'    => __( 'Page used to display question archive (list). Sometimes this page is used for display other subpages of AnsPress.<br/>This page is also referred as <b>Base Page</b> in AnsPress documentations and support forum.', 'anspress-question-answer' ),
 					'type'    => 'select',
 					'options' => 'posts',
 					'posts_args' => array(
 						'post_type' => 'page',
+						'showposts' => -1,
 					),
 					'value' => $opt['base_page'],
+					'sanitize' => 'absint',
+				),
+				'ask_page' => array(
+					'label'   => __( 'Ask page', 'anspress-question-answer' ),
+					'desc'    => __( 'Page used to display ask form.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => 'posts',
+					'posts_args' => array(
+						'post_type' => 'page',
+						'showposts' => -1,
+					),
+					'value' => $opt['ask_page'],
 					'sanitize' => 'absint',
 				),
 				'ask_page_slug' => array(
@@ -1162,5 +1218,21 @@ class AnsPress_Admin {
 		);
 
 		return $form;
+	}
+
+	/**
+	 * Add link to view, edit and create right next to page select field.
+	 *
+	 * @param object $field Field object.
+	 * @return void
+	 */
+	public static function page_select_field_opt( $field ) {
+		// Return if not the field we are looking for.
+		if ( ! in_array( $field->original_name, [ 'base_page', 'ask_page' ], true ) ) {
+			return;
+		}
+
+		$field->add_html( '&nbsp;&nbsp;&nbsp;<a href="' . esc_url( get_permalink( $field->value() ) ) . '">' . __( 'View page', 'anspress-question-answer' ) . '</a>&nbsp;&nbsp;&nbsp;' );
+		$field->add_html( '<a href="' . esc_url( get_edit_post_link( $field->value() ) ) .  '">' . __( 'Edit page', 'anspress-question-answer' ) . '</a>' );
 	}
 }

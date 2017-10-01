@@ -576,12 +576,11 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post object.
 	 */
 	public static function base_page_update( $post_id, $post ) {
-
 		if ( wp_is_post_revision( $post ) ) {
 			return;
 		}
 
-		if ( ap_opt( 'base_page' ) == $post_id ) {
+		if ( ap_opt( 'base_page' ) == $post_id || ap_opt( 'ask_page' ) == $post_id ) {
 			ap_opt( 'ap_flush', 'true' );
 		}
 	}

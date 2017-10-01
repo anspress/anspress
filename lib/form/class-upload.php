@@ -152,6 +152,8 @@ class Upload extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$args = $this->get( 'upload_options' );
 		$allowed_ext = '.' . str_replace( '|', ',.', implode( ',.', array_keys( $args['allowed_mimes'] ) ) );
 		unset( $args['allowed_mimes'] );
@@ -178,6 +180,9 @@ class Upload extends Field {
 		$this->add_html( '<span>' . esc_attr__( 'Browse file(s)', 'anspress-question-answer' ) . '</span>' );
 		$this->add_html( '<b>' . esc_html( number_format_i18n( 0 ) ) . '</b>' );
 		$this->add_html( '</div>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 	/**

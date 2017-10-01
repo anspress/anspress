@@ -52,6 +52,12 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		update_option( 'anspress_opt', $options );
 		wp_cache_delete( 'anspress_opt', 'ap' );
 		wp_cache_delete( 'anspress_opt', 'ap' );
+
+		// Flush rewrite rules.
+		if ( 'form_options_general_pages' === $form_name ) {
+			flush_rewrite_rules();
+		}
+
 		$updated = true;
 	}
 }

@@ -103,6 +103,8 @@ class Tags extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$options = $this->get_options();
 
 		$js_options = $this->get( 'js_options' );
@@ -124,6 +126,9 @@ class Tags extends Field {
 		}
 
 		$this->add_html( '</div>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }

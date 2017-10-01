@@ -628,58 +628,75 @@ function ap_link_to( $sub ) {
 	 * @return string
 	 */
 function ap_get_link_to( $sub ) {
+	$url = false;
+
+	if ( 'ask' === $sub ) {
+		$url = get_permalink( ap_opt( 'ask_page' ) );
+	}
+
+	if ( false === $url ) {
+		/**
+		 * Define default AnsPress page slugs.
+		 *
+		 * @var array
+		 */
+		$default_pages = array(
+			'question' 	 => ap_opt( 'question_page_slug' ),
+			'users' 	   => ap_opt( 'users_page_slug' ),
+			'user' 		   => ap_opt( 'user_page_slug' ),
+		);
+
+		$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
+
+		if ( is_array( $sub ) && isset( $sub['ap_page'] ) && isset( $default_pages[ $sub['ap_page'] ] ) ) {
+			$sub['ap_page'] = $default_pages[ $sub['ap_page'] ];
+		} elseif ( ! is_array( $sub ) && ! empty( $sub ) && isset( $default_pages[ $sub ] ) ) {
+			$sub = $default_pages[ $sub ];
+		}
+
+		$base = rtrim( ap_base_page_link(), '/' );
+		$args = '';
+
+		if ( get_option( 'permalink_structure' ) !== '' ) {
+			if ( ! is_array( $sub ) && 'base' !== $sub ) {
+				$args = $sub ? '/' . $sub : '';
+			} elseif ( is_array( $sub ) ) {
+				$args = '/';
+
+				if ( ! empty( $sub ) ) {
+					foreach ( (array) $sub as $s ) {
+						$args .= $s . '/';
+					}
+				}
+			}
+
+			$args = rtrim( $args, '/' ) . '/';
+		} else {
+			if ( ! is_array( $sub ) ) {
+				$args = $sub ? '&ap_page=' . $sub : '';
+			} elseif ( is_array( $sub ) ) {
+				$args = '';
+
+				if ( ! empty( $sub ) ) {
+					foreach ( $sub as $k => $s ) {
+						$args .= '&' . $k . '=' . $s;
+					}
+				}
+			}
+		}
+
+		$url = $base . $args;
+	} // End if().
+
 	/**
-	 * Define default AnsPress page slugs.
+	 * Allows filtering anspress links.
 	 *
-	 * @var array
+	 * @param string       $url Generated url.
+	 * @param string|array $sub AnsPress sub pages.
+	 *
+	 * @since unknown
 	 */
-	$default_pages = array(
-		'question' 	 => ap_opt( 'question_page_slug' ),
-		'ask' 		   => ap_opt( 'ask_page_slug' ),
-		'users' 	   => ap_opt( 'users_page_slug' ),
-		'user' 		   => ap_opt( 'user_page_slug' ),
-	);
-
-	$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
-
-	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && isset( $default_pages[ $sub['ap_page'] ] ) ) {
-		$sub['ap_page'] = $default_pages[ $sub['ap_page'] ];
-	} elseif ( ! is_array( $sub ) && ! empty( $sub ) && isset( $default_pages[ $sub ] ) ) {
-		$sub = $default_pages[ $sub ];
-	}
-
-	$base = rtrim( ap_base_page_link(), '/' );
-	$args = '';
-
-	if ( get_option( 'permalink_structure' ) !== '' ) {
-		if ( ! is_array( $sub ) && 'base' !== $sub ) {
-			$args = $sub ? '/' . $sub : '';
-		} elseif ( is_array( $sub ) ) {
-			$args = '/';
-
-			if ( ! empty( $sub ) ) {
-				foreach ( (array) $sub as $s ) {
-					$args .= $s . '/';
-				}
-			}
-		}
-
-		$args = rtrim( $args, '/' ) . '/';
-	} else {
-		if ( ! is_array( $sub ) ) {
-			$args = $sub ? '&ap_page=' . $sub : '';
-		} elseif ( is_array( $sub ) ) {
-			$args = '';
-
-			if ( ! empty( $sub ) ) {
-				foreach ( $sub as $k => $s ) {
-					$args .= '&' . $k . '=' . $s;
-				}
-			}
-		}
-	}
-
-	return esc_url( apply_filters( 'ap_link_to', $base . $args, $sub ) );
+	return apply_filters( 'ap_link_to', $url, $sub );
 }
 
 /**
@@ -847,28 +864,52 @@ function ap_replace_square_bracket( $contents ) {
  *
  * @see anspress_activate
  * @since 2.3
+ * @since 4.1.0 Creates ask question page if not exists.
  */
 function ap_create_base_page() {
 	// Check if page already exists.
 	$page_id = ap_opt( 'base_page' );
-	$_post = ap_get_post( $page_id );
+	$_post = get_page( $page_id );
 
-	if ( ! $_post ) {
-		$args                   = array();
-		$args['post_type']      = 'page';
-		$args['post_content']   = '[anspress]';
-		$args['post_status']    = 'publish';
-		$args['post_title']     = __( 'Questions', 'anspress-question-answer' );
-		$args['post_name']      = 'questions';
-		$args['comment_status'] = 'closed';
+	if ( ! $_post || 'trash' === $_post->post_status ) {
+		$args = array(
+			'post_type'      => 'page',
+			'post_content'   => '[anspress]',
+			'post_status'    => 'publish',
+			'post_title'     => __( 'Questions', 'anspress-question-answer' ),
+			'post_name'      => 'questions',
+			'comment_status' => 'closed',
+		);
 
 		// Now create post.
 		$new_page_id = wp_insert_post( $args );
 
 		if ( $new_page_id ) {
-			$page = ap_get_post( $new_page_id );
+			$page = get_page( $new_page_id );
+
 			ap_opt( 'base_page', $page->ID );
 			ap_opt( 'base_page_id', $page->post_name );
+		}
+	}
+
+	// Check if page already exists.
+	$_post = get_page( ap_opt( 'ask_page' ) );
+
+	if ( ! $_post || 'trash' === $_post->post_status ) {
+		$args = array(
+			'post_type'      => 'page',
+			'post_content'   => '[anspress]',
+			'post_status'    => 'publish',
+			'post_title'     => __( 'Ask a Question', 'anspress-question-answer' ),
+			'post_name'      => 'ask',
+			'comment_status' => 'closed',
+		);
+
+		// Now create post.
+		$new_page_id = wp_insert_post( $args );
+
+		if ( $new_page_id ) {
+			ap_opt( 'ask_page', $new_page_id );
 		}
 	}
 }
@@ -879,7 +920,7 @@ function ap_create_base_page() {
  * @param boolean|integer $question_id Question ID.
  * @return string
  *
- * @since  	2.3 [@see ap_page_title]
+ * @since  	2.3 @see `ap_page_title`
  */
 function ap_question_title_with_solved_prefix( $question_id = false ) {
 	if ( false === $question_id ) {

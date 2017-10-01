@@ -580,11 +580,15 @@ function ap_get_template_part( $file, $args = false ) {
  * Return current AnsPress page
  *
  * @return string
+ * @since unknown
+ * @since 4.1.0 Check if ask question page.
  */
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page' );
 
-	if ( '' === $query_var ) {
+	if ( get_the_ID() === ap_opt( 'ask_page' ) ) {
+		$query_var = 'ask';
+	} elseif ( '' === $query_var ) {
 		$query_var = 'base';
 	}
 
@@ -892,17 +896,32 @@ function ap_menu_obejct() {
 
 	foreach ( (array) anspress()->pages as $k => $args ) {
 		if ( $args['show_in_menu'] ) {
+			$object_id = 0;
+			$object    = $k;
+			$title     = $args['title'];
+			$url       = home_url( '/' );
+			$type      = 'anspress-links';
+
+			if ( 'ask' === $k ) {
+				$ask_page  = get_post( ap_opt( 'ask_page' ) );
+				$object_id = ap_opt( 'ask_page' );
+				$object    = 'page';
+				$url       = get_permalink( $ask_page );
+				$title     = $ask_page->post_title;
+				$type      = 'post_type';
+			}
+
 			$menu_items[] = (object) array(
 				'ID'               => 1,
 				'db_id'            => 0,
 				'menu_item_parent' => 0,
-				'object_id'        => 1,
+				'object_id'        => $object_id,
 				'post_parent'      => 0,
-				'type'             => 'anspress-links',
-				'object'           => $k,
+				'type'             => $type,
+				'object'           => $object,
 				'type_label'       => __( 'AnsPress links', 'anspress-question-answer' ),
-				'title'            => $args['title'],
-				'url'              => home_url( '/' ),
+				'title'            => $title,
+				'url'              => $url,
 				'target'           => '',
 				'attr_title'       => '',
 				'description'      => '',

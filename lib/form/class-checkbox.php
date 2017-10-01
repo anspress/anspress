@@ -88,6 +88,8 @@ class Checkbox extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		if ( $this->get( 'options' ) ) {
 			$value = $this->value();
 
@@ -103,6 +105,9 @@ class Checkbox extends Field {
 			$this->add_html( '<input type="checkbox" value="1" ' . $checked . $this->common_attr() . $this->custom_attr() . '/>' );
 			$this->add_html( $this->get( 'desc' ) . '</label>' );
 		}
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }

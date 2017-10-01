@@ -90,6 +90,8 @@ class Group extends Field {
 	 * @return void
 	 */
 	public function field_markup() {
+		parent::field_markup();
+
 		$checked = true;
 
 		if ( $this->get( 'toggleable' ) ) {
@@ -104,6 +106,9 @@ class Group extends Field {
 		$this->add_html( '<div class="ap-fieldgroup-c' . ( $checked ? ' show' : '' ) . '">' );
 		$this->add_html( $this->child->generate_fields() );
 		$this->add_html( '</div>' );
+
+		/** This action is documented in lib/form/class-input.php */
+		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
 	}
 
 }
