@@ -115,8 +115,17 @@ class AP_QA_Query_Hooks {
 	 * @param  array  $posts Post array.
 	 * @param  object $instance QP_Query instance.
 	 * @return array
+	 * @since 3.0.0
+	 * @since 4.1.0 Fixed: qameta fields are not appending properly.
 	 */
 	public static function posts_results( $posts, $instance ) {
+		$qa_ids = [];
+
+		foreach ( (array) $posts as $k => $p ) {
+			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
+				$qa_ids[] = $p->ID;
+			}
+		}
 
 		foreach ( (array) $posts as $k => $p ) {
 			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
@@ -134,22 +143,24 @@ class AP_QA_Query_Hooks {
 					if ( ! isset( $p_arr[ $fields_name ] ) || empty( $p_arr[ $fields_name ] ) ) {
 						$p->$fields_name = $val;
 					}
-
-					// Serialize fields and activities.
-					$p->activities = maybe_unserialize( $p->activities );
-					$p->fields = maybe_unserialize( $p->fields );
-
-					$p->ap_qameta_wrapped = true;
-					$p->votes_net = $p->votes_up - $p->votes_down;
-
-					if ( ! ap_user_can_view_post( $p ) ) {
-						$p->post_content = __( 'Restricted content', 'anspress-question-answer' );
-					}
-
-					$posts[ $k ] = $p;
 				}
+
+				// Serialize fields and activities.
+				$p->activities = maybe_unserialize( $p->activities );
+				$p->fields = maybe_unserialize( $p->fields );
+
+				$p->ap_qameta_wrapped = true;
+				$p->votes_net = $p->votes_up - $p->votes_down;
+
+				if ( ! ap_user_can_view_post( $p ) ) {
+					$p->post_content = __( 'Restricted content', 'anspress-question-answer' );
+				}
+
+				$posts[ $k ] = $p;
 			}
 		}
+
+
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();
