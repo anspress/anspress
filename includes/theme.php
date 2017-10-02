@@ -891,12 +891,19 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 	echo $html; // WPCS: xss okay.
 }
 
+/**
+ * Create array of object containing AnsPress pages. To be used in admin menu metabox.
+ *
+ * @return array
+ * @since unknown
+ * @since 4.1.0 Improved ask page object.
+ */
 function ap_menu_obejct() {
 	$menu_items = [];
 
 	foreach ( (array) anspress()->pages as $k => $args ) {
 		if ( $args['show_in_menu'] ) {
-			$object_id = 0;
+			$object_id = 1;
 			$object    = $k;
 			$title     = $args['title'];
 			$url       = home_url( '/' );
@@ -908,6 +915,13 @@ function ap_menu_obejct() {
 				$object    = 'page';
 				$url       = get_permalink( $ask_page );
 				$title     = $ask_page->post_title;
+				$type      = 'post_type';
+			} elseif ( 'base' === $k ) {
+				$base_page  = get_post( ap_opt( 'base_page' ) );
+				$object_id = ap_opt( 'base_page' );
+				$object    = 'page';
+				$url       = get_permalink( $base_page );
+				$title     = $base_page->post_title;
 				$type      = 'post_type';
 			}
 
@@ -928,8 +942,8 @@ function ap_menu_obejct() {
 				'classes'          => [ 'anspress-menu-' . $k ],
 				'xfn'              => '',
 			);
-		}
-	}
+		} // End if().
+	} // End foreach().
 
 	return $menu_items;
 }

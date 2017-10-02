@@ -788,7 +788,7 @@ class AnsPress_Admin {
 				),
 				'base_page' => array(
 					'label'   => __( 'Archives page', 'anspress-question-answer' ),
-					'desc'    => __( 'Page used to display question archive (list). Sometimes this page is used for display other subpages of AnsPress.<br/>This page is also referred as <b>Base Page</b> in AnsPress documentations and support forum.', 'anspress-question-answer' ),
+					'desc'    => __( 'Page used to display question archive (list). Sometimes this page is used for displaying other subpages of AnsPress.<br/>This page is also referred as <b>Base Page</b> in AnsPress documentations and support forum.', 'anspress-question-answer' ),
 					'type'    => 'select',
 					'options' => 'posts',
 					'posts_args' => array(
