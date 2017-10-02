@@ -30,8 +30,6 @@ class AnsPress_Rewrite {
 		$query_vars[] = 'ap_nonce';
 		$query_vars[] = 'question_id';
 		$query_vars[] = 'answer_id';
-		$query_vars[] = 'question';
-		$query_vars[] = 'question_name';
 		$query_vars[] = 'answer_id';
 		$query_vars[] = 'answer';
 		$query_vars[] = 'ask';
@@ -80,19 +78,13 @@ class AnsPress_Rewrite {
 		$question_permalink = ap_opt( 'question_page_permalink' );
 		$question_slug = ap_get_page_slug( 'question' );
 
-		if ( 'question_perma_2' === $question_permalink ) {
-			$question_placeholder = $lang . $question_slug . '/([^/]+)';
-			$question_perma = '&question_name=$matches[#]';
-		} elseif ( 'question_perma_3' === $question_permalink ) {
-			$question_placeholder = $lang . $question_slug . '/([^/]+)';
-			$question_perma = '&question_id=$matches[#]';
-		} elseif ( 'question_perma_4' === $question_permalink ) {
-			$question_placeholder = $lang . $question_slug . '/([^/]+)/([^/]+)';
-			$question_perma = '&question_id=$matches[#]&question_name=$matches[#]';
-		} else {
-			$question_placeholder = $lang . ap_base_page_slug() . '/' . $question_slug . '/([^/]+)';
-			$question_perma = '&question_name=$matches[#]';
-		}
+		$question_structure = AnsPress_PostTypes::question_perm_structure();
+
+		$question_rule = str_replace( '{question_id}', '([0-9]+)', $question_structure->rule );
+		$question_rule = str_replace( '{question_slug}', '([^/]+)', $question_rule );
+
+		$question_placeholder = $lang . $question_rule;
+		$question_perma = $question_structure->rewrite . $lang_rule;
 
 		$slug = $lang . $slug;
 		$base_page_id = $base_page_id . $lang_rule;
@@ -106,10 +98,10 @@ class AnsPress_Rewrite {
 		);
 
 		// Answer.
-		$new_rules[ $question_placeholder . '/answer/([^/]+)/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma . '&answer_id=$matches[#]';
+		$new_rules[ $question_placeholder . '/answer/([^/]+)/?$' ] = $question_structure->rewrite . '&answer_id=$matches[#]' . $lang_rule;
 
 		// Question.
-		$new_rules[ $question_placeholder . '/?$' ]  = 'index.php?page_id=' . $base_page_id . '&ap_page=question' . $question_perma;
+		$new_rules[ $question_placeholder . '/?$' ]  = $question_structure->rewrite . $lang_rule;
 
 		// Search.
 		$new_rules[ $slug . ap_get_page_slug( 'search' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=$matches[#]';
@@ -152,28 +144,9 @@ class AnsPress_Rewrite {
 	/**
 	 * Push custom query args in `$wp`.
 	 *
-	 * If `question_name` is passed then `question_id` var will be added.
-	 * Same for `ap_user`.
-	 *
 	 * @param object $wp WP query object.
 	 */
 	public static function add_query_var( $wp ) {
-		if ( ! empty( $wp->query_vars['question_name'] ) ) {
-			$wp->set_query_var( 'ap_page', 'question' );
-			$question = get_page_by_path( sanitize_title( $wp->query_vars['question_name'] ), 'OBJECT', 'question' );
-
-			if ( $question ) {
-				$wp->set_query_var( 'question_id', $question->ID );
-			} else {
-				// Rediret to 404 page if question does not exists.
-				global $wp_query;
-				$wp_query->set_404();
-				status_header( 404 );
-				get_template_part( 404 );
-				exit();
-			}
-		}
-
 		if ( ! empty( $wp->query_vars['ap_user'] ) ) {
 			$user = get_user_by( 'login', sanitize_text_field( urldecode( $wp->query_vars['ap_user'] ) ) );
 

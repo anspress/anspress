@@ -62,7 +62,7 @@ window.AnsPress = _.extend({
 
 		// Convert data to query string if object.
 		if(_.isString(options.data))
-			options.data = $.apParseParams(options.data);
+			options.data = jQuery.apParseParams(options.data);
 
 		if(typeof options.data.action === 'undefined')
 			options.data.action = 'ap_ajax';

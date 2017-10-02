@@ -19,6 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Return current page title.
  *
  * @return string current title
+ * @since unknown
+ * @since 4.1.0 Removed `question_name` query var check.
  */
 function ap_page_title() {
 
@@ -36,7 +38,7 @@ function ap_page_title() {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
 		$new_title = ap_opt( 'ask_page_title' );
-	} elseif ( '' === $current_page && ! is_question() && '' === get_query_var( 'question_name' ) ) {
+	} elseif ( '' === $current_page && ! is_question() ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) !== '' ) {
 		$new_title = sprintf( __( 'Discussion on "%s"', 'anspress-question-answer' ), get_the_title( get_query_var( 'parent' ) ) );
@@ -275,7 +277,7 @@ function ap_page() {
 	$pages = anspress()->pages;
 	$current_page = ap_current_page();
 
-	if ( is_question() ) {
+	if ( is_question() || is_singular( 'question' ) ) {
 		$current_page = 'question';
 	} elseif ( '' === $current_page && ! is_question() ) {
 		$current_page = 'base';

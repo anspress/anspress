@@ -552,7 +552,7 @@
 			var self = this;
 			AnsPress.showLoading(e.target);
 			AnsPress.ajax({
-				data: $(e.target).serialize(),
+				data: $(e.target).serializeArray(),
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					if(data.success){

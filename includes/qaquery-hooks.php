@@ -119,14 +119,6 @@ class AP_QA_Query_Hooks {
 	 * @since 4.1.0 Fixed: qameta fields are not appending properly.
 	 */
 	public static function posts_results( $posts, $instance ) {
-		$qa_ids = [];
-
-		foreach ( (array) $posts as $k => $p ) {
-			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
-				$qa_ids[] = $p->ID;
-			}
-		}
-
 		foreach ( (array) $posts as $k => $p ) {
 			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.

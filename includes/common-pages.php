@@ -56,16 +56,11 @@ class AnsPress_Common_Pages {
 	 * Output single question page.
 	 */
 	public static function question_page() {
-		// Set Header as 404 if question id is not set.
-		if ( false === get_question_id() ) {
-			SELF::set_404();
-			return;
-		}
-
-		$post = get_post( get_question_id() ); // Override okay.
+		global $question_rendered, $post;
+		$question_rendered = false;
 
 		// Check if user is allowed to read this question.
-		if ( ! ap_user_can_read_question( get_question_id() ) ) {
+		if ( ! ap_user_can_read_question( get_the_ID() ) ) {
 			if ( 'moderate' === $post->post_status ) {
 				$msg = __( 'This question is awaiting moderation and cannot be viewed. Please check back later.', 'anspress-question-answer' );
 			} else {
@@ -86,51 +81,35 @@ class AnsPress_Common_Pages {
 
 		global $questions;
 
-		anspress()->questions = $questions = new Question_Query( [ 'p' => get_question_id() ] );
-
-		if ( ap_have_questions() ) {
+		if ( 'future' == $post->post_status ) {
+			echo '<div class="future-notice">';
 			/**
-			 * Set current question as global post
-			 * @since 2.3.3
+			 * Filter to modify future post notice. If filter does not return false
+			 * then retunrd string will be shown.
+			 *
+			 * @param  boolean $notice 		False by default.
+			 * @param  object  $question   	Post object.
+			 * @return boolean|string
+			 * @since  2.4.7
 			 */
+			$notice = apply_filters( 'ap_future_post_notice', false, $post );
 
-			while ( ap_have_questions() ) : ap_the_question();
-				global $post;
-				setup_postdata( $post );
-			endwhile;
-
-			if ( 'future' == $post->post_status ) {
-				echo '<div class="future-notice">';
-				/**
-				 * Filter to modify future post notice. If filter does not return false
-				 * then retunrd string will be shown.
-				 *
-				 * @param  boolean $notice 		False by default.
-				 * @param  object  $question   	Post object.
-				 * @return boolean|string
-				 * @since  2.4.7
-				 */
-				$notice = apply_filters( 'ap_future_post_notice', false, $post );
-				if ( false === $notice ) {
-					$time_to_publish = human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) );
-					echo '<strong>' . sprintf( __('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ) . '</strong>';
-					echo '<p>' . __( 'This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ) . '</p>';
-				} else {
-					echo $notice; // xss okay.
-				}
-
-				echo '</div>';
+			if ( false === $notice ) {
+				$time_to_publish = human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) );
+				echo '<strong>' . sprintf( __('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ) . '</strong>';
+				echo '<p>' . esc_attr__( 'This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ) . '</p>';
+			} else {
+				echo $notice; // xss okay.
 			}
 
-			include( ap_get_theme_location( 'question.php' ) );
-
-			do_action( 'ap_after_question' );
-			wp_reset_postdata();
-
-		} else {
-			SELF::set_404();
+			echo '</div>';
 		}
 
+		include( ap_get_theme_location( 'question.php' ) );
+
+		do_action( 'ap_after_question' );
+
+		$question_rendered = true;
 	}
 
 	/**

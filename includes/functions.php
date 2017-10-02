@@ -80,13 +80,13 @@ function ap_get_theme_location( $file, $plugin = false ) {
 	// Checks if the file exists in the theme first,
 	// Otherwise serve the file from the plugin.
 	if ( file_exists( $child_path ) ) {
-	    $template_path = $child_path;
+	  $template_path = $child_path;
 	} elseif ( file_exists( $parent_path ) ) {
-	    $template_path = $parent_path;
+	  $template_path = $parent_path;
 	} elseif ( false !== $plugin ) {
-	    $template_path = $plugin . '/templates/' . $file;
+	  $template_path = $plugin . '/templates/' . $file;
 	} else {
-	    $template_path = ANSPRESS_THEME_DIR . '/' . $file;
+	  $template_path = ANSPRESS_THEME_DIR . '/' . $file;
 	}
 
 	/**
@@ -164,9 +164,11 @@ function is_anspress() {
  * Check if current page is question page.
  *
  * @return boolean
+ * @since 0.0.1
+ * @since 4.1.0 Also check and return true if singular question.
  */
 function is_question() {
-	if ( is_anspress() && 'question' === ap_current_page() ) {
+	if ( is_singular( 'question' ) || ( is_anspress() && 'question' === ap_current_page() ) ) {
 		return true;
 	}
 	return false;
@@ -188,19 +190,16 @@ function is_ask() {
  * Get current question ID in single question page.
  *
  * @return integer|false
+ * @since unknown
+ * @since 4.1.0 Remove `question_name` query var check.
  */
 function get_question_id() {
 	if ( is_question() && get_query_var( 'question_id' ) ) {
 		return (int) get_query_var( 'question_id' );
 	}
 
-	if ( is_question() && get_query_var( 'question' ) ) {
-		return get_query_var( 'question' );
-	}
-
-	if ( is_question() && get_query_var( 'question_name' ) ) {
-		$_post = get_page_by_path( get_query_var( 'question_name' ), OBJECT, 'question' ); // @codingStandardsIgnoreLine
-		return $_post->ID;
+	if ( is_question() ) {
+		return get_the_ID();
 	}
 
 	if ( get_query_var( 'edit_q' ) ) {

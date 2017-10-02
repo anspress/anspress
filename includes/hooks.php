@@ -87,6 +87,9 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
+			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
+			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Theme', 'comments_template_query_args' );
+			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );

@@ -147,4 +147,3 @@ function ap_widgets_positions() {
 	));
 }
 add_action( 'widgets_init', 'ap_widgets_positions' );
-

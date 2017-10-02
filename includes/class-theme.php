@@ -276,6 +276,7 @@ class AnsPress_Theme {
 	/**
 	 * Check if anspress.php file exists in theme. If exists
 	 * then load this template for AnsPress.
+	 *
 	 * @param  string $template Template.
 	 * @return string
 	 * @since  3.0.0
@@ -283,11 +284,70 @@ class AnsPress_Theme {
 	public static function anspress_basepage_template( $template ) {
 		if ( is_page( ap_base_page_slug() ) ) {
 			$new_template = locate_template( array( 'anspress.php' ) );
-			if ( '' != $new_template ) {
+
+			if ( '' !== $new_template ) {
 				return $new_template ;
 			}
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Filter single question content to render [anspress] shortcode.
+	 *
+	 * @param string $content Content.
+	 * @return string
+	 *
+	 * @since 4.1.0
+	 */
+	public static function the_content_single_question( $content ) {
+		global $ap_shortcode_loaded;
+
+		if ( true !== $ap_shortcode_loaded && is_singular( 'question' ) ) {
+			return do_shortcode( '[anspress]' );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Modify comments template args so that comments won't shows up again in single
+	 * question page.
+	 *
+	 * @global $question_rendered
+	 * @param array $args Comment args.
+	 * @return array|false
+	 *
+	 * @since 4.1.0
+	 */
+	public static function comments_template_query_args( $args ) {
+		global $question_rendered;
+
+		if ( true === $question_rendered && is_singular( 'question' ) ) {
+			return false;
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Return comment open as false in single question page. So that
+	 * theme won't render comments again.
+	 *
+	 * @global $question_rendered
+	 * @param boolean $ret Return.
+	 * @return boolean
+	 *
+	 * @since 4.1.0
+	 */
+	public static function single_question_comment_disable( $ret ) {
+		global $question_rendered;
+
+		if ( true === $question_rendered && is_singular( 'question' ) ) {
+			return false;
+		}
+
+		return $ret;
 	}
 }

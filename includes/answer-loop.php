@@ -298,7 +298,6 @@ function ap_answer_user_can_view() {
  * output answers pagination
  */
 function ap_answers_the_pagination() {
-
 	if ( get_query_var( 'answer_id' ) ) {
 		echo '<a class="ap-all-answers" href="' . get_permalink( get_question_id() ) . '">' . sprintf( __( 'You are viewing 1 out of %d answers, click here to view all answers.', 'anspress-question-answer' ), ap_get_answers_count( get_question_id() ) ) . '</a>';
 	} else {

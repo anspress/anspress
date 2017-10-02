@@ -277,10 +277,17 @@ function ap_total_questions_found() {
 
 /**
  * Reset original question query.
+ *
+ * @return boolean
+ * @since unknown
+ * @since 4.1.0 Check if global `$questions` exists.
  */
 function ap_reset_question_query() {
 	global $questions;
-	return $questions->reset_questions_data();
+
+	if ( $questions ) {
+		return $questions->reset_questions_data();
+	}
 }
 
 /**
@@ -709,6 +716,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
  * Output answers of current question.
  *
  * @since 2.1
+ * @since 4.1.0 Removed calling function @see `ap_reset_question_query`.
  */
 function ap_answers() {
 	global $answers;
