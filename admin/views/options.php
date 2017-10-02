@@ -136,11 +136,11 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 					<div class="ap-group-options">
 						<?php if ( 'general' === $active_tab ) : ?>
 							<p class="ap-tab-subs">
-								<a href="#pages-options"><?php esc_attr_e( 'Pages Options', 'anspress-question-answer' ); ?></a>
+								<a href="#pages-options"><?php esc_attr_e( 'Pages &amp; Permalinks', 'anspress-question-answer' ); ?></a>
 								<a href="#layout-options"><?php esc_attr_e( 'Layout Options', 'anspress-question-answer' ); ?></a>
 							</p>
 							<div class="postbox">
-								<h3 id="pages-options"><?php esc_attr_e( 'Pages Options', 'anspress-question-answer' ); ?></h3>
+								<h3 id="pages-options"><?php esc_attr_e( 'Pages &amp; Permalinks', 'anspress-question-answer' ); ?></h3>
 								<div class="inside">
 									<?php
 										anspress()->get_form( 'options_general_pages' )->generate( array(

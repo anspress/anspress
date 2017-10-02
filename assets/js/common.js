@@ -94,9 +94,12 @@ window.AnsPress = _.extend({
 		var isText = jQuery(elm).is('input[type="text"]');
 		var uid = this.uniqueId();
 
-		if(jQuery(elm).is('button')){
+		if(jQuery(elm).is('button')||jQuery(elm).is('.ap-btn')){
 			jQuery(elm).addClass('show-loading');
-			jQuery(elm).append('<span class="ap-loading-span"></span>');
+			$loading = jQuery('<span class="ap-loading-span"></span>');
+			$loading.height(jQuery(elm).height());
+			$loading.width(jQuery(elm).height());
+			jQuery(elm).append($loading);
 		} else {
 			var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
 			jQuery('body').append(el);
@@ -116,7 +119,7 @@ window.AnsPress = _.extend({
 	},
 
 	hideLoading: function(elm) {
-		if(jQuery(elm).is('button')){
+		if(jQuery(elm).is('button')||jQuery(elm).is('.ap-btn')){
 			jQuery(elm).removeClass('show-loading');
 			jQuery(elm).find('.ap-loading-span').remove();
 		}else if( 'all' == elm ){

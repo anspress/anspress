@@ -863,54 +863,48 @@ function ap_replace_square_bracket( $contents ) {
  *
  * @see anspress_activate
  * @since 2.3
- * @since 4.1.0 Creates ask question page if not exists.
+ * @since 4.1.0 Creates all other AnsPress pages if not exists.
  */
 function ap_create_base_page() {
-	// Check if page already exists.
-	$page_id = ap_opt( 'base_page' );
-	$_post = get_page( $page_id );
+	$opt = ap_opt();
 
-	if ( ! $_post || 'trash' === $_post->post_status ) {
-		$args = array(
-			'post_type'      => 'page',
-			'post_content'   => '[anspress]',
-			'post_status'    => 'publish',
-			'post_title'     => __( 'Questions', 'anspress-question-answer' ),
-			'post_name'      => 'questions',
-			'comment_status' => 'closed',
-		);
+	$pages = array(
+		'base_page' => array(
+			'post_title' => __( 'Questions', 'anspress-question-answer' ),
+			'post_name'  => 'questions',
+		),
+		'ask_page' => array(
+			'post_title' => __( 'Ask a Question', 'anspress-question-answer' ),
+			'post_name'  => 'ask',
+		),
+	);
 
-		// Now create post.
-		$new_page_id = wp_insert_post( $args );
+	foreach ( $pages as $slug => $page ) {
+		// Check if page already exists.
+		$_post = get_page( ap_opt( $slug ) );
 
-		if ( $new_page_id ) {
-			$page = get_page( $new_page_id );
+		if ( ! $_post || 'trash' === $_post->post_status ) {
+			$args = wp_parse_args( $page, array(
+				'post_type'      => 'page',
+				'post_content'   => '[anspress]',
+				'post_status'    => 'publish',
+				'comment_status' => 'closed',
+			) );
 
-			ap_opt( 'base_page', $page->ID );
-			ap_opt( 'base_page_id', $page->post_name );
+			// Now create post.
+			$new_page_id = wp_insert_post( $args );
+
+			if ( $new_page_id ) {
+				$page = get_page( $new_page_id );
+
+				ap_opt( $slug, $page->ID );
+
+				if ( 'base_page' === $slug ) {
+					ap_opt( 'base_page_id', $page->post_name );
+				}
+			}
 		}
-	}
-
-	// Check if page already exists.
-	$_post = get_page( ap_opt( 'ask_page' ) );
-
-	if ( ! $_post || 'trash' === $_post->post_status ) {
-		$args = array(
-			'post_type'      => 'page',
-			'post_content'   => '[anspress]',
-			'post_status'    => 'publish',
-			'post_title'     => __( 'Ask a Question', 'anspress-question-answer' ),
-			'post_name'      => 'ask',
-			'comment_status' => 'closed',
-		);
-
-		// Now create post.
-		$new_page_id = wp_insert_post( $args );
-
-		if ( $new_page_id ) {
-			ap_opt( 'ask_page', $new_page_id );
-		}
-	}
+	} // End foreach().
 }
 
 /**

@@ -307,7 +307,6 @@ function ap_answers_the_pagination() {
 	}
 }
 
-
 /**
  * Return numbers of published answers.
  *
@@ -328,8 +327,6 @@ function ap_count_published_answers( $question_id ) {
 	wp_cache_set( $key, $count, 'ap_count' );
 	return $count;
 }
-
-
 
 /**
  * Count all answers excluding best answer.

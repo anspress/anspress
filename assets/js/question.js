@@ -440,7 +440,7 @@
 			var self = this;
 			var q = $.parseJSON($(e.target).attr('ap-query'));
 			q.ap_ajax_action = 'toggle_best_answer';
-
+			AnsPress.showLoading(e.target);
 			AnsPress.ajax({
 				data: q,
 				success: function(data){
@@ -595,7 +595,7 @@
 		initialize: function(){
 			var loadedPosts = [];
 			$('[ap="question"],[ap="answer"]').each(function(e){
-				loadedPosts.push({ 'ID' : $(this).attr('ap-id')});
+				loadedPosts.push({ 'ID' : $(this).attr('apId')});
 			});
 			this.add(loadedPosts);
 		}
@@ -613,7 +613,7 @@
 			'click [ap="loadEditor"]': 'loadEditor',
 		},
 		renderItem: function(post){
-			var view = new AnsPress.views.Post({ model: post, el: '#post-'+post.get('ID') });
+			var view = new AnsPress.views.Post({ model: post, el: '[apId="'+post.get('ID')+'"]' });
 			view.render();
 		},
 

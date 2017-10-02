@@ -34,9 +34,9 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function init() {
 		ap_add_default_options([
-			'user_page_slug_questions'   => 'questions',
-			'user_page_slug_answers'   => 'answers',
-			'user_page_title_questions'   => __( 'Questions', 'anspress-question-answer' ),
+			'user_page_slug_questions'  => 'questions',
+			'user_page_slug_answers'    => 'answers',
+			'user_page_title_questions' => __( 'Questions', 'anspress-question-answer' ),
 			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
 		anspress()->add_action( 'ap_form_addon-free_profile', __CLASS__, 'options' );

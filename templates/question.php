@@ -17,7 +17,7 @@
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>
 
-			<div id="post-<?php the_ID(); ?>" ap="question" ap-id="<?php the_ID(); ?>" <?php post_class() ?>>
+			<div ap="question" apId="<?php the_ID(); ?>">
 				<div id="question" role="main" class="ap-content">
 					<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 					<?php
@@ -79,7 +79,7 @@
 
 							</div>
 
-							<div class="ap-post-footer clearfix">								
+							<div class="ap-post-footer clearfix">
 								<?php ap_post_actions_buttons() ?>
 								<?php do_action( 'ap_post_footer' ); ?>
 								<?php echo ap_comment_btn_html(); ?>

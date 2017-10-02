@@ -279,6 +279,8 @@ function ap_page() {
 
 	if ( is_question() || is_singular( 'question' ) ) {
 		$current_page = 'question';
+	} elseif ( get_the_ID() === ap_opt( 'user_page' ) ) {
+		$current_page = 'user';
 	} elseif ( '' === $current_page && ! is_question() ) {
 		$current_page = 'base';
 	}

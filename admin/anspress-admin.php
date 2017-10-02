@@ -424,7 +424,15 @@ class AnsPress_Admin {
 		$_post = get_post( $post_id );
 
 		if ( 'page' === $_post->post_type ) {
-			if ( in_array( $_post->ID, [ ap_opt( 'base_page' ), ap_opt('ask_page') ], true ) ) {
+			$pages_slug = [ 'base_page', 'ask_page' ];
+			$page_ids = [];
+			$opt = ap_opt();
+
+			foreach ( $pages_slug as $slug ) {
+				$page_ids[] = $opt[ $slug ];
+			}
+
+			if ( in_array( $_post->ID, $page_ids, true ) ) {
 				delete_transient( 'ap_pages_check' );
 			}
 		}
@@ -710,21 +718,30 @@ class AnsPress_Admin {
 	private static function check_pages_exists() {
 		$cache = get_transient( 'ap_pages_check' );
 
-		//if ( false === $cache ) {
+		if ( false === $cache ) {
+			$opt = ap_opt();
+			$pages_slug = [ 'base_page', 'ask_page' ];
+
+			$pages_in = [];
+			foreach ( $pages_slug as $slug ) {
+				$pages_in[] = $opt[ $slug ];
+			}
+
 			$args = array(
-				'post__in'  => [ ap_opt( 'base_page' ), ap_opt( 'ask_page' ) ],
+				'post__in'  => $pages_in,
 				'post_type' => 'page',
 			);
 
 			$pages = get_posts( $args );
-			if ( count( $pages ) < 2 ) {
+
+			if ( count( $pages ) < count( $pages_slug ) ) {
 				$cache = '0';
 				set_transient( 'ap_pages_check', '0', HOUR_IN_SECONDS );
 			} else {
 				set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 				$cache = '1';
 			}
-		//}
+		}
 
 		return '0' === $cache ? false : true;
 	}
@@ -829,7 +846,6 @@ class AnsPress_Admin {
 					'value' => $opt['question_page_permalink'],
 					'validate' => 'required',
 				),
-
 				'base_page_title' => array(
 					'label'    => __( 'Base page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Main questions list page title', 'anspress-question-answer' ),
@@ -846,13 +862,6 @@ class AnsPress_Admin {
 					'label'    => __( 'Author page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Title of the author page', 'anspress-question-answer' ),
 					'value'    => $opt['author_page_title'],
-					'validate' => 'required',
-				),
-				'show_solved_prefix' => array(
-					'label'    => __( 'Show solved prefix', 'anspress-question-answer' ),
-					'desc'     => __( 'If an answer is selected for question then [solved] prefix will be added in title.', 'anspress-question-answer' ),
-					'type'     => 'checkbox',
-					'value'    => $opt['show_solved_prefix'],
 					'validate' => 'required',
 				),
 			),
@@ -1099,6 +1108,13 @@ class AnsPress_Admin {
 					'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['default_date_format'],
+				),
+				'show_solved_prefix' => array(
+					'label'    => __( 'Show solved prefix', 'anspress-question-answer' ),
+					'desc'     => __( 'If an answer is selected for question then [solved] prefix will be added in title.', 'anspress-question-answer' ),
+					'type'     => 'checkbox',
+					'value'    => $opt['show_solved_prefix'],
+					'validate' => 'required',
 				),
 				'question_order_by' => array(
 					'label'   => __( 'Default question order', 'anspress-question-answer' ),
