@@ -50,6 +50,8 @@ class AnsPress_PostTypes {
 			$rewrites['rule'] = $question_slug . '/%question%/%question_id%';
 		} elseif ( 'question_perma_6' === $question_permalink ) {
 			$rewrites['rule'] = $question_slug . '/%question_id%-%question%';
+		} elseif ( 'question_perma_7' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question%-%question_id%';
 		} else {
 			$rewrites['rule'] = ap_base_page_slug() . '/' . $question_slug . '/%question%';
 		}
