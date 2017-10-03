@@ -55,6 +55,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 		// Flush rewrite rules.
 		if ( 'form_options_general_pages' === $form_name ) {
+			ap_opt( 'ap_flush', 'true' );
 			flush_rewrite_rules();
 		}
 

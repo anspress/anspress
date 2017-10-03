@@ -41,16 +41,16 @@ class AnsPress_PostTypes {
 
 		$rewrites = [];
 		if ( 'question_perma_2' === $question_permalink ) {
-			$rewrites['rule'] = $question_slug . '/{question_slug}';
+			$rewrites['rule'] = $question_slug . '/%question%';
 			$rewrites['rewrite'] = 'index.php?question=$matches[#]';
 		} elseif ( 'question_perma_3' === $question_permalink ) {
-			$rewrites['rule'] = $question_slug . '/{question_id}';
+			$rewrites['rule'] = $question_slug . '/%question_id%';
 			$rewrites['rewrite'] = 'index.php?post_type=question&p=$matches[#]';
 		} elseif ( 'question_perma_4' === $question_permalink ) {
-			$rewrites['rule'] = $question_slug . '/{question_id}/{question_slug}';
+			$rewrites['rule'] = $question_slug . '/%question_id%/%question%';
 			$rewrites['rewrite'] = 'index.php?question_id=$matches[#]&question=$matches[#]';
 		} else {
-			$rewrites['rule'] = ap_base_page_slug() . '/' . $question_slug . '/{question_slug}';
+			$rewrites['rule'] = ap_base_page_slug() . '/' . $question_slug . '/%question%';
 			$rewrites['rewrite'] = 'index.php?question=$matches[#]';
 		}
 
@@ -69,6 +69,9 @@ class AnsPress_PostTypes {
 	 * @since 2.0.1
 	 */
 	public static function register_question_cpt() {
+
+		add_rewrite_tag( '%question_id%', '([0-9]+)', 'post_type=question&p=' );
+		add_rewrite_tag( '%question%', '([^/]+)' );
 
 		// Question CPT labels.
 		$labels = array(
@@ -122,7 +125,11 @@ class AnsPress_PostTypes {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
-			'rewrite'             => false,
+			'rewrite'             => array(
+				'with_front' => false,
+				'slug' => self::question_perm_structure()->rule,
+				'page' => false,
+			),
 			'query_var'           => 'question',
 			'delete_with_user'    => true,
 		);
@@ -233,8 +240,8 @@ class AnsPress_PostTypes {
 
 			if ( get_option( 'permalink_structure' ) ) {
 				$structure = self::question_perm_structure();
-				$rule = str_replace( '{question_id}', $post->ID, $structure->rule );
-				$rule = str_replace( '{question_slug}', $post->post_name, $rule );
+				$rule = str_replace( '%question_id%', $post->ID, $structure->rule );
+				$rule = str_replace( '%question%', $post->post_name, $rule );
 				$link = home_url( $default_lang . '/' . $rule . '/' );
 			} else {
 				$link = add_query_arg( array( 'question' => $post->ID ), ap_base_page_link() );

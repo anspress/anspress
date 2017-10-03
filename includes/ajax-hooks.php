@@ -405,7 +405,7 @@ class AnsPress_Ajax {
 			require( ABSPATH . WPINC . '/class-wp-editor.php' );
 		}
 
-		ap_answer_form( ap_sanitize_unslash( 'question_id' ) );
+		ap_answer_form( ap_sanitize_unslash( 'question_id', 'r' ) );
 
 		\_WP_Editors::enqueue_scripts();
 

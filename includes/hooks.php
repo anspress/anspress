@@ -486,10 +486,10 @@ class AnsPress_Hooks {
 	 * @return void
 	 */
 	public static function flush_rules() {
-			if ( ap_opt( 'ap_flush' ) != 'false' ) {
-					flush_rewrite_rules();
-					ap_opt( 'ap_flush', 'false' );
-			}
+		if ( ap_opt( 'ap_flush' ) != 'false' ) {
+			flush_rewrite_rules();
+			ap_opt( 'ap_flush', 'false' );
+		}
 	}
 
 	/**

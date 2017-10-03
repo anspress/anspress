@@ -162,17 +162,23 @@ function ap_user_can_ask( $user_id = false ) {
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
+ * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID.
  */
 function ap_user_can_answer( $question_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
+	$question = ap_get_post( $question_id );
+
+	// Return false if not a question.
+	if ( ! $question || 'question' !== $question->post_type ) {
+		return false;
+	}
+
 	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
-
-	$question = ap_get_post( $question_id );
 
 	/**
 	 * Allow overriding of ap_user_can_answer.

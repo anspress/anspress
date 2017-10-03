@@ -171,6 +171,7 @@ function is_question() {
 	if ( is_singular( 'question' ) || ( is_anspress() && 'question' === ap_current_page() ) ) {
 		return true;
 	}
+
 	return false;
 }
 
@@ -191,7 +192,7 @@ function is_ask() {
  *
  * @return integer|false
  * @since unknown
- * @since 4.1.0 Remove `question_name` query var check.
+ * @since 4.1.0 Remove `question_name` query var check. Get question ID from queried object.
  */
 function get_question_id() {
 	if ( is_question() && get_query_var( 'question_id' ) ) {
@@ -199,7 +200,7 @@ function get_question_id() {
 	}
 
 	if ( is_question() ) {
-		return get_the_ID();
+		return get_queried_object_id();
 	}
 
 	if ( get_query_var( 'edit_q' ) ) {

@@ -57,8 +57,19 @@ class AnsPress_Rewrite {
 		global $wp_rewrite;
 		global $ap_rules;
 
-		unset( $wp_rewrite->extra_permastructs['question'] );
-		unset( $wp_rewrite->extra_permastructs['answer'] );
+		$question_structure = AnsPress_PostTypes::question_perm_structure();
+		$question_rule = str_replace( '%question%', '([^/]+)', $question_structure->rule );
+		$question_rule = str_replace( '%question_id%', '([0-9]+)', $question_rule );
+
+		foreach ( $wp_rewrite->rules as $key => $rewrite ) {
+			if ( false !== strpos( $key, $question_structure->rule ) ) {
+				unset( $wp_rewrite->rules[ $key ] );
+			}
+
+			if ( $question_rule . '/([^/]+)(?:/([0-9]+))?/?$' === $key ) {
+				unset( $wp_rewrite->rules[ $key ] );
+			}
+		}
 
 		$base_page_id = ap_opt( 'base_page' );
 		$slug = ap_base_page_slug() . '/';
@@ -77,9 +88,6 @@ class AnsPress_Rewrite {
 
 		$question_permalink = ap_opt( 'question_page_permalink' );
 		$question_slug = ap_get_page_slug( 'question' );
-
-		$question_structure = AnsPress_PostTypes::question_perm_structure();
-
 		$question_rule = str_replace( '{question_id}', '([0-9]+)', $question_structure->rule );
 		$question_rule = str_replace( '{question_slug}', '([^/]+)', $question_rule );
 
@@ -91,23 +99,9 @@ class AnsPress_Rewrite {
 
 		$new_rules = array(
 			$slug . 'parent/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&parent=$matches[#]',
-
 			$slug . 'page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&paged=$matches[#]',
-
 			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]&paged=$matches[#]',
 		);
-
-		// Answer embed.
-		$new_rules[ $question_placeholder . '/answer/([^/]+)/embed/?$' ] = $question_structure->rewrite . '&answer_id=$matches[#]&embed=true';
-
-		// Answer
-		$new_rules[ $question_placeholder . '/answer/([^/]+)/?$' ] = $question_structure->rewrite . '&answer_id=$matches[#]' . $lang_rule;
-
-		// Question embed.
-		$new_rules[ $question_placeholder . '/embed/?$' ]  = $question_structure->rewrite . '&embed=true';
-
-		// Question.
-		$new_rules[ $question_placeholder . '/?$' ]  = $question_structure->rewrite . $lang_rule;
 
 		// Search.
 		$new_rules[ $slug . ap_get_page_slug( 'search' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=$matches[#]';
@@ -128,7 +122,7 @@ class AnsPress_Rewrite {
 			self::$counter = 1;
 		}
 
-		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
+		//return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}
 
 	public static function incr_hash( $matches ) {

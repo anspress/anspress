@@ -80,18 +80,17 @@ class Answers_Query extends WP_Query {
 			$question_id = $this->args['question_id'];
 		}
 
-		if ( ! empty( $question_id ) ) {
+		if ( empty( $question_id ) ) {
+			$this->args = [];
+		} else {
 			$this->args['post_parent'] = $question_id;
+			$this->args['post_type'] = 'answer';
+			$args = $this->args;
+			/**
+			 * Initialize parent class
+			 */
+			parent::__construct( $args );
 		}
-
-		$this->args['post_type'] = 'answer';
-
-		$args = $this->args;
-
-		/**
-		 * Initialize parent class
-		 */
-		parent::__construct( $args );
 	}
 
 	public function get_answers() {
