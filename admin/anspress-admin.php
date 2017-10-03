@@ -843,6 +843,7 @@ class AnsPress_Admin {
 						'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213/',
 						'question_perma_4' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213/question-name/',
 						'question_perma_5' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name/213/',
+						'question_perma_6' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213-question-name/',
 					],
 					'value' => $opt['question_page_permalink'],
 					'validate' => 'required',

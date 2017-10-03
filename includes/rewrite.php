@@ -90,10 +90,6 @@ class AnsPress_Rewrite {
 		$question_slug = ap_get_page_slug( 'question' );
 		$question_rule = str_replace( '{question_id}', '([0-9]+)', $question_structure->rule );
 		$question_rule = str_replace( '{question_slug}', '([^/]+)', $question_rule );
-
-		$question_placeholder = $lang . $question_rule;
-		$question_perma = $question_structure->rewrite . $lang_rule;
-
 		$slug = $lang . $slug;
 		$base_page_id = $base_page_id . $lang_rule;
 
@@ -122,7 +118,7 @@ class AnsPress_Rewrite {
 			self::$counter = 1;
 		}
 
-		//return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
+		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
 	}
 
 	public static function incr_hash( $matches ) {
