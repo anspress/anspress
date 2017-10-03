@@ -42,16 +42,14 @@ class AnsPress_PostTypes {
 		$rewrites = [];
 		if ( 'question_perma_2' === $question_permalink ) {
 			$rewrites['rule'] = $question_slug . '/%question%';
-			$rewrites['rewrite'] = 'index.php?question=$matches[#]';
 		} elseif ( 'question_perma_3' === $question_permalink ) {
 			$rewrites['rule'] = $question_slug . '/%question_id%';
-			$rewrites['rewrite'] = 'index.php?post_type=question&p=$matches[#]';
 		} elseif ( 'question_perma_4' === $question_permalink ) {
 			$rewrites['rule'] = $question_slug . '/%question_id%/%question%';
-			$rewrites['rewrite'] = 'index.php?question_id=$matches[#]&question=$matches[#]';
+		} elseif ( 'question_perma_5' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question%/%question_id%';
 		} else {
 			$rewrites['rule'] = ap_base_page_slug() . '/' . $question_slug . '/%question%';
-			$rewrites['rewrite'] = 'index.php?question=$matches[#]';
 		}
 
 		/**
