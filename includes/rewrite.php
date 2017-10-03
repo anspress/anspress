@@ -97,8 +97,14 @@ class AnsPress_Rewrite {
 			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]&paged=$matches[#]',
 		);
 
-		// Answer.
+		// Answer embed.
+		$new_rules[ $question_placeholder . '/answer/([^/]+)/embed/?$' ] = $question_structure->rewrite . '&answer_id=$matches[#]&embed=true';
+
+		// Answer
 		$new_rules[ $question_placeholder . '/answer/([^/]+)/?$' ] = $question_structure->rewrite . '&answer_id=$matches[#]' . $lang_rule;
+
+		// Question embed.
+		$new_rules[ $question_placeholder . '/embed/?$' ]  = $question_structure->rewrite . '&embed=true';
 
 		// Question.
 		$new_rules[ $question_placeholder . '/?$' ]  = $question_structure->rewrite . $lang_rule;

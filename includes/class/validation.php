@@ -10,6 +10,8 @@
  * @subpackage   Validation
  */
 
+_deprecated_file( basename( __FILE__ ), '4.1.0', 'lib/class-validate.php' );
+
 /**
  * The validation class.
  *

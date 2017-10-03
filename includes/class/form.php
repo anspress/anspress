@@ -10,6 +10,8 @@
  * @copyright    2014 Rahul Aryan
  */
 
+_deprecated_file( basename( __FILE__ ), '4.1.0', 'lib/class-form.php' );
+
 /**
  * AnsPress HTML form handler
  *

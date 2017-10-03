@@ -194,6 +194,7 @@ class AnsPress_PostTypes {
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
 			'rewrite'             => false,
+			'query_var'						=> 'answer',
 		);
 
 		/**

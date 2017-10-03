@@ -90,6 +90,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Theme', 'comments_template_query_args' );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
+			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );

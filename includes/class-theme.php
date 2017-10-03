@@ -350,4 +350,31 @@ class AnsPress_Theme {
 
 		return $ret;
 	}
+
+	/**
+	 * Generate question excerpt if there is not any already.
+	 *
+	 * @param string $excerpt Default excerpt.
+	 * @param object $post    WP_Post object.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function get_the_excerpt( $excerpt, $post ) {
+		if ( 'question' === $post->post_type ) {
+			if ( get_query_var( 'answer_id' ) ) {
+				$post = ap_get_post( get_query_var( 'answer_id' ) );
+			}
+
+			// Check if excerpt exists.
+			if ( ! empty( $post->post_excerpt ) ) {
+				return $post->post_excerpt;
+			}
+
+			$excerpt_length = apply_filters( 'excerpt_length', 55 );
+			$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+			return wp_trim_words( $post->post_content, $excerpt_length, $excerpt_more );
+		}
+
+		return $excerpt;
+	}
 }

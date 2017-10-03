@@ -285,8 +285,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		private function includes() {
 			global $ap_options;
 
-			require_once ANSPRESS_DIR . 'includes/class/form.php';
-			require_once ANSPRESS_DIR . 'includes/class/validation.php';
+			//require_once ANSPRESS_DIR . 'includes/class/form.php';
+			//require_once ANSPRESS_DIR . 'includes/class/validation.php';
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
