@@ -127,11 +127,7 @@ class AnsPress_PostTypes {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
-			'rewrite'             => array(
-				'with_front' => false,
-				'slug' => self::question_perm_structure()->rule,
-				'page' => false,
-			),
+			'rewrite'             => false,
 			'query_var'           => 'question',
 			'delete_with_user'    => true,
 		);
@@ -143,8 +139,13 @@ class AnsPress_PostTypes {
 		 */
 		$args = apply_filters( 'ap_question_cpt_args', $args );
 
+		// Call it before registering cpt.
+		AnsPress_Rewrite::rewrite_rules();
+
 		// Register CPT question.
 		register_post_type( 'question', $args );
+
+
 	}
 
 	/**
@@ -258,7 +259,7 @@ class AnsPress_PostTypes {
 			return apply_filters( 'ap_question_post_type_link', $link, $post );
 
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
-			$link = get_permalink( $post->post_parent ) . "answer/{$post->ID}/#post-{$post->ID}";
+			$link = get_permalink( $post->post_parent ) . "answer/{$post->ID}/";
 
 			/**
 			 * Allow overriding of answer post type permalink.

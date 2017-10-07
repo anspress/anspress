@@ -10,10 +10,10 @@
  */
 
 ?>
-<apAnswersW style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
+<apanswersw style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
-			<h3 class="ap-answers-label ap-pull-left" apAnswerscountText>
+			<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">
 				<?php
 					$count = ( '' !== get_query_var( 'answer_id' ) ? ap_get_answers_count() : ap_total_answers_found() );
 					printf(
@@ -32,14 +32,14 @@
 		?>
 
 		<div id="answers">
-			<apAnswers>
+			<apanswers>
 				<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
 					<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
 				<?php endwhile ; ?>
-			</apAnswers>
+			</apanswers>
 		</div>
 
 		<?php ap_answers_the_pagination(); ?>
 	</div>
-</apAnswersW>
+</apanswersw>
 

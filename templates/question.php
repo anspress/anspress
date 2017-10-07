@@ -4,8 +4,9 @@
  * This file can be overridden by creating a anspress directory in active theme folder.
  *
  * @package    AnsPress
+ * @subpackage Templates
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
- * @author    Rahul Aryan <support@anspress.io>
+ * @author     Rahul Aryan <support@anspress.io>
  */
 
 ?>

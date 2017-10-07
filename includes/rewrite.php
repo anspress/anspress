@@ -20,6 +20,41 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Rewrite {
 	private static $counter = 1;
+
+	/**
+	 * Filter global request array.
+	 *
+	 * @param  array $request Request array.
+	 * @return array
+	 * @since  4.1.0
+	 */
+	public static function alter_the_query( $request ) {
+		// if ( isset( $request['answer_id'] ) ) {
+		// 	$request['p'] = $request['answer_id'];
+		// 	$request['post_type'] = 'answer';
+
+		// 	if ( isset( $request['question'] ) ) {
+		// 		unset( $request['question'] );
+		// 	}
+		// 	if ( isset( $request['name'] ) ) {
+		// 		unset( $request['name'] );
+		// 	}
+		// }
+
+		if ( isset( $request['post_type'] ) && 'answer' === $request['post_type'] ) {
+			if ( ! empty( $request['feed'] ) ) {
+				unset( $request['question_id'] );
+				unset( $request['answer'] );
+			}
+
+			if ( isset( $request['embed'] ) && 'true' === $request['embed'] ) {
+				$request['p'] = $request['answer_id'];
+			}
+		}
+
+		return $request;
+	}
+
 	/**
 	 * Register query vars
 	 * @param  array $query_vars Registered query variables.
@@ -43,9 +78,51 @@ class AnsPress_Rewrite {
 		$query_vars[] = 'parent';
 		$query_vars[] = 'ap_user';
 		$query_vars[] = 'user_page';
-		//$query_vars[] = 'ap_paged';
+		$query_vars[] = 'ap_paged';
 
 		return $query_vars;
+	}
+
+	/**
+	 * Generate rewrite rules for AnsPress.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function rewrite_rules() {
+		global $wp_rewrite;
+		$q_struct = AnsPress_PostTypes::question_perm_structure();
+		$rules = $wp_rewrite->generate_rewrite_rules( $q_struct->rule, EP_NONE, false, false, true );
+
+		$rule = key( $rules );
+		$rewrite = reset( $rules );
+
+		$rule = substr( $rule, 0, -3 );
+
+		$answer_rewrite = str_replace( 'post_type=question', 'post_type=answer', $rewrite );
+		$answer_rewrite = str_replace( '&question=', '&question_slug=', $answer_rewrite );
+		$answer_rewrite = str_replace( '&p=', '&question_id=', $answer_rewrite );
+
+		$question_rules = array(
+			$rule . '/answer/([0-9]+)/(feed|rdf|rss|rss2|atom)/?$' => $answer_rewrite . '&answer_id=$matches[#]&feed=$matches[#]',
+			$rule . '/answer/([0-9]+)/embed/?$'                    => $answer_rewrite . '&answer_id=$matches[#]&embed=true',
+			$rule . '/answer/([0-9]+)/?$'                          => $rewrite . '&answer_id=$matches[#]',
+			$rule . '/page/?([0-9]{1,})/?$'                        => $rewrite . '&ap_paged=$matches[#]',
+			$rule . '/(feed|rdf|rss|rss2|atom)/?$'                 => $rewrite . '&feed=$matches[#]',
+			$rule . '/embed/?$'                                    => $rewrite . '&embed=true',
+			$rule . '/?$'                                          => $rewrite,
+		);
+
+		$ap_rules = [];
+
+		foreach ( $question_rules as $r => $re ) {
+			$re = preg_replace( '/\\$([1-9]+)/', '$matches[#]', $re );
+			$re = preg_replace_callback( '/\#/', [ __CLASS__, 'incr_hash' ], $re );
+			$ap_rules[ $r ] = $re;
+			self::$counter = 1;
+		}
+
+		anspress()->rewrites = $ap_rules;
 	}
 
 	/**
@@ -55,70 +132,23 @@ class AnsPress_Rewrite {
 	 */
 	public static function rewrites() {
 		global $wp_rewrite;
-		global $ap_rules;
 
-		$question_structure = AnsPress_PostTypes::question_perm_structure();
-		$question_rule = str_replace( '%question%', '([^/]+)', $question_structure->rule );
-		$question_rule = str_replace( '%question_id%', '([0-9]+)', $question_rule );
-
-		foreach ( $wp_rewrite->rules as $key => $rewrite ) {
-			if ( false !== strpos( $key, $question_structure->rule ) ) {
-				unset( $wp_rewrite->rules[ $key ] );
-			}
-
-			if ( $question_rule . '/([^/]+)(?:/([0-9]+))?/?$' === $key ) {
-				unset( $wp_rewrite->rules[ $key ] );
-			}
-		}
-
-		$base_page_id = ap_opt( 'base_page' );
-		$slug = ap_base_page_slug() . '/';
-		$lang = '';
-		$lang_rule = '';
+		$new_rules  = anspress()->rewrites;
+		$lang       = '';
+		$lang_rule  = '';
 		$lang_index = 0;
 
 		// Support polylang permalink.
 		if ( function_exists( 'pll_languages_list' ) ) {
 			if ( ! empty( pll_languages_list() ) ) {
-				$lang = '(' . implode( '|', pll_languages_list() ) . ')/';
-				$lang_rule = '&lang=$matches[#]';
+				$lang       = '(' . implode( '|', pll_languages_list() ) . ')/';
+				$lang_rule  = '&lang=$matches[#]';
 				$lang_index = 1;
 			}
 		}
 
-		$question_permalink = ap_opt( 'question_page_permalink' );
-		$question_slug = ap_get_page_slug( 'question' );
-		$question_rule = str_replace( '{question_id}', '([0-9]+)', $question_structure->rule );
-		$question_rule = str_replace( '{question_slug}', '([^/]+)', $question_rule );
-		$slug = $lang . $slug;
-		$base_page_id = $base_page_id . $lang_rule;
-
-		$new_rules = array(
-			$slug . 'parent/([^/]+)/?' => 'index.php?page_id=' . $base_page_id . '&parent=$matches[#]',
-			$slug . 'page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&paged=$matches[#]',
-			$slug . '([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]&paged=$matches[#]',
-		);
-
-		// Search.
-		$new_rules[ $slug . ap_get_page_slug( 'search' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=search&ap_s=$matches[#]';
-
-		// Ask with post parent.
-		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask&parent=$matches[#]';
-
-		// Ask.
-		$new_rules[ $slug . ap_get_page_slug( 'ask' ) . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=ask';
-
-		// All other AnsPress pages.
-		$new_rules[ $slug . '([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]';
-
-		$ap_rules = apply_filters( 'ap_rewrite_rules', $new_rules, $slug, $base_page_id );
-
-		foreach ( $ap_rules as $k => $r ) {
-			$ap_rules[ $k ] = preg_replace_callback( '/\#/', [ __CLASS__, 'incr_hash' ], $r );
-			self::$counter = 1;
-		}
-
-		return $wp_rewrite->rules = $ap_rules + $wp_rewrite->rules;
+		$wp_rewrite->rules = ap_array_insert_after( $wp_rewrite->rules, 'type/([^/]+)/?$', $new_rules );
+		return $wp_rewrite->rules;
 	}
 
 	public static function incr_hash( $matches ) {

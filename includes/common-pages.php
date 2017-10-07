@@ -52,6 +52,39 @@ class AnsPress_Common_Pages {
 		ap_get_template_part( 'question-list' );
 	}
 
+	private static function question_permission_msg( $_post ) {
+		$msg = false;
+
+		// Check if user is allowed to read this question.
+		if ( ! ap_user_can_read_question( $_post->ID ) ) {
+			if ( 'moderate' === $_post->post_status ) {
+				$msg = __( 'This question is awaiting moderation and cannot be viewed. Please check back later.', 'anspress-question-answer' );
+			} else {
+				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
+			}
+		} elseif ( 'future' === $_post->post_status ) {
+			$time_to_publish = human_time_diff( strtotime( $_post->post_date ), current_time( 'timestamp', true ) );
+
+			$msg = '<strong>' . sprintf(
+				// Translators: %s contain time to publish.
+				__( 'Question will be published in %s', 'anspress-question-answer' ),
+				$time_to_publish
+			) . '</strong>';
+
+			$msg .= '<p>' . esc_attr__( 'This question is not published yet and is not accessible to anyone until it get published.', 'anspress-question-answer' ) . '</p>';
+		}
+
+		/**
+		 * Filter single question page permission message.
+		 *
+		 * @param string $msg Message.
+		 * @since 4.1.0
+		 */
+		$msg = apply_filters( 'ap_question_page_permission_msg', $msg );
+
+		return $msg;
+	}
+
 	/**
 	 * Output single question page.
 	 */
@@ -59,50 +92,13 @@ class AnsPress_Common_Pages {
 		global $question_rendered, $post;
 		$question_rendered = false;
 
-		// Check if user is allowed to read this question.
-		if ( ! ap_user_can_read_question( get_the_ID() ) ) {
-			if ( 'moderate' === $post->post_status ) {
-				$msg = __( 'This question is awaiting moderation and cannot be viewed. Please check back later.', 'anspress-question-answer' );
-			} else {
-				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
-			}
+		$msg = self::question_permission_msg( $post );
 
-			/**
-			 * Filter question page message.
-			 *
-			 * @param string $msg Message.
-			 * @since 4.1.0
-			 */
-			$msg = apply_filters( 'ap_question_page_message', $msg );
+		// Check if user have permission.
+		if ( false !== $msg ) {
 			echo '<div class="ap-no-permission">' . $msg . '</div>';
-
+			$question_rendered = true;
 			return;
-		}
-
-		global $questions;
-
-		if ( 'future' == $post->post_status ) {
-			echo '<div class="future-notice">';
-			/**
-			 * Filter to modify future post notice. If filter does not return false
-			 * then retunrd string will be shown.
-			 *
-			 * @param  boolean $notice 		False by default.
-			 * @param  object  $question   	Post object.
-			 * @return boolean|string
-			 * @since  2.4.7
-			 */
-			$notice = apply_filters( 'ap_future_post_notice', false, $post );
-
-			if ( false === $notice ) {
-				$time_to_publish = human_time_diff( strtotime( $post->post_date ), current_time( 'timestamp', true ) );
-				echo '<strong>' . sprintf( __('Question will be publish in %s', 'anspress-question-answer' ), $time_to_publish ) . '</strong>';
-				echo '<p>' . esc_attr__( 'This question is in waiting queue and is not accessible by anyone until it get published.', 'anspress-question-answer' ) . '</p>';
-			} else {
-				echo $notice; // xss okay.
-			}
-
-			echo '</div>';
 		}
 
 		include( ap_get_theme_location( 'question.php' ) );

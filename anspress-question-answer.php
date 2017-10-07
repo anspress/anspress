@@ -196,6 +196,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $user_pages;
 
 		/**
+		 * AnsPress rewrite rules.
+		 *
+		 * @var array
+		 * @since 4.1.0
+		 */
+		public $rewrites = [];
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public

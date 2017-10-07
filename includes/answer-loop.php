@@ -39,7 +39,6 @@ class Answers_Query extends WP_Query {
 	public function __construct( $args = array() ) {
 		global $answers;
 		$paged = (int) ap_isset_post_value( 'ap_paged', 1 );
-		set_query_var( 'ap_paged', $paged );
 
 		$defaults = array(
 			'question_id'              => get_question_id(),
@@ -80,7 +79,7 @@ class Answers_Query extends WP_Query {
 			$question_id = $this->args['question_id'];
 		}
 
-		if ( empty( $question_id ) ) {
+		if ( empty( $question_id ) && empty( $this->args['p'] ) ) {
 			$this->args = [];
 		} else {
 			$this->args['post_parent'] = $question_id;
@@ -302,7 +301,7 @@ function ap_answers_the_pagination() {
 	} else {
 		global $answers;
 		$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
-		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) .'?ap_paged=%#%' );
+		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) . '/page/%#%/' );
 	}
 }
 

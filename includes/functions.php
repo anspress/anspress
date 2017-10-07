@@ -168,7 +168,7 @@ function is_anspress() {
  * @since 4.1.0 Also check and return true if singular question.
  */
 function is_question() {
-	if ( is_singular( 'question' ) || ( is_anspress() && 'question' === ap_current_page() ) ) {
+	if ( is_singular( 'question' ) ) {
 		return true;
 	}
 
@@ -1938,6 +1938,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 	$withcomments = true;
 
 	$answers = ap_get_answers( array( 'p' => $answer_id ) );
+
 	while ( ap_have_answers() ) : ap_the_answer();
 		ap_get_template_part( 'answer' );
 	endwhile;

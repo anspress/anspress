@@ -95,10 +95,11 @@ class AnsPress_Hooks {
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );
 
-			// Register post ststus.
+			// Register post status.
 			anspress()->add_action( 'init', 'AnsPress_Post_Status', 'register_post_status' );
 
 			// Rewrite rules hooks.
+			anspress()->add_filter( 'request', 'AnsPress_Rewrite', 'alter_the_query' );
 			anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
 			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );

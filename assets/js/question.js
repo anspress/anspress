@@ -645,15 +645,16 @@
 		formPosted: function(data){
 			if(data.success && data.form === 'answer'){
 				AnsPress.trigger('answerFormPosted', data);
-				$('apAnswersW').show();
+				$('apanswersw').show();
 
 				// Clear editor contents
 				$('#ap-form-main').html('');
 				$('#answer-form-c').addClass('ap-minimal-editor');
 
 				// Append answer to the list.
-				$('apAnswers').append($(data.html).hide());
+				$('apanswers').append($(data.html).hide());
 				$(data.div_id).slideDown(300);
+				$(data.div_id).apScrollTo(null, true);
 				this.model.add({'ID': data.ID});
 				AnsPress.trigger('answerCountUpdated', data.answersCount);
 			}
@@ -671,7 +672,7 @@
 			});
 		},
 		answerCountUpdated: function(counts){
-			$('[apAnswerscountText]').text(counts.text);
+			$('[ap="answers_count_t"]').text(counts.text);
 		}
 	});
 

@@ -277,14 +277,6 @@ function ap_page() {
 	$pages = anspress()->pages;
 	$current_page = ap_current_page();
 
-	if ( is_question() || is_singular( 'question' ) ) {
-		$current_page = 'question';
-	} elseif ( get_the_ID() === ap_opt( 'user_page' ) ) {
-		$current_page = 'user';
-	} elseif ( '' === $current_page && ! is_question() ) {
-		$current_page = 'base';
-	}
-
 	if ( isset( $pages[ $current_page ]['func'] ) ) {
 		call_user_func( $pages[ $current_page ]['func'] );
 	} else {
@@ -590,9 +582,13 @@ function ap_get_template_part( $file, $args = false ) {
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page' );
 
-	if ( get_the_ID() === ap_opt( 'ask_page' ) ) {
+	if ( is_question() || is_singular( 'question' ) ) {
+		$query_var = 'question';
+	} elseif ( get_the_ID() === ap_opt( 'user_page' ) ) {
+		$query_var = 'user';
+	} elseif ( get_the_ID() === ap_opt( 'ask_page' ) ) {
 		$query_var = 'ask';
-	} elseif ( '' === $query_var ) {
+	} elseif ( '' === $query_var && ! is_question() ) {
 		$query_var = 'base';
 	}
 
