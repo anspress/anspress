@@ -77,16 +77,17 @@ class Editor extends Field {
 		parent::field_markup();
 
 		$settings = array(
-			'textarea_rows' => 10,
+			'textarea_rows'     => 10,
 			'tinymce'           => array(
 				'content_css'      => ap_get_theme_url( 'css/editor.css' ),
 				'wp_autoresize_on' => true,
 				'statusbar'        => false,
 				'codesample'       => true,
+				'anspress'         => true,
 			),
-			'quicktags'     => false,
-			'media_buttons' => false,
-			'textarea_name' => $this->field_name,
+			'quicktags'         => false,
+			'media_buttons'     => false,
+			'textarea_name'     => $this->field_name,
 		);
 
 		$editor_args = wp_parse_args( $this->get( 'editor_args' ), $settings );
