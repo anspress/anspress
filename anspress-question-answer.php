@@ -464,18 +464,56 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * Get specific AnsPress form.
 		 *
 		 * @param string $name Name of form.
-		 * @return null|object
+		 * @return false|object
 		 * @since 4.1.0
 		 */
 		public function &get_form( $name ) {
 			$name = preg_replace( '/^form_/i', '', $name );
 
-			if ( ! isset( $this->forms[ $name ] ) ) {
-				$args = apply_filters( 'ap_form_' . $name, null );
-				$this->forms[ $name ] = new Form( 'form_' . $name, $args );
+			if ( $this->form_exists( $name ) ) {
+				return $this->forms[ $name ];
 			}
 
-			return $this->forms[ $name ];
+			return false;
+		}
+
+		/**
+		 * Check if a form exists in AnsPress, if not then tries to register.
+		 *
+		 * @param string $name Name of form.
+		 * @return boolean
+		 * @since 4.1.0
+		 */
+		public function form_exists( $name ) {
+			$name = preg_replace( '/^form_/i', '', $name );
+
+			if ( isset( $this->forms[ $name ] ) ) {
+				return true;
+			}
+
+			/**
+			 * Register a form in AnsPress.
+			 *
+			 * @param array $form {
+			 * 		Form options and fields. Check @see `AnsPress\Form` for more detail.
+			 *
+			 * 		@type string  $submit_label Custom submit button label.
+			 * 		@type boolean $editing      Pass true if currently in editing mode.
+			 * 		@type integer $editing_id   If editing then pass editing post or comment id.
+			 * 		@type array   $fields       Fields. For more detail on field option check documentations.
+			 * }
+			 * @since 4.1.0
+			 * @todo  Add detailed docs for `$fields`.
+			 */
+			$args = apply_filters( 'ap_form_' . $name, null );
+
+			if ( ! is_null( $args ) && ! empty( $args ) ) {
+				$this->forms[ $name ] = new Form( 'form_' . $name, $args );
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 } // End if().

@@ -223,18 +223,19 @@ class Form {
 	/**
 	 * Find a field object.
 	 *
-	 * @param string        $field_name   Name of a field to find.
-	 * @param boolean|array $fields       List of field where to search.
+	 * @param string        $value         Value for argument `$key`.
+	 * @param boolean|array $fields        List of field where to search.
+	 * @param string        $key           Search field by which property of a field object.
 	 * @return array|boolean
 	 */
-	public function find( $field_name, $fields = false ) {
+	public function find( $value, $fields = false, $key = 'original_name' ) {
 		$fields = false === $fields ? $this->fields : $fields;
-		$found = wp_filter_object_list( $fields, [ 'original_name' => $field_name ] );
+		$found = wp_filter_object_list( $fields, [ $key => $value ] );
 
 		if ( empty( $found ) ) {
 			foreach ( $fields as $field ) {
 				if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
-					$child_found = $this->find( $field_name, $field->child->fields );
+					$child_found = $this->find( $value, $field->child->fields );
 
 					if ( ! empty( $child_found ) ) {
 						$found = $child_found;

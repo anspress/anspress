@@ -29,7 +29,20 @@ class Field {
 	 * @var string
 	 */
 	public $field_name = '';
+
+	/**
+	 * The original field name.
+	 *
+	 * @var string
+	 */
 	public $original_name = '';
+
+	/**
+	 * Unique name without square brackets.
+	 *
+	 * @var string
+	 */
+	public $field_id = '';
 
 	/**
 	 * The field arguments.
@@ -141,6 +154,7 @@ class Field {
 		$this->field_name    = $form_name . '[' . $name . ']';
 		$this->form_name     = $form_name;
 		$this->args          = $args;
+		$this->field_id      = $this->id();
 
 		$this->prepare();
 	}
@@ -385,6 +399,10 @@ class Field {
 	 * @return string
 	 */
 	public function id( $str = false ) {
+		if ( ! empty( $this->field_id ) ) {
+			return $this->field_id;
+		}
+
 		if ( false === $str ) {
 			$str = $this->field_name;
 		}
