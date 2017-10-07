@@ -103,7 +103,7 @@ class AnsPress_Rewrite {
 		$answer_rewrite = str_replace( '&question=', '&question_slug=', $answer_rewrite );
 		$answer_rewrite = str_replace( '&p=', '&question_id=', $answer_rewrite );
 
-		$question_rules = array(
+		$all_rules = array(
 			$rule . '/answer/([0-9]+)/(feed|rdf|rss|rss2|atom)/?$' => $answer_rewrite . '&answer_id=$matches[#]&feed=$matches[#]',
 			$rule . '/answer/([0-9]+)/embed/?$'                    => $answer_rewrite . '&answer_id=$matches[#]&embed=true',
 			$rule . '/answer/([0-9]+)/?$'                          => $rewrite . '&answer_id=$matches[#]',
@@ -113,9 +113,17 @@ class AnsPress_Rewrite {
 			$rule . '/?$'                                          => $rewrite,
 		);
 
+		/**
+		 * Allows filtering AnsPress rewrite rules.
+		 *
+		 * @param array $all_rules Rewrite rules.
+		 * @since 4.1.0
+		 */
+		$all_rules = apply_filters( 'ap_rewrites', $all_rules );
+
 		$ap_rules = [];
 
-		foreach ( $question_rules as $r => $re ) {
+		foreach ( $all_rules as $r => $re ) {
 			$re = preg_replace( '/\\$([1-9]+)/', '$matches[#]', $re );
 			$re = preg_replace_callback( '/\#/', [ __CLASS__, 'incr_hash' ], $re );
 			$ap_rules[ $r ] = $re;
