@@ -889,13 +889,14 @@ function ap_allow_anonymous() {
  * @since  2.1
  * @since  2.4.7 Added new filter `ap_user_can_change_status`.
  * @since  2.4.7 Added new argument `$user_id`.
+ * @since  4.1.0 Do not allow post author to change own post status regardless of moderator role.
  **/
 function ap_user_can_change_status( $post_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( user_can( $user_id, 'ap_change_status_other' ) || is_super_admin( $user_id ) ) {
+	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
 
@@ -920,6 +921,16 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
+	}
+
+	// Do not allow post author to change status if current status is moderate,
+	// regardless of moderator user role.
+	if ( 'moderate' === $post_o->post_status && $post_o->post_author == $user_id ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_change_status_other' ) ) {
+		return true;
 	}
 
 	if ( user_can( $user_id, 'ap_change_status' ) &&
