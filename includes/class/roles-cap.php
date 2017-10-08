@@ -1180,19 +1180,17 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 		return false;
 	}
 
-	if ( ! ap_opt( 'only_logged_in' ) && 'question' === $post_type ) {
+	$option = ap_opt( 'read_' . $post_type . '_per' );
+
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_' . $post_type ) ) {
 		return true;
 	}
 
-	if ( ! ap_opt( 'logged_in_can_see_ans' ) && 'answer' === $post_type ) {
+	if ( 'logged_in' === $option && is_user_logged_in() ) {
 		return true;
 	}
 
-	if ( ap_opt( 'only_logged_in' ) && is_user_logged_in() && 'question' === $post_type ) {
-		return true;
-	}
-
-	if ( ap_opt( 'logged_in_can_see_ans' ) && is_user_logged_in() && 'answer' === $post_type ) {
+	if ( 'anyone' === $option ) {
 		return true;
 	}
 

@@ -944,6 +944,21 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
+				'sep1' => array(
+					'html'  => '<h3>' . __( 'Visibility', 'anspress-question-answer' ) . '<p>' . __( 'Control visibility of posts, comments, etc.', 'anspress-question-answer' ) . '</p></h3>',
+				),
+				'read_question_per' => array(
+					'label' => __( 'Who can read question?', 'anspress-question-answer' ),
+					'desc'  => __( 'Set who can view or read a question.', 'anspress-question-answer' ),
+					'type'  => 'select',
+					'value'  => $opt['read_question_per'],
+					'options' => array(
+						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
+						'have_cap'  => __( 'Only user having ap_read_question capability', 'anspress-question-answer' ),
+					),
+				),
+
 				'only_logged_in' => array(
 					'label' => __( 'Must be logged in', 'anspress-question-answer' ),
 					'desc'  => __( 'Force users to be logged in to see AnsPress contents?', 'anspress-question-answer' ),

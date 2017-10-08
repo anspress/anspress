@@ -47,13 +47,14 @@ class Input extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
+		$this->args = wp_parse_args( $this->args, array(
+			'subtype' => 'text',
+			'label'   => __( 'AnsPress Input Field', 'anspress-question-answer' ),
+		) );
 
-		// Do not set defaults if custom html.
-		if ( empty( $this->args['html'] ) ) {
-			$this->args = wp_parse_args( $this->args, array(
-				'subtype' => 'text',
-				'label'   => __( 'AnsPress Input Field', 'anspress-question-answer' ),
-			) );
+		// Remove label if custom html.
+		if ( ! empty( $this->args['html'] ) ) {
+			unset( $this->args['label'] );
 		}
 
 		$this->set_subtype();
