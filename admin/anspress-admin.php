@@ -1150,10 +1150,16 @@ class AnsPress_Admin {
 					'value' => $opt['minimum_question_length'],
 				),
 				'question_text_editor' => array(
-					'label' => __( 'Use text editor ?', 'anspress-question-answer' ),
-					'desc'  => __( 'Text editor as default.', 'anspress-question-answer' ),
+					'label' => __( 'Question editor?', 'anspress-question-answer' ),
+					'desc'  => __( 'Quick tags editor', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['question_text_editor'],
+				),
+				'answer_text_editor' => array(
+					'label' => __( 'Answer editor?', 'anspress-question-answer' ),
+					'desc'  => __( 'Quick tags editor', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['answer_text_editor'],
 				),
 				'disable_comments_on_question' => array(
 					'label' => __( 'Disable comments', 'anspress-question-answer' ),
@@ -1196,12 +1202,6 @@ class AnsPress_Admin {
 					'desc'    => __( 'Set minimum letters for a answer contents.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['minimum_ans_length'],
-				),
-				'answer_text_editor' => array(
-					'label' => __( 'Use text editor ?', 'anspress-question-answer' ),
-					'desc'  => __( 'Text editor as default.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['answer_text_editor'],
 				),
 				'disable_comments_on_answer' => array(
 					'label' => __( 'Disable comments', 'anspress-question-answer' ),

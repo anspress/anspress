@@ -79,7 +79,6 @@ class AnsPress_Hooks {
 
 			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-			anspress()->add_filter( 'tiny_mce_before_init', __CLASS__, 'editor_buttons' );
 			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
@@ -491,44 +490,6 @@ class AnsPress_Hooks {
 			flush_rewrite_rules();
 			ap_opt( 'ap_flush', 'false' );
 		}
-	}
-
-	/**
-	 * Configure which button will appear in wp_editor
-	 *
-	 * @param	array	$buttons	 Button names.
-	 * @param	string $editor_id Editor ID.
-	 * @return array
-	 * @since 4.1.0
-	 */
-	public static function editor_buttons( $opt ) {
-		// Check if AnsPress field, if so return limited buttons.
-		if ( isset( $opt['anspress'] ) && $opt['anspress'] ) {
-			$buttons = 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apcode,apmedia';
-
-			/**
-			 * Allows filter TinyMce buttons used in AnsPress frontend.
-			 *
-			 * @param string $buttons Buttons.
-			 * @since 4.1.0
-			 */
-			$opt['toolbar1'] = apply_filters( 'ap_mce_editor_buttons', $buttons );
-
-			/**
-			 * Filter to toggling tinymce toolbar. BY default AnsPress removes all
-			 * toolbar except first one.
-			 *
-			 * @param boolean $toggle Toggle. True by default.
-			 * @since 4.1.0
-			 */
-			$remove_toolbar = apply_filters( 'ap_remove_tinymce_toolbar', true );
-
-			if ( true === $remove_toolbar ) {
-				unset( $opt['toolbar2'], $opt['toolbar3'], $opt['toolbar4'] );
-			}
-		}
-
-		return $opt;
 	}
 
 	/**

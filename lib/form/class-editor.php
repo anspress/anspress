@@ -41,6 +41,9 @@ class Editor extends Field {
 	protected function prepare() {
 		$this->args = wp_parse_args( $this->args, array(
 			'label' => __( 'AnsPress Editor Field', 'anspress-question-answer' ),
+			'editor_args' => array(
+				'quicktags' => false,
+			),
 		) );
 
 		$this->args['fields'] = array(
@@ -75,6 +78,7 @@ class Editor extends Field {
 	 */
 	public function field_markup() {
 		parent::field_markup();
+		$args = $this->get( 'editor_args', [] );
 
 		$settings = array(
 			'textarea_rows'     => 10,
@@ -84,11 +88,19 @@ class Editor extends Field {
 				'statusbar'        => false,
 				'codesample'       => true,
 				'anspress'         => true,
+				'toolbar1' => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apcode,apmedia',
+				'toolbar2' => '',
+				'toolbar3' => '',
+				'toolbar4' => '',
 			),
 			'quicktags'         => false,
 			'media_buttons'     => false,
 			'textarea_name'     => $this->field_name,
 		);
+
+		if ( true === $args['quicktags'] ) {
+			$settings['tinymce'] = false;
+		}
 
 		$editor_args = wp_parse_args( $this->get( 'editor_args' ), $settings );
 

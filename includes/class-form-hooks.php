@@ -53,6 +53,9 @@ class AP_Form_Hooks {
 					'label'      => __( 'Description', 'anspress-question-answer' ),
 					'min_length' => ap_opt( 'minimum_question_length' ),
 					'validate'   => 'required,min_string_length,badwords',
+					'editor_args' => array(
+						'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
+					),
 				),
 			),
 		);
@@ -132,6 +135,9 @@ class AP_Form_Hooks {
 					'label'      => __( 'Description', 'anspress-question-answer' ),
 					'min_length' => ap_opt( 'minimum_ans_length' ),
 					'validate'   => 'required,min_string_length,badwords',
+					'editor_args' => array(
+						'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
+					),
 				),
 				'question_id' => array(
 					'label'    => __( 'Question ID', 'anspress-question-answer' ),
@@ -140,7 +146,7 @@ class AP_Form_Hooks {
 					'sanitize' => 'absint',
 					'validate' => 'required,not_zero',
 					'value'    => $question_id,
-				)
+				),
 			),
 		);
 
