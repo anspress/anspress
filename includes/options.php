@@ -141,9 +141,8 @@ function ap_default_options() {
 		'duplicate_check'								=> true,
 		'disable_q_suggestion'					=> false,
 		'comment_number'								=> 5,
-
-		'read_question_per'			=> 'anyone',
-		'read_answer_per'			=> 'anyone',
+		'read_question_per'			        => 'anyone',
+		'read_answer_per'			          => 'anyone',
 	);
 
 	/**

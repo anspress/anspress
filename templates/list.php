@@ -1,18 +1,16 @@
 <div id="ap-lists" class="clearfix">
 	<?php if ( have_posts() ) : ?>
 		<div class="question-list">
-	<?php
-		/* Start the Loop */
-		while ( have_posts() ) : the_post();
-			include(ap_get_theme_location('question-list-item.php'));
-		endwhile;
-	?>
+		<?php
+			/* Start the Loop */
+			while ( have_posts() ) : the_post();
+				ap_get_template_part( 'question-list-item' );
+			endwhile;
+		?>
 		</div>
 	<?php ap_pagination(); ?>
-	<?php
-		else : 
-			include(ap_get_theme_location('content-none.php'));
-		endif; 
-	?>	
-</div>
 
+	<?php else : ?>
+		<?php ap_get_template_part( 'no-questions' ); ?>
+	<?php endif; ?>
+</div>

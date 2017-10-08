@@ -1181,16 +1181,11 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 	}
 
 	$option = ap_opt( 'read_' . $post_type . '_per' );
-
 	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_' . $post_type ) ) {
 		return true;
-	}
-
-	if ( 'logged_in' === $option && is_user_logged_in() ) {
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
 		return true;
-	}
-
-	if ( 'anyone' === $option ) {
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 

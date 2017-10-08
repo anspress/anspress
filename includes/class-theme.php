@@ -302,10 +302,15 @@ class AnsPress_Theme {
 	 * @since 4.1.0
 	 */
 	public static function the_content_single_question( $content ) {
-		global $ap_shortcode_loaded;
+		global $ap_shortcode_loaded, $post;
 
 		if ( true !== $ap_shortcode_loaded && is_singular( 'question' ) ) {
 			return do_shortcode( '[anspress]' );
+		}
+
+		// Check if user have permission.
+		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) && ! ap_user_can_read_post( $post->ID, false, $post->post_type ) ) {
+			return '<p>' . esc_attr__( 'Sorry, you do not have permission to read this post.', 'anspress-question-answer' ) . '</p>';
 		}
 
 		return $content;

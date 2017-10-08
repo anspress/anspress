@@ -9,6 +9,7 @@
  * @package AnsPress
  */
 
+if ( ap_user_can_read_answer() ) :
 ?>
 <div id="post-<?php the_ID(); ?>" <?php post_class() ?> apId="<?php the_ID(); ?>" ap="answer">
 	<div class="ap-content" itemprop="suggestedAnswer<?php echo ap_is_selected() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="https://schema.org/Answer">
@@ -51,15 +52,18 @@
 					?>
 
 				</div>
-				<?php if ( ap_user_can_read_answer( ) ) : ?>
-					<div class="ap-post-footer clearfix">
-						<?php echo ap_select_answer_btn_html( ); // xss okay ?>
-						<?php ap_post_actions_buttons() ?>
-						<?php echo ap_comment_btn_html(); // xss okay. ?>
-					</div>
-				<?php endif; ?>
+
+				<div class="ap-post-footer clearfix">
+					<?php echo ap_select_answer_btn_html( ); // xss okay ?>
+					<?php ap_post_actions_buttons() ?>
+					<?php echo ap_comment_btn_html(); // xss okay. ?>
+				</div>
+
 			</div>
 			<?php ap_the_comments(); ?>
 		</div>
 	</div>
 </div>
+
+<?php
+endif;

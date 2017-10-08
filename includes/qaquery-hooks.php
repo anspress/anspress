@@ -120,7 +120,9 @@ class AP_QA_Query_Hooks {
 	 */
 	public static function posts_results( $posts, $instance ) {
 		foreach ( (array) $posts as $k => $p ) {
-			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
+			if ( ! ap_user_can_read_post( $p, false, $p->post_type ) ) {
+				unset( $posts[ $k ] );
+			} elseif ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
 				$p_arr = (array) $p;
 
@@ -151,8 +153,6 @@ class AP_QA_Query_Hooks {
 				$posts[ $k ] = $p;
 			}
 		}
-
-
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();

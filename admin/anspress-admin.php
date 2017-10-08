@@ -958,7 +958,17 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_read_question capability', 'anspress-question-answer' ),
 					),
 				),
-
+				'read_answer_per' => array(
+					'label' => __( 'Who can read answers?', 'anspress-question-answer' ),
+					'desc'  => __( 'Set who can view or read a answer.', 'anspress-question-answer' ),
+					'type'  => 'select',
+					'value'  => $opt['read_answer_per'],
+					'options' => array(
+						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
+						'have_cap'  => __( 'Only user having ap_read_answer capability', 'anspress-question-answer' ),
+					),
+				),
 				'only_logged_in' => array(
 					'label' => __( 'Must be logged in', 'anspress-question-answer' ),
 					'desc'  => __( 'Force users to be logged in to see AnsPress contents?', 'anspress-question-answer' ),
