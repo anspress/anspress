@@ -980,6 +980,20 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_read_comment capability', 'anspress-question-answer' ),
 					),
 				),
+				'sep2' => array(
+					'html'  => '<h3>' . __( 'Posting', 'anspress-question-answer' ) . '<p>' . __( 'Control posting permissions.', 'anspress-question-answer' ) . '</p></h3>',
+				),
+				'post_question_per' => array(
+					'label' => __( 'Who can post question?', 'anspress-question-answer' ),
+					'desc'  => __( 'Set who can submit a question from frontend.', 'anspress-question-answer' ),
+					'type'  => 'select',
+					'value'  => $opt['post_question_per'],
+					'options' => array(
+						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
+						'have_cap'  => __( 'Only user having ap_new_question capability', 'anspress-question-answer' ),
+					),
+				),
 				'multiple_answers' => array(
 					'label' => __( 'Multiple answers', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow users to submit multiple answer per question.', 'anspress-question-answer' ),

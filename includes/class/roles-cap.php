@@ -122,6 +122,7 @@ class AP_Roles {
  * @param  integer|boolean $user_id User_id.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
+ * @since  4.1.0 Updated to use new option post_question_per.
  */
 function ap_user_can_ask( $user_id = false ) {
 	if ( false === $user_id ) {
@@ -148,7 +149,12 @@ function ap_user_can_ask( $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_new_question' ) || ( ! is_user_logged_in() && ap_allow_anonymous()) ) {
+	$option = ap_opt( 'post_question_per' );
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_new_question' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 
@@ -875,9 +881,11 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
  * Check if anonymous posting is allowed.
  *
  * @return boolean
+ * @since unknown
+ * @since 4.1.0 Updated to use new option post_question_per.
  */
 function ap_allow_anonymous() {
-	return (bool) ap_opt( 'allow_anonymous' );
+	return 'anyone' === ap_opt( 'post_question_per' );
 }
 
 /**
@@ -889,7 +897,7 @@ function ap_allow_anonymous() {
  * @since  2.1
  * @since  2.4.7 Added new filter `ap_user_can_change_status`.
  * @since  2.4.7 Added new argument `$user_id`.
- * @since  4.1.0 Do not allow post author to change own post status regardless of moderator role.
+ * @since  4.1.0 Do not allow post author to change their own post status regardless of moderator role.
  **/
 function ap_user_can_change_status( $post_id, $user_id = false ) {
 	if ( false === $user_id ) {
