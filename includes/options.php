@@ -143,6 +143,7 @@ function ap_default_options() {
 		'comment_number'								=> 5,
 		'read_question_per'			        => 'anyone',
 		'read_answer_per'			          => 'anyone',
+		'read_comment_per'			        => 'anyone',
 	);
 
 	/**

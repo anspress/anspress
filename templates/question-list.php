@@ -20,6 +20,7 @@
 		<?php endif; ?>
 
 		<?php if ( ap_have_questions() ) : ?>
+
 			<div class="ap-questions">
 				<?php
 					/* Start the Loop */
@@ -29,8 +30,14 @@
 				?>
 			</div>
 			<?php ap_questions_the_pagination(); ?>
+
 		<?php else : ?>
-			<?php ap_get_template_part( 'no-questions' ); ?>
+
+			<p class="ap-no-questions">
+				<?php esc_attr_e( 'There are no questions matching your query or you do not have permission to read them.', 'anspress-question-answer' ); ?>
+			</p>
+
+			<?php ap_get_template_part( 'login-signup' ); ?>
 		<?php endif; ?>
 	</div>
 

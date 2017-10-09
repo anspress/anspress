@@ -83,13 +83,15 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
-			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
-			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
+
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
 			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
-			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Theme', 'comments_template_query_args' );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
+
+			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
+			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
+			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );
@@ -312,18 +314,23 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer			 $comment_id Comment ID.
 	 * @param	integer|false $approved	 1 if comment is approved else false.
+	 *
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function new_comment_approve( $comment_id, $approved ) {
 		if ( 1 === $approved ) {
 			$comment = get_comment( $comment_id );
 
-			$post = ap_get_post( $comment->comment_post_ID );
-
-			if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-				return;
+			if ( 'anspress' === $comment->comment_type ) {
+				/**
+				 * Action is triggered when a anspress comment is published.
+				 *
+				 * @param object $comment Comment object.
+				 * @since unknown
+				 */
+				do_action( 'ap_publish_comment', $comment );
 			}
-
-			do_action( 'ap_publish_comment', $comment );
 		}
 	}
 
@@ -331,45 +338,50 @@ class AnsPress_Hooks {
 	 * Used to create an action when comment get approved.
 	 *
 	 * @param	array|object $comment Comment object.
+	 *
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function comment_approve( $comment ) {
-		$post = ap_get_post( $comment->comment_post_ID );
-
-		if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-			return;
+		if ( 'anspress' === $comment->comment_type ) {
+			/** This action is documented in includes/hooks.php */
+			do_action( 'ap_publish_comment', $comment );
 		}
-
-		do_action( 'ap_publish_comment', $comment );
 	}
 
 	/**
 	 * Used to create an action when comment get unapproved.
 	 *
 	 * @param	array|object $comment Comment object.
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function comment_unapprove( $comment ) {
-		$post = ap_get_post( $comment->comment_post_ID );
-
-		if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-			return;
+		if ( 'anspress' === $comment->comment_type ) {
+			/**
+			 * Action is triggered when a anspress comment is unpublished.
+			 *
+			 * @param object $comment Comment object.
+			 * @since unknown
+			 */
+			do_action( 'ap_unpublish_comment', $comment );
 		}
-
-		do_action( 'ap_unpublish_comment', $comment );
 	}
 
 	/**
 	 * Used to create an action when comment get trashed.
 	 *
 	 * @param	integer $comment_id Comment ID.
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function comment_trash( $comment_id ) {
 		$comment = get_comment( $comment_id );
-		$post = ap_get_post( $comment->comment_post_ID );
 
-		if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-			return;
+		if ( 'anspress' === $comment->comment_type ) {
+			/** This action is documented in includes/hooks.php */
+			do_action( 'ap_unpublish_comment', $comment );
 		}
-		do_action( 'ap_unpublish_comment', $comment );
 	}
 
 	/**

@@ -33,31 +33,19 @@ function ap_scripts_front() {
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'anspress-main' ), AP_VERSION );
 
 	$aplang = array(
-		'password_field_not_macthing' => __( 'Password not matching', 'anspress-question-answer' ),
-		'password_length_less' => __( 'Password length must be 6 or higher', 'anspress-question-answer' ),
-		'not_valid_email' => __( 'Not a valid email', 'anspress-question-answer' ),
-		'username_less' => __( 'Username length must be 4 or higher', 'anspress-question-answer' ),
-		'username_not_avilable' => __( 'Username not available', 'anspress-question-answer' ),
-		'email_already_in_use' => sprintf(
-			'%1$s <a href="%2$s">%3$s</a>',
-			__( 'Email already in use.', 'anspress-question-answer' ),
-			wp_lostpassword_url(),
-			__( 'Do you want to reset your password?', 'anspress-question-answer' )
-		),
-		'loading' => __( 'Loading', 'anspress-question-answer' ),
-		'sending' => __( 'Sending request', 'anspress-question-answer' ),
-		'uploading' => __( 'Uploading', 'anspress-question-answer' ),
-		'not_valid_response' => __( 'Something went wrong in server side, not a valid response.', 'anspress-question-answer' ),
-		'file_size_error' => sprintf( __( 'File size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ),
-		'attached_max' => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),
-		'commented' => __( 'commented', 'anspress-question-answer' ),
-		'comment' => __( 'Comment', 'anspress-question-answer' ),
-		'cancel' => __( 'Cancel', 'anspress-question-answer' ),
-		'update' => __( 'Update', 'anspress-question-answer' ),
-		'your_comment' => __( 'Write your comment...', 'anspress-question-answer' ),
-		'notifications' => __( 'Notifications', 'anspress-question-answer' ),
-		'mark_all_seen' => __( 'Mark all as seen', 'anspress-question-answer' ),
-		'search' => __( 'Search', 'anspress-question-answer' ),
+		'loading'                => __( 'Loading', 'anspress-question-answer' ),
+		'sending'                => __( 'Sending request', 'anspress-question-answer' ),
+		'file_size_error'        => sprintf( __( 'File size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ),
+		'attached_max'           => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),
+		'commented'              => __( 'commented', 'anspress-question-answer' ),
+		'comment'                => __( 'Comment', 'anspress-question-answer' ),
+		'cancel'                 => __( 'Cancel', 'anspress-question-answer' ),
+		'update'                 => __( 'Update', 'anspress-question-answer' ),
+		'your_comment'           => __( 'Write your comment...', 'anspress-question-answer' ),
+		'notifications'          => __( 'Notifications', 'anspress-question-answer' ),
+		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
+		'search'                 => __( 'Search', 'anspress-question-answer' ),
+		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
 	);
 
 	echo '<script type="text/javascript">';

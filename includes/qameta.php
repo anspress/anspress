@@ -71,7 +71,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			$value = $args[ $field ];
 
 			if ( 'fields' === $field ) {
-				$value = maybe_serialize( (array) $exists->$field + (array) $value );
+				$value = maybe_serialize( array_merge( (array) $exists->$field, (array) $value ) );
 				$formats[] = '%s';
 			} elseif ( 'activities' === $field ) {
 				$value = maybe_serialize( $value );

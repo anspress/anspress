@@ -1064,6 +1064,7 @@ function ap_role_caps( $role ) {
 		'participant' => array(
 			'ap_read_question'   => true,
 			'ap_read_answer'     => true,
+			'ap_read_comment'     => true,
 			'ap_new_question'    => true,
 			'ap_new_answer'      => true,
 			'ap_new_comment'     => true,
@@ -1115,6 +1116,7 @@ function ap_role_caps( $role ) {
  * @param  string|integer  $post_type Post type.
  * @return boolean
  * @since  2.4.6
+ * @since  4.1.0 Check for options `read_question_per` and `read_answer_per`.
  */
 function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = false ) {
 	if ( false === $user_id ) {
@@ -1349,6 +1351,112 @@ function ap_user_can_toggle_featured( $user_id = false ) {
 	}
 
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_toggle_featured' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if a user can read a comment.
+ *
+ * @param  integer|object  $_comment 	Comment id or object.
+ * @param  boolean|integer $user_id   User ID.
+ * @return boolean
+ * @since  4.1.0
+ */
+function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
+	if ( false === $_comment ) {
+		$_comment = get_comment( $_comment );
+	}
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_read_comment.
+	 *
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer|object 	$_comment 		  Comment object.
+	 * @param  integer 			    $user_id 		    User ID.
+	 * @since  4.1.0
+	 */
+	$filter = apply_filters( 'ap_user_can_read_comment', '', $_comment, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// If user cannot read post then return from here.
+	if ( ! ap_user_can_read_post( $_comment->comment_post_ID, $user_id ) ) {
+		return false;
+	}
+
+	if ( '1' != $_comment->comment_approved && ! ap_user_can_approve_comment( $user_id ) ) {
+		return false;
+	}
+
+	$option = ap_opt( 'read_comment_per' );
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_comment' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if a user can read a comments.
+ *
+ * @param  boolean|integer $user_id   User ID.
+ * @return boolean
+ * @since  4.1.0
+ */
+function ap_user_can_read_comments( $user_id = false ) {
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_read_comments.
+	 *
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer|object 	$_comment 		  Comment object.
+	 * @param  integer 			    $user_id 		    User ID.
+	 * @since  4.1.0
+	 */
+	$filter = apply_filters( 'ap_user_can_read_comments', '', $_comment, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// If user cannot read post then return from here.
+	if ( ! ap_user_can_read_post( $_comment->comment_post_ID, $user_id ) ) {
+		return false;
+	}
+
+	$option = ap_opt( 'read_comment_per' );
+
+	if ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 

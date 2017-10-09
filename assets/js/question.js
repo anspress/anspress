@@ -488,6 +488,18 @@
 				data: q,
 				success: function(data){
 					AnsPress.hideLoading(elm);
+					if(data.count > 0 && _.isEmpty(data.comments)){
+						var cont = $(commentDiv+' .ap-comments');
+						if(cont.find('.ap-comment-no-perm').length === 0){
+							var q = {msg: aplang.no_permission_comments};
+							var t = _.template(AnsPress.getTemplate('comment-no-permission')());
+							cont.append(t(q));
+						}else{
+							cont.find('.ap-comment-no-perm').remove();
+						}
+						return;
+					}
+
 					elm.addClass('loaded');
 					self.comments = new AnsPress.collections.Comments(data.comments);
 
@@ -514,7 +526,7 @@
 				if(this.$el.find('.ap-comment-no-perm').length === 0){
 					var q = {msg: $(e.target).attr('ap-msg')};
 					var t = _.template(AnsPress.getTemplate('comment-no-permission')());
-					this.$el.find('apComments').append(t(q));
+					this.$el.find('apcomments').append(t(q));
 				}else{
 					this.$el.find('.ap-comment-no-perm').remove();
 				}
@@ -524,7 +536,7 @@
 			if(this.$el.find('[comment-form]').length === 0){
 				var q = $.parseJSON($(e.target).attr('ap-query'));
 				var t = _.template(AnsPress.getTemplate('comment-form')());
-				this.$el.find('apComments').append(t(q));
+				this.$el.find('apcomments').append(t(q));
 				this.$el.find('[comment-form]').hide().slideDown(400, function(){
 					$(this).find('textarea').focus();
 				});
@@ -543,7 +555,7 @@
 
 			var q = $.parseJSON($(args.e.target).attr('ap-query'));
 			var t = _.template(AnsPress.getTemplate('comment-form')());
-			this.$el.find('apComments').append(t(q));
+			this.$el.find('apcomments').append(t(q));
 			this.$el.find('[comment-form]').hide().slideDown(400, function(){
 				$(this).find('textarea').val(args.comment.get('content')).focus();
 			});
@@ -708,7 +720,7 @@
 					if(data.success){
 						var commentsModel = new AnsPress.collections.Comments(data.comment);
 						var modalView = new AnsPress.views.Modal({
-							content: '<apComments class="have-comments"><div class="ap-comments"></div></apComments>',
+							content: '<apcomments class="have-comments"><div class="ap-comments"></div></apcomments>',
 							size: 'medium'
 						});
 						$('body').append(modalView.render().$el);

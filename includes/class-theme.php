@@ -317,26 +317,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Modify comments template args so that comments won't shows up again in single
-	 * question page.
-	 *
-	 * @global $question_rendered
-	 * @param array $args Comment args.
-	 * @return array|false
-	 *
-	 * @since 4.1.0
-	 */
-	public static function comments_template_query_args( $args ) {
-		global $question_rendered;
-
-		if ( true === $question_rendered && is_singular( 'question' ) ) {
-			return false;
-		}
-
-		return $args;
-	}
-
-	/**
 	 * Return comment open as false in single question page. So that
 	 * theme won't render comments again.
 	 *

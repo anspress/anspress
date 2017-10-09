@@ -15,6 +15,16 @@
  */
 class AnsPress_Comment_Hooks {
 
+	public static function the_comments( $comments ) {
+		foreach ( $comments as $k => $c ) {
+			if ( 'anspress' === $c->comment_type && ! ap_user_can_read_comment( $c ) ) {
+				unset( $comments[ $k ] );
+			}
+		}
+
+		return $comments;
+	}
+
 	/**
 	 * Comment data.
 	 *
@@ -38,7 +48,7 @@ class AnsPress_Comment_Hooks {
 			$args['include_unapproved'] = [ $user_id ];
 		}
 
-		if ( ap_user_can_approve_comment( ) ) {
+		if ( ap_user_can_approve_comment() ) {
 			$args['status'] = 'all';
 		}
 
@@ -80,6 +90,7 @@ class AnsPress_Comment_Hooks {
 		$result = array(
 			'success'       => true,
 			'action'        => 'load_comment_form',
+			'count'         => $count['all'],
 			'collapsed'     => ( $count['all'] > $shown ),
 			'collapsed_msg' => sprintf( __( 'Show %d more comments', 'anspress-question-answer' ), $more ),
 			'offset'        => $shown,
@@ -281,9 +292,16 @@ class AnsPress_Comment_Hooks {
 	 * @since  3.0.0
 	 */
 	public static function comments_template_query_args( $args ) {
+		global $question_rendered;
+
+		if ( true === $question_rendered && is_singular( 'question' ) ) {
+			return false;
+		}
+
 		if ( ap_user_can_approve_comment() ) {
 			$args['status'] = 'all';
 		}
+
 		return $args;
 	}
 
@@ -366,6 +384,10 @@ class AnsPress_Comment_Hooks {
  * @since 	0.1
  */
 function ap_comment_btn_html( $_post = null ) {
+	if ( ! ap_user_can_read_comments() ) {
+		return;
+	}
+
 	$_post = ap_get_post( $_post );
 
 	if ( 'question' === $_post->post_type  && ap_opt( 'disable_comments_on_question' ) ) {
@@ -466,9 +488,20 @@ function ap_comment_delete_locked( $comment_ID ) {
  */
 function ap_the_comments() {
 	global $post;
-	if ( ( 'answer' === $post->post_type && ! ap_opt( 'disable_comments_on_answer' ) ) || 'question' === $post->post_type ) {
-		echo '<apComments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></apComments>';
+
+	if ( ! ap_user_can_read_comments() ) {
+		return;
 	}
+
+	if ( 'question' === $post->post_type && ap_opt( 'disable_comments_on_question' ) ) {
+		return;
+	}
+
+	if ( 'answer' === $post->post_type && ap_opt( 'disable_comments_on_answer' ) ) {
+		return;
+	}
+
+	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></apcomments>';
 }
 
 /**

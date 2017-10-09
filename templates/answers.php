@@ -10,7 +10,8 @@
  */
 
 ?>
-<apanswersw style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
+<apanswersw>
+
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
 			<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">
@@ -26,20 +27,33 @@
 		</div>
 
 		<?php
-		if ( '' === get_query_var( 'answer_id' ) ) {
+		if ( '' === get_query_var( 'answer_id' ) && ap_have_answers() ) {
 			ap_answers_the_pagination();
 		}
 		?>
 
 		<div id="answers">
 			<apanswers>
-				<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
-					<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
-				<?php endwhile ; ?>
+				<?php if ( ap_have_answers() ) : ?>
+
+					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
+						<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
+					<?php endwhile ; ?>
+
+				<?php else: ?>
+
+					<p class="ap-no-questions">
+						<?php esc_attr_e( 'There are no answers matching your query or you do not have permission to read them.', 'anspress-question-answer' ); ?>
+					</p>
+
+				<?php endif; ?>
 			</apanswers>
+
 		</div>
 
-		<?php ap_answers_the_pagination(); ?>
+		<?php if ( ap_have_answers() ) : ?>
+			<?php ap_answers_the_pagination(); ?>
+		<?php endif; ?>
 	</div>
 </apanswersw>
 

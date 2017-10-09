@@ -120,9 +120,7 @@ class AP_QA_Query_Hooks {
 	 */
 	public static function posts_results( $posts, $instance ) {
 		foreach ( (array) $posts as $k => $p ) {
-			if ( ! ap_user_can_read_post( $p, false, $p->post_type ) ) {
-				unset( $posts[ $k ] );
-			} elseif ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
+			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
 				$p_arr = (array) $p;
 
@@ -146,11 +144,12 @@ class AP_QA_Query_Hooks {
 				$p->ap_qameta_wrapped = true;
 				$p->votes_net = $p->votes_up - $p->votes_down;
 
-				if ( ! ap_user_can_view_post( $p ) ) {
-					$p->post_content = __( 'Restricted content', 'anspress-question-answer' );
+				// Unset if user cannot read.
+				if ( ! ap_user_can_read_post( $p, false, $p->post_type ) ) {
+					unset( $posts[ $k ] );
+				} else {
+					$posts[ $k ] = $p;
 				}
-
-				$posts[ $k ] = $p;
 			}
 		}
 
