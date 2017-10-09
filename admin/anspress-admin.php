@@ -980,12 +980,6 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_read_comment capability', 'anspress-question-answer' ),
 					),
 				),
-				'only_logged_in' => array(
-					'label' => __( 'Must be logged in', 'anspress-question-answer' ),
-					'desc'  => __( 'Force users to be logged in to see AnsPress contents?', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value'  => $opt['only_logged_in'],
-				),
 				'multiple_answers' => array(
 					'label' => __( 'Multiple answers', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow users to submit multiple answer per question.', 'anspress-question-answer' ),

@@ -382,6 +382,7 @@ class AnsPress_Comment_Hooks {
  * @param 	mixed $_post Echo html.
  * @return 	string
  * @since 	0.1
+ * @since 	4.1.0 Added @see `ap_user_can_read_comments()` check.
  */
 function ap_comment_btn_html( $_post = null ) {
 	if ( ! ap_user_can_read_comments() ) {

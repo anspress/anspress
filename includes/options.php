@@ -132,7 +132,6 @@ function ap_default_options() {
 		'disable_down_vote_on_answer' 	=> false,
 		'show_solved_prefix'						=> true,
 		'load_assets_in_anspress_only'	=> false,
-		'only_logged_in'								=> false,
 		'keep_stop_words'								=> true,
 		'default_date_format'						=> false,
 		'anonymous_post_status'					=> 'moderate',
