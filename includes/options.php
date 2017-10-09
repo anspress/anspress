@@ -100,7 +100,6 @@ function ap_default_options() {
 		'mod_question_point'						=> 10,
 		'categories_per_page'						=> 20,
 		'question_prefix'								=> 'question',
-		'allow_anonymous'								=> false,
 		'only_admin_can_answer'					=> false,
 		'logged_in_can_see_ans'					=> false,
 		'logged_in_can_see_comment'			=> false,

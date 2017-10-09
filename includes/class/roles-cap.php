@@ -878,7 +878,7 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 }
 
 /**
- * Check if anonymous posting is allowed.
+ * Check if anonymous question posting is allowed.
  *
  * @return boolean
  * @since unknown

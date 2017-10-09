@@ -1006,12 +1006,6 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['disallow_op_to_answer'],
 				),
-				'allow_anonymous' => array(
-					'label' => __( 'Allow anonymous', 'anspress-question-answer' ),
-					'desc'  => __( 'Allow non-logged in users to post question and answer.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['allow_anonymous'],
-				),
 				'only_admin_can_answer' => array(
 					'label' => __( 'Only admin can answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow only admins to answer all question.', 'anspress-question-answer' ),

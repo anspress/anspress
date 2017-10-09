@@ -70,7 +70,7 @@ class AP_Form_Hooks {
 		}
 
 		// Add name fields if anonymous is allowed.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
+		if ( ! is_user_logged_in() && ap_allow_anonymous() ) {
 			$form['fields']['anonymous_name'] = array(
 				'label'        => __( 'Your Name', 'anspress-question-answer' ),
 				'attr'         => array(
@@ -160,7 +160,7 @@ class AP_Form_Hooks {
 		}
 
 		// Add name fields if anonymous is allowed.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
+		if ( ! is_user_logged_in() && ap_allow_anonymous() ) {
 			$form['fields']['anonymous_name'] = array(
 				'label'        => __( 'Your Name', 'anspress-question-answer' ),
 				'attr'         => array(
