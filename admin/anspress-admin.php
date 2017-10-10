@@ -1023,13 +1023,6 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['only_admin_can_answer'],
 				),
-				'logged_in_can_see_comment' => array(
-					'label' => __( 'Must be logged in to view comments', 'anspress-question-answer' ),
-					'desc'  => __( 'Only registered users can view comments.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['logged_in_can_see_comment'],
-				),
-
 				'allow_upload' => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),

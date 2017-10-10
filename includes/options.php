@@ -101,7 +101,6 @@ function ap_default_options() {
 		'categories_per_page'						=> 20,
 		'question_prefix'								=> 'question',
 		'only_admin_can_answer'					=> false,
-		'logged_in_can_see_comment'			=> false,
 		'question_text_editor'					=> false,
 		'answer_text_editor'						=> false,
 		'base_page_title'								=> __( 'Questions', 'anspress-question-answer' ),
