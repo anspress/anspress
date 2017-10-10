@@ -168,7 +168,7 @@ function ap_user_can_ask( $user_id = false ) {
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
- * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID.
+ * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID. Updated to use new option post_answer_per.
  */
 function ap_user_can_answer( $question_id, $user_id = false ) {
 	if ( false === $user_id ) {
@@ -190,9 +190,9 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	 * Allow overriding of ap_user_can_answer.
 	 *
 	 * @param boolean|string $filter 		Apply this filter, default is empty string.
-	 * @param integer 		 $question_id 	Question ID.
-	 * @param integer 		 $user_id 		User ID.
-	 * @since 2.4.6 Added 2 new arguments `$question_id` and `$user_id`.
+	 * @param integer 		   $question_id 	Question ID.
+	 * @param integer 		   $user_id 		User ID.
+	 * @since 2.4.6          Added 2 new arguments `$question_id` and `$user_id`.
 	 */
 	$filter = apply_filters( 'ap_user_can_answer', '', $question->ID, $user_id );
 
@@ -203,7 +203,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Return if user cannot read question.
-	if ( ! ap_allow_anonymous() && ! ap_user_can_read_question( $question_id, $user_id ) ) {
+	if ( ! ap_user_can_read_question( $question_id, $user_id ) ) {
 		return false;
 	}
 
@@ -227,17 +227,17 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 		return false;
 	}
 
-	// Check if user already answered and if multiple answer disabled then down't allow them to answer.
-	if ( user_can( $user_id, 'ap_new_answer' ) ) {
-		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
-			return false;
-		} else {
-			return true;
-		}
+	// Check if user already answered and if multiple answer disabled then don't allow them to answer.
+	if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
+		return false;
 	}
 
-	// Check if anonymous asnwer is allowed and if yes then return true.
-	if ( ap_allow_anonymous() && ! is_user_logged_in() ) {
+	$option = ap_opt( 'post_answer_per' );
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_new_answer' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 
@@ -1426,11 +1426,14 @@ function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
 /**
  * Check if a user can read a comments.
  *
+ * @param  mixed           $_post     Post ID or object.
  * @param  boolean|integer $user_id   User ID.
  * @return boolean
  * @since  4.1.0
  */
-function ap_user_can_read_comments( $user_id = false ) {
+function ap_user_can_read_comments( $_post = null, $user_id = false ) {
+	$_post = ap_get_post( $_post );
+
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -1443,11 +1446,11 @@ function ap_user_can_read_comments( $user_id = false ) {
 	 * Filter to hijack ap_user_can_read_comments.
 	 *
 	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer|object 	$_comment 		  Comment object.
+	 * @param  object 			    $_post 		      Post ID or object.
 	 * @param  integer 			    $user_id 		    User ID.
 	 * @since  4.1.0
 	 */
-	$filter = apply_filters( 'ap_user_can_read_comments', '', $_comment, $user_id );
+	$filter = apply_filters( 'ap_user_can_read_comments', '', $_post, $user_id );
 
 	if ( true === $filter ) {
 		return true;
@@ -1456,7 +1459,7 @@ function ap_user_can_read_comments( $user_id = false ) {
 	}
 
 	// If user cannot read post then return from here.
-	if ( ! ap_user_can_read_post( $_comment->comment_post_ID, $user_id ) ) {
+	if ( ! ap_user_can_read_post( $_post, $user_id ) ) {
 		return false;
 	}
 

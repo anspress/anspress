@@ -385,7 +385,7 @@ class AnsPress_Comment_Hooks {
  * @since 	4.1.0 Added @see `ap_user_can_read_comments()` check.
  */
 function ap_comment_btn_html( $_post = null ) {
-	if ( ! ap_user_can_read_comments() ) {
+	if ( ! ap_user_can_read_comments( $_post ) ) {
 		return;
 	}
 

@@ -689,7 +689,7 @@ class AnsPress_Hooks {
 		);
 
 		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $values['anonymous_name']['value'] ) ) {
+		if ( ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
 			$qameta['fields'] = array(
 				'anonymous_name' => $values['anonymous_name']['value'],
 			);
