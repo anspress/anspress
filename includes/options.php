@@ -100,7 +100,6 @@ function ap_default_options() {
 		'mod_question_point'						=> 10,
 		'categories_per_page'						=> 20,
 		'question_prefix'								=> 'question',
-		'only_admin_can_answer'					=> false,
 		'question_text_editor'					=> false,
 		'answer_text_editor'						=> false,
 		'base_page_title'								=> __( 'Questions', 'anspress-question-answer' ),

@@ -168,7 +168,7 @@ function ap_user_can_ask( $user_id = false ) {
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
- * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID. Updated to use new option post_answer_per.
+ * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID. Updated to use new option post_answer_per. Also removed checking of option only_admin_can_answer.
  */
 function ap_user_can_answer( $question_id, $user_id = false ) {
 	if ( false === $user_id ) {
@@ -204,11 +204,6 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 
 	// Return if user cannot read question.
 	if ( ! ap_user_can_read_question( $question_id, $user_id ) ) {
-		return false;
-	}
-
-	// Check if only admin is allowed to answer.
-	if ( ap_opt( 'only_admin_can_answer' ) && ! is_super_admin( $user_id ) ) {
 		return false;
 	}
 

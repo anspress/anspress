@@ -1017,12 +1017,6 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['disallow_op_to_answer'],
 				),
-				'only_admin_can_answer' => array(
-					'label' => __( 'Only admin can answer', 'anspress-question-answer' ),
-					'desc'  => __( 'Allow only admins to answer all question.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['only_admin_can_answer'],
-				),
 				'allow_upload' => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
