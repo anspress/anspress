@@ -244,6 +244,7 @@ class Form {
 				}
 			}
 		}
+
 		return is_array( $found ) ? reset( $found ) : $found;
 	}
 
@@ -443,7 +444,10 @@ class Form {
 				$this->after_save( $field->child->fields, $args );
 			}
 		}
+	}
 
+	public function set_values( $values ) {
+		$this->args['fields'] = array_merge_recursive( $this->args['fields'], $values );
 	}
 
 }

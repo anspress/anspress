@@ -292,18 +292,24 @@ class AnsPress_Comment_Hooks {
 		) );
 	}
 
+	/**
+	 * Callback for loading comment form.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
 	public static function comment_form() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+		$comment_id = ap_sanitize_unslash( 'comment', 'r' );
 
 		ob_start();
-		ap_comment_form( $post_id );
-		ap_ajax_tinymce_assets();
+		ap_comment_form( $post_id, $comment_id );
 		$html = ob_get_clean();
 
 		ap_ajax_json( array(
-			'success' => true,
-			'html'    => $html,
-			'modal_title'    => __( 'Add comment on post', 'anspress-question-answer' ),
+			'success'     => true,
+			'html'        => $html,
+			'modal_title' => __( 'Add comment on post', 'anspress-question-answer' ),
 		) );
 	}
 }
@@ -377,7 +383,16 @@ function ap_comment_actions( $comment ) {
 	$actions = [];
 
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
-		$actions[] = [ 'label' => __( 'Edit', 'anspress-question-answer' ), 'cb' => 'edit_comment', 'query' => [ '__nonce' => wp_create_nonce( 'edit-comment-' . $comment->comment_ID ), 'comment_ID' => $comment->comment_ID, 'post_id' => $comment->comment_post_ID, 'ap_ajax_action' => 'edit_comment' ] ];
+		$actions[] = array(
+			'label'           => __( 'Edit', 'anspress-question-answer' ),
+			'cb'              => 'edit_comment',
+			'query'           => array(
+				'__nonce'        => wp_create_nonce( 'edit-comment-' . $comment->comment_ID ),
+				'comment_ID'     => $comment->comment_ID,
+				'post_id'        => $comment->comment_post_ID,
+				'ap_ajax_action' => 'edit_comment',
+			),
+		);
 	}
 
 	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {

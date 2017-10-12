@@ -255,7 +255,7 @@
 		},
 		editCommentForm: function(e){
 			e.preventDefault();
-			AnsPress.trigger('loadCommentEdit', {postID: this.postID, e: e, comment: this.model});
+			AnsPress.trigger('loadCommentEdit', {post_id: this.postID, e: e.target, comment: this.model});
 		}
 	});
 
@@ -539,52 +539,44 @@
 					$('#anspress').append(self.commentForm.render().$el);
 				}
 			});
-
-			// if(_.isEmpty($(e.target).attr('ap-query'))){
-			// 	if(this.$el.find('.ap-comment-no-perm').length === 0){
-			// 		var q = {msg: $(e.target).attr('ap-msg')};
-			// 		var t = _.template(AnsPress.getTemplate('comment-no-permission')());
-			// 		this.$el.find('apcomments').append(t(q));
-			// 	}else{
-			// 		this.$el.find('.ap-comment-no-perm').remove();
-			// 	}
-			// 	return;
-			// }
-
-			// if(this.$el.find('[comment-form]').length === 0){
-			// 	var q = $.parseJSON($(e.target).attr('ap-query'));
-			// 	var t = _.template(AnsPress.getTemplate('comment-form')());
-			// 	this.$el.find('apcomments').append(t(q));
-			// 	this.$el.find('[comment-form]').hide().slideDown(400, function(){
-			// 		$(this).find('textarea').focus();
-			// 	});
-			// }else{
-			// 	this.$el.find('[comment-form]').slideUp(400, function(){
-			// 		$(this).remove();
-			// 	});
-			// }
 		},
 		loadCommentEdit: function(args){
-			if(this.model.id !== args.postID)
+			self = this;
+			if(this.model.id !== args.post_id)
 				return;
 
-			if(this.$el.find('[comment-form]').length > 0)
-				this.$el.find('[comment-form]').remove();
+			AnsPress.showLoading($(args.e));
+			AnsPress.ajax({
+				data: {post_id: args.post_id, comment: args.comment.id, ap_ajax_action: 'comment_form'},
+				success: function(data){
+					AnsPress.hideLoading($(args.e));
+					self.commentForm = new AnsPress.views.Modal({
+						title: data.modal_title,
+						content: data.html,
+						size: 'medium'
+					});
 
-			var q = $.parseJSON($(args.e.target).attr('ap-query'));
-			var t = _.template(AnsPress.getTemplate('comment-form')());
-			this.$el.find('apcomments').append(t(q));
-			this.$el.find('[comment-form]').hide().slideDown(400, function(){
-				$(this).find('textarea').val(args.comment.get('content')).focus();
+					$('#anspress').append(self.commentForm.render().$el);
+				}
 			});
 		},
 		submitComment: function(data){
+			if(!('new-comment' !== data.action || 'edit-comment' !== data.action))
+				return;
+
 			if(data.success){
-				this.commentForm.hide();
-				delete this.commentForm;
+				if(this.commentForm){
+					this.commentForm.hide();
+					delete this.commentForm;
+				}
 
 				if(this.comments && data.action === 'new-comment')
 					this.comments.add(data.comment);
+
+				if(this.comments && data.action === 'edit-comment'){
+					$('#comment-'+data.comment.ID+' .comment-content').html(data.comment.content);
+					$('#comment-'+data.comment.ID).addClass('edit-fade');
+				}
 
 				if(data.commentsCount)
 					AnsPress.trigger('commentCount', {count: data.commentsCount, postID: this.model.id });

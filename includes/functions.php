@@ -1995,17 +1995,14 @@ function ap_answer_form( $question_id, $editing = false ) {
  *
  * @param  false|integer $post_id  Question or answer id.
  * @param  false|object  $_comment Comment id or object.
- * @param  boolean       $editing  true if post is being edited.
  * @return void
  *
  * @since 4.1.0
  */
-function ap_comment_form( $post_id = false, $_comment = false, $editing = false ) {
+function ap_comment_form( $post_id = false, $_comment = false ) {
 	if ( false === $post_id ) {
 		$post_id = get_the_ID();
 	}
-
-	$_comment = get_comment( $_comment );
 
 	if ( ! ap_user_can_comment( $post_id ) ) {
 		return;
@@ -2028,7 +2025,30 @@ function ap_comment_form( $post_id = false, $_comment = false, $editing = false 
 		),
 	);
 
-	anspress()->get_form( 'comment' )->generate( $args );
+	$form = anspress()->get_form( 'comment' );
+
+	// Add value when editing post.
+	if ( false !== $_comment ) {
+		$_comment = get_comment( $_comment );
+		$values = [];
+
+		$args['hidden_fields'][] = array(
+			'name'  => 'comment_id',
+			'value' => $_comment->comment_ID,
+		);
+
+		$values['content']['value'] = $_comment->comment_content;
+
+		if ( '0' == $_comment->user_id ) {
+			$values['author']['value'] = $_comment->comment_author;
+			$values['email']['value']  = $_comment->comment_author_email;
+			$values['url']['value']    = $_comment->comment_author_url;
+		}
+
+		$form->set_values( $values );
+	}
+
+	$form->generate( $args );
 }
 
 function ap_ajax_tinymce_assets() {

@@ -213,8 +213,6 @@ class AP_Form_Hooks {
 	 * @since 4.1.0
 	 */
 	public static function comment_form() {
-		$editing_id = ap_sanitize_unslash( 'id', 'r' );
-
 		$form = array(
 			'submit_label' => __( 'Submit Comment', 'anspress-question-answer' ),
 			'fields' => array(
@@ -267,27 +265,10 @@ class AP_Form_Hooks {
 			);
 		}
 
-		// Add value when editing post.
-		// if ( ! empty( $editing_id ) ) {
-		// 	$question = ap_get_post( $editing_id );
-
-		// 	$form['editing']                         = true;
-		// 	$form['editing_id']                      = $editing_id;
-		// 	$form['submit_label']                    = __( 'Update Question', 'anspress-question-answer' );
-		// 	$form['fields']['post_title']['value']   = $question->post_title;
-		// 	$form['fields']['post_content']['value'] = $question->post_content;
-		// 	$form['fields']['is_private']['value']   = 'private_post' === $question->post_status ? true : false;
-
-		// 	if ( isset( $form['fields']['anonymous_name'] ) ) {
-		// 		$form['fields']['anonymous_name'] = ap_get_post_field( 'anonymous_name', $question );
-		// 	}
-		// }
-
 		/**
 		 * Filter for modifying comment form `$args`.
 		 *
 		 * @param 	array $fields 	Comment form fields.
-		 * @param 	bool 	$editing 	Currently editing form.
 		 * @since  	4.1.0
 		 */
 		$form = apply_filters( 'ap_comment_form_fields', $form );
@@ -612,6 +593,12 @@ class AP_Form_Hooks {
 		) );
 	}
 
+	/**
+	 * Process comment form.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
 	public static function submit_comment_form() {
 		$editing = false;
 		$form = anspress()->get_form( 'comment' );
@@ -641,6 +628,51 @@ class AP_Form_Hooks {
 				'form_errors'   => $form->errors,
 				'fields_errors' => $form->get_fields_errors(),
 			] );
+		}
+
+		$comment_id = ap_sanitize_unslash( 'comment_id', 'r' );
+		if ( ! empty( $comment_id ) ) {
+			$comment = get_comment( $comment_id );
+
+			if ( 'anspress' !== $comment->comment_type || ! ap_user_can_edit_comment( $comment_id ) ) {
+				ap_ajax_json([
+					'success'       => false,
+					'snackbar'      => [ 'message' => __( 'You cannot edit this comment.', 'anspress-question-answer' ) ],
+				] );
+			}
+
+			// Check if content is changed.
+			if ( $values['content']['value'] === $comment->comment_content ) {
+				ap_ajax_json( [
+					'success'  => false,
+					'snackbar' => [ 'message' => __( 'There is no change in your comment.', 'anspress-question-answer' ) ],
+				] );
+			}
+
+			$updated = wp_update_comment( array(
+				'comment_ID'      => $comment_id,
+				'comment_content' => $values['content']['value'],
+			) );
+
+			if ( ! is_wp_error( $updated ) ) {
+				$c = get_comment( $comment_id );
+				$count = get_comment_count( $c->comment_post_ID );
+
+				$result = array(
+					'success'       => true,
+					'comment'       => ap_comment_ajax_data( $c ),
+					'action' 		    => 'edit-comment',
+					'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
+					'snackbar'      => [ 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ],
+				);
+
+				ap_ajax_json( $result );
+			}
+
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => [ 'message' => $updated->get_error_message() ],
+			) );
 		}
 
 		$_post = ap_get_post( $post_id );
