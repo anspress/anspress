@@ -30,11 +30,11 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
-		anspress()->add_action( 'ap_ajax_new_comment', 'AnsPress_Comment_Hooks','new_comment' );
 		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks','edit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
 		anspress()->add_action( 'ap_ajax_get_comment', 'AnsPress_Comment_Hooks', 'get_comment' );
+		anspress()->add_action( 'ap_ajax_comment_form', 'AnsPress_Comment_Hooks', 'comment_form' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 		// Post actions.
@@ -61,6 +61,7 @@ class AnsPress_Ajax {
 
 		anspress()->add_action( 'ap_ajax_form_question', 'AP_Form_Hooks', 'submit_question_form', 11 );
 		anspress()->add_action( 'ap_ajax_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11 );
+		anspress()->add_action( 'ap_ajax_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11 );
 
 	}
 
@@ -401,20 +402,8 @@ class AnsPress_Ajax {
 	 * @since 3.0.0
 	 */
 	public static function load_tinymce() {
-		if ( ! class_exists( '_WP_Editors' ) ) {
-			require( ABSPATH . WPINC . '/class-wp-editor.php' );
-		}
-
 		ap_answer_form( ap_sanitize_unslash( 'question_id', 'r' ) );
-
-		\_WP_Editors::enqueue_scripts();
-
-		ob_start();
-		print_footer_scripts();
-		$scripts = ob_get_clean();
-
-		echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
-		\_WP_Editors::editor_js();
+		ap_ajax_tinymce_assets();
 
 		wp_die();
 	}
@@ -429,7 +418,7 @@ class AnsPress_Ajax {
 
 		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin( ) || current_user_can( 'manage_options' ) ) ) {
 			ap_ajax_json( array(
-				'success' => false,
+				'success'  => false,
 				'snackbar' => [ 'message' => __( 'Sorry, you are not allowed to convert this question to post', 'anspress-question-answer' ) ],
 			) );
 		}

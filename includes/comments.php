@@ -15,6 +15,13 @@
  */
 class AnsPress_Comment_Hooks {
 
+	/**
+	 * Filter comments array to include only comments which user can read.
+	 *
+	 * @param array $comments Comments.
+	 * @return array
+	 * @since 4.1.0
+	 */
 	public static function the_comments( $comments ) {
 		foreach ( $comments as $k => $c ) {
 			if ( 'anspress' === $c->comment_type && ! ap_user_can_read_comment( $c ) ) {
@@ -30,6 +37,7 @@ class AnsPress_Comment_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 * @param boolean $editing Editing mode.
+	 * @param integer $offset  Offset.
 	 * @return array
 	 */
 	public static function comments_data( $post_id, $editing = false, $offset = 0 ) {
@@ -98,97 +106,6 @@ class AnsPress_Comment_Hooks {
 		);
 
 		ap_ajax_json( $result );
-	}
-
-	/**
-	 * Process new comment submission.
-	 *
-	 * @since 3.0.0
-	 */
-	public static function new_comment() {
-		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
-		$content = ap_sanitize_unslash( 'content', 'r' );
-
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'new-comment' ) || ! ap_user_can_comment( $post_id ) ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Unable to post comment', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		// Check if comment content is not empty.
-		if ( empty( $content ) ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Sorry, you cannot post a blank comment', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		$_post = ap_get_post( $post_id );
-
-		$type = 'question' === $_post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
-
-		// Check if not restricted post type.
-		if ( in_array( $_post->post_status, [ 'draft', 'pending', 'trash' ], true ) ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => sprintf( __( 'Commenting is not allowed on draft, pending or deleted %s', 'anspress-question-answer' ), $type ) ],
-			) );
-		}
-
-		// Get current user object.
-		$user = wp_get_current_user();
-		if ( ! $user->exists() ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Sorry, you cannot post a comment', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		$commentdata = array(
-			'comment_post_ID' 		   => $_post->ID,
-			'comment_author' 		     => wp_slash( $user->display_name ),
-			'comment_author_email' 	 => wp_slash( $user->user_email ),
-			'comment_author_url' 	   => wp_slash( $user->user_url ),
-			'comment_content' 		   => trim( $content ),
-			'comment_type' 			     => 'anspress',
-			'comment_parent' 		     => 0,
-			'user_id' 				       => $user->ID,
-		);
-
-		/**
-		 * Filter comment content before inserting to DB.
-		 *
-		 * @param bool 		$apply_filter 	Apply this filter.
-		 * @param string 	$content 		Un-filtered comment content.
-		 */
-		$commentdata = apply_filters( 'ap_pre_insert_comment', $commentdata );
-
-		// Insert new comment and get the comment ID.
-		$comment_id = wp_new_comment( $commentdata, true );
-
-		if ( ! is_wp_error( $comment_id ) && false !== $comment_id ) {
-			$c = get_comment( $comment_id );
-			do_action( 'ap_after_new_comment', $c );
-
-			$count = get_comment_count( $c->comment_post_ID );
-
-			$result = array(
-				'success'    => true,
-				'comment'      => ap_comment_ajax_data( $c ),
-				'action' 		  => 'new-comment',
-				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
-				'snackbar'   => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
-			);
-
-			ap_ajax_json( $result );
-		}
-
-		// Lastly output error message.
-		ap_ajax_json( array(
-			'success' => false,
-			'snackbar' => [ 'message' => $comment_id->get_error_message() ],
-		) );
 	}
 
 	/**
@@ -374,6 +291,21 @@ class AnsPress_Comment_Hooks {
 			'comment' => ap_comment_ajax_data( $c, false ),
 		) );
 	}
+
+	public static function comment_form() {
+		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+
+		ob_start();
+		ap_comment_form( $post_id );
+		ap_ajax_tinymce_assets();
+		$html = ob_get_clean();
+
+		ap_ajax_json( array(
+			'success' => true,
+			'html'    => $html,
+			'modal_title'    => __( 'Add comment on post', 'anspress-question-answer' ),
+		) );
+	}
 }
 
 /**
@@ -416,23 +348,19 @@ function ap_comment_btn_html( $_post = null ) {
 
 	// Add comment button.
 	$q = '';
+
 	if ( ap_user_can_comment( $_post->ID ) ) {
 		$q = wp_json_encode( array(
 			'post_id'        => get_the_ID(),
 			'__nonce'        => wp_create_nonce( 'new-comment' ),
-			'ap_ajax_action' => 'new_comment',
+			'ap_ajax_action' => 'comment_form',
 		) );
+
+
+		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '"' . ( empty( $q ) ? ' ap-msg="' . esc_attr( $msg ) . '"' : '' ) . '>';
+		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
+		$output .= '</a>';
 	}
-
-	$msg = __( 'You do not have permission to comment.', 'anspress-question-answer' );
-
-	if ( ! is_user_logged_in() ) {
-		$msg .= ' ' . sprintf( __( '%sLogin%s to post comment', 'anspress-question-answer' ), '<a href="' . wp_login_url( ) . '">', '</a>' );
-	}
-
-	$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '"' . ( empty( $q ) ? ' ap-msg="' . esc_attr( $msg ) . '"' : '' ) . '>';
-	$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
-	$output .= '</a>';
 
 	return $output;
 }

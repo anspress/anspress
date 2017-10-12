@@ -516,7 +516,12 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
+	$option = ap_opt( 'post_comment_per' );
+	if ( 'have_cap' === $option && user_can( $user_id, 'ap_new_comment' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 

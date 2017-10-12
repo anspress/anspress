@@ -120,7 +120,7 @@ class AnsPress_Hooks {
 			// Form hooks.
 			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
 			anspress()->add_action( 'ap_form_answer', 'AP_Form_Hooks', 'answer_form', 11 );
-			anspress()->add_action( 'ap_form_image_upload', 'AP_Form_Hooks', 'image_upload_form', 11 );
+			anspress()->add_action( 'ap_form_comment', 'AP_Form_Hooks', 'comment_form', 11 );
 	}
 
 	/**

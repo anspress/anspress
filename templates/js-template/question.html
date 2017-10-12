@@ -60,18 +60,18 @@
 
 #START BLOCK modal #
 <div class="ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>">
-  <# if(typeof title !== 'undefined' ){ #>
-    <div class="ap-modal-header">
-      <h3>{{title}}</h3>
-    </div>
-  <# } #>
+  <div class="ap-modal-header">
+    <# if(typeof title !== 'undefined' ){ #>
+      <strong>{{title}}</strong>
+    <# } #>
+    <a href="#" close-modal class="ap-modal-close"><i class="apicon-x"></i></a>
+  </div>
   <div class="ap-modal-content">
     <# if(typeof content !== 'undefined'){ #>
       {{{content}}}
     <# } #>
   </div>
   <div class="ap-modal-footer">
-    <a href="#" close-modal>Close</a>
     <# if(typeof buttons !== 'undefined'){ #>
       <# _.each(buttons, function(btn){ #>
         <a class="ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>" href="#" <# if(typeof btn.cb !== 'undefined') { #>ap="{{btn.cb}}" ap-query="{{btn.query}}"<# } #>>{{btn.label}}</a>

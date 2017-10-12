@@ -350,6 +350,7 @@
 			this.listenTo(this.model, 'change:hideSelect', this.selectToggle);
 			this.listenTo(AnsPress, 'commentCount', this.commentCount);
 			this.listenTo(AnsPress, 'loadCommentEdit', this.loadCommentEdit);
+			this.listenTo(AnsPress, 'formPosted', this.submitComment);
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
@@ -357,7 +358,6 @@
 			'click [ap="select_answer"]': 'selectAnswer',
 			'click [ap="comment_btn"]': 'loadComments',
 			'click [ap="new-comment"]': 'loadCommentForm',
-			'submit [comment-form]': 'submitComment',
 			'click [ap="cancel-comment"]': 'hideCommentForm'
 		},
 		voteClicked: function(e){
@@ -521,30 +521,48 @@
 		},
 		loadCommentForm: function(e, comment){
 			e.preventDefault();
+			var self = this;
 
-			if(_.isEmpty($(e.target).attr('ap-query'))){
-				if(this.$el.find('.ap-comment-no-perm').length === 0){
-					var q = {msg: $(e.target).attr('ap-msg')};
-					var t = _.template(AnsPress.getTemplate('comment-no-permission')());
-					this.$el.find('apcomments').append(t(q));
-				}else{
-					this.$el.find('.ap-comment-no-perm').remove();
+			var q = $.parseJSON($(e.target).attr('ap-query'));
+
+			AnsPress.showLoading(e.target);
+			AnsPress.ajax({
+				data: q,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					self.commentForm = new AnsPress.views.Modal({
+						title: data.modal_title,
+						content: data.html,
+						size: 'medium'
+					});
+
+					$('#anspress').append(self.commentForm.render().$el);
 				}
-				return;
-			}
+			});
 
-			if(this.$el.find('[comment-form]').length === 0){
-				var q = $.parseJSON($(e.target).attr('ap-query'));
-				var t = _.template(AnsPress.getTemplate('comment-form')());
-				this.$el.find('apcomments').append(t(q));
-				this.$el.find('[comment-form]').hide().slideDown(400, function(){
-					$(this).find('textarea').focus();
-				});
-			}else{
-				this.$el.find('[comment-form]').slideUp(400, function(){
-					$(this).remove();
-				});
-			}
+			// if(_.isEmpty($(e.target).attr('ap-query'))){
+			// 	if(this.$el.find('.ap-comment-no-perm').length === 0){
+			// 		var q = {msg: $(e.target).attr('ap-msg')};
+			// 		var t = _.template(AnsPress.getTemplate('comment-no-permission')());
+			// 		this.$el.find('apcomments').append(t(q));
+			// 	}else{
+			// 		this.$el.find('.ap-comment-no-perm').remove();
+			// 	}
+			// 	return;
+			// }
+
+			// if(this.$el.find('[comment-form]').length === 0){
+			// 	var q = $.parseJSON($(e.target).attr('ap-query'));
+			// 	var t = _.template(AnsPress.getTemplate('comment-form')());
+			// 	this.$el.find('apcomments').append(t(q));
+			// 	this.$el.find('[comment-form]').hide().slideDown(400, function(){
+			// 		$(this).find('textarea').focus();
+			// 	});
+			// }else{
+			// 	this.$el.find('[comment-form]').slideUp(400, function(){
+			// 		$(this).remove();
+			// 	});
+			// }
 		},
 		loadCommentEdit: function(args){
 			if(this.model.id !== args.postID)
@@ -560,28 +578,17 @@
 				$(this).find('textarea').val(args.comment.get('content')).focus();
 			});
 		},
-		submitComment: function(e){
-			var self = this;
-			AnsPress.showLoading(e.target);
-			AnsPress.ajax({
-				data: $(e.target).serializeArray(),
-				success: function(data){
-					AnsPress.hideLoading(e.target);
-					if(data.success){
-						if(self.comments && data.action === 'new-comment')
-							self.comments.add(data.comment);
+		submitComment: function(data){
+			if(data.success){
+				this.commentForm.hide();
+				delete this.commentForm;
 
-						if(self.comments && data.action === 'edit-comment')
-							self.comments.get(data.comment.ID).set(data.comment);
+				if(this.comments && data.action === 'new-comment')
+					this.comments.add(data.comment);
 
-						if(data.commentsCount)
-							AnsPress.trigger('commentCount', {count: data.commentsCount, postID: self.model.id });
-
-						self.$el.find('[comment-form]').remove();
-					}
-				}
-			});
-			return false;
+				if(data.commentsCount)
+					AnsPress.trigger('commentCount', {count: data.commentsCount, postID: this.model.id });
+			}
 		},
 		hideCommentForm: function(e){
 			e.preventDefault();
@@ -693,19 +700,24 @@
 		className: 'ap-modal',
 		template: AnsPress.getTemplate('modal'),
 		events: {
-			'click [close-modal]': 'hide'
+			'click [close-modal]': 'clickHide'
 		},
 		initialize: function(options){
 			this.data = options;
 		},
 		render: function(){
+			$('html').css('overflow', 'hidden');
 			var t = _.template(this.template());
 			this.$el.html(t(this.data));
 			return this;
 		},
-		hide: function(e){
+		clickHide: function(e){
 			e.preventDefault();
+			this.hide();
+		},
+		hide: function(){
 			this.remove();
+			$('html').css('overflow', '');
 		}
 	});
 

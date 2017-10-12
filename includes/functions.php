@@ -1989,3 +1989,59 @@ function ap_answer_form( $question_id, $editing = false ) {
 
 	anspress()->get_form( 'answer' )->generate( $args );
 }
+
+/**
+ * Generate comment form.
+ *
+ * @param  false|integer $post_id  Question or answer id.
+ * @param  false|object  $_comment Comment id or object.
+ * @param  boolean       $editing  true if post is being edited.
+ * @return void
+ *
+ * @since 4.1.0
+ */
+function ap_comment_form( $post_id = false, $_comment = false, $editing = false ) {
+	if ( false === $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	$_comment = get_comment( $_comment );
+
+	if ( ! ap_user_can_comment( $post_id ) ) {
+		return;
+	}
+
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'post_id',
+				'value' => $post_id,
+			),
+			array(
+				'name'  => 'action',
+				'value' => 'ap_ajax',
+			),
+			array(
+				'name'  => 'ap_ajax_action',
+				'value' => 'form_comment',
+			),
+		),
+	);
+
+	anspress()->get_form( 'comment' )->generate( $args );
+}
+
+function ap_ajax_tinymce_assets() {
+	if ( ! class_exists( '_WP_Editors' ) ) {
+		require( ABSPATH . WPINC . '/class-wp-editor.php' );
+	}
+
+	\_WP_Editors::enqueue_scripts();
+
+	ob_start();
+	print_footer_scripts();
+	$scripts = ob_get_clean();
+
+	echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
+	\_WP_Editors::editor_js();
+}

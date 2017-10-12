@@ -1,5 +1,6 @@
 $icomoon-font-path: "fonts" !default;
 
+$apicon-x: "\e92e";
 $apicon-dots: "\e94a";
 $apicon-check: "\e903";
 $apicon-chevron-down: "\e93d";
@@ -27,13 +28,6 @@ $apicon-tag: "\e936";
 $apicon-comments: "\e937";
 $apicon-anspress: "\e92d";
 $apicon-anspress-icon: "\e941";
-$apicon-flag: "\e902";
-$apicon-answer: "\e900";
-$apicon-question: "\e901";
-$apicon-home: "\e939";
-$apicon-thumbs-up-down: "\e93a";
-$apicon-thumb-up: "\e93b";
-$apicon-thumb-down: "\e93c";
 $apicon-pencil: "\e905";
 $apicon-users: "\e906";
 $apicon-user-check: "\e907";
@@ -73,16 +67,22 @@ $apicon-star: "\e929";
 $apicon-stop: "\e92a";
 $apicon-sync: "\e92b";
 $apicon-trashcan: "\e92c";
-$apicon-x: "\e92e";
+$apicon-flag: "\e902";
+$apicon-answer: "\e900";
+$apicon-question: "\e901";
+$apicon-home: "\e939";
+$apicon-thumbs-up-down: "\e93a";
+$apicon-thumb-up: "\e93b";
+$apicon-thumb-down: "\e93c";
 $apicon-board: "\e938";
 
 @font-face {
   font-family: 'anspress';
-  src:  url('#{$icomoon-font-path}/anspress.eot?8lwej9');
-  src:  url('#{$icomoon-font-path}/anspress.eot?8lwej9#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/anspress.ttf?8lwej9') format('truetype'),
-    url('#{$icomoon-font-path}/anspress.woff?8lwej9') format('woff'),
-    url('#{$icomoon-font-path}/anspress.svg?8lwej9#anspress') format('svg');
+  src:  url('#{$icomoon-font-path}/anspress.eot?sit72p');
+  src:  url('#{$icomoon-font-path}/anspress.eot?sit72p#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/anspress.ttf?sit72p') format('truetype'),
+    url('#{$icomoon-font-path}/anspress.woff?sit72p') format('woff'),
+    url('#{$icomoon-font-path}/anspress.svg?sit72p#anspress') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -102,6 +102,11 @@ $apicon-board: "\e938";
   -moz-osx-font-smoothing: grayscale;
 }
 
+.apicon-x {
+  &:before {
+    content: $apicon-x;
+  }
+}
 .apicon-dots {
   &:before {
     content: $apicon-dots;
@@ -235,41 +240,6 @@ $apicon-board: "\e938";
 .apicon-anspress-icon {
   &:before {
     content: $apicon-anspress-icon;
-  }
-}
-.apicon-flag {
-  &:before {
-    content: $apicon-flag;
-  }
-}
-.apicon-answer {
-  &:before {
-    content: $apicon-answer;
-  }
-}
-.apicon-question {
-  &:before {
-    content: $apicon-question;
-  }
-}
-.apicon-home {
-  &:before {
-    content: $apicon-home;
-  }
-}
-.apicon-thumbs-up-down {
-  &:before {
-    content: $apicon-thumbs-up-down;
-  }
-}
-.apicon-thumb-up {
-  &:before {
-    content: $apicon-thumb-up;
-  }
-}
-.apicon-thumb-down {
-  &:before {
-    content: $apicon-thumb-down;
   }
 }
 .apicon-pencil {
@@ -467,9 +437,39 @@ $apicon-board: "\e938";
     content: $apicon-trashcan;
   }
 }
-.apicon-x {
+.apicon-flag {
   &:before {
-    content: $apicon-x;
+    content: $apicon-flag;
+  }
+}
+.apicon-answer {
+  &:before {
+    content: $apicon-answer;
+  }
+}
+.apicon-question {
+  &:before {
+    content: $apicon-question;
+  }
+}
+.apicon-home {
+  &:before {
+    content: $apicon-home;
+  }
+}
+.apicon-thumbs-up-down {
+  &:before {
+    content: $apicon-thumbs-up-down;
+  }
+}
+.apicon-thumb-up {
+  &:before {
+    content: $apicon-thumb-up;
+  }
+}
+.apicon-thumb-down {
+  &:before {
+    content: $apicon-thumb-down;
   }
 }
 .apicon-board {

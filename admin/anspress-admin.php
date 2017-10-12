@@ -1012,10 +1012,21 @@ class AnsPress_Admin {
 					'value' => $opt['multiple_answers'],
 				),
 				'disallow_op_to_answer' => array(
-					'label' => __( 'Asker can answer', 'anspress-question-answer' ),
-					'desc'  => __( 'Allow users to answer their own question.', 'anspress-question-answer' ),
+					'label' => __( 'OP can answer?', 'anspress-question-answer' ),
+					'desc'  => __( 'OP: Original poster/asker. Enabling this option will prevent users to post an answer on their question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['disallow_op_to_answer'],
+				),
+				'post_comment_per' => array(
+					'label' => __( 'Who can post comment?', 'anspress-question-answer' ),
+					'desc'  => __( 'Set who can submit a comment from frontend.', 'anspress-question-answer' ),
+					'type'  => 'select',
+					'value'  => $opt['post_comment_per'],
+					'options' => array(
+						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
+						'have_cap'  => __( 'Only user having ap_new_comment capability', 'anspress-question-answer' ),
+					),
 				),
 				'allow_upload' => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),

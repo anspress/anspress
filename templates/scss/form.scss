@@ -372,6 +372,17 @@
 	.show{
 		display: block !important;
 	}
+	.quicktags-toolbar .ed_button {
+		padding: 0 7px;
+		border: solid 1px #ddd;
+		box-shadow: none;
+		background: #fff;
+	}
+	#form_comment{
+		textarea{
+			width: 100%;
+		}
+	}
 }
 
 #ap-search-form {

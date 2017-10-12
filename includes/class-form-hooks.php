@@ -26,6 +26,7 @@ class AP_Form_Hooks {
 	 * Register question form.
 	 *
 	 * @return array
+	 * @since 4.1.0
 	 */
 	public static function question_form() {
 		$editing_id = ap_sanitize_unslash( 'id', 'r' );
@@ -78,7 +79,7 @@ class AP_Form_Hooks {
 				),
 				'order'        => 20,
 				'validate'     => 'max_string_length,badwords',
-				'max_length'   => 20,
+				'max_length'   => 64,
 			);
 		}
 
@@ -112,7 +113,7 @@ class AP_Form_Hooks {
 		 * @param 	bool 	$editing 	Currently editing form.
 		 * @since  	4.1.0
 		 */
-		$form = apply_filters( 'ap_question_form_fields', $form );
+		$form = apply_filters( 'ap_question_form_fields', $form, $editing );
 
 		return $form;
 	}
@@ -121,6 +122,7 @@ class AP_Form_Hooks {
 	 * Register answer form.
 	 *
 	 * @return array
+	 * @since 4.1.0
 	 */
 	public static function answer_form() {
 		$editing = false;
@@ -202,6 +204,95 @@ class AP_Form_Hooks {
 		 * @since  	4.1.0
 		 */
 		return apply_filters( 'ap_answer_form_fields', $form, $editing );
+	}
+
+	/**
+	 * Register comment form.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function comment_form() {
+		$editing_id = ap_sanitize_unslash( 'id', 'r' );
+
+		$form = array(
+			'submit_label' => __( 'Submit Comment', 'anspress-question-answer' ),
+			'fields' => array(
+				'content' => array(
+					'type'       => 'textarea',
+					'label'      => __( 'Comment', 'anspress-question-answer' ),
+					'min_length' => 5,
+					'validate'   => 'required,min_string_length,badwords',
+					'attr' => array(
+						'placeholder' => __( 'Write your comment here..', 'anspress-question-answer' ),
+						'rows' => 5,
+					),
+					'editor_args' => array(
+						'quicktags'     => true,
+						'textarea_rows' => 5,
+					),
+				),
+			),
+		);
+
+		// Add name fields if anonymous is allowed.
+		if ( ! is_user_logged_in() ) {
+			$form['fields']['author'] = array(
+				'label'        => __( 'Your Name', 'anspress-question-answer' ),
+				'attr'         => array(
+					'placeholder' => __( 'Enter your name to display.', 'anspress-question-answer' ),
+				),
+				'validate'     => 'required,max_string_length,badwords',
+				'max_length'   => 64,
+			);
+
+			$form['fields']['email'] = array(
+				'label'        => __( 'Your Email', 'anspress-question-answer' ),
+				'attr'         => array(
+					'placeholder' => __( 'Enter your email to get follow up notifications.', 'anspress-question-answer' ),
+				),
+				'subtype'      => 'email',
+				'validate'     => 'required,is_email',
+				'max_length'   => 254,
+			);
+
+			$form['fields']['url'] = array(
+				'label'        => __( 'Your Website', 'anspress-question-answer' ),
+				'attr'         => array(
+					'placeholder' => __( 'Enter link to your website.', 'anspress-question-answer' ),
+				),
+				'subtype'      => 'url',
+				'validate'     => 'required,is_url',
+				'max_length'   => 254,
+			);
+		}
+
+		// Add value when editing post.
+		// if ( ! empty( $editing_id ) ) {
+		// 	$question = ap_get_post( $editing_id );
+
+		// 	$form['editing']                         = true;
+		// 	$form['editing_id']                      = $editing_id;
+		// 	$form['submit_label']                    = __( 'Update Question', 'anspress-question-answer' );
+		// 	$form['fields']['post_title']['value']   = $question->post_title;
+		// 	$form['fields']['post_content']['value'] = $question->post_content;
+		// 	$form['fields']['is_private']['value']   = 'private_post' === $question->post_status ? true : false;
+
+		// 	if ( isset( $form['fields']['anonymous_name'] ) ) {
+		// 		$form['fields']['anonymous_name'] = ap_get_post_field( 'anonymous_name', $question );
+		// 	}
+		// }
+
+		/**
+		 * Filter for modifying comment form `$args`.
+		 *
+		 * @param 	array $fields 	Comment form fields.
+		 * @param 	bool 	$editing 	Currently editing form.
+		 * @since  	4.1.0
+		 */
+		$form = apply_filters( 'ap_comment_form_fields', $form );
+
+		return $form;
 	}
 
 	/**
@@ -518,6 +609,123 @@ class AP_Form_Hooks {
 			],
 			'redirect' => get_permalink( $question_id ),
 			'post_id'  => $post_id,
+		) );
+	}
+
+	public static function submit_comment_form() {
+		$editing = false;
+		$form = anspress()->get_form( 'comment' );
+
+		/**
+		 * Action triggered before processing comment form.
+		 *
+		 * @since 4.1.0
+		 */
+		do_action( 'ap_submit_comment_form' );
+
+		$values = $form->get_values();
+		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+
+		// Check nonce and is valid form.
+		if ( ! $form->is_submitted() || ! ap_user_can_comment( $post_id ) ) {
+			ap_ajax_json([
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
+			] );
+		}
+
+		if ( $form->have_errors() ) {
+			ap_ajax_json([
+				'success'       => false,
+				'snackbar'      => [ 'message' => __( 'Unable to post comment.', 'anspress-question-answer' ) ],
+				'form_errors'   => $form->errors,
+				'fields_errors' => $form->get_fields_errors(),
+			] );
+		}
+
+		$_post = ap_get_post( $post_id );
+
+		$type = 'question' === $_post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
+
+		// Check if not restricted post type.
+		if ( in_array( $_post->post_status, [ 'draft', 'pending', 'trash' ], true ) ) {
+			ap_ajax_json( array(
+				'success'  => false,
+				'snackbar' => array(
+					'message' => sprintf(
+						// Translators: %s contain post type name.
+						__( 'Commenting is not allowed on draft, pending or deleted %s', 'anspress-question-answer' ),
+						$type
+					),
+				),
+			));
+		}
+
+		if ( is_user_logged_in() ) {
+			$user = wp_get_current_user();
+			$user_id = $user->ID;
+			$author  = wp_slash( $user->display_name );
+			$email   = wp_slash( $user->user_email );
+			$url     = wp_slash( $user->user_url );
+		} else {
+			$user_id = 0;
+			$author  = $values['author']['value'];
+			$email   = $values['email']['value'];
+			$url     = $values['url']['value'];
+		}
+
+		$commentdata = array(
+			'comment_post_ID' 		   => $_post->ID,
+			'comment_author' 		     => wp_slash( $author ),
+			'comment_author_email' 	 => wp_slash( $email ),
+			'comment_author_url' 	   => wp_slash( $url ),
+			'comment_content' 		   => trim( $values['content']['value'] ),
+			'comment_type' 			     => 'anspress',
+			'comment_parent' 		     => 0,
+			'user_id' 				       => $user_id,
+		);
+
+		/**
+		 * Filter comment content before inserting to DB.
+		 *
+		 * @param bool 		$apply_filter  Apply this filter.
+		 * @param string 	$content 		   Un-filtered comment content.
+		 * @since 3.0.0
+		 */
+		$commentdata = apply_filters( 'ap_pre_insert_comment', $commentdata );
+
+		// Insert new comment and get the comment ID.
+		$comment_id = wp_new_comment( $commentdata, true );
+
+		if ( ! is_wp_error( $comment_id ) && false !== $comment_id ) {
+			$c = get_comment( $comment_id );
+			do_action( 'ap_after_new_comment', $c );
+
+			$count = get_comment_count( $c->comment_post_ID );
+
+			$result = array(
+				'success'    => true,
+				'comment'      => ap_comment_ajax_data( $c ),
+				'action' 		  => 'new-comment',
+				'commentsCount' => array(
+					'text'        => sprintf(
+						// Translators: %d contains count of comments.
+						_n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ),
+						$count['all']
+					),
+					'number'      => $count['all'],
+					'unapproved'  => $count['awaiting_moderation'],
+				),
+				'snackbar'   => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
+			);
+
+			ap_ajax_json( $result );
+		}
+
+		// Lastly output error message.
+		ap_ajax_json( array(
+			'success' => false,
+			'snackbar' => [ 'message' => $comment_id->get_error_message() ],
 		) );
 	}
 }
