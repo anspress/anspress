@@ -34,21 +34,25 @@ if ( ap_user_can_read_answer() ) :
 
 				<div class="ap-q-inner">
 					<?php
-						/**
-						* ACTION: ap_before_answer_content
-						* @since   3.0.0
-						*/
-						do_action( 'ap_before_answer_content' );
+					/**
+					 * Action triggered before answer content.
+					 *
+					 * @since   3.0.0
+					 */
+					do_action( 'ap_before_answer_content' );
 					?>
+
 					<div class="ap-answer-content ap-q-content" itemprop="text" ap-content>
 							<?php the_content(); ?>
 					</div>
+
 					<?php
-						/**
-						* ACTION: ap_after_answer_content
-						* @since   3.0.0
-						*/
-						do_action( 'ap_after_answer_content' );
+					/**
+					 * Action triggered after answer content.
+					 *
+					 * @since   3.0.0
+					 */
+					do_action( 'ap_after_answer_content' );
 					?>
 
 				</div>
@@ -60,7 +64,6 @@ if ( ap_user_can_read_answer() ) :
 				</div>
 
 			</div>
-			<?php ap_the_comments(); ?>
 		</div>
 	</div>
 </div>
