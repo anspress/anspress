@@ -86,17 +86,13 @@ class AnsPress_Comment_Hooks {
 
 		$_post = ap_get_post( $post_id );
 
-		if ( ap_user_can_read_comments() ) {
-			ob_start();
-			ap_the_comments( $post_id, array(
-				'number'    => ap_opt( 'comment_number' ),
-				'show_more' => false,
-				'paged'     => $paged,
-			) );
-			$html = ob_get_clean();
-		} else {
-			$html = '<div class="ap-comment-no-perm">' . __( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
-		}
+		ob_start();
+		ap_the_comments( $post_id, array(
+			'number'    => ap_opt( 'comment_number' ),
+			'show_more' => false,
+			'paged'     => $paged,
+		) );
+		$html = ob_get_clean();
 
 		$type = 'question' === $_post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
@@ -398,6 +394,8 @@ function ap_the_comments( $_post = null, $args = [] ) {
 
 	$_post = ap_get_post( $_post );
 	if ( ! ap_user_can_read_comments() ) {
+		echo '<div class="ap-comment-no-perm">' . __( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
+
 		return;
 	}
 
@@ -435,6 +433,13 @@ function ap_the_comments( $_post = null, $args = [] ) {
 	$args['offset'] = ceil( ( (int) $args['paged'] - 1 ) * (int) $args['number'] );
 
 	$query = new WP_Comment_Query( $args );
+
+	if ( 0 == $query->found_comments ) {
+		echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
+
+		return;
+	}
+
 	echo '<apcomments id="comments-' . esc_attr( $_post->ID ) . '" class="have-comments"><div class="ap-comments">';
 
 	foreach ( $query->comments as $c ) {

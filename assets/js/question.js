@@ -661,7 +661,6 @@
 				runCb = true;
 			this.remove();
 			$('html').css('overflow', '');
-			console.log(this.data.hideCb,runCb);
 			if(this.data.hideCb&&runCb) this.data.hideCb(this); // Callback
 		},
 		setContent: function(html){

@@ -52,6 +52,13 @@ class AnsPress_Common_Pages {
 		ap_get_template_part( 'question-list' );
 	}
 
+	/**
+	 * Render question permissions message.
+	 *
+	 * @param object $_post Post object.
+	 * @return string
+	 * @since 4.1.0
+	 */
 	private static function question_permission_msg( $_post ) {
 		$msg = false;
 
@@ -87,6 +94,9 @@ class AnsPress_Common_Pages {
 
 	/**
 	 * Output single question page.
+	 *
+	 * @since 0.0.1
+	 * @since 4.1.0 Changed template file name to single-question.php to question.php.
 	 */
 	public static function question_page() {
 		global $question_rendered, $post;
@@ -101,8 +111,13 @@ class AnsPress_Common_Pages {
 			return;
 		}
 
-		include( ap_get_theme_location( 'question.php' ) );
+		include( ap_get_theme_location( 'single-question.php' ) );
 
+		/**
+		 * An action triggered after rendering single question page.
+		 *
+		 * @since 0.0.1
+		 */
 		do_action( 'ap_after_question' );
 
 		$question_rendered = true;

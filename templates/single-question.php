@@ -7,6 +7,9 @@
  * @subpackage Templates
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
  * @author     Rahul Aryan <support@anspress.io>
+ *
+ * @since      0.0.1
+ * @since      4.1.0 Renamed file from question.php.
  */
 
 ?>
@@ -22,12 +25,12 @@
 				<div id="question" role="main" class="ap-content">
 					<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 					<?php
-						/**
-						* ACTION: ap_before_question_title.
-						*
-						* @since 	2.0
-						*/
-						do_action( 'ap_before_question_title' );
+					/**
+					 * Action triggered before question title.
+					 *
+					 * @since 	2.0
+					 */
+					do_action( 'ap_before_question_title' );
 					?>
 					<div class="ap-avatar">
 						<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
@@ -57,25 +60,25 @@
 							<!-- Start ap-content-inner -->
 							<div class="ap-q-inner">
 								<?php
-									/**
-									* ACTION: ap_before_question_content.
-									*
-									* @since 	2.0.0
-									*/
-									do_action( 'ap_before_question_content' );
+								/**
+								 * Action triggered before question content.
+								 *
+								 * @since 	2.0.0
+								 */
+								do_action( 'ap_before_question_content' );
 								?>
+
 								<div class="question-content ap-q-content" itemprop="text">
 									<?php the_content(); ?>
 								</div>
 
 								<?php
 									/**
-									* ACTION: ap_after_question_content.
-									*
-									* @since 	2.0.0
-									*/
+									 * Action triggered after question content.
+									 *
+									 * @since 	2.0.0
+									 */
 									do_action( 'ap_after_question_content' );
-
 								?>
 
 							</div>
