@@ -207,7 +207,7 @@
 	});
 
 	AnsPress.views.Comment = Backbone.View.extend({
-		tagName: 'ap-comment',
+		tagName: 'apcomment',
 		id: function(){
 			return 'comment-' + this.model.id;
 		},
@@ -356,7 +356,6 @@
 			'click [ap-vote] > a': 'voteClicked',
 			'click [ap="actiontoggle"]:not(.loaded)': 'postActions',
 			'click [ap="select_answer"]': 'selectAnswer',
-			'click [ap="comment_btn"]': 'loadComments',
 			'click [ap="new-comment"]': 'loadCommentForm',
 			'click [ap="cancel-comment"]': 'hideCommentForm'
 		},
@@ -465,60 +464,6 @@
 			else
 				this.$el.find('[ap="select_answer"]').removeClass('hide');
 		},
-		loadComments: function(e){
-			e.preventDefault();
-			var self = this;
-			var elm = $(e.currentTarget);
-			var commentDiv = '#comments-'+self.model.id;
-
-			if(elm.is('.loaded')){
-				if($(commentDiv).is('.have-comments'))
-					$(commentDiv).find('.ap-comments').slideUp(400, function(){
-						$(commentDiv).removeClass('have-comments');
-					});
-				else if( self.comments.length > 0 )
-					$(commentDiv).addClass('have-comments').find('.ap-comments').slideDown(400);
-				return;
-			}
-
-			var q = $.parseJSON(elm.attr('ap-query'));
-			q.ap_ajax_action = 'load_comments';
-			AnsPress.showLoading(elm);
-			AnsPress.ajax({
-				data: q,
-				success: function(data){
-					AnsPress.hideLoading(elm);
-					if(data.count > 0 && _.isEmpty(data.comments)){
-						var cont = $(commentDiv+' .ap-comments');
-						if(cont.find('.ap-comment-no-perm').length === 0){
-							var q = {msg: aplang.no_permission_comments};
-							var t = _.template(AnsPress.getTemplate('comment-no-permission')());
-							cont.append(t(q));
-						}else{
-							cont.find('.ap-comment-no-perm').remove();
-						}
-						return;
-					}
-
-					elm.addClass('loaded');
-					self.comments = new AnsPress.collections.Comments(data.comments);
-
-					var options = {
-						model: self.comments,
-						postID: self.model.id,
-						el: commentDiv+' .ap-comments',
-						collapsed: data.collapsed,
-						collapsed_msg: data.collapsed_msg,
-						offset: data.offset,
-						query: q
-					};
-
-					var view = new AnsPress.views.Comments(options);
-					view.render();
-					view.$el.hide().slideDown(400);
-				}
-			});
-		},
 		loadCommentForm: function(e, comment){
 			e.preventDefault();
 			var self = this;
@@ -533,7 +478,7 @@
 					self.commentForm = new AnsPress.views.Modal({
 						title: data.modal_title,
 						content: data.html,
-						size: 'medium'
+						size: 'medium',
 					});
 
 					$('#anspress').append(self.commentForm.render().$el);
@@ -575,7 +520,10 @@
 
 				if(this.comments && data.action === 'edit-comment'){
 					$('#comment-'+data.comment.ID+' .comment-content').html(data.comment.content);
-					$('#comment-'+data.comment.ID).addClass('edit-fade');
+					$('#comment-'+data.comment.ID).css('backgroundColor', 'rgba(255, 235, 59, 1)');
+					setTimeout(function(){
+						$('#comment-'+data.comment.ID).removeAttr('style');
+					}, 500)
 				}
 
 				if(data.commentsCount)
@@ -694,8 +642,9 @@
 		events: {
 			'click [close-modal]': 'clickHide'
 		},
-		initialize: function(options){
-			this.data = options;
+		initialize: function(opt){
+			opt.title = opt.title||aplang.loading;
+			this.data = opt;
 		},
 		render: function(){
 			$('html').css('overflow', 'hidden');
@@ -707,15 +656,27 @@
 			e.preventDefault();
 			this.hide();
 		},
-		hide: function(){
+		hide: function(runCb){
+			if(typeof runCb === 'undefined')
+				runCb = true;
 			this.remove();
 			$('html').css('overflow', '');
+			console.log(this.data.hideCb,runCb);
+			if(this.data.hideCb&&runCb) this.data.hideCb(this); // Callback
+		},
+		setContent: function(html){
+			this.$el.find('.ap-modal-content').html(html);
+		},
+		setTitle: function(title){
+			this.$el.find('.ap-modal-header strong').text(title);
 		}
 	});
 
   var AnsPressRouter = Backbone.Router.extend({
 		routes: {
-			'comment/:commentID': 'commentRoute'
+			'comment/:commentID': 'commentRoute',
+			'comments/:postID/page/:paged': 'commentsRoute',
+			'comments/:postID': 'commentsRoute'
 		},
 		commentRoute: function (query, page) {
 			AnsPress.ajax({
@@ -731,6 +692,36 @@
 						var commentsView = new AnsPress.views.Comments({model: commentsModel, el: modalView.$el.find('.ap-comments')});
 
 						modalView.$el.find('.ap-modal-content').html(commentsView.render().$el);
+					}
+				}
+			});
+		},
+		commentsRoute: function(postId, paged){
+			self = this;
+			paged = paged||1;
+
+			if ( this.commentsModal ) {
+				this.commentsModal.hide(false);
+				delete this.commentsModal;
+			}
+
+			this.commentsModal = new AnsPress.views.Modal({
+				content: '',
+				size: 'medium',
+				hideCb: function(){
+					Backbone.history.navigate('', true);
+				}
+			});
+
+			$('#anspress').append(this.commentsModal.render().$el);
+			AnsPress.showLoading(this.commentsModal.$el.find('.ap-modal-content'));
+			AnsPress.ajax({
+				data: {post_id: postId, ap_ajax_action: 'load_comments', paged: paged},
+				success: function(data){
+					if(data.success){
+						self.commentsModal.setTitle(data.modal_title);
+						self.commentsModal.setContent(data.html);
+						AnsPress.hideLoading(self.commentsModal.$el.find('.ap-modal-content'));
 					}
 				}
 			});
@@ -750,11 +741,6 @@
 		var anspressRouter = new AnsPressRouter();
 		if(!Backbone.History.started)
 			Backbone.history.start();
-
-		if(apShowComments)
-			$('[ap="comment_btn"]').each(function(){
-				$(this).click();
-			});
 	});
 
 

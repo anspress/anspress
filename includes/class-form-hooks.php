@@ -29,6 +29,7 @@ class AP_Form_Hooks {
 	 * @since 4.1.0
 	 */
 	public static function question_form() {
+		$editing = false;
 		$editing_id = ap_sanitize_unslash( 'id', 'r' );
 
 		$form = array(

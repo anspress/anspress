@@ -40,6 +40,7 @@
 		}
 		&-content{
 			line-height: 1.4;
+			min-height: 50px;
 		}
 		&-title{
 			font-weight: 600;
@@ -47,7 +48,7 @@
 			display: inline;
 		}
 		&-footer {
-			margin-top: 15px;
+
 		}
 		&-close{
 			color: #aaa;

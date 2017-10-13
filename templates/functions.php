@@ -33,7 +33,7 @@ function ap_scripts_front() {
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'anspress-main' ), AP_VERSION );
 
 	$aplang = array(
-		'loading'                => __( 'Loading', 'anspress-question-answer' ),
+		'loading'                => __( 'Loading..', 'anspress-question-answer' ),
 		'sending'                => __( 'Sending request', 'anspress-question-answer' ),
 		'file_size_error'        => sprintf( __( 'File size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ),
 		'attached_max'           => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),

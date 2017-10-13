@@ -2028,7 +2028,7 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 	$form = anspress()->get_form( 'comment' );
 
 	// Add value when editing post.
-	if ( false !== $_comment ) {
+	if ( false !== $_comment && ! empty( $_comment ) ) {
 		$_comment = get_comment( $_comment );
 		$values = [];
 

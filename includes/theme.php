@@ -210,10 +210,10 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 	$big = 999999999; // Need an unlikely integer.
 
 	if ( false === $current ) {
-	    $paged = ap_sanitize_unslash( 'ap_paged', 'r', 1 );
-	    $current = is_front_page() ? max( 1, $paged ) : max( 1, get_query_var( 'paged' ) );
+		$paged = ap_sanitize_unslash( 'ap_paged', 'r', 1 );
+		$current = is_front_page() ? max( 1, $paged ) : max( 1, get_query_var( 'paged' ) );
 	} elseif ( ! empty( $ap_current ) ) {
-	    $current = $ap_current;
+		$current = $ap_current;
 	}
 
 	if ( ! empty( $ap_max_num_pages ) ) {

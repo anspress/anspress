@@ -86,9 +86,6 @@
 								<?php echo ap_comment_btn_html(); ?>
 							</div>
 						</div>
-
-						<!-- End ap-content-inner -->
-						<?php ap_the_comments(); ?>
 					</div>
 				</div>
 			</div>

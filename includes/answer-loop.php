@@ -18,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Question
  *
- * This class is for retriving answers based on $args
+ * This class is for retrieving answers based on $args
  */
 class Answers_Query extends WP_Query {
 

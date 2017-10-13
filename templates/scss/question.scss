@@ -489,18 +489,3 @@ postMessage {
 	padding: 5px 10px;
 	margin: 20px auto 0;
 }
-
-.edit-fade {
-  -webkit-animation: target-fade 2s 1;
-  -moz-animation: target-fade 2s 1;
-}
-
-@-webkit-keyframes target-fade {
-  0% { background-color: #ffeb3b; }
-  100% { background-color: rgba(80, 173, 118, 0); }
-}
-
-@-moz-keyframes target-fade {
-  0% { background-color: #ffeb3b; }
-  100% { background-color: rgba(80, 173, 118, 0); }
-}
