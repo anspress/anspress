@@ -82,80 +82,43 @@ class AnsPress_Comment_Hooks {
 	 */
 	public static function load_comments() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+		$paged = max( 1, ap_isset_post_value( 'paged', 1 ) );
 
-		if ( ! check_ajax_referer( 'comment_form_nonce', '__nonce', false ) ) {
-			ap_ajax_json( array(
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'Unable to load comments', 'anspress-question-answer' ) ],
-			));
+		$_post = ap_get_post( $post_id );
+
+		if ( ap_user_can_read_comments() ) {
+			ob_start();
+			ap_the_comments( $post_id, array(
+				'number'    => ap_opt( 'comment_number' ),
+				'show_more' => false,
+				'paged'     => $paged,
+			) );
+			$html = ob_get_clean();
+		} else {
+			$html = '<div class="ap-comment-no-perm">' . __( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
 		}
 
-		$offset = ap_sanitize_unslash( 'offset', 'r', 0 );
-		$shown = $offset + ap_opt( 'comment_number' );
-		$count = get_comment_count( $post_id );
-		$more = floor( (int) $count['all'] - $shown );
+		$type = 'question' === $_post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
 		$result = array(
-			'success'       => true,
-			'action'        => 'load_comment_form',
-			'count'         => $count['all'],
-			'collapsed'     => ( $count['all'] > $shown ),
-			'collapsed_msg' => sprintf( __( 'Show %d more comments', 'anspress-question-answer' ), $more ),
-			'offset'        => $shown,
-			'comments'      => SELF::comments_data( $post_id, false, $offset ),
+			'success'     => true,
+			'modal_title' => sprintf(
+				// Translators: %s contains post type.
+				__( 'Comments on %s', 'anspress-question-answer' ),
+				$type
+			),
+			'html'        => $html,
 		);
 
-		ap_ajax_json( $result );
-	}
-
-	/**
-	 * Updates comment.
-	 *
-	 * @since 3.0.0
-	 */
-	public static function edit_comment() {
-		$comment_id = ap_sanitize_unslash( 'comment_ID', 'r' );
-		$content = ap_sanitize_unslash( 'content', 'r' );
-
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'edit-comment-' . $comment_id ) || ! ap_user_can_edit_comment( $comment_id ) ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Sorry, you cannot edit this comment', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		$comment = get_comment( $comment_id );
-
-		// Check if content is changed.
-		if ( $content === $comment->comment_content || empty( $content ) ) {
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'No change detected, edit comment and then try', 'anspress-question-answer' ) ],
-			] );
-		}
-
-		$updated = wp_update_comment( array(
-			'comment_ID'      => $comment_id,
-			'comment_content' => $content,
-		) );
-
-		if ( $updated ) {
-			$c = get_comment( $comment_id );
-			$count = get_comment_count( $c->comment_post_ID );
-			$result = array(
-				'success'       => true,
-				'comment'       => ap_comment_ajax_data( $c ),
-				'action' 		     => 'edit-comment',
-				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
-				'snackbar'      => [ 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ],
+		if ( $paged > 1 ) {
+			$result['modal_title'] .= sprintf(
+				// Translators: %d contains current paged value.
+				__( ' | Page %d', 'anspress-question-answer' ),
+				$paged
 			);
-			ap_ajax_json( $result );
 		}
 
-		ap_ajax_json( array(
-			'success'  => false,
-			'snackbar' => [ 'message' => __( 'Unable to update comment', 'anspress-question-answer' ) ],
-		) );
+		ap_ajax_json( $result );
 	}
 
 	/**
@@ -348,7 +311,7 @@ function ap_comment_btn_html( $_post = null ) {
 	}
 
 	// Show comments button.
-	$output = '<a href="#comments-' . $_post->ID . '" class="ap-btn ap-btn-comments" ap="comment_btn" ap-query="' . esc_js( $args ) . '">';
+	$output = '<a href="#/comments/' . $_post->ID . '" class="ap-btn ap-btn-comments">';
 	$output .= '<span ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
 	$output .= $unapproved . '</a>';
 
@@ -430,22 +393,60 @@ function ap_comment_delete_locked( $comment_ID ) {
  * @return void
  * @since 2.1
  */
-function ap_the_comments() {
-	global $post;
+function ap_the_comments( $_post = null, $args = [] ) {
+	global $comment;
 
+	$_post = ap_get_post( $_post );
 	if ( ! ap_user_can_read_comments() ) {
 		return;
 	}
 
-	if ( 'question' === $post->post_type && ap_opt( 'disable_comments_on_question' ) ) {
+	if ( 'question' === $_post->post_type && ap_opt( 'disable_comments_on_question' ) ) {
 		return;
 	}
 
-	if ( 'answer' === $post->post_type && ap_opt( 'disable_comments_on_answer' ) ) {
+	if ( 'answer' === $_post->post_type && ap_opt( 'disable_comments_on_answer' ) ) {
 		return;
 	}
 
-	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></apcomments>';
+	$user_id = get_current_user_id();
+
+	$default = array(
+		'post_id'   => $_post->ID,
+		'order'     => 'ASC',
+		'status'    => 'approve',
+		'number' 	  => ap_opt( 'comment_number' ),
+		'type'      => 'anspress',
+		'show_more' => true,
+		'paged'     => 1,
+		'no_found_rows' => false,
+	);
+
+	// Always include current user comments.
+	if ( ! empty( $user_id ) && $user_id > 0 ) {
+		$default['include_unapproved'] = [ $user_id ];
+	}
+
+	if ( ap_user_can_approve_comment() ) {
+		$default['status'] = 'all';
+	}
+
+	$args = wp_parse_args( $args, $default );
+	$args['offset'] = ceil( ( (int) $args['paged'] - 1 ) * (int) $args['number'] );
+
+	$query = new WP_Comment_Query( $args );
+	echo '<apcomments id="comments-' . esc_attr( $_post->ID ) . '" class="have-comments"><div class="ap-comments">';
+
+	foreach ( $query->comments as $c ) {
+		$comment = $c;
+		ap_get_template_part( 'comment' );
+	}
+
+	if ( $query->max_num_pages > 1 ) {
+		ap_pagination( $args['paged'], $query->max_num_pages, '?paged=%#%', get_permalink( $_post ) . '#/comments/' . $_post->ID . '/page/%#%' );
+	}
+
+	echo '</div></apcomments>';
 }
 
 /**
