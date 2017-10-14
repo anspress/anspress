@@ -10,6 +10,7 @@ window.AnsPress = _.extend({
 	models: {},
 	views: {},
 	collections: {},
+	modals: {},
 	loadTemplate: function(id){
 		if(jQuery('#apTemplate').length==0)
 			jQuery('<script id="apTemplate" type="text/html"></script>').appendTo('body');
@@ -134,6 +135,46 @@ window.AnsPress = _.extend({
 			return typeof qs[key] !== 'undefined' ? qs[key] : null;
 
 		return qs;
+	},
+	modal: function(name, args){
+		args = args||{};
+		if(typeof this.modals[name] !== 'undefined'){
+			return this.modals[name];
+		}
+
+		this.modals[name] = new AnsPress.views.Modal(_.extend({
+			title: aplang.loading,
+			content: '',
+			size: 'medium'
+		}, args));
+
+		jQuery('#anspress').append(this.modals[name].render().$el);
+		return this.modals[name];
+	},
+	hideModal: function(name, runCb){
+		if(typeof runCb === 'undefined')
+			runCb = true;
+
+		if(typeof this.modals[name] !== 'undefined'){
+			this.modals[name].hide(runCb);
+			delete this.modals[name];
+		}
+	},
+	removeHash: function(){
+    var scrollV, scrollH, loc = window.location;
+    if ("pushState" in history)
+      history.pushState("", document.title, loc.pathname + loc.search);
+    else {
+			// Prevent scrolling by storing the page's current scroll offset
+			scrollV = document.body.scrollTop;
+			scrollH = document.body.scrollLeft;
+
+			loc.hash = "";
+
+			// Restore the scroll offset, should be flicker free
+			document.body.scrollTop = scrollV;
+			document.body.scrollLeft = scrollH;
+    }
 	}
 }, Backbone.Events);
 
@@ -305,6 +346,53 @@ _.templateSettings = {
 				this.$el.html(t(this.data));
 			}
 			return this;
+		}
+	});
+
+	AnsPress.views.Modal = Backbone.View.extend({
+		id: 'ap-modal',
+		className: 'ap-modal',
+		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" ap-query=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
+		events: {
+			'click [ap="close-modal"]': 'clickHide',
+			'click [ap="modal-click"]': 'clickAction',
+		},
+		initialize: function(opt){
+			opt.title = opt.title||aplang.loading;
+			this.data = opt;
+		},
+		render: function(){
+			$('html').css('overflow', 'hidden');
+			var t = _.template(this.template);
+			this.$el.html(t(this.data));
+			return this;
+		},
+		clickHide: function(e){
+			e.preventDefault();
+			this.hide();
+		},
+		hide: function(runCb){
+			if(typeof runCb === 'undefined')
+				runCb = true;
+			this.remove();
+			$('html').css('overflow', '');
+			if(this.data.hideCb&&runCb) this.data.hideCb(this); // Callback
+		},
+		setContent: function(html){
+			this.$el.find('.ap-modal-content').html(html);
+		},
+		setTitle: function(title){
+			this.$el.find('.ap-modal-header strong').text(title);
+		},
+		clickAction: function(e){
+			e.preventDefault();
+			var targ = $(e.target);
+			q = targ.data('ap-query');
+
+			if(q.cb){
+				q.element = targ;
+				AnsPress.trigger(q.cb, q);
+			}
 		}
 	});
 
@@ -617,8 +705,6 @@ _.templateSettings = {
 		}
 		return params;
 	};
-
-
 })(jQuery);
 
 jQuery(document).ready(function($){
@@ -682,7 +768,7 @@ jQuery(document).ready(function($){
 					if(data.btn.hide) self.hide();
 
 				if(typeof data.cb !== 'undefined')
-					AnsPress.trigger(data.cb, data);
+					AnsPress.trigger(data.cb, data, e.target);
 			}
 		})
 	});

@@ -223,39 +223,11 @@
 			this.postID = options.postID;
 			this.model.on('change', this.render, this);
 		},
-		events: {
-			'click [ap="comment_action"]': 'actions',
-			'click [ap="edit_comment"]': 'editCommentForm'
-		},
 		render: function(){
 			var t = _.template(this.template());
 			this.$el.html(t(this.model.toJSON()));
 			this.$el.attr('class', this.className());
 			return this;
-		},
-		actions: function(e){
-			e.preventDefault();
-			var self = this;
-			var q = $.parseJSON($(e.target).attr('ap-query'));
-			AnsPress.showLoading(e.target);
-			AnsPress.ajax({
-				data: q,
-				success: function(data){
-					AnsPress.hideLoading(e.target);
-					if(data.success){
-						if(data.model)self.model.set(data.model);
-						if(data.commentsCount)
-							AnsPress.trigger('commentCount', {count: data.commentsCount, postID: self.postID });
-
-						if(data.action === 'delete_comment')
-							AnsPress.trigger('removeComment', self.model);
-					}
-				}
-			});
-		},
-		editCommentForm: function(e){
-			e.preventDefault();
-			AnsPress.trigger('loadCommentEdit', {post_id: this.postID, e: e.target, comment: this.model});
 		}
 	});
 
@@ -348,15 +320,13 @@
 		initialize: function(options){
 			this.listenTo(this.model, 'change:vote', this.voteUpdate);
 			this.listenTo(this.model, 'change:hideSelect', this.selectToggle);
-			this.listenTo(AnsPress, 'commentCount', this.commentCount);
-			this.listenTo(AnsPress, 'loadCommentEdit', this.loadCommentEdit);
-			this.listenTo(AnsPress, 'formPosted', this.submitComment);
+
+
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
 			'click [ap="actiontoggle"]:not(.loaded)': 'postActions',
 			'click [ap="select_answer"]': 'selectAnswer',
-			'click [ap="new-comment"]': 'loadCommentForm',
 			'click [ap="cancel-comment"]': 'hideCommentForm'
 		},
 		voteClicked: function(e){
@@ -464,88 +434,9 @@
 			else
 				this.$el.find('[ap="select_answer"]').removeClass('hide');
 		},
-		loadCommentForm: function(e, comment){
-			e.preventDefault();
-			var self = this;
-
-			var q = $.parseJSON($(e.target).attr('ap-query'));
-
-			AnsPress.showLoading(e.target);
-			AnsPress.ajax({
-				data: q,
-				success: function(data){
-					AnsPress.hideLoading(e.target);
-					self.commentForm = new AnsPress.views.Modal({
-						title: data.modal_title,
-						content: data.html,
-						size: 'medium',
-					});
-
-					$('#anspress').append(self.commentForm.render().$el);
-				}
-			});
-		},
-		loadCommentEdit: function(args){
-			self = this;
-			if(this.model.id !== args.post_id)
-				return;
-
-			AnsPress.showLoading($(args.e));
-			AnsPress.ajax({
-				data: {post_id: args.post_id, comment: args.comment.id, ap_ajax_action: 'comment_form'},
-				success: function(data){
-					AnsPress.hideLoading($(args.e));
-					self.commentForm = new AnsPress.views.Modal({
-						title: data.modal_title,
-						content: data.html,
-						size: 'medium'
-					});
-
-					$('#anspress').append(self.commentForm.render().$el);
-				}
-			});
-		},
-		submitComment: function(data){
-			if(!('new-comment' !== data.action || 'edit-comment' !== data.action))
-				return;
-
-			if(data.success){
-				if(this.commentForm){
-					this.commentForm.hide();
-					delete this.commentForm;
-				}
-
-				if(this.comments && data.action === 'new-comment')
-					this.comments.add(data.comment);
-
-				if(this.comments && data.action === 'edit-comment'){
-					$('#comment-'+data.comment.ID+' .comment-content').html(data.comment.content);
-					$('#comment-'+data.comment.ID).css('backgroundColor', 'rgba(255, 235, 59, 1)');
-					setTimeout(function(){
-						$('#comment-'+data.comment.ID).removeAttr('style');
-					}, 500)
-				}
-
-				if(data.commentsCount)
-					AnsPress.trigger('commentCount', {count: data.commentsCount, postID: this.model.id });
-			}
-		},
 		hideCommentForm: function(e){
 			e.preventDefault();
 			$(e.target).closest('[comment-form]').remove();
-		},
-		commentCount: function(args){
-			if(this.model.id !== args.postID)
-				return;
-
-			this.$el.find('[ap-commentscount-text]').text(args.count.text);
-
-			if(args.count.unapproved > 0 )
-				this.$el.find('[ap-un-commentscount]').addClass('have');
-			else
-				this.$el.find('[ap-un-commentscount]').removeClass('have');
-
-			this.$el.find('[ap-un-commentscount]').text(args.count.unapproved);
 		}
 	});
 
@@ -567,6 +458,10 @@
 			AnsPress.on('deletePost', this.deletePost, this);
 			AnsPress.on('answerCountUpdated', this.answerCountUpdated, this);
 			AnsPress.on('formPosted', this.formPosted, this);
+			this.listenTo(AnsPress, 'commentApproved', this.commentApproved);
+			this.listenTo(AnsPress, 'commentDeleted', this.commentDeleted);
+			this.listenTo(AnsPress, 'commentCount', this.commentCount);
+			this.listenTo(AnsPress, 'formPosted', this.submitComment);
 		},
 		events: {
 			'click [ap="loadEditor"]': 'loadEditor',
@@ -632,48 +527,60 @@
 		},
 		answerCountUpdated: function(counts){
 			$('[ap="answers_count_t"]').text(counts.text);
-		}
-	});
+		},
+		commentApproved: function(data, elm){
+			$('#comment-' + data.comment_ID ).removeClass('unapproved');
+			$(elm).remove();
+			if(data.commentsCount)
+				AnsPress.trigger('commentCount', {count: data.commentsCount, postID: data.post_ID });
+		},
+		commentDeleted: function(data, elm){
+			$(elm).closest('apcomment').css('background', 'red');
+			setTimeout(function(){
+				$(elm).closest('apcomment').remove();
+			}, 1000);
+			if(data.commentsCount)
+				AnsPress.trigger('commentCount', {count: data.commentsCount, postID: data.post_ID });
+		},
+		commentCount: function(args){
+			var find = $('[apid="'+args.postID+'"]');
+			find.find('[ap-commentscount-text]').text(args.count.text);
+			if(args.count.unapproved > 0 )
+				find.find('[ap-un-commentscount]').addClass('have');
+			else
+				find.find('[ap-un-commentscount]').removeClass('have');
 
-	AnsPress.views.Modal = Backbone.View.extend({
-		id: 'ap-modal',
-		className: 'ap-modal',
-		template: AnsPress.getTemplate('modal'),
-		events: {
-			'click [close-modal]': 'clickHide'
+			find.find('[ap-un-commentscount]').text(args.count.unapproved);
 		},
-		initialize: function(opt){
-			opt.title = opt.title||aplang.loading;
-			this.data = opt;
-		},
-		render: function(){
-			$('html').css('overflow', 'hidden');
-			var t = _.template(this.template());
-			this.$el.html(t(this.data));
-			return this;
-		},
-		clickHide: function(e){
-			e.preventDefault();
-			this.hide();
-		},
-		hide: function(runCb){
-			if(typeof runCb === 'undefined')
-				runCb = true;
-			this.remove();
-			$('html').css('overflow', '');
-			if(this.data.hideCb&&runCb) this.data.hideCb(this); // Callback
-		},
-		setContent: function(html){
-			this.$el.find('.ap-modal-content').html(html);
-		},
-		setTitle: function(title){
-			this.$el.find('.ap-modal-header strong').text(title);
+		submitComment: function(data){
+			if(!('new-comment' !== data.action || 'edit-comment' !== data.action))
+				return;
+
+			if(data.success){
+				AnsPress.hideModal('commentForm');
+
+				if(this.comments && data.action === 'new-comment')
+					this.comments.add(data.comment);
+
+				if(data.action === 'edit-comment'){
+					$('#comment-'+data.comment.ID+' .comment-content').html(data.comment.content);
+					$('#comment-'+data.comment.ID).css('backgroundColor', 'rgba(255, 235, 59, 1)');
+					setTimeout(function(){
+						$('#comment-'+data.comment.ID).removeAttr('style');
+					}, 500)
+				}
+
+				if(data.commentsCount)
+					AnsPress.trigger('commentCount', {count: data.commentsCount, postID: data.comment.post_id });
+			}
 		}
 	});
 
   var AnsPressRouter = Backbone.Router.extend({
 		routes: {
 			'comment/:commentID': 'commentRoute',
+			'comment/edit/:commentID': 'editCommentsRoute',
+			'comments/:postID/new': 'newCommentsRoute',
 			'comments/:postID/page/:paged': 'commentsRoute',
 			'comments/:postID': 'commentsRoute'
 		},
@@ -695,33 +602,65 @@
 				}
 			});
 		},
+		newCommentsRoute: function(postId){
+			self = this;
+			AnsPress.hideModal('commentForm', false);
+			$modal = AnsPress.modal('commentForm', {
+				hideCb: function(){
+					AnsPress.removeHash();
+				}
+			});
+			AnsPress.showLoading($modal.$el.find('.ap-modal-content'));
+			AnsPress.ajax({
+				data: {post_id: postId, ap_ajax_action: 'comment_form'},
+				success: function(data){
+					AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
+					$modal.setTitle(data.modal_title);
+					$modal.setContent(data.html);
+				}
+			});
+		},
 		commentsRoute: function(postId, paged){
 			self = this;
 			paged = paged||1;
 
-			if ( this.commentsModal ) {
-				this.commentsModal.hide(false);
-				delete this.commentsModal;
-			}
+			AnsPress.hideModal('comments', false);
 
-			this.commentsModal = new AnsPress.views.Modal({
+			$modal = AnsPress.modal('comments', {
 				content: '',
 				size: 'medium',
 				hideCb: function(){
-					Backbone.history.navigate('', true);
+					AnsPress.removeHash();
 				}
 			});
-
-			$('#anspress').append(this.commentsModal.render().$el);
-			AnsPress.showLoading(this.commentsModal.$el.find('.ap-modal-content'));
+			AnsPress.showLoading($modal.$el.find('.ap-modal-content'));
 			AnsPress.ajax({
 				data: {post_id: postId, ap_ajax_action: 'load_comments', paged: paged},
 				success: function(data){
 					if(data.success){
-						self.commentsModal.setTitle(data.modal_title);
-						self.commentsModal.setContent(data.html);
-						AnsPress.hideLoading(self.commentsModal.$el.find('.ap-modal-content'));
+						$modal.setTitle(data.modal_title);
+						$modal.setContent(data.html);
+						AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
 					}
+				}
+			});
+		},
+		editCommentsRoute: function(commentID){
+			self = this;
+			AnsPress.hideModal('commentForm', false);
+			AnsPress.modal('commentForm', {
+				hideCb: function(){
+					AnsPress.removeHash();
+				}
+			});
+
+			AnsPress.showLoading(AnsPress.modal('commentForm').$el.find('.ap-modal-content'));
+			AnsPress.ajax({
+				data: {comment: commentID, ap_ajax_action: 'comment_form'},
+				success: function(data){
+					AnsPress.hideLoading(AnsPress.modal('commentForm').$el.find('.ap-modal-content'));
+					AnsPress.modal('commentForm').setTitle(data.modal_title);
+					AnsPress.modal('commentForm').setContent(data.html);
 				}
 			});
 		}

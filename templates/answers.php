@@ -10,7 +10,7 @@
  */
 
 ?>
-<apanswersw>
+<apanswersw style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
 
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
@@ -23,6 +23,7 @@
 					);
 				?>
 			</h3>
+
 			<?php ap_answers_tab( get_the_permalink() ); ?>
 		</div>
 
@@ -39,12 +40,6 @@
 					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
 						<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
 					<?php endwhile ; ?>
-
-				<?php else: ?>
-
-					<p class="ap-no-questions">
-						<?php esc_attr_e( 'There are no answers matching your query or you do not have permission to read them.', 'anspress-question-answer' ); ?>
-					</p>
 
 				<?php endif; ?>
 			</apanswers>

@@ -1132,17 +1132,14 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 	}
 
 	$post_o = ap_get_post( $_post );
+	$post_type = $post_o->post_type;
 
 	if ( ! $post_o ) {
 		return false;
 	}
 
-	if ( false === $post_type ) {
-		$post_type = $post_o->post_type;
-	}
-
 	// If not question or answer then return true.
-	if ( ! in_array( $post_type, array( 'question', 'answer' ), true ) ) {
+	if ( ! in_array( $post_type, [ 'question', 'answer' ], true ) ) {
 		return true;
 	}
 
@@ -1191,6 +1188,7 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 	}
 
 	$option = ap_opt( 'read_' . $post_type . '_per' );
+
 	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_' . $post_type ) ) {
 		return true;
 	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {

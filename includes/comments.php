@@ -124,9 +124,9 @@ class AnsPress_Comment_Hooks {
 	 * @since 3.0.0 Moved from ajax.php to here.
 	 */
 	public static function delete_comment() {
-		$comment_id = (int) ap_sanitize_unslash( 'comment_ID', 'r' );
+		$comment_id = (int) ap_sanitize_unslash( 'comment_id', 'r' );
 
-		if ( ! $comment_id || ! ap_user_can_delete_comment( $comment_id ) || ! ap_verify_nonce( 'delete_comment' ) ) {
+		if ( ! $comment_id || ! ap_user_can_delete_comment( $comment_id ) || ! ap_verify_nonce( 'delete_comment_' . $comment_id ) ) {
 			ap_ajax_json( array(
 				'success' => false,
 				'snackbar' => [ 'message' => __( 'Failed to delete comment', 'anspress-question-answer' ) ],
@@ -154,7 +154,8 @@ class AnsPress_Comment_Hooks {
 			ap_ajax_json( array(
 				'success'       => true,
 				'snackbar'      => [ 'message' => __( 'Comment successfully deleted', 'anspress-question-answer' ) ],
-				'action'        => 'delete_comment',
+				'cb'        => 'commentDeleted',
+				'post_ID'        => $_comment->comment_post_ID,
 				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 			) );
 		}
@@ -185,7 +186,7 @@ class AnsPress_Comment_Hooks {
 	 * Ajax callback to approve comment.
 	 */
 	public static function approve_comment() {
-		$comment_id = (int) ap_sanitize_unslash( 'comment_ID', 'r' );
+		$comment_id = (int) ap_sanitize_unslash( 'comment_id', 'r' );
 
 		if ( ! ap_verify_nonce( 'approve_comment_' . $comment_id ) || ! ap_user_can_approve_comment( ) ) {
 			ap_ajax_json( array(
@@ -201,12 +202,19 @@ class AnsPress_Comment_Hooks {
 		if ( $success ) {
 			$_comment  = get_comment( $comment_id );
 			ap_ajax_json( array(
-				'success'      => true,
-				'action' 		   => 'comment_approved',
-				'model'      	 => [ 'approved' => '1', 'actions' => ap_comment_actions( $_comment ) ],
-				'comment_ID' 	 => $comment_id,
-				'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
-				'snackbar'     => [ 'message' => __( 'Comment approved successfully.', 'anspress-question-answer' ) ],
+				'success'       => true,
+				'cb' 		        => 'commentApproved',
+				'comment_ID' 	  => $comment_id,
+				'post_ID' 	    => $_comment->comment_post_ID,
+				'commentsCount' => array(
+					'text'         => sprintf(
+						_n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ),
+						$count['all']
+					),
+					'number'       => $count['all'],
+					'unapproved'   => $count['awaiting_moderation'],
+				),
+				'snackbar'      => array( 'message' => __( 'Comment approved successfully.', 'anspress-question-answer' ) ),
 			) );
 		}
 	}
@@ -258,11 +266,17 @@ class AnsPress_Comment_Hooks {
 	 * @since 4.1.0
 	 */
 	public static function comment_form() {
-		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 		$comment_id = ap_sanitize_unslash( 'comment', 'r' );
+		$_comment = get_comment( $comment_id );
+
+		if ( $_comment ) {
+			$_post = ap_get_post( $_comment->comment_post_ID );
+		} else {
+			$_post = ap_get_post( ap_sanitize_unslash( 'post_id', 'r' ) );
+		}
 
 		ob_start();
-		ap_comment_form( $post_id, $comment_id );
+		ap_comment_form( $_post->ID, $_comment );
 		$html = ob_get_clean();
 
 		ap_ajax_json( array(
@@ -315,14 +329,7 @@ function ap_comment_btn_html( $_post = null ) {
 	$q = '';
 
 	if ( ap_user_can_comment( $_post->ID ) ) {
-		$q = wp_json_encode( array(
-			'post_id'        => get_the_ID(),
-			'__nonce'        => wp_create_nonce( 'new-comment' ),
-			'ap_ajax_action' => 'comment_form',
-		) );
-
-
-		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment" ap-query="' . esc_js( $q ) . '"' . ( empty( $q ) ? ' ap-msg="' . esc_attr( $msg ) . '"' : '' ) . '>';
+		$output .= '<a href="#/comments/' . $_post->ID . '/new" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment">';
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
 		$output .= '</a>';
 	}
@@ -345,21 +352,32 @@ function ap_comment_actions( $comment ) {
 		$actions[] = array(
 			'label'           => __( 'Edit', 'anspress-question-answer' ),
 			'cb'              => 'edit_comment',
-			'query'           => array(
-				'__nonce'        => wp_create_nonce( 'edit-comment-' . $comment->comment_ID ),
-				'comment_ID'     => $comment->comment_ID,
-				'post_id'        => $comment->comment_post_ID,
-				'ap_ajax_action' => 'edit_comment',
-			),
+			'href' => get_permalink() . '#/comment/edit/' . $comment->comment_ID,
 		);
 	}
 
 	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {
-		$actions[] = [ 'label' => __( 'Delete', 'anspress-question-answer' ), 'query' => [ '__nonce' => wp_create_nonce( 'delete_comment' ), 'comment_ID' => $comment->comment_ID, 'ap_ajax_action' => 'delete_comment' ] ];
+		$actions[] = array(
+			'label' => __( 'Delete', 'anspress-question-answer' ),
+			'href' => '#',
+			'query' => array(
+				'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+				'ap_ajax_action' => 'delete_comment',
+				'comment_id'     => $comment->comment_ID,
+			),
+		);
 	}
 
 	if ( '0' === $comment->comment_approved && ap_user_can_approve_comment( ) ) {
-		$actions[] = [ 'label' => __( 'Approve', 'anspress-question-answer' ), 'query' => [ '__nonce' => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ), 'comment_ID' => $comment->comment_ID, 'ap_ajax_action' => 'approve_comment' ] ];
+		$actions[] = array(
+			'label' => __( 'Approve', 'anspress-question-answer' ),
+			'href' => '#',
+			'query' => array(
+				'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
+				'ap_ajax_action' => 'approve_comment',
+				'comment_id'     => $comment->comment_ID,
+			),
+		);
 	}
 
 	/**
@@ -393,7 +411,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 	global $comment;
 
 	$_post = ap_get_post( $_post );
-	if ( ! ap_user_can_read_comments() ) {
+	if ( ! ap_user_can_read_comments( $_post ) ) {
 		echo '<div class="ap-comment-no-perm">' . __( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
 
 		return;
@@ -464,6 +482,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 function ap_comment_ajax_data( $c, $actions = true ) {
 	return array(
 		'ID'        => $c->comment_ID,
+		'post_id'   => $c->comment_post_ID,
 		'link'      => get_comment_link( $c ),
 		'avatar'    => get_avatar( $c->user_id, 30 ),
 		'user_link' => ap_user_link( $c->user_id ),

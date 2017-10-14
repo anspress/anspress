@@ -11,8 +11,10 @@
  */
 
 $comment = get_comment();
+
+$approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 ?>
-<apcomment class="<?php comment_class(); ?>">
+<apcomment id="comment-<?php echo $comment->comment_ID; ?>" <?php comment_class( $approved ); ?>>
 	<div itemscope itemtype="http://schema.org/Comment">
 		<div class="ap-avatar"><?php echo get_avatar( $comment->user_id, 30 ); ?></div>
 		<div class="comment-inner">
@@ -27,7 +29,10 @@ $comment = get_comment();
 
 				<div class="ap-comment-actions">
 					<?php foreach ( ap_comment_actions( $comment ) as $action ) : ?>
-						<a href="#" ap="<?php echo ! empty( $action['cb'] ) ? $action['cb'] : 'comment_action'; ?>"<?php echo ! empty( $action['title'] ) ? ' title="' . $action['title'] . '"' : ''; ?><?php ! empty( $action['query'] ) ? ' ap-query="' . esc_js( wp_json_encode( $action['query'] ) ) . '"' : '' ?>>
+						<a href="<?php echo esc_url( $action['href'] ); ?>"
+							<?php echo ! empty( $action['title'] ) ? ' title="' . $action['title'] . '"' : ''; ?>
+							<?php echo ! empty ( $action['query'] ) ? ' ap-ajax-btn ap-query="' . esc_js( wp_json_encode( $action['query'] ) ) . '"' : ''; ?>
+							>
 							<?php echo esc_html( $action['label'] ); ?>
 						</a>
 					<?php endforeach; ?>

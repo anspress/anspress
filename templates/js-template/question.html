@@ -38,27 +38,3 @@
     {{label}}
   <# } #>
 #END BLOCK action #
-
-#START BLOCK modal #
-<div class="ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>">
-  <div class="ap-modal-header">
-    <# if(typeof title !== 'undefined' ){ #>
-      <strong>{{title}}</strong>
-    <# } #>
-    <a href="#" close-modal class="ap-modal-close"><i class="apicon-x"></i></a>
-  </div>
-  <div class="ap-modal-content">
-    <# if(typeof content !== 'undefined'){ #>
-      {{{content}}}
-    <# } #>
-  </div>
-  <div class="ap-modal-footer">
-    <# if(typeof buttons !== 'undefined'){ #>
-      <# _.each(buttons, function(btn){ #>
-        <a class="ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>" href="#" <# if(typeof btn.cb !== 'undefined') { #>ap="{{btn.cb}}" ap-query="{{btn.query}}"<# } #>>{{btn.label}}</a>
-      <# }); #>
-    <# } #>
-  </div>
-</div>
-<div class="ap-modal-backdrop"></div>
-#END BLOCK modal #
