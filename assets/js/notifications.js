@@ -8,8 +8,6 @@
  */
 
 (function($) {
-	AnsPress.loadTemplate('notifications');
-
 	AnsPress.models.Notification = Backbone.Model.extend({
 		idAttribute: 'ID',
 		defaults:{
@@ -37,19 +35,19 @@
 		id: function(){
 			return 'noti-' + this.model.id;
 		},
-		template: AnsPress.getTemplate('notification'),
+		template: "<div class=\"noti-item clearfix {{seen==1 ? 'seen' : 'unseen'}}\"><# if(ref_type === 'reputation') { #>  <div class=\"ap-noti-rep<# if(points < 1) { #> negative<# } #>\">{{points}}</div><# } else if(hide_actor) { #><div class=\"ap-noti-icon {{icon}}\"></div><# } else { #><div class=\"ap-noti-avatar\">{{{avatar}}}</div><# } #><a class=\"ap-noti-inner\" href=\"{{permalink}}\"><# if(ref_type !== 'reputation'){ #><strong class=\"ap-not-actor\">{{actor}}</strong><# } #>{{verb_label}}<strong class=\"ap-not-ref\">{{ref_title}}</strong><time class=\"ap-noti-date\">{{date}}</time></a></div>",
 		initialize: function(options){
 			this.model = options.model;
 		},
 		render: function(){
-			var t = _.template(this.template());
+			var t = _.template(this.template);
 			this.$el.html(t(this.model.toJSON()));
 			return this;
 		}
 	});
 
 	AnsPress.views.Notifications = Backbone.View.extend({
-		template: AnsPress.getTemplate('notifications'),
+		template: "<button class=\"ap-droptogg apicon-x\"></button><div class=\"ap-noti-head\">{{aplang.notifications}}<# if(total > 0) { #><i class=\"ap-noti-unseen\">{{total}}</i><a href=\"#\" class=\"ap-btn ap-btn-markall-read ap-btn-small\" ap-ajax-btn ap-query=\"{{JSON.stringify(mark_args)}}\">{{aplang.mark_all_seen}}</a><# } #></div><div class=\"scroll-wrap\"></div>",
 		initialize: function(options){
 			this.model = options.model;
 			this.mark_args = options.mark_args;
@@ -65,7 +63,7 @@
 		},
 		render: function(){
 			var self = this;
-			var t = _.template(this.template());
+			var t = _.template(this.template);
 			this.$el.html(t({'mark_args' : this.mark_args, 'total': this.total}));
 			if(this.model.length > 0){
 				this.model.each(function(notification){
