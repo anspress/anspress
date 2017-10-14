@@ -96,8 +96,23 @@ class AnsPress_Rewrite {
 
 		$rule = key( $rules );
 		$rewrite = reset( $rules );
-
 		$rule = substr( $rule, 0, -3 );
+
+		$base_page_id = ap_opt( 'base_page' );
+		$slug = ap_base_page_slug() . '/';
+		$lang_rule = '';
+		$lang_rewrite = '';
+
+		// Support polylang permalink.
+		if ( function_exists( 'pll_languages_list' ) ) {
+			if ( ! empty( pll_languages_list() ) ) {
+				$lang_rule = '(' . implode( '|', pll_languages_list() ) . ')/';
+				$lang_rewrite = '&lang=$matches[#]';
+			}
+		}
+
+		$slug = $lang_rule . $slug;
+		$base_page_id = $base_page_id . $lang_rewrite;
 
 		$answer_rewrite = str_replace( 'post_type=question', 'post_type=answer', $rewrite );
 		$answer_rewrite = str_replace( '&question=', '&question_slug=', $answer_rewrite );
@@ -111,6 +126,7 @@ class AnsPress_Rewrite {
 			$rule . '/(feed|rdf|rss|rss2|atom)/?$'                 => $rewrite . '&feed=$matches[#]',
 			$rule . '/embed/?$'                                    => $rewrite . '&embed=true',
 			$rule . '/?$'                                          => $rewrite,
+			$slug . '([^/]+)/?'                                    => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]',
 		);
 
 		/**
@@ -119,7 +135,7 @@ class AnsPress_Rewrite {
 		 * @param array $all_rules Rewrite rules.
 		 * @since 4.1.0
 		 */
-		$all_rules = apply_filters( 'ap_rewrites', $all_rules );
+		$all_rules = apply_filters( 'ap_rewrites', $all_rules, $slug, $base_page_id );
 
 		$ap_rules = [];
 

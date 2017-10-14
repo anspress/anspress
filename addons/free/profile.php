@@ -41,7 +41,7 @@ class AnsPress_Profile_Hooks {
 		]);
 		anspress()->add_action( 'ap_form_addon-free_profile', __CLASS__, 'options' );
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
-		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
+		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
@@ -104,12 +104,8 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base = $slug . ap_get_page_slug( 'user' );
-
 		self::user_pages();
-
 		$new_rules = [];
-
-
 		foreach ( (array) anspress()->user_pages as $page ) {
 			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/page/?([0-9]{1,})/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'] . '&paged=$matches[#]';
 			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'];
