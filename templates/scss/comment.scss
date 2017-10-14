@@ -114,5 +114,11 @@
 		.ap-pagination{
 			margin-bottom: 0;
 		}
+		&.single-comment{
+			.comment-content{
+				font-size: 18px;
+				margin-top: 10px;
+			}
+		}
 	}
 }

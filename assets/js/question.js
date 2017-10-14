@@ -191,124 +191,6 @@
 		}
 	});
 
-	AnsPress.models.Comment = Backbone.Model.extend({
-		idAttribute: 'ID',
-		defaults:{
-			ID: '',
-			userID: '',
-			avatar: '',
-			content: '',
-			actions: ''
-		}
-	});
-
-	AnsPress.collections.Comments = Backbone.Collection.extend({
-		model: AnsPress.models.Comment
-	});
-
-	AnsPress.views.Comment = Backbone.View.extend({
-		tagName: 'apcomment',
-		id: function(){
-			return 'comment-' + this.model.id;
-		},
-		className: function(){
-			var klass = this.model.get('class');
-			if(this.model.get('approved')==='0')
-				klass += ' unapproved';
-			return klass
-		},
-		template: AnsPress.getTemplate('comment'),
-		initialize: function(options){
-			this.model = options.model;
-			this.postID = options.postID;
-			this.model.on('change', this.render, this);
-		},
-		render: function(){
-			var t = _.template(this.template());
-			this.$el.html(t(this.model.toJSON()));
-			this.$el.attr('class', this.className());
-			return this;
-		}
-	});
-
-	AnsPress.views.Comments = Backbone.View.extend({
-		initialize: function(options){
-			this.model = options.model;
-			this.postID = options.postID;
-			this.collapsed = options.collapsed;
-			this.collapsed_msg = options.collapsed_msg;
-			this.offset = options.offset;
-			this.query = options.query;
-			AnsPress.on('removeComment', this.removeComment, this);
-			this.listenTo(this.model, 'remove', this.commentRemoved);
-			this.listenTo(this.model, 'add', this.newComment);
-		},
-		events: {
-			'click .ap-comments-more': 'loadMore'
-		},
-		renderItem: function(comment){
-			this.$el.parent().addClass('have-comments');
-			var view = new AnsPress.views.Comment({ model: comment, postID: this.postID });
-			this.$el.append(view.render().$el);
-			return view;
-		},
-		appendLoadMore: function(){
-			this.$el.find('.ap-comments-more').remove();
-			if(this.collapsed){
-				this.$el.append('<a href="#" class="ap-comments-more">'+this.collapsed_msg+'</a>');
-			}
-		},
-		render: function(){
-			var self = this;
-			if(this.model.length > 0){
-				this.model.each(function(comment){
-					self.renderItem(comment);
-				});
-
-				this.appendLoadMore();
-			}
-
-			return this;
-		},
-		removeComment: function(comment){
-			this.model.remove(comment);
-		},
-		commentRemoved: function(comment){
-			if(this.model.size() === 0)
-				this.$el.parent().removeClass('have-comments');
-			$('#comment-'+comment.id).slideUp(400, function(){
-				$(this).remove();
-			});
-		},
-		newComment: function(comment){
-			var view = this.renderItem(comment);
-			this.appendLoadMore();
-			view.$el.hide().slideDown(400);
-
-			this.$el.apScrollTo(null, true);
-		},
-		loadMore: function(e){
-			e.preventDefault();
-			var self = this;
-			AnsPress.showLoading(e.target);
-			this.query.offset = this.offset;
-			AnsPress.ajax({
-				data: this.query,
-				success: function(data){
-					AnsPress.hideLoading(e.target);
-					self.collapsed = data.collapsed;
-					self.collapsed_msg = data.collapsed_msg;
-					self.offset = data.offset;
-
-					if(data.comments.length>0){
-						self.model.add(data.comments);
-					}
-
-				}
-			});
-		}
-	});
-
 	AnsPress.views.Post = Backbone.View.extend({
 		idAttribute: 'ID',
 		templateId: 'answer',
@@ -320,14 +202,11 @@
 		initialize: function(options){
 			this.listenTo(this.model, 'change:vote', this.voteUpdate);
 			this.listenTo(this.model, 'change:hideSelect', this.selectToggle);
-
-
 		},
 		events: {
 			'click [ap-vote] > a': 'voteClicked',
 			'click [ap="actiontoggle"]:not(.loaded)': 'postActions',
-			'click [ap="select_answer"]': 'selectAnswer',
-			'click [ap="cancel-comment"]': 'hideCommentForm'
+			'click [ap="select_answer"]': 'selectAnswer'
 		},
 		voteClicked: function(e){
 			e.preventDefault();
@@ -433,10 +312,6 @@
 				this.$el.find('[ap="select_answer"]').addClass('hide');
 			else
 				this.$el.find('[ap="select_answer"]').removeClass('hide');
-		},
-		hideCommentForm: function(e){
-			e.preventDefault();
-			$(e.target).closest('[comment-form]').remove();
 		}
 	});
 
@@ -579,25 +454,32 @@
   var AnsPressRouter = Backbone.Router.extend({
 		routes: {
 			'comment/:commentID': 'commentRoute',
-			'comment/edit/:commentID': 'editCommentsRoute',
+			'comment/:commentID/edit': 'editCommentsRoute',
 			'comments/:postID/new': 'newCommentsRoute',
 			'comments/:postID/page/:paged': 'commentsRoute',
+			'comments/:postID': 'commentsRoute',
 			'comments/:postID': 'commentsRoute'
 		},
-		commentRoute: function (query, page) {
+		commentRoute: function (commentID) {
+			self = this;
+
+			AnsPress.hideModal('comment', false);
+			$modal = AnsPress.modal('comment', {
+				content: '',
+				size: 'medium',
+				hideCb: function(){
+					AnsPress.removeHash();
+				}
+			});
+			$modal.$el.addClass('single-comment');
+			AnsPress.showLoading($modal.$el.find('.ap-modal-content'));
 			AnsPress.ajax({
-				data: ajaxurl + '?action=ap_ajax&ap_ajax_action=get_comment&comment_id='+query,
+				data: {comment_id: commentID, ap_ajax_action: 'load_comments'},
 				success: function(data){
 					if(data.success){
-						var commentsModel = new AnsPress.collections.Comments(data.comment);
-						var modalView = new AnsPress.views.Modal({
-							content: '<apcomments class="have-comments"><div class="ap-comments"></div></apcomments>',
-							size: 'medium'
-						});
-						$('body').append(modalView.render().$el);
-						var commentsView = new AnsPress.views.Comments({model: commentsModel, el: modalView.$el.find('.ap-comments')});
-
-						modalView.$el.find('.ap-modal-content').html(commentsView.render().$el);
+						$modal.setTitle(data.modal_title);
+						$modal.setContent(data.html);
+						AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
 					}
 				}
 			});

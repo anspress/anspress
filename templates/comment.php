@@ -10,13 +10,16 @@
  * @since      4.1.0
  */
 
+global $avatar_size;
+
+$avatar_size = ! empty( $avatar_size ) ? $avatar_size : 30;
 $comment = get_comment();
 
 $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 ?>
 <apcomment id="comment-<?php echo $comment->comment_ID; ?>" <?php comment_class( $approved ); ?>>
 	<div itemscope itemtype="http://schema.org/Comment">
-		<div class="ap-avatar"><?php echo get_avatar( $comment->user_id, 30 ); ?></div>
+		<div class="ap-avatar"><?php echo get_avatar( $comment->user_id, $avatar_size ); ?></div>
 		<div class="comment-inner">
 			<div class="comment-header">
 				<a href="<?php echo esc_url( ap_user_link( $comment->user_id ) ); ?>" class="ap-comment-author" itemprop="creator" itemscope itemtype="http://schema.org/Person">

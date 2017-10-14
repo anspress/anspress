@@ -81,17 +81,33 @@ class AnsPress_Comment_Hooks {
 	 * @since 3.0.0 Moved from AnsPress_Ajax class.
 	 */
 	public static function load_comments() {
-		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
-		$paged = max( 1, ap_isset_post_value( 'paged', 1 ) );
+		global $avatar_size;
+		$paged = 1;
+		$comment_id = ap_sanitize_unslash( 'comment_id', 'r' );
+
+		if ( ! empty( $comment_id ) ) {
+			$_comment = get_comment( $comment_id );
+			$post_id = $_comment->comment_post_ID;
+		} else {
+			$post_id = ap_sanitize_unslash( 'post_id', 'r' );
+			$paged = max( 1, ap_isset_post_value( 'paged', 1 ) );
+		}
 
 		$_post = ap_get_post( $post_id );
 
-		ob_start();
-		ap_the_comments( $post_id, array(
+		$args = array(
 			'number'    => ap_opt( 'comment_number' ),
 			'show_more' => false,
 			'paged'     => $paged,
-		) );
+		);
+
+		if ( ! empty( $_comment ) ) {
+			$avatar_size = 60;
+			$args['comment__in'] = $_comment->comment_ID;
+		}
+
+		ob_start();
+		ap_the_comments( $post_id, $args );
 		$html = ob_get_clean();
 
 		$type = 'question' === $_post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
@@ -352,7 +368,7 @@ function ap_comment_actions( $comment ) {
 		$actions[] = array(
 			'label'           => __( 'Edit', 'anspress-question-answer' ),
 			'cb'              => 'edit_comment',
-			'href' => get_permalink() . '#/comment/edit/' . $comment->comment_ID,
+			'href' => get_permalink() . '#/comment/' . $comment->comment_ID . '/edit',
 		);
 	}
 
@@ -404,8 +420,12 @@ function ap_comment_delete_locked( $comment_ID ) {
 /**
  * Output comment wrapper.
  *
+ * @param mixed $_post Post ID or object.
+ * @param array $args  Arguments.
+ *
  * @return void
  * @since 2.1
+ * @since 4.1.0 Added two args `$_post` and `$args` and using WP_Comment_Query.
  */
 function ap_the_comments( $_post = null, $args = [] ) {
 	global $comment;
