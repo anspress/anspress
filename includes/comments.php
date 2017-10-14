@@ -33,48 +33,6 @@ class AnsPress_Comment_Hooks {
 	}
 
 	/**
-	 * Comment data.
-	 *
-	 * @param integer $post_id Post ID.
-	 * @param boolean $editing Editing mode.
-	 * @param integer $offset  Offset.
-	 * @return array
-	 */
-	public static function comments_data( $post_id, $editing = false, $offset = 0 ) {
-		$user_id = get_current_user_id();
-
-		$args = array(
-			'post_id' => $post_id,
-			'order'   => 'ASC',
-			'status'  => 'approve',
-			'number' 	=> ap_opt( 'comment_number' ),
-			'offset' 	=> $offset,
-		);
-
-		// Always include current user comments.
-		if ( ! empty( $user_id ) && $user_id > 0 ) {
-			$args['include_unapproved'] = [ $user_id ];
-		}
-
-		if ( ap_user_can_approve_comment() ) {
-			$args['status'] = 'all';
-		}
-
-		$comments = get_comments( $args );
-
-		$comments_arr = array();
-		foreach ( (array) $comments as $c ) {
-			$comments_arr[] = ap_comment_ajax_data( $c );
-		}
-
-		if ( ! empty( $comments_arr ) ) {
-			return $comments_arr;
-		}
-
-		return [];
-	}
-
-	/**
 	 * Ajax callback for loading comments.
 	 *
 	 * @since 2.0.1
@@ -251,28 +209,6 @@ class AnsPress_Comment_Hooks {
 
 		$permalink = get_permalink( $_post );
 		return $permalink . '#/comment/' . $comment->comment_ID;
-	}
-
-	/**
-	 * Ajax callback to get a single comment.
-	 */
-	public static function get_comment() {
-		$comment_id = ap_sanitize_unslash( 'comment_id', 'r' );
-		$c = get_comment( $comment_id );
-
-		// Check if user can read post.
-		if ( ! ap_user_can_read_post( $c->comment_post_ID ) ) {
-			wp_die();
-		}
-
-		if ( '1' !== $c->comment_approved && ! ( ap_user_can_delete_comment( $c->comment_ID ) || ap_user_can_approve_comment( $c->comment_ID ) ) ) {
-			wp_die();
-		}
-
-		ap_ajax_json( array(
-			'success' => true,
-			'comment' => ap_comment_ajax_data( $c, false ),
-		) );
 	}
 
 	/**

@@ -33,7 +33,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks','edit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_get_comment', 'AnsPress_Comment_Hooks', 'get_comment' );
 		anspress()->add_action( 'ap_ajax_comment_form', 'AnsPress_Comment_Hooks', 'comment_form' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 

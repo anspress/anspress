@@ -7,8 +7,6 @@
  */
 
 (function($) {
-	AnsPress.loadTemplate('question');
-
 	AnsPress.models.Action = Backbone.Model.extend({
 		defaults: {
 			cb: '',
@@ -41,7 +39,7 @@
 			return klass;
 		},
 		tagName: 'li',
-		template: AnsPress.getTemplate('action'),
+		template: "<# if(!header){ #><a href=\"{{href}}\" title=\"{{title}}\">{{{prefix}}}{{label}}<# if(count){ #><b>{{count}}</b><# } #></a><# } else { #>{{label}}<# } #>",
 		initialize: function(options){
 			this.model = options.model;
 			this.postID = options.postID;
@@ -52,7 +50,7 @@
 			'click a': 'triggerAction'
 		},
 		render: function(){
-			var t = _.template(this.template());
+			var t = _.template(this.template);
 			this.$el.html(t(this.model.toJSON()));
 			this.$el.attr('class', this.className());
 			return this;
@@ -458,7 +456,6 @@
 			'comments/:postID/new': 'newCommentsRoute',
 			'comments/:postID/page/:paged': 'commentsRoute',
 			'comments/:postID': 'commentsRoute',
-			'comments/:postID': 'commentsRoute'
 		},
 		commentRoute: function (commentID) {
 			self = this;
