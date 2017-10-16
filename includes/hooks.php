@@ -575,13 +575,26 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Base page ID.
 	 * @param	object	$post		Post object.
+	 * @since 4.1.0   Update respective page slug in options.
 	 */
 	public static function base_page_update( $post_id, $post ) {
 		if ( wp_is_post_revision( $post ) ) {
 			return;
 		}
 
-		if ( ap_opt( 'base_page' ) == $post_id || ap_opt( 'ask_page' ) == $post_id ) {
+		$main_pages = array_keys( ap_main_pages() );
+		$page_ids = [];
+
+		foreach ( $main_pages as $slug ) {
+			$page_ids[ ap_opt( $slug ) ] = $slug;
+		}
+
+		if ( in_array( $post_id, array_keys( $page_ids ) ) ) {
+			$current_opt = $page_ids[ $post_id ];
+
+			ap_opt( $current_opt, $post_id );
+			ap_opt( $current_opt . '_id', $post->post_name );
+
 			ap_opt( 'ap_flush', 'true' );
 		}
 	}

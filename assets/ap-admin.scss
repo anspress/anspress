@@ -1470,3 +1470,25 @@ span.ap-category-icon {
     color: #999;
   }
 }
+.ap-notice.notice{
+  p{
+    font-size: 16px;
+  }
+  &.notice-error{
+    background: #EF5350;
+    color: #ffd4d4;
+    a{
+      color: #fff;
+      border-bottom: solid 1px rgba(255, 255, 255, 0.42);
+    }
+    &.apicon-anspress-icon:before{
+      color: #fff;
+    }
+  }
+  &.apicon-anspress-icon:before {
+    float: left;
+    padding: 10px 10px 10px 0;
+    font-size: 25px;
+    color: $main-color;
+  }
+}

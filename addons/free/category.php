@@ -56,7 +56,7 @@ class AnsPress_Category {
 		anspress()->add_action( 'question_category_edit_form_fields', __CLASS__, 'image_field_edit' );
 		anspress()->add_action( 'create_question_category', __CLASS__, 'save_image_field' );
 		anspress()->add_action( 'edited_question_category', __CLASS__, 'save_image_field' );
-		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
+		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_action( 'ap_hover_card_cat', __CLASS__, 'hover_card_category' );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_question_subscribers_action_id', __CLASS__, 'subscribers_action_id' );
@@ -673,11 +673,11 @@ class AnsPress_Category {
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
+		$base_slug = get_page_uri( ap_opt( 'categories_page' ) );
+
 		$cat_rules = array(
-			$slug . ap_get_categories_slug() . '/page/?([0-9]{1,})/?$' => $base . 'categories&paged=$matches[#]',
-			$slug . ap_get_category_slug() . '/([^/]+)/page/?([0-9]{1,})/?$' => $base . 'category&q_cat=$matches[#]&paged=$matches[#]',
-			$slug . ap_get_category_slug() . '/([^/]+)/?' => $base . 'category&q_cat=$matches[#]',
-			$slug . ap_get_categories_slug() . '/?' => $base . 'categories',
+			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&ap_paged=$matches[#]',
+			$base_slug . '/([^/]+)/?$' => 'index.php?question_category=$matches[#]',
 		);
 
 		return $cat_rules + $rules;

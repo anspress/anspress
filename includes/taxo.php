@@ -274,9 +274,10 @@ function ap_category_icon( $term_id, $attributes = '' ) {
  * Slug for categories page.
  *
  * @return string
+ * @since 4.1.0 Use new option categories_page_id.
  */
 function ap_get_categories_slug() {
-	return apply_filters( 'ap_categories_slug', ap_get_page_slug( 'categories' ) );
+	return ap_opt( 'categories_page_id' );
 }
 
 /**

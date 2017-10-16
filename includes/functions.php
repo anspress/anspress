@@ -869,16 +869,7 @@ function ap_replace_square_bracket( $contents ) {
 function ap_create_base_page() {
 	$opt = ap_opt();
 
-	$pages = array(
-		'base_page' => array(
-			'post_title' => __( 'Questions', 'anspress-question-answer' ),
-			'post_name'  => 'questions',
-		),
-		'ask_page' => array(
-			'post_title' => __( 'Ask a Question', 'anspress-question-answer' ),
-			'post_name'  => 'ask',
-		),
-	);
+	$pages = ap_main_pages();
 
 	foreach ( $pages as $slug => $page ) {
 		// Check if page already exists.
@@ -892,6 +883,10 @@ function ap_create_base_page() {
 				'comment_status' => 'closed',
 			) );
 
+			if ( 'base_page' !== $slug ) {
+				$args['post_parent'] = ap_opt( 'base_page' );
+			}
+
 			// Now create post.
 			$new_page_id = wp_insert_post( $args );
 
@@ -899,10 +894,7 @@ function ap_create_base_page() {
 				$page = get_page( $new_page_id );
 
 				ap_opt( $slug, $page->ID );
-
-				if ( 'base_page' === $slug ) {
-					ap_opt( 'base_page_id', $page->post_name );
-				}
+				ap_opt( $slug . '_id', $page->post_name );
 			}
 		}
 	} // End foreach().
@@ -2051,6 +2043,12 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 	$form->generate( $args );
 }
 
+/**
+ * Include tinymce assets.
+ *
+ * @return void
+ * @since 4.1.0
+ */
 function ap_ajax_tinymce_assets() {
 	if ( ! class_exists( '_WP_Editors' ) ) {
 		require( ABSPATH . WPINC . '/class-wp-editor.php' );
@@ -2064,4 +2062,47 @@ function ap_ajax_tinymce_assets() {
 
 	echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
 	\_WP_Editors::editor_js();
+}
+
+/**
+ * All pages required of AnsPress.
+ *
+ * @return array
+ * @since 4.1.0
+ */
+function ap_main_pages() {
+	$pages = array(
+		'base_page' => array(
+			'label'      => __( 'Archives page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display question archive (list). Sometimes this page is used for displaying other subpages of AnsPress.<br/>This page is also referred as <b>Base Page</b> in AnsPress documentations and support forum.', 'anspress-question-answer' ),
+			'post_title' => __( 'Questions', 'anspress-question-answer' ),
+			'post_name'  => 'questions',
+		),
+		'ask_page' => array(
+			'label'      => __( 'Ask page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display ask form.', 'anspress-question-answer' ),
+			'post_title' => __( 'Ask a question', 'anspress-question-answer' ),
+			'post_name'  => 'ask',
+		),
+		'user_page' => array(
+			'label'      => __( 'User page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display user profile.', 'anspress-question-answer' ),
+			'post_title' => __( 'Profile', 'anspress-question-answer' ),
+			'post_name'  => 'profile',
+		),
+		'categories_page' => array(
+			'label'      => __( 'Categories page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display question categories. NOTE: Categories addon must be enabled to render this page.', 'anspress-question-answer' ),
+			'post_title' => __( 'Categories', 'anspress-question-answer' ),
+			'post_name'  => 'categories',
+		),
+		'tags_page' => array(
+			'label'      => __( 'Tags page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display question tags. NOTE: Tags addon must be enabled to render this page.', 'anspress-question-answer' ),
+			'post_title' => __( 'Tags', 'anspress-question-answer' ),
+			'post_name'  => 'tags',
+		),
+	);
+
+	return apply_filters( 'ap_main_pages', $pages );
 }

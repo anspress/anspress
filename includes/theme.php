@@ -581,13 +581,17 @@ function ap_get_template_part( $file, $args = false ) {
  */
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page' );
+	$main_pages = array_keys( ap_main_pages() );
+	$page_ids = [];
+
+	foreach ( $main_pages as $page_slug ) {
+		$page_ids[ ap_opt( $page_slug ) ] = $page_slug;
+	}
 
 	if ( is_question() || is_singular( 'question' ) ) {
 		$query_var = 'question';
-	} elseif ( get_the_ID() === ap_opt( 'user_page' ) ) {
-		$query_var = 'user';
-	} elseif ( get_the_ID() === ap_opt( 'ask_page' ) ) {
-		$query_var = 'ask';
+	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
+		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
 	} elseif ( '' === $query_var && ! is_question() ) {
 		$query_var = 'base';
 	}
@@ -909,19 +913,14 @@ function ap_menu_obejct() {
 			$url       = home_url( '/' );
 			$type      = 'anspress-links';
 
-			if ( 'ask' === $k ) {
-				$ask_page  = get_post( ap_opt( 'ask_page' ) );
-				$object_id = ap_opt( 'ask_page' );
+			$main_pages = array_keys( ap_main_pages() );
+
+			if ( in_array( $k . '_page', $main_pages, true ) ) {
+				$post  = get_post( ap_opt( $k . '_page' ) );
+				$object_id = ap_opt( $k . '_page' );
 				$object    = 'page';
-				$url       = get_permalink( $ask_page );
-				$title     = $ask_page->post_title;
-				$type      = 'post_type';
-			} elseif ( 'base' === $k ) {
-				$base_page  = get_post( ap_opt( 'base_page' ) );
-				$object_id = ap_opt( 'base_page' );
-				$object    = 'page';
-				$url       = get_permalink( $base_page );
-				$title     = $base_page->post_title;
+				$url       = get_permalink( $post );
+				$title     = $post->post_title;
 				$type      = 'post_type';
 			}
 

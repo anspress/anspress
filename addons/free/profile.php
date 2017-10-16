@@ -46,6 +46,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_user_link', __CLASS__, 'ap_user_link', 10, 3 );
+		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 	}
 
 	/**
@@ -56,6 +57,18 @@ class AnsPress_Profile_Hooks {
 
 		$form = array(
 			'fields' => array(
+				'user_page' => array(
+					'label'   => __( 'User page', 'anspress-question-answer' ),
+					'desc'    => __( 'Page used to display user profile.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => 'posts',
+					'posts_args' => array(
+						'post_type' => 'page',
+						'showposts' => -1,
+					),
+					'value' => $opt['user_page'],
+					'sanitize' => 'absint',
+				),
 				'user_page_title_questions' => array(
 					'label' => __( 'Questions page title', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom title for user profile questions page', 'anspress-question-answer' ),
@@ -103,15 +116,19 @@ class AnsPress_Profile_Hooks {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		$base = $slug . ap_get_page_slug( 'user' );
+		$base = ap_get_page_slug( 'user' );
 		self::user_pages();
 		$new_rules = [];
-		foreach ( (array) anspress()->user_pages as $page ) {
-			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/page/?([0-9]{1,})/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'] . '&paged=$matches[#]';
-			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'];
-		}
+		// foreach ( (array) anspress()->user_pages as $page ) {
+		// 	$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/page/?([0-9]{1,})/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'] . '&paged=$matches[#]';
+		// 	$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'];
+		// }
 
-		$new_rules[ $base . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]';
+		// $new_rules[ $base . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]';
+
+		$new_rules = array(
+			$base . '/([^/]+)/?' => 'index.php?author_name=$matches[#]',
+		);
 
 		return $new_rules + $rules;
 	}
@@ -377,6 +394,20 @@ class AnsPress_Profile_Hooks {
 		));
 	}
 
+	/**
+	 * Override current page of AnsPress.
+	 *
+	 * @param string $query_var Current page name.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function ap_current_page( $query_var ) {
+		if ( get_the_ID() === ap_opt( 'user_page' ) ) {
+			$query_var = 'user';
+		}
+
+		return $query_var;
+	}
 }
 
 // Init addon.

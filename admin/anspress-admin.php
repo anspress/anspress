@@ -635,7 +635,6 @@ class AnsPress_Admin {
 	 * @return array
 	 */
 	public static function modify_answer_title( $data ) {
-
 		if ( 'answer' === $data['post_type'] ) {
 			$data['post_title'] = get_the_title( $data['post_parent'] );
 		}
@@ -695,16 +694,22 @@ class AnsPress_Admin {
 			],
 			'missing_pages' => [
 				'type'    => 'error',
-				'message' => __( 'AnsPress pages does not exists.', 'anspress-question-answer' ),
-				'button'  => ' <a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">' . __( 'Set automatically', 'anspress-question-answer' ) . '</a> ' . __( 'Or', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Set existing page as base page', 'anspress-question-answer' ) . '</a>',
+				'message' => __( 'One or more AnsPress page(s) does not exists.', 'anspress-question-answer' ),
+				'button'  => ' <a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">' . __( 'Set automatically', 'anspress-question-answer' ) . '</a> ' . __( 'Or', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Set set by yourself', 'anspress-question-answer' ) . '</a>',
 				'show'    => ( ! self::check_pages_exists() ),
 			],
 		);
 
 		foreach ( $messages as $msg ) {
 			if ( $msg['show'] ) {
-				$class = 'notice notice-' . $msg['type'];
-				printf( '<div class="%1$s"><p>%2$s%3$s</p></div>', esc_attr( $class ), esc_html( $msg['message'] ), $msg['button'] );
+				$class = 'ap-notice notice notice-' . $msg['type'];
+				printf(
+					'<div class="%1$s %4$s"><p>%2$s%3$s</p></div>',
+					esc_attr( $class ),
+					esc_html( $msg['message'] ),
+					$msg['button'],
+					'apicon-anspress-icon'
+				);
 			}
 		}
 	}
@@ -718,9 +723,9 @@ class AnsPress_Admin {
 	private static function check_pages_exists() {
 		$cache = get_transient( 'ap_pages_check' );
 
-		if ( false === $cache ) {
+		//if ( false === $cache ) {
 			$opt = ap_opt();
-			$pages_slug = [ 'base_page', 'ask_page' ];
+			$pages_slug = array_keys( ap_main_pages() );
 
 			$pages_in = [];
 			foreach ( $pages_slug as $slug ) {
@@ -741,7 +746,7 @@ class AnsPress_Admin {
 				set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 				$cache = '1';
 			}
-		}
+		//}
 
 		return '0' === $cache ? false : true;
 	}
@@ -780,6 +785,7 @@ class AnsPress_Admin {
 	 */
 	public static function register_options() {
 		add_filter( 'ap_form_options_general_pages', [ __CLASS__, 'options_general_pages' ] );
+		add_filter( 'ap_form_options_general_permalinks', [ __CLASS__, 'options_general_permalinks' ] );
 		add_filter( 'ap_form_options_general_layout', [ __CLASS__, 'options_general_layout' ] );
 		add_filter( 'ap_form_options_postscomments_posts', [ __CLASS__, 'options_postscomments_posts' ] );
 		add_filter( 'ap_form_options_uac', [ __CLASS__, 'options_uac' ] );
@@ -794,7 +800,7 @@ class AnsPress_Admin {
 	public static function options_general_pages() {
 		$opt = ap_opt();
 		$form = array(
-			'submit_label' => __( 'Save Options', 'anspress-question-answer' ),
+			'submit_label' => __( 'Save Pages', 'anspress-question-answer' ),
 			'fields' => array(
 				'author_credits' => array(
 					'label'    => __( 'Hide author credits', 'anspress-question-answer' ),
@@ -803,30 +809,45 @@ class AnsPress_Admin {
 					'order'    => 0,
 					'value'    => $opt['author_credits'],
 				),
-				'base_page' => array(
-					'label'   => __( 'Archives page', 'anspress-question-answer' ),
-					'desc'    => __( 'Page used to display question archive (list). Sometimes this page is used for displaying other subpages of AnsPress.<br/>This page is also referred as <b>Base Page</b> in AnsPress documentations and support forum.', 'anspress-question-answer' ),
-					'type'    => 'select',
-					'options' => 'posts',
-					'posts_args' => array(
-						'post_type' => 'page',
-						'showposts' => -1,
-					),
-					'value' => $opt['base_page'],
-					'sanitize' => 'absint',
+			),
+		);
+
+		foreach ( ap_main_pages() as $slug => $args ) {
+			$form['fields'][ $slug ] = array(
+				'label'   => $args['label'],
+				'desc'    => $args['desc'],
+				'type'    => 'select',
+				'options' => 'posts',
+				'posts_args' => array(
+					'post_type' => 'page',
+					'showposts' => -1,
 				),
-				'ask_page' => array(
-					'label'   => __( 'Ask page', 'anspress-question-answer' ),
-					'desc'    => __( 'Page used to display ask form.', 'anspress-question-answer' ),
-					'type'    => 'select',
-					'options' => 'posts',
-					'posts_args' => array(
-						'post_type' => 'page',
-						'showposts' => -1,
-					),
-					'value' => $opt['ask_page'],
-					'sanitize' => 'absint',
-				),
+				'value'    => $opt[ $slug ],
+				'sanitize' => 'absint',
+			);
+		}
+
+		/**
+		 * Filter to override pages options form.
+		 *
+		 * @param array $form Form arguments.
+		 * @since 4.1.0
+		 */
+		return apply_filters( 'ap_options_form_pages', $form );
+	}
+
+	/**
+	 * Register permalinks options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_general_permalinks() {
+		$opt = ap_opt();
+
+		$form = array(
+			'submit_label' => __( 'Save Permalinks', 'anspress-question-answer' ),
+			'fields' => array(
 				'question_page_slug' => array(
 					'label' => __( 'Question slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Slug for single question page.', 'anspress-question-answer' ),
@@ -870,7 +891,13 @@ class AnsPress_Admin {
 			),
 		);
 
-		return $form;
+		/**
+		 * Filter to override permalinks options form.
+		 *
+		 * @param array $form Form arguments.
+		 * @since 4.1.0
+		 */
+		return apply_filters( 'ap_options_form_permalinks', $form );
 	}
 
 	/**
@@ -930,7 +957,13 @@ class AnsPress_Admin {
 			),
 		);
 
-		return $form;
+		/**
+		 * Filter to override layout options form.
+		 *
+		 * @param array $form Form arguments.
+		 * @since 4.1.0
+		 */
+		return apply_filters( 'ap_options_form_layout', $form );
 	}
 
 	/**
@@ -1109,7 +1142,13 @@ class AnsPress_Admin {
 			),
 		);
 
-		return $form;
+		/**
+		 * Filter to override UAC options form.
+		 *
+		 * @param array $form Form arguments.
+		 * @since 4.1.0
+		 */
+		return apply_filters( 'ap_options_form_uac', $form );
 	}
 
 	/**
@@ -1265,7 +1304,13 @@ class AnsPress_Admin {
 			),
 		);
 
-		return $form;
+		/**
+		 * Filter to override post and comments options form.
+		 *
+		 * @param array $form Form arguments.
+		 * @since 4.1.0
+		 */
+		return apply_filters( 'ap_options_form_postscomments', $form );
 	}
 
 	/**
@@ -1275,8 +1320,10 @@ class AnsPress_Admin {
 	 * @return void
 	 */
 	public static function page_select_field_opt( $field ) {
+		$page_slugs = array_keys( ap_main_pages() );
+
 		// Return if not the field we are looking for.
-		if ( ! in_array( $field->original_name, [ 'base_page', 'ask_page' ], true ) ) {
+		if ( ! in_array( $field->original_name, $page_slugs, true ) ) {
 			return;
 		}
 

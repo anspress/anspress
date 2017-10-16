@@ -126,7 +126,7 @@ class AnsPress_Rewrite {
 			$rule . '/(feed|rdf|rss|rss2|atom)/?$'                 => $rewrite . '&feed=$matches[#]',
 			$rule . '/embed/?$'                                    => $rewrite . '&embed=true',
 			$rule . '/?$'                                          => $rewrite,
-			$slug . '([^/]+)/?'                                    => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]',
+			//$slug . '([^/]+)/?'                                    => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]',
 		);
 
 		/**
