@@ -381,6 +381,7 @@ function ap_is_ajax() {
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_REQUEST['ap_ajax_action'] ) ) { // input var ok.
 		return true;
 	}
+
 	return false;
 }
 
@@ -427,9 +428,10 @@ function ap_form_allowed_tags() {
 		'br'         => array(),
 	);
 
-	/*
-	 * FILTER: ap_allowed_tags
-	 * Before passing allowed tags
+	/**
+	 * Filter allowed HTML KSES tags.
+	 *
+	 * @param array $allowed_tags Allowed tags.
 	 */
 	return apply_filters( 'ap_allowed_tags', $allowed_tags );
 }
@@ -443,14 +445,15 @@ function ap_send_json( $result = array() ) {
 	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
 	$json = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
+
 	wp_die( $json ); // xss ok.
 }
 
 /**
  * Highlight matching words.
  *
- * @param string $text String.
- * @param string $words Words need to higlight.
+ * @param string $text  String.
+ * @param string $words Words need to highlight.
  * @return string
  * @since 	2.0
  */
@@ -491,12 +494,12 @@ function ap_responce_message( $id, $only_message = false ) {
 		'you_cannot_vote_on_restricted' => array( 'type' => 'warning', 'message' => __( 'You cannot vote on restricted posts', 'anspress-question-answer' ) ),
 		);
 
-	/*
-	* FILTER: ap_responce_message
-	* Can be used to alter response messages
-	* @var array
-	* @since 2.0.1
-	*/
+	/**
+	 * Filter ajax response message.
+	 *
+	 * @param array $msg Messages.
+	 * @since 2.0.1
+	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
 
 	if ( isset( $msg[ $id ] ) && $only_message ) {
@@ -548,12 +551,12 @@ function ap_ajax_responce( $results ) {
 		);
 	}
 
-	/*
-	* FILTER: ap_ajax_responce
-	* Can be used to alter ap_ajax_responce
-	* @var array
-	* @since 2.0.1
-	*/
+	/**
+	 * Filter AnsPress ajax response body.
+	 *
+	 * @param array $results Results.
+	 * @since 2.0.1
+	 */
 	$results = apply_filters( 'ap_ajax_responce', $results );
 
 	return $results;
@@ -598,29 +601,23 @@ function ap_current_page_url( $args ) {
  * @param array $array Array to order.
  * @return array
  * @since 2.0.0
+ * @since 4.1.0 Keeps existing array keys.
  */
 function ap_sort_array_by_order( $array ) {
-	$new_array = array();
+	$new_array = [];
+
 	if ( ! empty( $array ) && is_array( $array ) ) {
-		$group = array();
 		foreach ( (array) $array as $k => $a ) {
+
 			if ( ! is_array( $a ) ) {
 				return;
 			}
-			$order = $a['order'];
-			$group[ $order ][] = $a;
-			$group[ $order ]['order'] = $order;
-		}
-		usort( $group, 'ap_sort_order_callback' );
-		foreach ( (array) $group as $a ) {
-			foreach ( (array) $a as $k => $newa ) {
-				if ( 'order' !== $k ) {
-					$new_array[] = $newa;
-				}
-			}
+
+			$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : 10;
 		}
 
-		return $new_array;
+		uasort( $array, 'ap_sort_order_callback' );
+		return $array;
 	}
 }
 
@@ -632,7 +629,11 @@ function ap_sort_array_by_order( $array ) {
  * @return integer
  */
 function ap_sort_order_callback( $a, $b ) {
-	return $a['order'] - $b['order'];
+	if ( $a['order'] == $b['order'] ) {
+		return 0;
+	}
+
+	return ( $a['order'] < $b['order'] ) ? -1 : 1;
 }
 
 /**
@@ -1400,10 +1401,15 @@ function ap_user_display_name( $args = array() ) {
 	}
 
 	/**
-	 * FILTER: ap_user_display_name
-	 * Filter can be used to alter display name
+	 * Filter AnsPress user display name.
 	 *
-	 * @var string
+	 * Filter can be used to alter user display name or
+	 * appending some extra information of user, like: rank, reputation etc.
+	 * Make sure to return plain text when `$args['html']` is true.
+	 *
+	 * @param string $return Name of user to return.
+	 * @param array  $args   Arguments.
+	 *
 	 * @since 2.0.1
 	 */
 	$return = apply_filters( 'ap_user_display_name', $return, $args );
@@ -1821,4 +1827,35 @@ function ap_array_insert_after( $array = [], $key, $new ) {
 function ap_rand( $min, $max, $weight ) {
 	$offset = $max - $min + 1;
 	return floor( $min + pow( lcg_value(), $weight ) * $offset );
+}
+
+/**
+ * Convert array notation (string, not real array) to dot notation.
+ *
+ * @param boolean|string $path Path name.
+ * @return string Path separated by dot notation.
+ */
+function ap_to_dot_notation( $path = false ) {
+	$parsed = rtrim( str_replace( '..', '.', str_replace( [ ']', '[' ], '.', $path ) ), '.' );
+	return $parsed;
+}
+
+/**
+ * Set key => value in an array.
+ *
+ * @param array  $arr  Array in which key value need to set.
+ * @param string $path Path of new array item.
+ * @param mixed  $val  Value to set.
+ *
+ * @return array Updated array.
+ */
+function ap_set_in_array( &$arr, $path, $val ) {
+	$path = is_string( $path ) ? explode( '.', $path ) : $path;
+	$loc = &$arr;
+
+	foreach ( (array) $path as $step ) {
+		$loc = &$loc[ $step ];
+	}
+
+	return $loc = $val;
 }

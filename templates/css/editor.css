@@ -10,6 +10,10 @@ blockquote {
 	padding-left: 10px;
 }
 
+.emoji {
+	width: 1em;
+}
+
 img {
 	height: auto;
 	max-width: 100%;

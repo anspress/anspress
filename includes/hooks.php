@@ -79,7 +79,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
-			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
+			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
@@ -108,6 +108,11 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
 			anspress()->add_action( 'ap_before_delete_answer', 'AnsPress_Vote', 'delete_votes' );
 			anspress()->add_action( 'ap_deleted_votes', 'AnsPress_Vote', 'ap_deleted_votes', 10, 2 );
+
+			// Form hooks.
+			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
+			anspress()->add_action( 'admin_post_ap_forms', 'AP_Form_Hooks', 'init' );
+			anspress()->add_action( 'admin_post_nopriv_ap_forms', 'AP_Form_Hooks', 'init' );
 	}
 
 	/**
@@ -498,16 +503,23 @@ class AnsPress_Hooks {
 
 	/**
 	 * Filter post so that anonymous author should not be replaced
+	 * by current user approving post.
 	 *
 	 * @param	array $data post data.
 	 * @param	array $args Post arguments.
 	 * @return array
 	 * @since 2.2
+	 * @since 4.1.0 Fixed: `post_author` get replaced if `anonymous_name` is empty.
+	 *
+	 * @global object $post Global post object.
 	 */
 	public static function wp_insert_post_data( $data, $args ) {
+		global $post;
+
 		if ( in_array( $args['post_type'], [ 'question', 'answer' ], true ) ) {
 			$fields = ap_get_post_field( 'fields', $args['ID'] );
-			if ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) {
+
+			if ( ( is_object( $post ) && '0' === $post->post_author ) || ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) ) {
 				$data['post_author'] = '0';
 			}
 		}
@@ -591,7 +603,7 @@ class AnsPress_Hooks {
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
 			 */
-			do_action( 'ap_processed_update_' . $post->post_type, $post_id, $post );
+			do_action( "ap_processed_update_{$post->post_type}", $post_id, $post );
 
 		} else {
 			/**
@@ -601,7 +613,7 @@ class AnsPress_Hooks {
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
 			 */
-			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
+			do_action( "ap_processed_new_{$post->post_type}", $post_id, $post );
 		}
 
 		if ( 'question' === $post->post_type ) {

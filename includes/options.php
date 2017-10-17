@@ -100,7 +100,6 @@ function ap_default_options() {
 		'mod_question_point'						=> 10,
 		'categories_per_page'						=> 20,
 		'question_prefix'								=> 'question',
-		'min_point_new_tag'							=> 100,
 		'allow_anonymous'								=> false,
 		'only_admin_can_answer'					=> false,
 		'logged_in_can_see_ans'					=> false,
@@ -147,12 +146,12 @@ function ap_default_options() {
 	);
 
 	/**
-	 * FILTER: ap_default_options
 	 * Filter to be used by extensions for including their default options.
-	 * @var array
+	 *
+	 * @param array $defaults Default options.
 	 * @since 0.1
 	 */
-	$defaults = apply_filters('ap_default_options', $defaults );
+	$defaults = apply_filters( 'ap_default_options', $defaults );
 
 	wp_cache_set( 'ap_default_options', $defaults, 'ap' );
 

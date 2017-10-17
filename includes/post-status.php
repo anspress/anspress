@@ -73,7 +73,7 @@ class AnsPress_Post_Status {
 		ap_ajax_json( array(
 			'success'     => true,
 			'snackbar'    => [ 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ],
-			'action'      => [ 'active' => true ],
+			'action'      => [ 'active'  => true ],
 			'postMessage' => ap_get_post_status_message( $post->ID ),
 			'newStatus'   => $status,
 		));
@@ -114,14 +114,14 @@ function ap_get_post_status_message( $post_id = false ) {
  * @param  boolean|integer $post_id Post ID.
  */
 function ap_post_status_badge( $post_id = false ) {
-	$ret = '<post-message>';
+	$ret = '<postMessage>';
 	$msg = ap_get_post_status_message( $post_id );
 
 	if ( ! empty( $msg ) ) {
 		$ret .= $msg;
 	}
 
-	$ret .= '</post-message>';
+	$ret .= '</postMessage>';
 
 	return $ret;
 }

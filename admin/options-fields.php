@@ -168,7 +168,6 @@ ap_register_option_section( 'general', 'qa', __( 'Question & Answer', 'anspress-
 			'name'  => 'comment_number',
 			'label' => __( 'Numbers of comments to show', 'anspress-question-answer' ),
 			'desc'  => __( 'Numbers of comments to load in each query?', 'anspress-question-answer' ),
-			'type'  => 'checkbox',
 		),
 		array(
 			'name'  => 'duplicate_check',

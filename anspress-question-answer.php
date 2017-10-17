@@ -25,6 +25,8 @@
  * GitHub Plugin URI: anspress/anspress
  */
 
+use AnsPress\Form as Form;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -283,18 +285,21 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		private function includes() {
 			global $ap_options;
 
+			require_once ANSPRESS_DIR . 'includes/class/class-ap-qa.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-ap-question.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-question-query.php';
 			require_once ANSPRESS_DIR . 'includes/class/form.php';
 			require_once ANSPRESS_DIR . 'includes/class/validation.php';
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
+			require_once ANSPRESS_DIR . 'includes/class-form-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/options.php';
 			require_once ANSPRESS_DIR . 'includes/functions.php';
 			require_once ANSPRESS_DIR . 'includes/hooks.php';
 			require_once ANSPRESS_DIR . 'includes/question-loop.php';
 			require_once ANSPRESS_DIR . 'includes/answer-loop.php';
 			require_once ANSPRESS_DIR . 'includes/qameta.php';
-			require_once ANSPRESS_DIR . 'includes/qaquery.php';
 			require_once ANSPRESS_DIR . 'includes/qaquery-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/post-types.php';
 			require_once ANSPRESS_DIR . 'includes/post-status.php';
@@ -323,6 +328,17 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
 
 			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
+			require_once ANSPRESS_DIR . 'lib/class-form.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-field.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-input.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-group.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-repeatable.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-checkbox.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-select.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-editor.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-upload.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-tags.php';
+			require_once ANSPRESS_DIR . 'lib/class-validate.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once ANSPRESS_DIR . 'lib/class-anspress-cli.php';
@@ -436,6 +452,22 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			foreach ( $this->actions as $hook ) {
 				add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 			}
+		}
+
+		/**
+		 * Get specific AnsPress form.
+		 *
+		 * @param string $name Name of form.
+		 * @return null|object
+		 * @since 4.1.0
+		 */
+		public function get_form( $name ) {
+			if ( ! isset( $this->forms[ $name ] ) ) {
+				$args = apply_filters( 'ap_form_' . $name, null );
+				$this->forms[ $name ] = new Form( 'form_' . $name, $args );
+			}
+
+			return $this->forms[ $name ];
 		}
 	}
 }

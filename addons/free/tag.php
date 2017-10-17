@@ -40,15 +40,14 @@ class AnsPress_Tag {
 		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
 		anspress()->add_action( 'init', __CLASS__, 'register_question_tag', 1 );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_tags_menu' );
-		anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'ap_display_question_metas', 10, 2 );
+		//anspress()->add_action( 'ap_question_display_meta', __CLASS__, 'question_display_meta', 10, 2 );
 		anspress()->add_action( 'ap_question_info', __CLASS__, 'ap_question_info' );
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_action( 'ap_enqueue', __CLASS__, 'ap_localize_scripts' );
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_ask_form_fields', __CLASS__, 'ask_from_tag_field', 10, 2 );
+		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
 		anspress()->add_action( 'ap_ask_fields_validation', __CLASS__, 'ap_ask_fields_validation' );
-		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'ap_pre_save_question', __CLASS__, 'after_new_question', 10, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
 		anspress()->add_filter( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
@@ -284,14 +283,18 @@ class AnsPress_Tag {
 	/**
 	 * Append meta display.
 	 *
-	 * @param  array $metas Display metas.
-	 * @param  array $question_id Post ID.
+	 * @param  array  $metas    Display metas.
+	 * @param  object $question AP_Question object.
 	 * @return array
 	 * @since 2.0
 	 */
-	public static function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id, 'question_tag' ) && ! is_singular( 'question' ) ) {
-			$metas['tags'] = ap_question_tags_html( array( 'label' => '<i class="apicon-tag"></i>', 'show' => 1 ) ); }
+	public static function question_display_meta( $metas, $question ) {
+		if ( $question->have_terms( 'question_tag' ) && ! is_singular( 'question' ) ) {
+			$metas['taxonomy']['tags'] = array(
+				'items' => $question->get_terms( 'question_tag' ),
+				'icon'  => 'apicon-tag',
+			);
+		}
 
 		return $metas;
 	}
@@ -319,10 +322,6 @@ class AnsPress_Tag {
 	 */
 	public static function ap_assets_js( $js ) {
 		$js['tags'] = [ 'dep' => [ 'anspress-main' ], 'footer' => true ];
-
-		if ( is_ask() ) {
-			$js['tags']['active'] = true;
-		}
 
 		return $js;
 	}
@@ -366,52 +365,27 @@ class AnsPress_Tag {
 	}
 
 	/**
-	 * Add tag field in ask form.
+	 * Add tag field in question form.
 	 *
-	 * @param  array   $args Arguments.
-	 * @param  boolean $editing Is editing form.
+	 * @param array $form AnsPress form arguments.
+	 * @since 4.1.0
 	 */
-	public static function ask_from_tag_field( $args, $editing ) {
-		global $editing_post;
-		$tag_val = $editing ? get_the_terms( $editing_post->ID, 'question_tag' ) : ap_sanitize_unslash( 'tags', 'r', [] ) ;
+	public static function ap_question_form_fields( $form ) {
 
-		ob_start();
-		?>
-			<div class="ap-field-tags ap-form-fields">
-				<label class="ap-form-label" for="tags"><?php esc_attr_e( 'Tags', 'anspress-question-answer' ); ?></label>
-				<div data-role="ap-tagsinput" class="ap-tags-input">
-					<div id="ap-tags-add">
-						<input id="tags" class="ap-tags-field ap-form-control" placeholder="<?php esc_attr_e( 'Type and hit enter', 'anspress-question-answer' ); ?>" autocomplete="off" />
-						<ul id="ap-tags-suggestion">
-						</ul>
-					</div>
-
-					<ul id="ap-tags-holder" aria-describedby="ap-tags-list-title">
-						<?php foreach ( (array) $tag_val as $tag ) { ?>
-							<?php if ( ! empty( $tag->slug ) ) { ?>
-								<li class="ap-tagssugg-item">
-									<button role="button" class="ap-tag-remove"><span class="sr-only"></span> <span class="ap-tag-item-value"><?php echo esc_attr( $tag->slug ); ?></span><i class="apicon-x"></i></button>
-									<input type="hidden" name="tags[]" value="<?php echo esc_attr( $tag->slug ); ?>" />
-								</li>
-							<?php } ?>
-						<?php } ?>
-					</ul>
-				</div>
-			</div>
-		<?php
-
-		$tag_field = ob_get_clean();
-		$args['fields'][] = array(
-			'name' 		=> 'tag',
-			'label' 	=> __( 'Tags', 'anspress-question-answer' ),
-			'type'  	=> 'custom',
-			'taxonomy' 	=> 'question_tag',
-			'desc' 		=> __( 'Slowly type for suggestions', 'anspress-question-answer' ),
-			'order' 	=> 11,
-			'html' 		=> $tag_field,
+		$form['fields']['tags'] = array(
+			'label'     => __( 'Tags', 'anspress-question-answer' ),
+			'desc' 		  => sprintf(
+				// Translators: %1$d contain minimum tags required and %2$d contain maximum tags allowed.
+				__( 'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.', 'anspress-question-answer' ),
+				ap_opt( 'min_tags' ),
+				ap_opt( 'max_tags' )
+			),
+			'type'      => 'tags',
+			'array_max' => ap_opt( 'max_tags' ),
+			'array_min' => ap_opt( 'min_tags' ),
 		);
 
-		return $args;
+		return $form;
 	}
 
 	/**
@@ -432,11 +406,11 @@ class AnsPress_Tag {
 	/**
 	 * Things to do after creating a question.
 	 *
-	 * @param  integer $post_id Post ID.
-	 * @param  object  $post Post object.
+	 * @param  array       $args     The post object arguments used for creation.
+	 * @param  AP_Question $question AP_Question object.
 	 * @since 1.0
 	 */
-	public static function after_new_question( $post_id, $post ) {
+	public static function after_new_question( $args, $question ) {
 		global $validate;
 
 		if ( empty( $validate ) ) {
@@ -446,7 +420,7 @@ class AnsPress_Tag {
 		$fields = $validate->get_sanitized_fields();
 		if ( isset( $fields['tags'] ) ) {
 			$tags = explode( ',', $fields['tags'] );
-			wp_set_object_terms( $post_id, $tags, 'question_tag' );
+			$question->set_terms( $tags, 'question_tag' );
 		}
 	}
 

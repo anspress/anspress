@@ -467,7 +467,7 @@ function ap_comment_delete_locked( $comment_ID ) {
 function ap_the_comments() {
 	global $post;
 	if ( ( 'answer' === $post->post_type && ! ap_opt( 'disable_comments_on_answer' ) ) || 'question' === $post->post_type ) {
-		echo '<ap-comments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></ap-comments>';
+		echo '<apComments id="comments-' . esc_attr( get_the_ID() ) . '"><div class="ap-comments"></div></apComments>';
 	}
 }
 

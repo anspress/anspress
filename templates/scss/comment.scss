@@ -23,10 +23,10 @@
 			border-color: #ef9a9a;
 		}
 	}
-	ap-comments{
+	apComments{
 		display: block;
 	}
-	ap-comments.have-comments{
+	apComments.have-comments{
 		display: block;
 		position: relative;
 		&:before, &:after{
