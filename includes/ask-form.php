@@ -36,6 +36,8 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		$is_private = $editing_post->post_status == 'private_post' ? true : false;
 	}
 
+	$parent_id = $editing ? $editing_post->post_parent : get_query_var( 'parent' );
+
 	$fields = array(
 		array(
 			'name' => 'title',
@@ -73,8 +75,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		array(
 			'name' => 'parent_id',
 			'type'  => 'hidden',
-			'value' => ( $editing ? $editing_post->post_parent : get_query_var( 'parent' )  ),
-			'order' => 20,
+			'value' => $parent_id,
 			'sanitize' => array( 'only_int' ),
 		),
 	);
@@ -123,14 +124,13 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	);
 
 	/**
-	 * FILTER: ap_ask_form_fields
-	 * Filter for modifying $args
+	 * Filter for modifying ask form `$args`.
 	 *
-	 * @param 	array 	$fields 	Ask form fields.
+	 * @param 	array $fields 	Ask form fields.
 	 * @param 	bool 	$editing 	Currently editing form.
 	 * @since  	2.0
 	 */
-	$fields = apply_filters( 'ap_ask_form_fields', array( 'fields' => $fields ), $editing );
+	$fields = apply_filters( 'ap_ask_form_fields', [ 'fields' => $fields ], $editing );
 
 	return $fields['fields'];
 }
@@ -217,88 +217,68 @@ function ap_remove_stop_words_post_name( $str ) {
 /**
  * Insert and update question.
  *
- * @param  array $args     Question arguments.
- * @param  bool  $wp_error Return wp error.
+ * @param  array $args       Question arguments.
+ * @param  null  $deprecated Deprecated as of 4.1.0.
  * @return bool|object|int
  */
-function ap_save_question( $args, $wp_error = false ) {
-
-	if ( isset( $args['is_private'] ) && $args['is_private'] ) {
-		$args['post_status'] = 'private_post';
+function ap_save_question( $args, $deprecated = null ) {
+	if ( $deprecated ) {
+		_deprecated_argument( __FUNCTION__, '4.1.0', __( 'This argument is not required anymore as function will return WP_Error object by default in case of error.', 'anspress-question-answer' ) );
 	}
 
-	$args = wp_parse_args( $args, array(
-		'post_author' 		 => -1,
-		'post_status' 		 => 'publish',
-		'post_name' 		   => '',
+	$defaults = array(
+		'ID'               => false,
+		'post_status'      => 'draft',
+		'post_title'       => '',
 		'comment_status' 	 => 'open',
 		'attach_uploads' 	 => false,
-	) );
+		'post_author' 		 => get_current_user_id(),
+		'is_private' 		   => false,
+		'post_name' 		   =>  '',
+	);
+
+	$args = wp_parse_args( $args, $defaults );
 
 	// Check if question title is empty.
 	if ( empty( $args['post_title'] ) ) {
-		if ( true === $wp_error ) {
-			return new WP_Error( 'question_title_empty', __( 'Question title cannot be blank', 'anspress-question-answer' ) );
-		}
-		return false;
+		return new WP_Error( 'ap_question_title_empty', __( 'Question title cannot be blank', 'anspress-question-answer' ) );
+	}
+
+	$args['post_type']   = 'question';
+	$args['post_name']   = isset( $args['post_name'] ) ? $args['post_name'] : $args['post_title'];
+
+	if ( ap_opt( 'allow_private_post' ) && isset( $args['is_private'] ) && $args['is_private'] ) {
+		$args['post_status'] = 'private_post';
+	} else {
+		$args['post_status'] = ap_new_edit_post_status( $args['post_author'], 'question', false );
+	}
+
+	// Set name of anonymous user.
+	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) && ! empty( $args['anonymous_name'] ) ) {
+		$args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
+	}
+
+	// @todo Check parent nonce.
+	if ( isset( $args['parent_id'] ) ) {
+		$args['post_parent'] = (int) $args['parent_id'];
 	}
 
 	/**
 	 * Filter question description before saving.
 	 *
 	 * @param string $content Post content.
-	 * @since unknown
-	 * @since @3.0.0 Moved from process-form.php
+	 * @since 1.0.0
+	 * @since 3.0.0 Moved from includes/process-form.php
 	 */
 	$args['post_content'] = apply_filters( 'ap_form_contents_filter', $args['post_content'] );
 
-	$args['post_name'] 	  = ap_remove_stop_words_post_name( $args['post_name'] );
-	$args['post_type'] 	  = 'question';
+	$question = new AP_Question( $args['ID'] );
 
-	if ( isset( $args['ID'] ) ) {
-		/**
-		 * Can be used to modify `$args` before updating question
-		 *
-		 * @param array $args Question arguments.
-		 * @since 2.0.1
-		 */
-		$args = apply_filters( 'ap_pre_update_question', $args );
-	} else {
-		/**
-		 * Can be used to modify args before inserting question
-		 *
-		 * @param array $args Question arguments.
-		 * @since 2.0.1
-		 */
-		$args = apply_filters( 'ap_pre_insert_question', $args );
+	foreach ( $args as $key => $val ) {
+		$question->set( $key, $val );
 	}
 
-	$post_id = wp_insert_post( $args, true );
-
-	if ( true === $wp_error && is_wp_error( $post_id ) ) {
-		return $post_id;
-	}
-
-	if ( $post_id ) {
-		$qameta_args = [ 'last_updated' => current_time( 'mysql' ) ];
-
-		if ( isset( $args['anonymous_name'] ) && ap_opt( 'allow_anonymous' ) ) {
-			$qameta_args['fields'] = [ 'anonymous_name' => $args['anonymous_name'] ];
-		}
-
-		ap_insert_qameta( $post_id, $qameta_args );
-		$activity_type = isset( $args['ID'] ) ? 'edit_question' : 'new_question';
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
-
-		if ( ap_isset_post_value( 'ap-medias' ) ) {
-			$ids = ap_sanitize_unslash( 'ap-medias', 'r' );
-			ap_set_media_post_parent( $ids, $post_id );
-		}
-	}
-
-	return $post_id;
+	return $question->save();
 }
 
 /**

@@ -147,12 +147,12 @@ function ap_default_options() {
 	);
 
 	/**
-	 * FILTER: ap_default_options
 	 * Filter to be used by extensions for including their default options.
-	 * @var array
+	 *
+	 * @param array $defaults Default options.
 	 * @since 0.1
 	 */
-	$defaults = apply_filters('ap_default_options', $defaults );
+	$defaults = apply_filters( 'ap_default_options', $defaults );
 
 	wp_cache_set( 'ap_default_options', $defaults, 'ap' );
 

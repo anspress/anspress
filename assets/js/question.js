@@ -89,9 +89,9 @@
 		},
 		renderPostMessage: function(message){
 			if(!_.isEmpty(message))
-				$('#post-'+this.postID).find('post-message').html(message);
+				$('#post-'+this.postID).find('postMessage').html(message);
 			else
-				$('#post-'+this.postID).find('post-message').html('');
+				$('#post-'+this.postID).find('postMessage').html('');
 		},
 		removed: function(){
       this.remove();
@@ -430,7 +430,7 @@
 					$(e.target).addClass('loaded');
 					self.actions.model = new AnsPress.collections.Actions(data.actions);
 					self.actions.view = new AnsPress.views.Actions({ model: self.actions.model, postID: self.model.get('ID') });
-					self.$el.find('post-actions .ap-actions').html(self.actions.view.render().$el);
+					self.$el.find('postActions .ap-actions').html(self.actions.view.render().$el);
 				}
 			});
 		},
@@ -514,7 +514,7 @@
 				if(this.$el.find('.ap-comment-no-perm').length === 0){
 					var q = {msg: $(e.target).attr('ap-msg')};
 					var t = _.template(AnsPress.getTemplate('comment-no-permission')());
-					this.$el.find('ap-comments').append(t(q));
+					this.$el.find('apComments').append(t(q));
 				}else{
 					this.$el.find('.ap-comment-no-perm').remove();
 				}
@@ -524,7 +524,7 @@
 			if(this.$el.find('[comment-form]').length === 0){
 				var q = $.parseJSON($(e.target).attr('ap-query'));
 				var t = _.template(AnsPress.getTemplate('comment-form')());
-				this.$el.find('ap-comments').append(t(q));
+				this.$el.find('apComments').append(t(q));
 				this.$el.find('[comment-form]').hide().slideDown(400, function(){
 					$(this).find('textarea').focus();
 				});
@@ -543,7 +543,7 @@
 
 			var q = $.parseJSON($(args.e.target).attr('ap-query'));
 			var t = _.template(AnsPress.getTemplate('comment-form')());
-			this.$el.find('ap-comments').append(t(q));
+			this.$el.find('apComments').append(t(q));
 			this.$el.find('[comment-form]').hide().slideDown(400, function(){
 				$(this).find('textarea').val(args.comment.get('content')).focus();
 			});
@@ -743,7 +743,7 @@
 					if(data.success){
 						var commentsModel = new AnsPress.collections.Comments(data.comment);
 						var modalView = new AnsPress.views.Modal({
-							content: '<ap-comments class="have-comments"><div class="ap-comments"></div></ap-comments>',
+							content: '<apComments class="have-comments"><div class="ap-comments"></div></apComments>',
 							size: 'medium'
 						});
 						$('body').append(modalView.render().$el);

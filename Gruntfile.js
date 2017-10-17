@@ -39,14 +39,6 @@
 					}]
 				}
 			},
-			phpdocumentor: {
-				dist: {
-					options: {
-						directory: './',
-						target: 'M:\wamp\www\anspress-docs\\'
-					}
-				}
-			},
 			csscomb: {
 				files: ['**/*.css', '!**/node_modules/**'],
 				tasks: ['csscomb'],

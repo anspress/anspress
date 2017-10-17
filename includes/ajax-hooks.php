@@ -256,14 +256,14 @@ class AnsPress_Ajax {
 			 *
 			 * @param  integer $post_id question ID.
 			 */
-			do_action( 'ap_wp_trash_question', $post_id );
+			do_action( 'ap_wp_delete_question', $post_id );
 		} else {
 			/**
 			 * Triggered right before deleting answer.
 			 *
 			 * @param  integer $post_id answer ID.
 			 */
-			do_action( 'ap_wp_trash_answer', $post_id );
+			do_action( 'ap_wp_delete_answer', $post_id );
 		}
 
 		wp_delete_post( $post_id, true );

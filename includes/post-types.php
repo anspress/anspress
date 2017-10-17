@@ -54,8 +54,9 @@ class AnsPress_PostTypes {
 		);
 
 		/**
-		 * FILTER: ap_question_cpt_labels
-		 * filter is called before registering question CPT
+		 * Override default question CPT labels.
+		 *
+		 * @param array $labels Default question labels.
 		 */
 		$labels = apply_filters( 'ap_question_cpt_labels', $labels );
 
@@ -91,8 +92,9 @@ class AnsPress_PostTypes {
 		);
 
 		/**
-		 * FILTER: ap_question_cpt_args
-		 * filter is called before registering question CPT
+		 * Filter default question CPT arguments.
+		 *
+		 * @param array $args CPT arguments.
 		 */
 		$args = apply_filters( 'ap_question_cpt_args', $args );
 
@@ -124,8 +126,9 @@ class AnsPress_PostTypes {
 		);
 
 		/**
-		 * FILTER: ap_answer_cpt_label
-		 * filter is called before registering answer CPT
+		 * Filter default answer labels.
+		 *
+		 * @param array $labels Default answer labels.
 		 */
 		$labels = apply_filters( 'ap_answer_cpt_label', $labels );
 
@@ -157,8 +160,9 @@ class AnsPress_PostTypes {
 		);
 
 		/**
-		 * FILTER: ap_answer_cpt_args
-		 * filter is called before registering answer CPT
+		 * Filter default answer arguments.
+		 *
+		 * @param array $args Arguments.
 		 */
 		$args = apply_filters( 'ap_answer_cpt_args', $args );
 
@@ -183,6 +187,7 @@ class AnsPress_PostTypes {
 			}
 
 			$default_lang = '';
+
 			// Support polylang permalink.
 			if ( function_exists( 'pll_default_language' ) ) {
 				$default_lang = pll_default_language();
@@ -203,8 +208,10 @@ class AnsPress_PostTypes {
 			}
 
 			/**
-			 * FILTER: ap_question_post_type_link
 			 * Allow overriding of question post type permalink
+			 *
+			 * @param string $link Question link.
+			 * @param object $post Post object.
 			 */
 			return apply_filters( 'ap_question_post_type_link', $link, $post );
 
@@ -212,11 +219,14 @@ class AnsPress_PostTypes {
 			$link = get_permalink( $post->post_parent ) . "{$post->ID}/";
 
 			/**
-			* FILTER: ap_answer_post_type_link
-			* Allow overriding of answer post type permalink
-			*/
+			 * Allow overriding of answer post type permalink.
+			 *
+			 * @param string $link Question link.
+			 * @param object $post Post object.
+			 */
 			return apply_filters( 'ap_answer_post_type_link', $link, $post );
-		}
+		} // End if().
+
 		return $link;
 	}
 

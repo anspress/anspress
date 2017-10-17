@@ -552,8 +552,8 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
 
 	if ( false !== $rows ) {
 		$counts = ap_update_votes_count( $post_id );
-		do_action( 'ap_undo_vote', $post_id, $counts );
-		do_action( 'ap_undo_' . $type, $post_id, $counts );
+		do_action( 'ap_undo_vote', $post_id, $user_id, $counts );
+		do_action( 'ap_undo_' . $type, $post_id, $user_id, $counts );
 
 		return $counts;
 	}

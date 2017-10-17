@@ -42,9 +42,9 @@ class AnsPress_Common_Pages {
 		}
 
 		/**
-		 * FILTER: ap_main_questions_args
-		 * Filter main question list args
-		 * @var array
+		 * Filter main question list query arguments.
+		 *
+		 * @param array $args Wp_Query arguments.
 		 */
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
@@ -71,6 +71,14 @@ class AnsPress_Common_Pages {
 			} else {
 				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
 			}
+
+			/**
+			 * Filter question page message.
+			 *
+			 * @param string $msg Message.
+			 * @since 4.1.0
+			 */
+			$msg = apply_filters( 'ap_question_page_message', $msg );
 			echo '<div class="ap-no-permission">' . $msg . '</div>';
 
 			return;
