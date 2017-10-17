@@ -57,7 +57,6 @@ class AnsPress_Category {
 		anspress()->add_action( 'create_question_category', __CLASS__, 'save_image_field' );
 		anspress()->add_action( 'edited_question_category', __CLASS__, 'save_image_field' );
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_action( 'ap_hover_card_cat', __CLASS__, 'hover_card_category' );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_question_subscribers_action_id', __CLASS__, 'subscribers_action_id' );
 		anspress()->add_filter( 'ap_ask_btn_link', __CLASS__, 'ap_ask_btn_link' );
@@ -82,7 +81,9 @@ class AnsPress_Category {
 	}
 
 	/**
-	 * Category page layout
+	 * Category page layout.
+	 *
+	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
 	public static function category_page() {
 		global $questions, $question_category, $wp;
@@ -676,62 +677,15 @@ class AnsPress_Category {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 		$base_slug = get_page_uri( ap_opt( 'categories_page' ) );
 		update_option( 'ap_categories_path', $base_slug, true );
 
 		$cat_rules = array(
-			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&ap_paged=$matches[#]',
+			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&ap_paged=$matches[#]&ap_page=category',
 			$base_slug . '/([^/]+)/?$' => 'index.php?question_category=$matches[#]&ap_page=category',
 		);
 
 		return $cat_rules + $rules;
-	}
-
-	/**
-	 * Output hover card for term.
-	 *
-	 * @param  integer $id User ID.
-	 * @since  3.0.0
-	 */
-	public static function hover_card_category( $id ) {
-		$cache = get_transient( 'ap_category_card_' . $id );
-
-		if ( false !== $cache ) {
-			ap_ajax_json( $cache );
-		}
-
-		$category = get_term( $id, 'question_category' );
-		$sub_cat_count = count( get_term_children( $category->term_id, 'question_category' ) );
-
-		$data = array(
-			'template' => 'category-hover',
-			'disableAutoLoad' => 'true',
-			'apData' => array(
-				'id' 			=> $category->term_id,
-				'name' 			=> $category->name,
-				'link' 			=> get_category_link( $category ), // @codingStandardsIgnoreLine.
-				'image' 		=> ap_get_category_image( $category->term_id, 90 ),
-				'icon' 			=> ap_get_category_icon( $category->term_id ),
-				'description' 	=> $category->description,
-				'question_count' 	=> sprintf( _n( '%d Question', '%d Questions', $category->count, 'anspress-question-answer' ),  $category->count ),
-				'sub_category' 	=> array(
-					'have' => $sub_cat_count > 0,
-					'count' => sprintf( _n( '%d Sub category', '%d Sub categories', $sub_cat_count, 'anspress-question-answer' ), $sub_cat_count ),
-				),
-			),
-		);
-
-		/**
-		 * Filter user hover card data.
-		 *
-		 * @param  array $data Card data.
-		 * @return array
-		 * @since  3.0.0
-		 */
-		$data = apply_filters( 'ap_category_hover_data', $data );
-		set_transient( 'ap_category_card_' . $id, $data, HOUR_IN_SECONDS );
-		ap_ajax_json( $data );
 	}
 
 	/**
@@ -822,13 +776,7 @@ class AnsPress_Category {
 	public static function category_feed() {
 
 		if ( is_question_category() ) {
-			global $question_category;
-
-			if ( ! $question_category ) {
-				$category_id = sanitize_title( get_query_var( 'q_cat' ) );
-				$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' );
-			}
-
+			$question_category = get_queried_object();
 			echo '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_url( $question_category->slug ) . '" title="' . esc_attr__( 'Question category feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
 		}
 	}

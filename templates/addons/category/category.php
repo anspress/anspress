@@ -68,7 +68,7 @@
 					?>
 				</div><!-- close .ap-questions -->
 
-				<?php ap_questions_the_pagination(); ?>
+				<?php ap_questions_the_pagination( get_query_var( 'ap_paged' ) ); ?>
 
 			<?php else : ?>
 

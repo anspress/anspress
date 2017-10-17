@@ -65,10 +65,15 @@ function ap_get_question( $question_id ) {
 }
 
 /**
- * output questions page pagination
- * @return string pagination html tag
+ * Output questions page pagination.
+ *
+ * @param integer|false $paged Current paged value.
+ *
+ * @return void
+ * @since 4.1.0 Added new argument `$paged`.
  */
-function ap_questions_the_pagination() {
+function ap_questions_the_pagination( $paged = false ) {
 	global $questions;
-	ap_pagination( false, $questions->max_num_pages );
+
+	ap_pagination( $paged, $questions->max_num_pages );
 }

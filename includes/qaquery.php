@@ -89,7 +89,6 @@ class Question_Query extends WP_Query {
 
 		$this->args['post_type'] = 'question';
 		$this->args['no_found_rows'] = true;
-
 		parent::__construct( $this->args );
 	}
 

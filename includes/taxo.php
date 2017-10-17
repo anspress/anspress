@@ -129,7 +129,7 @@ function ap_question_have_category( $post_id = false ) {
  */
 if ( ! function_exists( 'is_question_categories' ) ) {
 	function is_question_categories() {
-		if ( ap_get_categories_slug() == get_query_var( 'ap_page' ) ) {
+		if ( 'categories' === ap_current_page() ) {
 			return true;
 		}
 
@@ -144,7 +144,7 @@ if ( ! function_exists( 'is_question_categories' ) ) {
  * @since 4.0.0
  */
 function is_question_category() {
-	if ( ap_get_category_slug() == get_query_var( 'ap_page' ) ) {
+	if ( 'category' === ap_current_page() ) {
 		return true;
 	}
 

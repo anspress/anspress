@@ -18,7 +18,7 @@
 		<?php if ( ap_have_questions() ) : ?>
 			<div class="ap-questions">
 				<?php
-					
+
 					/* Start the Loop */
 					while ( ap_have_questions() ) : ap_the_question();
 						global $post;
@@ -26,12 +26,12 @@
 					endwhile;
 				?>
 			</div>
-			<?php ap_questions_the_pagination(); ?>
+			<?php ap_questions_the_pagination( get_query_var( 'ap_paged' ) ); ?>
 		<?php
-			else : 
+			else :
 				include(ap_get_theme_location('content-none.php'));
-			endif; 
-		?>	
+			endif;
+		?>
 	</div>
 	<?php if ( is_active_sidebar( 'ap-tag' ) && is_anspress()){ ?>
 		<div class="ap-question-right ap-col-3">
