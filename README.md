@@ -31,7 +31,7 @@ This plugin wouldn't be possible without a huge amount of contribution. Check ou
 
 We provide support on our site: https://anspress.io/questions
 Our support section uses actual version of AnsPress, so you can check out the support site if you want to see full working version of AnsPress.
-You can also take the demo site for a test drive https://d.anspress.io/
+You can also take the demo site for a test drive https://anspress.io/demo/?product=anspress
 
 **AnsPress Key Features:**
 
