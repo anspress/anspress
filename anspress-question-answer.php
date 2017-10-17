@@ -196,12 +196,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $user_pages;
 
 		/**
-		 * AnsPress rewrite rules.
+		 * AnsPress question rewrite rules.
 		 *
 		 * @var array
 		 * @since 4.1.0
 		 */
-		public $rewrites = [];
+		public $question_rule = [];
 
 		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
@@ -212,7 +212,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @return instance
 		 */
 		public static function instance() {
-			if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
 
 				self::$instance = new self();
 				self::$instance->setup_constants();

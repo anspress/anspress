@@ -144,8 +144,6 @@ class AnsPress_PostTypes {
 
 		// Register CPT question.
 		register_post_type( 'question', $args );
-
-
 	}
 
 	/**

@@ -65,6 +65,9 @@ class AnsPress_Category {
 		anspress()->add_filter( 'wp_head', __CLASS__, 'category_feed' );
 		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
+		anspress()->add_filter( 'template_include', __CLASS__, 'taxonomy_template' );
+		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
+		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_category_archive' );
 
 		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_category', __CLASS__, 'load_filter_category' );
@@ -83,19 +86,18 @@ class AnsPress_Category {
 	 */
 	public static function category_page() {
 		global $questions, $question_category, $wp;
-		$category_id = sanitize_title( get_query_var( 'q_cat' ) );
 
 		$question_args = array(
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'question_category',
-					'field' => is_numeric( $category_id ) ? 'id' : 'slug',
-					'terms' => array( $category_id ),
+					'field' => 'id',
+					'terms' => array( get_queried_object_id() ),
 				),
 			),
 		);
 
-		$question_category = get_term_by( 'slug', $category_id, 'question_category' ); //@codingStandardsIgnoreLine.
+		$question_category = get_queried_object();
 
 		if ( $question_category ) {
 			$questions = ap_get_questions( $question_args );
@@ -109,12 +111,12 @@ class AnsPress_Category {
 			do_action( 'ap_before_category_page', $question_category );
 
 			include( ap_get_theme_location( 'addons/category/category.php' ) );
-		} else {
-			global $wp_query;
-			$wp_query->set_404();
-			status_header( 404 );
-			include ap_get_theme_location( 'not-found.php' );
 		}
+		// 	global $wp_query;
+		// 	$wp_query->set_404();
+		// 	status_header( 404 );
+		// 	include ap_get_theme_location( 'not-found.php' );
+		// }
 	}
 
 	/**
@@ -205,7 +207,7 @@ class AnsPress_Category {
 		$category_args = array(
 			'hierarchical' => true,
 			'labels'       => $categories_labels,
-			'rewrite'      => true,
+			'rewrite'      => false,
 		);
 
 		/**
@@ -374,11 +376,13 @@ class AnsPress_Category {
 	public static function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_category' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
-				 return ap_get_link_to( array( 'ap_page' => ap_get_category_slug(), 'q_cat' => $term->slug ) );
+				$opt = get_option( 'ap_categories_path', 'categories' );
+				return home_url( $opt ) . '/' . $term->slug . '/';
 			} else {
-				return add_query_arg( array( 'ap_page' => ap_get_category_slug(), 'q_cat' => $term->term_id ), ap_base_page_link() );
+				return add_query_arg( [ 'ap_page' => 'category', 'question_category' => $term->slug ], home_url() );
 			}
 		}
+
 		return $url;
 	}
 
@@ -674,10 +678,11 @@ class AnsPress_Category {
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=' ;
 		$base_slug = get_page_uri( ap_opt( 'categories_page' ) );
+		update_option( 'ap_categories_path', $base_slug, true );
 
 		$cat_rules = array(
 			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&ap_paged=$matches[#]',
-			$base_slug . '/([^/]+)/?$' => 'index.php?question_category=$matches[#]',
+			$base_slug . '/([^/]+)/?$' => 'index.php?question_category=$matches[#]&ap_page=category',
 		);
 
 		return $cat_rules + $rules;
@@ -895,6 +900,55 @@ class AnsPress_Category {
 	public static function column_content( $value, $column_name, $tax_id ) {
 		if ( 'icon' === $column_name ) {
 			ap_category_icon( $tax_id );
+		}
+	}
+
+	/**
+	 * Modify current page to show category archive.
+	 *
+	 * @param string $query_var Current page.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function ap_current_page( $query_var ) {
+		if ( 'categories' === $query_var && 'category' === get_query_var( 'ap_page' ) ) {
+			return 'category';
+		}
+
+		return $query_var;
+	}
+
+	/**
+	 * Override taxonomy template.
+	 *
+	 * @param string $template Template file.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function taxonomy_template( $template ) {
+		if ( is_tax( 'question_category' ) ) {
+			return locate_template( 'page.php' );
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Modify main query to show category archive.
+	 *
+	 * @param object $query Wp_Query object.
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function modify_query_category_archive( $query ) {
+		if ( $query->is_main_query() &&
+			$query->is_tax( 'question_category' ) &&
+			'category' === get_query_var( 'ap_page' ) ) {
+
+			unset( $query->query_vars['question_category'] );
+			$query->set( 'p', ap_opt( 'categories_page' ) );
+			$query->set( 'post_type', 'page' );
+
 		}
 	}
 }

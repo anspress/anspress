@@ -92,15 +92,30 @@ class AnsPress_Rewrite {
 	public static function rewrite_rules() {
 		global $wp_rewrite;
 		$q_struct = AnsPress_PostTypes::question_perm_structure();
-		$rules = $wp_rewrite->generate_rewrite_rules( $q_struct->rule, EP_NONE, false, false, true );
+		$rules    = $wp_rewrite->generate_rewrite_rules( $q_struct->rule, EP_NONE, false, false, true );
 
-		$rule = key( $rules );
-		$rewrite = reset( $rules );
-		$rule = substr( $rule, 0, -3 );
+		$rule     = key( $rules );
 
+		anspress()->question_rule = array(
+			'rule'    => substr( $rule, 0, -3 ),
+			'rewrite' => reset( $rules ),
+		);
+	}
+
+	/**
+	 * Rewrite rules.
+	 *
+	 * @return array
+	 */
+	public static function rewrites() {
+		global $wp_rewrite;
+
+		$rule         = anspress()->question_rule['rule'];
+		$rewrite      = anspress()->question_rule['rewrite'];
+		$all_rules    = [];
 		$base_page_id = ap_opt( 'base_page' );
-		$slug = ap_base_page_slug() . '/';
-		$lang_rule = '';
+		$slug         = ap_base_page_slug() . '/';
+		$lang_rule    = '';
 		$lang_rewrite = '';
 
 		// Support polylang permalink.
@@ -146,32 +161,7 @@ class AnsPress_Rewrite {
 			self::$counter = 1;
 		}
 
-		anspress()->rewrites = $ap_rules;
-	}
-
-	/**
-	 * Rewrite rules.
-	 *
-	 * @return array
-	 */
-	public static function rewrites() {
-		global $wp_rewrite;
-
-		$new_rules  = anspress()->rewrites;
-		$lang       = '';
-		$lang_rule  = '';
-		$lang_index = 0;
-
-		// Support polylang permalink.
-		if ( function_exists( 'pll_languages_list' ) ) {
-			if ( ! empty( pll_languages_list() ) ) {
-				$lang       = '(' . implode( '|', pll_languages_list() ) . ')/';
-				$lang_rule  = '&lang=$matches[#]';
-				$lang_index = 1;
-			}
-		}
-
-		$wp_rewrite->rules = ap_array_insert_after( $wp_rewrite->rules, 'type/([^/]+)/?$', $new_rules );
+		$wp_rewrite->rules = ap_array_insert_after( $wp_rewrite->rules, 'type/([^/]+)/?$', $ap_rules );
 		return $wp_rewrite->rules;
 	}
 
