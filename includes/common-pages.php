@@ -49,7 +49,7 @@ class AnsPress_Common_Pages {
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
 		anspress()->questions = $questions = new Question_Query( $args );
-		ap_get_template_part( 'question-list' );
+		ap_get_template_part( 'archive' );
 	}
 
 	/**

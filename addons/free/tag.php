@@ -50,8 +50,7 @@ class AnsPress_Tag {
 		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
-		anspress()->add_filter( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
-		anspress()->add_filter( 'get_terms', __CLASS__, 'get_terms', 10, 3 );
+		//anspress()->add_filter( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
 		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
@@ -63,7 +62,9 @@ class AnsPress_Tag {
 		// List filtering.
 		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
 		anspress()->add_action( 'ap_ajax_load_filter_tag', __CLASS__, 'load_filter_tag' );
+		anspress()->add_action( 'ap_ajax_load_filter_tags_order', __CLASS__, 'load_filter_tags_order' );
 		anspress()->add_filter( 'ap_list_filter_active_tag', __CLASS__, 'filter_active_tag', 10, 2 );
+		anspress()->add_filter( 'ap_list_filter_active_tags_order', __CLASS__, 'filter_active_tags_order', 10, 2 );
 	}
 
 	/**
@@ -114,7 +115,8 @@ class AnsPress_Tag {
 		$offset       = $per_page * ( $paged - 1);
 
 		$tag_args = array(
-			'ap_tags_query' => 'num_rows',
+			'taxonomy' => 'question_tag',
+			'ap_tags_query' => true,
 			'parent'        => 0,
 			'number'        => $per_page,
 			'offset'        => $offset,
@@ -122,11 +124,11 @@ class AnsPress_Tag {
 			'order'         => 'DESC',
 		);
 
-		$ap_sort = ap_isset_post_value( 'ap_sort', 'count' );
+		$ap_sort = ap_isset_post_value( 'tags_order', 'count' );
 
 		if ( 'new' === $ap_sort ) {
 			$tag_args['orderby'] = 'id';
-			$tag_args['order']      = 'ASC';
+			$tag_args['order']   = 'DESC';
 		} elseif ( 'name' === $ap_sort ) {
 			$tag_args['orderby']    = 'name';
 			$tag_args['order']      = 'ASC';
@@ -134,21 +136,25 @@ class AnsPress_Tag {
 			$tag_args['orderby'] = 'count';
 		}
 
-		if ( isset( $_GET['ap_s'] ) ) {
-			$tag_args['search'] = sanitize_text_field( $_GET['ap_s'] );
+		if ( ap_isset_post_value( 'ap_s' ) ) {
+			$tag_args['search'] = ap_sanitize_unslash( 'ap_s', 'r' );
 		}
 
 		/**
-		 * FILTER: ap_tags_shortcode_args
-		 * Filter applied before getting categories.
+		 * Filter applied before getting tags.
 		 *
 		 * @var array
 		 */
 		$tag_args = apply_filters( 'ap_tags_shortcode_args', $tag_args );
 
-		$question_tags 		= get_terms( 'question_tag' , $tag_args );
-		$total_terms        = (int) wp_count_terms( 'question_tag', [ 'hide_empty' => false, 'parent' => 0 ] );
-		$ap_max_num_pages   = ceil( $total_terms / $per_page );
+		$query 		          = new WP_Term_Query( $tag_args );
+
+		// Count terms.
+		$tag_args['fields'] = 'count';
+		$found_query        = new WP_Term_Query( $tag_args );
+		$tags_rows_found    = $found_query->get_terms();
+		$ap_max_num_pages   = ceil( $tags_rows_found / $per_page );
+		$question_tags      = $query->get_terms();
 
 		include ap_get_theme_location( 'addons/tag/tags.php' );
 	}
@@ -467,7 +473,7 @@ class AnsPress_Tag {
 	}
 
 	/**
-	 * Modify terms mysql quries.
+	 * Modify terms mysql query.
 	 *
 	 * @param array $query Query parameters.
 	 * @param array $taxonomies Available taxonomies.
@@ -475,28 +481,11 @@ class AnsPress_Tag {
 	 * @return array
 	 */
 	public static function terms_clauses( $query, $taxonomies, $args ) {
-		if ( isset( $args['ap_tags_query'] ) && 'num_rows' === $args['ap_tags_query'] ) {
+		if ( isset( $args['ap_tags_query'] ) ) {
 			$query['fields'] = 'SQL_CALC_FOUND_ROWS ' . $query['fields'];
 		}
 
-		if ( in_array( 'question_tag', $taxonomies, true ) && isset( $args['ap_query'] ) && 'tags_subscription' === $args['ap_query'] ) {
-			global $wpdb;
-
-			$query['join']     = $query['join'].' INNER JOIN ' . $wpdb->prefix . 'ap_meta apmeta ON t.term_id = apmeta.apmeta_actionid';
-			$query['where']    = $query['where'] . " AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_param='tag' AND apmeta.apmeta_userid='" . $args['user_id'] . "'";
-		}
-
 		return $query;
-	}
-
-	public static function get_terms( $terms, $taxonomies, $args ) {
-		if ( isset( $args['ap_tags_query'] ) && $args['ap_tags_query'] == 'num_rows' ) {
-			global $tags_rows_found,  $wpdb;
-
-			$tags_rows_found = $wpdb->get_var( apply_filters( 'ap_get_terms_found_rows', 'SELECT FOUND_ROWS()', $terms, $taxonomies, $args ) );
-			// wp_cache_set( SELF::cache_key.'_count', SELF::total_count, 'anspress-question-answer' );
-		}
-		return $terms;
 	}
 
 	/**
@@ -585,10 +574,16 @@ class AnsPress_Tag {
 
 		if ( ! isset( $wp->query_vars['ap_tags'] ) ) {
 			$filters['tag'] = array(
-				'title' => __( 'Tag', 'anspress-question-answer' ),
-				'search' => true,
+				'title'    => __( 'Tag', 'anspress-question-answer' ),
+				'search'   => true,
 				'multiple' => true,
 			);
+		}
+
+		if ( 'tags' === ap_current_page() ) {
+			return array( 'tags_order' => array(
+				'title'    => __( 'Order', 'anspress-question-answer' ),
+			) );
 		}
 
 		return $filters;
@@ -608,6 +603,26 @@ class AnsPress_Tag {
 			'success'  => true,
 			'items'    => ap_get_tag_filter( $search ),
 			'multiple' => true,
+			'nonce'    => wp_create_nonce( 'filter_' . $filter ),
+		));
+	}
+
+	/**
+	 * Ajax callback for loading order by filter for tags.
+	 *
+	 * @since 4.0.0
+	 */
+	public static function load_filter_tags_order() {
+		$filter = ap_sanitize_unslash( 'filter', 'r' );
+		check_ajax_referer( 'filter_' . $filter, '__nonce' );
+
+		ap_ajax_json( array(
+			'success'  => true,
+			'items'    => array(
+				[ 'key' => 'tags_order', 'value' => 'popular', 'label' => __( 'Popular', 'anspress-question-answer' ) ],
+				[ 'key' => 'tags_order', 'value' => 'new', 'label' => __( 'New', 'anspress-question-answer' ) ],
+				[ 'key' => 'tags_order', 'value' => 'name', 'label' => __( 'Name', 'anspress-question-answer' ) ],
+			),
 			'nonce'    => wp_create_nonce( 'filter_' . $filter ),
 		));
 	}
@@ -642,6 +657,26 @@ class AnsPress_Tag {
 				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : ''  ) . '</span>';
 			}
 		}
+	}
+
+	/**
+	 * Output active tags_order in filter
+	 *
+	 * @since 4.1.0
+	 */
+	public static function filter_active_tags_order( $active, $filter ) {
+		$tags_order = ap_get_current_list_filters( 'tags_order' );
+		$tags_order = ! empty ( $tags_order ) ? $tags_order : 'popular';
+
+		$orders = array(
+			'popular' => __( 'Popular', 'anspress-question-answer' ),
+			'new'     => __( 'New', 'anspress-question-answer' ),
+			'name'    => __( 'Name', 'anspress-question-answer' ),
+		);
+
+		$active = isset( $orders[ $tags_order ] ) ? $orders[ $tags_order ] : '';
+
+		return ': <span class="ap-filter-active">' . $active . '</span>';
 	}
 
 	/**

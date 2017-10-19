@@ -75,5 +75,9 @@ function ap_get_question( $question_id ) {
 function ap_questions_the_pagination( $paged = false ) {
 	global $questions;
 
+	if ( in_array( ap_current_page(), [ 'category', 'tag' ], true ) ) {
+		$paged = get_query_var( 'ap_paged' );
+	}
+
 	ap_pagination( $paged, $questions->max_num_pages );
 }

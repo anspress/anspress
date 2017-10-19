@@ -1095,8 +1095,12 @@ function ap_isset_post_value( $var, $default = '' ) {
  * @since  4.0.0
  */
 function ap_get_current_list_filters( $filter = null ) {
-	$get_filters = [ 'order_by' => ap_opt( 'question_order_by' ) ];
+	$get_filters = [];
 	$filters = array_keys( ap_get_list_filters() );
+
+	if ( in_array( 'order_by', $filters, true ) ) {
+		$get_filters['order_by'] = ap_opt( 'question_order_by' );
+	}
 
 	if ( empty( $filters ) || ! is_array( $filters ) ) {
 		$filters = [];

@@ -1,42 +1,35 @@
-.anspress {
+#anspress {
   .ap-term-tag-box {
     list-style: none;
     padding: 0;
-    margin: 0 -15px;
+    margin: 0 -1px -1px 0;
+    display: flex;
+    flex-wrap: wrap;
+    border: solid 1px #ddd;
     >li {
-      border-bottom: 1px dashed #e4e4e4;
-      float: left;
-      margin: 0 0 20px;
-      padding: 0 0 10px;
-      width: 25%;
+      margin: 0;
+      padding: 0;
+      border-right: solid 1px #ddd;
+      border-bottom: solid 1px #ddd;
+      flex: 1 0 33.33%;
       .ap-tags-item {
-        padding: 0 15px;
+        padding: 20px 10px;
+        text-align: center;
       }
-      .ap-tagq-count {
-        color: #888888;
-        font-size: 12px;
-        font-style: italic;
-        line-height: 28px;
-        text-align: right;
-      }
-      .term-title {
-        background: none repeat scroll 0 0 padding-box #f4f4f4;
-        border: 1px solid #ddd;
-        border-radius: 2px;
-        color: #333;
-        margin-right: 10px;
-        padding: 3px 12px;
-        text-decoration: none;
-        text-transform: lowercase;
-      }
-      .ap-taxo-description {
-        color: #888888;
-        font-size: 12px;
-        height: 65px;
-        line-height: 21px;
-        margin-top: 15px;
-        overflow: hidden;
-      }
+    }
+    .ap-tagq-count {
+      font-style: italic;
+      display: block;
+      font-size: 12px;
+      margin-top: 6px;
+      color: #777;
+    }
+    .ap-term-title {
+      text-decoration: none;
+      text-transform: lowercase;
+      font-size: inherit;
+    }
+    .ap-taxo-description {
     }
   }
   .sub-taxo-label {

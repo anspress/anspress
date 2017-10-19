@@ -855,3 +855,31 @@ function ap_sort_order_callback( $a, $b ) {
 
 	return ( $a['order'] < $b['order'] ) ? -1 : 1;
 }
+
+/**
+ * Output tags order tabs.
+ *
+ * @deprecated 4.1.0
+ */
+function ap_tags_tab() {
+	_deprecated_function( __FUNCTION__, '4.1.0', 'ap_list_filters' );
+
+	$active = isset( $_GET['ap_sort'] ) ? $_GET['ap_sort'] : 'popular';
+
+	$link = ap_get_link_to( 'tags' ).'?ap_sort=';
+
+	?>
+    <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
+        <li class="<?php echo $active == 'popular' ? ' active' : ''; ?>"><a href="<?php echo $link.'popular'; ?>"><?php _e( 'Popular', 'anspress-question-answer' ); ?></a></li>
+        <li class="<?php echo $active == 'new' ? ' active' : ''; ?>"><a href="<?php echo $link.'new'; ?>"><?php _e( 'New', 'anspress-question-answer' ); ?></a></li>
+        <li class="<?php echo $active == 'name' ? ' active' : ''; ?>"><a href="<?php echo $link.'name'; ?>"><?php _e( 'Name', 'anspress-question-answer' ); ?></a></li>
+        <?php
+			/**
+			 * ACTION: ap_tags_tab
+			 * Used to hook into tags page tab
+			 */
+			do_action( 'ap_tags_tab', $active );
+		?>
+    </ul>
+  <?php
+}
