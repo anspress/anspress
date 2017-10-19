@@ -50,7 +50,6 @@ class AnsPress_Tag {
 		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
-		//anspress()->add_filter( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
 		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
@@ -291,7 +290,7 @@ class AnsPress_Tag {
 	 * @since 2.0
 	 */
 	public static function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id, 'question_tag' ) && ! is_singular( 'question' ) ) {
+		if ( ap_post_have_terms( $question_id, 'question_tag' ) ) {
 			$metas['tags'] = ap_question_tags_html( array( 'label' => '<i class="apicon-tag"></i>', 'show' => 1 ) ); }
 
 		return $metas;
@@ -470,22 +469,6 @@ class AnsPress_Tag {
 		}
 
 		return $navs;
-	}
-
-	/**
-	 * Modify terms mysql query.
-	 *
-	 * @param array $query Query parameters.
-	 * @param array $taxonomies Available taxonomies.
-	 * @param array $args Arguments.
-	 * @return array
-	 */
-	public static function terms_clauses( $query, $taxonomies, $args ) {
-		if ( isset( $args['ap_tags_query'] ) ) {
-			$query['fields'] = 'SQL_CALC_FOUND_ROWS ' . $query['fields'];
-		}
-
-		return $query;
 	}
 
 	/**

@@ -460,9 +460,10 @@ function ap_question_metas( $question_id = false ) {
 		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
-	/*
-     * FILTER: ap_display_question_meta
-     * Used to filter question display meta
+	/**
+   * Used to filter question display meta.
+	 *
+	 * @param array $metas
 	 */
 	$metas = apply_filters( 'ap_display_question_metas', $metas, $question_id );
 

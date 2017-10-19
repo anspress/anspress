@@ -346,7 +346,7 @@ class AnsPress_Category {
 	 * @since 	1.0
 	 */
 	public static function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id ) && ! is_singular( 'question' ) ) {
+		if ( ap_post_have_terms( $question_id ) ) {
 			$metas['categories'] = ap_question_categories_html( array( 'label' => '<i class="apicon-category"></i>' ) );
 		}
 
