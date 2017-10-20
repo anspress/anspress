@@ -1331,7 +1331,11 @@ function ap_user_display_name( $args = array() ) {
 		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
 	);
 
-	if ( ! is_array( $args ) ) {
+	if ( $args instanceof WP_Comment ) {
+		$defaults['user_id'] = $args->user_id;
+		$defaults['anonymous_label'] = $args->comment_author;
+		$args = $defaults;
+	} elseif ( ! is_array( $args ) ) {
 		$defaults['user_id'] = $args;
 		$args = $defaults;
 	} else {

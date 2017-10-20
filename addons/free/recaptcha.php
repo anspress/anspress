@@ -49,6 +49,7 @@ class AnsPress_reCcaptcha {
 		anspress()->add_action( 'ap_form_addon-free_recaptcha', __CLASS__, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_comment_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 	}
 
 	/**
