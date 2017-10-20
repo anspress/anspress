@@ -412,7 +412,7 @@ class AnsPress_Reputation_Hooks {
 	 * Display reputation tab content in AnsPress author page.
 	 */
 	public static function reputation_page() {
-		$user_id = get_query_var( 'ap_user_id' );
+		$user_id = get_queried_object_id();
 
 		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
 		include ap_get_theme_location( 'addons/reputation/index.php' );

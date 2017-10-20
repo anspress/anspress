@@ -1,14 +1,14 @@
 <?php
 /**
- * User profile template
+ * User profile template.
  * User profile index template.
  *
- * @link https://anspress.io
- * @since 4.0.0
+ * @link    https://anspress.io
+ * @since   4.0.0
  * @package AnsPress
  */
 
-	$user_id = get_query_var( 'ap_user_id' );
+	$user_id = get_queried_object_id();
 	$current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 ?>
 <div id="ap-user" class="ap-user <?php echo is_active_sidebar( 'ap-user' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
@@ -32,9 +32,9 @@
 	<?php //do_action( 'ap_user_content' ); ?>
 
 </div>
-<?php if ( is_active_sidebar( 'ap-user' ) && is_anspress()){ ?>
+
+<?php if ( is_active_sidebar( 'ap-user' ) && is_anspress()) : ?>
 	<div class="ap-question-right ap-col-3">
 		<?php dynamic_sidebar( 'ap-user' ); ?>
 	</div>
-<?php } ?>
-
+<?php endif; ?>

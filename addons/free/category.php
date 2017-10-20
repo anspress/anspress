@@ -113,11 +113,6 @@ class AnsPress_Category {
 
 			include( ap_get_theme_location( 'addons/category/category.php' ) );
 		}
-		// 	global $wp_query;
-		// 	$wp_query->set_404();
-		// 	status_header( 404 );
-		// 	include ap_get_theme_location( 'not-found.php' );
-		// }
 	}
 
 	/**

@@ -1393,7 +1393,7 @@ function ap_user_display_name( $args = array() ) {
  * Return Link to user pages.
  *
  * @param  boolean|integer $user_id    user id.
- * @param  string          $sub        page slug.
+ * @param  string|array    $sub        page slug.
  * @return string
  * @since  unknown
  */
@@ -1404,21 +1404,27 @@ function ap_user_link( $user_id = false, $sub = false ) {
 		$user_id = get_the_author_meta( 'ID' );
 	}
 
-	if ( $user_id < 1 ) {
-		$link = '#anonymousUser';
+	if ( empty( $user_id ) && is_author() ) {
+		$user_id = get_queried_object_id();
+	}
+
+	if ( $user_id < 1 && empty( $user_id ) ) {
+		$link = '#/user/anonymous';
+	} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
+		$user = get_user_by( 'id', $user_id );
+		$slug = get_option( 'ap_user_path' );
+		$link = home_url( $slug ) . '/' . $user->user_login . '/';
 	} else {
-		if ( function_exists( 'bp_core_get_userlink' ) ) {
-			return bp_core_get_userlink( $user_id, false, true );
-		} elseif ( function_exists( 'userpro' ) ) {
-			global $userpro;
-			return $userpro->permalink( $user_id );
-		}
-
-		if ( empty( $user_id ) ) {
-			return false;
-		}
-
 		$link = get_author_posts_url( $user_id );
+	}
+
+	// Append sub.
+	if ( ! empty( $sub ) ) {
+		if ( is_array( $sub ) ) {
+			$link = rtrim( $link, '/' ) . implode( '/', $sub ) . '/';
+		} else {
+			$link = $link . rtrim( $sub, '/' ) . '/';
+		}
 	}
 
 	return apply_filters( 'ap_user_link', $link, $user_id, $sub );

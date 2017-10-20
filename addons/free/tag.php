@@ -31,8 +31,6 @@ class AnsPress_Tag {
 	 * Initialize the class
 	 */
 	public static function init() {
-		SELF::includes();
-
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
 
@@ -64,13 +62,6 @@ class AnsPress_Tag {
 		anspress()->add_action( 'ap_ajax_load_filter_tags_order', __CLASS__, 'load_filter_tags_order' );
 		anspress()->add_filter( 'ap_list_filter_active_tag', __CLASS__, 'filter_active_tag', 10, 2 );
 		anspress()->add_filter( 'ap_list_filter_active_tags_order', __CLASS__, 'filter_active_tags_order', 10, 2 );
-	}
-
-	/**
-	 * Include required files
-	 */
-	public static function includes() {
-
 	}
 
 	/**

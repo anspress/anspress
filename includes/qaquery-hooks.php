@@ -159,27 +159,4 @@ class AP_QA_Query_Hooks {
 
 		return $posts;
 	}
-
-	/**
-	 * Filter to override default WP method to count total found posts
-	 * using SQL_CALC_FOUND_ROWS. Prevent AnsPress quries to use SQL_CALC_FOUND_ROWS
-	 * which is an old MySql function. Query takes too much time SQL_CALC_FOUND_ROWS in a site
-	 * where there are more then a million posts.
-	 */
-	public static function posts_pre_query( $query = null, $instance) {
-		if ( isset( $instance->query['ap_query'] ) ) {
-			global $wpdb;
-
-			$instance->request = str_replace( 'SQL_CALC_FOUND_ROWS', '', $instance->request );
-
-			$instance->query_vars['no_found_rows'] = 1;
-			$instance->found_posts = $wpdb->get_var( "SELECT count({$wpdb->posts}.ID) FROM {$wpdb->posts} {$instance->count_request['join']} WHERE 1=1 {$instance->count_request['where']}" );
-
-			$instance->found_posts = apply_filters_ref_array( 'found_posts', array( $instance->found_posts, &$instance ) );
-
-			$posts_per_page = ( ! empty( $instance->query_vars['posts_per_page'] ) ? $instance->query_vars['posts_per_page'] : get_option( 'posts_per_page' ) );
-			$instance->max_num_pages = ceil( $instance->found_posts / $posts_per_page );
-		}
-
-	}
 }

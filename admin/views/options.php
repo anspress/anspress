@@ -41,7 +41,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 	$form = anspress()->get_form( $form_name );
 
 	if ( ! $form->have_errors() ) {
-		$values = anspress()->get_form( $form_name )->get_values();
+		$values = $form->get_values();
 
 		$options = get_option( 'anspress_opt', [] );
 
@@ -55,6 +55,15 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 		// Flush rewrite rules.
 		if ( 'form_options_general_pages' === $form_name ) {
+			$main_pages = array_keys( ap_main_pages() );
+
+			foreach ( $main_pages as $slug ) {
+				if ( isset( $values[ $slug ] ) ) {
+					$_post = get_post( $values[ $slug ] );
+					ap_opt( $slug . '_id', $_post->post_name );
+				}
+			}
+
 			ap_opt( 'ap_flush', 'true' );
 			flush_rewrite_rules();
 		}
