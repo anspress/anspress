@@ -23,7 +23,7 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 		<div class="comment-inner">
 			<div class="comment-header">
 				<a href="<?php echo esc_url( ap_user_link( $comment->user_id ) ); ?>" class="ap-comment-author" itemprop="creator" itemscope itemtype="http://schema.org/Person">
-					<span itemprop="name"><?php echo ap_user_display_name( $comment->user_id ); ?></span>
+					<span itemprop="name"><?php echo ap_user_display_name( $comment ); ?></span>
 				</a> commented
 
 				<a href="<?php comment_link(); ?>" class="ap-comment-time">
