@@ -787,8 +787,10 @@ class AnsPress_Admin {
 		add_filter( 'ap_form_options_general_pages', [ __CLASS__, 'options_general_pages' ] );
 		add_filter( 'ap_form_options_general_permalinks', [ __CLASS__, 'options_general_permalinks' ] );
 		add_filter( 'ap_form_options_general_layout', [ __CLASS__, 'options_general_layout' ] );
-		add_filter( 'ap_form_options_postscomments_posts', [ __CLASS__, 'options_postscomments_posts' ] );
-		add_filter( 'ap_form_options_uac', [ __CLASS__, 'options_uac' ] );
+		add_filter( 'ap_form_options_postscomments', [ __CLASS__, 'options_postscomments' ] );
+		add_filter( 'ap_form_options_uac_reading', [ __CLASS__, 'options_uac_reading' ] );
+		add_filter( 'ap_form_options_uac_posting', [ __CLASS__, 'options_uac_posting' ] );
+		add_filter( 'ap_form_options_uac_other', [ __CLASS__, 'options_uac_other' ] );
 	}
 
 	/**
@@ -967,19 +969,16 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Register AnsPress user access control options.
+	 * Register UAC reading options.
 	 *
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function options_uac() {
+	public static function options_uac_reading() {
 		$opt = ap_opt();
 
 		$form = array(
 			'fields' => array(
-				'sep1' => array(
-					'html'  => '<h3>' . __( 'Visibility', 'anspress-question-answer' ) . '<p>' . __( 'Control visibility of posts, comments, etc.', 'anspress-question-answer' ) . '</p></h3>',
-				),
 				'read_question_per' => array(
 					'label' => __( 'Who can read question?', 'anspress-question-answer' ),
 					'desc'  => __( 'Set who can view or read a question.', 'anspress-question-answer' ),
@@ -1013,9 +1012,23 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_read_comment capability', 'anspress-question-answer' ),
 					),
 				),
-				'sep2' => array(
-					'html'  => '<h3>' . __( 'Posting', 'anspress-question-answer' ) . '<p>' . __( 'Control posting permissions.', 'anspress-question-answer' ) . '</p></h3>',
-				),
+			),
+		);
+
+		return $form;
+	}
+
+	/**
+	 * Register AnsPress user access control options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_uac_posting() {
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
 				'post_question_per' => array(
 					'label' => __( 'Who can post question?', 'anspress-question-answer' ),
 					'desc'  => __( 'Set who can submit a question from frontend.', 'anspress-question-answer' ),
@@ -1060,34 +1073,6 @@ class AnsPress_Admin {
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_comment capability', 'anspress-question-answer' ),
 					),
-				),
-				'allow_upload' => array(
-					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
-					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['allow_upload'],
-				),
-				'uploads_per_post' => array(
-					'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
-					'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
-					'value'  => $opt['uploads_per_post'],
-				),
-				'max_upload_size' => array(
-					'label' => __( 'Max upload size', 'anspress-question-answer' ),
-					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
-					'value' => $opt['max_upload_size'],
-				),
-				'allow_private_posts' => array(
-					'label' => __( 'Allow private posts', 'anspress-question-answer' ),
-					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['allow_private_posts'],
-				),
-				'multiple_answers' => array(
-					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
-					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['multiple_answers'],
 				),
 				'new_question_status' => array(
 					'label'     => __( 'Status of new question', 'anspress-question-answer' ),
@@ -1152,12 +1137,57 @@ class AnsPress_Admin {
 	}
 
 	/**
+	 * Register other UAC options.
+	 *
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function options_uac_other() {
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
+				'allow_upload' => array(
+					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['allow_upload'],
+				),
+				'uploads_per_post' => array(
+					'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
+					'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
+					'value'  => $opt['uploads_per_post'],
+				),
+				'max_upload_size' => array(
+					'label' => __( 'Max upload size', 'anspress-question-answer' ),
+					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
+					'value' => $opt['max_upload_size'],
+				),
+				'allow_private_posts' => array(
+					'label' => __( 'Allow private posts', 'anspress-question-answer' ),
+					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['allow_private_posts'],
+				),
+				'multiple_answers' => array(
+					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
+					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['multiple_answers'],
+				),
+			),
+		);
+
+		return $form;
+	}
+
+	/**
 	 * Register AnsPress QA options.
 	 *
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function options_postscomments_posts() {
+	public static function options_postscomments() {
 		$opt = ap_opt();
 
 		$form = array(

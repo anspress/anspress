@@ -944,9 +944,13 @@ ul.ap-meta-list {
   margin-top: 10px;
   margin-bottom: 20px;
   a{
-    border-right: solid 1px #bebebe;
-    margin-right: 10px;
     padding-right: 10px;
+    background: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 12px;
+    margin-right: 10px;
+    border-radius: 4px;
     &:last-child{
       border: none;
     }

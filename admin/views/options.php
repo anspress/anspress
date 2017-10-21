@@ -26,6 +26,57 @@ if ( ! current_user_can( 'manage_options' ) ) {
  */
 do_action( 'ap_before_options_page' );
 
+$all_options = array(
+	'general' => array(
+		'label' => __( 'General', 'anspress-question-answer' ),
+		'groups' => array(
+			'pages' => array(
+				'label' => __( 'Pages', 'anspress-question-answer' ),
+			),
+			'permalinks' => array(
+				'label' => __( 'Permalinks', 'anspress-question-answer' ),
+			),
+			'layout' => array(
+				'label' => __( 'Layout', 'anspress-question-answer' ),
+			),
+		),
+	),
+	'postscomments' => array(
+		'label' => __( 'Posts & Comments', 'anspress-question-answer' ),
+	),
+	'uac' => array(
+		'label' => __( 'User Access Control', 'anspress-question-answer' ),
+		'groups' => array(
+			'reading' => array(
+				'label' => __( 'Reading Permissions', 'anspress-question-answer' ),
+			),
+			'posting' => array(
+				'label' => __( 'Posting Permissions', 'anspress-question-answer' ),
+			),
+			'other' => array(
+				'label' => __( 'Other Permissions', 'anspress-question-answer' ),
+			),
+			'roles' => array(
+				'label' => __( 'Role Editor', 'anspress-question-answer' ),
+				'template' => 'roles.php',
+			),
+		),
+	),
+	'tools' => array(
+		'label' => __( 'Tools', 'anspress-question-answer' ),
+		'groups' => array(
+			're-count' => array(
+				'label' => __( 'Re-count', 'anspress-question-answer' ),
+				'template' => 'recount.php',
+			),
+			'uninstall' => array(
+				'label' => __( 'Uninstall', 'anspress-question-answer' ),
+				'template' => 'uninstall.php',
+			),
+		)
+	),
+);
+
 /**
  * Action used to register AnsPress options.
  *
@@ -74,12 +125,6 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 ?>
 
-<?php if ( true === $updated ) :   ?>
-	<div class="notice notice-success is-dismissible">
-		<p><?php esc_html_e( 'AnsPress option updated successfully!', 'anspress-question-answer' ); ?></p>
-	</div>
-<?php endif; ?>
-
 <div id="anspress" class="wrap">
 	<h2 class="admin-title">
 		<?php esc_html_e( 'AnsPress Options', 'anspress-question-answer' ); ?>
@@ -107,23 +152,8 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 							<?php
 								$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
 
-								$tab_links = array(
-									'general'       => __( 'General', 'anspress-question-answer' ),
-									'postscomments' => __( 'Posts & Comments', 'anspress-question-answer' ),
-									'uac'           => __( 'User Access Control', 'anspress-question-answer' ),
-									'tools'         => __( 'Tools', 'anspress-question-answer' ),
-								);
-
-								/**
-								 * Hook for modifying AnsPress options tab links.
-								 *
-								 * @param array $tab_links Tab links.
-								 * @since 4.1.0
-								 */
-								$tab_links = apply_filters( 'ap_options_tab_links', $tab_links );
-
-								foreach ( $tab_links as $key => $name ) {
-									echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $name ) . '</a>';
+								foreach ( $all_options as $key => $args ) {
+									echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $args['label'] ) . '</a>';
 								}
 
 								/**
@@ -144,101 +174,62 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 						$action_url = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
 					?>
 					<div class="ap-group-options">
-						<?php if ( 'general' === $active_tab ) : ?>
-							<p class="ap-tab-subs">
-								<a href="#pages-options"><?php esc_attr_e( 'Pages', 'anspress-question-answer' ); ?></a>
-								<a href="#permalinks-options"><?php esc_attr_e( 'Permalink & Titles', 'anspress-question-answer' ); ?></a>
-								<a href="#layout-options"><?php esc_attr_e( 'Layout Options', 'anspress-question-answer' ); ?></a>
-							</p>
-							<div class="postbox">
-								<h3 id="pages-options"><?php esc_attr_e( 'Pages', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php
-										anspress()->get_form( 'options_general_pages' )->generate( array(
-											'form_action' => $action_url . '#form_options_general_pages',
-											'ajax_submit' => false,
-										) );
-									?>
-								</div>
-							</div>
-							<div class="postbox">
-								<h3 id="permalinks-options"><?php esc_attr_e( 'Permalinks & Titles', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php
-										anspress()->get_form( 'options_general_permalinks' )->generate( array(
-											'form_action' => $action_url . '#form_options_general_permalinks',
-											'ajax_submit' => false,
-										) );
-									?>
-								</div>
-							</div>
-							<div class="postbox">
-								<h3 id="layout-options"><?php esc_attr_e( 'Layout Options', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php
-										anspress()->get_form( 'options_general_layout' )->generate( array(
-											'form_action' => $action_url . '#form_options_general_layout',
-											'ajax_submit' => false,
-										) );
-									?>
-								</div>
-							</div>
-						<?php elseif ( 'postscomments' === $active_tab ) : ?>
-							<div class="postbox">
-								<h3><?php esc_attr_e( 'Posts', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php
-										anspress()->get_form( 'options_postscomments_posts' )->generate( array(
-											'form_action' => $action_url . '#form_options_postscomments_posts',
-											'ajax_submit' => false,
-										) );
-									?>
-								</div>
-							</div>
-						<?php elseif ( 'uac' === $active_tab ) : ?>
-							<p class="ap-tab-subs">
-								<a href="#uac"><?php esc_attr_e( 'User Access Control', 'anspress-question-answer' ); ?></a>
-								<a href="#user-roles"><?php esc_attr_e( 'User roles', 'anspress-question-answer' ); ?></a>
-							</p>
-							<div class="postbox">
-								<h3 id="uac"><?php esc_attr_e( 'User Access Control', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php
-										anspress()->get_form( 'options_uac' )->generate( array(
-											'form_action' => $action_url . '#form_options_uac',
-											'ajax_submit' => false,
-										) );
-									?>
-								</div>
-							</div>
 
-							<div class="postbox">
-								<h3 id="user-roles"><?php esc_attr_e( 'User roles', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php include ANSPRESS_DIR . '/admin/views/roles.php'; ?>
-								</div>
-							</div>
+						<?php if ( isset( $all_options[ $active_tab ] ) ) : ?>
 
-						<?php elseif( 'tools' === $active_tab ): ?>
-							<p class="ap-tab-subs">
-								<a href="#re-count"><?php esc_attr_e( 'Re-count', 'anspress-question-answer' ); ?></a>
-								<a href="#uninstall"><?php esc_attr_e( 'Uninstall', 'anspress-question-answer' ); ?></a>
-							</p>
-							<?php global $wpdb; ?>
+							<?php if ( ! empty( $all_options[ $active_tab ]['groups'] ) ) : ?>
+								<p class="ap-tab-subs">
+									<?php foreach ( $all_options[ $active_tab ]['groups'] as $groupkey => $args ) : ?>
+										<a href="#<?php echo $active_tab . '-' . $groupkey ; ?>"><?php echo esc_attr( $args['label'] ); ?></a>
+									<?php endforeach; ?>
+								</p>
+							<?php endif; ?>
 
-							<div class="postbox">
-								<h3 id="re-count"><?php esc_attr_e( 'Re-count', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php include ANSPRESS_DIR . '/admin/views/recount.php'; ?>
+							<?php if ( true === $updated ) :   ?>
+								<div class="notice notice-success is-dismissible">
+									<p><?php esc_html_e( 'AnsPress option updated successfully!', 'anspress-question-answer' ); ?></p>
 								</div>
-							</div>
+							<?php endif; ?>
 
-							<div class="postbox">
-								<h3 id="uninstall"><?php esc_attr_e( 'Uninstall - clear all AnsPress data', 'anspress-question-answer' ); ?></h3>
-								<div class="inside">
-									<?php include ANSPRESS_DIR . '/admin/views/uninstall.php'; ?>
+							<?php if ( ! empty( $all_options[ $active_tab ]['groups'] ) ) : ?>
+
+								<?php foreach ( $all_options[ $active_tab ]['groups'] as $groupkey => $args ) : ?>
+									<div class="postbox">
+										<h3 id="<?php echo esc_attr( $active_tab . '-' . $groupkey ); ?>"><?php echo esc_attr( $args['label'] ); ?></h3>
+										<div class="inside">
+											<?php
+											if ( isset( $args['template'] ) ) {
+												include ANSPRESS_DIR . '/admin/views/' . $args['template'];
+											} else {
+												anspress()->get_form( 'options_' . $active_tab . '_' . $groupkey )->generate( array(
+													'form_action' => $action_url . '#form_options_' . $active_tab . '_' . $groupkey,
+													'ajax_submit' => false,
+												) );
+											}
+											?>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							<?php else : ?>
+								<?php $active_option = $all_options[ $active_tab ]; ?>
+								<div class="postbox">
+									<h3 id="pages-options"><?php echo esc_attr( $active_option['label'] ); ?></h3>
+									<div class="inside">
+										<?php
+										if ( isset( $active_option['template'] ) ) {
+											include ANSPRESS_DIR . '/admin/views/' . $active_option['template'];
+										} else {
+											anspress()->get_form( 'options_' . $active_tab )->generate( array(
+												'form_action' => $action_url . '#form_options_' . $active_tab,
+												'ajax_submit' => false,
+											) );
+										}
+										?>
+									</div>
 								</div>
-							</div>
+
+							<?php endif; ?>
+
 						<?php endif; ?>
 
 						<?php

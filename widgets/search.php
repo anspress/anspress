@@ -8,6 +8,7 @@
  * @link https://anspress.io
  * @since 2.0.0
  * @package AnsPress
+ * @subpackage Widget
  */
 
 // If this file is called directly, abort.
