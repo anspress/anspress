@@ -208,8 +208,6 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress-hidden', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
 
-		add_submenu_page( 'anspress-hidden', __( 'Upgrade AnsPress', 'anspress-question-answer' ), __( 'Upgrade AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_upgrade', array( __CLASS__, 'upgrade_page' ) );
-
 	}
 
 	public static function fix_active_admin_menu( $parent_file ) {
@@ -292,15 +290,6 @@ class AnsPress_Admin {
 	 */
 	public static function dashboard_page() {
 		include_once( 'views/dashboard.php' );
-	}
-
-	/**
-	 * Load dashboard page layout.
-	 *
-	 * @since 2.4
-	 */
-	public static function upgrade_page() {
-		include_once( 'views/upgrade.php' );
 	}
 
 	/**
@@ -685,12 +674,6 @@ class AnsPress_Admin {
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
 				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION )
-			],
-			'upgrade' => [
-				'type'    => 'error',
-				'message' => __( 'You must continue to upgrade AnsPress data.', 'anspress-question-answer' ),
-				'button'  => ' <a class="button" href="' . admin_url( 'admin.php?page=anspress_upgrade' ) . '">' . __( 'Upgrade now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'ap_update_helper', false ) && 'admin_page_anspress_upgrade' !== $page->base && $have_updates ),
 			],
 			'missing_pages' => [
 				'type'    => 'error',
