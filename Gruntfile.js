@@ -67,6 +67,12 @@
 				},
 				project: {
 					src: ['package.json']
+				},
+				readme: {
+					options: {
+						prefix: 'Stable tag:\\s+'
+					},
+					src: ['readme.txt']
 				}
 			},
 			sass: {
