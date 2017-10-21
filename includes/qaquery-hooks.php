@@ -159,4 +159,17 @@ class AP_QA_Query_Hooks {
 
 		return $posts;
 	}
+
+	/**
+	 * Modify main query.
+	 *
+	 * @param object $query Wp_Query object.
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function modify_query( $posts, $query ) {
+		if ( $query->is_main_query() && $query->is_search() && 'question' === get_query_var( 'post_type' ) ) {
+			return [ get_post( ap_opt( 'base_page' ) ) ];
+		}
+	}
 }

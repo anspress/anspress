@@ -49,7 +49,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		//anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_archive' );
-		anspress()->add_filter( 'template_include', __CLASS__, 'taxonomy_template' );
+		anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
 	}
 
 	/**
@@ -392,13 +392,13 @@ class AnsPress_Profile_Hooks {
 	}
 
 	/**
-	 * Override taxonomy template.
+	 * Override user page template.
 	 *
 	 * @param string $template Template file.
 	 * @return string
 	 * @since 4.1.0
 	 */
-	public static function taxonomy_template( $template ) {
+	public static function page_template( $template ) {
 		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
 			return locate_template( 'page.php' );
 		}

@@ -30,7 +30,7 @@ class AnsPress_Common_Pages {
 	public static function base_page() {
 		global $questions, $wp;
 
-		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var', false );
+		$keywords   = get_search_query();
 
 		$tax_relation = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
 		$args = array();

@@ -67,50 +67,6 @@ function is_ap_search() {
 }
 
 /**
- * Return current AnsPress page
- *
- * @return string|false
- */
-function ap_current_page_is() {
-	if ( is_anspress() ) {
-		if ( is_question() ) {
-			$template = 'question';
-		} elseif ( is_ask() ) {
-			$template = 'ask';
-		} elseif ( is_question_categories() ) {
-			$template = 'categories';
-		} elseif ( is_question_category() ) {
-			$template = 'category';
-		} elseif ( is_ap_search() ) {
-			$template = 'search';
-		} elseif ( get_query_var( 'ap_page' ) == '' ) {
-			$template = 'base';
-		} else {
-			$template = 'not-found';
-		}
-
-		return apply_filters( 'ap_current_page_is', $template );
-	}
-
-	return false;
-}
-
-/**
- * Get current user page template file
- *
- * @return string template file name.
- */
-function ap_get_current_page_template() {
-	if ( is_anspress() ) {
-		$template = ap_current_page_is();
-
-		return apply_filters( 'ap_current_page_template', $template . '.php' );
-	}
-
-	return 'content-none.php';
-}
-
-/**
  * Get post status.
  *
  * @param boolean|integer $post_id question or answer ID.
@@ -592,6 +548,8 @@ function ap_current_page() {
 		$query_var = 'question';
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
+	} elseif ( is_search() ) {
+		$query_var = 'search';
 	} elseif ( '' === $query_var && ! is_question() ) {
 		$query_var = 'base';
 	}

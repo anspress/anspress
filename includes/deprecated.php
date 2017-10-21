@@ -883,3 +883,52 @@ function ap_tags_tab() {
     </ul>
   <?php
 }
+
+/**
+ * Return current AnsPress page
+ *
+ * @return string|false
+ * @deprecated 4.1.0
+ */
+function ap_current_page_is() {
+	_deprecated_function( __FUNCTION__, '4.1.0' );
+
+	if ( is_anspress() ) {
+		if ( is_question() ) {
+			$template = 'question';
+		} elseif ( is_ask() ) {
+			$template = 'ask';
+		} elseif ( is_question_categories() ) {
+			$template = 'categories';
+		} elseif ( is_question_category() ) {
+			$template = 'category';
+		} elseif ( is_ap_search() ) {
+			$template = 'search';
+		} elseif ( get_query_var( 'ap_page' ) == '' ) {
+			$template = 'base';
+		} else {
+			$template = 'not-found';
+		}
+
+		return apply_filters( 'ap_current_page_is', $template );
+	}
+
+	return false;
+}
+
+/**
+ * Get current user page template file
+ *
+ * @return string template file name.
+ * @deprecated 4.1.0
+ */
+function ap_get_current_page_template() {
+	_deprecated_function( __FUNCTION__, '4.1.0' );
+	if ( is_anspress() ) {
+		$template = ap_current_page_is();
+
+		return apply_filters( 'ap_current_page_template', $template . '.php' );
+	}
+
+	return 'content-none.php';
+}
