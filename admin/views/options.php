@@ -77,6 +77,8 @@ $all_options = array(
 	),
 );
 
+$all_options = apply_filters( 'ap_all_options', $all_options );
+
 /**
  * Action used to register AnsPress options.
  *

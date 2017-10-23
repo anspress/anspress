@@ -66,6 +66,7 @@ class AnsPress_Reputation_Hooks {
 		anspress()->add_filter( 'ap_ajax_load_more_reputation', __CLASS__, 'load_more_reputation' );
 		anspress()->add_filter( 'ap_bp_nav', __CLASS__, 'ap_bp_nav' );
 		anspress()->add_filter( 'ap_bp_page', __CLASS__, 'ap_bp_page', 10, 2 );
+		anspress()->add_filter( 'ap_all_options', __CLASS__, 'ap_all_options', 10, 2 );
 	}
 
 	/**
@@ -85,6 +86,9 @@ class AnsPress_Reputation_Hooks {
 					'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_slug_reputations'],
+				),
+				'reputation_events' => array(
+					'html' => '<p>' . __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ). ' <a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) . '" class="button">' . __( 'Reputation Points' ) . '</a></p>',
 				),
 			),
 		);
@@ -476,14 +480,15 @@ class AnsPress_Reputation_Hooks {
 		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
 		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
+
+	public static function ap_all_options( $all_options ) {
+		$all_options['reputations'] = array(
+			'label'    => __( 'Reputations', 'anspress-question-answer' ),
+			'template' => 'reputation-events.php',
+		);
+
+		return $all_options;
+	}
 }
 
 AnsPress_Reputation_Hooks::init();
-
-/**
- * Option event view.
- */
-function ap_option_events_view() {
-	include ANSPRESS_DIR . '/admin/views/reputation-events.php';
-}
-
