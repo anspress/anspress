@@ -168,7 +168,7 @@ function ap_user_can_ask( $user_id = false ) {
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
- * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID. Updated to use new option post_answer_per. Also removed checking of option only_admin_can_answer.
+ * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID. Updated to use new option post_answer_per. Also removed checking of option only_admin_can_answer. Fixed: anonymous cannot answer if allow op to answer option is unchecked.
  */
 function ap_user_can_answer( $question_id, $user_id = false ) {
 	if ( false === $user_id ) {
@@ -218,7 +218,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == $user_id ) { // loose comparison ok.
+	if ( ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // loose comparison ok.
 		return false;
 	}
 
