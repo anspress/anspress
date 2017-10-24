@@ -794,6 +794,9 @@ class AnsPress_Admin {
 					'order'    => 0,
 					'value'    => $opt['author_credits'],
 				),
+				'sep-warning' => array(
+					'html' => '<div class="ap-uninstall-warning">' . __( 'If you have created main pages manually then make sure to have [anspress] shortcode in all pages.', 'anspress-question-answer' ) . '</div>',
+				),
 			),
 		);
 
