@@ -98,7 +98,6 @@ function ap_default_options() {
 		'close_selected' 								=> true,
 		'moderate_new_question'					=> 'no_mod',
 		'mod_question_point'						=> 10,
-		'categories_per_page'						=> 20,
 		'question_prefix'								=> 'question',
 		'question_text_editor'					=> false,
 		'answer_text_editor'						=> false,

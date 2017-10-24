@@ -161,7 +161,6 @@ class AnsPress_Category {
 			'form_category_orderby'   => 'count',
 			'categories_page_order'   => 'DESC',
 			'categories_page_orderby' => 'count',
-			'categories_page_slug'    => 'categories',
 			'category_page_slug'      => 'category',
 			'categories_per_page'     => 20,
 			'categories_image_height' => 150,
@@ -262,20 +261,10 @@ class AnsPress_Category {
 					),
 					'value' => $opt['categories_page_order'],
 				),
-				'categories_page_slug' => array(
-					'label' 	      => __( 'Categories page slug', 'anspress-question-answer' ),
-					'desc' 		      => __( 'Slug categories page', 'anspress-question-answer' ),
-					'value'         => $opt['categories_page_slug'],
-				),
 				'category_page_slug' => array(
 					'label' 	      => __( 'Category page slug', 'anspress-question-answer' ),
 					'desc' 		      => __( 'Slug for category page', 'anspress-question-answer' ),
 					'value'         => $opt['category_page_slug'],
-				),
-				'categories_page_title' => array(
-					'label' 	      => __( 'Categories title', 'anspress-question-answer' ),
-					'desc' 		      => __( 'Title of the categories page', 'anspress-question-answer' ),
-					'value'         => $opt['categories_page_title'],
 				),
 				'categories_per_page' => array(
 					'label'   => __( 'Category per page', 'anspress-question-answer' ),
