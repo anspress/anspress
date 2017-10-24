@@ -47,8 +47,8 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
-		//anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_archive' );
+		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
+		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 10, 2 );
 		anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
 	}
 
@@ -234,9 +234,9 @@ class AnsPress_Profile_Hooks {
 	public static function page_title( $title ) {
 		if ( 'user' === ap_current_page() ) {
 			SELF::user_pages();
-			$title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
-			$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
-			$page = ap_search_array( anspress()->user_pages, 'slug', $current_tab );
+			$title = ap_user_display_name( AnsPress_Profile_Hooks::current_user_id() );
+			$current_tab = sanitize_title( get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) ) );
+			$page = ap_search_array( anspress()->user_pages, 'rewrite', $current_tab );
 
 			if ( empty( $page ) ) {
 				return $title;
@@ -366,7 +366,7 @@ class AnsPress_Profile_Hooks {
 	 * @since 4.1.0
 	 */
 	public static function ap_current_page( $query_var ) {
-		if ( 'user' === get_query_var( 'ap_page' ) ) {
+		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
 			$query_var = 'user';
 		}
 
@@ -374,23 +374,16 @@ class AnsPress_Profile_Hooks {
 	}
 
 	/**
-	 * Modify main query to user.
+	 * Modify main query.
 	 *
+	 * @param array  $posts  Array of post object.
 	 * @param object $query Wp_Query object.
-	 * @return void
+	 * @return void|array
 	 * @since 4.1.0
 	 */
-	public static function modify_query_archive( $query ) {
+	public static function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() && 'user' === get_query_var( 'ap_page' ) ) {
-			unset( $query->query_vars['author'] );
-
-			if ( $query->is_author() ) {
-				$query->set( 'p', ap_opt( 'user_page' ) );
-				$query->set( 'post_type', 'page' );
-			} else {
-				$query->set_404();
-				status_header( 404 );
-			}
+			return [ get_post( ap_opt( 'base_page' ) ) ];
 		}
 	}
 

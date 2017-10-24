@@ -163,8 +163,9 @@ class AP_QA_Query_Hooks {
 	/**
 	 * Modify main query.
 	 *
+	 * @param array  $posts  Array of post object.
 	 * @param object $query Wp_Query object.
-	 * @return void
+	 * @return void|array
 	 * @since 4.1.0
 	 */
 	public static function modify_query( $posts, $query ) {

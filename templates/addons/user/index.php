@@ -9,7 +9,6 @@
  */
 
 $user_id = self::current_user_id();
-
 $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 ?>
 <div id="ap-user" class="ap-user <?php echo is_active_sidebar( 'ap-user' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
