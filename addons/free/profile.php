@@ -191,7 +191,7 @@ class AnsPress_Profile_Hooks {
 	 * Output user profile menu.
 	 */
 	public static function user_menu( $user_id = false, $class = '' ) {
-		$user_id = false !== $user_id ? $user_id : (int) get_query_var( 'ap_user_id' );
+		$user_id = false !== $user_id ? $user_id : self::current_user_id();
 		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 
@@ -274,11 +274,12 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function question_page() {
 		global $questions;
+
+		$user_id = self::current_user_id();
 		$args['ap_current_user_ignore'] = true;
-		$args['author'] = get_queried_object_id();
+		$args['author'] = $user_id;
 
 		/**
-		* FILTER: ap_authors_questions_args
 		* Filter authors question list args
 		*
 		* @var array
@@ -295,17 +296,19 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function answer_page() {
 		global $answers;
+
+		$user_id = self::current_user_id();
+
 		$args['ap_current_user_ignore'] = true;
 		$args['ignore_selected_answer'] = true;
 		$args['showposts'] = 10;
-		$args['author'] = get_queried_object_id();
+		$args['author'] = $user_id;
 
 		/*if ( false !== $paged ) {
 			$args['paged'] = $paged;
 		}*/
 
 		/**
-		 * FILTER: ap_authors_questions_args
 		 * Filter authors question list args
 		 *
 		 * @var array
@@ -404,6 +407,24 @@ class AnsPress_Profile_Hooks {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Get current user id for AnsPress profile.
+	 *
+	 * @return integer
+	 * @since 4.1.0
+	 */
+	public static function current_user_id() {
+		$query_object = get_queried_object();
+		$user_id = get_queried_object_id();
+
+		// Current user id if queried object is not set.
+		if ( ! $query_object instanceof WP_User || empty( $user_id ) ) {
+			$user_id = get_current_user_id();
+		}
+
+		return (int) $user_id;
 	}
 }
 
