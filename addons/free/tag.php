@@ -174,9 +174,7 @@ class AnsPress_Tag {
 		ap_add_default_options([
 			'max_tags'        => 5,
 			'min_tags'        => 1,
-			'tags_page_title' => __( 'Tags', 'anspress-question-answer' ),
 			'tags_per_page'   => 20,
-			'tags_page_slug'  => 'tags',
 			'tag_page_slug'   => 'tag',
 		]);
 
@@ -249,16 +247,6 @@ class AnsPress_Tag {
 					'description'       => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
 					'subtype'     => 'number',
 					'value'       => $opt['min_tags'],
-				),
-				'tags_page_title' => array(
-					'label' 	=> __( 'Tags page title', 'anspress-question-answer' ),
-					'desc' 		=> __( 'Title for tags page', 'anspress-question-answer' ),
-					'value'   => $opt['tags_page_title'],
-				),
-				'tags_page_slug' => array(
-					'label' 	=> __( 'Tags page slug', 'anspress-question-answer' ),
-					'desc' 		=> __( 'Slug tags page', 'anspress-question-answer' ),
-					'value'   => $opt['tags_page_slug'],
 				),
 				'tag_page_slug' => array(
 					'label' 	=> __( 'Tag page slug', 'anspress-question-answer' ),
