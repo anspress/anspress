@@ -237,6 +237,25 @@ class AnsPress_Comment_Hooks {
 			'modal_title' => __( 'Add comment on post', 'anspress-question-answer' ),
 		) );
 	}
+
+	/**
+	 * Change comment_type while adding comments for question or answer.
+	 *
+	 * @param array $commentdata Comment data array.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function preprocess_comment( $commentdata ) {
+		if ( ! empty( $commentdata['comment_post_ID'] ) ) {
+			$post_type = get_post_type( $commentdata['comment_post_ID'] );
+
+			if ( in_array( $post_type, [ 'question', 'answer' ], true ) ) {
+				$commentdata['comment_type'] = 'anspress';
+			}
+		}
+
+		return $commentdata;
+	}
 }
 
 /**
@@ -388,7 +407,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 		'order'     => 'ASC',
 		'status'    => 'approve',
 		'number' 	  => ap_opt( 'comment_number' ),
-		'type'      => 'anspress',
+		//'type'      => 'anspress',
 		'show_more' => true,
 		'paged'     => 1,
 		'no_found_rows' => false,
