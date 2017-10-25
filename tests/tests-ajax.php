@@ -11,9 +11,9 @@ class Tests_Ajax extends Ap_AjaxTest
 	}
 
 	public function tearDown() {
-		// your tear down methods here
-		// then
 		parent::tearDown();
+		$_POST = array();
+		remove_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 	}
 
 	public function _set_post_data( $query ) {
@@ -61,5 +61,6 @@ class Tests_Ajax extends Ap_AjaxTest
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Your vote has been removed.' );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 0 );
 		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
+		print_r(ob_get_contents());
 	}
 }
