@@ -25,7 +25,6 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
@@ -333,6 +332,8 @@ class AnsPress_Ajax {
 
 	/**
 	 * Handle Ajax callback for user hover card
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function hover_card() {
 		if ( ap_opt( 'disable_hover_card' ) ) {
