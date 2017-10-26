@@ -122,6 +122,7 @@ class AnsPress_Theme {
 	 *
 	 * @param  string $title Page title.
 	 * @return string
+	 * @deprecated 4.1.0
 	 */
 	public static function wpseo_title( $title ) {
 		if ( is_anspress() ) {
@@ -165,6 +166,8 @@ class AnsPress_Theme {
 
 	/**
 	 * Add feed link in wp_head
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function feed_link() {
 		if ( is_anspress() ) {
@@ -195,6 +198,8 @@ class AnsPress_Theme {
 
 	/**
 	 * Remove some unwanted things from wp_head
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function remove_head_items() {
 		if ( is_anspress() ) {
@@ -218,21 +223,15 @@ class AnsPress_Theme {
 
 	/**
 	 * Add feed and links in HEAD of the document
+	 *
+	 * @since 4.1.0 Removed question sortlink override.
 	 */
 	public static function wp_head() {
-		if ( is_anspress() ) {
+		if ( 'base' === ap_current_page() ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $q_feed ) . '" />';
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Answers Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $a_feed ) . '" />';
-
-			if ( ! defined( 'WPSEO_VERSION' ) ) {
-				echo '<link rel="canonical" href="' . ap_canonical_url() . '">'; // xss okay.
-			}
-
-			if ( is_question() ) {
-				echo '<link rel="shortlink" href="' . esc_url( wp_get_shortlink( get_question_id() ) ) . '" />';
-			}
 		}
 	}
 
@@ -240,6 +239,7 @@ class AnsPress_Theme {
 	 * Update concal link when wpseo plugin installed.
 	 *
 	 * @return string
+	 * @deprecated 4.1.0
 	 */
 	public static function wpseo_canonical( $url ) {
 		if ( is_question() ) {
