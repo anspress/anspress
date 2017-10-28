@@ -396,7 +396,8 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function page_template( $template ) {
 		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
-			return locate_template( 'page.php' );
+			$users_slug = ap_opt( 'users_page_id' );
+			return locate_template( [ 'page-' . $users_slug . '.php', 'page.php' ] );
 		}
 
 		return $template;

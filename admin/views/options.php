@@ -112,7 +112,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 			foreach ( $main_pages as $slug ) {
 				if ( isset( $values[ $slug ] ) ) {
-					$_post = get_post( $values[ $slug ] );
+					$_post = get_post( $values[ $slug ]['value'] );
 					ap_opt( $slug . '_id', $_post->post_name );
 				}
 			}

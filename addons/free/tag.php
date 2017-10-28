@@ -665,7 +665,8 @@ class AnsPress_Tag {
 	 */
 	public static function taxonomy_template( $template ) {
 		if ( is_tax( 'question_tag' ) ) {
-			return locate_template( 'page.php' );
+			$tags_slug = ap_opt( 'tags_page_id' );
+			return locate_template( [ 'page-' . $tags_slug . '.php', 'page.php' ] );
 		}
 
 		return $template;
