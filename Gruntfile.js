@@ -140,10 +140,6 @@
 			}
 		});
 
-		grunt.registerTask('precommit', function () {
-			grunt.task.run('build');
-		});
-
 		grunt.registerTask('translate', ['makepot', 'potomo']);
 		grunt.registerTask('build', ['sass', 'uglify', 'translate']);
 
