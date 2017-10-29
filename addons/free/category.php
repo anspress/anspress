@@ -64,7 +64,6 @@ class AnsPress_Category {
 		anspress()->add_filter( 'wp_head', __CLASS__, 'category_feed' );
 		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
-		anspress()->add_filter( 'template_include', __CLASS__, 'taxonomy_template', 0 );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_category_archive' );
 
@@ -848,22 +847,6 @@ class AnsPress_Category {
 		}
 
 		return $query_var;
-	}
-
-	/**
-	 * Override taxonomy template.
-	 *
-	 * @param string $template Template file.
-	 * @return string
-	 * @since 4.1.0
-	 */
-	public static function taxonomy_template( $template ) {
-		if ( is_tax( 'question_category' ) ) {
-			$categories_slug = ap_opt( 'categories_page_id' );
-			return locate_template( [ 'page-' . $categories_slug . '.php', 'page.php' ] );
-		}
-
-		return $template;
 	}
 
 	/**

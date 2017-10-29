@@ -49,7 +49,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 10, 2 );
-		anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
+		//anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
 	}
 
 	/**
@@ -396,8 +396,8 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function page_template( $template ) {
 		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
-			$users_slug = ap_opt( 'users_page_id' );
-			return locate_template( [ 'page-' . $users_slug . '.php', 'page.php' ] );
+			$user_slug = ap_opt( 'user_page_id' );
+			return locate_template( [ 'page-' . $user_slug . '.php', 'page.php' ] );
 		}
 
 		return $template;

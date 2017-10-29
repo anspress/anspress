@@ -132,28 +132,34 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
  * answer page in buddypress.
  *
  * @return boolean
+ * @since 4.1.0 Improved check. Check for main pages.
  */
 function is_anspress() {
-
 	// If buddypress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
-	    $bp_com = bp_current_component();
-	    if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
-	        return true;
-	    }
+		$bp_com = bp_current_component();
+		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
+			return true;
+		}
 	}
 
+	$page_slug = array_keys( ap_main_pages() );
 	$queried_object = get_queried_object();
 
-	if ( empty( $queried_object ) || ! is_object( $queried_object ) ) {
-		return false;
+	// Check if main pages.
+	if ( $queried_object instanceof WP_Post ) {
+		$page_ids = [];
+		foreach ( $page_slug as $slug ) {
+			$page_ids[] = ap_opt( $slug );
+		}
+
+		if ( in_array( $queried_object->ID, $page_ids ) ) {
+			return true;
+		}
 	}
 
-	if ( ! isset( $queried_object->ID ) ) {
-		return false;
-	}
-
-	if ( (int) ap_opt( 'base_page' ) === $queried_object->ID ) {
+	// Check if ap_page.
+	if ( get_query_var( 'ap_page', false ) ) {
 		return true;
 	}
 

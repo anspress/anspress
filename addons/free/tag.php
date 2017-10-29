@@ -52,7 +52,7 @@ class AnsPress_Tag {
 		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
-		anspress()->add_filter( 'template_include', __CLASS__, 'taxonomy_template' );
+		//anspress()->add_filter( 'template_include', __CLASS__, 'taxonomy_template' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_archive' );
 
@@ -666,7 +666,7 @@ class AnsPress_Tag {
 	public static function taxonomy_template( $template ) {
 		if ( is_tax( 'question_tag' ) ) {
 			$tags_slug = ap_opt( 'tags_page_id' );
-			return locate_template( [ 'page-' . $tags_slug . '.php', 'page.php' ] );
+			return locate_template( [ 'page-' . $tags_slug . '.php', 'anspress.php', 'page.php' ] );
 		}
 
 		return $template;
