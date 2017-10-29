@@ -282,8 +282,23 @@ class AnsPress_Theme {
 	 * @since  3.0.0
 	 */
 	public static function anspress_basepage_template( $template ) {
-		if ( is_page( ap_base_page_slug() ) ) {
-			$new_template = locate_template( array( 'anspress.php' ) );
+		if ( is_anspress() ) {
+			$templates = [ 'anspress.php', 'page.php' ];
+
+			if ( is_page() ) {
+				$_post = get_queried_object();
+
+				array_unshift( $templates, 'page-' . $_post->ID . '.php' );
+				array_unshift( $templates, 'page-' . $_post->post_name . '.php' );
+
+				$page_template = get_post_meta( $_post->ID, '_wp_page_template', true );
+
+				if ( ! empty( $page_template ) && 'default' !== $page_template ) {
+					array_unshift( $templates, $page_template );
+				}
+			}
+
+			$new_template = locate_template( $templates );
 
 			if ( '' !== $new_template ) {
 				return $new_template ;
