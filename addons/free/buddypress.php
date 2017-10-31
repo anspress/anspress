@@ -269,8 +269,8 @@ class AnsPress_BP_Hooks {
 			'contexts'                 => array( 'activity', 'member' ),
 			'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
 			'bp_activity_front_filter' => __( 'Question', 'anspress-question-answer' ),
-			'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
-			'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
+			'bp_activity_new_post'     => __( '%1$s asked: <a href="AP_CPT_LINK">[Question]</a>', 'anspress-question-answer' ),
+			'bp_activity_new_post_ms'  => __( '%1$s asked: <a href="AP_CPT_LINK">[Question]</a>, on the site %3$s', 'anspress-question-answer' ),
 		) );
 
 		bp_activity_set_post_type_tracking_args( 'answer', array(
@@ -279,9 +279,18 @@ class AnsPress_BP_Hooks {
 			'contexts'                 => array( 'activity', 'member' ),
 			'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
 			'bp_activity_front_filter' => __( 'Answer', 'anspress-question-answer' ),
-			'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
-			'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
+			'bp_activity_new_post'     => __( '%1$s answered to: <a href="AP_CPT_LINK">[Answer]</a>', 'anspress-question-answer' ),
+			'bp_activity_new_post_ms'  => __( '%1$s answered to: <a href="AP_CPT_LINK">[Answer]</a>, on the site %3$s', 'anspress-question-answer' ),
 		) );
+	}
+
+	/**
+	 * Custom button for question and answer activities.
+	 */
+	public static function activity_buttons() {
+		if ( 'new_question' === bp_get_activity_type() ) {
+			echo '<a class="button answer bp-secondary-action" title="' . esc_attr__( 'Answer this question', 'anspress-question-answer' ) . '" href="' . esc_url( ap_answers_link( bp_get_activity_secondary_item_id() ) ) . '">' . esc_attr__( 'Answer', 'anspress-question-answer' ) . '</a>';
+		}
 	}
 
 	/**
@@ -584,4 +593,64 @@ class AnsPress_BP_Hooks {
 if ( class_exists( 'BuddyPress' ) ) {
 	AnsPress_BP_Hooks::init();
 }
+
+     /**
+	 * Filter question activity strings
+	 * to display post title
+	 */
+
+        function question_include_post_type_title( $action, $activity ) {
+            if ( empty( $activity->id ) ) {
+                return $action;
+            }
+            if ( 'new_question' != $activity->type ) {
+                return $action;
+            }
+            preg_match_all( '/<a.*?>([^>]*)<\/a>/', $action, $matches );
+            if ( empty( $matches[1][1] ) || '[Question]' != $matches[1][1] ) {
+                return $action;
+            }
+            $post_type_title = bp_activity_get_meta( $activity->id, 'post_title' );
+            if ( empty( $post_type_title ) ) {
+                switch_to_blog( $activity->item_id );
+                $post_type_title = get_post_field( 'post_title', $activity->secondary_item_id );
+                // We have a title save it in activity meta to avoid switching blogs too much
+                if ( ! empty( $post_type_title ) ) {
+                    bp_activity_update_meta( $activity->id, 'post_title', $post_type_title );
+                }
+                restore_current_blog();
+            }
+            return str_replace( $matches[1][1], esc_html( $post_type_title ), $action );
+        }
+        add_filter( 'bp_activity_custom_post_type_post_action', 'question_include_post_type_title', 120, 2 );
+    
+     /**
+	 * Filter answer activity strings
+	 * to display post title
+	 */
+
+        function answer_include_post_type_title( $action, $activity ) {
+            if ( empty( $activity->id ) ) {
+                return $action;
+            }
+            if ( 'new_answer' != $activity->type ) {
+                return $action;
+            }
+            preg_match_all( '/<a.*?>([^>]*)<\/a>/', $action, $matches );
+            if ( empty( $matches[1][1] ) || '[Answer]' != $matches[1][1] ) {
+                return $action;
+            }
+            $post_type_title = bp_activity_get_meta( $activity->id, 'post_title' );
+            if ( empty( $post_type_title ) ) {
+                switch_to_blog( $activity->item_id );
+                $post_type_title = get_post_field( 'post_title', $activity->secondary_item_id );
+                // We have a title save it in activity meta to avoid switching blogs too much
+                if ( ! empty( $post_type_title ) ) {
+                    bp_activity_update_meta( $activity->id, 'post_title', $post_type_title );
+                }
+                restore_current_blog();
+            }
+            return str_replace( $matches[1][1], esc_html( $post_type_title ), $action );
+        }
+        add_filter( 'bp_activity_custom_post_type_post_action', 'answer_include_post_type_title', 121, 2 );
 
