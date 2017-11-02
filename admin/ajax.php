@@ -26,7 +26,7 @@ class AnsPress_Admin_Ajax {
 	 * Initialize admin ajax
 	 */
 	public static function init() {
-		anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
+		//anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
 		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
 		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
@@ -38,6 +38,8 @@ class AnsPress_Admin_Ajax {
 
 	/**
 	 * Ajax cllback for updating old taxonomy question_tags to question_tag
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function ap_taxo_rename() {
 
@@ -533,5 +535,4 @@ class AnsPress_Admin_Ajax {
 			'processed' => count( $ids ),
 		] );
 	}
-
 }

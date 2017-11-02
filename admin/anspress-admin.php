@@ -706,7 +706,7 @@ class AnsPress_Admin {
 	private static function check_pages_exists() {
 		$cache = get_transient( 'ap_pages_check' );
 
-		//if ( false === $cache ) {
+		if ( false === $cache ) {
 			$opt = ap_opt();
 			$pages_slug = array_keys( ap_main_pages() );
 
@@ -716,8 +716,9 @@ class AnsPress_Admin {
 			}
 
 			$args = array(
-				'post__in'  => $pages_in,
-				'post_type' => 'page',
+				'include'     => $pages_in,
+				'post_type'   => 'page',
+				'post_status' => 'publish',
 			);
 
 			$pages = get_posts( $args );
@@ -729,7 +730,7 @@ class AnsPress_Admin {
 				set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 				$cache = '1';
 			}
-		//}
+		}
 
 		return '0' === $cache ? false : true;
 	}
