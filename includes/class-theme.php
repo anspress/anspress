@@ -323,6 +323,10 @@ class AnsPress_Theme {
 	public static function the_content_single_question( $content ) {
 		global $ap_shortcode_loaded, $post;
 
+		if ( ! $post ) {
+			return $content;
+		}
+
 		if ( true !== $ap_shortcode_loaded && is_singular( 'question' ) ) {
 			return do_shortcode( '[anspress]' );
 		}

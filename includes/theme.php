@@ -536,7 +536,7 @@ function ap_get_template_part( $file, $args = false ) {
  * @since 4.1.0 Check if ask question page.
  */
 function ap_current_page() {
-	$query_var = get_query_var( 'ap_page' );
+	$query_var = get_query_var( 'ap_page', 'base' );
 	$main_pages = array_keys( ap_main_pages() );
 	$page_ids = [];
 
@@ -546,11 +546,13 @@ function ap_current_page() {
 
 	if ( is_question() || is_singular( 'question' ) ) {
 		$query_var = 'question';
+	} elseif ( 'edit' === $query_var ) {
+		$query_var = 'edit';
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
 	} elseif ( is_search() ) {
 		$query_var = 'search';
-	} elseif ( '' === $query_var && ! is_question() ) {
+	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
 	}
 

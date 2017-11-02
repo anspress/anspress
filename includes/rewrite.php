@@ -114,7 +114,7 @@ class AnsPress_Rewrite {
 		$rewrite      = anspress()->question_rule['rewrite'];
 		$all_rules    = [];
 		$base_page_id = ap_opt( 'base_page' );
-		$slug         = ap_base_page_slug() . '/';
+		$slug_main    = ap_base_page_slug();
 		$lang_rule    = '';
 		$lang_rewrite = '';
 
@@ -126,7 +126,7 @@ class AnsPress_Rewrite {
 			}
 		}
 
-		$slug = $lang_rule . $slug;
+		$slug = $lang_rule . $slug_main . '/';
 		$base_page_id = $base_page_id . $lang_rewrite;
 
 		$answer_rewrite = str_replace( 'post_type=question', 'post_type=answer', $rewrite );
@@ -134,6 +134,7 @@ class AnsPress_Rewrite {
 		$answer_rewrite = str_replace( '&p=', '&question_id=', $answer_rewrite );
 
 		$all_rules = array(
+			$slug . 'edit/?$'                                      => 'index.php?pagename=' . $slug_main . '&ap_page=edit',
 			$rule . '/answer/([0-9]+)/(feed|rdf|rss|rss2|atom)/?$' => $answer_rewrite . '&answer_id=$matches[#]&feed=$matches[#]',
 			$rule . '/answer/([0-9]+)/embed/?$'                    => $answer_rewrite . '&answer_id=$matches[#]&embed=true',
 			$rule . '/answer/([0-9]+)/?$'                          => $rewrite . '&answer_id=$matches[#]',
@@ -141,7 +142,7 @@ class AnsPress_Rewrite {
 			$rule . '/(feed|rdf|rss|rss2|atom)/?$'                 => $rewrite . '&feed=$matches[#]',
 			$rule . '/embed/?$'                                    => $rewrite . '&embed=true',
 			$rule . '/?$'                                          => $rewrite,
-			//$slug . '([^/]+)/?'                                    => 'index.php?page_id=' . $base_page_id . '&ap_page=$matches[#]',
+
 		);
 
 		/**
