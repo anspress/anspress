@@ -87,7 +87,7 @@ class AnsPress_Reputation_Hooks {
 					'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_slug_reputations'],
 				),
-				'reputation_events' => array(
+				'sep1' => array(
 					'html' => '<p>' . __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ). ' <a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) . '" class="button">' . __( 'Reputation Points' ) . '</a></p>',
 				),
 			),
@@ -481,6 +481,13 @@ class AnsPress_Reputation_Hooks {
 		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 
+	/**
+	 * Add reputation events option in AnsPress options.
+	 *
+	 * @param array $all_options Options.
+	 * @return array
+	 * @since 4.1.0
+	 */
 	public static function ap_all_options( $all_options ) {
 		$all_options['reputations'] = array(
 			'label'    => __( 'Reputations', 'anspress-question-answer' ),

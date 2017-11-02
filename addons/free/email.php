@@ -22,6 +22,13 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+use AnsPress\Email as Email;
+
+/**
+ * Include captcha field.
+ */
+require_once ANSPRESS_ADDONS_DIR . '/free/email/class-email.php';
+
 /**
  * Email addon for AnsPress
  */
@@ -53,6 +60,20 @@ class AnsPress_Email_Hooks {
 	 */
 	public static function init() {
 		SELF::ap_default_options();
+		anspress()->add_filter( 'ap_form_addon-free_email', __CLASS__, 'register_option' );
+		anspress()->add_filter( 'ap_form_email_template', __CLASS__, 'register_email_template' );
+		anspress()->add_filter( 'ap_all_options', __CLASS__, 'ap_all_options', 10, 2 );
+		anspress()->add_action( 'wp_ajax_ap_email_template', __CLASS__, 'ap_email_template' );
+		anspress()->add_action( 'ap_ajax_form_email_template', __CLASS__, 'save_email_template_form', 11 );
+		anspress()->add_action( 'ap_email_default_template_new_question', __CLASS__, 'template_new_question' );
+		anspress()->add_action( 'ap_email_default_template_new_answer', __CLASS__, 'template_new_answer' );
+		anspress()->add_action( 'ap_email_default_template_select_answer', __CLASS__, 'template_select_answer' );
+		anspress()->add_action( 'ap_email_default_template_new_comment', __CLASS__, 'template_new_comment' );
+		anspress()->add_action( 'ap_email_default_template_edit_question', __CLASS__, 'template_edit_question' );
+		anspress()->add_action( 'ap_email_default_template_edit_answer', __CLASS__, 'template_edit_answer' );
+		anspress()->add_action( 'ap_email_default_template_trash_question', __CLASS__, 'template_trash_question' );
+		anspress()->add_action( 'ap_email_default_template_trash_answer', __CLASS__, 'template_trash_answer' );
+
 		anspress()->add_filter( 'comment_notification_recipients', __CLASS__, 'default_recipients', 10, 2 );
 
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
@@ -61,17 +82,14 @@ class AnsPress_Email_Hooks {
 		anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 		anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
 
-		anspress()->add_filter( 'ap_form_addon-free_email', __CLASS__, 'register_option' );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'ap_after_new_question' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'ap_after_new_answer' );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
 		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
-		anspress()->add_action( 'ap_after_update_question', __CLASS__, 'ap_after_update_question', 10, 2 );
-		anspress()->add_action( 'ap_after_update_answer', __CLASS__, 'ap_after_update_answer', 10, 2 );
+		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'ap_after_update_question', 10, 2 );
+		anspress()->add_action( 'ap_processed_update_answer', __CLASS__, 'ap_after_update_answer', 10, 2 );
 		anspress()->add_action( 'ap_trash_question', __CLASS__, 'ap_trash_question', 10, 2 );
 		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'ap_trash_answer', 10, 2 );
-
-
 	}
 
 	/**
@@ -92,63 +110,33 @@ class AnsPress_Email_Hooks {
 	}
 
 	/**
-	 * Apppend default options
+	 * Append default options
 	 *
 	 * @since   4.0.0
 	 */
 	public static function ap_default_options() {
-		$defaults = [];
-		$defaults['notify_admin_email']         = get_option( 'admin_email' );
-		$defaults['plain_email']                = false;
-		$defaults['notify_admin_new_question']  = true;
-		$defaults['notify_admin_new_answer']    = true;
-		$defaults['notify_admin_new_comment']   = true;
-		$defaults['notify_admin_edit_question'] = true;
-		$defaults['notify_admin_edit_answer']   = true;
-		$defaults['notify_admin_trash_question'] = true;
-		$defaults['notify_admin_trash_answer']  = true;
-
-		$defaults['new_question_email_subject'] = __( 'New question posted by {asker}', 'anspress-question-answer' );
-		$defaults['new_question_email_body']    = __( "Hello!\nA new question is posted by {asker}\n\nTitle: {question_title}\nDescription:\n{question_excerpt}\n\nLink: {question_link}", 'anspress-question-answer' );
-
-		$defaults['new_answer_email_subject'] = __( 'New answer posted by {answerer}', 'anspress-question-answer' );
-		$defaults['new_answer_email_body']    = __( "Hello!\nA new answer is posted by {answerer} on {question_title}\nAnswer:\n{answer_excerpt}\n\nLink: {answer_link}", 'anspress-question-answer' );
-
-		$defaults['select_answer_email_subject'] = __( 'Your answer was selected as best', 'anspress-question-answer' );
-		$defaults['select_answer_email_body']    = __( "Hello!\nYour answer on '{question_title}' was selected as best.\n\nLink: {answer_link}", 'anspress-question-answer' );
-
-		$defaults['new_comment_email_subject'] = __( 'New comment by {commenter}', 'anspress-question-answer' );
-		$defaults['new_comment_email_body']    = __( "Hello!\nA new comment posted on '{question_title}' by {commenter}.\n\nLink: {comment_link}", 'anspress-question-answer' );
-
-		$defaults['edit_question_email_subject'] = __( 'A question is edited by {editor}', 'anspress-question-answer' );
-		$defaults['edit_question_email_body']    = __( "Hello!\nQuestion '{question_title}' is edited by {editor}.\n\nLink: {question_link}", 'anspress-question-answer' );
-
-		$defaults['edit_answer_email_subject'] = __( 'An answer is edited by {editor}', 'anspress-question-answer' );
-		$defaults['edit_answer_email_body']    = __( "Hello!\nAnswer on '{question_title}' is edited by {editor}.\n\nLink: {question_link}", 'anspress-question-answer' );
-
-		$defaults['trash_question_email_subject'] = __( 'A question is trashed by {user}', 'anspress-question-answer' );
-		$defaults['trash_question_email_body']    = __( "Hello!\nQuestion '{question_title}' is trashed by {user}.\n", 'anspress-question-answer' );
+		$defaults = array(
+			'email_admin_emails'         => get_option( 'admin_email' ),
+			'email_admin_new_question'   => true,
+			'email_admin_new_answer'     => true,
+			'email_admin_new_comment'    => true,
+			'email_admin_edit_question'  => true,
+			'email_admin_edit_answer'    => true,
+			'email_admin_trash_question' => true,
+			'email_admin_trash_answer'   => true,
+			'email_user_new_question'    => true,
+			'email_user_new_answer'      => true,
+			'email_user_select_answer'   => true,
+			'email_user_new_comment'     => true,
+			'email_user_edit_question'   => true,
+			'email_user_edit_answer'     => true,
+		);
 
 		$defaults['trash_answer_email_subject'] = __( 'An answer is trashed by {user}', 'anspress-question-answer' );
 		$defaults['trash_answer_email_body']    = __( "Hello!\nAnswer on '{question_title}' is trashed by {user}.\n", 'anspress-question-answer' );
 
 		ap_add_default_options( $defaults );
 	}
-
-	/**
-	 * Sanitize form value
-	 * @param  string $name Field value.
-	 * @return string
-	 */
-	public static function value($name) {
-		$settings = ap_opt();
-		if ( isset( $settings[ $name ] ) ) {
-			return str_replace( '//', '', $settings[ $name ] );
-		}
-
-		return '';
-	}
-
 
 	/**
 	 * Register options
@@ -159,112 +147,93 @@ class AnsPress_Email_Hooks {
 		$form = array(
 			'fields' => array(
 				'sep1' => array(
-					'html'    => '<h3>' . __( 'Admin Notification', 'anspress-question-answer' ) . '<p>' . __( 'Select types of notification which will be sent to admin. Users are notified by default for all activities.', 'anspress-question-answer' ) . '</p></h3>',
+					'html'    => '<h3>' . __( 'Admin Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select types of notification which will be sent to admin.', 'anspress-question-answer' ) . '</p></h3>',
 				),
-				'notify_admin_email' => array(
-					'label'   => __( 'Admin email', 'anspress-question-answer' ),
-					'desc'    => __( 'Email where all admin notification will be sent.', 'anspress-question-answer' ),
-					'subtype' => 'email',
-					'value'   => $opt['notify_admin_email'],
+				'email_admin_emails' => array(
+					'label'   => __( 'Admin email(s)', 'anspress-question-answer' ),
+					'desc'    => __( 'Email where all admin notification will be sent. It can have multiple emails separated by comma.', 'anspress-question-answer' ),
+					'value'   => $opt['email_admin_emails'],
 				),
-				'notify_admin_new_question' => array(
+				'email_admin_new_question' => array(
 					'label' => __( 'New question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new question notification to admin.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_new_question'],
+					'value' => $opt['email_admin_new_question'],
 				),
-				'notify_admin_new_answer' => array(
+				'email_admin_new_answer' => array(
 					'label' => __( 'New answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new answer notification to admin.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_new_answer'],
+					'value' => $opt['email_admin_new_answer'],
 				),
-				'notify_admin_new_comment' => array(
+				'email_admin_new_comment' => array(
 					'label' => __( 'New comment', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new comment notification to admin.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_new_comment'],
+					'value' => $opt['email_admin_new_comment'],
 				),
-				'notify_admin_edit_question' => array(
+				'email_admin_edit_question' => array(
 					'label' => __( 'Edit question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send notification to admin when question is edited.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_edit_question'],
+					'value' => $opt['email_admin_edit_question'],
 				),
-				'notify_admin_edit_answer' => array(
+				'email_admin_edit_answer' => array(
 					'label' => __( 'Edit answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send email to admin when answer is edited.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_edit_answer'],
+					'value' => $opt['email_admin_edit_answer'],
 				),
-				'notify_admin_trash_question' => array(
+				'email_admin_trash_question' => array(
 					'label' => __( 'Delete question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send email to admin when question is trashed.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_trash_question'],
+					'value' => $opt['email_admin_trash_question'],
 				),
-				'notify_admin_trash_answer' => array(
+				'email_admin_trash_answer' => array(
 					'label' => __( 'Delete answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send email to admin when answer is trashed.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
-					'value' => $opt['notify_admin_trash_answer'],
+					'value' => $opt['email_admin_trash_answer'],
 				),
 				'sep2' => array(
-					'html'    => '<h3>' . __( 'Email Templates', 'anspress-question-answer' ) . '<p>' . __( 'No HTML tags allowed in email template at the moment.', 'anspress-question-answer' ) . '</p></h3>',
+					'html'    => '<h3>' . __( 'User Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select the types of notification which will be sent to user.', 'anspress-question-answer' ) . '</p></h3>',
 				),
-				'new_question_email_subject' => array(
-					'label' => __( 'New question subject', 'anspress-question-answer' ),
-					'value' => $opt['new_question_email_subject'],
+				'email_user_new_question' => array(
+					'label' => __( 'New question', 'anspress-question-answer' ),
+					'desc'  => __( 'Send new question notification to user?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['email_user_new_question'],
 				),
-				'new_question_email_body' => array(
-					'label' => __( 'New question body', 'anspress-question-answer' ),
-					'type'  => 'textarea',
-					'value' => $opt['new_question_email_body'],
+				'email_user_new_answer' => array(
+					'label' => __( 'New answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Send new answer notification to user?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['email_user_new_answer'],
 				),
-				'new_answer_email_subject' => array(
-					'label' => __( 'New answer subject', 'anspress-question-answer' ),
-					'value' => $opt['new_answer_email_subject'],
+				'email_user_new_comment' => array(
+					'label' => __( 'New comment', 'anspress-question-answer' ),
+					'desc'  => __( 'Send new comment notification to user?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['email_user_new_comment'],
 				),
-				'new_answer_email_body' => array(
-					'label' => __( 'New answer body', 'anspress-question-answer' ),
-					'type'  => 'textarea',
-					'value' => $opt['new_answer_email_body'],
+				'email_user_edit_question' => array(
+					'label' => __( 'Edit question', 'anspress-question-answer' ),
+					'desc'  => __( 'Send edit question notification to user?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['email_user_edit_question'],
 				),
-				'select_answer_email_subject' => array(
-					'label' => __( 'Select answer subject', 'anspress-question-answer' ),
-					'value' => $opt['select_answer_email_subject'],
+				'email_user_edit_answer' => array(
+					'label' => __( 'Edit answer', 'anspress-question-answer' ),
+					'desc'  => __( 'Send edit answer notification to user?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['email_user_edit_answer'],
 				),
-				'select_answer_email_body' => array(
-					'label' => __( 'Select answer body', 'anspress-question-answer' ),
-					'type'  => 'textarea',
-					'value' => $opt['select_answer_email_body'],
-				),
-				'new_comment_email_subject' => array(
-					'label' => __( 'New comment subject', 'anspress-question-answer' ),
-					'value' => $opt['new_comment_email_subject'],
-				),
-				'new_comment_email_body' => array(
-					'label' => __( 'New comment body', 'anspress-question-answer' ),
-					'type' => 'textarea',
-					'value' => $opt['new_comment_email_body'],
-				),
-				'edit_question_email_subject' => array(
-					'label' => __( 'Edit question subject', 'anspress-question-answer' ),
-					'value' => $opt['edit_question_email_subject'],
-				),
-				'edit_question_email_body' => array(
-					'label' => __( 'Edit question body', 'anspress-question-answer' ),
-					'type'  => 'textarea',
-					'value' => $opt['edit_question_email_body'],
-				),
-				'edit_answer_email_subject' => array(
-					'label' => __( 'Edit answer subject', 'anspress-question-answer' ),
-					'value' => $opt['edit_answer_email_subject'],
-				),
-				'edit_answer_email_body' => array(
-					'label' => __( 'Edit answer body', 'anspress-question-answer' ),
-					'type'  => 'textarea',
-					'value' => $opt['edit_answer_email_body'],
+				'email_user_select_answer' => array(
+					'label' => __( 'Answer selected', 'anspress-question-answer' ),
+					'desc'  => __( 'Send notification to user when their answer get selected?', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['email_user_select_answer'],
 				),
 			),
 		);
@@ -273,18 +242,25 @@ class AnsPress_Email_Hooks {
 	}
 
 	/**
-	 * Email header.
+	 * Register email templates form.
+	 *
+	 * @return array
+	 * @since 4.1.0
 	 */
-	public static function header() {
-		$header = '';
+	public static function register_email_template() {
+		$form = array(
+			'fields' => array(
+				'subject' => array(
+					'label' => __( 'Email subject', 'anspress-question-answer' ),
+				),
+				'body' => array(
+					'label' => __( 'Email body', 'anspress-question-answer' ),
+					'type'  => 'editor',
+				),
+			),
+		);
 
-		if ( ! $charset = get_bloginfo( 'charset' ) ) {
-			$charset = 'utf-8';
-		}
-
-		$header .= 'Content-type: text/plain; charset=' . $charset . "\r\n";
-
-		return $header;
+		return $form;
 	}
 
 	/**
@@ -293,6 +269,7 @@ class AnsPress_Email_Hooks {
 	 * @param string $content Template content.
 	 * @param array  $args Arguments.
 	 * @return string
+	 * @deprecated 4.1.0
 	 */
 	public static function replace_tags( $content, $args ) {
 		return strtr( $content, $args );
@@ -304,19 +281,21 @@ class AnsPress_Email_Hooks {
 	 * @param string $email Email id to send.
 	 * @param string $subject Email subject.
 	 * @param string $message Email body.
+	 * @deprecated 4.1.0
 	 */
 	public static function send_mail( $email, $subject, $message ) {
 		if ( defined( 'AP_DISABLE_EMAIL' ) && true === AP_DISABLE_EMAIL ) {
 			return;
 		}
 
-		wp_mail( $email, $subject, $message, SELF::header() );
+		wp_mail( $email, $subject, $message );
 	}
 
 	/**
 	 * Add email to object.
 	 *
 	 * @param string|array $email Email of array of emails.
+	 * @deprecated 4.1.0
 	 */
 	public static function add_email( $email ) {
 
@@ -333,6 +312,8 @@ class AnsPress_Email_Hooks {
 
 	/**
 	 * Check if class has emails.
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function have_emails() {
 		return count( SELF::$emails ) > 0;
@@ -340,6 +321,8 @@ class AnsPress_Email_Hooks {
 
 	/**
 	 * Sends email to array of email ids.
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function initiate_send_email() {
 		SELF::$emails = array_unique( SELF::$emails );
@@ -352,215 +335,223 @@ class AnsPress_Email_Hooks {
 	}
 
 	/**
+	 * Get admin emails to notify based on option.
+	 *
+	 * @param string $opt Option key.
+	 * @return false|array Return array of emails else false.
+	 */
+	public static function get_admin_emails( $opt ) {
+		$current_user = wp_get_current_user();
+
+		if ( ap_opt( $opt ) ) {
+			$admin_emails = explode( ',', preg_replace( '/\s+/', '', ap_opt( 'email_admin_emails' ) ) );
+
+			// Don't bother if current user is admin.
+			if ( empty( $admin_emails ) || in_array( $current_user->user_email, $admin_emails, true ) ) {
+				return false;
+			}
+
+			return $admin_emails;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Send email to admin when new question is created.
 	 *
 	 * @param  integer $question_id Question ID.
 	 * @since 1.0
+	 * @since 4.1.0 Updated to use new Email class.
 	 */
 	public static function ap_after_new_question( $question_id ) {
-		if ( ap_opt( 'notify_admin_new_question' ) ) {
+		$args = [];
 
-			$current_user = wp_get_current_user();
-			$question = ap_get_post( $question_id );
-
-			// Don't bother if current user is admin.
-			if ( ap_opt( 'notify_admin_email' ) == $current_user->user_email ) { // WPCS: loose comparison okay.
-				return;
-			}
-
-			$tags = array(
-				'{asker}'             => ap_user_display_name( $question->post_author ),
-				'{question_title}'    => $question->post_title,
-				'{question_link}'     => get_permalink( $question->ID ),
-				'{question_content}'  => $question->post_content,
-				'{question_excerpt}'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
-			);
-
-			/**
-			 * Allow adding custom email tags for new question notification.
-			 *
-			 * @param array  $tags     Default email tags.
-			 * @param object $question Question object.
-			 * @since unknown
-			 * @since 4.1.0 Added new argument `$question`.
-			 */
-			$tags = apply_filters( 'ap_new_question_email_tags', $tags, $question );
-
-			SELF::$subject = SELF::replace_tags( ap_opt( 'new_question_email_subject' ), $tags );
-			SELF::$message = SELF::replace_tags( ap_opt( 'new_question_email_body' ), $tags );
-			SELF::$emails[] = ap_opt( 'notify_admin_email' );
-			SELF::initiate_send_email();
+		$admin_emails = self::get_admin_emails( 'email_admin_new_question' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
+
+		// Return if no users.
+		if ( empty( $args['users'] ) ) {
+			return;
+		}
+
+		$question = ap_get_post( $question_id );
+		$args['tags'] = array(
+			'{asker}'             => ap_user_display_name( $question->post_author ),
+			'{question_title}'    => $question->post_title,
+			'{question_link}'     => wp_get_shortlink( $question->ID ),
+			'{question_content}'  => apply_filters( 'the_content', $question->post_content ),
+			'{question_excerpt}'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
+		);
+
+		$email = new Email( 'new_question', $args );
+		$email->send_emails();
 	}
 
 	/**
 	 * Send email after new answer.
 	 *
 	 * @param integer $answer_id Answer ID.
+	 * @since 4.1.0 Updated to use new email class.
 	 */
 	public static function ap_after_new_answer( $answer_id ) {
 		$current_user = wp_get_current_user();
-		$answer = ap_get_post( $answer_id );
+		$args         = array(
+			'users' => [],
+		);
 
-		if ( ap_opt( 'notify_admin_new_answer' ) && ap_opt( 'notify_admin_email' ) !== $current_user->user_email ) {
-			SELF::add_email( ap_opt( 'notify_admin_email' ) );
+		$admin_emails = self::get_admin_emails( 'email_admin_new_answer' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
 
-		if ( 'private_post' !== $answer->post_status && 'moderate' !== $answer->post_status ) {
+		$answer = ap_get_post( $answer_id );
+
+		if ( ap_opt( 'email_user_new_answer' ) && 'private_post' !== $answer->post_status && 'moderate' !== $answer->post_status ) {
 			$subscribers = ap_get_subscribers( 'question', $answer->post_parent );
 
 			foreach ( (array) $subscribers as $s ) {
 				if ( ap_user_can_view_post( $answer ) && $s->user_email !== $current_user->user_email ) {
-					SELF::add_email( $s->user_email );
+					$args['users'][] = $s->user_email;
 				}
 			}
 		}
 
-		// Check if have emails before proceeding.
-		if ( ! SELF::have_emails() ) {
-			return;
-		}
-
-		$args = array(
+		$args['tags'] = array(
 			'{answerer}'        => ap_user_display_name( $answer->post_author ),
 			'{question_title}'  => $answer->post_title,
-			'{answer_link}'     => get_permalink( $answer->ID ),
+			'{answer_link}'     => wp_get_shortlink( $answer->ID ),
 			'{answer_content}'  => $answer->post_content,
 			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
 		);
 
-		$args = apply_filters( 'ap_new_answer_email_tags', $args );
-
-		SELF::$subject = SELF::replace_tags( ap_opt( 'new_answer_email_subject' ), $args );
-		SELF::$message = SELF::replace_tags( ap_opt( 'new_answer_email_body' ), $args );
-
-		SELF::initiate_send_email();
+		$email = new Email( 'new_answer', $args );
+		$email->send_emails();
 	}
 
 	/**
 	 * Notify answer author that his answer is selected as best.
 	 *
 	 * @param  object $_post Selected answer object.
+	 * @since 4.1.0 Updated to use new email class.
 	 */
 	public static function select_answer( $_post ) {
-		if ( get_current_user_id() === $_post->post_author ) {
+		if ( get_current_user_id() === $_post->post_author || ! ap_opt( 'email_user_select_answer' ) ) {
 			return;
 		}
 
 		$args = array(
-			'{answerer}'        => ap_user_display_name( $_post->post_author ),
+			'users' => [
+				get_the_author_meta( 'email', $_post->post_author )
+			],
+		);
+
+		$args['tags'] = array(
+			'{selector}'        => ap_user_display_name( get_current_user_id() ),
 			'{question_title}'  => $_post->post_title,
-			'{answer_link}'     => get_permalink( $_post->ID ),
+			'{answer_link}'     => wp_get_shortlink( $_post->ID ),
 			'{answer_content}'  => $_post->post_content,
 			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $_post->post_content ), 100 ),
 		);
 
-		$args = apply_filters( 'ap_select_answer_email_tags', $args );
-
-		$subject = SELF::replace_tags( ap_opt( 'select_answer_email_subject' ), $args );
-
-		$message = SELF::replace_tags( ap_opt( 'select_answer_email_body' ), $args );
-		SELF::send_mail( get_the_author_meta( 'email', $_post->post_author ), $subject, $message );
+		$email = new Email( 'select_answer', $args );
+		$email->send_emails();
 	}
 
 	/**
 	 * Notify admin on new comment and is not approved.
 	 *
 	 * @param object $comment Comment object.
+	 * @since 4.1.0 Updated to use new email class.
 	 */
 	public static function new_comment( $comment ) {
+		$args = [];
 
-		$current_user = wp_get_current_user();
-		$post = ap_get_post( $comment->comment_post_ID );
-
-		$subscribers = ap_get_subscribers( 'comment_' . $comment->comment_post_ID );
-		$post_author  = get_user_by( 'id', $post->post_author );
-
-		if ( ap_opt( 'notify_admin_new_comment' ) && ap_opt( 'notify_admin_email' ) !== $current_user->user_email ) {
-			SELF::add_email( ap_opt( 'notify_admin_email' ) );
+		$admin_emails = self::get_admin_emails( 'email_admin_new_comment' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
 
-		if ( $subscribers && ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
-			$post_author->data->user_email !== $current_user->user_email ) {
-			SELF::add_email( $post_author->data->user_email );
-		}
+		if ( ap_opt( 'email_user_new_comment' ) ) {
+			$current_user = wp_get_current_user();
+			$post         = ap_get_post( $comment->comment_post_ID );
+			$subscribers  = ap_get_subscribers( 'comment_' . $comment->comment_post_ID );
 
-		foreach ( (array) $subscribers as $s ) {
-			if ( ap_user_can_view_post( $post ) && $s->user_email !== $current_user->user_email ) {
-				SELF::add_email( $s->user_email );
+			if ( $post->post_author != get_current_user_id() ) {
+				$args['users'][] = $post->post_author;
+			}
+
+			foreach ( (array) $subscribers as $s ) {
+				if ( ap_user_can_view_post( $post ) && $s->user_email !== $current_user->user_email ) {
+					$args['users'][] = $s->user_email;
+				}
 			}
 		}
 
 		// Check if have emails before proceeding.
-		if ( ! SELF::have_emails() ) {
+		if ( empty( $args['users'] ) ) {
 			return;
 		}
 
-		$args = array(
+		$args['tags'] = array(
 			'{commenter}'         => ap_user_display_name( $comment->user_id ),
 			'{question_title}'    => $post->post_title,
 			'{comment_link}'      => get_comment_link( $comment ),
 			'{comment_content}'   => $comment->comment_content,
 		);
 
-		$args = apply_filters( 'ap_new_comment_email_tags', $args );
-		SELF::$subject = SELF::replace_tags( ap_opt( 'new_comment_email_subject' ), $args );
-		SELF::$message = SELF::replace_tags( ap_opt( 'new_comment_email_body' ), $args );
-
-		SELF::initiate_send_email();
+		$email = new Email( 'new_comment', $args );
+		$email->send_emails();
 	}
 
 	/**
 	 * Notify after question get updated.
 	 *
 	 * @param object $question Question object.
-	 * @param string $event Type of update event.
+	 * @since 4.1.0 Updated to use new email class.
 	 */
-	public static function ap_after_update_question( $question, $event ) {
-		if ( 'edited' !== $event ) {
+	public static function ap_after_update_question( $post_id, $question ) {
+		if ( in_array( $question->post_status, [ 'trash', 'draft' ] ) ) {
 			return;
 		}
 
-		$current_user = wp_get_current_user();
+		$args = [];
 
-		// Notify admin if current user is not admin itself.
-		if ( ap_opt( 'notify_admin_email' ) !== $current_user->user_email && ap_opt( 'notify_admin_edit_question' ) ) {
-			SELF::add_email( ap_opt( 'notify_admin_email' ) );
+		$admin_emails = self::get_admin_emails( 'email_admin_edit_question' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
 
+		$email = new Email( 'edit_question', $args );
+
+		$current_user = wp_get_current_user();
 		$subscribers = ap_get_subscribers( 'question', $question->ID );
 		$post_author  = get_user_by( 'id', $question->post_author );
 
 		if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
 			$post_author->data->user_email !== $current_user->user_email ) {
-			SELF::add_email( $post_author->data->user_email );
+			$email->add_email( $post_author->data->user_email );
 		}
 
 		foreach ( (array) $subscribers as $s ) {
 			if ( ap_user_can_view_post( $question ) && ! empty( $s->user_email ) &&
 				$s->user_email !== $current_user->user_email ) {
-				SELF::add_email( $s->user_email );
+				$email->add_email( $s->user_email );
 			}
 		}
 
-		// Check if have emails before proceeding.
-		if ( ! SELF::have_emails() ) {
-			return;
-		}
+		$email->add_template_tags( array(
+			'asker'             => ap_user_display_name( $question->post_author ),
+			'editor'            => ap_user_display_name( get_current_user_id() ),
+			'question_title'    => $question->post_title,
+			'question_link'     => get_permalink( $question->ID ),
+			'question_content'  => $question->post_content,
+			'question_excerpt'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
+		));
 
-		$args = array(
-			'{asker}'             => ap_user_display_name( $question->post_author ),
-			'{editor}'            => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'    => $question->post_title,
-			'{question_link}'     => get_permalink( $question->ID ),
-			'{question_content}'  => $question->post_content,
-			'{question_excerpt}'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
-		);
-
-		$args = apply_filters( 'ap_edit_question_email_tags', $args );
-		SELF::$subject = SELF::replace_tags( ap_opt( 'edit_question_email_subject' ), $args );
-		SELF::$message = SELF::replace_tags( ap_opt( 'edit_question_email_body' ), $args );
-		SELF::initiate_send_email();
+		$email->send_emails();
 	}
 
 	/**
@@ -569,53 +560,48 @@ class AnsPress_Email_Hooks {
 	 * @param object $answer Answer object.
 	 * @param string $event Event type.
 	 */
-	public static function ap_after_update_answer( $answer, $event ) {
-		if ( 'edited' !== $event ) {
+	public static function ap_after_update_answer( $answer_id, $answer ) {
+		if ( in_array( $answer->post_status, [ 'trash', 'draft' ] ) ) {
 			return;
 		}
 
-		$answer = ap_get_post( $answer );
 		$current_user = wp_get_current_user();
 
-		if ( ap_opt( 'notify_admin_email' ) !== $current_user->user_email &&
-			ap_opt( 'notify_admin_edit_answer' ) ) {
-			SELF::add_email( ap_opt( 'notify_admin_email' ) );
+		$args = [];
+
+		$admin_emails = self::get_admin_emails( 'email_admin_edit_answer' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
+
+		$email         = new Email( 'edit_answer', $args );
 
 		$a_subscribers = (array) ap_get_subscribers( 'answer_' . $answer->post_parent );
 		$q_subscribers = (array) ap_get_subscribers( 'question', $answer->post_parent );
-		$subscribers = array_merge( $a_subscribers, $q_subscribers );
-		$post_author  = get_user_by( 'id', $answer->post_author );
+		$subscribers   = array_merge( $a_subscribers, $q_subscribers );
+		$post_author   = get_user_by( 'id', $answer->post_author );
 
 		if ( ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
 			$current_user->user_email !== $post_author->data->user_email ) {
-			SELF::add_email( $post_author->data->user_email );
+			$email->add_email( $post_author->data->user_email );
 		}
 
 		foreach ( (array) $subscribers as $s ) {
 			if ( ap_user_can_view_post( $answer ) && ! empty( $s->user_email ) &&
 				$s->user_email !== $current_user->user_email ) {
-				SELF::add_email( $s->user_email );
+					$email->add_email( $s->user_email );
 			}
 		}
 
-		// Check if have emails before proceeding.
-		if ( ! SELF::have_emails() ) {
-			return;
-		}
+		$email->add_template_tags( array(
+			'answerer'          => ap_user_display_name( $answer->post_author ),
+			'editor'            => ap_user_display_name( get_current_user_id() ),
+			'question_title'    => $answer->post_title,
+			'question_link'     => get_permalink( $answer->post_parent ),
+			'answer_content'    => $answer->post_content,
+		) );
 
-		$args = array(
-			'{answerer}'          => ap_user_display_name( $answer->post_author ),
-			'{editor}'            => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'    => $answer->post_title,
-			'{question_link}'     => get_permalink( $answer->post_parent ),
-			'{answer_content}'    => $answer->post_content,
-		);
-
-		$args = apply_filters( 'ap_edit_answer_email_tags', $args );
-		SELF::$subject = SELF::replace_tags( ap_opt( 'edit_answer_email_subject' ), $args );
-		SELF::$message = SELF::replace_tags( ap_opt( 'edit_answer_email_body' ), $args );
-		SELF::initiate_send_email();
+		$email->send_emails();
 	}
 
 	/**
@@ -625,28 +611,26 @@ class AnsPress_Email_Hooks {
 	 * @param object  $_post Post object.
 	 */
 	public static function ap_trash_question( $post_id, $_post ) {
-		if ( ! ap_opt( 'notify_admin_trash_question' ) ) {
+		if ( ! ap_opt( 'email_admin_trash_question' ) ) {
 			return;
 		}
 
+		$args = [];
 		$current_user = wp_get_current_user();
-
-		// Don't bother if current user is admin.
-		if ( ap_opt( 'notify_admin_email' ) === $current_user->user_email ) {
-			return;
+		$admin_emails = self::get_admin_emails( 'email_admin_trash_question' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
 
-		$args = array(
+		$args['tags'] = array(
 			'{user}'              => ap_user_display_name( get_current_user_id() ),
 			'{question_title}'    => $_post->post_title,
-			'{question_link}'     => get_permalink( $_post->ID ),
+			'{question_link}'     => wp_get_shortlink( $_post->ID ),
+			'{question_content}'  => $_post->post_content,
 		);
 
-		$args = apply_filters( 'ap_trash_question_email_tags', $args );
-		$subject = SELF::replace_tags( ap_opt( 'trash_question_email_subject' ), $args );
-		$message = SELF::replace_tags( ap_opt( 'trash_question_email_body' ), $args );
-
-		SELF::send_mail( ap_opt( 'notify_admin_email' ), $subject, $message );
+		$email = new Email( 'trash_question', $args );
+		$email->send_emails();
 	}
 
 	/**
@@ -656,30 +640,26 @@ class AnsPress_Email_Hooks {
 	 * @param object  $_post Post object.
 	 */
 	public static function ap_trash_answer( $post_id, $_post ) {
-
-		if ( ! ap_opt( 'notify_admin_trash_answer' ) ) {
+		if ( ! ap_opt( 'email_admin_trash_answer' ) ) {
 			return;
 		}
 
+		$args = [];
 		$current_user = wp_get_current_user();
-
-		// Don't bother if current user is admin.
-		if ( ap_opt( 'notify_admin_email' ) === $current_user->user_email ) {
-			return;
+		$admin_emails = self::get_admin_emails( 'email_admin_trash_question' );
+		if ( ! empty( $admin_emails ) ) {
+			$args['users'] = $admin_emails;
 		}
 
-		$args = array(
+		$args['tags'] = array(
 			'{user}'              => ap_user_display_name( get_current_user_id() ),
 			'{question_title}'    => $_post->post_title,
-			'{question_link}'     => get_permalink( $_post->post_parent ),
+			'{question_link}'     => wp_get_shortlink( $_post->post_parent ),
+			'{answer_content}'    => $_post->post_content,
 		);
 
-		$args = apply_filters( 'ap_trash_answer_email_tags', $args );
-		$subject = SELF::replace_tags( ap_opt( 'trash_answer_email_subject' ), $args );
-		$message = SELF::replace_tags( ap_opt( 'trash_answer_email_body' ), $args );
-
-		// Sends email.
-		SELF::send_mail( ap_opt( 'notify_admin_email' ), $subject, $message );
+		$email = new Email( 'trash_question', $args );
+		$email->send_emails();
 	}
 
 	/**
@@ -748,6 +728,368 @@ class AnsPress_Email_Hooks {
 		if ( in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 			ap_delete_subscribers( 'comment_' . $_post->ID );
 		}
+	}
+
+	/**
+	 * Add reputation events option in AnsPress options.
+	 *
+	 * @param array $all_options Options.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function ap_all_options( $all_options ) {
+		$all_options['emails'] = array(
+			'label'    => __( 'Email Templates', 'anspress-question-answer' ),
+			'template' => 'emails.php',
+		);
+
+		return $all_options;
+	}
+
+	/**
+	 * Save email templates.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function save_email_template_form() {
+		$editing = false;
+		$template_slug = ap_sanitize_unslash( 'template', 'r' );
+		$template_id = (int) ap_opt( 'email_template_' . $template_slug );
+
+		$form = anspress()->get_form( 'email_template' );
+		$values = $form->get_values();
+
+		// Check nonce and is valid form.
+		if ( ! $form->is_submitted() || ! current_user_can( 'manage_options' ) ) {
+			ap_ajax_json([
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
+			] );
+		}
+
+		$post_args = array(
+			'post_title'		   => $values['subject']['value'],
+			'post_content' 		 => $values['body']['value'],
+		);
+
+		$_post = get_post( $template_id );
+		if ( $_post ) {
+			$editing = true;
+			$post_args['ID'] = $_post->ID;
+			// Check if valid post type and user can edit.
+			if ( $_post && 'anspress_email' !== $_post->post_type ) {
+				ap_ajax_json( 'something_wrong' );
+			}
+		}
+
+		// Post status.
+		$post_args['post_status'] = 'publish';
+
+		if ( $form->have_errors() ) {
+			ap_ajax_json([
+				'success'       => false,
+				'snackbar'      => [ 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ],
+				'form_errors'   => $form->errors,
+				'fields_errors' => $form->get_fields_errors(),
+			] );
+		}
+
+		if ( ! $editing ) {
+			$post_args['post_type'] = 'anspress_email';
+			$post_id = wp_insert_post( $post_args, true );
+		} else {
+			$post_id = wp_update_post( $post_args, true );
+		}
+
+		// If error return and send error message.
+		if ( is_wp_error( $post_id ) ) {
+			ap_ajax_json([
+				'success'       => false,
+				'snackbar'      => array(
+					'message' => sprintf(
+						// Translators: placeholder contain error message.
+						__( 'Unable to save template. Error: %s', 'anspress-question-answer' ),
+						$post_id->get_error_message()
+					),
+				),
+			] );
+		}
+
+		ap_opt( 'email_template_' . $template_slug, $post_id );
+
+		$form->after_save( false, array(
+			'post_id' => $post_id,
+		) );
+
+		// Clear temporary images.
+		if ( $post_id ) {
+			ap_clear_unattached_media();
+		}
+
+		ap_ajax_json( array(
+			'success'  => true,
+			'snackbar' => [
+				'message' => __( 'Post updated successfully', 'anspress-question-answer' ),
+			],
+			'post_id'  => $post_id,
+		) );
+	}
+
+	/**
+	 * Ajax callback for loading email template form.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function ap_email_template() {
+		check_ajax_referer( 'ap_email_template', '__nonce' );
+		$template_slug = ap_sanitize_unslash( 'template', 'r' );
+
+		AnsPress_Email_Hooks::template_form( $template_slug );
+
+		die();
+	}
+
+	/**
+	 * Generate email template form.
+	 *
+	 * @param string $active Currently active template.
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function template_form( $active ) {
+		$form = anspress()->get_form( 'email_template' );
+		$template = get_post( ap_opt( 'email_template_' . $active ) );
+
+		if ( $template ) {
+			$form->set_values( array(
+				'subject' => $template->post_title,
+				'body'    => $template->post_content,
+			) );
+		}
+
+		$form->generate(array(
+			'ajax_submit' => true,
+			'hidden_fields' => array(
+				[ 'name' => 'action', 'value' => 'ap_ajax' ],
+				[ 'name' => 'ap_ajax_action', 'value' => 'form_email_template' ],
+				[ 'name' => 'template', 'value' => $active ],
+			),
+		));
+	}
+
+	/**
+	 * Return default template for an event.
+	 *
+	 * @param string $event Event name.
+	 * @return array.
+	 */
+	public static function get_default_template( $event ) {
+		$template = array(
+			'subject' => '',
+			'body'    => '',
+		);
+
+		/**
+		 * Used for registering a default email template for an event.
+		 *
+		 * @param array $template Template.
+		 * @since 4.1.0
+		 */
+		return apply_filters( "ap_email_default_template_{$event}", $template );
+	}
+
+	/**
+	 * Add default new question email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_new_question( $template ) {
+		$template['subject'] = __( '{asker} have posted a new question', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'A new question is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{asker}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{question_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default new answer email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_new_answer( $template ) {
+		$template['subject'] = __( 'New answer posted by {answerer}', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'A new answer is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{answerer}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{answer_excerpt} ';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default selected answer email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_select_answer( $template ) {
+		$template['subject'] = __( 'Your answer is selected as best!', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'Your answer is selected as best by ', 'anspress-question-answer' ) . ' <b class="user-name">{selector}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{answer_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default selected answer email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_new_comment( $template ) {
+		$template['subject'] = __( 'New comment by {commenter}', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'A new comment posted by', 'anspress-question-answer' ) . ' <b class="user-name">{commenter}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{comment_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{comment_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default edit question email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_edit_question( $template ) {
+		$template['subject'] = __( 'A question is edited by {editor}', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'A question is edited by', 'anspress-question-answer' ) . ' <b class="user-name">{editor}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{question_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default edit answer email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_edit_answer( $template ) {
+		$template['subject'] = __( 'A answer is edited by {editor}', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'A answer is edited by', 'anspress-question-answer' ) . ' <b class="user-name">{editor}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{answer_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default trash question email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_trash_question( $template ) {
+		$template['subject'] = __( 'A question is trashed by {user}', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'A question is trashed by', 'anspress-question-answer' ) . ' <b class="user-name">{user}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{question_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
+	}
+
+	/**
+	 * Add default trash answer email template.
+	 *
+	 * @param array $template Template subject and body.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function template_trash_answer( $template ) {
+		$template['subject'] = __( 'An answer is trashed by {user}', 'anspress-question-answer' );
+		$body = '';
+		$body .= '<div class="ap-email-event">';
+		$body .= __( 'An answer is trashed by', 'anspress-question-answer' ) . ' <b class="user-name">{user}</b>';
+		$body .= '</div>';
+		$body .= '<div class="ap-email-body">';
+		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body .= '<div class="ap-email-content">';
+		$body .= '{answer_content}';
+		$body .= '</div>';
+		$body .= '</div>';
+		$template['body'] = $body;
+
+		return $template;
 	}
 }
 
