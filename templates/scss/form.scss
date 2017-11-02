@@ -2,20 +2,18 @@
 // Form and editor styles
 // --------------------------------------------------
 #anspress{
-	[type="text"],[type="url"],[type="email"],[type="url"],[type="tel"],[type="number"],[type="datetime-local"],[type="date"]{
-		&.ap-form-control{
-			border: 1px solid #ddd;
-			border-radius: 1px;
-			box-shadow: 0 0 2px rgba(0, 0, 0, 0.02) inset;
-			display: block;
-			height: 33px;
-			margin-bottom: 0;
-			padding: 5px 10px;
+	.ap-form-control{
+		border: 1px solid #ddd;
+		border-radius: 1px;
+		box-shadow: 0 0 2px rgba(0, 0, 0, 0.02) inset;
+		display: block;
+		height: 33px;
+		margin-bottom: 0;
+		padding: 5px 10px;
+		&[type="text"]{
 			width: 100%;
 		}
-		&.autogrow{
-			overflow: hidden;
-		}
+
 		&[type="checkbox"]{
 			display: inline;
 			margin: 0;
@@ -23,7 +21,12 @@
 			width: auto;
 			height: auto;
 		}
+		&.autogrow{
+			overflow: hidden;
+		}
 	}
+
+
 	textarea.ap-form-control{
 		height: auto;
 	}
@@ -33,6 +36,7 @@
 	}
 	.ap-field-desc {
 		font-size: 90%;
+    margin-top: 6px;
 	}
 	.ap-form-group {
 		margin-bottom: 20px;
