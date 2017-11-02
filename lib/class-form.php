@@ -446,8 +446,22 @@ class Form {
 		}
 	}
 
+	/**
+	 * Set values for a field.
+	 *
+	 * This must be called before initialization of form.
+	 *
+	 * @param array $values Values.
+	 * @return void
+	 * @since 4.1.0
+	 */
 	public function set_values( $values ) {
-		$this->args['fields'] = array_merge_recursive( $this->args['fields'], $values );
+		$formatted = [];
+		foreach ( $values as $key => $val ) {
+			$formatted[ $key ] = [];
+			$formatted[ $key ]['value'] = $val;
+		}
+		$this->args['fields'] = array_merge_recursive( $this->args['fields'], $formatted );
 	}
 
 }
