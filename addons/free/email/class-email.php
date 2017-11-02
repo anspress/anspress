@@ -13,7 +13,6 @@
 namespace AnsPress;
 
 use WP_Error;
-use PC;
 use AnsPress_Email_Hooks as Hooks;
 
 /**

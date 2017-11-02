@@ -85,7 +85,8 @@
 						"templates/css/main.css": "templates/scss/main.scss",
 						"templates/css/fonts.css": "templates/scss/fonts.scss",
 						"templates/css/RTL.css": "templates/scss/RTL.scss",
-						"assets/ap-admin.css": "assets/ap-admin.scss"
+						"assets/ap-admin.css": "assets/ap-admin.scss",
+						"templates/addons/email/style.css": "templates/addons/email/style.scss"
 					}
 				}
 			},
