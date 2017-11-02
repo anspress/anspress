@@ -169,7 +169,7 @@ class AnsPress_Dashboard {
 		<?php if ( $results ) :   ?>
 		<script>
 			var latestanswerChartData = {
-				labels: [ <?php echo esc_html( "'" . implode( "','", $days ) . "'" ); ?> ],
+				labels: [ <?php echo "'" . implode( "','", $days ) . "'"; ?> ],
 				datasets: [{
 					backgroundColor: 'rgba(78, 207, 158, 0.3)',
 					borderColor: 'rgba(78, 207, 158, 0.7)',
