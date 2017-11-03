@@ -33,14 +33,16 @@
 					do_action( 'ap_before_question_title' );
 					?>
 					<div class="ap-avatar">
-						<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+						<a href="<?php ap_profile_link(); ?>">
 							<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
 						</a>
 					</div>
 					<div class="ap-cell clearfix">
 						<div class="ap-cell-inner">
 							<div class="ap-q-metas">
-								<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
+								<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+									<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
+								</span>
 								<a href="<?php the_permalink(); ?>" class="ap-posted">
 									<?php
 										printf(

@@ -399,4 +399,23 @@ class AnsPress_Theme {
 		}
 		return $template;
 	}
+
+	/**
+	 * Remove hentry class from question, answers and main pages .
+	 *
+	 * @param array   $post_classes Post classes.
+	 * @param array   $class        An array of additional classes added to the post.
+	 * @param integer $post_id      Post ID.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function remove_hentry_class( $post_classes, $class, $post_id ) {
+		$_post = ap_get_post( $post_id );
+
+		if ( $_post && ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) || in_array( $_post->ID, ap_main_pages_id() ) ) ) {
+			return array_diff( $post_classes, [ 'hentry' ] );
+		}
+
+		return $post_classes;
+	}
 }

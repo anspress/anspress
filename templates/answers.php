@@ -14,7 +14,7 @@
 
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
-			<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">
+			<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t" itemprop="answerCount">
 				<?php
 					$count = ( '' !== get_query_var( 'answer_id' ) ? ap_get_answers_count() : ap_total_answers_found() );
 					printf(

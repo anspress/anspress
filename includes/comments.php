@@ -293,7 +293,7 @@ function ap_comment_btn_html( $_post = null ) {
 
 	// Show comments button.
 	$output = '<a href="#/comments/' . $_post->ID . '" class="ap-btn ap-btn-comments">';
-	$output .= '<span ap-commentscount-text>' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
+	$output .= '<span ap-commentscount-text itemprop="commentCount">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
 	$output .= $unapproved . '</a>';
 
 	// Add comment button.

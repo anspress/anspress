@@ -1353,7 +1353,7 @@ function ap_user_display_name( $args = array() ) {
 	$user = get_userdata( $user_id );
 
 	if ( $user ) {
-		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '">' . $user->display_name . '</a>';
+		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '" itemprop="url"><span itemprop="name">' . $user->display_name . '</span></a>';
 	} elseif ( $post && in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 		$post_fields = ap_get_post_field( 'fields' );
 
@@ -1477,7 +1477,7 @@ function ap_user_link_anchor( $user_id, $echo = true ) {
 		}
 	}
 
-	$html = '<a href="' . ap_user_link( $user_id ) . '"' . ap_hover_card_attributes( $user_id, false ) . '>';
+	$html = '<a href="' . ap_user_link( $user_id ) . '">';
 	$html .= $name;
 	$html .= '</a>';
 
@@ -2125,4 +2125,21 @@ function ap_main_pages() {
 	);
 
 	return apply_filters( 'ap_main_pages', $pages );
+}
+
+/**
+ * Return post IDs of main pages.
+ *
+ * @return array
+ * @since 4.1.0
+ */
+function ap_main_pages_id() {
+	$main_pages = array_keys( ap_main_pages() );
+	$pages_id = [];
+
+	foreach ( $main_pages as $slug ) {
+		$pages_id[ $slug ] = ap_opt( $slug );
+	}
+
+	return $pages_id;
 }

@@ -338,14 +338,14 @@ function ap_question_tags_html( $args = [] ) {
 	if ( $tags && count( $tags ) > 0 ) {
 		$o = '';
 		if ( $args['list'] ) {
-			$o .= '<ul class="' . $args['class'] . '">';
+			$o .= '<ul class="' . $args['class'] . '" itemprop="keywords">';
 			foreach ( $tags as $t ) {
 				$o .= '<li><a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . ' &times; <i class="tax-count">' . $t->count . '</i></a></li>';
 			}
 			$o .= '</ul>';
 		} else {
 			$o .= $args['label'];
-			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '">';
+			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '" itemprop="keywords">';
 			$i = 1;
 			foreach ( $tags as $t ) {
 				$o .= '<a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . '</a> ';
