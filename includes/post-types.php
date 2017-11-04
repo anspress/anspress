@@ -27,6 +27,7 @@ class AnsPress_PostTypes {
 		anspress()->add_action( 'init', __CLASS__, 'register_question_cpt', 0 );
 		anspress()->add_action( 'init', __CLASS__, 'register_answer_cpt', 0 );
 		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 2 );
+		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
 	}
 
 	/**
@@ -267,6 +268,21 @@ class AnsPress_PostTypes {
 			 */
 			return apply_filters( 'ap_answer_post_type_link', $link, $post );
 		} // End if().
+
+		return $link;
+	}
+
+	/**
+	 * Filters the post type archive permalink.
+	 *
+	 * @param string $link      The post type archive permalink.
+	 * @param string $post_type Post type name.
+	 * @since 4.1.0
+	 */
+	public static function post_type_archive_link( $link, $post_type ) {
+		if ( 'question' === $post_type ) {
+			return get_permalink( ap_opt( 'base_page' ) );
+		}
 
 		return $link;
 	}
