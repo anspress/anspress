@@ -15,7 +15,7 @@
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: 	    https://goo.gl/ffainr
- * Version:           4.0.5
+ * Version:           4.1.0
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
  * License:           GPL-3.0+
@@ -24,6 +24,8 @@
  * Domain Path:       /languages
  * GitHub Plugin URI: anspress/anspress
  */
+
+use AnsPress\Form as Form;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -63,7 +65,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.0.5';
+		private $_plugin_version = '4.1.0';
 
 		/**
 		 * Class instance
@@ -194,6 +196,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $user_pages;
 
 		/**
+		 * AnsPress question rewrite rules.
+		 *
+		 * @var array
+		 * @since 4.1.0
+		 */
+		public $question_rule = [];
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -202,7 +212,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @return instance
 		 */
 		public static function instance() {
-			if ( ! isset( self::$instance ) && ! (self::$instance instanceof self) ) {
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
 
 				self::$instance = new self();
 				self::$instance->setup_constants();
@@ -281,13 +291,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 */
 		private function includes() {
-			global $ap_options;
-
-			require_once ANSPRESS_DIR . 'includes/class/form.php';
-			require_once ANSPRESS_DIR . 'includes/class/validation.php';
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
+			require_once ANSPRESS_DIR . 'includes/class-form-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/options.php';
 			require_once ANSPRESS_DIR . 'includes/functions.php';
 			require_once ANSPRESS_DIR . 'includes/hooks.php';
@@ -303,8 +310,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/theme.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
-			require_once ANSPRESS_DIR . 'includes/ask-form.php';
-			require_once ANSPRESS_DIR . 'includes/answer-form.php';
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
@@ -323,6 +328,19 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
 
 			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
+			require_once ANSPRESS_DIR . 'lib/class-form.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-field.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-input.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-group.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-repeatable.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-checkbox.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-select.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-editor.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-upload.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-tags.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-radio.php';
+			require_once ANSPRESS_DIR . 'lib/form/class-textarea.php';
+			require_once ANSPRESS_DIR . 'lib/class-validate.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once ANSPRESS_DIR . 'lib/class-anspress-cli.php';
@@ -437,8 +455,64 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 			}
 		}
+
+		/**
+		 * Get specific AnsPress form.
+		 *
+		 * @param string $name Name of form.
+		 * @return false|object
+		 * @since 4.1.0
+		 */
+		public function &get_form( $name ) {
+			$name = preg_replace( '/^form_/i', '', $name );
+
+			if ( $this->form_exists( $name ) ) {
+				return $this->forms[ $name ];
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check if a form exists in AnsPress, if not then tries to register.
+		 *
+		 * @param string $name Name of form.
+		 * @return boolean
+		 * @since 4.1.0
+		 */
+		public function form_exists( $name ) {
+			$name = preg_replace( '/^form_/i', '', $name );
+
+			if ( isset( $this->forms[ $name ] ) ) {
+				return true;
+			}
+
+			/**
+			 * Register a form in AnsPress.
+			 *
+			 * @param array $form {
+			 * 		Form options and fields. Check @see `AnsPress\Form` for more detail.
+			 *
+			 * 		@type string  $submit_label Custom submit button label.
+			 * 		@type boolean $editing      Pass true if currently in editing mode.
+			 * 		@type integer $editing_id   If editing then pass editing post or comment id.
+			 * 		@type array   $fields       Fields. For more detail on field option check documentations.
+			 * }
+			 * @since 4.1.0
+			 * @todo  Add detailed docs for `$fields`.
+			 */
+			$args = apply_filters( 'ap_form_' . $name, null );
+
+			if ( ! is_null( $args ) && ! empty( $args ) ) {
+				$this->forms[ $name ] = new Form( 'form_' . $name, $args );
+
+				return true;
+			}
+
+			return false;
+		}
 	}
-}
+} // End if().
 
 /**
  * Run AnsPress thingy

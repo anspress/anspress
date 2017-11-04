@@ -10,6 +10,7 @@ window.AnsPress = _.extend({
 	models: {},
 	views: {},
 	collections: {},
+	modals: {},
 	loadTemplate: function(id){
 		if(jQuery('#apTemplate').length==0)
 			jQuery('<script id="apTemplate" type="text/html"></script>').appendTo('body');
@@ -60,11 +61,12 @@ window.AnsPress = _.extend({
 			method: 'POST',
 		});
 
-		// COnvert data to query string if object.
-		if(_.isObject(options.data))
-			options.data = jQuery.param(options.data);
+		// Convert data to query string if object.
+		if(_.isString(options.data))
+			options.data = jQuery.apParseParams(options.data);
 
-		options.data = 'action=ap_ajax&' + options.data;
+		if(typeof options.data.action === 'undefined')
+			options.data.action = 'ap_ajax';
 
 		var success = options.success;
 		delete options.success;
@@ -92,27 +94,40 @@ window.AnsPress = _.extend({
 		var customClass = jQuery(elm).data('loadclass')||'';
 		var isText = jQuery(elm).is('input[type="text"]');
 		var uid = this.uniqueId();
-		var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
-		jQuery('body').append(el);
-		var offset = jQuery(elm).offset();
-		var height = jQuery(elm).outerHeight();
-		var width = isText ? 40 : jQuery(elm).outerWidth();
-		el.css({
-			top: offset.top,
-			left: isText ? offset.left + jQuery(elm).outerWidth() - 40 : offset.left,
-			height: height,
-			width: width
-		});
 
-		jQuery(elm).data('loading', '#apuid-' + uid);
-		return '#apuid-' + uid;
+		if(jQuery(elm).is('button')||jQuery(elm).is('.ap-btn')){
+			jQuery(elm).addClass('show-loading');
+			$loading = jQuery('<span class="ap-loading-span"></span>');
+			$loading.height(jQuery(elm).height());
+			$loading.width(jQuery(elm).height());
+			jQuery(elm).append($loading);
+		} else {
+			var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
+			jQuery('body').append(el);
+			var offset = jQuery(elm).offset();
+			var height = jQuery(elm).outerHeight();
+			var width = isText ? 40 : jQuery(elm).outerWidth();
+			el.css({
+				top: offset.top,
+				left: isText ? offset.left + jQuery(elm).outerWidth() - 40 : offset.left,
+				height: height,
+				width: width
+			});
+
+			jQuery(elm).data('loading', '#apuid-' + uid);
+			return '#apuid-' + uid;
+		}
 	},
 
 	hideLoading: function(elm) {
-		if( 'all' == elm )
-				jQuery('.ap-loading-icon').hide();
-		else
-				jQuery(jQuery(elm).data('loading')).hide();
+		if(jQuery(elm).is('button')||jQuery(elm).is('.ap-btn')){
+			jQuery(elm).removeClass('show-loading');
+			jQuery(elm).find('.ap-loading-span').remove();
+		}else if( 'all' == elm ){
+			jQuery('.ap-loading-icon').hide();
+		}else{
+			jQuery(jQuery(elm).data('loading')).hide();
+		}
 	},
 	getUrlParam: function(key) {
 		var qs = jQuery.apParseParams(window.location.href);
@@ -120,6 +135,48 @@ window.AnsPress = _.extend({
 			return typeof qs[key] !== 'undefined' ? qs[key] : null;
 
 		return qs;
+	},
+	modal: function(name, args){
+		args = args||{};
+		if(typeof this.modals[name] !== 'undefined'){
+			return this.modals[name];
+		}
+
+		this.modals[name] = new AnsPress.views.Modal(_.extend({
+			title: aplang.loading,
+			content: '',
+			size: 'medium'
+		}, args));
+
+		jQuery('#anspress').append(this.modals[name].render().$el);
+		return this.modals[name];
+	},
+	hideModal: function(name, runCb){
+		if(typeof runCb === 'undefined')
+			runCb = true;
+
+		if(typeof this.modals[name] !== 'undefined'){
+			this.modals[name].hide(runCb);
+			delete this.modals[name];
+		}
+	},
+	removeHash: function(){
+		var scrollV, scrollH, loc = window.location;
+		// Prevent scrolling by storing the page's current scroll offset
+		scrollV = document.body.scrollTop;
+		scrollH = document.body.scrollLeft;
+
+    if ('pushState' in history){
+
+			history.pushState('', document.title, loc.pathname + loc.search);
+			Backbone.history.navigate('/');
+		} else {
+			loc.hash = '';
+		}
+		// Restore the scroll offset, should be flicker free
+		document.body.scrollTop = scrollV;
+		document.body.scrollLeft = scrollH;
+
 	}
 }, Backbone.Events);
 
@@ -294,6 +351,289 @@ _.templateSettings = {
 		}
 	});
 
+	AnsPress.views.Modal = Backbone.View.extend({
+		id: 'ap-modal',
+		className: 'ap-modal',
+		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" ap-query=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
+		events: {
+			'click [ap="close-modal"]': 'clickHide',
+			'click [ap="modal-click"]': 'clickAction',
+		},
+		initialize: function(opt){
+			opt.title = opt.title||aplang.loading;
+			this.data = opt;
+		},
+		render: function(){
+			$('html').css('overflow', 'hidden');
+			var t = _.template(this.template);
+			this.$el.html(t(this.data));
+			return this;
+		},
+		clickHide: function(e){
+			e.preventDefault();
+			this.hide();
+		},
+		hide: function(runCb){
+			if(typeof runCb === 'undefined')
+				runCb = true;
+			this.remove();
+			$('html').css('overflow', '');
+			if(this.data.hideCb&&runCb) this.data.hideCb(this); // Callback
+		},
+		setContent: function(html){
+			this.$el.find('.ap-modal-content').html(html);
+		},
+		setTitle: function(title){
+			this.$el.find('.ap-modal-header strong').text(title);
+		},
+		clickAction: function(e){
+			e.preventDefault();
+			var targ = $(e.target);
+			q = targ.data('ap-query');
+
+			if(q.cb){
+				q.element = targ;
+				AnsPress.trigger(q.cb, q);
+			}
+		}
+	});
+
+	$.fn.AnsPressTags = function() {
+		var suggestion, suggTimeOut;
+
+		function sanitizeTag(str) {
+			str = str.replace(/^\s+|\s+$/g, ''); // trim
+			str = str.toLowerCase();
+
+			str = str.replace(/\s+/g, '-') // collapse whitespace and replace by -
+				.replace(/-+/g, '-'); // collapse dashes
+				return str;
+		}
+
+		function sanitizeLabel(str) {
+			var div = document.createElement('div');
+			div.appendChild(document.createTextNode(str));
+			return div.innerHTML;
+		}
+
+		$(document).mouseup(function(e) {
+			if(suggestion)
+				suggestion.dontHide = true;
+
+			var container = $('.ap-tags-suggestion');
+			if (!container.is(e.target) && container.has(e.target).length === 0) {
+				container.remove();
+			}
+		});
+
+		function renderItem(val, tag, fieldName, typeField, opt){
+			if(typeField.parent().find('.ap-tag-item[data-val="'+val+'"]').length > 0 )
+				return;
+
+			// Check max tags allowed.
+			if(typeField.parent().find('.ap-tag-item').length >= opt.max_tags){
+				AnsPress.trigger( 'snackbar', {'success' : false, 'snackbar' : {'message': opt.label_max_tag_added} } );
+				return false;
+			}
+
+			$newFieldName = fieldName + '['+val+']';
+			var html = $('<span class="ap-tag-item" data-val="'+val+'">'+tag+'<input type="hidden" name="'+$newFieldName+'" value="'+tag+'" /></span>');
+
+			if(suggestion)
+				suggestion.find('li[data-val="'+val+'"]').remove();
+
+			$(html).insertBefore(typeField);
+
+			AnsPress.trigger('renderTagItem', html, val, tag, fieldName, typeField);
+		}
+
+		/**
+		 * Filter matching lists in suggestion.
+		 * @param {object} typeField
+		 */
+		function filterMatchingLists(typeField, opt){
+			if(!suggestion) return;
+
+			$allListElements = suggestion.find('li');
+
+			var $matchingListElements = $allListElements.not('.disable').filter(function(i, li){
+				var listItemText = $(li).text().toUpperCase(), searchText = typeField.val().toUpperCase();
+				return ~listItemText.indexOf(searchText);
+			});
+
+			$allListElements.each(function(){
+				var regex = new RegExp('('+typeField.val()+')', 'ig');
+				$(this).html($(this).text().replace(regex, '<b>$1</b>'));
+			});
+
+			$notMatched = $.grep($allListElements, function(element) {
+				return $.inArray(element, $matchingListElements) === -1;
+			});
+
+			$.each($notMatched,function(el){
+				$(this).remove();
+			});
+
+			if ( suggestion.find('li:not(.disable)').length === 0){
+				suggestion.append('<li class="disable">' + opt.label_no_matching + ' ' + ( opt.add_tag ? opt.label_add_new + '<input type="text" placeholder="Type and hit enter" class="new-tag-entry" />' : '') + '</li>');
+			}
+		}
+
+		/**
+		 * Render suggestion dropdown.
+		 * @param {object|array} tags
+		 * @param {object} fieldName
+		 * @param {object} typeField
+		 */
+		function renderSuggestion(tags, fieldName, typeField, opt){
+			var self = this;
+			var list = '';
+			var is_object = typeof tags === 'object';
+
+			if(!$.isEmptyObject(tags)){
+				$.each(tags, function(i, tag){
+					var index_val = is_object ? i : tag;
+					if(typeField.closest('.ap-tag-wrap').find("span.ap-tag-item[data-val='"+index_val+"']").length == 0)
+						list += '<li data-val="'+index_val+'">'+tag+'</li>';
+				});
+			} else if(opt.add_tag) {
+				typeField.allowNewTag = true;
+				list += '<li class="disable">'+opt.label_no_tags+' '+opt.label_add_new+'<input type="text" placeholder="Type and hit enter" class="new-tag-entry" /></li>';
+			} else {
+				list += '<li class="disable">'+opt.label_no_tags+'</li>';
+			}
+
+			var html = $('<ul class="ap-tags-suggestion">'+list+'</ul>').css('left', typeField.position().left);
+			filterMatchingLists(typeField, opt);
+
+			return html;
+		}
+
+		function removeSuggestion(){
+			if(suggestion){
+				suggestion.remove();
+				suggestion = null;
+				clearTimeout(suggTimeOut);
+			}
+		}
+
+		return this.each(function() {
+			var self = $(this);
+
+			var opt = self.data('options');
+			var fieldName = self.data('name');
+			var typeField = $(this).find('#'+self.data('id'));
+			var tags = self.find('script').length>0 ? JSON.parse(self.find('script').html()) : {};
+
+			// Remove tag when its clicked.
+			self.on('click', '.ap-tag-item', function(){
+				$(this).remove();
+			});
+
+			//focus type field when clicked on wrapper.
+			self.on('click', function(e){
+				if(e.target!==this) return;
+				typeField.click().focus();
+			});
+
+			self.on('keydown', '.new-tag-entry', function(e) {
+				if(e.keyCode == 13){ // Prevent submit form on Enter
+					e.preventDefault();
+
+					var val = $(this).val().trim();
+					renderItem(sanitizeTag(val), sanitizeLabel(val), fieldName, typeField, opt);
+					$(this).val('');
+					typeField.val('');
+				}
+			});
+
+			self.on('click', '.ap-tags-suggestion li:not(.disable)', function(e){
+				if(e.target!==this) return;
+
+				renderItem($(this).attr('data-val'), $(this).text(), fieldName, typeField, opt);
+				$(this).remove();
+				typeField.val('');
+			});
+
+			typeField.on('keydown', function(e) {
+				if(e.keyCode == 13) // Prevent submit form on Enter
+					e.preventDefault();
+
+				// Delete on backspace
+				if(e.keyCode == 8){
+					if(typeField.val() === '' && typeField.prev().is('.ap-tag-item'))
+						typeField.prev().remove();
+					removeSuggestion();
+				}
+
+				if(e.keyCode==40 && !suggestion){
+					suggestion = $(renderSuggestion(tags, fieldName, typeField, opt));
+					self.append(suggestion);
+				}
+
+				if(e.keyCode == 38 || e.keyCode == 40) {
+					var inputs = suggestion.find('.ap-tag-item');
+					var index = suggestion.find('li.focus').index();
+					var items = suggestion.find('li').length-1;
+					suggestion.find('li').removeClass('focus');
+
+					if(index == -1)
+						index = 0;
+					else
+						e.keyCode == 40 ? index++ : index--;
+
+					var currentLi = suggestion.find('li').eq(index);
+
+					if(currentLi.length>0){
+						currentLi.addClass('focus');
+						var pos = currentLi.position();
+						$(suggestion).animate({
+							scrollTop: pos.top
+						}, 0);
+					}
+				}
+			});
+
+			typeField.on('keyup', function(e) {
+				if(!suggestion){
+					suggestion = $(renderSuggestion(tags, fieldName, typeField, opt));
+					self.append(suggestion);
+				}
+
+				var focused = suggestion.find('li.focus');
+
+				if(focused.length>0){
+					if(e.keyCode == 13 || e.keyCode == 188){
+						var val = $(this).val().replace(/,\s*$/, '');
+						renderItem(focused.attr('data-val'), focused.text(), fieldName, typeField, opt);
+						$(this).val('');
+						removeSuggestion();
+					}
+				}
+
+				if(e.keyCode != 38 && e.keyCode != 40)
+					filterMatchingLists(typeField, opt);
+
+			});
+
+			typeField.on('click', function(e){
+				removeSuggestion();
+				suggestion = $(renderSuggestion(tags, fieldName, typeField, opt));
+				self.append(suggestion);
+			});
+
+			typeField.on('blur', function(e){
+				if(suggestion && suggestion.find('li input').is('.new-tag-entry'))
+					return;
+
+				clearTimeout(suggTimeOut);
+				suggTimeOut = setTimeout(function(){
+					removeSuggestion();
+				}, 200);
+			});
+		});
+	};
+
 	var re = /([^&=]+)=?([^&]*)/g;
 	var decode = function (str) {
 			return decodeURIComponent(str.replace(/\+/g, ' '));
@@ -367,13 +707,12 @@ _.templateSettings = {
 		}
 		return params;
 	};
-
-	var apSnackbarView = new AnsPress.views.Snackbar();
-	$('body').append(apSnackbarView.render().$el);
-
 })(jQuery);
 
 jQuery(document).ready(function($){
+	var apSnackbarView = new AnsPress.views.Snackbar();
+	$('body').append(apSnackbarView.render().$el);
+
 	$( document ).click(function (e) {
 		e.stopPropagation();
 		if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).closest('.open').is('.open') && !$(e.target).closest('form').is('form')) {
@@ -414,10 +753,13 @@ jQuery(document).ready(function($){
 	$('body').on('click', '[ap-ajax-btn]', function(e){
 		var self = this;
 		e.preventDefault();
+
 		if($(this).is('.loaded'))
 			return;
+
 		var self = $(this);
 		var query = JSON.parse(self.attr('ap-query'));
+
 		AnsPress.showLoading(self);
 		AnsPress.ajax({
 			data: query,
@@ -428,8 +770,152 @@ jQuery(document).ready(function($){
 					if(data.btn.hide) self.hide();
 
 				if(typeof data.cb !== 'undefined')
-					AnsPress.trigger(data.cb, data);
+					AnsPress.trigger(data.cb, data, e.target);
 			}
 		})
 	});
-})
+
+	$('[data-role="ap-tags"]').AnsPressTags();
+
+	function apAddRepeatField(el, values){
+		values = values||false;
+		var args = $(el).data('args');
+		args['index'] = $(el).find('[data-repeat-id]').length;
+		var template = $('#'+args.key+'-template').text();
+
+		var t = _.template(template);
+		t = t(args);
+		var regex = /(class|id|for)="([^"]+)"/g;
+
+		var t = t.replace(regex, function(match, group) {
+			return match.replace(/[[\]]/g, '');
+		});
+
+		var html = $('<div class="ap-repeatable-item" data-repeat-id="'+args.index+'">'+ t +'<a href="#" class="ap-repeatable-delete">'+args.label_delete+'</a></div>');
+		$.each(values, function(childName, v){
+			html.find('[name="'+args.key+'['+args.index+']['+childName+']"]').val(v);
+		});
+
+		var errors = $('#'+args.key+'-errors');
+
+		if ( errors.length > 0 ) {
+			var errors_json = JSON.parse(errors.html());
+			$.each(errors_json, function(i, err){
+				$.each(err, function(field, messages){
+					var fieldWrap = html.find('[name="'+args.key+'['+i+']['+field+']"]').closest('.ap-form-group');
+					fieldWrap.addClass('ap-have-errors');
+					var errContain = $('<div class="ap-field-errors"></div>');
+					$.each(messages, function(code, msg){
+						errContain.append('<span class="ap-field-error code-'+code+'">'+msg+'</span>');
+					})
+					$(errContain).insertAfter(fieldWrap.find('label'));
+				});
+			});
+		}
+
+		$(el).find('.ap-fieldrepeatable-item').append(html);
+	}
+
+	$('[data-role="ap-repeatable"]').each(function(){
+		var self = this;
+
+
+		$(this).find('.ap-repeatable-add').on('click', function(e){
+			e.preventDefault();
+
+			var self = $(this);
+			var query = JSON.parse(self.attr('ap-query'));
+			AnsPress.showLoading(self);
+
+			$count = $('[name="'+query.id+'-groups"]');
+			query.current_groups = $count.val();
+			$count.val(parseInt(query.current_groups)+1);
+
+			$nonce = $('[name="'+query.id+'-nonce"]');
+			query.current_nonce = $nonce.val();
+
+			AnsPress.ajax({
+				data: query,
+				success: function(data){
+					AnsPress.hideLoading(e.target);
+					$(data.html).insertBefore(self);
+					$nonce.val(data.nonce);
+				}
+			})
+		});
+
+		$(this).on('click', '.ap-repeatable-delete', function(e){
+			e.preventDefault();
+			$(this).closest('.ap-form-group').remove();
+		});
+
+	});
+
+	$('body').on('click', '.ap-form-group', function(){
+		$(this).removeClass('ap-have-errors');
+	});
+
+	$('body').on('click', 'button.show-loading', function(e){
+		e.preventDefault();
+	});
+
+	$('body').on( 'submit', '[apform]', function(e){
+		e.preventDefault();
+		var self = $(this);
+		var submitBtn = $(this).find('button[type="submit"]');
+		AnsPress.showLoading(submitBtn);
+
+    $(this).ajaxSubmit({
+			url: ajaxurl,
+			beforeSerialize: function() {
+				if(typeof tinymce !== 'undefined')
+					tinymce.triggerSave();
+
+				$('.ap-form-errors, .ap-field-errors').remove();
+				$('.ap-have-errors').removeClass('ap-have-errors');
+			},
+			success: function(data) {
+				AnsPress.hideLoading(submitBtn);
+				data = AnsPress.ajaxResponse(data);
+				if(data.snackbar){
+					AnsPress.trigger('snackbar', data)
+				}
+
+				if(typeof grecaptcha !== 'undefined' && typeof widgetId1 !== 'undefined')
+					grecaptcha.reset(widgetId1);
+
+				AnsPress.trigger('formPosted', data);
+
+				if(typeof data.form_errors !== 'undefined'){
+					$formError = $('<div class="ap-form-errors"></div>').prependTo(self);
+
+					$.each(data.form_errors, function(i, err){
+						$formError.append('<span class="ap-form-error ecode-'+i+'">'+err+'</div>');
+					});
+
+					$.each(data.fields_errors, function(i, errs){
+						$('.ap-field-'+i).addClass('ap-have-errors');
+						$('.ap-field-'+i).find('.ap-field-errorsc').html('<div class="ap-field-errors"></div>');
+
+						$.each(errs.error, function(code, err){
+							$('.ap-field-' + i).find('.ap-field-errors').append('<span class="ap-field-error ecode-'+code+'">'+err+'</span>');
+						});
+					});
+
+					self.apScrollTo();
+				}
+
+				if(typeof data.redirect !== 'undefined'){
+					window.location = data.redirect;
+				}
+			}
+		});
+	});
+
+});
+
+window.AnsPress.Helper = {
+	toggleNextClass: function(el){
+		jQuery(el).closest('.ap-field-type-group').find('.ap-fieldgroup-c').toggleClass('show');
+	}
+}

@@ -2,18 +2,18 @@
 // Form and editor styles
 // --------------------------------------------------
 #anspress{
-	.ap-form-control {
+	.ap-form-control{
 		border: 1px solid #ddd;
 		border-radius: 1px;
 		box-shadow: 0 0 2px rgba(0, 0, 0, 0.02) inset;
 		display: block;
 		height: 33px;
-		margin-bottom: 15px;
+		margin-bottom: 0;
 		padding: 5px 10px;
-		width: 100%;
-		&.autogrow{
-			overflow: hidden;
+		&[type="text"]{
+			width: 100%;
 		}
+
 		&[type="checkbox"]{
 			display: inline;
 			margin: 0;
@@ -21,56 +21,65 @@
 			width: auto;
 			height: auto;
 		}
+		&.autogrow{
+			overflow: hidden;
+		}
 	}
+
+
 	textarea.ap-form-control{
 		height: auto;
 	}
-	label > input[type="checkbox"] {
-		float: left;
-		margin-right: 10px !important;
-		margin-top: 3px !important;
-	}
+
 	label.inline-cb{
 		margin-bottom: 15px;
 	}
-	.ap-checkbox-withdesc{
-		margin-bottom: 15px;
-		[type="checkbox"]{
-			float: left;
-			height: 20px;
-			line-height: 100%;
-			margin-right: 10px;
-		}
-		p{
-			color: $light-color;
-			font-size: 13px;
-			margin-bottom: 0;
+	.ap-field-desc {
+		font-size: 90%;
+    margin-top: 6px;
+	}
+	.ap-form-group {
+		margin-bottom: 20px;
+	}
+	.ap-form-errors{
+		border-left: solid 3px #ff665c;
+    padding: 5px 5px 5px 10px;
+    margin-bottom: 15px;
+		background: #ffdedc;
+		i{
+			color: #F44336;
+			vertical-align: middle;
+			margin-right: 5px;
+			font-size: 16px;
 		}
 	}
-	.ap-field-description.have-error + .ap-field-ap_upload .ap-upload-anchor{
-		border-color: #F44336 !important;
+
+	.ap-field-errors{
+		border: solid 1px #ffe4e2;
+    display: table;
+    font-size: 12px;
+    margin-bottom: 5px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    background: #fff0ef;
+    color: #F44336;
+		span{
+			margin-right: 5px;
+			&:last-child{
+				margin-right: 0;
+			}
+		}
 	}
+
+	.ap-have-errors{
+		.ap-form-control, .ap-tag-wrap{
+			border-color: #f99991;
+		}
+	}
+
 	.ap-form-fields{
 		position: relative;
 		margin-bottom: 15px;
-		&.have-error{
-			border-color: #F44336 !important;
-			.ap-form-control{
-				border-color: #F44336 !important;
-			}
-			&.ap-field-description .ap-form-fields-in{
-				border-color: #F44336 !important;
-			}
-		}
-		.error {
-			background: #F44336;
-			margin-bottom: 20px;
-			display: table;
-			padding: 2px 6px;
-			font-size: 12px;
-			color: #fff;
-			margin-top: -10px;
-		}
 
 		&-wrap{
 			border-bottom: 1px solid #f7f7f7;
@@ -106,7 +115,6 @@
 		&-edit{
 			float: right;
 		}
-
 	}
 
 	.btn-submit-ans{
@@ -191,6 +199,14 @@
     border-bottom: 2px solid #eee;
 	}
 
+	.ap-image-prev {
+		position: relative;
+		img{
+			width: auto;
+			height: 150px;
+		}
+	}
+
 	.ap-avatar-upload-form{
 		.ap-upload-o{
 			background: none repeat scroll 0 0 rgba(0, 0, 0, 0.89);
@@ -219,70 +235,72 @@
 			opacity: 0;
 		}
 	}
-	.ap-post-upload-form{
-		background: #fff;
-		border-color: #ddd;
-		border-image: none;
-		border-right: 1px solid #ddd;
-		border-style: dashed solid solid;
-		border-width: 1px;
-		margin-top: -2px;
+
+	.ap-upload-list{
+		border: solid 1px #eee;
 		margin-bottom: 15px;
-		padding: 6px;
+		> div{
+			border-bottom: solid 1px #eee;
+			padding: 8px 15px;
+			&:last-child{
+				border-bottom: none;
+			}
+			.ext{
+				background: #ddd;
+				margin-right: 10px;
+				min-width: 40px;
+				display: inline-block;
+				text-align: center;
+				border-radius: 2px;
+				font-size: 11px;
+			}
+			.size{
+				float: right;
+			}
+			i{
+				display: block;
+				float: left;
+				font-size: 30px;
+				margin-right: 10px;
+				color: #888;
+				background: #eee;
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				border-radius: 3px;
+			}
+			.upload-error {
+				font-size: 90%;
+				color: #F44336;
+			}
+			&.have-error{
+				background: #fff7f6;
+			}
+		}
+	}
+
+	.ap-upload-c {
 		position: relative;
-		.ap-upload-o{
-		   	background: none;
-			border: medium none;
-			box-shadow: none;
-			color: #888;
-			font-weight: 400;
-		}
-		.ap-upload-link{
-			color: $link-color;
-			position: relative;
-		}
-		.ap-upload-remote-link{
-			color: $link-color;
-			cursor: pointer;
-		}
-		.ap-upload-input{
-			cursor: pointer;
-			height: 100%;
-			left: 0;
+		border: solid 1px #ddd;
+		display: table;
+		border-radius: 3px;
+		padding: 3px 10px 3px 3px;
+		input{
 			opacity: 0;
 			position: absolute;
-			right: 0;
+			left: 0;
 			top: 0;
+			height: 100%;
 			width: 100%;
 		}
-		.ap-upload-link-rc {
-			background: none repeat scroll 0 0 #fcfcfc;
-			border-radius: 2px;
-			display: none;
-			left: 0;
-			padding: 3px;
-			position: absolute;
-			right: 0;
-			top: 0;
-			z-index: 9;
-
-			.ap-form-control{
-				margin: 0;
-				width: auto;
-			}
-
-			> *{
-				display: inline-block;
-			}
-
-			> a{
-				border-radius: 2px;
-				height: 28px;
-				padding: 2px;
-				text-align: center;
-				vertical-align: top;
-				width: 28px;
-			}
+		span{
+			background: #eee;
+			padding: 2px 10px;
+			display: block;
+			float: left;
+			border-radius: 3px;
+			margin-right: 10px;
+			font-size: 90%;
 		}
 	}
 
@@ -322,6 +340,14 @@
 			min-height: 120px;
 		}
 	}
+
+	#ap-form-main {
+		padding: 15px;
+		.ap-field-form_answer-post_content .ap-form-label{
+			display: none;
+		}
+	}
+
 	.ap-attachment{
 		border: 2px solid #e3e1e1;
 		border-radius: 4px;
@@ -332,6 +358,33 @@
 		padding: 5px 10px;
 		&s h3{
 			margin-bottom: 5px;
+		}
+	}
+
+	.ap-fieldgroup-c{
+		display: none;
+		margin-left: 20px;
+	}
+	.ap-fieldrepeatable-c {
+		margin-left: 20px;
+	}
+	.ap-repeatable-item{
+		border: solid 1px #ddd;
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	.show{
+		display: block !important;
+	}
+	.quicktags-toolbar .ed_button {
+		padding: 0 7px;
+		border: solid 1px #ddd;
+		box-shadow: none;
+		background: #fff;
+	}
+	#form_comment{
+		textarea{
+			width: 100%;
 		}
 	}
 }

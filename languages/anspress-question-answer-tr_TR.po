@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-09-20 16:52:27+00:00\n"
+"POT-Creation-Date: 2017-11-04 16:14:21+00:00\n"
 "PO-Revision-Date: 2016-07-12 16:29+0530\n"
 "Last-Translator: Niyazi Saral <nsaral@cizgi.com.tr>\n"
 "Language-Team: AnsPress Türkçe <anspress@mertskaplan.com>\n"
@@ -16,16 +16,16 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 1.7.3\n"
 
-#: addons/free/avatar.php:81
+#: addons/free/avatar.php:82
 #, fuzzy
-msgid "Dynamic Avatar"
-msgstr "Avatar"
+msgid "Save add-on options"
+msgstr "Seçenekleri kaydet"
 
 #: addons/free/avatar.php:85
 msgid "Clear Cache"
 msgstr ""
 
-#: addons/free/avatar.php:85
+#: addons/free/avatar.php:86
 #, fuzzy
 msgid "Clear avatar cache"
 msgstr "Yanıt avatar boyutu"
@@ -49,45 +49,29 @@ msgid ""
 "localhost development."
 msgstr ""
 
-#: addons/free/bad-words.php:65
-msgid ""
-"Don’t use foul or abusive language. Let everything you say be good and "
-"helpful."
-msgstr ""
-
-#: addons/free/bad-words.php:75
-msgid "Bad Words"
-msgstr ""
-
-#: addons/free/bad-words.php:78
-msgid "Add comma separted bad words"
-msgstr ""
-
-#: addons/free/bad-words.php:79
-msgid ""
-"Enter words separted by comma. This option can be overriden by placing a "
-"<small>badwords.txt</small> in AnsPress override folder. While using bad "
-"word from file, add one word per line rather then comma separted."
-msgstr ""
+#: addons/free/avatar.php:118
+#, fuzzy
+msgid "Dynamic Avatar"
+msgstr "Avatar"
 
 #: addons/free/buddypress.php:99
 msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:107 addons/free/buddypress.php:188
-#: addons/free/profile.php:39 addons/free/profile.php:144
+#: addons/free/profile.php:39 addons/free/profile.php:150
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:885 includes/options.php:110
-#: includes/post-types.php:43 includes/taxo.php:79 includes/taxo.php:372
-#: widgets/questions.php:55
+#: includes/functions.php:2098 includes/options.php:104
+#: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
+#: widgets/questions.php:45 widgets/questions.php:87
 msgid "Questions"
 msgstr "Sorular"
 
 #: addons/free/buddypress.php:108 addons/free/buddypress.php:236
-#: addons/free/profile.php:40 addons/free/profile.php:151
+#: addons/free/profile.php:40 addons/free/profile.php:157
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
-#: includes/post-types.php:113 includes/theme.php:446
-#: widgets/question_stats.php:49 widgets/questions.php:87
+#: includes/post-types.php:160 includes/theme.php:398
+#: widgets/question_stats.php:49 widgets/questions.php:119
 msgid "Answers"
 msgstr "Yanıtlar"
 
@@ -106,9 +90,9 @@ msgid "Load more answers"
 msgstr "Yanıtları aşağı oylama"
 
 #: addons/free/buddypress.php:270 addons/free/buddypress.php:271
-#: admin/meta-box.php:41 admin/options-fields.php:194
-#: includes/ajax-hooks.php:195 includes/common-pages.php:21
-#: includes/post-status.php:92 includes/post-types.php:65
+#: admin/meta-box.php:41 includes/ajax-hooks.php:197 includes/comments.php:71
+#: includes/common-pages.php:21 includes/post-status.php:92
+#: includes/post-types.php:106
 msgid "Question"
 msgstr "Soru"
 
@@ -122,9 +106,9 @@ msgstr ""
 "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 
 #: addons/free/buddypress.php:280 addons/free/buddypress.php:281
-#: addons/free/buddypress.php:292 admin/options-fields.php:258
-#: admin/views/dashboard.php:34 includes/ajax-hooks.php:195
-#: includes/post-status.php:92 includes/post-types.php:135
+#: addons/free/buddypress.php:292 admin/views/dashboard.php:34
+#: includes/ajax-hooks.php:197 includes/comments.php:71
+#: includes/post-status.php:92 includes/post-types.php:183
 msgid "Answer"
 msgstr "Yanıt"
 
@@ -149,12 +133,12 @@ msgid "%1$s answered on - %2$s"
 msgstr "%1$s answered on - %2$s"
 
 #: addons/free/buddypress.php:387 addons/free/notification/query.php:314
-#: includes/comments.php:118 includes/post-types.php:64
+#: includes/class-form-hooks.php:681 includes/post-types.php:105
 msgid "question"
 msgstr "soru"
 
 #: addons/free/buddypress.php:387 addons/free/notification/query.php:316
-#: includes/comments.php:118 includes/post-types.php:134
+#: includes/class-form-hooks.php:681 includes/post-types.php:182
 msgid "answer"
 msgstr "yanıt"
 
@@ -171,9 +155,9 @@ msgstr "%1$s commented on your %3$s - %2$s"
 msgid "Display AnsPress categories"
 msgstr "AnsPress ID'leri virgül ile ayrılır"
 
-#: addons/free/category/widget.php:68 addons/free/category.php:731
-#: templates/addons/category/categories.php:29
-#: templates/addons/category/category.php:31 templates/addons/tag/tags.php:35
+#: addons/free/category/widget.php:68
+#: templates/addons/category/categories.php:33
+#: templates/addons/category/category.php:37 templates/addons/tag/tags.php:39
 #, fuzzy
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -184,14 +168,15 @@ msgid "%d Child"
 msgstr ""
 
 #: addons/free/category/widget.php:81 addons/free/category.php:39
-#: addons/free/category.php:173 addons/free/category.php:229
-#: addons/free/category.php:494 addons/free/category.php:497
+#: addons/free/category.php:168 addons/free/category.php:463
+#: addons/free/category.php:466 includes/functions.php:2116
 #: includes/taxo.php:29
 msgid "Categories"
 msgstr "Kategoriler"
 
 #: addons/free/category/widget.php:99 widgets/ask-form.php:74
-#: widgets/question_stats.php:68 widgets/questions.php:78 widgets/search.php:68
+#: widgets/question_stats.php:68 widgets/questions.php:110
+#: widgets/search.php:69
 msgid "Title:"
 msgstr "Başlık:"
 
@@ -221,25 +206,26 @@ msgstr "Sıralama Öğesi:"
 msgid "None"
 msgstr ""
 
-#: addons/free/category/widget.php:130 addons/free/category.php:239
-#: addons/free/category.php:253
+#: addons/free/category/widget.php:130 addons/free/category.php:235
+#: addons/free/category.php:248
 #, fuzzy
 msgid "Count"
 msgstr "Hesap"
 
-#: addons/free/category/widget.php:131 addons/free/category.php:236
-#: addons/free/category.php:250
+#: addons/free/category/widget.php:131 addons/free/category.php:232
+#: addons/free/category.php:245
 msgid "ID"
 msgstr ""
 
-#: addons/free/category/widget.php:132 addons/free/category.php:237
-#: addons/free/category.php:251 includes/answer-form.php:58
-#: includes/ask-form.php:86 includes/taxo.php:458
+#: addons/free/category/widget.php:132 addons/free/category.php:233
+#: addons/free/category.php:246 addons/free/tag.php:585 addons/free/tag.php:635
+#: includes/deprecated.php:291 includes/deprecated.php:434
+#: includes/deprecated.php:875
 msgid "Name"
 msgstr "İsim"
 
-#: addons/free/category/widget.php:133 addons/free/category.php:238
-#: addons/free/category.php:252
+#: addons/free/category/widget.php:133 addons/free/category.php:234
+#: addons/free/category.php:247
 msgid "Slug"
 msgstr ""
 
@@ -270,423 +256,426 @@ msgstr "Kullanıcı resmi genişliği"
 msgid "Icon height:"
 msgstr "Kullanıcı resmi yüsekliği"
 
-#: addons/free/category.php:38 addons/free/category.php:182
-#: addons/free/category.php:343 addons/free/category.php:418
-#: addons/free/category.php:535 admin/class-list-table-hooks.php:188
-#: includes/taxo.php:202
+#: addons/free/category.php:38 addons/free/category.php:320
+#: addons/free/category.php:388 addons/free/category.php:504
+#: admin/class-list-table-hooks.php:188 includes/taxo.php:202
 msgid "Category"
 msgstr "Kategori"
 
-#: addons/free/category.php:181
+#: addons/free/category.php:176
 msgid "Question Categories"
 msgstr "Soru Kategorileri"
 
-#: addons/free/category.php:183
+#: addons/free/category.php:178
 msgid "All Categories"
 msgstr "Tüm Kategoriler"
 
-#: addons/free/category.php:184
-#, fuzzy
-msgid "Add New Category"
-msgstr "Yeni Kategori Ekle [ap]"
-
-#: addons/free/category.php:185
+#: addons/free/category.php:180
 msgid "Edit Category"
 msgstr "Kategoriyi Düzenle"
 
-#: addons/free/category.php:186
+#: addons/free/category.php:181
 msgid "New Category"
 msgstr "Yeni Kategori"
 
-#: addons/free/category.php:187
+#: addons/free/category.php:182
 msgid "View Category"
 msgstr "Kategoriyi Gör"
 
-#: addons/free/category.php:188
+#: addons/free/category.php:183
 msgid "Search Category"
 msgstr "Kategori Ara"
 
-#: addons/free/category.php:189 addons/free/tag.php:200
+#: addons/free/category.php:184 addons/free/tag.php:189
 msgid "Nothing Found"
 msgstr "Hiçbir şey bulunamadı"
 
-#: addons/free/category.php:190 addons/free/tag.php:201
+#: addons/free/category.php:185 addons/free/tag.php:190
 msgid "Nothing found in Trash"
 msgstr "Çöpte hiçbir şey bulunamadı"
 
-#: addons/free/category.php:232
+#: addons/free/category.php:228
 msgid "Ask form category order"
 msgstr ""
 
-#: addons/free/category.php:233
+#: addons/free/category.php:229
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: addons/free/category.php:240 addons/free/category.php:254
+#: addons/free/category.php:236 addons/free/category.php:249
 msgid "Group"
 msgstr ""
 
-#: addons/free/category.php:246
+#: addons/free/category.php:241
 msgid "Categries page order by"
 msgstr ""
 
-#: addons/free/category.php:247 addons/free/category.php:261
+#: addons/free/category.php:242 addons/free/category.php:255
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: addons/free/category.php:260
+#: addons/free/category.php:254
 #, fuzzy
 msgid "Categries page order"
 msgstr "Kategoriler"
 
-#: addons/free/category.php:264
+#: addons/free/category.php:258
 #, fuzzy
 msgid "Ascending"
 msgstr "Bekleyen"
 
-#: addons/free/category.php:265
+#: addons/free/category.php:259
 #, fuzzy
 msgid "Descending"
 msgstr "Bekleyen"
 
-#: addons/free/category.php:271
-#, fuzzy
-msgid "Categories page slug"
-msgstr "Kullanıcılar sayfası göstergesi"
-
-#: addons/free/category.php:272
-#, fuzzy
-msgid "Slug categories page"
-msgstr "Alt Kategoriler"
-
-#: addons/free/category.php:279
+#: addons/free/category.php:264
 #, fuzzy
 msgid "Category page slug"
 msgstr "Kullanıcı sayfa göstergesi"
 
-#: addons/free/category.php:280
+#: addons/free/category.php:265
 #, fuzzy
 msgid "Slug for category page"
 msgstr "AnsPress Kategori Sayfası"
 
-#: addons/free/category.php:287
-#, fuzzy
-msgid "Categories title"
-msgstr "Kategoriler"
-
-#: addons/free/category.php:288
-#, fuzzy
-msgid "Title of the categories page"
-msgstr "Kullanıcların sayfa başlığı"
-
-#: addons/free/category.php:294
+#: addons/free/category.php:269
 #, fuzzy
 msgid "Category per page"
 msgstr "Sayfa başına içerik"
 
-#: addons/free/category.php:295
+#: addons/free/category.php:270
 #, fuzzy
 msgid "Category to show per page"
 msgstr "Bir sayfada gösterilecek etiket sayısı"
 
-#: addons/free/category.php:301
+#: addons/free/category.php:275
 #, fuzzy
 msgid "Categories image height"
 msgstr "Kategoriler"
 
-#: addons/free/category.php:302
+#: addons/free/category.php:276
 msgid "Image height in categories page"
 msgstr ""
 
-#: addons/free/category.php:343
+#: addons/free/category.php:320
 #, fuzzy
 msgid "Questions Category"
 msgstr "Soru Kategorileri"
 
-#: addons/free/category.php:423
-msgid "Select a topic that best fits your question"
-msgstr ""
+#: addons/free/category.php:389
+#, fuzzy
+msgid "Select a topic that best fits your question."
+msgstr "Düzenlenen sorunun gönderi durumunu belirle"
 
-#: addons/free/category.php:471
+#: addons/free/category.php:440
 #, fuzzy
 msgid "No matching category found"
 msgstr "Hiç yanıt bulunamadı"
 
-#: addons/free/category.php:554 addons/free/category.php:597
+#: addons/free/category.php:523 addons/free/category.php:566
 msgid "Image"
 msgstr ""
 
-#: addons/free/category.php:555 addons/free/category.php:600
+#: addons/free/category.php:524 addons/free/category.php:569
 #, fuzzy
 msgid "Upload image"
 msgstr "Karşıya yüklüyor"
 
-#: addons/free/category.php:559
+#: addons/free/category.php:528
 #, fuzzy
 msgid "Category image"
 msgstr "AnsPress Kategori Sayfası"
 
-#: addons/free/category.php:563 addons/free/category.php:616
+#: addons/free/category.php:532 addons/free/category.php:585
 #, fuzzy
 msgid "Category icon class"
 msgstr "Kategori: %s"
 
-#: addons/free/category.php:565 addons/free/category.php:620
-#: addons/free/category.php:629
+#: addons/free/category.php:534 addons/free/category.php:589
+#: addons/free/category.php:598
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: addons/free/category.php:569
+#: addons/free/category.php:538
 msgid "Icon background color"
 msgstr ""
 
-#: addons/free/category.php:571
+#: addons/free/category.php:540
 msgid "Set background color to be used with icon"
 msgstr ""
 
-#: addons/free/category.php:609
+#: addons/free/category.php:578
 #, fuzzy
 msgid "Remove image"
 msgstr "Kaldır"
 
-#: addons/free/category.php:611
+#: addons/free/category.php:580
 #, fuzzy
 msgid "Featured image for category"
 msgstr "AnsPress Kategori Sayfası"
 
-#: addons/free/category.php:625
+#: addons/free/category.php:594
 #, fuzzy
 msgid "Category icon color"
 msgstr "Kategori: %s"
 
-#: addons/free/category.php:734 templates/addons/category/categories.php:47
-#, fuzzy
-msgid "%d Sub category"
-msgid_plural "%d Sub categories"
-msgstr[0] "Alt Kategoriler"
-
-#: addons/free/category.php:846
+#: addons/free/category.php:763
 #, fuzzy
 msgid "Question category feed"
 msgstr "Soru Kategorileri"
 
-#: addons/free/category.php:893 addons/free/tag.php:684
+#: addons/free/category.php:810 addons/free/tag.php:616
 msgid ", %d+"
 msgstr ""
 
-#: addons/free/email.php:111
-#, fuzzy
-msgid "New question posted by {asker}"
-msgstr "Henüz hiç soru sorulmamış!"
-
-#: addons/free/email.php:112
-msgid ""
-"Hello!\n"
-"A new question is posted by {asker}\n"
-"\n"
-"Title: {question_title}\n"
-"Description:\n"
-"{question_excerpt}\n"
-"\n"
-"Link: {question_link}"
-msgstr ""
-
-#: addons/free/email.php:114
-#, fuzzy
-msgid "New answer posted by {answerer}"
-msgstr "Henüz hiç yanıt gönderilmemiş!"
-
-#: addons/free/email.php:115
-msgid ""
-"Hello!\n"
-"A new answer is posted by {answerer} on {question_title}\n"
-"Answer:\n"
-"{answer_excerpt}\n"
-"\n"
-"Link: {answer_link}"
-msgstr ""
-
-#: addons/free/email.php:117
-#, fuzzy
-msgid "Your answer was selected as best"
-msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
-
-#: addons/free/email.php:118
-#, fuzzy
-msgid ""
-"Hello!\n"
-"Your answer on '{question_title}' was selected as best.\n"
-"\n"
-"Link: {answer_link}"
-msgstr "<b>##post_title</b> sorusu için sizin yanıtınız en iyi olarak seçildi "
-
-#: addons/free/email.php:120
-msgid "New comment by {commenter}"
-msgstr ""
-
-#: addons/free/email.php:121
-msgid ""
-"Hello!\n"
-"A new comment posted on '{question_title}' by {commenter}.\n"
-"\n"
-"Link: {comment_link}"
-msgstr ""
-
-#: addons/free/email.php:123
-#, fuzzy
-msgid "A question is edited by {editor}"
-msgstr "Henüz hiç soru sorulmamış!"
-
-#: addons/free/email.php:124
-msgid ""
-"Hello!\n"
-"Question '{question_title}' is edited by {editor}.\n"
-"\n"
-"Link: {question_link}"
-msgstr ""
-
-#: addons/free/email.php:126
-#, fuzzy
-msgid "An answer is edited by {editor}"
-msgstr "Henüz hiç yanıt gönderilmemiş!"
-
-#: addons/free/email.php:127
-msgid ""
-"Hello!\n"
-"Answer on '{question_title}' is edited by {editor}.\n"
-"\n"
-"Link: {question_link}"
-msgstr ""
-
-#: addons/free/email.php:129
-#, fuzzy
-msgid "A question is trashed by {user}"
-msgstr "Soru %s için soruldu."
-
-#: addons/free/email.php:130
-msgid ""
-"Hello!\n"
-"Question '{question_title}' is trashed by {user}.\n"
-msgstr ""
-
-#: addons/free/email.php:132
+#: addons/free/email.php:135 addons/free/email.php:1079
 msgid "An answer is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:133
+#: addons/free/email.php:136
 msgid ""
 "Hello!\n"
 "Answer on '{question_title}' is trashed by {user}.\n"
 msgstr ""
 
-#: addons/free/email.php:157
-msgid "Email"
-msgstr "E-posta"
-
-#: addons/free/email.php:159
+#: addons/free/email.php:150
 #, fuzzy
-msgid "Notify admin(s)"
-msgstr "Bildirimler"
+msgid "Admin Notifications"
+msgstr "Bildirim"
 
-#: addons/free/email.php:162
-#, fuzzy
-msgid "Admin email"
-msgstr "eposta"
-
-#: addons/free/email.php:163
-msgid "Enter email where admin notification should be sent"
+#: addons/free/email.php:150
+msgid "Select types of notification which will be sent to admin."
 msgstr ""
 
-#: addons/free/email.php:169 addons/free/email.php:222
-#: includes/post-types.php:48
+#: addons/free/email.php:153
+#, fuzzy
+msgid "Admin email(s)"
+msgstr "eposta"
+
+#: addons/free/email.php:154
+msgid ""
+"Email where all admin notification will be sent. It can have multiple emails "
+"separated by comma."
+msgstr ""
+
+#: addons/free/email.php:158 addons/free/email.php:203
+#: includes/post-types.php:88
 #, fuzzy
 msgid "New question"
 msgstr "Yeni sorular"
 
-#: addons/free/email.php:170
-#, fuzzy
-msgid "Send email to admin for every new question."
-msgstr "Sadece yöneticinin yanıt vermesine izin verin."
+#: addons/free/email.php:159
+msgid "Send new question notification to admin."
+msgstr ""
 
-#: addons/free/email.php:176 includes/post-types.php:118
+#: addons/free/email.php:164 addons/free/email.php:209
+#: includes/post-types.php:165
 msgid "New answer"
 msgstr "Yeni yanıt"
 
-#: addons/free/email.php:177
-#, fuzzy
-msgid "Send email to admin for every new answer."
-msgstr "Yeni yanıt için soruyu seçin"
+#: addons/free/email.php:165
+msgid "Send new answer notification to admin."
+msgstr ""
 
-#: addons/free/email.php:183 addons/free/email.php:273
+#: addons/free/email.php:170 addons/free/email.php:215
 #, fuzzy
 msgid "New comment"
 msgstr "%d yorum"
 
-#: addons/free/email.php:184
-msgid "Send email to admin for every new comment."
+#: addons/free/email.php:171
+msgid "Send new comment notification to admin."
 msgstr ""
 
-#: addons/free/email.php:190 addons/free/email.php:290
-#: admin/class-list-table-hooks.php:346 includes/post-types.php:49
+#: addons/free/email.php:176 addons/free/email.php:221
+#: admin/class-list-table-hooks.php:346 includes/post-types.php:89
 msgid "Edit question"
 msgstr "Soruyu düzenle"
 
-#: addons/free/email.php:191
-msgid "Send email to admin when question is edited"
-msgstr ""
+#: addons/free/email.php:177
+#, fuzzy
+msgid "Send notification to admin when question is edited."
+msgstr "Sadece yöneticinin yanıt vermesine izin verin."
 
-#: addons/free/email.php:197 addons/free/email.php:307
-#: includes/post-types.php:119
+#: addons/free/email.php:182 addons/free/email.php:227
+#: includes/post-types.php:166
 msgid "Edit answer"
 msgstr "Yanıtı düzenle"
 
-#: addons/free/email.php:198
-msgid "Send email to admin when answer is edited"
-msgstr ""
+#: addons/free/email.php:183
+#, fuzzy
+msgid "Send email to admin when answer is edited."
+msgstr "Yeni yanıt için soruyu seçin"
 
-#: addons/free/email.php:204
+#: addons/free/email.php:188
 #, fuzzy
 msgid "Delete question"
 msgstr "Soru seçin"
 
-#: addons/free/email.php:205
-msgid "Send email to admin when question is trashed"
-msgstr ""
+#: addons/free/email.php:189
+#, fuzzy
+msgid "Send email to admin when question is trashed."
+msgstr "Sadece yöneticinin yanıt vermesine izin verin."
 
-#: addons/free/email.php:211
+#: addons/free/email.php:194
 #, fuzzy
 msgid "Delete answer"
 msgstr "seçilmiş yanıt"
 
-#: addons/free/email.php:212
-msgid "Send email to admin when asnwer is trashed"
-msgstr ""
-
-#: addons/free/email.php:218
-msgid "Templates"
-msgstr ""
-
-#: addons/free/email.php:226 addons/free/email.php:243
-#: addons/free/email.php:260 addons/free/email.php:277
-#: addons/free/email.php:294 addons/free/email.php:311
-msgid "Subject"
-msgstr ""
-
-#: addons/free/email.php:232 addons/free/email.php:249
-#: addons/free/email.php:266 addons/free/email.php:283
-#: addons/free/email.php:300 addons/free/email.php:317
-msgid "Body"
-msgstr ""
-
-#: addons/free/email.php:239
+#: addons/free/email.php:195
 #, fuzzy
-msgid "New Answer"
-msgstr "Yeni yanıt"
+msgid "Send email to admin when answer is trashed."
+msgstr "Yeni yanıt için soruyu seçin"
 
-#: addons/free/email.php:256
+#: addons/free/email.php:200
 #, fuzzy
-msgid "Select Answer"
-msgstr "Yanıtı seçmek"
+msgid "User Notifications"
+msgstr "Kullanıcı bildirimi"
+
+#: addons/free/email.php:200
+msgid "Select the types of notification which will be sent to user."
+msgstr ""
+
+#: addons/free/email.php:204
+msgid "Send new question notification to user?"
+msgstr ""
+
+#: addons/free/email.php:210
+#, fuzzy
+msgid "Send new answer notification to user?"
+msgstr "Tüm bildirimleri görüntüle"
+
+#: addons/free/email.php:216
+msgid "Send new comment notification to user?"
+msgstr ""
+
+#: addons/free/email.php:222
+msgid "Send edit question notification to user?"
+msgstr ""
+
+#: addons/free/email.php:228
+msgid "Send edit answer notification to user?"
+msgstr ""
+
+#: addons/free/email.php:233
+#, fuzzy
+msgid "Answer selected"
+msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
+
+#: addons/free/email.php:234
+#, fuzzy
+msgid "Send notification to user when their answer get selected?"
+msgstr "Sadece yöneticinin yanıt vermesine izin verin."
+
+#: addons/free/email.php:254
+#, fuzzy
+msgid "Email subject"
+msgstr "Yanıtı düzenle"
+
+#: addons/free/email.php:257
+#, fuzzy
+msgid "Email body"
+msgstr "E-posta"
+
+#: addons/free/email.php:742
+msgid "Email Templates"
+msgstr ""
+
+#: addons/free/email.php:767 includes/class-form-hooks.php:303
+#: includes/class-form-hooks.php:468 includes/class-form-hooks.php:621
+#, fuzzy
+msgid "Trying to cheat?!"
+msgstr "Hile yapıyorsun demek?"
+
+#: addons/free/email.php:792 includes/class-form-hooks.php:505
+#, fuzzy
+msgid "Unable to post answer."
+msgstr "Yorumları devre dışı bırak"
+
+#. Translators: placeholder contain error message.
+#: addons/free/email.php:812
+#, fuzzy
+msgid "Unable to save template. Error: %s"
+msgstr "Yeni sorunun durumu"
+
+#: addons/free/email.php:833
+#, fuzzy
+msgid "Post updated successfully"
+msgstr "Gönderi durumu başarı ile güncellendi"
+
+#: addons/free/email.php:911
+#, fuzzy
+msgid "{asker} have posted a new question"
+msgstr "Yukarı oylama alan soru"
+
+#: addons/free/email.php:914
+#, fuzzy
+msgid "A new question is posted by"
+msgstr "Henüz hiç soru sorulmamış!"
+
+#: addons/free/email.php:935
+#, fuzzy
+msgid "New answer posted by {answerer}"
+msgstr "Henüz hiç yanıt gönderilmemiş!"
+
+#: addons/free/email.php:938
+#, fuzzy
+msgid "A new answer is posted by"
+msgstr "Soru ve yanıtları ara"
+
+#: addons/free/email.php:959
+#, fuzzy
+msgid "Your answer is selected as best!"
+msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
+
+#: addons/free/email.php:962
+#, fuzzy
+msgid "Your answer is selected as best by "
+msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
+
+#: addons/free/email.php:983
+msgid "New comment by {commenter}"
+msgstr ""
+
+#: addons/free/email.php:986
+#, fuzzy
+msgid "A new comment posted by"
+msgstr "%d yorum"
+
+#: addons/free/email.php:1007
+#, fuzzy
+msgid "A question is edited by {editor}"
+msgstr "Henüz hiç soru sorulmamış!"
+
+#: addons/free/email.php:1010
+#, fuzzy
+msgid "A question is edited by"
+msgstr "Henüz hiç soru sorulmamış!"
+
+#: addons/free/email.php:1031
+#, fuzzy
+msgid "A answer is edited by {editor}"
+msgstr "Henüz hiç yanıt gönderilmemiş!"
+
+#: addons/free/email.php:1034
+#, fuzzy
+msgid "A answer is edited by"
+msgstr "Henüz hiç yanıt gönderilmemiş!"
+
+#: addons/free/email.php:1055
+#, fuzzy
+msgid "A question is trashed by {user}"
+msgstr "Soru %s için soruldu."
+
+#: addons/free/email.php:1058
+#, fuzzy
+msgid "A question is trashed by"
+msgstr "Soru %s için soruldu."
+
+#: addons/free/email.php:1082
+#, fuzzy
+msgid "An answer is trashed by"
+msgstr "Henüz hiç yanıt gönderilmemiş!"
 
 #: addons/free/notification/query.php:261
 msgid "Someone"
@@ -698,7 +687,7 @@ msgid "post"
 msgstr "Gönderiyi düzenle"
 
 #: addons/free/notification.php:43 addons/free/notification.php:49
-#: addons/free/notification.php:175 templates/functions.php:58
+#: addons/free/notification.php:179 templates/functions.php:45
 msgid "Notifications"
 msgstr "Bildirimler"
 
@@ -712,125 +701,130 @@ msgstr "Bildirimler"
 msgid "Custom title for user profile notifications page"
 msgstr "Uyarıyı sil"
 
-#: addons/free/notification.php:92
+#: addons/free/notification.php:91
 #, fuzzy
 msgid "Notifications page slug"
 msgstr "Bildirimler"
 
-#: addons/free/notification.php:93
+#: addons/free/notification.php:92
 #, fuzzy
 msgid "Custom slug for user profile notifications page"
 msgstr "Uyarıyı sil"
 
-#: addons/free/notification.php:133
+#: addons/free/notification.php:137
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "Sorunuz için en iyi yanıt seçildi."
 
-#: addons/free/notification.php:138
+#: addons/free/notification.php:142
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "%1$s commented on your %3$s - %2$s"
 
-#: addons/free/notification.php:143
+#: addons/free/notification.php:147
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:150
+#: addons/free/notification.php:154
 #, fuzzy
 msgid "down voted your %cpt%"
 msgstr "%sDown voted %s"
 
-#: addons/free/notification.php:155
+#: addons/free/notification.php:159
 #, fuzzy
 msgid "selected your answer"
 msgstr "seçilmiş yanıt"
 
-#: addons/free/notification.php:160
+#: addons/free/notification.php:164
 #, fuzzy
 msgid "You have earned %points% points"
 msgstr "Bu gönderiyi işaretlediniz"
 
-#: addons/free/notification.php:165
+#: addons/free/notification.php:169
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:212
+#: addons/free/notification.php:202
 #, fuzzy
 msgid "You do not have permission to view this page"
 msgstr "Bu sayfaya erişmek için yetkiniz yok."
 
-#: addons/free/notification.php:430
+#: addons/free/notification.php:420
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:440
+#: addons/free/notification.php:430
 #, fuzzy
 msgid "Successfully updated all notifications"
 msgstr "Etiket başarı ile oluşturuldu."
 
-#: addons/free/profile.php:43
+#: addons/free/profile.php:44
 msgid "User profile"
 msgstr "Kullanıcı profili"
 
-#: addons/free/profile.php:56
-#, fuzzy
-msgid "User Profile"
-msgstr "Kullanıcı profili"
-
-#: addons/free/profile.php:59
+#: addons/free/profile.php:64
 #, fuzzy
 msgid "Questions page title"
 msgstr "Sayfa başına sorular"
 
-#: addons/free/profile.php:60
+#: addons/free/profile.php:65
 #, fuzzy
 msgid "Custom title for user profile questions page"
 msgstr "Soru başlığını tek soru sayfasında göster."
 
-#: addons/free/profile.php:64
+#: addons/free/profile.php:69
 #, fuzzy
 msgid "Questions page slug"
 msgstr "Sayfa başına sorular"
 
-#: addons/free/profile.php:65
+#: addons/free/profile.php:70
 #, fuzzy
 msgid "Custom slug for user profile questions page"
 msgstr "Soru sayfası için gösterge gir."
 
-#: addons/free/profile.php:69
+#: addons/free/profile.php:74
 #, fuzzy
 msgid "Answers page title"
 msgstr "Kullanıcılar sayfası başlığı"
 
-#: addons/free/profile.php:70
+#: addons/free/profile.php:75
 msgid "Custom title for user profile answers page"
 msgstr ""
 
-#: addons/free/profile.php:74
+#: addons/free/profile.php:79
 #, fuzzy
 msgid "Answers page slug"
 msgstr "Sayfa başına yanıtlar"
 
-#: addons/free/profile.php:75
+#: addons/free/profile.php:80
 #, fuzzy
 msgid "Custom slug for user profile answers page"
 msgstr "Kullanıcılar sayfası için gösterge girin."
 
-#: addons/free/profile.php:288
+#: addons/free/profile.php:267
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
-#: addons/free/recaptcha.php:54
+#: addons/free/recaptcha/class-captcha.php:44
 #, fuzzy
-msgid "reCaptcha"
-msgstr "reCaptacha"
+msgid "AnsPress reCaptcha Field"
+msgstr "AnsPress Etiket Sayfası"
 
-#: addons/free/recaptcha.php:57
+#: addons/free/recaptcha/class-captcha.php:80
+#, fuzzy
+msgid "Failed to verify captcha. Please try again."
+msgstr "Etiket oluşturulamadı, lütfen tekrar deneyin."
+
+#: addons/free/recaptcha/class-captcha.php:94
+msgid ""
+"Unable to render captcha. Please add reCpatcha keys in AnsPress options."
+msgstr ""
+
+#: addons/free/recaptcha.php:64
 msgid "Recaptcha site key"
 msgstr "Recaptcha site key"
 
-#: addons/free/recaptcha.php:58
+#: addons/free/recaptcha.php:65
 msgid ""
 "Enter your site key, if you dont have it get it from here https://www.google."
 "com/recaptcha/admin"
@@ -838,357 +832,363 @@ msgstr ""
 "\"Site key\" girin, eğer yok ise buradan https://www.google.com/recaptcha/"
 "admin alabilirsiniz"
 
-#: addons/free/recaptcha.php:62
+#: addons/free/recaptcha.php:69
 msgid "Recaptcha secret key"
 msgstr "Recaptcha secret key"
 
-#: addons/free/recaptcha.php:63
+#: addons/free/recaptcha.php:70
 msgid "Enter your secret key"
 msgstr "\"secret key\" girin"
 
-#: addons/free/recaptcha.php:67
+#: addons/free/recaptcha.php:74
 #, fuzzy
 msgid "Recaptcha Method"
 msgstr "Recaptcha secret key"
 
-#: addons/free/recaptcha.php:68
+#: addons/free/recaptcha.php:75
 msgid "Select method to use when verification keeps failing"
 msgstr ""
 
-#: addons/free/recaptcha.php:84
-msgid "Bot verification failed."
-msgstr "Robot onayı başarısız oldu."
+#: addons/free/recaptcha.php:100
+msgid "Prove that you are a human"
+msgstr ""
 
-#: addons/free/recaptcha.php:117
-msgid "reCaptach keys missing, please add keys"
-msgstr "reCaptach bilgisi eksik, lütfen bilgileri girin"
-
-#: addons/free/reputation.php:37 addons/free/reputation.php:402
-#: addons/free/reputation.php:452 admin/views/recount.php:122
+#: addons/free/reputation.php:37 addons/free/reputation.php:408
+#: addons/free/reputation.php:458 addons/free/reputation.php:493
+#: admin/views/recount.php:122
 #, fuzzy
 msgid "Reputations"
 msgstr "İtibar"
 
-#: addons/free/reputation.php:75 addons/free/reputation.php:371
-msgid "Reputation"
-msgstr "İtibar"
-
-#: addons/free/reputation.php:76
-#, fuzzy
-msgid "Events"
-msgstr "Olay"
-
-#: addons/free/reputation.php:82
+#: addons/free/reputation.php:81
 #, fuzzy
 msgid "Reputations page title"
 msgstr "Soru sayfası başlığı"
 
-#: addons/free/reputation.php:83
+#: addons/free/reputation.php:82
 #, fuzzy
 msgid "Custom title for user profile reputations page"
 msgstr "Soru başlığını tek soru sayfasında göster."
 
-#: addons/free/reputation.php:88
+#: addons/free/reputation.php:86
 #, fuzzy
 msgid "Reputations page slug"
 msgstr "Soru sayfası göstergesi"
 
-#: addons/free/reputation.php:89
+#: addons/free/reputation.php:87
 #, fuzzy
 msgid "Custom slug for user profile reputations page"
 msgstr "Soru sayfası için gösterge gir."
 
-#: addons/free/reputation.php:99
+#: addons/free/reputation.php:91
+msgid "Reputation event points can be adjusted here :"
+msgstr ""
+
+#: addons/free/reputation.php:91
+#, fuzzy
+msgid "Reputation Points"
+msgstr "İtibar"
+
+#: addons/free/reputation.php:105
 #, fuzzy
 msgid "Registration"
 msgstr "Yeni Kayıt"
 
-#: addons/free/reputation.php:100
+#: addons/free/reputation.php:106
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:102
+#: addons/free/reputation.php:108
 #, fuzzy
 msgid "Registered"
 msgstr "Kayıt ol"
 
-#: addons/free/reputation.php:108
+#: addons/free/reputation.php:114
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:109
+#: addons/free/reputation.php:115
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:111
+#: addons/free/reputation.php:117
 #, fuzzy
 msgid "Asked a question"
 msgstr "Soru sor"
 
-#: addons/free/reputation.php:117
+#: addons/free/reputation.php:123
 #, fuzzy
 msgid "Answering"
 msgstr "Yanıt"
 
-#: addons/free/reputation.php:118
+#: addons/free/reputation.php:124
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "Sadece yöneticinin yanıt vermesine izin verin."
 
-#: addons/free/reputation.php:120
+#: addons/free/reputation.php:126
 #, fuzzy
 msgid "Posted an answer"
 msgstr "Yanıtı gönder"
 
-#: addons/free/reputation.php:126
+#: addons/free/reputation.php:132
 #, fuzzy
 msgid "Commenting"
 msgstr "Yorum"
 
-#: addons/free/reputation.php:127
+#: addons/free/reputation.php:133
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "Kendi soru veya yanıtınıza oy veremezsiniz."
 
-#: addons/free/reputation.php:129
+#: addons/free/reputation.php:135
 #, fuzzy
 msgid "Commented on a post"
 msgstr "yanıt üstüne yorum yapıldı"
 
-#: addons/free/reputation.php:135
+#: addons/free/reputation.php:141
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "Yanıtı seçmek"
 
-#: addons/free/reputation.php:136
+#: addons/free/reputation.php:142
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:138
+#: addons/free/reputation.php:144
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "Bu yanıtı en iyi  cevap olarak belirle"
 
-#: addons/free/reputation.php:144
+#: addons/free/reputation.php:150
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
 
-#: addons/free/reputation.php:145
+#: addons/free/reputation.php:151
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
 
-#: addons/free/reputation.php:147
+#: addons/free/reputation.php:153
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
 
-#: addons/free/reputation.php:153
+#: addons/free/reputation.php:159
 #, fuzzy
 msgid "Received up vote"
 msgstr "Yukarı oylama alan yanıt"
 
-#: addons/free/reputation.php:154
+#: addons/free/reputation.php:160
 #, fuzzy
 msgid "Points awarded when user receive an upvote"
 msgstr "Kullanıcı yanıtı yukarı oylama aldığında"
 
-#: addons/free/reputation.php:156
+#: addons/free/reputation.php:162
 #, fuzzy
 msgid "Received an upvote"
 msgstr "Yukarı oylama alan yanıt"
 
-#: addons/free/reputation.php:161
+#: addons/free/reputation.php:167
 #, fuzzy
 msgid "Received down vote"
 msgstr "Aşağı oylama alan bir yanıt"
 
-#: addons/free/reputation.php:162
+#: addons/free/reputation.php:168
 #, fuzzy
 msgid "Points awarded when user receive a down vote"
 msgstr "Kullanıcı yanıtı aşağı oylama aldığında "
 
-#: addons/free/reputation.php:164
+#: addons/free/reputation.php:170
 #, fuzzy
 msgid "Received a down vote"
 msgstr "Aşağı oylama alan bir yanıt"
 
-#: addons/free/reputation.php:169
+#: addons/free/reputation.php:175
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:170
+#: addons/free/reputation.php:176
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:172
+#: addons/free/reputation.php:178
 #, fuzzy
 msgid "Given an up vote"
 msgstr "Oyunuz gönderiliyor"
 
-#: addons/free/reputation.php:177
+#: addons/free/reputation.php:183
 #, fuzzy
 msgid "Gives down vote"
 msgstr "Olumsuz oylamayı devre dışı bırak"
 
-#: addons/free/reputation.php:178
+#: addons/free/reputation.php:184
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:180
+#: addons/free/reputation.php:186
 #, fuzzy
 msgid "Given a down vote"
 msgstr "Olumsuz oylamayı devre dışı bırak"
 
-#: addons/free/reputation.php:205
+#: addons/free/reputation.php:211
 #, fuzzy
 msgid "Successfully updated reputation points!"
 msgstr "Etiket başarı ile oluşturuldu."
 
-#: addons/free/reputation.php:393
+#: addons/free/reputation.php:377
+msgid "Reputation"
+msgstr "İtibar"
+
+#: addons/free/reputation.php:399
 msgid "%s Reputation"
 msgstr "%s İtibar"
 
-#: addons/free/tag.php:36 addons/free/tag.php:239 addons/free/tag.php:632
+#: addons/free/tag.php:34 addons/free/tag.php:538
 #: admin/class-list-table-hooks.php:192
 msgid "Tag"
 msgstr "Etiket"
 
-#: addons/free/tag.php:37 addons/free/tag.php:185 addons/free/tag.php:232
-#: addons/free/tag.php:309 addons/free/tag.php:381 addons/free/tag.php:406
-#: addons/free/tag.php:482 addons/free/tag.php:492
+#: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
+#: addons/free/tag.php:353 addons/free/tag.php:436 addons/free/tag.php:446
+#: includes/functions.php:2122
 msgid "Tags"
 msgstr "Etiketler"
 
-#: addons/free/tag.php:165
+#: addons/free/tag.php:156
 #, fuzzy
 msgid "(AnsPress) Tags"
 msgstr "AsnPress Sayfaları"
 
-#: addons/free/tag.php:169
+#: addons/free/tag.php:160
 #, fuzzy
 msgid "Widgets in this area will be shown in anspress tags page."
 msgstr "Bu alandaki bileşen kullanıcı sayfasında gösterilecektir."
 
-#: addons/free/tag.php:192 addons/free/tag.php:232
+#: addons/free/tag.php:181 addons/free/tag.php:221
 msgid "Question Tags"
 msgstr "Soru Etiketleri"
 
-#: addons/free/tag.php:194
+#: addons/free/tag.php:183
 msgid "All Tags"
 msgstr "Tüm etiketler"
 
-#: addons/free/tag.php:196
+#: addons/free/tag.php:185
 msgid "Edit Tag"
 msgstr "Etiketi Düzenle"
 
-#: addons/free/tag.php:197
+#: addons/free/tag.php:186
 msgid "New Tag"
 msgstr "Yeni Etiket"
 
-#: addons/free/tag.php:198
+#: addons/free/tag.php:187
 msgid "View Tag"
 msgstr "Etiketi Gör"
 
-#: addons/free/tag.php:199
+#: addons/free/tag.php:188
 msgid "Search Tag"
 msgstr "Etiket Ara"
 
-#: addons/free/tag.php:242
+#: addons/free/tag.php:233
 #, fuzzy
 msgid "Tags to show"
 msgstr "Bir sayfada gösterilecek etiket sayısı"
 
-#: addons/free/tag.php:243
+#: addons/free/tag.php:234
 #, fuzzy
 msgid "Numbers of tags to show in tags page."
 msgstr "Gösterilecek kullanıcı sayısı:"
 
-#: addons/free/tag.php:248
+#: addons/free/tag.php:239
 msgid "Maximum tags"
 msgstr ""
 
-#: addons/free/tag.php:249
+#: addons/free/tag.php:240
 msgid "Maximum numbers of tags that user can add when asking."
 msgstr ""
 
-#: addons/free/tag.php:254
+#: addons/free/tag.php:245
 #, fuzzy
 msgid "Minimum tags"
 msgstr "Minimum başlık boyutu"
 
-#: addons/free/tag.php:255
+#: addons/free/tag.php:246
 msgid "minimum numbers of tags that user must add when asking."
 msgstr ""
 
-#: addons/free/tag.php:260
-#, fuzzy
-msgid "Tags page title"
-msgstr "Temel soru başlığı"
-
-#: addons/free/tag.php:261
-#, fuzzy
-msgid "Title for tags page"
-msgstr "Soru sayfasının başlığı"
-
-#: addons/free/tag.php:267
-#, fuzzy
-msgid "Tags page slug"
-msgstr "Soru sorma sayfa göstergesi"
-
-#: addons/free/tag.php:268
-#, fuzzy
-msgid "Slug tags page"
-msgstr "Bir syfa seçin"
-
-#: addons/free/tag.php:275
+#: addons/free/tag.php:251
 #, fuzzy
 msgid "Tag page slug"
 msgstr "Soru sorma sayfa göstergesi"
 
-#: addons/free/tag.php:276
+#: addons/free/tag.php:252
 #, fuzzy
 msgid "Slug for tag page"
 msgstr "Soru sorma sayfası için gösterge gir."
 
-#: addons/free/tag.php:335
+#: addons/free/tag.php:309
 #, fuzzy
 msgid "Delete Tag"
 msgstr "Sil"
 
-#: addons/free/tag.php:336
+#: addons/free/tag.php:310
 #, fuzzy
 msgid "Add Tag"
 msgstr "Yeni Etiket Ekle [ap]"
 
-#: addons/free/tag.php:337
+#: addons/free/tag.php:311
 #, fuzzy
 msgid "added to the tags list."
 msgstr "Gönderiye yanıt verin."
 
-#: addons/free/tag.php:338
+#: addons/free/tag.php:312
 #, fuzzy
 msgid "removed from the tags list."
 msgstr "Favori listesinden kaldır"
 
-#: addons/free/tag.php:339
+#: addons/free/tag.php:313
 msgid "Suggestions are available. Use the up and down arrow keys to read it."
 msgstr ""
 
-#: addons/free/tag.php:384
-msgid "Type and hit enter"
+#. Translators: %1$d contain minimum tags required and %2$d contain maximum
+#. tags allowed.
+#: addons/free/tag.php:356
+msgid ""
+"Tagging will helps others to easily find your question. Minimum %1$d and "
+"maximum %2$d tags."
 msgstr ""
 
-#: addons/free/tag.php:409
-msgid "Slowly type for suggestions"
+#: addons/free/tag.php:546
+#, fuzzy
+msgid "Order"
+msgstr "Sıralama Öğesi:"
+
+#: addons/free/tag.php:583 addons/free/tag.php:633 includes/deprecated.php:873
+msgid "Popular"
 msgstr ""
+
+#: addons/free/tag.php:584 addons/free/tag.php:634 includes/deprecated.php:874
+#: includes/theme.php:391
+#, fuzzy
+msgid "New"
+msgstr "En yeni"
+
+#: admin/ajax.php:250
+#, fuzzy
+msgid "Sorry, you do not have permission!"
+msgstr "Bu işlemi yapmanız için yetkiniz yok."
+
+#: admin/ajax.php:264
+#, fuzzy
+msgid "Successfully enabled addon. Redirecting!"
+msgstr "Etiket başarı ile oluşturuldu."
 
 #: admin/anspress-admin.php:188
 msgid "All Questions"
 msgstr "Tüm Sorular"
 
-#: admin/anspress-admin.php:190
+#: admin/anspress-admin.php:190 admin/views/emails.php:39
 msgid "New Question"
 msgstr "Yeni Soru"
 
@@ -1196,93 +1196,619 @@ msgstr "Yeni Soru"
 msgid "All Answers"
 msgstr "Tüm Yanıtlar"
 
-#: admin/anspress-admin.php:194
-msgid "Select question"
-msgstr "Soru seçin"
+#: admin/anspress-admin.php:194 admin/views/emails.php:40
+#, fuzzy
+msgid "New Answer"
+msgstr "Yeni yanıt"
 
-#: admin/anspress-admin.php:203 admin/views/admin.php:27
-#: admin/views/dashboard.php:352
+#: admin/anspress-admin.php:203 admin/views/dashboard.php:352
+#: admin/views/options.php:132
 msgid "AnsPress Options"
 msgstr "AnsPress Seçenekleri"
 
 #: admin/anspress-admin.php:203
-#, fuzzy
-msgid "Options & Add-ons"
-msgstr "Seçenekler kaydedildi"
+msgid "Options"
+msgstr "Seçenekler"
 
-#: admin/anspress-admin.php:207 admin/views/sidebar.php:4
+#: admin/anspress-admin.php:205 admin/views/addons.php:50
+#, fuzzy
+msgid "AnsPress Add-ons"
+msgstr "AnsPress Seçenekleri"
+
+#: admin/anspress-admin.php:205
+msgid "Add-ons"
+msgstr ""
+
+#: admin/anspress-admin.php:209 admin/views/sidebar.php:4
 msgid "About AnsPress"
 msgstr "AnsPress Hakkında"
 
-#: admin/anspress-admin.php:209
-#, fuzzy
-msgid "Upgrade AnsPress"
-msgstr "AnsPress"
-
-#: admin/anspress-admin.php:308
+#: admin/anspress-admin.php:314
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: admin/anspress-admin.php:309
+#: admin/anspress-admin.php:315
 msgid "About"
 msgstr "Hakkında"
 
-#: admin/anspress-admin.php:488
+#: admin/anspress-admin.php:514
 #, fuzzy
 msgid "Select All"
 msgstr "Seçin"
 
-#: admin/anspress-admin.php:492
+#: admin/anspress-admin.php:518
 msgid "Add to Menu"
 msgstr "Menüye Ekle"
 
-#: admin/anspress-admin.php:620 admin/anspress-admin.php:629
-#: admin/options-fields.php:387 admin/options-fields.php:395
-#: admin/options-fields.php:405 admin/options-fields.php:415
-#: admin/options-fields.php:425 admin/options-fields.php:435
-#: includes/post-status.php:23
+#: admin/anspress-admin.php:645 admin/anspress-admin.php:654
+#: admin/anspress-admin.php:1070 admin/anspress-admin.php:1080
+#: admin/anspress-admin.php:1090 admin/anspress-admin.php:1100
+#: admin/anspress-admin.php:1110 includes/post-status.php:23
 msgid "Moderate"
 msgstr "Düzenle"
 
-#: admin/anspress-admin.php:623 admin/anspress-admin.php:630
+#: admin/anspress-admin.php:648 admin/anspress-admin.php:655
 msgid "Private Post"
 msgstr "Özel Gönderi"
 
-#: admin/anspress-admin.php:716
+#: admin/anspress-admin.php:674
 #, fuzzy
 msgid "AnsPress database is not updated."
 msgstr "AnsPress seçenekleri güncellendi"
 
-#: admin/anspress-admin.php:717
+#: admin/anspress-admin.php:675
 #, fuzzy
 msgid "Update now"
 msgstr "Yanıtı güncelle"
 
-#: admin/anspress-admin.php:722
-msgid "You must continue to upgrade AnsPress data."
+#: admin/anspress-admin.php:680
+msgid "One or more AnsPress page(s) does not exists."
 msgstr ""
 
-#: admin/anspress-admin.php:723
-msgid "Upgrade now"
-msgstr ""
-
-#: admin/anspress-admin.php:728
-msgid ""
-"AnsPress base page does not exists. AnsPress require a base page to work "
-"properly."
-msgstr ""
-
-#: admin/anspress-admin.php:729
+#: admin/anspress-admin.php:681
 msgid "Set automatically"
 msgstr ""
 
-#: admin/anspress-admin.php:729
+#: admin/anspress-admin.php:681
 msgid "Or"
 msgstr "veya"
 
-#: admin/anspress-admin.php:729
-msgid "Set existing page as base page"
+#: admin/anspress-admin.php:681
+#, fuzzy
+msgid "Set set by yourself"
+msgstr "Kendiniz hakkında birşey yazın"
+
+#: admin/anspress-admin.php:789
+#, fuzzy
+msgid "Save Pages"
+msgstr "Kimlik Kartını sakla"
+
+#: admin/anspress-admin.php:792
+msgid "Hide author credits"
+msgstr "Yazarın kredilerini gizle"
+
+#: admin/anspress-admin.php:793
+msgid "Hide link to AnsPress project site."
 msgstr ""
+
+#: admin/anspress-admin.php:799
+msgid ""
+"If you have created main pages manually then make sure to have [anspress] "
+"shortcode in all pages."
+msgstr ""
+
+#: admin/anspress-admin.php:838
+#, fuzzy
+msgid "Save Permalinks"
+msgstr "Sayfa başına soru"
+
+#: admin/anspress-admin.php:841
+#, fuzzy
+msgid "Question slug"
+msgstr "Soru sayfası göstergesi"
+
+#: admin/anspress-admin.php:842
+#, fuzzy
+msgid "Slug for single question page."
+msgstr "Soru sayfası için gösterge gir."
+
+#: admin/anspress-admin.php:847
+#, fuzzy
+msgid "Question permalink"
+msgstr "Sayfa başına soru"
+
+#: admin/anspress-admin.php:848
+#, fuzzy
+msgid "Select single question permalink structure."
+msgstr "Soru sabit linkinden önce temel sayfa göstergesi"
+
+#: admin/anspress-admin.php:863
+msgid "Base page title"
+msgstr "Temel soru başlığı"
+
+#: admin/anspress-admin.php:864
+msgid "Main questions list page title"
+msgstr "Ana sorular listesi sayfa başlığı"
+
+#: admin/anspress-admin.php:869
+msgid "Search page title"
+msgstr ""
+
+#: admin/anspress-admin.php:870
+msgid "Title of the search page"
+msgstr ""
+
+#: admin/anspress-admin.php:875
+#, fuzzy
+msgid "Author page title"
+msgstr "Soru sayfası başlığı"
+
+#: admin/anspress-admin.php:876
+#, fuzzy
+msgid "Title of the author page"
+msgstr "Kullanıcların sayfa başlığı"
+
+#: admin/anspress-admin.php:905
+msgid "Load assets in AnsPress page only?"
+msgstr ""
+
+#: admin/anspress-admin.php:906
+msgid ""
+"Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
+"careful, this might break layout."
+msgstr ""
+
+#: admin/anspress-admin.php:911
+msgid "List avatar size"
+msgstr "Avatar boyutunu göster"
+
+#: admin/anspress-admin.php:912
+msgid "User avatar size for questions list."
+msgstr "Sorular listesi için kullanıcı avatarı boyutu."
+
+#: admin/anspress-admin.php:917
+msgid "Question avatar size"
+msgstr "Soru avatar boyutu"
+
+#: admin/anspress-admin.php:918
+msgid "User avatar size for question."
+msgstr "Soru için kullanıcı avatar boyutu."
+
+#: admin/anspress-admin.php:923
+msgid "Answer avatar size"
+msgstr "Yanıt avatar boyutu"
+
+#: admin/anspress-admin.php:924
+msgid "User avatar size for answer."
+msgstr "Yanıt için kullanıcı avatar boyutu"
+
+#: admin/anspress-admin.php:929
+msgid "Comment avatar size"
+msgstr "Yorum avatar boyutu"
+
+#: admin/anspress-admin.php:930
+msgid "User avatar size for comments."
+msgstr "Yorumlar için kullanıcı avatar boyutu."
+
+#: admin/anspress-admin.php:935
+msgid "Questions per page"
+msgstr "Sayfa başına sorular"
+
+#: admin/anspress-admin.php:936
+msgid "Questions to show per page."
+msgstr "Sayfa başına göstermek için sorular."
+
+#: admin/anspress-admin.php:941
+msgid "Answers per page"
+msgstr "Sayfa başına yanıtlar"
+
+#: admin/anspress-admin.php:942
+msgid "Answers to show per page."
+msgstr "Sayfa başına yanıtlar"
+
+#: admin/anspress-admin.php:970
+#, fuzzy
+msgid "Who can read question?"
+msgstr "Bu soruyu favorilere eklediniz"
+
+#: admin/anspress-admin.php:971
+#, fuzzy
+msgid "Set who can view or read a question."
+msgstr "Düzenlenen sorunun gönderi durumunu belirle"
+
+#: admin/anspress-admin.php:975 admin/anspress-admin.php:986
+#: admin/anspress-admin.php:997 admin/anspress-admin.php:1025
+#: admin/anspress-admin.php:1036 admin/anspress-admin.php:1059
+msgid "Anyone, including anonymous"
+msgstr ""
+
+#: admin/anspress-admin.php:976 admin/anspress-admin.php:987
+#: admin/anspress-admin.php:998 admin/anspress-admin.php:1026
+#: admin/anspress-admin.php:1037 admin/anspress-admin.php:1060
+#, fuzzy
+msgid "Only logged in"
+msgstr "Hiçbir zaman oturum açmadı"
+
+#: admin/anspress-admin.php:977
+msgid "Only user having ap_read_question capability"
+msgstr ""
+
+#: admin/anspress-admin.php:981
+#, fuzzy
+msgid "Who can read answers?"
+msgstr "Yanıtları aşağı oylama"
+
+#: admin/anspress-admin.php:982
+msgid "Set who can view or read a answer."
+msgstr ""
+
+#: admin/anspress-admin.php:988
+msgid "Only user having ap_read_answer capability"
+msgstr ""
+
+#: admin/anspress-admin.php:992
+#, fuzzy
+msgid "Who can read comment?"
+msgstr "Yorumları göster"
+
+#: admin/anspress-admin.php:993
+msgid "Set who can view or read a comment."
+msgstr ""
+
+#: admin/anspress-admin.php:999
+msgid "Only user having ap_read_comment capability"
+msgstr ""
+
+#: admin/anspress-admin.php:1020
+#, fuzzy
+msgid "Who can post question?"
+msgstr "Bu soruyu favorilere eklediniz"
+
+#: admin/anspress-admin.php:1021
+msgid "Set who can submit a question from frontend."
+msgstr ""
+
+#: admin/anspress-admin.php:1027
+msgid "Only user having ap_new_question capability"
+msgstr ""
+
+#: admin/anspress-admin.php:1031
+#, fuzzy
+msgid "Who can post answer?"
+msgstr "Yanıtı gönder"
+
+#: admin/anspress-admin.php:1032
+msgid "Set who can submit an answer from frontend."
+msgstr ""
+
+#: admin/anspress-admin.php:1038
+msgid "Only user having ap_new_answer capability"
+msgstr ""
+
+#: admin/anspress-admin.php:1042
+msgid "Multiple answers"
+msgstr "Çoklu yanıtlar"
+
+#: admin/anspress-admin.php:1043
+#, fuzzy
+msgid "Allow users to submit multiple answer per question."
+msgstr ""
+"Kullanıcıya soru başına birden fazla yanıt verebilmesi için izin verin."
+
+#: admin/anspress-admin.php:1048
+#, fuzzy
+msgid "OP can answer?"
+msgstr "Yeni Yanıt Ekle"
+
+#: admin/anspress-admin.php:1049
+#, fuzzy
+msgid ""
+"OP: Original poster/asker. Enabling this option will prevent users to post "
+"an answer on their question."
+msgstr "Etkinleşirse kullanıcının çözülmüş sorulara yanıt yazmasını engeller."
+
+#: admin/anspress-admin.php:1054
+#, fuzzy
+msgid "Who can post comment?"
+msgstr "Yorumları devre dışı bırak"
+
+#: admin/anspress-admin.php:1055
+msgid "Set who can submit a comment from frontend."
+msgstr ""
+
+#: admin/anspress-admin.php:1061
+msgid "Only user having ap_new_comment capability"
+msgstr ""
+
+#: admin/anspress-admin.php:1065
+msgid "Status of new question"
+msgstr "Yeni sorunun durumu"
+
+#: admin/anspress-admin.php:1066
+#, fuzzy
+msgid "Default status of new question."
+msgstr "Yeni sorunun gönderi durumunu belirle"
+
+#: admin/anspress-admin.php:1069 admin/anspress-admin.php:1079
+#: admin/anspress-admin.php:1089 admin/anspress-admin.php:1099
+#: admin/anspress-admin.php:1109
+msgid "Publish"
+msgstr "Yayımla"
+
+#: admin/anspress-admin.php:1075
+msgid "Status of edited question"
+msgstr "Düzenlenen sorunu durumu"
+
+#: admin/anspress-admin.php:1076
+#, fuzzy
+msgid "Default status of edited question."
+msgstr "Düzenlenen sorunun gönderi durumunu belirle"
+
+#: admin/anspress-admin.php:1085
+msgid "Status of new answer"
+msgstr "Yeni yanıt durumu"
+
+#: admin/anspress-admin.php:1086
+#, fuzzy
+msgid "Default status of new answer."
+msgstr "Yeni yanıtın durumunu belirle"
+
+#: admin/anspress-admin.php:1095
+msgid "Status of edited answer"
+msgstr "Düzenlenen yanıtın durumu"
+
+#: admin/anspress-admin.php:1096
+#, fuzzy
+msgid "Default status of edited answer."
+msgstr "Düzenlenen yanıtın durumu belirle"
+
+#: admin/anspress-admin.php:1105
+msgid "Status of anonymous post"
+msgstr ""
+
+#: admin/anspress-admin.php:1106
+msgid "Default status of question or answer submitted by anonymous user."
+msgstr ""
+
+#: admin/anspress-admin.php:1138
+msgid "Allow image upload"
+msgstr "Resim yüklemeye izin ver"
+
+#: admin/anspress-admin.php:1139
+msgid "Allow logged-in users to upload image."
+msgstr "Kayıtlı kullanıcıların resim yüklemesine izin ver."
+
+#: admin/anspress-admin.php:1144
+#, fuzzy
+msgid "Max uploads per post"
+msgstr "Her gönderideki maksimum resim sayısı"
+
+#: admin/anspress-admin.php:1145
+#, fuzzy
+msgid "Set numbers of media user can upload for each post."
+msgstr ""
+"Her gönderide kullanıcının yükleyebileceği maksimum resim sayısını belirle. "
+
+#: admin/anspress-admin.php:1149
+msgid "Max upload size"
+msgstr "Maksimum yükleme boyutu"
+
+#: admin/anspress-admin.php:1150
+msgid "Set maximum upload size."
+msgstr "Maksimum yükleme boyutunu belirle"
+
+#: admin/anspress-admin.php:1154
+msgid "Allow private posts"
+msgstr "Özel mesajlaşmaya izin ver"
+
+#: admin/anspress-admin.php:1155
+#, fuzzy
+msgid ""
+"Allows users to create private question and answer. Private Q&A are only "
+"visible to admin and moderators."
+msgstr "Özel soru ve yanıt oluşturmak için kullanıcılara izin verin."
+
+#: admin/anspress-admin.php:1160
+msgid "Multiple Answers"
+msgstr "Çoklu Yanıtlar"
+
+#: admin/anspress-admin.php:1161
+#, fuzzy
+msgid "Allows users to post multiple answers on a question."
+msgstr ""
+"Kullanıcıya soru başına birden fazla yanıt verebilmesi için izin verin."
+
+#: admin/anspress-admin.php:1183
+#, fuzzy
+msgid "Load comments"
+msgstr "Yorumları göster"
+
+#: admin/anspress-admin.php:1184
+#, fuzzy
+msgid "Show question and answer comments by default"
+msgstr "Yorumları varsayılan ile göster."
+
+#: admin/anspress-admin.php:1189
+#, fuzzy
+msgid "Numbers of comments to show"
+msgstr "Gösterilecek kullanıcı sayısı:"
+
+#: admin/anspress-admin.php:1190
+#, fuzzy
+msgid "Numbers of comments to load in each query?"
+msgstr "Gösterilecek kullanıcı sayısı:"
+
+#: admin/anspress-admin.php:1195
+msgid "Check duplicate"
+msgstr ""
+
+#: admin/anspress-admin.php:1196
+msgid "Check for duplicate posts before posting"
+msgstr ""
+
+#: admin/anspress-admin.php:1201
+#, fuzzy
+msgid "Disable question suggestion"
+msgstr "Sorulara oylama yapmayı devre dışı bırak."
+
+#: admin/anspress-admin.php:1202
+msgid "Checking this will disable question suggestion in ask form"
+msgstr ""
+
+#: admin/anspress-admin.php:1207
+msgid "Show default date format"
+msgstr ""
+
+#: admin/anspress-admin.php:1208
+msgid ""
+"Instead of showing time passed i.e. 1 Hour ago, show default format date."
+msgstr ""
+
+#: admin/anspress-admin.php:1213
+msgid "Show solved prefix"
+msgstr "Çözüldü ön ekini göster"
+
+#: admin/anspress-admin.php:1214
+msgid ""
+"If an answer is selected for question then [solved] prefix will be added in "
+"title."
+msgstr "Soru için bir yanıt  seçilirse önek başlığına [çözüldü] eklenecektir."
+
+#: admin/anspress-admin.php:1220
+#, fuzzy
+msgid "Default question order"
+msgstr "Varsayılan yanıt sıralaması"
+
+#: admin/anspress-admin.php:1221
+msgid "Order question list by default using selected"
+msgstr ""
+
+#: admin/anspress-admin.php:1224 admin/anspress-admin.php:1290
+#: includes/theme.php:439 widgets/questions.php:118
+msgid "Voted"
+msgstr "Oylanmış"
+
+#: admin/anspress-admin.php:1225 admin/anspress-admin.php:1291
+#: admin/views/addons.php:93 includes/theme.php:390 includes/theme.php:435
+#: widgets/question_stats.php:47 widgets/questions.php:116
+msgid "Active"
+msgstr "Aktif"
+
+#: admin/anspress-admin.php:1226 admin/anspress-admin.php:1292
+#: includes/theme.php:442 widgets/questions.php:117
+msgid "Newest"
+msgstr "En yeni"
+
+#: admin/anspress-admin.php:1227 admin/anspress-admin.php:1293
+#: includes/theme.php:443
+msgid "Oldest"
+msgstr "En eski"
+
+#: admin/anspress-admin.php:1232
+msgid "Keep stop words in question slug"
+msgstr ""
+
+#: admin/anspress-admin.php:1233
+msgid "AnsPress will not strip stop words in question slug."
+msgstr ""
+
+#: admin/anspress-admin.php:1238
+msgid "Minimum title length"
+msgstr "Minimum başlık boyutu"
+
+#: admin/anspress-admin.php:1239
+msgid "Set minimum letters for a question title."
+msgstr "Soru başlığı için minimum karakater belirle."
+
+#: admin/anspress-admin.php:1244 admin/anspress-admin.php:1298
+msgid "Minimum question content"
+msgstr "Minimum soru içeriği"
+
+#: admin/anspress-admin.php:1245
+msgid "Set minimum letters for a question contents."
+msgstr "Soru içeriği için minimum karakter belirle."
+
+#: admin/anspress-admin.php:1250
+#, fuzzy
+msgid "Question editor?"
+msgstr "Soru Özet Akışı"
+
+#: admin/anspress-admin.php:1251 admin/anspress-admin.php:1257
+msgid "Quick tags editor"
+msgstr ""
+
+#: admin/anspress-admin.php:1256
+#, fuzzy
+msgid "Answer editor?"
+msgstr "Yanıtlandı"
+
+#: admin/anspress-admin.php:1262 admin/anspress-admin.php:1304
+msgid "Disable comments"
+msgstr "Yorumları devre dışı bırak"
+
+#: admin/anspress-admin.php:1263
+msgid "Disable comments on questions."
+msgstr "Sorulara yapılan yorumları devre dışı bırak."
+
+#: admin/anspress-admin.php:1268 admin/anspress-admin.php:1310
+msgid "Disable voting"
+msgstr "Oylamayı devre dışı bırak"
+
+#: admin/anspress-admin.php:1269
+msgid "Disable voting on questions."
+msgstr "Sorulara oylama yapmayı devre dışı bırak."
+
+#: admin/anspress-admin.php:1274 admin/anspress-admin.php:1316
+msgid "Disable down voting"
+msgstr "Olumsuz oylamayı devre dışı bırak"
+
+#: admin/anspress-admin.php:1275
+msgid "Disable down voting on questions."
+msgstr "Sorulara yapılan olumsuz oylamayı devre dışı bırak."
+
+#: admin/anspress-admin.php:1280
+msgid "Close question after selecting answer"
+msgstr "Yanıtı seçtikten sonra soruyu kapat"
+
+#: admin/anspress-admin.php:1281
+msgid "If enabled this will prevent user to submit answer on solved question."
+msgstr "Etkinleşirse kullanıcının çözülmüş sorulara yanıt yazmasını engeller."
+
+#: admin/anspress-admin.php:1286
+#, fuzzy
+msgid "Default answers order"
+msgstr "Varsayılan yanıt sıralama"
+
+#: admin/anspress-admin.php:1287
+#, fuzzy
+msgid "Order answers by by default using selected"
+msgstr "%d yanıt, %s seçilmiş"
+
+#: admin/anspress-admin.php:1299
+msgid "Set minimum letters for a answer contents."
+msgstr "Yanıt içeriğinde gereken minimum karakteri belirler."
+
+#: admin/anspress-admin.php:1305
+msgid "Disable comments on answer."
+msgstr "Yanıtlar üzerine yorum yapılmasını devre dışı bırakır."
+
+#: admin/anspress-admin.php:1311
+msgid "Disable voting on answers."
+msgstr "Yanıtlar üzerinde oylamayı devre dışı bırakır."
+
+#: admin/anspress-admin.php:1317
+msgid "Disable down voting on answers."
+msgstr "Yanıtlar üzerinde olumsuz oylama yapılmasını devre dışarı bırakır."
+
+#: admin/anspress-admin.php:1347
+#, fuzzy
+msgid "View page"
+msgstr "Etiketi Gör"
+
+#: admin/anspress-admin.php:1348
+#, fuzzy
+msgid "Edit page"
+msgstr "Etiketi Düzenle"
 
 #: admin/class-list-table-hooks.php:56 admin/class-list-table-hooks.php:396
 msgid "Flagged"
@@ -1308,7 +1834,7 @@ msgstr "Çöp"
 msgid "Delete this item permanently"
 msgstr "Bu nesneyi kalıcı olarak sil"
 
-#: admin/class-list-table-hooks.php:137 includes/theme.php:377
+#: admin/class-list-table-hooks.php:137 includes/theme.php:329
 msgid "Delete Permanently"
 msgstr "Kalıcı Olarak Sil"
 
@@ -1317,7 +1843,7 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
-#: includes/comments.php:429 includes/theme.php:334
+#: includes/comments.php:324 includes/theme.php:286
 msgid "Edit"
 msgstr "Düzenle"
 
@@ -1345,12 +1871,13 @@ msgstr ""
 msgid "Author"
 msgstr "Yazar"
 
-#: admin/class-list-table-hooks.php:185 includes/ask-form.php:42
+#: admin/class-list-table-hooks.php:185 includes/class-form-hooks.php:40
+#: includes/deprecated.php:247
 msgid "Title"
 msgstr "Başlık"
 
 #: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:293
-#: includes/theme.php:346
+#: includes/theme.php:298
 msgid "Status"
 msgstr "Durum"
 
@@ -1363,7 +1890,7 @@ msgid "Comments"
 msgstr "Yorumlar"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: admin/views/recount.php:54 includes/theme.php:443
+#: admin/views/recount.php:54 includes/theme.php:395
 #: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
 msgstr "Oylar"
@@ -1382,9 +1909,10 @@ msgid "--"
 msgstr "--"
 
 #: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
-#: includes/ajax-hooks.php:101 includes/ajax-hooks.php:103
-#: includes/ajax-hooks.php:280 includes/answer-form.php:262
-#: templates/answers.php:20 templates/buddypress/question-item.php:38
+#: admin/views/select_question.php:43 includes/ajax-hooks.php:103
+#: includes/ajax-hooks.php:105 includes/ajax-hooks.php:282
+#: includes/functions.php:1959 templates/answers.php:21
+#: templates/buddypress/question-item.php:38
 #, fuzzy
 msgid "%d Answer"
 msgid_plural "%d Answers"
@@ -1406,10 +1934,6 @@ msgstr "Bayrak"
 #: admin/class-list-table-hooks.php:437
 msgid "Please fill parent question field, Answer was not saved!"
 msgstr "Lütfen ana soru alanını doldurun, yanıtınız kaydedilmedi!"
-
-#: admin/functions.php:142
-msgid "Save options"
-msgstr "Seçenekleri kaydet"
 
 #: admin/license.php:39 admin/views/licenses.php:20
 msgid "Licenses"
@@ -1446,568 +1970,6 @@ msgstr "--"
 #, fuzzy
 msgid "+"
 msgstr "9+"
-
-#: admin/options-fields.php:14
-msgid "General"
-msgstr "Genel"
-
-#: admin/options-fields.php:15 admin/options-fields.php:311
-msgid "Add-ons"
-msgstr ""
-
-#: admin/options-fields.php:16
-#, fuzzy
-msgid "Access"
-msgstr "Başarı"
-
-#: admin/options-fields.php:17
-msgid "Tools"
-msgstr ""
-
-#: admin/options-fields.php:20
-msgid "Pages and permalinks"
-msgstr ""
-
-#: admin/options-fields.php:23
-#, fuzzy
-msgid "Questions page"
-msgstr "Sayfa başına sorular"
-
-#: admin/options-fields.php:24
-msgid "Select page for displaying anspress."
-msgstr "AnsPress'in görüntüleneceği sayfayı seçin"
-
-#: admin/options-fields.php:29
-#, fuzzy
-msgid "Ask question page slug"
-msgstr "Soru sayfası göstergesi"
-
-#: admin/options-fields.php:30
-#, fuzzy
-msgid "Set a slug for ask question page."
-msgstr "Soru sayfası için gösterge gir."
-
-#: admin/options-fields.php:35
-#, fuzzy
-msgid "Question slug"
-msgstr "Soru sayfası göstergesi"
-
-#: admin/options-fields.php:36
-#, fuzzy
-msgid "Slug for single question page."
-msgstr "Soru sayfası için gösterge gir."
-
-#: admin/options-fields.php:41
-#, fuzzy
-msgid "Question permalink"
-msgstr "Sayfa başına soru"
-
-#: admin/options-fields.php:42
-#, fuzzy
-msgid "Select single question permalink structure."
-msgstr "Soru sabit linkinden önce temel sayfa göstergesi"
-
-#: admin/options-fields.php:53
-msgid "Hide author credits"
-msgstr "Yazarın kredilerini gizle"
-
-#: admin/options-fields.php:54
-msgid "Hide link to AnsPress project site."
-msgstr ""
-
-#: admin/options-fields.php:60
-#, fuzzy
-msgid "Page Titles"
-msgstr "Sayfa başlıkları"
-
-#: admin/options-fields.php:64
-msgid "Base page title"
-msgstr "Temel soru başlığı"
-
-#: admin/options-fields.php:65
-msgid "Main questions list page title"
-msgstr "Ana sorular listesi sayfa başlığı"
-
-#: admin/options-fields.php:69
-msgid "Ask page title"
-msgstr "Soru sayfası başlığı"
-
-#: admin/options-fields.php:70
-msgid "Title of the ask page"
-msgstr "Soru sayfasının başlığı"
-
-#: admin/options-fields.php:74
-msgid "Search page title"
-msgstr ""
-
-#: admin/options-fields.php:75
-msgid "Title of the search page"
-msgstr ""
-
-#: admin/options-fields.php:79
-#, fuzzy
-msgid "Author page title"
-msgstr "Soru sayfası başlığı"
-
-#: admin/options-fields.php:80
-#, fuzzy
-msgid "Title of the author page"
-msgstr "Kullanıcların sayfa başlığı"
-
-#: admin/options-fields.php:84
-msgid "Show solved prefix"
-msgstr "Çözüldü ön ekini göster"
-
-#: admin/options-fields.php:85
-msgid ""
-"If an answer is selected for question then [solved] prefix will be added in "
-"title."
-msgstr "Soru için bir yanıt  seçilirse önek başlığına [çözüldü] eklenecektir."
-
-#: admin/options-fields.php:91
-msgid "Layout"
-msgstr "Düzen"
-
-#: admin/options-fields.php:94
-msgid "Load assets in AnsPress page only?"
-msgstr ""
-
-#: admin/options-fields.php:95
-msgid ""
-"Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
-"careful, this might break layout."
-msgstr ""
-
-#: admin/options-fields.php:101
-msgid "Avatar"
-msgstr "Avatar"
-
-#: admin/options-fields.php:106
-msgid "List avatar size"
-msgstr "Avatar boyutunu göster"
-
-#: admin/options-fields.php:107
-msgid "User avatar size for questions list."
-msgstr "Sorular listesi için kullanıcı avatarı boyutu."
-
-#: admin/options-fields.php:112
-msgid "Question avatar size"
-msgstr "Soru avatar boyutu"
-
-#: admin/options-fields.php:113
-msgid "User avatar size for question."
-msgstr "Soru için kullanıcı avatar boyutu."
-
-#: admin/options-fields.php:118 admin/options-fields.php:124
-msgid "Answer avatar size"
-msgstr "Yanıt avatar boyutu"
-
-#: admin/options-fields.php:119 admin/options-fields.php:125
-msgid "User avatar size for answer."
-msgstr "Yanıt için kullanıcı avatar boyutu"
-
-#: admin/options-fields.php:130
-msgid "Comment avatar size"
-msgstr "Yorum avatar boyutu"
-
-#: admin/options-fields.php:131
-msgid "User avatar size for comments."
-msgstr "Yorumlar için kullanıcı avatar boyutu."
-
-#: admin/options-fields.php:137
-msgid "Items to show per page"
-msgstr "Sayfa başına göstermek için öğeler"
-
-#: admin/options-fields.php:141
-msgid "Questions per page"
-msgstr "Sayfa başına sorular"
-
-#: admin/options-fields.php:142
-msgid "Questions to show per page."
-msgstr "Sayfa başına göstermek için sorular."
-
-#: admin/options-fields.php:147
-msgid "Answers per page"
-msgstr "Sayfa başına yanıtlar"
-
-#: admin/options-fields.php:148
-msgid "Answers to show per page."
-msgstr "Sayfa başına yanıtlar"
-
-#: admin/options-fields.php:154
-#, fuzzy
-msgid "Question & Answer"
-msgstr "Bayrakla işaretlenmiş soru ve yanıt"
-
-#: admin/options-fields.php:157
-msgid "Allow private posts"
-msgstr "Özel mesajlaşmaya izin ver"
-
-#: admin/options-fields.php:158
-msgid "Allow users to create private question and answer."
-msgstr "Özel soru ve yanıt oluşturmak için kullanıcılara izin verin."
-
-#: admin/options-fields.php:163
-#, fuzzy
-msgid "Load comments"
-msgstr "Yorumları göster"
-
-#: admin/options-fields.php:164
-#, fuzzy
-msgid "Show question and answer comments by default"
-msgstr "Yorumları varsayılan ile göster."
-
-#: admin/options-fields.php:169
-#, fuzzy
-msgid "Numbers of comments to show"
-msgstr "Gösterilecek kullanıcı sayısı:"
-
-#: admin/options-fields.php:170
-#, fuzzy
-msgid "Numbers of comments to load in each query?"
-msgstr "Gösterilecek kullanıcı sayısı:"
-
-#: admin/options-fields.php:175
-msgid "Check duplicate"
-msgstr ""
-
-#: admin/options-fields.php:176
-msgid "Check for duplicate posts before posting"
-msgstr ""
-
-#: admin/options-fields.php:181
-#, fuzzy
-msgid "Disable question suggestion"
-msgstr "Sorulara oylama yapmayı devre dışı bırak."
-
-#: admin/options-fields.php:182
-msgid "Checking this will disable question suggestion in ask form"
-msgstr ""
-
-#: admin/options-fields.php:187
-msgid "Show default date format"
-msgstr ""
-
-#: admin/options-fields.php:188
-msgid ""
-"Instead of showing time passed i.e. 1 Hour ago, show default format date."
-msgstr ""
-
-#: admin/options-fields.php:198
-#, fuzzy
-msgid "Default question order"
-msgstr "Varsayılan yanıt sıralaması"
-
-#: admin/options-fields.php:199
-msgid "Order question list by default using selected"
-msgstr ""
-
-#: admin/options-fields.php:202 admin/options-fields.php:266
-#: includes/theme.php:487 widgets/questions.php:86
-msgid "Voted"
-msgstr "Oylanmış"
-
-#: admin/options-fields.php:203 admin/options-fields.php:267
-#: includes/theme.php:438 includes/theme.php:483 widgets/question_stats.php:47
-#: widgets/questions.php:84
-msgid "Active"
-msgstr "Aktif"
-
-#: admin/options-fields.php:204 admin/options-fields.php:268
-#: includes/theme.php:490 widgets/questions.php:85
-msgid "Newest"
-msgstr "En yeni"
-
-#: admin/options-fields.php:205 admin/options-fields.php:269
-#: includes/theme.php:491
-msgid "Oldest"
-msgstr "En eski"
-
-#: admin/options-fields.php:210
-msgid "Keep stop words in question slug"
-msgstr ""
-
-#: admin/options-fields.php:211
-msgid "AnsPress will not strip stop words in question slug."
-msgstr ""
-
-#: admin/options-fields.php:216
-msgid "Minimum title length"
-msgstr "Minimum başlık boyutu"
-
-#: admin/options-fields.php:217
-msgid "Set minimum letters for a question title."
-msgstr "Soru başlığı için minimum karakater belirle."
-
-#: admin/options-fields.php:222 admin/options-fields.php:280
-msgid "Minimum question content"
-msgstr "Minimum soru içeriği"
-
-#: admin/options-fields.php:223
-msgid "Set minimum letters for a question contents."
-msgstr "Soru içeriği için minimum karakter belirle."
-
-#: admin/options-fields.php:228 admin/options-fields.php:286
-msgid "Use text editor ?"
-msgstr "Metin editörü kullanılsın mı?"
-
-#: admin/options-fields.php:229 admin/options-fields.php:287
-msgid "Text editor as default."
-msgstr "Metin editörü varsayılan."
-
-#: admin/options-fields.php:234 admin/options-fields.php:292
-msgid "Disable comments"
-msgstr "Yorumları devre dışı bırak"
-
-#: admin/options-fields.php:235
-msgid "Disable comments on questions."
-msgstr "Sorulara yapılan yorumları devre dışı bırak."
-
-#: admin/options-fields.php:240 admin/options-fields.php:298
-msgid "Disable voting"
-msgstr "Oylamayı devre dışı bırak"
-
-#: admin/options-fields.php:241
-msgid "Disable voting on questions."
-msgstr "Sorulara oylama yapmayı devre dışı bırak."
-
-#: admin/options-fields.php:246 admin/options-fields.php:304
-msgid "Disable down voting"
-msgstr "Olumsuz oylamayı devre dışı bırak"
-
-#: admin/options-fields.php:247
-msgid "Disable down voting on questions."
-msgstr "Sorulara yapılan olumsuz oylamayı devre dışı bırak."
-
-#: admin/options-fields.php:252
-msgid "Close question after selecting answer"
-msgstr "Yanıtı seçtikten sonra soruyu kapat"
-
-#: admin/options-fields.php:253
-msgid "If enabled this will prevent user to submit answer on solved question."
-msgstr "Etkinleşirse kullanıcının çözülmüş sorulara yanıt yazmasını engeller."
-
-#: admin/options-fields.php:262
-#, fuzzy
-msgid "Default answers order"
-msgstr "Varsayılan yanıt sıralama"
-
-#: admin/options-fields.php:263
-#, fuzzy
-msgid "Order answers by by default using selected"
-msgstr "%d yanıt, %s seçilmiş"
-
-#: admin/options-fields.php:274
-msgid "Multiple Answers"
-msgstr "Çoklu Yanıtlar"
-
-#: admin/options-fields.php:275
-msgid "Allow an user to submit multiple answers on a single question."
-msgstr ""
-"Tek bir soru üzerine kullanıcının birden fazla yanıt vermesine izin verir."
-
-#: admin/options-fields.php:281
-msgid "Set minimum letters for a answer contents."
-msgstr "Yanıt içeriğinde gereken minimum karakteri belirler."
-
-#: admin/options-fields.php:293
-msgid "Disable comments on answer."
-msgstr "Yanıtlar üzerine yorum yapılmasını devre dışı bırakır."
-
-#: admin/options-fields.php:299
-msgid "Disable voting on answers."
-msgstr "Yanıtlar üzerinde oylamayı devre dışı bırakır."
-
-#: admin/options-fields.php:305
-msgid "Disable down voting on answers."
-msgstr "Yanıtlar üzerinde olumsuz oylama yapılmasını devre dışarı bırakır."
-
-#: admin/options-fields.php:314
-#, fuzzy
-msgid "Permissions"
-msgstr "İzinler"
-
-#: admin/options-fields.php:317
-msgid "Only logged in can see questions, answer and comments?"
-msgstr ""
-
-#: admin/options-fields.php:318
-msgid "Require user to login to see AnsPress contents?."
-msgstr ""
-
-#: admin/options-fields.php:323
-msgid "Multiple answers"
-msgstr "Çoklu yanıtlar"
-
-#: admin/options-fields.php:324
-msgid "Allow user to submit multiple answer per question."
-msgstr ""
-"Kullanıcıya soru başına birden fazla yanıt verebilmesi için izin verin."
-
-#: admin/options-fields.php:329
-msgid "Asker can answer"
-msgstr "Soruyu soran yanıt da verebilir."
-
-#: admin/options-fields.php:330
-msgid "Allow asker to answer his own question."
-msgstr "Soruyu sorana yanıtı da verebilmesi için izin verin."
-
-#: admin/options-fields.php:335
-msgid "Allow anonymous"
-msgstr "Anonim kullanıcılara izin verin"
-
-#: admin/options-fields.php:336
-msgid "Non-loggedin user can post questions and answers."
-msgstr "Oturum açmamış kullanıcıların soru ve yanıt göndermesine izin verin."
-
-#: admin/options-fields.php:341
-msgid "Only admin can answer"
-msgstr "Sadece yönetici yanıt verebilir"
-
-#: admin/options-fields.php:342
-msgid "Only allow admin to answer question."
-msgstr "Sadece yöneticinin yanıt vermesine izin verin."
-
-#: admin/options-fields.php:347
-msgid "Only logged in can see answers"
-msgstr "Yanıtları sadece oturum açmış kullanıcılar görebilir"
-
-#: admin/options-fields.php:348
-msgid "non-loggedin user cannot see answers."
-msgstr "Oturum açmamış kullanıcılar yanıtları göremez."
-
-#: admin/options-fields.php:353
-msgid "Only logged in can see comment"
-msgstr "Sadece oturum açmış kullanıcılar yorumu görebilir"
-
-#: admin/options-fields.php:354
-msgid "non-loggedin user cannot see comments."
-msgstr "Oturum açmamış kullanıcılar yorumları göremez."
-
-#: admin/options-fields.php:359
-msgid "Lock delete action"
-msgstr "Silme işlevini kilitle"
-
-#: admin/options-fields.php:360
-msgid ""
-"Lock comment or post after a period so that user cannot delete it. Set the "
-"time in epoch i.e. 86400 = 1 day."
-msgstr ""
-"Belirli bir süre sonra yorumu veya gönderiyi kilitleyerek kullanıcının "
-"silmesini engelle. 86400 = 1 gün olarak zamanı düzenleyin."
-
-#: admin/options-fields.php:365
-msgid "Upload"
-msgstr "Karşıya Yükle"
-
-#: admin/options-fields.php:369
-msgid "Allow image upload"
-msgstr "Resim yüklemeye izin ver"
-
-#: admin/options-fields.php:370
-msgid "Allow logged-in users to upload image."
-msgstr "Kayıtlı kullanıcıların resim yüklemesine izin ver."
-
-#: admin/options-fields.php:375
-#, fuzzy
-msgid "Max uploads per post"
-msgstr "Her gönderideki maksimum resim sayısı"
-
-#: admin/options-fields.php:376
-#, fuzzy
-msgid "Set numbers of media user can upload for each post."
-msgstr ""
-"Her gönderide kullanıcının yükleyebileceği maksimum resim sayısını belirle. "
-
-#: admin/options-fields.php:381
-msgid "Max upload size"
-msgstr "Maksimum yükleme boyutu"
-
-#: admin/options-fields.php:382
-msgid "Set maximum upload size."
-msgstr "Maksimum yükleme boyutunu belirle"
-
-#: admin/options-fields.php:390
-msgid "Status of new question"
-msgstr "Yeni sorunun durumu"
-
-#: admin/options-fields.php:391
-msgid "Set post status of new question."
-msgstr "Yeni sorunun gönderi durumunu belirle"
-
-#: admin/options-fields.php:394 admin/options-fields.php:404
-#: admin/options-fields.php:414 admin/options-fields.php:424
-#: admin/options-fields.php:434
-msgid "Publish"
-msgstr "Yayımla"
-
-#: admin/options-fields.php:400
-msgid "Status of edited question"
-msgstr "Düzenlenen sorunu durumu"
-
-#: admin/options-fields.php:401
-msgid "Set post status of edited question."
-msgstr "Düzenlenen sorunun gönderi durumunu belirle"
-
-#: admin/options-fields.php:410
-msgid "Status of new answer"
-msgstr "Yeni yanıt durumu"
-
-#: admin/options-fields.php:411
-msgid "Set post status of new answer."
-msgstr "Yeni yanıtın durumunu belirle"
-
-#: admin/options-fields.php:420
-msgid "Status of edited answer"
-msgstr "Düzenlenen yanıtın durumu"
-
-#: admin/options-fields.php:421
-msgid "Set post status of edited answer."
-msgstr "Düzenlenen yanıtın durumu belirle"
-
-#: admin/options-fields.php:430
-msgid "Status of anonymous post"
-msgstr ""
-
-#: admin/options-fields.php:431
-msgid "Set post status post submitted by anonymous user."
-msgstr ""
-
-#: admin/options-fields.php:440
-#, fuzzy
-msgid "Re-count"
-msgstr "Bildirimleri yeniden say"
-
-#: admin/options-fields.php:441
-msgid "User roles"
-msgstr ""
-
-#: admin/options-fields.php:442
-msgid "Uninstall - clear all AnsPress data"
-msgstr ""
-
-#: admin/update.php:131
-#, fuzzy
-msgid "Post data updated successfully"
-msgstr "Gönderi durumu başarı ile güncellendi"
-
-#: admin/update.php:160
-msgid "Updated %1$d posts out of %2$d"
-msgstr ""
-
-#: admin/update.php:339 admin/update.php:352
-#: lib/class-anspress-upgrader.php:261 lib/class-anspress-upgrader.php:269
-#, fuzzy
-msgid "Successfully migrated all reputations"
-msgstr "Etiket başarı ile oluşturuldu."
-
-#: admin/update.php:370
-msgid "Migrated reputation... %1$d out of %2$d"
-msgstr ""
-
-#: admin/update.php:435
-msgid "Migrated categories data... %1$d out of %2$d"
-msgstr ""
 
 #: admin/updater.php:84
 msgid "Theme License"
@@ -2118,19 +2080,28 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: admin/views/admin.php:21
+#: admin/views/addons.php:63
 #, fuzzy
-msgid "AnsPress option updated!"
-msgstr "AnsPress seçenekleri güncellendi"
+msgid "Addon options updated successfully!"
+msgstr "Soru başarı ile güncellendi"
+
+#: admin/views/addons.php:133
+#, fuzzy
+msgid "Disable Addon"
+msgstr "Oylamayı devre dışı bırak"
+
+#: admin/views/addons.php:133
+msgid "Enable Add-on"
+msgstr ""
+
+#: admin/views/addons.php:149
+#, fuzzy
+msgid "Please enable addon to view options."
+msgstr "Lütfen sorunuzun içeriğini girin"
 
 #: admin/views/dashboard.php:26
 msgid "Require Attention"
 msgstr ""
-
-#: admin/views/dashboard.php:28
-#, fuzzy
-msgid "AnsPress Feed"
-msgstr "Yanıt özet akışı"
 
 #: admin/views/dashboard.php:32
 msgid "Latest Questions"
@@ -2232,6 +2203,53 @@ msgstr ""
 msgid "Documents and FAQ"
 msgstr ""
 
+#: admin/views/emails.php:25
+#, fuzzy
+msgid "More options"
+msgstr "Opsiyon yok"
+
+#: admin/views/emails.php:28
+msgid "More email options can be found in addon options"
+msgstr ""
+
+#: admin/views/emails.php:28
+#, fuzzy
+msgid "More email options"
+msgstr "Daha fazla işlem"
+
+#: admin/views/emails.php:33
+#, fuzzy
+msgid "Select Template"
+msgstr "Bir syfa seçin"
+
+#: admin/views/emails.php:41
+#, fuzzy
+msgid "New Comment"
+msgstr "%d yorum"
+
+#: admin/views/emails.php:42
+#, fuzzy
+msgid "Edit Question"
+msgstr "Soruyu düzenle"
+
+#: admin/views/emails.php:43 includes/common-pages.php:24
+msgid "Edit Answer"
+msgstr "Yanıtı Düzenle"
+
+#: admin/views/emails.php:44
+#, fuzzy
+msgid "Edit Comment"
+msgstr "Yorum"
+
+#: admin/views/emails.php:52
+msgid "The template selected here will appear below."
+msgstr ""
+
+#: admin/views/emails.php:57
+#, fuzzy
+msgid "Edit Template"
+msgstr "Etiketi Düzenle"
+
 #: admin/views/licenses.php:22
 msgid "License keys for AnsPress products, i.e. extensions and themes."
 msgstr ""
@@ -2251,6 +2269,74 @@ msgstr "Kaydet"
 #: admin/views/licenses.php:52
 msgid "No license yet."
 msgstr ""
+
+#: admin/views/options.php:19
+#, fuzzy
+msgid "Trying to cheat, huh!"
+msgstr "Hile yapıyorsun demek?"
+
+#: admin/views/options.php:31
+msgid "General"
+msgstr "Genel"
+
+#: admin/views/options.php:34
+msgid "Pages"
+msgstr "Sayfalar"
+
+#: admin/views/options.php:37
+#, fuzzy
+msgid "Permalinks"
+msgstr "İzinler"
+
+#: admin/views/options.php:40
+msgid "Layout"
+msgstr "Düzen"
+
+#: admin/views/options.php:45
+#, fuzzy
+msgid "Posts & Comments"
+msgstr "Yorumlar"
+
+#: admin/views/options.php:48
+msgid "User Access Control"
+msgstr ""
+
+#: admin/views/options.php:51
+#, fuzzy
+msgid "Reading Permissions"
+msgstr "İzinler"
+
+#: admin/views/options.php:54
+#, fuzzy
+msgid "Posting Permissions"
+msgstr "İzin yok"
+
+#: admin/views/options.php:57
+#, fuzzy
+msgid "Other Permissions"
+msgstr "İzinler"
+
+#: admin/views/options.php:60
+msgid "Role Editor"
+msgstr ""
+
+#: admin/views/options.php:66
+msgid "Tools"
+msgstr ""
+
+#: admin/views/options.php:69
+#, fuzzy
+msgid "Re-count"
+msgstr "Bildirimleri yeniden say"
+
+#: admin/views/options.php:73
+msgid "Uninstall"
+msgstr ""
+
+#: admin/views/options.php:192
+#, fuzzy
+msgid "AnsPress option updated successfully!"
+msgstr "Soru başarı ile güncellendi"
 
 #: admin/views/recount.php:58
 #, fuzzy
@@ -2399,7 +2485,7 @@ msgstr ""
 msgid "Re-count all users reputation points."
 msgstr "Etiket başarı ile oluşturuldu."
 
-#: admin/views/recount.php:140 includes/theme.php:447
+#: admin/views/recount.php:140 includes/theme.php:399
 #: widgets/question_stats.php:48
 msgid "Views"
 msgstr "Görüntülenme"
@@ -2464,51 +2550,47 @@ msgstr ""
 msgid "Its look like %s role already exists ."
 msgstr ""
 
-#: admin/views/roles.php:53
-msgid "Permission and role"
-msgstr ""
-
-#: admin/views/roles.php:59
+#: admin/views/roles.php:57
 msgid "Add new role"
 msgstr ""
 
-#: admin/views/roles.php:62
+#: admin/views/roles.php:60
 msgid "Add a new user role."
 msgstr ""
 
-#: admin/views/roles.php:65
+#: admin/views/roles.php:63
 msgid "Role name"
 msgstr ""
 
-#: admin/views/roles.php:66
+#: admin/views/roles.php:64
 msgid "Role slug, without any space"
 msgstr ""
 
-#: admin/views/roles.php:71 admin/views/roles.php:108
+#: admin/views/roles.php:69 admin/views/roles.php:106
 msgid "Basic Capabilities"
 msgstr ""
 
-#: admin/views/roles.php:76 admin/views/roles.php:117
+#: admin/views/roles.php:74 admin/views/roles.php:115
 msgid "Moderator Capabilities"
 msgstr ""
 
-#: admin/views/roles.php:81
+#: admin/views/roles.php:79
 msgid "Add role"
 msgstr ""
 
-#: admin/views/roles.php:88
+#: admin/views/roles.php:86
 msgid "AnsPress capabilities"
 msgstr ""
 
-#: admin/views/roles.php:89
+#: admin/views/roles.php:87
 msgid "Add AnsPress capabilities to 3rd party roles."
 msgstr ""
 
-#: admin/views/roles.php:94
+#: admin/views/roles.php:92
 msgid "Select user role"
 msgstr ""
 
-#: admin/views/roles.php:129
+#: admin/views/roles.php:127
 #, fuzzy
 msgid "Save Role"
 msgstr "Puanı Kaydet"
@@ -2525,6 +2607,16 @@ msgstr ""
 "Yavaşça soru önerisini yazın ve sonra soru başlığının sağındaki düğmeyi "
 "tıklatarak seçin."
 
+#: admin/views/select_question.php:37
+#, fuzzy
+msgid "Recently active questions"
+msgstr "İlgili Sorular"
+
+#: admin/views/select_question.php:42 includes/ajax-hooks.php:103
+#: includes/ajax-hooks.php:139 includes/theme.php:736
+msgid "Select"
+msgstr "Seçin"
+
 #: admin/views/sidebar.php:5
 msgid "Support Q&A"
 msgstr "Destek Soru / Yanıt (Q&A)"
@@ -2537,440 +2629,308 @@ msgstr "AnsPress Temaları"
 msgid "Github Repo"
 msgstr "Github Repo"
 
-#: admin/views/uninstall.php:21
+#: admin/views/uninstall.php:20
 msgid ""
 "If you are unsure about this section please do not use any of these options "
 "below."
 msgstr ""
 
-#: admin/views/uninstall.php:28
+#: admin/views/uninstall.php:27
 #, fuzzy
 msgid "Permanently delete all questions and answers?"
 msgstr "Soru ve yanıtda yer alacak kullanıcı görseli boyutu"
 
-#: admin/views/uninstall.php:34
+#: admin/views/uninstall.php:33
 #, fuzzy
 msgid "Delete %d Q&A"
 msgstr "Sil"
 
-#: admin/views/uninstall.php:35
+#: admin/views/uninstall.php:34
 msgid ""
 "Clicking this button will delete all questions and answers data from database"
 msgstr ""
 
-#: admin/views/uninstall.php:40
+#: admin/views/uninstall.php:39
 #, fuzzy
 msgid "Permanently delete all answers?"
 msgstr "Soru ve yanıtda yer alacak kullanıcı görseli boyutu"
 
-#: admin/views/uninstall.php:46
+#: admin/views/uninstall.php:45
 #, fuzzy
 msgid "Delete %d answers"
 msgstr "seçilmiş yanıt"
 
-#: admin/views/uninstall.php:47
+#: admin/views/uninstall.php:46
 msgid ""
 "Clicking this button will delete all answers and its related data from "
 "database"
 msgstr ""
 
-#: admin/views/uninstall.php:52
+#: admin/views/uninstall.php:51
 #, fuzzy
 msgid "Permanently delete all AnsPress user data?"
 msgstr "Soru ve yanıtda yer alacak kullanıcı görseli boyutu"
 
-#: admin/views/uninstall.php:55
+#: admin/views/uninstall.php:54
 #, fuzzy
 msgid "Delete all user data"
 msgstr "seçilmiş yanıt"
 
-#: admin/views/uninstall.php:56
+#: admin/views/uninstall.php:55
 msgid "Clicking this button will delete all user data added by AnsPress"
 msgstr ""
 
-#: admin/views/uninstall.php:61
+#: admin/views/uninstall.php:60
 #, fuzzy
 msgid "Permanently delete all AnsPress options?"
 msgstr "Soru ve yanıtda yer alacak kullanıcı görseli boyutu"
 
-#: admin/views/uninstall.php:64
+#: admin/views/uninstall.php:63
 #, fuzzy
 msgid "Delete all options"
 msgstr "Uyarıyı sil"
 
-#: admin/views/uninstall.php:65
+#: admin/views/uninstall.php:64
 msgid "Clicking this button will delete all AnsPress options"
 msgstr ""
 
-#: admin/views/uninstall.php:70
+#: admin/views/uninstall.php:69
 #, fuzzy
 msgid "Permanently delete all AnsPress terms?"
 msgstr "Soru ve yanıtda yer alacak kullanıcı görseli boyutu"
 
-#: admin/views/uninstall.php:73
+#: admin/views/uninstall.php:72
 #, fuzzy
 msgid "Delete all terms"
 msgstr "Uyarıyı sil"
 
-#: admin/views/uninstall.php:74
+#: admin/views/uninstall.php:73
 msgid "Clicking this button will delete all AnsPress terms data"
 msgstr ""
 
-#: admin/views/uninstall.php:79
+#: admin/views/uninstall.php:78
 #, fuzzy
 msgid "Permanently delete all AnsPress tables?"
 msgstr "Soru ve yanıtda yer alacak kullanıcı görseli boyutu"
 
-#: admin/views/uninstall.php:82
+#: admin/views/uninstall.php:81
 msgid "Delete all database tables"
 msgstr ""
 
-#: admin/views/uninstall.php:83
+#: admin/views/uninstall.php:82
 msgid "Clicking this button will remove all AnsPress DB tables"
 msgstr ""
 
-#: admin/views/uninstall.php:115
+#: admin/views/uninstall.php:114
 #, fuzzy
 msgid "Do you wish to proceed? This cannot be undone."
 msgstr "Emin misiniz? Bu işlem geri alınamaz!"
 
-#: admin/views/upgrade.php:19
-#, fuzzy
-msgid "Questions and Answers"
-msgstr "Soru ve yanıtları ara"
-
-#: admin/views/upgrade.php:20
-#, fuzzy
-msgid "Migrate reputation data"
-msgstr "İtibarı devre dışı bırak"
-
-#: admin/views/upgrade.php:21
-msgid "Migrate category data"
-msgstr ""
-
-#: admin/views/upgrade.php:27
-#, fuzzy
-msgid "Thank you for choosing AnsPress"
-msgstr "Oyladığınız için teşekkürler"
-
-#: admin/views/upgrade.php:28
-msgid ""
-"This page will help you with automatically migrating AnsPress 3.x data to 4."
-"x. Please make sure to create a backup of site before starting upgrade."
-msgstr ""
-
-#: admin/views/upgrade.php:29
-msgid "Start Upgrade"
-msgstr ""
-
-#: admin/views/upgrade.php:31
-msgid ""
-"Aaiyaa! Something went wrong. Please click above button again or report "
-"issue to us."
-msgstr ""
-
-#: admin/views/upgrade.php:42
-msgid "Having trouble upgrading? We are available 12x7"
-msgstr ""
-
-#: admin/views/upgrade.php:43
-msgid "Get help now"
-msgstr ""
-
-#: anspress-question-answer.php:44
+#: anspress-question-answer.php:46
 msgid "AnsPress is not running!"
 msgstr ""
 
-#: anspress-question-answer.php:45
+#: anspress-question-answer.php:47
 msgid ""
 "Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP "
 "version is %s. Please ask hosting provider to update your PHP version."
 msgstr ""
 
-#: includes/ajax-hooks.php:90
+#: includes/ajax-hooks.php:92
 #, fuzzy
 msgid "%d similar question found"
 msgid_plural "%d similar questions found"
 msgstr[0] "%d benzer soru bulundu"
 
-#: includes/ajax-hooks.php:91
-msgid ""
-"We've found similar questions that have already been asked, click to read "
-"them."
+#: includes/ajax-hooks.php:93
+msgid "We have found some similar questions that have been asked earlier."
 msgstr ""
 
-#: includes/ajax-hooks.php:101 includes/ajax-hooks.php:137
-#: includes/theme.php:773
-msgid "Select"
-msgstr "Seçin"
-
-#: includes/ajax-hooks.php:110
+#: includes/ajax-hooks.php:112
 msgid "No related questions found."
 msgstr "İlgili hiçbir soru bulunmadı."
 
-#: includes/ajax-hooks.php:136
+#: includes/ajax-hooks.php:138
 msgid "Best answer is unselected for your question."
 msgstr "Sorunuz için en iyi yanıt seçilmedi."
 
-#: includes/ajax-hooks.php:145
+#: includes/ajax-hooks.php:147
 msgid ""
 "This answer cannot be selected as best, update status to select as best "
 "answer."
 msgstr ""
 
-#: includes/ajax-hooks.php:173
+#: includes/ajax-hooks.php:175
 msgid "Best answer is selected for your question."
 msgstr "Sorunuz için en iyi yanıt seçildi."
 
-#: includes/ajax-hooks.php:174 includes/theme.php:781
+#: includes/ajax-hooks.php:176 includes/theme.php:744
 msgid "Unselect"
 msgstr "Seçimi kaldır"
 
-#: includes/ajax-hooks.php:186
+#: includes/ajax-hooks.php:188
 #, fuzzy
 msgid "Unable to trash this post"
 msgstr "Bu gönderiyi olumlu oyla"
 
-#: includes/ajax-hooks.php:207 includes/class/form.php:299
-#: includes/class/form.php:307 includes/comments.php:433 includes/theme.php:360
+#: includes/ajax-hooks.php:209 includes/comments.php:332 includes/theme.php:312
+#: lib/form/class-group.php:81
 msgid "Delete"
 msgstr "Sil"
 
-#: includes/ajax-hooks.php:207 includes/theme.php:361
+#: includes/ajax-hooks.php:209 includes/theme.php:313
 msgid "Delete this post (can be restored again)"
 msgstr ""
 
-#: includes/ajax-hooks.php:208
+#: includes/ajax-hooks.php:210
 msgid "%s is restored"
 msgstr ""
 
-#: includes/ajax-hooks.php:223
+#: includes/ajax-hooks.php:225
 #, fuzzy
 msgid "This post was created %s, hence you cannot trash it"
 msgstr "Bu gönderi %s önce oluşturulmuş ve kilitlendiği için silemezsiniz."
 
-#: includes/ajax-hooks.php:231 includes/theme.php:357
+#: includes/ajax-hooks.php:233 includes/theme.php:309
 #, fuzzy
 msgid "Undelete"
 msgstr "Sil"
 
-#: includes/ajax-hooks.php:231 includes/theme.php:358
+#: includes/ajax-hooks.php:233 includes/theme.php:310
 #, fuzzy
 msgid "Restore this post"
 msgstr "Bu gönderiyi olumlu oyla"
 
-#: includes/ajax-hooks.php:232
+#: includes/ajax-hooks.php:234
 msgid "%s is trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:247
+#: includes/ajax-hooks.php:249
 msgid "Sorry, unable to delete post"
 msgstr ""
 
-#: includes/ajax-hooks.php:275
+#: includes/ajax-hooks.php:277
 #, fuzzy
 msgid "Question is deleted permanently"
 msgstr "Soru kalıcı olarak silindi"
 
-#: includes/ajax-hooks.php:284
+#: includes/ajax-hooks.php:286
 #, fuzzy
 msgid "Answer is deleted permanently"
 msgstr "Yanıt kalıcı olarak silindi"
 
-#: includes/ajax-hooks.php:299
+#: includes/ajax-hooks.php:301
 msgid "Sorry, you cannot toggle a featured question"
 msgstr ""
 
-#: includes/ajax-hooks.php:309
+#: includes/ajax-hooks.php:311
 msgid "Only question can be set as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:318 includes/theme.php:857
+#: includes/ajax-hooks.php:320 includes/theme.php:820
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "Bu soruyu öne çıkarılmış yap"
 
-#: includes/ajax-hooks.php:318 includes/theme.php:858
+#: includes/ajax-hooks.php:320 includes/theme.php:821
 #, fuzzy
 msgid "Feature"
 msgstr "Özellikler"
 
-#: includes/ajax-hooks.php:319
+#: includes/ajax-hooks.php:321
 msgid "Question is unmarked as featured."
 msgstr "Sorunun öne çıkarılmış olarak işaretlenmesi geri alındı."
 
-#: includes/ajax-hooks.php:326 includes/theme.php:854
+#: includes/ajax-hooks.php:328 includes/theme.php:817
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "Bu soruyu öne çıkarılmış yap"
 
-#: includes/ajax-hooks.php:326 includes/theme.php:855
+#: includes/ajax-hooks.php:328 includes/theme.php:818
 #, fuzzy
 msgid "Unfeature"
 msgstr "Özellikler"
 
-#: includes/ajax-hooks.php:327
+#: includes/ajax-hooks.php:329
 msgid "Question is marked as featured."
 msgstr "Soru öne çıkarılmış olarak işaretlendi."
 
-#: includes/ajax-hooks.php:365
+#: includes/ajax-hooks.php:369
 #, fuzzy
 msgid "You cannot close a question"
 msgstr "Bu soruyu favorilere eklediniz"
 
-#: includes/ajax-hooks.php:371 includes/theme.php:318
+#: includes/ajax-hooks.php:375 includes/theme.php:270
 msgid "Close"
 msgstr "Kapat"
 
-#: includes/ajax-hooks.php:371 includes/theme.php:318
+#: includes/ajax-hooks.php:375 includes/theme.php:270
 msgid "Open"
 msgstr "Aç"
 
-#: includes/ajax-hooks.php:372 includes/theme.php:319
+#: includes/ajax-hooks.php:376 includes/theme.php:271
 #, fuzzy
 msgid "Close this question for new answer."
 msgstr "Yeni yanıt için soruyu seçin"
 
-#: includes/ajax-hooks.php:372 includes/theme.php:319
+#: includes/ajax-hooks.php:376 includes/theme.php:271
 #, fuzzy
 msgid "Open this question for new answers"
 msgstr "Yeni yanıt için soruyu seçin"
 
-#: includes/ajax-hooks.php:374
+#: includes/ajax-hooks.php:378
 #, fuzzy
 msgid "Question closed"
 msgstr "Soru Özet Akışı"
 
-#: includes/ajax-hooks.php:374
+#: includes/ajax-hooks.php:378
 #, fuzzy
 msgid "Question is opened"
 msgstr "Soru Özet Akışı"
 
-#: includes/ajax-hooks.php:438
+#: includes/ajax-hooks.php:422
 msgid "Sorry, you are not allowed to convert this question to post"
 msgstr ""
 
-#: includes/ajax-hooks.php:457
+#: includes/ajax-hooks.php:441
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:485
+#: includes/ajax-hooks.php:469
 #, fuzzy
 msgid "You must be logged in to subscribe to a question"
 msgstr "Bu soruya hiç kimse kayıt olmadı."
 
-#: includes/ajax-hooks.php:494 includes/ajax-hooks.php:517
+#: includes/ajax-hooks.php:478 includes/ajax-hooks.php:501
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:505
+#: includes/ajax-hooks.php:489
 #, fuzzy
 msgid "Successfully unsubscribed from question"
 msgstr "Sadece siz bu soruya kayıt oldunuz."
 
-#: includes/ajax-hooks.php:507 includes/theme.php:884
+#: includes/ajax-hooks.php:491 includes/theme.php:847
 msgid "Subscribe"
 msgstr "Kaydol"
 
-#: includes/ajax-hooks.php:523
+#: includes/ajax-hooks.php:507
 #, fuzzy
 msgid "Successfully subscribed to question"
 msgstr "Bu soruya hiç kimse kayıt olmadı."
 
-#: includes/ajax-hooks.php:525 includes/theme.php:884
+#: includes/ajax-hooks.php:509 includes/theme.php:847
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Kaydol"
 
-#: includes/answer-form.php:41
-msgid "Your answer.."
-msgstr "Yanıtınız.."
-
-#: includes/answer-form.php:60 includes/ask-form.php:88
-msgid "Enter your name to display"
-msgstr "Gösterilmesi için isminizi girin"
-
-#: includes/answer-form.php:72 includes/ask-form.php:100
-msgid "Only visible to admin and moderator."
-msgstr "Sadece yönetici ve moderatöre görünür."
-
-#: includes/answer-form.php:139 includes/post-types.php:120
-msgid "Update answer"
-msgstr "Yanıtı güncelle"
-
-#: includes/answer-form.php:139
-msgid "Post answer"
-msgstr "Yanıtı gönder"
-
-#: includes/answer-form.php:271
-msgid "Answer submitted successfully"
-msgstr "Yanıt başarı ile gönderildi"
-
-#: includes/answer-loop.php:303
+#: includes/answer-loop.php:301
 msgid "You are viewing 1 out of %d answers, click here to view all answers."
 msgstr ""
 
 #: includes/api.php:15
 msgid "Wrong data supplied"
 msgstr ""
-
-#: includes/ask-form.php:44
-msgid "Question in one sentence"
-msgstr "Sorunuzu bir cümle ile girin"
-
-#: includes/ask-form.php:60
-msgid "Description"
-msgstr "Açıklama"
-
-#: includes/ask-form.php:157
-#, fuzzy
-msgid "You cannot edit this question."
-msgstr "Bu soruyu favorilere eklediniz"
-
-#: includes/ask-form.php:165
-#, fuzzy
-msgid "Post you are trying to edit is not a question."
-msgstr "Bu soruyu düzenlemeye yetkiniz yok."
-
-#: includes/ask-form.php:173 includes/post-types.php:50
-msgid "Update question"
-msgstr "Soruyu güncelle"
-
-#: includes/ask-form.php:173
-msgid "Post question"
-msgstr "Soruyu gönder"
-
-#: includes/ask-form.php:241
-msgid "Question title cannot be blank"
-msgstr ""
-
-#: includes/class/form.php:67
-msgid "Submit"
-msgstr "Gönder"
-
-#: includes/class/form.php:200
-msgid "Reset"
-msgstr ""
-
-#: includes/class/form.php:204 templates/functions.php:55
-msgid "Cancel"
-msgstr "İptal"
-
-#: includes/class/form.php:291
-msgid "Repeat your password"
-msgstr "Parolayı tekrarlayın"
-
-#: includes/class/form.php:309
-msgid "Add more"
-msgstr "Daha fazla ekleyin"
-
-#: includes/class/form.php:475
-msgid "Select a page"
-msgstr "Bir syfa seçin"
-
-#: includes/class/form.php:719
-msgid "No fields found"
-msgstr "Hiçbir alan bulunmadı"
 
 #: includes/class/roles-cap.php:59
 msgid "AnsPress Moderator"
@@ -2984,193 +2944,346 @@ msgstr "AnsPress Katılımcılar"
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1256
+#: includes/class/roles-cap.php:1274
 #, fuzzy
 msgid "Voting on own post is not allowed"
 msgstr "Aşağıya doğru oylama engellendi."
 
-#: includes/class/roles-cap.php:1264
+#: includes/class/roles-cap.php:1282
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1274
+#: includes/class/roles-cap.php:1292
 #, fuzzy
 msgid "You do not have permission to vote."
 msgstr "Bu işlemi yapmanız için yetkiniz yok."
 
-#: includes/class/validation.php:73
-msgid "This field is required"
-msgstr "Bu alan zorunludur"
+#: includes/class-form-hooks.php:36
+#, fuzzy
+msgid "Submit Question"
+msgstr "Soruyu Düzenle"
 
-#: includes/class/validation.php:103
-msgid "Field value should be at least %d characters"
+#: includes/class-form-hooks.php:41 includes/deprecated.php:249
+msgid "Question in one sentence"
+msgstr "Sorunuzu bir cümle ile girin"
+
+#: includes/class-form-hooks.php:44
+#, fuzzy
+msgid "Question title"
+msgstr "Sayfa başına sorular"
+
+#: includes/class-form-hooks.php:55 includes/class-form-hooks.php:138
+#: includes/deprecated.php:265
+msgid "Description"
+msgstr "Açıklama"
+
+#: includes/class-form-hooks.php:69 includes/class-form-hooks.php:160
+#, fuzzy
+msgid "Is private?"
+msgstr "Özel"
+
+#: includes/class-form-hooks.php:70 includes/class-form-hooks.php:161
+#: includes/deprecated.php:305 includes/deprecated.php:448
+msgid "Only visible to admin and moderator."
+msgstr "Sadece yönetici ve moderatöre görünür."
+
+#: includes/class-form-hooks.php:77 includes/class-form-hooks.php:168
+#: includes/class-form-hooks.php:240
+#, fuzzy
+msgid "Your Name"
+msgstr "Soy adınız"
+
+#: includes/class-form-hooks.php:79 includes/class-form-hooks.php:170
+#: includes/deprecated.php:293 includes/deprecated.php:436
+msgid "Enter your name to display"
+msgstr "Gösterilmesi için isminizi girin"
+
+#: includes/class-form-hooks.php:100
+msgid "Update Question"
+msgstr "Soruyu Güncelle"
+
+#: includes/class-form-hooks.php:134
+#, fuzzy
+msgid "Post Answer"
+msgstr "Yanıtı gönder"
+
+#: includes/class-form-hooks.php:146
+#, fuzzy
+msgid "Question ID"
+msgstr "Soru"
+
+#: includes/class-form-hooks.php:190 includes/post-types.php:167
+msgid "Update answer"
+msgstr "Yanıtı güncelle"
+
+#: includes/class-form-hooks.php:218
+#, fuzzy
+msgid "Submit Comment"
+msgstr "Yorum"
+
+#: includes/class-form-hooks.php:222 templates/functions.php:41
+msgid "Comment"
+msgstr "Yorum"
+
+#: includes/class-form-hooks.php:226
+#, fuzzy
+msgid "Write your comment here.."
+msgstr "Yorumunuzu gönderiyor"
+
+#: includes/class-form-hooks.php:242
+#, fuzzy
+msgid "Enter your name to display."
+msgstr "Gösterilmesi için isminizi girin"
+
+#: includes/class-form-hooks.php:249
+msgid "Your Email"
+msgstr "Epostanız"
+
+#: includes/class-form-hooks.php:251
+msgid "Enter your email to get follow up notifications."
 msgstr ""
 
-#: includes/class/validation.php:123 includes/class/validation.php:126
-msgid "It must be minimum %d characters"
-msgstr "En az %d karakter olmalı"
-
-#: includes/class/validation.php:138
-msgid "Not a valid email address"
-msgstr "Geçerli bir ePosta değil"
-
-#: includes/class-theme.php:171 includes/class-theme.php:226
-msgid "Question Feed"
-msgstr "Soru Özet Akışı"
-
-#: includes/class-theme.php:227
+#: includes/class-form-hooks.php:259
 #, fuzzy
-msgid "Answers Feed"
-msgstr "Yanıt özet akışı"
+msgid "Your Website"
+msgstr "Yanıtın"
 
-#: includes/comments.php:71
+#: includes/class-form-hooks.php:261
+msgid "Enter link to your website."
+msgstr ""
+
+#: includes/class-form-hooks.php:338 includes/class-form-hooks.php:361
 #, fuzzy
-msgid "Unable to load comments"
+msgid "Unable to post question."
+msgstr "Yeni sorunun durumu"
+
+#: includes/class-form-hooks.php:357
+msgid ""
+"You are trying to post a duplicate question. Please search existing "
+"questions before posting a new one."
+msgstr ""
+
+#. Translators: placeholder contain error message.
+#: includes/class-form-hooks.php:412
+#, fuzzy
+msgid "Unable to post question. Error: %s"
+msgstr "Yeni sorunun durumu"
+
+#: includes/class-form-hooks.php:429
+#, fuzzy
+msgid "Question updated successfully, you'll be redirected in a moment."
+msgstr "Soru başarı ile güncellendi"
+
+#: includes/class-form-hooks.php:431
+#, fuzzy
+msgid "Your question is posted successfully, you'll be redirected in a moment."
+msgstr "Soru başarı ile güncellendi"
+
+#. Translators: placeholder contain error message.
+#: includes/class-form-hooks.php:561
+msgid "Unable to post answer. Error: %s"
+msgstr ""
+
+#: includes/class-form-hooks.php:582
+#, fuzzy
+msgid "Answer updated successfully. Redirecting you to question page."
+msgstr "Soru başarı ile güncellendi"
+
+#: includes/class-form-hooks.php:584
+#, fuzzy
+msgid "Your answer is posted successfully."
+msgstr "Yanıt başarı ile güncellendi"
+
+#: includes/class-form-hooks.php:628
+#, fuzzy
+msgid "Unable to post comment."
 msgstr "Yorumları devre dışı bırak"
 
-#: includes/comments.php:84
+#: includes/class-form-hooks.php:641
 #, fuzzy
-msgid "Show %d more comments"
-msgstr "Yorumları göster"
+msgid "You cannot edit this comment."
+msgstr "Bu soruyu favorilere eklediniz"
 
-#: includes/comments.php:104
+#: includes/class-form-hooks.php:649
 #, fuzzy
-msgid "Unable to post comment"
-msgstr "Yorumları devre dışı bırak"
+msgid "There is no change in your comment."
+msgstr "Henüz hiçbir soru bulunmuyor."
 
-#: includes/comments.php:112
-msgid "Sorry, you cannot post a blank comment"
-msgstr ""
-
-#: includes/comments.php:124
-msgid "Commenting is not allowed on draft, pending or deleted %s"
-msgstr ""
-
-#: includes/comments.php:133
-msgid "Sorry, you cannot post a comment"
-msgstr ""
-
-#: includes/comments.php:169 includes/comments.php:221
-#: includes/comments.php:271 includes/comments.php:314
-#: includes/comments.php:391
+#. Translators: %d contains count of comments.
+#: includes/class-form-hooks.php:666 includes/class-form-hooks.php:746
+#: includes/comments.php:133 includes/comments.php:185
+#: includes/comments.php:296
 #, fuzzy
 msgid "%d Comment"
 msgid_plural "%d Comments"
 msgstr[0] "Yorum"
 
-#: includes/comments.php:170
-#, fuzzy
-msgid "Comment successfully posted"
-msgstr "Yorum başarı ile gönderildi."
-
-#: includes/comments.php:195
-msgid "Sorry, you cannot edit this comment"
-msgstr ""
-
-#: includes/comments.php:205
-msgid "No change detected, edit comment and then try"
-msgstr ""
-
-#: includes/comments.php:222
+#: includes/class-form-hooks.php:667
 #, fuzzy
 msgid "Comment updated successfully"
 msgstr "Yorum başarı ile güncellendi."
 
-#: includes/comments.php:229
-#, fuzzy
-msgid "Unable to update comment"
-msgstr "Yorumu yenileyin"
+#. Translators: %s contain post type name.
+#: includes/class-form-hooks.php:690
+msgid "Commenting is not allowed on draft, pending or deleted %s"
+msgstr ""
 
-#: includes/comments.php:245
+#: includes/class-form-hooks.php:752
+#, fuzzy
+msgid "Comment successfully posted"
+msgstr "Yorum başarı ile gönderildi."
+
+#: includes/class-theme.php:174 includes/class-theme.php:233
+msgid "Question Feed"
+msgstr "Soru Özet Akışı"
+
+#: includes/class-theme.php:234
+#, fuzzy
+msgid "Answers Feed"
+msgstr "Yanıt özet akışı"
+
+#: includes/class-theme.php:336
+#, fuzzy
+msgid "Sorry, you do not have permission to read this post."
+msgstr "Bu soruyu düzenlemeye yetkiniz yok."
+
+#. Translators: %s contains post type.
+#: includes/comments.php:77
+#, fuzzy
+msgid "Comments on %s"
+msgstr "yanıt üstüne yorum yapıldı"
+
+#. Translators: %d contains current paged value.
+#: includes/comments.php:86
+msgid " | Page %d"
+msgstr ""
+
+#: includes/comments.php:106
 #, fuzzy
 msgid "Failed to delete comment"
 msgstr "düzenlenen yorum"
 
-#: includes/comments.php:255
+#: includes/comments.php:116
 #, fuzzy
 msgid "This comment was created %s. Its locked hence you cannot delete it."
 msgstr "Bu gönderi %s önce oluşturulmuş ve kilitlendiği için silemezsiniz."
 
-#: includes/comments.php:269
+#: includes/comments.php:130
 #, fuzzy
 msgid "Comment successfully deleted"
 msgstr "Yorum başarı ile gönderildi."
 
-#: includes/comments.php:299
+#: includes/comments.php:168
 msgid "Sorry, unable to approve comment"
 msgstr ""
 
-#: includes/comments.php:315
+#: includes/comments.php:191
 #, fuzzy
 msgid "Comment approved successfully."
 msgstr "Yorum başarı ile güncellendi."
 
-#: includes/comments.php:386
+#: includes/comments.php:237
+#, fuzzy
+msgid "Add comment on post"
+msgstr "yanıt üstüne yorum yapıldı"
+
+#: includes/comments.php:291
 #, fuzzy
 msgid "Comments awaiting moderation"
 msgstr "Mesajlar düzenleme bekliyor"
 
-#: includes/comments.php:404
-#, fuzzy
-msgid "You do not have permission to comment."
-msgstr "Bu işlemi yapmanız için yetkiniz yok."
-
-#: includes/comments.php:407
-#, fuzzy
-msgid "%sLogin%s to post comment"
-msgstr "Yorumları devre dışı bırak"
-
-#: includes/comments.php:411
+#: includes/comments.php:304
 #, fuzzy
 msgid "Add a Comment"
 msgstr "Yorum ekle"
 
-#: includes/comments.php:437
+#: includes/comments.php:344
 msgid "Approve"
 msgstr ""
 
-#: includes/common-pages.php:22
-msgid "Ask"
-msgstr "Soru Sor"
+#: includes/comments.php:390
+#, fuzzy
+msgid "Sorry, you do not have permission to read comments."
+msgstr "Bu işlemi yapmanız için yetkiniz yok."
 
-#: includes/common-pages.php:23 templates/functions.php:60
-#: templates/search-form.php:12
+#: includes/comments.php:431
+#, fuzzy
+msgid "No comments found."
+msgstr "Hiçbir kullanıcı bulunmadı."
+
+#: includes/common-pages.php:22
+#, fuzzy
+msgid "Ask a Question"
+msgstr "Soru sor"
+
+#: includes/common-pages.php:23 templates/addons/tag/tags.php:20
+#: templates/functions.php:47 templates/search-form.php:16
 msgid "Search"
 msgstr "Arama"
 
-#: includes/common-pages.php:24
-msgid "Edit Answer"
-msgstr "Yanıtı Düzenle"
-
-#: includes/common-pages.php:70
+#: includes/common-pages.php:68
 msgid ""
-"This question is waiting for a moderator and cannot be viewed. Please check "
-"back later to see if it has been approved."
+"This question is awaiting moderation and cannot be viewed. Please check back "
+"later."
 msgstr ""
 
-#: includes/common-pages.php:72
+#: includes/common-pages.php:70
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
 
-#: includes/common-pages.php:108
-msgid "Question will be publish in %s"
+#. Translators: %s contain time to publish.
+#: includes/common-pages.php:77
+msgid "Question will be published in %s"
 msgstr ""
 
-#: includes/common-pages.php:109
+#: includes/common-pages.php:81
 msgid ""
-"This question is in waiting queue and is not accessible by anyone until it "
+"This question is not published yet and is not accessible to anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:135
+#: includes/common-pages.php:133
 #, fuzzy
 msgid "Something went wrong, please try again"
 msgstr "Bir şey ters gitti, lütfen tekrar deneyin."
 
-#: includes/common-pages.php:157
+#: includes/common-pages.php:155
 #, fuzzy
 msgid "Sorry, you cannot edit this answer."
 msgstr "Bu yanıtı düzenle"
+
+#: includes/deprecated.php:32
+msgid "Check missing fields and then re-submit."
+msgstr "Eksik alanları kontrol ederek tekrar gönderin."
+
+#: includes/deprecated.php:65
+msgid "Insert images and attach media by %1$sselecting them%2$s"
+msgstr ""
+
+#: includes/deprecated.php:123
+#, fuzzy
+msgid "Uploaded"
+msgstr "Karşıya Yükle"
+
+#: includes/deprecated.php:124
+msgid "Failed"
+msgstr ""
+
+#: includes/deprecated.php:126
+msgid "Insert to post"
+msgstr ""
+
+#: includes/deprecated.php:159
+msgid "Question title cannot be blank"
+msgstr ""
+
+#: includes/deprecated.php:417
+msgid "Your answer.."
+msgstr "Yanıtınız.."
+
+#: includes/deprecated.php:713
+msgid "Save options"
+msgstr "Seçenekleri kaydet"
 
 #: includes/flag.php:34
 msgid "You have already reported this post."
@@ -3189,202 +3302,272 @@ msgid "You have flagged this post"
 msgstr "Bu gönderiyi işaretlediniz"
 
 #. translators: %s: human-readable time difference
-#: includes/functions.php:245
+#: includes/functions.php:251
 msgid "%s ago"
 msgstr "%s önce"
 
-#: includes/functions.php:478
+#: includes/functions.php:487
 msgid "Success"
 msgstr "Başarı"
 
-#: includes/functions.php:480
+#: includes/functions.php:489
 msgid "Something went wrong, last action failed."
 msgstr "Bir şey ters gitti, son şlem başarısız oldu."
 
-#: includes/functions.php:482
+#: includes/functions.php:491
 msgid "Comment updated successfully."
 msgstr "Yorum başarı ile güncellendi."
 
-#: includes/functions.php:483
+#: includes/functions.php:492
 msgid "You cannot vote on your own question or answer."
 msgstr "Kendi soru veya yanıtınıza oy veremezsiniz."
 
-#: includes/functions.php:484
+#: includes/functions.php:493
 #, fuzzy
 msgid "You do not have permission to view private posts."
 msgstr "Bu özel mesajı görüntüleme yetkiniz yok."
 
-#: includes/functions.php:485
+#: includes/functions.php:494
 msgid "Please check captcha field and resubmit it again."
 msgstr "Lütfen captcha alanını kontrol ederek tekrar gönderin."
 
-#: includes/functions.php:486
+#: includes/functions.php:495
 msgid "Image uploaded successfully"
 msgstr "Resim başarı ile yüklendi"
 
-#: includes/functions.php:487
+#: includes/functions.php:496
 msgid "Answer has been deleted permanently"
 msgstr "Yanıt kalıcı olarak silindi"
 
-#: includes/functions.php:488
+#: includes/functions.php:497
 msgid "You have already attached maximum numbers of allowed uploads."
 msgstr "İzin verilen maksimum yükleme sayısı kadar ekleme yaptınız."
 
-#: includes/functions.php:489
+#: includes/functions.php:498
 msgid "Your profile has been updated successfully."
 msgstr "Profiliniz başarı ile güncellendi."
 
-#: includes/functions.php:490
+#: includes/functions.php:499
 msgid "Voting down is disabled."
 msgstr "Aşağıya doğru oylama engellendi."
 
-#: includes/functions.php:491
+#: includes/functions.php:500
 msgid "You cannot vote on restricted posts"
 msgstr ""
 
-#: includes/functions.php:916
+#: includes/functions.php:925
 msgid "[Solved] "
 msgstr "[Çözüldü]"
 
-#: includes/functions.php:1291
+#: includes/functions.php:1266
 msgid "asked"
 msgstr "soruldu"
 
-#: includes/functions.php:1292 includes/functions.php:1293
+#: includes/functions.php:1267 includes/functions.php:1268
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1294
+#: includes/functions.php:1269
 msgid "answered"
 msgstr "yanıtlandı"
 
-#: includes/functions.php:1295
+#: includes/functions.php:1270
 #, fuzzy
 msgid "deleted answer"
 msgstr "seçilmiş yanıt"
 
-#: includes/functions.php:1296
+#: includes/functions.php:1271
 #, fuzzy
 msgid "restored question"
 msgstr "Öne çıkarılmış soru"
 
-#: includes/functions.php:1297
+#: includes/functions.php:1272
 #, fuzzy
 msgid "restored answer"
 msgstr "düzenlenen yanıt"
 
-#: includes/functions.php:1298 templates/functions.php:53
+#: includes/functions.php:1273 templates/functions.php:40
 msgid "commented"
 msgstr "yorumlandı"
 
-#: includes/functions.php:1299
+#: includes/functions.php:1274
 #, fuzzy
 msgid "deleted comment"
 msgstr "düzenlenen yorum"
 
-#: includes/functions.php:1300
+#: includes/functions.php:1275
 msgid "commented on answer"
 msgstr "yanıt üstüne yorum yapıldı"
 
-#: includes/functions.php:1301
+#: includes/functions.php:1276
 msgid "edited question"
 msgstr "düzenlenen soru"
 
-#: includes/functions.php:1302
+#: includes/functions.php:1277
 msgid "edited answer"
 msgstr "düzenlenen yanıt"
 
-#: includes/functions.php:1303
+#: includes/functions.php:1278
 msgid "edited comment"
 msgstr "düzenlenen yorum"
 
-#: includes/functions.php:1304
+#: includes/functions.php:1279
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/functions.php:1305
+#: includes/functions.php:1280
 msgid "selected answer"
 msgstr "seçilmiş yanıt"
 
-#: includes/functions.php:1306
+#: includes/functions.php:1281
 msgid "unselected answer"
 msgstr "seçilmemiş yanıt"
 
-#: includes/functions.php:1307
+#: includes/functions.php:1282
 msgid "updated status"
 msgstr "güncellenen durum"
 
-#: includes/functions.php:1308
+#: includes/functions.php:1283
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1309
+#: includes/functions.php:1284
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1310
+#: includes/functions.php:1285
 #, fuzzy
 msgid "changed status"
 msgstr "güncellenen durum"
 
-#: includes/functions.php:1362
+#: includes/functions.php:1337
 msgid "Anonymous"
 msgstr "Anonim"
 
-#: includes/functions.php:1389
+#: includes/functions.php:1368
 msgid " (anonymous)"
 msgstr " (anonim)"
 
-#: includes/hooks.php:680
+#: includes/functions.php:1870
+#, fuzzy
+msgid "You cannot edit this question."
+msgstr "Bu soruyu favorilere eklediniz"
+
+#: includes/functions.php:1875 templates/ask.php:17
+#, fuzzy
+msgid "You do not have permission to ask a question."
+msgstr "Soru sormak için izniniz yok."
+
+#: includes/functions.php:1968
+msgid "Answer submitted successfully"
+msgstr "Yanıt başarı ile gönderildi"
+
+#: includes/functions.php:2096
+msgid "Archives page"
+msgstr ""
+
+#: includes/functions.php:2097
+msgid ""
+"Page used to display question archive (list). Sometimes this page is used "
+"for displaying other subpages of AnsPress.<br/>This page is also referred as "
+"<b>Base Page</b> in AnsPress documentations and support forum."
+msgstr ""
+
+#: includes/functions.php:2102
+#, fuzzy
+msgid "Ask page"
+msgstr "Soru sayfası başlığı"
+
+#: includes/functions.php:2103
+msgid "Page used to display ask form."
+msgstr ""
+
+#: includes/functions.php:2104
+#, fuzzy
+msgid "Ask a question"
+msgstr "Soru sor"
+
+#: includes/functions.php:2108
+#, fuzzy
+msgid "User page"
+msgstr "Sayfa başına kullanıcılar"
+
+#: includes/functions.php:2109
+msgid "Page used to display user profile."
+msgstr ""
+
+#: includes/functions.php:2110
+msgid "Profile"
+msgstr "Profil"
+
+#: includes/functions.php:2114
+#, fuzzy
+msgid "Categories page"
+msgstr "Kullanıcılar sayfası göstergesi"
+
+#: includes/functions.php:2115
+msgid ""
+"Page used to display question categories. NOTE: Categories addon must be "
+"enabled to render this page."
+msgstr ""
+
+#: includes/functions.php:2120
+#, fuzzy
+msgid "Tags page"
+msgstr "Sayfa başına etiket"
+
+#: includes/functions.php:2121
+msgid ""
+"Page used to display question tags. NOTE: Tags addon must be enabled to "
+"render this page."
+msgstr ""
+
+#: includes/hooks.php:820
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:681
+#: includes/hooks.php:821
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:682
+#: includes/hooks.php:822
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:683
+#: includes/hooks.php:823
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:684
+#: includes/hooks.php:824
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:685
+#: includes/hooks.php:825
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:686
+#: includes/hooks.php:826
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:687
+#: includes/hooks.php:827
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:688
+#: includes/hooks.php:828
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:689
+#: includes/hooks.php:829
 msgid "years"
 msgstr ""
 
-#: includes/options.php:111 includes/theme.php:562
-msgid "Ask question"
-msgstr "Soru sor"
-
-#: includes/options.php:112
+#: includes/options.php:105
 #, fuzzy
 msgid "Search \"%s\""
 msgstr "Arama"
 
-#: includes/options.php:113
+#: includes/options.php:106
 msgid "%s"
 msgstr "%s"
 
@@ -3444,131 +3627,86 @@ msgstr "Çöp"
 msgid "This %s has been trashed, you can delete it permanently from wp-admin."
 msgstr "%s çöpe taşındı, kalıcı olarak wp-admin panelinden silebilirsiniz."
 
-#: includes/post-types.php:44
+#: includes/post-types.php:84
 #, fuzzy
 msgid "Parent question:"
 msgstr "Ana Soru:"
 
-#: includes/post-types.php:45
+#: includes/post-types.php:85
 #, fuzzy
 msgid "All questions"
 msgstr "Tüm Sorular"
 
-#: includes/post-types.php:46
+#: includes/post-types.php:86
 #, fuzzy
 msgid "View question"
 msgstr "Soruyu Görüntüle"
 
-#: includes/post-types.php:47
+#: includes/post-types.php:87
 #, fuzzy
 msgid "Add new question"
 msgstr "Yeni Soru Ekle"
 
-#: includes/post-types.php:51 widgets/search.php:60
+#: includes/post-types.php:90
+msgid "Update question"
+msgstr "Soruyu güncelle"
+
+#: includes/post-types.php:91 widgets/search.php:61
 msgid "Search questions"
 msgstr "Sorularu ara"
 
-#: includes/post-types.php:52
+#: includes/post-types.php:92
 msgid "No question found"
 msgstr "Hiç soru bulunamadı"
 
-#: includes/post-types.php:53
+#: includes/post-types.php:93
 #, fuzzy
 msgid "No questions found in trash"
 msgstr "Çöpte hiç soru bulunamadı"
 
-#: includes/post-types.php:114
+#: includes/post-types.php:161
 #, fuzzy
 msgid "Parent answer:"
 msgstr "Ana Yanıt"
 
-#: includes/post-types.php:115
+#: includes/post-types.php:162
 #, fuzzy
 msgid "All answers"
 msgstr "Tüm Yanıtlar"
 
-#: includes/post-types.php:116
+#: includes/post-types.php:163
 #, fuzzy
 msgid "View answer"
 msgstr "Yanıtı Görüntüle"
 
-#: includes/post-types.php:117
+#: includes/post-types.php:164
 #, fuzzy
 msgid "Add new answer"
 msgstr "Yeni Yanıt Ekle"
 
-#: includes/post-types.php:121
+#: includes/post-types.php:168
 #, fuzzy
 msgid "Search answers"
 msgstr "Yanıt ara"
 
-#: includes/post-types.php:122
+#: includes/post-types.php:169
 msgid "No answer found"
 msgstr "Hiç yanıt bulunamadı"
 
-#: includes/post-types.php:123
+#: includes/post-types.php:170
 #, fuzzy
 msgid "No answer found in trash"
 msgstr "Çöpte hiç yanıt bulunamadı"
 
-#: includes/process-form.php:123
-#, fuzzy
-msgid "Sorry, unable to post new question"
-msgstr "Yeni sorunun durumu"
-
-#: includes/process-form.php:163
-msgid ""
-"This seems to be a duplicate question. A question with same content already "
-"exists."
-msgstr ""
-
-#: includes/process-form.php:209
-#, fuzzy
-msgid "Question posted successfully. Redirecting to question"
-msgstr "Soru başarı ile güncellendi"
-
-#: includes/process-form.php:273
-msgid "Question updated successfully"
-msgstr "Soru başarı ile güncellendi"
-
-#: includes/process-form.php:289
-#, fuzzy
-msgid "Sorry, you cannot asnwer on this question"
-msgstr "Sadece siz bu soruya kayıt oldunuz."
-
-#: includes/process-form.php:333
-msgid ""
-"This seems to be a duplicate answer. An answer with same content already "
-"exists."
-msgstr ""
-
-#: includes/process-form.php:385
-#, fuzzy
-msgid "Sorry, you cannot edit this answer"
-msgstr "Bu yanıtı düzenle"
-
-#: includes/process-form.php:422
-msgid "Answer updated successfully"
-msgstr "Yanıt başarı ile güncellendi"
-
-#: includes/process-form.php:441
-msgid "Check missing fields and then re-submit."
-msgstr "Eksik alanları kontrol ederek tekrar gönderin."
-
-#: includes/qaquery-hooks.php:146
-#, fuzzy
-msgid "Restricted content"
-msgstr "düzenlenen yorum"
-
-#: includes/qaquery.php:438
+#: includes/qaquery.php:443
 msgid "Featured"
 msgstr ""
 
-#: includes/qaquery.php:442
+#: includes/qaquery.php:447
 msgid "Solved"
 msgstr "Çözüldü"
 
-#: includes/qaquery.php:446
+#: includes/qaquery.php:451
 #, fuzzy
 msgid "%d views"
 msgstr "%d kez okundu"
@@ -3582,117 +3720,86 @@ msgstr ""
 msgid "Question and answer is powered by"
 msgstr "Soru ve yanıtları ara"
 
-#: includes/taxo.php:322
+#: includes/taxo.php:324
 #, fuzzy
 msgid "Tagged"
 msgstr "Etiket: "
 
-#: includes/taxo.php:456
-msgid "Popular"
-msgstr ""
-
-#: includes/taxo.php:457 includes/theme.php:439
-#, fuzzy
-msgid "New"
-msgstr "En yeni"
-
-#: includes/theme.php:31
+#: includes/theme.php:33
 msgid "No permission"
 msgstr ""
 
-#: includes/theme.php:42
+#: includes/theme.php:44
 msgid "Discussion on \"%s\""
 msgstr "\"%s\" üstüne yorum"
 
-#: includes/theme.php:46 templates/not-found.php:1
+#: includes/theme.php:48 templates/not-found.php:1
 msgid "Error 404"
 msgstr "404 Hatası"
 
-#: includes/theme.php:378
+#: includes/theme.php:330
 msgid "Delete post permanently (cannot be restored again)"
 msgstr ""
 
-#: includes/theme.php:388
+#: includes/theme.php:340
 msgid "Convert to post"
 msgstr ""
 
-#: includes/theme.php:389
+#: includes/theme.php:341
 #, fuzzy
 msgid "Convert this question to blog post"
 msgstr "Bu soruyu yanıtlayın"
 
-#: includes/theme.php:448 widgets/questions.php:88
+#: includes/theme.php:400 widgets/questions.php:120
 msgid "Unanswered"
 msgstr "Yanıtlanmadı"
 
-#: includes/theme.php:449
+#: includes/theme.php:401
 msgid "Unsolved"
 msgstr "Çözülmedi"
 
-#: includes/theme.php:515
+#: includes/theme.php:467
 msgid "Best answer"
 msgstr "En iyi yanıt"
 
-#: includes/theme.php:695
+#: includes/theme.php:514
+msgid "Ask question"
+msgstr "Soru sor"
+
+#: includes/theme.php:658
 #, fuzzy
 msgid "Order By"
 msgstr "Sıralama Öğesi:"
 
-#: includes/theme.php:740
+#: includes/theme.php:703
 msgid "Reset sorting and filter"
 msgstr "Sıralama ve Filitreyi ssıfırla"
 
-#: includes/theme.php:740
+#: includes/theme.php:703
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:772
+#: includes/theme.php:735
 msgid "Select this answer as best"
 msgstr "Bu yanıtı en iyi  cevap olarak belirle"
 
-#: includes/theme.php:780
+#: includes/theme.php:743
 msgid "Unselect this answer"
 msgstr "Bu yanıtı seçme"
 
-#: includes/theme.php:908
+#: includes/theme.php:895
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AsnPress Puanları"
 
-#: includes/upload.php:28
-msgid "You are not allowed to upload attachments."
-msgstr ""
-
-#: includes/upload.php:84
+#: includes/upload.php:43
 msgid "Unable to delete attachment"
 msgstr ""
 
-#: includes/upload.php:150
-#, fuzzy
-msgid "You have already uploaded maximum numbers of allowed attachments"
-msgstr "İzin verilen maksimum yükleme sayısı kadar ekleme yaptınız."
-
-#: includes/upload.php:157
+#: includes/upload.php:112
 #, fuzzy
 msgid "File cannot be uploaded, size is bigger then %s MB"
 msgstr "Boyutu %d'den fazla büyük olduğu için dosya yüklenemez."
-
-#: includes/upload.php:225
-#, fuzzy
-msgid "Uploaded"
-msgstr "Karşıya Yükle"
-
-#: includes/upload.php:226
-msgid "Failed"
-msgstr ""
-
-#: includes/upload.php:228
-msgid "Insert to post"
-msgstr ""
-
-#: includes/upload.php:281
-msgid "Insert images and attach media by %1$sselecting them%2$s"
-msgstr ""
 
 #: includes/votes.php:64
 msgid "Your vote has been removed."
@@ -3720,6 +3827,11 @@ msgstr "Bu gönderiyi olumsuz oyla"
 msgid "Migrating question: %d"
 msgstr "Bir soru sormak için."
 
+#: lib/class-anspress-upgrader.php:261 lib/class-anspress-upgrader.php:269
+#, fuzzy
+msgid "Successfully migrated all reputations"
+msgstr "Etiket başarı ile oluşturuldu."
+
 #: lib/class-anspress-upgrader.php:287
 #, fuzzy
 msgid "Migrated all reputations"
@@ -3730,13 +3842,237 @@ msgstr "İtibarı devre dışı bırak"
 msgid "Categories data migrated"
 msgstr "Kategoriler"
 
+#: lib/class-form.php:88
+msgid "Submit"
+msgstr "Gönder"
+
+#. Translators: Placeholder contain form name.
+#: lib/class-form.php:171
+#, fuzzy
+msgid "No fields found for form: %s"
+msgstr "Hiçbir alan bulunmadı"
+
+#: lib/class-form.php:370 lib/form/class-field.php:375
+msgid "Error found in fields, please check and re-submit"
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:281 lib/class-validate.php:297
+#, fuzzy
+msgid "%s field is required."
+msgstr "Bu alan zorunludur"
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:313
+msgid "Value provided in field %s is not a valid email."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:329
+msgid "Value provided in field %s is not a valid URL."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:345
+msgid "Value provided in field %s is not numeric."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:368
+msgid "Value provided in field %1$s must be at least %2$d characters long."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:392
+msgid "Value provided in field %1$s must not exceeds %2$d characters."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:411
+msgid "Value provided in field %s is not an array."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:430
+msgid "Minimum %1$d values are required in field %2$s."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:449
+msgid "Maximum values allowed in field %2$s is %1$d."
+msgstr ""
+
+#. Translators: placeholder contain field label.
+#: lib/class-validate.php:500
+msgid "Found bad words in field %s. Remove them and try again."
+msgstr ""
+
+#: lib/class-validate.php:517
+msgid "There is no error, the file uploaded with success"
+msgstr ""
+
+#: lib/class-validate.php:518
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr ""
+
+#: lib/class-validate.php:519
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr ""
+
+#: lib/class-validate.php:520
+msgid "The uploaded file was only partially uploaded"
+msgstr ""
+
+#: lib/class-validate.php:521
+msgid "No file was uploaded"
+msgstr ""
+
+#: lib/class-validate.php:522
+msgid "Missing a temporary folder"
+msgstr ""
+
+#: lib/class-validate.php:523
+msgid "Failed to write file to disk."
+msgstr ""
+
+#: lib/class-validate.php:524
+msgid "A PHP extension stopped the file upload."
+msgstr ""
+
+#: lib/class-validate.php:614
+msgid "You are not allowed to upload file(s)"
+msgstr ""
+
+#. Translators: %1$d contain maximum files user can upload, %2$s contain label
+#. of field.
+#: lib/class-validate.php:623
+msgid "You cannot upload more than %1$d file in field %2$s"
+msgstr ""
+
+#: lib/class-validate.php:630
+msgid "File type is not allowed to upload."
+msgstr ""
+
+#. Translators: %s contain maximum file size user can upload.
+#: lib/class-validate.php:644
+#, fuzzy
+msgid "File(s) size is bigger then %s MB"
+msgstr "Boyutu %d'den fazla büyük olduğu için dosya yüklenemez."
+
+#: lib/form/class-checkbox.php:41
+#, fuzzy
+msgid "AnsPress Checkbox Field"
+msgstr "AnsPress Temaları"
+
+#: lib/form/class-editor.php:43
+#, fuzzy
+msgid "AnsPress Editor Field"
+msgstr "AnsPress Moderator"
+
+#. Translators: %s contain label of editor field.
+#: lib/form/class-editor.php:53
+msgid "%s images"
+msgstr ""
+
+#: lib/form/class-group.php:50
+#, fuzzy
+msgid "AnsPress Group Field"
+msgstr "AnsPress seçenekleri güncellendi"
+
+#: lib/form/class-input.php:52
+#, fuzzy
+msgid "AnsPress Input Field"
+msgstr "AnsPress Seçenekleri"
+
+#: lib/form/class-radio.php:41
+#, fuzzy
+msgid "AnsPress Radio Field"
+msgstr "AnsPress Kimlik Kartı"
+
+#: lib/form/class-repeatable.php:57
+#, fuzzy
+msgid "AnsPress Repeatable Field"
+msgstr "AnsPress seçenekleri güncellendi"
+
+#: lib/form/class-repeatable.php:164
+#, fuzzy
+msgid "Add More %s"
+msgstr "Daha fazla ekleyin"
+
+#: lib/form/class-select.php:41
+#, fuzzy
+msgid "AnsPress Select Field"
+msgstr "AnsPress İstatistikleri"
+
+#: lib/form/class-select.php:88
+#, fuzzy
+msgid "Select an option"
+msgstr "Uyarıyı sil"
+
+#: lib/form/class-tags.php:41
+#, fuzzy
+msgid "AnsPress Tags Field"
+msgstr "AsnPress Sayfaları"
+
+#: lib/form/class-tags.php:54
+#, fuzzy
+msgid "No tags found!"
+msgstr "Hiç yanıt bulunamadı"
+
+#: lib/form/class-tags.php:55
+#, fuzzy
+msgid "No matching tags found!"
+msgstr "Hiç yanıt bulunamadı"
+
+#: lib/form/class-tags.php:56
+#, fuzzy
+msgid "Add New Tag."
+msgstr "Yeni Etiket Ekle [ap]"
+
+#: lib/form/class-tags.php:57
+#, fuzzy
+msgid "You have already added maximum numbers of tags allowed."
+msgstr "İzin verilen maksimum yükleme sayısı kadar ekleme yaptınız."
+
+#: lib/form/class-textarea.php:41
+#, fuzzy
+msgid "AnsPress Textarea Field"
+msgstr "AnsPress Temaları"
+
+#: lib/form/class-upload.php:78
+#, fuzzy
+msgid "AnsPress Upload Field"
+msgstr "AnsPress Kimlik Kartı"
+
+#: lib/form/class-upload.php:86
+msgid "This file type is not allowed to upload."
+msgstr ""
+
+#. Translators: %d contains maximum files allowed to upload.
+#: lib/form/class-upload.php:92
+msgid "You cannot add more then %d files"
+msgstr ""
+
+#: lib/form/class-upload.php:180
+msgid "Browse file(s)"
+msgstr ""
+
 #: templates/addons/category/categories-question-list.php:22
 #: templates/addons/tag/tags-question-list.php:22
 #, fuzzy
 msgid "View all questions"
 msgstr "Yeni sorular"
 
-#: templates/addons/category/category.php:50
+#. Translators: %d contains count of sub category.
+#: templates/addons/category/categories.php:56
+#, fuzzy
+msgid "%d Sub category"
+msgid_plural "%d Sub categories"
+msgstr[0] "Alt Kategoriler"
+
+#: templates/addons/category/category.php:56
 msgid "Sub Categories"
 msgstr "Alt Kategoriler"
 
@@ -3744,7 +4080,7 @@ msgstr "Alt Kategoriler"
 msgid "No category is set!"
 msgstr ""
 
-#: templates/addons/notification/index.php:24 templates/functions.php:59
+#: templates/addons/notification/index.php:24 templates/functions.php:46
 #, fuzzy
 msgid "Mark all as seen"
 msgstr "Okunmuş olarak işaretle"
@@ -3776,34 +4112,31 @@ msgstr "Form yükleniyor"
 msgid "No tags is set!"
 msgstr ""
 
-#: templates/addons/tag/tag.php:12
-#, fuzzy
-msgid "Question tag: %s"
-msgstr "Soru Etiketleri"
-
-#: templates/addons/tag/tag.php:12
+#: templates/addons/tag/tag.php:20
 #, fuzzy
 msgid "1 Question"
 msgid_plural "%s Questions"
 msgstr[0] "1 Soru"
 
-#: templates/addons/tag/tags.php:20
+#: templates/addons/tag/tags.php:22
 #, fuzzy
-msgid "Search tags..."
+msgid "Search tags"
 msgstr "Kullanıcıları ara..."
 
-#: templates/addons/tag/tags.php:44
+#. Translators: %s contain human readable time.
+#: templates/addons/user/answer-item.php:38 templates/shortcode/question.php:47
+#: templates/single-question.php:52
 #, fuzzy
-msgid "No description."
-msgstr "-- Açıklama yok --"
+msgid "Posted %s"
+msgstr "%sAsked %s"
 
-#: templates/addons/user/answer-item.php:39
+#: templates/addons/user/answer-item.php:45
 #: templates/buddypress/answer-item.php:39
 #: templates/buddypress/question-item.php:41
 msgid "View Question"
 msgstr "Soruyu Görüntüle"
 
-#: templates/addons/user/answer-item.php:44
+#: templates/addons/user/answer-item.php:50
 #: templates/buddypress/answer-item.php:44
 #: templates/buddypress/question-item.php:47
 #, fuzzy
@@ -3811,13 +4144,13 @@ msgid "%d Vote"
 msgid_plural "%d Votes"
 msgstr[0] "Oyla"
 
-#: templates/addons/user/answer-item.php:46
+#: templates/addons/user/answer-item.php:52
 #: templates/buddypress/answer-item.php:46
 #, fuzzy
 msgid "This answer is selected as best"
 msgstr "Kullanıcının yanıtı en iyi yanıt olarak seçildiğinde"
 
-#: templates/addons/user/answer-item.php:46
+#: templates/addons/user/answer-item.php:52
 #: templates/buddypress/answer-item.php:46
 #, fuzzy
 msgid "Selected"
@@ -3828,15 +4161,10 @@ msgstr "Seçin"
 msgid "No answer posted by this user."
 msgstr "Henüz hiç yanıt gönderilmemiş!"
 
-#: templates/answer-form.php:24
+#: templates/answer-form.php:28
 #, fuzzy
 msgid "Write your answer."
 msgstr "seçilmiş yanıt"
-
-#: templates/ask.php:17
-#, fuzzy
-msgid "You do not have permission to ask a question."
-msgstr "Soru sormak için izniniz yok."
 
 #: templates/attachments.php:14
 msgid "Attachments"
@@ -3867,180 +4195,135 @@ msgid "go to page 1"
 msgstr "Sayfaya git: "
 
 #: templates/functions.php:36
-msgid "Password not matching"
-msgstr "Parola eşleşmiyor"
-
-#: templates/functions.php:37
-msgid "Password length must be 6 or higher"
-msgstr "Parola 6 ya da daha fazla karakterden oluşmalı"
-
-#: templates/functions.php:38
-msgid "Not a valid email"
-msgstr "Geçerli bir e-posta değil"
-
-#: templates/functions.php:39
-msgid "Username length must be 4 or higher"
-msgstr "Kullanıcı adı 4 ya da daha fazla karakterden oluşmalı"
-
-#: templates/functions.php:40
-msgid "Username not available"
-msgstr "Kullanıcı adı kullanılamaz"
-
-#: templates/functions.php:43
 #, fuzzy
-msgid "Email already in use."
-msgstr "Bu eposta adresi zaten kullanımda"
-
-#: templates/functions.php:45
-#, fuzzy
-msgid "Do you want to reset your password?"
-msgstr ""
-"Bu e-posta adresi zaten kullanılıyor. %s Parolayı sıfırlamak mı "
-"istiyorsunuz? %s"
-
-#: templates/functions.php:47
-msgid "Loading"
+msgid "Loading.."
 msgstr "Yükleniyor"
 
-#: templates/functions.php:48
+#: templates/functions.php:37
 msgid "Sending request"
 msgstr "İstek gönderiliyor"
 
-#: templates/functions.php:49
-msgid "Uploading"
-msgstr "Karşıya yüklüyor"
-
-#: templates/functions.php:50
-msgid "Something went wrong in server side, not a valid response."
-msgstr ""
-
-#: templates/functions.php:51
+#: templates/functions.php:38
 #, fuzzy
 msgid "File size is bigger then %s MB"
 msgstr "Boyutu %d'den fazla büyük olduğu için dosya yüklenemez."
 
-#: templates/functions.php:52
+#: templates/functions.php:39
 #, fuzzy
 msgid "You have already attached maximum numbers of allowed attachments"
 msgstr "İzin verilen maksimum yükleme sayısı kadar ekleme yaptınız."
 
-#: templates/functions.php:54
-msgid "Comment"
-msgstr "Yorum"
+#: templates/functions.php:42
+msgid "Cancel"
+msgstr "İptal"
 
-#: templates/functions.php:56
+#: templates/functions.php:43
 msgid "Update"
 msgstr "Yenile"
 
-#: templates/functions.php:57
+#: templates/functions.php:44
 #, fuzzy
 msgid "Write your comment..."
 msgstr "Yorumunuzu gönderiyor"
 
-#: templates/functions.php:83
+#: templates/functions.php:48
+#, fuzzy
+msgid "Sorry, you don't have permission to read comments."
+msgstr "Bu işlemi yapmanız için yetkiniz yok."
+
+#: templates/functions.php:68
 #, fuzzy
 msgid "(AnsPress) Before"
 msgstr "AnsPress Rolü"
 
-#: templates/functions.php:87
+#: templates/functions.php:72
 msgid "Widgets in this area will be shown before anspress body."
 msgstr "Bu alandaki bileşen AnsPress gövdesinden önce gösterilecektir."
 
-#: templates/functions.php:93
+#: templates/functions.php:78
 #, fuzzy
 msgid "(AnsPress) Question List Top"
 msgstr "AnsPress Soru takibi"
 
-#: templates/functions.php:97
+#: templates/functions.php:82
 msgid "Widgets in this area will be shown before questions list."
 msgstr ""
 "Bu alandaki bileşen AnsPress sorular listesinin üstünde gösterilecektir."
 
-#: templates/functions.php:103
+#: templates/functions.php:88
 #, fuzzy
 msgid "(AnsPress) Sidebar"
 msgstr "AnsPress Moderator"
 
-#: templates/functions.php:107
+#: templates/functions.php:92
 #, fuzzy
 msgid ""
 "Widgets in this area will be shown in AnsPress sidebar except single "
 "question page."
 msgstr "Bu alandaki bileşen AnsPress kenarçubuğunda gösterilecektir. "
 
-#: templates/functions.php:113
+#: templates/functions.php:98
 #, fuzzy
 msgid "(AnsPress) Question Sidebar"
 msgstr "AnsPress Soru Kenarçubuğu"
 
-#: templates/functions.php:117
+#: templates/functions.php:102
 #, fuzzy
 msgid "Widgets in this area will be shown in single question page sidebar."
 msgstr "Bu alandaki bileşen soru sayfası kenarçubuğunda gösterilecektir."
 
-#: templates/functions.php:123
+#: templates/functions.php:108
 #, fuzzy
 msgid "(AnsPress) Category Page"
 msgstr "AnsPress Kategori Sayfası"
 
-#: templates/functions.php:127
+#: templates/functions.php:112
 msgid "Widgets in this area will be shown in category listing page."
 msgstr "Bu alandaki bileşen kategori listeleri sayfasınde gösterilecektir. "
 
-#: templates/functions.php:133
+#: templates/functions.php:118
 #, fuzzy
 msgid "(AnsPress) Tag page"
 msgstr "AnsPress Etiket Sayfası"
 
-#: templates/functions.php:137
+#: templates/functions.php:122
 msgid "Widgets in this area will be shown in tag listing page."
 msgstr ""
 "Bu alandaki bileşen AnsPress etiket listeleri sayfasında gösterilecektir."
 
-#: templates/functions.php:143
+#: templates/functions.php:128
 #, fuzzy
 msgid "(AnsPress) Author page"
 msgstr "AsnPress Sayfaları"
 
-#: templates/functions.php:147
+#: templates/functions.php:132
 #, fuzzy
 msgid "Widgets in this area will be shown in authors page."
 msgstr "Bu alandaki bileşen kullanıcı sayfasında gösterilecektir."
 
-#: templates/login-signup.php:17
+#: templates/login-signup.php:19
 msgid "Register"
 msgstr "Kayıt ol"
 
-#: templates/login-signup.php:18
+#: templates/login-signup.php:20
 msgid "or"
 msgstr "veya"
 
-#: templates/login-signup.php:19
+#: templates/login-signup.php:21
 msgid "Login"
 msgstr "Oturum Aç"
 
-#: templates/no-permission-post.php:5
-msgid "This is a private %s."
-msgstr "Bu özeldir %s"
+#: templates/question-list.php:32
+msgid ""
+"There are no questions matching your query or you do not have permission to "
+"read them."
+msgstr ""
 
-#: templates/no-permission-post.php:7
-msgid "This %s waiting for moderation."
-msgstr "Bu %s moderasyon bekliyor."
-
-#: templates/no-permission-post.php:9
-msgid "This has been trashed or waiting for approval."
-msgstr "Bu çöpe atilmiş veya onay bekliyor."
-
-#: templates/question.php:46 templates/shortcode/question.php:42
-#, fuzzy
-msgid "Posted %s"
-msgstr "%sAsked %s"
-
-#: templates/search-form.php:14
+#: templates/search-form.php:18
 msgid "Search questions..."
 msgstr "Soruları ara..."
 
-#: templates/shortcode/question.php:79
+#: templates/shortcode/question.php:87
 msgid "View all answers"
 msgstr ""
 
@@ -4109,35 +4392,35 @@ msgstr "Bu bileşen sadece tek soru sayfasında kullanılabilir."
 msgid "Question stats"
 msgstr "Soru istatistikleri"
 
-#: widgets/questions.php:10
+#: widgets/questions.php:29
 msgid "(AnsPress) Questions"
 msgstr ""
 
-#: widgets/questions.php:11
+#: widgets/questions.php:30
 msgid "Shows list of question shorted by option."
 msgstr ""
 
-#: widgets/questions.php:82
+#: widgets/questions.php:114
 msgid "Order by:"
 msgstr "Sıralama Öğesi:"
 
-#: widgets/questions.php:93
+#: widgets/questions.php:125
 msgid "Category IDs:"
 msgstr "Kategori ID'leri:"
 
-#: widgets/questions.php:95
+#: widgets/questions.php:127
 msgid "Comma separted AnsPress category ids"
 msgstr "AnsPress ID'leri virgül ile ayrılır"
 
-#: widgets/questions.php:99
+#: widgets/questions.php:131
 msgid "Limit:"
 msgstr "Sınır:"
 
-#: widgets/search.php:29
+#: widgets/search.php:30
 msgid "(AnsPress) Search"
 msgstr ""
 
-#: widgets/search.php:30
+#: widgets/search.php:31
 msgid "Question and answer search form."
 msgstr ""
 
@@ -4158,37 +4441,280 @@ msgstr "WordPress için en gelişmiş topluluk soru ve cevap sistemi"
 msgid "Rahul Aryan"
 msgstr "Rahul Aryan"
 
-#: addons/free/tag.php:193
+#: addons/free/category.php:177
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Category"
+msgstr "Kategori"
+
+#: addons/free/category.php:179
+#, fuzzy
+msgctxt "anspress-question-answer"
+msgid "Add New Category"
+msgstr "Yeni Kategori Ekle [ap]"
+
+#: addons/free/tag.php:182
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Tag"
 msgstr "Etiket"
 
-#: addons/free/tag.php:195
+#: addons/free/tag.php:184
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Add New Tag"
 msgstr "Yeni Etiket Ekle [ap]"
 
-#: includes/post-types.php:41
+#: includes/post-types.php:81
 msgctxt "Post Type General Name"
 msgid "Questions"
 msgstr "Sorular [Gönderi Tipine Göre Genel]"
 
-#: includes/post-types.php:111
+#: includes/post-types.php:158
 msgctxt "Post Type General Name"
 msgid "Answers"
 msgstr "Yanıtlar [Gönderi Tipine Göre Genel]"
 
-#: includes/post-types.php:42
+#: includes/post-types.php:82
 msgctxt "Post Type Singular Name"
 msgid "Question"
 msgstr "Soru [Gönderi Tipine Göre Tekil]"
 
-#: includes/post-types.php:112
+#: includes/post-types.php:159
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
+
+#, fuzzy
+#~ msgid ""
+#~ "Hello!\n"
+#~ "Your answer on '{question_title}' was selected as best.\n"
+#~ "\n"
+#~ "Link: {answer_link}"
+#~ msgstr ""
+#~ "<b>##post_title</b> sorusu için sizin yanıtınız en iyi olarak seçildi "
+
+#, fuzzy
+#~ msgid "New question subject"
+#~ msgstr "Yeni sorular"
+
+#, fuzzy
+#~ msgid "New question body"
+#~ msgstr "Yeni sorular"
+
+#, fuzzy
+#~ msgid "New answer subject"
+#~ msgstr "Yeni yanıt"
+
+#, fuzzy
+#~ msgid "New answer body"
+#~ msgstr "Yeni yanıt"
+
+#, fuzzy
+#~ msgid "Select answer subject"
+#~ msgstr "Bu yanıtı en iyi  cevap olarak belirle"
+
+#, fuzzy
+#~ msgid "Select answer body"
+#~ msgstr "Yanıtı seçmek"
+
+#, fuzzy
+#~ msgid "New comment subject"
+#~ msgstr "%d yorum"
+
+#, fuzzy
+#~ msgid "Edit question subject"
+#~ msgstr "Soruyu düzenle"
+
+#, fuzzy
+#~ msgid "Edit question body"
+#~ msgstr "Soruyu düzenle"
+
+#, fuzzy
+#~ msgid "Edit answer body"
+#~ msgstr "Yanıtı düzenle"
+
+#, fuzzy
+#~ msgid "Slug categories page"
+#~ msgstr "Alt Kategoriler"
+
+#, fuzzy
+#~ msgid "Title of the categories page"
+#~ msgstr "Kullanıcların sayfa başlığı"
+
+#, fuzzy
+#~ msgid "Notify admin(s)"
+#~ msgstr "Bildirimler"
+
+#, fuzzy
+#~ msgid "User Profile"
+#~ msgstr "Kullanıcı profili"
+
+#, fuzzy
+#~ msgid "reCaptcha"
+#~ msgstr "reCaptacha"
+
+#~ msgid "Bot verification failed."
+#~ msgstr "Robot onayı başarısız oldu."
+
+#~ msgid "reCaptach keys missing, please add keys"
+#~ msgstr "reCaptach bilgisi eksik, lütfen bilgileri girin"
+
+#, fuzzy
+#~ msgid "Events"
+#~ msgstr "Olay"
+
+#, fuzzy
+#~ msgid "Tags page title"
+#~ msgstr "Temel soru başlığı"
+
+#, fuzzy
+#~ msgid "Title for tags page"
+#~ msgstr "Soru sayfasının başlığı"
+
+#, fuzzy
+#~ msgid "Tags page slug"
+#~ msgstr "Soru sorma sayfa göstergesi"
+
+#, fuzzy
+#~ msgid "Slug tags page"
+#~ msgstr "Bir syfa seçin"
+
+#~ msgid "Select question"
+#~ msgstr "Soru seçin"
+
+#, fuzzy
+#~ msgid "Options & Add-ons"
+#~ msgstr "Seçenekler kaydedildi"
+
+#, fuzzy
+#~ msgid "Upgrade AnsPress"
+#~ msgstr "AnsPress"
+
+#, fuzzy
+#~ msgid "Access"
+#~ msgstr "Başarı"
+
+#, fuzzy
+#~ msgid "Questions page"
+#~ msgstr "Sayfa başına sorular"
+
+#~ msgid "Select page for displaying anspress."
+#~ msgstr "AnsPress'in görüntüleneceği sayfayı seçin"
+
+#, fuzzy
+#~ msgid "Ask question page slug"
+#~ msgstr "Soru sayfası göstergesi"
+
+#, fuzzy
+#~ msgid "Set a slug for ask question page."
+#~ msgstr "Soru sayfası için gösterge gir."
+
+#, fuzzy
+#~ msgid "Page Titles"
+#~ msgstr "Sayfa başlıkları"
+
+#~ msgid "Title of the ask page"
+#~ msgstr "Soru sayfasının başlığı"
+
+#~ msgid "Avatar"
+#~ msgstr "Avatar"
+
+#~ msgid "Items to show per page"
+#~ msgstr "Sayfa başına göstermek için öğeler"
+
+#, fuzzy
+#~ msgid "Question & Answer"
+#~ msgstr "Bayrakla işaretlenmiş soru ve yanıt"
+
+#~ msgid "Use text editor ?"
+#~ msgstr "Metin editörü kullanılsın mı?"
+
+#~ msgid "Text editor as default."
+#~ msgstr "Metin editörü varsayılan."
+
+#~ msgid "Allow an user to submit multiple answers on a single question."
+#~ msgstr ""
+#~ "Tek bir soru üzerine kullanıcının birden fazla yanıt vermesine izin verir."
+
+#~ msgid "Asker can answer"
+#~ msgstr "Soruyu soran yanıt da verebilir."
+
+#~ msgid "Allow asker to answer his own question."
+#~ msgstr "Soruyu sorana yanıtı da verebilmesi için izin verin."
+
+#~ msgid "Allow anonymous"
+#~ msgstr "Anonim kullanıcılara izin verin"
+
+#~ msgid "Non-loggedin user can post questions and answers."
+#~ msgstr ""
+#~ "Oturum açmamış kullanıcıların soru ve yanıt göndermesine izin verin."
+
+#~ msgid "Only admin can answer"
+#~ msgstr "Sadece yönetici yanıt verebilir"
+
+#~ msgid "Only allow admin to answer question."
+#~ msgstr "Sadece yöneticinin yanıt vermesine izin verin."
+
+#~ msgid "Only logged in can see answers"
+#~ msgstr "Yanıtları sadece oturum açmış kullanıcılar görebilir"
+
+#~ msgid "non-loggedin user cannot see answers."
+#~ msgstr "Oturum açmamış kullanıcılar yanıtları göremez."
+
+#~ msgid "Only logged in can see comment"
+#~ msgstr "Sadece oturum açmış kullanıcılar yorumu görebilir"
+
+#~ msgid "non-loggedin user cannot see comments."
+#~ msgstr "Oturum açmamış kullanıcılar yorumları göremez."
+
+#~ msgid "Lock delete action"
+#~ msgstr "Silme işlevini kilitle"
+
+#~ msgid ""
+#~ "Lock comment or post after a period so that user cannot delete it. Set "
+#~ "the time in epoch i.e. 86400 = 1 day."
+#~ msgstr ""
+#~ "Belirli bir süre sonra yorumu veya gönderiyi kilitleyerek kullanıcının "
+#~ "silmesini engelle. 86400 = 1 gün olarak zamanı düzenleyin."
+
+#~ msgid "Upload"
+#~ msgstr "Karşıya Yükle"
+
+#, fuzzy
+#~ msgid "Questions and Answers"
+#~ msgstr "Soru ve yanıtları ara"
+
+#, fuzzy
+#~ msgid "Thank you for choosing AnsPress"
+#~ msgstr "Oyladığınız için teşekkürler"
+
+#, fuzzy
+#~ msgid "Post you are trying to edit is not a question."
+#~ msgstr "Bu soruyu düzenlemeye yetkiniz yok."
+
+#~ msgid "Post question"
+#~ msgstr "Soruyu gönder"
+
+#~ msgid "Repeat your password"
+#~ msgstr "Parolayı tekrarlayın"
+
+#~ msgid "It must be minimum %d characters"
+#~ msgstr "En az %d karakter olmalı"
+
+#~ msgid "Not a valid email address"
+#~ msgstr "Geçerli bir ePosta değil"
+
+#, fuzzy
+#~ msgid "Unable to load comments"
+#~ msgstr "Yorumları devre dışı bırak"
+
+#, fuzzy
+#~ msgid "Unable to update comment"
+#~ msgstr "Yorumu yenileyin"
+
+#~ msgid "Ask"
+#~ msgstr "Soru Sor"
 
 #~ msgid "You do not have permission to delete this comment"
 #~ msgstr "Bu yorumu silme yetkiniz yok"
@@ -4198,9 +4724,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Form loaded."
 #~ msgstr "Form yüklendi."
-
-#~ msgid "You do not have permission to edit this question."
-#~ msgstr "Bu soruyu düzenlemeye yetkiniz yok."
 
 #~ msgid "Something went wrong, please try again."
 #~ msgstr "Bir şey ters gitti, lütfen tekrar deneyin."
@@ -4212,12 +4735,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #, fuzzy
 #~ msgid "Register now"
 #~ msgstr "Kayıt ol"
-
-#~ msgid "Unable to create tag, please try again."
-#~ msgstr "Etiket oluşturulamadı, lütfen tekrar deneyin."
-
-#~ msgid "Successfully created a tag."
-#~ msgstr "Etiket başarı ile oluşturuldu."
 
 #~ msgid "Unable to load form, please try again."
 #~ msgstr "Form yüklenemedi, lütfen tekrar deneyin."
@@ -4241,15 +4758,65 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgstr "Etiket oluştur"
 
 #, fuzzy
-#~ msgctxt "anspress-question-answer"
-#~ msgid "Category"
-#~ msgstr "Kategori"
+#~ msgid "Sorry, you cannot asnwer on this question"
+#~ msgstr "Sadece siz bu soruya kayıt oldunuz."
 
-#~ msgid "Answered"
-#~ msgstr "Yanıtlandı"
+#, fuzzy
+#~ msgid "Sorry, you cannot edit this answer"
+#~ msgstr "Bu yanıtı düzenle"
 
-#~ msgid "Notification"
-#~ msgstr "Bildirim"
+#, fuzzy
+#~ msgid "Restricted content"
+#~ msgstr "düzenlenen yorum"
+
+#, fuzzy
+#~ msgid "You have already uploaded maximum numbers of allowed attachments"
+#~ msgstr "İzin verilen maksimum yükleme sayısı kadar ekleme yaptınız."
+
+#, fuzzy
+#~ msgid "Question tag: %s"
+#~ msgstr "Soru Etiketleri"
+
+#, fuzzy
+#~ msgid "No description."
+#~ msgstr "-- Açıklama yok --"
+
+#~ msgid "Password not matching"
+#~ msgstr "Parola eşleşmiyor"
+
+#~ msgid "Password length must be 6 or higher"
+#~ msgstr "Parola 6 ya da daha fazla karakterden oluşmalı"
+
+#~ msgid "Not a valid email"
+#~ msgstr "Geçerli bir e-posta değil"
+
+#~ msgid "Username length must be 4 or higher"
+#~ msgstr "Kullanıcı adı 4 ya da daha fazla karakterden oluşmalı"
+
+#~ msgid "Username not available"
+#~ msgstr "Kullanıcı adı kullanılamaz"
+
+#, fuzzy
+#~ msgid "Email already in use."
+#~ msgstr "Bu eposta adresi zaten kullanımda"
+
+#, fuzzy
+#~ msgid "Do you want to reset your password?"
+#~ msgstr ""
+#~ "Bu e-posta adresi zaten kullanılıyor. %s Parolayı sıfırlamak mı "
+#~ "istiyorsunuz? %s"
+
+#~ msgid "Uploading"
+#~ msgstr "Karşıya yüklüyor"
+
+#~ msgid "This is a private %s."
+#~ msgstr "Bu özeldir %s"
+
+#~ msgid "This %s waiting for moderation."
+#~ msgstr "Bu %s moderasyon bekliyor."
+
+#~ msgid "This has been trashed or waiting for approval."
+#~ msgstr "Bu çöpe atilmiş veya onay bekliyor."
 
 #, fuzzy
 #~ msgid "Auto delete notifications"
@@ -4270,12 +4837,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Points"
 #~ msgstr "Puanlar"
-
-#~ msgid "Options"
-#~ msgstr "Seçenekler"
-
-#~ msgid "User notification"
-#~ msgstr "Kullanıcı bildirimi"
 
 #~ msgid ""
 #~ "Is your existing question tags are not appearing ? click here to fix it %s"
@@ -4321,9 +4882,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Dont show user hover card on mouseover."
 #~ msgstr "Fare üstüne geldiğinde kullanıcı kimlik kartını gösterme."
 
-#~ msgid "Users per page"
-#~ msgstr "Sayfa başına kullanıcılar"
-
 #~ msgid "Users to show per page."
 #~ msgstr "Sayfa başına göstermek için kullanıcılar."
 
@@ -4338,9 +4896,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Show question sidebar"
 #~ msgstr "Soru kenar çubuğunu göster"
-
-#~ msgid "Pages"
-#~ msgstr "Sayfalar"
 
 #~ msgid "Page slug"
 #~ msgstr "Sayfa göstergesi"
@@ -4465,9 +5020,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "User"
 #~ msgstr "Kullanıcı"
 
-#~ msgid "Profile"
-#~ msgstr "Profil"
-
 #~ msgid "No user found"
 #~ msgstr "Hiçbir kullanıcı bulunmadı"
 
@@ -4531,9 +5083,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Avatar uploaded successfully."
 #~ msgstr "Avatar başarı ile yüklendi."
-
-#~ msgid "View all notifications"
-#~ msgstr "Tüm bildirimleri görüntüle"
 
 #~ msgid "Flag "
 #~ msgstr "Bayrak"
@@ -4603,12 +5152,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "%s is closed, new answer are not accepted."
 #~ msgstr "%s kapandı, yeni yanıtlar kabul edilemez."
 
-#~ msgid "Edit Question"
-#~ msgstr "Soruyu Düzenle"
-
-#~ msgid "Update Question"
-#~ msgstr "Soruyu Güncelle"
-
 #~ msgid "Search question"
 #~ msgstr "Soru ara"
 
@@ -4661,9 +5204,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "For new comment."
 #~ msgstr "Yeni yorum için."
 
-#~ msgid "Receive upvote on question"
-#~ msgstr "Yukarı oylama alan soru"
-
 #~ msgid "When user receive an upvote on question"
 #~ msgstr "Kullanıcı sorusu yukarı oylama aldığında"
 
@@ -4709,9 +5249,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "<i>%d views</i>"
 #~ msgstr "<i>%d gösterim </i>"
 
-#~ msgid "More action"
-#~ msgstr "Daha fazla işlem"
-
 #~ msgid ".."
 #~ msgstr ".."
 
@@ -4724,9 +5261,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Last name"
 #~ msgstr "Soy Adı"
 
-#~ msgid "Your surname"
-#~ msgstr "Soy adınız"
-
 #~ msgid "Nickname"
 #~ msgstr "Takma isim"
 
@@ -4735,9 +5269,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Display name"
 #~ msgstr "Görünen isim"
-
-#~ msgid "Write something about yourself"
-#~ msgstr "Kendiniz hakkında birşey yazın"
 
 #~ msgid "Username"
 #~ msgstr "Kullanıcı adı"
@@ -4927,9 +5458,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Member for %s"
 #~ msgstr "%s için üye"
 
-#~ msgid "Never logged in"
-#~ msgstr "Hiçbir zaman oturum açmadı"
-
 #~ msgid "Total"
 #~ msgstr "Toplam"
 
@@ -4975,9 +5503,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "%d Following"
 #~ msgstr "%d Takip Edilen"
 
-#~ msgid "No users found."
-#~ msgstr "Hiçbir kullanıcı bulunmadı."
-
 #~ msgid "1 answer"
 #~ msgid_plural "%d answers"
 #~ msgstr[0] "%d yanıt"
@@ -4998,15 +5523,9 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Avatar size:"
 #~ msgstr "Avatar boyut:"
 
-#~ msgid "No options"
-#~ msgstr "Opsiyon yok"
-
 #~ msgid "1 follower"
 #~ msgid_plural "%d followers"
 #~ msgstr[0] "%d takipçi"
-
-#~ msgid "Related Questions"
-#~ msgstr "İlgili Sorular"
 
 #~ msgid "Login to see your profile links"
 #~ msgstr "Profil bağlantılarınızı görebilmek için oturum açın "
@@ -5068,9 +5587,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Assign a default rank for newly registered user."
 #~ msgstr "Yeni kayıt olan bir kullanıcıya varsayılan bir rütbe ata."
-
-#~ msgid "There is no question yet."
-#~ msgstr "Henüz hiçbir soru bulunmuyor."
 
 #~ msgid "Please login for adding question to your subscribe"
 #~ msgstr "Soru ekleyebilmek için önce oturum açın"
@@ -5207,9 +5723,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "%d Followers, %d following"
 #~ msgstr "%d Takipçi, %d Takip edilen"
 
-#~ msgid "AnsPress Badges"
-#~ msgstr "AnsPress Kimlik Kartı"
-
 #~ msgid "New badge"
 #~ msgstr "Yeni kimlik kartı"
 
@@ -5218,9 +5731,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Multiple"
 #~ msgstr "Çoklu"
-
-#~ msgid "Save badge"
-#~ msgstr "Kimlik Kartını sakla"
 
 #~ msgid "%sAnswered about %s ago%s"
 #~ msgstr "%sYanıtlandı yaklaşık %s önce%s"
@@ -5322,9 +5832,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Last seen %s ago"
 #~ msgstr "En son %s önce"
 
-#~ msgid "AnsPress Stats"
-#~ msgstr "AnsPress İstatistikleri"
-
 #~ msgid "Ago"
 #~ msgstr "Önce"
 
@@ -5381,9 +5888,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Answers to show per page in question page"
 #~ msgstr "Bir sayfada gösterilecek yanıt sayısı"
 
-#~ msgid "Tags per page"
-#~ msgstr "Sayfa başına etiket"
-
 #~ msgid "Sorting & Ordering"
 #~ msgstr "Sıralama"
 
@@ -5423,9 +5927,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Checked %s answers."
 #~ msgstr "%s yanıt kontrol edildi."
 
-#~ msgid "No Permission"
-#~ msgstr "İzin yok"
-
 #~ msgid "edit"
 #~ msgstr "düzenle"
 
@@ -5435,23 +5936,11 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 #~ msgid "Please enter a title"
 #~ msgstr "Lütfen bir başlık girin"
 
-#~ msgid "Please enter content of question"
-#~ msgstr "Lütfen sorunuzun içeriğini girin"
-
 #~ msgid "Please enter some content"
 #~ msgstr "Lütfen biraz içerik girin"
 
-#~ msgid "Ask Question"
-#~ msgstr "Soru sor"
-
 #~ msgid "Submit Answer"
 #~ msgstr "Yanıtı Gönder"
-
-#~ msgid "Trying to cheat? huh!."
-#~ msgstr "Hile yapıyorsun demek?"
-
-#~ msgid "Your Answer"
-#~ msgstr "Yanıtın"
 
 #~ msgid "Quick signup form"
 #~ msgstr "Hızlı kayıt formu"
@@ -5553,9 +6042,6 @@ msgstr "Yanıt [Gönderi Tipine Göre Tekil]"
 
 #~ msgid "Remember me"
 #~ msgstr "Beni hatırla"
-
-#~ msgid "Your Email"
-#~ msgstr "Epostanız"
 
 #~ msgid "Sign up!"
 #~ msgstr "Kayıt ol!"

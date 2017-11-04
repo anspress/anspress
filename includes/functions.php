@@ -80,13 +80,13 @@ function ap_get_theme_location( $file, $plugin = false ) {
 	// Checks if the file exists in the theme first,
 	// Otherwise serve the file from the plugin.
 	if ( file_exists( $child_path ) ) {
-	    $template_path = $child_path;
+	  $template_path = $child_path;
 	} elseif ( file_exists( $parent_path ) ) {
-	    $template_path = $parent_path;
+	  $template_path = $parent_path;
 	} elseif ( false !== $plugin ) {
-	    $template_path = $plugin . '/templates/' . $file;
+	  $template_path = $plugin . '/templates/' . $file;
 	} else {
-	    $template_path = ANSPRESS_THEME_DIR . '/' . $file;
+	  $template_path = ANSPRESS_THEME_DIR . '/' . $file;
 	}
 
 	/**
@@ -132,28 +132,34 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
  * answer page in buddypress.
  *
  * @return boolean
+ * @since 4.1.0 Improved check. Check for main pages.
  */
 function is_anspress() {
-
 	// If buddypress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
-	    $bp_com = bp_current_component();
-	    if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
-	        return true;
-	    }
+		$bp_com = bp_current_component();
+		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
+			return true;
+		}
 	}
 
+	$page_slug = array_keys( ap_main_pages() );
 	$queried_object = get_queried_object();
 
-	if ( empty( $queried_object ) || ! is_object( $queried_object ) ) {
-		return false;
+	// Check if main pages.
+	if ( $queried_object instanceof WP_Post ) {
+		$page_ids = [];
+		foreach ( $page_slug as $slug ) {
+			$page_ids[] = ap_opt( $slug );
+		}
+
+		if ( in_array( $queried_object->ID, $page_ids ) ) {
+			return true;
+		}
 	}
 
-	if ( ! isset( $queried_object->ID ) ) {
-		return false;
-	}
-
-	if ( (int) ap_opt( 'base_page' ) === $queried_object->ID ) {
+	// Check if ap_page.
+	if ( get_query_var( 'ap_page', false ) ) {
 		return true;
 	}
 
@@ -164,11 +170,14 @@ function is_anspress() {
  * Check if current page is question page.
  *
  * @return boolean
+ * @since 0.0.1
+ * @since 4.1.0 Also check and return true if singular question.
  */
 function is_question() {
-	if ( is_anspress() && 'question' === ap_current_page() ) {
+	if ( is_singular( 'question' ) ) {
 		return true;
 	}
+
 	return false;
 }
 
@@ -188,19 +197,16 @@ function is_ask() {
  * Get current question ID in single question page.
  *
  * @return integer|false
+ * @since unknown
+ * @since 4.1.0 Remove `question_name` query var check. Get question ID from queried object.
  */
 function get_question_id() {
 	if ( is_question() && get_query_var( 'question_id' ) ) {
 		return (int) get_query_var( 'question_id' );
 	}
 
-	if ( is_question() && get_query_var( 'question' ) ) {
-		return get_query_var( 'question' );
-	}
-
-	if ( is_question() && get_query_var( 'question_name' ) ) {
-		$_post = get_page_by_path( get_query_var( 'question_name' ), OBJECT, 'question' ); // @codingStandardsIgnoreLine
-		return $_post->ID;
+	if ( is_question() ) {
+		return get_queried_object_id();
 	}
 
 	if ( get_query_var( 'edit_q' ) ) {
@@ -381,6 +387,7 @@ function ap_is_ajax() {
 	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_REQUEST['ap_ajax_action'] ) ) { // input var ok.
 		return true;
 	}
+
 	return false;
 }
 
@@ -427,9 +434,10 @@ function ap_form_allowed_tags() {
 		'br'         => array(),
 	);
 
-	/*
-	 * FILTER: ap_allowed_tags
-	 * Before passing allowed tags
+	/**
+	 * Filter allowed HTML KSES tags.
+	 *
+	 * @param array $allowed_tags Allowed tags.
 	 */
 	return apply_filters( 'ap_allowed_tags', $allowed_tags );
 }
@@ -443,14 +451,15 @@ function ap_send_json( $result = array() ) {
 	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
 	$json = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
+
 	wp_die( $json ); // xss ok.
 }
 
 /**
  * Highlight matching words.
  *
- * @param string $text String.
- * @param string $words Words need to higlight.
+ * @param string $text  String.
+ * @param string $words Words need to highlight.
  * @return string
  * @since 	2.0
  */
@@ -491,12 +500,12 @@ function ap_responce_message( $id, $only_message = false ) {
 		'you_cannot_vote_on_restricted' => array( 'type' => 'warning', 'message' => __( 'You cannot vote on restricted posts', 'anspress-question-answer' ) ),
 		);
 
-	/*
-	* FILTER: ap_responce_message
-	* Can be used to alter response messages
-	* @var array
-	* @since 2.0.1
-	*/
+	/**
+	 * Filter ajax response message.
+	 *
+	 * @param array $msg Messages.
+	 * @since 2.0.1
+	 */
 	$msg = apply_filters( 'ap_responce_message', $msg );
 
 	if ( isset( $msg[ $id ] ) && $only_message ) {
@@ -515,6 +524,8 @@ function ap_responce_message( $id, $only_message = false ) {
  *
  * @param  array|string $results Response to send.
  * @return array
+ * @since  unknown
+ * @since  4.1.0 Removed `template` variable. Send `snackbar` for default message.
  */
 function ap_ajax_responce( $results ) {
 	if ( ! is_array( $results ) ) {
@@ -529,31 +540,19 @@ function ap_ajax_responce( $results ) {
 		$error_message = ap_responce_message( $results['message'] );
 
 		if ( false !== $error_message ) {
-			$results['message']      = $error_message['message'];
-			$results['message_type'] = $error_message['type'];
+			$results['snackbar'] = array(
+				'message'      => $error_message['message'],
+				'message_type' => $error_message['type'],
+			);
 		}
 	}
 
-	// Send requested template.
-	if ( isset( $results['template'] ) ) {
-		$template_file = ap_get_theme_url( 'js-template/' . $results['template'] . '.html' );
-
-		if ( ap_env_dev() ) {
-			$template_file = $template_file . '&time=' . time();
-		}
-
-		$results['apTemplate'] = array(
-			'name'     => $results['template'],
-			'template' => $template_file,
-		);
-	}
-
-	/*
-	* FILTER: ap_ajax_responce
-	* Can be used to alter ap_ajax_responce
-	* @var array
-	* @since 2.0.1
-	*/
+	/**
+	 * Filter AnsPress ajax response body.
+	 *
+	 * @param array $results Results.
+	 * @since 2.0.1
+	 */
 	$results = apply_filters( 'ap_ajax_responce', $results );
 
 	return $results;
@@ -598,41 +597,24 @@ function ap_current_page_url( $args ) {
  * @param array $array Array to order.
  * @return array
  * @since 2.0.0
+ * @since 4.1.0 Use `WP_List_Util` class for sorting.
  */
 function ap_sort_array_by_order( $array ) {
-	$new_array = array();
+	$new_array = [];
+
 	if ( ! empty( $array ) && is_array( $array ) ) {
-		$group = array();
-		foreach ( (array) $array as $k => $a ) {
-			if ( ! is_array( $a ) ) {
-				return;
+		$i = 1;
+		foreach ( $array as $k => $a ) {
+			if ( is_array( $a ) ) {
+				$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : $i;
 			}
-			$order = $a['order'];
-			$group[ $order ][] = $a;
-			$group[ $order ]['order'] = $order;
-		}
-		usort( $group, 'ap_sort_order_callback' );
-		foreach ( (array) $group as $a ) {
-			foreach ( (array) $a as $k => $newa ) {
-				if ( 'order' !== $k ) {
-					$new_array[] = $newa;
-				}
-			}
+
+			$i+=2;
 		}
 
-		return $new_array;
+		$util = new WP_List_Util( $array );
+		return $util->sort( 'order', 'ASC', true );
 	}
-}
-
-/**
- * Callback for @uses ap_sort_array_by_order.
- *
- * @param  array $a Array.
- * @param  array $b Array.
- * @return integer
- */
-function ap_sort_order_callback( $a, $b ) {
-	return $a['order'] - $b['order'];
 }
 
 /**
@@ -652,58 +634,75 @@ function ap_link_to( $sub ) {
 	 * @return string
 	 */
 function ap_get_link_to( $sub ) {
+	$url = false;
+
+	if ( 'ask' === $sub ) {
+		$url = get_permalink( ap_opt( 'ask_page' ) );
+	}
+
+	if ( false === $url ) {
+		/**
+		 * Define default AnsPress page slugs.
+		 *
+		 * @var array
+		 */
+		$default_pages = array(
+			'question' 	 => ap_opt( 'question_page_slug' ),
+			'users' 	   => ap_opt( 'users_page_slug' ),
+			'user' 		   => ap_opt( 'user_page_slug' ),
+		);
+
+		$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
+
+		if ( is_array( $sub ) && isset( $sub['ap_page'] ) && isset( $default_pages[ $sub['ap_page'] ] ) ) {
+			$sub['ap_page'] = $default_pages[ $sub['ap_page'] ];
+		} elseif ( ! is_array( $sub ) && ! empty( $sub ) && isset( $default_pages[ $sub ] ) ) {
+			$sub = $default_pages[ $sub ];
+		}
+
+		$base = rtrim( ap_base_page_link(), '/' );
+		$args = '';
+
+		if ( get_option( 'permalink_structure' ) !== '' ) {
+			if ( ! is_array( $sub ) && 'base' !== $sub ) {
+				$args = $sub ? '/' . $sub : '';
+			} elseif ( is_array( $sub ) ) {
+				$args = '/';
+
+				if ( ! empty( $sub ) ) {
+					foreach ( (array) $sub as $s ) {
+						$args .= $s . '/';
+					}
+				}
+			}
+
+			$args = rtrim( $args, '/' ) . '/';
+		} else {
+			if ( ! is_array( $sub ) ) {
+				$args = $sub ? '&ap_page=' . $sub : '';
+			} elseif ( is_array( $sub ) ) {
+				$args = '';
+
+				if ( ! empty( $sub ) ) {
+					foreach ( $sub as $k => $s ) {
+						$args .= '&' . $k . '=' . $s;
+					}
+				}
+			}
+		}
+
+		$url = $base . $args;
+	} // End if().
+
 	/**
-	 * Define default AnsPress page slugs.
+	 * Allows filtering anspress links.
 	 *
-	 * @var array
+	 * @param string       $url Generated url.
+	 * @param string|array $sub AnsPress sub pages.
+	 *
+	 * @since unknown
 	 */
-	$default_pages = array(
-		'question' 	 => ap_opt( 'question_page_slug' ),
-		'ask' 		   => ap_opt( 'ask_page_slug' ),
-		'users' 	   => ap_opt( 'users_page_slug' ),
-		'user' 		   => ap_opt( 'user_page_slug' ),
-	);
-
-	$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
-
-	if ( is_array( $sub ) && isset( $sub['ap_page'] ) && isset( $default_pages[ $sub['ap_page'] ] ) ) {
-		$sub['ap_page'] = $default_pages[ $sub['ap_page'] ];
-	} elseif ( ! is_array( $sub ) && ! empty( $sub ) && isset( $default_pages[ $sub ] ) ) {
-		$sub = $default_pages[ $sub ];
-	}
-
-	$base = rtrim( ap_base_page_link(), '/' );
-	$args = '';
-
-	if ( get_option( 'permalink_structure' ) !== '' ) {
-		if ( ! is_array( $sub ) && 'base' !== $sub ) {
-			$args = $sub ? '/' . $sub : '';
-		} elseif ( is_array( $sub ) ) {
-			$args = '/';
-
-			if ( ! empty( $sub ) ) {
-				foreach ( (array) $sub as $s ) {
-					$args .= $s . '/';
-				}
-			}
-		}
-
-		$args = rtrim( $args, '/' ) . '/';
-	} else {
-		if ( ! is_array( $sub ) ) {
-			$args = $sub ? '&ap_page=' . $sub : '';
-		} elseif ( is_array( $sub ) ) {
-			$args = '';
-
-			if ( ! empty( $sub ) ) {
-				foreach ( $sub as $k => $s ) {
-					$args .= '&' . $k . '=' . $s;
-				}
-			}
-		}
-	}
-
-	return esc_url( apply_filters( 'ap_link_to', $base . $args, $sub ) );
+	return apply_filters( 'ap_link_to', $url, $sub );
 }
 
 /**
@@ -871,30 +870,40 @@ function ap_replace_square_bracket( $contents ) {
  *
  * @see anspress_activate
  * @since 2.3
+ * @since 4.1.0 Creates all other AnsPress pages if not exists.
  */
 function ap_create_base_page() {
-	// Check if page already exists.
-	$page_id = ap_opt( 'base_page' );
-	$_post = ap_get_post( $page_id );
+	$opt = ap_opt();
 
-	if ( ! $_post ) {
-		$args                   = array();
-		$args['post_type']      = 'page';
-		$args['post_content']   = '[anspress]';
-		$args['post_status']    = 'publish';
-		$args['post_title']     = __( 'Questions', 'anspress-question-answer' );
-		$args['post_name']      = 'questions';
-		$args['comment_status'] = 'closed';
+	$pages = ap_main_pages();
 
-		// Now create post.
-		$new_page_id = wp_insert_post( $args );
+	foreach ( $pages as $slug => $page ) {
+		// Check if page already exists.
+		$_post = get_page( ap_opt( $slug ) );
 
-		if ( $new_page_id ) {
-			$page = ap_get_post( $new_page_id );
-			ap_opt( 'base_page', $page->ID );
-			ap_opt( 'base_page_id', $page->post_name );
+		if ( ! $_post || 'trash' === $_post->post_status ) {
+			$args = wp_parse_args( $page, array(
+				'post_type'      => 'page',
+				'post_content'   => '[anspress]',
+				'post_status'    => 'publish',
+				'comment_status' => 'closed',
+			) );
+
+			if ( 'base_page' !== $slug ) {
+				$args['post_parent'] = ap_opt( 'base_page' );
+			}
+
+			// Now create post.
+			$new_page_id = wp_insert_post( $args );
+
+			if ( $new_page_id ) {
+				$page = get_page( $new_page_id );
+
+				ap_opt( $slug, $page->ID );
+				ap_opt( $slug . '_id', $page->post_name );
+			}
 		}
-	}
+	} // End foreach().
 }
 
 /**
@@ -903,7 +912,7 @@ function ap_create_base_page() {
  * @param boolean|integer $question_id Question ID.
  * @return string
  *
- * @since  	2.3 [@see ap_page_title]
+ * @since  	2.3 @see `ap_page_title`
  */
 function ap_question_title_with_solved_prefix( $question_id = false ) {
 	if ( false === $question_id ) {
@@ -1051,40 +1060,6 @@ function ap_whitelist_array( $master_keys, $array ) {
 }
 
 /**
- * Read env file of AnsPress.
- *
- * @return string
- */
-function ap_read_env() {
-	$file = ANSPRESS_DIR . '/env';
-	$cache = wp_cache_get( 'ap_env', 'ap' );
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
-	if ( file_exists( $file ) ) {
-		// Get the contents of env file.
-		$content = file_get_contents( $file ); // @codingStandardsIgnoreLine.
-		wp_cache_set( 'ap_env', $content, 'ap' );
-		return $content;
-	}
-
-}
-
-/**
- * Check if anspress environment is development.
- *
- * @return boolean
- */
-function ap_env_dev() {
-	if ( 'development' === ap_read_env() ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
  * Append table name in $wpdb.
  */
 function ap_append_table_names() {
@@ -1126,8 +1101,12 @@ function ap_isset_post_value( $var, $default = '' ) {
  * @since  4.0.0
  */
 function ap_get_current_list_filters( $filter = null ) {
-	$get_filters = [ 'order_by' => ap_opt( 'question_order_by' ) ];
+	$get_filters = [];
 	$filters = array_keys( ap_get_list_filters() );
+
+	if ( in_array( 'order_by', $filters, true ) ) {
+		$get_filters['order_by'] = ap_opt( 'question_order_by' );
+	}
 
 	if ( empty( $filters ) || ! is_array( $filters ) ) {
 		$filters = [];
@@ -1223,14 +1202,10 @@ function ap_new_edit_post_status( $user_id = false, $post_type = 'question', $ed
  * @param  integer|false $question_id Question ID.
  * @return boolean|false
  * @since  3.0.0
+ * @since  4.1.0 Removed option check. Removed `ap_sanitize_description_field` sanitization.
  */
 function ap_find_duplicate_post( $content, $post_type = 'question', $question_id = false ) {
-	if ( ! ap_opt( 'duplicate_check' ) ) {
-		return false;
-	}
-
 	global $wpdb;
-	$content = ap_sanitize_description_field( $content );
 
 	// Return if content is empty. But blank content will be checked.
 	if ( empty( $content ) ) {
@@ -1362,7 +1337,11 @@ function ap_user_display_name( $args = array() ) {
 		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
 	);
 
-	if ( ! is_array( $args ) ) {
+	if ( $args instanceof WP_Comment ) {
+		$defaults['user_id'] = $args->user_id;
+		$defaults['anonymous_label'] = $args->comment_author;
+		$args = $defaults;
+	} elseif ( ! is_array( $args ) ) {
 		$defaults['user_id'] = $args;
 		$args = $defaults;
 	} else {
@@ -1374,7 +1353,7 @@ function ap_user_display_name( $args = array() ) {
 	$user = get_userdata( $user_id );
 
 	if ( $user ) {
-		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '">' . $user->display_name . '</a>';
+		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '" itemprop="url"><span itemprop="name">' . $user->display_name . '</span></a>';
 	} elseif ( $post && in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 		$post_fields = ap_get_post_field( 'fields' );
 
@@ -1400,10 +1379,15 @@ function ap_user_display_name( $args = array() ) {
 	}
 
 	/**
-	 * FILTER: ap_user_display_name
-	 * Filter can be used to alter display name
+	 * Filter AnsPress user display name.
 	 *
-	 * @var string
+	 * Filter can be used to alter user display name or
+	 * appending some extra information of user, like: rank, reputation etc.
+	 * Make sure to return plain text when `$args['html']` is true.
+	 *
+	 * @param string $return Name of user to return.
+	 * @param array  $args   Arguments.
+	 *
 	 * @since 2.0.1
 	 */
 	$return = apply_filters( 'ap_user_display_name', $return, $args );
@@ -1419,7 +1403,7 @@ function ap_user_display_name( $args = array() ) {
  * Return Link to user pages.
  *
  * @param  boolean|integer $user_id    user id.
- * @param  string          $sub        page slug.
+ * @param  string|array    $sub        page slug.
  * @return string
  * @since  unknown
  */
@@ -1430,21 +1414,27 @@ function ap_user_link( $user_id = false, $sub = false ) {
 		$user_id = get_the_author_meta( 'ID' );
 	}
 
-	if ( $user_id < 1 ) {
-		$link = '#anonymousUser';
+	if ( empty( $user_id ) && is_author() ) {
+		$user_id = get_queried_object_id();
+	}
+
+	if ( $user_id < 1 && empty( $user_id ) ) {
+		$link = '#/user/anonymous';
+	} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
+		$user = get_user_by( 'id', $user_id );
+		$slug = get_option( 'ap_user_path' );
+		$link = home_url( $slug ) . '/' . $user->user_login . '/';
 	} else {
-		if ( function_exists( 'bp_core_get_userlink' ) ) {
-			return bp_core_get_userlink( $user_id, false, true );
-		} elseif ( function_exists( 'userpro' ) ) {
-			global $userpro;
-			return $userpro->permalink( $user_id );
-		}
-
-		if ( empty( $user_id ) ) {
-			return false;
-		}
-
 		$link = get_author_posts_url( $user_id );
+	}
+
+	// Append sub.
+	if ( ! empty( $sub ) ) {
+		if ( is_array( $sub ) ) {
+			$link = rtrim( $link, '/' ) . implode( '/', $sub ) . '/';
+		} else {
+			$link = $link . rtrim( $sub, '/' ) . '/';
+		}
 	}
 
 	return apply_filters( 'ap_user_link', $link, $user_id, $sub );
@@ -1469,26 +1459,6 @@ function ap_active_user_page() {
 	return apply_filters( 'ap_active_user_page', $page );
 }
 
-
-/**
- * Return or echo hovercard data attribute.
- *
- * @param  integer $user_id User id.
- * @param  boolean $echo    Echo or return? default is true.
- * @return string
- */
-function ap_hover_card_attributes( $user_id, $echo = true ) {
-	if ( $user_id > 0 ) {
-		$attr = ' data-userid="' . $user_id . '"';
-
-		if ( true !== $echo ) {
-			return $attr;
-		}
-
-		echo $attr; // xss okay.
-	}
-}
-
 /**
  * User name and link with anchor tag.
  *
@@ -1507,7 +1477,7 @@ function ap_user_link_anchor( $user_id, $echo = true ) {
 		}
 	}
 
-	$html = '<a href="' . ap_user_link( $user_id ) . '"' . ap_hover_card_attributes( $user_id, false ) . '>';
+	$html = '<a href="' . ap_user_link( $user_id ) . '">';
 	$html .= $name;
 	$html .= '</a>';
 
@@ -1608,10 +1578,11 @@ function ap_get_addons() {
 			'pro'   			=> 'Pro',
 		) );
 
-		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true : false;
+		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true: false;
 		$data['path']   = wp_normalize_path( $path );
-		$data['active'] = isset( $option[ $id ] ) ? true : false;
+		$data['active'] = isset( $option[ $id ] ) ? true: false;
 		$data['id']     = $id;
+		$data['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], $id ) ) );
 
 		if ( ! empty( $data['name'] ) ) {
 			$addons[ $id ] = $data;
@@ -1622,7 +1593,6 @@ function ap_get_addons() {
 
 	return $addons;
 }
-
 
 /**
  * Return all active addons.
@@ -1640,6 +1610,26 @@ function ap_get_active_addons() {
 	}
 
 	return $active_addons;
+}
+
+/**
+ * Return a single addon by file path.
+ *
+ * @param string $file Main file name of addon.
+ * @return array
+ * @since 4.1.0
+ */
+function ap_get_addon( $file ) {
+	$search = false;
+
+	foreach ( ap_get_addons() as $f => $addon ) {
+		if ( $f === $file ) {
+			$search = $addon;
+			break;
+		}
+	}
+
+	return $search;
 }
 
 /**
@@ -1821,4 +1811,335 @@ function ap_array_insert_after( $array = [], $key, $new ) {
 function ap_rand( $min, $max, $weight ) {
 	$offset = $max - $min + 1;
 	return floor( $min + pow( lcg_value(), $weight ) * $offset );
+}
+
+/**
+ * Convert array notation (string, not real array) to dot notation.
+ *
+ * @param boolean|string $path Path name.
+ * @return string Path separated by dot notation.
+ */
+function ap_to_dot_notation( $path = false ) {
+	$parsed = rtrim( str_replace( '..', '.', str_replace( [ ']', '[' ], '.', $path ) ), '.' );
+	return $parsed;
+}
+
+/**
+ * Set key => value in an array.
+ *
+ * @param array  $arr  Array in which key value need to set.
+ * @param string $path Path of new array item.
+ * @param mixed  $val  Value to set.
+ *
+ * @return array Updated array.
+ */
+function ap_set_in_array( &$arr, $path, $val ) {
+	$path = is_string( $path ) ? explode( '.', $path ) : $path;
+	$loc = &$arr;
+
+	foreach ( (array) $path as $step ) {
+		$loc = &$loc[ $step ];
+	}
+
+	return $loc = $val;
+}
+
+/**
+ * Output new/edit question form.
+ *
+ * @param null $deprecated Deprecated argument.
+ * @return void
+ *
+ * @since unknown
+ * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument. Using new form class.
+ */
+function ap_ask_form( $deprecated = null ) {
+	if ( ! is_null( $deprecated ) ) {
+		_deprecated_argument( __FUNCTION__, '4.1.0', 'Use $_GET[id] for currently editing question ID.' );
+	}
+
+	$editing = false;
+	$editing_id = ap_sanitize_unslash( 'id', 'r' );
+
+	// If post_id is empty then its not editing.
+	if ( ! empty( $editing_id ) ) {
+		$editing = true;
+	}
+
+	if ( $editing && ! ap_user_can_edit_question( $editing_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	if ( ! $editing && ! ap_user_can_ask( ) ) {
+		echo '<p>' . esc_attr__( 'You do not have permission to ask a question.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'action',
+				'value' => 'ap_ajax',
+			),
+			array(
+				'name'  => 'ap_ajax_action',
+				'value' => 'form_question',
+			),
+		),
+	);
+
+	// Generate form.
+	anspress()->get_form( 'question' )->generate( $args );
+}
+
+/**
+ * Remove stop words from post name if option is enabled.
+ *
+ * @param  string $str Post name to filter.
+ * @return string
+ *
+ * @since  3.0.0
+ * @since 4.1.0 Moved from includes\ask-form.php.
+ */
+function ap_remove_stop_words_post_name( $str ) {
+	$str = sanitize_title( $str );
+
+	if ( ap_opt( 'keep_stop_words' ) ) {
+		return $str;
+	}
+
+	$post_name = ap_remove_stop_words( $str );
+
+	// Check if post name is not empty.
+	if ( ! empty( $post_name ) ) {
+		return $post_name;
+	}
+
+	// If empty then return original without stripping stop words.
+	return sanitize_title( $str );
+}
+
+/**
+ * Send ajax response after posting an answer.
+ *
+ * @param integer|object $question_id Question ID or object.
+ * @param integer|object $answer_id   Answer ID or object.
+ * @return void
+ * @since 4.0.0
+ * @since 4.1.0 Moved from includes\answer-form.php.
+ */
+function ap_answer_post_ajax_response( $question_id, $answer_id ) {
+	$question = ap_get_post( $question_id );
+	// Get existing answer count.
+	$current_ans = ap_count_published_answers( $question_id );
+
+	if ( $current_ans == 1 ) {
+		global $post;
+		$post = $question;
+		setup_postdata( $post );
+	} else {
+		global $post;
+		$post = ap_get_post( $answer_id );
+		setup_postdata( $post );
+	}
+
+	ob_start();
+	global $answers;
+	global $withcomments;
+	$withcomments = true;
+
+	$answers = ap_get_answers( array( 'p' => $answer_id ) );
+
+	while ( ap_have_answers() ) : ap_the_answer();
+		ap_get_template_part( 'answer' );
+	endwhile;
+
+	$html = ob_get_clean();
+	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
+
+	$result = array(
+		'success'       => true,
+		'ID'            => $answer_id,
+		'form'          => 'answer',
+		'div_id'        => '#post-' . get_the_ID(),
+		'can_answer'    => ap_user_can_answer( $post->ID ),
+		'html'          => $html,
+		'snackbar'      => [ 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ],
+		'answersCount'  => [ 'text' => $count_label, 'number' => $current_ans ],
+	);
+
+	ap_ajax_json( $result );
+}
+
+/**
+ * Generate answer form.
+ *
+ * @param  mixed   $question_id  Question iD.
+ * @param  boolean $editing      true if post is being edited.
+ * @return void
+ * @since unknown
+ * @since 4.1.0 Moved from includes\answer-form.php. Using new Form class.
+ */
+function ap_answer_form( $question_id, $editing = false ) {
+	if ( ! ap_user_can_answer( $question_id ) ) {
+		return;
+	}
+
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'action',
+				'value' => 'ap_ajax',
+			),
+			array(
+				'name'  => 'ap_ajax_action',
+				'value' => 'form_answer',
+			),
+		),
+	);
+
+	anspress()->get_form( 'answer' )->generate( $args );
+}
+
+/**
+ * Generate comment form.
+ *
+ * @param  false|integer $post_id  Question or answer id.
+ * @param  false|object  $_comment Comment id or object.
+ * @return void
+ *
+ * @since 4.1.0
+ */
+function ap_comment_form( $post_id = false, $_comment = false ) {
+	if ( false === $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	if ( ! ap_user_can_comment( $post_id ) ) {
+		return;
+	}
+
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'post_id',
+				'value' => $post_id,
+			),
+			array(
+				'name'  => 'action',
+				'value' => 'ap_ajax',
+			),
+			array(
+				'name'  => 'ap_ajax_action',
+				'value' => 'form_comment',
+			),
+		),
+	);
+
+	$form = anspress()->get_form( 'comment' );
+
+	// Add value when editing post.
+	if ( false !== $_comment && ! empty( $_comment ) ) {
+		$_comment = get_comment( $_comment );
+		$values = [];
+
+		$args['hidden_fields'][] = array(
+			'name'  => 'comment_id',
+			'value' => $_comment->comment_ID,
+		);
+
+		$values['content']['value'] = $_comment->comment_content;
+
+		if ( '0' == $_comment->user_id ) {
+			$values['author']['value'] = $_comment->comment_author;
+			$values['email']['value']  = $_comment->comment_author_email;
+			$values['url']['value']    = $_comment->comment_author_url;
+		}
+
+		$form->set_values( $values );
+	}
+
+	$form->generate( $args );
+}
+
+/**
+ * Include tinymce assets.
+ *
+ * @return void
+ * @since 4.1.0
+ */
+function ap_ajax_tinymce_assets() {
+	if ( ! class_exists( '_WP_Editors' ) ) {
+		require( ABSPATH . WPINC . '/class-wp-editor.php' );
+	}
+
+	\_WP_Editors::enqueue_scripts();
+
+	ob_start();
+	print_footer_scripts();
+	$scripts = ob_get_clean();
+
+	echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
+	\_WP_Editors::editor_js();
+}
+
+/**
+ * All pages required of AnsPress.
+ *
+ * @return array
+ * @since 4.1.0
+ */
+function ap_main_pages() {
+	$pages = array(
+		'base_page' => array(
+			'label'      => __( 'Archives page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display question archive (list). Sometimes this page is used for displaying other subpages of AnsPress.<br/>This page is also referred as <b>Base Page</b> in AnsPress documentations and support forum.', 'anspress-question-answer' ),
+			'post_title' => __( 'Questions', 'anspress-question-answer' ),
+			'post_name'  => 'questions',
+		),
+		'ask_page' => array(
+			'label'      => __( 'Ask page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display ask form.', 'anspress-question-answer' ),
+			'post_title' => __( 'Ask a question', 'anspress-question-answer' ),
+			'post_name'  => 'ask',
+		),
+		'user_page' => array(
+			'label'      => __( 'User page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display user profile.', 'anspress-question-answer' ),
+			'post_title' => __( 'Profile', 'anspress-question-answer' ),
+			'post_name'  => 'profile',
+		),
+		'categories_page' => array(
+			'label'      => __( 'Categories page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display question categories. NOTE: Categories addon must be enabled to render this page.', 'anspress-question-answer' ),
+			'post_title' => __( 'Categories', 'anspress-question-answer' ),
+			'post_name'  => 'categories',
+		),
+		'tags_page' => array(
+			'label'      => __( 'Tags page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display question tags. NOTE: Tags addon must be enabled to render this page.', 'anspress-question-answer' ),
+			'post_title' => __( 'Tags', 'anspress-question-answer' ),
+			'post_name'  => 'tags',
+		),
+	);
+
+	return apply_filters( 'ap_main_pages', $pages );
+}
+
+/**
+ * Return post IDs of main pages.
+ *
+ * @return array
+ * @since 4.1.0
+ */
+function ap_main_pages_id() {
+	$main_pages = array_keys( ap_main_pages() );
+	$pages_id = [];
+
+	foreach ( $main_pages as $slug ) {
+		$pages_id[ $slug ] = ap_opt( $slug );
+	}
+
+	return $pages_id;
 }

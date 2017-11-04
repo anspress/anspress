@@ -129,7 +129,7 @@ function ap_question_have_category( $post_id = false ) {
  */
 if ( ! function_exists( 'is_question_categories' ) ) {
 	function is_question_categories() {
-		if ( ap_get_categories_slug() == get_query_var( 'ap_page' ) ) {
+		if ( 'categories' === ap_current_page() ) {
 			return true;
 		}
 
@@ -144,7 +144,7 @@ if ( ! function_exists( 'is_question_categories' ) ) {
  * @since 4.0.0
  */
 function is_question_category() {
-	if ( ap_get_category_slug() == get_query_var( 'ap_page' ) ) {
+	if ( 'category' === ap_current_page() ) {
 		return true;
 	}
 
@@ -274,9 +274,10 @@ function ap_category_icon( $term_id, $attributes = '' ) {
  * Slug for categories page.
  *
  * @return string
+ * @since 4.1.0 Use new option categories_page_id.
  */
 function ap_get_categories_slug() {
-	return apply_filters( 'ap_categories_slug', ap_get_page_slug( 'categories' ) );
+	return ap_opt( 'categories_page_id' );
 }
 
 /**
@@ -310,6 +311,7 @@ function ap_category_have_image( $term_id ) {
  *
  * @param  array $args Arguments.
  * @return string
+ *
  * @since  1.0
  */
 function ap_question_tags_html( $args = [] ) {
@@ -319,7 +321,7 @@ function ap_question_tags_html( $args = [] ) {
 		'list'          => false,
 		'tag'           => 'span',
 		'class'         => 'question-tags',
-		'label'         => __( 'Tagged', 'tags-for-anspress' ),
+		'label'         => __( 'Tagged', 'anspress-question-answer' ),
 		'echo'          => false,
 		'show'          => 0,
 	);
@@ -336,14 +338,14 @@ function ap_question_tags_html( $args = [] ) {
 	if ( $tags && count( $tags ) > 0 ) {
 		$o = '';
 		if ( $args['list'] ) {
-			$o .= '<ul class="' . $args['class'] . '">';
+			$o .= '<ul class="' . $args['class'] . '" itemprop="keywords">';
 			foreach ( $tags as $t ) {
 				$o .= '<li><a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . ' &times; <i class="tax-count">' . $t->count . '</i></a></li>';
 			}
 			$o .= '</ul>';
 		} else {
 			$o .= $args['label'];
-			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '">';
+			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '" itemprop="keywords">';
 			$i = 1;
 			foreach ( $tags as $t ) {
 				$o .= '<a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . '</a> ';
@@ -369,7 +371,7 @@ function ap_tag_details() {
 	echo '<div class="clearfix">';
 	echo '<h3><a href="'.get_tag_link( $tag ).'">'. $tag->name .'</a></h3>';
 	echo '<div class="ap-taxo-meta">';
-	echo '<span class="count">'. $tag->count .' '.__( 'Questions', 'tags-for-anspress' ).'</span>';
+	echo '<span class="count">'. $tag->count .' '.__( 'Questions', 'anspress-question-answer' ).'</span>';
 	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $tag->term_id, 'question_tag' ) . '" title="Subscribe to '. $tag->name .'" rel="nofollow"></a>';
 	echo '</div>';
 	echo '</div>';
@@ -444,27 +446,6 @@ function ap_get_tag_filter( $search = false ) {
 	}
 
 	return $items;
-}
-
-function ap_tags_tab() {
-	$active = isset( $_GET['ap_sort'] ) ? $_GET['ap_sort'] : 'popular';
-
-	$link = ap_get_link_to( 'tags' ).'?ap_sort=';
-
-	?>
-    <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
-        <li class="<?php echo $active == 'popular' ? ' active' : ''; ?>"><a href="<?php echo $link.'popular'; ?>"><?php _e( 'Popular', 'tags-for-anspress' ); ?></a></li>
-        <li class="<?php echo $active == 'new' ? ' active' : ''; ?>"><a href="<?php echo $link.'new'; ?>"><?php _e( 'New', 'tags-for-anspress' ); ?></a></li>
-        <li class="<?php echo $active == 'name' ? ' active' : ''; ?>"><a href="<?php echo $link.'name'; ?>"><?php _e( 'Name', 'tags-for-anspress' ); ?></a></li>
-        <?php
-			/**
-			 * ACTION: ap_tags_tab
-			 * Used to hook into tags page tab
-			 */
-			do_action( 'ap_tags_tab', $active );
-		?>
-    </ul>
-    <?php
 }
 
 /**

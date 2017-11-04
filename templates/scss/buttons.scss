@@ -8,9 +8,11 @@
 	color: $default-color;
 	font-weight: 600;
 	line-height: 1.6;
-	padding: 7px 15px;
+	padding: 5px 10px;
 	text-decoration: none;
 	vertical-align: middle;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+
 	&-medium {
 		padding: 3px 12px;
 	}

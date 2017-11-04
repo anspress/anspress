@@ -71,7 +71,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			$value = $args[ $field ];
 
 			if ( 'fields' === $field ) {
-				$value = maybe_serialize( (array) $exists->$field + (array) $value );
+				$value = maybe_serialize( array_merge( (array) $exists->$field, (array) $value ) );
 				$formats[] = '%s';
 			} elseif ( 'activities' === $field ) {
 				$value = maybe_serialize( $value );
@@ -448,7 +448,7 @@ function ap_update_post_attach_ids( $post_id ) {
 
 	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} where post_type = 'attachment' AND post_parent = %d", $post_id ));
 
-	$insert = ap_insert_qameta( $post_id, [ 'attach' => $ids ] );
+	$insert = ap_insert_qameta( (int) $post_id, [ 'attach' => $ids ] );
 	return $ids;
 }
 
@@ -463,7 +463,6 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
 	return ap_insert_qameta( $post_id, [ 'activities' => $activities, 'last_updated' => current_time( 'mysql' ) ] );
 }
 
-
 /**
  * Update post activity meta.
  *
@@ -476,7 +475,6 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
  * @since  2.4.7
  */
 function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
-
 	if ( empty( $post ) ) {
 		return false;
 	}

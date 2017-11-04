@@ -1,6 +1,5 @@
 <?php
-
-class Ap_AjaxTest extends WP_UnitTestCase {
+class Ap_AjaxTest extends WP_Ajax_UnitTestCase {
   protected $_last_response;
 
 	public function triggerAjaxCapture() {

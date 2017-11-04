@@ -19,6 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Return current page title.
  *
  * @return string current title
+ * @since unknown
+ * @since 4.1.0 Removed `question_name` query var check.
  */
 function ap_page_title() {
 
@@ -36,7 +38,7 @@ function ap_page_title() {
 		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
 	} elseif ( is_ask() ) {
 		$new_title = ap_opt( 'ask_page_title' );
-	} elseif ( '' === $current_page && ! is_question() && '' === get_query_var( 'question_name' ) ) {
+	} elseif ( '' === $current_page && ! is_question() ) {
 		$new_title = ap_opt( 'base_page_title' );
 	} elseif ( get_query_var( 'parent' ) !== '' ) {
 		$new_title = sprintf( __( 'Discussion on "%s"', 'anspress-question-answer' ), get_the_title( get_query_var( 'parent' ) ) );
@@ -62,50 +64,6 @@ function is_ap_search() {
 	}
 
 	return false;
-}
-
-/**
- * Return current AnsPress page
- *
- * @return string|false
- */
-function ap_current_page_is() {
-	if ( is_anspress() ) {
-		if ( is_question() ) {
-			$template = 'question';
-		} elseif ( is_ask() ) {
-			$template = 'ask';
-		} elseif ( is_question_categories() ) {
-			$template = 'categories';
-		} elseif ( is_question_category() ) {
-			$template = 'category';
-		} elseif ( is_ap_search() ) {
-			$template = 'search';
-		} elseif ( get_query_var( 'ap_page' ) == '' ) {
-			$template = 'base';
-		} else {
-			$template = 'not-found';
-		}
-
-		return apply_filters( 'ap_current_page_is', $template );
-	}
-
-	return false;
-}
-
-/**
- * Get current user page template file
- *
- * @return string template file name.
- */
-function ap_get_current_page_template() {
-	if ( is_anspress() ) {
-		$template = ap_current_page_is();
-
-		return apply_filters( 'ap_current_page_template', $template . '.php' );
-	}
-
-	return 'content-none.php';
 }
 
 /**
@@ -208,10 +166,10 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 	$big = 999999999; // Need an unlikely integer.
 
 	if ( false === $current ) {
-	    $paged = ap_sanitize_unslash( 'ap_paged', 'r', 1 );
-	    $current = is_front_page() ? max( 1, $paged ) : max( 1, get_query_var( 'paged' ) );
+		$paged = ap_sanitize_unslash( 'ap_paged', 'r', 1 );
+		$current = is_front_page() ? max( 1, $paged ) : max( 1, get_query_var( 'paged' ) );
 	} elseif ( ! empty( $ap_current ) ) {
-	    $current = $ap_current;
+		$current = $ap_current;
 	}
 
 	if ( ! empty( $ap_max_num_pages ) ) {
@@ -274,12 +232,6 @@ function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true,
 function ap_page() {
 	$pages = anspress()->pages;
 	$current_page = ap_current_page();
-
-	if ( is_question() ) {
-		$current_page = 'question';
-	} elseif ( '' === $current_page && ! is_question() ) {
-		$current_page = 'base';
-	}
 
 	if ( isset( $pages[ $current_page ]['func'] ) ) {
 		call_user_func( $pages[ $current_page ]['func'] );
@@ -416,7 +368,7 @@ function ap_post_actions_buttons() {
 		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
 	]);
 
-	echo '<post-actions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></post-actions>';
+	echo '<postActions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>';
 }
 
 /**
@@ -580,11 +532,27 @@ function ap_get_template_part( $file, $args = false ) {
  * Return current AnsPress page
  *
  * @return string
+ * @since unknown
+ * @since 4.1.0 Check if ask question page.
  */
 function ap_current_page() {
-	$query_var = get_query_var( 'ap_page' );
+	$query_var = get_query_var( 'ap_page', 'base' );
+	$main_pages = array_keys( ap_main_pages() );
+	$page_ids = [];
 
-	if ( '' === $query_var ) {
+	foreach ( $main_pages as $page_slug ) {
+		$page_ids[ ap_opt( $page_slug ) ] = $page_slug;
+	}
+
+	if ( is_question() || is_singular( 'question' ) ) {
+		$query_var = 'question';
+	} elseif ( 'edit' === $query_var ) {
+		$query_var = 'edit';
+	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
+		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
+	} elseif ( is_search() ) {
+		$query_var = 'search';
+	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
 	}
 
@@ -604,9 +572,8 @@ function ap_current_page() {
 function ap_assets() {
 	$assets = array(
 		'js' => array(
-			'main'          => [ 'dep' => [ 'jquery', 'jquery-form', 'underscore', 'backbone' ], 'footer' => true ],
-			'upload'        => [ 'dep' => [ 'plupload', 'anspress-main' ], 'footer' => true ],
-			'notifications' => [ 'dep' => [ 'anspress-main' ], 'footer' => true ],
+			'form'          => [ 'dep' => [ 'jquery' ], 'footer' => true ],
+			'main'          => [ 'dep' => [ 'jquery', 'anspress-form', 'underscore', 'backbone' ], 'footer' => true ],
 			'theme' 				=> [ 'theme' => true, 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(
@@ -618,10 +585,6 @@ function ap_assets() {
 
 	if ( is_ask() || ap_current_page() === 'edit' ) {
 		$assets['js']['main']['active'] = true;
-
-		if ( ap_user_can_upload( ) ) {
-			$assets['js']['upload']['active'] = true;
-		}
 	}
 
 	if ( is_question() || ap_current_page() === 'edit' ) {
@@ -892,30 +855,54 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 	echo $html; // WPCS: xss okay.
 }
 
+/**
+ * Create array of object containing AnsPress pages. To be used in admin menu metabox.
+ *
+ * @return array
+ * @since unknown
+ * @since 4.1.0 Improved ask page object.
+ */
 function ap_menu_obejct() {
 	$menu_items = [];
 
 	foreach ( (array) anspress()->pages as $k => $args ) {
 		if ( $args['show_in_menu'] ) {
+			$object_id = 1;
+			$object    = $k;
+			$title     = $args['title'];
+			$url       = home_url( '/' );
+			$type      = 'anspress-links';
+
+			$main_pages = array_keys( ap_main_pages() );
+
+			if ( in_array( $k . '_page', $main_pages, true ) ) {
+				$post  = get_post( ap_opt( $k . '_page' ) );
+				$object_id = ap_opt( $k . '_page' );
+				$object    = 'page';
+				$url       = get_permalink( $post );
+				$title     = $post->post_title;
+				$type      = 'post_type';
+			}
+
 			$menu_items[] = (object) array(
 				'ID'               => 1,
 				'db_id'            => 0,
 				'menu_item_parent' => 0,
-				'object_id'        => 1,
+				'object_id'        => $object_id,
 				'post_parent'      => 0,
-				'type'             => 'anspress-links',
-				'object'           => $k,
+				'type'             => $type,
+				'object'           => $object,
 				'type_label'       => __( 'AnsPress links', 'anspress-question-answer' ),
-				'title'            => $args['title'],
-				'url'              => home_url( '/' ),
+				'title'            => $title,
+				'url'              => $url,
 				'target'           => '',
 				'attr_title'       => '',
 				'description'      => '',
 				'classes'          => [ 'anspress-menu-' . $k ],
 				'xfn'              => '',
 			);
-		}
-	}
+		} // End if().
+	} // End foreach().
 
 	return $menu_items;
 }

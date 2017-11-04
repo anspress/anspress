@@ -32,7 +32,7 @@ class Question_Query extends WP_Query {
 	 *
 	 * @param array|string $args Query args.
 	 */
-	public function __construct( $args = '' ) {
+	public function __construct( $args = [] ) {
 		if ( is_front_page() ) {
 			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1; // input var ok.
 		} else {
@@ -88,8 +88,6 @@ class Question_Query extends WP_Query {
 		}
 
 		$this->args['post_type'] = 'question';
-		$this->args['no_found_rows'] = true;
-
 		parent::__construct( $this->args );
 	}
 
@@ -277,10 +275,17 @@ function ap_total_questions_found() {
 
 /**
  * Reset original question query.
+ *
+ * @return boolean
+ * @since unknown
+ * @since 4.1.0 Check if global `$questions` exists.
  */
 function ap_reset_question_query() {
 	global $questions;
-	return $questions->reset_questions_data();
+
+	if ( $questions ) {
+		return $questions->reset_questions_data();
+	}
 }
 
 /**
@@ -454,9 +459,10 @@ function ap_question_metas( $question_id = false ) {
 		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_latest_post_activity_html( $question_id, ! is_question() );
 	}
 
-	/*
-     * FILTER: ap_display_question_meta
-     * Used to filter question display meta
+	/**
+   * Used to filter question display meta.
+	 *
+	 * @param array $metas
 	 */
 	$metas = apply_filters( 'ap_display_question_metas', $metas, $question_id );
 
@@ -685,12 +691,12 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$user_id = ! empty( $activity['user_id'] ) ? $activity['user_id'] : 0;
 		$activity_type = ! empty( $activity['type'] ) ? $activity['type'] : '';
 		$html .= '<span class="ap-post-history">';
-		$html .= ap_user_link_anchor( $user_id, false );
+		$html .= '<a href="' . ap_user_link( $user_id ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( $user_id ) . '</span></a>';
 		$html .= ' ' . ap_activity_short_title( $activity_type );
 
 		if ( ! empty( $activity['date'] ) ) {
 			$html .= ' <a href="' . get_permalink( $_post ) . '">';
-			$html .= '<time datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time>';
+			$html .= '<time itemprop="dateModified" datetime="' . mysql2date( 'c', $activity['date'] ) . '">' . ap_human_time( $activity['date'], false ) . '</time>';
 			$html .= '</a>';
 		}
 
@@ -709,6 +715,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
  * Output answers of current question.
  *
  * @since 2.1
+ * @since 4.1.0 Removed calling function @see `ap_reset_question_query`.
  */
 function ap_answers() {
 	global $answers;

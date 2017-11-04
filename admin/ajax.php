@@ -26,19 +26,20 @@ class AnsPress_Admin_Ajax {
 	 * Initialize admin ajax
 	 */
 	public static function init() {
-		anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
+		//anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
 		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
 		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
-		anspress()->add_action( 'wp_ajax_ap_toggle_addons', __CLASS__, 'ap_toggle_addons' );
-		anspress()->add_action( 'wp_ajax_ap_migrator_4x', __CLASS__, 'ap_migrator_4x' );
+		anspress()->add_action( 'wp_ajax_ap_toggle_addon', __CLASS__, 'ap_toggle_addon' );
 		anspress()->add_action( 'wp_ajax_anspress_recount', __CLASS__, 'anspress_recount' );
 	}
 
 	/**
 	 * Ajax cllback for updating old taxonomy question_tags to question_tag
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function ap_taxo_rename() {
 
@@ -240,44 +241,29 @@ class AnsPress_Admin_Ajax {
 	/**
 	 * Toggle addons.
 	 */
-	public static function ap_toggle_addons() {
-		check_ajax_referer( 'ap-toggle-addons', '__nonce' );
+	public static function ap_toggle_addon() {
+		check_ajax_referer( 'toggle_addon', '__nonce' );
 
-		if ( ! is_super_admin( ) ) {
-			wp_die( '' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			ap_ajax_json( array(
+				'success' => false,
+				'snackbar' => [ 'message' => __( 'Sorry, you do not have permission!', 'anspress-question-answer' ) ],
+			) );
 		}
 
-		$_REQUEST['option_page'] = 'addons';
-		$previous_addons = get_option( 'anspress_addons', [] );
-		$new_addons = array_flip( ap_isset_post_value( 'addon', [] ) );
-
-		if ( empty( $new_addons ) ) {
-			update_option( 'anspress_addons', [] );
+		$addon_id = ap_sanitize_unslash( 'addon_id', 'r' );
+		if ( ap_is_addon_active( $addon_id ) ) {
+			ap_deactivate_addon( $addon_id );
+		} else {
+			ap_activate_addon( $addon_id );
 		}
 
-		$addons = $previous_addons + $new_addons;
-
-		foreach ( (array) $addons as $file => $status ) {
-			if ( ! isset( $new_addons[ $file ] ) ) {
-				ap_deactivate_addon( $file );
-			} else {
-				ap_activate_addon( $file );
-			}
-		}
-
-		wp_die( );
-	}
-
-
-	public static function ap_migrator_4x() {
-		check_ajax_referer( 'ap_migration', '__nonce' );
-
-		if ( is_super_admin() ) {
-			require_once( ANSPRESS_DIR . 'admin/update.php' );
-			new AP_Update_Helper();
-		}
-
-		wp_die();
+		ap_ajax_json( array(
+			'success'  => true,
+			'addon_id' => $addon_id,
+			'snackbar' => [ 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ],
+			'cb'       => 'toggleAddon',
+		) );
 	}
 
 	/**
@@ -450,18 +436,11 @@ class AnsPress_Admin_Ajax {
 	public static function recount_reputation( $current, $offset ) {
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},5" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
-		$rep_events = ap_get_reputation_events();
 
 		foreach ( (array) $ids as $id ) {
-			foreach( (array) $rep_events as $event => $args ) {
-				if ( 'answer' === $args['parent'] ) {
-					self::recount_answer_reputation( $args );
-				}
-			}
-
 			ap_update_user_reputation_meta( $id );
 		}
 
@@ -474,7 +453,7 @@ class AnsPress_Admin_Ajax {
 		wp_send_json( [
 			'action'    => $action,
 			'total'     => $total_found,
-			'processed' => count( $ids ),
+			'processed' => $offset + count( $ids ),
 		] );
 	}
 
@@ -485,11 +464,11 @@ class AnsPress_Admin_Ajax {
 	 * @param  string  $event   Event type.
 	 * @return boolean Returns true on success.
 	 */
-	public function recount_answer_reputation( $user_id, $event ) {
+	public static function recount_answer_reputation( $user_id, $event ) {
 		global $wpdb;
 
 		$post_ids = $wpdb->get_col(
-			$wpdb->prepare( "SELECT ID FROM {$wpdb->ap_reputation} WHERE post_author = %d AND post_type = 'answer' AND post_status IN ('publish', 'private_post')", $user_id )
+			$wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_author = %d AND post_type = 'answer' AND post_status IN ('publish', 'private_post')", $user_id )
 		);
 
 		// Return if no answers found.
@@ -498,7 +477,6 @@ class AnsPress_Admin_Ajax {
 		}
 
 		$events = ap_search_array( ap_get_reputation_events(), 'parent', 'answer' );
-
 		foreach ( (array) $post_ids as $id ) {
 				$exists = ap_get_reputation( $e, $id, $user_id );
 
@@ -557,5 +535,4 @@ class AnsPress_Admin_Ajax {
 			'processed' => count( $ids ),
 		] );
 	}
-
 }

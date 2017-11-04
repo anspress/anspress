@@ -34,7 +34,7 @@ class Cpt_Tests extends AnsPress_UnitTestCase
 		$this->assertEquals( 'Questions', $wp_post_types['question']->labels->menu_name );
 		$this->assertEquals( 1, $wp_post_types['question']->publicly_queryable );
 		$this->assertEquals( 1, $wp_post_types['question']->has_archive );
-		$this->assertEquals( 'apq', $wp_post_types['question']->query_var );
+		$this->assertEquals( 'question', $wp_post_types['question']->query_var );
 		$this->assertEquals( 'Questions', $wp_post_types['question']->label );
 	}
 

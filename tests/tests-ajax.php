@@ -11,9 +11,9 @@ class Tests_Ajax extends Ap_AjaxTest
 	}
 
 	public function tearDown() {
-		// your tear down methods here
-		// then
 		parent::tearDown();
+		$_POST = array();
+		remove_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 	}
 
 	public function _set_post_data( $query ) {
@@ -61,5 +61,20 @@ class Tests_Ajax extends Ap_AjaxTest
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Your vote has been removed.' );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 0 );
 		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
+	}
+
+	public function test_load_comments() {
+		$this->_setRole( 'administrator' );
+
+		$this->factory->comment->create_many(10, array(
+			'comment_type' => 'anspress',
+		));
+		// Up vote.
+		$this->_set_post_data( 'post_id='.$this->current_post.'&ap_ajax_action=load_comments' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
+		$this->triggerAjaxCapture();
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertEquals( $this->ap_ajax_success( 'modal_title' ), 'Comments on Question' );
+		$this->assertEquals( $this->ap_ajax_success( 'modal_title' ), 'Comments on Question' );
 	}
 }

@@ -31,12 +31,10 @@ class AnsPress_Tag {
 	 * Initialize the class
 	 */
 	public static function init() {
-		SELF::includes();
-
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
 
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'option_fields', 20 );
+		anspress()->add_action( 'ap_form_addon-free_tag', __CLASS__, 'option_fields' );
 		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
 		anspress()->add_action( 'init', __CLASS__, 'register_question_tag', 1 );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_tags_menu' );
@@ -45,63 +43,51 @@ class AnsPress_Tag {
 		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 		anspress()->add_action( 'ap_enqueue', __CLASS__, 'ap_localize_scripts' );
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_ask_form_fields', __CLASS__, 'ask_from_tag_field', 10, 2 );
+		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
 		anspress()->add_action( 'ap_ask_fields_validation', __CLASS__, 'ap_ask_fields_validation' );
-		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
-		anspress()->add_filter( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
-		anspress()->add_filter( 'get_terms', __CLASS__, 'get_terms', 10, 3 );
 		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
-		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_current_page_is', __CLASS__, 'ap_current_page_is' );
+		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
+		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
+		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_archive' );
 
 		// List filtering.
 		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
 		anspress()->add_action( 'ap_ajax_load_filter_qtag', __CLASS__, 'load_filter_tag' );
+		anspress()->add_action( 'ap_ajax_load_filter_tags_order', __CLASS__, 'load_filter_tags_order' );
 		anspress()->add_filter( 'ap_list_filter_active_qtag', __CLASS__, 'filter_active_tag', 10, 2 );
-	}
-
-	/**
-	 * Include required files
-	 */
-	public static function includes() {
-
+		anspress()->add_filter( 'ap_list_filter_active_tags_order', __CLASS__, 'filter_active_tags_order', 10, 2 );
 	}
 
 	/**
 	 * Tag page layout.
+	 *
+	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
 	public static function tag_page() {
 		global $questions, $question_tag;
-		$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
+		$question_tag = get_queried_object();
 
 		$question_args = array(
-			'paged'      => max( 1, get_query_var( 'paged' ) ),
+			'paged'      => max( 1, get_query_var( 'ap_paged' ) ),
 			'tax_query'  => array(
 				array(
 					'taxonomy' => 'question_tag',
-					'field'    => 'slug',
-					'terms'    => array( $tag_id ),
+					'field'    => 'id',
+					'terms'    => array( $question_tag->term_id ),
 				),
 			),
 		);
 
 		$question_args = apply_filters( 'ap_tag_question_query_args', $question_args );
 
-		$question_tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
-
 		if ( $question_tag ) {
 			$questions = ap_get_questions( $question_args );
 			include( ap_get_theme_location( 'addons/tag/tag.php' ) );
-		} else {
-			global $wp_query;
-			$wp_query->set_404();
-			status_header( 404 );
-			include ap_get_theme_location( 'not-found.php' );
 		}
 
 	}
@@ -118,7 +104,8 @@ class AnsPress_Tag {
 		$offset       = $per_page * ( $paged - 1);
 
 		$tag_args = array(
-			'ap_tags_query' => 'num_rows',
+			'taxonomy' => 'question_tag',
+			'ap_tags_query' => true,
 			'parent'        => 0,
 			'number'        => $per_page,
 			'offset'        => $offset,
@@ -126,11 +113,11 @@ class AnsPress_Tag {
 			'order'         => 'DESC',
 		);
 
-		$ap_sort = ap_isset_post_value( 'ap_sort', 'count' );
+		$ap_sort = ap_isset_post_value( 'tags_order', 'count' );
 
 		if ( 'new' === $ap_sort ) {
 			$tag_args['orderby'] = 'id';
-			$tag_args['order']      = 'ASC';
+			$tag_args['order']   = 'DESC';
 		} elseif ( 'name' === $ap_sort ) {
 			$tag_args['orderby']    = 'name';
 			$tag_args['order']      = 'ASC';
@@ -138,21 +125,25 @@ class AnsPress_Tag {
 			$tag_args['orderby'] = 'count';
 		}
 
-		if ( isset( $_GET['ap_s'] ) ) {
-			$tag_args['search'] = sanitize_text_field( $_GET['ap_s'] );
+		if ( ap_isset_post_value( 'ap_s' ) ) {
+			$tag_args['search'] = ap_sanitize_unslash( 'ap_s', 'r' );
 		}
 
 		/**
-		 * FILTER: ap_tags_shortcode_args
-		 * Filter applied before getting categories.
+		 * Filter applied before getting tags.
 		 *
 		 * @var array
 		 */
 		$tag_args = apply_filters( 'ap_tags_shortcode_args', $tag_args );
 
-		$question_tags 		= get_terms( 'question_tag' , $tag_args );
-		$total_terms        = (int) wp_count_terms( 'question_tag', [ 'hide_empty' => false, 'parent' => 0 ] );
-		$ap_max_num_pages   = ceil( $total_terms / $per_page );
+		$query 		          = new WP_Term_Query( $tag_args );
+
+		// Count terms.
+		$tag_args['fields'] = 'count';
+		$found_query        = new WP_Term_Query( $tag_args );
+		$tags_rows_found    = $found_query->get_terms();
+		$ap_max_num_pages   = ceil( $tags_rows_found / $per_page );
+		$question_tags      = $query->get_terms();
 
 		include ap_get_theme_location( 'addons/tag/tags.php' );
 	}
@@ -182,9 +173,7 @@ class AnsPress_Tag {
 		ap_add_default_options([
 			'max_tags'        => 5,
 			'min_tags'        => 1,
-			'tags_page_title' => __( 'Tags', 'anspress-question-answer' ),
 			'tags_per_page'   => 20,
-			'tags_page_slug'  => 'tags',
 			'tag_page_slug'   => 'tag',
 		]);
 
@@ -236,48 +225,37 @@ class AnsPress_Tag {
 	 * Register option fields.
 	 */
 	public static function option_fields() {
-		ap_register_option_section( 'addons', 'tags', __( 'Tag', 'anspress-question-answer' ), array(
-			array(
-				'name'              => 'tags_per_page',
-				'label'             => __( 'Tags to show', 'anspress-question-answer' ),
-				'description'       => __( 'Numbers of tags to show in tags page.', 'anspress-question-answer' ),
-				'type'              => 'number',
-			),
-			array(
-				'name'              => 'max_tags',
-				'label'             => __( 'Maximum tags', 'anspress-question-answer' ),
-				'description'       => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
-				'type'              => 'number',
-			),
-			array(
-				'name'              => 'min_tags',
-				'label'             => __( 'Minimum tags', 'anspress-question-answer' ),
-				'description'       => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
-				'type'              => 'number',
-			),
-			array(
-				'name' 		=> 'tags_page_title',
-				'label' 	=> __( 'Tags page title', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Title for tags page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
-			array(
-				'name' 		=> 'tags_page_slug',
-				'label' 	=> __( 'Tags page slug', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Slug tags page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
-			),
+		$opt = ap_opt();
 
-			array(
-				'name' 		=> 'tag_page_slug',
-				'label' 	=> __( 'Tag page slug', 'anspress-question-answer' ),
-				'desc' 		=> __( 'Slug for tag page', 'anspress-question-answer' ),
-				'type' 		=> 'text',
-				'show_desc_tip' => false,
+		$form = array(
+			'fields' => array(
+				'tags_per_page' => array(
+					'label'       => __( 'Tags to show', 'anspress-question-answer' ),
+					'description' => __( 'Numbers of tags to show in tags page.', 'anspress-question-answer' ),
+					'subtype'     => 'number',
+					'value'       => $opt['tags_per_page'],
+				),
+				'max_tags' => array(
+					'label'             => __( 'Maximum tags', 'anspress-question-answer' ),
+					'description'       => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
+					'subtype'     => 'number',
+					'value'       => $opt['max_tags'],
+				),
+				'min_tags' => array(
+					'label'             => __( 'Minimum tags', 'anspress-question-answer' ),
+					'description'       => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
+					'subtype'     => 'number',
+					'value'       => $opt['min_tags'],
+				),
+				'tag_page_slug' => array(
+					'label' 	=> __( 'Tag page slug', 'anspress-question-answer' ),
+					'desc' 		=> __( 'Slug for tag page', 'anspress-question-answer' ),
+					'value'   => $opt['tag_page_slug'],
+				),
 			),
-		));
+		);
+
+		return $form;
 	}
 
 
@@ -290,7 +268,7 @@ class AnsPress_Tag {
 	 * @since 2.0
 	 */
 	public static function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id, 'question_tag' ) && ! is_singular( 'question' ) ) {
+		if ( ap_post_have_terms( $question_id, 'question_tag' ) ) {
 			$metas['tags'] = ap_question_tags_html( array( 'label' => '<i class="apicon-tag"></i>', 'show' => 1 ) ); }
 
 		return $metas;
@@ -319,10 +297,6 @@ class AnsPress_Tag {
 	 */
 	public static function ap_assets_js( $js ) {
 		$js['tags'] = [ 'dep' => [ 'anspress-main' ], 'footer' => true ];
-
-		if ( is_ask() ) {
-			$js['tags']['active'] = true;
-		}
 
 		return $js;
 	}
@@ -356,62 +330,48 @@ class AnsPress_Tag {
 	 */
 	public static function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_tag' === $taxonomy ) {
-			if ( get_option( 'permalink_structure' ) !== '' ) {
-				return ap_get_link_to( array( 'ap_page' => ap_get_tag_slug(), 'q_tag' => $term->slug ) );
+			if ( get_option( 'permalink_structure' ) != '' ) {
+				$opt = get_option( 'ap_tags_path', 'tags' );
+				return home_url( $opt ) . '/' . $term->slug . '/';
 			} else {
-				return ap_get_link_to( array( 'ap_page' => ap_get_tag_slug(), 'q_tag' => $term->term_id ) );
+				return add_query_arg( [ 'ap_page' => 'tag', 'question_tag' => $term->slug ], home_url() );
 			}
 		}
 		return $url;
 	}
 
 	/**
-	 * Add tag field in ask form.
+	 * Add tag field in question form.
 	 *
-	 * @param  array   $args Arguments.
-	 * @param  boolean $editing Is editing form.
+	 * @param array $form AnsPress form arguments.
+	 * @since 4.1.0
 	 */
-	public static function ask_from_tag_field( $args, $editing ) {
-		global $editing_post;
-		$tag_val = $editing ? get_the_terms( $editing_post->ID, 'question_tag' ) : ap_sanitize_unslash( 'tags', 'r', [] ) ;
+	public static function ap_question_form_fields( $form ) {
+		$editing_id = ap_sanitize_unslash( 'id', 'r' );
 
-		ob_start();
-		?>
-			<div class="ap-field-tags ap-form-fields">
-				<label class="ap-form-label" for="tags"><?php esc_attr_e( 'Tags', 'anspress-question-answer' ); ?></label>
-				<div data-role="ap-tagsinput" class="ap-tags-input">
-					<div id="ap-tags-add">
-						<input id="tags" class="ap-tags-field ap-form-control" placeholder="<?php esc_attr_e( 'Type and hit enter', 'anspress-question-answer' ); ?>" autocomplete="off" />
-						<ul id="ap-tags-suggestion">
-						</ul>
-					</div>
-
-					<ul id="ap-tags-holder" aria-describedby="ap-tags-list-title">
-						<?php foreach ( (array) $tag_val as $tag ) { ?>
-							<?php if ( ! empty( $tag->slug ) ) { ?>
-								<li class="ap-tagssugg-item">
-									<button role="button" class="ap-tag-remove"><span class="sr-only"></span> <span class="ap-tag-item-value"><?php echo esc_attr( $tag->slug ); ?></span><i class="apicon-x"></i></button>
-									<input type="hidden" name="tags[]" value="<?php echo esc_attr( $tag->slug ); ?>" />
-								</li>
-							<?php } ?>
-						<?php } ?>
-					</ul>
-				</div>
-			</div>
-		<?php
-
-		$tag_field = ob_get_clean();
-		$args['fields'][] = array(
-			'name' 		=> 'tag',
-			'label' 	=> __( 'Tags', 'anspress-question-answer' ),
-			'type'  	=> 'custom',
-			'taxonomy' 	=> 'question_tag',
-			'desc' 		=> __( 'Slowly type for suggestions', 'anspress-question-answer' ),
-			'order' 	=> 11,
-			'html' 		=> $tag_field,
+		$form['fields']['tags'] = array(
+			'label'     => __( 'Tags', 'anspress-question-answer' ),
+			'desc' 		  => sprintf(
+				// Translators: %1$d contain minimum tags required and %2$d contain maximum tags allowed.
+				__( 'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.', 'anspress-question-answer' ),
+				ap_opt( 'min_tags' ),
+				ap_opt( 'max_tags' )
+			),
+			'type'      => 'tags',
+			'array_max' => ap_opt( 'max_tags' ),
+			'array_min' => ap_opt( 'min_tags' ),
 		);
 
-		return $args;
+		// Add value when editing post.
+		if ( ! empty( $editing_id ) ) {
+			$tags = get_the_terms( $editing_id, 'question_tag' );
+			if ( $tags ) {
+				$tags = wp_list_pluck( $tags, 'name', 'term_id' );
+				$form['fields']['tags']['value'] = $tags;
+			}
+		}
+
+		return $form;
 	}
 
 	/**
@@ -437,16 +397,10 @@ class AnsPress_Tag {
 	 * @since 1.0
 	 */
 	public static function after_new_question( $post_id, $post ) {
-		global $validate;
+		$values = anspress()->get_form( 'question' )->get_values();
 
-		if ( empty( $validate ) ) {
-			return;
-		}
-
-		$fields = $validate->get_sanitized_fields();
-		if ( isset( $fields['tags'] ) ) {
-			$tags = explode( ',', $fields['tags'] );
-			wp_set_object_terms( $post_id, $tags, 'question_tag' );
+		if ( isset( $values['tags'] ) ) {
+			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
 		}
 	}
 
@@ -496,39 +450,6 @@ class AnsPress_Tag {
 	}
 
 	/**
-	 * Modify terms mysql quries.
-	 *
-	 * @param array $query Query parameters.
-	 * @param array $taxonomies Available taxonomies.
-	 * @param array $args Arguments.
-	 * @return array
-	 */
-	public static function terms_clauses( $query, $taxonomies, $args ) {
-		if ( isset( $args['ap_tags_query'] ) && 'num_rows' === $args['ap_tags_query'] ) {
-			$query['fields'] = 'SQL_CALC_FOUND_ROWS ' . $query['fields'];
-		}
-
-		if ( in_array( 'question_tag', $taxonomies, true ) && isset( $args['ap_query'] ) && 'tags_subscription' === $args['ap_query'] ) {
-			global $wpdb;
-
-			$query['join']     = $query['join'].' INNER JOIN ' . $wpdb->prefix . 'ap_meta apmeta ON t.term_id = apmeta.apmeta_actionid';
-			$query['where']    = $query['where'] . " AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_param='tag' AND apmeta.apmeta_userid='" . $args['user_id'] . "'";
-		}
-
-		return $query;
-	}
-
-	public static function get_terms( $terms, $taxonomies, $args ) {
-		if ( isset( $args['ap_tags_query'] ) && $args['ap_tags_query'] == 'num_rows' ) {
-			global $tags_rows_found,  $wpdb;
-
-			$tags_rows_found = $wpdb->get_var( apply_filters( 'ap_get_terms_found_rows', 'SELECT FOUND_ROWS()', $terms, $taxonomies, $args ) );
-			// wp_cache_set( SELF::cache_key.'_count', SELF::total_count, 'anspress-question-answer' );
-		}
-		return $terms;
-	}
-
-	/**
 	 * Handle tags suggestion on question form
 	 */
 	public static function ap_tags_suggestion() {
@@ -562,34 +483,19 @@ class AnsPress_Tag {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		$tags_rules = array();
-		$base = 'index.php?page_id=' . $base_page_id . '&ap_page=';
-		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tag&q_tag=$matches[#]&paged=$matches[#]';
-		$tags_rules[ $slug . ap_get_tags_slug() . '/([^/]+)/page/?([0-9]{1,})/?' ] = $base . 'tags&q_tag=$matches[#]&paged=$matches[#]';
+		$base_slug = get_page_uri( ap_opt( 'tags_page' ) );
+		update_option( 'ap_tags_path', $base_slug, true );
 
-		$tags_rules[ $slug . ap_get_tag_slug() . '/([^/]+)/?' ] = $base . 'tag&q_tag=$matches[#]';
-		$tags_rules[ $slug . ap_get_tags_slug() . '/?' ] = $base . 'tags';
+		$cat_rules = array(
+			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_tag=$matches[#]&ap_paged=$matches[#]&ap_page=tag',
+			$base_slug . '/([^/]+)/?$' => 'index.php?question_tag=$matches[#]&ap_page=tag',
+		);
 
-		return $tags_rules + $rules;
+		return $cat_rules + $rules;
 	}
 
 	/**
-	 * Override ap_current_page_is function to check if tags or tag page.
-	 *
-	 * @param  string $page Current page slug.
-	 * @return string
-	 */
-	public static function ap_current_page_is( $page ) {
-		if ( is_question_tags() ) {
-			$page = 'tags';
-		} elseif ( is_question_tag() ) {
-			$page = 'tag';
-		}
-
-		return $page;
-	}
-	/**
-	 * Filter main questions query args. Modify and add label args.
+	 * Filter main questions query args. Modify and add tags args.
 	 *
 	 * @param  array $args Questions args.
 	 * @return array
@@ -629,10 +535,16 @@ class AnsPress_Tag {
 
 		if ( ! isset( $wp->query_vars['ap_tags'] ) ) {
 			$filters['qtag'] = array(
-				'title' => __( 'Tag', 'anspress-question-answer' ),
-				'search' => true,
+				'title'    => __( 'Tag', 'anspress-question-answer' ),
+				'search'   => true,
 				'multiple' => true,
 			);
+		}
+
+		if ( 'tags' === ap_current_page() ) {
+			return array( 'tags_order' => array(
+				'title'    => __( 'Order', 'anspress-question-answer' ),
+			) );
 		}
 
 		return $filters;
@@ -652,6 +564,26 @@ class AnsPress_Tag {
 			'success'  => true,
 			'items'    => ap_get_tag_filter( $search ),
 			'multiple' => true,
+			'nonce'    => wp_create_nonce( 'filter_' . $filter ),
+		));
+	}
+
+	/**
+	 * Ajax callback for loading order by filter for tags.
+	 *
+	 * @since 4.0.0
+	 */
+	public static function load_filter_tags_order() {
+		$filter = ap_sanitize_unslash( 'filter', 'r' );
+		check_ajax_referer( 'filter_' . $filter, '__nonce' );
+
+		ap_ajax_json( array(
+			'success'  => true,
+			'items'    => array(
+				[ 'key' => 'tags_order', 'value' => 'popular', 'label' => __( 'Popular', 'anspress-question-answer' ) ],
+				[ 'key' => 'tags_order', 'value' => 'new', 'label' => __( 'New', 'anspress-question-answer' ) ],
+				[ 'key' => 'tags_order', 'value' => 'name', 'label' => __( 'Name', 'anspress-question-answer' ) ],
+			),
 			'nonce'    => wp_create_nonce( 'filter_' . $filter ),
 		));
 	}
@@ -685,6 +617,59 @@ class AnsPress_Tag {
 
 				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : ''  ) . '</span>';
 			}
+		}
+	}
+
+	/**
+	 * Output active tags_order in filter
+	 *
+	 * @since 4.1.0
+	 */
+	public static function filter_active_tags_order( $active, $filter ) {
+		$tags_order = ap_get_current_list_filters( 'tags_order' );
+		$tags_order = ! empty ( $tags_order ) ? $tags_order : 'popular';
+
+		$orders = array(
+			'popular' => __( 'Popular', 'anspress-question-answer' ),
+			'new'     => __( 'New', 'anspress-question-answer' ),
+			'name'    => __( 'Name', 'anspress-question-answer' ),
+		);
+
+		$active = isset( $orders[ $tags_order ] ) ? $orders[ $tags_order ] : '';
+
+		return ': <span class="ap-filter-active">' . $active . '</span>';
+	}
+
+	/**
+	 * Modify current page to show tag archive.
+	 *
+	 * @param string $query_var Current page.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function ap_current_page( $query_var ) {
+		if ( 'tags' === $query_var && 'tag' === get_query_var( 'ap_page' ) ) {
+			return 'tag';
+		}
+
+		return $query_var;
+	}
+
+	/**
+	 * Modify main query to show tag archive.
+	 *
+	 * @param object $query Wp_Query object.
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function modify_query_archive( $query ) {
+		if ( $query->is_main_query() &&
+			$query->is_tax( 'question_tag' ) &&
+			'tag' === get_query_var( 'ap_page' ) ) {
+
+			unset( $query->query_vars['question_tag'] );
+			$query->set( 'p', ap_opt( 'tags_page' ) );
+			$query->set( 'post_type', 'page' );
 		}
 	}
 }

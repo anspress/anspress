@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 if ( ! function_exists('ap_get_questions' ) ) {
-	function ap_get_questions($args = array()) {
+	function ap_get_questions( $args = [] ) {
 
 		if ( is_front_page() ) {
 			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
@@ -25,13 +25,13 @@ if ( ! function_exists('ap_get_questions' ) ) {
 		}
 
 		if ( ! isset( $args['post_parent'] ) ) {
-			$args['post_parent'] = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
+			$args['post_parent'] = get_query_var( 'parent' ) ? get_query_var( 'parent' ) : false;
 		}
 
 		$args = wp_parse_args( $args, array(
 			'showposts' => ap_opt( 'question_per_page' ),
-			'paged' => $paged,
-			'ap_query' => 'featured_post',
+			'paged'     => $paged,
+			'ap_query'  => 'featured_post',
 		));
 
 		return new Question_Query( $args );
@@ -65,10 +65,21 @@ function ap_get_question( $question_id ) {
 }
 
 /**
- * output questions page pagination
- * @return string pagination html tag
+ * Output questions page pagination.
+ *
+ * @param integer|false $paged Current paged value.
+ *
+ * @return void
+ * @since 4.1.0 Added new argument `$paged`.
  */
-function ap_questions_the_pagination() {
+function ap_questions_the_pagination( $paged = false ) {
 	global $questions;
-	ap_pagination( false, $questions->max_num_pages );
+
+	if ( get_query_var( 'ap_paged' ) ) {
+		$paged = get_query_var( 'ap_paged' );
+	} elseif ( get_query_var( 'paged' ) ) {
+		$paged = get_query_var( 'paged' );
+	}
+
+	ap_pagination( $paged, $questions->max_num_pages );
 }

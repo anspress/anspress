@@ -12,7 +12,7 @@
  * @anspress-addon
  * Addon Name:    Notification
  * Addon URI:     https://anspress.io
- * Description:   User notifications.
+ * Description:   Shows a fancy user notification dropdown like Facebook and Stackoverflow.
  * Author:        Rahul Aryan
  * Author URI:    https://anspress.io
  */
@@ -49,10 +49,9 @@ class AnsPress_Notification_Hook {
 			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
 			anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 			anspress()->add_filter( 'ap_menu_items', __CLASS__, 'ap_menu_items' );
-			anspress()->add_action( 'ap_option_groups', __CLASS__, 'load_options', 20 );
+			anspress()->add_filter( 'ap_form_addon-free_notification', __CLASS__, 'load_options' );
 			anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 			anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
-			anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
 			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 			anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 			anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
@@ -78,20 +77,25 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Register Avatar options
 	 */
-	public static function load_options() {
-		global $ap_option_tabs;
+	public static function load_options( $form ) {
+		$opt = ap_opt();
 
-		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
-			'name'  => 'user_page_title_notifications',
-			'label' => __( 'Notifications page title', 'anspress-question-answer' ),
-			'desc'  => __( 'Custom title for user profile notifications page', 'anspress-question-answer' ),
+		$form = array(
+			'fields' => array(
+				'user_page_title_notifications' => array(
+					'label' => __( 'Notifications page title', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom title for user profile notifications page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_title_notifications'],
+				),
+				'user_page_slug_notifications' => array(
+					'label' => __( 'Notifications page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom slug for user profile notifications page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_slug_notifications'],
+				),
+			),
 		);
 
-		$ap_option_tabs['addons']['sections']['profile.php']['fields'][] = array(
-			'name'  => 'user_page_slug_notifications',
-			'label' => __( 'Notifications page slug', 'anspress-question-answer' ),
-			'desc'  => __( 'Custom slug for user profile notifications page', 'anspress-question-answer' ),
-		);
+		return $form;
 	}
 
 	/**
@@ -181,24 +185,10 @@ class AnsPress_Notification_Hook {
 	}
 
 	/**
-	 * Enqueue scripts.
-	 *
-	 * @param array $js JavaScript array.
-	 * @return array
-	 */
-	public static function ap_assets_js( $js ) {
-		if ( is_user_logged_in() ) {
-			$js['notifications']['active'] = true;
-		}
-
-		return $js;
-	}
-
-	/**
 	 * Display reputation tab content in AnsPress author page.
 	 */
 	public static function notification_page() {
-		$user_id = get_query_var( 'ap_user_id' );
+		$user_id = AnsPress_Profile_Hooks::current_user_id();
 	 	$seen = ap_sanitize_unslash( 'seen', 'r', 'all' );
 
 		if ( get_current_user_id() === $user_id ) {

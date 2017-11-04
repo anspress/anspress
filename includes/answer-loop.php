@@ -18,7 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Question
  *
- * This class is for retriving answers based on $args
+ * This class is for retrieving answers based on $args
  */
 class Answers_Query extends WP_Query {
 
@@ -39,7 +39,6 @@ class Answers_Query extends WP_Query {
 	public function __construct( $args = array() ) {
 		global $answers;
 		$paged = (int) ap_isset_post_value( 'ap_paged', 1 );
-		set_query_var( 'ap_paged', $paged );
 
 		$defaults = array(
 			'question_id'              => get_question_id(),
@@ -51,7 +50,7 @@ class Answers_Query extends WP_Query {
 			'only_best_answer'         => false,
 			'ignore_selected_answer'   => false,
 			'post_status'   				   => [ 'publish' ],
-			'ap_order_by' 	           => 'active',
+			'ap_order_by' 	           => ap_opt( 'answers_sort' ),
 		);
 
 		if ( get_query_var( 'answer_id' ) ) {
@@ -80,18 +79,18 @@ class Answers_Query extends WP_Query {
 			$question_id = $this->args['question_id'];
 		}
 
-		if ( ! empty( $question_id ) ) {
+		if ( ! isset( $this->args['author'] ) && empty( $question_id ) && empty( $this->args['p'] ) ) {
+			$this->args = [];
+		} else {
 			$this->args['post_parent'] = $question_id;
+			$this->args['post_type']   = 'answer';
+			$args                      = $this->args;
+
+			/**
+			 * Initialize parent class
+			 */
+			parent::__construct( $args );
 		}
-
-		$this->args['post_type'] = 'answer';
-
-		$args = $this->args;
-
-		/**
-		 * Initialize parent class
-		 */
-		parent::__construct( $args );
 	}
 
 	public function get_answers() {
@@ -298,16 +297,14 @@ function ap_answer_user_can_view() {
  * output answers pagination
  */
 function ap_answers_the_pagination() {
-
 	if ( get_query_var( 'answer_id' ) ) {
 		echo '<a class="ap-all-answers" href="' . get_permalink( get_question_id() ) . '">' . sprintf( __( 'You are viewing 1 out of %d answers, click here to view all answers.', 'anspress-question-answer' ), ap_get_answers_count( get_question_id() ) ) . '</a>';
 	} else {
 		global $answers;
 		$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
-		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) .'?ap_paged=%#%' );
+		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) . '/page/%#%/' );
 	}
 }
-
 
 /**
  * Return numbers of published answers.
@@ -329,8 +326,6 @@ function ap_count_published_answers( $question_id ) {
 	wp_cache_set( $key, $count, 'ap_count' );
 	return $count;
 }
-
-
 
 /**
  * Count all answers excluding best answer.

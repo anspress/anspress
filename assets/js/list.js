@@ -1,6 +1,4 @@
 (function($) {
-	AnsPress.loadTemplate('list');
-
 	AnsPress.models.Filter = Backbone.Model.extend({
 		defaults: {
 			active: false,

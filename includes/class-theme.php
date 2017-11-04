@@ -122,6 +122,7 @@ class AnsPress_Theme {
 	 *
 	 * @param  string $title Page title.
 	 * @return string
+	 * @deprecated 4.1.0
 	 */
 	public static function wpseo_title( $title ) {
 		if ( is_anspress() ) {
@@ -165,6 +166,8 @@ class AnsPress_Theme {
 
 	/**
 	 * Add feed link in wp_head
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function feed_link() {
 		if ( is_anspress() ) {
@@ -195,6 +198,8 @@ class AnsPress_Theme {
 
 	/**
 	 * Remove some unwanted things from wp_head
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function remove_head_items() {
 		if ( is_anspress() ) {
@@ -218,21 +223,15 @@ class AnsPress_Theme {
 
 	/**
 	 * Add feed and links in HEAD of the document
+	 *
+	 * @since 4.1.0 Removed question sortlink override.
 	 */
 	public static function wp_head() {
-		if ( is_anspress() ) {
+		if ( 'base' === ap_current_page() ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $q_feed ) . '" />';
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Answers Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $a_feed ) . '" />';
-
-			if ( ! defined( 'WPSEO_VERSION' ) ) {
-				echo '<link rel="canonical" href="' . ap_canonical_url() . '">'; // xss okay.
-			}
-
-			if ( is_question() ) {
-				echo '<link rel="shortlink" href="' . esc_url( wp_get_shortlink( get_question_id() ) ) . '" />';
-			}
 		}
 	}
 
@@ -240,6 +239,7 @@ class AnsPress_Theme {
 	 * Update concal link when wpseo plugin installed.
 	 *
 	 * @return string
+	 * @deprecated 4.1.0
 	 */
 	public static function wpseo_canonical( $url ) {
 		if ( is_question() ) {
@@ -276,14 +276,35 @@ class AnsPress_Theme {
 	/**
 	 * Check if anspress.php file exists in theme. If exists
 	 * then load this template for AnsPress.
+	 *
 	 * @param  string $template Template.
 	 * @return string
 	 * @since  3.0.0
 	 */
 	public static function anspress_basepage_template( $template ) {
-		if ( is_page( ap_base_page_slug() ) ) {
-			$new_template = locate_template( array( 'anspress.php' ) );
-			if ( '' != $new_template ) {
+		if ( is_anspress() ) {
+			$templates = [ 'anspress.php', 'page.php' ];
+
+			if ( is_page() ) {
+				$_post = get_queried_object();
+
+				array_unshift( $templates, 'page-' . $_post->ID . '.php' );
+				array_unshift( $templates, 'page-' . $_post->post_name . '.php' );
+
+				$page_template = get_post_meta( $_post->ID, '_wp_page_template', true );
+
+				if ( ! empty( $page_template ) && 'default' !== $page_template ) {
+					array_unshift( $templates, $page_template );
+				}
+			} elseif ( is_tax() ) {
+				$_term = get_queried_object();
+				$term_type = str_replace( 'question_', '', $_term->taxonomy );
+				array_unshift( $templates, 'anspress-' . $term_type . '.php' );
+			}
+
+			$new_template = locate_template( $templates );
+
+			if ( '' !== $new_template ) {
 				return $new_template ;
 			}
 		}
@@ -291,6 +312,110 @@ class AnsPress_Theme {
 		return $template;
 	}
 
+	/**
+	 * Filter single question content to render [anspress] shortcode.
+	 *
+	 * @param string $content Content.
+	 * @return string
+	 *
+	 * @since 4.1.0
+	 */
+	public static function the_content_single_question( $content ) {
+		global $ap_shortcode_loaded, $post;
 
+		if ( ! $post ) {
+			return $content;
+		}
+
+		if ( true !== $ap_shortcode_loaded && is_singular( 'question' ) ) {
+			return do_shortcode( '[anspress]' );
+		}
+
+		// Check if user have permission.
+		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) && ! ap_user_can_read_post( $post->ID, false, $post->post_type ) ) {
+			return '<p>' . esc_attr__( 'Sorry, you do not have permission to read this post.', 'anspress-question-answer' ) . '</p>';
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Return comment open as false in single question page. So that
+	 * theme won't render comments again.
+	 *
+	 * @global $question_rendered
+	 * @param boolean $ret Return.
+	 * @return boolean
+	 *
+	 * @since 4.1.0
+	 */
+	public static function single_question_comment_disable( $ret ) {
+		global $question_rendered;
+
+		if ( true === $question_rendered && is_singular( 'question' ) ) {
+			return false;
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Generate question excerpt if there is not any already.
+	 *
+	 * @param string $excerpt Default excerpt.
+	 * @param object $post    WP_Post object.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function get_the_excerpt( $excerpt, $post ) {
+		if ( 'question' === $post->post_type ) {
+			if ( get_query_var( 'answer_id' ) ) {
+				$post = ap_get_post( get_query_var( 'answer_id' ) );
+			}
+
+			// Check if excerpt exists.
+			if ( ! empty( $post->post_excerpt ) ) {
+				return $post->post_excerpt;
+			}
+
+			$excerpt_length = apply_filters( 'excerpt_length', 55 );
+			$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+			return wp_trim_words( $post->post_content, $excerpt_length, $excerpt_more );
+		}
+
+		return $excerpt;
+	}
+
+	/**
+	 * Override page templates.
+	 *
+	 * @param string $template Current template.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function page_template( $template ){
+		if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
+			return locate_template( 'page.php' );
+		}
+		return $template;
+	}
+
+	/**
+	 * Remove hentry class from question, answers and main pages .
+	 *
+	 * @param array   $post_classes Post classes.
+	 * @param array   $class        An array of additional classes added to the post.
+	 * @param integer $post_id      Post ID.
+	 * @return array
+	 * @since 4.1.0
+	 */
+	public static function remove_hentry_class( $post_classes, $class, $post_id ) {
+		$_post = ap_get_post( $post_id );
+
+		if ( $_post && ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) || in_array( $_post->ID, ap_main_pages_id() ) ) ) {
+			return array_diff( $post_classes, [ 'hentry' ] );
+		}
+
+		return $post_classes;
+	}
 }
-

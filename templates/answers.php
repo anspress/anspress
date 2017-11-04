@@ -10,10 +10,11 @@
  */
 
 ?>
-<ap-answers-w style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
+<apanswersw style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
+
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
-			<h3 class="ap-answers-label ap-pull-left" ap-answerscount-text>
+			<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t" itemprop="answerCount">
 				<?php
 					$count = ( '' !== get_query_var( 'answer_id' ) ? ap_get_answers_count() : ap_total_answers_found() );
 					printf(
@@ -22,26 +23,32 @@
 					);
 				?>
 			</h3>
+
 			<?php ap_answers_tab( get_the_permalink() ); ?>
 		</div>
 
 		<?php
-		if ( '' === get_query_var( 'answer_id' ) ) {
+		if ( '' === get_query_var( 'answer_id' ) && ap_have_answers() ) {
 			ap_answers_the_pagination();
 		}
 		?>
 
 		<div id="answers">
+			<apanswers>
+				<?php if ( ap_have_answers() ) : ?>
 
-				<ap-answers>
 					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
 						<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
 					<?php endwhile ; ?>
-				</ap-answers>
+
+				<?php endif; ?>
+			</apanswers>
+
 		</div>
 
-		<?php ap_answers_the_pagination(); ?>
-
+		<?php if ( ap_have_answers() ) : ?>
+			<?php ap_answers_the_pagination(); ?>
+		<?php endif; ?>
 	</div>
-</ap-answers-w>
+</apanswersw>
 

@@ -27,6 +27,43 @@ class AnsPress_PostTypes {
 		anspress()->add_action( 'init', __CLASS__, 'register_question_cpt', 0 );
 		anspress()->add_action( 'init', __CLASS__, 'register_answer_cpt', 0 );
 		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 2 );
+		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
+	}
+
+	/**
+	 * Return question permalink structure.
+	 *
+	 * @return object
+	 * @since 4.1.0
+	 */
+	public static function question_perm_structure() {
+		$question_permalink = ap_opt( 'question_page_permalink' );
+		$question_slug = ap_get_page_slug( 'question' );
+
+		$rewrites = [];
+		if ( 'question_perma_2' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question%';
+		} elseif ( 'question_perma_3' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question_id%';
+		} elseif ( 'question_perma_4' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question_id%/%question%';
+		} elseif ( 'question_perma_5' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question%/%question_id%';
+		} elseif ( 'question_perma_6' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question_id%-%question%';
+		} elseif ( 'question_perma_7' === $question_permalink ) {
+			$rewrites['rule'] = $question_slug . '/%question%-%question_id%';
+		} else {
+			$rewrites['rule'] = ap_base_page_slug() . '/' . $question_slug . '/%question%';
+		}
+
+		/**
+		 * Allows filtering question permalink structure.
+		 *
+		 * @param array $rewrite Question permalink structure.
+		 * @since 4.1.0
+		 */
+		return (object) apply_filters( 'ap_question_perm_structure', $rewrites );
 	}
 
 	/**
@@ -35,6 +72,9 @@ class AnsPress_PostTypes {
 	 * @since 2.0.1
 	 */
 	public static function register_question_cpt() {
+
+		add_rewrite_tag( '%question_id%', '([0-9]+)', 'post_type=question&p=' );
+		add_rewrite_tag( '%question%', '([^/]+)' );
 
 		// Question CPT labels.
 		$labels = array(
@@ -54,8 +94,9 @@ class AnsPress_PostTypes {
 		);
 
 		/**
-		 * FILTER: ap_question_cpt_labels
-		 * filter is called before registering question CPT
+		 * Override default question CPT labels.
+		 *
+		 * @param array $labels Default question labels.
 		 */
 		$labels = apply_filters( 'ap_question_cpt_labels', $labels );
 
@@ -69,6 +110,7 @@ class AnsPress_PostTypes {
 				'editor',
 				'author',
 				'comments',
+				'excerpt',
 				'trackbacks',
 				'revisions',
 				'custom-fields',
@@ -87,14 +129,19 @@ class AnsPress_PostTypes {
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
 			'rewrite'             => false,
-			'query_var'           => 'apq',
+			'query_var'           => 'question',
+			'delete_with_user'    => true,
 		);
 
 		/**
-		 * FILTER: ap_question_cpt_args
-		 * filter is called before registering question CPT
+		 * Filter default question CPT arguments.
+		 *
+		 * @param array $args CPT arguments.
 		 */
 		$args = apply_filters( 'ap_question_cpt_args', $args );
+
+		// Call it before registering cpt.
+		AnsPress_Rewrite::rewrite_rules();
 
 		// Register CPT question.
 		register_post_type( 'question', $args );
@@ -124,8 +171,9 @@ class AnsPress_PostTypes {
 		);
 
 		/**
-		 * FILTER: ap_answer_cpt_label
-		 * filter is called before registering answer CPT
+		 * Filter default answer labels.
+		 *
+		 * @param array $labels Default answer labels.
 		 */
 		$labels = apply_filters( 'ap_answer_cpt_label', $labels );
 
@@ -138,6 +186,7 @@ class AnsPress_PostTypes {
 				'editor',
 				'author',
 				'comments',
+				'excerpt',
 				'revisions',
 				'custom-fields',
 			),
@@ -154,11 +203,13 @@ class AnsPress_PostTypes {
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
 			'rewrite'             => false,
+			'query_var'						=> 'answer',
 		);
 
 		/**
-		 * FILTER: ap_answer_cpt_args
-		 * filter is called before registering answer CPT
+		 * Filter default answer arguments.
+		 *
+		 * @param array $args Arguments.
 		 */
 		$args = apply_filters( 'ap_answer_cpt_args', $args );
 
@@ -183,40 +234,56 @@ class AnsPress_PostTypes {
 			}
 
 			$default_lang = '';
+
 			// Support polylang permalink.
 			if ( function_exists( 'pll_default_language' ) ) {
 				$default_lang = pll_default_language();
 			}
 
 			if ( get_option( 'permalink_structure' ) ) {
-				if ( 'question_perma_1' === $question_slug ) {
-					$link = home_url( $default_lang . '/' . ap_base_page_slug() . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
-				} elseif ( 'question_perma_2' === $question_slug ) {
-					$link = home_url( $default_lang . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->post_name . '/' );
-				} elseif ( 'question_perma_3' === $question_slug ) {
-					$link = home_url( $default_lang . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' );
-				} elseif ( 'question_perma_4' === $question_slug ) {
-					$link = home_url( $default_lang . '/' . ap_opt( 'question_page_slug' ) . '/' . $post->ID . '/' . $post->post_name . '/' );
-				}
+				$structure = self::question_perm_structure();
+				$rule = str_replace( '%question_id%', $post->ID, $structure->rule );
+				$rule = str_replace( '%question%', $post->post_name, $rule );
+				$link = home_url( $default_lang . '/' . $rule . '/' );
 			} else {
-				$link = add_query_arg( array( 'apq' => false, 'question_id' => $post->ID ), ap_base_page_link() );
+				$link = add_query_arg( array( 'question' => $post->ID ), ap_base_page_link() );
 			}
 
 			/**
-			 * FILTER: ap_question_post_type_link
 			 * Allow overriding of question post type permalink
+			 *
+			 * @param string $link Question link.
+			 * @param object $post Post object.
 			 */
 			return apply_filters( 'ap_question_post_type_link', $link, $post );
 
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
-			$link = get_permalink( $post->post_parent ) . "{$post->ID}/";
+			$link = get_permalink( $post->post_parent ) . "answer/{$post->ID}/";
 
 			/**
-			* FILTER: ap_answer_post_type_link
-			* Allow overriding of answer post type permalink
-			*/
+			 * Allow overriding of answer post type permalink.
+			 *
+			 * @param string $link Question link.
+			 * @param object $post Post object.
+			 */
 			return apply_filters( 'ap_answer_post_type_link', $link, $post );
+		} // End if().
+
+		return $link;
+	}
+
+	/**
+	 * Filters the post type archive permalink.
+	 *
+	 * @param string $link      The post type archive permalink.
+	 * @param string $post_type Post type name.
+	 * @since 4.1.0
+	 */
+	public static function post_type_archive_link( $link, $post_type ) {
+		if ( 'question' === $post_type ) {
+			return get_permalink( ap_opt( 'base_page' ) );
 		}
+
 		return $link;
 	}
 

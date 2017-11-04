@@ -25,16 +25,14 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'ap_ajax_hover_card', __CLASS__, 'hover_card' );
 		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
-		anspress()->add_action( 'ap_ajax_new_comment', 'AnsPress_Comment_Hooks','new_comment' );
 		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks','edit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_get_comment', 'AnsPress_Comment_Hooks', 'get_comment' );
+		anspress()->add_action( 'ap_ajax_comment_form', 'AnsPress_Comment_Hooks', 'comment_form' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 		// Post actions.
@@ -50,7 +48,6 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
 
 		// Uploader hooks.
-		anspress()->add_action( 'wp_ajax_ap_image_submission', 'AnsPress_Uploader', 'image_submission' );
 		anspress()->add_action( 'ap_ajax_delete_attachment', 'AnsPress_Uploader', 'delete_attachment' );
 
 		// List filtering.
@@ -58,6 +55,11 @@ class AnsPress_Ajax {
 
 		// Subscribe
 		anspress()->add_action( 'ap_ajax_subscribe', __CLASS__, 'subscribe_to_question' );
+		anspress()->add_action( 'ap_ajax_get_repeatable_field', __CLASS__, 'get_repeatable_field' );
+
+		anspress()->add_action( 'ap_ajax_form_question', 'AP_Form_Hooks', 'submit_question_form', 11 );
+		anspress()->add_action( 'ap_ajax_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11 );
+		anspress()->add_action( 'ap_ajax_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11 );
 
 	}
 
@@ -87,8 +89,8 @@ class AnsPress_Ajax {
 
 		if ( $questions ) {
 				$items = '<div class="ap-similar-questions-head">';
-				$items .= '<h3><i class="apicon-check"></i>' . sprintf( _n( '%d similar question found', '%d similar questions found', count( $questions ), 'anspress-question-answer' ), count( $questions ) ) . '</h3>';
-				$items .= '<p>' . __( 'We\'ve found similar questions that have already been asked, click to read them.', 'anspress-question-answer' ) . '</p>';
+				$items .= '<p><strong>' . sprintf( _n( '%d similar question found', '%d similar questions found', count( $questions ), 'anspress-question-answer' ), count( $questions ) ) . '</strong></p>';
+				$items .= '<p>' . __( 'We have found some similar questions that have been asked earlier.', 'anspress-question-answer' ) . '</p>';
 				$items .= '</div>';
 
 			$items .= '<div class="ap-similar-questions">';
@@ -330,6 +332,8 @@ class AnsPress_Ajax {
 
 	/**
 	 * Handle Ajax callback for user hover card
+	 *
+	 * @deprecated 4.1.0
 	 */
 	public static function hover_card() {
 		if ( ap_opt( 'disable_hover_card' ) ) {
@@ -398,30 +402,10 @@ class AnsPress_Ajax {
 	 * @since 3.0.0
 	 */
 	public static function load_tinymce() {
-		$settings = ap_tinymce_editor_settings( 'answer' );
+		ap_answer_form( ap_sanitize_unslash( 'question_id', 'r' ) );
+		ap_ajax_tinymce_assets();
 
-		if ( false !== $settings['tinymce'] ) {
-			$settings['tinymce'] = array(
-				'content_css'      => ap_get_theme_url( 'css/editor.css' ),
-				'wp_autoresize_on' => true,
-			);
-		}
-
-		if ( ap_user_can_upload( ) ) {
-			ap_upload_js_init();
-			wp_enqueue_script( 'ap-upload', ANSPRESS_URL . 'assets/js/upload.js', [ 'plupload' ] );
-		}
-
-		echo '<div class="ap-editor">';
-	    wp_editor( '', 'description', $settings );
-	    echo '</div>';
-	    \_WP_Editors::enqueue_scripts();
-	    ob_start();
-		print_footer_scripts();
-		$scripts = ob_get_clean();
-		echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
-		\_WP_Editors::editor_js();
-	    wp_die();
+		wp_die();
 	}
 
 	/**
@@ -434,7 +418,7 @@ class AnsPress_Ajax {
 
 		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin( ) || current_user_can( 'manage_options' ) ) ) {
 			ap_ajax_json( array(
-				'success' => false,
+				'success'  => false,
 				'snackbar' => [ 'message' => __( 'Sorry, you are not allowed to convert this question to post', 'anspress-question-answer' ) ],
 			) );
 		}
@@ -524,5 +508,38 @@ class AnsPress_Ajax {
 			'count'    => ap_get_post_field( 'subscribers', $post_id ),
 			'label'    => __( 'Unsubscribe', 'anspress-question-answer' ),
 		) );
+	}
+
+	/**
+	 * Ajax callback for returning repeatable field group.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function get_repeatable_field() {
+		if ( ! ap_verify_nonce( 'get_repeatable_field' ) ) {
+			ap_ajax_json( [ 'success' => false ] );
+		}
+
+		$form_name    = ap_sanitize_unslash( 'form_name', 'r' );
+		$field_name   = ap_sanitize_unslash( 'field_name', 'r' );
+		$count_groups = ap_sanitize_unslash( 'current_groups', 'r' );
+
+		$_REQUEST[ sanitize_title( $field_name ) . '-g' ] = $count_groups;
+		$_REQUEST[ sanitize_title( $field_name ) . '-n' ]  = ap_sanitize_unslash( 'current_nonce', 'r' );
+
+		$form = anspress()->get_form( 'question' );
+		$form->prepare();
+		$field = $form->find( $field_name );
+
+		if ( ! empty( $field ) && is_object( $field ) ) {
+			if ( $field->get_last_field() ) {
+				ap_ajax_json( array(
+					'success' => true,
+					'html'    => $field->get_last_field()->output(),
+					'nonce'    => wp_create_nonce( $field_name . ( $count_groups + 1 ) ),
+				) );
+			}
+		}
 	}
 }

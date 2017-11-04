@@ -122,6 +122,7 @@ class AP_Roles {
  * @param  integer|boolean $user_id User_id.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
+ * @since  4.1.0 Updated to use new option post_question_per.
  */
 function ap_user_can_ask( $user_id = false ) {
 	if ( false === $user_id ) {
@@ -148,7 +149,12 @@ function ap_user_can_ask( $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_new_question' ) || ( ! is_user_logged_in() && ap_allow_anonymous()) ) {
+	$option = ap_opt( 'post_question_per' );
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_new_question' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 
@@ -162,25 +168,31 @@ function ap_user_can_ask( $user_id = false ) {
  * @param  boolean|integer $user_id        User ID.
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
+ * @since  4.1.0 Check if `$question_id` argument is a valid question CPT ID. Updated to use new option post_answer_per. Also removed checking of option only_admin_can_answer. Fixed: anonymous cannot answer if allow op to answer option is unchecked.
  */
 function ap_user_can_answer( $question_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
+	$question = ap_get_post( $question_id );
+
+	// Return false if not a question.
+	if ( ! $question || 'question' !== $question->post_type ) {
+		return false;
+	}
+
 	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
-
-	$question = ap_get_post( $question_id );
 
 	/**
 	 * Allow overriding of ap_user_can_answer.
 	 *
 	 * @param boolean|string $filter 		Apply this filter, default is empty string.
-	 * @param integer 		 $question_id 	Question ID.
-	 * @param integer 		 $user_id 		User ID.
-	 * @since 2.4.6 Added 2 new arguments `$question_id` and `$user_id`.
+	 * @param integer 		   $question_id 	Question ID.
+	 * @param integer 		   $user_id 		User ID.
+	 * @since 2.4.6          Added 2 new arguments `$question_id` and `$user_id`.
 	 */
 	$filter = apply_filters( 'ap_user_can_answer', '', $question->ID, $user_id );
 
@@ -191,12 +203,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Return if user cannot read question.
-	if ( ! ap_allow_anonymous() && ! ap_user_can_read_question( $question_id, $user_id ) ) {
-		return false;
-	}
-
-	// Check if only admin is allowed to answer.
-	if ( ap_opt( 'only_admin_can_answer' ) && ! is_super_admin( $user_id ) ) {
+	if ( ! ap_user_can_read_question( $question_id, $user_id ) ) {
 		return false;
 	}
 
@@ -211,21 +218,21 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && $question->post_author == $user_id ) { // loose comparison ok.
+	if ( ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // loose comparison ok.
 		return false;
 	}
 
-	// Check if user already answered and if multiple answer disabled then down't allow them to answer.
-	if ( user_can( $user_id, 'ap_new_answer' ) ) {
-		if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
-			return false;
-		} else {
-			return true;
-		}
+	// Check if user already answered and if multiple answer disabled then don't allow them to answer.
+	if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
+		return false;
 	}
 
-	// Check if anonymous asnwer is allowed and if yes then return true.
-	if ( ap_allow_anonymous() && ! is_user_logged_in() ) {
+	$option = ap_opt( 'post_answer_per' );
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_new_answer' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 
@@ -509,7 +516,12 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_new_comment' ) || ap_opt( 'anonymous_comment' ) ) {
+	$option = ap_opt( 'post_comment_per' );
+	if ( 'have_cap' === $option && user_can( $user_id, 'ap_new_comment' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 
@@ -866,12 +878,14 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 }
 
 /**
- * Check if anonymous posting is allowed.
+ * Check if anonymous question posting is allowed.
  *
  * @return boolean
+ * @since unknown
+ * @since 4.1.0 Updated to use new option post_question_per.
  */
 function ap_allow_anonymous() {
-	return (bool) ap_opt( 'allow_anonymous' );
+	return 'anyone' === ap_opt( 'post_question_per' );
 }
 
 /**
@@ -883,13 +897,14 @@ function ap_allow_anonymous() {
  * @since  2.1
  * @since  2.4.7 Added new filter `ap_user_can_change_status`.
  * @since  2.4.7 Added new argument `$user_id`.
+ * @since  4.1.0 Do not allow post author to change their own post status regardless of moderator role.
  **/
 function ap_user_can_change_status( $post_id, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( user_can( $user_id, 'ap_change_status_other' ) || is_super_admin( $user_id ) ) {
+	if ( is_super_admin( $user_id ) ) {
 		return true;
 	}
 
@@ -914,6 +929,16 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
+	}
+
+	// Do not allow post author to change status if current status is moderate,
+	// regardless of moderator user role.
+	if ( 'moderate' === $post_o->post_status && $post_o->post_author == $user_id ) {
+		return false;
+	}
+
+	if ( user_can( $user_id, 'ap_change_status_other' ) ) {
+		return true;
 	}
 
 	if ( user_can( $user_id, 'ap_change_status' ) &&
@@ -1047,6 +1072,7 @@ function ap_role_caps( $role ) {
 		'participant' => array(
 			'ap_read_question'   => true,
 			'ap_read_answer'     => true,
+			'ap_read_comment'     => true,
 			'ap_new_question'    => true,
 			'ap_new_answer'      => true,
 			'ap_new_comment'     => true,
@@ -1098,6 +1124,7 @@ function ap_role_caps( $role ) {
  * @param  string|integer  $post_type Post type.
  * @return boolean
  * @since  2.4.6
+ * @since  4.1.0 Check for options `read_question_per` and `read_answer_per`.
  */
 function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = false ) {
 	if ( false === $user_id ) {
@@ -1105,17 +1132,14 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 	}
 
 	$post_o = ap_get_post( $_post );
+	$post_type = $post_o->post_type;
 
 	if ( ! $post_o ) {
 		return false;
 	}
 
-	if ( false === $post_type ) {
-		$post_type = $post_o->post_type;
-	}
-
 	// If not question or answer then return true.
-	if ( ! in_array( $post_type, array( 'question', 'answer' ), true ) ) {
+	if ( ! in_array( $post_type, [ 'question', 'answer' ], true ) ) {
 		return true;
 	}
 
@@ -1163,19 +1187,13 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 		return false;
 	}
 
-	if ( ! ap_opt( 'only_logged_in' ) && 'question' === $post_type ) {
-		return true;
-	}
+	$option = ap_opt( 'read_' . $post_type . '_per' );
 
-	if ( ! ap_opt( 'logged_in_can_see_ans' ) && 'answer' === $post_type ) {
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_' . $post_type ) ) {
 		return true;
-	}
-
-	if ( ap_opt( 'only_logged_in' ) && is_user_logged_in() && 'question' === $post_type ) {
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
 		return true;
-	}
-
-	if ( ap_opt( 'logged_in_can_see_ans' ) && is_user_logged_in() && 'answer' === $post_type ) {
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 
@@ -1339,6 +1357,115 @@ function ap_user_can_toggle_featured( $user_id = false ) {
 	}
 
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_toggle_featured' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if a user can read a comment.
+ *
+ * @param  integer|object  $_comment 	Comment id or object.
+ * @param  boolean|integer $user_id   User ID.
+ * @return boolean
+ * @since  4.1.0
+ */
+function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
+	if ( false === $_comment ) {
+		$_comment = get_comment( $_comment );
+	}
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_read_comment.
+	 *
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  integer|object 	$_comment 		  Comment object.
+	 * @param  integer 			    $user_id 		    User ID.
+	 * @since  4.1.0
+	 */
+	$filter = apply_filters( 'ap_user_can_read_comment', '', $_comment, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// If user cannot read post then return from here.
+	if ( ! ap_user_can_read_post( $_comment->comment_post_ID, $user_id ) ) {
+		return false;
+	}
+
+	if ( '1' != $_comment->comment_approved && ! ap_user_can_approve_comment( $user_id ) ) {
+		return false;
+	}
+
+	$option = ap_opt( 'read_comment_per' );
+	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_comment' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Check if a user can read a comments.
+ *
+ * @param  mixed           $_post     Post ID or object.
+ * @param  boolean|integer $user_id   User ID.
+ * @return boolean
+ * @since  4.1.0
+ */
+function ap_user_can_read_comments( $_post = null, $user_id = false ) {
+	$_post = ap_get_post( $_post );
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_read_comments.
+	 *
+	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
+	 * @param  object 			    $_post 		      Post ID or object.
+	 * @param  integer 			    $user_id 		    User ID.
+	 * @since  4.1.0
+	 */
+	$filter = apply_filters( 'ap_user_can_read_comments', '', $_post, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	// If user cannot read post then return from here.
+	if ( ! ap_user_can_read_post( $_post, $user_id ) ) {
+		return false;
+	}
+
+	$option = ap_opt( 'read_comment_per' );
+
+	if ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
 		return true;
 	}
 

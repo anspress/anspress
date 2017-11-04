@@ -49,7 +49,8 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
 			anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
 			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
-			anspress()->add_action( 'save_post', __CLASS__, 'question_answer_hooks', 1, 3 );
+			anspress()->add_action( 'save_post_question', __CLASS__, 'save_question_hooks', 1, 3 );
+			anspress()->add_action( 'save_post_answer', __CLASS__, 'save_answer_hooks', 1, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
@@ -60,39 +61,49 @@ class AnsPress_Hooks {
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
-			anspress()->add_filter( 'posts_pre_query', 'AP_QA_Query_Hooks', 'posts_pre_query', 1, 2 );
+			anspress()->add_action( 'posts_pre_query', 'AP_QA_Query_Hooks', 'modify_query', 1, 2 );
 
 			// Theme	hooks.
 			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
 			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
 			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
-			anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
-			anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
-			anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
+			//anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
+			//anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
+			//anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
 			anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
-			anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
+			//anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
+			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'page_template' );
 
 			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-			anspress()->add_filter( 'mce_buttons', __CLASS__, 'editor_buttons', 10, 2 );
-			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 10, 2 );
+			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
+			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
+
+			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
+			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
+			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
+			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
+			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );
+
+			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
-			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
+			anspress()->add_filter( 'preprocess_comment', 'AnsPress_Comment_Hooks', 'preprocess_comment' );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );
 
-			// Register post ststus.
+			// Register post status.
 			anspress()->add_action( 'init', 'AnsPress_Post_Status', 'register_post_status' );
 
 			// Rewrite rules hooks.
+			anspress()->add_filter( 'request', 'AnsPress_Rewrite', 'alter_the_query' );
 			anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
 			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
@@ -100,7 +111,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
 
 			// Upload hooks.
-			anspress()->add_action( 'before_delete_post', 'AnsPress_Uploader', 'before_delete_attachment' );
+			anspress()->add_action( 'deleted_post', 'AnsPress_Uploader', 'deleted_attachment' );
 			anspress()->add_action( 'init', 'AnsPress_Uploader', 'create_single_schedule' );
 			anspress()->add_action( 'ap_delete_temp_attachments', 'AnsPress_Uploader', 'cron_delete_temp_attachments' );
 
@@ -108,6 +119,11 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
 			anspress()->add_action( 'ap_before_delete_answer', 'AnsPress_Vote', 'delete_votes' );
 			anspress()->add_action( 'ap_deleted_votes', 'AnsPress_Vote', 'ap_deleted_votes', 10, 2 );
+
+			// Form hooks.
+			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
+			anspress()->add_action( 'ap_form_answer', 'AP_Form_Hooks', 'answer_form', 11 );
+			anspress()->add_action( 'ap_form_comment', 'AP_Form_Hooks', 'comment_form', 11 );
 	}
 
 	/**
@@ -301,18 +317,23 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer			 $comment_id Comment ID.
 	 * @param	integer|false $approved	 1 if comment is approved else false.
+	 *
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function new_comment_approve( $comment_id, $approved ) {
 		if ( 1 === $approved ) {
 			$comment = get_comment( $comment_id );
 
-			$post = ap_get_post( $comment->comment_post_ID );
-
-			if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-				return;
+			if ( 'anspress' === $comment->comment_type ) {
+				/**
+				 * Action is triggered when a anspress comment is published.
+				 *
+				 * @param object $comment Comment object.
+				 * @since unknown
+				 */
+				do_action( 'ap_publish_comment', $comment );
 			}
-
-			do_action( 'ap_publish_comment', $comment );
 		}
 	}
 
@@ -320,45 +341,50 @@ class AnsPress_Hooks {
 	 * Used to create an action when comment get approved.
 	 *
 	 * @param	array|object $comment Comment object.
+	 *
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function comment_approve( $comment ) {
-		$post = ap_get_post( $comment->comment_post_ID );
-
-		if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-			return;
+		if ( 'anspress' === $comment->comment_type ) {
+			/** This action is documented in includes/hooks.php */
+			do_action( 'ap_publish_comment', $comment );
 		}
-
-		do_action( 'ap_publish_comment', $comment );
 	}
 
 	/**
 	 * Used to create an action when comment get unapproved.
 	 *
 	 * @param	array|object $comment Comment object.
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function comment_unapprove( $comment ) {
-		$post = ap_get_post( $comment->comment_post_ID );
-
-		if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-			return;
+		if ( 'anspress' === $comment->comment_type ) {
+			/**
+			 * Action is triggered when a anspress comment is unpublished.
+			 *
+			 * @param object $comment Comment object.
+			 * @since unknown
+			 */
+			do_action( 'ap_unpublish_comment', $comment );
 		}
-
-		do_action( 'ap_unpublish_comment', $comment );
 	}
 
 	/**
 	 * Used to create an action when comment get trashed.
 	 *
 	 * @param	integer $comment_id Comment ID.
+	 * @since unknown
+	 * @since 4.1.0 Do not check post_type, instead comment type.
 	 */
 	public static function comment_trash( $comment_id ) {
 		$comment = get_comment( $comment_id );
-		$post = ap_get_post( $comment->comment_post_ID );
 
-		if( ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
-			return;
+		if ( 'anspress' === $comment->comment_type ) {
+			/** This action is documented in includes/hooks.php */
+			do_action( 'ap_unpublish_comment', $comment );
 		}
-		do_action( 'ap_unpublish_comment', $comment );
 	}
 
 	/**
@@ -475,39 +501,43 @@ class AnsPress_Hooks {
 	 * @return void
 	 */
 	public static function flush_rules() {
-			if ( ap_opt( 'ap_flush' ) != 'false' ) {
-					flush_rewrite_rules();
-					ap_opt( 'ap_flush', 'false' );
-			}
+		if ( ap_opt( 'ap_flush' ) != 'false' ) {
+			flush_rewrite_rules();
+			ap_opt( 'ap_flush', 'false' );
+		}
 	}
 
 	/**
-	 * Configure which button will appear in wp_editor
+	 * Include AnsPress tinymce plugin.
 	 *
-	 * @param	array	$buttons	 Button names.
-	 * @param	string $editor_id Editor ID.
+	 * @param array $plugin_array Tinymce plugins.
 	 * @return array
+	 * @since 4.1.0
 	 */
-	public static function editor_buttons( $buttons, $editor_id ) {
-		if ( is_anspress() || ap_is_ajax() ) {
-			return array( 'bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'link', 'unlink', 'blockquote', 'pre' );
-		}
-
-		return $buttons;
-	}
+	public static function mce_plugins( $plugin_array ) {
+		$plugin_array[ 'anspress' ] = ANSPRESS_URL . 'assets/js/min/tinymce-plugin.min.js';
+		return $plugin_array;
+ 	}
 
 	/**
 	 * Filter post so that anonymous author should not be replaced
+	 * by current user approving post.
 	 *
 	 * @param	array $data post data.
 	 * @param	array $args Post arguments.
 	 * @return array
 	 * @since 2.2
+	 * @since 4.1.0 Fixed: `post_author` get replaced if `anonymous_name` is empty.
+	 *
+	 * @global object $post Global post object.
 	 */
 	public static function wp_insert_post_data( $data, $args ) {
+		global $post;
+
 		if ( in_array( $args['post_type'], [ 'question', 'answer' ], true ) ) {
 			$fields = ap_get_post_field( 'fields', $args['ID'] );
-			if ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) {
+
+			if ( ( is_object( $post ) && '0' === $post->post_author ) || ( !empty( $fields ) && !empty( $fields['anonymous_name'] ) ) ) {
 				$data['post_author'] = '0';
 			}
 		}
@@ -548,74 +578,184 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Base page ID.
 	 * @param	object	$post		Post object.
+	 * @since 4.1.0   Update respective page slug in options.
 	 */
 	public static function base_page_update( $post_id, $post ) {
-
 		if ( wp_is_post_revision( $post ) ) {
 			return;
 		}
 
-		if ( ap_opt( 'base_page' ) == $post_id ) {
+		$main_pages = array_keys( ap_main_pages() );
+		$page_ids = [];
+
+		foreach ( $main_pages as $slug ) {
+			$page_ids[ ap_opt( $slug ) ] = $slug;
+		}
+
+		if ( in_array( $post_id, array_keys( $page_ids ) ) ) {
+			$current_opt = $page_ids[ $post_id ];
+
+			ap_opt( $current_opt, $post_id );
+			ap_opt( $current_opt . '_id', $post->post_name );
+
 			ap_opt( 'ap_flush', 'true' );
 		}
 	}
 
 	/**
-	 * Trigger AnsPress posts hooks right after inserting question/answer
+	 * Trigger posts hooks right after saving question.
 	 *
 	 * @param	integer $post_id Post ID.
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
-	 * @since 3.0.3
+	 * @since 4.1.0
 	 */
-	public static function question_answer_hooks( $post_id, $post, $updated ) {
+	public static function save_question_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
 			return;
 		}
 
-		// check if post type is question or answer.
-		if ( ! in_array( $post->post_type, [ 'question', 'answer' ] ) ) {
-			return;
+		$form = anspress()->get_form( 'question' );
+		$values = $form->get_values();
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_question' : 'new_question';
+
+		$qameta = array(
+			'last_updated' => current_time( 'mysql' ),
+			'answers'      => ap_count_published_answers( $post_id ),
+			'activities'   => array(
+				'type'    => $activity_type,
+				'user_id' => $post->post_author,
+				'date'    => current_time( 'mysql' ),
+			),
+		);
+
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
+			$qameta['fields'] = array(
+				'anonymous_name' => $values['anonymous_name']['value'],
+			);
 		}
 
-		if ( $updated ) {
-			if ( 'answer' === $post->post_type ) {
-				// Update answer count.
-				ap_update_answers_count( $post->post_parent );
-			}
+		/**
+		 * Modify qameta args which will be inserted after inserting
+		 * or updating question.
+		 *
+		 * @param array   $qameta  Qameta arguments.
+		 * @param object  $post    Post object.
+		 * @param boolean $updated Is updated.
+		 * @since 4.1.0
+		 */
+		$qameta = apply_filters( 'ap_insert_question_qameta', $qameta, $post, $updated );
+		ap_insert_qameta( $post_id, $qameta );
 
+		if ( $updated ) {
 			/**
-			 * Action triggered right after updating question/answer.
+			 * Action triggered right after updating question.
 			 *
 			 * @param integer $post_id Inserted post ID.
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
 			 */
-			do_action( 'ap_processed_update_' . $post->post_type, $post_id, $post );
+			do_action( 'ap_processed_update_question' , $post_id, $post );
 
 		} else {
 			/**
-			 * Action triggered right after inserting new question/answer.
+			 * Action triggered right after inserting new question.
 			 *
 			 * @param integer $post_id Inserted post ID.
 			 * @param object	$post		Inserted post object.
 			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
 			 */
-			do_action( 'ap_processed_new_' . $post->post_type, $post_id, $post );
+			do_action( 'ap_processed_new_question', $post_id, $post );
 		}
 
-		if ( 'question' === $post->post_type ) {
-			// Update qameta terms.
-			ap_update_qameta_terms( $post_id );
+		// Update qameta terms.
+		ap_update_qameta_terms( $post_id );
+	}
+
+	/**
+	 * Trigger posts hooks right after saving answer.
+	 *
+	 * @param	integer $post_id Post ID.
+	 * @param	object	$post		Post Object
+	 * @param	boolean $updated Is updating post
+	 * @since 4.1.0
+	 */
+	public static function save_answer_hooks( $post_id, $post, $updated ) {
+		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
+			return;
 		}
+
+		$form = anspress()->get_form( 'answer' );
+		$values = $form->get_values();
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_answer' : 'new_answer';
+
+		// Update parent question's answer count.
+		ap_update_answers_count( $post->post_parent );
+
+		$qameta = array(
+			'last_updated' => current_time( 'mysql' ),
+			'activities'   => array(
+				'type'    => $activity_type,
+				'user_id' => $post->post_author,
+				'date'    => current_time( 'mysql' ),
+			),
+		);
+
+		// Check if anonymous post and have name.
+		if ( ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
+			$qameta['fields'] = array(
+				'anonymous_name' => $values['anonymous_name']['value'],
+			);
+		}
+
+		/**
+		 * Modify qameta args which will be inserted after inserting
+		 * or updating answer.
+		 *
+		 * @param array   $qameta  Qameta arguments.
+		 * @param object  $post    Post object.
+		 * @param boolean $updated Is updated.
+		 * @since 4.1.0
+		 */
+		$qameta = apply_filters( 'ap_insert_answer_qameta', $qameta, $post, $updated );
+		ap_insert_qameta( $post_id, $qameta );
+
+		if ( $updated ) {
+			/**
+			 * Action triggered right after updating answer.
+			 *
+			 * @param integer $post_id Inserted post ID.
+			 * @param object	$post		Inserted post object.
+			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
+			 */
+			do_action( 'ap_processed_update_answer' , $post_id, $post );
+
+		} else {
+			/**
+			 * Action triggered right after inserting new answer.
+			 *
+			 * @param integer $post_id Inserted post ID.
+			 * @param object	$post		Inserted post object.
+			 * @since 0.9
+			 * @since 4.1.0 Removed `$post->post_type` variable.
+			 */
+			do_action( 'ap_processed_new_answer', $post_id, $post );
+		}
+
+		// Update qameta terms.
+		ap_update_qameta_terms( $post_id );
 	}
 
 	/**
 	 * Update user meta of vote
 	 *
-	 * @param	integer $userid					 User ID who is voting.
-	 * @param	string	$type						 Vote type.
-	 * @param	integer $actionid				 Post ID.
+	 * @param	integer $userid					  User ID who is voting.
+	 * @param	string	$type						  Vote type.
+	 * @param	integer $actionid				  Post ID.
 	 * @param	integer $receiving_userid User who is receiving vote.
 	 */
 	public static function update_user_vote_casted_count( $userid, $type, $actionid, $receiving_userid ) {

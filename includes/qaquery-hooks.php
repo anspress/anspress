@@ -115,9 +115,10 @@ class AP_QA_Query_Hooks {
 	 * @param  array  $posts Post array.
 	 * @param  object $instance QP_Query instance.
 	 * @return array
+	 * @since 3.0.0
+	 * @since 4.1.0 Fixed: qameta fields are not appending properly.
 	 */
 	public static function posts_results( $posts, $instance ) {
-
 		foreach ( (array) $posts as $k => $p ) {
 			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
@@ -134,18 +135,19 @@ class AP_QA_Query_Hooks {
 					if ( ! isset( $p_arr[ $fields_name ] ) || empty( $p_arr[ $fields_name ] ) ) {
 						$p->$fields_name = $val;
 					}
+				}
 
-					// Serialize fields and activities.
-					$p->activities = maybe_unserialize( $p->activities );
-					$p->fields = maybe_unserialize( $p->fields );
+				// Serialize fields and activities.
+				$p->activities = maybe_unserialize( $p->activities );
+				$p->fields = maybe_unserialize( $p->fields );
 
-					$p->ap_qameta_wrapped = true;
-					$p->votes_net = $p->votes_up - $p->votes_down;
+				$p->ap_qameta_wrapped = true;
+				$p->votes_net = $p->votes_up - $p->votes_down;
 
-					if ( ! ap_user_can_view_post( $p ) ) {
-						$p->post_content = __( 'Restricted content', 'anspress-question-answer' );
-					}
-
+				// Unset if user cannot read.
+				if ( ! ap_user_can_read_post( $p, false, $p->post_type ) ) {
+					unset( $posts[ $k ] );
+				} else {
 					$posts[ $k ] = $p;
 				}
 			}
@@ -159,25 +161,16 @@ class AP_QA_Query_Hooks {
 	}
 
 	/**
-	 * Filter to override default WP method to count total found posts
-	 * using SQL_CALC_FOUND_ROWS. Prevent AnsPress quries to use SQL_CALC_FOUND_ROWS
-	 * which is an old MySql function. Query takes too much time SQL_CALC_FOUND_ROWS in a site
-	 * where there are more then a million posts.
+	 * Modify main query.
+	 *
+	 * @param array  $posts  Array of post object.
+	 * @param object $query Wp_Query object.
+	 * @return void|array
+	 * @since 4.1.0
 	 */
-	public static function posts_pre_query( $query = null, $instance) {
-		if ( isset( $instance->query['ap_query'] ) ) {
-			global $wpdb;
-
-			$instance->request = str_replace( 'SQL_CALC_FOUND_ROWS', '', $instance->request );
-
-			$instance->query_vars['no_found_rows'] = 1;
-			$instance->found_posts = $wpdb->get_var( "SELECT count({$wpdb->posts}.ID) FROM {$wpdb->posts} {$instance->count_request['join']} WHERE 1=1 {$instance->count_request['where']}" );
-
-			$instance->found_posts = apply_filters_ref_array( 'found_posts', array( $instance->found_posts, &$instance ) );
-
-			$posts_per_page = ( ! empty( $instance->query_vars['posts_per_page'] ) ? $instance->query_vars['posts_per_page'] : get_option( 'posts_per_page' ) );
-			$instance->max_num_pages = ceil( $instance->found_posts / $posts_per_page );
+	public static function modify_query( $posts, $query ) {
+		if ( $query->is_main_query() && $query->is_search() && 'question' === get_query_var( 'post_type' ) ) {
+			return [ get_post( ap_opt( 'base_page' ) ) ];
 		}
-
 	}
 }

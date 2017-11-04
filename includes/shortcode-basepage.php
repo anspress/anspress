@@ -33,22 +33,22 @@ class AnsPress_BasePage_Shortcode {
 	/**
 	 * Control the output of [anspress] shortcode.
 	 *
-	 * @param  array  $atts  {
+	 * @param array  $atts {
 	 *     Attributes of the shortcode.
 	 *
-	 *     $categories 			slug of question_category
-	 *     $tags 				slug of question_tag
-	 *     $tax_relation 		taxonomy relation, see here https://codex.wordpress.org/Taxonomies
-	 *     $tags_operator 		operator for question_tag taxonomy
-	 *     $categories_operator operator for question_category taxonomy
-	 *     $page 				Select a page to display.
-	 *     $hide_list_head 		Hide list head?
-	 *     $order_by 				Sort by.
+	 *     @type string  $categories 			     Slug of question_category
+	 *     @type string  $tags 				         Slug of question_tag
+	 *     @type string  $tax_relation 		     Taxonomy relation, see here @link https://codex.wordpress.org/Taxonomies
+	 *     @type string  $tags_operator 		   Operator for question_tag taxonomy
+	 *     @type string  $categories_operator  Operator for question_category taxonomy
+	 *     @type string  $page 				         Select a page to display.
+	 *     @type boolean $hide_list_head 		   Hide list head?
+	 *     @type string  $order_by 				     Sort by.
 	 *  }
-	 * @param  string $content
+	 * @param string $content Shortcode content.
 	 * @return string
 	 * @since 2.0.0
-	 * @since  3.0.0 Added new attribute `hide_list_head` and `attr_order_by`.
+	 * @since 3.0.0 Added new attribute `hide_list_head` and `attr_order_by`.
 	 */
 	public function anspress_sc( $atts, $content = '' ) {
 		global $questions, $ap_shortcode_loaded;

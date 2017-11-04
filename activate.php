@@ -233,10 +233,6 @@ class AP_Activate {
 		$ap_roles->add_roles();
 		$ap_roles->add_capabilities();
 
-		if ( true === version_compare( ap_opt( 'ap_version' ), '4.0.0-alpha.1', '<' ) ) {
-			update_option( 'ap_update_helper', true );
-		}
-
 		if ( ap_opt( 'ap_version' ) !== AP_VERSION ) {
 			ap_opt( 'ap_installed', 'false' );
 			ap_opt( 'ap_version', AP_VERSION );
@@ -249,6 +245,9 @@ class AP_Activate {
 		$this->insert_tables();
 		update_option( 'anspress_db_version', AP_DB_VERSION );
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
+
+		// Create main pages.
+		ap_create_base_page();
 
 		ap_opt( 'ap_flush', 'true' );
 		flush_rewrite_rules( false );

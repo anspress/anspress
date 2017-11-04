@@ -24,6 +24,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+use AnsPress\Form\Field\Captcha as Captcha;
+
+/**
+ * Include captcha field.
+ */
+require_once ANSPRESS_ADDONS_DIR . '/free/recaptcha/class-captcha.php';
 
 /**
  * Bad words filter hooks.
@@ -37,126 +43,69 @@ class AnsPress_reCcaptcha {
 	 */
 	public static function init() {
 		ap_add_default_options([
-			'recaptcha_method'   => 'post',
+			'recaptcha_method'  => 'post',
 		]);
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
-		anspress()->add_action( 'ap_process_ask_form', __CLASS__, 'verification_response' );
-		anspress()->add_action( 'ap_process_answer_form', __CLASS__, 'verification_response' );
-		anspress()->add_action( 'ap_ask_form_fields', __CLASS__, 'ap_ask_form_fields', 10, 2 );
-		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_ask_form_fields', 10, 2 );
+
+		anspress()->add_action( 'ap_form_addon-free_recaptcha', __CLASS__, 'options' );
+		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_comment_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 	}
 
 	/**
 	 * Register Categories options
 	 */
 	public static function options() {
-		// Register recpatcha options.
-		ap_register_option_section( 'addons', 'recpatcha',  __( 'reCaptcha', 'anspress-question-answer' ), [
-			array(
-				'name'  => 'recaptcha_site_key',
-				'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
-				'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
-			) ,
-			array(
-				'name'  => 'recaptcha_secret_key',
-				'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
-				'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
-			) ,
-			array(
-				'name'    => 'recaptcha_method',
-				'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
-				'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
-				'type'    => 'select',
-				'options' => [ 'curl' => 'CURL', 'post' => 'POST' ],
-			) ,
-		]);
+		$opt = ap_opt();
+
+		$form = array(
+			'fields' => array(
+				'recaptcha_site_key' => array(
+					'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
+					'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
+					'value' => $opt['recaptcha_site_key'],
+				),
+				'recaptcha_secret_key' => array(
+					'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
+					'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
+					'value' => $opt['recaptcha_secret_key'],
+				),
+				'recaptcha_method' => array(
+					'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
+					'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
+						'curl' => 'CURL',
+						'post' => 'POST',
+					),
+					'value'   => $opt['recaptcha_method'],
+				),
+			),
+		);
+
+		return $form;
 	}
 
 	/**
-	 * Send ajax response if capatcha verification fails.
-	 * @since 3.0.0
-	 */
-	public static function verification_response() {
-		if ( ap_show_captcha_to_user() && false === SELF::verify_recaptcha() ) {
-			ap_ajax_json( array(
-				'form' 			=> $_POST['ap_form_action'],
-				'message'		=> 'captcha_error',
-				'errors'		=> array( 'captcha' => __( 'Bot verification failed.', 'anspress-question-answer' ) ),
-			) );
-		}
-	}
-
-	/**
-	 * Check reCaptach verification.
+	 * Add captcha field in question and answer form.
 	 *
-	 * @return boolean
-	 * @since  3.0.0
+	 * @param array $form Form arguments.
+	 * @return array
+	 * @since 4.1.0
 	 */
-	public static function verify_recaptcha() {
-		require_once( ANSPRESS_ADDONS_DIR . '/free/recaptcha/autoload.php' );
-		$method = ap_opt( 'recaptcha_method' ) === 'curl' ? new \ReCaptcha\RequestMethod\CurlPost() : new \ReCaptcha\RequestMethod\Post();
-		$recaptcha = new \ReCaptcha\ReCaptcha( trim( ap_opt( 'recaptcha_secret_key' ) ), $method );
-		$ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ); //@codingStandardsIgnoreLine.
-		$captcha_response = ap_sanitize_unslash( 'g-recaptcha-response', 'r' );
-		$resp = $recaptcha->verify( $captcha_response, $ip );
-
-		if ( $resp->isSuccess() ) {
-			do_action( 'ap_form_captcha_verified' );
-			return true;
-		}
-
-		return false;
-	}
-
-	public static function ap_ask_form_fields( $args, $editing ) {
-		global $editing_post;
-
+	public static function ap_question_form_fields( $form ) {
 		if ( ap_show_captcha_to_user() ) {
-			// Show recpatcha if key exists and enabled.
-			if ( ap_opt( 'recaptcha_site_key' ) == '' ) {
-				$html = '<div class="ap-notice red">' . __( 'reCaptach keys missing, please add keys', 'anspress-question-answer' ) . '</div>';
-			} else {
 
-				$html = '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>';
-
-				$html .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>';
-
-				ob_start();
-				?>
-					<script type="text/javascript">
-						var onloadCallback = function() {
-						widgetId1 = grecaptcha.render("recaptcha", {
-							"sitekey" : "<?php echo ap_opt( 'recaptcha_site_key' ); ?>"
-							});
-						};
-
-						jQuery(document).ready(function(){
-							// Rest widget after answer form get submitted
-							if(typeof AnsPress !== 'undefined'){
-								AnsPress.on('answerFormPosted', function(){
-									if(typeof grecaptcha !== 'undefined')
-										grecaptcha.reset(widgetId1);
-								});
-							}
-						});
-
-					</script>
-				<?php
-				$html .= ob_get_clean();
-			}
-
-			$args['fields'][] = array(
-				'name'  => 'captcha',
-				'type'  => 'custom',
+			$form['fields']['captcha'] = array(
+				'label'  => __( 'Prove that you are a human', 'anspress-question-answer' ),
+				'type'  => 'captcha',
 				'order' => 100,
-				'html' 	=> $html,
 			);
 		}
 
-		return $args;
+		return $form;
 	}
+
 }
-
-
 
 AnsPress_reCcaptcha::init();

@@ -39,14 +39,6 @@
 					}]
 				}
 			},
-			phpdocumentor: {
-				dist: {
-					options: {
-						directory: './',
-						target: 'M:\wamp\www\anspress-docs\\'
-					}
-				}
-			},
 			csscomb: {
 				files: ['**/*.css', '!**/node_modules/**'],
 				tasks: ['csscomb'],
@@ -75,6 +67,12 @@
 				},
 				project: {
 					src: ['package.json']
+				},
+				readme: {
+					options: {
+						prefix: 'Stable tag:\\s+'
+					},
+					src: ['readme.txt']
 				}
 			},
 			sass: {
@@ -87,7 +85,8 @@
 						"templates/css/main.css": "templates/scss/main.scss",
 						"templates/css/fonts.css": "templates/scss/fonts.scss",
 						"templates/css/RTL.css": "templates/scss/RTL.scss",
-						"assets/ap-admin.css": "assets/ap-admin.scss"
+						"assets/ap-admin.css": "assets/ap-admin.scss",
+						"templates/addons/email/style.css": "templates/addons/email/style.scss"
 					}
 				}
 			},
@@ -97,12 +96,11 @@
 				},
 				my_target: {
 					files: {
-						'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js'],
+						'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js', 'assets/js/notifications.js', 'assets/js/upload.js'],
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
 						'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
-						'assets/js/min/tags.min.js': ['assets/js/tags.js'],
-						'assets/js/min/notifications.min.js': ['assets/js/notifications.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],
+						'assets/js/min/tinymce-plugin.min.js': ['assets/js/tinymce-plugin.js']
 					}
 				}
 			},
@@ -141,10 +139,6 @@
 					tasks: ['uglify'],
 				}
 			}
-		});
-
-		grunt.registerTask('precommit', function () {
-			grunt.task.run('build');
 		});
 
 		grunt.registerTask('translate', ['makepot', 'potomo']);

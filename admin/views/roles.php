@@ -49,8 +49,6 @@ if ( ! empty( $message ) ) {
 ?>
 
 <div class="wrap">
-	<?php do_action( 'ap_before_admin_page_title' ) ?>
-	<h2><?php _e( 'Permission and role', 'anspress-question-answer' ) ?></h2>
 	<div class="white-bg">
 	    <table class="form-table">
 	        <tbody>

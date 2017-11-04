@@ -34,47 +34,56 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function init() {
 		ap_add_default_options([
-			'user_page_slug_questions'   => 'questions',
-			'user_page_slug_answers'   => 'answers',
-			'user_page_title_questions'   => __( 'Questions', 'anspress-question-answer' ),
+			'user_page_slug_questions'  => 'questions',
+			'user_page_slug_answers'    => 'answers',
+			'user_page_title_questions' => __( 'Questions', 'anspress-question-answer' ),
 			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
-		anspress()->add_action( 'ap_option_groups', __CLASS__, 'options' );
+
+		anspress()->add_action( 'ap_form_addon-free_profile', __CLASS__, 'options' );
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
-		anspress()->add_action( 'ap_rewrite_rules', __CLASS__, 'rewrite_rules', 10, 3 );
+
+		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
-		anspress()->add_filter( 'ap_user_link', __CLASS__, 'ap_user_link', 10, 3 );
+		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
+		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 10, 2 );
+		//anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
 	}
 
 	/**
 	 * Register profile options
 	 */
 	public static function options() {
+		$opt = ap_opt();
 
-		ap_register_option_section( 'addons', basename( __FILE__ ),  __( 'User Profile', 'anspress-question-answer' ), [
-			array(
-				'name'  => 'user_page_title_questions',
-				'label' => __( 'Questions page title', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom title for user profile questions page', 'anspress-question-answer' ),
+		$form = array(
+			'fields' => array(
+				'user_page_title_questions' => array(
+					'label' => __( 'Questions page title', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom title for user profile questions page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_title_questions'],
+				),
+				'user_page_slug_questions' => array(
+					'label' => __( 'Questions page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom slug for user profile questions page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_slug_questions'],
+				),
+				'user_page_title_answers' => array(
+					'label' => __( 'Answers page title', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom title for user profile answers page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_title_answers'],
+				),
+				'user_page_slug_answers' => array(
+					'label' => __( 'Answers page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Custom slug for user profile answers page', 'anspress-question-answer' ),
+					'value' => $opt['user_page_slug_answers'],
+				),
 			),
-			array(
-				'name'  => 'user_page_slug_questions',
-				'label' => __( 'Questions page slug', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom slug for user profile questions page', 'anspress-question-answer' ),
-			),
-			array(
-				'name'  => 'user_page_title_answers',
-				'label' => __( 'Answers page title', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom title for user profile answers page', 'anspress-question-answer' ),
-			),
-			array(
-				'name'  => 'user_page_slug_answers',
-				'label' => __( 'Answers page slug', 'anspress-question-answer' ),
-				'desc'  => __( 'Custom slug for user profile answers page', 'anspress-question-answer' ),
-			),
-		]);
+		);
+
+		return $form;
 	}
 
 	/**
@@ -98,19 +107,16 @@ class AnsPress_Profile_Hooks {
 	 * @return array
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
-		$base = $slug . ap_get_page_slug( 'user' );
-
-		self::user_pages();
+		$base_slug = get_page_uri( ap_opt( 'user_page' ) );
+		update_option( 'ap_user_path', $base_slug, true );
 
 		$new_rules = [];
-
-
-		foreach ( (array) anspress()->user_pages as $page ) {
-			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/page/?([0-9]{1,})/?$' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'] . '&paged=$matches[#]';
-			$new_rules[ $base . '/([^/]+)/' . $page['rewrite'] . '/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]&user_page=' . $page['slug'];
-		}
-
-		$new_rules[ $base . '/([^/]+)/?' ] = 'index.php?page_id=' . $base_page_id . '&ap_page=user&ap_user=$matches[#]';
+		$new_rules = array(
+			$base_slug . '/([^/]+)/([^/]+)/page/?([0-9]{1,})/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]&ap_paged=$matches[#]',
+			$base_slug . '/([^/]+)/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]',
+			$base_slug . '/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user',
+			$base_slug . '/?' => 'index.php?ap_page=user',
+		);
 
 		return $new_rules + $rules;
 	}
@@ -161,6 +167,7 @@ class AnsPress_Profile_Hooks {
 			$rewrite = ap_opt( 'user_page_slug_' . $args['slug'] );
 			$title = ap_opt( 'user_page_title_' . $args['slug'] );
 
+
 			// Override user page slug.
 			if ( empty( $args['rewrite'] ) ) {
 				anspress()->user_pages[ $key ]['rewrite'] = ! empty( $rewrite ) ? sanitize_title( $rewrite ) : $args['slug'];
@@ -184,8 +191,8 @@ class AnsPress_Profile_Hooks {
 	 * Output user profile menu.
 	 */
 	public static function user_menu( $user_id = false, $class = '' ) {
-		$user_id = false !== $user_id ? $user_id : (int) get_query_var( 'ap_user_id' );
-		$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
+		$user_id = false !== $user_id ? $user_id : self::current_user_id();
+		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 
 		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class ) . '">';
@@ -193,7 +200,7 @@ class AnsPress_Profile_Hooks {
 		foreach ( (array) $ap_menu as $args ) {
 
 			if ( empty( $args['private'] ) || ( true === $args['private'] && get_current_user_id() === $user_id ) ) {
-				echo '<li class="ap-menu-' . esc_attr( $args['slug'] ) . ( $args['slug'] === $current_tab ? ' active' : '' ) . '">';
+				echo '<li class="ap-menu-' . esc_attr( $args['slug'] ) . ( $args['rewrite'] === $current_tab ? ' active' : '' ) . '">';
 
 				$url = isset( $args['url'] ) ? $args['url'] : ap_user_link( $user_id, $args['rewrite'] );
 				echo '<a href="' . esc_url( $url ) . '">';
@@ -227,9 +234,9 @@ class AnsPress_Profile_Hooks {
 	public static function page_title( $title ) {
 		if ( 'user' === ap_current_page() ) {
 			SELF::user_pages();
-			$title = sprintf( ap_opt( 'user_page_title' ), ap_user_display_name( get_query_var( 'ap_user_id' ) ) );
-			$current_tab = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
-			$page = ap_search_array( anspress()->user_pages, 'slug', $current_tab );
+			$title = ap_user_display_name( AnsPress_Profile_Hooks::current_user_id() );
+			$current_tab = sanitize_title( get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) ) );
+			$page = ap_search_array( anspress()->user_pages, 'rewrite', $current_tab );
 
 			if ( empty( $page ) ) {
 				return $title;
@@ -242,39 +249,11 @@ class AnsPress_Profile_Hooks {
 	}
 
 	/**
-	 * Filter ap_user_link function.
-	 *
-	 * @param string       $link Link.
-	 * @param integer      $user_id User id.
-	 * @param array|string $sub Sub page.
-	 * @return string
-	 */
-	public static function ap_user_link( $link, $user_id, $sub ) {
-		$user = get_user_by( 'id', $user_id );
-
-		// If permalink is enabled.
-		if ( $user_id > 0 && get_option( 'permalink_structure' ) !== '' ) {
-			if ( false === $sub ) {
-				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login );
-			} elseif ( is_array( $sub ) ) {
-				$sub['ap_page']  = 'user';
-				$sub['ap_user']  = $user->user_login;
-			} elseif ( ! is_array( $sub ) ) {
-				$sub = array( 'ap_page' => 'user', 'ap_user' => $user->user_login, 'user_page' => $sub );
-			}
-
-			$link = ap_get_link_to( $sub );
-		}
-
-		return $link;
-	}
-
-	/**
 	 * Render sub page template.
 	 */
 	public static function sub_page_template() {
-		$current = ap_sanitize_unslash( 'user_page', 'query_var', 'questions' );
-		$current_page = ap_search_array( anspress()->user_pages, 'slug', $current );
+		$current = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
+		$current_page = ap_search_array( anspress()->user_pages, 'rewrite', $current );
 
 		if ( ! empty( $current_page ) ) {
 			$current_page = $current_page[0];
@@ -295,11 +274,12 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function question_page() {
 		global $questions;
+
+		$user_id = self::current_user_id();
 		$args['ap_current_user_ignore'] = true;
-		$args['author'] = (int) get_query_var( 'ap_user_id' );
+		$args['author'] = $user_id;
 
 		/**
-		* FILTER: ap_authors_questions_args
 		* Filter authors question list args
 		*
 		* @var array
@@ -316,17 +296,19 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function answer_page() {
 		global $answers;
+
+		$user_id = self::current_user_id();
+
 		$args['ap_current_user_ignore'] = true;
 		$args['ignore_selected_answer'] = true;
 		$args['showposts'] = 10;
-		$args['author'] = (int) get_query_var( 'ap_user_id' );
+		$args['author'] = $user_id;
 
 		/*if ( false !== $paged ) {
 			$args['paged'] = $paged;
 		}*/
 
 		/**
-		 * FILTER: ap_authors_questions_args
 		 * Filter authors question list args
 		 *
 		 * @var array
@@ -376,6 +358,68 @@ class AnsPress_Profile_Hooks {
 		));
 	}
 
+	/**
+	 * Override current page of AnsPress.
+	 *
+	 * @param string $query_var Current page name.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function ap_current_page( $query_var ) {
+		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
+			$query_var = 'user';
+		}
+
+		return $query_var;
+	}
+
+	/**
+	 * Modify main query.
+	 *
+	 * @param array  $posts  Array of post object.
+	 * @param object $query Wp_Query object.
+	 * @return void|array
+	 * @since 4.1.0
+	 */
+	public static function modify_query_archive( $posts, $query ) {
+		if ( $query->is_main_query() && 'user' === get_query_var( 'ap_page' ) ) {
+			return [ get_post( ap_opt( 'base_page' ) ) ];
+		}
+	}
+
+	/**
+	 * Override user page template.
+	 *
+	 * @param string $template Template file.
+	 * @return string
+	 * @since 4.1.0
+	 */
+	public static function page_template( $template ) {
+		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
+			$user_slug = ap_opt( 'user_page_id' );
+			return locate_template( [ 'page-' . $user_slug . '.php', 'page.php' ] );
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Get current user id for AnsPress profile.
+	 *
+	 * @return integer
+	 * @since 4.1.0
+	 */
+	public static function current_user_id() {
+		$query_object = get_queried_object();
+		$user_id = get_queried_object_id();
+
+		// Current user id if queried object is not set.
+		if ( ! $query_object instanceof WP_User || empty( $user_id ) ) {
+			$user_id = get_current_user_id();
+		}
+
+		return (int) $user_id;
+	}
 }
 
 // Init addon.

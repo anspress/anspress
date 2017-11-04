@@ -1,6 +1,6 @@
 <?php
 /**
- * AnsPress options
+ * AnsPress options.
  *
  * @package   AnsPress
  * @author    Rahul Aryan <support@anspress.io>
@@ -98,17 +98,10 @@ function ap_default_options() {
 		'close_selected' 								=> true,
 		'moderate_new_question'					=> 'no_mod',
 		'mod_question_point'						=> 10,
-		'categories_per_page'						=> 20,
 		'question_prefix'								=> 'question',
-		'min_point_new_tag'							=> 100,
-		'allow_anonymous'								=> false,
-		'only_admin_can_answer'					=> false,
-		'logged_in_can_see_ans'					=> false,
-		'logged_in_can_see_comment'			=> false,
 		'question_text_editor'					=> false,
 		'answer_text_editor'						=> false,
 		'base_page_title'								=> __( 'Questions', 'anspress-question-answer' ),
-		'ask_page_title'								=> __( 'Ask question', 'anspress-question-answer' ),
 		'search_page_title'							=> __( 'Search "%s"', 'anspress-question-answer' ),
 		'user_page_title'							  => __( '%s', 'anspress-question-answer' ),
 		'disable_comments_on_question' 	=> false,
@@ -127,7 +120,6 @@ function ap_default_options() {
 		'show_question_sidebar' 				=> true,
 		'allow_upload' 									=> true,
 		'uploads_per_post' 							=> 4,
-		'ask_page_slug' 								=> 'ask',
 		'question_page_slug' 						=> 'question',
 		'question_page_permalink' 			=> 'question_perma_1',
 		'max_upload_size' 							=> 500000,
@@ -135,7 +127,6 @@ function ap_default_options() {
 		'disable_down_vote_on_answer' 	=> false,
 		'show_solved_prefix'						=> true,
 		'load_assets_in_anspress_only'	=> false,
-		'only_logged_in'								=> false,
 		'keep_stop_words'								=> true,
 		'default_date_format'						=> false,
 		'anonymous_post_status'					=> 'moderate',
@@ -144,15 +135,21 @@ function ap_default_options() {
 		'duplicate_check'								=> true,
 		'disable_q_suggestion'					=> false,
 		'comment_number'								=> 5,
+		'read_question_per'			        => 'anyone',
+		'read_answer_per'			          => 'anyone',
+		'read_comment_per'			        => 'anyone',
+		'post_question_per'			        => 'anyone',
+		'post_answer_per'			          => 'logged_in',
+		'post_comment_per'			        => 'logged_in',
 	);
 
 	/**
-	 * FILTER: ap_default_options
 	 * Filter to be used by extensions for including their default options.
-	 * @var array
+	 *
+	 * @param array $defaults Default options.
 	 * @since 0.1
 	 */
-	$defaults = apply_filters('ap_default_options', $defaults );
+	$defaults = apply_filters( 'ap_default_options', $defaults );
 
 	wp_cache_set( 'ap_default_options', $defaults, 'ap' );
 

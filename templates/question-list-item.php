@@ -15,10 +15,10 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 $clearfix_class = array( 'ap-questions-item clearfix' );
 
 ?>
-<div id="question-<?php the_ID(); ?>" <?php post_class( $clearfix_class ); ?>>
+<div id="question-<?php the_ID(); ?>" <?php post_class( $clearfix_class ); ?> itemtype="https://schema.org/Question" itemscope="">
 	<div class="ap-questions-inner">
 		<div class="ap-avatar ap-pull-left">
-			<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+			<a href="<?php ap_profile_link(); ?>">
 				<?php ap_author_avatar( ap_opt( 'avatar_size_list' ) ); ?>
 			</a>
 		</div>
@@ -26,20 +26,20 @@ $clearfix_class = array( 'ap-questions-item clearfix' );
 			<!-- Votes count -->
 			<?php if ( ! ap_opt( 'disable_voting_on_question' ) ) : ?>
 				<span class="ap-questions-count ap-questions-vcount">
-					<span><?php ap_votes_net(); ?></span>
+					<span itemprop="upvoteCount"><?php ap_votes_net(); ?></span>
 					<?php _e( 'Votes', 'anspress-question-answer' ); ?>
 				</span>
 			<?php endif; ?>
 
 			<!-- Answer Count -->
 			<a class="ap-questions-count ap-questions-acount" href="<?php echo ap_answers_link(); ?>">
-				<span><?php ap_answers_count(); ?></span>
+				<span itemprop="answerCount"><?php ap_answers_count(); ?></span>
 				<?php _e( 'Ans', 'anspress-question-answer' ); ?>
 			</a>
 		</div>
 
 		<div class="ap-questions-summery">
-			<span class="ap-questions-title" itemprop="title">
+			<span class="ap-questions-title" itemprop="name">
 				<?php ap_question_status(); ?>
 				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</span>

@@ -1,8 +1,27 @@
 <?php
+/**
+ * AnsPress questions widget form.
+ *
+ * @package    AnsPress
+ * @subpackage Widget
+ * @author     Rahul Aryan <support@anspress.io>
+ * @license    GPL 3+ GNU GPL licence above 3+
+ * @link       https://anspress.io
+ * @since      2.0.0
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * The question widget class.
+ */
 class AP_Questions_Widget extends WP_Widget {
 
 	/**
-	 * Initialize the class
+	 * Initialize the class.
 	 */
 	public function __construct() {
 		parent::__construct(
@@ -12,13 +31,25 @@ class AP_Questions_Widget extends WP_Widget {
 		);
 	}
 
+	/**
+	 * Widget render
+	 *
+	 * @param array $args Arguments.
+	 * @param array $instance Widget arguments.
+	 * @return void
+	 */
 	public function widget( $args, $instance ) {
 		global $questions;
 
-		$title 			= apply_filters( 'widget_title', $instance['title'] );
-		$order_by 	= $instance[ 'order_by' ];
-		$limit			= $instance[ 'limit' ];
-		$category_ids	= $instance[ 'category_ids' ];
+		$instance = wp_parse_args( $instance, array(
+			'widget_title' => __( 'Questions', 'anspress-question-answer' ),
+			'order_by'     => 'active',
+		) );
+
+		$title 			   = apply_filters( 'widget_title', $instance['title'] );
+		$order_by 	   = $instance[ 'order_by' ];
+		$limit			   = $instance[ 'limit' ];
+		$category_ids	 = $instance[ 'category_ids' ];
 
 		if ( ! empty( $category_ids ) ) {
 			$category_ids = explode( ',', str_replace( ' ', '', $category_ids ) );
@@ -48,6 +79,7 @@ class AP_Questions_Widget extends WP_Widget {
 		ap_get_template_part( 'widgets/widget-questions' );
 		echo '</div>';
 		echo $args['after_widget'];
+
 		wp_reset_postdata();
 	}
 
