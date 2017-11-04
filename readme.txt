@@ -32,7 +32,7 @@ This plugin wouldn't be possible without a huge amount of contribution. Check ou
 
 We provide support on our site: https://anspress.io/questions
 Our support section uses actual version of AnsPress, so you can check out the support site if you want to see full working version of AnsPress.
-You can also take the demo site for a test drive https://d.anspress.io/
+You can also take the demo site for a test drive https://anspress.io/demo/
 
 **AnsPress Key Features:**
 
@@ -73,12 +73,12 @@ Use this shortcode in base to AnsPress work properly
 
 == Installation ==
 
-Read full documentation here https://anspress.io/docs/
+Read full documentation here https://anspress.io/resources/
 
 
 == Frequently Asked Questions ==
 
-Read full FAQ here https://anspress.io/docs/?topic=faq
+Read full FAQ here https://anspress.io/resources/faq/
 
 == Screenshots ==
 
@@ -97,6 +97,120 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 
 == Changelog ==
+
+= 4.1.0 =
+
+* Fixed: wp_mail first argument cannot be empty.
+* Set question archive link and include front slug while adding rewrites
+* Added hooks in form class: ap_before_prepare_field, ap_generate_form_args, ap_after_form_field
+* Improved question and answer schema
+* Prevent polluting JavaScript global namespace.
+* Fixed: question shortcode
+* Fixed: undefined index in questions widget.
+* Added new methods set_values()
+* Added email template
+* Check other templates exists before loading anspress.php template
+* Load page-*.php for archives if available
+* Deprecated wp_head related hooks
+* Fixed: comments modal not showing once closed
+* Fix: Comments posted from wp-admin aren't visible in frontend.
+* Fixed: User profile shows anonymous when rendering using shortcode
+* Removed options tags_page_title and tags_page_slug
+* Removed option categories_page_slug and categories_page_title
+* Fixed: anonymous cannot answer if allow op to answer option is unchecked
+* Removed old form and validation classes
+* Removed 3.x to 4.x upgrader
+* Added recaptcha in comment form
+* Anonymous name not showing in comment
+* Show category and tags in single question page
+* Fixed tags pagination
+* Improved categories page template
+* Added more dependent pages: categories, tags and user.
+* Removed JS template
+* Removed notifications.html js template
+* Removed question.html JS template
+* Added single comment route
+* Removed ap_the_comment() from answer.php
+* delete list.php
+* Renamed question.php to single-question.php :tractor:
+* Improved comments interface :lipstick:
+* Added new option post_comment_per :snowflake:
+* Removed option only_admin_can_answer
+* Removed logged_in_can_see_comment
+* Removed option logged_in_can_see_ans
+* Added new option post_answer_per for answer permission
+* Removed option allow_anonymous
+* Added new option post_question_per
+* Removed option only_logged_in
+* Added a new option read_comment_per to control comments visibility
+* Added new option read_answer_per
+* Added new option read_question_per. This option will control visibility of a question for users.
+* Do not allow post author to change own post status regardless of moderator role.
+* Strictly remove all tinymce toolbar except first one
+* Added ap_rewrites filter hook
+* Improved rewrite
+* Added new question permalink structure: QUESTION_SLUG/question-name-213/
+* Added new question permalink structure: QUESTION_SLUG/213-question-name/
+* Added new question permalink structure: https://domain.com/QUESTION_SLUG/question-name/question-id
+* Improved question rewrite rules
+* Added embed support for question and answer.
+* Add excerpt support question and answer CPT
+* Fixed JS issue and improved loading
+* Use single hierarchy for displaying single question.
+* Fixed: qameta fields are not appending properly
+* Fixed menu items
+* Removed "ask_page_title" option.
+* Removed "ask_page_slug" option.
+* let admin select ask question page
+* add "answer" prefix before answer permalink
+* Show loading while submitting question or answer form
+* Added new addons page
+* Improved tag addon options
+* Improved reputation options
+* Improved recaptcha addon options
+* Improved notification addon options
+* Improved email addon fields
+* Added textarea field
+* Process addon options form
+* Added new addons page
+* Make reputations date accurate
+* Deprecated: AnsPress_Validation and AnsPress_Form classes.
+* Improved wp-admin new answer page.
+* Deleted old options page
+* Check access rights in options page
+* Deprecated options page related functions.
+* Improved options page. Using new form class.
+* Added radio field
+* Added bad words in validation class and removed addon
+* Delete attachments if image not found in content
+* Improved answer form
+* Moved function of includes/answer-form.php and deleted file.
+* Fixed: removed hyphen from custom html tags
+* Deprecated ap_read_env() and ap_env_dev()
+* Deprecated ap_tinymce_editor_settings()
+* Improved answer form
+* Added jquery-form plugin as WP is using older version of this plugin
+* Improved question suggestion
+* Deleted ask-form.php
+* Added recpatcha field and deprecated few functions.
+* Improved question processing
+* Improved upload field
+* Added new form library
+* Fixed reputation re-count
+* Replace post-message tags with postMessage
+* Fixed html tags ap-comments to apComments and post-actions to postActions
+* Added new argument in ap_new_question_email_tags hook
+* Allow overriding question moderation message.
+* Fixed: If anonymous post, `post_author` get replaced by current user id if `anonymous_name` is empty.
+* Load local avatar only if no gravatar exists
+* FIXED: Wrong field type for comment_number
+* HOOK: Added `ap_addon_avatar_colors` to let avatar colors customizable.
+* fix: editing broken demo link
+* Fixed: tags filter redirect to 404 on home page.
+* Updated translations
+* Fixed translation text domain
+* Make some strings translatable without context
+* Make AP feed metabox title translatable.
 
 = 4.0.5 =
   * Fixed user profile rewrite and reputation query

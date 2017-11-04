@@ -2,10 +2,11 @@
 **Contributors:** [nerdaryan](https://profiles.wordpress.org/nerdaryan)
 **Donate link:** https://www.paypal.me/nerdaryan
 **Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
-**Requires at least:** 4.0
+**Requires at least:** 4.7
 **Tested up to:** 4.8
 **Stable tag:** 4.1.0
 **License:** GPLv2 or later
+**Demo:** https://anspress.io/demo/?product=anspress
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
 Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
@@ -31,7 +32,7 @@ This plugin wouldn't be possible without a huge amount of contribution. Check ou
 
 We provide support on our site: https://anspress.io/questions
 Our support section uses actual version of AnsPress, so you can check out the support site if you want to see full working version of AnsPress.
-You can also take the demo site for a test drive https://anspress.io/demo/?product=anspress
+You can also take the demo site for a test drive https://d.anspress.io/
 
 **AnsPress Key Features:**
 
@@ -72,12 +73,12 @@ Use this shortcode in base to AnsPress work properly
 
 ## Installation ##
 
-Read full documentation here https://anspress.io/docs/
+Read full documentation here https://anspress.io/resources/
 
 
 ## Frequently Asked Questions ##
 
-Read full FAQ here https://anspress.io/docs/?topic=faq
+Read full FAQ here https://anspress.io/resources/faq/
 
 ## Screenshots ##
 
@@ -97,4 +98,4 @@ Read full FAQ here https://anspress.io/docs/?topic=faq
 
 ## Changelog ##
 
-Visit our site for full changelog
+Visit our site for full changelog.
