@@ -114,6 +114,14 @@ class Form {
 			$field_class = 'AnsPress\\Form\\Field\\' . $type_class;
 
 			if ( class_exists( $field_class ) ) {
+				/**
+				 * Allows filtering field argument before its being passed to Field class.
+				 *
+				 * @param array $field_args Field arguments.
+				 * @param object $form Form class, passed by reference.
+				 * @since 4.1.0
+				 */
+				$field_args = apply_filters_ref_array( 'ap_before_prepare_field', [ $field_args, $this ] );
 				$this->fields[ $field_name ] = new $field_class( $this->form_name, $field_name, $field_args, $this );
 			}
 		}
@@ -174,6 +182,16 @@ class Form {
 			'ajax_submit'   => true,
 		) );
 
+		/**
+		 * Allows filtering arguments passed to @see AnsPress\Form\generate() method. Passed
+		 * by reference.
+		 *
+		 * @param array  $form_args Form arguments.
+		 * @param object $form      Current form object.
+		 * @since 4.1.0
+		 */
+		$form_args = apply_filters_ref_array( 'ap_generate_form_args', [ $form_args, $this ] );
+
 		$action = ! empty( $form_args['form_action'] ) ? ' action="' . esc_url( $form_args['form_action'] ) . '"' : '';
 
 		echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
@@ -200,6 +218,14 @@ class Form {
 				echo '<input type="hidden" name="' . esc_attr( $field['name'] ) . '" value="' . esc_attr( $field['value'] ) . '" />';
 			}
 		}
+
+		/**
+		 * Action triggered after all form fields are generated and before closing
+		 * form tag. This action can be used to append more fields or HTML in form.
+		 *
+		 * @param object $form Current form class.
+		 */
+		do_action_ref_array( 'ap_after_form_field', [ $this ] );
 
 		echo '</form>';
 	}
