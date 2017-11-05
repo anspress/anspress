@@ -597,7 +597,7 @@ class AnsPress_Email_Hooks {
 			'answerer'          => ap_user_display_name( $answer->post_author ),
 			'editor'            => ap_user_display_name( get_current_user_id() ),
 			'question_title'    => $answer->post_title,
-			'question_link'     => get_permalink( $answer->post_parent ),
+			'answer_link'       => get_permalink( $answer->ID ),
 			'answer_content'    => $answer->post_content,
 		) );
 
