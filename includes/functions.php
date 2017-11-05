@@ -2049,12 +2049,12 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 			'value' => $_comment->comment_ID,
 		);
 
-		$values['content']['value'] = $_comment->comment_content;
+		$values['content'] = $_comment->comment_content;
 
 		if ( '0' == $_comment->user_id ) {
-			$values['author']['value'] = $_comment->comment_author;
-			$values['email']['value']  = $_comment->comment_author_email;
-			$values['url']['value']    = $_comment->comment_author_url;
+			$values['author'] = $_comment->comment_author;
+			$values['email']  = $_comment->comment_author_email;
+			$values['url']    = $_comment->comment_author_url;
 		}
 
 		$form->set_values( $values );
