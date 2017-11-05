@@ -149,22 +149,27 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 				<p class="ap-form-nofields"><?php esc_attr_e( 'Please enable addon to view options.', 'anspress-question-answer' ); ?></p>
 			<?php else : ?>
 				<?php
-					$from_args = array(
-						'form_action' => admin_url( 'admin.php?page=anspress_addons&active_addon=' . $active ),
-						'ajax_submit' => false,
-					);
+				$from_args = array(
+					'form_action' => admin_url( 'admin.php?page=anspress_addons&active_addon=' . $active ),
+					'ajax_submit' => false,
+				);
 
-					/**
-					 * Filter AnsPress add-on options form.
-					 *
-					 * @param array $form_args Array for form arguments.
-					 * @since 4.1.0
-					 */
-					$form_args = apply_filters( 'ap_addon_form_args', $from_args );
+				/**
+				 * Filter AnsPress add-on options form.
+				 *
+				 * @param array $form_args Array for form arguments.
+				 * @since 4.1.0
+				 */
+				$form_args = apply_filters( 'ap_addon_form_args', $from_args );
 
-					$form_name = substr( $active_data['id'], 0, strrpos( $active_data['id'], '.' ) );
-					$form_name = str_replace( '/', '_', $form_name );
+				$form_name = substr( $active_data['id'], 0, strrpos( $active_data['id'], '.' ) );
+				$form_name = str_replace( '/', '_', $form_name );
+
+				if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
 					anspress()->get_form( 'addon-' . $form_name )->generate( $form_args );
+				} else {
+					echo '<p class="ap-form-nofields">' . esc_attr__( 'There is no option registered by this addon.', 'anspress-question-answer' ) . '</p>';
+				}
 				?>
 			<?php endif; ?>
 
