@@ -362,12 +362,14 @@ class AnsPress_Theme {
 	/**
 	 * Generate question excerpt if there is not any already.
 	 *
-	 * @param string $excerpt Default excerpt.
-	 * @param object $post    WP_Post object.
+	 * @param string      $excerpt Default excerpt.
+	 * @param object|null $post    WP_Post object.
 	 * @return string
 	 * @since 4.1.0
 	 */
-	public static function get_the_excerpt( $excerpt, $post ) {
+	public static function get_the_excerpt( $excerpt, $post = null ) {
+		$post = get_post( $post );
+
 		if ( 'question' === $post->post_type ) {
 			if ( get_query_var( 'answer_id' ) ) {
 				$post = ap_get_post( get_query_var( 'answer_id' ) );
