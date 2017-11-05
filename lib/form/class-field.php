@@ -38,6 +38,13 @@ class Field {
 	public $original_name = '';
 
 	/**
+	 * The form name.
+	 *
+	 * @var string
+	 */
+	public $form_name;
+
+	/**
 	 * Unique name without square brackets.
 	 *
 	 * @var string

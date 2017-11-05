@@ -458,35 +458,6 @@ class AnsPress_Admin_Ajax {
 	}
 
 	/**
-	 * Recount reputation for answering a question.
-	 *
-	 * @param  integer $user_id User id.
-	 * @param  string  $event   Event type.
-	 * @return boolean Returns true on success.
-	 */
-	public static function recount_answer_reputation( $user_id, $event ) {
-		global $wpdb;
-
-		$post_ids = $wpdb->get_col(
-			$wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_author = %d AND post_type = 'answer' AND post_status IN ('publish', 'private_post')", $user_id )
-		);
-
-		// Return if no answers found.
-		if ( empty( $post_ids ) ) {
-			return true;
-		}
-
-		$events = ap_search_array( ap_get_reputation_events(), 'parent', 'answer' );
-		foreach ( (array) $post_ids as $id ) {
-				$exists = ap_get_reputation( $e, $id, $user_id );
-
-				if ( ! $exists ) {
-
-				}
-		}
-	}
-
-	/**
 	 * Recount question views.
 	 *
 	 * @param integer $current Current index.

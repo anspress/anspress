@@ -55,11 +55,9 @@ function ap_opt( $key = false, $value = null ) {
 
 	if ( isset( $settings[ $key ] ) ) {
 		return $settings[ $key ];
-	} else {
-		return null;
 	}
 
-	return false;
+	return null;
 }
 
 /**

@@ -91,23 +91,14 @@ class AnsPress_Process_Form {
 	 */
 	public function process_form() {
 		$action = sanitize_text_field( $_POST['ap_form_action'] );
-		switch ( $action ) {
-			case 'ask_form':
-				$this->process_ask_form();
-				break;
 
-			case 'answer_form':
-				$this->process_answer_form();
-				break;
+		/**
+		 * ACTION: ap_process_form_[action]
+		 * process form
+		 * @since 2.0.1
+		 * @deprecated 4.1.0
+		 */
+		do_action( 'ap_process_form_' . $action );
 
-			default:
-				/**
-				 * ACTION: ap_process_form_[action]
-				 * process form
-				 * @since 2.0.1
-				 */
-				do_action( 'ap_process_form_' . $action );
-				break;
-		}
 	}
 }

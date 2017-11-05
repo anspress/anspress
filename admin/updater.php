@@ -23,15 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @ignore
  */
 class AnsPress_Prod_Updater {
-	private $api_url   = '';
-	private $api_data  = array();
-	private $name      = '';
-	private $slug      = '';
-	private $version   = '';
+	private $api_url        = '';
+	private $api_data       = array();
+	private $name           = '';
+	private $slug           = '';
+	private $version        = '';
 	private $response_key   = '';
-	private $license   = '';
-	private $strings   = '';
-	private $update_checked   = false;
+	private $license        = '';
+	private $strings        = '';
+	private $update_checked = false;
+	private $is_plugin      = true;
 
 	/**
 	 * Class constructor.

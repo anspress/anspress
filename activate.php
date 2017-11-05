@@ -57,8 +57,7 @@ class AP_Activate {
 		if ( null === self::$instance ) {
 			anspress();
 			self::$instance = new self;
-			global $network_wide;
-			$network_wide = $network_wide;
+			$GLOBALS['network_wide'] = $network_wide;
 		}
 
 		return self::$instance;

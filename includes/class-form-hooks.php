@@ -578,7 +578,7 @@ class AP_Form_Hooks {
 			ap_answer_post_ajax_response( $question_id, $post_id );
 		}
 
-		if ( isset( $question_args['ID'] ) ) {
+		if ( isset( $answer_args['ID'] ) ) {
 			$message = __( 'Answer updated successfully. Redirecting you to question page.', 'anspress-question-answer' );
 		} else {
 			$message = __( 'Your answer is posted successfully.', 'anspress-question-answer' );

@@ -252,7 +252,7 @@ class Form {
 	 * @param string        $value         Value for argument `$key`.
 	 * @param boolean|array $fields        List of field where to search.
 	 * @param string        $key           Search field by which property of a field object.
-	 * @return array|boolean
+	 * @return object|boolean
 	 */
 	public function find( $value, $fields = false, $key = 'original_name' ) {
 		$fields = false === $fields ? $this->fields : $fields;

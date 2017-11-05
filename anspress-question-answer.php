@@ -204,6 +204,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $question_rule = [];
 
 		/**
+		 * The forms.
+		 *
+		 * @var array
+		 * @since 4.1.0
+		 */
+		public $forms = [];
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public

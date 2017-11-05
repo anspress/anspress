@@ -263,7 +263,7 @@ class Upload extends Field {
 				$this->upload_file( $file );
 			}
 		} else {
-			$this->upload_file( $file );
+			$this->upload_file( $value );
 		}
 
 		$this->value = $this->uploaded_files;
