@@ -421,7 +421,7 @@ class AnsPress_Email_Hooks {
 
 		$args['tags'] = array(
 			'{answerer}'        => ap_user_display_name( $answer->post_author ),
-			'{question_title}'  => $answer->post_title,
+			'{question_title}'  => get_the_title( $answer->post_parent ),
 			'{answer_link}'     => wp_get_shortlink( $answer->ID ),
 			'{answer_content}'  => $answer->post_content,
 			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
@@ -938,7 +938,7 @@ class AnsPress_Email_Hooks {
 		$body .= __( 'A new answer is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{answerer}</b>';
 		$body .= '</div>';
 		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
 		$body .= '<div class="ap-email-content">';
 		$body .= '{answer_excerpt} ';
 		$body .= '</div>';
