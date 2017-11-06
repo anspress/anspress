@@ -19,7 +19,7 @@
           regex = /data-apimagename\=\"([\S+]*)\"/g;
           apimagename = regex.exec(match);
 
-          regex = /alt\=\"([\S+]*)\"/g;
+          regex = /alt\=\"([^"]*)\"/g;
           alt = regex.exec(match);
           return '{{apimage "'+apimagename[1]+'" "'+alt[1]+'"}}';
         });
