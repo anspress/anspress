@@ -48,7 +48,6 @@ class AnsPress_Category {
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
 		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
 		anspress()->add_action( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
 		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
@@ -60,7 +59,7 @@ class AnsPress_Category {
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_question_subscribers_action_id', __CLASS__, 'subscribers_action_id' );
 		anspress()->add_filter( 'ap_ask_btn_link', __CLASS__, 'ap_ask_btn_link' );
-		anspress()->add_filter( 'ap_canonical_url', __CLASS__, 'ap_canonical_url' );
+		//anspress()->add_filter( 'ap_canonical_url', __CLASS__, 'ap_canonical_url' );
 		anspress()->add_filter( 'wp_head', __CLASS__, 'category_feed' );
 		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
@@ -426,13 +425,13 @@ class AnsPress_Category {
 	 *
 	 * @param  string $title AnsPress page title.
 	 * @return string
+	 * @deprecated 4.1.1
 	 */
 	public static function page_title( $title ) {
 		if ( is_question_categories() ) {
 			$title = ap_opt( 'categories_page_title' );
 		} elseif ( is_question_category() ) {
-			$category_id = sanitize_title( get_query_var( 'q_cat' ) );
-			$category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' ); //@codingStandardsIgnoreLine
+			$category = get_queried_object();
 
 			if ( $category ) {
 				$title = $category->name;
@@ -458,12 +457,24 @@ class AnsPress_Category {
 				$navs['category'] = array( 'title' => $cats[0]->name, 'link' => get_term_link( $cats[0], 'question_category' ), 'order' => 2 ); //@codingStandardsIgnoreLine
 			}
 		} elseif ( is_question_category() ) {
-			$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
-			$category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' ); //@codingStandardsIgnoreLine
-			$navs['page'] = array( 'title' => __( 'Categories', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'categories' ), 'order' => 8 );
-			$navs['category'] = array( 'title' => $category->name, 'link' => get_term_link( $category, 'question_category' ), 'order' => 8 );//@codingStandardsIgnoreLine
+			$category = get_queried_object();
+			$navs['page'] = array(
+				'title' => __( 'Categories', 'anspress-question-answer' ),
+				'link'  => ap_get_link_to( 'categories' ),
+				'order' => 8,
+			);
+
+			$navs['category'] = array(
+				'title' => $category->name,
+				'link'  => get_term_link( $category, 'question_category' ),
+				'order' => 8,
+			);
 		} elseif ( is_question_categories() ) {
-			$navs['page'] = array( 'title' => __( 'Categories', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'categories' ), 'order' => 8 );
+			$navs['page'] = array(
+				'title' => __( 'Categories', 'anspress-question-answer' ),
+				'link'  => ap_get_link_to( 'categories' ),
+				'order' => 8,
+			);
 		}
 
 		return $navs;
@@ -737,14 +748,14 @@ class AnsPress_Category {
 	 *
 	 * @param  string $canonical_url url.
 	 * @return string
+	 * @deprecated 4.1.1
 	 */
 	public static function ap_canonical_url( $canonical_url ) {
 		if ( is_question_category() ) {
 			global $question_category;
 
 			if ( ! $question_category ) {
-				$category_id = sanitize_text_field( get_query_var( 'q_cat' ) );
-				$question_category = get_term_by( is_numeric( $category_id ) ? 'id' : 'slug', $category_id, 'question_category' ); // @codingStandardsIgnoreLine.
+				$question_category = get_queried_object();
 			}
 
 			return get_term_link( $question_category ); // @codingStandardsIgnoreLine.
