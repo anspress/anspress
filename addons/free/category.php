@@ -64,7 +64,7 @@ class AnsPress_Category {
 		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_category_archive' );
+		anspress()->add_action( 'posts_pre_query', __CLASS__, 'posts_pre_query', 10, 2 );
 
 		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_category', __CLASS__, 'load_filter_category' );
@@ -84,7 +84,7 @@ class AnsPress_Category {
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
 	public static function category_page() {
-		global $questions, $question_category, $wp;
+		global $questions, $question_category, $wp_query;
 
 		$question_args = array(
 			'tax_query' => array(
@@ -109,7 +109,7 @@ class AnsPress_Category {
 			 */
 			do_action( 'ap_before_category_page', $question_category );
 
-			include( ap_get_theme_location( 'addons/category/category.php' ) );
+			include( ap_get_theme_location( 'addons/category/single-category.php' ) );
 		}
 	}
 
@@ -861,20 +861,19 @@ class AnsPress_Category {
 	}
 
 	/**
-	 * Modify main query to show category archive.
+	 * Modify main query.
 	 *
+	 * @param array  $posts  Array of post object.
 	 * @param object $query Wp_Query object.
-	 * @return void
+	 * @return void|array
 	 * @since 4.1.0
 	 */
-	public static function modify_query_category_archive( $query ) {
+	public static function posts_pre_query( $posts, $query ) {
 		if ( $query->is_main_query() &&
 			$query->is_tax( 'question_category' ) &&
 			'category' === get_query_var( 'ap_page' ) ) {
 
-			unset( $query->query_vars['question_category'] );
-			$query->set( 'p', ap_opt( 'categories_page' ) );
-			$query->set( 'post_type', 'page' );
+			return [ get_post( ap_opt( 'categories_page' ) ) ];
 		}
 	}
 }
