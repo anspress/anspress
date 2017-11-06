@@ -8,6 +8,7 @@
  * @since       4.0
  * @package     AnsPress
  * @subpackage  Templates
+ * @since       4.1.1 Renamed file from category.php to single-category.php.
  */
 ?>
 

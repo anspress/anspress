@@ -272,17 +272,19 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 */
 		private function setup_constants() {
+			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
+
 			$constants = array(
 				'DS' 										=> DIRECTORY_SEPARATOR,
 				'AP_VERSION' 						=> $this->_plugin_version,
-				'ANSPRESS_DIR' 					=> plugin_dir_path( __FILE__ ),
+				'ANSPRESS_DIR' 					=> $plugin_dir,
 				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
-				'ANSPRESS_WIDGET_DIR' 	=> plugin_dir_path( __FILE__ ) . 'widgets' . DIRECTORY_SEPARATOR,
-				'ANSPRESS_THEME_DIR' 		=> plugin_dir_path( __FILE__ ) . 'templates',
+				'ANSPRESS_WIDGET_DIR' 	=> $plugin_dir . 'widgets/',
+				'ANSPRESS_THEME_DIR' 		=> $plugin_dir . 'templates',
 				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'templates',
 				'ANSPRESS_CACHE_DIR' 		=> WP_CONTENT_DIR . '/cache/anspress',
 				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
-				'ANSPRESS_ADDONS_DIR' 	=> plugin_dir_path( __FILE__ ) . 'addons',
+				'ANSPRESS_ADDONS_DIR' 	=> $plugin_dir . 'addons',
 			);
 
 			foreach ( $constants as $k => $val ) {
@@ -318,11 +320,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/theme.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
-			require_once ANSPRESS_DIR . 'widgets/search.php';
-			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
-			require_once ANSPRESS_DIR . 'widgets/questions.php';
-			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
-			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
 			require_once ANSPRESS_DIR . 'includes/flag.php';
@@ -334,6 +331,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/reputation.php';
 			require_once ANSPRESS_DIR . 'includes/subscribers.php';
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
+
+			require_once ANSPRESS_DIR . 'widgets/search.php';
+			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
+			require_once ANSPRESS_DIR . 'widgets/questions.php';
+			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
+			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 
 			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
 			require_once ANSPRESS_DIR . 'lib/class-form.php';
