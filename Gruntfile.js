@@ -79,7 +79,7 @@
 				dist: {
 					options: {
 						style: 'compressed',
-						sourcemap: 'file'
+						sourcemap: 'auto'
 					},
 					files: {
 						"templates/css/main.css": "templates/scss/main.scss",
