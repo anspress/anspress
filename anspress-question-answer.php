@@ -77,30 +77,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public static $instance = null;
 
 		/**
-		 * AnsPress hooks
-		 *
-		 * @access public
-		 * @var object Register all AnsPress hooks
-		 */
-		public $anspress_hooks;
-
-		/**
-		 * AnsPress ajax
-		 *
-		 * @access public
-		 * @var object Register all AnsPress ajax hooks
-		 */
-		public $anspress_ajax;
-
-		/**
-		 * Admin ajax
-		 *
-		 * @access public
-		 * @var object Register all admin ajax hooks
-		 */
-		public $admin_ajax;
-
-		/**
 		 * AnsPress pages
 		 *
 		 * @access public
@@ -146,14 +122,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $current_answer;
 
 		/**
-		 * AnsPress form
-		 *
-		 * @access public
-		 * @var object AnsPress form
-		 */
-		public $form;
-
-		/**
 		 * The array of actions registered with WordPress.
 		 *
 		 * @since  1.0.0
@@ -170,14 +138,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @var array The filters registered with WordPress to fire when the plugin loads.
 		 */
 		protected $filters;
-
-		/**
-		 * AnsPress form object
-		 *
-		 * @access public
-		 * @var object
-		 */
-		public $anspress_forms;
 
 		/**
 		 * AnsPress reputation events.
@@ -247,7 +207,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 					AnsPress_Post_Table_Hooks::init();
 				}
 
-				self::$instance->anspress_forms = new AnsPress_Process_Form();
+				new AnsPress_Process_Form();
 
 				/*
 				 * ACTION: anspress_loaded
@@ -380,7 +340,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 */
 		public function site_include() {
-			self::$instance->anspress_hooks 	= AnsPress_Hooks::init();
+			AnsPress_Hooks::init();
 			AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $data ) {
