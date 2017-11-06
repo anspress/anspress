@@ -534,9 +534,10 @@ function ap_get_template_part( $file, $args = false ) {
  * @return string
  * @since unknown
  * @since 4.1.0 Check if ask question page.
+ * @since 4.1.1 Do not return `base` by default.
  */
 function ap_current_page() {
-	$query_var = get_query_var( 'ap_page', 'base' );
+	$query_var = get_query_var( 'ap_page', '' );
 	$main_pages = array_keys( ap_main_pages() );
 	$page_ids = [];
 

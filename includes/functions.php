@@ -133,6 +133,7 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
  *
  * @return boolean
  * @since 4.1.0 Improved check. Check for main pages.
+ * @since 4.1.1 Check for @see ap_current_page().
  */
 function is_anspress() {
 	// If buddypress installed.
@@ -159,7 +160,7 @@ function is_anspress() {
 	}
 
 	// Check if ap_page.
-	if ( get_query_var( 'ap_page', false ) ) {
+	if ( '' !== ap_current_page() ) {
 		return true;
 	}
 
