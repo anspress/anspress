@@ -166,4 +166,56 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 	}
+
+	/**
+	 * Register a sample form.
+	 */
+	public function register_form() {
+		return array(
+			'fields' => array(
+				'text_field' => array(
+					'label' => 'A sample text field',
+				),
+			),
+		);
+	}
+
+	/**
+	 * @covers AnsPress::get_form
+	 */
+	public function test_get_form() {
+		// Register form
+		add_filter( 'ap_form_test', [ $this, 'register_form' ] );
+
+		// Prepare form.
+		anspress()->get_form( 'test' )->prepare();
+
+		// Find for field `text_field` and check instanceof.
+		$this->assertInstanceOf( 'AnsPress\\Form\\Field',  anspress()->get_form( 'test' )->find( 'text_field' ) );
+
+		$this->assertSame( 'form_test', anspress()->get_form( 'test' )->form_name );
+
+		// As get form is passed reference, verify it.
+		$form = anspress()->get_form( 'test' );
+		anspress()->get_form( 'test' )->form_name = 'form_test_changed';
+
+		$this->assertEquals( $form, anspress()->get_form( 'test' ) );
+	}
+
+	/**
+	 * @covers AnsPress::form_exists
+	 */
+	public function test_form_exists() {
+		anspress()->forms['sample'] = new AnsPress\Form( 'form_sample', array(
+			'fields' => array(
+				'field_one' => array(
+					'label' => 'Simple text field',
+				),
+			),
+		) );
+
+		$this->assertTrue( anspress()->form_exists( 'form_sample' ) );
+		$this->assertTrue( anspress()->form_exists( 'sample' ) );
+		$this->assertFalse( anspress()->form_exists( 'undefinedform' ) );
+	}
 }
