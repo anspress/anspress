@@ -105,30 +105,30 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-validate.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-cli.php' );
 
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/avatar.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/buddypress.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/category.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/category/widget.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/email.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/email/class-email.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/notification.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/notification/functions.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/notification/query.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/profile.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/recaptcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/recaptcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/autoload.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/class-recaptcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/ReCaptcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestMethod.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestParameters.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/Response.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestMethod/Curl.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestMethod/CurlPost.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestMethod/Post.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestMethod/Socket.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/reputation/ReCaptcha/RequestMethod/SocketPost.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . 'free/tag.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/avatar.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/buddypress.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/category.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/category/widget.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/email.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/email/class-email.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/notification.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/notification/functions.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/notification/query.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/profile.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/autoload.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/class-captcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/ReCaptcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestParameters.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/Response.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/Curl.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/CurlPost.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/Post.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/Socket.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/reputation.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/tag.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . 'readme.txt' );
 
@@ -158,11 +158,11 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/ap-admin.scss' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/ap-admin.scss' );
 
-		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/admin-app.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/ap-admin.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/common.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/main.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/tinymce-plugin.min.js' );
+		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/admin-app.min.js' );
+		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/ap-admin.min.js' );
+		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/common.min.js' );
+		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/main.min.js' );
+		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-plugin.min.js' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 	}
