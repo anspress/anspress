@@ -516,10 +516,10 @@
 			AnsPress.ajax({
 				data: {post_id: postId, ap_ajax_action: 'load_comments', paged: paged},
 				success: function(data){
+					AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
 					if(data.success){
 						$modal.setTitle(data.modal_title);
 						$modal.setContent(data.html);
-						AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
 					}
 				}
 			});

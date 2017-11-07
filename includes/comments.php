@@ -381,11 +381,19 @@ function ap_comment_delete_locked( $comment_ID ) {
  * @return void
  * @since 2.1
  * @since 4.1.0 Added two args `$_post` and `$args` and using WP_Comment_Query.
+ * @since 4.1.1 Check if valid post and post type before loading comments.
  */
 function ap_the_comments( $_post = null, $args = [] ) {
 	global $comment;
 
 	$_post = ap_get_post( $_post );
+
+	// Check if valid post.
+	if ( ! $_post || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		echo '<div class="ap-comment-no-perm">' . __( 'Not a valid post ID.', 'anspress-question-answer' ) . '</div>';
+		return;
+	}
+
 	if ( ! ap_user_can_read_comments( $_post ) ) {
 		echo '<div class="ap-comment-no-perm">' . __( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
 

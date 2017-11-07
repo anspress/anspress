@@ -545,6 +545,8 @@ function ap_ajax_responce( $results ) {
 				'message'      => $error_message['message'],
 				'message_type' => $error_message['type'],
 			);
+
+			$results['success'] = 'error' === $error_message['type'] ? false : true;
 		}
 	}
 
