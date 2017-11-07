@@ -78,7 +78,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'page_template' );
 
-			anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
+			//anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
@@ -447,6 +447,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	array $items Menu item.
 	 * @return array
+	 * @deprecated 4.1.1
 	 */
 	public static function update_menu_url( $items ) {
 		// If this is admin then we dont want to update url.

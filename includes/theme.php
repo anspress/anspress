@@ -23,31 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 4.1.0 Removed `question_name` query var check.
  */
 function ap_page_title() {
-
-	$pages = anspress()->pages;
-
-	$current_page = ap_current_page();
-
-	if ( is_question() ) {
-		if ( ! ap_user_can_read_question( get_question_id() ) ) {
-			$new_title = __( 'No permission', 'anspress-question-answer' );
-		} else {
-			$new_title = ap_question_title_with_solved_prefix();
-		}
-	} elseif ( is_ap_search() ) {
-		$new_title = sprintf( ap_opt( 'search_page_title' ), sanitize_text_field( get_query_var( 'ap_s' ) ) );
-	} elseif ( is_ask() ) {
-		$new_title = ap_opt( 'ask_page_title' );
-	} elseif ( '' === $current_page && ! is_question() ) {
-		$new_title = ap_opt( 'base_page_title' );
-	} elseif ( get_query_var( 'parent' ) !== '' ) {
-		$new_title = sprintf( __( 'Discussion on "%s"', 'anspress-question-answer' ), get_the_title( get_query_var( 'parent' ) ) );
-	} elseif ( isset( $pages[ $current_page ]['title'] ) ) {
-		$new_title = $pages[ $current_page ]['title'];
-	} else {
-		$new_title = __( 'Error 404', 'anspress-question-answer' );
-	}
-
+	$new_title = '';
 	$new_title = apply_filters( 'ap_page_title', $new_title );
 
 	return $new_title;

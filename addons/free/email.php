@@ -73,6 +73,7 @@ class AnsPress_Email_Hooks {
 		anspress()->add_action( 'ap_email_default_template_edit_answer', __CLASS__, 'template_edit_answer' );
 		anspress()->add_action( 'ap_email_default_template_trash_question', __CLASS__, 'template_trash_question' );
 		anspress()->add_action( 'ap_email_default_template_trash_answer', __CLASS__, 'template_trash_answer' );
+		anspress()->add_action( 'ap_email_form_allowed_tags', __CLASS__, 'form_allowed_tags' );
 
 		anspress()->add_filter( 'comment_notification_recipients', __CLASS__, 'default_recipients', 10, 2 );
 
@@ -257,81 +258,13 @@ class AnsPress_Email_Hooks {
 					'label' => __( 'Email body', 'anspress-question-answer' ),
 					'type'  => 'editor',
 				),
+				'tags' => array(
+					'html'  => '<label class="ap-form-label" for="form_email_template-allowed_tags">' . __( 'Allowed tags', 'anspress-question-answer' ) . '</label><div class="ap-email-allowed-tags">' . apply_filters( 'ap_email_form_allowed_tags', '' ) . '</div>',
+				),
 			),
 		);
 
 		return $form;
-	}
-
-	/**
-	 * Replace tags in email template.
-	 *
-	 * @param string $content Template content.
-	 * @param array  $args Arguments.
-	 * @return string
-	 * @deprecated 4.1.0
-	 */
-	public static function replace_tags( $content, $args ) {
-		return strtr( $content, $args );
-	}
-
-	/**
-	 * Send email to users.
-	 *
-	 * @param string $email Email id to send.
-	 * @param string $subject Email subject.
-	 * @param string $message Email body.
-	 * @deprecated 4.1.0
-	 */
-	public static function send_mail( $email, $subject, $message ) {
-		if ( defined( 'AP_DISABLE_EMAIL' ) && true === AP_DISABLE_EMAIL ) {
-			return;
-		}
-
-		wp_mail( $email, $subject, $message );
-	}
-
-	/**
-	 * Add email to object.
-	 *
-	 * @param string|array $email Email of array of emails.
-	 * @deprecated 4.1.0
-	 */
-	public static function add_email( $email ) {
-
-		if ( is_array( $email ) ) {
-			foreach ( $email as $e ) {
-				if ( is_email( $email ) && ! in_array( $e, SELF::$emails, true ) ) {
-					SELF::$emails[] = $email;
-				}
-			}
-		} elseif ( is_email( $email ) && ! in_array( $email, SELF::$emails, true ) ) {
-			SELF::$emails[] = $email;
-		}
-	}
-
-	/**
-	 * Check if class has emails.
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function have_emails() {
-		return count( SELF::$emails ) > 0;
-	}
-
-	/**
-	 * Sends email to array of email ids.
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function initiate_send_email() {
-		SELF::$emails = array_unique( SELF::$emails );
-
-		SELF::$emails = apply_filters( 'ap_emails_to_notify', SELF::$emails );
-
-		foreach ( (array) SELF::$emails as $email ) {
-			SELF::send_mail( $email, SELF::$subject, SELF::$message );
-		}
 	}
 
 	/**
@@ -867,6 +800,12 @@ class AnsPress_Email_Hooks {
 				'subject' => $template->post_title,
 				'body'    => $template->post_content,
 			) );
+		} else {
+			$default_template = self::get_default_template( $active );
+			$form->set_values( array(
+				'subject' => $default_template['subject'],
+				'body'    => $default_template['body'],
+			) );
 		}
 
 		$form->generate(array(
@@ -1090,6 +1029,43 @@ class AnsPress_Email_Hooks {
 		$template['body'] = $body;
 
 		return $template;
+	}
+
+	public static function form_allowed_tags() {
+		$active = ap_isset_post_value( 'template', 'new_question' );
+
+		$tags = array(
+			'site_name', 'site_url', 'site_description',
+		);
+
+		$type_tags = [];
+
+		if ( in_array( $active, [ 'new_question', 'edit_question' ] ) ) {
+			$type_tags = array(
+				'asker', 'question_title', 'question_link', 'question_content', 'question_excerpt',
+			);
+		} elseif ( in_array( $active, [ 'new_answer', 'edit_answer' ] ) ) {
+			$type_tags = array(
+				'answerer', 'question_title', 'answer_link', 'answer_content', 'answer_excerpt',
+			);
+		} elseif ( 'select_answer' === $active ) {
+			$type_tags = array(
+				'selector', 'question_title', 'answer_link', 'answer_content', 'answer_excerpt',
+			);
+		} elseif ( 'new_comment' === $active ) {
+			$type_tags = array(
+				'commenter', 'question_title', 'comment_link', 'comment_content',
+			);
+		}
+
+		$tags = array_merge( $tags, $type_tags );
+
+		$html = '';
+		foreach ( $tags as $tag ) {
+			$html .= '<pre>{' . esc_html( $tag ) . '}</pre>';
+		}
+
+		return $html;
 	}
 }
 

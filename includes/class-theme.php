@@ -96,6 +96,7 @@ class AnsPress_Theme {
 	 *
 	 * @param string $title WP page title.
 	 * @return string
+	 * @deprecated 4.1.1
 	 */
 	public static function ap_title( $title ) {
 		if ( is_anspress() ) {

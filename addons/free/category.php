@@ -64,7 +64,7 @@ class AnsPress_Category {
 		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'posts_pre_query', __CLASS__, 'posts_pre_query', 10, 2 );
+		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_category_archive', 0 );
 
 		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_category', __CLASS__, 'load_filter_category' );
@@ -137,13 +137,13 @@ class AnsPress_Category {
 		);
 
 		/**
-		 * FILTER: ap_categories_shortcode_args
 		 * Filter applied before getting categories.
 		 *
-		 * @var array
+		 * @param array $cat_args `get_terms` arguments.
 		 * @since 1.0
 		 */
 		$cat_args = apply_filters( 'ap_categories_shortcode_args', $cat_args );
+
 		$question_categories = get_terms( 'question_category' , $cat_args );
 		include ap_get_theme_location( 'addons/category/categories.php' );
 	}
@@ -861,19 +861,20 @@ class AnsPress_Category {
 	}
 
 	/**
-	 * Modify main query.
+	 * Modify main query to show category archive.
 	 *
-	 * @param array  $posts  Array of post object.
 	 * @param object $query Wp_Query object.
-	 * @return void|array
+	 * @return void
 	 * @since 4.1.0
 	 */
-	public static function posts_pre_query( $posts, $query ) {
+	public static function modify_query_category_archive( $query ) {
 		if ( $query->is_main_query() &&
 			$query->is_tax( 'question_category' ) &&
 			'category' === get_query_var( 'ap_page' ) ) {
 
-			return [ get_post( ap_opt( 'categories_page' ) ) ];
+			unset( $query->query_vars['question_category'] );
+			$query->set( 'p', ap_opt( 'categories_page' ) );
+			$query->set( 'post_type', 'page' );
 		}
 	}
 }

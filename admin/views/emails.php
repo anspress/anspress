@@ -41,7 +41,6 @@ $i = 1;
 						'new_comment'   => __( 'New Comment', 'anspress-question-answer' ),
 						'edit_question' => __( 'Edit Question', 'anspress-question-answer' ),
 						'edit_answer'   => __( 'Edit Answer', 'anspress-question-answer' ),
-						'edit_comment'  => __( 'Edit Comment', 'anspress-question-answer' ),
 					);
 				?>
 				<select id="select-templates" name="email_templates">
@@ -87,4 +86,11 @@ $i = 1;
 		});
 	});
 </script>
+<style>
+	.ap-email-allowed-tags pre{
+    display: inline;
+    background: #eee;
+    margin-right: 15px;
+	}
+</style>
 
