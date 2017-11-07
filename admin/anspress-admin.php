@@ -97,9 +97,9 @@ class AnsPress_Admin {
 			return;
 		}
 
-		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css' );
+		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', [], AP_VERSION );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
+		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), [], AP_VERSION );
 	}
 
 	/**
