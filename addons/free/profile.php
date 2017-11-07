@@ -46,7 +46,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
-		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
+		anspress()->add_filter( 'wp_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 10, 2 );
 		//anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
@@ -191,7 +191,7 @@ class AnsPress_Profile_Hooks {
 	 * Output user profile menu.
 	 */
 	public static function user_menu( $user_id = false, $class = '' ) {
-		$user_id = false !== $user_id ? $user_id : self::current_user_id();
+		$user_id = false !== $user_id ? $user_id : ap_current_user_id();
 		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 
@@ -234,7 +234,7 @@ class AnsPress_Profile_Hooks {
 	public static function page_title( $title ) {
 		if ( 'user' === ap_current_page() ) {
 			SELF::user_pages();
-			$title = ap_user_display_name( AnsPress_Profile_Hooks::current_user_id() );
+			$title = ap_user_display_name( ap_current_user_id() );
 			$current_tab = sanitize_title( get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) ) );
 			$page = ap_search_array( anspress()->user_pages, 'rewrite', $current_tab );
 
@@ -275,7 +275,7 @@ class AnsPress_Profile_Hooks {
 	public static function question_page() {
 		global $questions;
 
-		$user_id = self::current_user_id();
+		$user_id = ap_current_user_id();
 		$args['ap_current_user_ignore'] = true;
 		$args['author'] = $user_id;
 
@@ -297,7 +297,7 @@ class AnsPress_Profile_Hooks {
 	public static function answer_page() {
 		global $answers;
 
-		$user_id = self::current_user_id();
+		$user_id = ap_current_user_id();
 
 		$args['ap_current_user_ignore'] = true;
 		$args['ignore_selected_answer'] = true;
@@ -319,24 +319,30 @@ class AnsPress_Profile_Hooks {
 		ap_get_template_part( 'addons/user/answers' );
 	}
 
+	/**
+	 * Ajax callback for loading more answers.
+	 *
+	 * @return void
+	 */
 	public static function load_more_answers() {
 		global $answers;
+
 		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
-		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
+		$paged   = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
+
 		$args['ap_current_user_ignore'] = true;
 		$args['ignore_selected_answer'] = true;
-		$args['showposts'] = 10;
-		$args['author'] = (int) $user_id;
+		$args['showposts']              = 10;
+		$args['author']                 = (int) $user_id;
 
 		if ( false !== $paged ) {
 			$args['paged'] = $paged;
 		}
 
 		/**
-		 * FILTER: ap_authors_questions_args
 		 * Filter authors question list args
 		 *
-		 * @var array
+		 * @param array $args WP_Query arguments.
 		 */
 		$args = apply_filters( 'ap_user_answers_args', $args );
 		anspress()->answers = $answers = new Answers_Query( $args );
@@ -350,12 +356,18 @@ class AnsPress_Profile_Hooks {
 		}
 		$html = ob_get_clean();
 
-		ap_ajax_json(array(
-			'success'  => true,
-			'element'  => '#ap-bp-answers',
-			'args'  => [ 'ap_ajax_action' => 'user_more_answers', '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => $paged, 'user_id' => $user_id ],
-			'html'   	 => $html,
-		));
+		ap_ajax_json( array(
+			'success'         => true,
+			'element'         => '#ap-bp-answers',
+			'args'            => array(
+				'ap_ajax_action' => 'user_more_answers',
+				'__nonce'        => wp_create_nonce( 'loadmore-answers' ),
+				'type'           => 'answers',
+				'current'        => $paged,
+				'user_id'        => $user_id,
+			),
+			'html'   	        => $html,
+		) );
 	}
 
 	/**
@@ -376,14 +388,22 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Modify main query.
 	 *
-	 * @param array  $posts  Array of post object.
-	 * @param object $query Wp_Query object.
+	 * @param  array  $posts  Array of post object.
+	 * @param  object $query Wp_Query object.
 	 * @return void|array
 	 * @since 4.1.0
+	 * @since 4.1.1 Redirect to current user profile if no author set.
 	 */
 	public static function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() && 'user' === get_query_var( 'ap_page' ) ) {
-			return [ get_post( ap_opt( 'base_page' ) ) ];
+
+			// Redirect to current user profile.
+			if ( ! get_query_var( 'author', false ) && is_user_logged_in() ) {
+				wp_safe_redirect( ap_user_link( get_current_user_id() ) );
+				die();
+			}
+
+			return [ get_post( ap_opt( 'user_page' ) ) ];
 		}
 	}
 

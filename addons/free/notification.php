@@ -188,8 +188,8 @@ class AnsPress_Notification_Hook {
 	 * Display reputation tab content in AnsPress author page.
 	 */
 	public static function notification_page() {
-		$user_id = AnsPress_Profile_Hooks::current_user_id();
-	 	$seen = ap_sanitize_unslash( 'seen', 'r', 'all' );
+		$user_id = ap_current_user_id();
+	 	$seen    = ap_sanitize_unslash( 'seen', 'r', 'all' );
 
 		if ( get_current_user_id() === $user_id ) {
 			$seen = 'all' === $seen ? null : (int) $seen;

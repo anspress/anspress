@@ -3,33 +3,44 @@
  * User profile template.
  * User profile index template.
  *
- * @link    https://anspress.io
- * @since   4.0.0
- * @package AnsPress
+ * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
+ * @author     Rahul Aryan <support@anspress.io>
+ *
+ * @link       https://anspress.io
+ * @since      4.0.0
+ * @package    AnsPress
+ * @subpackage Templates
  */
 
-$user_id = self::current_user_id();
+$user_id     = ap_current_user_id();
 $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 ?>
+
 <div id="ap-user" class="ap-user <?php echo is_active_sidebar( 'ap-user' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
-	<div class="ap-user-bio">
-		<div class="ap-user-avatar ap-pull-left">
-			<?php echo get_avatar( $user_id, 80 ); ?>
-		</div>
-		<div class="no-overflow">
-			<div class="ap-user-name">
-				<?php echo ap_user_display_name( [ 'user_id' => $user_id, 'html' => true ] ); ?>
-			</div>
-			<div class="ap-user-about">
-				<?php echo get_user_meta( $user_id, 'description', true ); ?>
-			</div>
-		</div>
-	</div>
 
-	<?php SELF::user_menu(); ?>
-	<?php SELF::sub_page_template(); ?>
+	<?php if ( '0' == $user_id && ! is_user_logged_in() ) : ?>
 
-	<?php //do_action( 'ap_user_content' ); ?>
+		<h1><?php _e( 'Please login to view your profile', 'anspress-question-answer' ); ?></h1>
+
+	<?php else : ?>
+
+		<div class="ap-user-bio">
+			<div class="ap-user-avatar ap-pull-left">
+				<?php echo get_avatar( $user_id, 80 ); ?>
+			</div>
+			<div class="no-overflow">
+				<div class="ap-user-name">
+					<?php echo ap_user_display_name( [ 'user_id' => $user_id, 'html' => true ] ); ?>
+				</div>
+				<div class="ap-user-about">
+					<?php echo get_user_meta( $user_id, 'description', true ); ?>
+				</div>
+			</div>
+		</div>
+		<?php SELF::user_menu(); ?>
+		<?php SELF::sub_page_template(); ?>
+
+	<?php endif; ?>
 
 </div>
 
@@ -38,3 +49,5 @@ $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 		<?php dynamic_sidebar( 'ap-user' ); ?>
 	</div>
 <?php endif; ?>
+
+
