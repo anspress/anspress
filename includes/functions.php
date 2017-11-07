@@ -1407,6 +1407,7 @@ function ap_user_display_name( $args = array() ) {
  * @param  string|array    $sub        page slug.
  * @return string
  * @since  unknown
+ * @since  4.1.1 Profile link not linking to BuddyPress when active.
  */
 function ap_user_link( $user_id = false, $sub = false ) {
 	$link = '';
@@ -1421,6 +1422,8 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 	if ( $user_id < 1 && empty( $user_id ) ) {
 		$link = '#/user/anonymous';
+	} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
+		$link = bp_core_get_userlink( $user_id, false, true );
 	} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
 		$user = get_user_by( 'id', $user_id );
 		$slug = get_option( 'ap_user_path' );

@@ -281,6 +281,7 @@ class AnsPress_Theme {
 	 * @param  string $template Template.
 	 * @return string
 	 * @since  3.0.0
+	 * @since  4.1.0 Give priority to page templates and then anspress.php and lastly fallback to page.php.
 	 */
 	public static function anspress_basepage_template( $template ) {
 		if ( is_anspress() ) {
