@@ -158,11 +158,7 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		$page_num_link = str_replace( array( '&amp;', '&#038;' ), '&', get_pagenum_link( $big ) );
 	}
 
-	if ( is_front_page() ) {
-		$base = add_query_arg( array( 'ap_paged' => '%#%' ), home_url( '/' ) );
-	} else {
-		$base = str_replace( $big, '%#%', $page_num_link );
-	}
+	$base = str_replace( $big, '%#%', $page_num_link );
 
 	if ( '1' == $total ) { // WPCS: loose comparison ok.
 		return;
@@ -174,8 +170,8 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 		'format'   => $format,
 		'current'  => $current,
 		'total'    => $total,
-		'end_size' => 3,
-		'mid_size' => 3,
+		'end_size' => 2,
+		'mid_size' => 2,
 	) );
 	echo '</div>';
 }
@@ -208,6 +204,7 @@ function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true,
 function ap_page() {
 	$pages = anspress()->pages;
 	$current_page = ap_current_page();
+	$current_page = '' === $current_page ? 'base' : $current_page;
 
 	if ( isset( $pages[ $current_page ]['func'] ) ) {
 		call_user_func( $pages[ $current_page ]['func'] );

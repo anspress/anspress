@@ -75,7 +75,9 @@ function ap_get_question( $question_id ) {
 function ap_questions_the_pagination( $paged = false ) {
 	global $questions;
 
-	if ( get_query_var( 'ap_paged' ) ) {
+	if ( is_front_page() ) {
+		$paged = get_query_var( 'page' );
+	} elseif ( get_query_var( 'ap_paged' ) ) {
 		$paged = get_query_var( 'ap_paged' );
 	} elseif ( get_query_var( 'paged' ) ) {
 		$paged = get_query_var( 'paged' );

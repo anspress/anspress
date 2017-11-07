@@ -41,6 +41,10 @@ class AnsPress_Common_Pages {
 			$args['s'] = $keywords;
 		}
 
+		if ( is_front_page() ) {
+			$args['paged'] = get_query_var( 'page' );
+		}
+
 		/**
 		 * Filter main question list query arguments.
 		 *
