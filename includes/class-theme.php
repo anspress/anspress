@@ -96,23 +96,15 @@ class AnsPress_Theme {
 	 *
 	 * @param string $title WP page title.
 	 * @return string
-	 * @deprecated 4.1.1
+	 * @since 4.1.1 Do not override title of all pages except single question.
 	 */
 	public static function ap_title( $title ) {
 		if ( is_anspress() ) {
 			remove_filter( 'wp_title', [ __CLASS__, 'ap_title' ] );
 
-			$new_title = ap_page_title();
-
-			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
-				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title );
-			} else {
-				$new_title = $new_title . ' | ';
+			if ( is_question() ) {
+				return ap_question_title_with_solved_prefix() . ' | ';
 			}
-
-			$new_title = apply_filters( 'ap_title', $new_title );
-
-			return $new_title;
 		}
 
 		return $title;

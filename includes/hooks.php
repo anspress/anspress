@@ -68,6 +68,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
 			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
 			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
+			anspress()->add_filter( 'wp_title', 'AnsPress_Theme', 'ap_title' , 0 );
 			//anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
 			//anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
 			//anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
