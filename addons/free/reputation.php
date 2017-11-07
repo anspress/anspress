@@ -201,12 +201,14 @@ class AnsPress_Reputation_Hooks {
 		$points = [];
 
 		foreach ( ap_get_reputation_events() as $slug => $event ) {
-			if ( isset( $events_point[ $slug ] ) && (int) $events_point[ $slug ] !== (int) $event['points'] ) {
+			if ( isset( $events_point[ $slug ] ) ) {
 				$points[ sanitize_text_field( $slug ) ] = (int) $events_point[ $slug ];
 			}
 		}
 
-		update_option( 'anspress_reputation_events', $points );
+		if ( ! empty( $points ) ) {
+			update_option( 'anspress_reputation_events', $points );
+		}
 
 		echo '<div class="notice notice-success is-dismissible"><p>' . esc_attr__( 'Successfully updated reputation points!', 'anspress-question-answer' ) . '</p></div>';
 
