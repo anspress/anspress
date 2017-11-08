@@ -133,6 +133,8 @@ class AnsPress_Rewrite {
 		$answer_rewrite = str_replace( '&p=', '&question_id=', $answer_rewrite );
 
 		$all_rules = array(
+			$slug . 'search/([^/]+)/page/?([0-9]{1,})/?$'               => 'index.php?s=$matches[#]&paged=$matches[#]&post_type=question',
+			$slug . 'search/([^/]+)/?$'                            => 'index.php?s=$matches[#]&post_type=question',
 			$slug . 'edit/?$'                                      => 'index.php?pagename=' . $slug_main . '&ap_page=edit',
 			$rule . '/answer/([0-9]+)/(feed|rdf|rss|rss2|atom)/?$' => $answer_rewrite . '&answer_id=$matches[#]&feed=$matches[#]',
 			$rule . '/answer/([0-9]+)/embed/?$'                    => $answer_rewrite . '&answer_id=$matches[#]&embed=true',

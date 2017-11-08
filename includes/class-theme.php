@@ -383,20 +383,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Override page templates.
-	 *
-	 * @param string $template Current template.
-	 * @return string
-	 * @since 4.1.0
-	 */
-	public static function page_template( $template ){
-		if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
-			return locate_template( 'page.php' );
-		}
-		return $template;
-	}
-
-	/**
 	 * Remove hentry class from question, answers and main pages .
 	 *
 	 * @param array   $post_classes Post classes.

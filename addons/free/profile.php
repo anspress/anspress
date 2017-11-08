@@ -49,7 +49,6 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'wp_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 10, 2 );
-		//anspress()->add_filter( 'template_include', __CLASS__, 'page_template' );
 	}
 
 	/**

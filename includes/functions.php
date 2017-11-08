@@ -160,7 +160,9 @@ function is_anspress() {
 	}
 
 	// Check if ap_page.
-	if ( '' !== ap_current_page() ) {
+	if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
+		return true;
+	} elseif ( '' !== ap_current_page() ) {
 		return true;
 	}
 

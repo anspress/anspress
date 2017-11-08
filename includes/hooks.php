@@ -61,7 +61,7 @@ class AnsPress_Hooks {
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
-			anspress()->add_action( 'posts_pre_query', 'AP_QA_Query_Hooks', 'modify_query', 1, 2 );
+			anspress()->add_filter( 'posts_pre_query', 'AP_QA_Query_Hooks', 'modify_main_posts', 999999, 2 );
 
 			// Theme	hooks.
 			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
@@ -77,7 +77,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
-			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'page_template' );
 
 			//anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
@@ -86,7 +85,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
-			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template' );
+			add_filter( 'template_include', [ 'AnsPress_Theme', 'anspress_basepage_template' ], 9999 );
 			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );

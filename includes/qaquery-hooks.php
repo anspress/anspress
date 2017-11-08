@@ -168,9 +168,13 @@ class AP_QA_Query_Hooks {
 	 * @return void|array
 	 * @since 4.1.0
 	 */
-	public static function modify_query( $posts, $query ) {
+	public static function modify_main_posts( $posts, $query ) {
 		if ( $query->is_main_query() && $query->is_search() && 'question' === get_query_var( 'post_type' ) ) {
-			return [ get_post( ap_opt( 'base_page' ) ) ];
+			$query->found_posts = 1;
+			$query->max_num_pages = 1;
+			$posts = [ get_page( ap_opt( 'base_page' ) ) ];
 		}
+
+		return $posts;
 	}
 }

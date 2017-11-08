@@ -524,8 +524,6 @@ function ap_current_page() {
 		$query_var = 'edit';
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
-	} elseif ( is_search() ) {
-		$query_var = 'search';
 	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
 	}
