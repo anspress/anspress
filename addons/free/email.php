@@ -559,7 +559,6 @@ class AnsPress_Email_Hooks {
 			'{user}'              => ap_user_display_name( get_current_user_id() ),
 			'{question_title}'    => $_post->post_title,
 			'{question_link}'     => wp_get_shortlink( $_post->ID ),
-			'{question_content}'  => $_post->post_content,
 		);
 
 		$email = new Email( 'trash_question', $args );
@@ -588,7 +587,6 @@ class AnsPress_Email_Hooks {
 			'{user}'              => ap_user_display_name( get_current_user_id() ),
 			'{question_title}'    => $_post->post_title,
 			'{question_link}'     => wp_get_shortlink( $_post->post_parent ),
-			'{answer_content}'    => $_post->post_content,
 		);
 
 		$email = new Email( 'trash_question', $args );
@@ -998,9 +996,6 @@ class AnsPress_Email_Hooks {
 		$body .= '</div>';
 		$body .= '<div class="ap-email-body">';
 		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{question_content}';
-		$body .= '</div>';
 		$body .= '</div>';
 		$template['body'] = $body;
 
@@ -1022,9 +1017,6 @@ class AnsPress_Email_Hooks {
 		$body .= '</div>';
 		$body .= '<div class="ap-email-body">';
 		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{answer_content}';
-		$body .= '</div>';
 		$body .= '</div>';
 		$template['body'] = $body;
 
