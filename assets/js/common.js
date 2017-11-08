@@ -615,10 +615,10 @@ _.templateSettings = {
 				var focused = suggestion.find('li.focus');
 
 				// On pressing comma add tag.
-				// if(e.keyCode == 188){
-				// 	addTagElement(e.target, fieldName, typeField, opt);
-				// 	return;
-				// }
+				if(e.keyCode == 188){
+					addTagElement(e.target, fieldName, typeField, opt);
+					return;
+				}
 
 				if(focused.length>0){
 					if(e.keyCode == 13){
