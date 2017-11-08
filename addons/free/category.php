@@ -64,7 +64,7 @@ class AnsPress_Category {
 		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_category_archive', 0 );
+		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_category_archive', 9999, 2 );
 
 		// List filtering.
 		anspress()->add_action( 'ap_ajax_load_filter_category', __CLASS__, 'load_filter_category' );
@@ -861,21 +861,21 @@ class AnsPress_Category {
 	}
 
 	/**
-	 * Modify main query to show category archive.
+	 * Modify main query.
 	 *
+	 * @param array  $posts  Array of post object.
 	 * @param object $query Wp_Query object.
-	 * @return void
+	 * @return void|array
 	 * @since 4.1.0
 	 */
-	public static function modify_query_category_archive( $query ) {
-		if ( $query->is_main_query() &&
-			$query->is_tax( 'question_category' ) &&
-			'category' === get_query_var( 'ap_page' ) ) {
-
-			unset( $query->query_vars['question_category'] );
-			$query->set( 'p', ap_opt( 'categories_page' ) );
-			$query->set( 'post_type', 'page' );
+	public static function modify_query_category_archive( $posts, $query ) {
+		if ( $query->is_main_query() && $query->is_tax( 'question_category' ) && 'category' === get_query_var( 'ap_page' ) ) {
+			$query->found_posts = 1;
+			$query->max_num_pages = 1;
+			$posts = [ get_page( ap_opt( 'categories_page' ) ) ];
 		}
+
+		return $posts;
 	}
 }
 
