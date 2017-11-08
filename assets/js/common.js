@@ -411,6 +411,7 @@ _.templateSettings = {
 		}
 
 		function sanitizeLabel(str) {
+			str = str.replace(/,\s*$/, "");
 			var div = document.createElement('div');
 			div.appendChild(document.createTextNode(str));
 			return div.innerHTML;
@@ -475,7 +476,7 @@ _.templateSettings = {
 			});
 
 			if ( suggestion.find('li:not(.disable)').length === 0){
-				suggestion.append('<li class="disable">' + opt.label_no_matching + ' ' + ( opt.add_tag ? opt.label_add_new + '<input type="text" placeholder="Type and hit enter" class="new-tag-entry" />' : '') + '</li>');
+				suggestion.append('<li class="disable">' + opt.label_no_matching + '</li>');
 			}
 		}
 
@@ -496,9 +497,6 @@ _.templateSettings = {
 					if(typeField.closest('.ap-tag-wrap').find("span.ap-tag-item[data-val='"+index_val+"']").length == 0)
 						list += '<li data-val="'+index_val+'">'+tag+'</li>';
 				});
-			} else if(opt.add_tag) {
-				typeField.allowNewTag = true;
-				list += '<li class="disable">'+opt.label_no_tags+' '+opt.label_add_new+'<input type="text" placeholder="Type and hit enter" class="new-tag-entry" /></li>';
 			} else {
 				list += '<li class="disable">'+opt.label_no_tags+'</li>';
 			}
@@ -515,6 +513,23 @@ _.templateSettings = {
 				suggestion = null;
 				clearTimeout(suggTimeOut);
 			}
+		}
+
+		function addTagElement(elm, fieldName, typeField, opt){
+			$value = $(elm).is('input') ? $(elm).val() : $(elm).attr('data-val');
+			$label = $(elm).is('input') ? $(elm).val() : $(elm).text();
+
+			// Return if empty.
+			if(''===$value)
+				return;
+
+			renderItem(sanitizeTag($value), sanitizeLabel($label), fieldName, typeField, opt);
+
+			if($(elm).is('input'))
+				$(elm).val('');
+
+			typeField.val('');
+			removeSuggestion();
 		}
 
 		return this.each(function() {
@@ -549,10 +564,7 @@ _.templateSettings = {
 
 			self.on('click', '.ap-tags-suggestion li:not(.disable)', function(e){
 				if(e.target!==this) return;
-
-				renderItem($(this).attr('data-val'), $(this).text(), fieldName, typeField, opt);
-				$(this).remove();
-				typeField.val('');
+				addTagElement(e.target, fieldName, typeField, opt);
 			});
 
 			typeField.on('keydown', function(e) {
@@ -602,8 +614,14 @@ _.templateSettings = {
 
 				var focused = suggestion.find('li.focus');
 
+				// On pressing comma add tag.
+				// if(e.keyCode == 188){
+				// 	addTagElement(e.target, fieldName, typeField, opt);
+				// 	return;
+				// }
+
 				if(focused.length>0){
-					if(e.keyCode == 13 || e.keyCode == 188){
+					if(e.keyCode == 13){
 						var val = $(this).val().replace(/,\s*$/, '');
 						renderItem(focused.attr('data-val'), focused.text(), fieldName, typeField, opt);
 						$(this).val('');
