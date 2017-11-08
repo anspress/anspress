@@ -143,6 +143,7 @@ window.AnsPress = _.extend({
 		}
 
 		this.modals[name] = new AnsPress.views.Modal(_.extend({
+			id: 'ap-modal-' + name,
 			title: aplang.loading,
 			content: '',
 			size: 'medium'
@@ -352,7 +353,6 @@ _.templateSettings = {
 	});
 
 	AnsPress.views.Modal = Backbone.View.extend({
-		id: 'ap-modal',
 		className: 'ap-modal',
 		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" ap-query=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
 		events: {
@@ -910,6 +910,27 @@ jQuery(document).ready(function($){
 				}
 			}
 		});
+	});
+
+	$(document).mouseup(function(e){
+		var container = $('.ap-modal-body');
+
+		// if the target of the click isn't the container nor a descendant of the container
+		if (!container.is(e.target) && container.has(e.target).length === 0){
+			$.each(AnsPress.modals, function(modal){
+				AnsPress.hideModal(modal);
+			});
+		}
+	});
+
+	$(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			$lastModal = $('.ap-modal').last();
+			if ( $lastModal.length>0 ){
+				$name = $lastModal.attr('id').replace('ap-modal-', '');
+				AnsPress.hideModal($name);
+			}
+		}
 	});
 
 });
