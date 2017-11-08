@@ -53,7 +53,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'save_post_answer', __CLASS__, 'save_answer_hooks', 1, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
-			anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
+			//anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
 			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscriber', 10, 4 );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
@@ -85,7 +85,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
-			add_filter( 'template_include', [ 'AnsPress_Theme', 'anspress_basepage_template' ], 9999 );
+			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
 			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
@@ -770,6 +770,7 @@ class AnsPress_Hooks {
 	 * Append variable to post Object.
 	 *
 	 * @param Object $post Post object.
+	 * @deprecated 4.1.1
 	 */
 	public static function filter_page_title( $post ) {
 		if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {

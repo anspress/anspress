@@ -146,8 +146,10 @@ class AnsPress_Theme {
 	 * @param  string $title Current page/post title.
 	 * @param  string $id    Post ID.
 	 * @return string
+	 * @deprecated 4.1.1
 	 */
 	public static function the_title( $title, $id = null ) {
+		_deprecated_function( __FUNCTION__, '4.1.1' );
 
 		if ( ap_opt( 'base_page' ) == $id  ) { // WPCS: loose comparison ok.
 			remove_filter( 'the_title', [ __CLASS__, 'the_title' ] );

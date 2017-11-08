@@ -53,6 +53,12 @@ class AnsPress_Avatar_Hook {
 		anspress()->add_action( 'wp_ajax_ap_clear_avatar_cache', __CLASS__, 'clear_avatar_cache' );
 	}
 
+	/**
+	 * Register options of Avatar addon.
+	 *
+	 * @return void
+	 * @since 4.1.0
+	 */
 	public static function option_form() {
 		$opt = ap_opt();
 
@@ -111,24 +117,13 @@ class AnsPress_Avatar_Hook {
 	}
 
 	/**
-	 * Register Avatar options
-	 */
-	public static function load_options() {
-
-		ap_register_option_section( 'addons', basename( __FILE__ ), __( 'Dynamic Avatar', 'anspress-question-answer' ), array(
-
-		));
-	}
-
-	/**
 	 * Override get_avatar.
 	 *
 	 * @param  string         $args 		Avatar image.
-	 * @param  integar|string $id_or_email 	User id or email.
+	 * @param  integer|string $id_or_email 	User id or email.
 	 * @return string
 	 */
 	public static function get_avatar( $args, $id_or_email ) {
-
 		$override = apply_filters( 'ap_pre_avatar_url', false, $args, $id_or_email );
 
 		// Return if override is not false.
