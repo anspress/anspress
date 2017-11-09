@@ -413,7 +413,10 @@ class AnsPress_Profile_Hooks {
 	public static function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() && ! $query->is_404 && 'user' === get_query_var( 'ap_page' ) ) {
 			$query_object = get_queried_object();
-			if ( $query_object && $query_object instanceof WP_User ) {
+
+			if ( ! $query_object && ! get_query_var( 'author_name' ) && is_user_logged_in() ) {
+				wp_safe_redirect( ap_user_link( get_current_user_id() ) ); exit;
+			} elseif ( $query_object && $query_object instanceof WP_User ) {
 				return [ get_post( ap_opt( 'user_page' ) ) ];
 			} else {
 				$query->set_404();
