@@ -1412,6 +1412,7 @@ function ap_user_display_name( $args = array() ) {
  * @return string
  * @since  unknown
  * @since  4.1.1 Profile link not linking to BuddyPress when active.
+ * @since  4.1.2 User user nicename in url as author_name query var gets user by nicename.
  */
 function ap_user_link( $user_id = false, $sub = false ) {
 	$link = '';
@@ -1431,7 +1432,7 @@ function ap_user_link( $user_id = false, $sub = false ) {
 	} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
 		$user = get_user_by( 'id', $user_id );
 		$slug = get_option( 'ap_user_path' );
-		$link = home_url( $slug ) . '/' . $user->user_login . '/';
+		$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
 	} else {
 		$link = get_author_posts_url( $user_id );
 	}
