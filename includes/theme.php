@@ -508,6 +508,7 @@ function ap_get_template_part( $file, $args = false ) {
  * @since unknown
  * @since 4.1.0 Check if ask question page.
  * @since 4.1.1 Do not return `base` by default.
+ * @since 4.1.2 If 404 do not return anything.
  */
 function ap_current_page() {
 	$query_var = get_query_var( 'ap_page', '' );
@@ -526,6 +527,8 @@ function ap_current_page() {
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
 	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
+	} elseif ( is_404() ) {
+		$query_var = '';
 	}
 
 	/**

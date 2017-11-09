@@ -17,6 +17,14 @@
 
 	<div class="ap-question-lr ap-row" itemtype="https://schema.org/Question" itemscope="">
 		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
+			<?php
+				/**
+				 * Action hook triggered before question meta in single question.
+				 *
+				 * @since 4.1.2
+				 */
+				do_action( 'ap_before_question_meta' );
+			?>
 			<div class="ap-question-meta clearfix">
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>

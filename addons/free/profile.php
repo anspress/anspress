@@ -49,7 +49,8 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'wp_title', __CLASS__, 'page_title' );
 		anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
+		anspress()->add_filter( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
+		anspress()->add_action( 'pre_get_posts', __CLASS__, 'pre_get_posts' );
 	}
 
 	/**
@@ -115,7 +116,6 @@ class AnsPress_Profile_Hooks {
 			$base_slug . '/([^/]+)/([^/]+)/page/?([0-9]{1,})/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]&ap_paged=$matches[#]',
 			$base_slug . '/([^/]+)/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]',
 			$base_slug . '/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user',
-			$base_slug . '/?' => 'index.php?ap_page=user',
 		);
 
 		return $new_rules + $rules;
@@ -407,16 +407,10 @@ class AnsPress_Profile_Hooks {
 	 * @return void|array
 	 * @since 4.1.0
 	 * @since 4.1.1 Redirect to current user profile if no author set.
+	 * @since 4.1.2 Check for 404 error.
 	 */
 	public static function modify_query_archive( $posts, $query ) {
-		if ( $query->is_main_query() && 'user' === get_query_var( 'ap_page' ) ) {
-
-			// Redirect to current user profile.
-			if ( ! get_query_var( 'author', false ) && is_user_logged_in() ) {
-				wp_safe_redirect( ap_user_link( get_current_user_id() ) );
-				die();
-			}
-
+		if ( $query->is_main_query() && ! $query->is_404 && $query->is_author() && 'user' === get_query_var( 'ap_page' ) ) {
 			return [ get_post( ap_opt( 'user_page' ) ) ];
 		}
 	}
@@ -453,6 +447,22 @@ class AnsPress_Profile_Hooks {
 		}
 
 		return (int) $user_id;
+	}
+
+	/**
+	 * Modify main to check if user exists or not.
+	 *
+	 * @param object $query Wp_Query object.
+	 * @return void
+	 * @since 4.1.0
+	 */
+	public static function pre_get_posts( $query ) {
+		if ( $query->is_main_query() && $query->is_author() && 'user' === get_query_var( 'ap_page' ) ) {
+			if ( ! is_numeric( get_query_var( 'author' ) ) ) {
+				$query->set_404();
+				status_header( 404 );
+			}
+		}
 	}
 }
 
