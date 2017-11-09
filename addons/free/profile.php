@@ -50,7 +50,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_filter( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
-		anspress()->add_action( 'pre_get_posts', __CLASS__, 'pre_get_posts' );
+		//anspress()->add_action( 'wp', __CLASS__, 'pre_get_posts' );
 	}
 
 	/**
@@ -116,6 +116,7 @@ class AnsPress_Profile_Hooks {
 			$base_slug . '/([^/]+)/([^/]+)/page/?([0-9]{1,})/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]&ap_paged=$matches[#]',
 			$base_slug . '/([^/]+)/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]',
 			$base_slug . '/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user',
+			$base_slug . '/?' => 'index.php?ap_page=user',
 		);
 
 		return $new_rules + $rules;
@@ -410,8 +411,14 @@ class AnsPress_Profile_Hooks {
 	 * @since 4.1.2 Check for 404 error.
 	 */
 	public static function modify_query_archive( $posts, $query ) {
-		if ( $query->is_main_query() && ! $query->is_404 && $query->is_author() && 'user' === get_query_var( 'ap_page' ) ) {
-			return [ get_post( ap_opt( 'user_page' ) ) ];
+		if ( $query->is_main_query() && ! $query->is_404 && 'user' === get_query_var( 'ap_page' ) ) {
+			$query_object = get_queried_object();
+			if ( $query_object && $query_object instanceof WP_User ) {
+				return [ get_post( ap_opt( 'user_page' ) ) ];
+			} else {
+				$query->set_404();
+				status_header( 404 );
+			}
 		}
 	}
 
@@ -449,21 +456,6 @@ class AnsPress_Profile_Hooks {
 		return (int) $user_id;
 	}
 
-	/**
-	 * Modify main to check if user exists or not.
-	 *
-	 * @param object $query Wp_Query object.
-	 * @return void
-	 * @since 4.1.0
-	 */
-	public static function pre_get_posts( $query ) {
-		if ( $query->is_main_query() && $query->is_author() && 'user' === get_query_var( 'ap_page' ) ) {
-			if ( ! is_numeric( get_query_var( 'author' ) ) ) {
-				$query->set_404();
-				status_header( 404 );
-			}
-		}
-	}
 }
 
 // Init addon.
