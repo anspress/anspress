@@ -47,6 +47,7 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'wp_title', __CLASS__, 'page_title' );
+		anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
 	}
@@ -224,6 +225,17 @@ class AnsPress_Profile_Hooks {
 		echo '</ul>';
 	}
 
+	public static function user_page_title() {
+		SELF::user_pages();
+		$title = ap_user_display_name( ap_current_user_id() );
+		$current_tab = sanitize_title( get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) ) );
+		$page = ap_search_array( anspress()->user_pages, 'rewrite', $current_tab );
+
+		if ( ! empty( $page ) ) {
+			return $title . ' | ' . $page[0]['label'];
+		}
+	}
+
 	/**
 	 * Add user page title.
 	 *
@@ -232,19 +244,22 @@ class AnsPress_Profile_Hooks {
 	 */
 	public static function page_title( $title ) {
 		if ( 'user' === ap_current_page() ) {
-			SELF::user_pages();
-			$title = ap_user_display_name( ap_current_user_id() );
-			$current_tab = sanitize_title( get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) ) );
-			$page = ap_search_array( anspress()->user_pages, 'rewrite', $current_tab );
-
-			if ( empty( $page ) ) {
-				return $title;
-			}
-
-			return $title . ' | ' . $page[0]['label'];
+			return self::user_page_title() . ' | ';
 		}
 
 		return $title;
+	}
+
+	/**
+	 * Filter user page title.
+	 *
+	 * @param object $_post WP post object.
+	 * @return void
+	 */
+	public static function filter_page_title( $_post ) {
+		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) {
+			$_post->post_title = self::user_page_title();
+		}
 	}
 
 	/**
