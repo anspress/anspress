@@ -276,6 +276,7 @@ class AnsPress_Theme {
 	 * @return string
 	 * @since  3.0.0
 	 * @since  4.1.0 Give priority to page templates and then anspress.php and lastly fallback to page.php.
+	 * @since  4.1.1 Load single question template if exists.
 	 */
 	public static function anspress_basepage_template( $template ) {
 		if ( is_anspress() ) {
@@ -292,6 +293,12 @@ class AnsPress_Theme {
 				if ( ! empty( $page_template ) && 'default' !== $page_template ) {
 					array_unshift( $templates, $page_template );
 				}
+			} elseif ( is_single() ) {
+				$_post = get_queried_object();
+
+				array_unshift( $templates, 'single-' . $_post->ID . '.php' );
+				array_unshift( $templates, 'single-' . $_post->post_name . '.php' );
+				array_unshift( $templates, 'single-' . $_post->post_type . '.php' );
 			} elseif ( is_tax() ) {
 				$_term = get_queried_object();
 				$term_type = str_replace( 'question_', '', $_term->taxonomy );
