@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define databse version.
-define( 'AP_DB_VERSION', 31 );
+define( 'AP_DB_VERSION', 32 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
@@ -172,6 +172,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $forms = [];
 
 		/**
+		 * The activity object.
+		 *
+		 * @var void|object
+		 * @since 4.1.2
+		 */
+		public $activity;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -262,6 +270,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		private function includes() {
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
+			require_once ANSPRESS_DIR . 'includes/activity.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
 			require_once ANSPRESS_DIR . 'includes/class-form-hooks.php';

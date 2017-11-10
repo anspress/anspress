@@ -1070,13 +1070,12 @@ function ap_whitelist_array( $master_keys, $array ) {
 function ap_append_table_names() {
 	global $wpdb;
 
-	$wpdb->ap_qameta 		     = $wpdb->prefix . 'ap_qameta';
-	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
-	$wpdb->ap_views 			   = $wpdb->prefix . 'ap_views';
-	$wpdb->ap_reputations	   = $wpdb->prefix . 'ap_reputations';
-	$wpdb->ap_subscribers	   = $wpdb->prefix . 'ap_subscribers';
-	$wpdb->ap_email_queues	 = $wpdb->prefix . 'ap_email_queues';
-	$wpdb->ap_email_content	 = $wpdb->prefix . 'ap_email_content';
+	$wpdb->ap_qameta 		   = $wpdb->prefix . 'ap_qameta';
+	$wpdb->ap_votes 		   = $wpdb->prefix . 'ap_votes';
+	$wpdb->ap_views 			 = $wpdb->prefix . 'ap_views';
+	$wpdb->ap_reputations	 = $wpdb->prefix . 'ap_reputations';
+	$wpdb->ap_subscribers	 = $wpdb->prefix . 'ap_subscribers';
+	$wpdb->ap_activity	   = $wpdb->prefix . 'ap_activity';
 
 }
 ap_append_table_names();
@@ -2173,3 +2172,4 @@ function ap_current_user_id() {
 
 	return 0;
 }
+

@@ -192,11 +192,29 @@ class AP_Activate {
 		global $wpdb;
 
 		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_subscribers . '` (
-				`subs_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`subs_user_id` bigint(20) NOT NULL,
-				`subs_ref_id` bigint(20) NOT NULL,
+				`subs_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`subs_user_id` bigint(20) UNSIGNED NOT NULL,
+				`subs_ref_id` bigint(20) UNSIGNED NOT NULL,
 				`subs_event` varchar(100) NOT NULL,
 				PRIMARY KEY (`subs_id`)
+			)' . $this->charset_collate . ';';
+	}
+
+	/**
+	 * AnsPress activity table.
+	 *
+	 * @since 4.1.2
+	 */
+	public function activity_table() {
+		global $wpdb;
+
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_activity . '` (
+				`activity_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`activity_action` varchar(20) NOT NULL,
+				`activity_user_id` bigint(20) UNSIGNED NOT NULL,
+				`activity_ref_id` bigint(20) UNSIGNED NOT NULL,
+				`activity_date` timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (`activity_id`)
 			)' . $this->charset_collate . ';';
 	}
 
@@ -212,6 +230,7 @@ class AP_Activate {
 		$this->views_table();
 		$this->reputation_table();
 		$this->subscribers_table();
+		$this->activity_table();
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 

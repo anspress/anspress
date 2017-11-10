@@ -50,7 +50,6 @@ class AnsPress_Profile_Hooks {
 		anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_filter( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
-		//anspress()->add_action( 'wp', __CLASS__, 'pre_get_posts' );
 	}
 
 	/**

@@ -10,6 +10,11 @@
  * @since        0.8
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * AnsPress user role helper
  */
