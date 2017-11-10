@@ -610,6 +610,7 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
+	 * @since 4.1.2 Do not process if form not submitted.
 	 */
 	public static function save_question_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -617,6 +618,12 @@ class AnsPress_Hooks {
 		}
 
 		$form = anspress()->get_form( 'question' );
+
+		// Return if form is not submitted.
+		if ( ! $form->is_submitted() ) {
+			return;
+		}
+
 		$values = $form->get_values();
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_question' : 'new_question';
 
@@ -674,6 +681,10 @@ class AnsPress_Hooks {
 
 		// Update qameta terms.
 		ap_update_qameta_terms( $post_id );
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_q' : 'new_q';
+
+		// Insert activity.
+		ap_activity_insert( $activity_type, $post_id );
 	}
 
 	/**
@@ -683,6 +694,7 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
+	 * @since 4.1.2 Do not process if form not submitted.
 	 */
 	public static function save_answer_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -690,6 +702,12 @@ class AnsPress_Hooks {
 		}
 
 		$form = anspress()->get_form( 'answer' );
+
+		// Return if form is not submitted.
+		if ( ! $form->is_submitted() ) {
+			return;
+		}
+
 		$values = $form->get_values();
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_answer' : 'new_answer';
 
@@ -749,6 +767,11 @@ class AnsPress_Hooks {
 
 		// Update qameta terms.
 		ap_update_qameta_terms( $post_id );
+
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_a' : 'new_a';
+
+		// Insert activity.
+		ap_activity_insert( $activity_type, $post_id );
 	}
 
 	/**
