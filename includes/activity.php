@@ -32,6 +32,7 @@ function ap_activity_object() {
 /**
  * Insert activity into database. This function is an alias  of @see AnsPress\Activity::insert().
  *
+ * @param integer       $post_id Activity question id.
  * @param integer       $action  Activity action id.
  * @param integer       $ref_id  Reference item id.
  * @param integer|false $user_id User id for this activity. Default value is current_user_id().
@@ -40,6 +41,24 @@ function ap_activity_object() {
  *
  * @since 4.1.2 Introduced
  */
-function ap_activity_insert( $action, $ref_id, $user_id = false, $date = false ) {
-	return ap_activity_object()->insert( $action, $ref_id, $user_id, $date );
+function ap_activity_for_post( $post_id, $action, $ref_id, $user_id = false, $date = false ) {
+	$activity_id = ap_activity_object()->insert( $action, $ref_id, $user_id, $date );
+
+	// If not error.
+	if ( false !== $activity_id && ! is_wp_error( $activity_id ) ) {
+		$post = ap_get_post( $post_id );
+
+		$added_relation = ap_activity_object()->add_relation( $activity_id, $post_id );
+
+		// If answer post then add question as relation too.
+		if ( 'answer' === $post->post_type ) {
+			ap_activity_object()->add_relation( $activity_id, $post->post_parent );
+		}
+
+		if ( false !== $added_relation ) {
+			return $activity_id;
+		}
+	}
+
+	return $activity_id;
 }

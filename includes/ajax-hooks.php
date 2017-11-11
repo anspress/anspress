@@ -131,7 +131,20 @@ class AnsPress_Ajax {
 
 		// Unselect best answer if already selected.
 		if ( ap_have_answer_selected( $_post->post_parent ) ) {
-			ap_unselect_answer( $answer_id );
+			ap_unset_selected_answer( $_post->post_parent );
+
+			// Add question activity meta.
+			ap_update_post_activity_meta( $_post->post_parent, 'answer_unselected', get_current_user_id() );
+			ap_update_post_activity_meta( $_post->ID, 'unselected_best_answer', get_current_user_id() );
+
+			/**
+			 * Action triggered after an answer is un-selected as best.
+			 *
+			 * @param WP_Post $_post WordPress post object.
+			 * @since unknown
+			 */
+			do_action( 'ap_unselect_answer', $_post );
+
 			ap_ajax_json( array(
 				'success'    => true,
 				'action'     => 'unselected',
@@ -291,6 +304,9 @@ class AnsPress_Ajax {
 
 	/**
 	 * Handle toggle featured question ajax callback
+	 *
+	 * @since unknown
+	 * @since 4.1.2 Insert to activity table when question is featured.
 	 */
 	public static function toggle_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
@@ -323,6 +339,10 @@ class AnsPress_Ajax {
 		}
 
 		ap_set_featured_question( $post->ID );
+
+		// Update activity.
+		ap_activity_for_post( $post->ID, 'featured', $post->ID );
+
 		ap_ajax_json( array(
 			'success'  => true,
 			'action'   => [ 'active' => true, 'title' => __( 'Unmark this question as featured', 'anspress-question-answer' ), 'label' => __( 'Unfeature', 'anspress-question-answer' ) ],
@@ -358,6 +378,9 @@ class AnsPress_Ajax {
 
 	/**
 	 * Close question callback.
+	 *
+	 * @since unknown
+	 * @since 4.1.2 Add activity when question is closed.
 	 */
 	public static function close_question() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'p' );
@@ -376,6 +399,11 @@ class AnsPress_Ajax {
 		$close_title = $_post->closed ? __( 'Close this question for new answer.', 'anspress-question-answer' ) : __( 'Open this question for new answers', 'anspress-question-answer' );
 
 		$message = 1 === $toggle ? __( 'Question closed', 'anspress-question-answer' ) : __( 'Question is opened', 'anspress-question-answer' );
+
+		// Log in activity table.
+		if ( 1 === $toggle ) {
+			ap_activity_for_post( $_post->ID, 'closed_q', $_post->ID );
+		}
 
 		$results = array(
 			'success'     => true,

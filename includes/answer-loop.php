@@ -350,21 +350,10 @@ function ap_count_other_answer( $question_id = false ) {
  * Unselect an answer as best.
  *
  * @param  integer $post_id Post ID.
+ * @deprecated 4.1.2
  */
 function ap_unselect_answer( $post_id ) {
 	$post = ap_get_post( $post_id );
-
-	ap_unset_selected_answer( $post->post_parent );
-
-	// Add question activity meta.
-	ap_update_post_activity_meta( $post->post_parent, 'answer_unselected', get_current_user_id() );
-	ap_update_post_activity_meta( $post->ID, 'unselected_best_answer', get_current_user_id() );
-
-	do_action( 'ap_unselect_answer', $post );
-
-	if ( ap_opt( 'close_selected' ) ) {
-		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
-	}
 }
 
 /**

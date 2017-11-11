@@ -18,6 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 use WP_Error;
+use PC;
 
 /**
  * Class which has helper functions to get activities from the database.
@@ -81,19 +82,45 @@ class Activity {
 	public function prepare_actions() {
 		$defaults = array(
 			'new_q' => array(
-				'label'    => __( 'New question', 'anspress-question-answer' ),
 				'ref_type' => 'question',
 			),
 			'edit_q' => array(
-				'label'    => __( 'Edit question', 'anspress-question-answer' ),
 				'ref_type' => 'question',
 			),
 			'new_a' => array(
-				'label'    => __( 'New answer', 'anspress-question-answer' ),
 				'ref_type' => 'answer',
 			),
 			'edit_a' => array(
-				'label'    => __( 'Edit answer', 'anspress-question-answer' ),
+				'ref_type' => 'answer',
+			),
+			'status_publish' => array(
+				'ref_type' => [ 'answer', 'question' ],
+			),
+			'status_future' => array(
+				'ref_type' => [ 'answer', 'question' ],
+			),
+			'status_moderate' => array(
+				'ref_type' => [ 'answer', 'question' ],
+			),
+			'status_private_post' => array(
+				'ref_type' => [ 'answer', 'question' ],
+			),
+			'status_trash' => array(
+				'ref_type' => [ 'answer', 'question' ],
+			),
+			'featured' => array(
+				'ref_type' => 'question',
+			),
+			'closed_q' => array(
+				'ref_type' => 'question',
+			),
+			'new_c' => array(
+				'ref_type' => [ 'answer', 'question' ],
+			),
+			'selected' => array(
+				'ref_type' => 'answer',
+			),
+			'unselected' => array(
 				'ref_type' => 'answer',
 			),
 		);
@@ -140,22 +167,22 @@ class Activity {
 	/**
 	 * Insert activity data into the database.
 	 *
-	 * @param integer       $action  Activity action id.
-	 * @param integer       $ref_id  Reference item id.
-	 * @param integer|false $user_id User id for this activity. Default value is current_user_id().
-	 * @param integer       $date    Timestamp of activity.
-	 * @return boolean|integer Returns last inserted id or `false` on fail.
+	 * @param integer       $action      Activity action id.
+	 * @param integer       $ref_id      Reference item id.
+	 * @param integer|false $user_id     User id for this activity. Default value is current_user_id().
+	 * @param integer       $date        Timestamp of activity.
+	 * @return boolean|integer Returns   last inserted id or `false` on fail.
 	 * @since 4.1.2
 	 */
 	public function insert( $action, $ref_id, $user_id = false, $date = false ) {
 		global $wpdb;
 
-		$action  = sanitize_text_field( $action );
-		$ref_id  = intval( $ref_id );
+		$action = sanitize_text_field( $action );
+		$ref_id = intval( $ref_id );
 
 		// Check if valid action.
 		if ( ! $this->action_exists( $action ) ) {
-			return WP_Error( 'not_valid_action', __( 'Not a valid action', 'anspress-question-answer' ) );
+			return new WP_Error( 'not_valid_action', __( 'Not a valid action', 'anspress-question-answer' ) );
 		}
 
 		// Get current user id if $user_id is false.
@@ -210,6 +237,120 @@ class Activity {
 		 * @since 4.1.2
 		 */
 		do_action( 'ap_activity_inserted', $action, $user_id, $ref_id, $date );
+
+		return $wpdb->insert_id;
+	}
+
+	/**
+	 * Get activity by activity_id.
+	 *
+	 * @param integer $activity_id Activity id.
+	 * @return boolean|object
+	 * @since 4.1.2
+	 */
+	public function get_activity( $activity_id ) {
+		global $wpdb;
+
+		if ( empty( $activity_id ) ) {
+			return false;
+		}
+
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_activity WHERE activity_id = %d", $activity_id ) );
+	}
+
+	/**
+	 * Add activity relation. Using this function an activity can be linked
+	 * with many data like: post, comment, user etc. Relation makes it easy to
+	 * fetch data later.
+	 *
+	 * @param integer $activity_id Activity id.
+	 * @param integer $ref_id      Reference id.
+	 * @param string  $rel_type    Reference type.
+	 * @return WP_Error|false|integer Returns `false` on error and late inserted ID on success.
+	 */
+	public function add_relation( $activity_id, $ref_id, $rel_type = 'post' ) {
+		global $wpdb;
+		$activity = $this->get_activity( $activity_id );
+
+		// Check if valid activity.
+		if ( ! $activity ) {
+			return new WP_Error( 'not_activity', __( 'Not a valid activity.', 'anspress-question-answer' ) );
+		}
+
+		// Check ref id not empty.
+		if ( empty( $ref_id ) ) {
+			return new WP_Error( 'ref_empty', __( 'Ref ID empty.', 'anspress-question-answer' ) );
+		}
+
+		$inserted = $wpdb->insert(
+			$wpdb->ap_activity_rel,
+			array(
+				'rel_activity_id' => $activity_id,
+				'rel_ref_id'      => $ref_id,
+				'rel_type'    => $rel_type,
+			),
+			array(
+				'%d', '%d', '%s',
+			)
+		);
+
+		if ( ! $inserted ) {
+			return false;
+		}
+
+		// Return inserted ID.
+		return $wpdb->insert_id;
+	}
+
+	/**
+	 * Delete single and multiple activity from database.
+	 *
+	 * @param array $where {
+	 * 		Where clause.
+	 *
+	 * 		@type string  $action  Activity action name.
+	 * 		@type integer $ref_id  Activity reference id.
+	 * 		@type integer $user_id Activity user id.
+	 * 		@type string  $date    Activity date.
+	 * }
+	 * @return boolean
+	 * @since 4.1.2
+	 */
+	public function delete( $where ) {
+		global $wpdb;
+
+		$where = wp_array_slice_assoc( $where, [ 'action', 'ref_id', 'user_id', 'date' ] );
+		$types = [];
+		$cols = [];
+
+		foreach ( $where as $key => $value ) {
+			if ( in_array( $key, [ 'action', 'date' ], true ) ) {
+				$types[] = '%s';
+			} else {
+				$types[] = '%d';
+			}
+
+			$cols[ 'activity_' . $key ] = $value;
+		}
+
+		// Check if there are columns.
+		if ( empty( $cols ) ) {
+			return new WP_Error( 'no_cols', __( 'No columns found in where clue', 'anspress-question-answer' ) );
+		}
+
+		$deleted = $wpdb->delete( $this->table, $cols, $types ); // DB call okay, DB cache okay.
+
+		if ( false === $deleted ) {
+			return false;
+		}
+
+		/**
+		 * Hook triggered right after an AnsPress activity is deleted from database.
+		 *
+		 * @param array $where Where clauses.
+		 * @since 4.1.2
+		 */
+		do_action( 'ap_activity_deleted', $where );
 
 		return true;
 	}

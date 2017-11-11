@@ -51,6 +51,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
 			anspress()->add_action( 'save_post_question', __CLASS__, 'save_question_hooks', 1, 3 );
 			anspress()->add_action( 'save_post_answer', __CLASS__, 'save_answer_hooks', 1, 3 );
+			anspress()->add_action( 'transition_post_status', __CLASS__, 'transition_post_status', 10, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			//anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
@@ -391,6 +392,8 @@ class AnsPress_Hooks {
 	 * Actions to run after posting a comment
 	 *
 	 * @param	object|array $comment Comment object.
+	 * @since unknown
+	 * @since 4.1.2 Log to activity table on new comment.
 	 */
 	public static function publish_comment( $comment ) {
 		$comment = (object) $comment;
@@ -409,6 +412,9 @@ class AnsPress_Hooks {
 
 		$count = get_comment_count( $comment->comment_post_ID );
 		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
+
+		// Log to activity table.
+		ap_activity_for_post( $post->ID, 'new_c', $comment->comment_ID );
 	}
 
 	/**
@@ -610,7 +616,7 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
-	 * @since 4.1.2 Do not process if form not submitted.
+	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
 	 */
 	public static function save_question_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -684,7 +690,7 @@ class AnsPress_Hooks {
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_q' : 'new_q';
 
 		// Insert activity.
-		ap_activity_insert( $activity_type, $post_id );
+		ap_activity_for_post( $post_id, $activity_type, $post_id );
 	}
 
 	/**
@@ -694,7 +700,7 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
-	 * @since 4.1.2 Do not process if form not submitted.
+	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
 	 */
 	public static function save_answer_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -771,7 +777,25 @@ class AnsPress_Hooks {
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_a' : 'new_a';
 
 		// Insert activity.
-		ap_activity_insert( $activity_type, $post_id );
+		ap_activity_for_post( $post_id, $activity_type, $post_id );
+	}
+
+	/**
+	 * Trigger activity update hook on question and answer status transition.
+	 *
+	 * @param string  $new_status New post status.
+	 * @param string  $old_status Old post status.
+	 * @param WP_Post $post       WordPress post object.
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function transition_post_status( $new_status, $old_status, $post ) {
+		if ( 'new' === $old_status || ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
+			return;
+		}
+
+		$question_id = 'answer' === $post->post_type ? $post->post_parent : $post->ID;
+		ap_activity_for_post(  $post->ID, 'status_' . $new_status, $post->ID );
 	}
 
 	/**

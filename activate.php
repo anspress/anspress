@@ -219,6 +219,23 @@ class AP_Activate {
 	}
 
 	/**
+	 * AnsPress activity relationship table.
+	 *
+	 * @since 4.1.2
+	 */
+	public function activity_relation_table() {
+		global $wpdb;
+
+		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_activity_rel . '` (
+				`rel_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`rel_activity_id` bigint(20) UNSIGNED NOT NULL,
+				`rel_type` varchar(20) NOT NULL,
+				`rel_ref_id` bigint(20) UNSIGNED NOT NULL,
+				PRIMARY KEY (`rel_id`)
+			)' . $this->charset_collate . ';';
+	}
+
+	/**
 	 * Insert and update tables
 	 */
 	public function insert_tables() {
@@ -231,6 +248,7 @@ class AP_Activate {
 		$this->reputation_table();
 		$this->subscribers_table();
 		$this->activity_table();
+		$this->activity_relation_table();
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
