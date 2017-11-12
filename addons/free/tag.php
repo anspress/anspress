@@ -44,8 +44,8 @@ class AnsPress_Tag {
 		anspress()->add_action( 'ap_enqueue', __CLASS__, 'ap_localize_scripts' );
 		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
-		anspress()->add_action( 'ap_ask_fields_validation', __CLASS__, 'ap_ask_fields_validation' );
-		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
 		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
 		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
 		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
@@ -379,6 +379,7 @@ class AnsPress_Tag {
 	 *
 	 * @param  array $args Form arguments.
 	 * @return array
+	 * @deprecated 4.1.2
 	 */
 	public static function ap_ask_fields_validation( $args ) {
 		$args['tags'] = array(
