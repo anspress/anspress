@@ -32,33 +32,73 @@ function ap_activity_object() {
 /**
  * Insert activity into database. This function is an alias  of @see AnsPress\Activity::insert().
  *
- * @param integer       $post_id Activity question id.
- * @param integer       $action  Activity action id.
- * @param integer       $ref_id  Reference item id.
- * @param integer|false $user_id User id for this activity. Default value is current_user_id().
- * @param integer|false $date    Timestamp of activity, default value `false`.
- * @return boolean|integer Returns last inserted id or `false` on fail.
+ * @param array $args Arguments for insert. All list of arguments can be seen at @see AnsPress\Activity::insert().
+ * @return WP_Error|integer Returns last inserted id or `WP_Error` on fail.
  *
  * @since 4.1.2 Introduced
  */
-function ap_activity_for_post( $post_id, $action, $ref_id, $user_id = false, $date = false ) {
-	$activity_id = ap_activity_object()->insert( $action, $ref_id, $user_id, $date );
+function ap_activity_add( $args = [] ) {
+	return ap_activity_object()->insert( $args );
+}
 
-	// If not error.
-	if ( false !== $activity_id && ! is_wp_error( $activity_id ) ) {
-		$post = ap_get_post( $post_id );
+/**
+ * Delete all activities related to a post.
+ *
+ * If given post is a question then it delete all activities by column `activity_q_id` else
+ * by `activity_a_id`. More detail about activity delete can be found here @see AnsPress\Activity::delete()
+ *
+ * @param  WP_Post|integer $post_id WordPress post object or post ID.
+ * @return WP_Error|integer Return numbers of rows deleted on success.
+ * @since 4.1.2
+ */
+function ap_delete_post_activity( $post_id ) {
+	$_post = ap_get_post( $post_id );
 
-		$added_relation = ap_activity_object()->add_relation( $activity_id, $post_id );
-
-		// If answer post then add question as relation too.
-		if ( 'answer' === $post->post_type ) {
-			ap_activity_object()->add_relation( $activity_id, $post->post_parent );
-		}
-
-		if ( false !== $added_relation ) {
-			return $activity_id;
-		}
+	// Check if AnsPress posts.
+	if ( ! ap_is_cpt( $_post ) ) {
+		return new WP_Error( 'not_cpt', __( 'Not AnsPress posts', 'anspress-question-answer' ) );
 	}
 
-	return $activity_id;
+	$where = [];
+
+	if ( 'question' === $_post->post_type ) {
+		$where['q_id'] = $_post->ID;
+	} else {
+		$where['a_id'] = $_post->ID;
+	}
+
+	// Delete all activities by post id.
+	return ap_activity_object()->delete( $where );
+}
+
+/**
+ * Delete all activities related to a comment.
+ *
+ * More detail about activity delete can be found here @see AnsPress\Activity::delete()
+ *
+ * @param Comment|integer $comment_id WordPress comment object or comment ID.
+ * @return WP_Error|integer Return numbers of rows deleted on success.
+ * @since  4.1.2
+ */
+function ap_delete_comment_activity( $comment_id ) {
+	if ( 'anspress' !== get_comment_type( $comment_id ) ) {
+		return;
+	}
+
+	// Delete all activities by post id.
+	return ap_activity_object()->delete( [ 'c_id' => $comment_id ] );
+}
+
+/**
+ * Delete all activities related to a user.
+ *
+ * More detail about activity delete can be found here @see AnsPress\Activity::delete()
+ *
+ * @param User|integer $user_id WordPress user object or user ID.
+ * @return WP_Error|integer Return numbers of rows deleted on success.
+ * @since  4.1.2
+ */
+function ap_delete_user_activity( $user_id ) {
+	// Delete all activities by post id.
+	return ap_activity_object()->delete( [ 'user_id' => $user_id ] );
 }

@@ -265,7 +265,11 @@ function ap_update_votes_count( $post_id ) {
  */
 function ap_set_selected_answer( $question_id, $answer_id ) {
 	// Log to activity table.
-	ap_activity_for_post( $answer_id, 'selected', $answer_id );
+	ap_activity_add( array(
+		'q_id'   => $question_id,
+		'a_id'   => $answer_id,
+		'action' => 'selected',
+	) );
 
 	ap_insert_qameta( $answer_id, [ 'selected' => 1, 'last_updated' => current_time( 'mysql' ) ] );
 	ap_insert_qameta( $question_id, [ 'selected_id' => $answer_id, 'last_updated' => current_time( 'mysql' ) ] );
@@ -284,7 +288,11 @@ function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
 
 	// Log to activity table.
-	ap_activity_for_post( $qameta->selected_id, 'unselected', $qameta->selected_id );
+	ap_activity_add( array(
+		'q_id'   => $question_id,
+		'a_id'   => $qameta->selected_id,
+		'action' => 'unselected',
+	) );
 
 	// Clear selected column from answer qameta.
 	ap_insert_qameta( $qameta->selected_id, [ 'selected' => 0, 'last_updated' => current_time( 'mysql' ) ] );

@@ -351,6 +351,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 			AnsPress_Hooks::init();
+			AnsPress\Activity::get_instance();
 			AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $data ) {

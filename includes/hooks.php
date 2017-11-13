@@ -180,15 +180,32 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Before deleting a question or answer.
+	 * This callback handles pre delete question actions.
+	 *
+	 * Before deleting a question we have to make sure that all answers
+	 * and metas are cleared. Some hooks in answer may require question data
+	 * so its better to delete all answers before deleting question.
 	 *
 	 * @param	integer $post_id Question or answer ID.
+	 * @since unknown
 	 */
 	public static function before_delete( $post_id ) {
 
 		$post = ap_get_post( $post_id );
 		if ( 'question' === $post->post_type ) {
+
+			/**
+			 * Action triggered before deleting a question form database.
+			 *
+			 * At this point question are not actually deleted from database hence
+			 * it will be easy to perform actions which uses mysql queries.
+			 *
+			 * @param integer $post_id Question id.
+			 * @param WP_Post $post    Question object.
+			 * @since unknown
+			 */
 			do_action( 'ap_before_delete_question', $post->ID, $post );
+
 			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] ); // @codingStandardsIgnoreLine
 
 			foreach ( (array) $answers as $a ) {
@@ -414,7 +431,12 @@ class AnsPress_Hooks {
 		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
 
 		// Log to activity table.
-		ap_activity_for_post( $post->ID, 'new_c', $comment->comment_ID );
+		ap_activity_add( array(
+			'q_id'   => 'answer' === $post->post_type ? $post->post_parent: $post->ID,
+			'action' => 'new_c',
+			'a_id'   => 'answer' === $post->post_type ? $post->ID: 0,
+			'c_id'   => $comment->comment_ID,
+		) );
 	}
 
 	/**
@@ -690,7 +712,10 @@ class AnsPress_Hooks {
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_q' : 'new_q';
 
 		// Insert activity.
-		ap_activity_for_post( $post_id, $activity_type, $post_id );
+		ap_activity_add( array(
+			'q_id'   => $post_id,
+			'action' => $activity_type,
+		) );
 	}
 
 	/**
@@ -777,7 +802,11 @@ class AnsPress_Hooks {
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_a' : 'new_a';
 
 		// Insert activity.
-		ap_activity_for_post( $post_id, $activity_type, $post_id );
+		ap_activity_add( array(
+			'q_id'   => $post->post_parent,
+			'a_id'   => $post_id,
+			'action' => $activity_type,
+		) );
 	}
 
 	/**
@@ -795,7 +824,14 @@ class AnsPress_Hooks {
 		}
 
 		$question_id = 'answer' === $post->post_type ? $post->post_parent : $post->ID;
-		ap_activity_for_post(  $post->ID, 'status_' . $new_status, $post->ID );
+		$answer_id   = 'answer' === $post->post_type ? $post->ID : 0;
+
+		// Log to db.
+		ap_activity_add( array(
+			'q_id'   => $question_id,
+			'a_id'   => $answer_id,
+			'action' => 'status_' . $new_status,
+		) );
 	}
 
 	/**

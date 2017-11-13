@@ -18,7 +18,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 use WP_Error;
-use PC;
 
 /**
  * Class which has helper functions to get activities from the database.
@@ -57,6 +56,7 @@ class Activity {
 	public static function get_instance() {
 		if ( null == self::$instance ) {
 			self::$instance = new self;
+			self::hooks();
 		}
 
 		return self::$instance;
@@ -70,6 +70,64 @@ class Activity {
 		$this->table = $wpdb->ap_activity;
 
 		$this->prepare_actions();
+	}
+
+	/**
+	 * Register all hooks of activities.
+	 *
+	 * @return void
+	 * @since 4.1.2
+	 */
+	private static function hooks() {
+		anspress()->add_action( 'before_delete_post', __CLASS__, '_before_delete' );
+		anspress()->add_action( 'delete_comment', __CLASS__, '_delete_comment' );
+		anspress()->add_action( 'delete_user', __CLASS__, '_delete_user' );
+	}
+
+	/**
+	 * Callback for `before_delete_post`.
+	 *
+	 * Deletes activities related to a post.
+	 *
+	 * @param integer $post_id Post id.
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function _before_delete( $post_id ) {
+		$_post = ap_get_post( $post_id );
+
+		// Return if not AnsPress cpt.
+		if ( ! ap_is_cpt( $_post ) ) {
+			return;
+		}
+
+		ap_delete_post_activity( $post_id );
+	}
+
+	/**
+	 * Callback for `delete_comment`.
+	 *
+	 * Deletes activities related to a comment.
+	 *
+	 * @param integer $comment_id Comment id.
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function _delete_comment( $comment_id ) {
+		ap_delete_comment_activity( $comment_id );
+	}
+
+	/**
+	 * Callback for `delete_user`.
+	 *
+	 * Deletes activities related to a user.
+	 *
+	 * @param integer $user_id User id.
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function _delete_user( $user_id ) {
+		ap_delete_user_activity( $user_id );
 	}
 
 	/**
@@ -165,61 +223,67 @@ class Activity {
 	}
 
 	/**
-	 * Insert activity data into the database.
+	 * Insert activity data into the database. `$q_id` argument cannot be
+	 * left blank as it is required.
 	 *
-	 * @param integer       $action      Activity action id.
-	 * @param integer       $ref_id      Reference item id.
-	 * @param integer|false $user_id     User id for this activity. Default value is current_user_id().
-	 * @param integer       $date        Timestamp of activity.
-	 * @return boolean|integer Returns   last inserted id or `false` on fail.
+	 * @param array $args {
+	 * 		Arguments for insert query.
+	 *
+	 * 		@type string  $action  Registered action key.
+	 * 		@type integer $q_id    Question id. This is a required argument.
+	 * 		@type integer $a_id    Answer id. This argument is optional.
+	 * 		@type integer $c_id    Comment id. This argument is optional.
+	 * 		@type integer $user_id User id. This is optional.
+	 * 		@type string  $date    Date of activity. Current time is used by default.
+	 * }
 	 * @since 4.1.2
 	 */
-	public function insert( $action, $ref_id, $user_id = false, $date = false ) {
+	public function insert( $args = [] ) {
 		global $wpdb;
 
-		$action = sanitize_text_field( $action );
-		$ref_id = intval( $ref_id );
+		$args = wp_parse_args( $args, array(
+			'action'  => '',
+			'q_id'    => 0,
+			'a_id'    => 0,
+			'c_id'    => 0,
+			'user_id' => get_current_user_id(),
+			'date'    => current_time( 'mysql' ),
+		) );
+
+		// Check if question id exists.
+		if ( empty( $args['q_id'] ) ) {
+			return new WP_Error( 'question_id_empty', __( 'Question id is required.', 'anspress-question-answer' ) );
+		}
 
 		// Check if valid action.
-		if ( ! $this->action_exists( $action ) ) {
+		if ( ! $this->action_exists( $args['action'] ) ) {
 			return new WP_Error( 'not_valid_action', __( 'Not a valid action', 'anspress-question-answer' ) );
 		}
 
-		// Get current user id if $user_id is false.
-		if ( false === $user_id ) {
-			$user_id = get_current_user_id();
-		}
+		// split date for validation.
+		$mm = substr( $args['date'], 5, 2 );
+		$jj = substr( $args['date'], 8, 2 );
+		$aa = substr( $args['date'], 0, 4 );
+		$valid_date = wp_checkdate( $mm, $jj, $aa, $args['date'] );
 
-		$user_id = intval( $user_id );
-
-		// Check if validate.
-		if ( false !== $date ) {
-			$mm = substr( $date, 5, 2 );
-			$jj = substr( $date, 8, 2 );
-			$aa = substr( $date, 0, 4 );
-			$valid_date = wp_checkdate( $mm, $jj, $aa, $date );
-
-			if ( ! $valid_date ) {
-				return new WP_Error( 'invalid_date' );
-			}
-		}
-
-		// If no date passed then use current timestamp.
-		if ( false === $date ) {
-			$date = current_time( 'mysql' );
+		// Validate date.
+		if ( ! $valid_date ) {
+			return new WP_Error( 'invalid_date', __( 'Invalid date', 'anspress-question-answer' ) );
 		}
 
 		// Insert.
 		$inserted = $wpdb->insert(
 			$this->table,
 			array(
-				'activity_action'  => $action,
-				'activity_user_id' => $user_id,
-				'activity_ref_id'  => $ref_id,
-				'activity_date'    => $date,
+				'activity_action'  => $args['action'],
+				'activity_q_id'    => $args['q_id'],
+				'activity_a_id'    => $args['a_id'],
+				'activity_c_id'    => $args['c_id'],
+				'activity_user_id' => $args['user_id'],
+				'activity_date'    => $args['date'],
 			),
 			array(
-				'%s', '%d', '%d', '%s',
+				'%s', '%d', '%d', '%d', '%d', '%s',
 			)
 		);
 
@@ -230,13 +294,10 @@ class Activity {
 		/**
 		 * Hook called right after an activity get inserted to database.
 		 *
-		 * @param integer $action  Activity action id.
-		 * @param integer $user_id User id for this activity.
-		 * @param integer $ref_id  Reference item id.
-		 * @param integer $date    Timestamp of activity.
+		 * @param array $args  Insert arguments.
 		 * @since 4.1.2
 		 */
-		do_action( 'ap_activity_inserted', $action, $user_id, $ref_id, $date );
+		do_action( 'ap_activity_inserted', $args );
 
 		return $wpdb->insert_id;
 	}
@@ -259,69 +320,27 @@ class Activity {
 	}
 
 	/**
-	 * Add activity relation. Using this function an activity can be linked
-	 * with many data like: post, comment, user etc. Relation makes it easy to
-	 * fetch data later.
-	 *
-	 * @param integer $activity_id Activity id.
-	 * @param integer $ref_id      Reference id.
-	 * @param string  $rel_type    Reference type.
-	 * @return WP_Error|false|integer Returns `false` on error and late inserted ID on success.
-	 */
-	public function add_relation( $activity_id, $ref_id, $rel_type = 'post' ) {
-		global $wpdb;
-		$activity = $this->get_activity( $activity_id );
-
-		// Check if valid activity.
-		if ( ! $activity ) {
-			return new WP_Error( 'not_activity', __( 'Not a valid activity.', 'anspress-question-answer' ) );
-		}
-
-		// Check ref id not empty.
-		if ( empty( $ref_id ) ) {
-			return new WP_Error( 'ref_empty', __( 'Ref ID empty.', 'anspress-question-answer' ) );
-		}
-
-		$inserted = $wpdb->insert(
-			$wpdb->ap_activity_rel,
-			array(
-				'rel_activity_id' => $activity_id,
-				'rel_ref_id'      => $ref_id,
-				'rel_type'    => $rel_type,
-			),
-			array(
-				'%d', '%d', '%s',
-			)
-		);
-
-		if ( ! $inserted ) {
-			return false;
-		}
-
-		// Return inserted ID.
-		return $wpdb->insert_id;
-	}
-
-	/**
 	 * Delete single and multiple activity from database.
 	 *
 	 * @param array $where {
-	 * 		Where clause.
+	 * 		Where clause for delete query.
 	 *
 	 * 		@type string  $action  Activity action name.
-	 * 		@type integer $ref_id  Activity reference id.
-	 * 		@type integer $user_id Activity user id.
-	 * 		@type string  $date    Activity date.
+	 * 		@type integer $q_id    Question id. This is a required argument.
+	 * 		@type integer $a_id    Answer id. This is optional.
+	 * 		@type integer $c_id    Comment id. This is optional.
+	 * 		@type integer $user_id Activity user id. This is optional.
+	 * 		@type string  $date    Activity date. This is optional.
 	 * }
-	 * @return boolean
+	 * @return WP_Error|integer Return numbers of rows deleted on success.
 	 * @since 4.1.2
 	 */
 	public function delete( $where ) {
 		global $wpdb;
 
-		$where = wp_array_slice_assoc( $where, [ 'action', 'ref_id', 'user_id', 'date' ] );
+		$where = wp_array_slice_assoc( $where, [ 'action', 'a_id', 'c_id', 'q_id', 'user_id', 'date' ] );
 		$types = [];
-		$cols = [];
+		$cols  = [];
 
 		foreach ( $where as $key => $value ) {
 			if ( in_array( $key, [ 'action', 'date' ], true ) ) {
@@ -341,7 +360,7 @@ class Activity {
 		$deleted = $wpdb->delete( $this->table, $cols, $types ); // DB call okay, DB cache okay.
 
 		if ( false === $deleted ) {
-			return false;
+			return new WP_Error( 'failed_to_delete', __( 'Failed to delete activity rows.', 'anspress-question-answer' ) );
 		}
 
 		/**
@@ -352,7 +371,7 @@ class Activity {
 		 */
 		do_action( 'ap_activity_deleted', $where );
 
-		return true;
+		return $deleted;
 	}
 
 }

@@ -341,7 +341,10 @@ class AnsPress_Ajax {
 		ap_set_featured_question( $post->ID );
 
 		// Update activity.
-		ap_activity_for_post( $post->ID, 'featured', $post->ID );
+		ap_activity_add( array(
+			'q_id'   => $post->ID,
+			'action' => 'featured',
+		) );
 
 		ap_ajax_json( array(
 			'success'  => true,
@@ -402,7 +405,10 @@ class AnsPress_Ajax {
 
 		// Log in activity table.
 		if ( 1 === $toggle ) {
-			ap_activity_for_post( $_post->ID, 'closed_q', $_post->ID );
+			ap_activity_add( array(
+				'q_id'   => $_post->ID,
+				'action' => 'closed_q',
+			) );
 		}
 
 		$results = array(

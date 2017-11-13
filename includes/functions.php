@@ -1068,7 +1068,7 @@ function ap_whitelist_array( $master_keys, $array ) {
  * Append table name in $wpdb.
  *
  * @since unknown
- * @since 4.1.2 Added `ap_activity` and `ap_activity_rel`.
+ * @since 4.1.2 Added `ap_activity` table.
  */
 function ap_append_table_names() {
 	global $wpdb;
@@ -1079,7 +1079,6 @@ function ap_append_table_names() {
 	$wpdb->ap_reputations	  = $wpdb->prefix . 'ap_reputations';
 	$wpdb->ap_subscribers	  = $wpdb->prefix . 'ap_subscribers';
 	$wpdb->ap_activity	    = $wpdb->prefix . 'ap_activity';
-	$wpdb->ap_activity_rel	= $wpdb->prefix . 'ap_activity_rel';
 
 }
 ap_append_table_names();
@@ -2175,5 +2174,16 @@ function ap_current_user_id() {
 	}
 
 	return 0;
+}
+
+/**
+ * Check if post object is AnsPress CPT i.e. question or answer.
+ *
+ * @param WP_Post $_post WordPress post object.
+ * @return boolean
+ * @since 4.1.2
+ */
+function ap_is_cpt( $_post ) {
+	return ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) );
 }
 
