@@ -109,7 +109,7 @@ class Activity extends AnsPress_Query {
 		// If no cache found then get from DB.
 		if ( false === $this->objects ) {
 			$this->objects = $wpdb->get_results( $query ); // WPCS: DB call okay.
-			$this->total_count = $wpdb->get_var( apply_filters( 'ap_activities_found_rows', 'SELECT FOUND_ROWS()', $this ) );
+			$this->total_count( $key );
 
 			$activities = [];
 			foreach ( $this->objects as $activity ) {
@@ -118,8 +118,6 @@ class Activity extends AnsPress_Query {
 			}
 
 			$this->objects = $activities;
-
-			wp_cache_set( 'ap_' . $key, $this->total_count, 'counts' );
 			wp_cache_set( $key, $activities, 'ap_activities' );
 		}
 
@@ -238,7 +236,7 @@ class Activity extends AnsPress_Query {
 		echo esc_attr( $this->get_the_icon() );
 	}
 
-	public function the_ref_content() {
+	public function the_ref_content( $show_question = false ) {
 		include ap_get_theme_location( 'activities/activity-ref-content.php' );
 	}
 
@@ -270,5 +268,9 @@ class Activity extends AnsPress_Query {
 		}
 
 		echo '<div class="ap-activity-when">' . esc_html( $current_when ) . '</div>';
+	}
+
+	public function get_q_id() {
+		return $this->object->q_id;
 	}
 }

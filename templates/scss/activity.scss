@@ -117,6 +117,11 @@
 				}
 			}
 		}
+		&-more{
+			.ap-btn{
+				display: table;
+			}
+		}
 	}
 	.ap-activity-when {
     display: table;

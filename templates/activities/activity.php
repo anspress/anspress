@@ -31,17 +31,25 @@
 			<div class="ap-activity-content">
 				<div class="ap-activity-header">
 					<?php echo ap_user_display_name( [ 'user_id' => $activities->get_user_id(), 'html' => true, 'full_details' => true ] ); ?>
-					<span class="ap-activity-verb"><?php $activities->the_verb(); ?> with other <?php echo $activities->count_same_q_activities(); ?> activities</span>
+					<span class="ap-activity-verb"><?php $activities->the_verb(); ?></span>
+					<span><?php
+						$count = $activities->count_same_q_activities();
+
+						printf(
+							_n( 'with other activity', 'with other %d activities', $count, 'anspress-question-answer' ),
+							(int) $count
+						);
+					?></span>
 				</div>
 
 				<div class="ap-activity-ref">
-					<?php $activities->the_ref_content(); ?>
+					<a href="<?php echo get_permalink( $activities->get_q_id() ); ?>"><?php echo get_the_title( $activities->get_q_id() ); ?></a>
 				</div>
 
 				<div class="ap-activities-same">
 					<?php $activities->same_activities_start(); ?>
 
-					<?php while( $activities->same_question_activities() ): $activities->the_object(); ?>
+					<?php while ( $activities->same_question_activities() ): $activities->the_object(); ?>
 						<div class="ap-activity-same">
 							<div class="ap-activity-avatar">
 								<?php echo $activities->get_avatar( 35 ); ?>

@@ -25,9 +25,7 @@ if ( 'answer' === $type && ! empty( $this->object->a_id ) ) {
 	$post_id = $this->object->a_id;
 }
 
-if ( 'comment' === $type && $this->have_same_q_activities() ) {
-	echo '<a href="' . get_permalink( $this->object->q_id ) . '">' . get_the_title( $this->object->q_id ) . '</a>';
-} elseif ( 'comment' === $type ) {
+if ( 'comment' === $type ) {
 	echo get_comment_excerpt( $this->object->c_id ) . '<a href="' . get_comment_link( $this->object->c_id ) . '">' . __( 'View comment', 'anspress-question-answer' ) . '</a>';
 } elseif ( ! empty( $post_id ) ) {
 	echo '<a href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a>';
