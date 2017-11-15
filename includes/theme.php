@@ -93,10 +93,9 @@ function is_post_waiting_moderation( $post_id = false ) {
  * @since 2.0.0
  */
 function is_post_closed( $post_id = null ) {
-	if ( ap_get_post_field( 'closed', $post_id ) ) {
+	if ( '1' === ap_get_post_field( 'closed', $post_id ) ) {
 		return true;
 	}
-
 	return false;
 }
 

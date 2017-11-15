@@ -1342,6 +1342,7 @@ function ap_user_display_name( $args = array() ) {
 		'html'               => false,
 		'echo'               => false,
 		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
+		'full_details'       => false,
 	);
 
 	if ( $args instanceof WP_Comment ) {
@@ -1429,14 +1430,19 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 	if ( $user_id < 1 && empty( $user_id ) ) {
 		$link = '#/user/anonymous';
-	} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
-		$link = bp_core_get_userlink( $user_id, false, true );
-	} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
-		$user = get_user_by( 'id', $user_id );
-		$slug = get_option( 'ap_user_path' );
-		$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
 	} else {
-		$link = get_author_posts_url( $user_id );
+		$user = get_user_by( 'id', $user_id );
+
+		if ( ! $user ) {
+			$link = '#/user/anonymous';
+		} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
+			$link = bp_core_get_userlink( $user_id, false, true );
+		} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
+			$slug = get_option( 'ap_user_path' );
+			$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
+		} else {
+			$link = get_author_posts_url( $user_id );
+		}
 	}
 
 	// Append sub.

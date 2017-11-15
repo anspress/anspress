@@ -53,6 +53,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'anspress-question-answer.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'activate.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/roles-cap.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity-helper.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/activity.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/common-pages.php' );

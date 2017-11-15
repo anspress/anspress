@@ -276,7 +276,7 @@ class AnsPress_Avatar {
 	 * Extrated from Google's metallic color.
 	 */
 	public function colors() {
-		$colors = [ '#F44336', '#EF5350', '#F44336', '#E53935', '#D32F2F', '#C62828', '#B71C1C', '#FF5252', '#FF1744', '#D50000', '#E91E63', '#F06292', '#EC407A', '#E91E63', '#D81B60', '#C2185B', '#AD1457', '#880E4F', '#FF80AB', '#FF4081', '#F50057', '#C51162', '#9C27B0', '#BA68C8', '#AB47BC', '#9C27B0', '#8E24AA', '#7B1FA2', '#6A1B9A', '#4A148C', '#EA80FC', '#E040FB', '#D500F9', '#AA00FF', '#673AB7', '#7E57C2', '#673AB7', '#5E35B1', '#512DA8', '#4527A0', '#311B92', '#B388FF', '#7C4DFF', '#651FFF', '#6200EA', '#3F51B5', '#7986CB', '#5C6BC0', '#3F51B5', '#3949AB', '#303F9F', '#283593', '#1A237E', '#536DFE', '#3D5AFE', '#304FFE', '#2196F3', '#42A5F5', '#2196F3', '#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#448AFF', '#2979FF', '#2962FF', '#03A9F4', '#4FC3F7', '#29B6F6', '#03A9F4', '#039BE5', '#0288D1', '#0277BD', '#01579B', '#40C4FF', '#00B0FF', '#0091EA', '#00BCD4', '#00BCD4', '#00ACC1', '#0097A7', '#00838F', '#006064', '#00B8D4', '#009688', '#4DB6AC', '#26A69A', '#009688', '#00897B', '#00796B', '#00695C', '#004D40', '#00BFA5', '#4CAF50', '#66BB6A', '#4CAF50', '#43A047', '#388E3C', '#2E7D32', '#1B5E20', '#00E676', '#00C853', '#8BC34A', '#8BC34A', '#7CB342', '#689F38', '#558B2F', '#33691E', '#64DD17', '#F0F4C3', '#E6EE9C', '#DCE775', '#D4E157', '#AFB42B', '#9E9D24', '#827717', '#AEEA00', '#FDD835', '#FBC02D', '#F9A825', '#F57F17', '#FFD600', '#FFC107', '#FFD54F', '#FFCA28', '#FFC107', '#FFB300', '#FFA000', '#FF8F00', '#FF6F00', '#FFE57F', '#FFD740', '#FFC400', '#FFAB00', '#FF9800', '#FFB74D', '#FFA726', '#FF9800', '#FB8C00', '#F57C00', '#EF6C00', '#E65100', '#FFAB40', '#FF9100', '#FF6D00', '#FF5722', '#FFAB91', '#FF8A65', '#FF7043', '#FF5722', '#F4511E', '#E64A19', '#D84315', '#BF360C', '#FF9E80', '#FF6E40', '#FF3D00', '#DD2C00', '#795548', '#A1887F', '#8D6E63', '#795548', '#6D4C41', '#5D4037', '#4E342E', '#3E2723', '#757575', '#616161', '#424242', '#212121', '#607D8B', '#78909C', '#607D8B', '#546E7A', '#455A64', '#37474F', '#263238' ];
+		$colors = [ '#EA526F', '#FF0038', '#3C91E6', '#D64933', '#00A878', '#0A2472', '#736B92', '#FFAD05', '#DD9787', '#74D3AE', '#B9314F', '#878472', '#983628', '#E2AEDD', '#1B9AAA', '#FFC43D' ];
 
 		/**
 		 * Filters avatar addon colors.
@@ -361,10 +361,8 @@ class AnsPress_Avatar {
 		// Random background Colors.
 		$color_key = array_rand( $this->colors );
 
-		$bg_color = $this->hex_to_rgb( $this->colors[ $color_key ] );
-		$bg_color = imagecolorallocate( $im, $bg_color['r'], $bg_color['g'], $bg_color['b'] );
-
-		imagefill( $im, 0, 0, $bg_color );
+		$bg_color = $this->colors[ $color_key ];
+		$this->image_gradientrect( $im, $bg_color, $this->color_luminance( $bg_color, 0.10 ) );
 		list($x, $y) = $this->image_center( $im, $text, $font, $this->font_size );
 		imagettftext( $im, $this->font_size, 0, $x, $y, $text_color, $font, $text );
 
@@ -420,6 +418,77 @@ class AnsPress_Avatar {
 		$y = intval( ( $yi + $yr ) / 2 );
 
 		return array( $x, $y );
+	}
+
+	/**
+	 * Fill gradient.
+	 *
+	 * @param resource $img   Image resource.
+	 * @param string   $start Start color.
+	 * @param string   $end   End color.
+	 * @return boolean
+	 */
+	private function image_gradientrect( $img, $start, $end ) {
+		$x = 0;
+		$y = 0;
+		$x1 = 90;
+		$y1 = 90;
+
+		if ( $x > $x1 || $y > $y1 ) {
+			return false;
+		}
+
+		$start = str_replace( '#', '', $start );
+		$end = str_replace( '#', '', $end );
+
+		$s = array(
+			hexdec( substr( $start, 0, 2 ) ),
+			hexdec( substr( $start, 2, 2 ) ),
+			hexdec( substr( $start, 4, 2 ) ),
+		);
+
+		$e = array(
+			hexdec( substr( $end, 0, 2 ) ),
+			hexdec( substr( $end, 2, 2 ) ),
+			hexdec( substr( $end, 4, 2 ) ),
+		);
+
+		$steps = $y1 - $y;
+		for ( $i = 0; $i < $steps; $i++ ) {
+			$r = $s[0] - ( ( ( $s[0] - $e[0] ) / $steps ) * $i );
+			$g = $s[1] - ( ( ( $s[1] - $e[1] ) / $steps ) * $i );
+			$b = $s[2] - ( ( ( $s[2] - $e[2]) / $steps ) * $i );
+			$color = imagecolorallocate( $img, $r, $g, $b );
+			imagefilledrectangle( $img, $x, $y + $i, $x1, $y + $i + 1, $color );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Lightens/darkens a given colour (hex format), returning the altered colour in hex format.
+	 *
+	 * @param string $hex     Colour as hexadecimal (with or without hash).
+	 * @param float  $percent float $percent Decimal ( 0.2 = lighten by 20%(), -0.4 = darken by 40%() ).
+	 * @return str Lightened/Darkend colour as hexadecimal (with hash);
+	 */
+	private function color_luminance( $hex, $percent ) {
+		// Validate hex string.
+		$hex = preg_replace( '/[^0-9a-f]/i', '', $hex );
+		$new_hex = '#';
+
+		if ( strlen( $hex ) < 6 ) {
+			$hex = $hex[0] + $hex[0] + $hex[1] + $hex[1] + $hex[2] + $hex[2];
+		}
+
+		// Convert to decimal and change luminosity.
+		for ( $i = 0; $i < 3; $i++ ) {
+			$dec = hexdec( substr( $hex, $i * 2, 2 ) );
+			$dec = min( max( 0, $dec + $dec * $percent ), 255 );
+			$new_hex .= str_pad( dechex( $dec ) , 2, 0, STR_PAD_LEFT );
+		}
+
+		return $new_hex;
 	}
 
 }

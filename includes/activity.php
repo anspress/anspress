@@ -18,21 +18,21 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Get the global AnsPress activity instance.
  *
- * @return Object Return instance of @see AnsPress\Activity().
+ * @return Object Return instance of @see AnsPress\Activity_Helper().
  * @since 4.1.2
  */
 function ap_activity_object() {
 	if ( ! anspress()->activity ) {
-		anspress()->activity = AnsPress\Activity::get_instance();
+		anspress()->activity = AnsPress\Activity_Helper::get_instance();
 	}
 
 	return anspress()->activity;
 }
 
 /**
- * Insert activity into database. This function is an alias  of @see AnsPress\Activity::insert().
+ * Insert activity into database. This function is an alias  of @see AnsPress\Activity_Helper::insert().
  *
- * @param array $args Arguments for insert. All list of arguments can be seen at @see AnsPress\Activity::insert().
+ * @param array $args Arguments for insert. All list of arguments can be seen at @see AnsPress\Activity_Helper::insert().
  * @return WP_Error|integer Returns last inserted id or `WP_Error` on fail.
  *
  * @since 4.1.2 Introduced
@@ -45,7 +45,7 @@ function ap_activity_add( $args = [] ) {
  * Delete all activities related to a post.
  *
  * If given post is a question then it delete all activities by column `activity_q_id` else
- * by `activity_a_id`. More detail about activity delete can be found here @see AnsPress\Activity::delete()
+ * by `activity_a_id`. More detail about activity delete can be found here @see AnsPress\Activity_Helper::delete()
  *
  * @param  WP_Post|integer $post_id WordPress post object or post ID.
  * @return WP_Error|integer Return numbers of rows deleted on success.
@@ -74,7 +74,7 @@ function ap_delete_post_activity( $post_id ) {
 /**
  * Delete all activities related to a comment.
  *
- * More detail about activity delete can be found here @see AnsPress\Activity::delete()
+ * More detail about activity delete can be found here @see AnsPress\Activity_Helper::delete()
  *
  * @param Comment|integer $comment_id WordPress comment object or comment ID.
  * @return WP_Error|integer Return numbers of rows deleted on success.
@@ -92,7 +92,7 @@ function ap_delete_comment_activity( $comment_id ) {
 /**
  * Delete all activities related to a user.
  *
- * More detail about activity delete can be found here @see AnsPress\Activity::delete()
+ * More detail about activity delete can be found here @see AnsPress\Activity_Helper::delete()
  *
  * @param User|integer $user_id WordPress user object or user ID.
  * @return WP_Error|integer Return numbers of rows deleted on success.
@@ -101,4 +101,25 @@ function ap_delete_comment_activity( $comment_id ) {
 function ap_delete_user_activity( $user_id ) {
 	// Delete all activities by post id.
 	return ap_activity_object()->delete( [ 'user_id' => $user_id ] );
+}
+
+function ap_activity_parse( $activity ) {
+	if ( ! is_object( $activity ) ) {
+		return false;
+	}
+
+	$new = [];
+
+	// Rename keys.
+	foreach ( $activity as $key => $value ) {
+		$new[ str_replace( 'activity_', '', $key ) ] = $value;
+	}
+
+	$new = (object) $new;
+
+	if ( ap_activity_object()->action_exists( $new->action ) ) {
+		$new->action = ap_activity_object()->get_action( $new->action );
+	}
+
+	return $new;
 }

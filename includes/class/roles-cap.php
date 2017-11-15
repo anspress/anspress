@@ -223,12 +223,12 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // loose comparison ok.
+	if ( is_user_logged_in() && ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // loose comparison ok.
 		return false;
 	}
 
 	// Check if user already answered and if multiple answer disabled then don't allow them to answer.
-	if ( ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
+	if ( is_user_logged_in() && ! ap_opt( 'multiple_answers' ) && ap_is_user_answered( $question->ID, $user_id ) ) {
 		return false;
 	}
 

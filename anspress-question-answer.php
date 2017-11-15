@@ -270,7 +270,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		private function includes() {
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
-			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
 			require_once ANSPRESS_DIR . 'includes/activity.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
@@ -301,6 +300,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/reputation.php';
 			require_once ANSPRESS_DIR . 'includes/subscribers.php';
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-activity-helper.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
@@ -351,7 +352,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 			AnsPress_Hooks::init();
-			AnsPress\Activity::get_instance();
+			AnsPress\Activity_Helper::get_instance();
 			AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $data ) {
