@@ -230,6 +230,10 @@ abstract class AnsPress_Query {
 	 * @param false|integer $key Object key.
 	 */
 	public function add_prefetch_id( $type, $id, $key = false ) {
+		if ( empty( $id ) ) {
+			return;
+		}
+
 		if ( ! isset( $this->ids[ $type ] ) ) {
 			$this->ids[ $type ] = [];
 		}
@@ -299,5 +303,15 @@ abstract class AnsPress_Query {
 	 */
 	public function template( $template ) {
 		include ap_get_theme_location( $template . '.php' );
+	}
+
+	/**
+	 * Check if loop has more pages.
+	 *
+	 * @return boolean
+	 * @since 4.1.2
+	 */
+	public function have_pages() {
+		return $this->total_pages > $this->paged;
 	}
 }

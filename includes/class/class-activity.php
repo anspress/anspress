@@ -121,29 +121,106 @@ class Activity extends AnsPress_Query {
 			wp_cache_set( $key, $activities, 'ap_activities' );
 		}
 
+		$this->prefetch();
+
 		parent::query();
 	}
 
-	public function same_question_activities() {
-		if ( $this->current + 1 < $this->count && $this->have_same_q_activities() ) {
+	/**
+	 * Prefetch posts, comments and other data.
+	 */
+	private function prefetch() {
+		foreach ( (array) $this->objects as $key => $activity ) {
+			// Add question and answer id.
+			if ( ! empty( $activity->q_id ) ) {
+				$this->add_prefetch_id( 'post', $activity->q_id );
+				$this->add_prefetch_id( 'post', $activity->a_id );
+			}
+
+			// Add comment ID.
+			if ( ! empty( $activity->c_id ) ) {
+				$this->add_prefetch_id( 'comment', $activity->c_id );
+			}
+
+			// Add user ID.
+			if ( ! empty( $activity->user_id ) ) {
+				$this->add_prefetch_id( 'user', $activity->user_id );
+			}
+		}
+
+		$this->prefetch_posts();
+		$this->prefetch_actors();
+		$this->prefetch_comments();
+	}
+
+	/**
+	 * Pre fetch post contents and append to object.
+	 */
+	private function prefetch_posts() {
+
+		if ( empty( $this->ids['post'] ) ) {
+			return;
+		}
+
+		global $wpdb;
+
+		$ids_str = esc_sql( sanitize_comma_delimited( $this->ids['post'] ) );
+		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
+
+		foreach ( $posts as $_post ) {
+			wp_cache_set( $_post->ID, $_post, 'posts' );
+		}
+	}
+
+	/**
+	 * Prefetch actors user object.
+	 */
+	private function prefetch_actors() {
+		if ( empty( $this->ids['user'] ) ) {
+			return;
+		}
+
+		ap_post_author_pre_fetch( $this->ids['user'] );
+	}
+
+	/**
+	 * Pre fetch comments and append data to object.
+	 */
+	private function prefetch_comments() {
+		global $wpdb;
+
+		if ( empty( $this->ids['comment'] ) ) {
+			return;
+		}
+
+		$ids = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
+		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" );
+
+		foreach ( $comments as $_comment ) {
+			wp_cache_set( $_comment->comment_ID, $_comment, 'comment' );
+		}
+	}
+
+	public function have_group() {
+		if ( $this->current + 1 < $this->count && $this->have_group_items() ) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public function same_activities_start() {
-		if ( $this->have_same_q_activities() ) {
+	public function group_start() {
+		if ( $this->have_group_items() ) {
 			$this->in_same_loop = true;
 			$this->current--;
 		}
 	}
 
-	public function same_activities_end() {
+	public function group_end() {
 		$this->in_same_loop = false;
 	}
 
-	public function have_same_q_activities() {
+	public function have_group_items() {
 		$next = $this->current + 1;
 
 		// Return if no item in that index.
@@ -159,9 +236,9 @@ class Activity extends AnsPress_Query {
 		return false;
 	}
 
-	public function count_same_q_activities() {
+	public function count_group() {
 
-		if ( $this->have_same_q_activities() ) {
+		if ( $this->have_group_items() ) {
 			$next = $this->current + 1;
 			$count = 0;
 			$current_obj = $this->object;
@@ -245,12 +322,14 @@ class Activity extends AnsPress_Query {
 
 		if ( $date >= strtotime( '-30 minutes' ) ) {
 			$when = __( 'Just now', 'anspress-question-answer' );
-		} elseif ( $date >= strtotime( '-24 hours' ) ) {
+		}	elseif ( $date >= strtotime( '-24 hours' ) ) {
 			$when = __( 'Today', 'anspress-question-answer' );
 		} elseif ( $date >= strtotime( '-48 hours' ) ) {
 			$when = __( 'Yesterday', 'anspress-question-answer' );
-		} else {
-			$when = __( 'Later', 'anspress-question-answer' );
+		}	elseif ( $date <= strtotime( '1 year' ) ) {
+			$when = date( 'M', $date );
+		}	else {
+			$when = date( 'M Y', $date );
 		}
 
 		return $when;
@@ -272,5 +351,17 @@ class Activity extends AnsPress_Query {
 
 	public function get_q_id() {
 		return $this->object->q_id;
+	}
+
+	public function more_button() {
+		$paged = max(1, get_query_var( 'paged' ) );
+
+		$args = wp_json_encode( array(
+			'ap_ajax_action' => 'more_activities',
+			'__nonce'        => wp_create_nonce( 'load_activities' ),
+			'paged'          => $this->paged + 1,
+		) );
+
+		echo '<a href="#" class="ap-btn" ap-ajax-btn ap-query="' . esc_js( $args ) . '">' . __( 'Load More', 'anspress-question-answer' ) . '</a>';
 	}
 }

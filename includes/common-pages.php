@@ -22,6 +22,7 @@ class AnsPress_Common_Pages {
 		ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), [ __CLASS__, 'ask_page' ] );
 		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), [ __CLASS__, 'search_page' ], false );
 		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), [ __CLASS__, 'edit_page' ], false );
+		ap_register_page( 'activities', __( 'Activities', 'anspress-question-answer' ), [ __CLASS__, 'activities_page' ], false );
 	}
 
 	/**
@@ -164,6 +165,17 @@ class AnsPress_Common_Pages {
 		$editing_post = ap_get_post( $post_id );
 
 		ap_answer_form( $editing_post->post_parent, true );
+	}
+
+	/**
+	 * Render activities page.
+	 *
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function activities_page() {
+		$activities = new AnsPress\Activity();
+		include ap_get_theme_location( 'activities/activities.php' );
 	}
 
 	/**

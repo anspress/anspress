@@ -557,15 +557,7 @@ function ap_assets() {
 		),
 	);
 
-	if ( is_ask() || ap_current_page() === 'edit' ) {
-		$assets['js']['main']['active'] = true;
-	}
-
-	if ( is_question() || ap_current_page() === 'edit' ) {
-		$assets['js']['main']['active'] = true;
-	}
-
-	if ( is_anspress() && ( ap_current_page() === 'base' || ap_current_page() === 'search' ) ) {
+	if ( ap_current_page() !== '' ) {
 		$assets['js']['main']['active'] = true;
 	}
 

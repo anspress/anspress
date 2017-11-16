@@ -2139,6 +2139,12 @@ function ap_main_pages() {
 			'post_title' => __( 'Tags', 'anspress-question-answer' ),
 			'post_name'  => 'tags',
 		),
+		'activities_page' => array(
+			'label'      => __( 'Activities page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display all anspress activities.', 'anspress-question-answer' ),
+			'post_title' => __( 'Activities', 'anspress-question-answer' ),
+			'post_name'  => 'activities',
+		),
 	);
 
 	return apply_filters( 'ap_main_pages', $pages );

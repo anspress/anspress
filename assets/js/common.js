@@ -951,6 +951,11 @@ jQuery(document).ready(function($){
 		}
 	});
 
+	AnsPress.on( 'loadedMoreActivities', function(data, e){
+		$(data.html).insertAfter($('.ap-activities:last-child'));
+		$(e).closest('.ap-activity-item').remove();
+	});
+
 });
 
 window.AnsPress.Helper = {

@@ -14,7 +14,7 @@
 ?>
 <div class="ap-activity-item">
 
-	<?php if ( $activities->have_same_q_activities() ) : ?>
+	<?php if ( $activities->have_group_items() ) : ?>
 		<div class="ap-activity-icon">
 			<i class="<?php $activities->the_icon(); ?>"></i>
 		</div>
@@ -26,14 +26,14 @@
 
 	<div class="ap-activity-right">
 
-		<?php if ( $activities->have_same_q_activities() ) : ?>
+		<?php if ( $activities->have_group_items() ) : ?>
 
 			<div class="ap-activity-content">
 				<div class="ap-activity-header">
 					<?php echo ap_user_display_name( [ 'user_id' => $activities->get_user_id(), 'html' => true, 'full_details' => true ] ); ?>
 					<span class="ap-activity-verb"><?php $activities->the_verb(); ?></span>
 					<span><?php
-						$count = $activities->count_same_q_activities();
+						$count = $activities->count_group();
 
 						printf(
 							_n( 'with other activity', 'with other %d activities', $count, 'anspress-question-answer' ),
@@ -47,9 +47,9 @@
 				</div>
 
 				<div class="ap-activities-same">
-					<?php $activities->same_activities_start(); ?>
+					<?php $activities->group_start(); ?>
 
-					<?php while ( $activities->same_question_activities() ): $activities->the_object(); ?>
+					<?php while ( $activities->have_group() ): $activities->the_object(); ?>
 						<div class="ap-activity-same">
 							<div class="ap-activity-avatar">
 								<?php echo $activities->get_avatar( 35 ); ?>
@@ -63,12 +63,16 @@
 								<div class="ap-activity-ref">
 									<span class="ap-activity-verb"><?php $activities->the_verb(); ?></span> <time class="ap-activity-date"><?php echo ap_human_time( $activities->get_the_date(), false ); ?></time>
 								</div>
+
+								<div class="ap-activity-ref">
+									<?php $activities->the_ref_content(); ?>
+								</div>
 							</div>
 
 						</div>
 					<?php endwhile; ?>
 
-					<?php $activities->same_activities_end(); ?>
+					<?php $activities->group_end(); ?>
 				</div>
 
 			</div>

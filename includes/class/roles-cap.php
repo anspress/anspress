@@ -1377,9 +1377,7 @@ function ap_user_can_toggle_featured( $user_id = false ) {
  * @since  4.1.0
  */
 function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
-	if ( false === $_comment ) {
-		$_comment = get_comment( $_comment );
-	}
+	$_comment = get_comment( $_comment );
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();

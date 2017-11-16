@@ -82,6 +82,7 @@ class Activity_Helper {
 		anspress()->add_action( 'before_delete_post', __CLASS__, '_before_delete' );
 		anspress()->add_action( 'delete_comment', __CLASS__, '_delete_comment' );
 		anspress()->add_action( 'delete_user', __CLASS__, '_delete_user' );
+		anspress()->add_action( 'ap_ajax_more_activities', __CLASS__, '_ajax_more_activities' );
 	}
 
 	/**
@@ -115,6 +116,27 @@ class Activity_Helper {
 	 */
 	public static function _delete_comment( $comment_id ) {
 		ap_delete_comment_activity( $comment_id );
+	}
+
+	public static function _ajax_more_activities() {
+		// Check ajax referer.
+		if ( ! check_ajax_referer( 'load_activities', '__nonce', false ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$activities = new \AnsPress\Activity( array(
+			'paged' => max( 1, ap_isset_post_value( 'paged', 1 ) ),
+		) );
+
+		ob_start();
+		include ap_get_theme_location( 'activities/activities.php' );
+		$html = ob_get_clean();
+
+		ap_ajax_json( array(
+			'success' => true,
+			'html'    => $html,
+			'cb'      => 'loadedMoreActivities',
+		) );
 	}
 
 	/**
