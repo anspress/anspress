@@ -47,11 +47,11 @@ class AnsPress_Notification_Hook {
 		// Activate AnsPress notifications only if buddypress not active.
 		if ( ! ap_is_addon_active( 'free/buddypress.php' ) ) {
 			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
-			anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
-			anspress()->add_filter( 'ap_menu_items', __CLASS__, 'ap_menu_items' );
+			//anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
+			anspress()->add_filter( 'ap_menu_object', __CLASS__, 'ap_menu_object' );
 			anspress()->add_filter( 'ap_form_addon-free_notification', __CLASS__, 'load_options' );
 			anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
-			anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
+			anspress()->add_action( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
 			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
 			anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
 			anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
@@ -104,6 +104,7 @@ class AnsPress_Notification_Hook {
 	 * @param  string $url Menu url.
 	 * @param  object $item Menu item object.
 	 * @return string
+	 * @deprecated 4.1.2
 	 */
 	public static function menu_link( $url, $item ) {
 		if ( 'notifications' === $item->post_name ) {
@@ -118,6 +119,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param  object $items Menu item object.
 	 * @return array
+	 * @deprecated 4.1.2
 	 */
 	public static function ap_menu_items( $items ) {
 		foreach ( $items as $k => $i ) {
@@ -126,6 +128,23 @@ class AnsPress_Notification_Hook {
 				if ( $count > 0 ) {
 					$items[ $k ]->title = $i->title . '<i class="noti-count">' . esc_attr( number_format_i18n( $count ) ) . '</i>';
 				}
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Filter notification menu title.
+	 *
+	 * @param  object $items Menu item object.
+	 * @return array
+	 */
+	public static function ap_menu_object( $items ) {
+		foreach ( $items as $k => $i ) {
+			if ( isset( $i->object ) && 'notifications' === $i->object ) {
+				$items[ $k ]->url = '#apNotifications';
+				$items[ $k ]->type = 'custom';
 			}
 		}
 
