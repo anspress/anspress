@@ -261,7 +261,7 @@ class AP_Form_Hooks {
 					'placeholder' => __( 'Enter link to your website.', 'anspress-question-answer' ),
 				),
 				'subtype'      => 'url',
-				'validate'     => 'required,is_url',
+				'validate'     => 'is_url',
 				'max_length'   => 254,
 			);
 		}
