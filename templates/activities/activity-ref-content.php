@@ -27,6 +27,6 @@ if ( 'answer' === $type && ! empty( $this->object->a_id ) ) {
 
 if ( 'comment' === $type && ap_user_can_read_comment( $this->object->c_id ) ) {
 	echo get_comment_excerpt( $this->object->c_id ) . '<a href="' . ap_get_short_link( [ 'ap_c' => $this->object->c_id ] ) . '">' . __( 'View comment', 'anspress-question-answer' ) . '</a>';
-} elseif ( ! empty( $post_id ) && ! $this->in_same_loop ) {
+} elseif ( ! empty( $post_id ) && ! $this->in_group ) {
 	echo '<a href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a>';
 }
