@@ -78,8 +78,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
-
-			//anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
@@ -468,39 +466,6 @@ class AnsPress_Hooks {
 		} else {
 			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment_answer', get_current_user_id(), true );
 		}
-	}
-
-	/**
-	 * Update AnsPress pages URL dynimacally
-	 *
-	 * @param	array $items Menu item.
-	 * @return array
-	 * @deprecated 4.1.1
-	 */
-	public static function update_menu_url( $items ) {
-		// If this is admin then we dont want to update url.
-		if ( is_admin() ) {
-			return $items;
-		}
-
-		$pages = anspress()->pages;
-
-		foreach ( (array) $items as $key => $item ) {
-
-			if ( 'anspress-links' === $item->type ) {
-				if ( isset( $pages[ $item->object ]['private'] ) && $pages[ $item->object ]['private'] && ! is_user_logged_in() ) {
-					unset( $items[ $key ] );
-				} else {
-					if ( 'base' === $item->object ) {
-						$item->url = ap_get_link_to( '/' );
-					} else {
-						$item->url = apply_filters( 'ap_menu_link', ap_get_link_to( ap_get_page_slug( $item->object ) ), $item );
-					}
-				}
-			}
-		}
-
-		return apply_filters( 'ap_menu_items', $items );
 	}
 
 	/**
