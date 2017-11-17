@@ -870,7 +870,13 @@ function ap_menu_obejct() {
 		} // End if().
 	} // End foreach().
 
-	return $menu_items;
+	/**
+	 * Hook for filtering default AnsPress menu objects.
+	 *
+	 * @param array $menu_items Array of menu objects.
+	 * @since 4.1.2
+	 */
+	return apply_filters( 'ap_menu_object', $menu_items );
 }
 
 /**
