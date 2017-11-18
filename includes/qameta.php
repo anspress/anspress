@@ -282,7 +282,7 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
  * @param  integer $question_id Question ID.
  * @return integer|false
  * @since  3.1.0
- * @since  4.1.2 Insert activity to log.
+ * @since  4.1.2 Insert activity to `ap_activity` table.
  */
 function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
@@ -489,6 +489,7 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
  * @param  boolean|string $date    				Activity date in mysql timestamp format.
  * @return boolean
  * @since  2.4.7
+ * @deprecated 4.1.2  Use @see ap_activity_add(). Activities are inserted in `ap_activity` table.
  */
 function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
 	if ( empty( $post ) ) {

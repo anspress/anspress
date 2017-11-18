@@ -89,6 +89,8 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );
+			anspress()->add_filter( 'ap_after_question_content', 'AnsPress_Theme', 'after_question_content' );
+			anspress()->add_filter( 'ap_after_answer_content', 'AnsPress_Theme', 'after_question_content' );
 
 			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );

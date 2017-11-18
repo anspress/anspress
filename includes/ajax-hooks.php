@@ -119,6 +119,7 @@ class AnsPress_Ajax {
 	 * Ajax action for selecting a best answer.
 	 *
 	 * @since 2.0.0
+	 * @since 4.1.2 Log activities to `ap_activity` table and removed @see ap_update_post_activity_meta().
 	 */
 	public static function toggle_best_answer() {
 		$answer_id = (int) ap_sanitize_unslash( 'answer_id', 'r' );
@@ -132,10 +133,6 @@ class AnsPress_Ajax {
 		// Unselect best answer if already selected.
 		if ( ap_have_answer_selected( $_post->post_parent ) ) {
 			ap_unset_selected_answer( $_post->post_parent );
-
-			// Add question activity meta.
-			ap_update_post_activity_meta( $_post->post_parent, 'answer_unselected', get_current_user_id() );
-			ap_update_post_activity_meta( $_post->ID, 'unselected_best_answer', get_current_user_id() );
 
 			/**
 			 * Action triggered after an answer is un-selected as best.
@@ -160,12 +157,6 @@ class AnsPress_Ajax {
 				'snackbar' => [ 'message' => __( 'This answer cannot be selected as best, update status to select as best answer.', 'anspress-question-answer' ) ],
 			] );
 		}
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $_post->post_parent, 'answer_selected', get_current_user_id() );
-
-		// Add answer activity meta.
-		ap_update_post_activity_meta( $_post->ID, 'best_answer', get_current_user_id() );
 
 		/**
 		 * Trigger right after selecting an answer.

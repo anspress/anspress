@@ -409,4 +409,18 @@ class AnsPress_Theme {
 
 		return $post_classes;
 	}
+
+	/**
+	 * Show recent activity of a question below content.
+	 *
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function after_question_content() {
+		$activity = ap_recent_activity( null, false );
+
+		if ( ! empty( $activity ) ) {
+			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . $activity . '</div>';
+		}
+	}
 }

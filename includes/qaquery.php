@@ -459,7 +459,7 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	if ( ! is_question() ) {
-		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_recent_activity( $question_id, false, true );
+		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_recent_activity( $question_id, false );
 	}
 
 	/**

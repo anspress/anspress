@@ -46,11 +46,6 @@
 				text-decoration: none;
 				color: inherit;
 			}
-			>.ap-post-history {
-				margin-left: 10px;
-				padding-left: 15px;
-				border-left: solid 1px #ccc;
-			}
 			.ap-avatar {
 				margin-top: 0;
 				margin-right: 10px;
@@ -70,6 +65,14 @@
 	}
 	.ap-q-inner {
 		padding: 15px;
+	}
+	.ap-post-updated{
+		font-size: 12px;
+		margin-top: 10px;
+		i{
+			margin-right: 5px;
+			color: #aaa;
+		}
 	}
 	.ap-question-meta {
 		margin-bottom: 25px;

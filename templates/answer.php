@@ -1,12 +1,13 @@
 <?php
 /**
- * Answer content
+ * Template used for generating single answer item.
  *
  * @author Rahul Aryan <support@anspress.io>
  * @link https://anspress.io/anspress
- * @since 0.1
- *
  * @package AnsPress
+ * @subpackage Templates
+ * @since 0.1
+ * @since 4.1.2 Removed @see ap_recent_post_activity().
  */
 
 if ( ap_user_can_read_answer() ) :
@@ -28,7 +29,6 @@ if ( ap_user_can_read_answer() ) :
 							<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
 						</time>
 					</a>
-					<?php ap_recent_post_activity(); ?>
 					<?php echo ap_post_status_badge( ); // xss okay.	?>
 				</div>
 
