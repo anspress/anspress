@@ -201,6 +201,7 @@ class Question_Query extends WP_Query {
 	 */
 	public function pre_fetch() {
 		$this->get_ids();
+		ap_prefetch_recent_activities( $this->ap_ids['post_ids'] );
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
 
@@ -430,6 +431,8 @@ function ap_question_status( $_post = null ) {
  * Question meta to display.
  *
  * @param false|integer $question_id question id.
+ * @since unknown
+ * @since 4.1.2 Use @see ap_recent_activity() for showing activity.
  */
 function ap_question_metas( $question_id = false ) {
 	if ( false === $question_id ) {
@@ -456,7 +459,7 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	if ( ! is_question() ) {
-		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_latest_post_activity_html( $question_id, ! is_question() );
+		$metas['history'] = '<i class="apicon-pulse"></i>' . ap_recent_activity( $question_id, false, true );
 	}
 
 	/**
