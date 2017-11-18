@@ -223,7 +223,7 @@ class Activity_Helper {
 			),
 			'selected' => array(
 				'ref_type' => 'answer',
-				'verb'     => __( 'Selected an answer as best', 'anspress-question-answer' ),
+				'verb'     => __( 'Selected answer as best', 'anspress-question-answer' ),
 				'icon'     => 'apicon-check',
 			),
 			'unselected' => array(

@@ -417,7 +417,9 @@ class AnsPress_Theme {
 	 * @since 4.1.2
 	 */
 	public static function after_question_content() {
-		$activity = ap_recent_activity( null, false );
+		$_post = ap_get_post();
+		$query_db = 'answer' === $_post->post_type ? false : true;
+		$activity = ap_recent_activity( null, false, $query_db );
 
 		if ( ! empty( $activity ) ) {
 			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . $activity . '</div>';

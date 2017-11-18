@@ -122,7 +122,7 @@ class Question_Query extends WP_Query {
 		$this->in_the_loop = true;
 
 		if ( -1 === $this->current_post ) {
-			   do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
+			do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
 		}
 
 		$post = $this->next_question(); // override ok.
@@ -198,6 +198,9 @@ class Question_Query extends WP_Query {
 
 	/**
 	 * Pre fetch current users vote on all answers
+	 *
+	 * @since 3.1.0
+	 * @since 4.1.2 Prefetch post activities.
 	 */
 	public function pre_fetch() {
 		$this->get_ids();

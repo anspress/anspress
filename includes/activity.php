@@ -154,7 +154,7 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
 	$column = 'answer' === $type ? 'a_id' : 'q_id';
 	$activity = wp_cache_get( $_post->ID, 'ap_' . $column . '_activity' );
 
-	if ( false === $activity && false === $get_cached ) {
+	if ( false === $activity && false !== $get_cached ) {
 		$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d ORDER BY activity_date DESC LIMIT 1", $_post->ID ) );
 
 		// Parse.
@@ -174,20 +174,28 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
  *
  * @param Wp_Post|integer|null $_post WordPress post object or null for global post.
  * @param boolean              $echo  Echo or return. Default is `echo`.
- * @param boolean              $get_cached  Get rows from cache do not query database. Default is `false`.
+ * @param boolean              $query_db  Get rows from database. Default is `false`.
  * @return void|string
  */
-function ap_recent_activity( $_post = null, $echo = true, $get_cached = false ) {
+function ap_recent_activity( $_post = null, $echo = true, $query_db = false ) {
 	$html     = '';
 	$_post    = ap_get_post( $_post );
-	$activity =  ap_get_recent_activity( $_post, $get_cached );
+	$activity = ap_get_recent_activity( $_post, $query_db );
 
 	if ( $activity ) {
 		$html .= '<span class="ap-post-history">';
 		$html .= '<a href="' . ap_user_link( $activity->user_id ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( $activity->user_id ) . '</span></a>';
 		$html .= ' ' . esc_html( $activity->action['verb'] );
 
-		$html .= ' <a href="' . get_permalink( $_post ) . '">';
+		if ( 'answer' === $activity->action['ref_type'] ) {
+			$link = ap_get_short_link( [ 'ap_a' => $activity->a_id ] );
+		} elseif( 'comment' === $activity->action['ref_type'] ) {
+			$link = ap_get_short_link( [ 'ap_c' => $activity->c_id ] );
+		} else {
+			$link = ap_get_short_link( [ 'ap_q' => $activity->c_id ] );
+		}
+
+		$html .= ' <a href="' . esc_url( $link ) . '">';
 		$html .= '<time itemprop="dateModified" datetime="' . mysql2date( 'c', $activity->date ) . '">' . ap_human_time( $activity->date, false ) . '</time>';
 		$html .= '</a>';
 		$html .= '</span>';
