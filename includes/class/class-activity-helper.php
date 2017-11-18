@@ -193,7 +193,7 @@ class Activity_Helper {
 			),
 			'status_moderate' => array(
 				'ref_type' => 'post',
-				'verb'     => __( 'Changed publish date to future', 'anspress-question-answer' ),
+				'verb'     => __( 'Changed status to moderate', 'anspress-question-answer' ),
 				'icon'     => 'apicon-flag',
 			),
 			'status_private_post' => array(

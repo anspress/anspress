@@ -79,7 +79,7 @@
 						self.model.set(data.action);
 					}
 
-					if(data.postMessage) self.renderPostMessage(data.postMessage);
+					if(data.postmessage) self.renderPostMessage(data.postmessage);
 					if(data.deletePost) AnsPress.trigger('deletePost', data.deletePost);
 					if(data.answersCount) AnsPress.trigger('answerCountUpdated', data.answersCount);
 				}
@@ -87,9 +87,9 @@
 		},
 		renderPostMessage: function(message){
 			if(!_.isEmpty(message))
-				$('#post-'+this.postID).find('postMessage').html(message);
+				$('[apid="'+this.postID+'"]').find('postmessage').html(message);
 			else
-				$('#post-'+this.postID).find('postMessage').html('');
+				$('[apid="'+this.postID+'"]').find('postmessage').html('');
 		},
 		removed: function(){
       this.remove();

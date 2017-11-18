@@ -346,3 +346,20 @@ ul{
 		margin: 0 10px;
 	}
 }
+
+.ap-notice{
+	background: #eee;
+	border-left: solid 3px rgba(0,0,0,0.2);
+	padding: 5px 5px;
+	font-size: 12px;
+	margin-top: 10px;
+	i{
+		margin-right: 5px;
+	}
+	&.closed{
+		background: #FFEBEE;
+	}
+	&.status-moderate{
+		background: #ffeeba;
+	}
+}

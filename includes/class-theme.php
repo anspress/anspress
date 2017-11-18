@@ -411,12 +411,14 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Show recent activity of a question below content.
+	 * Callback for showing content below question and answer.
 	 *
 	 * @return void
 	 * @since 4.1.2
 	 */
 	public static function after_question_content() {
+		echo ap_post_status_badge(); // xss safe.
+
 		$_post = ap_get_post();
 		$query_db = 'answer' === $_post->post_type ? false : true;
 		$activity = ap_recent_activity( null, false, $query_db );

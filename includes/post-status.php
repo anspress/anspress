@@ -74,7 +74,7 @@ class AnsPress_Post_Status {
 			'success'     => true,
 			'snackbar'    => [ 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ],
 			'action'      => [ 'active'  => true ],
-			'postMessage' => ap_get_post_status_message( $post->ID ),
+			'postmessage' => ap_get_post_status_message( $post->ID ),
 			'newStatus'   => $status,
 		));
 	}
@@ -92,18 +92,20 @@ function ap_get_post_status_message( $post_id = false ) {
 	$post_type = 'question' === $post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
 	$ret = '';
-
+	$msg = '';
 	if ( is_private_post( $post_id ) ) {
-		$ret = '<i class="apicon-lock">' . __( 'Private', 'anspress-question-answer' ) . '</i><span>' . sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-lock"></i><span>' . sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	} elseif ( is_post_waiting_moderation( $post_id ) ) {
-		$ret = '<i class="apicon-alert">' . __( 'Awaiting approval', 'anspress-question-answer' ) . '</i><span>' . sprintf( __( 'This %s is awaiting for approval by moderator.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-alert"></i><span>' . sprintf( __( 'This %s is waiting for the approval by the moderator.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	} elseif ( is_post_closed( $post_id ) ) {
-		$ret = '<i class="apicon-x">' . __( 'Closed', 'anspress-question-answer' ) . '</i><span>' . __( 'Question is closed for new answers', 'anspress-question-answer' ) . '</span>';
+		$ret = '<i class="apicon-x"></i><span>' . __( 'Question is closed for new answers.', 'anspress-question-answer' ) . '</span>';
 	} elseif ( 'trash' === $post->post_status ) {
-		$ret = '<i class="apicon-trashcan">' . __( 'Trashed', 'anspress-question-answer' ) . '</i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-trashcan"></i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	}
 
-	$msg = '<div class="ap-pmsg status-' . $post->post_status . '">' . $ret . '</div>';
+	if ( ! empty( $ret ) ) {
+		$msg = '<div class="ap-notice status-' . $post->post_status . ( is_post_closed( $post_id ) ? ' closed' : '' ) . '">' . $ret . '</div>';
+	}
 
 	return apply_filters( 'ap_get_post_status_message',  $msg, $post_id );
 }
@@ -114,14 +116,14 @@ function ap_get_post_status_message( $post_id = false ) {
  * @param  boolean|integer $post_id Post ID.
  */
 function ap_post_status_badge( $post_id = false ) {
-	$ret = '<postMessage>';
+	$ret = '<postmessage>';
 	$msg = ap_get_post_status_message( $post_id );
 
 	if ( ! empty( $msg ) ) {
 		$ret .= $msg;
 	}
 
-	$ret .= '</postMessage>';
+	$ret .= '</postmessage>';
 
 	return $ret;
 }

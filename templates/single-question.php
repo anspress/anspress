@@ -64,7 +64,6 @@
 										);
 									?>
 								</a>
-								<?php echo ap_post_status_badge( ); // xss okay.	?>
 							</div>
 
 							<!-- Start ap-content-inner -->

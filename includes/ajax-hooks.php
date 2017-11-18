@@ -213,7 +213,7 @@ class AnsPress_Ajax {
 				'action' 		   => [ 'active' => false, 'label' => __( 'Delete', 'anspress-question-answer' ), 'title' => __( 'Delete this post (can be restored again)', 'anspress-question-answer' ) ],
 				'snackbar' 		 => [ 'message' => sprintf( __( '%s is restored', 'anspress-question-answer' ), $post_type ) ],
 				'newStatus'    => 'publish',
-				'postMessage' => ap_get_post_status_message( $post_id ),
+				'postmessage' => ap_get_post_status_message( $post_id ),
 			) );
 		}
 
@@ -237,7 +237,7 @@ class AnsPress_Ajax {
 			'action' 		   => [ 'active' => true, 'label' => __( 'Undelete', 'anspress-question-answer' ), 'title' => __( 'Restore this post', 'anspress-question-answer' ) ],
 			'snackbar' 		 => [ 'message' => sprintf( __( '%s is trashed', 'anspress-question-answer' ), $post_type ) ],
 			'newStatus'    => 'trash',
-			'postMessage' => ap_get_post_status_message( $post_id ),
+			'postmessage' => ap_get_post_status_message( $post_id ),
 		) );
 	}
 
@@ -406,7 +406,7 @@ class AnsPress_Ajax {
 			'success'     => true,
 			'action'      => [ 'label' => $close_label, 'title' => $close_title ],
 			'snackbar'    => [ 'message' => $message ],
-			'postMessage' => ap_get_post_status_message( $post_id ),
+			'postmessage' => ap_get_post_status_message( $post_id ),
 		);
 
 		ap_ajax_json( $results );

@@ -29,7 +29,6 @@ if ( ap_user_can_read_answer() ) :
 							<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
 						</time>
 					</a>
-					<?php echo ap_post_status_badge( ); // xss okay.	?>
 				</div>
 
 				<div class="ap-q-inner">
