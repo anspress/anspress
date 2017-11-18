@@ -42,8 +42,8 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'comment_unapproved_to_approved', __CLASS__, 'comment_approve' );
 			anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapprove' );
 			anspress()->add_action( 'trashed_comment', __CLASS__, 'comment_trash' );
-			anspress()->add_action( 'delete_comment ', __CLASS__, 'comment_trash' );
-			anspress()->add_action( 'edit_comment ', __CLASS__, 'edit_comment' );
+			anspress()->add_action( 'delete_comment', __CLASS__, 'comment_trash' );
+			anspress()->add_action( 'edit_comment', __CLASS__, 'edit_comment' );
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'publish_comment' );
 			anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'unpublish_comment' );
 			anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
@@ -140,15 +140,12 @@ class AnsPress_Hooks {
 	 * @param	integer $post_id Question id.
 	 * @param	object	$post Question post object.
 	 * @since	1.0
+	 * @since	4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function after_new_question( $post_id, $post ) {
 
-		// Add question activity meta.
-		ap_update_post_activity_meta( $post_id, 'new_question', $post->post_author );
-
 		/**
-		 * ACTION: ap_after_new_question
-		 * action triggered after inserting a question
+		 * Action triggered after inserting a question
 		 *
 		 * @since 0.9
 		 */
@@ -161,18 +158,14 @@ class AnsPress_Hooks {
 	 * @param	integer $post_id answer id.
 	 * @param	object	$post answer post object.
 	 * @since 2.0.1
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function after_new_answer( $post_id, $post ) {
 		// Update answer count.
 		ap_update_answers_count( $post->post_parent );
 
-		// Update activities in qameta.
-		ap_update_post_activity_meta( $post_id, 'new_answer', $post->post_author );
-		ap_update_post_activity_meta( $post->post_parent, 'new_answer', $post->post_author );
-
 		/**
-		 * ACTION: ap_after_new_answer
-		 * action triggered after inserting an answer
+		 * Action triggered after inserting an answer
 		 *
 		 * @since 0.9
 		 */
@@ -226,10 +219,11 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Question or answer ID.
 	 * @param	object  $post Post Object.
+	 * @since unknown
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function delete_answer( $post_id, $post ) {
 		do_action( 'ap_before_delete_answer', $post->ID, $post );
-		ap_update_post_activity_meta( $post->post_parent, 'delete_answer', get_current_user_id() );
 
 		if ( ap_is_selected( $post ) ) {
 			ap_unset_selected_answer( $post->post_parent );
@@ -244,6 +238,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Post ID.
 	 * @since 2.0.0
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function trash_post_action( $post_id ) {
 		$post = ap_get_post( $post_id );
@@ -269,13 +264,11 @@ class AnsPress_Hooks {
 					ap_unset_selected_answer( $p->post_parent );
 				}
 
-				ap_update_post_activity_meta( $p->ID, 'delete_answer', get_current_user_id(), true );
 				wp_trash_post( $p->ID );
 			}
 		}
 
 		if ( 'answer' === $post->post_type ) {
-			ap_update_post_activity_meta( $post->ID, 'delete_answer', get_current_user_id(), true );
 
 			/**
 			 * Triggered before trashing an answer.
@@ -297,6 +290,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Post ID.
 	 * @since 2.0.0
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function untrash_ans_on_question_untrash( $post_id ) {
 		$_post = ap_get_post( $post_id );
@@ -316,13 +310,10 @@ class AnsPress_Hooks {
 				//do_action( 'ap_untrash_answer', $p->ID, $p );
 				wp_untrash_post( $p->ID );
 			}
-
-			ap_update_post_activity_meta( $_post->post_parent, 'restore_question', get_current_user_id() );
 		}
 
 		if ( 'answer' === $_post->post_type ) {
 			$ans = ap_count_published_answers( $_post->post_parent );
-			ap_update_post_activity_meta( $_post->post_parent, 'restore_answer', get_current_user_id(), true );
 			do_action( 'ap_untrash_answer', $_post->ID, $_post );
 
 			// Update answer count.
@@ -410,7 +401,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	object|array $comment Comment object.
 	 * @since unknown
-	 * @since 4.1.2 Log to activity table on new comment.
+	 * @since 4.1.2 Log to activity table on new comment. Removed @see ap_update_post_activity_meta().
 	 */
 	public static function publish_comment( $comment ) {
 		$comment = (object) $comment;
@@ -419,12 +410,6 @@ class AnsPress_Hooks {
 
 		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 			return false;
-		}
-
-		if ( $post->post_type == 'question' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment', $comment->user_id );
-		} elseif ( $post->post_type == 'answer' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment_answer', $comment->user_id, true );
 		}
 
 		$count = get_comment_count( $comment->comment_post_ID );
@@ -443,31 +428,37 @@ class AnsPress_Hooks {
 	 * Actions to run after unpublishing a comment.
 	 *
 	 * @param	object|array $comment Comment object.
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function unpublish_comment( $comment ) {
 		$comment = (object) $comment;
-		ap_update_post_activity_meta( $comment->comment_post_ID, 'delete_comment', get_current_user_id(), true );
-
 		$count = get_comment_count( $comment->comment_post_ID );
 		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
 	}
 
 	/**
 	 * Edit comment hook callback.
+	 *
+	 * @since unknown
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
-	public function edit_comment( $comment_id ) {
+	public static function edit_comment( $comment_id ) {
 		$comment = get_comment( $comment_id );
 		$post = ap_get_post( $comment->comment_post_ID );
 
-		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
+		if ( ! ap_is_cpt( $post ) ) {
 			return;
 		}
 
-		if ( $post->post_type == 'question' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment', get_current_user_id() );
-		} else {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment_answer', get_current_user_id(), true );
-		}
+		$q_id = 'answer' === $post->post_type ? $post->post_parent : $post->ID;
+		$a_id = 'answer' === $post->post_type ? $post->ID : 0;
+
+		// Insert activity.
+		ap_activity_add( array(
+			'q_id'   => $q_id,
+			'a_id'   => $a_id,
+			'action' => 'edit_c',
+		) );
 	}
 
 	/**

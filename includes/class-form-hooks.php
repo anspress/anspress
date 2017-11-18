@@ -656,6 +656,15 @@ class AP_Form_Hooks {
 			) );
 
 			if ( ! is_wp_error( $updated ) ) {
+				/**
+				 * Fires immediately after a comment is updated in the database.
+				 *
+				 * @since 4.1.2
+				 *
+				 * @param int   $comment_id The comment ID.
+				 */
+				do_action( 'ap_edit_comment', $comment_id );
+
 				$c = get_comment( $comment_id );
 				$count = get_comment_count( $c->comment_post_ID );
 

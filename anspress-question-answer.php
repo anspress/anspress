@@ -199,9 +199,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				$ap_classes = array();
 
 				self::$instance->includes();
-				self::$instance->ajax_hooks();
 				self::$instance->site_include();
-
+				self::$instance->ajax_hooks();
 				AnsPress_PostTypes::init();
 
 				/*
@@ -218,8 +217,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				new AnsPress_Process_Form();
 
 				/*
-				 * ACTION: anspress_loaded
-				 * Hooks for extension to load their codes after AnsPress is leaded
+				 * Hooks for extension to load their codes after AnsPress is loaded.
 				 */
 				do_action( 'anspress_loaded' );
 
@@ -351,9 +349,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 */
 		public function site_include() {
-			AnsPress_Hooks::init();
+			\AnsPress_Hooks::init();
 			AnsPress\Activity_Helper::get_instance();
-			AnsPress_Views::init();
+			\AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $data ) {
 				if ( $data['active'] && file_exists( $data['path'] ) ) {

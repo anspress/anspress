@@ -218,7 +218,12 @@ class Activity_Helper {
 			),
 			'new_c' => array(
 				'ref_type' => 'comment',
-				'verb'     => __( 'Posted a new comment', 'anspress-question-answer' ),
+				'verb'     => __( 'Posted new comment', 'anspress-question-answer' ),
+				'icon'     => 'apicon-comments',
+			),
+			'edit_c' => array(
+				'ref_type' => 'comment',
+				'verb'     => __( 'Edited comment', 'anspress-question-answer' ),
 				'icon'     => 'apicon-comments',
 			),
 			'selected' => array(
