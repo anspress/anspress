@@ -155,7 +155,13 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
 	$activity = wp_cache_get( $_post->ID, 'ap_' . $column . '_activity' );
 
 	if ( false === $activity && false !== $get_cached ) {
-		$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d ORDER BY activity_date DESC LIMIT 1", $_post->ID ) );
+		$q_where = '';
+
+		if ( 'q_id' === $column && is_question() ) {
+			$q_where = " AND (activity_a_id = 0 OR activity_action IN('new_a', 'unselected','selected') )";
+		}
+
+		$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d$q_where ORDER BY activity_date DESC LIMIT 1", $_post->ID ) );
 
 		// Parse.
 		if ( $activity ) {
@@ -237,7 +243,13 @@ function ap_prefetch_recent_activities( $ids, $col = 'q_id' ) {
 		return;
 	}
 
-	$query = "SELECT t1.* FROM {$wpdb->ap_activity} t1 NATURAL JOIN (SELECT max(activity_date) AS activity_date FROM {$wpdb->ap_activity} WHERE activity_{$col} IN({$ids_string}) GROUP BY activity_{$col}) t2 ORDER BY t2.activity_date";
+	$q_where = '';
+
+	if ( 'q_id' === $col && is_question() ) {
+		$q_where = " AND (activity_a_id = 0 OR activity_action IN('new_a', 'unselected','selected') )";
+	}
+
+	$query = "SELECT t1.* FROM {$wpdb->ap_activity} t1 NATURAL JOIN (SELECT max(activity_date) AS activity_date FROM {$wpdb->ap_activity} WHERE activity_{$col} IN({$ids_string})$q_where GROUP BY activity_{$col}) t2 ORDER BY t2.activity_date";
 	$key = md5( $query );
 
 	$activity = wp_cache_get( $key, 'ap_prefetch_activities' );
