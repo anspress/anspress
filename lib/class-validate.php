@@ -85,7 +85,7 @@ class Validate {
 	 * @return null|string
 	 */
 	public static function sanitize_absint( $value = null ) {
-		if ( ! empty( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			return absint( $value );
 		}
 	}
@@ -97,7 +97,7 @@ class Validate {
 	 * @return null|string Return integer value.
 	 */
 	public static function sanitize_intval( $value = null ) {
-		if ( ! empty( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			return intval( $value );
 		}
 	}
@@ -109,7 +109,7 @@ class Validate {
 	 * @return null|boolean Return boolean value.
 	 */
 	public static function sanitize_boolean( $value = null ) {
-		if ( ! empty( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			return (bool) $value;
 		}
 	}

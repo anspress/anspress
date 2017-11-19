@@ -95,7 +95,6 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 	if ( ! $form->have_errors() ) {
 		$values = $form->get_values();
-
 		$options = get_option( 'anspress_opt', [] );
 
 		foreach ( $values as $key => $opt ) {

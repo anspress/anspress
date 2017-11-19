@@ -406,6 +406,13 @@ class Form {
 		return $errors;
 	}
 
+	/**
+	 * Get values from all fields.
+	 *
+	 * @param boolean|array $fields Child fields.
+	 * @return array
+	 * @since 4.1.0
+	 */
 	private function field_values( $fields = false ) {
 		$values = [];
 
@@ -420,7 +427,6 @@ class Form {
 		foreach ( (array) $fields as $field ) {
 			$field->pre_get();
 			$values[ $field->original_name ] = [ 'value' => $field->value() ];
-
 			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
 				$values[ $field->original_name ]['child'] = $this->field_values( $field->child->fields );
 			}

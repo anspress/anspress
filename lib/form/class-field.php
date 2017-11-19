@@ -287,8 +287,7 @@ class Field {
 	 */
 	public function unsafe_value() {
 		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
-
-		if ( $request_value ) {
+		if ( isset( $request_value ) ) {
 			return wp_unslash( $request_value );
 		}
 	}
@@ -319,7 +318,6 @@ class Field {
 		}
 
 		$sanitized = $this->sanitize();
-
 		if ( null !== $sanitized ) {
 			return $sanitized;
 		}
@@ -546,7 +544,6 @@ class Field {
 			} // End foreach().
 
 			$this->sanitized = true;
-
 			if ( null !== $unsafe_value && true === $sanitize_applied ) {
 				$this->sanitized_value = $unsafe_value;
 			}
