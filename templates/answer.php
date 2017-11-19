@@ -63,7 +63,7 @@ if ( ap_user_can_read_answer() ) :
 				</div>
 
 			</div>
-			<?php ap_the_comments(); ?>
+			<?php ap_post_comments(); ?>
 		</div>
 
 	</div>

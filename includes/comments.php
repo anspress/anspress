@@ -382,15 +382,17 @@ function ap_comment_delete_locked( $comment_ID ) {
  *
  * @param mixed $_post Post ID or object.
  * @param array $args  Arguments.
+ * @param array $single Is on single page? Default is `false`.
  *
  * @return void
  * @since 2.1
  * @since 4.1.0 Added two args `$_post` and `$args` and using WP_Comment_Query.
  * @since 4.1.1 Check if valid post and post type before loading comments.
+ * @since 4.1.2 Introduced new argument `$single`.
  */
-function ap_the_comments( $_post = null, $args = [] ) {
+function ap_the_comments( $_post = null, $args = [], $single = false ) {
 	// If comment number is 0 then dont show on single question.
-	if ( is_single() && ap_opt( 'comment_number' ) < 1 ) {
+	if ( $single && ap_opt( 'comment_number' ) < 1 ) {
 		return;
 	}
 
@@ -419,7 +421,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 	}
 
 	if ( 0 == get_comments_number( $_post->ID ) ) {
-		if ( ! is_single() ) {
+		if ( ! $single ) {
 			echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		}
 		return;
@@ -431,7 +433,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 		'post_id'   => $_post->ID,
 		'order'     => 'ASC',
 		'status'    => 'approve',
-		'number' 	  => is_single() ? ap_opt( 'comment_number' ) : 10,
+		'number' 	  => $single ? ap_opt( 'comment_number' ) : 10,
 		//'type'      => 'anspress',
 		'show_more' => true,
 		'paged'     => 1,
@@ -452,7 +454,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 
 	$query = new WP_Comment_Query( $args );
 
-	if ( 0 == $query->found_comments && ! is_single() ) {
+	if ( 0 == $query->found_comments && ! $single ) {
 		echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		return;
 	}
@@ -464,7 +466,7 @@ function ap_the_comments( $_post = null, $args = [] ) {
 		ap_get_template_part( 'comment' );
 	}
 
-	if ( $query->max_num_pages > 1 && is_single() ) {
+	if ( $query->max_num_pages > 1 && $single ) {
 		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '">' . esc_attr__( 'View all comments', 'anspress-question-answer' ) . '</a>';
 	} elseif ( $query->max_num_pages > 1 ) {
 		ap_pagination( $args['paged'], $query->max_num_pages, '?paged=%#%', get_permalink( $_post ) . '#/comments/' . $_post->ID . '/page/%#%' );
@@ -497,3 +499,13 @@ function ap_comment_ajax_data( $c, $actions = true ) {
 	);
 }
 
+/**
+ * A wrapper function for @see ap_the_comments() for using in
+ * post templates.
+ *
+ * @return void
+ * @since 4.1.2
+ */
+function ap_post_comments() {
+	ap_the_comments( null, [], true );
+}
