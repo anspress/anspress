@@ -264,6 +264,7 @@ class AnsPress_Comment_Hooks {
  * @return 	string
  * @since 	0.1
  * @since 	4.1.0 Added @see ap_user_can_read_comments() check.
+ * @since 	4.1.2 Hide comments button if comments are already showing.
  */
 function ap_comment_btn_html( $_post = null ) {
 
@@ -293,7 +294,7 @@ function ap_comment_btn_html( $_post = null ) {
 
 	$output = '';
 	// Hide comments button if comments are already shown.
-	if ( ! ( is_single() && ap_opt( 'comment_number' ) < 0 ) ) {
+	if ( ! ( is_single() && ap_opt( 'comment_number' ) > 0 ) ) {
 		// Show comments button.
 		$output .= '<a href="#/comments/' . $_post->ID . '" class="ap-btn ap-btn-comments">';
 		$output .= '<span ap-commentscount-text itemprop="commentCount">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
