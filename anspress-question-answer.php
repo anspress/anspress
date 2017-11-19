@@ -609,21 +609,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		}
 
 		/**
-		 * Redirect to about AnsPress page after activating AnsPress.
-		 *
-		 * @since  3.0.0
-		 * @access public
-		 * @static
-		 */
-		public static function redirect_to_about_page() {
-			if ( get_option( 'anspress_do_installation_redirect' ) ) {
-				delete_option( 'anspress_do_installation_redirect' );
-				wp_redirect( admin_url( 'admin.php?page=anspress_about' ) );
-				exit;
-			}
-		}
-
-		/**
 		 * Prevent loading of previous extension.
 		 *
 	 	 * @param boolean $ret Return.
@@ -645,7 +630,6 @@ add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
 add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
-add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
