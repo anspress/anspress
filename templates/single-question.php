@@ -97,6 +97,8 @@
 								<?php echo ap_comment_btn_html(); ?>
 							</div>
 						</div>
+
+						<?php ap_the_comments(); ?>
 					</div>
 				</div>
 			</div>

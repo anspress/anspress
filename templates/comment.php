@@ -19,12 +19,16 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 ?>
 <apcomment id="comment-<?php echo $comment->comment_ID; ?>" <?php comment_class( $approved ); ?>>
 	<div itemscope itemtype="http://schema.org/Comment">
-		<div class="ap-avatar"><?php echo get_avatar( $comment->user_id, $avatar_size ); ?></div>
+
+		<?php if ( ! is_single() ) : ?>
+			<div class="ap-avatar"><?php echo get_avatar( $comment->user_id, $avatar_size ); ?></div>
+		<?php endif; ?>
+
 		<div class="comment-inner">
 			<div class="comment-header">
 				<a href="<?php echo esc_url( ap_user_link( $comment->user_id ) ); ?>" class="ap-comment-author" itemprop="creator" itemscope itemtype="http://schema.org/Person">
 					<span itemprop="name"><?php echo ap_user_display_name( $comment ); ?></span>
-				</a> commented
+				</a> <?php _e( 'commented', 'anspress-question-answer' ); ?>
 
 				<a href="<?php comment_link(); ?>" class="ap-comment-time">
 					<time itemprop="dateCreated" datetime="<?php echo date( 'c', strtotime( $comment->comment_date ) ); ?>"><?php echo ap_human_time( $comment->comment_date_gmt, false ); ?></time>
@@ -42,7 +46,18 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 
 				</div>
 			</div>
-			<div class="comment-content" itemprop="text"><?php comment_text(); ?></div>
+
+			<?php if ( ! is_single() ) : ?>
+				<div class="comment-content" itemprop="text"><?php comment_text(); ?></div>
+			<?php else : ?>
+				<?php
+					$comment_text = strip_tags( get_comment_text() );
+					$comment_c = strlen( $comment_text );
+				?>
+				<div class="comment-content" itemprop="text">
+					<?php comment_text(); ?>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </apcomment>

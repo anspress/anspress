@@ -63,7 +63,9 @@ if ( ap_user_can_read_answer() ) :
 				</div>
 
 			</div>
+			<?php ap_the_comments(); ?>
 		</div>
+
 	</div>
 </div>
 
