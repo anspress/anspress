@@ -423,7 +423,9 @@ function ap_form_allowed_tags() {
 		'strong'     => array(
 			'style'    => $allowed_style,
 			),
-		'pre'        => array(),
+		'pre'        => array(
+			'class' => [],
+		),
 		'code'       => array(),
 		'blockquote' => array(),
 		'img'        => array(
@@ -1066,17 +1068,19 @@ function ap_whitelist_array( $master_keys, $array ) {
 
 /**
  * Append table name in $wpdb.
+ *
+ * @since unknown
+ * @since 4.1.2 Added `ap_activity` table.
  */
 function ap_append_table_names() {
 	global $wpdb;
 
-	$wpdb->ap_qameta 		     = $wpdb->prefix . 'ap_qameta';
-	$wpdb->ap_votes 		     = $wpdb->prefix . 'ap_votes';
-	$wpdb->ap_views 			   = $wpdb->prefix . 'ap_views';
-	$wpdb->ap_reputations	   = $wpdb->prefix . 'ap_reputations';
-	$wpdb->ap_subscribers	   = $wpdb->prefix . 'ap_subscribers';
-	$wpdb->ap_email_queues	 = $wpdb->prefix . 'ap_email_queues';
-	$wpdb->ap_email_content	 = $wpdb->prefix . 'ap_email_content';
+	$wpdb->ap_qameta 		    = $wpdb->prefix . 'ap_qameta';
+	$wpdb->ap_votes 		    = $wpdb->prefix . 'ap_votes';
+	$wpdb->ap_views 			  = $wpdb->prefix . 'ap_views';
+	$wpdb->ap_reputations	  = $wpdb->prefix . 'ap_reputations';
+	$wpdb->ap_subscribers	  = $wpdb->prefix . 'ap_subscribers';
+	$wpdb->ap_activity	    = $wpdb->prefix . 'ap_activity';
 
 }
 ap_append_table_names();
@@ -1325,14 +1329,26 @@ function ap_canonical_url() {
 }
 
 /**
- * For user display name
- * It can be filtered for adding cutom HTML.
+ * Return or echo user display name.
  *
- * @param  mixed $args Arguments.
- * @return string
+ * Get display name from comments if WP_Comment object is passed. Else
+ * fetch name form user profile. If anonymous user then fetch name from
+ * current question, answer or comment.
+ *
+ * @param  WP_Comment|array|integer $args {
+ * 		Arguments or `WP_Comment` or user ID.
+ *
+ * 		@type integer $user_id User ID.
+ * 		@type boolean $html    Shall return just text name or name with html markup.
+ * 		@type boolean $echo    Return or echo.
+ * 		@type string  $anonymous_label A placeholder name for anonymous user if no name found in post or comment.
+ * }
+ *
+ * @return string|void If `$echo` argument is tru then it will echo name.
  * @since 0.1
+ * @since 4.1.2 Improved args and PHPDoc.
  */
-function ap_user_display_name( $args = array() ) {
+function ap_user_display_name( $args = [] ) {
 	global $post;
 
 	$defaults = array(
@@ -1342,12 +1358,13 @@ function ap_user_display_name( $args = array() ) {
 		'anonymous_label'    => __( 'Anonymous', 'anspress-question-answer' ),
 	);
 
-	if ( $args instanceof WP_Comment ) {
+	// When only user id passed.
+	if ( is_numeric( $args ) ) {
+		$defaults['user_id'] = $args;
+		$args = $defaults;
+	} elseif ( $args instanceof WP_Comment ) {
 		$defaults['user_id'] = $args->user_id;
 		$defaults['anonymous_label'] = $args->comment_author;
-		$args = $defaults;
-	} elseif ( ! is_array( $args ) ) {
-		$defaults['user_id'] = $args;
 		$args = $defaults;
 	} else {
 		$args = wp_parse_args( $args, $defaults );
@@ -1397,7 +1414,7 @@ function ap_user_display_name( $args = array() ) {
 	 */
 	$return = apply_filters( 'ap_user_display_name', $return, $args );
 
-	if ( ! $echo ) {
+	if ( ! $args['echo'] ) {
 		return $return;
 	}
 
@@ -1427,14 +1444,19 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 	if ( $user_id < 1 && empty( $user_id ) ) {
 		$link = '#/user/anonymous';
-	} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
-		$link = bp_core_get_userlink( $user_id, false, true );
-	} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
-		$user = get_user_by( 'id', $user_id );
-		$slug = get_option( 'ap_user_path' );
-		$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
 	} else {
-		$link = get_author_posts_url( $user_id );
+		$user = get_user_by( 'id', $user_id );
+
+		if ( ! $user ) {
+			$link = '#/user/anonymous';
+		} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
+			$link = bp_core_get_userlink( $user_id, false, true );
+		} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
+			$slug = get_option( 'ap_user_path' );
+			$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
+		} else {
+			$link = get_author_posts_url( $user_id );
+		}
 	}
 
 	// Append sub.
@@ -2130,6 +2152,12 @@ function ap_main_pages() {
 			'post_title' => __( 'Tags', 'anspress-question-answer' ),
 			'post_name'  => 'tags',
 		),
+		'activities_page' => array(
+			'label'      => __( 'Activities page', 'anspress-question-answer' ),
+			'desc'       => __( 'Page used to display all anspress activities.', 'anspress-question-answer' ),
+			'post_title' => __( 'Activities', 'anspress-question-answer' ),
+			'post_name'  => 'activities',
+		),
 	);
 
 	return apply_filters( 'ap_main_pages', $pages );
@@ -2172,3 +2200,15 @@ function ap_current_user_id() {
 
 	return 0;
 }
+
+/**
+ * Check if post object is AnsPress CPT i.e. question or answer.
+ *
+ * @param WP_Post $_post WordPress post object.
+ * @return boolean
+ * @since 4.1.2
+ */
+function ap_is_cpt( $_post ) {
+	return ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) );
+}
+

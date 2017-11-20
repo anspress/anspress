@@ -46,11 +46,6 @@
 				text-decoration: none;
 				color: inherit;
 			}
-			>.ap-post-history {
-				margin-left: 10px;
-				padding-left: 15px;
-				border-left: solid 1px #ccc;
-			}
 			.ap-avatar {
 				margin-top: 0;
 				margin-right: 10px;
@@ -70,6 +65,14 @@
 	}
 	.ap-q-inner {
 		padding: 15px;
+	}
+	.ap-post-updated{
+		font-size: 12px;
+		margin-top: 10px;
+		i{
+			margin-right: 5px;
+			color: #aaa;
+		}
 	}
 	.ap-question-meta {
 		margin-bottom: 25px;
@@ -380,62 +383,11 @@
 	}
 }
 
-postMessage {
-	float: right;
+postmessage {
 }
 
 .ap-pmsg {
-	position: relative;
-	i {
-		display: block;
-		font-size: 12px;
-		font-style: normal;
-		line-height: 15px;
-		margin-top: -5px;
-		padding: 5px 6px;
-		color: #888;
-		border: solid 1px #ddd;
-		border-radius: 2px;
-		background: #fff;
-		&:before {
-			font-size: 15px;
-			margin-right: 4px;
-			vertical-align: text-bottom;
-		}
-	}
-	&:hover span {
-		display: block;
-	}
-	span {
-		display: none;
-		position: absolute;
-		right: 0;
-		margin-top: 5px;
-		padding: 7px;
-		border: solid 1px #ddd;
-		background: #fff;
-		box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-		z-index: 9999;
-		width: 300px;
-		border-radius: 3px;
-	}
-	&.status {
-		&-moderate i {
-			color: #fff;
-			border-color: #fff;
-			background: #ff9800;
-		}
-		&-private_post i {
-			color: #fff;
-			border-color: #fff;
-			background: #757575;
-		}
-		&-trash i {
-			color: #fff;
-			border-color: #fff;
-			background: #e53935;
-		}
-	}
+
 }
 
 .ap-questions-tab {

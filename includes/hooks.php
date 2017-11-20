@@ -42,8 +42,8 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'comment_unapproved_to_approved', __CLASS__, 'comment_approve' );
 			anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapprove' );
 			anspress()->add_action( 'trashed_comment', __CLASS__, 'comment_trash' );
-			anspress()->add_action( 'delete_comment ', __CLASS__, 'comment_trash' );
-			anspress()->add_action( 'edit_comment ', __CLASS__, 'edit_comment' );
+			anspress()->add_action( 'delete_comment', __CLASS__, 'comment_trash' );
+			anspress()->add_action( 'edit_comment', __CLASS__, 'edit_comment' );
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'publish_comment' );
 			anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'unpublish_comment' );
 			anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
@@ -51,6 +51,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
 			anspress()->add_action( 'save_post_question', __CLASS__, 'save_question_hooks', 1, 3 );
 			anspress()->add_action( 'save_post_answer', __CLASS__, 'save_answer_hooks', 1, 3 );
+			anspress()->add_action( 'transition_post_status', __CLASS__, 'transition_post_status', 10, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			//anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
@@ -77,8 +78,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
-
-			//anspress()->add_filter( 'wp_get_nav_menu_items', __CLASS__, 'update_menu_url' );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
@@ -90,6 +89,8 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );
+			anspress()->add_filter( 'ap_after_question_content', 'AnsPress_Theme', 'after_question_content' );
+			anspress()->add_filter( 'ap_after_answer_content', 'AnsPress_Theme', 'after_question_content' );
 
 			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
 			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
@@ -139,15 +140,12 @@ class AnsPress_Hooks {
 	 * @param	integer $post_id Question id.
 	 * @param	object	$post Question post object.
 	 * @since	1.0
+	 * @since	4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function after_new_question( $post_id, $post ) {
 
-		// Add question activity meta.
-		ap_update_post_activity_meta( $post_id, 'new_question', $post->post_author );
-
 		/**
-		 * ACTION: ap_after_new_question
-		 * action triggered after inserting a question
+		 * Action triggered after inserting a question
 		 *
 		 * @since 0.9
 		 */
@@ -160,18 +158,14 @@ class AnsPress_Hooks {
 	 * @param	integer $post_id answer id.
 	 * @param	object	$post answer post object.
 	 * @since 2.0.1
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function after_new_answer( $post_id, $post ) {
 		// Update answer count.
 		ap_update_answers_count( $post->post_parent );
 
-		// Update activities in qameta.
-		ap_update_post_activity_meta( $post_id, 'new_answer', $post->post_author );
-		ap_update_post_activity_meta( $post->post_parent, 'new_answer', $post->post_author );
-
 		/**
-		 * ACTION: ap_after_new_answer
-		 * action triggered after inserting an answer
+		 * Action triggered after inserting an answer
 		 *
 		 * @since 0.9
 		 */
@@ -179,15 +173,32 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Before deleting a question or answer.
+	 * This callback handles pre delete question actions.
+	 *
+	 * Before deleting a question we have to make sure that all answers
+	 * and metas are cleared. Some hooks in answer may require question data
+	 * so its better to delete all answers before deleting question.
 	 *
 	 * @param	integer $post_id Question or answer ID.
+	 * @since unknown
 	 */
 	public static function before_delete( $post_id ) {
 
 		$post = ap_get_post( $post_id );
 		if ( 'question' === $post->post_type ) {
+
+			/**
+			 * Action triggered before deleting a question form database.
+			 *
+			 * At this point question are not actually deleted from database hence
+			 * it will be easy to perform actions which uses mysql queries.
+			 *
+			 * @param integer $post_id Question id.
+			 * @param WP_Post $post    Question object.
+			 * @since unknown
+			 */
 			do_action( 'ap_before_delete_question', $post->ID, $post );
+
 			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] ); // @codingStandardsIgnoreLine
 
 			foreach ( (array) $answers as $a ) {
@@ -208,10 +219,11 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Question or answer ID.
 	 * @param	object  $post Post Object.
+	 * @since unknown
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function delete_answer( $post_id, $post ) {
 		do_action( 'ap_before_delete_answer', $post->ID, $post );
-		ap_update_post_activity_meta( $post->post_parent, 'delete_answer', get_current_user_id() );
 
 		if ( ap_is_selected( $post ) ) {
 			ap_unset_selected_answer( $post->post_parent );
@@ -226,6 +238,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Post ID.
 	 * @since 2.0.0
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function trash_post_action( $post_id ) {
 		$post = ap_get_post( $post_id );
@@ -251,13 +264,11 @@ class AnsPress_Hooks {
 					ap_unset_selected_answer( $p->post_parent );
 				}
 
-				ap_update_post_activity_meta( $p->ID, 'delete_answer', get_current_user_id(), true );
 				wp_trash_post( $p->ID );
 			}
 		}
 
 		if ( 'answer' === $post->post_type ) {
-			ap_update_post_activity_meta( $post->ID, 'delete_answer', get_current_user_id(), true );
 
 			/**
 			 * Triggered before trashing an answer.
@@ -279,6 +290,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Post ID.
 	 * @since 2.0.0
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function untrash_ans_on_question_untrash( $post_id ) {
 		$_post = ap_get_post( $post_id );
@@ -298,13 +310,10 @@ class AnsPress_Hooks {
 				//do_action( 'ap_untrash_answer', $p->ID, $p );
 				wp_untrash_post( $p->ID );
 			}
-
-			ap_update_post_activity_meta( $_post->post_parent, 'restore_question', get_current_user_id() );
 		}
 
 		if ( 'answer' === $_post->post_type ) {
 			$ans = ap_count_published_answers( $_post->post_parent );
-			ap_update_post_activity_meta( $_post->post_parent, 'restore_answer', get_current_user_id(), true );
 			do_action( 'ap_untrash_answer', $_post->ID, $_post );
 
 			// Update answer count.
@@ -391,6 +400,8 @@ class AnsPress_Hooks {
 	 * Actions to run after posting a comment
 	 *
 	 * @param	object|array $comment Comment object.
+	 * @since unknown
+	 * @since 4.1.2 Log to activity table on new comment. Removed @see ap_update_post_activity_meta().
 	 */
 	public static function publish_comment( $comment ) {
 		$comment = (object) $comment;
@@ -401,78 +412,53 @@ class AnsPress_Hooks {
 			return false;
 		}
 
-		if ( $post->post_type == 'question' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment', $comment->user_id );
-		} elseif ( $post->post_type == 'answer' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'new_comment_answer', $comment->user_id, true );
-		}
-
 		$count = get_comment_count( $comment->comment_post_ID );
 		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
+
+		// Log to activity table.
+		ap_activity_add( array(
+			'q_id'   => 'answer' === $post->post_type ? $post->post_parent: $post->ID,
+			'action' => 'new_c',
+			'a_id'   => 'answer' === $post->post_type ? $post->ID: 0,
+			'c_id'   => $comment->comment_ID,
+		) );
 	}
 
 	/**
 	 * Actions to run after unpublishing a comment.
 	 *
 	 * @param	object|array $comment Comment object.
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
 	public static function unpublish_comment( $comment ) {
 		$comment = (object) $comment;
-		ap_update_post_activity_meta( $comment->comment_post_ID, 'delete_comment', get_current_user_id(), true );
-
 		$count = get_comment_count( $comment->comment_post_ID );
 		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
 	}
 
 	/**
 	 * Edit comment hook callback.
+	 *
+	 * @since unknown
+	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
 	 */
-	public function edit_comment( $comment_id ) {
+	public static function edit_comment( $comment_id ) {
 		$comment = get_comment( $comment_id );
 		$post = ap_get_post( $comment->comment_post_ID );
 
-		if ( ! ('question' == $post->post_type || 'answer' == $post->post_type) ) {
+		if ( ! ap_is_cpt( $post ) ) {
 			return;
 		}
 
-		if ( $post->post_type == 'question' ) {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment', get_current_user_id() );
-		} else {
-			ap_update_post_activity_meta( $comment->comment_post_ID, 'edit_comment_answer', get_current_user_id(), true );
-		}
-	}
+		$q_id = 'answer' === $post->post_type ? $post->post_parent : $post->ID;
+		$a_id = 'answer' === $post->post_type ? $post->ID : 0;
 
-	/**
-	 * Update AnsPress pages URL dynimacally
-	 *
-	 * @param	array $items Menu item.
-	 * @return array
-	 * @deprecated 4.1.1
-	 */
-	public static function update_menu_url( $items ) {
-		// If this is admin then we dont want to update url.
-		if ( is_admin() ) {
-			return $items;
-		}
-
-		$pages = anspress()->pages;
-
-		foreach ( (array) $items as $key => $item ) {
-
-			if ( 'anspress-links' === $item->type ) {
-				if ( isset( $pages[ $item->object ]['private'] ) && $pages[ $item->object ]['private'] && ! is_user_logged_in() ) {
-					unset( $items[ $key ] );
-				} else {
-					if ( 'base' === $item->object ) {
-						$item->url = ap_get_link_to( '/' );
-					} else {
-						$item->url = apply_filters( 'ap_menu_link', ap_get_link_to( ap_get_page_slug( $item->object ) ), $item );
-					}
-				}
-			}
-		}
-
-		return apply_filters( 'ap_menu_items', $items );
+		// Insert activity.
+		ap_activity_add( array(
+			'q_id'   => $q_id,
+			'a_id'   => $a_id,
+			'action' => 'edit_c',
+		) );
 	}
 
 	/**
@@ -518,7 +504,7 @@ class AnsPress_Hooks {
 	public static function mce_plugins( $plugin_array ) {
 		$plugin_array[ 'anspress' ] = ANSPRESS_URL . 'assets/js/min/tinymce-plugin.min.js';
 		return $plugin_array;
- 	}
+	}
 
 	/**
 	 * Filter post so that anonymous author should not be replaced
@@ -610,6 +596,7 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
+	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
 	 */
 	public static function save_question_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -617,6 +604,12 @@ class AnsPress_Hooks {
 		}
 
 		$form = anspress()->get_form( 'question' );
+
+		// Return if form is not submitted.
+		if ( ! $form->is_submitted() ) {
+			return;
+		}
+
 		$values = $form->get_values();
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_question' : 'new_question';
 
@@ -674,6 +667,13 @@ class AnsPress_Hooks {
 
 		// Update qameta terms.
 		ap_update_qameta_terms( $post_id );
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_q' : 'new_q';
+
+		// Insert activity.
+		ap_activity_add( array(
+			'q_id'   => $post_id,
+			'action' => $activity_type,
+		) );
 	}
 
 	/**
@@ -683,6 +683,7 @@ class AnsPress_Hooks {
 	 * @param	object	$post		Post Object
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
+	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
 	 */
 	public static function save_answer_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
@@ -690,6 +691,12 @@ class AnsPress_Hooks {
 		}
 
 		$form = anspress()->get_form( 'answer' );
+
+		// Return if form is not submitted.
+		if ( ! $form->is_submitted() ) {
+			return;
+		}
+
 		$values = $form->get_values();
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_answer' : 'new_answer';
 
@@ -749,6 +756,40 @@ class AnsPress_Hooks {
 
 		// Update qameta terms.
 		ap_update_qameta_terms( $post_id );
+
+		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_a' : 'new_a';
+
+		// Insert activity.
+		ap_activity_add( array(
+			'q_id'   => $post->post_parent,
+			'a_id'   => $post_id,
+			'action' => $activity_type,
+		) );
+	}
+
+	/**
+	 * Trigger activity update hook on question and answer status transition.
+	 *
+	 * @param string  $new_status New post status.
+	 * @param string  $old_status Old post status.
+	 * @param WP_Post $post       WordPress post object.
+	 * @return void
+	 * @since 4.1.2
+	 */
+	public static function transition_post_status( $new_status, $old_status, $post ) {
+		if ( 'new' === $old_status || ! in_array( $post->post_type, [ 'answer', 'question' ], true ) ) {
+			return;
+		}
+
+		$question_id = 'answer' === $post->post_type ? $post->post_parent : $post->ID;
+		$answer_id   = 'answer' === $post->post_type ? $post->ID : 0;
+
+		// Log to db.
+		ap_activity_add( array(
+			'q_id'   => $question_id,
+			'a_id'   => $answer_id,
+			'action' => 'status_' . $new_status,
+		) );
 	}
 
 	/**

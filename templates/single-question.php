@@ -10,6 +10,7 @@
  *
  * @since      0.0.1
  * @since      4.1.0 Renamed file from question.php.
+ * @since      4.1.2 Removed @see ap_recent_post_activity().
  */
 
 ?>
@@ -63,8 +64,6 @@
 										);
 									?>
 								</a>
-								<?php ap_recent_post_activity(); ?>
-								<?php echo ap_post_status_badge( ); // xss okay.	?>
 							</div>
 
 							<!-- Start ap-content-inner -->
@@ -90,7 +89,6 @@
 									 */
 									do_action( 'ap_after_question_content' );
 								?>
-
 							</div>
 
 							<div class="ap-post-footer clearfix">
@@ -99,6 +97,8 @@
 								<?php echo ap_comment_btn_html(); ?>
 							</div>
 						</div>
+
+						<?php ap_post_comments(); ?>
 					</div>
 				</div>
 			</div>

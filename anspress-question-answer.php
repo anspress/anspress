@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define databse version.
-define( 'AP_DB_VERSION', 31 );
+define( 'AP_DB_VERSION', 33 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
@@ -172,6 +172,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $forms = [];
 
 		/**
+		 * The activity object.
+		 *
+		 * @var void|object
+		 * @since 4.1.2
+		 */
+		public $activity;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -191,9 +199,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				$ap_classes = array();
 
 				self::$instance->includes();
-				self::$instance->ajax_hooks();
 				self::$instance->site_include();
-
+				self::$instance->ajax_hooks();
 				AnsPress_PostTypes::init();
 
 				/*
@@ -210,8 +217,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				new AnsPress_Process_Form();
 
 				/*
-				 * ACTION: anspress_loaded
-				 * Hooks for extension to load their codes after AnsPress is leaded
+				 * Hooks for extension to load their codes after AnsPress is loaded.
 				 */
 				do_action( 'anspress_loaded' );
 
@@ -262,6 +268,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		private function includes() {
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
+			require_once ANSPRESS_DIR . 'includes/activity.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
 			require_once ANSPRESS_DIR . 'includes/class-form-hooks.php';
@@ -291,6 +298,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/reputation.php';
 			require_once ANSPRESS_DIR . 'includes/subscribers.php';
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-activity-helper.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
@@ -340,8 +349,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 */
 		public function site_include() {
-			AnsPress_Hooks::init();
-			AnsPress_Views::init();
+			\AnsPress_Hooks::init();
+			AnsPress\Activity_Helper::get_instance();
+			\AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $data ) {
 				if ( $data['active'] && file_exists( $data['path'] ) ) {
@@ -595,22 +605,9 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			$tables[] 	= $wpdb->prefix . 'ap_views';
 			$tables[] 	= $wpdb->prefix . 'ap_qameta';
+			$tables[] 	= $wpdb->prefix . 'ap_activity';
+			$tables[] 	= $wpdb->prefix . 'ap_votes';
 			return $tables;
-		}
-
-		/**
-		 * Redirect to about AnsPress page after activating AnsPress.
-		 *
-		 * @since  3.0.0
-		 * @access public
-		 * @static
-		 */
-		public static function redirect_to_about_page() {
-			if ( get_option( 'anspress_do_installation_redirect' ) ) {
-				delete_option( 'anspress_do_installation_redirect' );
-				wp_redirect( admin_url( 'admin.php?page=anspress_about' ) );
-				exit;
-			}
 		}
 
 		/**
@@ -635,7 +632,6 @@ add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
 add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
-add_filter( 'admin_init', [ 'AnsPress_Init', 'redirect_to_about_page' ] );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

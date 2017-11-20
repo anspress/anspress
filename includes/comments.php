@@ -54,7 +54,6 @@ class AnsPress_Comment_Hooks {
 		$_post = ap_get_post( $post_id );
 
 		$args = array(
-			'number'    => ap_opt( 'comment_number' ),
 			'show_more' => false,
 			'paged'     => $paged,
 		);
@@ -264,9 +263,11 @@ class AnsPress_Comment_Hooks {
  * @param 	mixed $_post Echo html.
  * @return 	string
  * @since 	0.1
- * @since 	4.1.0 Added @see `ap_user_can_read_comments()` check.
+ * @since 	4.1.0 Added @see ap_user_can_read_comments() check.
+ * @since 	4.1.2 Hide comments button if comments are already showing.
  */
 function ap_comment_btn_html( $_post = null ) {
+
 	if ( ! ap_user_can_read_comments( $_post ) ) {
 		return;
 	}
@@ -291,10 +292,14 @@ function ap_comment_btn_html( $_post = null ) {
 		$unapproved = '<b class="unapproved' . ( $unapproved_count > 0 ? ' have' : '' ) . '" ap-un-commentscount title="' . esc_attr__( 'Comments awaiting moderation', 'anspress-question-answer' ) . '">' . $unapproved_count . '</b>';
 	}
 
-	// Show comments button.
-	$output = '<a href="#/comments/' . $_post->ID . '" class="ap-btn ap-btn-comments">';
-	$output .= '<span ap-commentscount-text itemprop="commentCount">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
-	$output .= $unapproved . '</a>';
+	$output = '';
+	// Hide comments button if comments are already shown.
+	if ( ! ( is_single() && ap_opt( 'comment_number' ) > 0 ) ) {
+		// Show comments button.
+		$output .= '<a href="#/comments/' . $_post->ID . '" class="ap-btn ap-btn-comments">';
+		$output .= '<span ap-commentscount-text itemprop="commentCount">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
+		$output .= $unapproved . '</a>';
+	}
 
 	// Add comment button.
 	$q = '';
@@ -377,13 +382,20 @@ function ap_comment_delete_locked( $comment_ID ) {
  *
  * @param mixed $_post Post ID or object.
  * @param array $args  Arguments.
+ * @param array $single Is on single page? Default is `false`.
  *
  * @return void
  * @since 2.1
  * @since 4.1.0 Added two args `$_post` and `$args` and using WP_Comment_Query.
  * @since 4.1.1 Check if valid post and post type before loading comments.
+ * @since 4.1.2 Introduced new argument `$single`.
  */
-function ap_the_comments( $_post = null, $args = [] ) {
+function ap_the_comments( $_post = null, $args = [], $single = false ) {
+	// If comment number is 0 then dont show on single question.
+	if ( $single && ap_opt( 'comment_number' ) < 1 ) {
+		return;
+	}
+
 	global $comment;
 
 	$_post = ap_get_post( $_post );
@@ -408,13 +420,20 @@ function ap_the_comments( $_post = null, $args = [] ) {
 		return;
 	}
 
+	if ( 0 == get_comments_number( $_post->ID ) ) {
+		if ( ! $single ) {
+			echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
+		}
+		return;
+	}
+
 	$user_id = get_current_user_id();
 
 	$default = array(
 		'post_id'   => $_post->ID,
 		'order'     => 'ASC',
 		'status'    => 'approve',
-		'number' 	  => ap_opt( 'comment_number' ),
+		'number' 	  => $single ? ap_opt( 'comment_number' ) : 10,
 		//'type'      => 'anspress',
 		'show_more' => true,
 		'paged'     => 1,
@@ -435,9 +454,8 @@ function ap_the_comments( $_post = null, $args = [] ) {
 
 	$query = new WP_Comment_Query( $args );
 
-	if ( 0 == $query->found_comments ) {
+	if ( 0 == $query->found_comments && ! $single ) {
 		echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
-
 		return;
 	}
 
@@ -448,7 +466,9 @@ function ap_the_comments( $_post = null, $args = [] ) {
 		ap_get_template_part( 'comment' );
 	}
 
-	if ( $query->max_num_pages > 1 ) {
+	if ( $query->max_num_pages > 1 && $single ) {
+		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '">' . esc_attr__( 'View all comments', 'anspress-question-answer' ) . '</a>';
+	} elseif ( $query->max_num_pages > 1 ) {
 		ap_pagination( $args['paged'], $query->max_num_pages, '?paged=%#%', get_permalink( $_post ) . '#/comments/' . $_post->ID . '/page/%#%' );
 	}
 
@@ -479,3 +499,13 @@ function ap_comment_ajax_data( $c, $actions = true ) {
 	);
 }
 
+/**
+ * A wrapper function for @see ap_the_comments() for using in
+ * post templates.
+ *
+ * @return void
+ * @since 4.1.2
+ */
+function ap_post_comments() {
+	ap_the_comments( null, [], true );
+}

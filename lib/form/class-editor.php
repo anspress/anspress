@@ -88,7 +88,7 @@ class Editor extends Field {
 				'statusbar'        => false,
 				'codesample'       => true,
 				'anspress'         => true,
-				'toolbar1' => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apcode,apmedia',
+				'toolbar1' => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apmedia,apcode',
 				'toolbar2' => '',
 				'toolbar3' => '',
 				'toolbar4' => '',

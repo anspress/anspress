@@ -183,9 +183,13 @@ class Answers_Query extends WP_Query {
 
 	/**
 	 * Pre fetch current users vote on all answers
+	 *
+	 * @since 3.1.0
+	 * @since 4.1.2 Prefetch posts activity.
 	 */
 	public function pre_fetch() {
 		$this->get_ids();
+		ap_prefetch_recent_activities( $this->ap_ids['post_ids'], 'a_id' );
 		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
 		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
 
@@ -350,21 +354,10 @@ function ap_count_other_answer( $question_id = false ) {
  * Unselect an answer as best.
  *
  * @param  integer $post_id Post ID.
+ * @deprecated 4.1.2
  */
 function ap_unselect_answer( $post_id ) {
 	$post = ap_get_post( $post_id );
-
-	ap_unset_selected_answer( $post->post_parent );
-
-	// Add question activity meta.
-	ap_update_post_activity_meta( $post->post_parent, 'answer_unselected', get_current_user_id() );
-	ap_update_post_activity_meta( $post->ID, 'unselected_best_answer', get_current_user_id() );
-
-	do_action( 'ap_unselect_answer', $post );
-
-	if ( ap_opt( 'close_selected' ) ) {
-		wp_update_post( array( 'ID' => $post->post_parent, 'post_status' => 'publish' ) );
-	}
 }
 
 /**

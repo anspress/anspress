@@ -44,13 +44,12 @@ class AnsPress_Profile_Hooks {
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
 
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
+		//anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'wp_title', __CLASS__, 'page_title' );
 		anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
 		anspress()->add_filter( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
-		//anspress()->add_action( 'wp', __CLASS__, 'pre_get_posts' );
 	}
 
 	/**
@@ -128,6 +127,7 @@ class AnsPress_Profile_Hooks {
 	 * @param  string $url Menu url.
 	 * @param  object $item Menu item object.
 	 * @return string
+	 * @deprecated 4.1.2
 	 */
 	public static function menu_link( $url, $item ) {
 		if ( 'user' === $item->object ) {

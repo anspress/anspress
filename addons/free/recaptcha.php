@@ -32,7 +32,7 @@ use AnsPress\Form\Field\Captcha as Captcha;
 require_once ANSPRESS_ADDONS_DIR . '/free/recaptcha/class-captcha.php';
 
 /**
- * Bad words filter hooks.
+ * The reCaptcha class.
  */
 class AnsPress_reCcaptcha {
 	/**

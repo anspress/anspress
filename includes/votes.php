@@ -249,7 +249,7 @@ function ap_get_votes( $args = array() ) {
 		// Also cache each vote individually.
 		foreach ( (array) $results as $vote ) {
 			$vote_key = $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type;
-			wp_cache_set( $vote_key, $vote, 'ap_votes' );
+			wp_cache_set( $vote_key, $vote, 'ap_vote' );
 		}
 	}
 
@@ -390,13 +390,13 @@ function ap_count_post_votes_by( $by, $value ) {
  * @param  integer      $user_id User ID.
  * @param  string|array $type    Vote type.
  * @param  string       $value   Vote value.
- * @return boolena|object
+ * @return boolean|object
  * @since  4.0.0
  */
 function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	$cache_key = $post_id . '_' . $user_id . '_' . $type;
-	$cache = wp_cache_get( $cache_key, 'ap_vote' );
 
+	$cache = wp_cache_get( $cache_key, 'ap_vote' );
 	if ( false !== $cache ) {
 		return $cache;
 	}
@@ -632,13 +632,13 @@ function ap_user_votes_pre_fetch( $ids ) {
 		}
 
 		foreach ( (array) $cache_keys as $key => $val ) {
-			wp_cache_set( $key, '', 'ap_votes' );
+			wp_cache_set( $key, '', 'ap_vote' );
 		}
 	}
 }
 
 /**
- * Delete multiple post voets.
+ * Delete multiple post votes.
  *
  * @param integer $post_id Post id.
  * @param string  $type Vote type.

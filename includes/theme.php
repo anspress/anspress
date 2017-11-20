@@ -93,10 +93,9 @@ function is_post_waiting_moderation( $post_id = false ) {
  * @since 2.0.0
  */
 function is_post_closed( $post_id = null ) {
-	if ( ap_get_post_field( 'closed', $post_id ) ) {
+	if ( '1' === ap_get_post_field( 'closed', $post_id ) ) {
 		return true;
 	}
-
 	return false;
 }
 
@@ -558,15 +557,7 @@ function ap_assets() {
 		),
 	);
 
-	if ( is_ask() || ap_current_page() === 'edit' ) {
-		$assets['js']['main']['active'] = true;
-	}
-
-	if ( is_question() || ap_current_page() === 'edit' ) {
-		$assets['js']['main']['active'] = true;
-	}
-
-	if ( is_anspress() && ( ap_current_page() === 'base' || ap_current_page() === 'search' ) ) {
+	if ( ap_current_page() !== '' ) {
 		$assets['js']['main']['active'] = true;
 	}
 
@@ -879,7 +870,13 @@ function ap_menu_obejct() {
 		} // End if().
 	} // End foreach().
 
-	return $menu_items;
+	/**
+	 * Hook for filtering default AnsPress menu objects.
+	 *
+	 * @param array $menu_items Array of menu objects.
+	 * @since 4.1.2
+	 */
+	return apply_filters( 'ap_menu_object', $menu_items );
 }
 
 /**

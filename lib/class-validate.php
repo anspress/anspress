@@ -85,7 +85,7 @@ class Validate {
 	 * @return null|string
 	 */
 	public static function sanitize_absint( $value = null ) {
-		if ( ! empty( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			return absint( $value );
 		}
 	}
@@ -97,7 +97,7 @@ class Validate {
 	 * @return null|string Return integer value.
 	 */
 	public static function sanitize_intval( $value = null ) {
-		if ( ! empty( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			return intval( $value );
 		}
 	}
@@ -109,7 +109,7 @@ class Validate {
 	 * @return null|boolean Return boolean value.
 	 */
 	public static function sanitize_boolean( $value = null ) {
-		if ( ! empty( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			return (bool) $value;
 		}
 	}
@@ -175,7 +175,7 @@ class Validate {
 	public static function sanitize_description( $value = null ) {
 		if ( ! empty( $value ) ) {
 			$value = str_replace( '<!--more-->', '', $value );
-			$value = preg_replace_callback( '/<pre.*?>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $value );
+			$value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $value );
 			$value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $value );
 			$value = str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $value );
 
@@ -192,7 +192,10 @@ class Validate {
 	 * @return string
 	 */
 	private static function pre_content( $matches ) {
-		return '<pre>' . esc_html( $matches[1] ) . '</pre>';
+		preg_match( '/aplang\=\\"([A-Za-z0-9 _]*)\\"/', $matches[1], $lang );
+		$lang = empty( $lang ) ? 'text' : esc_attr( $lang[1] );
+
+		return '<pre class="brush: ' . sanitize_key( $lang ) . '">' . esc_html( $matches[2] ) . '</pre>';
 	}
 
 	/**

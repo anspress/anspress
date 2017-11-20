@@ -261,8 +261,16 @@ function ap_update_votes_count( $post_id ) {
  * @param  integer $answer_id   Answer ID.
  * @return integer|false
  * @since  3.1.0
+ * @since  4.1.2 Insert activity to log.
  */
 function ap_set_selected_answer( $question_id, $answer_id ) {
+	// Log to activity table.
+	ap_activity_add( array(
+		'q_id'   => $question_id,
+		'a_id'   => $answer_id,
+		'action' => 'selected',
+	) );
+
 	ap_insert_qameta( $answer_id, [ 'selected' => 1, 'last_updated' => current_time( 'mysql' ) ] );
 	ap_insert_qameta( $question_id, [ 'selected_id' => $answer_id, 'last_updated' => current_time( 'mysql' ) ] );
 	return ap_update_answer_selected( $answer_id );
@@ -271,12 +279,20 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
 /**
  * Clear selected answer from a question.
  *
- * @param  integere $question_id Question ID.
+ * @param  integer $question_id Question ID.
  * @return integer|false
  * @since  3.1.0
+ * @since  4.1.2 Insert activity to `ap_activity` table.
  */
 function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
+
+	// Log to activity table.
+	ap_activity_add( array(
+		'q_id'   => $question_id,
+		'a_id'   => $qameta->selected_id,
+		'action' => 'unselected',
+	) );
 
 	// Clear selected column from answer qameta.
 	ap_insert_qameta( $qameta->selected_id, [ 'selected' => 0, 'last_updated' => current_time( 'mysql' ) ] );
@@ -473,6 +489,7 @@ function ap_update_post_activities( $post_id, $activities = array() ) {
  * @param  boolean|string $date    				Activity date in mysql timestamp format.
  * @return boolean
  * @since  2.4.7
+ * @deprecated 4.1.2  Use @see ap_activity_add(). Activities are inserted in `ap_activity` table.
  */
 function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_question = false, $date = false ) {
 	if ( empty( $post ) ) {

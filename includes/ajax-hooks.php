@@ -119,6 +119,7 @@ class AnsPress_Ajax {
 	 * Ajax action for selecting a best answer.
 	 *
 	 * @since 2.0.0
+	 * @since 4.1.2 Log activities to `ap_activity` table and removed @see ap_update_post_activity_meta().
 	 */
 	public static function toggle_best_answer() {
 		$answer_id = (int) ap_sanitize_unslash( 'answer_id', 'r' );
@@ -131,7 +132,16 @@ class AnsPress_Ajax {
 
 		// Unselect best answer if already selected.
 		if ( ap_have_answer_selected( $_post->post_parent ) ) {
-			ap_unselect_answer( $answer_id );
+			ap_unset_selected_answer( $_post->post_parent );
+
+			/**
+			 * Action triggered after an answer is un-selected as best.
+			 *
+			 * @param WP_Post $_post WordPress post object.
+			 * @since unknown
+			 */
+			do_action( 'ap_unselect_answer', $_post );
+
 			ap_ajax_json( array(
 				'success'    => true,
 				'action'     => 'unselected',
@@ -147,12 +157,6 @@ class AnsPress_Ajax {
 				'snackbar' => [ 'message' => __( 'This answer cannot be selected as best, update status to select as best answer.', 'anspress-question-answer' ) ],
 			] );
 		}
-
-		// Add question activity meta.
-		ap_update_post_activity_meta( $_post->post_parent, 'answer_selected', get_current_user_id() );
-
-		// Add answer activity meta.
-		ap_update_post_activity_meta( $_post->ID, 'best_answer', get_current_user_id() );
 
 		/**
 		 * Trigger right after selecting an answer.
@@ -209,7 +213,7 @@ class AnsPress_Ajax {
 				'action' 		   => [ 'active' => false, 'label' => __( 'Delete', 'anspress-question-answer' ), 'title' => __( 'Delete this post (can be restored again)', 'anspress-question-answer' ) ],
 				'snackbar' 		 => [ 'message' => sprintf( __( '%s is restored', 'anspress-question-answer' ), $post_type ) ],
 				'newStatus'    => 'publish',
-				'postMessage' => ap_get_post_status_message( $post_id ),
+				'postmessage' => ap_get_post_status_message( $post_id ),
 			) );
 		}
 
@@ -233,7 +237,7 @@ class AnsPress_Ajax {
 			'action' 		   => [ 'active' => true, 'label' => __( 'Undelete', 'anspress-question-answer' ), 'title' => __( 'Restore this post', 'anspress-question-answer' ) ],
 			'snackbar' 		 => [ 'message' => sprintf( __( '%s is trashed', 'anspress-question-answer' ), $post_type ) ],
 			'newStatus'    => 'trash',
-			'postMessage' => ap_get_post_status_message( $post_id ),
+			'postmessage' => ap_get_post_status_message( $post_id ),
 		) );
 	}
 
@@ -291,6 +295,9 @@ class AnsPress_Ajax {
 
 	/**
 	 * Handle toggle featured question ajax callback
+	 *
+	 * @since unknown
+	 * @since 4.1.2 Insert to activity table when question is featured.
 	 */
 	public static function toggle_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
@@ -323,6 +330,13 @@ class AnsPress_Ajax {
 		}
 
 		ap_set_featured_question( $post->ID );
+
+		// Update activity.
+		ap_activity_add( array(
+			'q_id'   => $post->ID,
+			'action' => 'featured',
+		) );
+
 		ap_ajax_json( array(
 			'success'  => true,
 			'action'   => [ 'active' => true, 'title' => __( 'Unmark this question as featured', 'anspress-question-answer' ), 'label' => __( 'Unfeature', 'anspress-question-answer' ) ],
@@ -358,6 +372,9 @@ class AnsPress_Ajax {
 
 	/**
 	 * Close question callback.
+	 *
+	 * @since unknown
+	 * @since 4.1.2 Add activity when question is closed.
 	 */
 	public static function close_question() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'p' );
@@ -377,11 +394,19 @@ class AnsPress_Ajax {
 
 		$message = 1 === $toggle ? __( 'Question closed', 'anspress-question-answer' ) : __( 'Question is opened', 'anspress-question-answer' );
 
+		// Log in activity table.
+		if ( 1 === $toggle ) {
+			ap_activity_add( array(
+				'q_id'   => $_post->ID,
+				'action' => 'closed_q',
+			) );
+		}
+
 		$results = array(
 			'success'     => true,
 			'action'      => [ 'label' => $close_label, 'title' => $close_title ],
 			'snackbar'    => [ 'message' => $message ],
-			'postMessage' => ap_get_post_status_message( $post_id ),
+			'postmessage' => ap_get_post_status_message( $post_id ),
 		);
 
 		ap_ajax_json( $results );

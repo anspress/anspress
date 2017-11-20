@@ -178,6 +178,13 @@ window.AnsPress = _.extend({
 		document.body.scrollTop = scrollV;
 		document.body.scrollLeft = scrollH;
 
+	},
+	loadCSS: function(href){
+		var cssLink = document.createElement('link');
+		cssLink.rel = 'stylesheet';
+		cssLink.href = href;
+		var head = document.getElementsByTagName('head')[0];
+		head.parentNode.insertBefore(cssLink, head);
 	}
 }, Backbone.Events);
 
@@ -949,6 +956,11 @@ jQuery(document).ready(function($){
 				AnsPress.hideModal($name);
 			}
 		}
+	});
+
+	AnsPress.on( 'loadedMoreActivities', function(data, e){
+		$(data.html).insertAfter($('.ap-activities:last-child'));
+		$(e).closest('.ap-activity-item').remove();
 	});
 
 });
