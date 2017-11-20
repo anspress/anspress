@@ -89,9 +89,9 @@ class Field {
 	/**
 	 * Child fields.
 	 *
-	 * @var array
+	 * @var object
 	 */
-	public $child = [];
+	public $child;
 
 	/**
 	 * Is editing.

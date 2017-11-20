@@ -302,7 +302,7 @@ function ap_unset_selected_answer( $question_id ) {
 /**
  * Update views count of qameta.
  *
- * @param  integer       $post_id Question ID.
+ * @param  integer|false $post_id Question ID.
  * @param  integer|false $views   Passing view will replace existing value else increment existing.
  * @return integer
  * @since  3.1.0

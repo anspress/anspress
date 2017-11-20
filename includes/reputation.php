@@ -408,6 +408,7 @@ class AnsPress_Reputation_Query {
 	var $events;
 	var $ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [] ];
 	var $pos = [];
+	var $args = [];
 
 	/**
 	 * Initialize the class.

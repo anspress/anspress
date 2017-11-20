@@ -40,9 +40,9 @@ class AnsPress_Prod_Updater {
 	 * @uses plugin_basename()
 	 * @uses hook()
 	 *
-	 * @param string $_plugin_file Path to the plugin file.
-	 * @param array  $_api_data    Optional data to send with API calls.
-	 * @param boolean  $is_plugin  Is plugin.
+	 * @param string     $_plugin_file Path to the plugin file.
+	 * @param array|null $_api_data    Optional data to send with API calls.
+	 * @param boolean    $is_plugin    Is plugin.
 	 */
 	public function __construct( $_plugin_file, $_api_data = null, $is_plugin = true ) {
 
@@ -125,7 +125,7 @@ class AnsPress_Prod_Updater {
 	 * @uses api_request()
 	 *
 	 * @param array $_transient_data Update array build by WordPress.
-	 * @return stdClass Modified update array with custom plugin data.
+	 * @return array|object Modified update array with custom plugin data.
 	 */
 	function check_update( $_transient_data ) {
 		if ( $this->update_checked ) {

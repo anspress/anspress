@@ -40,6 +40,12 @@ class Upload extends Field {
 	public $multiple_upload = false;
 
 	public $uploaded = false;
+
+	/**
+	 * The uploaded files.
+	 *
+	 * @var boolean|array
+	 */
 	public $uploaded_files = false;
 
 	/**
