@@ -423,7 +423,9 @@ function ap_form_allowed_tags() {
 		'strong'     => array(
 			'style'    => $allowed_style,
 			),
-		'pre'        => array(),
+		'pre'        => array(
+			'class' => [],
+		),
 		'code'       => array(),
 		'blockquote' => array(),
 		'img'        => array(

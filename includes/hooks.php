@@ -504,7 +504,7 @@ class AnsPress_Hooks {
 	public static function mce_plugins( $plugin_array ) {
 		$plugin_array[ 'anspress' ] = ANSPRESS_URL . 'assets/js/min/tinymce-plugin.min.js';
 		return $plugin_array;
- 	}
+	}
 
 	/**
 	 * Filter post so that anonymous author should not be replaced

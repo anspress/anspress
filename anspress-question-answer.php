@@ -605,6 +605,8 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			$tables[] 	= $wpdb->prefix . 'ap_views';
 			$tables[] 	= $wpdb->prefix . 'ap_qameta';
+			$tables[] 	= $wpdb->prefix . 'ap_activity';
+			$tables[] 	= $wpdb->prefix . 'ap_votes';
 			return $tables;
 		}
 
