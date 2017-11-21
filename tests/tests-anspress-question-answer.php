@@ -132,6 +132,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/reputation.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/tag.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/syntaxhighlighter.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . 'readme.txt' );
 
@@ -154,6 +155,9 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/question-list.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/search-form.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/single-question.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activities.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activity-ref-content.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activity.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/question.png' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/answer.png' );
@@ -166,6 +170,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/common.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/main.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-plugin.min.js' );
+		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-syntax.min.js' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 	}
