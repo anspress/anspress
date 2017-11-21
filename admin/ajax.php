@@ -19,7 +19,6 @@ if ( ! defined( 'WPINC' ) ) {
  * administrative side of the WordPress site.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
  */
 class AnsPress_Admin_Ajax {
 	/**

@@ -173,6 +173,26 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-syntax.min.js' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/ajax.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/includes/ajax-hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/about.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/addons.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/dashboard.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/emails.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/licenses.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/options.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/recount.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/reputation-events.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/roles.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/select_question.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/sidebar.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/uninstall.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/anspress-admin.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/class-list-table-hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/functions.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/license.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/meta-box.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/updater.php' );
 	}
 
 	/**
@@ -225,5 +245,51 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertTrue( anspress()->form_exists( 'form_sample' ) );
 		$this->assertTrue( anspress()->form_exists( 'sample' ) );
 		$this->assertFalse( anspress()->form_exists( 'undefinedform' ) );
+	}
+
+	/**
+	 * @covers AnsPress::ajax_hooks
+	 */
+	public function test_ajax_hooks() {
+		// Check if ajax hooks exists if not doing ajax.
+		$this->assertFalse( has_action( 'wp_ajax_ap_delete_flag', [ 'AnsPress_Admin_Ajax', 'ap_delete_flag' ] ) );
+		$this->assertFalse( has_action( 'ap_ajax_toggle_best_answer', [ 'AnsPress_Ajax', 'toggle_best_answer' ] ) );
+	}
+
+	/**
+	 * @covers AnsPress::site_include
+	 */
+	public function test_site_include() {
+		$this->assertNotEquals( false, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
+		$this->assertInstanceOf( 'AnsPress\Activity_Helper', anspress()->activity );
+
+		// Enable addons to check if they are loading properly.
+		ap_activate_addon( 'free/avatar.php' );
+		ap_activate_addon( 'free/buddypress.php' );
+		ap_activate_addon( 'free/category.php' );
+		ap_activate_addon( 'free/email.php' );
+		ap_activate_addon( 'free/notification.php' );
+		ap_activate_addon( 'free/profile.php' );
+		ap_activate_addon( 'free/recaptcha.php' );
+		ap_activate_addon( 'free/reputation.php' );
+		ap_activate_addon( 'free/syntaxhighlighter.php' );
+		ap_activate_addon( 'free/tag.php' );
+
+		foreach ( (array) ap_get_addons() as $data ) {
+			if ( $data['active'] && file_exists( $data['path'] ) ) {
+				require_once( $data['path'] );
+			}
+		}
+
+		$this->assertTrue( class_exists( 'AnsPress_Avatar_Hook' ) );
+		$this->assertTrue( class_exists( 'AnsPress_BP_Hooks' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Category' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Email_Hooks' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Notification_Hook' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Profile_Hooks' ) );
+		$this->assertTrue( class_exists( 'AnsPress_reCcaptcha' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Reputation_Hooks' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Syntax_Highlighter' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Tag' ) );
 	}
 }

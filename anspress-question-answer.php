@@ -339,7 +339,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
 
 				AnsPress_Ajax::init();
-				AnsPress_Admin_Ajax::init( );
+				AnsPress_Admin_Ajax::init();
 			}
 		}
 
@@ -350,7 +350,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public function site_include() {
 			\AnsPress_Hooks::init();
-			AnsPress\Activity_Helper::get_instance();
+			$this->activity = AnsPress\Activity_Helper::get_instance();
 			\AnsPress_Views::init();
 
 			foreach ( (array) ap_get_addons() as $data ) {
@@ -524,7 +524,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 */
 		public static function load_anspress() {
 			/*
-			 * ACTION: before_loading_anspress
 			 * Action before loading AnsPress.
 			 * @since 2.4.7
 			 */
