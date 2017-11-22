@@ -97,7 +97,9 @@ class AP_QA_Query_Hooks {
 
 			// Keep best answer to top.
 			if ( $answer_query && ! $args->query['ignore_selected_answer'] ) {
-				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
+				if ( ! isset( $args->query['paged'] ) || $args->query['paged'] < 2 ) {
+					$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
+				}
 			}
 
 			// Allow filtering sql query.

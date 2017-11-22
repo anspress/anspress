@@ -35,11 +35,11 @@ class Answers_Query extends WP_Query {
 	 * @param array $args Query arguments.
 	 * @access public
 	 * @since  2.0
+	 * @since  4.1.2 Fixed: pagination issue.
 	 */
 	public function __construct( $args = array() ) {
 		global $answers;
-		$paged = (int) ap_isset_post_value( 'ap_paged', 1 );
-
+		$paged = (int) max( 1, get_query_var( 'ap_paged', 1 ) );
 		$defaults = array(
 			'question_id'              => get_question_id(),
 			'ap_query'      				   => true,
@@ -298,7 +298,9 @@ function ap_answer_user_can_view() {
 }
 
 /**
- * output answers pagination
+ * Output answers pagination. Should be used inside a loop.
+ *
+ * @return void.
  */
 function ap_answers_the_pagination() {
 	if ( get_query_var( 'answer_id' ) ) {
@@ -306,7 +308,7 @@ function ap_answers_the_pagination() {
 	} else {
 		global $answers;
 		$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
-		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) . '/page/%#%/' );
+		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) . 'page/%#%/' );
 	}
 }
 
