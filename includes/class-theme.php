@@ -322,11 +322,12 @@ class AnsPress_Theme {
 	 * @return string
 	 *
 	 * @since 4.1.0
+	 * @since 4.1.2 Do not replace content once question is loaded.
 	 */
 	public static function the_content_single_question( $content ) {
-		global $ap_shortcode_loaded, $post;
+		global $ap_shortcode_loaded, $post, $question_rendered;
 
-		if ( ! $post ) {
+		if ( ! $post || true === $question_rendered ) {
 			return $content;
 		}
 
