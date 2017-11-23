@@ -155,7 +155,7 @@ class AP_QA_Query_Hooks {
 					$posts[ $k ] = $p;
 				}
 			}
-		}
+		} // End foreach().
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();
@@ -197,6 +197,12 @@ class AP_QA_Query_Hooks {
 		}
 
 		return $posts;
+	}
+
+	public static function pre_get_posts( $query ) {
+		if ( $query->is_single() && $query->is_main_query() && 'question' === get_query_var( 'post_type' ) ) {
+			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post' ] );
+		}
 	}
 
 }

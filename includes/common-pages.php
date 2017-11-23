@@ -110,6 +110,7 @@ class AnsPress_Common_Pages {
 
 		// Check if user have permission.
 		if ( false !== $msg ) {
+			status_header( 403 );
 			echo '<div class="ap-no-permission">' . $msg . '</div>';
 			$question_rendered = true;
 			return;
