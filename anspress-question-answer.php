@@ -556,6 +556,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 * @static
 		 *
 		 * @param  string $plugin Plugin base name.
+		 * @deprecated 4.1.3
 		 */
 		public static function activation_redirect( $plugin ) {
 			if ( plugin_basename( __FILE__ ) === $plugin ) {
@@ -628,7 +629,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 add_filter( 'anspress_load_ext', [ 'AnsPress_Init', 'prevent_ext' ], 10, 2 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
-add_action( 'activated_plugin', [ 'AnsPress_Init', 'activation_redirect' ] );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
 
