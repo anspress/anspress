@@ -291,5 +291,23 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		$this->assertTrue( class_exists( 'AnsPress_Reputation_Hooks' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Syntax_Highlighter' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Tag' ) );
+
+		ap_deactivate_addon( 'free/avatar.php' );
+		ap_deactivate_addon( 'free/buddypress.php' );
+		ap_deactivate_addon( 'free/category.php' );
+		ap_deactivate_addon( 'free/email.php' );
+		ap_deactivate_addon( 'free/notification.php' );
+		ap_deactivate_addon( 'free/profile.php' );
+		ap_deactivate_addon( 'free/recaptcha.php' );
+		ap_deactivate_addon( 'free/reputation.php' );
+		ap_deactivate_addon( 'free/syntaxhighlighter.php' );
+		ap_deactivate_addon( 'free/tag.php' );
+	}
+
+	/**
+	 * @covers anspress
+	 */
+	public function test_anspress() {
+		$this->assertInstanceOf( 'AnsPress', anspress() );
 	}
 }

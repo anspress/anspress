@@ -86,7 +86,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
-			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
+			//anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );
