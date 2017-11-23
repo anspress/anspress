@@ -156,9 +156,6 @@ class AP_QA_Query_Hooks {
 				}
 			}
 
-			if ( $instance->is_main_query() && $instance->is_single() && 'question' === get_query_var( 'post_type' ) ) {
-				$posts[ $k ]->post_content = '[anspress]';
-			}
 		} // End foreach().
 
 
