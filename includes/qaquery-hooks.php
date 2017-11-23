@@ -155,7 +155,13 @@ class AP_QA_Query_Hooks {
 					$posts[ $k ] = $p;
 				}
 			}
+
+			if ( $instance->is_main_query() && $instance->is_single() && 'question' === get_query_var( 'post_type' ) ) {
+				$posts[ $k ]->post_content = '[anspress]';
+			}
 		} // End foreach().
+
+
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();
@@ -190,13 +196,10 @@ class AP_QA_Query_Hooks {
 	 * @since 4.1.0
 	 */
 	public static function modify_main_posts( $posts, $query ) {
-		if ( $query->is_main_query() && ( $query->is_search() || $query->is_single() ) && 'question' === get_query_var( 'post_type' ) ) {
+		if ( $query->is_main_query() && $query->is_search() && 'question' === get_query_var( 'post_type' ) ) {
 			$query->found_posts = 1;
 			$query->max_num_pages = 1;
-
-			$_page = get_page( ap_opt( 'base_page' ) );
-			$_page->post_content = '[anspress]';
-			$posts = [ $_page ];
+			$posts = [ get_page( ap_opt( 'base_page' ) ) ];
 		}
 
 		return $posts;
