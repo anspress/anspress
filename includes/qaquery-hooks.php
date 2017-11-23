@@ -97,9 +97,7 @@ class AP_QA_Query_Hooks {
 
 			// Keep best answer to top.
 			if ( $answer_query && ! $args->query['ignore_selected_answer'] ) {
-				if ( ! isset( $args->query['paged'] ) || $args->query['paged'] < 2 ) {
-					$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
-				}
+				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
 			}
 
 			// Allow filtering sql query.
@@ -148,7 +146,11 @@ class AP_QA_Query_Hooks {
 
 				// Unset if user cannot read.
 				if ( ! ap_user_can_read_post( $p, false, $p->post_type ) ) {
-					unset( $posts[ $k ] );
+					if ( $instance->is_single() && $instance->is_main_query() ) {
+						$posts[ $k ] = self::imaginary_post( $p );
+					} else {
+						unset( $posts[ $k ] );
+					}
 				} else {
 					$posts[ $k ] = $p;
 				}
@@ -160,6 +162,23 @@ class AP_QA_Query_Hooks {
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * An imaginary post.
+	 *
+	 * @return object
+	 */
+	public static function imaginary_post( $p ) {
+		$_post = array(
+			'ID'           => 0,
+			'post_title'   => __( 'No permission', 'anspress-question-answer' ),
+			'post_content' => __( 'You do not have permission to read this question.', 'anspress-question-answer' ),
+			'post_status'  => $p->post_status,
+			'post_type'    => 'question',
+		);
+
+		return (object) $_post;
 	}
 
 	/**
@@ -179,4 +198,5 @@ class AP_QA_Query_Hooks {
 
 		return $posts;
 	}
+
 }

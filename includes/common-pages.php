@@ -106,7 +106,6 @@ class AnsPress_Common_Pages {
 	public static function question_page() {
 		global $question_rendered, $post;
 		$question_rendered = false;
-
 		$msg = self::question_permission_msg( $post );
 
 		// Check if user have permission.
