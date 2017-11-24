@@ -64,6 +64,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
 			anspress()->add_filter( 'posts_pre_query', 'AP_QA_Query_Hooks', 'modify_main_posts', 999999, 2 );
 			anspress()->add_filter( 'pre_get_posts', 'AP_QA_Query_Hooks', 'pre_get_posts' );
+			anspress()->add_action( 'loop_start', 'AP_QA_Query_Hooks', 'loop_start' );
 
 			// Theme	hooks.
 			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
@@ -86,7 +87,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
-			anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999999999999999 );
+			//anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999999999999999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );

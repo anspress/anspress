@@ -119,6 +119,8 @@ class AP_QA_Query_Hooks {
 	 * @since 4.1.0 Fixed: qameta fields are not appending properly.
 	 */
 	public static function posts_results( $posts, $instance ) {
+		global $question_rendered;
+
 		foreach ( (array) $posts as $k => $p ) {
 			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
@@ -157,8 +159,6 @@ class AP_QA_Query_Hooks {
 			}
 
 		} // End foreach().
-
-
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();
@@ -202,10 +202,28 @@ class AP_QA_Query_Hooks {
 		return $posts;
 	}
 
+	/**
+	 * Include all post status in single question so that we can show custom messages.
+	 *
+	 * @param WP_Query $query Query loop.
+	 * @return void
+	 */
 	public static function pre_get_posts( $query ) {
 		if ( $query->is_single() && $query->is_main_query() && 'question' === get_query_var( 'post_type' ) ) {
 			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post' ] );
 		}
 	}
 
+	/**
+	 * Make sure single question loop render AnsPress shortcode.
+	 *
+	 * @param WP_Query $query Query loop.
+	 * @return void
+	 * @since 4.1.3
+	 */
+	public static function loop_start( $query ) {
+		if ( $query->is_main_query() && $query->is_single() && 'question' === get_query_var( 'post_type' ) ) {
+			$query->posts[0]->post_content = '[anspress]';
+		}
+	}
 }
