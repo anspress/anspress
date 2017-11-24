@@ -30,7 +30,7 @@
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>
 
-			<div ap="question" apId="<?php the_ID(); ?>">
+			<div ap="question" apid="<?php the_ID(); ?>">
 				<div id="question" role="main" class="ap-content">
 					<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 					<?php

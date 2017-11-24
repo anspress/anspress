@@ -12,7 +12,7 @@
 
 if ( ap_user_can_read_answer() ) :
 ?>
-<div id="post-<?php the_ID(); ?>" <?php post_class() ?> apId="<?php the_ID(); ?>" ap="answer">
+<div id="post-<?php the_ID(); ?>" <?php post_class() ?> apid="<?php the_ID(); ?>" ap="answer">
 	<div class="ap-content" itemprop="suggestedAnswer<?php echo ap_is_selected() ? ' acceptedAnswer' : ''; ?>" itemscope itemtype="https://schema.org/Answer">
 		<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>
 		<div class="ap-avatar">
