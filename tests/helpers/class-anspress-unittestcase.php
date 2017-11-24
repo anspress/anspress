@@ -18,4 +18,8 @@ class AnsPress_UnitTestCase extends WP_UnitTestCase {
 		wp_set_current_user( $user_id );
 		$_POST = array_merge( $_POST, $post );
 	}
+
+	protected function _go_to_question( $id ) {
+		$this->go_to( site_url( "?post_type=question&p=$id" ) );
+	}
 }

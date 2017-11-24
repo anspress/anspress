@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-11-07 15:12:08+00:00\n"
+"POT-Creation-Date: 2017-11-24 06:43:33+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:21+0530\n"
 "Last-Translator: Kenny Ma <kenynma603@gmail.com>\n"
 "Language-Team: \n"
@@ -23,61 +23,56 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: addons/free/avatar.php:82
+#: addons/free/avatar.php:88
 #, fuzzy
 msgid "Save add-on options"
 msgstr "储存选项"
 
-#: addons/free/avatar.php:85
+#: addons/free/avatar.php:91
 msgid "Clear Cache"
 msgstr ""
 
-#: addons/free/avatar.php:86
+#: addons/free/avatar.php:92
 #, fuzzy
 msgid "Clear avatar cache"
 msgstr "回答的头像大小"
 
-#: addons/free/avatar.php:89
+#: addons/free/avatar.php:95
 msgid "Font family"
 msgstr ""
 
-#: addons/free/avatar.php:90
+#: addons/free/avatar.php:96
 msgid "Select font family for avatar letters."
 msgstr ""
 
-#: addons/free/avatar.php:102
+#: addons/free/avatar.php:108
 #, fuzzy
 msgid "Force avatar"
 msgstr "上传大头贴"
 
-#: addons/free/avatar.php:103
+#: addons/free/avatar.php:109
 msgid ""
 "Show AnsPress avatars by default instead of gravatar fallback. Useful in "
 "localhost development."
 msgstr ""
-
-#: addons/free/avatar.php:118
-#, fuzzy
-msgid "Dynamic Avatar"
-msgstr "大头贴"
 
 #: addons/free/buddypress.php:99
 msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:107 addons/free/buddypress.php:188
-#: addons/free/profile.php:39 addons/free/profile.php:150
+#: addons/free/profile.php:39 addons/free/profile.php:151
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:2104 includes/options.php:102
+#: includes/functions.php:2128 includes/options.php:102
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
 #: widgets/questions.php:45 widgets/questions.php:87
 msgid "Questions"
 msgstr "问题讨论"
 
 #: addons/free/buddypress.php:108 addons/free/buddypress.php:236
-#: addons/free/profile.php:40 addons/free/profile.php:157
+#: addons/free/profile.php:40 addons/free/profile.php:158
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
-#: includes/post-types.php:160 includes/theme.php:374
+#: includes/post-types.php:160 includes/theme.php:370
 #: widgets/question_stats.php:49 widgets/questions.php:119
 msgid "Answers"
 msgstr "回答数"
@@ -97,7 +92,7 @@ msgid "Load more answers"
 msgstr "对这个回答扣票"
 
 #: addons/free/buddypress.php:270 addons/free/buddypress.php:271
-#: admin/meta-box.php:41 includes/ajax-hooks.php:197 includes/comments.php:71
+#: admin/meta-box.php:41 includes/ajax-hooks.php:201 includes/comments.php:70
 #: includes/common-pages.php:21 includes/post-status.php:92
 #: includes/post-types.php:106
 msgid "Question"
@@ -113,7 +108,7 @@ msgstr "%1$s 发了一个新<a href=\"AP_CPT_LINK\">问题</a>, 在%3$s"
 
 #: addons/free/buddypress.php:280 addons/free/buddypress.php:281
 #: addons/free/buddypress.php:292 admin/views/dashboard.php:34
-#: includes/ajax-hooks.php:197 includes/comments.php:71
+#: includes/ajax-hooks.php:201 includes/comments.php:70
 #: includes/post-status.php:92 includes/post-types.php:183
 msgid "Answer"
 msgstr "回答"
@@ -139,12 +134,12 @@ msgid "%1$s answered on - %2$s"
 msgstr "%1$s个回答在 - %2$s"
 
 #: addons/free/buddypress.php:387 addons/free/notification/query.php:314
-#: includes/class-form-hooks.php:681 includes/post-types.php:105
+#: includes/class-form-hooks.php:690 includes/post-types.php:105
 msgid "question"
 msgstr "提问"
 
 #: addons/free/buddypress.php:387 addons/free/notification/query.php:316
-#: includes/class-form-hooks.php:681 includes/post-types.php:182
+#: includes/class-form-hooks.php:690 includes/post-types.php:182
 msgid "answer"
 msgstr "回答"
 
@@ -177,7 +172,7 @@ msgstr ""
 
 #: addons/free/category/widget.php:81 addons/free/category.php:39
 #: addons/free/category.php:167 addons/free/category.php:462
-#: addons/free/category.php:474 includes/functions.php:2122
+#: addons/free/category.php:474 includes/functions.php:2146
 #: includes/taxo.php:29
 #, fuzzy
 msgid "Categories"
@@ -227,7 +222,7 @@ msgid "ID"
 msgstr ""
 
 #: addons/free/category/widget.php:132 addons/free/category.php:232
-#: addons/free/category.php:245 addons/free/tag.php:585 addons/free/tag.php:635
+#: addons/free/category.php:245 addons/free/tag.php:586 addons/free/tag.php:636
 #: includes/deprecated.php:291 includes/deprecated.php:434
 #: includes/deprecated.php:875
 msgid "Name"
@@ -446,11 +441,11 @@ msgstr "讨论板 ID:"
 msgid "Question category feed"
 msgstr "问题馈送"
 
-#: addons/free/category.php:821 addons/free/tag.php:616
+#: addons/free/category.php:821 addons/free/tag.php:617
 msgid ", %d+"
 msgstr ""
 
-#: addons/free/email.php:136 addons/free/email.php:1018
+#: addons/free/email.php:136 addons/free/email.php:1013
 msgid "An answer is trashed by {user}"
 msgstr ""
 
@@ -600,101 +595,101 @@ msgstr ""
 msgid "Allowed tags"
 msgstr ""
 
-#: addons/free/email.php:675
+#: addons/free/email.php:673
 msgid "Email Templates"
 msgstr ""
 
-#: addons/free/email.php:700 includes/class-form-hooks.php:303
+#: addons/free/email.php:698 includes/class-form-hooks.php:303
 #: includes/class-form-hooks.php:468 includes/class-form-hooks.php:621
 msgid "Trying to cheat?!"
 msgstr ""
 
-#: addons/free/email.php:725 includes/class-form-hooks.php:505
+#: addons/free/email.php:723 includes/class-form-hooks.php:505
 #, fuzzy
 msgid "Unable to post answer."
 msgstr "关闭回应功能"
 
 #. Translators: placeholder contain error message.
-#: addons/free/email.php:745
+#: addons/free/email.php:743
 #, fuzzy
 msgid "Unable to save template. Error: %s"
 msgstr "新提问的状态"
 
-#: addons/free/email.php:766
+#: addons/free/email.php:764
 #, fuzzy
 msgid "Post updated successfully"
 msgstr "发文状态修改成功"
 
-#: addons/free/email.php:850
+#: addons/free/email.php:848
 #, fuzzy
 msgid "{asker} have posted a new question"
 msgstr "问题得到投票"
 
-#: addons/free/email.php:853
+#: addons/free/email.php:851
 #, fuzzy
 msgid "A new question is posted by"
 msgstr "尚无提问"
 
-#: addons/free/email.php:874
+#: addons/free/email.php:872
 #, fuzzy
 msgid "New answer posted by {answerer}"
 msgstr "尚无回答"
 
-#: addons/free/email.php:877
+#: addons/free/email.php:875
 #, fuzzy
 msgid "A new answer is posted by"
 msgstr "搜寻问题与回答"
 
-#: addons/free/email.php:898
+#: addons/free/email.php:896
 #, fuzzy
 msgid "Your answer is selected as best!"
 msgstr "当使用者的\"回答\"被选为\"最佳\""
 
-#: addons/free/email.php:901
+#: addons/free/email.php:899
 #, fuzzy
 msgid "Your answer is selected as best by "
 msgstr "当使用者的\"回答\"被选为\"最佳\""
 
-#: addons/free/email.php:922
+#: addons/free/email.php:920
 msgid "New comment by {commenter}"
 msgstr ""
 
-#: addons/free/email.php:925
+#: addons/free/email.php:923
 #, fuzzy
 msgid "A new comment posted by"
 msgstr "一个回应"
 
-#: addons/free/email.php:946
+#: addons/free/email.php:944
 #, fuzzy
 msgid "A question is edited by {editor}"
 msgstr "尚无提问"
 
-#: addons/free/email.php:949
+#: addons/free/email.php:947
 #, fuzzy
 msgid "A question is edited by"
 msgstr "尚无提问"
 
-#: addons/free/email.php:970
+#: addons/free/email.php:968
 #, fuzzy
 msgid "A answer is edited by {editor}"
 msgstr "尚无回答"
 
-#: addons/free/email.php:973
+#: addons/free/email.php:971
 #, fuzzy
 msgid "A answer is edited by"
 msgstr "尚无回答"
 
-#: addons/free/email.php:994
+#: addons/free/email.php:992
 #, fuzzy
 msgid "A question is trashed by {user}"
 msgstr "问题被问了 %s"
 
-#: addons/free/email.php:997
+#: addons/free/email.php:995
 #, fuzzy
 msgid "A question is trashed by"
 msgstr "问题被问了 %s"
 
-#: addons/free/email.php:1021
+#: addons/free/email.php:1016
 #, fuzzy
 msgid "An answer is trashed by"
 msgstr "尚无回答"
@@ -709,7 +704,7 @@ msgid "post"
 msgstr "编辑贴文"
 
 #: addons/free/notification.php:43 addons/free/notification.php:49
-#: addons/free/notification.php:179 templates/functions.php:45
+#: addons/free/notification.php:198 templates/functions.php:45
 msgid "Notifications"
 msgstr "通知"
 
@@ -733,49 +728,49 @@ msgstr "通知"
 msgid "Custom slug for user profile notifications page"
 msgstr "删除通知"
 
-#: addons/free/notification.php:137
+#: addons/free/notification.php:156
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "在这个提问中你的回答已被选为最佳回答"
 
-#: addons/free/notification.php:142
+#: addons/free/notification.php:161
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "%1$s回应了你的 %3$s - %2$s"
 
-#: addons/free/notification.php:147
+#: addons/free/notification.php:166
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:154
+#: addons/free/notification.php:173
 #, fuzzy
 msgid "down voted your %cpt%"
 msgstr "%s扣票 %s"
 
-#: addons/free/notification.php:159
+#: addons/free/notification.php:178
 #, fuzzy
 msgid "selected your answer"
 msgstr "选取回答"
 
-#: addons/free/notification.php:164
+#: addons/free/notification.php:183
 #, fuzzy
 msgid "You have earned %points% points"
 msgstr "你已经检举这个文章了"
 
-#: addons/free/notification.php:169
+#: addons/free/notification.php:188
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:202
+#: addons/free/notification.php:221
 #, fuzzy
 msgid "You do not have permission to view this page"
 msgstr "你没有权限存取这个页面"
 
-#: addons/free/notification.php:420
+#: addons/free/notification.php:439
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:430
+#: addons/free/notification.php:449
 #, fuzzy
 msgid "Successfully updated all notifications"
 msgstr "成功建立标籤"
@@ -823,7 +818,7 @@ msgstr "每页几个回答"
 msgid "Custom slug for user profile answers page"
 msgstr "输入使用者页面代称"
 
-#: addons/free/profile.php:267
+#: addons/free/profile.php:282
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
@@ -874,8 +869,8 @@ msgstr ""
 msgid "Prove that you are a human"
 msgstr ""
 
-#: addons/free/reputation.php:37 addons/free/reputation.php:410
-#: addons/free/reputation.php:460 addons/free/reputation.php:495
+#: addons/free/reputation.php:37 addons/free/reputation.php:411
+#: addons/free/reputation.php:461 addons/free/reputation.php:496
 #: admin/views/recount.php:122
 #, fuzzy
 msgid "Reputations"
@@ -1057,23 +1052,23 @@ msgstr "关闭扣票功能"
 msgid "Successfully updated reputation points!"
 msgstr "成功建立标籤"
 
-#: addons/free/reputation.php:379
+#: addons/free/reputation.php:380
 msgid "Reputation"
 msgstr "声望"
 
-#: addons/free/reputation.php:401
+#: addons/free/reputation.php:402
 #, fuzzy
 msgid "%s Reputation"
 msgstr "% 的声誉"
 
-#: addons/free/tag.php:34 addons/free/tag.php:538
+#: addons/free/tag.php:34 addons/free/tag.php:539
 #: admin/class-list-table-hooks.php:192
 msgid "Tag"
 msgstr "标籤"
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
-#: addons/free/tag.php:353 addons/free/tag.php:436 addons/free/tag.php:446
-#: includes/functions.php:2128
+#: addons/free/tag.php:353 addons/free/tag.php:437 addons/free/tag.php:447
+#: includes/functions.php:2152
 msgid "Tags"
 msgstr "标籤"
 
@@ -1183,27 +1178,27 @@ msgid ""
 "maximum %2$d tags."
 msgstr ""
 
-#: addons/free/tag.php:546
+#: addons/free/tag.php:547
 #, fuzzy
 msgid "Order"
 msgstr "排序:"
 
-#: addons/free/tag.php:583 addons/free/tag.php:633 includes/deprecated.php:873
+#: addons/free/tag.php:584 addons/free/tag.php:634 includes/deprecated.php:873
 msgid "Popular"
 msgstr ""
 
-#: addons/free/tag.php:584 addons/free/tag.php:634 includes/deprecated.php:874
-#: includes/theme.php:367
+#: addons/free/tag.php:585 addons/free/tag.php:635 includes/deprecated.php:874
+#: includes/theme.php:363
 #, fuzzy
 msgid "New"
 msgstr "最新"
 
-#: admin/ajax.php:250
+#: admin/ajax.php:249
 #, fuzzy
 msgid "Sorry, you do not have permission!"
 msgstr "你没有权限进行这个操作"
 
-#: admin/ajax.php:264
+#: admin/ajax.php:263
 #, fuzzy
 msgid "Successfully enabled addon. Redirecting!"
 msgstr "成功建立标籤"
@@ -1226,7 +1221,7 @@ msgid "New Answer"
 msgstr "新的回答"
 
 #: admin/anspress-admin.php:203 admin/views/dashboard.php:352
-#: admin/views/options.php:132
+#: admin/views/options.php:131
 msgid "AnsPress Options"
 msgstr "AnsPress 选项"
 
@@ -1710,23 +1705,23 @@ msgid "Order question list by default using selected"
 msgstr ""
 
 #: admin/anspress-admin.php:1224 admin/anspress-admin.php:1290
-#: includes/theme.php:415 widgets/questions.php:118
+#: includes/theme.php:411 widgets/questions.php:118
 msgid "Voted"
 msgstr "投票"
 
 #: admin/anspress-admin.php:1225 admin/anspress-admin.php:1291
-#: admin/views/addons.php:93 includes/theme.php:366 includes/theme.php:411
+#: admin/views/addons.php:93 includes/theme.php:362 includes/theme.php:407
 #: widgets/question_stats.php:47 widgets/questions.php:116
 msgid "Active"
 msgstr "活跃"
 
 #: admin/anspress-admin.php:1226 admin/anspress-admin.php:1292
-#: includes/theme.php:418 widgets/questions.php:117
+#: includes/theme.php:414 widgets/questions.php:117
 msgid "Newest"
 msgstr "最新"
 
 #: admin/anspress-admin.php:1227 admin/anspress-admin.php:1293
-#: includes/theme.php:419
+#: includes/theme.php:415
 msgid "Oldest"
 msgstr "最旧"
 
@@ -1860,7 +1855,7 @@ msgstr "垃圾"
 msgid "Delete this item permanently"
 msgstr "永远删除这个项目"
 
-#: admin/class-list-table-hooks.php:137 includes/theme.php:305
+#: admin/class-list-table-hooks.php:137 includes/theme.php:301
 msgid "Delete Permanently"
 msgstr "永远删除"
 
@@ -1870,7 +1865,7 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr "预览 “%s”"
 
 #: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
-#: includes/comments.php:324 includes/theme.php:262
+#: includes/comments.php:329 includes/theme.php:258
 msgid "Edit"
 msgstr "编辑"
 
@@ -1904,7 +1899,7 @@ msgid "Title"
 msgstr "抬头"
 
 #: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:293
-#: includes/theme.php:274
+#: includes/theme.php:270
 msgid "Status"
 msgstr "状态"
 
@@ -1917,7 +1912,7 @@ msgid "Comments"
 msgstr "回应"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: admin/views/recount.php:54 includes/theme.php:371
+#: admin/views/recount.php:54 includes/theme.php:367
 #: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
 msgstr "投票"
@@ -1937,8 +1932,8 @@ msgstr "--"
 
 #: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
 #: admin/views/select_question.php:43 includes/ajax-hooks.php:103
-#: includes/ajax-hooks.php:105 includes/ajax-hooks.php:282
-#: includes/functions.php:1965 templates/answers.php:21
+#: includes/ajax-hooks.php:105 includes/ajax-hooks.php:286
+#: includes/functions.php:1989 templates/answers.php:21
 #: templates/buddypress/question-item.php:38
 #, fuzzy
 msgid "%d Answer"
@@ -2381,7 +2376,7 @@ msgstr "帐号资料"
 msgid "Uninstall"
 msgstr ""
 
-#: admin/views/options.php:192
+#: admin/views/options.php:191
 #, fuzzy
 msgid "AnsPress option updated successfully!"
 msgstr "提问已成功更新"
@@ -2532,7 +2527,7 @@ msgstr ""
 msgid "Re-count all users reputation points."
 msgstr "成功建立标籤"
 
-#: admin/views/recount.php:140 includes/theme.php:375
+#: admin/views/recount.php:140 includes/theme.php:371
 #: widgets/question_stats.php:48
 msgid "Views"
 msgstr "阅读"
@@ -2661,7 +2656,7 @@ msgid "Recently active questions"
 msgstr "相关问题"
 
 #: admin/views/select_question.php:42 includes/ajax-hooks.php:103
-#: includes/ajax-hooks.php:139 includes/theme.php:713
+#: includes/ajax-hooks.php:149 includes/theme.php:702
 msgid "Select"
 msgstr "选取"
 
@@ -2784,6 +2779,11 @@ msgid ""
 "version is %s. Please ask hosting provider to update your PHP version."
 msgstr ""
 
+#: includes/activity.php:59
+#, fuzzy
+msgid "Not AnsPress posts"
+msgstr "AnsPress 选项"
+
 #: includes/ajax-hooks.php:92
 #, fuzzy
 msgid "%d similar question found"
@@ -2799,182 +2799,182 @@ msgstr ""
 msgid "No related questions found."
 msgstr "找不到相关问题"
 
-#: includes/ajax-hooks.php:138
+#: includes/ajax-hooks.php:148
 msgid "Best answer is unselected for your question."
 msgstr "你的提问尚未选择最佳回答"
 
-#: includes/ajax-hooks.php:147
+#: includes/ajax-hooks.php:157
 msgid ""
 "This answer cannot be selected as best, update status to select as best "
 "answer."
 msgstr ""
 
-#: includes/ajax-hooks.php:175
+#: includes/ajax-hooks.php:179
 msgid "Best answer is selected for your question."
 msgstr "在这个提问中你的回答已被选为最佳回答"
 
-#: includes/ajax-hooks.php:176 includes/theme.php:721
+#: includes/ajax-hooks.php:180 includes/theme.php:710
 msgid "Unselect"
 msgstr "取消选择"
 
-#: includes/ajax-hooks.php:188
+#: includes/ajax-hooks.php:192
 #, fuzzy
 msgid "Unable to trash this post"
 msgstr "投一票"
 
-#: includes/ajax-hooks.php:209 includes/comments.php:332 includes/theme.php:288
+#: includes/ajax-hooks.php:213 includes/comments.php:337 includes/theme.php:284
 #: lib/form/class-group.php:81
 msgid "Delete"
 msgstr "删除"
 
-#: includes/ajax-hooks.php:209 includes/theme.php:289
+#: includes/ajax-hooks.php:213 includes/theme.php:285
 msgid "Delete this post (can be restored again)"
 msgstr ""
 
-#: includes/ajax-hooks.php:210
+#: includes/ajax-hooks.php:214
 msgid "%s is restored"
 msgstr ""
 
-#: includes/ajax-hooks.php:225
+#: includes/ajax-hooks.php:229
 #, fuzzy
 msgid "This post was created %s, hence you cannot trash it"
 msgstr "这个贴文在 %s 之前建立，因为已经上锁以致无法删除。"
 
-#: includes/ajax-hooks.php:233 includes/theme.php:285
+#: includes/ajax-hooks.php:237 includes/theme.php:281
 #, fuzzy
 msgid "Undelete"
 msgstr "删除"
 
-#: includes/ajax-hooks.php:233 includes/theme.php:286
+#: includes/ajax-hooks.php:237 includes/theme.php:282
 #, fuzzy
 msgid "Restore this post"
 msgstr "投一票"
 
-#: includes/ajax-hooks.php:234
+#: includes/ajax-hooks.php:238
 msgid "%s is trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:249
+#: includes/ajax-hooks.php:253
 msgid "Sorry, unable to delete post"
 msgstr ""
 
-#: includes/ajax-hooks.php:277
+#: includes/ajax-hooks.php:281
 #, fuzzy
 msgid "Question is deleted permanently"
 msgstr "提问已经被永久删除"
 
-#: includes/ajax-hooks.php:286
+#: includes/ajax-hooks.php:290
 #, fuzzy
 msgid "Answer is deleted permanently"
 msgstr "回答已经被永久删除"
 
-#: includes/ajax-hooks.php:301
+#: includes/ajax-hooks.php:308
 msgid "Sorry, you cannot toggle a featured question"
 msgstr ""
 
-#: includes/ajax-hooks.php:311
+#: includes/ajax-hooks.php:318
 #, fuzzy
 msgid "Only question can be set as featured"
 msgstr "提问已经被标为推荐"
 
-#: includes/ajax-hooks.php:320 includes/theme.php:797
+#: includes/ajax-hooks.php:327 includes/theme.php:786
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "推荐这个提问"
 
-#: includes/ajax-hooks.php:320 includes/theme.php:798
+#: includes/ajax-hooks.php:327 includes/theme.php:787
 #, fuzzy
 msgid "Feature"
 msgstr "推荐"
 
-#: includes/ajax-hooks.php:321
+#: includes/ajax-hooks.php:328
 msgid "Question is unmarked as featured."
 msgstr "提问已被标为\"推荐\""
 
-#: includes/ajax-hooks.php:328 includes/theme.php:794
+#: includes/ajax-hooks.php:342 includes/theme.php:783
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "推荐这个提问"
 
-#: includes/ajax-hooks.php:328 includes/theme.php:795
+#: includes/ajax-hooks.php:342 includes/theme.php:784
 #, fuzzy
 msgid "Unfeature"
 msgstr "推荐"
 
-#: includes/ajax-hooks.php:329
+#: includes/ajax-hooks.php:343
 msgid "Question is marked as featured."
 msgstr "提问已经被标为推荐"
 
-#: includes/ajax-hooks.php:369
+#: includes/ajax-hooks.php:386
 #, fuzzy
 msgid "You cannot close a question"
 msgstr "当回答问题"
 
-#: includes/ajax-hooks.php:375 includes/theme.php:246
+#: includes/ajax-hooks.php:392 includes/theme.php:242
 msgid "Close"
 msgstr "关闭"
 
-#: includes/ajax-hooks.php:375 includes/theme.php:246
+#: includes/ajax-hooks.php:392 includes/theme.php:242
 msgid "Open"
 msgstr "公开"
 
-#: includes/ajax-hooks.php:376 includes/theme.php:247
+#: includes/ajax-hooks.php:393 includes/theme.php:243
 #, fuzzy
 msgid "Close this question for new answer."
 msgstr "选择一个问题来回答"
 
-#: includes/ajax-hooks.php:376 includes/theme.php:247
+#: includes/ajax-hooks.php:393 includes/theme.php:243
 #, fuzzy
 msgid "Open this question for new answers"
 msgstr "选择一个问题来回答"
 
-#: includes/ajax-hooks.php:378
+#: includes/ajax-hooks.php:395
 #, fuzzy
 msgid "Question closed"
 msgstr "问题馈送"
 
-#: includes/ajax-hooks.php:378
+#: includes/ajax-hooks.php:395
 #, fuzzy
 msgid "Question is opened"
 msgstr "问题馈送"
 
-#: includes/ajax-hooks.php:422
+#: includes/ajax-hooks.php:447
 msgid "Sorry, you are not allowed to convert this question to post"
 msgstr ""
 
-#: includes/ajax-hooks.php:441
+#: includes/ajax-hooks.php:466
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:469
+#: includes/ajax-hooks.php:494
 #, fuzzy
 msgid "You must be logged in to subscribe to a question"
 msgstr "没有人订阅这个问题"
 
-#: includes/ajax-hooks.php:478 includes/ajax-hooks.php:501
+#: includes/ajax-hooks.php:503 includes/ajax-hooks.php:526
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:489
+#: includes/ajax-hooks.php:514
 #, fuzzy
 msgid "Successfully unsubscribed from question"
 msgstr "只有你订阅这个提问"
 
-#: includes/ajax-hooks.php:491 includes/theme.php:824
+#: includes/ajax-hooks.php:516 includes/theme.php:813
 msgid "Subscribe"
 msgstr "订阅"
 
-#: includes/ajax-hooks.php:507
+#: includes/ajax-hooks.php:532
 #, fuzzy
 msgid "Successfully subscribed to question"
 msgstr "没有人订阅这个问题"
 
-#: includes/ajax-hooks.php:509 includes/theme.php:824
+#: includes/ajax-hooks.php:534 includes/theme.php:813
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "订阅"
 
-#: includes/answer-loop.php:301
+#: includes/answer-loop.php:307
 msgid "You are viewing 1 out of %d answers, click here to view all answers."
 msgstr ""
 
@@ -2982,28 +2982,148 @@ msgstr ""
 msgid "Wrong data supplied"
 msgstr ""
 
-#: includes/class/roles-cap.php:59
+#: includes/class/class-activity-helper.php:166
+#, fuzzy
+msgid "Asked question"
+msgstr "提出问题"
+
+#: includes/class/class-activity-helper.php:171
+#, fuzzy
+msgid "Edited question"
+msgstr "编辑了提问"
+
+#: includes/class/class-activity-helper.php:176
+#, fuzzy
+msgid "Answered question"
+msgstr "回答这个问题"
+
+#: includes/class/class-activity-helper.php:181
+#, fuzzy
+msgid "Edited answer"
+msgstr "编辑了回答"
+
+#: includes/class/class-activity-helper.php:186
+#, fuzzy
+msgid "Changed status to publish"
+msgstr "修改发文状态"
+
+#: includes/class/class-activity-helper.php:191
+msgid "Changed publish date to future"
+msgstr ""
+
+#: includes/class/class-activity-helper.php:196
+#, fuzzy
+msgid "Changed status to moderate"
+msgstr "修改发文状态"
+
+#: includes/class/class-activity-helper.php:201
+msgid "Changed visibility to private"
+msgstr ""
+
+#: includes/class/class-activity-helper.php:206
+#, fuzzy
+msgid "Trashed"
+msgstr "垃圾"
+
+#: includes/class/class-activity-helper.php:211
+#, fuzzy
+msgid "Marked as featured question"
+msgstr "推荐的提问"
+
+#: includes/class/class-activity-helper.php:216
+#, fuzzy
+msgid "Marked as closed"
+msgstr "显示为已阅读"
+
+#: includes/class/class-activity-helper.php:221
+#, fuzzy
+msgid "Posted new comment"
+msgstr "对新回应"
+
+#: includes/class/class-activity-helper.php:226
+#, fuzzy
+msgid "Edited comment"
+msgstr "编辑了回应"
+
+#: includes/class/class-activity-helper.php:231
+#, fuzzy
+msgid "Selected answer as best"
+msgstr "将这个回答选为最佳回答"
+
+#: includes/class/class-activity-helper.php:236
+#, fuzzy
+msgid "Unselected an answer"
+msgstr "未选取的回答"
+
+#: includes/class/class-activity-helper.php:324
+#, fuzzy
+msgid "Question id is required."
+msgstr "必填"
+
+#: includes/class/class-activity-helper.php:329
+#, fuzzy
+msgid "Not a valid action"
+msgstr "不是正确的信箱"
+
+#: includes/class/class-activity-helper.php:340
+msgid "Invalid date"
+msgstr ""
+
+#: includes/class/class-activity-helper.php:360
+#, fuzzy
+msgid "Failed to insert activity"
+msgstr "编辑了回应"
+
+#: includes/class/class-activity-helper.php:426
+msgid "No columns found in where clue"
+msgstr ""
+
+#: includes/class/class-activity-helper.php:432
+#, fuzzy
+msgid "Failed to delete activity rows."
+msgstr "编辑了回应"
+
+#: includes/class/class-activity.php:465
+msgid "Just now"
+msgstr ""
+
+#: includes/class/class-activity.php:467
+msgid "Today"
+msgstr ""
+
+#: includes/class/class-activity.php:469
+msgid "Yesterday"
+msgstr ""
+
+#: includes/class/class-activity.php:526
+#: templates/addons/notification/index.php:46
+#: templates/addons/reputation/index.php:23
+#, fuzzy
+msgid "Load More"
+msgstr "表单载入中"
+
+#: includes/class/roles-cap.php:64
 msgid "AnsPress Moderator"
 msgstr "AnsPress 管理员"
 
-#: includes/class/roles-cap.php:63
+#: includes/class/roles-cap.php:68
 msgid "AnsPress Participants"
 msgstr "AndPress 贡献者"
 
-#: includes/class/roles-cap.php:64
+#: includes/class/roles-cap.php:69
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1274
+#: includes/class/roles-cap.php:1279
 #, fuzzy
 msgid "Voting on own post is not allowed"
 msgstr "扣票功能已被关闭"
 
-#: includes/class/roles-cap.php:1282
+#: includes/class/roles-cap.php:1287
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1292
+#: includes/class/roles-cap.php:1297
 #, fuzzy
 msgid "You do not have permission to vote."
 msgstr "你没有权限进行这个操作"
@@ -3160,112 +3280,117 @@ msgid "There is no change in your comment."
 msgstr "尚无问题"
 
 #. Translators: %d contains count of comments.
-#: includes/class-form-hooks.php:666 includes/class-form-hooks.php:746
-#: includes/comments.php:133 includes/comments.php:185
-#: includes/comments.php:296
+#: includes/class-form-hooks.php:675 includes/class-form-hooks.php:755
+#: includes/comments.php:132 includes/comments.php:184
+#: includes/comments.php:300
 #, fuzzy
 msgid "%d Comment"
 msgid_plural "%d Comments"
 msgstr[0] "回应"
 msgstr[1] "回应"
 
-#: includes/class-form-hooks.php:667
+#: includes/class-form-hooks.php:676
 #, fuzzy
 msgid "Comment updated successfully"
 msgstr "回应上传成功"
 
 #. Translators: %s contain post type name.
-#: includes/class-form-hooks.php:690
+#: includes/class-form-hooks.php:699
 msgid "Commenting is not allowed on draft, pending or deleted %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:752
+#: includes/class-form-hooks.php:761
 #, fuzzy
 msgid "Comment successfully posted"
 msgstr "回应发表成功"
 
-#: includes/class-theme.php:167 includes/class-theme.php:226
+#: includes/class-theme.php:169 includes/class-theme.php:228
 msgid "Question Feed"
 msgstr "问题馈送"
 
-#: includes/class-theme.php:227
+#: includes/class-theme.php:229
 #, fuzzy
 msgid "Answers Feed"
 msgstr "解答馈送"
 
-#: includes/class-theme.php:330
+#: includes/class-theme.php:340
 #, fuzzy
 msgid "Sorry, you do not have permission to read this post."
 msgstr "你没有权限编辑这个提问"
 
 #. Translators: %s contains post type.
-#: includes/comments.php:77
+#: includes/comments.php:76
 #, fuzzy
 msgid "Comments on %s"
 msgstr "在回答上回应"
 
 #. Translators: %d contains current paged value.
-#: includes/comments.php:86
+#: includes/comments.php:85
 msgid " | Page %d"
 msgstr ""
 
-#: includes/comments.php:106
+#: includes/comments.php:105
 #, fuzzy
 msgid "Failed to delete comment"
 msgstr "编辑了回应"
 
-#: includes/comments.php:116
+#: includes/comments.php:115
 #, fuzzy
 msgid "This comment was created %s. Its locked hence you cannot delete it."
 msgstr "这个贴文在 %s 之前建立，因为已经上锁以致无法删除。"
 
-#: includes/comments.php:130
+#: includes/comments.php:129
 #, fuzzy
 msgid "Comment successfully deleted"
 msgstr "回应发表成功"
 
-#: includes/comments.php:168
+#: includes/comments.php:167
 msgid "Sorry, unable to approve comment"
 msgstr ""
 
-#: includes/comments.php:191
+#: includes/comments.php:190
 #, fuzzy
 msgid "Comment approved successfully."
 msgstr "回应上传成功"
 
-#: includes/comments.php:237
+#: includes/comments.php:236
 #, fuzzy
 msgid "Add comment on post"
 msgstr "在回答上回应"
 
-#: includes/comments.php:291
+#: includes/comments.php:292
 #, fuzzy
 msgid "Comments awaiting moderation"
 msgstr "文章正在等待审核"
 
-#: includes/comments.php:304
+#: includes/comments.php:309
 #, fuzzy
 msgid "Add a Comment"
 msgstr "回应"
 
-#: includes/comments.php:344
+#: includes/comments.php:349
 msgid "Approve"
 msgstr ""
 
-#: includes/comments.php:393
+#: includes/comments.php:405
 #, fuzzy
 msgid "Not a valid post ID."
 msgstr "不是正确的信箱"
 
-#: includes/comments.php:398
+#: includes/comments.php:410
 #, fuzzy
 msgid "Sorry, you do not have permission to read comments."
 msgstr "你没有权限进行这个操作"
 
-#: includes/comments.php:439
+#: includes/comments.php:425 includes/comments.php:458
 #, fuzzy
 msgid "No comments found."
 msgstr "没有找到使用者"
+
+#: includes/comments.php:470
+#, fuzzy
+msgid "View all comments"
+msgstr "关闭回应功能"
 
 #: includes/common-pages.php:22
 #, fuzzy
@@ -3277,34 +3402,39 @@ msgstr "提出问题"
 msgid "Search"
 msgstr "搜寻"
 
-#: includes/common-pages.php:68
+#: includes/common-pages.php:25 includes/functions.php:2158
+#, fuzzy
+msgid "Activities"
+msgstr "活跃"
+
+#: includes/common-pages.php:73
 msgid ""
 "This question is awaiting moderation and cannot be viewed. Please check back "
 "later."
 msgstr ""
 
-#: includes/common-pages.php:70
+#: includes/common-pages.php:75
 #, fuzzy
 msgid "Sorry! you are not allowed to read this question."
 msgstr "只有你订阅这个提问"
 
 #. Translators: %s contain time to publish.
-#: includes/common-pages.php:77
+#: includes/common-pages.php:82
 msgid "Question will be published in %s"
 msgstr ""
 
-#: includes/common-pages.php:81
+#: includes/common-pages.php:86
 msgid ""
 "This question is not published yet and is not accessible to anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:133
+#: includes/common-pages.php:143
 #, fuzzy
 msgid "Something went wrong, please try again"
 msgstr "哪裡出错了，请再试一次。"
 
-#: includes/common-pages.php:155
+#: includes/common-pages.php:165
 #, fuzzy
 msgid "Sorry, you cannot edit this answer."
 msgstr "编辑这个回答"
@@ -3360,267 +3490,277 @@ msgid "You have flagged this post"
 msgstr "你已经检举这个文章了"
 
 #. translators: %s: human-readable time difference
-#: includes/functions.php:252
+#: includes/functions.php:254
 msgid "%s ago"
 msgstr "%s 前"
 
-#: includes/functions.php:488
+#: includes/functions.php:492
 msgid "Success"
 msgstr "成功"
 
-#: includes/functions.php:490
+#: includes/functions.php:494
 msgid "Something went wrong, last action failed."
 msgstr "错误，上一个动作失败"
 
-#: includes/functions.php:492
+#: includes/functions.php:496
 msgid "Comment updated successfully."
 msgstr "回应上传成功"
 
-#: includes/functions.php:493
+#: includes/functions.php:497
 msgid "You cannot vote on your own question or answer."
 msgstr "你不能对自己的提问或回答进行投票"
 
-#: includes/functions.php:494
+#: includes/functions.php:498
 #, fuzzy
 msgid "You do not have permission to view private posts."
 msgstr "你没有权限检视私密贴文"
 
-#: includes/functions.php:495
+#: includes/functions.php:499
 msgid "Please check captcha field and resubmit it again."
 msgstr "请确认验证码栏位后重新送出"
 
-#: includes/functions.php:496
+#: includes/functions.php:500
 msgid "Image uploaded successfully"
 msgstr "图片上传成功"
 
-#: includes/functions.php:497
+#: includes/functions.php:501
 msgid "Answer has been deleted permanently"
 msgstr "回答已经被永久删除"
 
-#: includes/functions.php:498
+#: includes/functions.php:502
 msgid "You have already attached maximum numbers of allowed uploads."
 msgstr "您已经到达最大可上传数量"
 
-#: includes/functions.php:499
+#: includes/functions.php:503
 msgid "Your profile has been updated successfully."
 msgstr "您的个人档桉已成功更新。"
 
-#: includes/functions.php:500
+#: includes/functions.php:504
 msgid "Voting down is disabled."
 msgstr "扣票功能已被关闭"
 
-#: includes/functions.php:501
+#: includes/functions.php:505
 #, fuzzy
 msgid "You cannot vote on restricted posts"
 msgstr "你不能对自己的提问或回答进行投票"
 
-#: includes/functions.php:928
+#: includes/functions.php:932
 msgid "[Solved] "
 msgstr "[已解决]"
 
-#: includes/functions.php:1269
+#: includes/functions.php:1275
 msgid "asked"
 msgstr "提出讨论"
 
-#: includes/functions.php:1270 includes/functions.php:1271
+#: includes/functions.php:1276 includes/functions.php:1277
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1272
+#: includes/functions.php:1278
 msgid "answered"
 msgstr "回答了"
 
-#: includes/functions.php:1273
+#: includes/functions.php:1279
 #, fuzzy
 msgid "deleted answer"
 msgstr "选取回答"
 
-#: includes/functions.php:1274
+#: includes/functions.php:1280
 #, fuzzy
 msgid "restored question"
 msgstr "推荐的提问"
 
-#: includes/functions.php:1275
+#: includes/functions.php:1281
 #, fuzzy
 msgid "restored answer"
 msgstr "编辑了回答"
 
-#: includes/functions.php:1276 templates/functions.php:40
+#: includes/functions.php:1282 templates/comment.php:31
+#: templates/functions.php:40
 msgid "commented"
 msgstr "已回应"
 
-#: includes/functions.php:1277
+#: includes/functions.php:1283
 #, fuzzy
 msgid "deleted comment"
 msgstr "编辑了回应"
 
-#: includes/functions.php:1278
+#: includes/functions.php:1284
 msgid "commented on answer"
 msgstr "在回答上回应"
 
-#: includes/functions.php:1279
+#: includes/functions.php:1285
 msgid "edited question"
 msgstr "编辑了提问"
 
-#: includes/functions.php:1280
+#: includes/functions.php:1286
 msgid "edited answer"
 msgstr "编辑了回答"
 
-#: includes/functions.php:1281
+#: includes/functions.php:1287
 msgid "edited comment"
 msgstr "编辑了回应"
 
-#: includes/functions.php:1282
+#: includes/functions.php:1288
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "在回答上回应"
 
-#: includes/functions.php:1283
+#: includes/functions.php:1289
 msgid "selected answer"
 msgstr "选取回答"
 
-#: includes/functions.php:1284
+#: includes/functions.php:1290
 msgid "unselected answer"
 msgstr "未选取的回答"
 
-#: includes/functions.php:1285
+#: includes/functions.php:1291
 msgid "updated status"
 msgstr "更新状态"
 
-#: includes/functions.php:1286
+#: includes/functions.php:1292
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1287
+#: includes/functions.php:1293
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1288
+#: includes/functions.php:1294
 #, fuzzy
 msgid "changed status"
 msgstr "更新状态"
 
-#: includes/functions.php:1340
+#: includes/functions.php:1358
 msgid "Anonymous"
 msgstr "匿名"
 
-#: includes/functions.php:1371
+#: includes/functions.php:1390
 msgid " (anonymous)"
 msgstr "(匿名)"
 
-#: includes/functions.php:1876
+#: includes/functions.php:1900
 #, fuzzy
 msgid "You cannot edit this question."
 msgstr "你正在追踪这个提问"
 
-#: includes/functions.php:1881 templates/ask.php:17
+#: includes/functions.php:1905 templates/ask.php:17
 #, fuzzy
 msgid "You do not have permission to ask a question."
 msgstr "你没有权限提出问题"
 
-#: includes/functions.php:1974
+#: includes/functions.php:1998
 msgid "Answer submitted successfully"
 msgstr "回答已成功送出"
 
-#: includes/functions.php:2102
+#: includes/functions.php:2126
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2103
+#: includes/functions.php:2127
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred as "
 "<b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2108
+#: includes/functions.php:2132
 #, fuzzy
 msgid "Ask page"
 msgstr "提问页面标题"
 
-#: includes/functions.php:2109
+#: includes/functions.php:2133
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2110
+#: includes/functions.php:2134
 #, fuzzy
 msgid "Ask a question"
 msgstr "提出问题"
 
-#: includes/functions.php:2114
+#: includes/functions.php:2138
 #, fuzzy
 msgid "User page"
 msgstr "每页几个使用者"
 
-#: includes/functions.php:2115
+#: includes/functions.php:2139
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2116
+#: includes/functions.php:2140
 msgid "Profile"
 msgstr "个人档桉"
 
-#: includes/functions.php:2120
+#: includes/functions.php:2144
 #, fuzzy
 msgid "Categories page"
 msgstr "使用者页面代称"
 
-#: includes/functions.php:2121
+#: includes/functions.php:2145
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2126
+#: includes/functions.php:2150
 #, fuzzy
 msgid "Tags page"
 msgstr "提问页面代称"
 
-#: includes/functions.php:2127
+#: includes/functions.php:2151
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/hooks.php:822
+#: includes/functions.php:2156
+#, fuzzy
+msgid "Activities page"
+msgstr "活跃 %s 前"
+
+#: includes/functions.php:2157
+msgid "Page used to display all anspress activities."
+msgstr ""
+
+#: includes/hooks.php:865
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:823
+#: includes/hooks.php:866
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:824
+#: includes/hooks.php:867
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:825
+#: includes/hooks.php:868
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:826
+#: includes/hooks.php:869
 #, fuzzy
 msgid "day"
 msgstr "%d 天"
 
-#: includes/hooks.php:827
+#: includes/hooks.php:870
 #, fuzzy
 msgid "days"
 msgstr "%d 天"
 
-#: includes/hooks.php:828
+#: includes/hooks.php:871
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:829
+#: includes/hooks.php:872
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:830
+#: includes/hooks.php:873
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:831
+#: includes/hooks.php:874
 #, fuzzy
 msgid "years"
 msgstr "%d 年，"
@@ -3641,7 +3781,7 @@ msgid_plural "Moderate <span class=\"count\">(%s)</span>"
 msgstr[0] "审核 (%s)"
 msgstr[1] "审核 (%s)"
 
-#: includes/post-status.php:31 includes/post-status.php:97
+#: includes/post-status.php:31
 msgid "Private"
 msgstr "私密"
 
@@ -3666,27 +3806,14 @@ msgid "This %s is marked as a private, only admin and post author can see."
 msgstr "%s 被标为私密讯息，只有管理者及文章作者可以看见。"
 
 #: includes/post-status.php:99
-msgid "Awaiting approval"
-msgstr ""
-
-#: includes/post-status.php:99
 #, fuzzy
-msgid "This %s is awaiting for approval by moderator."
+msgid "This %s is waiting for the approval by the moderator."
 msgstr "%s 正在等候板主认可"
 
 #: includes/post-status.php:101
-msgid "Closed"
-msgstr "关闭的"
-
-#: includes/post-status.php:101
 #, fuzzy
-msgid "Question is closed for new answers"
+msgid "Question is closed for new answers."
 msgstr "问题被问了 %s"
-
-#: includes/post-status.php:103
-#, fuzzy
-msgid "Trashed"
-msgstr "垃圾"
 
 #: includes/post-status.php:103
 #, fuzzy
@@ -3764,16 +3891,26 @@ msgstr "没有找到回答"
 msgid "No answer found in trash"
 msgstr "回收桶内没有找到回答"
 
-#: includes/qaquery.php:443
+#: includes/qaquery-hooks.php:178
+#, fuzzy
+msgid "No permission"
+msgstr "权限"
+
+#: includes/qaquery-hooks.php:179
+#, fuzzy
+msgid "You do not have permission to read this question."
+msgstr "你没有权限提出问题"
+
+#: includes/qaquery.php:449
 #, fuzzy
 msgid "Featured"
 msgstr "推荐"
 
-#: includes/qaquery.php:447
+#: includes/qaquery.php:453
 msgid "Solved"
 msgstr "已解决"
 
-#: includes/qaquery.php:451
+#: includes/qaquery.php:457
 #, fuzzy
 msgid "%d views"
 msgstr "<i>%d 个阅读</i>"
@@ -3792,58 +3929,58 @@ msgstr "搜寻问题与回答"
 msgid "Tagged"
 msgstr "检举"
 
-#: includes/theme.php:306
+#: includes/theme.php:302
 msgid "Delete post permanently (cannot be restored again)"
 msgstr ""
 
-#: includes/theme.php:316
+#: includes/theme.php:312
 #, fuzzy
 msgid "Convert to post"
 msgstr "扣一票"
 
-#: includes/theme.php:317
+#: includes/theme.php:313
 #, fuzzy
 msgid "Convert this question to blog post"
 msgstr "回答这个问题"
 
-#: includes/theme.php:376 widgets/questions.php:120
+#: includes/theme.php:372 widgets/questions.php:120
 msgid "Unanswered"
 msgstr "未回应"
 
-#: includes/theme.php:377
+#: includes/theme.php:373
 msgid "Unsolved"
 msgstr "未结论"
 
-#: includes/theme.php:443
+#: includes/theme.php:439
 msgid "Best answer"
 msgstr "最佳回答"
 
-#: includes/theme.php:490
+#: includes/theme.php:486
 msgid "Ask question"
 msgstr "提出问题"
 
-#: includes/theme.php:635
+#: includes/theme.php:624
 #, fuzzy
 msgid "Order By"
 msgstr "排序:"
 
-#: includes/theme.php:680
+#: includes/theme.php:669
 msgid "Reset sorting and filter"
 msgstr "重设排序与过滤"
 
-#: includes/theme.php:680
+#: includes/theme.php:669
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:712
+#: includes/theme.php:701
 msgid "Select this answer as best"
 msgstr "将这个回答选为最佳回答"
 
-#: includes/theme.php:720
+#: includes/theme.php:709
 msgid "Unselect this answer"
 msgstr "反选取这个回答"
 
-#: includes/theme.php:872
+#: includes/theme.php:861
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress 点数"
@@ -3908,112 +4045,112 @@ msgstr "提交"
 msgid "No fields found for form: %s"
 msgstr "没有找到栏位"
 
-#: lib/class-form.php:370 lib/form/class-field.php:382
+#: lib/class-form.php:370 lib/form/class-field.php:380
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:281 lib/class-validate.php:297
+#: lib/class-validate.php:284 lib/class-validate.php:300
 #, fuzzy
 msgid "%s field is required."
 msgstr "必填"
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:313
+#: lib/class-validate.php:316
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:329
+#: lib/class-validate.php:332
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:345
+#: lib/class-validate.php:348
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:368
+#: lib/class-validate.php:371
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:392
+#: lib/class-validate.php:395
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:411
+#: lib/class-validate.php:414
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:430
+#: lib/class-validate.php:433
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:449
+#: lib/class-validate.php:452
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:500
+#: lib/class-validate.php:503
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:517
+#: lib/class-validate.php:520
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:518
+#: lib/class-validate.php:521
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:519
+#: lib/class-validate.php:522
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 
-#: lib/class-validate.php:520
+#: lib/class-validate.php:523
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: lib/class-validate.php:521
+#: lib/class-validate.php:524
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/class-validate.php:522
+#: lib/class-validate.php:525
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: lib/class-validate.php:523
+#: lib/class-validate.php:526
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: lib/class-validate.php:524
+#: lib/class-validate.php:527
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:614
+#: lib/class-validate.php:617
 #, fuzzy
 msgid "You are not allowed to upload file(s)"
 msgstr "只有你订阅这个提问"
 
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
-#: lib/class-validate.php:623
+#: lib/class-validate.php:626
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:630
+#: lib/class-validate.php:633
 msgid "File type is not allowed to upload."
 msgstr ""
 
 #. Translators: %s contain maximum file size user can upload.
-#: lib/class-validate.php:644
+#: lib/class-validate.php:647
 #, fuzzy
 msgid "File(s) size is bigger then %s MB"
 msgstr "无法上传文件，文件大于 %d Byte"
@@ -4098,23 +4235,44 @@ msgstr "您已经到达最大可上传数量"
 msgid "AnsPress Textarea Field"
 msgstr "AnsPress 主题"
 
-#: lib/form/class-upload.php:78
+#: lib/form/class-upload.php:84
 #, fuzzy
 msgid "AnsPress Upload Field"
 msgstr "AnsPress 臂章"
 
-#: lib/form/class-upload.php:86
+#: lib/form/class-upload.php:92
 msgid "This file type is not allowed to upload."
 msgstr ""
 
 #. Translators: %d contains maximum files allowed to upload.
-#: lib/form/class-upload.php:92
+#: lib/form/class-upload.php:98
 msgid "You cannot add more then %d files"
 msgstr ""
 
-#: lib/form/class-upload.php:180
+#: lib/form/class-upload.php:186
 msgid "Browse file(s)"
 msgstr ""
+
+#: templates/activities/activities.php:40
+msgid "That's all!"
+msgstr ""
+
+#: templates/activities/activities.php:56
+#, fuzzy
+msgid "No activities found!"
+msgstr "没有找到回答"
+
+#: templates/activities/activity-ref-content.php:29
+#, fuzzy
+msgid "View comment"
+msgstr "一个回应"
+
+#: templates/activities/activity.php:39
+#, fuzzy
+msgid "with other activity"
+msgid_plural "with other %d activities"
+msgstr[0] "我的动态"
+msgstr[1] "我的动态"
 
 #: templates/addons/category/categories-question-list.php:22
 #: templates/addons/tag/tags-question-list.php:22
@@ -4161,12 +4319,6 @@ msgstr ""
 msgid "No notification"
 msgstr "没有通知"
 
-#: templates/addons/notification/index.php:46
-#: templates/addons/reputation/index.php:23
-#, fuzzy
-msgid "Load More"
-msgstr "表单载入中"
-
 #: templates/addons/tag/no-tags-found.php:15
 msgid "No tags is set!"
 msgstr ""
@@ -4185,7 +4337,7 @@ msgstr "搜寻使用者..."
 
 #. Translators: %s contain human readable time.
 #: templates/addons/user/answer-item.php:38 templates/shortcode/question.php:47
-#: templates/single-question.php:52
+#: templates/single-question.php:61
 #, fuzzy
 msgid "Posted %s"
 msgstr "%s提出讨论 %s"
@@ -4548,12 +4700,15 @@ msgid "Answer"
 msgstr "解答"
 
 #, fuzzy
-#~ msgid "Edit Comment"
-#~ msgstr "回应"
+#~ msgid "Dynamic Avatar"
+#~ msgstr "大头贴"
+
+#~ msgid "Closed"
+#~ msgstr "关闭的"
 
 #, fuzzy
-#~ msgid "No permission"
-#~ msgstr "权限"
+#~ msgid "Edit Comment"
+#~ msgstr "回应"
 
 #~ msgid "Discussion on \"%s\""
 #~ msgstr "\"%s\" 上的讨论"
@@ -5111,9 +5266,6 @@ msgstr "解答"
 #~ msgid "You are not following anyone."
 #~ msgstr "你没有追踪任何人"
 
-#~ msgid "My activity"
-#~ msgstr "我的动态"
-
 #~ msgid "%s's activity"
 #~ msgstr "%s 的动态"
 
@@ -5190,9 +5342,6 @@ msgstr "解答"
 
 #~ msgid "Edited on"
 #~ msgstr "编辑在"
-
-#~ msgid "Change status of post"
-#~ msgstr "修改发文状态"
 
 #~ msgid "You need to login before doing this action."
 #~ msgstr "你要登入才能继续"
@@ -5304,9 +5453,6 @@ msgstr "解答"
 
 #~ msgid "Awarded for completing profile fields."
 #~ msgstr "得到完成使用者档桉的奖励"
-
-#~ msgid "For new comment."
-#~ msgstr "对新回应"
 
 #~ msgid "When user receive an upvote on question"
 #~ msgstr "当使用者得到一个问题的投票"
@@ -5686,9 +5832,6 @@ msgstr "解答"
 #~ msgid "More questions by %s"
 #~ msgstr "%s 的更多问题"
 
-#~ msgid "Mark as read"
-#~ msgstr "显示为已阅读"
-
 #~ msgid "No reputation earned yet."
 #~ msgstr "尚未取得声誉"
 
@@ -5788,9 +5931,6 @@ msgstr "解答"
 
 #~ msgid "%s %s about %s ago"
 #~ msgstr "%s %s 约 %s 前"
-
-#~ msgid "Active %s ago"
-#~ msgstr "活跃 %s 前"
 
 #~ msgid " %s %s %s ago"
 #~ msgstr " %s %s %s 前"

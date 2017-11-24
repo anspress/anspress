@@ -14,6 +14,9 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 		parent::tearDown();
 	}
 
+	/**
+	 * @covers AnsPress::instance
+	 */
 	public function test_anspress_instance() {
 		$this->assertClassHasStaticAttribute( 'instance', 'AnsPress' );
 	}
