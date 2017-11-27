@@ -280,10 +280,12 @@ class AP_Form_Hooks {
 	/**
 	 * Process question form submission.
 	 *
-	 * @return void
+	 * @param boolean $manual Is form submitted manually.
+	 * @return void|WP_Error|integer This method will not die script if `$manual` is set to `true` and also return `WP_Error` on error.
 	 * @since 4.1.0
+	 * @since 4.1.5 Added new argument `$manual` for allowing form to be submitted manually.
 	 */
-	public static function submit_question_form() {
+	public static function submit_question_form( $manual = false ) {
 		$editing = false;
 		$form = anspress()->get_form( 'question' );
 
@@ -296,8 +298,8 @@ class AP_Form_Hooks {
 
 		$values = $form->get_values();
 
-		// Check nonce and is valid form.
-		if ( ! $form->is_submitted() ) {
+		// Check nonce and is valid form. Do not check if `$manual` is true.
+		if ( ! $form->is_submitted() && false === $manual ) {
 			ap_ajax_json([
 				'success' => false,
 				'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
@@ -315,7 +317,7 @@ class AP_Form_Hooks {
 			$_post = ap_get_post( $question_args['ID'] );
 
 			// Check if valid post type and user can edit.
-			if ( 'question' !== $_post->post_type || ! ap_user_can_edit_question( $_post ) ) {
+			if ( false === $manual && ( 'question' !== $_post->post_type || ! ap_user_can_edit_question( $_post ) ) ) {
 				ap_ajax_json( 'something_wrong' );
 			}
 		}
@@ -333,12 +335,16 @@ class AP_Form_Hooks {
 		$question_args['post_status'] = ap_new_edit_post_status( false, 'question', $editing );
 
 		if ( $form->have_errors() ) {
-			ap_ajax_json([
-				'success'       => false,
-				'snackbar'      => [ 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ],
-				'form_errors'   => $form->errors,
-				'fields_errors' => $form->get_fields_errors(),
-			] );
+			if ( false === $manual ) {
+				ap_ajax_json([
+					'success'       => false,
+					'snackbar'      => [ 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ],
+					'form_errors'   => $form->errors,
+					'fields_errors' => $form->get_fields_errors(),
+				] );
+			} else {
+				return new WP_Error( 'failed', __( 'Failed to insert question', 'anspress-question-answer' ) );
+			}
 		}
 
 		// Set post parent.
@@ -356,12 +362,16 @@ class AP_Form_Hooks {
 		if ( ! $editing && ap_opt( 'duplicate_check' ) && false !== ap_find_duplicate_post( $question_args['post_content'], 'question' ) ) {
 			$form->add_error( 'duplicate-question', __( 'You are trying to post a duplicate question. Please search existing questions before posting a new one.', 'anspress-question-answer' ) );
 
-			ap_ajax_json([
-				'success'       => false,
-				'snackbar'      => [ 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ],
-				'form_errors'   => $form->errors,
-				'fields_errors' => $form->get_fields_errors(),
-			] );
+			if ( false === $manual ) {
+				ap_ajax_json([
+					'success'       => false,
+					'snackbar'      => [ 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ],
+					'form_errors'   => $form->errors,
+					'fields_errors' => $form->get_fields_errors(),
+				] );
+			} else {
+				return new WP_Error( 'failed', __( 'Failed to insert question', 'anspress-question-answer' ) );
+			}
 		}
 
 		/**
@@ -404,16 +414,20 @@ class AP_Form_Hooks {
 
 		// If error return and send error message.
 		if ( is_wp_error( $post_id ) ) {
-			ap_ajax_json([
-				'success'       => false,
-				'snackbar'      => array(
-					'message' => sprintf(
-						// Translators: placeholder contain error message.
-						__( 'Unable to post question. Error: %s', 'anspress-question-answer' ),
-						$post_id->get_error_message()
+			if ( false === $manual ) {
+				ap_ajax_json([
+					'success'       => false,
+					'snackbar'      => array(
+						'message' => sprintf(
+							// Translators: placeholder contain error message.
+							__( 'Unable to post question. Error: %s', 'anspress-question-answer' ),
+							$post_id->get_error_message()
+						),
 					),
-				),
-			] );
+				] );
+			} else {
+				return new WP_Error( 'failed', __( 'Failed to insert question', 'anspress-question-answer' ) );
+			}
 		}
 
 		$form->after_save( false, array(
@@ -431,14 +445,18 @@ class AP_Form_Hooks {
 			$message = __( 'Your question is posted successfully, you\'ll be redirected in a moment.', 'anspress-question-answer' );
 		}
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'snackbar' => [
-				'message' => $message,
-			],
-			'redirect' => get_permalink( $post_id ),
-			'post_id'  => $post_id,
-		) );
+		if ( false === $manual ) {
+			ap_ajax_json( array(
+				'success'  => true,
+				'snackbar' => [
+					'message' => $message,
+				],
+				'redirect' => get_permalink( $post_id ),
+				'post_id'  => $post_id,
+			) );
+		}
+
+		return $post_id;
 	}
 
 	/**
