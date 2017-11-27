@@ -170,7 +170,7 @@ class Repeatable extends Field {
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
+		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
 	}
 
 }

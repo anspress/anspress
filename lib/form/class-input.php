@@ -150,7 +150,7 @@ class Input extends Field {
 		 * @param object $field Field object passed by reference.
 		 * @since 4.1.0
 		 */
-		do_action_ref_array( 'ap_after_field_markup', [ $this ] );
+		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
 	}
 
 }
