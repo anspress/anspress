@@ -26,7 +26,8 @@ if ( ap_user_can_read_answer() ) :
 					<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
 					<a href="<?php the_permalink(); ?>" class="ap-posted">
 						<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
-							<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+							<?php printf( __( 'Posted %s', 'anspress-question-answer' ), 
+								     ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
 						</time>
 					</a>
 				</div>
