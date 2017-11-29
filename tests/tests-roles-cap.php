@@ -15,7 +15,7 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
   }
 
   /**
-	 * @covers ap_role_caps
+	 * @covers ::ap_role_caps
 	 */
   public function test_ap_role_caps() {
     // Check participant caps.
@@ -161,7 +161,7 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
   }
 
   /**
-	 * @covers ap_user_can_ask
+	 * @covers ::ap_user_can_ask
 	 */
   public function test_ap_user_can_ask() {
     // Check if user roles can ask.

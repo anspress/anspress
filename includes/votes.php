@@ -604,6 +604,14 @@ function ap_vote_btn( $post = null, $echo = true ) {
 
 	$html .= '</div>';
 
+	/**
+	 * Allows overriding voting button HTML upload.
+	 *
+	 * @param string $html Vote button.
+	 * @since 4.1.5
+	 */
+	$html = apply_filters( 'ap_vote_btn_html', $html );
+
 	if ( ! $echo ) {
 		return $html;
 	}
