@@ -317,7 +317,7 @@ class AP_Form_Hooks {
 			$_post = ap_get_post( $question_args['ID'] );
 
 			// Check if valid post type and user can edit.
-			if ( false === $manual && ( 'question' !== $_post->post_type || ! ap_user_can_edit_question( $_post ) ) ) {
+			if ( false !== $manual && ( 'question' !== $_post->post_type ||  ! ap_user_can_edit_question( $_post ) ) ) {
 				ap_ajax_json( 'something_wrong' );
 			}
 		}

@@ -618,11 +618,6 @@ class AnsPress_Hooks {
 		$qameta = array(
 			'last_updated' => current_time( 'mysql' ),
 			'answers'      => ap_count_published_answers( $post_id ),
-			'activities'   => array(
-				'type'    => $activity_type,
-				'user_id' => $post->post_author,
-				'date'    => current_time( 'mysql' ),
-			),
 		);
 
 		// Check if anonymous post and have name.

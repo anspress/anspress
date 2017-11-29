@@ -1882,6 +1882,7 @@ function ap_set_in_array( &$arr, $path, $val ) {
  *
  * @since unknown
  * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument. Using new form class.
+ * @since 4.1.5 Don't use ap_ajax as action.
  */
 function ap_ask_form( $deprecated = null ) {
 	if ( ! is_null( $deprecated ) ) {
@@ -1910,11 +1911,7 @@ function ap_ask_form( $deprecated = null ) {
 		'hidden_fields' => array(
 			array(
 				'name'  => 'action',
-				'value' => 'ap_ajax',
-			),
-			array(
-				'name'  => 'ap_ajax_action',
-				'value' => 'form_question',
+				'value' => 'ap_form_question',
 			),
 		),
 	);
@@ -2010,6 +2007,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
  * @return void
  * @since unknown
  * @since 4.1.0 Moved from includes\answer-form.php. Using new Form class.
+ * @since 4.1.5 Don't use ap_ajax as action.
  */
 function ap_answer_form( $question_id, $editing = false ) {
 	if ( ! ap_user_can_answer( $question_id ) ) {
@@ -2020,11 +2018,7 @@ function ap_answer_form( $question_id, $editing = false ) {
 		'hidden_fields' => array(
 			array(
 				'name'  => 'action',
-				'value' => 'ap_ajax',
-			),
-			array(
-				'name'  => 'ap_ajax_action',
-				'value' => 'form_answer',
+				'value' => 'ap_form_answer',
 			),
 		),
 	);
@@ -2040,6 +2034,7 @@ function ap_answer_form( $question_id, $editing = false ) {
  * @return void
  *
  * @since 4.1.0
+ * @since 4.1.5 Don't use ap_ajax.
  */
 function ap_comment_form( $post_id = false, $_comment = false ) {
 	if ( false === $post_id ) {
@@ -2058,11 +2053,7 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 			),
 			array(
 				'name'  => 'action',
-				'value' => 'ap_ajax',
-			),
-			array(
-				'name'  => 'ap_ajax_action',
-				'value' => 'form_comment',
+				'value' => 'ap_form_comment',
 			),
 		),
 	);

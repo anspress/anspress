@@ -221,11 +221,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				 */
 				do_action( 'anspress_loaded' );
 
-				self::$instance->setup_hooks();
-
 				if ( class_exists( 'WP_CLI' ) ) {
 					WP_CLI::add_command( 'anspress', 'AnsPress_Cli' );
 				}
+
+				self::$instance->setup_hooks();
 			} // End if().
 
 			return self::$instance;

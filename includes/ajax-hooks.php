@@ -57,9 +57,12 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_subscribe', __CLASS__, 'subscribe_to_question' );
 		anspress()->add_action( 'ap_ajax_get_repeatable_field', __CLASS__, 'get_repeatable_field' );
 
-		anspress()->add_action( 'ap_ajax_form_question', 'AP_Form_Hooks', 'submit_question_form', 11 );
-		anspress()->add_action( 'ap_ajax_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11 );
-		anspress()->add_action( 'ap_ajax_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11 );
+		anspress()->add_action( 'wp_ajax_ap_form_question', 'AP_Form_Hooks', 'submit_question_form', 11, 0 );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_form_question', 'AP_Form_Hooks', 'submit_question_form', 11, 0 );
+		anspress()->add_action( 'wp_ajax_ap_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11, 0 );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11, 0 );
+		anspress()->add_action( 'wp_ajax_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
 
 	}
 
