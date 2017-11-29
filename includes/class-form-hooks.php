@@ -27,6 +27,9 @@ class AP_Form_Hooks {
 	 *
 	 * @return array
 	 * @since 4.1.0
+	 * @since 4.1.5 Fixed: anonymous_name field value.
+	 *
+	 * @category haveTests
 	 */
 	public static function question_form() {
 		$editing = false;
@@ -103,7 +106,9 @@ class AP_Form_Hooks {
 			$form['fields']['is_private']['value']   = 'private_post' === $question->post_status ? true : false;
 
 			if ( isset( $form['fields']['anonymous_name'] ) ) {
-				$form['fields']['anonymous_name'] = ap_get_post_field( 'anonymous_name', $question );
+				$fields = ap_get_post_field( 'fields', $question );
+
+				$form['fields']['anonymous_name']['value'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
 			}
 		}
 

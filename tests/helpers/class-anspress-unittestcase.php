@@ -22,4 +22,8 @@ class AnsPress_UnitTestCase extends WP_UnitTestCase {
 	protected function _go_to_question( $id ) {
 		$this->go_to( site_url( "?post_type=question&p=$id" ) );
 	}
+
+	protected function insert_question( $title, $content ) {
+		return $this->factory->post->create( array( 'post_title' => $title, 'post_type' => 'question', 'post_status' => 'publish', 'post_content' => $content ) );
+	}
 }

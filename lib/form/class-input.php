@@ -76,9 +76,9 @@ class Input extends Field {
 		}
 
 		$validate_subtype = array(
-			'number'         => 'is_numeric',
-			'email'          => 'is_email',
-			'url'            => 'is_url',
+			'number' => 'is_numeric',
+			'email'  => 'is_email',
+			'url'    => 'is_url',
 		);
 
 		if ( in_array( $this->subtype, array_keys( $validate_subtype ), true ) ) {
