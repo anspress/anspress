@@ -348,7 +348,7 @@ _.templateSettings = {
 			if(!self.hover)
 				this.hoveTimeOut = setTimeout(function(){
 					self.$el.removeClass('snackbar-show');
-				}, 2000);
+				}, 5000);
 		},
 		render: function(){
 			if(this.data){
@@ -936,18 +936,6 @@ jQuery(document).ready(function($){
 			}
 		});
 	});
-
-	$(document).mouseup(function(e){
-		var container = $('.ap-modal-body');
-
-		// if the target of the click isn't the container nor a descendant of the container
-		if (!container.is(e.target) && container.has(e.target).length === 0){
-			$.each(AnsPress.modals, function(modal){
-				AnsPress.hideModal(modal);
-			});
-		}
-	});
-
 	$(document).keyup(function(e) {
 		if (e.keyCode == 27) {
 			$lastModal = $('.ap-modal').last();
