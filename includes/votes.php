@@ -607,10 +607,11 @@ function ap_vote_btn( $post = null, $echo = true ) {
 	/**
 	 * Allows overriding voting button HTML upload.
 	 *
-	 * @param string $html Vote button.
+	 * @param string  $html Vote button.
+	 * @param WP_Post $post WordPress post object.
 	 * @since 4.1.5
 	 */
-	$html = apply_filters( 'ap_vote_btn_html', $html );
+	$html = apply_filters( 'ap_vote_btn_html', $html, $post );
 
 	if ( ! $echo ) {
 		return $html;
