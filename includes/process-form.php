@@ -88,6 +88,7 @@ class AnsPress_Process_Form {
 	 *
 	 * @return void
 	 * @since 2.0.1
+	 * @deprecated 4.1.5
 	 */
 	public function process_form() {
 		$action = sanitize_text_field( $_POST['ap_form_action'] );
