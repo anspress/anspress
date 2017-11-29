@@ -408,6 +408,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
  * @return boolean
  * @since  2.4.7 Added new argument `$user_id`.
  * @since  2.4.7 Added new filter `ap_user_can_edit_question`.
+ * @since  4.1.5 Check if valid post type.
  */
 function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	if ( false === $user_id ) {
@@ -423,6 +424,11 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	} else {
 		global $post;
 		$question = $post;
+	}
+
+	// Check post_type.
+	if ( ! $question || 'question' === $question->post_type ) {
+		return false;
 	}
 
 	/**

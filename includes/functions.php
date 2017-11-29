@@ -1883,6 +1883,7 @@ function ap_set_in_array( &$arr, $path, $val ) {
  * @since unknown
  * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument. Using new form class.
  * @since 4.1.5 Don't use ap_ajax as action.
+ * @category haveTests
  */
 function ap_ask_form( $deprecated = null ) {
 	if ( ! is_null( $deprecated ) ) {

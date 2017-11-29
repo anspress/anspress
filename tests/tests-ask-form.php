@@ -64,6 +64,26 @@ class Ask_Form_Tests extends AnsPress_UnitTestCase
     $this->assertEquals( 'hidden', $form->args['fields']['post_id']['subtype'] );
     $this->assertEquals( 'absint', $form->args['fields']['post_id']['sanitize'] );
 
+    // Try for logged in users.
+    $this->_setRole( 'subscriber' );
+
+    unset( anspress()->forms['question'] );
+    anspress()->form_exists('question');
+    $form = anspress()->forms['question'];
+
+    $this->assertArrayNotHasKey( 'anonymous_name', $form->args['fields'] );
+  }
+
+  /**
+   * Test question fields while editing.
+   *
+	 * @covers AP_Form_Hooks::question_form
+	 */
+  public function test_question_form_editing() {
+    $this->logout();
+
+    ap_opt( 'allow_private_posts', true );
+
     $id = $this->factory->post->create( array(
       'post_title' => 'Mauris a velit id neque dignissim congue', 'post_type' => 'question', 'post_status' => 'private_post', 'post_content' => 'Sed cursus, diam sit amet'
     ) );
@@ -86,14 +106,41 @@ class Ask_Form_Tests extends AnsPress_UnitTestCase
     $this->assertEquals( 'Sed cursus, diam sit amet', $form->args['fields']['post_content']['value'] );
     $this->assertEquals( true, $form->args['fields']['is_private']['value'] );
     $this->assertEquals( 'Rahul', $form->args['fields']['anonymous_name']['value'] );
+  }
 
-    // Try for logged in users.
-    $this->_setRole( 'subscriber' );
+  /**
+   * Tests ap_ask_form() function.
+   *
+   * @covers ::ap_ask_form
+   */
+  public function test_ap_ask_form() {
+    $_REQUEST = [];
+    $_POST = [];
 
-    unset( anspress()->forms['question'] );
-    anspress()->form_exists('question');
-    $form = anspress()->forms['question'];
+    ap_opt( 'post_question_per', 'have_cap' );
+    $this->_setRole( 'ap_banned' );
+    $id = $this->factory->post->create( array(
+      'post_title' => 'Suspendisse aliqua', 'post_type' => 'question', 'post_content' => 'Sed cursus, diam sit amet', 'post_author' => get_current_user_id()
+    ) );
 
-    $this->assertArrayNotHasKey( 'anonymous_name', $form->args['fields'] );
+    ob_start();
+    ap_ask_form();
+    $form_html = ob_get_clean();
+
+    $this->assertEquals( '<p>You do not have permission to ask a question.</p>', $form_html );
+
+    ap_opt( 'post_question_per', 'anyone' );
+    $_REQUEST['id'] = $id;
+    ob_start();
+    ap_ask_form();
+    $form_html = ob_get_clean();
+    $this->assertEquals( '<p>You cannot edit this question.</p>', $form_html );
+
+    $this->_setRole( 'administrator' );
+    ob_start();
+    ap_ask_form();
+    $form_html = ob_get_clean();
+    $this->assertContains( 'name="form_question[post_title]"', $form_html );
+    $this->assertContains( 'name="form_question[post_content]"', $form_html );
   }
 }
