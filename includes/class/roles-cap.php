@@ -827,8 +827,10 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
  * @param  integer $post_id Post ID.
  * @param  integer $user_id User ID.
  * @return boolean
+ * @since  2.4.6
+ * @since  4.1.5 Allow first argument to be `null`.
  */
-function ap_user_can_view_future_post( $post_id, $user_id = false ) {
+function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -842,9 +844,9 @@ function ap_user_can_view_future_post( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
+	$_post = ap_get_post( $post_id );
 
-	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
+	if ( $_post && $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
 	}
 

@@ -207,10 +207,12 @@ class AP_QA_Query_Hooks {
 	 *
 	 * @param WP_Query $query Query loop.
 	 * @return void
+	 * @since 4.1.4
+	 * @since 4.1.5 Include future questions as well.
 	 */
 	public static function pre_get_posts( $query ) {
 		if ( $query->is_single() && $query->is_main_query() && 'question' === get_query_var( 'post_type' ) ) {
-			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post' ] );
+			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post', 'future' ] );
 		}
 	}
 

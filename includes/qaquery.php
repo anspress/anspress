@@ -31,6 +31,8 @@ class Question_Query extends WP_Query {
 	 * Initialize class.
 	 *
 	 * @param array|string $args Query args.
+	 * @since unknown
+	 * @since 4.1.5 Include future questions if user have privilege.
 	 */
 	public function __construct( $args = [] ) {
 		if ( is_front_page() ) {
@@ -70,6 +72,11 @@ class Question_Query extends WP_Query {
 		// Check if user can read moderate posts.
 		if ( ap_user_can_view_moderate_post( ) ) {
 			$this->args['post_status'][] = 'moderate';
+		}
+
+		// Check if user can read moderate posts.
+		if ( ap_user_can_view_future_post( ) ) {
+			$this->args['post_status'][] = 'future';
 		}
 
 		// Show trash posts to super admin.
