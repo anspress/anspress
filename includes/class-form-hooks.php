@@ -451,6 +451,8 @@ class AP_Form_Hooks {
 		}
 
 		if ( false === $manual ) {
+			anspress()->session->set_question( $post_id );
+
 			ap_ajax_json( array(
 				'success'  => true,
 				'snackbar' => [

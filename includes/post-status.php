@@ -101,6 +101,8 @@ function ap_get_post_status_message( $post_id = false ) {
 		$ret = '<i class="apicon-x"></i><span>' . __( 'Question is closed for new answers.', 'anspress-question-answer' ) . '</span>';
 	} elseif ( 'trash' === $post->post_status ) {
 		$ret = '<i class="apicon-trashcan"></i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+	} elseif ( 'future' === $post->post_status ) {
+		$ret = '<i class="apicon-clock"></i><span>' . sprintf( __( 'This %s is not published yet and is not accessible to anyone until it get published.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
 	}
 
 	if ( ! empty( $ret ) ) {

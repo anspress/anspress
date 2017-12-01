@@ -796,16 +796,13 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
  * @param  integer $post_id Question ID.
  * @param  integer $user_id User ID.
  * @return boolean
+ * @since  unknown
+ * @since  4.1.5 Let user view if post is in their session. This is useful for anonymous users.
  */
 function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
-	}
-
-	// Return if user is anonymous.
-	if ( empty( $user_id ) ) {
-		return false;
 	}
 
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_moderate' ) ) {
@@ -815,6 +812,13 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
 	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // loose comparison ok.
+		return true;
+	}
+
+	$session_type = 'answer' === $post_o->post_type ? 'answers' : 'questions';
+	$session_posts = anspress()->session->get( $session_type );
+
+	if ( ! is_user_logged_in() && '0' === $post_o->post_author && in_array( $post_o->ID, $session_posts ) ) {
 		return true;
 	}
 
@@ -829,15 +833,11 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
  * @return boolean
  * @since  2.4.6
  * @since  4.1.5 Allow first argument to be `null`.
+ * @since  4.1.5 Let user view if post is in their session. This is useful for anonymous users.
  */
 function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
-	}
-
-	// Return if user is anonymous.
-	if ( empty( $user_id ) ) {
-		return false;
 	}
 
 	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_view_future' ) ) {
@@ -846,7 +846,14 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 
 	$_post = ap_get_post( $post_id );
 
-	if ( $_post && $post_o->post_author == $user_id ) { // loose comparison ok.
+	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // loose comparison ok.
+		return true;
+	}
+
+	$session_type = 'answer' === $_post->post_type ? 'answers' : 'questions';
+	$session_posts = anspress()->session->get( $session_type );
+
+	if ( ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {
 		return true;
 	}
 

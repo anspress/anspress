@@ -54,14 +54,15 @@
 								</span>
 								<a href="<?php the_permalink(); ?>" class="ap-posted">
 									<?php
-										printf(
-											'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
-											ap_get_time( get_the_ID(), 'c' ),
-											sprintf(
-												__( 'Posted %s', 'anspress-question-answer' ),
-												ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
-											)
-										);
+									$posted = 'future' === get_post_status() ? __( 'Scheduled for', 'anspress-question-answer' ) : __( 'Published', 'anspress-question-answer' );
+
+									$time = ap_get_time( get_the_ID(), 'U' );
+
+									if ( 'future' !== get_post_status() ) {
+										$time = ap_human_time( $time );
+									}
+
+									printf( '<time itemprop="datePublished" datetime="%1$s">%2$s</time>', ap_get_time( get_the_ID(), 'c' ), $time );
 									?>
 								</a>
 							</div>

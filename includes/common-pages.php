@@ -74,7 +74,7 @@ class AnsPress_Common_Pages {
 			} else {
 				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
 			}
-		} elseif ( 'future' === $_post->post_status ) {
+		} elseif ( 'future' === $_post->post_status && ! ap_user_can_view_future_post( $_post ) ) {
 			$time_to_publish = human_time_diff( strtotime( $_post->post_date ), current_time( 'timestamp', true ) );
 
 			$msg = '<strong>' . sprintf(

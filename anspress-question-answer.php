@@ -180,6 +180,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $activity;
 
 		/**
+		 * The session.
+		 *
+		 * @var AnsPress\Session
+		 * @since 4.1.5
+		 */
+		public $session;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -189,16 +197,15 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		public static function instance() {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
-
 				self::$instance = new self();
 				self::$instance->setup_constants();
 				self::$instance->actions = array();
 				self::$instance->filters = array();
 
-				global $ap_classes;
-				$ap_classes = array();
-
 				self::$instance->includes();
+
+				self::$instance->session = \AnsPress\Session::init();
+
 				self::$instance->site_include();
 				self::$instance->ajax_hooks();
 				AnsPress_PostTypes::init();
@@ -300,6 +307,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class-query.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-activity-helper.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-session.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
