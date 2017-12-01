@@ -203,8 +203,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				self::$instance->filters = array();
 
 				self::$instance->includes();
-
-				self::$instance->session = \AnsPress\Session::init();
+				self::$instance->session = AnsPress\Session::init();
 
 				self::$instance->site_include();
 				self::$instance->ajax_hooks();

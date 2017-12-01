@@ -809,7 +809,12 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return true;
 	}
 
-	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
+	$post_o = ap_get_post( $post_id );
+
+	// Bail if not answer or question.
+	if ( ! $post_o || ! ap_is_cpt( $post_o ) ) {
+		return false;
+	}
 
 	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // loose comparison ok.
 		return true;
@@ -818,7 +823,7 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 	$session_type = 'answer' === $post_o->post_type ? 'answers' : 'questions';
 	$session_posts = anspress()->session->get( $session_type );
 
-	if ( ! is_user_logged_in() && '0' === $post_o->post_author && in_array( $post_o->ID, $session_posts ) ) {
+	if ( ! empty( $session_posts ) && ! is_user_logged_in() && '0' === $post_o->post_author && in_array( $post_o->ID, $session_posts ) ) {
 		return true;
 	}
 
@@ -845,6 +850,11 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 	}
 
 	$_post = ap_get_post( $post_id );
+
+	// Bail if not answer or question.
+	if ( ! $_post || ! ap_is_cpt( $_post ) ) {
+		return false;
+	}
 
 	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // loose comparison ok.
 		return true;

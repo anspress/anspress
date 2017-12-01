@@ -26,9 +26,9 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	 * @covers AnsPress_BasePage_Shortcode::anspress_sc
 	 */
 	public function test_anspress_sc() {
+		$this->go_to( home_url() );
 		global $questions, $ap_shortcode_loaded;
 		$this->assertNotEquals( true, $ap_shortcode_loaded );
-
 		// Make sure shortcode does not echo anything.
 		ob_start( );
 		$content = do_shortcode('[anspress]');
@@ -41,6 +41,8 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	 * @covers AnsPress_Common_Pages::base_page
 	 */
 	public function test_base_page() {
+		$this->go_to( home_url() );
+
 		$question_id = $this->factory->post->create( array( 'post_title' => 'Sample question', 'post_type' => 'question', 'post_status' => 'publish', 'post_content' => 'test content' ) );
 
 		add_filter( 'the_content', [ $this, 'the_content' ] );

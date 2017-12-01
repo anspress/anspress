@@ -81,7 +81,9 @@ class Session {
 	 * Set the session cookie.
 	 */
 	protected function set_cookie()	{
-		setcookie( $this->name, $this->id, time() + $this->expires, $this->cookie_path, $this->cookie_domain );
+		if ( ! headers_sent() ) {
+			@setcookie( $this->name, $this->id, time() + $this->expires, $this->cookie_path, $this->cookie_domain );
+		}
 	}
 
 	/**
@@ -90,7 +92,9 @@ class Session {
 	 * @return void
 	 */
 	protected function delete_cookie() {
-		setcookie( $this->name, '', time() - 42000, $this->cookie_path, $this->cookie_domain );
+		if ( ! headers_sent() ) {
+			@setcookie( $this->name, '', time() - 42000, $this->cookie_path, $this->cookie_domain );
+		}
 	}
 
 	/**

@@ -11,6 +11,7 @@
  * @since      0.0.1
  * @since      4.1.0 Renamed file from question.php.
  * @since      4.1.2 Removed @see ap_recent_post_activity().
+ * @since      4.1.5 Fixed date grammar when post is not published.
  */
 
 ?>
