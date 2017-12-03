@@ -55,6 +55,13 @@ class Session {
 	private $expires = DAY_IN_SECONDS;
 
 	/**
+	 * The session ID.
+	 *
+	 * @var string
+	 */
+	private $id;
+
+	/**
 	 * Get current instance.
 	 *
 	 * @return AnsPress\Session
@@ -121,7 +128,6 @@ class Session {
 	 */
 	public function get( $key ) {
 		$cache = get_transient( 'anspress_session_' . $this->id );
-
 		if ( false === $cache ) {
 			return;
 		}
@@ -134,12 +140,12 @@ class Session {
 	/**
 	 * Set offset in AnsPress session.
 	 *
-	 * @param string $key Offset key.
-	 * @param mixed  $val Offset value.
+	 * @param string     $key Offset key.
+	 * @param mixed|null $val Offset value. Delete key value pair if this is `null`.
 	 * @return void
 	 * @since 4.1.5
 	 */
-	public function set( $key, $val ) {
+	public function set( $key, $val = null ) {
 		$cache = get_transient( 'anspress_session_' . $this->id );
 
 		if ( false === $cache ) {
@@ -185,5 +191,22 @@ class Session {
 		}
 
 		$this->set( 'answers', $answers );
+	}
+
+	/**
+	 * Delete all session data or just a key=>value pair.
+	 *
+	 * @param null|string $key Name of key. On `null` all session data is deleted.
+	 * @return void
+	 * @since 4.1.5
+	 */
+	public function delete( $key = null ) {
+		// Delete all session data if no key set.
+		if ( null === $key ) {
+			delete_transient( 'anspress_session_' . $this->id );
+			return;
+		}
+
+		$this->set( $key );
 	}
 }

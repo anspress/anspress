@@ -12,6 +12,9 @@
 
 namespace AnsPress;
 
+use AnsPress\Session;
+
+
 /**
  * The form class.
  *
@@ -441,9 +444,9 @@ class Form {
 	 * @return array|false
 	 */
 	public function get_values() {
-		if ( $this->have_errors() ) {
-			return false;
-		}
+		// if ( $this->have_errors() ) {
+		// 	return false;
+		// }
 
 		if ( ! is_null( $this->values ) ) {
 			return $this->values;
@@ -459,8 +462,13 @@ class Form {
 	 * @param boolean|array $fields Fields.
 	 * @param array         $args   Arguments to be passed to method.
 	 * @return void
+	 * @since 4.1.0
+	 * @since 4.1.5 Delete AnsPress session data.
 	 */
 	public function after_save( $fields = false, $args = [] ) {
+		// Delete session data.
+		$this->delete_values_session();
+
 		if ( false === $this->prepared ) {
 			$this->prepare();
 		}
@@ -484,16 +492,50 @@ class Form {
 	 * This must be called before initialization of form.
 	 *
 	 * @param array $values Values.
-	 * @return void
+	 * @return AnsPress\Form
+	 *
 	 * @since 4.1.0
+	 * @since 4.1.5 Set values after form is prepared. Return current object.
 	 */
 	public function set_values( $values ) {
-		$formatted = [];
-		foreach ( $values as $key => $val ) {
-			$formatted[ $key ] = [];
-			$formatted[ $key ]['value'] = $val;
+		if ( false === $this->prepared ) {
+			$this->prepare();
 		}
-		$this->args['fields'] = array_merge_recursive( $this->args['fields'], $formatted );
+
+		if ( empty( $values ) ) {
+			return $this;
+		}
+
+		foreach ( $values as $key => $val ) {
+			is_array( $val ) && isset( $val['value'] ) && $val = $val['value'];
+			$this->find( $key )->value = $val;
+		}
+
+		return $this;
 	}
 
+
+	/**
+	 * Save current values to AnsPress session so that users unfinished question can
+	 * be retrieved later.
+	 *
+	 * @return void
+	 * @since 4.1.5
+	 */
+	public function save_values_session() {
+		$values = $this->get_values();
+
+		if ( ! empty( $values ) ) {
+			anspress()->session->set( $this->form_name, $values );
+		}
+	}
+
+	/**
+	 * Delete all form data stored in user session.
+	 *
+	 * @return void
+	 */
+	public function delete_values_session() {
+		anspress()->session->delete( $this->form_name );
+	}
 }

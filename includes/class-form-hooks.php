@@ -187,21 +187,6 @@ class AP_Form_Hooks {
 			'sanitize' => 'absint',
 		);
 
-		// Add value when editing post.
-		if ( ! empty( $editing_id ) ) {
-			$answer = ap_get_post( $editing_id );
-			$form['editing']                         = true;
-			$form['editing_id']                      = $editing_id;
-			$form['submit_label']                    = __( 'Update answer', 'anspress-question-answer' );
-			$form['fields']['post_content']['value'] = $answer->post_content;
-			$form['fields']['is_private']['value']   = 'private_post' === $answer->post_status ? true : false;
-			$form['fields']['question_id']['value']  = $answer->post_parent;
-
-			if ( isset( $form['fields']['anonymous_name'] ) ) {
-				$form['fields']['anonymous_name'] = ap_get_post_field( 'anonymous_name', $answer );
-			}
-		}
-
 		/**
 		 * Filter for modifying answer form `$args`.
 		 *
@@ -302,6 +287,9 @@ class AP_Form_Hooks {
 		do_action( 'ap_submit_question_form' );
 
 		$values = $form->get_values();
+
+		// Store current values in session.
+		$form->save_values_session();
 
 		// Check nonce and is valid form. Do not check if `$manual` is true.
 		if ( ! $form->is_submitted() && false === $manual ) {

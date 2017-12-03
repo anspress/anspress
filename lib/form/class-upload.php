@@ -39,6 +39,12 @@ class Upload extends Field {
 	 */
 	public $multiple_upload = false;
 
+	/**
+	 * Is files uploaded.
+	 *
+	 * @var boolean
+	 * @since 4.1.0
+	 */
 	public $uploaded = false;
 
 	/**

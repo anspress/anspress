@@ -89,7 +89,6 @@ class Checkbox extends Field {
 	 */
 	public function field_markup() {
 		parent::field_markup();
-
 		if ( $this->get( 'options' ) ) {
 			$value = $this->value();
 

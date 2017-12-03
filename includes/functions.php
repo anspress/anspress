@@ -1882,7 +1882,8 @@ function ap_set_in_array( &$arr, $path, $val ) {
  *
  * @since unknown
  * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument. Using new form class.
- * @since 4.1.5 Don't use ap_ajax as action.
+ * @since 4.1.5 Don't use ap_ajax as action. Set values here while editing.
+ *
  * @category haveTests
  */
 function ap_ask_form( $deprecated = null ) {
@@ -1917,8 +1918,34 @@ function ap_ask_form( $deprecated = null ) {
 		),
 	);
 
+	$values = [];
+	$session_values = anspress()->session->get( 'form_question' );
+
+	// Add value when editing post.
+	if ( $editing ) {
+		$question = ap_get_post( $editing_id );
+
+		$form['editing']      = true;
+		$form['editing_id']   = $editing_id;
+		$form['submit_label'] = __( 'Update Question', 'anspress-question-answer' );
+
+		$values['post_title']   = $question->post_title;
+		$values['post_content'] = $question->post_content;
+		$values['is_private']   = 'private_post' === $question->post_status ? true : false;
+
+		if ( isset( $values['anonymous_name'] ) ) {
+			$fields = ap_get_post_field( 'fields', $question );
+
+			$values['anonymous_name'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
+		}
+	} elseif ( ! empty( $session_values ) ) {
+		PC::debug($session_values);
+		// Set last session values if not editing.
+		$values = $session_values;
+	}
+
 	// Generate form.
-	anspress()->get_form( 'question' )->generate( $args );
+	anspress()->get_form( 'question' )->set_values( $values )->generate( $args );
 }
 
 /**
