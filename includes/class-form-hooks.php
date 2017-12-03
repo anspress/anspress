@@ -586,6 +586,7 @@ class AP_Form_Hooks {
 		}
 
 		if ( ! $editing ) {
+			anspress()->session->set_answer( $post_id );
 			ap_answer_post_ajax_response( $question_id, $post_id );
 		}
 

@@ -52,16 +52,25 @@ class AP_QA_Query_Hooks {
 							}
 						}
 					} else {
-						$post_status .= $wpdb->posts.".post_status = '".$query_status."' ";
+						$post_status .= $wpdb->posts.".post_status = '" . $query_status . "' ";
 					}
 				}
 
-				// Include user's session questions.
-				// $session_posts = anspress()->session->get( 'questions' );
-				// $ids = sanitize_comma_delimited( $session_posts );
-				// if ( ! empty( $ids ) ) {
-				// 	$sql['where'] = $sql['where'] . " OR ( {$wpdb->posts}.ID IN ({$ids}) )";
-				// }
+				$ap_type = false;
+				if ( isset( $args->query['ap_question_query'] ) ) {
+					$ap_type = 'question';
+				} elseif ( isset( $args->query['ap_answers_query'] ) ) {
+					$ap_type = 'answer';
+				}
+
+				if ( ! empty( $ap_type ) ) {
+					// Include user's session questions.
+					$session_posts = anspress()->session->get( $ap_type . 's' );
+					$ids = sanitize_comma_delimited( $session_posts );
+					if ( ! empty( $ids ) ) {
+						$sql['where'] = $sql['where'] . $wpdb->prepare( " OR ( {$wpdb->posts}.ID IN ({$ids}) AND {$wpdb->posts}.post_type = %s )", $ap_type );
+					}
+				}
 
 				// Replace post_status query.
 				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {

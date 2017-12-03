@@ -820,10 +820,7 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return true;
 	}
 
-	$session_type = 'answer' === $post_o->post_type ? 'answers' : 'questions';
-	$session_posts = anspress()->session->get( $session_type );
-
-	if ( ! empty( $session_posts ) && ! is_user_logged_in() && '0' === $post_o->post_author && in_array( $post_o->ID, $session_posts ) ) {
+	if ( ! is_user_logged_in() && '0' === $post_o->post_author && anspress()->session->post_in_session( $post_o ) ) {
 		return true;
 	}
 
@@ -1189,6 +1186,11 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 		return true;
 	} elseif ( false === $filter ) {
 		return false;
+	}
+
+	// Show if post in user's session.
+	if ( ! is_user_logged_in() && '0' === $post_o->post_author && anspress()->session->post_in_session( $post_o ) ) {
+		return true;
 	}
 
 	// Also return true if user have capability to edit others question.
