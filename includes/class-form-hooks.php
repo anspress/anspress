@@ -147,14 +147,6 @@ class AP_Form_Hooks {
 						'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
 					),
 				),
-				'question_id' => array(
-					'label'    => __( 'Question ID', 'anspress-question-answer' ),
-					'type'     => 'input',
-					'subtype'  => 'hidden',
-					'sanitize' => 'absint',
-					'validate' => 'required,not_zero',
-					'value'    => $question_id,
-				),
 			),
 		);
 
@@ -179,13 +171,6 @@ class AP_Form_Hooks {
 				'max_length'   => 20,
 			);
 		}
-
-		$form['fields']['post_id'] = array(
-			'type'     => 'input',
-			'subtype'  => 'hidden',
-			'value'    => $editing_id,
-			'sanitize' => 'absint',
-		);
 
 		/**
 		 * Filter for modifying answer form `$args`.
@@ -464,6 +449,7 @@ class AP_Form_Hooks {
 	 */
 	public static function submit_answer_form( $manual = false ) {
 		$editing = false;
+		$question_id = ap_sanitize_unslash( 'question_id', 'r' );
 		$form = anspress()->get_form( 'answer' );
 
 		/**
@@ -474,7 +460,8 @@ class AP_Form_Hooks {
 		do_action( 'ap_submit_answer_form' );
 
 		$values = $form->get_values();
-		$question_id = $values['question_id']['value'];
+		// Store current values in session.
+		$form->save_values_session( $question_id );
 
 		// Check nonce and is valid form.
 		if ( false === $manual && ( ! $form->is_submitted() || ! ap_user_can_answer( $question_id ) ) ) {
@@ -493,8 +480,8 @@ class AP_Form_Hooks {
 
 		if ( ! empty( $values['post_id']['value'] ) ) {
 			$answer_args['ID'] = $values['post_id']['value'];
-			$editing = true;
-			$_post = ap_get_post( $answer_args['ID'] );
+			$editing           = true;
+			$_post             = ap_get_post( $answer_args['ID'] );
 
 			// Check if valid post type and user can edit.
 			if ( 'answer' !== $_post->post_type || ! ap_user_can_edit_answer( $_post ) ) {
@@ -588,6 +575,7 @@ class AP_Form_Hooks {
 			}
 		}
 
+		$form->delete_values_session( $question_id );
 		$form->after_save( false, array(
 			'post_id' => $post_id,
 		) );

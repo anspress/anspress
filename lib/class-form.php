@@ -442,6 +442,8 @@ class Form {
 	 * Get all values of fields.
 	 *
 	 * @return array|false
+	 * @since 4.1.0
+	 * @since 4.1.5 Return values even if there are errors.
 	 */
 	public function get_values() {
 		// if ( $this->have_errors() ) {
@@ -519,23 +521,27 @@ class Form {
 	 * Save current values to AnsPress session so that users unfinished question can
 	 * be retrieved later.
 	 *
+	 * @param integer $id Numerical id.
 	 * @return void
 	 * @since 4.1.5
 	 */
-	public function save_values_session() {
+	public function save_values_session( $id = '' ) {
 		$values = $this->get_values();
 
 		if ( ! empty( $values ) ) {
-			anspress()->session->set( $this->form_name, $values );
+			$id = empty( $id ) ? '' : '_' . $id;
+			anspress()->session->set( $this->form_name . $id, $values );
 		}
 	}
 
 	/**
 	 * Delete all form data stored in user session.
 	 *
+	 * @param integer $id Numerical id.
 	 * @return void
 	 */
-	public function delete_values_session() {
-		anspress()->session->delete( $this->form_name );
+	public function delete_values_session( $id = '' ) {
+		$id = empty( $id ) ? '' : '_' . $id;
+		anspress()->session->delete( $this->form_name . $id );
 	}
 }

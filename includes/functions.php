@@ -1882,7 +1882,7 @@ function ap_set_in_array( &$arr, $path, $val ) {
  *
  * @since unknown
  * @since 4.1.0 Moved from includes\ask-form.php. Deprecated first argument. Using new form class.
- * @since 4.1.5 Don't use ap_ajax as action. Set values here while editing.
+ * @since 4.1.5 Don't use ap_ajax as action. Set values here while editing. Get values form session if exists.
  *
  * @category haveTests
  */
@@ -1939,7 +1939,6 @@ function ap_ask_form( $deprecated = null ) {
 			$values['anonymous_name'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
 		}
 	} elseif ( ! empty( $session_values ) ) {
-		PC::debug($session_values);
 		// Set last session values if not editing.
 		$values = $session_values;
 	}
@@ -2038,7 +2037,21 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
  * @since 4.1.5 Don't use ap_ajax as action.
  */
 function ap_answer_form( $question_id, $editing = false ) {
-	if ( ! ap_user_can_answer( $question_id ) ) {
+	$editing = false;
+	$editing_id = ap_sanitize_unslash( 'id', 'r' );
+
+	// If post_id is empty then its not editing.
+	if ( ! empty( $editing_id ) ) {
+		$editing = true;
+	}
+
+	if ( $editing && ! ap_user_can_edit_answer( $editing_id ) ) {
+		echo '<p>' . esc_attr__( 'You cannot edit this answer.', 'anspress-question-answer' ) . '</p>';
+		return;
+	}
+
+	if ( ! $editing && ! ap_user_can_answer( $question_id ) ) {
+		echo '<p>' . esc_attr__( 'You do not have permission to answer this question.', 'anspress-question-answer' ) . '</p>';
 		return;
 	}
 
@@ -2048,10 +2061,39 @@ function ap_answer_form( $question_id, $editing = false ) {
 				'name'  => 'action',
 				'value' => 'ap_form_answer',
 			),
+			array(
+				'name'  => 'question_id',
+				'value' => (int) $question_id,
+			),
 		),
 	);
 
-	anspress()->get_form( 'answer' )->generate( $args );
+	$values = [];
+	$session_values = anspress()->session->get( 'form_answer_' . $question_id );
+
+	// Add value when editing post.
+	if ( $editing ) {
+		$answer = ap_get_post( $editing_id );
+
+		$form['editing']      = true;
+		$form['editing_id']   = $editing_id;
+		$form['submit_label'] = __( 'Update Answer', 'anspress-question-answer' );
+
+		$values['post_title']   = $answer->post_title;
+		$values['post_content'] = $answer->post_content;
+		$values['is_private']   = 'private_post' === $answer->post_status ? true : false;
+
+		if ( isset( $values['anonymous_name'] ) ) {
+			$fields = ap_get_post_field( 'fields', $answer );
+
+			$values['anonymous_name'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
+		}
+	} elseif ( ! empty( $session_values ) ) {
+		// Set last session values if not editing.
+		$values = $session_values;
+	}
+
+	anspress()->get_form( 'answer' )->set_values( $values )->generate( $args );
 }
 
 /**
