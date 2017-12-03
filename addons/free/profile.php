@@ -288,8 +288,6 @@ class AnsPress_Profile_Hooks {
 	 * Display user questions page.
 	 */
 	public static function question_page() {
-		global $questions;
-
 		$user_id = ap_current_user_id();
 		$args['ap_current_user_ignore'] = true;
 		$args['author'] = $user_id;
@@ -301,7 +299,7 @@ class AnsPress_Profile_Hooks {
 		*/
 		$args = apply_filters( 'ap_authors_questions_args', $args );
 
-		anspress()->questions = $questions = new Question_Query( $args );
+		anspress()->questions = new Question_Query( $args );
 
 		include ap_get_theme_location( 'addons/user/questions.php' );
 	}

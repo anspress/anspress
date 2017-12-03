@@ -39,8 +39,6 @@ class AP_Questions_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-		global $questions;
-
 		$instance = wp_parse_args( $instance, array(
 			'widget_title' => __( 'Questions', 'anspress-question-answer' ),
 			'order_by'     => 'active',
@@ -74,7 +72,7 @@ class AP_Questions_Widget extends WP_Widget {
 			);
 		}
 
-		$questions = ap_get_questions( $question_args );
+		anspress()->questions = ap_get_questions( $question_args );
 		echo '<div class="ap-widget-inner">';
 		ap_get_template_part( 'widgets/widget-questions' );
 		echo '</div>';

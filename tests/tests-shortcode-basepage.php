@@ -27,7 +27,7 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	 */
 	public function test_anspress_sc() {
 		$this->go_to( home_url() );
-		global $questions, $ap_shortcode_loaded;
+		global $ap_shortcode_loaded;
 		$this->assertNotEquals( true, $ap_shortcode_loaded );
 		// Make sure shortcode does not echo anything.
 		ob_start( );

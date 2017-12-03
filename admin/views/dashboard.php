@@ -103,7 +103,7 @@ class AnsPress_Dashboard {
 	 * Show latest questions.
 	 */
 	public static function anspress_latestq() {
-		global $questions, $wpdb;
+		global $wpdb;
 
 		$results = $wpdb->get_results( "SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'question' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" ); // db call okay, cache okay.
 
@@ -132,7 +132,7 @@ class AnsPress_Dashboard {
 		<div class="main">
 			<canvas id="latestquestion-chart" height="80"></canvas>
 
-			<?php $questions = ap_get_questions( array( 'ap_order_by' => 'newest', 'showposts' => 5 ) ); ?>
+			<?php anspress()->questions = ap_get_questions( array( 'ap_order_by' => 'newest', 'showposts' => 5 ) ); ?>
 
 			<?php if ( ap_have_questions() ) :   ?>
 				<ul class="post-list">

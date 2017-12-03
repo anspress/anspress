@@ -56,6 +56,13 @@ class AP_QA_Query_Hooks {
 					}
 				}
 
+				// Include user's session questions.
+				// $session_posts = anspress()->session->get( 'questions' );
+				// $ids = sanitize_comma_delimited( $session_posts );
+				// if ( ! empty( $ids ) ) {
+				// 	$sql['where'] = $sql['where'] . " OR ( {$wpdb->posts}.ID IN ({$ids}) )";
+				// }
+
 				// Replace post_status query.
 				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
 					$pos = $pos + strlen( $post_status );

@@ -84,7 +84,7 @@ class AnsPress_Category {
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
 	public static function category_page() {
-		global $questions, $question_category, $wp_query;
+		global $question_category, $wp_query;
 
 		$question_args = array(
 			'tax_query' => array(
@@ -99,7 +99,7 @@ class AnsPress_Category {
 		$question_category = get_queried_object();
 
 		if ( $question_category ) {
-			$questions = ap_get_questions( $question_args );
+			anspress()->questions = ap_get_questions( $question_args );
 
 			/**
 			 * This action can be used to show custom message before category page.
@@ -689,7 +689,7 @@ class AnsPress_Category {
 	 * @return array
 	 */
 	public static function ap_main_questions_args( $args ) {
-		global $questions, $wp;
+		global $wp;
 		$query = $wp->query_vars;
 
 		$categories_operator = ! empty( $wp->query_vars['ap_categories_operator'] ) ? $wp->query_vars['ap_categories_operator'] : 'IN';

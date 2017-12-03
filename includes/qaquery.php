@@ -257,10 +257,8 @@ function ap_get_post( $post = null ) { // @codingStandardsIgnoreLine
  * @return boolean
  */
 function ap_have_questions() {
-	global $questions;
-
-	if ( $questions ) {
-		return $questions->have_posts();
+	if ( anspress()->questions ) {
+		return anspress()->questions->have_posts();
 	}
 }
 
@@ -270,8 +268,9 @@ function ap_have_questions() {
  * @return Object
  */
 function ap_the_question() {
-	global $questions;
-	return $questions->the_question();
+	if ( anspress()->questions ) {
+		return anspress()->questions->the_question();
+	}
 }
 
 /**
@@ -280,8 +279,9 @@ function ap_the_question() {
  * @return integer
  */
 function ap_total_questions_found() {
-	global $questions;
-	return $questions->found_posts;
+	if ( anspress()->questions ) {
+		return anspress()->questions->found_posts;
+	}
 }
 
 /**
@@ -292,10 +292,8 @@ function ap_total_questions_found() {
  * @since 4.1.0 Check if global `$questions` exists.
  */
 function ap_reset_question_query() {
-	global $questions;
-
-	if ( $questions ) {
-		return $questions->reset_questions_data();
+	if ( anspress()->questions ) {
+		return anspress()->questions->reset_questions_data();
 	}
 }
 

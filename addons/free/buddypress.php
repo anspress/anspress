@@ -160,7 +160,6 @@ class AnsPress_BP_Hooks {
 	 * Callback for rendering questions page.
 	 */
 	public static function page_questions( $user_id = false, $paged = false, $only_posts = false ) {
-		global $questions;
 		$args['ap_current_user_ignore'] = true;
 		$args['showposts'] = 10;
 
@@ -181,7 +180,7 @@ class AnsPress_BP_Hooks {
 		 * @var array
 		 */
 		$args = apply_filters( 'ap_bp_questions_args', $args );
-		anspress()->questions = $questions = new Question_Query( $args );
+		anspress()->questions = new Question_Query( $args );
 
 		if ( false === $only_posts ) {
 			echo '<div class="ap-bp-head clearfix">';
@@ -197,12 +196,12 @@ class AnsPress_BP_Hooks {
 				ap_get_template_part( 'buddypress/question-item' );
 			endwhile;
 		}
-		
-		
+
+
 		if ( false === $only_posts ) {
 			echo '</div>';
 		}
-		
+
 		if ( $questions->max_num_pages > 1 && false === $only_posts ) {
 			$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'loadmore-questions' ), 'type' => 'questions', 'current' => 1, 'user_id' => bp_displayed_user_id() ] );
 			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more questions', 'anspress-question-answer' ) .'</a>';
@@ -249,11 +248,11 @@ class AnsPress_BP_Hooks {
 				ap_get_template_part( 'buddypress/answer-item' );
 			endwhile;
 		}
-		
+
 		if ( false === $only_posts ) {
 			echo '</div>';
 		}
-		
+
 		if ( $answers->max_num_pages > 1 && false === $only_posts ) {
 			$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => 1, 'user_id' => bp_displayed_user_id(), 'order_by' => ap_sanitize_unslash( 'order_by', 'r' ) ] );
 			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more answers', 'anspress-question-answer' ) . '</a>';
@@ -558,8 +557,7 @@ class AnsPress_BP_Hooks {
 			SELF::page_questions( $user_id, $paged, true );
 			$html = ob_get_clean();
 
-			global $questions;
-			$paged = $questions->max_num_pages > $paged ? $paged : false;
+			$paged = anspress()->questions->max_num_pages > $paged ? $paged : false;
 
 			ap_ajax_json(array(
 				'success'  => true,

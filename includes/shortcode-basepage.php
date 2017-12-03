@@ -51,7 +51,7 @@ class AnsPress_BasePage_Shortcode {
 	 * @since 3.0.0 Added new attribute `hide_list_head` and `attr_order_by`.
 	 */
 	public function anspress_sc( $atts, $content = '' ) {
-		global $questions, $ap_shortcode_loaded;
+		global $ap_shortcode_loaded;
 
 		// Check if AnsPress shortcode already loaded.
 		if ( true === $ap_shortcode_loaded ) {

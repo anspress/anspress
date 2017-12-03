@@ -132,7 +132,7 @@ function ap_have_parent_post( $post_id = false ) {
  * @return string
  */
 function ap_pagination( $current = false, $total = false, $format = '?paged=%#%', $page_num_link = false ) {
-	global $ap_max_num_pages, $ap_current, $questions;
+	global $ap_max_num_pages, $ap_current;
 
 	if ( is_front_page() ) {
 		$format = '';
@@ -149,8 +149,8 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 
 	if ( ! empty( $ap_max_num_pages ) ) {
 		$total = $ap_max_num_pages;
-	} elseif ( false === $total && isset( $questions->max_num_pages ) ) {
-		$total = $questions->max_num_pages;
+	} elseif ( false === $total && isset( anspress()->questions->max_num_pages ) ) {
+		$total = anspress()->questions->max_num_pages;
 	}
 
 	if ( false === $page_num_link ) {

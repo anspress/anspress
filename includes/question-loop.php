@@ -73,8 +73,6 @@ function ap_get_question( $question_id ) {
  * @since 4.1.0 Added new argument `$paged`.
  */
 function ap_questions_the_pagination( $paged = false ) {
-	global $questions;
-
 	if ( is_front_page() ) {
 		$paged = get_query_var( 'page' );
 	} elseif ( get_query_var( 'ap_paged' ) ) {
@@ -83,5 +81,5 @@ function ap_questions_the_pagination( $paged = false ) {
 		$paged = get_query_var( 'paged' );
 	}
 
-	ap_pagination( $paged, $questions->max_num_pages );
+	ap_pagination( $paged, anspress()->questions->max_num_pages );
 }

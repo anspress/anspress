@@ -29,7 +29,7 @@ class AnsPress_Common_Pages {
 	 * Layout of base page
 	 */
 	public static function base_page() {
-		global $questions, $wp;
+		global $wp;
 
 		$keywords   = get_search_query();
 
@@ -53,7 +53,7 @@ class AnsPress_Common_Pages {
 		 */
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
-		anspress()->questions = $questions = new Question_Query( $args );
+		anspress()->questions = new Question_Query( $args );
 		ap_get_template_part( 'archive' );
 	}
 

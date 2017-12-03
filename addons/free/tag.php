@@ -69,7 +69,7 @@ class AnsPress_Tag {
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
 	public static function tag_page() {
-		global $questions, $question_tag;
+		global $question_tag;
 		$question_tag = get_queried_object();
 
 		$question_args = array(
@@ -86,7 +86,7 @@ class AnsPress_Tag {
 		$question_args = apply_filters( 'ap_tag_question_query_args', $question_args );
 
 		if ( $question_tag ) {
-			$questions = ap_get_questions( $question_args );
+			anspress()->questions = ap_get_questions( $question_args );
 			include( ap_get_theme_location( 'addons/tag/tag.php' ) );
 		}
 
@@ -502,7 +502,7 @@ class AnsPress_Tag {
 	 * @return array
 	 */
 	public static function ap_main_questions_args( $args ) {
-		global $questions, $wp;
+		global $wp;
 		$query = $wp->query_vars;
 
 		$current_filter = ap_get_current_list_filters( 'tag' );
