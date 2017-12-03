@@ -100,11 +100,13 @@ class Form {
 	/**
 	 * Prepare input field.
 	 *
-	 * @return void
+	 * @return AnsPress\Form
+	 * @since 4.1.0
+	 * @since 4.1.5 Return current instance.
 	 */
 	public function prepare() {
 		if ( empty( $this->args['fields'] ) ) {
-			return;
+			return $this;
 		}
 
 		$fields = ap_sort_array_by_order( $this->args['fields'] );
@@ -131,6 +133,8 @@ class Form {
 
 		$this->prepared = true;
 		$this->sanitize_validate();
+
+		return $this;
 	}
 
 	/**

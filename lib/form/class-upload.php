@@ -248,9 +248,11 @@ class Upload extends Field {
 	 *
 	 * @param array $file File array.
 	 * @return void
+	 * @since 4.1.0
+	 * @since 4.1.5 Fixed: custom mimes are not working.
 	 */
 	private function upload_file( $file ) {
-		$id = ap_upload_user_file( $file );
+		$id = ap_upload_user_file( $file, true, '', $this->get( 'upload_options.allowed_mimes' ) );
 		if ( is_wp_error( $id ) ) {
 			$this->add_error( $id->get_error_code(), $id->get_error_message() );
 		} else {

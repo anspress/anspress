@@ -103,8 +103,9 @@ class AnsPress_Uploader {
  * @param boolean $parent_post    Attachment parent post ID.
  * @return integer|boolean|object
  * @since  3.0.0 Added new argument `$post_parent`.
+ * @since  4.1.5 Added new argument `$mimes` so that default mimes can be overridden.
  */
-function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '' ) {
+function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '', $mimes = false ) {
 	require_once ABSPATH . 'wp-admin/includes/admin.php';
 
 	// Check if file is greater then allowed size.
@@ -114,7 +115,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '' )
 
 	$file_return = wp_handle_upload( $file, array(
 		'test_form' => false,
-		'mimes'     => ap_allowed_mimes(),
+		'mimes'     => false === $mimes ? ap_allowed_mimes() : $mimes,
 	));
 
 	if ( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
