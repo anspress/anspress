@@ -78,16 +78,15 @@
 					if(data.action){
 						self.model.set(data.action);
 					}
-
-					if(data.postmessage) self.renderPostMessage(data.postmessage);
+					self.renderPostMessage(data);
 					if(data.deletePost) AnsPress.trigger('deletePost', data.deletePost);
 					if(data.answersCount) AnsPress.trigger('answerCountUpdated', data.answersCount);
 				}
 			});
 		},
-		renderPostMessage: function(message){
-			if(!_.isEmpty(message))
-				$('[apid="'+this.postID+'"]').find('postmessage').html(message);
+		renderPostMessage: function(data){
+			if(!_.isEmpty(data.postmessage))
+				$('[apid="'+this.postID+'"]').find('postmessage').html(data.postmessage);
 			else
 				$('[apid="'+this.postID+'"]').find('postmessage').html('');
 		},

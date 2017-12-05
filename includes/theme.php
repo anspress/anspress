@@ -544,6 +544,7 @@ function ap_current_page() {
  * @return array
  */
 function ap_assets() {
+
 	$assets = array(
 		'js' => array(
 			'form'          => [ 'dep' => [ 'jquery' ], 'footer' => true ],
