@@ -932,3 +932,28 @@ function ap_get_current_page_template() {
 
 	return 'content-none.php';
 }
+
+/**
+ * Return ajax comment data.
+ *
+ * @param object $c Comment object.
+ * @return array
+ * @since 4.0.0
+ * @deprecated 4.1.5
+ */
+function ap_comment_ajax_data( $c, $actions = true ) {
+	return array(
+		'ID'        => $c->comment_ID,
+		'post_id'   => $c->comment_post_ID,
+		'link'      => get_comment_link( $c ),
+		'avatar'    => get_avatar( $c->user_id, 30 ),
+		'user_link' => ap_user_link( $c->user_id ),
+		'user_name' => ap_user_display_name( $c->user_id ),
+		'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
+		'time'      => ap_human_time( $c->comment_date_gmt, false ),
+		'content'   => $c->comment_content,
+		'approved'  => $c->comment_approved,
+		'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
+		'actions' 	 => $actions ? ap_comment_actions( $c ) : [],
+	);
+}

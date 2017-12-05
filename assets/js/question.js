@@ -431,20 +431,22 @@
 
 			if(data.success){
 				AnsPress.hideModal('commentForm');
-
-				if(this.comments && data.action === 'new-comment')
-					this.comments.add(data.comment);
+				if(data.action === 'new-comment')
+					$('#comments-'+data.post_id).html(data.html);
 
 				if(data.action === 'edit-comment'){
-					$('#comment-'+data.comment.ID+' .comment-content').html(data.comment.content);
-					$('#comment-'+data.comment.ID).css('backgroundColor', 'rgba(255, 235, 59, 1)');
+					$old = $('#comment-'+data.comment_id);
+					$(data.html).insertAfter($old);
+					$old.remove();
+
+					$('#comment-'+data.comment_id).css('backgroundColor', 'rgba(255, 235, 59, 1)');
 					setTimeout(function(){
-						$('#comment-'+data.comment.ID).removeAttr('style');
+						$('#comment-'+data.comment_id).removeAttr('style');
 					}, 500)
 				}
 
 				if(data.commentsCount)
-					AnsPress.trigger('commentCount', {count: data.commentsCount, postID: data.comment.post_id });
+					AnsPress.trigger('commentCount', {count: data.commentsCount, postID: data.post_id });
 			}
 		}
 	});
@@ -454,7 +456,7 @@
 			'comment/:commentID': 'commentRoute',
 			'comment/:commentID/edit': 'editCommentsRoute',
 			'comments/:postID/new': 'newCommentsRoute',
-			'comments/:postID/page/:paged': 'commentsRoute',
+			'comments/:postID/all': 'commentsRoute',
 			'comments/:postID': 'commentsRoute',
 		},
 		commentRoute: function (commentID) {
@@ -501,26 +503,10 @@
 		},
 		commentsRoute: function(postId, paged){
 			self = this;
-			paged = paged||1;
-
-			AnsPress.hideModal('comments', false);
-
-			$modal = AnsPress.modal('comments', {
-				content: '',
-				size: 'medium',
-				hideCb: function(){
-					AnsPress.removeHash();
-				}
-			});
-			AnsPress.showLoading($modal.$el.find('.ap-modal-content'));
 			AnsPress.ajax({
-				data: {post_id: postId, ap_ajax_action: 'load_comments', paged: paged},
+				data: {post_id: postId, ap_ajax_action: 'load_comments'},
 				success: function(data){
-					AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
-					if(data.success){
-						$modal.setTitle(data.modal_title);
-						$modal.setContent(data.html);
-					}
+					$('#comments-'+postId).html(data.html);
 				}
 			});
 		},

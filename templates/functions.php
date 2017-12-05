@@ -54,7 +54,6 @@ function ap_scripts_front() {
 	  echo 'apTemplateUrl = "' . ap_get_theme_url( 'js-template', false, false ) . '";';
 	  echo 'apQuestionID = "' . get_question_id() . '";';
 	  echo 'aplang = ' . wp_json_encode( $aplang ) . ';';
-	  echo 'apShowComments = "' . (bool) ap_opt( 'show_comments_default' ) . '";';
 	  echo 'disable_q_suggestion = "' . (bool) ap_opt( 'disable_q_suggestion' ) . '";';
 	echo '</script>';
 }

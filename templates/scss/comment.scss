@@ -26,13 +26,11 @@
 			position: relative;
 		}
 	}
-	a.ap-view-comments {
+	.ap-comments-footer a {
     margin-top: 5px;
-    display: block;
     color: #2488B7;
     font-size: 12px;
-    font-weight: bold;
-    padding: 0 10px;
+    margin-right: 10px;
 	}
 	apcomment{
 		display: block;

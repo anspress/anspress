@@ -66,6 +66,11 @@
 									printf( '<time itemprop="datePublished" datetime="%1$s">%2$s</time>', ap_get_time( get_the_ID(), 'c' ), $time );
 									?>
 								</a>
+								<span class="ap-comments-count">
+									<?php $comment_count = get_comments_number(); ?>
+									<span itemprop="commentCount"><?php echo (int) $comment_count; ?></span>
+									<?php printf( _n( 'Comment', 'Comments', $comment_count, 'anspress-question-answer' ) ); ?>
+								</span>
 							</div>
 
 							<!-- Start ap-content-inner -->

@@ -55,7 +55,6 @@ class AnsPress_Comment_Hooks {
 
 		$args = array(
 			'show_more' => false,
-			'paged'     => $paged,
 		);
 
 		if ( ! empty( $_comment ) ) {
@@ -71,21 +70,8 @@ class AnsPress_Comment_Hooks {
 
 		$result = array(
 			'success'     => true,
-			'modal_title' => sprintf(
-				// Translators: %s contains post type.
-				__( 'Comments on %s', 'anspress-question-answer' ),
-				$type
-			),
 			'html'        => $html,
 		);
-
-		if ( $paged > 1 ) {
-			$result['modal_title'] .= sprintf(
-				// Translators: %d contains current paged value.
-				__( ' | Page %d', 'anspress-question-answer' ),
-				$paged
-			);
-		}
 
 		ap_ajax_json( $result );
 	}
@@ -428,15 +414,15 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 	}
 
 	$user_id = get_current_user_id();
+	$paged = (int) max( 1, ap_isset_post_value( 'paged', 1 ) );
 
 	$default = array(
 		'post_id'   => $_post->ID,
 		'order'     => 'ASC',
 		'status'    => 'approve',
-		'number' 	  => $single ? ap_opt( 'comment_number' ) : 10,
+		'number' 	  => $single ? ap_opt( 'comment_number' ) : 99,
 		//'type'      => 'anspress',
 		'show_more' => true,
-		'paged'     => 1,
 		'no_found_rows' => false,
 	);
 
@@ -450,53 +436,28 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 	}
 
 	$args = wp_parse_args( $args, $default );
-	$args['offset'] = ceil( ( (int) $args['paged'] - 1 ) * (int) $args['number'] );
+	if ( $paged > 1 ) {
+		$args['offset'] = ap_opt( 'comment_number' );
+	}
 
 	$query = new WP_Comment_Query( $args );
-
 	if ( 0 == $query->found_comments && ! $single ) {
 		echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		return;
 	}
-
-	echo '<apcomments id="comments-' . esc_attr( $_post->ID ) . '" class="have-comments"><div class="ap-comments">';
 
 	foreach ( $query->comments as $c ) {
 		$comment = $c;
 		ap_get_template_part( 'comment' );
 	}
 
+	echo '<div class="ap-comments-footer">';
 	if ( $query->max_num_pages > 1 && $single ) {
-		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '">' . esc_attr__( 'View all comments', 'anspress-question-answer' ) . '</a>';
-	} elseif ( $query->max_num_pages > 1 ) {
-		ap_pagination( $args['paged'], $query->max_num_pages, '?paged=%#%', get_permalink( $_post ) . '#/comments/' . $_post->ID . '/page/%#%' );
+		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '/all">' . sprintf( __( 'Show %s more comments', 'anspress-question-answer' ), $query->found_comments - ap_opt( 'comment_number' ) ) . '</a>';
 	}
 
-	echo '</div></apcomments>';
-}
-
-/**
- * Return ajax comment data.
- *
- * @param object $c Comment object.
- * @return array
- * @since 4.0.0
- */
-function ap_comment_ajax_data( $c, $actions = true ) {
-	return array(
-		'ID'        => $c->comment_ID,
-		'post_id'   => $c->comment_post_ID,
-		'link'      => get_comment_link( $c ),
-		'avatar'    => get_avatar( $c->user_id, 30 ),
-		'user_link' => ap_user_link( $c->user_id ),
-		'user_name' => ap_user_display_name( $c->user_id ),
-		'iso_date'  => date( 'c', strtotime( $c->comment_date ) ),
-		'time'      => ap_human_time( $c->comment_date_gmt, false ),
-		'content'   => $c->comment_content,
-		'approved'  => $c->comment_approved,
-		'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
-		'actions' 	 => $actions ? ap_comment_actions( $c ) : [],
-	);
+	echo '<a class="ap-new-comment" href="#/comments/' . $_post->ID . '/new">' . __( 'Add a comment', 'anspress-question-answer' ) . '</a>';
+	echo '</div>';
 }
 
 /**
@@ -507,5 +468,7 @@ function ap_comment_ajax_data( $c, $actions = true ) {
  * @since 4.1.2
  */
 function ap_post_comments() {
+	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '" class="have-comments">';
 	ap_the_comments( null, [], true );
+	echo '</apcomments>';
 }

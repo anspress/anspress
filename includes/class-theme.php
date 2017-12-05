@@ -280,7 +280,7 @@ class AnsPress_Theme {
 	 */
 	public static function anspress_basepage_template( $template ) {
 		if ( is_anspress() ) {
-			$templates = [ 'anspress.php', 'page.php' ];
+			$templates = [ 'anspress.php', 'page.php', 'index.php' ];
 
 			if ( is_page() ) {
 				$_post = get_queried_object();

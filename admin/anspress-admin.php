@@ -1179,12 +1179,6 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'show_comments_default' => array(
-					'label' => __( 'Load comments', 'anspress-question-answer' ),
-					'desc'  => __( 'Show question and answer comments by default', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['show_comments_default'],
-				),
 				'comment_number' => array(
 					'label'   => __( 'Numbers of comments to show', 'anspress-question-answer' ),
 					'desc'    => __( 'Numbers of comments to load in each query?', 'anspress-question-answer' ),

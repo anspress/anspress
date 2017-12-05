@@ -617,6 +617,8 @@ class AP_Form_Hooks {
 	 * @since 4.1.0
 	 */
 	public static function submit_comment_form() {
+		global $comment;
+
 		$editing = false;
 		$form = anspress()->get_form( 'comment' );
 
@@ -684,12 +686,19 @@ class AP_Form_Hooks {
 				$c = get_comment( $comment_id );
 				$count = get_comment_count( $c->comment_post_ID );
 
+				ob_start();
+				$comment = $c;
+				ap_get_template_part( 'comment' );
+				$html = ob_get_clean();
+
 				$result = array(
 					'success'       => true,
-					'comment'       => ap_comment_ajax_data( $c ),
 					'action' 		    => 'edit-comment',
 					'commentsCount' => [ 'text' => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ), 'number' => $count['all'], 'unapproved' => $count['awaiting_moderation'] ],
 					'snackbar'      => [ 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ],
+					'html' => $html,
+					'post_id' => $c->comment_post_ID,
+					'comment_id' => $c->comment_ID,
 				);
 
 				ap_ajax_json( $result );
@@ -761,9 +770,12 @@ class AP_Form_Hooks {
 
 			$count = get_comment_count( $c->comment_post_ID );
 
+			ob_start();
+			ap_the_comments( $c->comment_post_ID );
+			$html = ob_get_clean();
+
 			$result = array(
 				'success'    => true,
-				'comment'      => ap_comment_ajax_data( $c ),
 				'action' 		  => 'new-comment',
 				'commentsCount' => array(
 					'text'        => sprintf(
@@ -775,6 +787,9 @@ class AP_Form_Hooks {
 					'unapproved'  => $count['awaiting_moderation'],
 				),
 				'snackbar'   => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
+				'html' => $html,
+				'post_id' => $c->comment_post_ID,
+				'comment_id' => $c->comment_ID,
 			);
 
 			ap_ajax_json( $result );
