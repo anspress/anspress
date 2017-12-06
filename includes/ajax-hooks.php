@@ -572,6 +572,13 @@ class AnsPress_Ajax {
 		}
 	}
 
+	/**
+	 * Ajax callback for `ap_search_tags`. This was called by tags field
+	 * for fetching tags suggestions.
+	 *
+	 * @return void
+	 * @since 4.1.5
+	 */
 	public static function search_tags() {
 		if ( ! ap_verify_default_nonce() ) {
 			wp_send_json( '{}' );

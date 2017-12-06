@@ -270,7 +270,6 @@ class AP_Activate {
 		ap_create_base_page();
 
 		ap_opt( 'ap_flush', 'true' );
-		flush_rewrite_rules( false );
 	}
 
 	/**

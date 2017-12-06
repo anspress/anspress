@@ -1,4 +1,5 @@
 <?php
+error_reporting( E_ALL );
 
 define( 'WP_USE_THEMES', false );
 $_tests_dir = getenv('WP_TESTS_DIR');
@@ -15,11 +16,9 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 require $_tests_dir . '/includes/bootstrap.php';
 
-activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
+$ret = activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
 
 echo "Installing AnsPress...\n";
-
-// Install AnsPress
 AP_Activate::get_instance();
 
 global $current_user;

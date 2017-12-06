@@ -30,7 +30,14 @@
 			<div class="ap-question-meta clearfix">
 				<?php echo ap_question_metas(); // xss ok. ?>
 			</div>
-
+			<?php
+				/**
+				 * Action hook triggered after single question meta.
+				 *
+				 * @since 4.1.5
+				 */
+				do_action( 'ap_after_question_meta' );
+			?>
 			<div ap="question" apid="<?php the_ID(); ?>">
 				<div id="question" role="main" class="ap-content">
 					<div class="ap-single-vote"><?php ap_vote_btn(); ?></div>

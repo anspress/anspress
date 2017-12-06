@@ -78,7 +78,6 @@
     float: right;
 	}
 	.ap-question-meta {
-		margin-bottom: 25px;
 		>.ap-display-meta-item {
 			display: inline-block;
 			margin-right: 20px;
@@ -121,6 +120,9 @@
 				color: #fff;
 			}
 		}
+	}
+	#question {
+    margin-top: 20px;
 	}
 	.ap-user-meta {
 		a {
