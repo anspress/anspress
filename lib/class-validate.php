@@ -216,27 +216,37 @@ class Validate {
 	 * Sanitize keys and values. Exclude new tags if not allowed.
 	 * Only include numbers of max tags allowed in field option.
 	 *
-	 * @param null|array $value      Arrays of tags to sanitize.
-	 * @param array      $options    Tags options.
-	 * @param array      $js_options Tags JavaScript options.
+	 * @param null|array $value Arrays of tags to sanitize.
+	 * @param array      $args  Tags JavaScript options.
 	 *
 	 * @return array|null Return sanitized tag array.
+	 * @since 4.1.0
+	 * @since 4.1.5 Improved tags validation.
 	 */
-	public static function sanitize_tags_field( $value = null, $options, $js_options ) {
+	public static function sanitize_tags_field( $value = null, $args = [] ) {
 		if ( ! empty( $value ) ) {
 			$i = 0;
 			$sanitized = [];
-			foreach ( (array) $value as $tag_slug => $tag_label ) {
-				$i++;
+			$existing_tags = [];
 
-				// Include new tags only if add_tag option is true.
-				if ( true === $js_options['add_tag'] || ( false === $js_options['add_tag'] && in_array( $tag_slug, array_keys( $options ), true ) ) ) {
-					$sanitized[ sanitize_title( $tag_slug ) ] = sanitize_text_field( $tag_label );
+			foreach ( (array) $value as $tag ) {
+				if ( is_numeric( $tag ) ) {
+					$existing_tags[] = $tag;
+				} else {
+					$sanitized[] = sanitize_text_field( $tag );
+				}
+			}
 
-					// Only output max numbers of tags allowed.
-					if ( $js_options['max_tags'] === $i ) {
-						break;
-					}
+			$terms = get_terms( array(
+				'taxonomy'   => 'question_tag',
+				'include'    => $existing_tags,
+				'fields'     => 'names',
+				'hide_empty' => false,
+			) );
+
+			if ( $terms ) {
+				foreach ( $terms as $tname ) {
+					$sanitized[] = $tname;
 				}
 			}
 

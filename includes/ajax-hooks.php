@@ -63,7 +63,8 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'wp_ajax_nopriv_ap_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11, 0 );
 		anspress()->add_action( 'wp_ajax_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
-
+		anspress()->add_action( 'wp_ajax_ap_search_tags', __CLASS__, 'search_tags' );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_search_tags', __CLASS__, 'search_tags' );
 	}
 
 	/**
@@ -569,5 +570,36 @@ class AnsPress_Ajax {
 				) );
 			}
 		}
+	}
+
+	public static function search_tags() {
+		if ( ! ap_verify_default_nonce() ) {
+			wp_send_json( '{}' );
+		}
+
+		$q = ap_sanitize_unslash( 'q', 'r' );
+		$terms = get_terms(array(
+			'taxonomy'   => 'question_tag',
+			'search'     => $q,
+			'count'      => true,
+			'number'     => 20,
+			'hide_empty' => false,
+			'orderby'    => 'count',
+		));
+
+		$format  = [];
+
+		if ( $terms ) {
+			foreach ( $terms as $t ) {
+				$format[] = array(
+					'term_id'     => $t->term_id,
+					'name'        => $t->name,
+					'description' => $t->description,
+					'count'       => sprintf( _n( '%d Question', '%d Questions', $t->count, 'anspress-question-answer' ), $t->count ),
+				);
+			}
+		}
+
+		wp_send_json( $format );
 	}
 }

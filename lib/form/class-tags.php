@@ -41,23 +41,18 @@ class Tags extends Field {
 			'label'      => __( 'AnsPress Tags Field', 'anspress-question-answer' ),
 			'array_max'  => 3,
 			'array_min'  => 2,
-			'js_options' => [],
 			'terms_args'  => array(
 				'taxonomy'   => 'question_tag',
 				'hide_empty' => false,
 				'fields'     => 'id=>name',
 			),
 			'options' => 'terms',
-		) );
-
-		$this->args['js_options'] = wp_parse_args( $this->args['js_options'], array(
-			'label_no_tags'       => __( 'No tags found!', 'anspress-question-answer' ),
-			'label_no_matching'   => __( 'No matching tags found!', 'anspress-question-answer' ),
-			'label_add_new'       => __( 'Add New Tag.', 'anspress-question-answer' ),
-			'label_max_tag_added' => __( 'You have already added maximum numbers of tags allowed.', 'anspress-question-answer' ),
-			'add_tag'             => true,
-			'min_tags'            => $this->args['array_min'],
-			'max_tags'            => $this->args['array_max'],
+			'js_options' => array(
+				'maxItems' => $this->args['array_max'],
+				'form'     => $this->form_name,
+				'id'       => $this->id(),
+				'field'    => $this->field_name,
+			),
 		) );
 
 		// Call parent prepare().
@@ -75,7 +70,7 @@ class Tags extends Field {
 	 * @return array
 	 */
 	protected function sanitize_cb_args( $val ) {
-		return [ $val, $this->get_options(), $this->get( 'js_options' ) ];
+		return [ $val, $this->args ];
 	}
 
 	/**
@@ -87,14 +82,33 @@ class Tags extends Field {
 		$options = $this->get( 'options' );
 
 		if ( is_string( $options ) && 'terms' === $options ) {
-			return get_terms( $this->get( 'terms_args', [] ) );
-		}
+			$options = [];
+			if ( ! empty( $this->value() ) ) {
+				$value = $this->value();
+				$terms = get_terms( array(
+					'taxonomy'   => 'question_tag',
+					'hide_empty' => false,
+					'name'       => $value,
+					'count'      => true,
+				) );
+				if ( $terms ) {
+					foreach ( $terms as $tag ) {
+						$options[] = array(
+							'term_id'     => $tag->term_id,
+							'name'        => $tag->name,
+							'description' => $tag->description,
+							'count'       => $tag->count,
+						);
+					}
+				}
+			}
 
-		if ( is_string( $options ) && 'posts' === $options ) {
+			return $options;
+		} elseif ( is_string( $options ) && 'posts' === $options ) {
 			return wp_list_pluck( get_posts( $this->get( 'posts_args', [] ) ), 'post_title', 'ID' );
 		}
 
-		return (array) $options;
+		return [];
 	}
 
 	/**
@@ -106,29 +120,27 @@ class Tags extends Field {
 		parent::field_markup();
 
 		$options = $this->get_options();
+		$value = ! empty( $options) ? implode( ',', wp_list_pluck( $options, 'term_id' ) ) : '';
+		$type = is_string( $options ) ? $options : 'tags';
 
-		$js_options = $this->get( 'js_options' );
-		$js_options_str = is_array( $js_options ) ? ' data-options="' . esc_attr( esc_js( wp_json_encode( $js_options ) ) ) . '"' : '';
+		$this->add_html( '<input type="text" id="' . $this->id() . '" data-type="' . $type . '" data-options="' . esc_js( wp_json_encode( $this->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" ap-tag-field' . $this->custom_attr() . ' name="' . esc_attr( $this->field_name ) . '" value="' . $value . '" />' );
 
-		$this->add_html( '<div class="ap-tag-wrap" data-role="ap-tags" data-name="' . esc_attr( $this->field_name ) . '"' . $js_options_str . ' data-id="' . sanitize_html_class( $this->field_name ) . '">' );
-
-		$i = 1;
-		// Populate already selected tags.
-		foreach ( (array) $this->value() as $key => $label ) {
-			$i++;
-			$this->add_html( '<span class="ap-tag-item" data-val="' . esc_attr( $key ) . '">' . esc_attr( $label ) . '<input type="hidden" name="' . esc_attr( $this->field_name ) . '[' . esc_attr( $key ) . ']" value="' . esc_attr( $label ) . '" /></span>' );
-		}
-
-		$this->add_html( '<input type="text" id="' . sanitize_html_class( $this->field_name ) . '" class="ap-tags-input" autocomplete="off"' . $this->custom_attr() . ' />' );
-
-		if ( $options ) {
-			$this->add_html( '<script type="application/json">' . wp_json_encode( $options ) . '</script>' );
-		}
-
-		$this->add_html( '</div>' );
+		$this->add_html( '<script id="' . $this->id() . '-options" type="application/json">' . wp_json_encode( $options ) . '</script>' );
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+	}
+
+	/**
+	 * Get POST (unsafe) value of a field.
+	 *
+	 * @return mixed
+	 */
+	public function unsafe_value() {
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		if ( isset( $request_value ) ) {
+			return explode( ',', wp_unslash( $request_value ) );
+		}
 	}
 
 }

@@ -544,11 +544,12 @@ function ap_current_page() {
  * @return array
  */
 function ap_assets() {
+	wp_register_script( 'selectize', ANSPRESS_URL . 'assets/js/min/selectize.min.js', [ 'jquery' ] );
 
 	$assets = array(
 		'js' => array(
 			'form'          => [ 'dep' => [ 'jquery' ], 'footer' => true ],
-			'main'          => [ 'dep' => [ 'jquery', 'anspress-form', 'underscore', 'backbone' ], 'footer' => true ],
+			'main'          => [ 'dep' => [ 'jquery', 'anspress-form', 'underscore', 'backbone', 'selectize' ], 'footer' => true ],
 			'theme' 				=> [ 'theme' => true, 'dep' => [ 'anspress-main' ], 'footer' => true ],
 		),
 		'css' => array(

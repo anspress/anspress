@@ -149,7 +149,7 @@ class Upload extends Field {
 	/**
 	 * Get POST (unsafe) value of a field.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function unsafe_value() {
 		$request_value = $this->get( $this->id( $this->field_name ), null, $_FILES );
