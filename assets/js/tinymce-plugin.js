@@ -16,7 +16,7 @@
 
         //jQuery(e.content).find('').
         e.content = e.content.replace(/<img([^>]+data-apimagename.*?[\w\W]+?)\/>/g, function(match, t) {
-          regex = /data-apimagename\=\"([\S+]*)\"/g;
+          regex = /data-apimagename\=\"(.*)\"/g;
           apimagename = regex.exec(match);
 
           regex = /alt\=\"([^"]*)\"/g;
