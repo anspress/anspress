@@ -84,8 +84,6 @@ class AnsPress_Category {
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
 	public static function category_page() {
-		global $question_category, $wp_query;
-
 		$question_args = array(
 			'tax_query' => array(
 				array(

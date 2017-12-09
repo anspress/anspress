@@ -2221,6 +2221,13 @@ function ap_main_pages() {
 		),
 	);
 
+	/**
+	 * Hook for filtering main pages of AnsPress. Custom main pages
+	 * can be registered using this hook.
+	 *
+	 * @param array $pages Array of pages.
+	 * @since 4.1.5
+	 */
 	return apply_filters( 'ap_main_pages', $pages );
 }
 

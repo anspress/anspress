@@ -25,9 +25,9 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	 * @covers AnsPress::setup_constants
 	 */
 	public function test_constants() {
-		$tests_dir = 'tests/';
-		$plugin_dir = str_replace( 'tests/', '', wp_normalize_path( plugin_dir_path( __FILE__ ) ) );
-		$plugin_url = str_replace( 'tests/', '', plugin_dir_url( __FILE__ ) );
+		$tests_dir = 'tests/unit/';
+		$plugin_dir = str_replace( $tests_dir, '', wp_normalize_path( plugin_dir_path( __FILE__ ) ) );
+		$plugin_url = str_replace( $tests_dir, '', plugin_dir_url( __FILE__ ) );
 
 		$this->assertSame( ANSPRESS_URL, $plugin_url );
 		$this->assertSame( ANSPRESS_DIR, $plugin_dir );

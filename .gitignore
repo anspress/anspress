@@ -9,3 +9,4 @@
 /.sass-cache
 *.bak
 *~
+/vendor

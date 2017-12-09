@@ -11,7 +11,8 @@
 	>
 	<testsuites>
 		<testsuite>
-			<directory prefix="tests-" suffix=".php">./tests/</directory>
+			<directory prefix="tests-" suffix=".php">./tests/unit/</directory>
+			<!-- <directory suffix=".php">./tests/acceptance/</directory> -->
 		</testsuite>
 	</testsuites>
 	<filter>

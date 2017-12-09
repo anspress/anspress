@@ -257,6 +257,9 @@ class AnsPress_Admin_Ajax {
 			ap_activate_addon( $addon_id );
 		}
 
+		// Delete page check transient.
+		delete_transient( 'ap_pages_check' );
+
 		ap_ajax_json( array(
 			'success'  => true,
 			'addon_id' => $addon_id,
