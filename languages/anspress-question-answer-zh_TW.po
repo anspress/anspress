@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-11-24 06:43:33+00:00\n"
+"POT-Creation-Date: 2017-12-10 05:12:04+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:21+0530\n"
 "Last-Translator: Tunghua Tai <tunghua@me.com>\n"
 "Language-Team: \n"
@@ -60,20 +60,20 @@ msgstr ""
 msgid "Q&A"
 msgstr ""
 
-#: addons/free/buddypress.php:107 addons/free/buddypress.php:188
+#: addons/free/buddypress.php:107 addons/free/buddypress.php:187
 #: addons/free/profile.php:39 addons/free/profile.php:151
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:2128 includes/options.php:102
+#: includes/functions.php:2189 includes/options.php:102
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
-#: widgets/questions.php:45 widgets/questions.php:87
+#: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
 msgstr "問題討論"
 
-#: addons/free/buddypress.php:108 addons/free/buddypress.php:236
+#: addons/free/buddypress.php:108 addons/free/buddypress.php:238
 #: addons/free/profile.php:40 addons/free/profile.php:158
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
 #: includes/post-types.php:160 includes/theme.php:370
-#: widgets/question_stats.php:49 widgets/questions.php:119
+#: widgets/question_stats.php:49 widgets/questions.php:117
 msgid "Answers"
 msgstr "回答數"
 
@@ -81,73 +81,74 @@ msgstr "回答數"
 msgid "No AnsPress template found for rendering this page."
 msgstr ""
 
-#: addons/free/buddypress.php:204
+#: addons/free/buddypress.php:206
 #, fuzzy
 msgid "Load more questions"
 msgstr "載入更多對話"
 
-#: addons/free/buddypress.php:253 templates/addons/user/answers.php:29
+#: addons/free/buddypress.php:257 templates/addons/user/answers.php:29
 #, fuzzy
 msgid "Load more answers"
 msgstr "對這個回答扣票"
 
-#: addons/free/buddypress.php:270 addons/free/buddypress.php:271
-#: admin/meta-box.php:41 includes/ajax-hooks.php:201 includes/comments.php:70
+#: addons/free/buddypress.php:274 addons/free/buddypress.php:275
+#: admin/meta-box.php:41 includes/ajax-hooks.php:205 includes/comments.php:69
 #: includes/common-pages.php:21 includes/post-status.php:92
 #: includes/post-types.php:106
 msgid "Question"
 msgstr "提問"
 
-#: addons/free/buddypress.php:272
+#: addons/free/buddypress.php:276
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
 msgstr "%1$s 提出了一個新<a href=\"AP_CPT_LINK\">問題</a>"
 
-#: addons/free/buddypress.php:273
+#: addons/free/buddypress.php:277
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 msgstr "%1$s 發了一個新<a href=\"AP_CPT_LINK\">問題</a>, 在%3$s"
 
-#: addons/free/buddypress.php:280 addons/free/buddypress.php:281
-#: addons/free/buddypress.php:292 admin/views/dashboard.php:34
-#: includes/ajax-hooks.php:201 includes/comments.php:70
+#: addons/free/buddypress.php:284 addons/free/buddypress.php:285
+#: addons/free/buddypress.php:296 admin/views/dashboard.php:34
+#: includes/ajax-hooks.php:205 includes/comments.php:69
 #: includes/post-status.php:92 includes/post-types.php:183
+#: templates/answers.php:20
 msgid "Answer"
 msgstr "回答"
 
-#: addons/free/buddypress.php:282
+#: addons/free/buddypress.php:286
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
 msgstr "%1$s <a href=\"AP_CPT_LINK\">回答了</a> 問題"
 
-#: addons/free/buddypress.php:283
+#: addons/free/buddypress.php:287
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
 msgstr "%1$s <a href=\"AP_CPT_LINK\">回答</a>了問題, 在%3$s"
 
-#: addons/free/buddypress.php:292
+#: addons/free/buddypress.php:296
 msgid "Answer this question"
 msgstr "回答這個問題"
 
-#: addons/free/buddypress.php:376
+#: addons/free/buddypress.php:380
 msgid "%1$d answers on - %2$s"
 msgstr "%1$d個回答在 - %2$s"
 
-#: addons/free/buddypress.php:380
+#: addons/free/buddypress.php:384
 msgid "%1$s answered on - %2$s"
 msgstr "%1$s個回答在 - %2$s"
 
-#: addons/free/buddypress.php:387 addons/free/notification/query.php:314
-#: includes/class-form-hooks.php:690 includes/post-types.php:105
+#: addons/free/buddypress.php:391 addons/free/notification/query.php:314
+#: includes/class-form-hooks.php:715 includes/post-types.php:105
 msgid "question"
 msgstr "提問"
 
-#: addons/free/buddypress.php:387 addons/free/notification/query.php:316
-#: includes/class-form-hooks.php:690 includes/post-types.php:182
+#: addons/free/buddypress.php:391 addons/free/notification/query.php:316
+#: includes/class-form-hooks.php:715 includes/post-types.php:182
 msgid "answer"
 msgstr "回答"
 
-#: addons/free/buddypress.php:392
+#: addons/free/buddypress.php:396
 msgid "%1$d comments on your %3$s - %2$s"
 msgstr "%1$d個回應在你的 %3$s - %2$s"
 
-#: addons/free/buddypress.php:396
+#: addons/free/buddypress.php:400
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr "%1$s回應了你的 %3$s - %2$s"
 
@@ -156,7 +157,7 @@ msgstr "%1$s回應了你的 %3$s - %2$s"
 msgid "Display AnsPress categories"
 msgstr "列出逗點區隔的 AnsPress 分類 ID"
 
-#: addons/free/category/widget.php:68
+#: addons/free/category/widget.php:68 includes/ajax-hooks.php:605
 #: templates/addons/category/categories.php:33
 #: templates/addons/category/single-category.php:38
 #: templates/addons/tag/tags.php:39
@@ -171,15 +172,15 @@ msgid "%d Child"
 msgstr ""
 
 #: addons/free/category/widget.php:81 addons/free/category.php:39
-#: addons/free/category.php:167 addons/free/category.php:462
-#: addons/free/category.php:474 includes/functions.php:2146
+#: addons/free/category.php:165 addons/free/category.php:460
+#: addons/free/category.php:472 includes/functions.php:2207
 #: includes/taxo.php:29
 #, fuzzy
 msgid "Categories"
 msgstr "討論版"
 
 #: addons/free/category/widget.php:99 widgets/ask-form.php:74
-#: widgets/question_stats.php:68 widgets/questions.php:110
+#: widgets/question_stats.php:68 widgets/questions.php:108
 #: widgets/search.php:69
 msgid "Title:"
 msgstr "標題："
@@ -210,26 +211,26 @@ msgstr "排序:"
 msgid "None"
 msgstr ""
 
-#: addons/free/category/widget.php:130 addons/free/category.php:234
-#: addons/free/category.php:247
+#: addons/free/category/widget.php:130 addons/free/category.php:232
+#: addons/free/category.php:245
 #, fuzzy
 msgid "Count"
 msgstr "帳號資料"
 
-#: addons/free/category/widget.php:131 addons/free/category.php:231
-#: addons/free/category.php:244
+#: addons/free/category/widget.php:131 addons/free/category.php:229
+#: addons/free/category.php:242
 msgid "ID"
 msgstr ""
 
-#: addons/free/category/widget.php:132 addons/free/category.php:232
-#: addons/free/category.php:245 addons/free/tag.php:586 addons/free/tag.php:636
+#: addons/free/category/widget.php:132 addons/free/category.php:230
+#: addons/free/category.php:243 addons/free/tag.php:586 addons/free/tag.php:636
 #: includes/deprecated.php:291 includes/deprecated.php:434
 #: includes/deprecated.php:875
 msgid "Name"
 msgstr "名"
 
-#: addons/free/category/widget.php:133 addons/free/category.php:233
-#: addons/free/category.php:246
+#: addons/free/category/widget.php:133 addons/free/category.php:231
+#: addons/free/category.php:244
 msgid "Slug"
 msgstr ""
 
@@ -260,188 +261,188 @@ msgstr "封面圖寬度"
 msgid "Icon height:"
 msgstr "封面高度"
 
-#: addons/free/category.php:38 addons/free/category.php:176
-#: addons/free/category.php:319 addons/free/category.php:387
-#: addons/free/category.php:515 admin/class-list-table-hooks.php:188
+#: addons/free/category.php:38 addons/free/category.php:174
+#: addons/free/category.php:317 addons/free/category.php:385
+#: addons/free/category.php:513 admin/class-list-table-hooks.php:188
 #: includes/taxo.php:202
 msgid "Category"
 msgstr "討論版"
 
-#: addons/free/category.php:175
+#: addons/free/category.php:173
 #, fuzzy
 msgid "Question Categories"
 msgstr "問題狀態"
 
-#: addons/free/category.php:177
+#: addons/free/category.php:175
 #, fuzzy
 msgid "All Categories"
 msgstr "AP 分類頁面"
 
-#: addons/free/category.php:178
+#: addons/free/category.php:176
 #, fuzzy
 msgid "Add New Category"
 msgstr "討論版"
 
-#: addons/free/category.php:179
+#: addons/free/category.php:177
 #, fuzzy
 msgid "Edit Category"
 msgstr "討論版"
 
-#: addons/free/category.php:180
+#: addons/free/category.php:178
 #, fuzzy
 msgid "New Category"
 msgstr "討論版"
 
-#: addons/free/category.php:181
+#: addons/free/category.php:179
 #, fuzzy
 msgid "View Category"
 msgstr "討論版"
 
-#: addons/free/category.php:182
+#: addons/free/category.php:180
 #, fuzzy
 msgid "Search Category"
 msgstr "搜尋回答"
 
-#: addons/free/category.php:183 addons/free/tag.php:189
+#: addons/free/category.php:181 addons/free/tag.php:189
 #, fuzzy
 msgid "Nothing Found"
 msgstr "找不到問題"
 
-#: addons/free/category.php:184 addons/free/tag.php:190
+#: addons/free/category.php:182 addons/free/tag.php:190
 #, fuzzy
 msgid "Nothing found in Trash"
 msgstr "回收桶內找不到問題"
 
-#: addons/free/category.php:227
+#: addons/free/category.php:225
 msgid "Ask form category order"
 msgstr ""
 
-#: addons/free/category.php:228
+#: addons/free/category.php:226
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: addons/free/category.php:235 addons/free/category.php:248
+#: addons/free/category.php:233 addons/free/category.php:246
 msgid "Group"
 msgstr ""
 
-#: addons/free/category.php:240
+#: addons/free/category.php:238
 msgid "Categries page order by"
 msgstr ""
 
-#: addons/free/category.php:241 addons/free/category.php:254
+#: addons/free/category.php:239 addons/free/category.php:252
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: addons/free/category.php:253
+#: addons/free/category.php:251
 msgid "Categries page order"
 msgstr ""
 
-#: addons/free/category.php:257
+#: addons/free/category.php:255
 #, fuzzy
 msgid "Ascending"
 msgstr "等待中"
 
-#: addons/free/category.php:258
+#: addons/free/category.php:256
 #, fuzzy
 msgid "Descending"
 msgstr "等待中"
 
-#: addons/free/category.php:263
+#: addons/free/category.php:261
 #, fuzzy
 msgid "Category page slug"
 msgstr "使用者頁面代稱"
 
-#: addons/free/category.php:264
+#: addons/free/category.php:262
 #, fuzzy
 msgid "Slug for category page"
 msgstr "AP 分類頁面"
 
-#: addons/free/category.php:268
+#: addons/free/category.php:266
 #, fuzzy
 msgid "Category per page"
 msgstr "AP 分類頁面"
 
-#: addons/free/category.php:269
+#: addons/free/category.php:267
 #, fuzzy
 msgid "Category to show per page"
 msgstr "每頁顯示幾個項目"
 
-#: addons/free/category.php:274
+#: addons/free/category.php:272
 msgid "Categories image height"
 msgstr ""
 
-#: addons/free/category.php:275
+#: addons/free/category.php:273
 msgid "Image height in categories page"
 msgstr ""
 
-#: addons/free/category.php:319
+#: addons/free/category.php:317
 #, fuzzy
 msgid "Questions Category"
 msgstr "問題狀態"
 
-#: addons/free/category.php:388
+#: addons/free/category.php:386
 #, fuzzy
 msgid "Select a topic that best fits your question."
 msgstr "對編輯問題設定文章狀態"
 
-#: addons/free/category.php:439
+#: addons/free/category.php:437
 #, fuzzy
 msgid "No matching category found"
 msgstr "沒有找到回答"
 
-#: addons/free/category.php:534 addons/free/category.php:577
+#: addons/free/category.php:532 addons/free/category.php:575
 msgid "Image"
 msgstr ""
 
-#: addons/free/category.php:535 addons/free/category.php:580
+#: addons/free/category.php:533 addons/free/category.php:578
 #, fuzzy
 msgid "Upload image"
 msgstr "上傳中"
 
-#: addons/free/category.php:539
+#: addons/free/category.php:537
 #, fuzzy
 msgid "Category image"
 msgstr "AP 分類頁面"
 
-#: addons/free/category.php:543 addons/free/category.php:596
+#: addons/free/category.php:541 addons/free/category.php:594
 #, fuzzy
 msgid "Category icon class"
 msgstr "討論板 ID:"
 
-#: addons/free/category.php:545 addons/free/category.php:600
-#: addons/free/category.php:609
+#: addons/free/category.php:543 addons/free/category.php:598
+#: addons/free/category.php:607
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: addons/free/category.php:549
+#: addons/free/category.php:547
 msgid "Icon background color"
 msgstr ""
 
-#: addons/free/category.php:551
+#: addons/free/category.php:549
 msgid "Set background color to be used with icon"
 msgstr ""
 
-#: addons/free/category.php:589
+#: addons/free/category.php:587
 #, fuzzy
 msgid "Remove image"
 msgstr "移除"
 
-#: addons/free/category.php:591
+#: addons/free/category.php:589
 #, fuzzy
 msgid "Featured image for category"
 msgstr "AP 分類頁面"
 
-#: addons/free/category.php:605
+#: addons/free/category.php:603
 #, fuzzy
 msgid "Category icon color"
 msgstr "討論板 ID:"
 
-#: addons/free/category.php:774
+#: addons/free/category.php:772
 #, fuzzy
 msgid "Question category feed"
 msgstr "問題饋送"
 
-#: addons/free/category.php:821 addons/free/tag.php:617
+#: addons/free/category.php:819 addons/free/tag.php:617
 msgid ", %d+"
 msgstr ""
 
@@ -599,12 +600,12 @@ msgstr ""
 msgid "Email Templates"
 msgstr ""
 
-#: addons/free/email.php:698 includes/class-form-hooks.php:303
-#: includes/class-form-hooks.php:468 includes/class-form-hooks.php:621
+#: addons/free/email.php:698 includes/class-form-hooks.php:283
+#: includes/class-form-hooks.php:470 includes/class-form-hooks.php:639
 msgid "Trying to cheat?!"
 msgstr ""
 
-#: addons/free/email.php:723 includes/class-form-hooks.php:505
+#: addons/free/email.php:723 includes/class-form-hooks.php:508
 #, fuzzy
 msgid "Unable to post answer."
 msgstr "關閉回應功能"
@@ -1068,7 +1069,7 @@ msgstr "標籤"
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
 #: addons/free/tag.php:353 addons/free/tag.php:437 addons/free/tag.php:447
-#: includes/functions.php:2152
+#: includes/functions.php:2213
 msgid "Tags"
 msgstr "標籤"
 
@@ -1198,7 +1199,7 @@ msgstr "最新"
 msgid "Sorry, you do not have permission!"
 msgstr "你沒有權限進行這個操作"
 
-#: admin/ajax.php:263
+#: admin/ajax.php:266
 #, fuzzy
 msgid "Successfully enabled addon. Redirecting!"
 msgstr "成功建立標籤"
@@ -1640,193 +1641,183 @@ msgstr "允許使用者在一個提問提出多個回答"
 
 #: admin/anspress-admin.php:1183
 #, fuzzy
-msgid "Load comments"
-msgstr "顯示回應"
-
-#: admin/anspress-admin.php:1184
-#, fuzzy
-msgid "Show question and answer comments by default"
-msgstr "預設顯示回應"
-
-#: admin/anspress-admin.php:1189
-#, fuzzy
 msgid "Numbers of comments to show"
 msgstr "顯示使用者的數量:"
 
-#: admin/anspress-admin.php:1190
+#: admin/anspress-admin.php:1184
 #, fuzzy
 msgid "Numbers of comments to load in each query?"
 msgstr "顯示使用者的數量:"
 
-#: admin/anspress-admin.php:1195
+#: admin/anspress-admin.php:1189
 msgid "Check duplicate"
 msgstr ""
 
-#: admin/anspress-admin.php:1196
+#: admin/anspress-admin.php:1190
 msgid "Check for duplicate posts before posting"
 msgstr ""
 
-#: admin/anspress-admin.php:1201
+#: admin/anspress-admin.php:1195
 #, fuzzy
 msgid "Disable question suggestion"
 msgstr "在問題上關閉投票功能"
 
-#: admin/anspress-admin.php:1202
+#: admin/anspress-admin.php:1196
 msgid "Checking this will disable question suggestion in ask form"
 msgstr ""
 
-#: admin/anspress-admin.php:1207
+#: admin/anspress-admin.php:1201
 #, fuzzy
 msgid "Show default date format"
 msgstr "預設回答排列方式"
 
-#: admin/anspress-admin.php:1208
+#: admin/anspress-admin.php:1202
 msgid ""
 "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/anspress-admin.php:1213
+#: admin/anspress-admin.php:1207
 msgid "Show solved prefix"
 msgstr "顯示【已解決】字首"
 
-#: admin/anspress-admin.php:1214
+#: admin/anspress-admin.php:1208
 msgid ""
 "If an answer is selected for question then [solved] prefix will be added in "
 "title."
 msgstr "如果問題已經有最佳回答了，【已解決】字頭就會加到問題標題上去。"
 
-#: admin/anspress-admin.php:1220
+#: admin/anspress-admin.php:1214
 #, fuzzy
 msgid "Default question order"
 msgstr "選擇提問"
 
-#: admin/anspress-admin.php:1221
+#: admin/anspress-admin.php:1215
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1224 admin/anspress-admin.php:1290
-#: includes/theme.php:411 widgets/questions.php:118
+#: admin/anspress-admin.php:1218 admin/anspress-admin.php:1284
+#: includes/theme.php:411 widgets/questions.php:116
 msgid "Voted"
 msgstr "投票"
 
-#: admin/anspress-admin.php:1225 admin/anspress-admin.php:1291
+#: admin/anspress-admin.php:1219 admin/anspress-admin.php:1285
 #: admin/views/addons.php:93 includes/theme.php:362 includes/theme.php:407
-#: widgets/question_stats.php:47 widgets/questions.php:116
+#: widgets/question_stats.php:47 widgets/questions.php:114
 msgid "Active"
 msgstr "活躍"
 
-#: admin/anspress-admin.php:1226 admin/anspress-admin.php:1292
-#: includes/theme.php:414 widgets/questions.php:117
+#: admin/anspress-admin.php:1220 admin/anspress-admin.php:1286
+#: includes/theme.php:414 widgets/questions.php:115
 msgid "Newest"
 msgstr "最新"
 
-#: admin/anspress-admin.php:1227 admin/anspress-admin.php:1293
+#: admin/anspress-admin.php:1221 admin/anspress-admin.php:1287
 #: includes/theme.php:415
 msgid "Oldest"
 msgstr "最舊"
 
-#: admin/anspress-admin.php:1232
+#: admin/anspress-admin.php:1226
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/anspress-admin.php:1233
+#: admin/anspress-admin.php:1227
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/anspress-admin.php:1238
+#: admin/anspress-admin.php:1232
 msgid "Minimum title length"
 msgstr "標題最短長度"
 
-#: admin/anspress-admin.php:1239
+#: admin/anspress-admin.php:1233
 msgid "Set minimum letters for a question title."
 msgstr "設定提問標題最少需要字數"
 
-#: admin/anspress-admin.php:1244 admin/anspress-admin.php:1298
+#: admin/anspress-admin.php:1238 admin/anspress-admin.php:1292
 msgid "Minimum question content"
 msgstr "提問內容最少字數"
 
-#: admin/anspress-admin.php:1245
+#: admin/anspress-admin.php:1239
 msgid "Set minimum letters for a question contents."
 msgstr "提問內容最少要幾個字？"
 
-#: admin/anspress-admin.php:1250
+#: admin/anspress-admin.php:1244
 #, fuzzy
 msgid "Question editor?"
 msgstr "問題饋送"
 
-#: admin/anspress-admin.php:1251 admin/anspress-admin.php:1257
+#: admin/anspress-admin.php:1245 admin/anspress-admin.php:1251
 msgid "Quick tags editor"
 msgstr ""
 
-#: admin/anspress-admin.php:1256
+#: admin/anspress-admin.php:1250
 #, fuzzy
 msgid "Answer editor?"
 msgstr "已回答"
 
-#: admin/anspress-admin.php:1262 admin/anspress-admin.php:1304
+#: admin/anspress-admin.php:1256 admin/anspress-admin.php:1298
 msgid "Disable comments"
 msgstr "關閉回應功能"
 
-#: admin/anspress-admin.php:1263
+#: admin/anspress-admin.php:1257
 msgid "Disable comments on questions."
 msgstr "在問題上關閉回應功能"
 
-#: admin/anspress-admin.php:1268 admin/anspress-admin.php:1310
+#: admin/anspress-admin.php:1262 admin/anspress-admin.php:1304
 msgid "Disable voting"
 msgstr "關閉投票功能"
 
-#: admin/anspress-admin.php:1269
+#: admin/anspress-admin.php:1263
 msgid "Disable voting on questions."
 msgstr "在問題上關閉投票功能"
 
-#: admin/anspress-admin.php:1274 admin/anspress-admin.php:1316
+#: admin/anspress-admin.php:1268 admin/anspress-admin.php:1310
 msgid "Disable down voting"
 msgstr "關閉扣票功能"
 
-#: admin/anspress-admin.php:1275
+#: admin/anspress-admin.php:1269
 msgid "Disable down voting on questions."
 msgstr "在問題上關閉投票功能"
 
-#: admin/anspress-admin.php:1280
+#: admin/anspress-admin.php:1274
 msgid "Close question after selecting answer"
 msgstr "選取回答後關閉問題"
 
-#: admin/anspress-admin.php:1281
+#: admin/anspress-admin.php:1275
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr "已解答的問題不能再回答"
 
-#: admin/anspress-admin.php:1286
+#: admin/anspress-admin.php:1280
 #, fuzzy
 msgid "Default answers order"
 msgstr "預設回答排列方式"
 
-#: admin/anspress-admin.php:1287
+#: admin/anspress-admin.php:1281
 #, fuzzy
 msgid "Order answers by by default using selected"
 msgstr "%d 則回答, %d 則選取"
 
-#: admin/anspress-admin.php:1299
+#: admin/anspress-admin.php:1293
 msgid "Set minimum letters for a answer contents."
 msgstr "設定答案內容最少要幾個字"
 
-#: admin/anspress-admin.php:1305
+#: admin/anspress-admin.php:1299
 msgid "Disable comments on answer."
 msgstr "在回答上關閉意見功能"
 
-#: admin/anspress-admin.php:1311
+#: admin/anspress-admin.php:1305
 msgid "Disable voting on answers."
 msgstr "在回答上關閉投票功能"
 
-#: admin/anspress-admin.php:1317
+#: admin/anspress-admin.php:1311
 msgid "Disable down voting on answers."
 msgstr "在回答上關閉扣票功能"
 
-#: admin/anspress-admin.php:1347
+#: admin/anspress-admin.php:1341
 #, fuzzy
 msgid "View page"
 msgstr "檢視"
 
-#: admin/anspress-admin.php:1348
+#: admin/anspress-admin.php:1342
 #, fuzzy
 msgid "Edit page"
 msgstr "編輯檢舉"
@@ -1865,7 +1856,7 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr "預覽 “%s”"
 
 #: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
-#: includes/comments.php:329 includes/theme.php:258
+#: includes/comments.php:315 includes/theme.php:258
 msgid "Edit"
 msgstr "編輯"
 
@@ -1893,7 +1884,7 @@ msgstr ""
 msgid "Author"
 msgstr "作者"
 
-#: admin/class-list-table-hooks.php:185 includes/class-form-hooks.php:40
+#: admin/class-list-table-hooks.php:185 includes/class-form-hooks.php:43
 #: includes/deprecated.php:247
 msgid "Title"
 msgstr "抬頭"
@@ -1931,10 +1922,9 @@ msgid "--"
 msgstr "--"
 
 #: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
-#: admin/views/select_question.php:43 includes/ajax-hooks.php:103
-#: includes/ajax-hooks.php:105 includes/ajax-hooks.php:286
-#: includes/functions.php:1989 templates/answers.php:21
-#: templates/buddypress/question-item.php:38
+#: admin/views/select_question.php:43 includes/ajax-hooks.php:107
+#: includes/ajax-hooks.php:109 includes/ajax-hooks.php:290
+#: includes/functions.php:2013 templates/buddypress/question-item.php:38
 #, fuzzy
 msgid "%d Answer"
 msgid_plural "%d Answers"
@@ -2655,8 +2645,8 @@ msgstr "慢慢輸入問題建議，然後在問題抬頭右邊點擊\"選取\""
 msgid "Recently active questions"
 msgstr "相關問題"
 
-#: admin/views/select_question.php:42 includes/ajax-hooks.php:103
-#: includes/ajax-hooks.php:149 includes/theme.php:702
+#: admin/views/select_question.php:42 includes/ajax-hooks.php:107
+#: includes/ajax-hooks.php:153 includes/theme.php:704
 msgid "Select"
 msgstr "選取"
 
@@ -2784,192 +2774,192 @@ msgstr ""
 msgid "Not AnsPress posts"
 msgstr "AnsPress 選項"
 
-#: includes/ajax-hooks.php:92
+#: includes/ajax-hooks.php:96
 #, fuzzy
 msgid "%d similar question found"
 msgid_plural "%d similar questions found"
 msgstr[0] "找到 %d 則類似問題"
 msgstr[1] "找到 %d 則類似問題"
 
-#: includes/ajax-hooks.php:93
+#: includes/ajax-hooks.php:97
 msgid "We have found some similar questions that have been asked earlier."
 msgstr ""
 
-#: includes/ajax-hooks.php:112
+#: includes/ajax-hooks.php:116
 msgid "No related questions found."
 msgstr "找不到相關問題"
 
-#: includes/ajax-hooks.php:148
+#: includes/ajax-hooks.php:152
 msgid "Best answer is unselected for your question."
 msgstr "你的提問尚未選擇最佳回答"
 
-#: includes/ajax-hooks.php:157
+#: includes/ajax-hooks.php:161
 msgid ""
 "This answer cannot be selected as best, update status to select as best "
 "answer."
 msgstr ""
 
-#: includes/ajax-hooks.php:179
+#: includes/ajax-hooks.php:183
 msgid "Best answer is selected for your question."
 msgstr "在這個提問中你的回答已被選為最佳回答"
 
-#: includes/ajax-hooks.php:180 includes/theme.php:710
+#: includes/ajax-hooks.php:184 includes/theme.php:712
 msgid "Unselect"
 msgstr "取消選擇"
 
-#: includes/ajax-hooks.php:192
+#: includes/ajax-hooks.php:196
 #, fuzzy
 msgid "Unable to trash this post"
 msgstr "投一票"
 
-#: includes/ajax-hooks.php:213 includes/comments.php:337 includes/theme.php:284
+#: includes/ajax-hooks.php:217 includes/comments.php:323 includes/theme.php:284
 #: lib/form/class-group.php:81
 msgid "Delete"
 msgstr "刪除"
 
-#: includes/ajax-hooks.php:213 includes/theme.php:285
+#: includes/ajax-hooks.php:217 includes/theme.php:285
 msgid "Delete this post (can be restored again)"
 msgstr ""
 
-#: includes/ajax-hooks.php:214
+#: includes/ajax-hooks.php:218
 msgid "%s is restored"
 msgstr ""
 
-#: includes/ajax-hooks.php:229
+#: includes/ajax-hooks.php:233
 #, fuzzy
 msgid "This post was created %s, hence you cannot trash it"
 msgstr "這個貼文在 %s 之前建立，因為已經上鎖以致無法刪除。"
 
-#: includes/ajax-hooks.php:237 includes/theme.php:281
+#: includes/ajax-hooks.php:241 includes/theme.php:281
 #, fuzzy
 msgid "Undelete"
 msgstr "刪除"
 
-#: includes/ajax-hooks.php:237 includes/theme.php:282
+#: includes/ajax-hooks.php:241 includes/theme.php:282
 #, fuzzy
 msgid "Restore this post"
 msgstr "投一票"
 
-#: includes/ajax-hooks.php:238
+#: includes/ajax-hooks.php:242
 msgid "%s is trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:253
+#: includes/ajax-hooks.php:257
 msgid "Sorry, unable to delete post"
 msgstr ""
 
-#: includes/ajax-hooks.php:281
+#: includes/ajax-hooks.php:285
 #, fuzzy
 msgid "Question is deleted permanently"
 msgstr "提問已經被永久刪除"
 
-#: includes/ajax-hooks.php:290
+#: includes/ajax-hooks.php:294
 #, fuzzy
 msgid "Answer is deleted permanently"
 msgstr "回答已經被永久刪除"
 
-#: includes/ajax-hooks.php:308
+#: includes/ajax-hooks.php:312
 msgid "Sorry, you cannot toggle a featured question"
 msgstr ""
 
-#: includes/ajax-hooks.php:318
+#: includes/ajax-hooks.php:322
 #, fuzzy
 msgid "Only question can be set as featured"
 msgstr "提問已經被標為推薦"
 
-#: includes/ajax-hooks.php:327 includes/theme.php:786
+#: includes/ajax-hooks.php:331 includes/theme.php:788
 #, fuzzy
 msgid "Mark this question as featured"
 msgstr "推薦這個提問"
 
-#: includes/ajax-hooks.php:327 includes/theme.php:787
+#: includes/ajax-hooks.php:331 includes/theme.php:789
 #, fuzzy
 msgid "Feature"
 msgstr "推薦"
 
-#: includes/ajax-hooks.php:328
+#: includes/ajax-hooks.php:332
 msgid "Question is unmarked as featured."
 msgstr "提問已被標為\"推薦\""
 
-#: includes/ajax-hooks.php:342 includes/theme.php:783
+#: includes/ajax-hooks.php:346 includes/theme.php:785
 #, fuzzy
 msgid "Unmark this question as featured"
 msgstr "推薦這個提問"
 
-#: includes/ajax-hooks.php:342 includes/theme.php:784
+#: includes/ajax-hooks.php:346 includes/theme.php:786
 #, fuzzy
 msgid "Unfeature"
 msgstr "推薦"
 
-#: includes/ajax-hooks.php:343
+#: includes/ajax-hooks.php:347
 msgid "Question is marked as featured."
 msgstr "提問已經被標為推薦"
 
-#: includes/ajax-hooks.php:386
+#: includes/ajax-hooks.php:390
 #, fuzzy
 msgid "You cannot close a question"
 msgstr "當回答問題"
 
-#: includes/ajax-hooks.php:392 includes/theme.php:242
+#: includes/ajax-hooks.php:396 includes/theme.php:242
 msgid "Close"
 msgstr "關閉"
 
-#: includes/ajax-hooks.php:392 includes/theme.php:242
+#: includes/ajax-hooks.php:396 includes/theme.php:242
 msgid "Open"
 msgstr "公開"
 
-#: includes/ajax-hooks.php:393 includes/theme.php:243
+#: includes/ajax-hooks.php:397 includes/theme.php:243
 #, fuzzy
 msgid "Close this question for new answer."
 msgstr "選擇一個問題來回答"
 
-#: includes/ajax-hooks.php:393 includes/theme.php:243
+#: includes/ajax-hooks.php:397 includes/theme.php:243
 #, fuzzy
 msgid "Open this question for new answers"
 msgstr "選擇一個問題來回答"
 
-#: includes/ajax-hooks.php:395
+#: includes/ajax-hooks.php:399
 #, fuzzy
 msgid "Question closed"
 msgstr "問題饋送"
 
-#: includes/ajax-hooks.php:395
+#: includes/ajax-hooks.php:399
 #, fuzzy
 msgid "Question is opened"
 msgstr "問題饋送"
 
-#: includes/ajax-hooks.php:447
+#: includes/ajax-hooks.php:451
 msgid "Sorry, you are not allowed to convert this question to post"
 msgstr ""
 
-#: includes/ajax-hooks.php:466
+#: includes/ajax-hooks.php:470
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:494
+#: includes/ajax-hooks.php:498
 #, fuzzy
 msgid "You must be logged in to subscribe to a question"
 msgstr "沒有人訂閱這個問題"
 
-#: includes/ajax-hooks.php:503 includes/ajax-hooks.php:526
+#: includes/ajax-hooks.php:507 includes/ajax-hooks.php:530
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:514
+#: includes/ajax-hooks.php:518
 #, fuzzy
 msgid "Successfully unsubscribed from question"
 msgstr "只有你訂閱這個提問"
 
-#: includes/ajax-hooks.php:516 includes/theme.php:813
+#: includes/ajax-hooks.php:520 includes/theme.php:815
 msgid "Subscribe"
 msgstr "訂閱"
 
-#: includes/ajax-hooks.php:532
+#: includes/ajax-hooks.php:536
 #, fuzzy
 msgid "Successfully subscribed to question"
 msgstr "沒有人訂閱這個問題"
 
-#: includes/ajax-hooks.php:534 includes/theme.php:813
+#: includes/ajax-hooks.php:538 includes/theme.php:815
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "訂閱"
@@ -3114,192 +3104,195 @@ msgstr "AndPress 貢獻者"
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1279
+#: includes/class/roles-cap.php:1306
 #, fuzzy
 msgid "Voting on own post is not allowed"
 msgstr "扣票功能已被關閉"
 
-#: includes/class/roles-cap.php:1287
+#: includes/class/roles-cap.php:1314
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1297
+#: includes/class/roles-cap.php:1324
 #, fuzzy
 msgid "You do not have permission to vote."
 msgstr "你沒有權限進行這個操作"
 
-#: includes/class-form-hooks.php:36
+#: includes/class-form-hooks.php:39
 #, fuzzy
 msgid "Submit Question"
 msgstr "編輯問題"
 
-#: includes/class-form-hooks.php:41 includes/deprecated.php:249
+#: includes/class-form-hooks.php:44 includes/deprecated.php:249
 msgid "Question in one sentence"
 msgstr "用一句話概括提問"
 
-#: includes/class-form-hooks.php:44
+#: includes/class-form-hooks.php:47
 #, fuzzy
 msgid "Question title"
 msgstr "每頁幾則問題"
 
-#: includes/class-form-hooks.php:55 includes/class-form-hooks.php:138
+#: includes/class-form-hooks.php:58 includes/class-form-hooks.php:143
 #: includes/deprecated.php:265
 msgid "Description"
 msgstr "描述"
 
-#: includes/class-form-hooks.php:69 includes/class-form-hooks.php:160
+#: includes/class-form-hooks.php:72 includes/class-form-hooks.php:157
 #, fuzzy
 msgid "Is private?"
 msgstr "私密"
 
-#: includes/class-form-hooks.php:70 includes/class-form-hooks.php:161
+#: includes/class-form-hooks.php:73 includes/class-form-hooks.php:158
 #: includes/deprecated.php:305 includes/deprecated.php:448
 msgid "Only visible to admin and moderator."
 msgstr "僅發給站長及管理員"
 
-#: includes/class-form-hooks.php:77 includes/class-form-hooks.php:168
-#: includes/class-form-hooks.php:240
+#: includes/class-form-hooks.php:80 includes/class-form-hooks.php:165
+#: includes/class-form-hooks.php:215
 #, fuzzy
 msgid "Your Name"
 msgstr "你的姓"
 
-#: includes/class-form-hooks.php:79 includes/class-form-hooks.php:170
+#: includes/class-form-hooks.php:82 includes/class-form-hooks.php:167
 #: includes/deprecated.php:293 includes/deprecated.php:436
+#: tests/unit/tests-ask-form.php:58
 msgid "Enter your name to display"
 msgstr "輸入你的顯示名"
 
-#: includes/class-form-hooks.php:100
+#: includes/class-form-hooks.php:103 includes/functions.php:1930
 msgid "Update Question"
 msgstr "更新問題"
 
-#: includes/class-form-hooks.php:134
+#: includes/class-form-hooks.php:139
 #, fuzzy
 msgid "Post Answer"
 msgstr "張貼回答"
 
-#: includes/class-form-hooks.php:146
-#, fuzzy
-msgid "Question ID"
-msgstr "提問"
-
-#: includes/class-form-hooks.php:190 includes/post-types.php:167
-msgid "Update answer"
-msgstr "更新回答"
-
-#: includes/class-form-hooks.php:218
+#: includes/class-form-hooks.php:193
 #, fuzzy
 msgid "Submit Comment"
 msgstr "回應"
 
-#: includes/class-form-hooks.php:222 templates/functions.php:41
+#: includes/class-form-hooks.php:197 templates/answer.php:36
+#: templates/functions.php:41 templates/single-question.php:79
 msgid "Comment"
 msgstr "回應"
 
-#: includes/class-form-hooks.php:226
+#: includes/class-form-hooks.php:201
 #, fuzzy
 msgid "Write your comment here.."
 msgstr "送出你的回應"
 
-#: includes/class-form-hooks.php:242
+#: includes/class-form-hooks.php:217
 #, fuzzy
 msgid "Enter your name to display."
 msgstr "輸入你的顯示名"
 
-#: includes/class-form-hooks.php:249
+#: includes/class-form-hooks.php:224
 #, fuzzy
 msgid "Your Email"
 msgstr "Email"
 
-#: includes/class-form-hooks.php:251
+#: includes/class-form-hooks.php:226
 msgid "Enter your email to get follow up notifications."
 msgstr ""
 
-#: includes/class-form-hooks.php:259
+#: includes/class-form-hooks.php:234
 msgid "Your Website"
 msgstr ""
 
-#: includes/class-form-hooks.php:261
+#: includes/class-form-hooks.php:236
 msgid "Enter link to your website."
 msgstr ""
 
-#: includes/class-form-hooks.php:338 includes/class-form-hooks.php:361
+#: includes/class-form-hooks.php:319 includes/class-form-hooks.php:346
 #, fuzzy
 msgid "Unable to post question."
 msgstr "新提問的狀態"
 
-#: includes/class-form-hooks.php:357
+#: includes/class-form-hooks.php:324 includes/class-form-hooks.php:351
+#, fuzzy
+msgid "Failed to insert question"
+msgstr "編輯了回應"
+
+#: includes/class-form-hooks.php:341
 msgid ""
 "You are trying to post a duplicate question. Please search existing "
 "questions before posting a new one."
 msgstr ""
 
 #. Translators: placeholder contain error message.
-#: includes/class-form-hooks.php:412
+#: includes/class-form-hooks.php:401
 #, fuzzy
 msgid "Unable to post question. Error: %s"
 msgstr "新提問的狀態"
 
-#: includes/class-form-hooks.php:429
+#: includes/class-form-hooks.php:421
 #, fuzzy
 msgid "Question updated successfully, you'll be redirected in a moment."
 msgstr "提問已成功更新"
 
-#: includes/class-form-hooks.php:431
+#: includes/class-form-hooks.php:423
 #, fuzzy
 msgid "Your question is posted successfully, you'll be redirected in a moment."
 msgstr "提問已成功更新"
 
+#: includes/class-form-hooks.php:513
+#, fuzzy
+msgid "Please check field"
+msgstr "AnsPress 主題"
+
 #. Translators: placeholder contain error message.
-#: includes/class-form-hooks.php:561
+#: includes/class-form-hooks.php:568
 msgid "Unable to post answer. Error: %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:582
+#: includes/class-form-hooks.php:594
 #, fuzzy
 msgid "Answer updated successfully. Redirecting you to question page."
 msgstr "提問已成功更新"
 
-#: includes/class-form-hooks.php:584
+#: includes/class-form-hooks.php:596
 #, fuzzy
 msgid "Your answer is posted successfully."
 msgstr "回答已成功更新"
 
-#: includes/class-form-hooks.php:628
+#: includes/class-form-hooks.php:646
 #, fuzzy
 msgid "Unable to post comment."
 msgstr "關閉回應功能"
 
-#: includes/class-form-hooks.php:641
+#: includes/class-form-hooks.php:659
 #, fuzzy
 msgid "You cannot edit this comment."
 msgstr "你正在追蹤這個提問"
 
-#: includes/class-form-hooks.php:649
+#: includes/class-form-hooks.php:667
 #, fuzzy
 msgid "There is no change in your comment."
 msgstr "尚無問題"
 
 #. Translators: %d contains count of comments.
-#: includes/class-form-hooks.php:675 includes/class-form-hooks.php:755
-#: includes/comments.php:132 includes/comments.php:184
-#: includes/comments.php:300
+#: includes/class-form-hooks.php:697 includes/class-form-hooks.php:783
+#: includes/comments.php:118 includes/comments.php:170
+#: includes/comments.php:286
 #, fuzzy
 msgid "%d Comment"
 msgid_plural "%d Comments"
 msgstr[0] "回應"
 msgstr[1] "回應"
 
-#: includes/class-form-hooks.php:676
+#: includes/class-form-hooks.php:698
 #, fuzzy
 msgid "Comment updated successfully"
 msgstr "回應上傳成功"
 
 #. Translators: %s contain post type name.
-#: includes/class-form-hooks.php:699
+#: includes/class-form-hooks.php:724
 msgid "Commenting is not allowed on draft, pending or deleted %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:761
+#: includes/class-form-hooks.php:789
 #, fuzzy
 msgid "Comment successfully posted"
 msgstr "回應發表成功"
@@ -3318,79 +3311,73 @@ msgstr "解答饋送"
 msgid "Sorry, you do not have permission to read this post."
 msgstr "你沒有權限編輯這個提問"
 
-#. Translators: %s contains post type.
-#: includes/comments.php:76
-#, fuzzy
-msgid "Comments on %s"
-msgstr "在回答上回應"
-
-#. Translators: %d contains current paged value.
-#: includes/comments.php:85
-msgid " | Page %d"
-msgstr ""
-
-#: includes/comments.php:105
+#: includes/comments.php:91
 #, fuzzy
 msgid "Failed to delete comment"
 msgstr "編輯了回應"
 
-#: includes/comments.php:115
+#: includes/comments.php:101
 #, fuzzy
 msgid "This comment was created %s. Its locked hence you cannot delete it."
 msgstr "這個貼文在 %s 之前建立，因為已經上鎖以致無法刪除。"
 
-#: includes/comments.php:129
+#: includes/comments.php:115
 #, fuzzy
 msgid "Comment successfully deleted"
 msgstr "回應發表成功"
 
-#: includes/comments.php:167
+#: includes/comments.php:153
 msgid "Sorry, unable to approve comment"
 msgstr ""
 
-#: includes/comments.php:190
+#: includes/comments.php:176
 #, fuzzy
 msgid "Comment approved successfully."
 msgstr "回應上傳成功"
 
-#: includes/comments.php:236
+#: includes/comments.php:222
 #, fuzzy
 msgid "Add comment on post"
 msgstr "在回答上回應"
 
-#: includes/comments.php:292
+#: includes/comments.php:278
 #, fuzzy
 msgid "Comments awaiting moderation"
 msgstr "文章正在等待審核"
 
-#: includes/comments.php:309
+#: includes/comments.php:295
 #, fuzzy
 msgid "Add a Comment"
 msgstr "回應"
 
-#: includes/comments.php:349
+#: includes/comments.php:335
 msgid "Approve"
 msgstr ""
 
-#: includes/comments.php:405
+#: includes/comments.php:391
 #, fuzzy
 msgid "Not a valid post ID."
 msgstr "不是正確的信箱"
 
-#: includes/comments.php:410
+#: includes/comments.php:396
 #, fuzzy
 msgid "Sorry, you do not have permission to read comments."
 msgstr "你沒有權限進行這個操作"
 
-#: includes/comments.php:425 includes/comments.php:458
+#: includes/comments.php:411 includes/comments.php:445
 #, fuzzy
 msgid "No comments found."
 msgstr "沒有找到使用者"
 
-#: includes/comments.php:470
+#: includes/comments.php:456
 #, fuzzy
-msgid "View all comments"
-msgstr "關閉回應功能"
+msgid "Show %s more comments"
+msgstr "顯示回應"
+
+#: includes/comments.php:459
+#, fuzzy
+msgid "Add a comment"
+msgstr "回應"
 
 #: includes/common-pages.php:22
 #, fuzzy
@@ -3402,7 +3389,7 @@ msgstr "提出問題"
 msgid "Search"
 msgstr "搜尋"
 
-#: includes/common-pages.php:25 includes/functions.php:2158
+#: includes/common-pages.php:25 includes/functions.php:2219
 #, fuzzy
 msgid "Activities"
 msgstr "活躍"
@@ -3575,7 +3562,7 @@ msgstr "推薦的提問"
 msgid "restored answer"
 msgstr "編輯了回答"
 
-#: includes/functions.php:1282 templates/comment.php:31
+#: includes/functions.php:1282 templates/comment.php:27
 #: templates/functions.php:40
 msgid "commented"
 msgstr "已回應"
@@ -3639,128 +3626,142 @@ msgstr "匿名"
 msgid " (anonymous)"
 msgstr "(匿名)"
 
-#: includes/functions.php:1900
+#: includes/functions.php:1903
 #, fuzzy
 msgid "You cannot edit this question."
 msgstr "你正在追蹤這個提問"
 
-#: includes/functions.php:1905 templates/ask.php:17
+#: includes/functions.php:1908 templates/ask.php:17
 #, fuzzy
 msgid "You do not have permission to ask a question."
 msgstr "你沒有權限提出問題"
 
-#: includes/functions.php:1998
+#: includes/functions.php:2022
 msgid "Answer submitted successfully"
 msgstr "回答已成功送出"
 
-#: includes/functions.php:2126
+#: includes/functions.php:2049
+#, fuzzy
+msgid "You cannot edit this answer."
+msgstr "編輯這個回答"
+
+#: includes/functions.php:2054
+#, fuzzy
+msgid "You do not have permission to answer this question."
+msgstr "你沒有權限提出問題"
+
+#: includes/functions.php:2080
+msgid "Update Answer"
+msgstr "更新回答"
+
+#: includes/functions.php:2187
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2127
+#: includes/functions.php:2188
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred as "
 "<b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2132
+#: includes/functions.php:2193
 #, fuzzy
 msgid "Ask page"
 msgstr "提問頁面標題"
 
-#: includes/functions.php:2133
+#: includes/functions.php:2194
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2134
+#: includes/functions.php:2195
 #, fuzzy
 msgid "Ask a question"
 msgstr "提出問題"
 
-#: includes/functions.php:2138
+#: includes/functions.php:2199
 #, fuzzy
 msgid "User page"
 msgstr "每頁幾個使用者"
 
-#: includes/functions.php:2139
+#: includes/functions.php:2200
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2140
+#: includes/functions.php:2201
 msgid "Profile"
 msgstr "個人檔案"
 
-#: includes/functions.php:2144
+#: includes/functions.php:2205
 #, fuzzy
 msgid "Categories page"
 msgstr "使用者頁面代稱"
 
-#: includes/functions.php:2145
+#: includes/functions.php:2206
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2150
+#: includes/functions.php:2211
 #, fuzzy
 msgid "Tags page"
 msgstr "提問頁面代稱"
 
-#: includes/functions.php:2151
+#: includes/functions.php:2212
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2156
+#: includes/functions.php:2217
 #, fuzzy
 msgid "Activities page"
 msgstr "活躍 %s 前"
 
-#: includes/functions.php:2157
+#: includes/functions.php:2218
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:865
+#: includes/hooks.php:860
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:866
+#: includes/hooks.php:861
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:867
+#: includes/hooks.php:862
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:868
+#: includes/hooks.php:863
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:869
+#: includes/hooks.php:864
 #, fuzzy
 msgid "day"
 msgstr "%d 天"
 
-#: includes/hooks.php:870
+#: includes/hooks.php:865
 #, fuzzy
 msgid "days"
 msgstr "%d 天"
 
-#: includes/hooks.php:871
+#: includes/hooks.php:866
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:872
+#: includes/hooks.php:867
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:873
+#: includes/hooks.php:868
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:874
+#: includes/hooks.php:869
 #, fuzzy
 msgid "years"
 msgstr "%d 年，"
@@ -3820,6 +3821,12 @@ msgstr "問題被問了 %s"
 msgid "This %s has been trashed, you can delete it permanently from wp-admin."
 msgstr "%s 已被丟到垃圾桶，你可以從 wp-admin 來永久刪除他。"
 
+#: includes/post-status.php:105
+msgid ""
+"This %s is not published yet and is not accessible to anyone until it get "
+"published."
+msgstr ""
+
 #: includes/post-types.php:84
 #, fuzzy
 msgid "Parent question:"
@@ -3877,6 +3884,10 @@ msgstr "檢視回答"
 msgid "Add new answer"
 msgstr "新增回答"
 
+#: includes/post-types.php:167
+msgid "Update answer"
+msgstr "更新回答"
+
 #: includes/post-types.php:168
 #, fuzzy
 msgid "Search answers"
@@ -3891,26 +3902,26 @@ msgstr "沒有找到回答"
 msgid "No answer found in trash"
 msgstr "回收桶內沒有找到回答"
 
-#: includes/qaquery-hooks.php:178
+#: includes/qaquery-hooks.php:194
 #, fuzzy
 msgid "No permission"
 msgstr "權限"
 
-#: includes/qaquery-hooks.php:179
+#: includes/qaquery-hooks.php:195
 #, fuzzy
 msgid "You do not have permission to read this question."
 msgstr "你沒有權限提出問題"
 
-#: includes/qaquery.php:449
+#: includes/qaquery.php:454
 #, fuzzy
 msgid "Featured"
 msgstr "推薦"
 
-#: includes/qaquery.php:453
+#: includes/qaquery.php:458
 msgid "Solved"
 msgstr "已解決"
 
-#: includes/qaquery.php:457
+#: includes/qaquery.php:462
 #, fuzzy
 msgid "%d views"
 msgstr "<i>%d 個閱讀</i>"
@@ -3943,7 +3954,7 @@ msgstr "扣一票"
 msgid "Convert this question to blog post"
 msgstr "回答這個問題"
 
-#: includes/theme.php:372 widgets/questions.php:120
+#: includes/theme.php:372 widgets/questions.php:118
 msgid "Unanswered"
 msgstr "未回應"
 
@@ -3959,28 +3970,28 @@ msgstr "最佳回答"
 msgid "Ask question"
 msgstr "提出問題"
 
-#: includes/theme.php:624
+#: includes/theme.php:626
 #, fuzzy
 msgid "Order By"
 msgstr "排序:"
 
-#: includes/theme.php:669
+#: includes/theme.php:671
 msgid "Reset sorting and filter"
 msgstr "重設排序與過濾"
 
-#: includes/theme.php:669
+#: includes/theme.php:671
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:701
+#: includes/theme.php:703
 msgid "Select this answer as best"
 msgstr "將這個回答選為最佳回答"
 
-#: includes/theme.php:709
+#: includes/theme.php:711
 msgid "Unselect this answer"
 msgstr "反選取這個回答"
 
-#: includes/theme.php:861
+#: includes/theme.php:863
 #, fuzzy
 msgid "AnsPress links"
 msgstr "AnsPress 點數"
@@ -3989,7 +4000,7 @@ msgstr "AnsPress 點數"
 msgid "Unable to delete attachment"
 msgstr ""
 
-#: includes/upload.php:112
+#: includes/upload.php:113
 #, fuzzy
 msgid "File cannot be uploaded, size is bigger then %s MB"
 msgstr "無法上傳文件，文件大於 %d Byte"
@@ -4035,122 +4046,123 @@ msgstr "關閉聲望"
 msgid "Categories data migrated"
 msgstr "頁面標題"
 
-#: lib/class-form.php:88
+#: lib/class-form.php:91
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:284
 msgid "Submit"
 msgstr "提交"
 
 #. Translators: Placeholder contain form name.
-#: lib/class-form.php:171
+#: lib/class-form.php:178
 #, fuzzy
 msgid "No fields found for form: %s"
 msgstr "沒有找到欄位"
 
-#: lib/class-form.php:370 lib/form/class-field.php:380
+#: lib/class-form.php:377 lib/form/class-field.php:380
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:284 lib/class-validate.php:300
+#: lib/class-validate.php:294 lib/class-validate.php:310
 #, fuzzy
 msgid "%s field is required."
 msgstr "必填"
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:316
+#: lib/class-validate.php:326
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:332
+#: lib/class-validate.php:342
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:348
+#: lib/class-validate.php:358
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:371
+#: lib/class-validate.php:381
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:395
+#: lib/class-validate.php:405
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:414
+#: lib/class-validate.php:424
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:433
+#: lib/class-validate.php:443
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:452
+#: lib/class-validate.php:462
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:503
+#: lib/class-validate.php:513
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:520
+#: lib/class-validate.php:530
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:521
+#: lib/class-validate.php:531
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:522
+#: lib/class-validate.php:532
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 
-#: lib/class-validate.php:523
+#: lib/class-validate.php:533
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: lib/class-validate.php:524
+#: lib/class-validate.php:534
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/class-validate.php:525
+#: lib/class-validate.php:535
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: lib/class-validate.php:526
+#: lib/class-validate.php:536
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: lib/class-validate.php:527
+#: lib/class-validate.php:537
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:617
+#: lib/class-validate.php:627
 #, fuzzy
 msgid "You are not allowed to upload file(s)"
 msgstr "只有你訂閱這個提問"
 
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
-#: lib/class-validate.php:626
+#: lib/class-validate.php:636
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:633
+#: lib/class-validate.php:643
 msgid "File type is not allowed to upload."
 msgstr ""
 
 #. Translators: %s contain maximum file size user can upload.
-#: lib/class-validate.php:647
+#: lib/class-validate.php:657
 #, fuzzy
 msgid "File(s) size is bigger then %s MB"
 msgstr "無法上傳文件，文件大於 %d Byte"
@@ -4210,46 +4222,26 @@ msgstr "刪除通知"
 msgid "AnsPress Tags Field"
 msgstr "AnsPress 頁面"
 
-#: lib/form/class-tags.php:54
-#, fuzzy
-msgid "No tags found!"
-msgstr "沒有找到回答"
-
-#: lib/form/class-tags.php:55
-#, fuzzy
-msgid "No matching tags found!"
-msgstr "沒有找到回答"
-
-#: lib/form/class-tags.php:56
-#, fuzzy
-msgid "Add New Tag."
-msgstr "新增回答"
-
-#: lib/form/class-tags.php:57
-#, fuzzy
-msgid "You have already added maximum numbers of tags allowed."
-msgstr "您已經到達最大可上傳數量"
-
 #: lib/form/class-textarea.php:41
 #, fuzzy
 msgid "AnsPress Textarea Field"
 msgstr "AnsPress 主題"
 
-#: lib/form/class-upload.php:84
+#: lib/form/class-upload.php:90
 #, fuzzy
 msgid "AnsPress Upload Field"
 msgstr "AnsPress 臂章"
 
-#: lib/form/class-upload.php:92
+#: lib/form/class-upload.php:98
 msgid "This file type is not allowed to upload."
 msgstr ""
 
 #. Translators: %d contains maximum files allowed to upload.
-#: lib/form/class-upload.php:98
+#: lib/form/class-upload.php:104
 msgid "You cannot add more then %d files"
 msgstr ""
 
-#: lib/form/class-upload.php:186
+#: lib/form/class-upload.php:192
 msgid "Browse file(s)"
 msgstr ""
 
@@ -4336,8 +4328,8 @@ msgid "Search tags"
 msgstr "搜尋使用者..."
 
 #. Translators: %s contain human readable time.
-#: templates/addons/user/answer-item.php:38 templates/shortcode/question.php:47
-#: templates/single-question.php:61
+#: templates/addons/user/answer-item.php:38 templates/answer.php:29
+#: templates/shortcode/question.php:47
 #, fuzzy
 msgid "Posted %s"
 msgstr "%s提出討論 %s"
@@ -4450,70 +4442,70 @@ msgstr "送出你的回應"
 msgid "Sorry, you don't have permission to read comments."
 msgstr "你沒有權限進行這個操作"
 
-#: templates/functions.php:68
+#: templates/functions.php:67
 #, fuzzy
 msgid "(AnsPress) Before"
 msgstr "AnsPress 角色"
 
-#: templates/functions.php:72
+#: templates/functions.php:71
 msgid "Widgets in this area will be shown before anspress body."
 msgstr "這個小工具會出現在 anspress body 之前"
 
-#: templates/functions.php:78
+#: templates/functions.php:77
 #, fuzzy
 msgid "(AnsPress) Question List Top"
 msgstr "AnsPress 問題追蹤"
 
-#: templates/functions.php:82
+#: templates/functions.php:81
 msgid "Widgets in this area will be shown before questions list."
 msgstr "這個小工具會出現在問題清單之前"
 
-#: templates/functions.php:88
+#: templates/functions.php:87
 #, fuzzy
 msgid "(AnsPress) Sidebar"
 msgstr "AnsPress 管理員"
 
-#: templates/functions.php:92
+#: templates/functions.php:91
 #, fuzzy
 msgid ""
 "Widgets in this area will be shown in AnsPress sidebar except single "
 "question page."
 msgstr "這個小工具會出現在 AnsPress 側邊欄"
 
-#: templates/functions.php:98
+#: templates/functions.php:97
 #, fuzzy
 msgid "(AnsPress) Question Sidebar"
 msgstr "AP 問題側邊欄"
 
-#: templates/functions.php:102
+#: templates/functions.php:101
 #, fuzzy
 msgid "Widgets in this area will be shown in single question page sidebar."
 msgstr "這個小工具會出現在問題頁面側邊欄"
 
-#: templates/functions.php:108
+#: templates/functions.php:107
 #, fuzzy
 msgid "(AnsPress) Category Page"
 msgstr "AP 分類頁面"
 
-#: templates/functions.php:112
+#: templates/functions.php:111
 msgid "Widgets in this area will be shown in category listing page."
 msgstr "這個小工具會出現在分類清單頁面"
 
-#: templates/functions.php:118
+#: templates/functions.php:117
 #, fuzzy
 msgid "(AnsPress) Tag page"
 msgstr "AP 標籤頁面"
 
-#: templates/functions.php:122
+#: templates/functions.php:121
 msgid "Widgets in this area will be shown in tag listing page."
 msgstr "這個小工具將會出現在標籤清單頁面"
 
-#: templates/functions.php:128
+#: templates/functions.php:127
 #, fuzzy
 msgid "(AnsPress) Author page"
 msgstr "AnsPress 頁面"
 
-#: templates/functions.php:132
+#: templates/functions.php:131
 #, fuzzy
 msgid "Widgets in this area will be shown in authors page."
 msgstr "這個小工具將會出現在 \"關於使用者頁面\""
@@ -4549,6 +4541,15 @@ msgstr "搜尋問題..."
 msgid "View all answers"
 msgstr ""
 
+#: templates/single-question.php:65
+msgid "Scheduled for"
+msgstr ""
+
+#: templates/single-question.php:65
+#, fuzzy
+msgid "Published"
+msgstr "發行"
+
 #: templates/widgets/widget-questions.php:17
 #, fuzzy
 msgid "1 Answer"
@@ -4566,6 +4567,331 @@ msgstr[1] "投票"
 #: templates/widgets/widget-questions.php:23
 msgid "No questions found."
 msgstr "找不到問題"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/internationalized-plugin.php:11
+msgid "This is a dummy plugin"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:42
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:72
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:80
+#, fuzzy
+msgid "There was an error when reading this WXR file"
+msgstr "大頭貼上傳失敗，請確認您的圖片。"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:43
+msgid ""
+"Details are shown above. The importer will now try again with a different "
+"parser..."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:84
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:89
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:306
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:495
+msgid ""
+"This does not appear to be a WXR file, missing/invalid WXR version number"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:132
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:141
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:192
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:196
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:205
+#, fuzzy
+msgid "Sorry, there has been an error."
+msgstr "你的投票已被取消"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:133
+#, fuzzy
+msgid "The file does not exist, please try again."
+msgstr "無法載入表格，請再試一次"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:176
+#, fuzzy
+msgid "All done."
+msgstr "所有回答"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:176
+msgid "Have fun!"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:177
+msgid "Remember to update the passwords and roles of imported users."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:197
+msgid ""
+"The export file could not be found at <code>%s</code>. It is likely that "
+"this was caused by a permissions problem."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:213
+msgid ""
+"This WXR file (version %s) may not be supported by this version of the "
+"importer. Please consider updating."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:238
+msgid ""
+"Failed to import author %s. Their posts will be attributed to the current "
+"user."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:264
+#, fuzzy
+msgid "Assign Authors"
+msgstr "作者"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:265
+msgid ""
+"To make it easier for you to edit and save the imported content, you may "
+"want to reassign the author of the imported item to an existing user of this "
+"site. For example, you may want to import all the entries as <code>admin</"
+"code>s entries."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:267
+msgid ""
+"If a new user is created by WordPress, a new password will be randomly "
+"generated and the new user&#8217;s role will be set as %s. Manually changing "
+"the new user&#8217;s details will be necessary."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:277
+msgid "Import Attachments"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:280
+msgid "Download and import file attachments"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:297
+msgid "Import author:"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:308
+msgid "or create new user with login name:"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:311
+#, fuzzy
+msgid "as a new user:"
+msgstr "新答案的狀態"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:319
+msgid "assign posts to an existing user:"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:321
+msgid "or assign posts to an existing user:"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:322
+#, fuzzy
+msgid "- Select -"
+msgstr "選取"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:372
+msgid ""
+"Failed to create new user for %s. Their posts will be attributed to the "
+"current user."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:424
+#, fuzzy
+msgid "Failed to import category %s"
+msgstr "AP 分類頁面"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:467
+#, fuzzy
+msgid "Failed to import post tag %s"
+msgstr "編輯了回應"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:516
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:738
+msgid "Failed to import %s %s"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:605
+msgid "Failed to import &#8220;%s&#8221;: Invalid post type %s"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:642
+#, fuzzy
+msgid "%s &#8220;%s&#8221; already exists."
+msgstr "檢視 “%s” 問題"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:704
+#, fuzzy
+msgid "Failed to import %s &#8220;%s&#8221;"
+msgstr "預覽 “%s”"
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:869
+msgid "Menu item skipped due to missing menu slug"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:876
+msgid "Menu item skipped due to invalid menu slug: %s"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:939
+msgid "Fetching attachments is not enabled"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:952
+msgid "Invalid file type"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:996
+msgid "Remote server did not respond"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1002
+msgid "Remote server returned error response %1$d %2$s"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1009
+msgid "Remote file is incorrect size"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1014
+msgid "Zero size file downloaded"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1020
+msgid "Remote file is too large, limit is %s"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1119
+msgid "Import WordPress"
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1126
+msgid ""
+"A new version of this importer is available. Please update to version %s to "
+"ensure compatibility with newer export files."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1141
+msgid ""
+"Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import "
+"the posts, pages, comments, custom fields, categories, and tags into this "
+"site."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1142
+msgid "Choose a WXR (.xml) file to upload, then click Upload file and import."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1216
+msgid ""
+"Import <strong>posts, pages, comments, custom fields, categories, and tags</"
+"strong> from a WordPress export file."
+msgstr ""
+
+#: vendor/lucatume/wp-browser/src/data/themedir1/internationalized-theme/functions.php:7
+msgid "This is a dummy theme"
+msgstr ""
+
+#: vendor/wp-cli/core-command/src/Core_Command.php:652
+msgid "Wildcard DNS may not be configured correctly."
+msgstr ""
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:428
+#, fuzzy
+msgid "%s year"
+msgid_plural "%s years"
+msgstr[0] "%d 年，"
+msgstr[1] "%d 年，"
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:429
+#, fuzzy
+msgid "%s month"
+msgid_plural "%s months"
+msgstr[0] "%d 月,"
+msgstr[1] "%d 月,"
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:430
+msgid "%s week"
+msgid_plural "%s weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:431
+msgid "%s day"
+msgid_plural "%s days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:432
+msgid "%s hour"
+msgid_plural "%s hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:433
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:434
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor/wp-cli/entity-command/src/Site_Command.php:118
+#, fuzzy
+msgid "Uncategorized"
+msgstr "討論版"
+
+#: vendor/wp-cli/export-command/src/Export_Command.php:324
+msgid "Invalid start ID: %d"
+msgstr ""
+
+#: vendor/wp-cli/export-command/src/WP_Export_File_Writer.php:15
+#: vendor/wp-cli/export-command/src/WP_Export_Split_Files_Writer.php:63
+msgid "WP Export: error opening %s for writing."
+msgstr ""
+
+#: vendor/wp-cli/export-command/src/WP_Export_File_Writer.php:32
+#: vendor/wp-cli/export-command/src/WP_Export_Split_Files_Writer.php:51
+msgid "WP Export: error writing to export file."
+msgstr ""
+
+#: vendor/wp-cli/export-command/src/WP_Export_Query.php:337
+msgid "Term is missing a parent: %s (%d)"
+msgstr ""
+
+#: vendor/wp-cli/export-command/src/WP_Export_XML_Over_HTTP.php:19
+#: vendor/wp-cli/export-command/src/WP_Export_XML_Over_HTTP.php:23
+msgid "Export Error"
+msgstr ""
+
+#: vendor/wp-cli/extension-command/src/WP_CLI/CommandWithUpgrade.php:608
+msgid " Try again"
+msgstr ""
+
+#: vendor/wp-cli/extension-command/src/WP_CLI/CommandWithUpgrade.php:613
+msgid "API error. Try Again."
+msgstr ""
+
+#: vendor/wp-cli/media-command/src/Media_Command.php:129
+msgid "image"
+msgid_plural "images"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor/wp-cli/wp-cli/php/utils-wp.php:171
+msgid "Inactive Widgets"
+msgstr ""
+
+#: vendor/wp-cli/wp-cli/php/utils-wp.php:174
+msgid ""
+"Drag widgets here to remove them from the sidebar but keep their settings."
+msgstr ""
 
 #: widgets/ask-form.php:28
 msgid "(AnsPress) Ask form"
@@ -4626,19 +4952,19 @@ msgstr ""
 msgid "Shows list of question shorted by option."
 msgstr ""
 
-#: widgets/questions.php:114
+#: widgets/questions.php:112
 msgid "Order by:"
 msgstr "排序:"
 
-#: widgets/questions.php:125
+#: widgets/questions.php:123
 msgid "Category IDs:"
 msgstr "討論板 ID:"
 
-#: widgets/questions.php:127
+#: widgets/questions.php:125
 msgid "Comma separted AnsPress category ids"
 msgstr "列出逗點區隔的 AnsPress 分類 ID"
 
-#: widgets/questions.php:131
+#: widgets/questions.php:129
 msgid "Limit:"
 msgstr "限制："
 
@@ -4698,6 +5024,55 @@ msgstr "提問"
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr "解答"
+
+#: vendor/wp-cli/core-command/src/Core_Command.php:430
+#: vendor/wp-cli/core-command/src/Core_Command.php:503
+msgctxt "Default network name"
+msgid "%s Sites"
+msgstr ""
+
+#. translators: Default category slug
+#: vendor/wp-cli/entity-command/src/Site_Command.php:121
+#, fuzzy
+msgctxt "Default category slug"
+msgid "Uncategorized"
+msgstr "討論版"
+
+#, fuzzy
+#~ msgid "Load comments"
+#~ msgstr "顯示回應"
+
+#, fuzzy
+#~ msgid "Show question and answer comments by default"
+#~ msgstr "預設顯示回應"
+
+#, fuzzy
+#~ msgid "Question ID"
+#~ msgstr "提問"
+
+#, fuzzy
+#~ msgid "Comments on %s"
+#~ msgstr "在回答上回應"
+
+#, fuzzy
+#~ msgid "View all comments"
+#~ msgstr "關閉回應功能"
+
+#, fuzzy
+#~ msgid "No tags found!"
+#~ msgstr "沒有找到回答"
+
+#, fuzzy
+#~ msgid "No matching tags found!"
+#~ msgstr "沒有找到回答"
+
+#, fuzzy
+#~ msgid "Add New Tag."
+#~ msgstr "新增回答"
+
+#, fuzzy
+#~ msgid "You have already added maximum numbers of tags allowed."
+#~ msgstr "您已經到達最大可上傳數量"
 
 #, fuzzy
 #~ msgid "Dynamic Avatar"
@@ -4961,14 +5336,8 @@ msgstr "解答"
 #~ msgid "Don't have a user account?."
 #~ msgstr "還沒有帳號？%s馬上註冊%s"
 
-#~ msgid "Unable to load form, please try again."
-#~ msgstr "無法載入表格，請再試一次"
-
 #~ msgid "Successfully loaded form."
 #~ msgstr "成功載入表格"
-
-#~ msgid "Update Answer"
-#~ msgstr "更新回答"
 
 #~ msgid "Create new tag"
 #~ msgstr "建立新標籤"
@@ -5307,9 +5676,6 @@ msgstr "解答"
 
 #~ msgid "My notification"
 #~ msgstr "我的通知"
-
-#~ msgid "There was an error while uploading avatar, please check your image"
-#~ msgstr "大頭貼上傳失敗，請確認您的圖片。"
 
 #~ msgid "Cover photo uploaded successfully."
 #~ msgstr "封面圖片上傳成功"
@@ -5666,9 +6032,6 @@ msgstr "解答"
 
 #~ msgid "Upload cover"
 #~ msgstr "上傳封面圖片"
-
-#~ msgid "%d months, "
-#~ msgstr "%d 月,"
 
 #~ msgid "Vote for closing"
 #~ msgstr "投票關閉"
