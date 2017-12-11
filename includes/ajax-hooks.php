@@ -580,13 +580,31 @@ class AnsPress_Ajax {
 	 * @since 4.1.5
 	 */
 	public static function search_tags() {
-		if ( ! ap_verify_default_nonce() ) {
+		$q = ap_sanitize_unslash( 'q', 'r' );
+		$form = ap_sanitize_unslash( 'form', 'r' );
+		$field_name = ap_sanitize_unslash( 'field', 'r' );
+
+		if ( ! ap_verify_nonce( 'tags_' . $form . $field_name ) ) {
 			wp_send_json( '{}' );
 		}
 
-		$q = ap_sanitize_unslash( 'q', 'r' );
+		// Die if not valid form.
+		if ( ! anspress()->form_exists( $form ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$field = anspress()->get_form( $form )->find( $field_name );
+
+		// Check if field exists and type is tags.
+		if ( ! is_a( $field, 'AnsPress\Form\Field\Tags' ) ) {
+			ap_ajax_json( 'something_wrong' );
+		}
+
+		$taxo = $field->get( 'terms_args.taxonomy' );
+		$taxo = ! empty( $taxo ) ? $taxo : 'tag';
+
 		$terms = get_terms(array(
-			'taxonomy'   => 'question_tag',
+			'taxonomy'   => $taxo,
 			'search'     => $q,
 			'count'      => true,
 			'number'     => 20,

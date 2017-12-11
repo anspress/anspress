@@ -162,8 +162,6 @@ class AnsPress_Category {
 			'categories_image_height' => 150,
 		]);
 
-		ap_register_menu( 'ANSPRESS_CATEGORIES_PAGE_URL', __( 'Categories', 'anspress-question-answer' ), ap_get_link_to( 'categories' ) );
-
 		/**
 		 * Labels for category taxonomy.
 		 *
@@ -196,22 +194,23 @@ class AnsPress_Category {
 		 * @since 2.0
 		 */
 		$category_args = array(
-			'hierarchical' => true,
-			'labels'       => $categories_labels,
-			'rewrite'      => false,
+			'hierarchical'       => true,
+			'labels'             => $categories_labels,
+			'rewrite'            => false,
+			'publicly_queryable' => true,
 		);
 
 		/**
-		 * FILTER: ap_question_category_args
-		 * Filter ic called before registering question_category taxonomy
+		 * Filter is called before registering question_category taxonomy.
+		 *
+		 * @param array $category_args Category arguments.
 		 */
 		$category_args = apply_filters( 'ap_question_category_args',  $category_args );
 
 		/**
 		 * Now let WordPress know about our taxonomy
 		 */
-		register_taxonomy( 'question_category', array( 'question' ), $category_args );
-
+		register_taxonomy( 'question_category', [ 'question' ], $category_args );
 	}
 
 	/**
@@ -734,7 +733,7 @@ class AnsPress_Category {
 	 */
 	public static function ap_ask_btn_link( $link ) {
 		if ( is_question_category() ) {
-			global $question_category;
+			$question_category = get_queried_object();
 			return $link . '?category=' . $question_category->term_id;
 		}
 

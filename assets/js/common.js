@@ -720,26 +720,7 @@ jQuery(document).ready(function($){
 					count: 0,
 				}
 			},
-			maxItems: 4,
-			load: function(query, callback) {
-				if (!query.length) return callback();
-				jQuery.ajax({
-					url: ajaxurl,
-					type: 'GET',
-					dataType: 'json',
-					data: {
-						action: 'ap_search_tags',
-						q: query,
-						__nonce: ap_nonce,
-					},
-					error: function() {
-						callback();
-					},
-					success: function(res) {
-						callback(res);
-					}
-				});
-			}
+			maxItems: 4
 		}
 	}
 
@@ -750,6 +731,27 @@ jQuery(document).ready(function($){
 		var defaults = AnsPress.tagsPreset[type];
 		defaults.options = options;
 		defaults.maxItems = jsoptions.maxItems;
+		defaults.load = function(query, callback) {
+			if (!query.length) return callback();
+			jQuery.ajax({
+				url: ajaxurl,
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					action: 'ap_search_tags',
+					q: query,
+					__nonce: jsoptions.nonce,
+					form: jsoptions.form,
+					field: jsoptions.field,
+				},
+				error: function() {
+					callback();
+				},
+				success: function(res) {
+					callback(res);
+				}
+			});
+		};
 		$el.selectize(defaults);
 	}
 

@@ -237,8 +237,9 @@ class Validate {
 				}
 			}
 
+			$taxo = ! empty( $args['terms_args']['taxonomy'] ) ? $args['terms_args']['taxonomy'] : 'question_tag';
 			$terms = get_terms( array(
-				'taxonomy'   => 'question_tag',
+				'taxonomy'   => $taxo,
 				'include'    => $existing_tags,
 				'fields'     => 'names',
 				'hide_empty' => false,
@@ -437,7 +438,7 @@ class Validate {
 		$min_arr = $field->get( 'array_min', 0 );
 		$value = $field->value();
 
-		if ( empty( $value ) || ! is_array( $value ) || $min_arr > count( $value ) ) {
+		if ( $min_arr > 0 && ( empty( $value ) || ! is_array( $value ) || $min_arr > count( $value ) ) ) {
 			$field->add_error( 'array-min', sprintf(
 				// Translators: placeholder contain field label.
 				__( 'Minimum %1$d values are required in field %2$s.', 'anspress-question-answer' ),

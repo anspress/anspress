@@ -366,7 +366,7 @@ class AnsPress_Tag {
 		if ( ! empty( $editing_id ) ) {
 			$tags = get_the_terms( $editing_id, 'question_tag' );
 			if ( $tags ) {
-				$tags = wp_list_pluck( $tags, 'name', 'term_id' );
+				$tags = wp_list_pluck( $tags, 'term_id' );
 				$form['fields']['tags']['value'] = $tags;
 			}
 		}

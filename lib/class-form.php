@@ -262,6 +262,10 @@ class Form {
 	 * @return object|boolean
 	 */
 	public function find( $value, $fields = false, $key = 'original_name' ) {
+		if ( false === $this->prepared ) {
+			$this->prepare();
+		}
+
 		$fields = false === $fields ? $this->fields : $fields;
 		$found = wp_filter_object_list( $fields, [ $key => $value ] );
 

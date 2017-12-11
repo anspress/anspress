@@ -51,7 +51,8 @@ class Tags extends Field {
 				'maxItems' => $this->args['array_max'],
 				'form'     => $this->form_name,
 				'id'       => $this->id(),
-				'field'    => $this->field_name,
+				'field'    => $this->original_name,
+				'nonce'    => wp_create_nonce( 'tags_' . $this->form_name . $this->original_name ),
 			),
 		) );
 
@@ -86,11 +87,13 @@ class Tags extends Field {
 			if ( ! empty( $this->value() ) ) {
 				$value = $this->value();
 				$terms = get_terms( array(
-					'taxonomy'   => 'question_tag',
+					'taxonomy'   => $this->get( 'terms_args.taxonomy' ),
 					'hide_empty' => false,
-					'name'       => $value,
+					'include'    => $value,
 					'count'      => true,
+					'number'     => 20,
 				) );
+
 				if ( $terms ) {
 					foreach ( $terms as $tag ) {
 						$options[] = array(
@@ -120,7 +123,7 @@ class Tags extends Field {
 		parent::field_markup();
 
 		$options = $this->get_options();
-		$value = ! empty( $options) ? implode( ',', wp_list_pluck( $options, 'term_id' ) ) : '';
+		$value = ! empty( $this->value() ) ? implode( ',', $this->value() ) : '';
 		$type = is_string( $options ) ? $options : 'tags';
 
 		$this->add_html( '<input type="text" id="' . $this->id() . '" data-type="' . $type . '" data-options="' . esc_js( wp_json_encode( $this->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" ap-tag-field' . $this->custom_attr() . ' name="' . esc_attr( $this->field_name ) . '" value="' . $value . '" />' );

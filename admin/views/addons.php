@@ -3,10 +3,11 @@
  * AnsPress admin add-ons page.
  *
  * @link       https://anspress.io
- * @since      4.0
+ * @since      4.0.0
  * @author     Rahul Aryan <support@anspress.io>
  * @package    AnsPress
  * @subpackage Admin Views
+ * @since 4.1.5 Fixed form name.
  */
 
 // If this file is called directly, abort.
@@ -162,7 +163,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 				 */
 				$form_args = apply_filters( 'ap_addon_form_args', $from_args );
 
-				$form_name = substr( $active_data['id'], 0, strrpos( $active_data['id'], '.' ) );
+				$form_name = str_replace( '.php', '', $active_data['id'] );
 				$form_name = str_replace( '/', '_', $form_name );
 
 				if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
