@@ -82,6 +82,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
+            anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
@@ -508,6 +509,27 @@ class AnsPress_Hooks {
 		return $plugin_array;
 	}
 
+    /**
+     * Filters the translations loaded for external TinyMCE 3.x plugins.
+     *
+     * The filter takes an associative array ('plugin_name' => 'path')
+     * where 'path' is the include path to the file.
+     *
+     * The language file should follow the same format as wp_mce_translation(),
+     * and should define a variable ($strings) that holds all translated strings.
+     *
+     * @since 4.5.0
+     *
+     * @param array $translations Translations for external TinyMCE plugins.
+     */
+    
+    public static function mce_plugins_languages( $translations ) {
+        
+        $translations['anspress'] = ANSPRESS_DIR . 'includes/mce-languages.php';
+        return $translations;
+        
+    }
+    
 	/**
 	 * Filter post so that anonymous author should not be replaced
 	 * by current user approving post.
