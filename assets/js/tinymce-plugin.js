@@ -25,12 +25,12 @@
         });
       });
       ed.addButton('apmedia', {
-        title: 'Insert image',
+        title: ed.getLang('anspress.i18n_insert_image'),
         icon: 'image',
         onclick: function () {
           // Open window
           var win = ed.windowManager.open({
-            title: 'Insert Media (AnsPress)',
+            title: ed.getLang('anspress.i18n_insert_media'),
             resizable: true,
             scrollbars: true,
             width: 500,
@@ -46,7 +46,7 @@
                 }
               },
               {
-                text: 'Close',
+                ed.getLang('anspress.i18n_close'),
                 onclick: function () {
                   win.close();
                 }
@@ -55,8 +55,8 @@
             body: [{
                 type: 'button',
                 name: 'file-browser',
-                label: 'Select File',
-                text: 'Browse from computer',
+                label: ed.getLang('anspress.i18n_select_file'),
+                text: ed.getLang('anspress.i18n_browse_from_computer'),
                 onclick: function (e) {
                   $ta_name = jQuery(ed.getElement()).attr('id') + '-images[]';
                   var input = jQuery('<input name="'+ $ta_name +'" type="file" accept="image/*" />').hide();
@@ -80,13 +80,13 @@
               {
                 type: 'textbox',
                 name: 'file-title',
-                label: 'Image title',
+                label: ed.getLang('anspress.i18n_image_title'),
                 minWidth: 300
               },
               {
                 type: 'container',
                 name: 'image-preview',
-                label: 'Media preview',
+                label: ed.getLang('anspress.i18n_media_preview'),
               },
             ]
           });
