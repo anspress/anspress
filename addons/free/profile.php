@@ -421,6 +421,9 @@ class AnsPress_Profile_Hooks {
 				status_header( 404 );
 			}
 		}
+        
+        return $posts;
+        
 	}
 
 	/**
