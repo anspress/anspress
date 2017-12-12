@@ -35,7 +35,7 @@ function ap_tinymce_translations() {
 		'i18n_insert_codes'         => __( 'Insert codes (AnsPress)', 'anspress-question-answer' ),
 		'i18n_insert'               => __( 'Insert', 'anspress-question-answer' ),
 		'i18n_inline'               => __( 'Inline?', 'anspress-question-answer' ),
-		'i18n_insert_your_code'     => __( 'Insert your code..', 'anspress-question-answer' ),
+		'i18n_insert_your_code'     => __( 'Insert your code.', 'anspress-question-answer' ),
 	);
 
 	$locale = _WP_Editors::$mce_locale;
