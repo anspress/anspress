@@ -46,7 +46,11 @@
                 }
               },
               {
+<<<<<<< HEAD
                 ed.getLang('anspress.i18n_close'),
+=======
+                text: ed.getLang('anspress.i18n_close'),
+>>>>>>> anspress/master
                 onclick: function () {
                   win.close();
                 }

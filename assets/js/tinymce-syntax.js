@@ -35,18 +35,18 @@
         return false;
       }
       ed.addButton('apcode', {
-        title: 'Insert code',
+        title: ed.getLang('anspress.i18n_insert_code'),
         icon: 'code',
         onclick: function () {
           // Open window
           var win = ed.windowManager.open({
-            title: 'Insert codes (AnsPress)',
+            title: ed.getLang('anspress.i18n_insert_codes'),
             resizable: true,
             scrollbars: true,
             width: 700,
             height: 300,
             buttons: [{
-                text: 'Insert',
+                text: ed.getLang('anspress.i18n_insert'),
                 subtype: 'primary',
                 onclick: 'submit'
               },
@@ -68,14 +68,14 @@
               {
                 type: 'checkbox',
                 name: 'inline',
-                label: 'Inline?',
+                label: ed.getLang('anspress.i18n_inline'),
                 value: isInline(ed)
               },
               {
                 type: 'textbox',
                 name: 'code',
                 label: false,
-                text: 'Insert your code..',
+                text: ed.getLang('anspress.i18n_insert_your_code'),
                 minWidth: 300,
                 minHeight: 200,
                 multiline: true,

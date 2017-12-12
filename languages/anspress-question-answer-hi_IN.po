@@ -3,19 +3,19 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-12-10 05:12:04+00:00\n"
-"PO-Revision-Date: 2017-04-26 08:49+0000\n"
+"POT-Creation-Date: 2017-12-12 15:46:09+00:00\n"
+"PO-Revision-Date: 2017-12-12 21:20+0530\n"
 "Last-Translator: Rahul Aryan <rah12@live.com>\n"
 "Language-Team: Hindi\n"
-"Language: hi-IN\n"
+"Language: hi_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco - https://localise.biz/\n"
+"X-Generator: Poedit 2.0.1\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
@@ -49,8 +49,8 @@ msgstr "अवतार भेजे"
 
 #: addons/free/avatar.php:109
 msgid ""
-"Show AnsPress avatars by default instead of gravatar fallback. Useful in "
-"localhost development."
+"Show AnsPress avatars by default instead of gravatar fallback. Useful in localhost "
+"development."
 msgstr ""
 
 #: addons/free/buddypress.php:99
@@ -58,9 +58,8 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/free/buddypress.php:107 addons/free/buddypress.php:187
-#: addons/free/profile.php:39 addons/free/profile.php:151
-#: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:2189 includes/options.php:102
+#: addons/free/profile.php:39 addons/free/profile.php:151 admin/views/dashboard.php:30
+#: admin/views/dashboard.php:212 includes/functions.php:2196 includes/options.php:102
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
@@ -69,8 +68,8 @@ msgstr "सवाल"
 #: addons/free/buddypress.php:108 addons/free/buddypress.php:238
 #: addons/free/profile.php:40 addons/free/profile.php:158
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
-#: includes/post-types.php:160 includes/theme.php:370
-#: widgets/question_stats.php:49 widgets/questions.php:117
+#: includes/post-types.php:160 includes/theme.php:370 widgets/question_stats.php:49
+#: widgets/questions.php:117
 msgid "Answers"
 msgstr "जवाब"
 
@@ -88,10 +87,9 @@ msgstr "अधिक बातचीत ला रहे है"
 msgid "Load more answers"
 msgstr "निचे मत प्राप्त जवाब"
 
-#: addons/free/buddypress.php:274 addons/free/buddypress.php:275
-#: admin/meta-box.php:41 includes/ajax-hooks.php:205 includes/comments.php:69
-#: includes/common-pages.php:21 includes/post-status.php:92
-#: includes/post-types.php:106
+#: addons/free/buddypress.php:274 addons/free/buddypress.php:275 admin/meta-box.php:41
+#: includes/ajax-hooks.php:205 includes/comments.php:69 includes/common-pages.php:21
+#: includes/post-status.php:92 includes/post-types.php:106
 msgid "Question"
 msgstr "सवाल"
 
@@ -105,9 +103,8 @@ msgstr "%1$s ने साईट पर नया <a href=\"AP_CPT_LINK\">सव
 
 #: addons/free/buddypress.php:284 addons/free/buddypress.php:285
 #: addons/free/buddypress.php:296 admin/views/dashboard.php:34
-#: includes/ajax-hooks.php:205 includes/comments.php:69
-#: includes/post-status.php:92 includes/post-types.php:183
-#: templates/answers.php:20
+#: includes/ajax-hooks.php:205 includes/comments.php:69 includes/post-status.php:92
+#: includes/post-types.php:183 templates/answers.php:20
 msgid "Answer"
 msgstr "जवाब"
 
@@ -153,10 +150,9 @@ msgstr "%1$s ने आपके %3$s - %2$s पर टिप्पणी की
 msgid "Display AnsPress categories"
 msgstr ""
 
-#: addons/free/category/widget.php:68 includes/ajax-hooks.php:605
+#: addons/free/category/widget.php:68 includes/ajax-hooks.php:623
 #: templates/addons/category/categories.php:33
-#: templates/addons/category/single-category.php:38
-#: templates/addons/tag/tags.php:39
+#: templates/addons/category/single-category.php:38 templates/addons/tag/tags.php:39
 msgid "%d Question"
 msgid_plural "%d Questions"
 msgstr[0] "%d सवाल"
@@ -167,16 +163,14 @@ msgid "%d Child"
 msgstr ""
 
 #: addons/free/category/widget.php:81 addons/free/category.php:39
-#: addons/free/category.php:165 addons/free/category.php:460
-#: addons/free/category.php:472 includes/functions.php:2207
-#: includes/taxo.php:29
+#: addons/free/category.php:459 addons/free/category.php:471
+#: includes/functions.php:2214 includes/taxo.php:29
 #, fuzzy
 msgid "Categories"
 msgstr "वर्ग"
 
 #: addons/free/category/widget.php:99 widgets/ask-form.php:74
-#: widgets/question_stats.php:68 widgets/questions.php:108
-#: widgets/search.php:69
+#: widgets/question_stats.php:68 widgets/questions.php:108 widgets/search.php:69
 msgid "Title:"
 msgstr "शीर्शक:"
 
@@ -205,26 +199,25 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: addons/free/category/widget.php:130 addons/free/category.php:232
-#: addons/free/category.php:245
+#: addons/free/category/widget.php:130 addons/free/category.php:231
+#: addons/free/category.php:244
 #, fuzzy
 msgid "Count"
 msgstr "खाता"
 
-#: addons/free/category/widget.php:131 addons/free/category.php:229
-#: addons/free/category.php:242
+#: addons/free/category/widget.php:131 addons/free/category.php:228
+#: addons/free/category.php:241
 msgid "ID"
 msgstr ""
 
-#: addons/free/category/widget.php:132 addons/free/category.php:230
-#: addons/free/category.php:243 addons/free/tag.php:586 addons/free/tag.php:636
-#: includes/deprecated.php:291 includes/deprecated.php:434
-#: includes/deprecated.php:875
+#: addons/free/category/widget.php:132 addons/free/category.php:229
+#: addons/free/category.php:242 addons/free/tag.php:586 addons/free/tag.php:636
+#: includes/deprecated.php:291 includes/deprecated.php:434 includes/deprecated.php:875
 msgid "Name"
 msgstr "नाम"
 
-#: addons/free/category/widget.php:133 addons/free/category.php:231
-#: addons/free/category.php:244
+#: addons/free/category/widget.php:133 addons/free/category.php:230
+#: addons/free/category.php:243
 msgid "Slug"
 msgstr ""
 
@@ -254,186 +247,186 @@ msgstr "कवर चौड़ाई"
 msgid "Icon height:"
 msgstr "कवर उचाई"
 
-#: addons/free/category.php:38 addons/free/category.php:174
-#: addons/free/category.php:317 addons/free/category.php:385
-#: addons/free/category.php:513 admin/class-list-table-hooks.php:188
+#: addons/free/category.php:38 addons/free/category.php:172
+#: addons/free/category.php:316 addons/free/category.php:384
+#: addons/free/category.php:512 admin/class-list-table-hooks.php:188
 #: includes/taxo.php:202
 msgid "Category"
 msgstr "वर्ग"
 
-#: addons/free/category.php:173
+#: addons/free/category.php:171
 #, fuzzy
 msgid "Question Categories"
 msgstr "सवाल के आंकड़े"
 
-#: addons/free/category.php:175
+#: addons/free/category.php:173
 #, fuzzy
 msgid "All Categories"
 msgstr "वर्ग"
 
-#: addons/free/category.php:176
+#: addons/free/category.php:174
 #, fuzzy
 msgid "Add New Category"
 msgstr "वर्ग"
 
-#: addons/free/category.php:177
+#: addons/free/category.php:175
 #, fuzzy
 msgid "Edit Category"
 msgstr "वर्ग"
 
-#: addons/free/category.php:178
+#: addons/free/category.php:176
 #, fuzzy
 msgid "New Category"
 msgstr "वर्ग"
 
-#: addons/free/category.php:179
+#: addons/free/category.php:177
 #, fuzzy
 msgid "View Category"
 msgstr "वर्ग"
 
-#: addons/free/category.php:180
+#: addons/free/category.php:178
 #, fuzzy
 msgid "Search Category"
 msgstr "जवाब खोजें"
 
-#: addons/free/category.php:181 addons/free/tag.php:189
+#: addons/free/category.php:179 addons/free/tag.php:189
 #, fuzzy
 msgid "Nothing Found"
 msgstr "कोई सवाल नहीं पाया गया"
 
-#: addons/free/category.php:182 addons/free/tag.php:190
+#: addons/free/category.php:180 addons/free/tag.php:190
 #, fuzzy
 msgid "Nothing found in Trash"
 msgstr "कोई सवाल कचरे नहीं पाया गया"
 
-#: addons/free/category.php:225
+#: addons/free/category.php:224
 msgid "Ask form category order"
 msgstr ""
 
-#: addons/free/category.php:226
+#: addons/free/category.php:225
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: addons/free/category.php:233 addons/free/category.php:246
+#: addons/free/category.php:232 addons/free/category.php:245
 msgid "Group"
 msgstr ""
 
-#: addons/free/category.php:238
+#: addons/free/category.php:237
 msgid "Categries page order by"
 msgstr ""
 
-#: addons/free/category.php:239 addons/free/category.php:252
+#: addons/free/category.php:238 addons/free/category.php:251
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: addons/free/category.php:251
+#: addons/free/category.php:250
 msgid "Categries page order"
 msgstr ""
 
-#: addons/free/category.php:255
+#: addons/free/category.php:254
 #, fuzzy
 msgid "Ascending"
 msgstr "बाकी"
 
-#: addons/free/category.php:256
+#: addons/free/category.php:255
 #, fuzzy
 msgid "Descending"
 msgstr "बाकी"
 
-#: addons/free/category.php:261
+#: addons/free/category.php:260
 #, fuzzy
 msgid "Category page slug"
 msgstr "वर्ग"
 
-#: addons/free/category.php:262
+#: addons/free/category.php:261
 msgid "Slug for category page"
 msgstr ""
 
-#: addons/free/category.php:266
+#: addons/free/category.php:265
 #, fuzzy
 msgid "Category per page"
 msgstr "एक पेज पर दिखाए उपयोगकर्ता"
 
-#: addons/free/category.php:267
+#: addons/free/category.php:266
 #, fuzzy
 msgid "Category to show per page"
 msgstr "एक पेज पर दिखाए उपयोगकर्ता"
 
-#: addons/free/category.php:272
+#: addons/free/category.php:271
 msgid "Categories image height"
 msgstr ""
 
-#: addons/free/category.php:273
+#: addons/free/category.php:272
 msgid "Image height in categories page"
 msgstr ""
 
-#: addons/free/category.php:317
+#: addons/free/category.php:316
 #, fuzzy
 msgid "Questions Category"
 msgstr "सवाल के आंकड़े"
 
-#: addons/free/category.php:386
+#: addons/free/category.php:385
 #, fuzzy
 msgid "Select a topic that best fits your question."
 msgstr "आपके सवाल का सर्वोत्तम उत्तर चुना गया है"
 
-#: addons/free/category.php:437
+#: addons/free/category.php:436
 #, fuzzy
 msgid "No matching category found"
 msgstr "कोई जवाब नहीं मिला"
 
-#: addons/free/category.php:532 addons/free/category.php:575
+#: addons/free/category.php:531 addons/free/category.php:574
 msgid "Image"
 msgstr ""
 
-#: addons/free/category.php:533 addons/free/category.php:578
+#: addons/free/category.php:532 addons/free/category.php:577
 #, fuzzy
 msgid "Upload image"
 msgstr "भेज  रहे है"
 
-#: addons/free/category.php:537
+#: addons/free/category.php:536
 #, fuzzy
 msgid "Category image"
 msgstr "वर्ग"
 
-#: addons/free/category.php:541 addons/free/category.php:594
+#: addons/free/category.php:540 addons/free/category.php:593
 #, fuzzy
 msgid "Category icon class"
 msgstr "वर्ग"
 
-#: addons/free/category.php:543 addons/free/category.php:598
-#: addons/free/category.php:607
+#: addons/free/category.php:542 addons/free/category.php:597
+#: addons/free/category.php:606
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: addons/free/category.php:547
+#: addons/free/category.php:546
 msgid "Icon background color"
 msgstr ""
 
-#: addons/free/category.php:549
+#: addons/free/category.php:548
 msgid "Set background color to be used with icon"
 msgstr ""
 
-#: addons/free/category.php:587
+#: addons/free/category.php:586
 #, fuzzy
 msgid "Remove image"
 msgstr "हटाइये"
 
-#: addons/free/category.php:589
+#: addons/free/category.php:588
 msgid "Featured image for category"
 msgstr ""
 
-#: addons/free/category.php:603
+#: addons/free/category.php:602
 #, fuzzy
 msgid "Category icon color"
 msgstr "वर्ग"
 
-#: addons/free/category.php:772
+#: addons/free/category.php:771
 #, fuzzy
 msgid "Question category feed"
 msgstr "सवाल सूचि "
 
-#: addons/free/category.php:819 addons/free/tag.php:617
+#: addons/free/category.php:818 addons/free/tag.php:617
 msgid ", %d+"
 msgstr ""
 
@@ -466,8 +459,7 @@ msgid ""
 "separated by comma."
 msgstr ""
 
-#: addons/free/email.php:159 addons/free/email.php:204
-#: includes/post-types.php:88
+#: addons/free/email.php:159 addons/free/email.php:204 includes/post-types.php:88
 #, fuzzy
 msgid "New question"
 msgstr "नए सवाल"
@@ -476,8 +468,7 @@ msgstr "नए सवाल"
 msgid "Send new question notification to admin."
 msgstr ""
 
-#: addons/free/email.php:165 addons/free/email.php:210
-#: includes/post-types.php:165
+#: addons/free/email.php:165 addons/free/email.php:210 includes/post-types.php:165
 msgid "New answer"
 msgstr "नया जवाब"
 
@@ -504,8 +495,7 @@ msgstr "सवाल को बदलिये"
 msgid "Send notification to admin when question is edited."
 msgstr "केवल एडमिन ही जवाब देने की अनुमति दे"
 
-#: addons/free/email.php:183 addons/free/email.php:228
-#: includes/post-types.php:166
+#: addons/free/email.php:183 addons/free/email.php:228 includes/post-types.php:166
 msgid "Edit answer"
 msgstr "जवाब बदलिये"
 
@@ -823,8 +813,7 @@ msgid "Failed to verify captcha. Please try again."
 msgstr "बल्ला नहीं बना पाये, फिर से प्रयास करे"
 
 #: addons/free/recaptcha/class-captcha.php:94
-msgid ""
-"Unable to render captcha. Please add reCpatcha keys in AnsPress options."
+msgid "Unable to render captcha. Please add reCpatcha keys in AnsPress options."
 msgstr ""
 
 #: addons/free/recaptcha.php:64
@@ -833,8 +822,8 @@ msgstr ""
 
 #: addons/free/recaptcha.php:65
 msgid ""
-"Enter your site key, if you dont have it get it from here https://www.google."
-"com/recaptcha/admin"
+"Enter your site key, if you dont have it get it from here https://www.google.com/"
+"recaptcha/admin"
 msgstr ""
 
 #: addons/free/recaptcha.php:69
@@ -853,7 +842,7 @@ msgstr ""
 msgid "Select method to use when verification keeps failing"
 msgstr ""
 
-#: addons/free/recaptcha.php:100
+#: addons/free/recaptcha.php:99
 msgid "Prove that you are a human"
 msgstr ""
 
@@ -1046,14 +1035,13 @@ msgstr "ख्याति"
 msgid "%s Reputation"
 msgstr "%d ख्याति"
 
-#: addons/free/tag.php:34 addons/free/tag.php:539
-#: admin/class-list-table-hooks.php:192
+#: addons/free/tag.php:34 addons/free/tag.php:539 admin/class-list-table-hooks.php:192
 msgid "Tag"
 msgstr "बिल्ला"
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
 #: addons/free/tag.php:353 addons/free/tag.php:437 addons/free/tag.php:447
-#: includes/functions.php:2213
+#: includes/functions.php:2220
 msgid "Tags"
 msgstr "बिल्ले"
 
@@ -1155,8 +1143,8 @@ msgstr ""
 #. tags allowed.
 #: addons/free/tag.php:356
 msgid ""
-"Tagging will helps others to easily find your question. Minimum %1$d and "
-"maximum %2$d tags."
+"Tagging will helps others to easily find your question. Minimum %1$d and maximum "
+"%2$d tags."
 msgstr ""
 
 #: addons/free/tag.php:547
@@ -1210,7 +1198,7 @@ msgstr "AnsPress विकल्प"
 msgid "Options"
 msgstr "ख्याति"
 
-#: admin/anspress-admin.php:205 admin/views/addons.php:50
+#: admin/anspress-admin.php:205 admin/views/addons.php:51
 #, fuzzy
 msgid "AnsPress Add-ons"
 msgstr "AnsPress विकल्प"
@@ -1291,8 +1279,8 @@ msgstr ""
 
 #: admin/anspress-admin.php:799
 msgid ""
-"If you have created main pages manually then make sure to have [anspress] "
-"shortcode in all pages."
+"If you have created main pages manually then make sure to have [anspress] shortcode "
+"in all pages."
 msgstr ""
 
 #: admin/anspress-admin.php:838
@@ -1350,8 +1338,8 @@ msgstr ""
 
 #: admin/anspress-admin.php:906
 msgid ""
-"Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
-"careful, this might break layout."
+"Check this to load AnsPress JS and CSS on the AnsPress page only. Be careful, this "
+"might break layout."
 msgstr ""
 
 #: admin/anspress-admin.php:911
@@ -1496,8 +1484,8 @@ msgstr "जवाब भेजिए"
 
 #: admin/anspress-admin.php:1049
 msgid ""
-"OP: Original poster/asker. Enabling this option will prevent users to post "
-"an answer on their question."
+"OP: Original poster/asker. Enabling this option will prevent users to post an "
+"answer on their question."
 msgstr ""
 
 #: admin/anspress-admin.php:1054
@@ -1594,8 +1582,8 @@ msgstr "निजी पोस्ट करने दे"
 
 #: admin/anspress-admin.php:1155
 msgid ""
-"Allows users to create private question and answer. Private Q&A are only "
-"visible to admin and moderators."
+"Allows users to create private question and answer. Private Q&A are only visible to "
+"admin and moderators."
 msgstr ""
 
 #: admin/anspress-admin.php:1160
@@ -1640,8 +1628,7 @@ msgid "Show default date format"
 msgstr "मुख्य जबाब छटाई"
 
 #: admin/anspress-admin.php:1202
-msgid ""
-"Instead of showing time passed i.e. 1 Hour ago, show default format date."
+msgid "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
 #: admin/anspress-admin.php:1207
@@ -1650,8 +1637,7 @@ msgstr ""
 
 #: admin/anspress-admin.php:1208
 msgid ""
-"If an answer is selected for question then [solved] prefix will be added in "
-"title."
+"If an answer is selected for question then [solved] prefix will be added in title."
 msgstr ""
 
 #: admin/anspress-admin.php:1214
@@ -1663,24 +1649,23 @@ msgstr "सवाल चुने"
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1218 admin/anspress-admin.php:1284
-#: includes/theme.php:411 widgets/questions.php:116
+#: admin/anspress-admin.php:1218 admin/anspress-admin.php:1284 includes/theme.php:411
+#: widgets/questions.php:116
 msgid "Voted"
 msgstr "मतदान किया"
 
 #: admin/anspress-admin.php:1219 admin/anspress-admin.php:1285
-#: admin/views/addons.php:93 includes/theme.php:362 includes/theme.php:407
+#: admin/views/addons.php:94 includes/theme.php:362 includes/theme.php:407
 #: widgets/question_stats.php:47 widgets/questions.php:114
 msgid "Active"
 msgstr "सक्रिय"
 
-#: admin/anspress-admin.php:1220 admin/anspress-admin.php:1286
-#: includes/theme.php:414 widgets/questions.php:115
+#: admin/anspress-admin.php:1220 admin/anspress-admin.php:1286 includes/theme.php:414
+#: widgets/questions.php:115
 msgid "Newest"
 msgstr "सबसे नया"
 
-#: admin/anspress-admin.php:1221 admin/anspress-admin.php:1287
-#: includes/theme.php:415
+#: admin/anspress-admin.php:1221 admin/anspress-admin.php:1287 includes/theme.php:415
 msgid "Oldest"
 msgstr "सबसे पुराना"
 
@@ -1870,8 +1855,8 @@ msgid "Comments"
 msgstr "टिप्पणियाँ"
 
 #: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
-#: admin/views/recount.php:54 includes/theme.php:367
-#: templates/content-answer.php:20 templates/question-list-item.php:30
+#: admin/views/recount.php:54 includes/theme.php:367 templates/content-answer.php:20
+#: templates/question-list-item.php:30
 msgid "Votes"
 msgstr "मत"
 
@@ -1890,8 +1875,8 @@ msgstr "--"
 
 #: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
 #: admin/views/select_question.php:43 includes/ajax-hooks.php:107
-#: includes/ajax-hooks.php:109 includes/ajax-hooks.php:290
-#: includes/functions.php:2013 templates/buddypress/question-item.php:38
+#: includes/ajax-hooks.php:109 includes/ajax-hooks.php:290 includes/functions.php:2020
+#: templates/buddypress/question-item.php:38
 msgid "%d Answer"
 msgid_plural "%d Answers"
 msgstr[0] "%d जवाब"
@@ -1905,8 +1890,7 @@ msgstr "जानकारी"
 msgid "This question is orphan, no question is selected for this answer"
 msgstr "ये सवाल लावारिस है, इस जवाब के लिए किसी सवाल का चुनाव नहीं है"
 
-#: admin/class-list-table-hooks.php:366 admin/meta-box.php:129
-#: includes/flag.php:127
+#: admin/class-list-table-hooks.php:366 admin/meta-box.php:129 includes/flag.php:127
 msgid "Flag"
 msgstr "अलग करे"
 
@@ -2026,28 +2010,26 @@ msgstr ""
 
 #: admin/updater.php:104
 msgid ""
-"Updating this theme will lose any customizations you have made. 'Cancel' to "
-"stop, 'OK' to update."
+"Updating this theme will lose any customizations you have made. 'Cancel' to stop, "
+"'OK' to update."
 msgstr ""
 
 #: admin/updater.php:105
 msgid ""
-"<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" "
-"title=\"%4s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</"
-"a>."
+"<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" title="
+"\"%4s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</a>."
 msgstr ""
 
 #: admin/updater.php:231
 msgid ""
-"There is a new version of %1$s available. <a target=\"_blank\" class="
-"\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+"There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" "
+"href=\"%2$s\">View version %3$s details</a>."
 msgstr ""
 
 #: admin/updater.php:238
 msgid ""
-"There is a new version of %1$s available. <a target=\"_blank\" class="
-"\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
-"\">update now</a>."
+"There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" "
+"href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s\">update now</a>."
 msgstr ""
 
 #: admin/updater.php:374
@@ -2060,24 +2042,24 @@ msgstr "आपको ये सवाल बदलने की अनुमत�
 msgid "Error"
 msgstr "गलती ४०४"
 
-#: admin/views/addons.php:63
+#: admin/views/addons.php:64
 #, fuzzy
 msgid "Addon options updated successfully!"
 msgstr "सवाल सफलता पूर्वक बदल दिया गया है"
 
-#: admin/views/addons.php:133
+#: admin/views/addons.php:134
 msgid "Disable Addon"
 msgstr ""
 
-#: admin/views/addons.php:133
+#: admin/views/addons.php:134
 msgid "Enable Add-on"
 msgstr ""
 
-#: admin/views/addons.php:149
+#: admin/views/addons.php:150
 msgid "Please enable addon to view options."
 msgstr ""
 
-#: admin/views/addons.php:171
+#: admin/views/addons.php:172
 msgid "There is no option registered by this addon."
 msgstr ""
 
@@ -2401,8 +2383,7 @@ msgid "Successfully updated flagged posts count!"
 msgstr "सफलता पूर्वक बिल्ला बना दिया"
 
 #: admin/views/recount.php:97
-msgid ""
-"Failed to count flagged posts, please try again or submit a help request"
+msgid "Failed to count flagged posts, please try again or submit a help request"
 msgstr ""
 
 #: admin/views/recount.php:100
@@ -2435,8 +2416,7 @@ msgstr "सफलता पूर्वक बिल्ला बना दि�
 
 #: admin/views/recount.php:114
 msgid ""
-"Failed to count question subscribers, please try again or submit a help "
-"request"
+"Failed to count question subscribers, please try again or submit a help request"
 msgstr ""
 
 #: admin/views/recount.php:117
@@ -2462,8 +2442,7 @@ msgid "Successfully updated users reputation!"
 msgstr "सफलता पूर्वक बिल्ला बना दिया"
 
 #: admin/views/recount.php:131
-msgid ""
-"Failed to count users reputation, please try again or submit a help request"
+msgid "Failed to count users reputation, please try again or submit a help request"
 msgstr ""
 
 #: admin/views/recount.php:134
@@ -2471,8 +2450,7 @@ msgstr ""
 msgid "Re-count all users reputation points."
 msgstr "सफलता पूर्वक बिल्ला बना दिया"
 
-#: admin/views/recount.php:140 includes/theme.php:371
-#: widgets/question_stats.php:48
+#: admin/views/recount.php:140 includes/theme.php:371 widgets/question_stats.php:48
 msgid "Views"
 msgstr "दर्शन"
 
@@ -2590,8 +2568,8 @@ msgstr "नए जवाब के लिए एक सवाल चुनिए
 
 #: admin/views/select_question.php:21
 msgid ""
-"Slowly type for question suggestion and then click select button right to "
-"question title."
+"Slowly type for question suggestion and then click select button right to question "
+"title."
 msgstr ""
 
 #: admin/views/select_question.php:37
@@ -2618,8 +2596,7 @@ msgstr ""
 
 #: admin/views/uninstall.php:20
 msgid ""
-"If you are unsure about this section please do not use any of these options "
-"below."
+"If you are unsure about this section please do not use any of these options below."
 msgstr ""
 
 #: admin/views/uninstall.php:27
@@ -2632,8 +2609,7 @@ msgid "Delete %d Q&A"
 msgstr "हटाइये"
 
 #: admin/views/uninstall.php:34
-msgid ""
-"Clicking this button will delete all questions and answers data from database"
+msgid "Clicking this button will delete all questions and answers data from database"
 msgstr ""
 
 #: admin/views/uninstall.php:39
@@ -2647,8 +2623,7 @@ msgstr "चुना सवाल"
 
 #: admin/views/uninstall.php:46
 msgid ""
-"Clicking this button will delete all answers and its related data from "
-"database"
+"Clicking this button will delete all answers and its related data from database"
 msgstr ""
 
 #: admin/views/uninstall.php:51
@@ -2717,8 +2692,8 @@ msgstr "AnsPress विकल्प"
 
 #: anspress-question-answer.php:47
 msgid ""
-"Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP "
-"version is %s. Please ask hosting provider to update your PHP version."
+"Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is "
+"%s. Please ask hosting provider to update your PHP version."
 msgstr ""
 
 #: includes/activity.php:59
@@ -2748,8 +2723,7 @@ msgstr "आपके सवाल का सर्वोत्तम उत्�
 
 #: includes/ajax-hooks.php:161
 msgid ""
-"This answer cannot be selected as best, update status to select as best "
-"answer."
+"This answer cannot be selected as best, update status to select as best answer."
 msgstr ""
 
 #: includes/ajax-hooks.php:183
@@ -2852,7 +2826,7 @@ msgstr "सवाल को विशेष चुना गया है."
 msgid "You cannot close a question"
 msgstr "सवाल का जवाब देने के लिए."
 
-#: includes/ajax-hooks.php:396 includes/theme.php:242
+#: includes/ajax-hooks.php:396 includes/mce-languages.php:29 includes/theme.php:242
 msgid "Close"
 msgstr "बंद करे"
 
@@ -3037,8 +3011,7 @@ msgstr ""
 msgid "Yesterday"
 msgstr ""
 
-#: includes/class/class-activity.php:526
-#: templates/addons/notification/index.php:46
+#: includes/class/class-activity.php:526 templates/addons/notification/index.php:46
 #: templates/addons/reputation/index.php:23
 #, fuzzy
 msgid "Load More"
@@ -3111,7 +3084,7 @@ msgstr "आपका जवाब.."
 msgid "Enter your name to display"
 msgstr "प्रदर्शित किया जानेवाला  नाम लिखिए"
 
-#: includes/class-form-hooks.php:103 includes/functions.php:1930
+#: includes/class-form-hooks.php:103 includes/functions.php:1937
 #, fuzzy
 msgid "Update Question"
 msgstr "सवाल बदलिये"
@@ -3170,8 +3143,8 @@ msgstr "ने टीप्पणी बदली"
 
 #: includes/class-form-hooks.php:341
 msgid ""
-"You are trying to post a duplicate question. Please search existing "
-"questions before posting a new one."
+"You are trying to post a duplicate question. Please search existing questions "
+"before posting a new one."
 msgstr ""
 
 #. Translators: placeholder contain error message.
@@ -3227,8 +3200,7 @@ msgstr "आपकी टिप्पणी भेज रहे है "
 
 #. Translators: %d contains count of comments.
 #: includes/class-form-hooks.php:697 includes/class-form-hooks.php:783
-#: includes/comments.php:118 includes/comments.php:170
-#: includes/comments.php:286
+#: includes/comments.php:118 includes/comments.php:170 includes/comments.php:286
 msgid "%d Comment"
 msgid_plural "%d Comments"
 msgstr[0] "टिप्पणी"
@@ -3340,15 +3312,14 @@ msgstr "सवाल पूछे"
 msgid "Search"
 msgstr "खोजें"
 
-#: includes/common-pages.php:25 includes/functions.php:2219
+#: includes/common-pages.php:25 includes/functions.php:2226
 #, fuzzy
 msgid "Activities"
 msgstr "सक्रिय"
 
 #: includes/common-pages.php:73
 msgid ""
-"This question is awaiting moderation and cannot be viewed. Please check back "
-"later."
+"This question is awaiting moderation and cannot be viewed. Please check back later."
 msgstr ""
 
 #: includes/common-pages.php:75
@@ -3363,8 +3334,8 @@ msgstr ""
 
 #: includes/common-pages.php:86
 msgid ""
-"This question is not published yet and is not accessible to anyone until it "
-"get published."
+"This question is not published yet and is not accessible to anyone until it get "
+"published."
 msgstr ""
 
 #: includes/common-pages.php:143
@@ -3482,240 +3453,287 @@ msgstr "निचे मत करना उपलब्ध नहीं."
 msgid "You cannot vote on restricted posts"
 msgstr "आपके सवाल या जवाब को आप मत नहीं दे सकते."
 
-#: includes/functions.php:932
+#: includes/functions.php:933
 msgid "[Solved] "
 msgstr "[सुलझा गया "
 
-#: includes/functions.php:1275
+#: includes/functions.php:1276
 msgid "asked"
 msgstr "ने पूछा की"
 
-#: includes/functions.php:1276 includes/functions.php:1277
+#: includes/functions.php:1277 includes/functions.php:1278
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1278
+#: includes/functions.php:1279
 msgid "answered"
 msgstr "ने जवाब दिया"
 
-#: includes/functions.php:1279
+#: includes/functions.php:1280
 #, fuzzy
 msgid "deleted answer"
 msgstr "चुना सवाल"
 
-#: includes/functions.php:1280
+#: includes/functions.php:1281
 #, fuzzy
 msgid "restored question"
 msgstr "ने सवाल बदला"
 
-#: includes/functions.php:1281
+#: includes/functions.php:1282
 #, fuzzy
 msgid "restored answer"
 msgstr "ने जवाब बदला "
 
-#: includes/functions.php:1282 templates/comment.php:27
-#: templates/functions.php:40
+#: includes/functions.php:1283 templates/comment.php:27 templates/functions.php:40
 msgid "commented"
 msgstr "ने टिप्पणी की"
 
-#: includes/functions.php:1283
+#: includes/functions.php:1284
 #, fuzzy
 msgid "deleted comment"
 msgstr "ने टीप्पणी बदली"
 
-#: includes/functions.php:1284
+#: includes/functions.php:1285
 msgid "commented on answer"
 msgstr "ने जवाब पर टिप्पणी की"
 
-#: includes/functions.php:1285
+#: includes/functions.php:1286
 msgid "edited question"
 msgstr "ने सवाल बदला"
 
-#: includes/functions.php:1286
+#: includes/functions.php:1287
 msgid "edited answer"
 msgstr "ने जवाब बदला "
 
-#: includes/functions.php:1287
+#: includes/functions.php:1288
 msgid "edited comment"
 msgstr "ने टीप्पणी बदली"
 
-#: includes/functions.php:1288
+#: includes/functions.php:1289
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "ने जवाब पर टिप्पणी की"
 
-#: includes/functions.php:1289
+#: includes/functions.php:1290
 msgid "selected answer"
 msgstr "चुना सवाल"
 
-#: includes/functions.php:1290
+#: includes/functions.php:1291
 msgid "unselected answer"
 msgstr "अनचुना सवाल"
 
-#: includes/functions.php:1291
+#: includes/functions.php:1292
 msgid "updated status"
 msgstr "बदली स्थिति"
 
-#: includes/functions.php:1292
+#: includes/functions.php:1293
 msgid "selected as best answer"
 msgstr "सबसे अच्छे जवाब के रूप में स्वीकृत"
 
-#: includes/functions.php:1293
+#: includes/functions.php:1294
 msgid "unselected as best answer"
 msgstr "सबसे अच्छे जवाब के रूप में अस्वीकृत"
 
-#: includes/functions.php:1294
+#: includes/functions.php:1295
 #, fuzzy
 msgid "changed status"
 msgstr "बदली स्थिति"
 
-#: includes/functions.php:1358
+#: includes/functions.php:1359
 msgid "Anonymous"
 msgstr "बेनाम"
 
-#: includes/functions.php:1390
+#: includes/functions.php:1391
 msgid " (anonymous)"
 msgstr "(बेनाम)"
 
-#: includes/functions.php:1903
+#: includes/functions.php:1910
 #, fuzzy
 msgid "You cannot edit this question."
 msgstr "आप इस सवाल का अनुकरण कर रहे है."
 
-#: includes/functions.php:1908 templates/ask.php:17
+#: includes/functions.php:1915 templates/ask.php:17
 #, fuzzy
 msgid "You do not have permission to ask a question."
 msgstr "आपको सवाल पूछने की अनुमति नहीं."
 
-#: includes/functions.php:2022
+#: includes/functions.php:2029
 msgid "Answer submitted successfully"
 msgstr "जवाब सफलता पूर्वक चढ़ा दिया गया है"
 
-#: includes/functions.php:2049
+#: includes/functions.php:2056
 #, fuzzy
 msgid "You cannot edit this answer."
 msgstr "ये जवाब बदलिये"
 
-#: includes/functions.php:2054
+#: includes/functions.php:2061
 #, fuzzy
 msgid "You do not have permission to answer this question."
 msgstr "आपको सवाल पूछने की अनुमति नहीं."
 
-#: includes/functions.php:2080
+#: includes/functions.php:2087
 msgid "Update Answer"
 msgstr "जवाब बदलिये"
 
-#: includes/functions.php:2187
+#: includes/functions.php:2194
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2188
+#: includes/functions.php:2195
 msgid ""
-"Page used to display question archive (list). Sometimes this page is used "
-"for displaying other subpages of AnsPress.<br/>This page is also referred as "
-"<b>Base Page</b> in AnsPress documentations and support forum."
+"Page used to display question archive (list). Sometimes this page is used for "
+"displaying other subpages of AnsPress.<br/>This page is also referred as <b>Base "
+"Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2193
+#: includes/functions.php:2200
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2194
+#: includes/functions.php:2201
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2195
+#: includes/functions.php:2202
 #, fuzzy
 msgid "Ask a question"
 msgstr "सवाल पूछे"
 
-#: includes/functions.php:2199
+#: includes/functions.php:2206
 #, fuzzy
 msgid "User page"
 msgstr "दोस्त परिचय"
 
-#: includes/functions.php:2200
+#: includes/functions.php:2207
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2201
+#: includes/functions.php:2208
 #, fuzzy
 msgid "Profile"
 msgstr "दोस्त परिचय"
 
-#: includes/functions.php:2205
+#: includes/functions.php:2212
 #, fuzzy
 msgid "Categories page"
 msgstr "एक पेज पर दिखाए उपयोगकर्ता"
 
-#: includes/functions.php:2206
+#: includes/functions.php:2213
 msgid ""
-"Page used to display question categories. NOTE: Categories addon must be "
-"enabled to render this page."
+"Page used to display question categories. NOTE: Categories addon must be enabled to "
+"render this page."
 msgstr ""
 
-#: includes/functions.php:2211
+#: includes/functions.php:2218
 #, fuzzy
 msgid "Tags page"
 msgstr "आधार पेज"
 
-#: includes/functions.php:2212
+#: includes/functions.php:2219
 msgid ""
-"Page used to display question tags. NOTE: Tags addon must be enabled to "
-"render this page."
+"Page used to display question tags. NOTE: Tags addon must be enabled to render this "
+"page."
 msgstr ""
 
-#: includes/functions.php:2217
+#: includes/functions.php:2224
 #, fuzzy
 msgid "Activities page"
 msgstr "सक्रिय %s"
 
-#: includes/functions.php:2218
+#: includes/functions.php:2225
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:860
+#: includes/hooks.php:872
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:861
+#: includes/hooks.php:873
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:862
+#: includes/hooks.php:874
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:863
+#: includes/hooks.php:875
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:864
+#: includes/hooks.php:876
 #, fuzzy
 msgid "day"
 msgstr "%d दिन. "
 
-#: includes/hooks.php:865
+#: includes/hooks.php:877
 #, fuzzy
 msgid "days"
 msgstr "%d दिन. "
 
-#: includes/hooks.php:866
+#: includes/hooks.php:878
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:867
+#: includes/hooks.php:879
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:868
+#: includes/hooks.php:880
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:869
+#: includes/hooks.php:881
 #, fuzzy
 msgid "years"
 msgstr "%d साल, "
+
+#: includes/mce-languages.php:27
+msgid "Insert image"
+msgstr "छवि सम्मिलित करें"
+
+#: includes/mce-languages.php:28
+msgid "Insert Media (AnsPress)"
+msgstr "मीडिया संमिलित करें (AnsPress)"
+
+#: includes/mce-languages.php:30
+msgid "Select File"
+msgstr "फाइल चुनो"
+
+#: includes/mce-languages.php:31
+msgid "Browse from computer"
+msgstr ""
+
+#: includes/mce-languages.php:32
+#, fuzzy
+msgid "Image title"
+msgstr "सवाल खोजें"
+
+#: includes/mce-languages.php:33
+msgid "Media preview"
+msgstr "मीडिया पूर्वावलोकन"
+
+#: includes/mce-languages.php:34
+#, fuzzy
+msgid "Insert code"
+msgstr "इस पोस्ट को निचे मत करे"
+
+#: includes/mce-languages.php:35
+msgid "Insert codes (AnsPress)"
+msgstr "कोड संमिलित करें (AnsPress)"
+
+#: includes/mce-languages.php:36
+#, fuzzy
+msgid "Insert"
+msgstr "इस पोस्ट को निचे मत करे"
+
+#: includes/mce-languages.php:37
+msgid "Inline?"
+msgstr "इनलाइन?"
+
+#: includes/mce-languages.php:38
+#, fuzzy
+msgid "Insert your code.."
+msgstr "आपकी टिप्पणी भेज रहे है "
 
 #: includes/options.php:103
 msgid "Search \"%s\""
@@ -3769,8 +3787,7 @@ msgstr "%s को कचरे में दाल दिया गया है
 
 #: includes/post-status.php:105
 msgid ""
-"This %s is not published yet and is not accessible to anyone until it get "
-"published."
+"This %s is not published yet and is not accessible to anyone until it get published."
 msgstr ""
 
 #: includes/post-types.php:84
@@ -3999,112 +4016,112 @@ msgstr "प्रस्तुत करे"
 msgid "No fields found for form: %s"
 msgstr "कोई विस्तार नहीं"
 
-#: lib/class-form.php:377 lib/form/class-field.php:380
+#: lib/class-form.php:381 lib/form/class-field.php:380
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:294 lib/class-validate.php:310
+#: lib/class-validate.php:295 lib/class-validate.php:311
 #, fuzzy
 msgid "%s field is required."
 msgstr "ये क्षेत्र जरुरी है"
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:326
+#: lib/class-validate.php:327
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:342
+#: lib/class-validate.php:343
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:358
+#: lib/class-validate.php:359
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:381
+#: lib/class-validate.php:382
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:405
+#: lib/class-validate.php:406
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:424
+#: lib/class-validate.php:425
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:443
+#: lib/class-validate.php:444
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:462
+#: lib/class-validate.php:463
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:513
+#: lib/class-validate.php:514
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:530
+#: lib/class-validate.php:531
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:531
+#: lib/class-validate.php:532
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:532
-msgid ""
-"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
-"the HTML form"
-msgstr ""
-
 #: lib/class-validate.php:533
-msgid "The uploaded file was only partially uploaded"
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the "
+"HTML form"
 msgstr ""
 
 #: lib/class-validate.php:534
-msgid "No file was uploaded"
+msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
 #: lib/class-validate.php:535
-msgid "Missing a temporary folder"
+msgid "No file was uploaded"
 msgstr ""
 
 #: lib/class-validate.php:536
-msgid "Failed to write file to disk."
+msgid "Missing a temporary folder"
 msgstr ""
 
 #: lib/class-validate.php:537
+msgid "Failed to write file to disk."
+msgstr ""
+
+#: lib/class-validate.php:538
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:627
+#: lib/class-validate.php:628
 #, fuzzy
 msgid "You are not allowed to upload file(s)"
 msgstr "केवल आप इस सवाल का अनुसरण कर रहे है"
 
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
-#: lib/class-validate.php:636
+#: lib/class-validate.php:637
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:643
+#: lib/class-validate.php:644
 msgid "File type is not allowed to upload."
 msgstr ""
 
 #. Translators: %s contain maximum file size user can upload.
-#: lib/class-validate.php:657
+#: lib/class-validate.php:658
 #, fuzzy
 msgid "File(s) size is bigger then %s MB"
 msgstr "फाइल अपलोड नहीं हूँ सकती, आकार % बाईट से बड़ा है"
@@ -4271,28 +4288,24 @@ msgstr "साथी खोजे"
 msgid "Posted %s"
 msgstr "%s ने पूछा %s"
 
-#: templates/addons/user/answer-item.php:45
-#: templates/buddypress/answer-item.php:39
+#: templates/addons/user/answer-item.php:45 templates/buddypress/answer-item.php:39
 #: templates/buddypress/question-item.php:41
 msgid "View Question"
 msgstr "सवाल देखे"
 
-#: templates/addons/user/answer-item.php:50
-#: templates/buddypress/answer-item.php:44
+#: templates/addons/user/answer-item.php:50 templates/buddypress/answer-item.php:44
 #: templates/buddypress/question-item.php:47
 msgid "%d Vote"
 msgid_plural "%d Votes"
 msgstr[0] "मत"
 msgstr[1] "मत"
 
-#: templates/addons/user/answer-item.php:52
-#: templates/buddypress/answer-item.php:46
+#: templates/addons/user/answer-item.php:52 templates/buddypress/answer-item.php:46
 #, fuzzy
 msgid "This answer is selected as best"
 msgstr "जब साथी का जवाब सर्वोत्तम चुना जाता है"
 
-#: templates/addons/user/answer-item.php:52
-#: templates/buddypress/answer-item.php:46
+#: templates/addons/user/answer-item.php:52 templates/buddypress/answer-item.php:46
 #, fuzzy
 msgid "Selected"
 msgstr "चुने"
@@ -4331,8 +4344,8 @@ msgstr "कोई सवाल पाया नहीं गया"
 
 #: templates/content-none.php:24
 msgid ""
-"Showing results with pagination active, you are currently on page %d. Click "
-"here to return to the initial page"
+"Showing results with pagination active, you are currently on page %d. Click here to "
+"return to the initial page"
 msgstr ""
 
 #: templates/content-none.php:27
@@ -4401,8 +4414,7 @@ msgstr "सभापति"
 
 #: templates/functions.php:91
 msgid ""
-"Widgets in this area will be shown in AnsPress sidebar except single "
-"question page."
+"Widgets in this area will be shown in AnsPress sidebar except single question page."
 msgstr ""
 
 #: templates/functions.php:97
@@ -4460,8 +4472,8 @@ msgstr "गलती ४०४"
 
 #: templates/question-list.php:32
 msgid ""
-"There are no questions matching your query or you do not have permission to "
-"read them."
+"There are no questions matching your query or you do not have permission to read "
+"them."
 msgstr ""
 
 #: templates/search-form.php:18
@@ -4509,16 +4521,14 @@ msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:43
 msgid ""
-"Details are shown above. The importer will now try again with a different "
-"parser..."
+"Details are shown above. The importer will now try again with a different parser..."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:84
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:89
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:306
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:495
-msgid ""
-"This does not appear to be a WXR file, missing/invalid WXR version number"
+msgid "This does not appear to be a WXR file, missing/invalid WXR version number"
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:132
@@ -4550,20 +4560,19 @@ msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:197
 msgid ""
-"The export file could not be found at <code>%s</code>. It is likely that "
-"this was caused by a permissions problem."
+"The export file could not be found at <code>%s</code>. It is likely that this was "
+"caused by a permissions problem."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:213
 msgid ""
-"This WXR file (version %s) may not be supported by this version of the "
-"importer. Please consider updating."
+"This WXR file (version %s) may not be supported by this version of the importer. "
+"Please consider updating."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:238
 msgid ""
-"Failed to import author %s. Their posts will be attributed to the current "
-"user."
+"Failed to import author %s. Their posts will be attributed to the current user."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:264
@@ -4573,17 +4582,16 @@ msgstr "लेखक"
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:265
 msgid ""
-"To make it easier for you to edit and save the imported content, you may "
-"want to reassign the author of the imported item to an existing user of this "
-"site. For example, you may want to import all the entries as <code>admin</"
-"code>s entries."
+"To make it easier for you to edit and save the imported content, you may want to "
+"reassign the author of the imported item to an existing user of this site. For "
+"example, you may want to import all the entries as <code>admin</code>s entries."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:267
 msgid ""
-"If a new user is created by WordPress, a new password will be randomly "
-"generated and the new user&#8217;s role will be set as %s. Manually changing "
-"the new user&#8217;s details will be necessary."
+"If a new user is created by WordPress, a new password will be randomly generated "
+"and the new user&#8217;s role will be set as %s. Manually changing the new "
+"user&#8217;s details will be necessary."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:277
@@ -4622,8 +4630,8 @@ msgstr "चुने"
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:372
 msgid ""
-"Failed to create new user for %s. Their posts will be attributed to the "
-"current user."
+"Failed to create new user for %s. Their posts will be attributed to the current "
+"user."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:424
@@ -4697,15 +4705,14 @@ msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1126
 msgid ""
-"A new version of this importer is available. Please update to version %s to "
-"ensure compatibility with newer export files."
+"A new version of this importer is available. Please update to version %s to ensure "
+"compatibility with newer export files."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1141
 msgid ""
-"Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import "
-"the posts, pages, comments, custom fields, categories, and tags into this "
-"site."
+"Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import the "
+"posts, pages, comments, custom fields, categories, and tags into this site."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1142
@@ -4714,8 +4721,8 @@ msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1216
 msgid ""
-"Import <strong>posts, pages, comments, custom fields, categories, and tags</"
-"strong> from a WordPress export file."
+"Import <strong>posts, pages, comments, custom fields, categories, and tags</strong> "
+"from a WordPress export file."
 msgstr ""
 
 #: vendor/lucatume/wp-browser/src/data/themedir1/internationalized-theme/functions.php:7
@@ -4816,8 +4823,7 @@ msgid "Inactive Widgets"
 msgstr ""
 
 #: vendor/wp-cli/wp-cli/php/utils-wp.php:174
-msgid ""
-"Drag widgets here to remove them from the sidebar but keep their settings."
+msgid "Drag widgets here to remove them from the sidebar but keep their settings."
 msgstr ""
 
 #: widgets/ask-form.php:28
@@ -5079,10 +5085,6 @@ msgstr "वर्ग"
 
 #~ msgid "Select question"
 #~ msgstr "सवाल चुने"
-
-#, fuzzy
-#~ msgid "Upgrade AnsPress"
-#~ msgstr "जवाब बदलिये"
 
 #, fuzzy
 #~ msgid "Access"

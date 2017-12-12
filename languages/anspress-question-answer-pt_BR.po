@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AnsPress\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-12-10 05:12:04+00:00\n"
+"POT-Creation-Date: 2017-12-12 15:46:09+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:19+0530\n"
 "Last-Translator: \n"
 "Language-Team: AnsPress.io <rah12@live.com>\n"
@@ -61,7 +61,7 @@ msgstr ""
 #: addons/free/buddypress.php:107 addons/free/buddypress.php:187
 #: addons/free/profile.php:39 addons/free/profile.php:151
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:2189 includes/options.php:102
+#: includes/functions.php:2196 includes/options.php:102
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
@@ -155,7 +155,7 @@ msgstr "%1$s comentado sobre você %3$s - %2$s"
 msgid "Display AnsPress categories"
 msgstr "Páginas Anspress"
 
-#: addons/free/category/widget.php:68 includes/ajax-hooks.php:605
+#: addons/free/category/widget.php:68 includes/ajax-hooks.php:623
 #: templates/addons/category/categories.php:33
 #: templates/addons/category/single-category.php:38
 #: templates/addons/tag/tags.php:39
@@ -170,9 +170,8 @@ msgid "%d Child"
 msgstr ""
 
 #: addons/free/category/widget.php:81 addons/free/category.php:39
-#: addons/free/category.php:165 addons/free/category.php:460
-#: addons/free/category.php:472 includes/functions.php:2207
-#: includes/taxo.php:29
+#: addons/free/category.php:459 addons/free/category.php:471
+#: includes/functions.php:2214 includes/taxo.php:29
 msgid "Categories"
 msgstr "Categorias"
 
@@ -207,25 +206,25 @@ msgstr "Ordenar por"
 msgid "None"
 msgstr "Nenhum"
 
-#: addons/free/category/widget.php:130 addons/free/category.php:232
-#: addons/free/category.php:245
+#: addons/free/category/widget.php:130 addons/free/category.php:231
+#: addons/free/category.php:244
 msgid "Count"
 msgstr "Contagem"
 
-#: addons/free/category/widget.php:131 addons/free/category.php:229
-#: addons/free/category.php:242
+#: addons/free/category/widget.php:131 addons/free/category.php:228
+#: addons/free/category.php:241
 msgid "ID"
 msgstr "ID"
 
-#: addons/free/category/widget.php:132 addons/free/category.php:230
-#: addons/free/category.php:243 addons/free/tag.php:586 addons/free/tag.php:636
+#: addons/free/category/widget.php:132 addons/free/category.php:229
+#: addons/free/category.php:242 addons/free/tag.php:586 addons/free/tag.php:636
 #: includes/deprecated.php:291 includes/deprecated.php:434
 #: includes/deprecated.php:875
 msgid "Name"
 msgstr "Nome"
 
-#: addons/free/category/widget.php:133 addons/free/category.php:231
-#: addons/free/category.php:244
+#: addons/free/category/widget.php:133 addons/free/category.php:230
+#: addons/free/category.php:243
 msgid "Slug"
 msgstr ""
 
@@ -255,190 +254,190 @@ msgstr "Largura da capa"
 msgid "Icon height:"
 msgstr "Altura da capa"
 
-#: addons/free/category.php:38 addons/free/category.php:174
-#: addons/free/category.php:317 addons/free/category.php:385
-#: addons/free/category.php:513 admin/class-list-table-hooks.php:188
+#: addons/free/category.php:38 addons/free/category.php:172
+#: addons/free/category.php:316 addons/free/category.php:384
+#: addons/free/category.php:512 admin/class-list-table-hooks.php:188
 #: includes/taxo.php:202
 msgid "Category"
 msgstr "Categoria"
 
-#: addons/free/category.php:173
+#: addons/free/category.php:171
 #, fuzzy
 msgid "Question Categories"
 msgstr "Estatísticas de perguntas"
 
-#: addons/free/category.php:175
+#: addons/free/category.php:173
 #, fuzzy
 msgid "All Categories"
 msgstr "Categorias"
 
-#: addons/free/category.php:176
+#: addons/free/category.php:174
 #, fuzzy
 msgid "Add New Category"
 msgstr "Categoria"
 
-#: addons/free/category.php:177
+#: addons/free/category.php:175
 #, fuzzy
 msgid "Edit Category"
 msgstr "Categoria"
 
-#: addons/free/category.php:178
+#: addons/free/category.php:176
 #, fuzzy
 msgid "New Category"
 msgstr "Categoria"
 
-#: addons/free/category.php:179
+#: addons/free/category.php:177
 #, fuzzy
 msgid "View Category"
 msgstr "Categoria"
 
-#: addons/free/category.php:180
+#: addons/free/category.php:178
 #, fuzzy
 msgid "Search Category"
 msgstr "Encontrar resposta"
 
-#: addons/free/category.php:181 addons/free/tag.php:189
+#: addons/free/category.php:179 addons/free/tag.php:189
 #, fuzzy
 msgid "Nothing Found"
 msgstr "Pergunta não encontrada"
 
-#: addons/free/category.php:182 addons/free/tag.php:190
+#: addons/free/category.php:180 addons/free/tag.php:190
 #, fuzzy
 msgid "Nothing found in Trash"
 msgstr "Pergunta não encontrada na lixeira"
 
-#: addons/free/category.php:225
+#: addons/free/category.php:224
 msgid "Ask form category order"
 msgstr ""
 
-#: addons/free/category.php:226
+#: addons/free/category.php:225
 msgid "Set how you want to order categories in form."
 msgstr ""
 
-#: addons/free/category.php:233 addons/free/category.php:246
+#: addons/free/category.php:232 addons/free/category.php:245
 msgid "Group"
 msgstr ""
 
-#: addons/free/category.php:238
+#: addons/free/category.php:237
 msgid "Categries page order by"
 msgstr ""
 
-#: addons/free/category.php:239 addons/free/category.php:252
+#: addons/free/category.php:238 addons/free/category.php:251
 msgid "Set how you want to order categories in categories page."
 msgstr ""
 
-#: addons/free/category.php:251
+#: addons/free/category.php:250
 #, fuzzy
 msgid "Categries page order"
 msgstr "Categorias"
 
-#: addons/free/category.php:255
+#: addons/free/category.php:254
 #, fuzzy
 msgid "Ascending"
 msgstr "Pendente"
 
-#: addons/free/category.php:256
+#: addons/free/category.php:255
 #, fuzzy
 msgid "Descending"
 msgstr "Pendente"
 
-#: addons/free/category.php:261
+#: addons/free/category.php:260
 #, fuzzy
 msgid "Category page slug"
 msgstr "Ap Página de categoria"
 
-#: addons/free/category.php:262
+#: addons/free/category.php:261
 #, fuzzy
 msgid "Slug for category page"
 msgstr "Ap Página de categoria"
 
-#: addons/free/category.php:266
+#: addons/free/category.php:265
 #, fuzzy
 msgid "Category per page"
 msgstr "Ap Página de categoria"
 
-#: addons/free/category.php:267
+#: addons/free/category.php:266
 #, fuzzy
 msgid "Category to show per page"
 msgstr "Itens para mostrar por página"
 
-#: addons/free/category.php:272
+#: addons/free/category.php:271
 #, fuzzy
 msgid "Categories image height"
 msgstr "Categorias"
 
-#: addons/free/category.php:273
+#: addons/free/category.php:272
 msgid "Image height in categories page"
 msgstr ""
 
-#: addons/free/category.php:317
+#: addons/free/category.php:316
 #, fuzzy
 msgid "Questions Category"
 msgstr "Página de pergunta"
 
-#: addons/free/category.php:386
+#: addons/free/category.php:385
 #, fuzzy
 msgid "Select a topic that best fits your question."
 msgstr "Define o estado de pergunta editada"
 
-#: addons/free/category.php:437
+#: addons/free/category.php:436
 #, fuzzy
 msgid "No matching category found"
 msgstr "Resposta não encontrada"
 
-#: addons/free/category.php:532 addons/free/category.php:575
+#: addons/free/category.php:531 addons/free/category.php:574
 msgid "Image"
 msgstr ""
 
-#: addons/free/category.php:533 addons/free/category.php:578
+#: addons/free/category.php:532 addons/free/category.php:577
 #, fuzzy
 msgid "Upload image"
 msgstr "Carregando"
 
-#: addons/free/category.php:537
+#: addons/free/category.php:536
 #, fuzzy
 msgid "Category image"
 msgstr "Ap Página de categoria"
 
-#: addons/free/category.php:541 addons/free/category.php:594
+#: addons/free/category.php:540 addons/free/category.php:593
 #, fuzzy
 msgid "Category icon class"
 msgstr "Categorias"
 
-#: addons/free/category.php:543 addons/free/category.php:598
-#: addons/free/category.php:607
+#: addons/free/category.php:542 addons/free/category.php:597
+#: addons/free/category.php:606
 msgid "Font icon class, if image not set"
 msgstr ""
 
-#: addons/free/category.php:547
+#: addons/free/category.php:546
 msgid "Icon background color"
 msgstr ""
 
-#: addons/free/category.php:549
+#: addons/free/category.php:548
 msgid "Set background color to be used with icon"
 msgstr ""
 
-#: addons/free/category.php:587
+#: addons/free/category.php:586
 #, fuzzy
 msgid "Remove image"
 msgstr "Remover"
 
-#: addons/free/category.php:589
+#: addons/free/category.php:588
 #, fuzzy
 msgid "Featured image for category"
 msgstr "Ap Página de categoria"
 
-#: addons/free/category.php:603
+#: addons/free/category.php:602
 #, fuzzy
 msgid "Category icon color"
 msgstr "Categorias"
 
-#: addons/free/category.php:772
+#: addons/free/category.php:771
 #, fuzzy
 msgid "Question category feed"
 msgstr "Perguntas Feed"
 
-#: addons/free/category.php:819 addons/free/tag.php:617
+#: addons/free/category.php:818 addons/free/tag.php:617
 msgid ", %d+"
 msgstr ""
 
@@ -860,7 +859,7 @@ msgstr "Chave secreta Recaptcha"
 msgid "Select method to use when verification keeps failing"
 msgstr ""
 
-#: addons/free/recaptcha.php:100
+#: addons/free/recaptcha.php:99
 msgid "Prove that you are a human"
 msgstr ""
 
@@ -1062,7 +1061,7 @@ msgstr "Tags"
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
 #: addons/free/tag.php:353 addons/free/tag.php:437 addons/free/tag.php:447
-#: includes/functions.php:2213
+#: includes/functions.php:2220
 msgid "Tags"
 msgstr "Tags"
 
@@ -1222,7 +1221,7 @@ msgstr "AnsPress Opções"
 msgid "Options"
 msgstr "Opções"
 
-#: admin/anspress-admin.php:205 admin/views/addons.php:50
+#: admin/anspress-admin.php:205 admin/views/addons.php:51
 #, fuzzy
 msgid "AnsPress Add-ons"
 msgstr "AnsPress Opções"
@@ -1690,7 +1689,7 @@ msgid "Voted"
 msgstr "Votado"
 
 #: admin/anspress-admin.php:1219 admin/anspress-admin.php:1285
-#: admin/views/addons.php:93 includes/theme.php:362 includes/theme.php:407
+#: admin/views/addons.php:94 includes/theme.php:362 includes/theme.php:407
 #: widgets/question_stats.php:47 widgets/questions.php:114
 msgid "Active"
 msgstr "Ativo"
@@ -1913,7 +1912,7 @@ msgstr "--"
 #: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
 #: admin/views/select_question.php:43 includes/ajax-hooks.php:107
 #: includes/ajax-hooks.php:109 includes/ajax-hooks.php:290
-#: includes/functions.php:2013 templates/buddypress/question-item.php:38
+#: includes/functions.php:2020 templates/buddypress/question-item.php:38
 #, fuzzy
 msgid "%d Answer"
 msgid_plural "%d Answers"
@@ -2086,25 +2085,25 @@ msgstr "Você não tem permissão para editar esta pergunta"
 msgid "Error"
 msgstr "Error 404"
 
-#: admin/views/addons.php:63
+#: admin/views/addons.php:64
 #, fuzzy
 msgid "Addon options updated successfully!"
 msgstr "Opções de AnsPress atualizadas com sucesso"
 
-#: admin/views/addons.php:133
+#: admin/views/addons.php:134
 #, fuzzy
 msgid "Disable Addon"
 msgstr "Desabilitar votação"
 
-#: admin/views/addons.php:133
+#: admin/views/addons.php:134
 msgid "Enable Add-on"
 msgstr ""
 
-#: admin/views/addons.php:149
+#: admin/views/addons.php:150
 msgid "Please enable addon to view options."
 msgstr ""
 
-#: admin/views/addons.php:171
+#: admin/views/addons.php:172
 msgid "There is no option registered by this addon."
 msgstr ""
 
@@ -2888,7 +2887,8 @@ msgstr "Pergunta marcada como destaque"
 msgid "You cannot close a question"
 msgstr "Para responder um pergunta"
 
-#: includes/ajax-hooks.php:396 includes/theme.php:242
+#: includes/ajax-hooks.php:396 includes/mce-languages.php:29
+#: includes/theme.php:242
 msgid "Close"
 msgstr "Fechar"
 
@@ -3146,7 +3146,7 @@ msgstr "Seu sobrenome"
 msgid "Enter your name to display"
 msgstr "Digite seu nome para exibir"
 
-#: includes/class-form-hooks.php:103 includes/functions.php:1930
+#: includes/class-form-hooks.php:103 includes/functions.php:1937
 msgid "Update Question"
 msgstr "Atualizar Pergunta"
 
@@ -3378,7 +3378,7 @@ msgstr "Pergunte"
 msgid "Search"
 msgstr "Encontrar"
 
-#: includes/common-pages.php:25 includes/functions.php:2219
+#: includes/common-pages.php:25 includes/functions.php:2226
 #, fuzzy
 msgid "Activities"
 msgstr "Atividade"
@@ -3520,239 +3520,291 @@ msgstr ""
 msgid "You cannot vote on restricted posts"
 msgstr "Você não pode votar em sua pergunta ou resposta"
 
-#: includes/functions.php:932
+#: includes/functions.php:933
 msgid "[Solved] "
 msgstr ""
 
-#: includes/functions.php:1275
+#: includes/functions.php:1276
 msgid "asked"
 msgstr "perguntou"
 
-#: includes/functions.php:1276 includes/functions.php:1277
+#: includes/functions.php:1277 includes/functions.php:1278
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1278
+#: includes/functions.php:1279
 msgid "answered"
 msgstr "respondeu"
 
-#: includes/functions.php:1279
+#: includes/functions.php:1280
 #, fuzzy
 msgid "deleted answer"
 msgstr "resposta selecionada"
 
-#: includes/functions.php:1280
+#: includes/functions.php:1281
 #, fuzzy
 msgid "restored question"
 msgstr "Pergunta destaque"
 
-#: includes/functions.php:1281
+#: includes/functions.php:1282
 #, fuzzy
 msgid "restored answer"
 msgstr "resposta editada"
 
-#: includes/functions.php:1282 templates/comment.php:27
+#: includes/functions.php:1283 templates/comment.php:27
 #: templates/functions.php:40
 msgid "commented"
 msgstr "comentado"
 
-#: includes/functions.php:1283
+#: includes/functions.php:1284
 #, fuzzy
 msgid "deleted comment"
 msgstr "comentário editado"
 
-#: includes/functions.php:1284
+#: includes/functions.php:1285
 msgid "commented on answer"
 msgstr ""
 
-#: includes/functions.php:1285
+#: includes/functions.php:1286
 msgid "edited question"
 msgstr "pergunta editada"
 
-#: includes/functions.php:1286
+#: includes/functions.php:1287
 msgid "edited answer"
 msgstr "resposta editada"
 
-#: includes/functions.php:1287
+#: includes/functions.php:1288
 msgid "edited comment"
 msgstr "comentário editado"
 
-#: includes/functions.php:1288
+#: includes/functions.php:1289
 #, fuzzy
 msgid "edited comment on answer"
 msgstr "comentário na resposta"
 
-#: includes/functions.php:1289
+#: includes/functions.php:1290
 msgid "selected answer"
 msgstr "resposta selecionada"
 
-#: includes/functions.php:1290
+#: includes/functions.php:1291
 msgid "unselected answer"
 msgstr "resposta desselecionada"
 
-#: includes/functions.php:1291
+#: includes/functions.php:1292
 msgid "updated status"
 msgstr "Estado atualizado"
 
-#: includes/functions.php:1292
+#: includes/functions.php:1293
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1293
+#: includes/functions.php:1294
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1294
+#: includes/functions.php:1295
 #, fuzzy
 msgid "changed status"
 msgstr "Estado atualizado"
 
-#: includes/functions.php:1358
+#: includes/functions.php:1359
 msgid "Anonymous"
 msgstr "Anônimo"
 
-#: includes/functions.php:1390
+#: includes/functions.php:1391
 msgid " (anonymous)"
 msgstr "(anônimo)"
 
-#: includes/functions.php:1903
+#: includes/functions.php:1910
 #, fuzzy
 msgid "You cannot edit this question."
 msgstr "Você esta inscrito nesta pergunta"
 
-#: includes/functions.php:1908 templates/ask.php:17
+#: includes/functions.php:1915 templates/ask.php:17
 #, fuzzy
 msgid "You do not have permission to ask a question."
 msgstr "Você não tem permissões para responder perguntas"
 
-#: includes/functions.php:2022
+#: includes/functions.php:2029
 msgid "Answer submitted successfully"
 msgstr "Resposta enviada com sucesso"
 
-#: includes/functions.php:2049
+#: includes/functions.php:2056
 #, fuzzy
 msgid "You cannot edit this answer."
 msgstr "Editar esta resposta"
 
-#: includes/functions.php:2054
+#: includes/functions.php:2061
 #, fuzzy
 msgid "You do not have permission to answer this question."
 msgstr "Você não tem permissões para responder esta questão"
 
-#: includes/functions.php:2080
+#: includes/functions.php:2087
 msgid "Update Answer"
 msgstr "Atualizar resposta"
 
-#: includes/functions.php:2187
+#: includes/functions.php:2194
 #, fuzzy
 msgid "Archives page"
 msgstr "Página Perguntar"
 
-#: includes/functions.php:2188
+#: includes/functions.php:2195
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred as "
 "<b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2193
+#: includes/functions.php:2200
 msgid "Ask page"
 msgstr "Página Perguntar"
 
-#: includes/functions.php:2194
+#: includes/functions.php:2201
 #, fuzzy
 msgid "Page used to display ask form."
 msgstr "Selecione a página para mostrar o formulário de pergunta"
 
-#: includes/functions.php:2195
+#: includes/functions.php:2202
 #, fuzzy
 msgid "Ask a question"
 msgstr "Fazer pergunta"
 
-#: includes/functions.php:2199
+#: includes/functions.php:2206
 msgid "User page"
 msgstr "Página do usuário"
 
-#: includes/functions.php:2200
+#: includes/functions.php:2207
 #, fuzzy
 msgid "Page used to display user profile."
 msgstr "Selecione a página para mostrar o perfil do usuário"
 
-#: includes/functions.php:2201
+#: includes/functions.php:2208
 msgid "Profile"
 msgstr "Perfil"
 
-#: includes/functions.php:2205
+#: includes/functions.php:2212
 #, fuzzy
 msgid "Categories page"
 msgstr "Categorias"
 
-#: includes/functions.php:2206
+#: includes/functions.php:2213
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2211
+#: includes/functions.php:2218
 #, fuzzy
 msgid "Tags page"
 msgstr "AP Tag page"
 
-#: includes/functions.php:2212
+#: includes/functions.php:2219
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2217
+#: includes/functions.php:2224
 #, fuzzy
 msgid "Activities page"
 msgstr "Página Perguntar"
 
-#: includes/functions.php:2218
+#: includes/functions.php:2225
 #, fuzzy
 msgid "Page used to display all anspress activities."
 msgstr "Selecione a página para mostrar o perfil do usuário"
 
-#: includes/hooks.php:860
+#: includes/hooks.php:872
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:861
+#: includes/hooks.php:873
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:862
+#: includes/hooks.php:874
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:863
+#: includes/hooks.php:875
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:864
+#: includes/hooks.php:876
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:865
+#: includes/hooks.php:877
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:866
+#: includes/hooks.php:878
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:867
+#: includes/hooks.php:879
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:868
+#: includes/hooks.php:880
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:869
+#: includes/hooks.php:881
 msgid "years"
 msgstr ""
+
+#: includes/mce-languages.php:27
+#, fuzzy
+msgid "Insert image"
+msgstr "Entre com link das imagens"
+
+#: includes/mce-languages.php:28
+msgid "Insert Media (AnsPress)"
+msgstr ""
+
+#: includes/mce-languages.php:30
+#, fuzzy
+msgid "Select File"
+msgstr "Selecione"
+
+#: includes/mce-languages.php:31
+msgid "Browse from computer"
+msgstr ""
+
+#: includes/mce-languages.php:32
+#, fuzzy
+msgid "Image title"
+msgstr "Títulos de Página"
+
+#: includes/mce-languages.php:33
+#, fuzzy
+msgid "Media preview"
+msgstr "1 visualização"
+
+#: includes/mce-languages.php:34
+#, fuzzy
+msgid "Insert code"
+msgstr "Votar contra "
+
+#: includes/mce-languages.php:35
+#, fuzzy
+msgid "Insert codes (AnsPress)"
+msgstr "Atualizar resposta"
+
+#: includes/mce-languages.php:36
+#, fuzzy
+msgid "Insert"
+msgstr "Votar contra "
+
+#: includes/mce-languages.php:37
+msgid "Inline?"
+msgstr ""
+
+#: includes/mce-languages.php:38
+#, fuzzy
+msgid "Insert your code.."
+msgstr "Enviando seu comentário"
 
 #: includes/options.php:103
 msgid "Search \"%s\""
@@ -4040,112 +4092,112 @@ msgstr "Enviar"
 msgid "No fields found for form: %s"
 msgstr "Arquivo não encontrado"
 
-#: lib/class-form.php:377 lib/form/class-field.php:380
+#: lib/class-form.php:381 lib/form/class-field.php:380
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:294 lib/class-validate.php:310
+#: lib/class-validate.php:295 lib/class-validate.php:311
 #, fuzzy
 msgid "%s field is required."
 msgstr "Este campo é obrigatório"
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:326
+#: lib/class-validate.php:327
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:342
+#: lib/class-validate.php:343
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:358
+#: lib/class-validate.php:359
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:381
+#: lib/class-validate.php:382
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:405
+#: lib/class-validate.php:406
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:424
+#: lib/class-validate.php:425
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:443
+#: lib/class-validate.php:444
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:462
+#: lib/class-validate.php:463
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:513
+#: lib/class-validate.php:514
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:530
+#: lib/class-validate.php:531
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:531
+#: lib/class-validate.php:532
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:532
+#: lib/class-validate.php:533
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 
-#: lib/class-validate.php:533
+#: lib/class-validate.php:534
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: lib/class-validate.php:534
+#: lib/class-validate.php:535
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/class-validate.php:535
+#: lib/class-validate.php:536
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: lib/class-validate.php:536
+#: lib/class-validate.php:537
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: lib/class-validate.php:537
+#: lib/class-validate.php:538
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:627
+#: lib/class-validate.php:628
 #, fuzzy
 msgid "You are not allowed to upload file(s)"
 msgstr "Somente você está inscrito nesta pergunta"
 
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
-#: lib/class-validate.php:636
+#: lib/class-validate.php:637
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:643
+#: lib/class-validate.php:644
 msgid "File type is not allowed to upload."
 msgstr ""
 
 #. Translators: %s contain maximum file size user can upload.
-#: lib/class-validate.php:657
+#: lib/class-validate.php:658
 msgid "File(s) size is bigger then %s MB"
 msgstr ""
 
@@ -5153,10 +5205,6 @@ msgstr "Categorias"
 #~ msgstr "Salva opções"
 
 #, fuzzy
-#~ msgid "Upgrade AnsPress"
-#~ msgstr "Atualizar resposta"
-
-#, fuzzy
 #~ msgid "Set existing page as base page"
 #~ msgstr "Mostra permalink de pergunta no rodapé da página base"
 
@@ -5177,10 +5225,6 @@ msgstr "Categorias"
 #, fuzzy
 #~ msgid "Set a slug for ask question page."
 #~ msgstr "Defina o mínimo de letras para o título da pergunta"
-
-#, fuzzy
-#~ msgid "Page Titles"
-#~ msgstr "Títulos de Página"
 
 #~ msgid "Ask page title"
 #~ msgstr "Perguntar título de página"
@@ -5628,9 +5672,6 @@ msgstr "Categorias"
 
 #~ msgid "add image from link"
 #~ msgstr "add link para imagem"
-
-#~ msgid "Enter images link"
-#~ msgstr "Entre com link das imagens"
 
 #~ msgid "<span>1</span> Participant"
 #~ msgid_plural "<span>%d</span> Participants"

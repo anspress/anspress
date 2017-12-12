@@ -684,4 +684,3 @@ class AnsPress_Tag {
 
 // Init addons.
 AnsPress_Tag::init();
-
