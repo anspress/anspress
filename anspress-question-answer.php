@@ -634,8 +634,8 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 }
 
 add_filter( 'anspress_load_ext', [ 'AnsPress_Init', 'prevent_ext' ], 10, 2 );
-add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ], 5 );
-add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] );
+add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] );
+add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ], 5 );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
 
