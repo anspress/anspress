@@ -1,5 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 <<<<<<< HEAD
+<<<<<<< HEAD
 if ( ! defined( 'ABSPATH' ) )
     exit;
 
@@ -25,6 +26,8 @@ function get_anspress_tinymce_plugin_translations_string() {
 
 $strings = get_anspress_tinymce_plugin_translations_string();
 =======
+=======
+>>>>>>> anspress/master
 /**
  * AnsPress tinymce translations.
  *
@@ -71,4 +74,7 @@ function ap_tinymce_translations() {
 }
 
 $strings = ap_tinymce_translations();
+<<<<<<< HEAD
+>>>>>>> anspress/master
+=======
 >>>>>>> anspress/master

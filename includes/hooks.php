@@ -83,7 +83,11 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
 			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
 <<<<<<< HEAD
+<<<<<<< HEAD
             anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
+=======
+      anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
+>>>>>>> anspress/master
 =======
       anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
 >>>>>>> anspress/master
@@ -534,6 +538,17 @@ class AnsPress_Hooks {
         
     }
     
+	/**
+	 * Add translations for AnsPress's tinymce plugins.
+	 *
+	 * @param array $translations Translations for external TinyMCE plugins.
+	 * @since 4.1.5
+	 */
+	public static function mce_plugins_languages( $translations ) {
+		$translations['anspress'] = ANSPRESS_DIR . 'includes/mce-languages.php';
+		return $translations;
+	}
+
 	/**
 	 * Add translations for AnsPress's tinymce plugins.
 	 *
