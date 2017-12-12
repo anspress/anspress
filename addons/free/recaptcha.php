@@ -95,9 +95,8 @@ class AnsPress_reCcaptcha {
 	 */
 	public static function ap_question_form_fields( $form ) {
 		if ( ap_show_captcha_to_user() ) {
-
 			$form['fields']['captcha'] = array(
-				'label'  => __( 'Prove that you are a human', 'anspress-question-answer' ),
+				'label' => __( 'Prove that you are a human', 'anspress-question-answer' ),
 				'type'  => 'captcha',
 				'order' => 100,
 			);

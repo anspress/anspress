@@ -1698,7 +1698,10 @@ function ap_activate_addon( $addon_name ) {
 			WpeCommon::purge_memcached();
 			WpeCommon::clear_maxcdn_cache();
 			WpeCommon::purge_varnish_cache();
-    }
+		}
+
+		// Delete cache.
+		wp_cache_delete( 'addons', 'anspress' );
 
 		return true;
 	}
@@ -1725,6 +1728,9 @@ function ap_deactivate_addon( $addon_name ) {
 		unset( $opt[ $addon_name ] );
 		update_option( 'anspress_addons', $opt );
 		do_action( 'ap_addon_deactivated', $addon_name );
+
+		// Delete cache.
+		wp_cache_delete( 'addons', 'anspress' );
 
 		return true;
 	}

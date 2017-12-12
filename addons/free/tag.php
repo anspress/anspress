@@ -53,7 +53,7 @@ class AnsPress_Tag {
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'pre_get_posts', __CLASS__, 'modify_query_archive' );
+		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 9999, 2 );
 
 		// List filtering.
 		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
@@ -659,19 +659,25 @@ class AnsPress_Tag {
 	/**
 	 * Modify main query to show tag archive.
 	 *
-	 * @param object $query Wp_Query object.
-	 * @return void
+	 * @param array|null $posts Array of objects.
+	 * @param object     $query Wp_Query object.
+	 *
+	 * @return array|null
 	 * @since 4.1.0
 	 */
-	public static function modify_query_archive( $query ) {
+	public static function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() &&
 			$query->is_tax( 'question_tag' ) &&
 			'tag' === get_query_var( 'ap_page' ) ) {
 
-			unset( $query->query_vars['question_tag'] );
-			$query->set( 'p', ap_opt( 'tags_page' ) );
-			$query->set( 'post_type', 'page' );
+			$query->found_posts = 1;
+			$query->max_num_pages = 1;
+			$page = get_page( ap_opt( 'tags_page' ) );
+			$page->post_title = get_queried_object()->name;
+			$posts = [ $page ];
 		}
+
+		return $posts;
 	}
 }
 

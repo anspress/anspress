@@ -869,7 +869,9 @@ class AnsPress_Category {
 		if ( $query->is_main_query() && $query->is_tax( 'question_category' ) && 'category' === get_query_var( 'ap_page' ) ) {
 			$query->found_posts = 1;
 			$query->max_num_pages = 1;
-			$posts = [ get_page( ap_opt( 'categories_page' ) ) ];
+			$page = get_page( ap_opt( 'categories_page' ) );
+			$page->post_title = get_queried_object()->name;
+			$posts = [ $page ];
 		}
 
 		return $posts;
