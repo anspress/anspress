@@ -11,5 +11,3 @@
 *~
 /vendor
 /languages/*.po~
-
-includes/hooks.php
