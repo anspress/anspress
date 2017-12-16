@@ -75,8 +75,7 @@
 								</a>
 								<span class="ap-comments-count">
 									<?php $comment_count = get_comments_number(); ?>
-									<span itemprop="commentCount"><?php echo (int) $comment_count; ?></span>
-									<?php printf( _n( 'Comment', 'Comments', $comment_count, 'anspress-question-answer' ) ); ?>
+									<?php printf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ) , '<span itemprop="commentCount">'.$comment_count.'</span>' ); ?>
 								</span>
 							</div>
 
