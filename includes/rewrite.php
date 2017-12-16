@@ -162,8 +162,7 @@ class AnsPress_Rewrite {
 			$ap_rules[ $r ] = $re;
 			self::$counter = 1;
 		}
-		$front = ltrim( $wp_rewrite->front, '/' );
-		$wp_rewrite->rules = ap_array_insert_after( $wp_rewrite->rules, $front . 'type/([^/]+)/?$', $ap_rules );
+		$wp_rewrite->rules = array_merge($ap_rules, $wp_rewrite->rules);
 		return $wp_rewrite->rules;
 	}
 
