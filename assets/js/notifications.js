@@ -35,7 +35,7 @@
 		id: function(){
 			return 'noti-' + this.model.id;
 		},
-		template: "<div class=\"noti-item clearfix {{seen==1 ? 'seen' : 'unseen'}}\"><# if(ref_type === 'reputation') { #>  <div class=\"ap-noti-rep<# if(points < 1) { #> negative<# } #>\">{{points}}</div><# } else if(hide_actor) { #><div class=\"ap-noti-icon {{icon}}\"></div><# } else { #><div class=\"ap-noti-avatar\">{{{avatar}}}</div><# } #><a class=\"ap-noti-inner\" href=\"{{permalink}}\"><# if(ref_type !== 'reputation'){ #><strong class=\"ap-not-actor\">{{actor}}</strong><# } #>{{verb_label}}<strong class=\"ap-not-ref\">{{ref_title}}</strong><time class=\"ap-noti-date\">{{date}}</time></a></div>",
+		template: "<div class=\"noti-item clearfix {{seen==1 ? 'seen' : 'unseen'}}\"><# if(ref_type === 'reputation') { #>  <div class=\"ap-noti-rep<# if(points < 1) { #> negative<# } #>\">{{points}}</div><# } else if(hide_actor) { #><div class=\"ap-noti-icon {{icon}}\"></div><# } else { #><div class=\"ap-noti-avatar\">{{{avatar}}}</div><# } #><a class=\"ap-noti-inner\" href=\"{{permalink}}\"><# if(ref_type !== 'reputation'){ #><strong class=\"ap-not-actor\">{{actor}}</strong><# } #> {{verb_label}} <strong class=\"ap-not-ref\">{{ref_title}}</strong><time class=\"ap-noti-date\">{{date}}</time></a></div>",
 		initialize: function(options){
 			this.model = options.model;
 		},
