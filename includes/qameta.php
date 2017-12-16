@@ -197,6 +197,7 @@ function ap_append_qameta( $post ) {
 	foreach ( ap_qameta_fields() as $fields_name => $val ) {
 		if ( ! isset( $post_arr[ $fields_name ] ) ) {
 			$exist = false;
+			break;
 		}
 	}
 
