@@ -712,14 +712,7 @@ jQuery(document).ready(function($){
 					'</div>';
 				}
 			},
-			create: function(input) {
-				return {
-					term_id: input,
-					name: input,
-					description: '',
-					count: 0,
-				}
-			},
+			create: false,
 			maxItems: 4
 		}
 	}
@@ -731,6 +724,18 @@ jQuery(document).ready(function($){
 		var defaults = AnsPress.tagsPreset[type];
 		defaults.options = options;
 		defaults.maxItems = jsoptions.maxItems;
+
+		if(false !== jsoptions.create){
+			defaults.create = function(input) {
+				return {
+					term_id: input,
+					name: input,
+					description: '',
+					count: 0,
+				}
+			};
+		}
+
 		defaults.load = function(query, callback) {
 			if (!query.length) return callback();
 			jQuery.ajax({

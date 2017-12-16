@@ -37,6 +37,15 @@ class Tags extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
+		$js_options = array(
+			'maxItems' => $this->args['array_max'],
+			'form'     => $this->form_name,
+			'id'       => $this->id(),
+			'field'    => $this->original_name,
+			'nonce'    => wp_create_nonce( 'tags_' . $this->form_name . $this->original_name ),
+			'create'   => false,
+		);
+
 		$this->args = wp_parse_args( $this->args, array(
 			'label'      => __( 'AnsPress Tags Field', 'anspress-question-answer' ),
 			'array_max'  => 3,
@@ -47,14 +56,10 @@ class Tags extends Field {
 				'fields'     => 'id=>name',
 			),
 			'options' => 'terms',
-			'js_options' => array(
-				'maxItems' => $this->args['array_max'],
-				'form'     => $this->form_name,
-				'id'       => $this->id(),
-				'field'    => $this->original_name,
-				'nonce'    => wp_create_nonce( 'tags_' . $this->form_name . $this->original_name ),
-			),
+			'js_options' => [],
 		) );
+
+		$this->args['js_options'] = wp_parse_args( $this->args['js_options'], $js_options );
 
 		// Call parent prepare().
 		parent::prepare();

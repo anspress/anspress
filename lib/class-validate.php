@@ -232,22 +232,26 @@ class Validate {
 			foreach ( (array) $value as $tag ) {
 				if ( is_numeric( $tag ) ) {
 					$existing_tags[] = $tag;
-				} else {
+				} elseif( false !== $args['js_options']['create']) {
 					$sanitized[] = sanitize_text_field( $tag );
 				}
 			}
 
 			$taxo = ! empty( $args['terms_args']['taxonomy'] ) ? $args['terms_args']['taxonomy'] : 'question_tag';
-			$terms = get_terms( array(
-				'taxonomy'   => $taxo,
-				'include'    => $existing_tags,
-				'fields'     => 'names',
-				'hide_empty' => false,
-			) );
 
-			if ( $terms ) {
-				foreach ( $terms as $tname ) {
-					$sanitized[] = $tname;
+			if ( ! empty( $existing_tags ) ) {
+				$terms = get_terms( array(
+					'taxonomy'   => $taxo,
+					'include'    => $existing_tags,
+					'fields'     => 'names',
+					'hide_empty' => false,
+				) );
+
+				// If allowed add new tags as well.
+				if ( $terms ) {
+					foreach ( $terms as $tname ) {
+						$sanitized[] = $tname;
+					}
 				}
 			}
 

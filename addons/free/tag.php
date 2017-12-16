@@ -360,6 +360,9 @@ class AnsPress_Tag {
 			'type'      => 'tags',
 			'array_max' => ap_opt( 'max_tags' ),
 			'array_min' => ap_opt( 'min_tags' ),
+			'js_options' => array(
+				'create' => true,
+			),
 		);
 
 		// Add value when editing post.
@@ -375,22 +378,6 @@ class AnsPress_Tag {
 	}
 
 	/**
-	 * Add tag in validation field.
-	 *
-	 * @param  array $args Form arguments.
-	 * @return array
-	 * @deprecated 4.1.2
-	 */
-	public static function ap_ask_fields_validation( $args ) {
-		$args['tags'] = array(
-			'sanitize' => array( 'sanitize_tags' ),
-			'validate' => array( 'comma_separted_count' => ap_opt( 'min_tags' ) ),
-		);
-
-		return $args;
-	}
-
-	/**
 	 * Things to do after creating a question.
 	 *
 	 * @param  integer $post_id Post ID.
@@ -399,7 +386,6 @@ class AnsPress_Tag {
 	 */
 	public static function after_new_question( $post_id, $post ) {
 		$values = anspress()->get_form( 'question' )->get_values();
-
 		if ( isset( $values['tags'] ) ) {
 			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
 		}
