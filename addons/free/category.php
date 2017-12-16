@@ -588,7 +588,7 @@ class AnsPress_Category {
 					<p class='description'><?php esc_attr_e( 'Featured image for category', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
-			<tr class='form-field form-required term-name-wrap'>
+			<tr class='form-field term-name-wrap'>
 				<th scope='row'>
 					<label for='custom-field'><?php esc_attr_e( 'Category icon class', 'anspress-question-answer' ); ?></label>
 				</th>
@@ -597,7 +597,7 @@ class AnsPress_Category {
 					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
-			<tr class='form-field form-required term-name-wrap'>
+			<tr class='form-field term-name-wrap'>
 				<th scope='row'>
 					<label for='ap-category-color'><?php esc_attr_e( 'Category icon color', 'anspress-question-answer' ); ?></label>
 				</th>
@@ -621,42 +621,62 @@ class AnsPress_Category {
 	 */
 	public static function save_image_field( $term_id ) {
 
-		$image_url = ap_isset_post_value( 'ap_category_image_url', false );
-		$image_id = ap_isset_post_value( 'ap_category_image_id', false );
-		$icon = ap_isset_post_value( 'ap_icon', false );
-		$color = ap_isset_post_value( 'ap_color', false );
+		$image_url = ap_isset_post_value( 'ap_category_image_url', '' );
+		$image_id  = ap_isset_post_value( 'ap_category_image_id', '' );
+		$icon      = ap_isset_post_value( 'ap_icon', '' );
+		$color     = ap_isset_post_value( 'ap_color', '' );
 
-		if ( ( $image_url && $image_id ) || $icon || $color ) {
+		if ( current_user_can( 'manage_categories' ) ) {
 			// Get options from database - if not a array create a new one.
 			$term_meta = get_term_meta( $term_id, 'ap_category', true );
 
 			if ( ! is_array( $term_meta ) ) {
-				$term_meta = [];
+				$term_meta = [ 'image' => [] ];
 			}
 
 			if ( ! is_array( $term_meta['image'] ) ) {
 				$term_meta['image'] = [];
 			}
 
-			// Get value and save it into the database.
-			$term_meta['image']['url'] = $image_url ? esc_url( $image_url ) : '';
-			$term_meta['image']['id'] = $image_id ? (int) $image_id : '';
-
-			if ( $icon ) {
-				$term_meta['icon'] = sanitize_text_field( $icon );
+			// Image url.
+			if ( ! empty( $image_url ) ) {
+				$term_meta['image']['url'] = esc_url( $image_url );
+			} else {
+				unset( $term_meta['image']['url'] );
 			}
 
-			if ( $color ) {
+			// Image id.
+			if ( ! empty( $image_id ) ) {
+				$term_meta['image']['id'] = (int) $image_id;
+			} else {
+				unset( $term_meta['image']['id'] );
+			}
+
+			// Category icon.
+			if ( ! empty( $icon ) ) {
+				$term_meta['icon'] = sanitize_text_field( $icon );
+			} else {
+				unset( $term_meta['icon'] );
+			}
+
+			// Category color.
+			if ( ! empty( $color ) ) {
 				$term_meta['color'] = sanitize_text_field( $color );
+			} else {
+				unset( $term_meta['color'] );
+			}
+
+			if ( empty( $term_meta['image'] ) ) {
+				unset( $term_meta['image'] );
 			}
 
 			// Delete meta if empty.
 			if ( empty( $term_meta ) ) {
 				delete_term_meta( $term_id, 'ap_category' );
+			} else {
+				update_term_meta( $term_id, 'ap_category', $term_meta );
 			}
-
-			update_term_meta( $term_id, 'ap_category', $term_meta );
-		}
+		} // End if().
 	}
 
 	/**

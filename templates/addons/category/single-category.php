@@ -10,6 +10,8 @@
  * @subpackage  Templates
  * @since       4.1.1 Renamed file from category.php to single-category.php.
  */
+
+$icon = ap_get_category_icon( $question_category->term_id );
 ?>
 
 <?php dynamic_sidebar( 'ap-top' ); ?>
@@ -24,9 +26,12 @@
 		<?php endif; ?>
 
 		<div class="ap-taxo-detail">
-			<div class="ap-pull-left">
-				<?php ap_category_icon( $question_category->term_id ); ?>
-			</div>
+			<?php if ( ! empty( $icon ) ) : ?>
+				<div class="ap-pull-left">
+					<?php ap_category_icon( $question_category->term_id ); ?>
+				</div>
+			<?php endif; ?>
+
 			<div class="no-overflow">
 				<div>
 					<a class="entry-title" href="<?php echo get_category_link( $question_category );?>">

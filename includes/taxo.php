@@ -249,14 +249,12 @@ function ap_category_image( $term_id, $height = 32 ) {
  */
 function ap_get_category_icon( $term_id, $attributes = '' ) {
 	$option = get_term_meta( $term_id, 'ap_category', true );
-	$color = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : 'background:#333;';
+	$color = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : '';
 
 	$style = 'style="' . $color . $attributes . '"';
 
 	if ( ! empty( $option['icon'] ) ) {
 		return '<span class="ap-category-icon ' . $option['icon'] . '"' . $style . '></span>';
-	} else {
-		return '<span class="ap-category-icon apicon-category"' . $style . '></span>';
 	}
 }
 
