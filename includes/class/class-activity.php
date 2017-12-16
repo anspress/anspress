@@ -468,9 +468,9 @@ class Activity extends AnsPress_Query {
 		} elseif ( $date >= strtotime( '-48 hours' ) ) {
 			$when = __( 'Yesterday', 'anspress-question-answer' );
 		}	elseif ( $date <= strtotime( '1 year' ) ) {
-			$when = date( 'M', $date );
+			$when = date_i18n( 'M', $date );
 		}	else {
-			$when = date( 'M Y', $date );
+			$when = date_i18n( 'M Y', $date );
 		}
 
 		return $when;
