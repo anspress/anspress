@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2017-12-12 15:46:09+00:00\n"
+"POT-Creation-Date: 2017-12-17 03:27:29+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:17+0530\n"
 "Last-Translator: &gt;&gt;CoW&lt;&lt; <dennis.wessels@posteo.de>\n"
 "Language-Team: AnsPress <support@anspress.io>\n"
@@ -65,7 +65,7 @@ msgstr ""
 #: addons/free/profile.php:39 addons/free/profile.php:151
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:2196 includes/options.php:102
-#: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
+#: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:372
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
 msgstr "Fragen"
@@ -164,7 +164,7 @@ msgstr "Ein Komma (,) trennt die AsnPress Kategorien IDs"
 
 #: addons/free/category/widget.php:68 includes/ajax-hooks.php:623
 #: templates/addons/category/categories.php:33
-#: templates/addons/category/single-category.php:38
+#: templates/addons/category/single-category.php:43
 #: templates/addons/tag/tags.php:39
 #, fuzzy
 msgid "%d Question"
@@ -227,7 +227,7 @@ msgid "ID"
 msgstr ""
 
 #: addons/free/category/widget.php:132 addons/free/category.php:229
-#: addons/free/category.php:242 addons/free/tag.php:586 addons/free/tag.php:636
+#: addons/free/category.php:242 addons/free/tag.php:572 addons/free/tag.php:622
 #: includes/deprecated.php:291 includes/deprecated.php:434
 #: includes/deprecated.php:875
 msgid "Name"
@@ -441,12 +441,12 @@ msgstr "AP Kategorien Seite "
 msgid "Category icon color"
 msgstr "Kategorien IDs:"
 
-#: addons/free/category.php:771
+#: addons/free/category.php:791
 #, fuzzy
 msgid "Question category feed"
 msgstr "Fragen Feed"
 
-#: addons/free/category.php:818 addons/free/tag.php:617
+#: addons/free/category.php:838 addons/free/tag.php:603
 msgid ", %d+"
 msgstr ""
 
@@ -1066,13 +1066,13 @@ msgstr "Reputation"
 msgid "%s Reputation"
 msgstr "%s Reputation"
 
-#: addons/free/tag.php:34 addons/free/tag.php:539
+#: addons/free/tag.php:34 addons/free/tag.php:525
 #: admin/class-list-table-hooks.php:192
 msgid "Tag"
 msgstr "Schlagwort"
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
-#: addons/free/tag.php:353 addons/free/tag.php:437 addons/free/tag.php:447
+#: addons/free/tag.php:353 addons/free/tag.php:423 addons/free/tag.php:433
 #: includes/functions.php:2220
 msgid "Tags"
 msgstr "Schlagworte"
@@ -1183,16 +1183,16 @@ msgid ""
 "maximum %2$d tags."
 msgstr ""
 
-#: addons/free/tag.php:547
+#: addons/free/tag.php:533
 #, fuzzy
 msgid "Order"
 msgstr "Sortieren nach:"
 
-#: addons/free/tag.php:584 addons/free/tag.php:634 includes/deprecated.php:873
+#: addons/free/tag.php:570 addons/free/tag.php:620 includes/deprecated.php:873
 msgid "Popular"
 msgstr ""
 
-#: addons/free/tag.php:585 addons/free/tag.php:635 includes/deprecated.php:874
+#: addons/free/tag.php:571 addons/free/tag.php:621 includes/deprecated.php:874
 #: includes/theme.php:363
 #, fuzzy
 msgid "New"
@@ -3193,7 +3193,7 @@ msgid "Submit Comment"
 msgstr "Kommentar"
 
 #: includes/class-form-hooks.php:197 templates/answer.php:36
-#: templates/functions.php:41 templates/single-question.php:79
+#: templates/functions.php:41
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -3837,7 +3837,7 @@ msgstr ""
 
 #: includes/mce-languages.php:38
 #, fuzzy
-msgid "Insert your code.."
+msgid "Insert your code."
 msgstr "Sende dein Kommentar"
 
 #: includes/options.php:103
@@ -4009,7 +4009,7 @@ msgstr ""
 msgid "Question and answer is powered by"
 msgstr "Suche Fragen & Antworten"
 
-#: includes/taxo.php:324
+#: includes/taxo.php:322
 #, fuzzy
 msgid "Tagged"
 msgstr "Gemeldet"
@@ -4136,107 +4136,107 @@ msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:295 lib/class-validate.php:311
+#: lib/class-validate.php:299 lib/class-validate.php:315
 #, fuzzy
 msgid "%s field is required."
 msgstr "Das ist ein Pflichtfeld."
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:327
+#: lib/class-validate.php:331
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:343
+#: lib/class-validate.php:347
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:359
+#: lib/class-validate.php:363
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:382
+#: lib/class-validate.php:386
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:406
+#: lib/class-validate.php:410
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:425
+#: lib/class-validate.php:429
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:444
+#: lib/class-validate.php:448
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:463
+#: lib/class-validate.php:467
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
 #. Translators: placeholder contain field label.
-#: lib/class-validate.php:514
+#: lib/class-validate.php:518
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:531
+#: lib/class-validate.php:535
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:532
+#: lib/class-validate.php:536
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:533
+#: lib/class-validate.php:537
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 
-#: lib/class-validate.php:534
+#: lib/class-validate.php:538
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: lib/class-validate.php:535
+#: lib/class-validate.php:539
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/class-validate.php:536
+#: lib/class-validate.php:540
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: lib/class-validate.php:537
+#: lib/class-validate.php:541
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: lib/class-validate.php:538
+#: lib/class-validate.php:542
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:628
+#: lib/class-validate.php:632
 #, fuzzy
 msgid "You are not allowed to upload file(s)"
 msgstr "Nur du hast diese Frage abonniert."
 
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
-#: lib/class-validate.php:637
+#: lib/class-validate.php:641
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:644
+#: lib/class-validate.php:648
 msgid "File type is not allowed to upload."
 msgstr ""
 
 #. Translators: %s contain maximum file size user can upload.
-#: lib/class-validate.php:658
+#: lib/class-validate.php:662
 #, fuzzy
 msgid "File(s) size is bigger then %s MB"
 msgstr "Die Datei konnte nicht hochgeladen werden, die Größe ist über %d Byte"
@@ -4291,7 +4291,7 @@ msgstr "AnsPress Statistiken"
 msgid "Select an option"
 msgstr "Benachrichtigung löschen"
 
-#: lib/form/class-tags.php:41
+#: lib/form/class-tags.php:50
 #, fuzzy
 msgid "AnsPress Tags Field"
 msgstr "AnsPress Seiten"
@@ -4358,7 +4358,7 @@ msgstr[1] "Kategorie"
 msgid "No category is set!"
 msgstr ""
 
-#: templates/addons/category/single-category.php:57
+#: templates/addons/category/single-category.php:62
 #, fuzzy
 msgid "Sub Categories"
 msgstr "Kategorie"
@@ -4627,6 +4627,13 @@ msgstr ""
 #, fuzzy
 msgid "Published"
 msgstr "Veröffentlicht"
+
+#: templates/single-question.php:78
+#, fuzzy
+msgid "%s Comment"
+msgid_plural "%s Comments"
+msgstr[0] "Kommentar"
+msgstr[1] "Kommentar"
 
 #: templates/widgets/widget-questions.php:17
 #, fuzzy
