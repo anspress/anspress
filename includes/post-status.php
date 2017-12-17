@@ -94,15 +94,15 @@ function ap_get_post_status_message( $post_id = false ) {
 	$ret = '';
 	$msg = '';
 	if ( is_private_post( $post_id ) ) {
-		$ret = '<i class="apicon-lock"></i><span>' . sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-lock"></i><span>' . sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	} elseif ( is_post_waiting_moderation( $post_id ) ) {
-		$ret = '<i class="apicon-alert"></i><span>' . sprintf( __( 'This %s is waiting for the approval by the moderator.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-alert"></i><span>' . sprintf( __( 'This %s is waiting for the approval by the moderator.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	} elseif ( is_post_closed( $post_id ) ) {
 		$ret = '<i class="apicon-x"></i><span>' . __( 'Question is closed for new answers.', 'anspress-question-answer' ) . '</span>';
 	} elseif ( 'trash' === $post->post_status ) {
-		$ret = '<i class="apicon-trashcan"></i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-trashcan"></i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	} elseif ( 'future' === $post->post_status ) {
-		$ret = '<i class="apicon-clock"></i><span>' . sprintf( __( 'This %s is not published yet and is not accessible to anyone until it get published.', 'anspress-question-answer' ), $post->post_type ) . '</span>';
+		$ret = '<i class="apicon-clock"></i><span>' . sprintf( __( 'This %s is not published yet and is not accessible to anyone until it get published.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	}
 
 	if ( ! empty( $ret ) ) {
