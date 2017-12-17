@@ -75,7 +75,11 @@
 								</a>
 								<span class="ap-comments-count">
 									<?php $comment_count = get_comments_number(); ?>
+<<<<<<< HEAD
+									<?php printf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ) , '<span itemprop="commentCount">'.$comment_count.'</span>' ); ?>
+=======
 									<?php printf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ) , '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ); ?>
+>>>>>>> anspress/master
 								</span>
 							</div>
 

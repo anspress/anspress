@@ -123,7 +123,9 @@
             while (model = self.model.first()) {
               model.destroy();
             }
+          if ( data.items ) {
             self.model.add(data.items);
+          }
           }
 				}
 			});
