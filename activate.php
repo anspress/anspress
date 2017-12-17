@@ -95,22 +95,21 @@ class AP_Activate {
 			'anspress-paid-membership/anspress-paid-membership.php',
 		] );
 	}
-    
-	 /**
-	  * Delete old AnsPress options.
-	  */
+
+	/**
+	 * Delete old AnsPress options.
+	 *
+ 	 * @since 4.1.5
+	 */
 	public function delete_options() {
-        
-		$settings = get_option( 'anspress_opt' , array() );
-		unset($settings['user_page_title_questions']);
-		unset($settings['user_page_slug_questions']);
-		unset($settings['user_page_title_answers']);
-		unset($settings['user_page_slug_answers']);
-        
+		$settings = get_option( 'anspress_opt' , [] );
+		unset( $settings['user_page_title_questions'] );
+		unset( $settings['user_page_slug_questions'] );
+		unset( $settings['user_page_title_answers'] );
+		unset( $settings['user_page_slug_answers'] );
 		update_option( 'anspress_opt', $settings );
 		wp_cache_delete( 'anspress_opt', 'ap' );
 		wp_cache_delete( 'ap_default_options', 'ap' );
-        
 	}
 
 	/**

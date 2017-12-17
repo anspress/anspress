@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 4.1.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-12-12 15:46:09+00:00\n"
+"POT-Creation-Date: 2017-12-17 03:27:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -63,7 +63,7 @@ msgstr ""
 #: addons/free/profile.php:39 addons/free/profile.php:151
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
 #: includes/functions.php:2196 includes/options.php:102
-#: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:374
+#: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:372
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
 msgstr ""
@@ -155,7 +155,7 @@ msgstr ""
 
 #: addons/free/category/widget.php:68 includes/ajax-hooks.php:623
 #: templates/addons/category/categories.php:33
-#: templates/addons/category/single-category.php:38
+#: templates/addons/category/single-category.php:43
 #: templates/addons/tag/tags.php:39
 msgid "%d Question"
 msgid_plural "%d Questions"
@@ -213,7 +213,7 @@ msgid "ID"
 msgstr ""
 
 #: addons/free/category/widget.php:132 addons/free/category.php:229
-#: addons/free/category.php:242 addons/free/tag.php:586 addons/free/tag.php:636
+#: addons/free/category.php:242 addons/free/tag.php:572 addons/free/tag.php:622
 #: includes/deprecated.php:291 includes/deprecated.php:434
 #: includes/deprecated.php:875
 msgid "Name"
@@ -400,11 +400,11 @@ msgstr ""
 msgid "Category icon color"
 msgstr ""
 
-#: addons/free/category.php:771
+#: addons/free/category.php:791
 msgid "Question category feed"
 msgstr ""
 
-#: addons/free/category.php:818 addons/free/tag.php:617
+#: addons/free/category.php:838 addons/free/tag.php:603
 msgid ", %d+"
 msgstr ""
 
@@ -939,13 +939,13 @@ msgstr ""
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/free/tag.php:34 addons/free/tag.php:539
+#: addons/free/tag.php:34 addons/free/tag.php:525
 #: admin/class-list-table-hooks.php:192
 msgid "Tag"
 msgstr ""
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
-#: addons/free/tag.php:353 addons/free/tag.php:437 addons/free/tag.php:447
+#: addons/free/tag.php:353 addons/free/tag.php:423 addons/free/tag.php:433
 #: includes/functions.php:2220
 msgid "Tags"
 msgstr ""
@@ -1042,15 +1042,15 @@ msgid ""
 "maximum %2$d tags."
 msgstr ""
 
-#: addons/free/tag.php:547
+#: addons/free/tag.php:533
 msgid "Order"
 msgstr ""
 
-#: addons/free/tag.php:584 addons/free/tag.php:634 includes/deprecated.php:873
+#: addons/free/tag.php:570 addons/free/tag.php:620 includes/deprecated.php:873
 msgid "Popular"
 msgstr ""
 
-#: addons/free/tag.php:585 addons/free/tag.php:635 includes/deprecated.php:874
+#: addons/free/tag.php:571 addons/free/tag.php:621 includes/deprecated.php:874
 #: includes/theme.php:363
 msgid "New"
 msgstr ""
@@ -2845,7 +2845,7 @@ msgid "Submit Comment"
 msgstr ""
 
 #: includes/class-form-hooks.php:197 templates/answer.php:36
-#: templates/functions.php:41 templates/single-question.php:79
+#: templates/functions.php:41
 msgid "Comment"
 msgstr ""
 
@@ -3419,7 +3419,7 @@ msgid "Inline?"
 msgstr ""
 
 #: includes/mce-languages.php:38
-msgid "Insert your code.."
+msgid "Insert your code."
 msgstr ""
 
 #: includes/options.php:103
@@ -3568,7 +3568,7 @@ msgstr ""
 msgid "Question and answer is powered by"
 msgstr ""
 
-#: includes/taxo.php:324
+#: includes/taxo.php:322
 msgid "Tagged"
 msgstr ""
 
@@ -3683,105 +3683,105 @@ msgstr ""
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
-#: lib/class-validate.php:295 lib/class-validate.php:311
+#: lib/class-validate.php:299 lib/class-validate.php:315
 #. Translators: placeholder contain field label.
 msgid "%s field is required."
 msgstr ""
 
-#: lib/class-validate.php:327
+#: lib/class-validate.php:331
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
-#: lib/class-validate.php:343
+#: lib/class-validate.php:347
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
-#: lib/class-validate.php:359
+#: lib/class-validate.php:363
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
-#: lib/class-validate.php:382
+#: lib/class-validate.php:386
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
-#: lib/class-validate.php:406
+#: lib/class-validate.php:410
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
-#: lib/class-validate.php:425
+#: lib/class-validate.php:429
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
-#: lib/class-validate.php:444
+#: lib/class-validate.php:448
 #. Translators: placeholder contain field label.
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
-#: lib/class-validate.php:463
+#: lib/class-validate.php:467
 #. Translators: placeholder contain field label.
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
-#: lib/class-validate.php:514
+#: lib/class-validate.php:518
 #. Translators: placeholder contain field label.
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:531
+#: lib/class-validate.php:535
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:532
+#: lib/class-validate.php:536
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:533
+#: lib/class-validate.php:537
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 
-#: lib/class-validate.php:534
+#: lib/class-validate.php:538
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: lib/class-validate.php:535
+#: lib/class-validate.php:539
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/class-validate.php:536
+#: lib/class-validate.php:540
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: lib/class-validate.php:537
+#: lib/class-validate.php:541
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: lib/class-validate.php:538
+#: lib/class-validate.php:542
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:628
+#: lib/class-validate.php:632
 msgid "You are not allowed to upload file(s)"
 msgstr ""
 
-#: lib/class-validate.php:637
+#: lib/class-validate.php:641
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:644
+#: lib/class-validate.php:648
 msgid "File type is not allowed to upload."
 msgstr ""
 
-#: lib/class-validate.php:658
+#: lib/class-validate.php:662
 #. Translators: %s contain maximum file size user can upload.
 msgid "File(s) size is bigger then %s MB"
 msgstr ""
@@ -3827,7 +3827,7 @@ msgstr ""
 msgid "Select an option"
 msgstr ""
 
-#: lib/form/class-tags.php:41
+#: lib/form/class-tags.php:50
 msgid "AnsPress Tags Field"
 msgstr ""
 
@@ -3886,7 +3886,7 @@ msgstr[1] ""
 msgid "No category is set!"
 msgstr ""
 
-#: templates/addons/category/single-category.php:57
+#: templates/addons/category/single-category.php:62
 msgid "Sub Categories"
 msgstr ""
 
@@ -4119,6 +4119,12 @@ msgstr ""
 #: templates/single-question.php:65
 msgid "Published"
 msgstr ""
+
+#: templates/single-question.php:78
+msgid "%s Comment"
+msgid_plural "%s Comments"
+msgstr[0] ""
+msgstr[1] ""
 
 #: templates/widgets/widget-questions.php:17
 msgid "1 Answer"
