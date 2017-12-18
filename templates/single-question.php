@@ -28,7 +28,7 @@
 				do_action( 'ap_before_question_meta' );
 			?>
 			<div class="ap-question-meta clearfix">
-				<?php echo ap_question_metas(); // xss ok. ?>
+				<?php ap_question_metas(); // xss ok. ?>
 			</div>
 			<?php
 				/**
