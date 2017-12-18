@@ -332,7 +332,7 @@ class AP_Form_Hooks {
 		}
 
 		// If private override status.
-		if ( true === $values['is_private']['value'] ) {
+		if ( isset( $values['is_private']['value'] ) && true === $values['is_private']['value'] ) {
 			$question_args['post_status'] = 'private_post';
 		}
 
