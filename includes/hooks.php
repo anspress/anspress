@@ -461,6 +461,7 @@ class AnsPress_Hooks {
 			'q_id'   => $q_id,
 			'a_id'   => $a_id,
 			'action' => 'edit_c',
+            'c_id'   => $comment_id,
 		) );
 	}
 
