@@ -491,7 +491,7 @@ class AnsPress_Tag {
 		global $wp;
 		$query = $wp->query_vars;
 
-		$current_filter = ap_get_current_list_filters( 'tag' );
+		$current_filter = ap_get_current_list_filters( 'qtag' );
 		$tags_operator = ! empty( $wp->query_vars['ap_tags_operator'] ) ? $wp->query_vars['ap_tags_operator'] : 'IN';
 
 		if ( isset( $query['ap_tags'] ) && is_array( $query['ap_tags'] ) ) {

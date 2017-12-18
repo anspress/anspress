@@ -36,7 +36,6 @@ class AnsPress_Common_Pages {
 		$tax_relation = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
 		$args = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
-		$args['tax_query'] = array( 'relation' => $tax_relation );
 
 		if ( false !== $keywords ) {
 			$args['s'] = $keywords;

@@ -631,7 +631,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			return $ret;
 		}
 	}
-}
+} // End if().
 
 add_filter( 'anspress_load_ext', [ 'AnsPress_Init', 'prevent_ext' ], 10, 2 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ], 5 );
