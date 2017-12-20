@@ -11,7 +11,7 @@
  * @package   AnsPress
  *
  * @wordpress-plugin
- * Plugin Name:       AnsPress
+ * Plugin Name:       AnsPress Question Answer
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link: 	    https://goo.gl/ffainr
