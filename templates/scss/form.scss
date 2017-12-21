@@ -29,6 +29,10 @@
 
 	textarea.ap-form-control{
 		height: auto;
+		width: 100%;
+		max-width: 100%;
+		min-width: 100%;
+		margin-bottom: 15px;
 	}
 
 	label.inline-cb{
