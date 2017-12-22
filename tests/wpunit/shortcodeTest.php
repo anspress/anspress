@@ -1,15 +1,20 @@
 <?php
-class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
-{
 
-	public function setUp() {
+class shortcodeTest extends \Codeception\TestCase\WPTestCase
+{
+	use AnsPress\Tests\Testcases\Common;
+	public function setUp()
+	{
 		// before
 		parent::setUp();
+
 		// your set up methods here
 	}
 
-	public function tearDown() {
+	public function tearDown()
+	{
 		// your tear down methods here
+
 		// then
 		parent::tearDown();
 	}
@@ -17,7 +22,7 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress_BasePage_Shortcode::get_instance
 	 */
-	public function test_get_instance() {
+	public function testGetInstance() {
 		$this->assertClassHasStaticAttribute( 'instance', 'AnsPress_BasePage_Shortcode' );
 		$this->assertTrue( shortcode_exists( 'anspress' ), 'anspress shortcode not registered.' );
 	}
@@ -25,7 +30,7 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress_BasePage_Shortcode::anspress_sc
 	 */
-	public function test_anspress_sc() {
+	public function testAnspressSc() {
 		$this->go_to( home_url() );
 		global $ap_shortcode_loaded;
 		$this->assertNotEquals( true, $ap_shortcode_loaded );
@@ -40,7 +45,7 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress_Common_Pages::base_page
 	 */
-	public function test_base_page() {
+	public function testBasePage() {
 		$this->go_to( home_url() );
 
 		$question_id = $this->factory->post->create( array( 'post_title' => 'Sample question', 'post_type' => 'question', 'post_status' => 'publish', 'post_content' => 'test content' ) );
@@ -64,10 +69,10 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress_Common_Pages::question_page
 	 */
-	public function test_question_page() {
+	public function testQuestionPage() {
 		$question_id = $this->factory->post->create( array( 'post_title' => 'supersamplequestion1', 'post_type' => 'question', 'post_status' => 'publish', 'post_content' => 'Cras tempor eleifend essds98d9s8d9s' ) );
 
-		$this->_go_to_question( $question_id );
+		$this->go_to_question( $question_id );
 		$this->assertTrue(is_single());
 		$this->assertTrue(is_singular('question'));
 
@@ -110,7 +115,7 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress_Common_Pages::base_page
 	 */
-	public function test_ask_page() {
+	public function testAskPage() {
 		$question_id = $this->factory->post->create( array( 'post_title' => 'Sample question', 'post_type' => 'question', 'post_status' => 'publish', 'post_content' => 'test content' ) );
 
 		add_filter( 'the_content', [ $this, 'the_content' ] );
@@ -123,6 +128,5 @@ class Tests_AnsPress_BasePage_Shortcode extends AnsPress_UnitTestCase
 		$this->assertContains( 'Sample question', $content );
 		$this->assertNotContains( 'AnsPress shortcode cannot be nested.', $content );
 	}
-
 
 }

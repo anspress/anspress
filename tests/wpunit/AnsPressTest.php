@@ -1,6 +1,7 @@
 <?php
-class Tests_AnsPress extends AnsPress_UnitTestCase
+class AnsPressTest extends \Codeception\TestCase\WPTestCase
 {
+	use AnsPress\Tests\Testcases\Common;
 
 	public function setUp() {
 		// before
@@ -17,17 +18,17 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress::instance
 	 */
-	public function test_anspress_instance() {
+	public function testInstance() {
 		$this->assertClassHasStaticAttribute( 'instance', 'AnsPress' );
 	}
 
 	/**
 	 * @covers AnsPress::setup_constants
 	 */
-	public function test_constants() {
-		$tests_dir = 'tests/unit/';
-		$plugin_dir = str_replace( $tests_dir, '', wp_normalize_path( plugin_dir_path( __FILE__ ) ) );
-		$plugin_url = str_replace( $tests_dir, '', plugin_dir_url( __FILE__ ) );
+	public function testConstant() {
+		$tests_dir = 'tests/wpunit/';
+		$plugin_dir = wp_normalize_path( ABSPATH . 'wp-content/plugins/anspress-question-answer/' );
+		$plugin_url = home_url( 'wp-content/plugins/anspress-question-answer/' );
 
 		$this->assertSame( ANSPRESS_URL, $plugin_url );
 		$this->assertSame( ANSPRESS_DIR, $plugin_dir );
@@ -51,7 +52,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress::includes
 	 */
-	public function test_include() {
+	public function testInclude() {
 		// Check main PHP file exists.
 		$this->assertFileExists( ANSPRESS_DIR . 'anspress-question-answer.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'activate.php' );
@@ -201,7 +202,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * Register a sample form.
 	 */
-	public function register_form() {
+	public function _registerForm() {
 		return array(
 			'fields' => array(
 				'text_field' => array(
@@ -214,9 +215,9 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress::get_form
 	 */
-	public function test_get_form() {
+	public function testGetForm() {
 		// Register form
-		add_filter( 'ap_form_test', [ $this, 'register_form' ] );
+		add_filter( 'ap_form_test', [ $this, '_registerForm' ] );
 
 		// Prepare form.
 		anspress()->get_form( 'test' )->prepare();
@@ -236,7 +237,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress::form_exists
 	 */
-	public function test_form_exists() {
+	public function testFormExists() {
 		anspress()->forms['sample'] = new AnsPress\Form( 'form_sample', array(
 			'fields' => array(
 				'field_one' => array(
@@ -253,7 +254,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress::ajax_hooks
 	 */
-	public function test_ajax_hooks() {
+	public function testAjaxHooks() {
 		// Check if ajax hooks exists if not doing ajax.
 		$this->assertFalse( has_action( 'wp_ajax_ap_delete_flag', [ 'AnsPress_Admin_Ajax', 'ap_delete_flag' ] ) );
 		$this->assertFalse( has_action( 'ap_ajax_toggle_best_answer', [ 'AnsPress_Ajax', 'toggle_best_answer' ] ) );
@@ -262,7 +263,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers AnsPress::site_include
 	 */
-	public function test_site_include() {
+	public function testSiteInclude() {
 		$this->assertNotEquals( false, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
 		$this->assertInstanceOf( 'AnsPress\Activity_Helper', anspress()->activity );
 
@@ -310,7 +311,7 @@ class Tests_AnsPress extends AnsPress_UnitTestCase
 	/**
 	 * @covers anspress
 	 */
-	public function test_anspress() {
+	public function testAnsPress() {
 		$this->assertInstanceOf( 'AnsPress', anspress() );
 	}
 }

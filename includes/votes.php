@@ -18,6 +18,8 @@ class AnsPress_Vote {
 	 * Process voting button.
 	 *
 	 * @since 2.0.1.1
+	 *
+	 * @todo Add ajax tests for subscribers.
 	 */
 	public static function vote() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );

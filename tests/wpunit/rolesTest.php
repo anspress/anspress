@@ -1,23 +1,29 @@
 <?php
-class AP_Roles_Tests extends AnsPress_UnitTestCase
-{
 
-	public function setUp() {
+class rolesTest extends \Codeception\TestCase\WPTestCase
+{
+	use AnsPress\Tests\Testcases\Common;
+
+	public function setUp()
+	{
 		// before
 		parent::setUp();
+
 		// your set up methods here
 	}
 
-	public function tearDown() {
+	public function tearDown()
+	{
 		// your tear down methods here
+
 		// then
 		parent::tearDown();
-  }
+	}
 
-  /**
+	/**
 	 * @covers ::ap_role_caps
 	 */
-  public function test_ap_role_caps() {
+  public function testApRoleCaps() {
     // Check participant caps.
 		$caps = ap_role_caps( 'participant' );
 		$this->assertArrayHasKey( 'ap_read_question', $caps );
@@ -62,7 +68,7 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
   /**
 	 * @covers AP_Roles::__construct
 	 */
-  public function test___construct() {
+  public function testConstruct() {
     $role = new AP_Roles;
 
     $participants_caps = ap_role_caps( 'participant' );
@@ -75,7 +81,7 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
   /**
 	 * @covers AP_Roles::add_roles
 	 */
-  public function test_add_roles() {
+  public function testAddRoles() {
     $this->assertInstanceOf( 'WP_Role', get_role('ap_participant') );
     $this->assertInstanceOf( 'WP_Role', get_role('ap_moderator') );
     $this->assertInstanceOf( 'WP_Role', get_role('ap_banned') );
@@ -84,7 +90,7 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
   /**
 	 * @covers AP_Roles::add_capabilities
 	 */
-  public function test_add_capabilities() {
+  public function testAddCapabilities() {
     global $wp_roles;
 
     if ( class_exists( 'WP_Roles' ) ) {
@@ -163,22 +169,22 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
   /**
 	 * @covers ::ap_user_can_ask
 	 */
-  public function test_ap_user_can_ask() {
+  public function testApUserCanAsk() {
     // Check if user roles can ask.
-    $this->_setRole( 'subscriber' );
+    $this->setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->_setRole( 'ap_participant' );
+		$this->setRole( 'ap_participant' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->_setRole( 'ap_moderator' );
+		$this->setRole( 'ap_moderator' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->_setRole( 'editor' );
+		$this->setRole( 'editor' );
 		$this->assertTrue( ap_user_can_ask() );
 
     // Check user having ap_new_question can ask.
     $option = ap_opt( 'post_question_per' );
     ap_opt( 'post_question_per', 'have_cap' );
     add_role( 'ap_test_ask', 'Test user can ask', [ 'ap_new_question' => true ] );
-    $this->_setRole( 'ap_test_ask' );
+    $this->setRole( 'ap_test_ask' );
     $this->assertTrue( ap_user_can_ask() );
     $this->logout();
     $this->assertFalse( ap_user_can_ask() );
@@ -186,14 +192,14 @@ class AP_Roles_Tests extends AnsPress_UnitTestCase
     // Verify anyone can ask option.
     ap_opt( 'post_question_per', 'anyone' );
     $this->assertTrue( ap_user_can_ask() );
-    $this->_setRole( 'subscriber' );
+    $this->setRole( 'subscriber' );
     $this->assertTrue( ap_user_can_ask() );
 
     // Check logged-in can ask permission.
     ap_opt( 'post_question_per', 'logged_in' );
     $this->logout();
     $this->assertFalse( ap_user_can_ask() );
-    $this->_setRole( 'subscriber' );
+    $this->setRole( 'subscriber' );
     $this->assertTrue( ap_user_can_ask() );
   }
 }

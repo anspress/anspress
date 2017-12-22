@@ -1,25 +1,36 @@
 <?php
-class Cpt_Tests extends AnsPress_UnitTestCase
+
+class CptTest extends \Codeception\TestCase\WPTestCase
 {
 
-	public function setUp() {
+	public function setUp()
+	{
 		// before
 		parent::setUp();
+
 		// your set up methods here
 	}
 
-	public function tearDown() {
+	public function tearDown()
+	{
 		// your tear down methods here
+
 		// then
 		parent::tearDown();
 	}
 
-	public function test_question_post_type() {
+	/**
+	 * @covers AnsPress_PostTypes::register_question_cpt
+	 */
+	public function testQuestionPostType() {
 		global $wp_post_types;
 		$this->assertArrayHasKey( 'question', $wp_post_types );
 	}
 
-	public function test_question_post_type_labels() {
+	/**
+	 * @covers AnsPress_PostTypes::register_question_cpt
+	 */
+	public function testQuestionPostTypeLabels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Questions', $wp_post_types['question']->labels->name );
 		$this->assertEquals( 'Question', $wp_post_types['question']->labels->singular_name );
@@ -38,12 +49,18 @@ class Cpt_Tests extends AnsPress_UnitTestCase
 		$this->assertEquals( 'Questions', $wp_post_types['question']->label );
 	}
 
-	public function test_answer_post_type() {
+	/**
+	 * @covers AnsPress_PostTypes::register_answer_cpt
+	 */
+	public function testAnswerPostType() {
 		global $wp_post_types;
 		$this->assertArrayHasKey( 'answer', $wp_post_types );
 	}
 
-	public function test_answer_post_type_labels() {
+	/**
+	 * @covers AnsPress_PostTypes::register_answer_cpt
+	 */
+	public function testAnswerPostTypeLabels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Answers', $wp_post_types['answer']->labels->name );
 		$this->assertEquals( 'Answer', $wp_post_types['answer']->labels->singular_name );
@@ -61,11 +78,12 @@ class Cpt_Tests extends AnsPress_UnitTestCase
 		$this->assertEquals( 'Answers', $wp_post_types['answer']->label );
 	}
 
-	public function test_register_post_statuses() {
+	public function testRegisterPostStatuses() {
 		AnsPress_Post_Status::register_post_status();
 		global $wp_post_statuses;
 
 		$this->assertInternalType( 'object', $wp_post_statuses['moderate'] );
 		$this->assertInternalType( 'object', $wp_post_statuses['private_post'] );
 	}
+
 }

@@ -1,7 +1,12 @@
 <?php
-class Tests_Ajax extends Ap_AjaxTest
+
+class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase
 {
-	public $current_post;
+    use AnsPress\Tests\Testcases\Common;
+    use AnsPress\Tests\Testcases\Ajax;
+
+    public $current_post;
+
 	public function setUp() {
 		// before
 		parent::setUp();
@@ -22,48 +27,70 @@ class Tests_Ajax extends Ap_AjaxTest
 		foreach ( $args as $key => $value ) {
 			$_POST[ $key ] = $value;
 		}
-	}
+    }
 
-	/**
+    /**
 	 * Test voting by administrator
+     *
+     * @covers AnsPress_Vote::vote
 	 */
-	public function test_voteup_as_administrator() {
+	public function testVoteupAdministrator() {
 		$this->_setRole( 'administrator' );
 
 		// Up vote.
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'post_id='.$this->current_post.'&__nonce='.$nonce.'&ap_ajax_action=vote&type=vote_up' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
-		$this->triggerAjaxCapture();
+        add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
+
+        try {
+            $this->_handleAjax( 'ap_ajax' );
+        } catch ( WPAjaxDieStopException $e ) {
+            $this->_last_response = $e->getMessage();
+        }
+
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'voted' );
 		$this->assertTrue( $this->ap_ajax_success( 'vote_type' ) === 'vote_up' );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Thank you for voting.' );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 1 );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->active === 'vote_up' );
-		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
+        $this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
+
+        $this->_last_response = '';
 
 		// Down vote. Will show undo vote warning.
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'post_id='.$this->current_post.'&__nonce='.$nonce.'&ap_ajax_action=vote&type=vote_down' );
-		$this->triggerAjaxCapture();
+		try {
+            $this->_handleAjax( 'ap_ajax' );
+        } catch ( WPAjaxDieStopException $e ) {
+            $this->_last_response = $e->getMessage();
+        }
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Undo your vote first.' );
 		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
+        $this->_last_response = '';
 
-		// Undo vote.
+		// // Undo vote.
 		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
 		$this->_set_post_data( 'action=ap_ajax&post_id='.$this->current_post.'&__nonce='.$nonce.'&ap_ajax_action=vote&type=vote_up' );
-		$this->triggerAjaxCapture();
+		try {
+            $this->_handleAjax( 'ap_ajax' );
+        } catch ( WPAjaxDieStopException $e ) {
+            $this->_last_response = $e->getMessage();
+        }
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'undo' );
 		$this->assertTrue( $this->ap_ajax_success( 'vote_type' ) === 'vote_up' );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Your vote has been removed.' );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 0 );
 		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
-	}
+    }
 
-	public function test_load_comments() {
+    /**
+     * @covers AnsPress_Comment_Hooks::load_comments
+     */
+    public function testLoadComments() {
 		$this->_setRole( 'administrator' );
 
 		$this->factory->comment->create_many(5, array(
@@ -73,8 +100,14 @@ class Tests_Ajax extends Ap_AjaxTest
 		// Up vote.
 		$this->_set_post_data( 'post_id='.$this->current_post.'&ap_ajax_action=load_comments' );
 		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
-		$this->triggerAjaxCapture();
+        try {
+            $this->_handleAjax( 'ap_ajax' );
+        } catch ( WPAjaxDieStopException $e ) {
+            $this->_last_response = $e->getMessage();
+        }
+
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertContains( 'apcomment', $this->ap_ajax_success( 'html' ) );
 	}
+
 }

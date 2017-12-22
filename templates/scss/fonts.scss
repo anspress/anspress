@@ -75,6 +75,8 @@ $apicon-thumbs-up-down: "\e93a";
 $apicon-thumb-up: "\e93b";
 $apicon-thumb-down: "\e93c";
 $apicon-board: "\e938";
+$apicon-bell-slash: "\e94b";
+$apicon-bell: "\e94c";
 
 @font-face {
   font-family: 'anspress';
@@ -101,7 +103,16 @@ $apicon-board: "\e938";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.apicon-bell-slash {
+  &:before {
+    content: $apicon-bell-slash;
+  }
+}
+.apicon-bell {
+  &:before {
+    content: $apicon-bell;
+  }
+}
 .apicon-x {
   &:before {
     content: $apicon-x;

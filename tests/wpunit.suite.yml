@@ -1,0 +1,22 @@
+# Codeception Test Suite Configuration
+#
+# Suite for unit or integration tests that require WordPress functions and classes.
+
+actor: WpunitTester
+modules:
+    enabled:
+        - WPLoader
+        - \Helper\Wpunit
+    config:
+        WPLoader:
+            wpRootFolder: "D:/xampp2/htdocs/aptest"
+            dbName: "apwploader"
+            dbHost: "localhost"
+            dbUser: "root"
+            dbPassword: ""
+            tablePrefix: "wp_"
+            domain: "aptest.local"
+            adminEmail: "admin@anspress.local"
+            title: "Test"
+            plugins: ['anspress-question-answer/anspress-question-answer.php']
+            activatePlugins: ['anspress-question-answer/anspress-question-answer.php']

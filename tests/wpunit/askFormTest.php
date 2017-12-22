@@ -1,23 +1,34 @@
 <?php
-class Ask_Form_Tests extends AnsPress_UnitTestCase
+
+class askFormTest extends \Codeception\TestCase\WPTestCase
 {
+    use AnsPress\Tests\Testcases\Common;
 
-	public function setUp() {
-		// before
-		parent::setUp();
-		// your set up methods here
-	}
+    public function setUp()
+    {
+        // before
+        parent::setUp();
 
-	public function tearDown() {
-		// your tear down methods here
-		// then
-		parent::tearDown();
-  }
+        // your set up methods here
+    }
 
-  /**
+    public function tearDown()
+    {
+        // your tear down methods here
+
+        // then
+        parent::tearDown();
+    }
+
+    // tests
+    public function testMe()
+    {
+    }
+
+    /**
 	 * @covers AP_Form_Hooks::question_form
 	 */
-  public function test_question_form() {
+  public function testQuestionForm() {
     $this->logout();
 
     ap_opt( 'allow_private_posts', true );
@@ -65,7 +76,7 @@ class Ask_Form_Tests extends AnsPress_UnitTestCase
     $this->assertEquals( 'absint', $form->args['fields']['post_id']['sanitize'] );
 
     // Try for logged in users.
-    $this->_setRole( 'subscriber' );
+    $this->setRole( 'subscriber' );
 
     unset( anspress()->forms['question'] );
     anspress()->form_exists('question');
@@ -79,7 +90,7 @@ class Ask_Form_Tests extends AnsPress_UnitTestCase
    *
 	 * @covers AP_Form_Hooks::question_form
 	 */
-  public function test_question_form_editing() {
+  public function testQuestionFormEditing() {
     $this->logout();
 
     ap_opt( 'allow_private_posts', true );
@@ -113,12 +124,12 @@ class Ask_Form_Tests extends AnsPress_UnitTestCase
    *
    * @covers ::ap_ask_form
    */
-  public function test_ap_ask_form() {
+  public function testApAskForm() {
     $_REQUEST = [];
     $_POST = [];
 
     ap_opt( 'post_question_per', 'have_cap' );
-    $this->_setRole( 'ap_banned' );
+    $this->setRole( 'ap_banned' );
     $id = $this->factory->post->create( array(
       'post_title' => 'Suspendisse aliqua', 'post_type' => 'question', 'post_content' => 'Sed cursus, diam sit amet', 'post_author' => get_current_user_id()
     ) );
@@ -136,11 +147,12 @@ class Ask_Form_Tests extends AnsPress_UnitTestCase
     $form_html = ob_get_clean();
     $this->assertEquals( '<p>You cannot edit this question.</p>', $form_html );
 
-    $this->_setRole( 'administrator' );
+    $this->setRole( 'administrator' );
     ob_start();
     ap_ask_form();
     $form_html = ob_get_clean();
     $this->assertContains( 'name="form_question[post_title]"', $form_html );
     $this->assertContains( 'name="form_question[post_content]"', $form_html );
   }
+
 }

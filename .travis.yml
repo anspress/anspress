@@ -11,24 +11,29 @@ env:
 - WP_VERSION=latest WP_MULTISITE=0
 - WP_VERSION=4.7 WP_MULTISITE=0
 
-before_script:
-  - bash tests/bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
-      composer global require "phpunit/phpunit=5.7.*"
-    else
-      composer global require "phpunit/phpunit=4.8.*"
-    fi
-script:
-- if [[ $TRAVIS_PHP_VERSION != '7.1'|| $WP_VERSION != 'latest'
-  || $WP_MULTISITE != '0' ]]; then phpenv config-rm xdebug.ini; fi
-- if [[ $TRAVIS_PHP_VERSION = '7.1' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-  ]]; then phpunit --coverage-clover=coverage.clover --debug; else phpunit --debug; fi
+install:
+  - wget https://goo.gl/hvDPsK
 
-after_script:
-- if [[ $TRAVIS_PHP_VERSION = '7.1' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-  ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-- if [[ $TRAVIS_PHP_VERSION = '7.1' && $WP_VERSION = 'latest' && $WP_MULTISITE = '0'
-  ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover --access-token="4aa26d5b17f315b687b65085e10b9c1c049744c0eb23227f33f0e804283f5fe3";
-  fi
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install apache2 libapache2-mod-fastcgi
+  # enable php-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  - mysql -e 'create database wptestloader;'
+  # configure apache virtual hosts
+  - echo "127.0.0.1 aptest.localhost" | sudo tee -a /etc/hosts
+  - sudo service apache2 restart
+  - sudo apt-get install git
+  - composer require lucatume/wp-browser ^1.21
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - java -jar selenium-server-standalone-3.8.1.jar -port 4444 -Djava.security.egd=file:///dev/urandom switch > /dev/null &
+  - sleep 10
+  - ./vendor/bin/codecept build
+  - bash tests/bin/install.sh aptest root '' localhost $WP_VERSION
+
+script:
+  - ./vendor/bin/codecept run wpunit --steps --debug

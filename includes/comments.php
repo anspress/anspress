@@ -37,6 +37,8 @@ class AnsPress_Comment_Hooks {
 	 *
 	 * @since 2.0.1
 	 * @since 3.0.0 Moved from AnsPress_Ajax class.
+	 *
+	 * @category haveTest
 	 */
 	public static function load_comments() {
 		global $avatar_size;
