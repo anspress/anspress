@@ -12,20 +12,26 @@ env:
 - WP_VERSION=4.7 WP_MULTISITE=0
 
 install:
-  - wget https://goo.gl/hvDPsK
+  - wget http://selenium-release.storage.googleapis.com/3.8/selenium-server-standalone-3.8.1.jar
 
 before_script:
   - sudo apt-get update
+
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # enable php-fpm
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars
+  - sudo chown -R travis:travis /var/lib/apache2/fastcgi
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  - mysql -e 'create database wptestloader;'
   # configure apache virtual hosts
-  - echo "127.0.0.1 aptest.localhost" | sudo tee -a /etc/hosts
+  - sudo cp -f tests/_data/travis-ci-vhost /etc/apache2/sites-available/000-default.conf
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?/www?g" --in-place /etc/apache2/sites-available/000-default.conf
+  - echo "127.0.0.1 aptest.local" | sudo tee -a /etc/hosts
   - sudo service apache2 restart
+  - mysql -e 'create database aptest;'
   - sudo apt-get install git
   - composer require lucatume/wp-browser ^1.21
   - export DISPLAY=:99.0
