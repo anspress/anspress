@@ -208,7 +208,7 @@ copy_anspress(){
 
 install_composer
 install_wpcli
-vhost
+#vhost
 download_wp
 install_test_suite
 install_db
