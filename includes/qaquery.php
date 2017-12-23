@@ -230,7 +230,7 @@ class Question_Query extends WP_Query {
  * @param  mixed $post Post object.
  * @return object
  */
-function ap_get_post( $post = null ) { // @codingStandardsIgnoreLine
+function ap_get_post( $post = null ) {
 	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
 		$post = $GLOBALS['post']; // override ok.
 	}

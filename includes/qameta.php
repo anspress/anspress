@@ -115,7 +115,6 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	if ( false !== $inserted ) {
-
 		$cache = wp_cache_get( $post_id, 'posts' );
 
 		if ( false !== $cache  ) {
@@ -376,7 +375,6 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
  * @since  3.1.0
  */
 function ap_update_subscribers_count( $post_id, $count = false ) {
-
 	if ( false === $count ) {
 		$count = ap_subscribers_count( 'question', $post_id );
 	}

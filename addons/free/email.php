@@ -340,7 +340,7 @@ class AnsPress_Email_Hooks {
 		$answer = ap_get_post( $answer_id );
 
 		if ( ap_opt( 'email_user_new_answer' ) && 'private_post' !== $answer->post_status && 'moderate' !== $answer->post_status ) {
-			$subscribers = ap_get_subscribers( 'question', $answer->post_parent );
+			$subscribers = ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => $answer->post_parent ] );
 
 			foreach ( (array) $subscribers as $s ) {
 				if ( ap_user_can_view_post( $answer ) && $s->user_email !== $current_user->user_email ) {
@@ -407,7 +407,7 @@ class AnsPress_Email_Hooks {
 		if ( ap_opt( 'email_user_new_comment' ) ) {
 			$current_user = wp_get_current_user();
 			$post         = ap_get_post( $comment->comment_post_ID );
-			$subscribers  = ap_get_subscribers( 'comment_' . $comment->comment_post_ID );
+			$subscribers  = ap_get_subscribers( [ 'subs_event' => 'comment_' . $comment->comment_post_ID ] );
 
 			if ( $post->post_author != get_current_user_id() ) {
 				$args['users'][] = $post->post_author;
@@ -457,7 +457,7 @@ class AnsPress_Email_Hooks {
 		$email = new Email( 'edit_question', $args );
 
 		$current_user = wp_get_current_user();
-		$subscribers = ap_get_subscribers( 'question', $question->ID );
+		$subscribers = ap_get_subscribers( [ 'subs_event' => 'question', $question->ID ] );
 		$post_author  = get_user_by( 'id', $question->post_author );
 
 		if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
@@ -506,8 +506,8 @@ class AnsPress_Email_Hooks {
 
 		$email         = new Email( 'edit_answer', $args );
 
-		$a_subscribers = (array) ap_get_subscribers( 'answer_' . $answer->post_parent );
-		$q_subscribers = (array) ap_get_subscribers( 'question', $answer->post_parent );
+		$a_subscribers = (array) ap_get_subscribers( [ 'subs_events' => 'answer_' . $answer->post_parent ] );
+		$q_subscribers = (array) ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => $answer->post_parent ] );
 		$subscribers   = array_merge( $a_subscribers, $q_subscribers );
 		$post_author   = get_user_by( 'id', $answer->post_author );
 

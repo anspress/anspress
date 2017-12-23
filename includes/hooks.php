@@ -55,9 +55,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count' , 10, 4 );
 			//anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
-			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
-			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscriber', 10, 4 );
-			anspress()->add_action( 'ap_delete_subscriber', __CLASS__, 'delete_subscriber', 10, 4 );
+
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
 
@@ -131,9 +129,12 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_form_comment', 'AP_Form_Hooks', 'comment_form', 11 );
 
 			// Subscriptions
-			anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 			anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
 			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'answer_subscription', 10, 2 );
+			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
+			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscribers', 10, 2 );
+			anspress()->add_action( 'ap_delete_subscriber', __CLASS__, 'delete_subscriber', 10, 3 );
+			anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
 			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
 	}
@@ -840,23 +841,16 @@ class AnsPress_Hooks {
 	/**
 	 * Update qameta subscribers count on adding new subscriber.
 	 *
-	 * @param integer $subscriber_id id of new subscriber added.
-	 * @param integer $user_id id of user.
-	 * @param string  $event Subscribe event.
-	 * @param integer $ref_id Reference id.
-	 */
-	public static function new_subscriber( $subscribe_id, $user_id, $event, $ref_id ) {
-		ap_update_subscribers_count( $ref_id );
-	}
-
-	/**
-	 * Update qameta subscribers count on adding new subscriber.
-	 *
 	 * @param integer $rows Number of rows deleted.
 	 * @param string  $where Where clause.
 	 */
-	public static function delete_subscriber( $rows, $where ) {
-		ap_update_subscribers_count( $ref_id );
+	public static function delete_subscriber( $ref_id, $user_id, $event ) {
+		// Remove ids from event.
+		$esc_event = ap_esc_subscriber_event( $event );
+
+		if ( in_array( $esc_event, [ 'question', 'answer', 'comment' ], true ) ) {
+			ap_update_subscribers_count( $ref_id );
+		}
 	}
 
 	public static function display_question_metas( $metas, $question_id ) {
@@ -904,9 +898,95 @@ class AnsPress_Hooks {
 	}
 
 	/**
+	 * Subscribe OP to his own question.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post post objct.
+	 *
+	 * @category haveTest
+	 *
+	 * @since unknown Introduced
+	 * @since 4.1.5 Moved from addons/free/email.php
+	 */
+	public static function question_subscription( $post_id, $_post ) {
+		if ( $_post->post_author > 0 ) {
+			ap_new_subscriber( $_post->post_author, 'question', $_post->ID );
+		}
+	}
+
+	/**
+	 * Subscribe author to their answer. Answer id is stored in event name.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $_post   Post object.
+	 *
+	 * @category haveTest
+	 *
+	 * @since unknown Introduced
+	 * @since 4.1.5 Moved from addons/free/email.php
+	 */
+	public static function answer_subscription( $post_id, $_post ) {
+		if ( $_post->post_author > 0 ) {
+			ap_new_subscriber( $_post->post_author, 'answer_' . $post_id, $_post->post_parent );
+		}
+	}
+
+	/**
+	 * Update qameta subscribers count on adding new subscriber.
+	 *
+	 * @param integer $subscriber_id id of new subscriber added.
+	 * @param integer $user_id id of user.
+	 * @param string  $event Subscribe event.
+	 * @param integer $ref_id Reference id.
+	 *
+	 * @category haveTest
+	 *
+	 * @since unknown
+	 * @since 4.1.5 Update answer subscribers count.
+	 */
+	public static function new_subscriber( $subscribe_id, $user_id, $event, $ref_id ) {
+		// Remove ids from event.
+		$esc_event = ap_esc_subscriber_event( $event );
+
+		if ( in_array( $esc_event, [ 'question', 'answer', 'comment' ], true ) ) {
+			ap_update_subscribers_count( $ref_id );
+		}
+
+		// Update answer subscribers count.
+		if ( 'answer' === $esc_event ) {
+			$event_id = ap_esc_subscriber_event_id( $event );
+			ap_update_subscribers_count( $event_id );
+		}
+	}
+
+	/**
+	 * Update qameta subscribers count before deleting subscribers.
+	 *
+	 * @param string $rows  Number of rows deleted.
+	 * @param string $where Where clause.
+	 *
+	 * @category haveTest
+	 *
+	 * @since 4.1.5
+	 */
+	public static function delete_subscribers( $rows, $where ) {
+		if ( ! isset( $where['subs_ref_id'] ) && ! isset( $where['subs_event'] ) ) {
+			return;
+		}
+
+		// Remove ids from event.
+		$esc_event = ap_esc_subscriber_event( $where['subs_event'] );
+
+		if ( in_array( $esc_event, [ 'question', 'answer', 'comment' ], true ) ) {
+			ap_update_subscribers_count( $where['subs_ref_id'] );
+		}
+	}
+
+	/**
 	 * Delete subscriptions.
 	 *
 	 * @param integer $postid Post ID.
+	 *
 	 * @since unknown Introduced
 	 * @since 4.1.5 Moved from addons/free/email.php
 	 */
@@ -926,35 +1006,6 @@ class AnsPress_Hooks {
 			ap_delete_subscribers( array(
 				'subs_event'  => 'answer_' . $_post->post_parent,
 			) );
-		}
-	}
-
-	/**
-	 * Subscribe OP to his own question.
-	 *
-	 * @param integer $post_id Post ID.
-	 * @param object  $_post post objct.
-	 *
-	 * @since unknown Introduced
-	 * @since 4.1.5 Moved from addons/free/email.php
-	 */
-	public static function question_subscription( $post_id, $_post ) {
-		if ( $_post->post_author > 0 ) {
-			ap_new_subscriber( $_post->post_author, 'question', $_post->ID );
-		}
-	}
-
-	/**
-	 * Subscribe to answer.
-	 *
-	 * @param integer $post_id Post ID.
-	 * @param object  $_post post objct.
-	 * @since unknown Introduced
-	 * @since 4.1.5 Moved from addons/free/email.php
-	 */
-	public static function answer_subscription( $post_id, $_post ) {
-		if ( $_post->post_author > 0 ) {
-			ap_new_subscriber( $_post->post_author, 'answer_' . $_post->post_parent, $_post->ID );
 		}
 	}
 
