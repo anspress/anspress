@@ -9,5 +9,5 @@ $I->fillTinyMceEditorById('form_question-post_content', 'Nulla vestibulum ultric
 $I->selectOption('form_question[category]', 'Sample Cat');
 //$I->fillField([ 'css' => '#form_question-tags-selectized' ], 'testTag1,testTag2,testtag3');
 $I->click('//*[@id="form_question"]/button');
-$I->waitForJS("return jQuery.active == 0;", 30);
-$i->seeElement('#question');
+$I->click('#form_question button[type=submit]');
+
