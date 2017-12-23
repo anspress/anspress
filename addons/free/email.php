@@ -77,11 +77,8 @@ class AnsPress_Email_Hooks {
 
 		anspress()->add_filter( 'comment_notification_recipients', __CLASS__, 'default_recipients', 10, 2 );
 
-		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'answer_subscription', 10, 2 );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
-		anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
-		anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
+
+
 
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'ap_after_new_question' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'ap_after_new_answer' );
@@ -591,81 +588,6 @@ class AnsPress_Email_Hooks {
 
 		$email = new Email( 'trash_question', $args );
 		$email->send_emails();
-	}
-
-	/**
-	 * Subscribe OP to his own question.
-	 *
-	 * @param integer $post_id Post ID.
-	 * @param object  $_post post objct.
-	 */
-	public static function question_subscription( $post_id, $_post ) {
-		if ( $_post->post_author > 0 ) {
-			ap_new_subscriber( $_post->post_author, 'question', $_post->ID );
-		}
-	}
-
-	/**
-	 * Subscribe to answer.
-	 *
-	 * @param integer $post_id Post ID.
-	 * @param object  $_post post objct.
-	 */
-	public static function answer_subscription( $post_id, $_post ) {
-		if ( $_post->post_author > 0 ) {
-			ap_new_subscriber( $_post->post_author, 'answer_' . $_post->post_parent, $_post->ID );
-		}
-	}
-
-	/**
-	 * Add comment subscriber.
-	 *
-	 * @param object $comment Comment object.
-	 */
-	public static function comment_subscription( $comment ) {
-		if ( $comment->user_id > 0 ) {
-			ap_new_subscriber( $comment->user_id, 'comment_' . $comment->comment_post_ID, $comment->comment_ID );
-		}
-	}
-
-	/**
-	 * Delete subscriptions.
-	 *
-	 * @param integer $postid Post ID.
-	 */
-	public static function delete_subscriptions( $postid ) {
-		$_post = get_post( $postid );
-
-		if ( 'question' === $_post->post_type ) {
-			// Delete question subscriptions.
-			ap_delete_subscribers( array(
-				'subs_event'  => 'question',
-				'subs_ref_id' => $postid,
-			) );
-		}
-
-		if ( 'answer' === $_post->post_type ) {
-			// Delete question subscriptions.
-			ap_delete_subscribers( array(
-				'subs_event'  => 'answer_' . $_post->post_parent,
-			) );
-		}
-	}
-
-	/**
-	 * Delete comment subscriptions right before deleting comment.
-	 *
-	 * @param integer $comment_id Comment ID.
-	 */
-	public static function delete_comment_subscriptions( $comment_id ) {
-		$_comment = get_comment( $comment_id );
-		$_post = get_post( $_comment->comment_post_ID );
-
-		if ( in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
-			ap_delete_subscribers( array(
-				'subs_event'  => 'comment_' . $_post->ID,
-			) );
-		}
 	}
 
 	/**
