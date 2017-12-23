@@ -2,7 +2,8 @@ actor: UiTester
 modules:
     enabled:
         - \Helper\Acceptance
-        - \Helper\UI
+        - \Helper\Ui
+        - \Helper\Wpunit
         - WPWebDriver
     config:
         WPWebDriver:

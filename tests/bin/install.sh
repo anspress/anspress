@@ -34,7 +34,7 @@ install_composer(){
 	}
 
 	#echo 'export PATH="$PATH:/home/travis/.composer/vendor/bin"' >> ~/.bashrc
-	curl -i http://localhost:4444/wd/hub/status
+	# curl -i http://localhost:4444/wd/hub/status
 }
 
 install_wpcli(){
@@ -206,6 +206,26 @@ copy_anspress(){
 	sudo git reset --hard origin/master
 }
 
+core_install(){
+	cd $WP_CORE_DIR
+	sudo echo "apache_modules:
+  - mod_rewrite" > wp-cli.yml
+  	sudo chown -R travis:travis $WP_CORE_DIR
+
+	wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass="$DB_PASS" --allow-root
+	wp core install --url='http://aptest.local/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
+	cat "$WP_CORE_DIR/wp-config.php"
+	# wp rewrite structure '/%postname%/' --hard --allow-root
+	# wp plugin activate anspress-question-answer --allow-root
+
+	# if [ $EXTENSIONS == 'true' ]; then
+	# 	wp plugin install categories-for-anspress --activate --allow-root
+	# 	wp plugin install tags-for-anspress --activate --allow-root
+	# 	wp plugin install anspress-email --activate --allow-root
+	# 	wp theme install twentytwelve --activate --allow-root
+	# fi
+}
+
 install_composer
 install_wpcli
 #vhost
@@ -213,3 +233,4 @@ download_wp
 install_test_suite
 install_db
 copy_anspress
+core_install

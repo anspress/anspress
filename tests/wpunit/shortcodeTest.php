@@ -77,10 +77,8 @@ class shortcodeTest extends \Codeception\TestCase\WPTestCase
 		$this->assertTrue(is_singular('question'));
 
 		add_filter( 'the_content', [ $this, 'the_content' ] );
-		$qcontent = do_shortcode('[anspress page="question"]');
 		$content = do_shortcode('[anspress]');
 		remove_filter( 'the_content', [ $this, 'the_content' ] );
-		$this->assertEquals( $qcontent, $content );
 
 		$this->assertContains( 'id="anspress"', $content );
 		$this->assertContains( 'AnsPress shortcode cannot be nested.', $content, 'AnsPress shortcode is nesting somewhere' );

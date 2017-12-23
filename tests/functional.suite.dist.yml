@@ -23,7 +23,7 @@ modules:
             tablePrefix: 'wp_'
         WordPress:
             depends: WPDb
-            wpRootFolder: 'D:/xampp2/htdocs/anspress'
+            wpRootFolder: '/home/travis/build/anspress/anspress/www'
             adminUsername: 'admin'
             adminPassword: 'admin'
             adminPath: '/wp-admin'
