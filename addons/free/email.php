@@ -638,12 +638,17 @@ class AnsPress_Email_Hooks {
 
 		if ( 'question' === $_post->post_type ) {
 			// Delete question subscriptions.
-			ap_delete_subscribers( 'question', $postid );
+			ap_delete_subscribers( array(
+				'subs_event'  => 'question',
+				'subs_ref_id' => $postid,
+			) );
 		}
 
 		if ( 'answer' === $_post->post_type ) {
 			// Delete question subscriptions.
-			ap_delete_subscribers( 'answer_' . $_post->post_parent );
+			ap_delete_subscribers( array(
+				'subs_event'  => 'answer_' . $_post->post_parent,
+			) );
 		}
 	}
 
@@ -657,7 +662,9 @@ class AnsPress_Email_Hooks {
 		$_post = get_post( $_comment->comment_post_ID );
 
 		if ( in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
-			ap_delete_subscribers( 'comment_' . $_post->ID );
+			ap_delete_subscribers( array(
+				'subs_event'  => 'comment_' . $_post->ID,
+			) );
 		}
 	}
 

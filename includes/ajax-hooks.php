@@ -489,6 +489,12 @@ class AnsPress_Ajax {
 		));
 	}
 
+	/**
+	 * Subscribe user to a question.
+	 *
+	 * @return void
+	 * @since unknown
+	 */
 	public static function subscribe_to_question() {
 		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
 
@@ -512,7 +518,7 @@ class AnsPress_Ajax {
 		$exists = ap_get_subscriber( false, 'question', $post_id );
 
 		if ( $exists ) {
-			ap_delete_subscribers( 'question', $post_id, get_current_user_id() );
+			ap_delete_subscriber( $post_id, get_current_user_id(), 'question' );
 			ap_ajax_json( array(
 				'success'  => true,
 				'snackbar' => [ 'message' => __( 'Successfully unsubscribed from question', 'anspress-question-answer' ) ],

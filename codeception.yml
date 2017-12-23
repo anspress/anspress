@@ -22,18 +22,4 @@ settings:
     bootstrap: _bootstrap.php
     colors: false
     memory_limit: 1024M
-modules:
-    config:
-        config:
-            WPLoader:
-                wpRootFolder: "D:/xampp2/htdocs/aptest"
-                dbName: "apwploader"
-                dbHost: "localhost"
-                dbUser: "root"
-                dbPassword: ""
-                tablePrefix: "wp_"
-                domain: "aptest.local"
-                adminEmail: "admin@anspress.local"
-                title: "Test"
-                plugins: ['anspress-question-answer/anspress-question-answer.php']
-                activatePlugins: ['anspress-question-answer/anspress-question-answer.php']
+

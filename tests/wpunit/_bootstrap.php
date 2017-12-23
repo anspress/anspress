@@ -5,3 +5,4 @@ use Codeception\Util\Autoload;
 $support = Configuration::supportDir();
 
 Autoload::addNamespace( '\AnsPress\Tests', $support );
+

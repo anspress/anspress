@@ -57,6 +57,7 @@ class AnsPress_Hooks {
 			//anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
 			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscriber', 10, 4 );
+			anspress()->add_action( 'ap_delete_subscriber', __CLASS__, 'delete_subscriber', 10, 4 );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
 
@@ -845,11 +846,9 @@ class AnsPress_Hooks {
 	 * Update qameta subscribers count on adding new subscriber.
 	 *
 	 * @param integer $rows Number of rows deleted.
-	 * @param string  $event Subscribe event.
-	 * @param integer $ref_id Reference id.
-	 * @param integer $user_id Id of user.
+	 * @param string  $where Where clause.
 	 */
-	public static function delete_subscriber( $rows, $event, $ref_id, $user_id ) {
+	public static function delete_subscriber( $rows, $where ) {
 		ap_update_subscribers_count( $ref_id );
 	}
 
