@@ -684,23 +684,31 @@ class AnsPress_Reputation_Query {
 	 */
 	public function the_ref_content() {
 		if ( in_array( $this->reputation->parent, [ 'post', 'question', 'answer' ], true ) ) {
-			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_p' => $this->reputation->rep_ref_id ] ) ) . '">';
+			
+			if( ap_user_can_read_post( get_post( $this->reputation->rep_ref_id ), get_current_user_id() ) ) {
+				
+				echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_p' => $this->reputation->rep_ref_id ] ) ) . '">';
 
-			if ( ! empty( $this->reputation->ref->post_title ) ) {
-				echo '<strong>' . esc_html( $this->reputation->ref->post_title ) . '</strong>';
+				if ( ! empty( $this->reputation->ref->post_title ) ) {
+					echo '<strong>' . esc_html( $this->reputation->ref->post_title ) . '</strong>';
+				}
+
+				if ( ! empty( $this->reputation->ref->post_content ) ) {
+					echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->post_content ), 200 ) ) . '</p>';
+				}
+
+				echo '</a>';
 			}
-
-			if ( ! empty( $this->reputation->ref->post_content ) ) {
-				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->post_content ), 200 ) ) . '</p>';
-			}
-
-			echo '</a>';
 		} elseif ( 'comment' === $this->reputation->parent ) {
-			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_c' => $this->reputation->rep_ref_id ] ) ) . '">';
-			if ( ! empty( $this->reputation->ref->comment_content ) ) {
-				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->comment_content ), 200 ) ) . '</p>';
+			
+			if( ap_user_can_read_comment( get_comment( $this->reputation->rep_ref_id ), get_current_user_id() ) ) {
+				
+				echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_c' => $this->reputation->rep_ref_id ] ) ) . '">';
+				if ( ! empty( $this->reputation->ref->comment_content ) ) {
+					echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->comment_content ), 200 ) ) . '</p>';
+				}
+				echo '</a>';
 			}
-			echo '</a>';
 		}
 	}
 
