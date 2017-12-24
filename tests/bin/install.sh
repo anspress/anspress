@@ -203,7 +203,7 @@ copy_anspress(){
 	git init
 	git remote add origin "https://github.com/anspress/anspress.git"
 	git fetch origin
-	sudo git reset --hard origin/master
+	sudo git reset --hard origin/$TRAVIS_BRANCH
 }
 
 core_install(){
