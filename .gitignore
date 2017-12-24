@@ -11,3 +11,6 @@
 *~
 /vendor
 /languages/*.po~
+/codeception.yml
+/tests/wpunit.suite.yml
+/tests/functional.suite.yml
