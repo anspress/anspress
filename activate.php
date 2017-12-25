@@ -114,10 +114,14 @@ class AP_Activate {
 
 	/**
 	 * Enable default addons.
+	 *
+	 * @since unknown
+	 * @since 4.1.6 Enable category add-on by default.
 	 */
 	public function enable_addons() {
 		ap_activate_addon( 'free/reputation.php' );
 		ap_activate_addon( 'free/email.php' );
+		ap_activate_addon( 'free/category.php' );
 	}
 
 	/**
