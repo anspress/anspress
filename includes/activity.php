@@ -194,11 +194,11 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = false ) {
 		$html .= ' ' . esc_html( $activity->action['verb'] );
 
 		if ( 'answer' === $activity->action['ref_type'] ) {
-			$link = ap_get_short_link( [ 'ap_a' => $activity->a_id ] );
+			$link = get_permalink( $activity->a_id );
 		} elseif( 'comment' === $activity->action['ref_type'] ) {
 			$link = ap_get_short_link( [ 'ap_c' => $activity->c_id ] );
 		} else {
-			$link = ap_get_short_link( [ 'ap_q' => $activity->c_id ] );
+			$link = get_permalink( $activity->q_id );
 		}
 
 		$html .= ' <a href="' . esc_url( $link ) . '">';
