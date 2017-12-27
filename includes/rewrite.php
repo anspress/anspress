@@ -206,6 +206,9 @@ class AnsPress_Rewrite {
 
 	/**
 	 * Handles shortlink redirects.
+	 *
+	 * @since unknown
+	 * @since 4.1.6 Fixed: question and answer links are redirected to home.
 	 */
 	public static function shortlink() {
 		global $wp_query;
@@ -215,9 +218,11 @@ class AnsPress_Rewrite {
 			return;
 		}
 
+		$post_id = ap_isset_post_value( 'ap_q', ap_isset_post_value( 'ap_a', false ) );
+
 		// Post redirect.
-		if ( ap_isset_post_value( 'ap_p', false ) ) {
-			$permalink = get_permalink( ap_isset_post_value( 'ap_p' ) );
+		if ( $post_id = ap_isset_post_value( 'ap_p', $post_id ) ) {
+			$permalink = get_permalink( $post_id );
 			exit( wp_redirect( $permalink, 302 ) ); // xss okay.
 		}
 

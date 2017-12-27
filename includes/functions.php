@@ -1798,10 +1798,18 @@ function ap_in_array_r( $needle, $haystack, $strict = false ) {
 
 /**
  * Return short link to a item.
+ *
+ * @param array $args Arguments.
+ * @return string Shortlink to a AnsPress page or item.
+ *
+ * @category haveTest
+ *
+ * @since unknown
+ * @since 4.1.6 Fixed: trailing slash.
  */
 function ap_get_short_link( $args ) {
 	array_unshift( $args, [ 'ap_page' => 'shortlink' ] );
-	return add_query_arg( $args, home_url() );
+	return add_query_arg( $args, home_url( '/' ) );
 }
 
 /**
