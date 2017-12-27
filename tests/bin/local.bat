@@ -5,7 +5,10 @@ start selenium ^&^& exit
 PATH %PATH%;D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer\vendor\bin
 cd /d "D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer"
 git checkout-index -a -f --prefix=D:/xampp2/htdocs/aptest/wp-content/plugins/anspress-question-answer/
-call codecept run ui --steps
+cd /d "D:\xampp2\htdocs\aptest"
+call wp plugin activate anspress-question-answer/anspress-question-answer.php
+cd /d "D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer"
+call codecept run ui --steps --debug
 @ECHO OFF
 FOR /F "tokens=5 delims= " %%P IN ('netstat -ano ^| findstr 4444') DO (
   if /i not "%%P" == "0" (

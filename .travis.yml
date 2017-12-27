@@ -53,7 +53,7 @@ before_script:
 #   directories: vendor
 
 script:
-  - ./vendor/bin/codecept run wpunit --steps --debug && ./vendor/bin/codecept run ui --steps --debug
+  - ./vendor/bin/codecept run wpunit --steps --debug && ./vendor/bin/codecept run activator --steps --debug && ./vendor/bin/codecept run ui --steps --debug
 
 after_failure:
   - bash tests/bin/upload.sh
