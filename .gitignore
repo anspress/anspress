@@ -15,3 +15,5 @@
 /tests/wpunit.suite.yml
 /tests/functional.suite.yml
 /tests/ui.suite.yml
+/tests/ui.suite.dist.yml
+/tests/activator.suite.yml
