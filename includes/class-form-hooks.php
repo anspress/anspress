@@ -171,6 +171,30 @@ class AP_Form_Hooks {
 				'max_length'   => 20,
 			);
 		}
+		
+		$form['fields']['post_id'] = array(
+			'type'     => 'input',
+			'subtype'  => 'hidden',
+			'value'    => $editing_id,
+			'sanitize' => 'absint',
+		);
+
+		// Add value when editing post.
+		if ( ! empty( $editing_id ) ) {
+			$answer = ap_get_post( $editing_id );
+
+			$form['editing']                         = true;
+			$form['editing_id']                      = $editing_id;
+			$form['submit_label']                    = __( 'Update Answer', 'anspress-question-answer' );
+			$form['fields']['post_content']['value'] = $answer->post_content;
+			$form['fields']['is_private']['value']   = 'private_post' === $answer->post_status ? true : false;
+
+			if ( isset( $form['fields']['anonymous_name'] ) ) {
+				$fields = ap_get_post_field( 'fields', $answer );
+
+				$form['fields']['anonymous_name']['value'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
+			}
+		}
 
 		/**
 		 * Filter for modifying answer form `$args`.
