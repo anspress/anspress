@@ -659,7 +659,7 @@ class Validate {
 			if ( false !== $file_size ) {
 				$field->add_error( 'max-size-upload', sprintf(
 					// Translators: %s contain maximum file size user can upload.
-					__( 'File(s) size is bigger then %s MB', 'anspress-question-answer' ),
+					__( 'File(s) size is bigger than %s MB', 'anspress-question-answer' ),
 					round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 )
 				) );
 			}
