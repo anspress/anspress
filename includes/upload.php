@@ -110,7 +110,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '', 
 
 	// Check if file is greater then allowed size.
 	if ( $file['size'] > ap_opt( 'max_upload_size' )  ) {
-		return new WP_Error( 'file_size_error', sprintf( __( 'File cannot be uploaded, size is bigger then %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) );
+		return new WP_Error( 'file_size_error', sprintf( __( 'File cannot be uploaded, size is bigger than %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) );
 	}
 
 	$file_return = wp_handle_upload( $file, array(
