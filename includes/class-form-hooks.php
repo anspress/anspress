@@ -129,6 +129,7 @@ class AP_Form_Hooks {
 	 *
 	 * @return array
 	 * @since 4.1.0
+	 * @since 4.1.6 Fixed: editing answer creates new answer.
 	 */
 	public static function answer_form() {
 		$editing = false;
@@ -170,6 +171,20 @@ class AP_Form_Hooks {
 				'validate'     => 'max_string_length,badwords',
 				'max_length'   => 20,
 			);
+		}
+
+		$form['fields']['post_id'] = array(
+			'type'     => 'input',
+			'subtype'  => 'hidden',
+			'value'    => $editing_id,
+			'sanitize' => 'absint',
+		);
+
+		// Add value when editing post.
+		if ( ! empty( $editing_id ) ) {
+			$form['editing']      = true;
+			$form['editing_id']   = $editing_id;
+			$form['submit_label'] = __( 'Update Question', 'anspress-question-answer' );
 		}
 
 		/**

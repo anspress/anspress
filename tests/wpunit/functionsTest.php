@@ -30,5 +30,4 @@ class functionsTest extends \Codeception\TestCase\WPTestCase
         $this->assertEquals('shortlink', $query['ap_page']);
         $this->go_to(ap_get_short_link(['ap_q' => $id]));
     }
-
 }

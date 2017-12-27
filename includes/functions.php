@@ -2050,6 +2050,7 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
  * @since unknown
  * @since 4.1.0 Moved from includes\answer-form.php. Using new Form class.
  * @since 4.1.5 Don't use ap_ajax as action.
+ * @since 4.1.6 Fixed: editing answer creates new answer.
  */
 function ap_answer_form( $question_id, $editing = false ) {
 	$editing = false;
@@ -2079,7 +2080,7 @@ function ap_answer_form( $question_id, $editing = false ) {
 			array(
 				'name'  => 'question_id',
 				'value' => (int) $question_id,
-			),
+			)
 		),
 	);
 
@@ -2103,6 +2104,12 @@ function ap_answer_form( $question_id, $editing = false ) {
 
 			$values['anonymous_name'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
 		}
+
+		$args['hidden_fields'][] =array(
+			'name'  => 'post_id',
+			'value' => (int) $editing_id,
+		);
+
 	} elseif ( ! empty( $session_values ) ) {
 		// Set last session values if not editing.
 		$values = $session_values;

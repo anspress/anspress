@@ -25,7 +25,7 @@ class addonsCest
      * @example {"key": "syntaxhighlighter", "name": "Syntax Highlighter", "opt": "false"}
      * @example {"key": "tag", "name": "Tag"}
      */
-    private function activateAddons(UiTester $I, \Codeception\Example $example)
+    public function activateAddons(UiTester $I, \Codeception\Example $example)
     {
         $I->loginAsAdmin();
         $I->cli('cache delete addons anspress');

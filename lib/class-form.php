@@ -518,7 +518,11 @@ class Form {
 
 		foreach ( $values as $key => $val ) {
 			is_array( $val ) && isset( $val['value'] ) && $val = $val['value'];
-			$this->find( $key )->value = $val;
+			$field = $this->find( $key );
+
+			if ( $field ) {
+				$field->value = $val;
+			}
 		}
 
 		return $this;
