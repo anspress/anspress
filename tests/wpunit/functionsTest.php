@@ -246,4 +246,5 @@ class functionsTest extends \Codeception\TestCase\WPTestCase
         $this->assertEquals( [] , $tags['li'] );
         $this->assertEquals( [] , $tags['del'] );
     }
+
 }
