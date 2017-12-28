@@ -215,8 +215,7 @@ core_install(){
 	wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass="$DB_PASS" --allow-root
 	wp core install --url='http://aptest.local/' --title='AnsPress_test' --admin_user='admin' --admin_password='admin' --admin_email=support@wptest.localhost --allow-root
 	cat "$WP_CORE_DIR/wp-config.php"
-	# wp rewrite structure '/%postname%/' --hard --allow-root
-	# wp plugin activate anspress-question-answer --allow-root
+	wp rewrite structure '/%postname%/' --hard --allow-root
 
 	# if [ $EXTENSIONS == 'true' ]; then
 	# 	wp plugin install categories-for-anspress --activate --allow-root

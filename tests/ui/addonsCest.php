@@ -30,7 +30,7 @@ class addonsCest
         $I->loginAsAdmin();
         $I->cli('cache delete addons anspress');
         $I->cli('option delete anspress_addons');
-        $I->wait(2);
+        $I->wait(3);
         $I->amOnPage('/wp-admin/admin.php?page=anspress_addons');
         $I->wantTo('Enable addon: ' . $example['name'] );
         $I->click($example['name'], '.ap-addons-list');
@@ -69,5 +69,19 @@ class addonsCest
         $I->waitForJS("return jQuery.active == 0;", 10);
         $I->seeInField('form_email_template[subject]', 'Hello subject');
         $I->seeInField('form_email_template[body]', 'Hello Lorem');
+    }
+
+    public function testTagsAddon(){
+        $I->wantTo('check tag addon');
+        $I->loginAsAdmin();
+        $I->cli('cache delete addons anspress');
+        $I->cli('option delete anspress_addons');
+        $I->wait(2);
+        $I->amOnPage('/wp-admin/admin.php?page=anspress_addons');
+        $I->wantTo('Enable addon: ' . $example['name'] );
+        $I->click($example['name'], '.ap-addons-list');
+        $I->click('Enable Add-on');
+        $I->waitForText("Disable Addon", 20);
+        $I->amOnPage('');
     }
 }
