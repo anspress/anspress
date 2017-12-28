@@ -15,11 +15,6 @@ class functionsCest
     public function testApGetShortLink(UiTester $I)
     {
         $I->wantTo('check if shortlink is working or not');
-        $I->loginAsAdmin();
-        $I->wantTo('Change site permalink');
-        $I->amOnPage('wp-admin/options-permalink.php');
-        $I->selectOption('form [name=selection]', 'Post name');
-        $I->click('//*[@id="submit"]');
         $id = $I->havePostInDatabase( [ 'post_type' => 'question', 'post_title' => 'Question {n}' ] );
         $I->amOnPage('?ap_page=shortlink&ap_q=' . $id);
         $I->makeScreenshot(ap_screenshot_inc() . 'shortlink-question');

@@ -7,6 +7,7 @@ cd /d "D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer"
 git checkout-index -a -f --prefix=D:/xampp2/htdocs/aptest/wp-content/plugins/anspress-question-answer/
 cd /d "D:\xampp2\htdocs\aptest"
 call wp plugin activate anspress-question-answer/anspress-question-answer.php
+call wp theme activate twentytwelve
 cd /d "D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer"
 call codecept run ui --steps --debug
 @ECHO OFF
