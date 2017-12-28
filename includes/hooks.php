@@ -193,6 +193,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	integer $post_id Question or answer ID.
 	 * @since unknown
+	 * @since 4.1.6 Delete cache for `ap_is_answered`.
 	 */
 	public static function before_delete( $post_id ) {
 
@@ -220,9 +221,11 @@ class AnsPress_Hooks {
 
 			// Delete qameta.
 			ap_delete_qameta( $post->ID );
+			wp_cache_delete( 'ap_is_answered_' . $post->post_author . '_' . $post->ID, 'counts' );
 
 		} elseif ( 'answer' === $post->post_type ) {
 				SELF::delete_answer( $post_id, $post );
+				wp_cache_delete( 'ap_is_answered_' . $post->post_author . '_' . $post->post_parent, 'counts' );
 		}
 	}
 
@@ -251,6 +254,7 @@ class AnsPress_Hooks {
 	 * @param	integer $post_id Post ID.
 	 * @since 2.0.0
 	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
+	 * @since 4.1.6 Delete cache for `ap_is_answered`.
 	 */
 	public static function trash_post_action( $post_id ) {
 		$post = ap_get_post( $post_id );
@@ -278,6 +282,8 @@ class AnsPress_Hooks {
 
 				wp_trash_post( $p->ID );
 			}
+
+			wp_cache_delete( 'ap_is_answered_' . $post->post_author . '_' . $post->ID, 'counts' );
 		}
 
 		if ( 'answer' === $post->post_type ) {
@@ -294,6 +300,7 @@ class AnsPress_Hooks {
 			update_post_meta( $post->ID, '_ap_last_post_status', $post->post_status );
 
 			ap_update_answers_count( $post->post_parent );
+			wp_cache_delete( 'ap_is_answered_' . $post->post_author . '_' . $post->post_parent, 'counts' );
 		}
 	}
 
@@ -970,7 +977,7 @@ class AnsPress_Hooks {
 	 * @since 4.1.5
 	 */
 	public static function delete_subscribers( $rows, $where ) {
-		if ( ! isset( $where['subs_ref_id'] ) && ! isset( $where['subs_event'] ) ) {
+		if ( ! isset( $where['subs_ref_id'] ) || ! isset( $where['subs_event'] ) ) {
 			return;
 		}
 

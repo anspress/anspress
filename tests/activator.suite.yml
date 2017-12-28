@@ -1,0 +1,27 @@
+actor: ActivatorTester
+modules:
+    enabled:
+        - WPDb
+        - \Helper\Activator
+        - \Helper\Acceptance
+        - \Helper\Ui
+        - WPWebDriver
+    config:
+        WPWebDriver:
+            url: 'http://aptest.local'
+            browser: chrome
+            port: 4444
+            window_size: 1024x768
+            adminUsername: 'admin'
+            adminPassword: 'admin'
+            adminPath: '/wp-admin'
+        WPDb:
+            dsn: 'mysql:host=localhost;dbname=aptest'
+            user: 'root'
+            password: ''
+            dump: 'tests/_data/dump.sql'
+            populate: false
+            cleanup: false
+            url: 'http://aptest.local'
+            urlReplacement: true
+            tablePrefix: 'wp_'

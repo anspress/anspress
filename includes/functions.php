@@ -48,21 +48,6 @@ function ap_base_page_link() {
 }
 
 /**
- * Get all theme names from AnsPress themes directory.
- *
- * @return array
- */
-function ap_theme_list() {
-	$themes = array();
-	$dirs = array_filter( glob( ANSPRESS_THEME_DIR . '/*' ), 'is_dir' );
-	foreach ( $dirs as $dir ) {
-		$themes[ basename( $dir ) ] = basename( $dir );
-	}
-
-	return $themes;
-}
-
-/**
  * Get location to a file. First file is being searched in child theme and then active theme
  * and last fall back to AnsPress theme directory.
  *
@@ -102,8 +87,9 @@ function ap_get_theme_location( $file, $plugin = false ) {
  * Get url to a file
  * Used for enqueue CSS or JS.
  *
- * @param  string $file   File name.
- * @param  mixed  $plugin Plugin path, if calling from AnsPress extension.
+ * @param  string  $file   File name.
+ * @param  mixed   $plugin Plugin path, if calling from AnsPress extension.
+ * @param  boolean $ver    When true, AnsPress version will be appended to file url.
  * @return string
  * @since  2.0
  */
@@ -114,29 +100,35 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
 	// Checks if the file exists in the theme first.
 	// Otherwise serve the file from the plugin.
 	if ( file_exists( $child_path ) ) {
-	    $template_url = get_stylesheet_directory_uri() . '/anspress/' . $file;
+		$template_url = get_stylesheet_directory_uri() . '/anspress/' . $file;
 	} elseif ( file_exists( $parent_path ) ) {
-	    $template_url = get_template_directory_uri() . '/anspress/' . $file;
+		$template_url = get_template_directory_uri() . '/anspress/' . $file;
 	} elseif ( false !== $plugin ) {
-	    $template_url = $plugin . 'templates/' . $file;
+		$template_url = $plugin . 'templates/' . $file;
 	} else {
-	    $template_url = ANSPRESS_THEME_URL . '/' . $file;
+		$template_url = ANSPRESS_THEME_URL . '/' . $file;
 	}
 
+	/**
+	 * Allows filtering url of a AnsPress file.
+	 *
+	 * @param string $url Url of a file.
+	 * @since 2.0
+	 */
 	return apply_filters( 'ap_theme_url', $template_url . ( true === $ver ? '?v=' . AP_VERSION : '' ) );
 }
 
 
 /**
  * Check if current page is AnsPress. Also check if showing question or
- * answer page in buddypress.
+ * answer page in BuddyPress.
  *
  * @return boolean
  * @since 4.1.0 Improved check. Check for main pages.
  * @since 4.1.1 Check for @see ap_current_page().
  */
 function is_anspress() {
-	// If buddypress installed.
+	// If BuddyPress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
 		$bp_com = bp_current_component();
 		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
@@ -190,7 +182,7 @@ function is_question() {
  * @return boolean
  */
 function is_ask() {
-	if ( is_anspress() && ap_current_page() === 'ask' ) {
+	if ( is_anspress() && 'ask' === ap_current_page() ) {
 		return true;
 	}
 	return false;
@@ -266,23 +258,29 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
  * @param integer $question_id 	Question ID.
  * @param integer $user_id 		User ID.
  * @return boolean
+ *
+ * @since unknown
+ * @since 4.1.6 Changed cache group to `counts`.
+ * @todo clear cache after answer.
  */
 function ap_is_user_answered( $question_id, $user_id ) {
 	global $wpdb;
-	$cache  = wp_cache_get( $user_id, 'ap_is_user_answered' );
+	$key = 'ap_is_answered_' . $user_id . '_' . $question_id;
+	$cache  = wp_cache_get( $key, 'counts' );
 
 	if ( false !== $cache ) {
 		return $cache > 0 ? true : false;
 	}
 
 	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND ( post_author = %d AND post_type = 'answer')", $question_id, $user_id ) ); // db call ok.
-	wp_cache_set( $user_id, $count, 'ap_is_user_answered' );
+
+	wp_cache_set( $key, $count, 'counts' );
 
 	return $count > 0 ? true : false;
 }
 
 /**
- * Return link to asnwers.
+ * Return link to answers.
  *
  * @param  boolean|integer $question_id Question ID.
  * @return string
@@ -307,11 +305,18 @@ function ap_post_edit_link( $_post ) {
 	$nonce = wp_create_nonce( 'edit-post-' . $_post->ID );
 	$base_page = 'question' === $_post->post_type ? ap_get_link_to( 'ask' ) : ap_get_link_to( 'edit' );
 	$edit_link = add_query_arg( array( 'id' => $_post->ID, '__nonce' => $nonce ), $base_page );
+
+	/**
+	 * Allows filtering post edit link.
+	 *
+	 * @param string $edit_link Url to edit post.
+	 * @since unknown
+	 */
 	return apply_filters( 'ap_post_edit_link', $edit_link );
 }
 
 /**
- * Trim strings.
+ * Truncate string but preserve full word.
  *
  * @param string $text String.
  * @param int    $limit Limit string to.
@@ -322,6 +327,7 @@ function ap_truncate_chars( $text, $limit = 40, $ellipsis = '...' ) {
 	$text = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text );
 	if ( strlen( $text ) > $limit ) {
 		$endpos = strpos( $text, ' ', (string) $limit );
+
 		if ( false !== $endpos ) {
 			$text = trim( substr( $text, 0, $endpos ) ) . $ellipsis;
 		}
@@ -346,6 +352,7 @@ function ap_short_num( $num, $precision = 2 ) {
 	} else {
 		$n_format = $num;
 	}
+
 	return $n_format;
 }
 
@@ -365,7 +372,7 @@ function sanitize_comma_delimited( $str, $pieces_type = 'int' ) {
 		$sanitized = [];
 		foreach ( $str as $s ) {
 			if ( '0' == $s || ! empty ( $s ) ) {
-				$sanitized[] = 'int' === $pieces_type ? intval( $s ) : sanitize_text_field( $s );
+				$sanitized[] = 'int' === $pieces_type ? intval( $s ) : str_replace( [ "'", '"', ',' ], '', sanitize_text_field( $s ) );
 			}
 		}
 
@@ -403,9 +410,11 @@ function ap_is_ajax() {
 function ap_form_allowed_tags() {
 	global $ap_kses_check;
 	$ap_kses_check = true;
+
 	$allowed_style = array(
 		'align' => true,
 	);
+
 	$allowed_tags = array(
 		'p'          => array(
 			'style'    => $allowed_style,
@@ -436,7 +445,6 @@ function ap_form_allowed_tags() {
 		'ol'         => array(),
 		'li'         => array(),
 		'del'        => array(),
-		'br'         => array(),
 	);
 
 	/**

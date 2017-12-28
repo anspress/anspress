@@ -957,3 +957,19 @@ function ap_comment_ajax_data( $c, $actions = true ) {
 		'actions' 	 => $actions ? ap_comment_actions( $c ) : [],
 	);
 }
+
+/**
+ * Get all theme names from AnsPress themes directory.
+ *
+ * @return array
+ * @deprecated 4.1.6
+ */
+function ap_theme_list() {
+	$themes = array();
+	$dirs = array_filter( glob( ANSPRESS_THEME_DIR . '/*' ), 'is_dir' );
+	foreach ( $dirs as $dir ) {
+		$themes[ basename( $dir ) ] = basename( $dir );
+	}
+
+	return $themes;
+}
