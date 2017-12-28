@@ -51,4 +51,33 @@ class AnsPress_Cli extends WP_CLI_Command {
 
 		print( "\n\r=== Upgrade process completed ===\n\r" );
 	}
+
+	/**
+	 * Activate an addon.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <addon>
+	 * : Addon file name to activate.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp anspress activate_addon free/avatar.php
+	 *
+	 * @when after_wp_load
+	 */
+	public function activate_addon( $args, $assoc_args ) {
+		if ( empty( $args[0] ) ) {
+			return WP_CLI::error( __( 'You must pass a addon name i.e. free/avatar.php', 'anspress-question-answer' ) );
+		}
+
+		$addon_name = $args[0];
+		$ret = ap_activate_addon( $args[0] );
+
+		if ( false === $ret ) {
+			return WP_CLI::error( __( 'Unable to activate addon. May be its already active or wrong name passed.', 'anspress-question-answer' ) );
+		}
+
+		WP_CLI::success( __( 'Successfully enabled addon', 'anspress-question-answer' ) );
+	}
 }
