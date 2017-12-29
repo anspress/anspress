@@ -1,7 +1,7 @@
 <?php
 $I = new UiTester($scenario);
 $I->wantTo('check new answer');
-$I->cli('user create answertester ct@local.com --role=ap_participant --user_pass=test');
+$I->cli('user create answertester ct34534f@local.com --role=ap_participant --user_pass=test');
 $id = $I->havePostInDatabase( [ 'post_type' => 'question', 'post_title' => 'Super sample question' ] );
 $I->loginAs('answertester', 'test');
 $I->amOnPage('?p='.$id);

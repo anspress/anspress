@@ -2,7 +2,7 @@
 $I = new UiTester($scenario);
 $I->wantTo('test new comments');
 $id = $I->havePostInDatabase([ 'post_type' => 'question' ]);
-$I->cli('user create commenttester ct@local.com --role=ap_participant --user_pass=test');
+$I->cli('user create commenttester ct45645fre@local.com --role=ap_participant --user_pass=test');
 $I->cli('option update comment_moderation 0');
 $I->cli('option update comment_whitelist 0');
 $I->loginAs('commenttester', 'test');
