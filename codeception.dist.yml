@@ -20,5 +20,5 @@ extensions:
         - tad\Codeception\Command\SearchReplace
 settings:
     bootstrap: _bootstrap.php
-    colors: false
+    colors: true
     memory_limit: 1024M
