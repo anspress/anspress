@@ -14,7 +14,6 @@ $I->wantTo('Enable addon: Tag');
 $I->click( 'Tag', '.ap-addons-list');
 $I->click('Enable Add-on');
 $I->waitForText("Disable Addon", 20);
-$I->amOnPage('');
 
 $id = $I->havePostInDatabase( [ 'post_type' => 'page', 'post_title' => 'Ask', 'post_content' => '[anspress page="ask"]' ] );
 
