@@ -1,6 +1,7 @@
 cd /d "D:\xampp2\htdocs\aptest"
 wp db reset --yes|more
-wp core install --url=aptest.local --title=AnsPress --admin_user=admin --admin_password=admin --admin_email=test@admin.com|more
+call wp core install --url=aptest.local --title=AnsPress --admin_user=admin --admin_password=admin --admin_email=test@admin.com
+call wp rewrite structure '/%postname%/' --hard --allow-root
 start selenium ^&^& exit
 PATH %PATH%;D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer\vendor\bin
 cd /d "D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer"

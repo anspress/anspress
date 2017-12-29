@@ -21,3 +21,5 @@ $I->see('2', '.ap-pagination a:nth-child(2)');
 $I->click('.ap-pagination a:nth-child(2)');
 $I->seeElement('#ap-lists');
 $I->see('1', '.ap-pagination a:nth-child(2)');
+$I->dontHaveOptionInDatabase('show_on_front');
+$I->dontHaveOptionInDatabase('page_on_front');

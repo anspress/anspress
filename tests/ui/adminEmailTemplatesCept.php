@@ -21,6 +21,7 @@ $I->see('Edit template:');
 $I->see('Email subject');
 $I->see('Email body');
 $I->see('Allowed tags');
+
 $I->wantTo('check if form get reloaded on changing template');
 $I->selectOption('select[name=email_templates]', 'Edit Question');
 $I->waitForJS("return jQuery.active == 0;", 10);

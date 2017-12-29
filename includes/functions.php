@@ -15,19 +15,22 @@
  * @return string
  * @since  2.0.0
  * @since  3.0.0 Return `questions` if base page is not selected.
+ * @since  4.1.6 Make sure always `questions` is returned if no base page is set.
  */
 function ap_base_page_slug() {
-	$base_page = get_post( ap_opt( 'base_page' ) );
+	$slug = 'questions';
 
-	if ( ! $base_page ) {
-		return 'questions';
-	}
+	if ( ! empty( ap_opt( 'base_page' ) ) ) {
+		$base_page = get_post( ap_opt( 'base_page' ) );
 
-	$slug = $base_page->post_name;
+		if ( $base_page ) {
+			$slug = $base_page->post_name;
 
-	if ( $base_page->post_parent > 0 ) {
-		$parent_page = get_post( $base_page->post_parent );
-		$slug = $parent_page->post_name . '/' . $slug;
+			if ( $base_page->post_parent > 0 ) {
+				$parent_page = get_post( $base_page->post_parent );
+				$slug = $parent_page->post_name . '/' . $slug;
+			}
+		}
 	}
 
 	return apply_filters( 'ap_base_page_slug', $slug );
