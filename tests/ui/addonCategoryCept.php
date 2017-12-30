@@ -46,3 +46,7 @@ $I->haveManyPostsInDatabase(20, array(
 ));
 $I->click('Q_category_20');
 $I->seeElement('.ap-questions');
+
+// Rest addons.
+$I->cli('cache delete addons anspress');
+$I->cli('option delete anspress_addons');

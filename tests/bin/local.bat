@@ -10,7 +10,7 @@ cd /d "D:\xampp2\htdocs\aptest"
 call wp plugin activate anspress-question-answer/anspress-question-answer.php
 REM call wp theme activate twentytwelve
 cd /d "D:\xampp2\htdocs\anspress\wp-content\plugins\anspress-question-answer"
-call codecept run ui uploadCept --steps --debug
+call codecept run ui --steps --debug
 @ECHO OFF
 FOR /F "tokens=5 delims= " %%P IN ('netstat -ano ^| findstr 4444') DO (
   if /i not "%%P" == "0" (

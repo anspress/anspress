@@ -36,3 +36,6 @@ $I->seeElement('#ap-single');
 $I->see('AwesomeTag', '.question-tags');
 $I->seeNumberOfElements('.question-tags a', 4);
 
+// Rest addons.
+$I->cli('cache delete addons anspress');
+$I->cli('option delete anspress_addons');
