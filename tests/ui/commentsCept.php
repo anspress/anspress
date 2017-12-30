@@ -37,7 +37,9 @@ $I->makeScreenshot('edited-comment');
 
 $I->wantTo('delete a comment');
 $comment_id = $I->haveCommentInDatabase($id);
-$I->loginAsAdmin();
+$I->amOnPage('/wp-login.php');
+$I->wait(3);
+$I->submitForm('#loginform', ['log' =>'admin','pwd' => 'admin'], '#wp-submit');
 $I->amOnPage('?p='.$id);
 $I->click("#comment-$comment_id .ap-comment-actions a:nth-child(2)");
 $I->waitForText('Comment successfully deleted', 5);

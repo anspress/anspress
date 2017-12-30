@@ -15,6 +15,17 @@ $I->click( 'Category', '.ap-addons-list');
 $I->click('Enable Add-on');
 $I->waitForText("Disable Addon", 20);
 
+$I->wantTo('check category creation in wp-admin');
+$I->amOnPage('/wp-admin/edit-tags.php?taxonomy=question_category');
+$I->click('.wp-color-result');
+$I->fillField('#ap-category-color', '#000');
+$I->submitForm('#addtag', array(
+  'tag-name' => 'ApSampleCat',
+  'ap_icon' => 'apicon-star',
+));
+$I->waitForText('ApSampleCat', 20);
+$I->seeInSource('<span class="ap-category-icon apicon-star"');
+
 $I->wantTo('check categories page');
 $I->amOnPage( '/questions/categories/');
 $I->seeElement('#ap-categories');

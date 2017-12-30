@@ -31,6 +31,7 @@
           // Open window
           var win = ed.windowManager.open({
             title: ed.getLang('anspress.i18n_insert_media'),
+            id: 'ap-image-window',
             resizable: true,
             scrollbars: true,
             width: 500,
@@ -57,6 +58,7 @@
                 name: 'file-browser',
                 label: ed.getLang('anspress.i18n_select_file'),
                 text: ed.getLang('anspress.i18n_browse_from_computer'),
+                id: 'ap-image-window-btn',
                 onclick: function (e) {
                   $ta_name = jQuery(ed.getElement()).attr('id') + '-images[]';
                   var input = jQuery('<input name="'+ $ta_name +'" type="file" accept="image/*" />').hide();
