@@ -77,9 +77,6 @@ class AnsPress_Email_Hooks {
 
 		anspress()->add_filter( 'comment_notification_recipients', __CLASS__, 'default_recipients', 10, 2 );
 
-
-
-
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'ap_after_new_question' );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'ap_after_new_answer' );
 		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
@@ -298,6 +295,7 @@ class AnsPress_Email_Hooks {
 		$args = [];
 
 		$admin_emails = self::get_admin_emails( 'email_admin_new_question' );
+
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}

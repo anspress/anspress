@@ -686,13 +686,15 @@ class AnsPress_Category {
 	 * @param  string  $slug Slug.
 	 * @param  integer $base_page_id Base page ID.
 	 * @return array
+	 * @since unknown
+	 * @since 4.1.6 Fixed: category pagination.
 	 */
 	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base_slug = get_page_uri( ap_opt( 'categories_page' ) );
 		update_option( 'ap_categories_path', $base_slug, true );
 
 		$cat_rules = array(
-			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&ap_paged=$matches[#]&ap_page=category',
+			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&paged=$matches[#]&ap_page=category',
 			$base_slug . '/([^/]+)/?$' => 'index.php?question_category=$matches[#]&ap_page=category',
 		);
 
