@@ -28,6 +28,7 @@ $I->amOnPage('?p='.$id);
 $I->seeElement('#ap-single');
 $I->click('#post-' . $id .' [ap="actiontoggle"]');
 $I->waitForElement('#post-' . $id .' .ap-actions li', 20);
+$I->scrollTo('#post-' . $id .' .ap-actions li');
 $I->click('Edit', '#post-' . $id .' .ap-actions li');
 $I->seeElement('#form_answer');
 $I->fillTinyMceEditorById('form_answer-post_content', '######edited####answer######');
