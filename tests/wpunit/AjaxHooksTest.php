@@ -110,4 +110,28 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->assertContains( 'apcomment', $this->ap_ajax_success( 'html' ) );
 	}
 
+	/**
+	 * @covers AnsPress_Ajax::toggle_best_answer
+	 */
+	// public function testToggleBestAnswer() {
+	// 	$id = $this->insert_answer();
+	// 	$nonce = wp_create_nonce( 'select-answer-' . $id->a );
+	// 	$this->_setRole( 'ap_moderator' );
+
+	// 	$this->_set_post_data( 'answer_id='.$id->a.'&nonce=' . $nonce .'&action=ap_toggle_best_answer' );
+	// 	codecept_debug($_POST);
+	// 	add_action( 'wp_ajax_ap_toggle_best_answer', array( 'AnsPress_Ajax', 'toggle_best_answer' ) );
+	// 	do_action('wp_ajax_ap_toggle_best_answer');
+    //     try {
+    //         $this->_handleAjax( 'ap_toggle_best_answer' );
+    //     } catch ( WPAjaxDieStopException $e ) {
+    //     	$this->_last_response = $e->getMessage();
+	// 	}
+
+	// 	codecept_debug($this->_last_response);
+	// 	codecept_debug('hhhhhhhhhhhhhhhhh');
+	// 	$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+	// 	$this->assertEquals( 'selected', $this->ap_ajax_success( 'action' ) );
+	// }
+
 }

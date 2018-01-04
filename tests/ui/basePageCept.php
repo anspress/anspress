@@ -1,7 +1,7 @@
 <?php
 $I = new UiTester($scenario);
 $I->wantTo('test base page rendering');
-$I->haveManyPostsInDatabase(20, array(
+$I->haveManyPostsInDatabase(22, array(
   'post_type' => 'question'
 ));
 $I->amOnPage('/questions/');

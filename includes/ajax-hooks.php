@@ -25,7 +25,7 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'ap_ajax_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
+		anspress()->add_action( 'wp_ajax_ap_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
@@ -124,6 +124,9 @@ class AnsPress_Ajax {
 	 *
 	 * @since 2.0.0
 	 * @since 4.1.2 Log activities to `ap_activity` table and removed @see ap_update_post_activity_meta().
+	 * @since 4.1.6 Check if user have permission to toggle best answer.
+	 *
+	 * @category haveTest
 	 */
 	public static function toggle_best_answer() {
 		$answer_id = (int) ap_sanitize_unslash( 'answer_id', 'r' );
@@ -133,6 +136,14 @@ class AnsPress_Ajax {
 		}
 
 		$_post = ap_get_post( $answer_id );
+
+		// Check for permission.
+		if ( ! ap_user_can_select_answer( $_post ) ) {
+			ap_ajax_json( array(
+				'success'    => false,
+				'snackbar' 	 => [ 'message' => __( 'You do not have permission to select or unselect answer', 'anspress-question-answer' ) ],
+			) );
+		}
 
 		// Unselect best answer if already selected.
 		if ( ap_have_answer_selected( $_post->post_parent ) ) {

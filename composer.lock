@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34333ad14f64034f8ade29ff9a76a042",
+    "content-hash": "e504a695e97656c5d2080c675740b356",
     "packages": [],
     "packages-dev": [
         {
@@ -669,6 +669,76 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "ericmartel/codeception-email",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ericmartel/codeception-email.git",
+                "reference": "a53370c349467af06a245110014667c3a432e6b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ericmartel/codeception-email/zipball/a53370c349467af06a245110014667c3a432e6b8",
+                "reference": "a53370c349467af06a245110014667c3a432e6b8",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\Email\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Martel",
+                    "email": "emartel@gmail.com"
+                }
+            ],
+            "description": "Provides test helpers for Codeception when testing email functionality",
+            "time": "2017-09-05T17:02:06+00:00"
+        },
+        {
+            "name": "ericmartel/codeception-email-mailhog",
+            "version": "1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ericmartel/codeception-email-mailhog.git",
+                "reference": "5aa917bf97c5a228ef5cba90741cf3b7ff373ea7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ericmartel/codeception-email-mailhog/zipball/5aa917bf97c5a228ef5cba90741cf3b7ff373ea7",
+                "reference": "5aa917bf97c5a228ef5cba90741cf3b7ff373ea7",
+                "shasum": ""
+            },
+            "require": {
+                "ericmartel/codeception-email": "^1.0",
+                "guzzlehttp/guzzle": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\Module\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Martel",
+                    "email": "emartel@gmail.com"
+                }
+            ],
+            "description": "Provides test helpers for Codeception when testing email functionality with MailHog",
+            "time": "2017-11-25T04:16:18+00:00"
         },
         {
             "name": "facebook/webdriver",

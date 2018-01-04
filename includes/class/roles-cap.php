@@ -250,6 +250,8 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
  * @param  mixed         $_post    Post.
  * @param  integer|false $user_id    user id.
  * @return boolean
+ * @since unknown
+ * @since 4.1.6 Allow moderators to toggle best answer.
  */
 function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 
@@ -286,7 +288,12 @@ function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 
 	$question 	= ap_get_post( $answer->post_parent );
 
-	if ( (string) $user_id === $question->post_author ) {
+	if ( is_user_logged_in() && (string) $user_id === $question->post_author ) {
+		return true;
+	}
+
+	// Allow moderators to toggle best answer.
+	if ( user_can( $user_id, 'ap_toggle_best_answer' ) ) {
 		return true;
 	}
 
@@ -1131,6 +1138,7 @@ function ap_role_caps( $role ) {
 			'ap_no_moderation'          => true,
 			'ap_restore_posts'          => true,
 			'ap_toggle_featured'        => true,
+			'ap_toggle_best_answer'     => true,
 		),
 	);
 

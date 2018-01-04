@@ -1,15 +1,15 @@
-# Copyright (C) 2017 Rahul Aryan
+# Copyright (C) 2018 Rahul Aryan
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress 4.1.5\n"
+"Project-Id-Version: AnsPress Question Answer 4.1.6\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2017-12-17 03:27:29+00:00\n"
+"POT-Creation-Date: 2018-01-04 04:14:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -62,7 +62,7 @@ msgstr ""
 #: addons/free/buddypress.php:107 addons/free/buddypress.php:187
 #: addons/free/profile.php:39 addons/free/profile.php:151
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:2196 includes/options.php:102
+#: includes/functions.php:2222 includes/options.php:102
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:372
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
@@ -89,7 +89,7 @@ msgid "Load more answers"
 msgstr ""
 
 #: addons/free/buddypress.php:274 addons/free/buddypress.php:275
-#: admin/meta-box.php:41 includes/ajax-hooks.php:205 includes/comments.php:69
+#: admin/meta-box.php:41 includes/ajax-hooks.php:216 includes/comments.php:71
 #: includes/common-pages.php:21 includes/post-status.php:92
 #: includes/post-types.php:106
 msgid "Question"
@@ -105,7 +105,7 @@ msgstr ""
 
 #: addons/free/buddypress.php:284 addons/free/buddypress.php:285
 #: addons/free/buddypress.php:296 admin/views/dashboard.php:34
-#: includes/ajax-hooks.php:205 includes/comments.php:69
+#: includes/ajax-hooks.php:216 includes/comments.php:71
 #: includes/post-status.php:92 includes/post-types.php:183
 #: templates/answers.php:20
 msgid "Answer"
@@ -132,12 +132,12 @@ msgid "%1$s answered on - %2$s"
 msgstr ""
 
 #: addons/free/buddypress.php:391 addons/free/notification/query.php:314
-#: includes/class-form-hooks.php:715 includes/post-types.php:105
+#: includes/class-form-hooks.php:730 includes/post-types.php:105
 msgid "question"
 msgstr ""
 
 #: addons/free/buddypress.php:391 addons/free/notification/query.php:316
-#: includes/class-form-hooks.php:715 includes/post-types.php:182
+#: includes/class-form-hooks.php:730 includes/post-types.php:182
 msgid "answer"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 msgid "Display AnsPress categories"
 msgstr ""
 
-#: addons/free/category/widget.php:68 includes/ajax-hooks.php:623
+#: addons/free/category/widget.php:68 includes/ajax-hooks.php:640
 #: templates/addons/category/categories.php:33
 #: templates/addons/category/single-category.php:43
 #: templates/addons/tag/tags.php:39
@@ -168,7 +168,7 @@ msgstr ""
 
 #: addons/free/category/widget.php:81 addons/free/category.php:39
 #: addons/free/category.php:459 addons/free/category.php:471
-#: includes/functions.php:2214 includes/taxo.php:29
+#: includes/functions.php:2240 includes/taxo.php:29
 msgid "Categories"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 
 #: addons/free/category.php:38 addons/free/category.php:172
 #: addons/free/category.php:316 addons/free/category.php:384
-#: addons/free/category.php:512 admin/class-list-table-hooks.php:188
+#: addons/free/category.php:512 admin/class-list-table-hooks.php:189
 #: includes/taxo.php:202
 msgid "Category"
 msgstr ""
@@ -400,229 +400,229 @@ msgstr ""
 msgid "Category icon color"
 msgstr ""
 
-#: addons/free/category.php:791
+#: addons/free/category.php:793
 msgid "Question category feed"
 msgstr ""
 
-#: addons/free/category.php:838 addons/free/tag.php:603
+#: addons/free/category.php:840 addons/free/tag.php:603
 msgid ", %d+"
 msgstr ""
 
-#: addons/free/email.php:136 addons/free/email.php:1013
+#: addons/free/email.php:130 addons/free/email.php:940
 msgid "An answer is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:137
+#: addons/free/email.php:131
 msgid ""
 "Hello!\n"
 "Answer on '{question_title}' is trashed by {user}.\n"
 msgstr ""
 
-#: addons/free/email.php:151
+#: addons/free/email.php:145
 msgid "Admin Notifications"
 msgstr ""
 
-#: addons/free/email.php:151
+#: addons/free/email.php:145
 msgid "Select types of notification which will be sent to admin."
 msgstr ""
 
-#: addons/free/email.php:154
+#: addons/free/email.php:148
 msgid "Admin email(s)"
 msgstr ""
 
-#: addons/free/email.php:155
+#: addons/free/email.php:149
 msgid ""
 "Email where all admin notification will be sent. It can have multiple "
 "emails separated by comma."
 msgstr ""
 
-#: addons/free/email.php:159 addons/free/email.php:204
+#: addons/free/email.php:153 addons/free/email.php:198
 #: includes/post-types.php:88
 msgid "New question"
 msgstr ""
 
-#: addons/free/email.php:160
+#: addons/free/email.php:154
 msgid "Send new question notification to admin."
 msgstr ""
 
-#: addons/free/email.php:165 addons/free/email.php:210
+#: addons/free/email.php:159 addons/free/email.php:204
 #: includes/post-types.php:165
 msgid "New answer"
 msgstr ""
 
-#: addons/free/email.php:166
+#: addons/free/email.php:160
 msgid "Send new answer notification to admin."
 msgstr ""
 
-#: addons/free/email.php:171 addons/free/email.php:216
+#: addons/free/email.php:165 addons/free/email.php:210
 msgid "New comment"
 msgstr ""
 
-#: addons/free/email.php:172
+#: addons/free/email.php:166
 msgid "Send new comment notification to admin."
 msgstr ""
 
-#: addons/free/email.php:177 addons/free/email.php:222
-#: admin/class-list-table-hooks.php:346 includes/post-types.php:89
+#: addons/free/email.php:171 addons/free/email.php:216
+#: admin/class-list-table-hooks.php:347 includes/post-types.php:89
 msgid "Edit question"
 msgstr ""
 
-#: addons/free/email.php:178
+#: addons/free/email.php:172
 msgid "Send notification to admin when question is edited."
 msgstr ""
 
-#: addons/free/email.php:183 addons/free/email.php:228
+#: addons/free/email.php:177 addons/free/email.php:222
 #: includes/post-types.php:166
 msgid "Edit answer"
 msgstr ""
 
-#: addons/free/email.php:184
+#: addons/free/email.php:178
 msgid "Send email to admin when answer is edited."
 msgstr ""
 
-#: addons/free/email.php:189
+#: addons/free/email.php:183
 msgid "Delete question"
 msgstr ""
 
-#: addons/free/email.php:190
+#: addons/free/email.php:184
 msgid "Send email to admin when question is trashed."
 msgstr ""
 
-#: addons/free/email.php:195
+#: addons/free/email.php:189
 msgid "Delete answer"
 msgstr ""
 
-#: addons/free/email.php:196
+#: addons/free/email.php:190
 msgid "Send email to admin when answer is trashed."
 msgstr ""
 
-#: addons/free/email.php:201
+#: addons/free/email.php:195
 msgid "User Notifications"
 msgstr ""
 
-#: addons/free/email.php:201
+#: addons/free/email.php:195
 msgid "Select the types of notification which will be sent to user."
 msgstr ""
 
-#: addons/free/email.php:205
+#: addons/free/email.php:199
 msgid "Send new question notification to user?"
 msgstr ""
 
-#: addons/free/email.php:211
+#: addons/free/email.php:205
 msgid "Send new answer notification to user?"
 msgstr ""
 
-#: addons/free/email.php:217
+#: addons/free/email.php:211
 msgid "Send new comment notification to user?"
 msgstr ""
 
-#: addons/free/email.php:223
+#: addons/free/email.php:217
 msgid "Send edit question notification to user?"
 msgstr ""
 
-#: addons/free/email.php:229
+#: addons/free/email.php:223
 msgid "Send edit answer notification to user?"
 msgstr ""
 
-#: addons/free/email.php:234
+#: addons/free/email.php:228
 msgid "Answer selected"
 msgstr ""
 
-#: addons/free/email.php:235
+#: addons/free/email.php:229
 msgid "Send notification to user when their answer get selected?"
 msgstr ""
 
-#: addons/free/email.php:255
+#: addons/free/email.php:249
 msgid "Email subject"
 msgstr ""
 
-#: addons/free/email.php:258
+#: addons/free/email.php:252
 msgid "Email body"
 msgstr ""
 
-#: addons/free/email.php:262
+#: addons/free/email.php:256
 msgid "Allowed tags"
 msgstr ""
 
-#: addons/free/email.php:673
+#: addons/free/email.php:600
 msgid "Email Templates"
 msgstr ""
 
-#: addons/free/email.php:698 includes/class-form-hooks.php:283
-#: includes/class-form-hooks.php:470 includes/class-form-hooks.php:639
+#: addons/free/email.php:625 includes/class-form-hooks.php:298
+#: includes/class-form-hooks.php:485 includes/class-form-hooks.php:654
 msgid "Trying to cheat?!"
 msgstr ""
 
-#: addons/free/email.php:723 includes/class-form-hooks.php:508
+#: addons/free/email.php:650 includes/class-form-hooks.php:523
 msgid "Unable to post answer."
 msgstr ""
 
-#: addons/free/email.php:743
+#: addons/free/email.php:670
 #. Translators: placeholder contain error message.
 msgid "Unable to save template. Error: %s"
 msgstr ""
 
-#: addons/free/email.php:764
+#: addons/free/email.php:691
 msgid "Post updated successfully"
 msgstr ""
 
-#: addons/free/email.php:848
+#: addons/free/email.php:775
 msgid "{asker} have posted a new question"
 msgstr ""
 
-#: addons/free/email.php:851
+#: addons/free/email.php:778
 msgid "A new question is posted by"
 msgstr ""
 
-#: addons/free/email.php:872
+#: addons/free/email.php:799
 msgid "New answer posted by {answerer}"
 msgstr ""
 
-#: addons/free/email.php:875
+#: addons/free/email.php:802
 msgid "A new answer is posted by"
 msgstr ""
 
-#: addons/free/email.php:896
+#: addons/free/email.php:823
 msgid "Your answer is selected as best!"
 msgstr ""
 
-#: addons/free/email.php:899
+#: addons/free/email.php:826
 msgid "Your answer is selected as best by "
 msgstr ""
 
-#: addons/free/email.php:920
+#: addons/free/email.php:847
 msgid "New comment by {commenter}"
 msgstr ""
 
-#: addons/free/email.php:923
+#: addons/free/email.php:850
 msgid "A new comment posted by"
 msgstr ""
 
-#: addons/free/email.php:944
+#: addons/free/email.php:871
 msgid "A question is edited by {editor}"
 msgstr ""
 
-#: addons/free/email.php:947
+#: addons/free/email.php:874
 msgid "A question is edited by"
 msgstr ""
 
-#: addons/free/email.php:968
+#: addons/free/email.php:895
 msgid "A answer is edited by {editor}"
 msgstr ""
 
-#: addons/free/email.php:971
+#: addons/free/email.php:898
 msgid "A answer is edited by"
 msgstr ""
 
-#: addons/free/email.php:992
+#: addons/free/email.php:919
 msgid "A question is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:995
+#: addons/free/email.php:922
 msgid "A question is trashed by"
 msgstr ""
 
-#: addons/free/email.php:1016
+#: addons/free/email.php:943
 msgid "An answer is trashed by"
 msgstr ""
 
@@ -777,8 +777,8 @@ msgstr ""
 msgid "Prove that you are a human"
 msgstr ""
 
-#: addons/free/reputation.php:37 addons/free/reputation.php:411
-#: addons/free/reputation.php:461 addons/free/reputation.php:496
+#: addons/free/reputation.php:37 addons/free/reputation.php:416
+#: addons/free/reputation.php:466 addons/free/reputation.php:501
 #: admin/views/recount.php:122
 msgid "Reputations"
 msgstr ""
@@ -931,22 +931,22 @@ msgstr ""
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:380
+#: addons/free/reputation.php:381 addons/free/reputation.php:384
 msgid "Reputation"
 msgstr ""
 
-#: addons/free/reputation.php:402
+#: addons/free/reputation.php:407
 msgid "%s Reputation"
 msgstr ""
 
 #: addons/free/tag.php:34 addons/free/tag.php:525
-#: admin/class-list-table-hooks.php:192
+#: admin/class-list-table-hooks.php:193
 msgid "Tag"
 msgstr ""
 
 #: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
 #: addons/free/tag.php:353 addons/free/tag.php:423 addons/free/tag.php:433
-#: includes/functions.php:2220
+#: includes/functions.php:2246
 msgid "Tags"
 msgstr ""
 
@@ -1632,126 +1632,126 @@ msgstr ""
 msgid "Edit page"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:56 admin/class-list-table-hooks.php:396
+#: admin/class-list-table-hooks.php:57 admin/class-list-table-hooks.php:397
 msgid "Flagged"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:130
+#: admin/class-list-table-hooks.php:131
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:130
+#: admin/class-list-table-hooks.php:131
 msgid "Restore"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:133
+#: admin/class-list-table-hooks.php:134
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:133 admin/meta-box.php:70
+#: admin/class-list-table-hooks.php:134 admin/meta-box.php:70
 msgid "Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:137
+#: admin/class-list-table-hooks.php:138
 msgid "Delete this item permanently"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:137 includes/theme.php:301
+#: admin/class-list-table-hooks.php:138 includes/theme.php:301
 msgid "Delete Permanently"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:142
+#: admin/class-list-table-hooks.php:143
 msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:142 admin/meta-box.php:69
-#: includes/comments.php:315 includes/theme.php:258
+#: admin/class-list-table-hooks.php:143 admin/meta-box.php:69
+#: includes/comments.php:317 includes/theme.php:258
 msgid "Edit"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:148
+#: admin/class-list-table-hooks.php:149
 msgid "Preview &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:148
+#: admin/class-list-table-hooks.php:149
 msgid "Preview"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:151
+#: admin/class-list-table-hooks.php:152
 msgid "View &#8220;%s&#8221; question"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:151
+#: admin/class-list-table-hooks.php:152
 msgid "View"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:168 admin/meta-box.php:130
+#: admin/class-list-table-hooks.php:169 admin/meta-box.php:130
 msgid "Clear flag"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:184 admin/class-list-table-hooks.php:291
+#: admin/class-list-table-hooks.php:185 admin/class-list-table-hooks.php:292
 msgid "Author"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:185 includes/class-form-hooks.php:43
+#: admin/class-list-table-hooks.php:186 includes/class-form-hooks.php:43
 #: includes/deprecated.php:247
 msgid "Title"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:293
+#: admin/class-list-table-hooks.php:196 admin/class-list-table-hooks.php:294
 #: includes/theme.php:270
 msgid "Status"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:196 templates/question-list-item.php:37
+#: admin/class-list-table-hooks.php:197 templates/question-list-item.php:37
 msgid "Ans"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:197 admin/class-list-table-hooks.php:294
+#: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
 msgid "Comments"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:198 admin/class-list-table-hooks.php:295
+#: admin/class-list-table-hooks.php:199 admin/class-list-table-hooks.php:296
 #: admin/views/recount.php:54 includes/theme.php:367
 #: templates/content-answer.php:20 templates/question-list-item.php:30
 msgid "Votes"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:199 admin/class-list-table-hooks.php:296
+#: admin/class-list-table-hooks.php:200 admin/class-list-table-hooks.php:297
 msgid "Flags"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:200 admin/class-list-table-hooks.php:297
+#: admin/class-list-table-hooks.php:201 admin/class-list-table-hooks.php:298
 msgid "Date"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:247 admin/class-list-table-hooks.php:263
+#: admin/class-list-table-hooks.php:248 admin/class-list-table-hooks.php:264
 msgid "--"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:268 admin/class-list-table-hooks.php:342
+#: admin/class-list-table-hooks.php:269 admin/class-list-table-hooks.php:343
 #: admin/views/select_question.php:43 includes/ajax-hooks.php:107
-#: includes/ajax-hooks.php:109 includes/ajax-hooks.php:290
-#: includes/functions.php:2020 templates/buddypress/question-item.php:38
+#: includes/ajax-hooks.php:109 includes/ajax-hooks.php:301
+#: includes/functions.php:2039 templates/buddypress/question-item.php:38
 msgid "%d Answer"
 msgid_plural "%d Answers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-list-table-hooks.php:292
+#: admin/class-list-table-hooks.php:293
 msgid "Content"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:331
+#: admin/class-list-table-hooks.php:332
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:366 admin/meta-box.php:129
+#: admin/class-list-table-hooks.php:367 admin/meta-box.php:129
 #: includes/flag.php:127
 msgid "Flag"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:437
+#: admin/class-list-table-hooks.php:438
 msgid "Please fill parent question field, Answer was not saved!"
 msgstr ""
 
@@ -2375,7 +2375,7 @@ msgid "Recently active questions"
 msgstr ""
 
 #: admin/views/select_question.php:42 includes/ajax-hooks.php:107
-#: includes/ajax-hooks.php:153 includes/theme.php:704
+#: includes/ajax-hooks.php:164 includes/theme.php:704
 msgid "Select"
 msgstr ""
 
@@ -2505,159 +2505,163 @@ msgstr ""
 msgid "No related questions found."
 msgstr ""
 
-#: includes/ajax-hooks.php:152
+#: includes/ajax-hooks.php:144
+msgid "You do not have permission to select or unselect answer"
+msgstr ""
+
+#: includes/ajax-hooks.php:163
 msgid "Best answer is unselected for your question."
 msgstr ""
 
-#: includes/ajax-hooks.php:161
+#: includes/ajax-hooks.php:172
 msgid ""
 "This answer cannot be selected as best, update status to select as best "
 "answer."
 msgstr ""
 
-#: includes/ajax-hooks.php:183
+#: includes/ajax-hooks.php:194
 msgid "Best answer is selected for your question."
 msgstr ""
 
-#: includes/ajax-hooks.php:184 includes/theme.php:712
+#: includes/ajax-hooks.php:195 includes/theme.php:712
 msgid "Unselect"
 msgstr ""
 
-#: includes/ajax-hooks.php:196
+#: includes/ajax-hooks.php:207
 msgid "Unable to trash this post"
 msgstr ""
 
-#: includes/ajax-hooks.php:217 includes/comments.php:323 includes/theme.php:284
+#: includes/ajax-hooks.php:228 includes/comments.php:325 includes/theme.php:284
 #: lib/form/class-group.php:81
 msgid "Delete"
 msgstr ""
 
-#: includes/ajax-hooks.php:217 includes/theme.php:285
+#: includes/ajax-hooks.php:228 includes/theme.php:285
 msgid "Delete this post (can be restored again)"
 msgstr ""
 
-#: includes/ajax-hooks.php:218
+#: includes/ajax-hooks.php:229
 msgid "%s is restored"
 msgstr ""
 
-#: includes/ajax-hooks.php:233
+#: includes/ajax-hooks.php:244
 msgid "This post was created %s, hence you cannot trash it"
 msgstr ""
 
-#: includes/ajax-hooks.php:241 includes/theme.php:281
+#: includes/ajax-hooks.php:252 includes/theme.php:281
 msgid "Undelete"
 msgstr ""
 
-#: includes/ajax-hooks.php:241 includes/theme.php:282
+#: includes/ajax-hooks.php:252 includes/theme.php:282
 msgid "Restore this post"
 msgstr ""
 
-#: includes/ajax-hooks.php:242
+#: includes/ajax-hooks.php:253
 msgid "%s is trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:257
+#: includes/ajax-hooks.php:268
 msgid "Sorry, unable to delete post"
 msgstr ""
 
-#: includes/ajax-hooks.php:285
+#: includes/ajax-hooks.php:296
 msgid "Question is deleted permanently"
 msgstr ""
 
-#: includes/ajax-hooks.php:294
+#: includes/ajax-hooks.php:305
 msgid "Answer is deleted permanently"
 msgstr ""
 
-#: includes/ajax-hooks.php:312
+#: includes/ajax-hooks.php:323
 msgid "Sorry, you cannot toggle a featured question"
 msgstr ""
 
-#: includes/ajax-hooks.php:322
+#: includes/ajax-hooks.php:333
 msgid "Only question can be set as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:331 includes/theme.php:788
+#: includes/ajax-hooks.php:342 includes/theme.php:788
 msgid "Mark this question as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:331 includes/theme.php:789
+#: includes/ajax-hooks.php:342 includes/theme.php:789
 msgid "Feature"
 msgstr ""
 
-#: includes/ajax-hooks.php:332
+#: includes/ajax-hooks.php:343
 msgid "Question is unmarked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:346 includes/theme.php:785
+#: includes/ajax-hooks.php:357 includes/theme.php:785
 msgid "Unmark this question as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:346 includes/theme.php:786
+#: includes/ajax-hooks.php:357 includes/theme.php:786
 msgid "Unfeature"
 msgstr ""
 
-#: includes/ajax-hooks.php:347
+#: includes/ajax-hooks.php:358
 msgid "Question is marked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:390
+#: includes/ajax-hooks.php:401
 msgid "You cannot close a question"
 msgstr ""
 
-#: includes/ajax-hooks.php:396 includes/mce-languages.php:29
+#: includes/ajax-hooks.php:407 includes/mce-languages.php:29
 #: includes/theme.php:242
 msgid "Close"
 msgstr ""
 
-#: includes/ajax-hooks.php:396 includes/theme.php:242
+#: includes/ajax-hooks.php:407 includes/theme.php:242
 msgid "Open"
 msgstr ""
 
-#: includes/ajax-hooks.php:397 includes/theme.php:243
+#: includes/ajax-hooks.php:408 includes/theme.php:243
 msgid "Close this question for new answer."
 msgstr ""
 
-#: includes/ajax-hooks.php:397 includes/theme.php:243
+#: includes/ajax-hooks.php:408 includes/theme.php:243
 msgid "Open this question for new answers"
 msgstr ""
 
-#: includes/ajax-hooks.php:399
+#: includes/ajax-hooks.php:410
 msgid "Question closed"
 msgstr ""
 
-#: includes/ajax-hooks.php:399
+#: includes/ajax-hooks.php:410
 msgid "Question is opened"
 msgstr ""
 
-#: includes/ajax-hooks.php:451
+#: includes/ajax-hooks.php:462
 msgid "Sorry, you are not allowed to convert this question to post"
 msgstr ""
 
-#: includes/ajax-hooks.php:470
+#: includes/ajax-hooks.php:481
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:498
+#: includes/ajax-hooks.php:515
 msgid "You must be logged in to subscribe to a question"
 msgstr ""
 
-#: includes/ajax-hooks.php:507 includes/ajax-hooks.php:530
+#: includes/ajax-hooks.php:524 includes/ajax-hooks.php:547
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:518
+#: includes/ajax-hooks.php:535
 msgid "Successfully unsubscribed from question"
 msgstr ""
 
-#: includes/ajax-hooks.php:520 includes/theme.php:815
+#: includes/ajax-hooks.php:537 includes/theme.php:815
 msgid "Subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:536
+#: includes/ajax-hooks.php:553
 msgid "Successfully subscribed to question"
 msgstr ""
 
-#: includes/ajax-hooks.php:538 includes/theme.php:815
+#: includes/ajax-hooks.php:555 includes/theme.php:815
 msgid "Unsubscribe"
 msgstr ""
 
@@ -2783,15 +2787,15 @@ msgstr ""
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1306
+#: includes/class/roles-cap.php:1314
 msgid "Voting on own post is not allowed"
 msgstr ""
 
-#: includes/class/roles-cap.php:1314
+#: includes/class/roles-cap.php:1322
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1324
+#: includes/class/roles-cap.php:1332
 msgid "You do not have permission to vote."
 msgstr ""
 
@@ -2807,147 +2811,148 @@ msgstr ""
 msgid "Question title"
 msgstr ""
 
-#: includes/class-form-hooks.php:58 includes/class-form-hooks.php:143
+#: includes/class-form-hooks.php:58 includes/class-form-hooks.php:144
 #: includes/deprecated.php:265
 msgid "Description"
 msgstr ""
 
-#: includes/class-form-hooks.php:72 includes/class-form-hooks.php:157
+#: includes/class-form-hooks.php:72 includes/class-form-hooks.php:158
 msgid "Is private?"
 msgstr ""
 
-#: includes/class-form-hooks.php:73 includes/class-form-hooks.php:158
+#: includes/class-form-hooks.php:73 includes/class-form-hooks.php:159
 #: includes/deprecated.php:305 includes/deprecated.php:448
 msgid "Only visible to admin and moderator."
 msgstr ""
 
-#: includes/class-form-hooks.php:80 includes/class-form-hooks.php:165
-#: includes/class-form-hooks.php:215
+#: includes/class-form-hooks.php:80 includes/class-form-hooks.php:166
+#: includes/class-form-hooks.php:230
 msgid "Your Name"
 msgstr ""
 
-#: includes/class-form-hooks.php:82 includes/class-form-hooks.php:167
+#: includes/class-form-hooks.php:82 includes/class-form-hooks.php:168
 #: includes/deprecated.php:293 includes/deprecated.php:436
-#: tests/unit/tests-ask-form.php:58
+#: tests/wpunit/askFormTest.php:69
 msgid "Enter your name to display"
 msgstr ""
 
-#: includes/class-form-hooks.php:103 includes/functions.php:1937
+#: includes/class-form-hooks.php:103 includes/class-form-hooks.php:187
+#: includes/functions.php:1956
 msgid "Update Question"
 msgstr ""
 
-#: includes/class-form-hooks.php:139
+#: includes/class-form-hooks.php:140
 msgid "Post Answer"
 msgstr ""
 
-#: includes/class-form-hooks.php:193
+#: includes/class-form-hooks.php:208
 msgid "Submit Comment"
 msgstr ""
 
-#: includes/class-form-hooks.php:197 templates/answer.php:36
+#: includes/class-form-hooks.php:212 templates/answer.php:36
 #: templates/functions.php:41
 msgid "Comment"
 msgstr ""
 
-#: includes/class-form-hooks.php:201
+#: includes/class-form-hooks.php:216
 msgid "Write your comment here.."
 msgstr ""
 
-#: includes/class-form-hooks.php:217
+#: includes/class-form-hooks.php:232
 msgid "Enter your name to display."
 msgstr ""
 
-#: includes/class-form-hooks.php:224
+#: includes/class-form-hooks.php:239
 msgid "Your Email"
 msgstr ""
 
-#: includes/class-form-hooks.php:226
+#: includes/class-form-hooks.php:241
 msgid "Enter your email to get follow up notifications."
 msgstr ""
 
-#: includes/class-form-hooks.php:234
+#: includes/class-form-hooks.php:249
 msgid "Your Website"
 msgstr ""
 
-#: includes/class-form-hooks.php:236
+#: includes/class-form-hooks.php:251
 msgid "Enter link to your website."
 msgstr ""
 
-#: includes/class-form-hooks.php:319 includes/class-form-hooks.php:346
+#: includes/class-form-hooks.php:334 includes/class-form-hooks.php:361
 msgid "Unable to post question."
 msgstr ""
 
-#: includes/class-form-hooks.php:324 includes/class-form-hooks.php:351
+#: includes/class-form-hooks.php:339 includes/class-form-hooks.php:366
 msgid "Failed to insert question"
 msgstr ""
 
-#: includes/class-form-hooks.php:341
+#: includes/class-form-hooks.php:356
 msgid ""
 "You are trying to post a duplicate question. Please search existing "
 "questions before posting a new one."
 msgstr ""
 
-#: includes/class-form-hooks.php:401
+#: includes/class-form-hooks.php:416
 #. Translators: placeholder contain error message.
 msgid "Unable to post question. Error: %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:421
+#: includes/class-form-hooks.php:436
 msgid "Question updated successfully, you'll be redirected in a moment."
 msgstr ""
 
-#: includes/class-form-hooks.php:423
+#: includes/class-form-hooks.php:438
 msgid "Your question is posted successfully, you'll be redirected in a moment."
 msgstr ""
 
-#: includes/class-form-hooks.php:513
+#: includes/class-form-hooks.php:528
 msgid "Please check field"
 msgstr ""
 
-#: includes/class-form-hooks.php:568
+#: includes/class-form-hooks.php:583
 #. Translators: placeholder contain error message.
 msgid "Unable to post answer. Error: %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:594
+#: includes/class-form-hooks.php:609
 msgid "Answer updated successfully. Redirecting you to question page."
 msgstr ""
 
-#: includes/class-form-hooks.php:596
+#: includes/class-form-hooks.php:611
 msgid "Your answer is posted successfully."
 msgstr ""
 
-#: includes/class-form-hooks.php:646
+#: includes/class-form-hooks.php:661
 msgid "Unable to post comment."
 msgstr ""
 
-#: includes/class-form-hooks.php:659
+#: includes/class-form-hooks.php:674
 msgid "You cannot edit this comment."
 msgstr ""
 
-#: includes/class-form-hooks.php:667
+#: includes/class-form-hooks.php:682
 msgid "There is no change in your comment."
 msgstr ""
 
-#: includes/class-form-hooks.php:697 includes/class-form-hooks.php:783
-#: includes/comments.php:118 includes/comments.php:170
-#: includes/comments.php:286
+#: includes/class-form-hooks.php:712 includes/class-form-hooks.php:798
+#: includes/comments.php:120 includes/comments.php:172
+#: includes/comments.php:288
 #. Translators: %d contains count of comments.
 msgid "%d Comment"
 msgid_plural "%d Comments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-form-hooks.php:698
+#: includes/class-form-hooks.php:713
 msgid "Comment updated successfully"
 msgstr ""
 
-#: includes/class-form-hooks.php:724
+#: includes/class-form-hooks.php:739
 #. Translators: %s contain post type name.
 msgid "Commenting is not allowed on draft, pending or deleted %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:789
+#: includes/class-form-hooks.php:804
 msgid "Comment successfully posted"
 msgstr ""
 
@@ -2963,59 +2968,59 @@ msgstr ""
 msgid "Sorry, you do not have permission to read this post."
 msgstr ""
 
-#: includes/comments.php:91
+#: includes/comments.php:93
 msgid "Failed to delete comment"
 msgstr ""
 
-#: includes/comments.php:101
+#: includes/comments.php:103
 msgid "This comment was created %s. Its locked hence you cannot delete it."
 msgstr ""
 
-#: includes/comments.php:115
+#: includes/comments.php:117
 msgid "Comment successfully deleted"
 msgstr ""
 
-#: includes/comments.php:153
+#: includes/comments.php:155
 msgid "Sorry, unable to approve comment"
 msgstr ""
 
-#: includes/comments.php:176
+#: includes/comments.php:178
 msgid "Comment approved successfully."
 msgstr ""
 
-#: includes/comments.php:222
+#: includes/comments.php:224
 msgid "Add comment on post"
 msgstr ""
 
-#: includes/comments.php:278
+#: includes/comments.php:280
 msgid "Comments awaiting moderation"
 msgstr ""
 
-#: includes/comments.php:295
+#: includes/comments.php:297
 msgid "Add a Comment"
 msgstr ""
 
-#: includes/comments.php:335
+#: includes/comments.php:337
 msgid "Approve"
 msgstr ""
 
-#: includes/comments.php:391
+#: includes/comments.php:393
 msgid "Not a valid post ID."
 msgstr ""
 
-#: includes/comments.php:396
+#: includes/comments.php:398
 msgid "Sorry, you do not have permission to read comments."
 msgstr ""
 
-#: includes/comments.php:411 includes/comments.php:445
+#: includes/comments.php:413 includes/comments.php:447
 msgid "No comments found."
 msgstr ""
 
-#: includes/comments.php:456
+#: includes/comments.php:458
 msgid "Show %s more comments"
 msgstr ""
 
-#: includes/comments.php:459
+#: includes/comments.php:461
 msgid "Add a comment"
 msgstr ""
 
@@ -3028,36 +3033,36 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:25 includes/functions.php:2226
+#: includes/common-pages.php:25 includes/functions.php:2252
 msgid "Activities"
 msgstr ""
 
-#: includes/common-pages.php:73
+#: includes/common-pages.php:72
 msgid ""
 "This question is awaiting moderation and cannot be viewed. Please check "
 "back later."
 msgstr ""
 
-#: includes/common-pages.php:75
+#: includes/common-pages.php:74
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
 
-#: includes/common-pages.php:82
+#: includes/common-pages.php:81
 #. Translators: %s contain time to publish.
 msgid "Question will be published in %s"
 msgstr ""
 
-#: includes/common-pages.php:86
+#: includes/common-pages.php:85
 msgid ""
 "This question is not published yet and is not accessible to anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:143
+#: includes/common-pages.php:142
 msgid "Something went wrong, please try again"
 msgstr ""
 
-#: includes/common-pages.php:165
+#: includes/common-pages.php:164
 msgid "Sorry, you cannot edit this answer."
 msgstr ""
 
@@ -3109,272 +3114,272 @@ msgstr ""
 msgid "You have flagged this post"
 msgstr ""
 
-#: includes/functions.php:254
+#: includes/functions.php:249
 #. translators: %s: human-readable time difference
 msgid "%s ago"
 msgstr ""
 
-#: includes/functions.php:492
+#: includes/functions.php:503
 msgid "Success"
 msgstr ""
 
-#: includes/functions.php:494
+#: includes/functions.php:505
 msgid "Something went wrong, last action failed."
 msgstr ""
 
-#: includes/functions.php:496
+#: includes/functions.php:507
 msgid "Comment updated successfully."
 msgstr ""
 
-#: includes/functions.php:497
+#: includes/functions.php:508
 msgid "You cannot vote on your own question or answer."
 msgstr ""
 
-#: includes/functions.php:498
+#: includes/functions.php:509
 msgid "You do not have permission to view private posts."
 msgstr ""
 
-#: includes/functions.php:499
+#: includes/functions.php:510
 msgid "Please check captcha field and resubmit it again."
 msgstr ""
 
-#: includes/functions.php:500
+#: includes/functions.php:511
 msgid "Image uploaded successfully"
 msgstr ""
 
-#: includes/functions.php:501
+#: includes/functions.php:512
 msgid "Answer has been deleted permanently"
 msgstr ""
 
-#: includes/functions.php:502
+#: includes/functions.php:513
 msgid "You have already attached maximum numbers of allowed uploads."
 msgstr ""
 
-#: includes/functions.php:503
+#: includes/functions.php:514
 msgid "Your profile has been updated successfully."
 msgstr ""
 
-#: includes/functions.php:504
+#: includes/functions.php:515
 msgid "Voting down is disabled."
 msgstr ""
 
-#: includes/functions.php:505
+#: includes/functions.php:516
 msgid "You cannot vote on restricted posts"
 msgstr ""
 
-#: includes/functions.php:933
+#: includes/functions.php:944
 msgid "[Solved] "
 msgstr ""
 
-#: includes/functions.php:1276
+#: includes/functions.php:1287
 msgid "asked"
 msgstr ""
 
-#: includes/functions.php:1277 includes/functions.php:1278
+#: includes/functions.php:1288 includes/functions.php:1289
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1279
+#: includes/functions.php:1290
 msgid "answered"
 msgstr ""
 
-#: includes/functions.php:1280
+#: includes/functions.php:1291
 msgid "deleted answer"
 msgstr ""
 
-#: includes/functions.php:1281
+#: includes/functions.php:1292
 msgid "restored question"
 msgstr ""
 
-#: includes/functions.php:1282
+#: includes/functions.php:1293
 msgid "restored answer"
 msgstr ""
 
-#: includes/functions.php:1283 templates/comment.php:27
+#: includes/functions.php:1294 templates/comment.php:27
 #: templates/functions.php:40
 msgid "commented"
 msgstr ""
 
-#: includes/functions.php:1284
+#: includes/functions.php:1295
 msgid "deleted comment"
 msgstr ""
 
-#: includes/functions.php:1285
+#: includes/functions.php:1296
 msgid "commented on answer"
 msgstr ""
 
-#: includes/functions.php:1286
+#: includes/functions.php:1297
 msgid "edited question"
 msgstr ""
 
-#: includes/functions.php:1287
+#: includes/functions.php:1298
 msgid "edited answer"
 msgstr ""
 
-#: includes/functions.php:1288
+#: includes/functions.php:1299
 msgid "edited comment"
 msgstr ""
 
-#: includes/functions.php:1289
+#: includes/functions.php:1300
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/functions.php:1290
+#: includes/functions.php:1301
 msgid "selected answer"
 msgstr ""
 
-#: includes/functions.php:1291
+#: includes/functions.php:1302
 msgid "unselected answer"
 msgstr ""
 
-#: includes/functions.php:1292
+#: includes/functions.php:1303
 msgid "updated status"
 msgstr ""
 
-#: includes/functions.php:1293
+#: includes/functions.php:1304
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1294
+#: includes/functions.php:1305
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1295
+#: includes/functions.php:1306
 msgid "changed status"
 msgstr ""
 
-#: includes/functions.php:1359
+#: includes/functions.php:1370
 msgid "Anonymous"
 msgstr ""
 
-#: includes/functions.php:1391
+#: includes/functions.php:1402
 msgid " (anonymous)"
 msgstr ""
 
-#: includes/functions.php:1910
+#: includes/functions.php:1929
 msgid "You cannot edit this question."
 msgstr ""
 
-#: includes/functions.php:1915 templates/ask.php:17
+#: includes/functions.php:1934 templates/ask.php:17
 msgid "You do not have permission to ask a question."
 msgstr ""
 
-#: includes/functions.php:2029
+#: includes/functions.php:2048
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:2056
+#: includes/functions.php:2076
 msgid "You cannot edit this answer."
 msgstr ""
 
-#: includes/functions.php:2061
+#: includes/functions.php:2081
 msgid "You do not have permission to answer this question."
 msgstr ""
 
-#: includes/functions.php:2087
+#: includes/functions.php:2107
 msgid "Update Answer"
 msgstr ""
 
-#: includes/functions.php:2194
+#: includes/functions.php:2220
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2195
+#: includes/functions.php:2221
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred "
 "as <b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2200
+#: includes/functions.php:2226
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2201
+#: includes/functions.php:2227
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2202
+#: includes/functions.php:2228
 msgid "Ask a question"
 msgstr ""
 
-#: includes/functions.php:2206
+#: includes/functions.php:2232
 msgid "User page"
 msgstr ""
 
-#: includes/functions.php:2207
+#: includes/functions.php:2233
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2208
+#: includes/functions.php:2234
 msgid "Profile"
 msgstr ""
 
-#: includes/functions.php:2212
+#: includes/functions.php:2238
 msgid "Categories page"
 msgstr ""
 
-#: includes/functions.php:2213
+#: includes/functions.php:2239
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2218
+#: includes/functions.php:2244
 msgid "Tags page"
 msgstr ""
 
-#: includes/functions.php:2219
+#: includes/functions.php:2245
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2224
+#: includes/functions.php:2250
 msgid "Activities page"
 msgstr ""
 
-#: includes/functions.php:2225
+#: includes/functions.php:2251
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:872
+#: includes/hooks.php:880
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:873
+#: includes/hooks.php:881
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:874
+#: includes/hooks.php:882
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:875
+#: includes/hooks.php:883
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:876
+#: includes/hooks.php:884
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:877
+#: includes/hooks.php:885
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:878
+#: includes/hooks.php:886
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:879
+#: includes/hooks.php:887
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:880
+#: includes/hooks.php:888
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:881
+#: includes/hooks.php:889
 msgid "years"
 msgstr ""
 
@@ -3568,6 +3573,14 @@ msgstr ""
 msgid "Question and answer is powered by"
 msgstr ""
 
+#: includes/subscribers.php:174
+msgid "All 2 arguments $event and $ref_id are deprecated."
+msgstr ""
+
+#: includes/subscribers.php:248
+msgid "All 3 arguments $event, $ref_id and $user_id are deprecated."
+msgstr ""
+
 #: includes/taxo.php:322
 msgid "Tagged"
 msgstr ""
@@ -3629,27 +3642,47 @@ msgid "Unable to delete attachment"
 msgstr ""
 
 #: includes/upload.php:113
-msgid "File cannot be uploaded, size is bigger then %s MB"
+msgid "File cannot be uploaded, size is bigger than %s MB"
 msgstr ""
 
-#: includes/votes.php:64
+#: includes/votes.php:66
 msgid "Your vote has been removed."
 msgstr ""
 
-#: includes/votes.php:78
+#: includes/votes.php:80
 msgid "Undo your vote first."
 msgstr ""
 
-#: includes/votes.php:94
+#: includes/votes.php:96
 msgid "Thank you for voting."
 msgstr ""
 
-#: includes/votes.php:596
+#: includes/votes.php:598 includes/votes.php:603
+msgid "You have already voted"
+msgstr ""
+
+#: includes/votes.php:598 includes/votes.php:603
+msgid "Withdraw your vote"
+msgstr ""
+
+#: includes/votes.php:598
 msgid "Up vote this post"
 msgstr ""
 
-#: includes/votes.php:602
+#: includes/votes.php:603
 msgid "Down vote this post"
+msgstr ""
+
+#: lib/class-anspress-cli.php:71
+msgid "You must pass a addon name i.e. free/avatar.php"
+msgstr ""
+
+#: lib/class-anspress-cli.php:78
+msgid "Unable to activate addon. May be its already active or wrong name passed."
+msgstr ""
+
+#: lib/class-anspress-cli.php:81
+msgid "Successfully enabled addon"
 msgstr ""
 
 #: lib/class-anspress-upgrader.php:62
@@ -3783,7 +3816,7 @@ msgstr ""
 
 #: lib/class-validate.php:662
 #. Translators: %s contain maximum file size user can upload.
-msgid "File(s) size is bigger then %s MB"
+msgid "File(s) size is bigger than %s MB"
 msgstr ""
 
 #: lib/form/class-checkbox.php:41
@@ -4001,7 +4034,7 @@ msgid "Sending request"
 msgstr ""
 
 #: templates/functions.php:38
-msgid "File size is bigger then %s MB"
+msgid "File size is bigger than %s MB"
 msgstr ""
 
 #: templates/functions.php:39
@@ -4356,7 +4389,7 @@ msgstr ""
 msgid "This is a dummy theme"
 msgstr ""
 
-#: vendor/wp-cli/core-command/src/Core_Command.php:652
+#: vendor/wp-cli/core-command/src/Core_Command.php:651
 msgid "Wildcard DNS may not be configured correctly."
 msgstr ""
 
@@ -4437,7 +4470,7 @@ msgstr ""
 msgid "API error. Try Again."
 msgstr ""
 
-#: vendor/wp-cli/media-command/src/Media_Command.php:129
+#: vendor/wp-cli/media-command/src/Media_Command.php:142
 msgid "image"
 msgid_plural "images"
 msgstr[0] ""
@@ -4532,7 +4565,7 @@ msgid "Question and answer search form."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "AnsPress"
+msgid "AnsPress Question Answer"
 msgstr ""
 
 #. Author URI of the plugin/theme
@@ -4577,8 +4610,8 @@ msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr ""
 
-#: vendor/wp-cli/core-command/src/Core_Command.php:430
-#: vendor/wp-cli/core-command/src/Core_Command.php:503
+#: vendor/wp-cli/core-command/src/Core_Command.php:429
+#: vendor/wp-cli/core-command/src/Core_Command.php:502
 msgctxt "Default network name"
 msgid "%s Sites"
 msgstr ""

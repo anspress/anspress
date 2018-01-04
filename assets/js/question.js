@@ -284,7 +284,8 @@
 			e.preventDefault();
 			var self = this;
 			var q = $.parseJSON($(e.target).attr('ap-query'));
-			q.ap_ajax_action = 'toggle_best_answer';
+			q.action = 'ap_toggle_best_answer';
+
 			AnsPress.showLoading(e.target);
 			AnsPress.ajax({
 				data: q,
