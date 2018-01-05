@@ -106,7 +106,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		wp_cache_delete( 'anspress_opt', 'ap' );
 
 		// Flush rewrite rules.
-		if ( 'form_options_general_pages' === $form_name ) {
+		if ( 'form_options_general_pages' === $form_name || 'form_options_general_permalinks' === $form_name ) {
 			$main_pages = array_keys( ap_main_pages() );
 
 			foreach ( $main_pages as $slug ) {
