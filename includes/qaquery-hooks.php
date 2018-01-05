@@ -17,6 +17,8 @@ class AP_QA_Query_Hooks {
 	 * @param  array  $sql  Sql query.
 	 * @param  Object $args Instance.
 	 * @return array
+	 * @since unknown
+	 * @since 4.1.6 Fixed: session post is included while viewing a single answer.
 	 */
 	public static function sql_filter( $sql, $args ) {
 		global $wpdb;
@@ -63,7 +65,7 @@ class AP_QA_Query_Hooks {
 					$ap_type = 'answer';
 				}
 
-				if ( ! empty( $ap_type ) ) {
+				if ( ! empty( $ap_type ) && ! get_query_var( 'answer_id', false ) ) {
 					// Include user's session questions.
 					$session_posts = anspress()->session->get( $ap_type . 's' );
 					$ids = sanitize_comma_delimited( $session_posts );
