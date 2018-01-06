@@ -182,14 +182,16 @@ class Session {
 	 * @param integer $id Answer id.
 	 * @return void
 	 * @since 4.1.5
+	 * @since 4.1.7 Fixed: new answers are not being set in session.
 	 */
 	public function set_answer( $id ) {
 		$answers = $this->get( 'answers' );
 
 		if ( ! $answers ) {
-			$answers[] = $id;
+			$answers = [];
 		}
 
+		$answers[] = $id;
 		$this->set( 'answers', $answers );
 	}
 

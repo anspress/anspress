@@ -2014,26 +2014,15 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 	// Get existing answer count.
 	$current_ans = ap_count_published_answers( $question_id );
 
-	if ( $current_ans == 1 ) {
-		global $post;
-		$post = $question;
-		setup_postdata( $post );
-	} else {
-		global $post;
-		$post = ap_get_post( $answer_id );
-		setup_postdata( $post );
-	}
+	global $post;
+	$post = ap_get_post( $answer_id );
+	setup_postdata( $post );
 
 	ob_start();
-	global $answers;
 	global $withcomments;
 	$withcomments = true;
 
-	$answers = ap_get_answers( array( 'p' => $answer_id ) );
-
-	while ( ap_have_answers() ) : ap_the_answer();
-		ap_get_template_part( 'answer' );
-	endwhile;
+	ap_get_template_part( 'answer' );
 
 	$html = ob_get_clean();
 	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );

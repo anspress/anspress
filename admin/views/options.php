@@ -83,6 +83,7 @@ $all_options = apply_filters( 'ap_all_options', $all_options );
  * Action used to register AnsPress options.
  *
  * @since 4.1.0
+ * @since Fixed: rewrite rules  not getting flushed on changing permalinks.
  */
 do_action( 'ap_register_options' );
 

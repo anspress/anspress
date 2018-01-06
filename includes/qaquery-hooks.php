@@ -14,13 +14,13 @@ class AP_QA_Query_Hooks {
 	/**
 	 * Alter WP_Query mysql query for question and answers.
 	 *
-	 * @param  array  $sql  Sql query.
-	 * @param  Object $args Instance.
+	 * @param  array  $sql      Sql query.
+	 * @param  Object $wp_query Instance.
 	 * @return array
 	 * @since unknown
-	 * @since 4.1.6 Fixed: session post is included while viewing a single answer.
+	 * @since 4.1.7 Fixed: session answers are included in wrong question.
 	 */
-	public static function sql_filter( $sql, $args ) {
+	public static function sql_filter( $sql, $wp_query ) {
 		global $wpdb;
 
 		// Do not filter if wp-admin.
@@ -28,13 +28,13 @@ class AP_QA_Query_Hooks {
 			return $sql;
 		}
 
-		if ( isset( $args->query['ap_query'] ) ) {
+		if ( isset( $wp_query->query['ap_query'] ) ) {
 			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 			$post_status = '';
-			$query_status = $args->query['post_status'];
+			$query_status = $wp_query->query['post_status'];
 
-			if ( isset( $args->query['ap_current_user_ignore'] ) && false === $args->query['ap_current_user_ignore'] ) {
+			if ( isset( $wp_query->query['ap_current_user_ignore'] ) && false === $wp_query->query['ap_current_user_ignore'] ) {
 				// Build the post_status mysql query.
 				if ( ! empty( $query_status ) ) {
 					if ( is_array( $query_status ) ) {
@@ -42,7 +42,7 @@ class AP_QA_Query_Hooks {
 
 						foreach ( get_post_stati() as $status ) {
 
-							if ( in_array( $status, $args->query['post_status'], true ) ) {
+							if ( in_array( $status, $wp_query->query['post_status'], true ) ) {
 								$post_status .= $wpdb->posts.".post_status = '" . $status . "'";
 
 								if ( count( $query_status ) != $i ) {
@@ -59,9 +59,9 @@ class AP_QA_Query_Hooks {
 				}
 
 				$ap_type = false;
-				if ( isset( $args->query['ap_question_query'] ) ) {
+				if ( isset( $wp_query->query['ap_question_query'] ) ) {
 					$ap_type = 'question';
-				} elseif ( isset( $args->query['ap_answers_query'] ) ) {
+				} elseif ( isset( $wp_query->query['ap_answers_query'] ) ) {
 					$ap_type = 'answer';
 				}
 
@@ -69,8 +69,13 @@ class AP_QA_Query_Hooks {
 					// Include user's session questions.
 					$session_posts = anspress()->session->get( $ap_type . 's' );
 					$ids = sanitize_comma_delimited( $session_posts );
+
 					if ( ! empty( $ids ) ) {
-						$sql['where'] = $sql['where'] . $wpdb->prepare( " OR ( {$wpdb->posts}.ID IN ({$ids}) AND {$wpdb->posts}.post_type = %s )", $ap_type );
+						if ( 'question' === $ap_type ) {
+							$sql['where'] = $sql['where'] . $wpdb->prepare( " OR ( {$wpdb->posts}.ID IN ({$ids}) AND {$wpdb->posts}.post_type = %s )", $ap_type );
+						} elseif ( ! empty( $wp_query->args['question_id'] ) ) {
+							$sql['where'] = $sql['where'] . $wpdb->prepare( " OR ( {$wpdb->posts}.ID IN ({$ids}) AND {$wpdb->posts}.post_type = %s AND {$wpdb->posts}.post_parent = %d )", $ap_type, $wp_query->args['question_id'] );
+						}
 					}
 				}
 
@@ -83,12 +88,12 @@ class AP_QA_Query_Hooks {
 			}
 
 			// Hack to fix WP_Query for fetching anonymous author posts.
-			if ( isset( $args->query['author'] ) && 0 === $args->query['author'] ) {
-				$sql['where'] = $sql['where'] . $wpdb->prepare( " AND {$wpdb->posts}.post_author = %d", $args->query['author'] );
+			if ( isset( $wp_query->query['author'] ) && 0 === $wp_query->query['author'] ) {
+				$sql['where'] = $sql['where'] . $wpdb->prepare( " AND {$wpdb->posts}.post_author = %d", $wp_query->query['author'] );
 			}
 
-			$ap_order_by = isset( $args->query['ap_order_by'] ) ? $args->query['ap_order_by'] : 'active';
-			$answer_query = isset( $args->query['ap_answers_query'] );
+			$ap_order_by = isset( $wp_query->query['ap_order_by'] ) ? $wp_query->query['ap_order_by'] : 'active';
+			$answer_query = isset( $wp_query->query['ap_answers_query'] );
 
 			if ( 'answers' === $ap_order_by && ! $answer_query ) {
 				$sql['orderby'] = 'IFNULL(qameta.answers, 0) DESC, ' . $sql['orderby'];
@@ -114,14 +119,14 @@ class AP_QA_Query_Hooks {
 			}
 
 			// Keep best answer to top.
-			if ( $answer_query && ! $args->query['ignore_selected_answer'] ) {
+			if ( $answer_query && ! $wp_query->query['ignore_selected_answer'] ) {
 				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
 			}
 
 			// Allow filtering sql query.
 			$sql = apply_filters( 'ap_qa_sql', $sql );
 
-			$args->count_request = $sql;
+			$wp_query->count_request = $sql;
 		}
 
 		return $sql;
