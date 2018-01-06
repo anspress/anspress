@@ -89,6 +89,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/reputation.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/subscribers.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-query.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-session.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/search.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/question_stats.php' );

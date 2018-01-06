@@ -27,7 +27,7 @@ $id = $I->havePostInDatabase( [ 'post_type' => 'answer', 'post_parent' => $id ] 
 $I->amOnPage('?p='.$id);
 $I->seeElement('#ap-single');
 $I->click('#post-' . $id .' [ap="actiontoggle"]');
-$I->waitForElement('#post-' . $id .' .ap-actions li', 20);
+$I->waitForElement('#post-' . $id .' .ap-actions li', 30);
 $I->scrollTo('#post-' . $id .' .ap-actions li');
 $I->click('Edit', '#post-' . $id .' .ap-actions li');
 $I->seeElement('#form_answer');
