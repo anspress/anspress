@@ -21,7 +21,9 @@ $I->seeElement("#post-$id");
 $I->see($content, "#post-$id");
 
 $I->wantTo('check answer editing');
-$I->loginAsAdmin();
+$I->amOnPage('/wp-login.php');
+$I->wait(3);
+$I->submitForm('#loginform', ['log' =>'admin','pwd' => 'admin'], '#wp-submit');
 $id = $I->havePostInDatabase( [ 'post_type' => 'question', 'post_title' => 'Question {n}' ] );
 $id = $I->havePostInDatabase( [ 'post_type' => 'answer', 'post_parent' => $id ] );
 $I->amOnPage('?p='.$id);
