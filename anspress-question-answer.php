@@ -328,6 +328,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'lib/form/class-radio.php';
 			require_once ANSPRESS_DIR . 'lib/form/class-textarea.php';
 			require_once ANSPRESS_DIR . 'lib/class-validate.php';
+			require_once ANSPRESS_DIR . 'lib/class-wp-async-task.php';
+
+			require_once ANSPRESS_DIR . 'includes/class-async-tasks.php';
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once ANSPRESS_DIR . 'lib/class-anspress-cli.php';

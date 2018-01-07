@@ -112,6 +112,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-textarea.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-validate.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-cli.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-wp-async-task.php' );
 
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/avatar.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/buddypress.php' );

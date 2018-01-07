@@ -136,7 +136,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_delete_subscriber', __CLASS__, 'delete_subscriber', 10, 3 );
 			anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
-			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions' );
+			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions', 10, 2 );
 	}
 
 	/**
@@ -1019,13 +1019,20 @@ class AnsPress_Hooks {
 	/**
 	 * Add comment subscriber.
 	 *
+	 * If question than subscription event will be `question_{$question_id}` and ref id will contain
+	 * comment id. If answer than subscription event will be `answer_{$answer_id}` and ref_id
+	 * will contain comment ID.
+	 *
 	 * @param object $comment Comment object.
 	 * @since unknown Introduced
 	 * @since 4.1.5 Moved from addons/free/email.php
+	 * @since 4.1.8 Changed event.
 	 */
 	public static function comment_subscription( $comment ) {
 		if ( $comment->user_id > 0 ) {
-			ap_new_subscriber( $comment->user_id, 'comment_' . $comment->comment_post_ID, $comment->comment_ID );
+			$_post = ap_get_post( $comment->comment_post_ID );
+			$type = $_post->post_type . '_' . $_post->ID;
+			ap_new_subscriber( $comment->user_id, $type, $comment->comment_ID );
 		}
 	}
 
@@ -1033,16 +1040,20 @@ class AnsPress_Hooks {
 	 * Delete comment subscriptions right before deleting comment.
 	 *
 	 * @param integer $comment_id Comment ID.
+	 * @param integer $_comment   Comment object.
+	 *
 	 * @since unknown Introduced
 	 * @since 4.1.5 Moved from addons/free/email.php
+	 * @since 4.1.8 Changed event.
 	 */
-	public static function delete_comment_subscriptions( $comment_id ) {
-		$_comment = get_comment( $comment_id );
+	public static function delete_comment_subscriptions( $comment_id, $_comment ) {
 		$_post = get_post( $_comment->comment_post_ID );
 
 		if ( in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
-			ap_delete_subscribers( array(
-				'subs_event'  => 'comment_' . $_post->ID,
+			$type = $_post->post_type . '_' . $_post->ID;
+			$row = ap_delete_subscribers( array(
+				'subs_event'  => $type,
+				'subs_ref_id' => $_comment->comment_ID,
 			) );
 		}
 	}
