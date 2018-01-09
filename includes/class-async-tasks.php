@@ -1,4 +1,11 @@
 <?php
+/**
+ * Registers async action hooks.
+ *
+ * @package AnsPress
+ * @since 4.1.8
+ */
+
 namespace AnsPress\AsyncTasks;
 
 // If this file is called directly, abort.
@@ -9,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Run async tasks for hook ap_after_new_question.
  *
- * @since 1.0.0
+ * @since 4.1.8
  */
 class NewQuestion extends \WP_Async_Task {
 
@@ -25,7 +32,7 @@ class NewQuestion extends \WP_Async_Task {
 	 *
 	 * @param array $data Arguments.
 	 * @return array
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function prepare_data( $data ) {
 		$post_id = $data[0];
@@ -36,7 +43,7 @@ class NewQuestion extends \WP_Async_Task {
 	 * Run action.
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
@@ -52,7 +59,7 @@ class NewQuestion extends \WP_Async_Task {
 /**
  * Run async tasks for hook ap_after_new_answer.
  *
- * @since 1.0.0
+ * @since 4.1.8
  */
 class NewAnswer extends \WP_Async_Task {
 
@@ -68,7 +75,7 @@ class NewAnswer extends \WP_Async_Task {
 	 *
 	 * @param array $data Arguments.
 	 * @return array
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function prepare_data( $data ) {
 		$post_id = $data[0];
@@ -79,7 +86,7 @@ class NewAnswer extends \WP_Async_Task {
 	 * Run action.
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
@@ -95,7 +102,7 @@ class NewAnswer extends \WP_Async_Task {
 /**
  * Run async tasks for hook `ap_select_answer`.
  *
- * @since 1.0.0
+ * @since 4.1.8
  */
 class SelectAnswer extends \WP_Async_Task {
 
@@ -111,7 +118,7 @@ class SelectAnswer extends \WP_Async_Task {
 	 *
 	 * @param array $data Arguments.
 	 * @return array
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function prepare_data( $data ) {
 		return array( 'post_id' => $data[0]->ID );
@@ -121,7 +128,7 @@ class SelectAnswer extends \WP_Async_Task {
 	 * Run action.
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
@@ -137,7 +144,7 @@ class SelectAnswer extends \WP_Async_Task {
 /**
  * Run async tasks for hook `ap_publish_comment`.
  *
- * @since 1.0.0
+ * @since 4.1.8
  */
 class PublishComment extends \WP_Async_Task {
 
@@ -153,7 +160,7 @@ class PublishComment extends \WP_Async_Task {
 	 *
 	 * @param array $data Arguments.
 	 * @return array
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function prepare_data( $data ) {
 		return array( 'comment_id' => $data[0]->comment_ID );
@@ -163,7 +170,7 @@ class PublishComment extends \WP_Async_Task {
 	 * Run action.
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function run_action() {
 		$comment_id = $_POST['comment_id'];
@@ -179,7 +186,7 @@ class PublishComment extends \WP_Async_Task {
 /**
  * Run async tasks for hook `ap_processed_update_question`.
  *
- * @since 1.0.0
+ * @since 4.1.8
  */
 class UpdateQuestion extends \WP_Async_Task {
 
@@ -195,7 +202,7 @@ class UpdateQuestion extends \WP_Async_Task {
 	 *
 	 * @param array $data Arguments.
 	 * @return array
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function prepare_data( $data ) {
 		$post_id = $data[0];
@@ -206,7 +213,7 @@ class UpdateQuestion extends \WP_Async_Task {
 	 * Run action.
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
@@ -222,7 +229,7 @@ class UpdateQuestion extends \WP_Async_Task {
 /**
  * Run async tasks for hook `ap_processed_update_answer`.
  *
- * @since 1.0.0
+ * @since 4.1.8
  */
 class UpdateAnswer extends \WP_Async_Task {
 
@@ -238,7 +245,7 @@ class UpdateAnswer extends \WP_Async_Task {
 	 *
 	 * @param array $data Arguments.
 	 * @return array
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function prepare_data( $data ) {
 		$post_id = $data[0];
@@ -249,7 +256,7 @@ class UpdateAnswer extends \WP_Async_Task {
 	 * Run action.
 	 *
 	 * @return void
-	 * @since 1.0.0
+	 * @since 4.1.8
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];

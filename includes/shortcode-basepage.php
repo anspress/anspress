@@ -93,6 +93,7 @@ class AnsPress_BasePage_Shortcode {
 	 * Get attributes from shortcode and set it as query var.
 	 *
 	 * @since 3.0.0
+	 * @since 4.1.8 Added `post_parent` attribute.
 	 */
 	public function attributes( $atts, $content ) {
 		global $wp;
@@ -136,6 +137,11 @@ class AnsPress_BasePage_Shortcode {
 		// Sort by.
 		if ( isset( $atts['order_by'] ) ) {
 			$_GET['filters'] = [ 'order_by' => $atts['order_by'] ];
+		}
+
+		// parent post.
+		if ( isset( $atts['post_parent'] ) ) {
+			set_query_var( 'post_parent', $atts['post_parent'] );
 		}
 	}
 }

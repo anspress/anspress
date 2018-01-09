@@ -45,6 +45,11 @@ class AnsPress_Common_Pages {
 			$args['paged'] = get_query_var( 'page' );
 		}
 
+		// Set post parent.
+		if ( get_query_var( 'post_parent', false ) ) {
+			$args['post_parent'] = get_query_var( 'post_parent' );
+		}
+
 		/**
 		 * Filter main question list query arguments.
 		 *

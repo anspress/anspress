@@ -94,6 +94,15 @@ class AP_Form_Hooks {
 			'sanitize' => 'absint',
 		);
 
+		// Set post parent field and nonce.
+		$post_parent = ap_isset_post_value( 'post_parent', false );
+		if ( $post_parent && wp_verify_nonce( ap_isset_post_value( '__nonce_pp' ), 'post_parent_' . $post_parent ) ) {
+			$form['hidden_fields'] = array(
+				[ 'name' => 'post_parent', 'value' => $post_parent ],
+				[ 'name' => '__nonce_pp', 'value' => wp_create_nonce( 'post_parent_' . $post_parent ) ],
+			);
+		}
+
 		// Add value when editing post.
 		if ( ! empty( $editing_id ) ) {
 			$question = ap_get_post( $editing_id );
@@ -107,7 +116,6 @@ class AP_Form_Hooks {
 
 			if ( isset( $form['fields']['anonymous_name'] ) ) {
 				$fields = ap_get_post_field( 'fields', $question );
-
 				$form['fields']['anonymous_name']['value'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
 			}
 		}
@@ -341,9 +349,9 @@ class AP_Form_Hooks {
 		}
 
 		// Set post parent.
-		// @TODO: Check nonce for post parent.
-		if ( isset( $values['post_parent'] ) && $values['post_parent']['value'] ) {
-			$question_args['post_parent'] = $values['post_parent']['value'];
+		$post_parent = ap_sanitize_unslash( 'post_parent', 'r' );
+		if ( ! empty( $post_parent ) && wp_verify_nonce( ap_sanitize_unslash( '__nonce_pp', 'r' ), 'post_parent_' . $post_parent ) ) {
+			$question_args['post_parent'] = (int) $post_parent;
 		}
 
 		// If private override status.

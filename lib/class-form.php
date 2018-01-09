@@ -168,6 +168,8 @@ class Form {
 	 * 		@type array  $hidden_fields Custom hidden input fields.
 	 * }
 	 * @return void
+	 * @since 4.1.0
+	 * @since 4.1.8 Inherit `hidden_fields` from form args.
 	 */
 	public function generate( $form_args = [] ) {
 		// Dont do anything if no fields.
@@ -188,6 +190,10 @@ class Form {
 			'hidden_fields' => false,
 			'ajax_submit'   => true,
 		) );
+
+		if ( ! empty( $this->args['hidden_fields'] ) ) {
+			$form_args['hidden_fields'] = wp_parse_args( $form_args['hidden_fields'], $this->args['hidden_fields'] );
+		}
 
 		/**
 		 * Allows filtering arguments passed to @see AnsPress\Form\generate() method. Passed

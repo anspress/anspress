@@ -3,6 +3,7 @@
     "languages",
     "templates",
     "tests"
+    "lib/class-wp-async-task.php"
   ],
   "commit_ignore" : [
     ".gitignore",

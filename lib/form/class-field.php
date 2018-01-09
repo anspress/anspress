@@ -387,7 +387,12 @@ class Field {
 	 * @return void
 	 */
 	public function errors() {
-		$this->add_html( '<div class="ap-field-errorsc">' );
+		$wrapper = $this->get( 'wrapper', [] );
+
+		if ( false !== $wrapper ) {
+			$this->add_html( '<div class="ap-field-errorsc">' );
+		}
+
 		if ( $this->have_errors() ) {
 			$this->add_html( '<div class="ap-field-errors">' );
 			foreach ( $this->errors as $code => $err ) {
@@ -395,7 +400,10 @@ class Field {
 			}
 			$this->add_html( '</div>' );
 		}
-		$this->add_html( '</div>' );
+
+		if ( false !== $wrapper ) {
+			$this->add_html( '</div>' );
+		}
 	}
 
 	/**
