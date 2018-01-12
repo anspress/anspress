@@ -357,6 +357,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * Include all public classes
 		 *
 		 * @access public
+		 * @since 0.0.1
+		 * @since 4.1.8 Load all addons by default in test mode.
 		 */
 		public function site_include() {
 			\AnsPress_Hooks::init();
@@ -365,6 +367,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			foreach ( (array) ap_get_addons() as $data ) {
 				if ( $data['active'] && file_exists( $data['path'] ) ) {
+					require_once( $data['path'] );
+				} elseif ( defined( 'ANSPRESS_TEST_MODE' ) && file_exists( $data['path'] ) ) {
+					// Load all addons for test mode.
 					require_once( $data['path'] );
 				}
 			}
