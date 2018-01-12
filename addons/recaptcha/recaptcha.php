@@ -29,7 +29,7 @@ use AnsPress\Form\Field\Captcha as Captcha;
 /**
  * Include captcha field.
  */
-require_once ANSPRESS_ADDONS_DIR . '/free/recaptcha/class-captcha.php';
+require_once ANSPRESS_ADDONS_DIR . '/recaptcha/class-captcha.php';
 
 /**
  * The reCaptcha class.
@@ -46,7 +46,7 @@ class AnsPress_reCcaptcha {
 			'recaptcha_method'  => 'post',
 		]);
 
-		anspress()->add_action( 'ap_form_addon-free_recaptcha', __CLASS__, 'options' );
+		anspress()->add_action( 'ap_form_addon-recaptcha', __CLASS__, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_comment_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );

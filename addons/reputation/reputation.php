@@ -38,7 +38,7 @@ class AnsPress_Reputation_Hooks {
 			'user_page_slug_reputations'   => 'reputations',
 		]);
 
-		anspress()->add_action( 'ap_form_addon-free_reputation', __CLASS__, 'load_options', 20 );
+		anspress()->add_action( 'ap_form_addon-reputation', __CLASS__, 'load_options', 20 );
 		anspress()->add_action( 'wp_ajax_ap_save_events', __CLASS__, 'ap_save_events' );
 		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question', 10, 2 );
 		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );

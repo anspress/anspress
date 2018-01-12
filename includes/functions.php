@@ -1572,8 +1572,9 @@ function ap_search_array( $array, $key, $value ) {
 /**
  * Get all AnsPress add-ons data.
  *
- * @since 4.0.0
  * @return array
+ * @since 4.0.0
+ * @since 4.1.8 Do not fetch addon meta data from files, instead defined it in array.
  */
 function ap_get_addons() {
 	$cache = wp_cache_get( 'addons', 'anspress' );
@@ -1601,40 +1602,76 @@ function ap_get_addons() {
 	}
 
 	$all_files = apply_filters( 'ap_addon_files', $all_files );
-	$addons = [];
-	foreach ( (array) $all_files as $file ) {
+	$addons = array(
+		'email.php' => array(
+			'name' => __( 'Emails', 'anspress-question-answer' ),
+			'description' => __( 'Notifies users and admins by email for various events and activities.', 'anspress-question-answer' ),
+		),
+		'notification.php' => array(
+			'name' => __( 'Notification', 'anspress-question-answer' ),
+			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),
+		),
+		'category.php' => array(
+			'name' => __( 'Categories', 'anspress-question-answer' ),
+			'description' => __( 'Add category support in AnsPress questions.', 'anspress-question-answer' ),
+		),
+		'tag.php' => array(
+			'name' => __( 'Tags', 'anspress-question-answer' ),
+			'description' => __( 'Add tag support in AnsPress questions.', 'anspress-question-answer' ),
+		),
+		'reputation.php' => array(
+			'name' => __( 'Reputation', 'anspress-question-answer' ),
+			'description' => __( 'Award points to user based on activities.', 'anspress-question-answer' ),
+		),
+		'avatar.php' => array(
+			'name' => __( 'Dynamic Avatar', 'anspress-question-answer' ),
+			'description' => __( 'Generate user avatar based on display name initials.', 'anspress-question-answer' ),
+		),
+		'buddypress.php' => array(
+			'name' => __( 'BuddyPress', 'anspress-question-answer' ),
+			'description' => __( 'Integrate AnsPress with BuddyPress.', 'anspress-question-answer' ),
+		),
+		'profile.php' => array(
+			'name' => __( 'User Profile', 'anspress-question-answer' ),
+			'description' => __( 'User profile for users.', 'anspress-question-answer' ),
+		),
+		'recaptcha.php' => array(
+			'name' => __( 'reCaptcha', 'anspress-question-answer' ),
+			'description' => __( 'Add reCaptcha verification in question, answer and comment forms.', 'anspress-question-answer' ),
+		),
+		'syntaxhighlighter.php' => array(
+			'name' => __( 'Syntax Highlighter', 'anspress-question-answer' ),
+			'description' => __( 'Add syntax highlighter support.', 'anspress-question-answer' ),
+		),
+	);
 
-		if ( is_array( $file ) ) {
-			$id = $file['name'];
-			$path = $file['path'];
-		} else {
-			$id = wp_normalize_path( $file );
-			$path = ANSPRESS_ADDONS_DIR . DS . $file;
+	$valid_addons = [];
+	foreach ( (array) $addons as $k => $addon ) {
+		$path = ANSPRESS_ADDONS_DIR . DS . basename( $k, '.php' ) . DS . $k;
+		$path2 = ANSPRESS_ADDONS_DIR . DS . $k;
+
+		$addons[ $k ]['path'] = '';
+
+		if ( isset( $addon['path'] ) && file_exists( $addon['path'] ) ) {
+			$addons[ $k ]['path'] = wp_normalize_path( $addon['path'] );
+		} elseif ( file_exists( $path ) ) {
+			$addons[ $k ]['path'] = wp_normalize_path( $path );
+		} elseif ( file_exists( $path2 ) ) {
+			$addons[ $k ]['path'] = wp_normalize_path( $path2 );
 		}
 
-		$data = get_file_data( $path, array(
-			'name'        => 'Addon Name',
-			'addonuri'    => 'Addon URI',
-			'description' => 'Description',
-			'author'      => 'Author',
-			'authoruri'   => 'Author URI',
-			'pro'   			=> 'Pro',
-		) );
+		$addons[ $k ]['pro']    = isset( $addon['pro'] ) ? $addon['pro'] : false;
+		$addons[ $k ]['active'] = isset( $option[ $k ] ) ? true: false;
+		$addons[ $k ]['id']     = $k;
+		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], $k ) ) );
 
-		$data['pro']    = 'yes' === strtolower( $data['pro'] ) ? true: false;
-		$data['path']   = wp_normalize_path( $path );
-		$data['active'] = isset( $option[ $id ] ) ? true: false;
-		$data['id']     = $id;
-		$data['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], $id ) ) );
-
-		if ( ! empty( $data['name'] ) ) {
-			$addons[ $id ] = $data;
+		if ( ! empty( $addons[ $k ]['path'] ) && file_exists( $addons[ $k ]['path'] ) ) {
+			$valid_addons[ $k ] = $addons[ $k ];
 		}
 	}
 
-	wp_cache_set( 'addons', $addons, 'anspress' );
-
-	return $addons;
+	wp_cache_set( 'addons', $valid_addons, 'anspress' );
+	return $valid_addons;
 }
 
 /**
@@ -1760,6 +1797,44 @@ function ap_is_addon_active( $addon ) {
 	$addons = ap_get_active_addons();
 
 	if ( isset( $addons[ $addon ] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Get addon image.
+ *
+ * @param string $file Addon main file name. Example: `avatar.php` or `category.php`.
+ * @return void|string Return image if exists else null.
+ * @since 4.1.8
+ */
+function ap_get_addon_image( $file ) {
+	$addon = ap_get_addon( $file );
+
+	if ( isset( $addon['path'] ) ) {
+		$path_parts = pathinfo( $addon['path'] );
+		if ( isset( $path_parts['dirname'] ) && file_exists( $path_parts['dirname'] . '/image.png' ) ) {
+			return plugin_dir_url( $addon['path'] ) . '/image.png';
+		}
+	}
+}
+
+/**
+ * Check if addon has options.
+ *
+ * @param string $file Addon main file.
+ * @return boolean
+ * @since 4.1.8
+ */
+function ap_addon_has_options( $file ) {
+	$addon = ap_get_addon( $file );
+
+	$form_name = str_replace( '.php', '', $addon['id'] );
+	$form_name = str_replace( '/', '_', $form_name );
+
+	if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
 		return true;
 	}
 

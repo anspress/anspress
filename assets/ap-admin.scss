@@ -1167,63 +1167,62 @@ ul.ap-meta-list {
   }
 }
 .ap-addon{
-  display: inherit;
-  width: 235px;
-  border-bottom: solid 1px #eee;
-  a{
-    padding: 15px;
-    display: block;
-    color: #333;
-  }
-
-  &.active{
-    background: #ededed;
-    border-bottom: none;
-    font-weight: bold;
-  }
-  &s-list {
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 235px;
-    margin-right: 35px;
-  }
-  &s-listw {
-    background: #fff;
-    border: solid 1px #ddd;
-    border-radius: 5px;
+  width: 300px;
+  border: solid 1px #e7e7e7;
+  background: #fff;
+  margin: 0 15px 30px;
+  border-radius: 4px;
+  height: 225px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+  overflow: hidden;
+  p{
+    margin-top: 0;
+    margin-bottom: 10px;
+    height: 44px;
     overflow: hidden;
   }
+  h4{
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
+  &-image {
+    height: 95px;
+    padding: 3px 3px 0;
+    img{
+      width: 100%;
+      border-radius: 4px;
+    }
+  }
+  &-detail{
+    padding: 10px;
+  }
+  &.active{
+    border-color: #C5E1A5;
+  }
+  &s-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   &-status{
     font-weight: normal;
     float: right;
     font-size: 11px;
-    font-style: italic;
-    color: #8bc34a;
+    background: #8bc34a;
+    color: #fff;
+    padding: 0px 6px;
+    border-radius: 2px;
   }
-  &s{
-    display: flex;
-  }
-  &-options {
-    flex: 1;
-    background: #f7f7f7;
-    border-radius: 5px;
-    form, .ap-form-nofields{
-      padding: 30px;
-    }
-  }
-  &-name{
-    background: #fff;
-    margin: 0;
-    padding: 20px;
-    border-bottom: solid 1px #eee;
-    border-radius: 5px 5px 0;
-    p{
-      margin-bottom: 0;
-    }
-  }
-  &-toggle{
+  &-pro{
+    font-weight: normal;
     float: right;
-    margin-top: 10px !important;
+    font-size: 11px;
+    background: #FF5722;
+    color: #fff;
+    padding: 0px 6px;
+    border-radius: 2px;
+    margin-right: 6px;
   }
 }
 .ap-events{
@@ -1493,4 +1492,7 @@ span.ap-category-icon {
     font-size: 25px;
     color: $main-color;
   }
+}
+.ap-thickboxw{
+  padding: 20px;
 }

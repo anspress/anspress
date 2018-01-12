@@ -27,7 +27,7 @@ use AnsPress\Email as Email;
 /**
  * Include captcha field.
  */
-require_once ANSPRESS_ADDONS_DIR . '/free/email/class-email.php';
+require_once ANSPRESS_ADDONS_DIR . '/email/class-email.php';
 
 /**
  * Email addon for AnsPress
@@ -60,7 +60,7 @@ class AnsPress_Email_Hooks {
 	 */
 	public static function init() {
 		SELF::ap_default_options();
-		anspress()->add_filter( 'ap_form_addon-free_email', __CLASS__, 'register_option' );
+		anspress()->add_filter( 'ap_form_addon-email', __CLASS__, 'register_option' );
 		anspress()->add_filter( 'ap_form_email_template', __CLASS__, 'register_email_template' );
 		anspress()->add_filter( 'ap_all_options', __CLASS__, 'ap_all_options', 10, 2 );
 		anspress()->add_action( 'wp_ajax_ap_email_template', __CLASS__, 'ap_email_template' );

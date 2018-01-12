@@ -23,8 +23,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Require functions.
-require_once( ANSPRESS_ADDONS_DIR . '/free/notification/functions.php' );
-require_once( ANSPRESS_ADDONS_DIR . '/free/notification/query.php' );
+require_once( ANSPRESS_ADDONS_DIR . '/notification/functions.php' );
+require_once( ANSPRESS_ADDONS_DIR . '/notification/query.php' );
 
 /**
  * AnsPress notification hooks.
@@ -49,7 +49,7 @@ class AnsPress_Notification_Hook {
 			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
 			//anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
 			anspress()->add_filter( 'ap_menu_object', __CLASS__, 'ap_menu_object' );
-			anspress()->add_filter( 'ap_form_addon-free_notification', __CLASS__, 'load_options' );
+			anspress()->add_filter( 'ap_form_addon-notification', __CLASS__, 'load_options' );
 			anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
 			anspress()->add_action( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
 			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );

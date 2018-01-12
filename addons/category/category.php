@@ -39,7 +39,7 @@ class AnsPress_Category {
 		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( __CLASS__, 'categories_page' ) );
 
 		anspress()->add_action( 'init', __CLASS__, 'register_question_categories', 1 );
-		anspress()->add_action( 'ap_form_addon-free_category', __CLASS__, 'load_options' );
+		anspress()->add_action( 'ap_form_addon-category', __CLASS__, 'load_options' );
 		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'admin_enqueue_scripts' );
 		anspress()->add_action( 'ap_load_admin_assets', __CLASS__, 'ap_load_admin_assets' );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_category_menu' );
@@ -75,7 +75,7 @@ class AnsPress_Category {
 	 * Include required files
 	 */
 	public static function includes() {
-		require_once( ANSPRESS_ADDONS_DIR . '/free/category/widget.php' );
+		require_once( ANSPRESS_ADDONS_DIR . '/category/widget.php' );
 	}
 
 	/**

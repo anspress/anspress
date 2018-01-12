@@ -40,7 +40,7 @@ class AnsPress_Profile_Hooks {
 			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
 
-		anspress()->add_action( 'ap_form_addon-free_profile', __CLASS__, 'options' );
+		anspress()->add_action( 'ap_form_addon-profile', __CLASS__, 'options' );
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
 
 		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
@@ -421,9 +421,9 @@ class AnsPress_Profile_Hooks {
 				status_header( 404 );
 			}
 		}
-        
+
         return $posts;
-        
+
 	}
 
 	/**

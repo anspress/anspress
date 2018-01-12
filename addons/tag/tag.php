@@ -34,7 +34,7 @@ class AnsPress_Tag {
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
 
-		anspress()->add_action( 'ap_form_addon-free_tag', __CLASS__, 'option_fields' );
+		anspress()->add_action( 'ap_form_addon-tag', __CLASS__, 'option_fields' );
 		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
 		anspress()->add_action( 'init', __CLASS__, 'register_question_tag', 1 );
 		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_tags_menu' );

@@ -48,7 +48,7 @@ class AnsPress_Avatar_Hook {
 			'avatar_force'  => false,
 		]);
 
-		anspress()->add_action( 'ap_form_addon-free_avatar', __CLASS__, 'option_form' );
+		anspress()->add_action( 'ap_form_addon-avatar', __CLASS__, 'option_form' );
 		anspress()->add_filter( 'pre_get_avatar_data', __CLASS__, 'get_avatar', 1000, 3 );
 		anspress()->add_action( 'wp_ajax_ap_clear_avatar_cache', __CLASS__, 'clear_avatar_cache' );
 	}

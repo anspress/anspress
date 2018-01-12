@@ -78,6 +78,8 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
 		anspress()->add_action( 'ap_register_options', __CLASS__, 'register_options' );
 		anspress()->add_action( 'ap_after_field_markup', __CLASS__, 'page_select_field_opt' );
+		anspress()->add_action( 'admin_action_ap_addon_options', __CLASS__, 'ap_addon_options' );
+		anspress()->add_action( 'admin_action_ap_save_addon_options', __CLASS__, 'save_addon_options' );
 	}
 
 	/**
@@ -1341,4 +1343,112 @@ class AnsPress_Admin {
 		$field->add_html( '&nbsp;&nbsp;&nbsp;<a href="' . esc_url( get_permalink( $field->value() ) ) . '">' . __( 'View page', 'anspress-question-answer' ) . '</a>&nbsp;&nbsp;&nbsp;' );
 		$field->add_html( '<a href="' . esc_url( get_edit_post_link( $field->value() ) ) .  '">' . __( 'Edit page', 'anspress-question-answer' ) . '</a>' );
 	}
+
+	/**
+	 * Load addons options form in a thickbox.
+	 *
+	 * @return void
+	 */
+	public static function ap_addon_options() {
+		// Bail if no permission.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			exit;
+		}
+
+		define( 'IFRAME_REQUEST', true );
+		iframe_header();
+
+		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', [], AP_VERSION );
+		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), [], AP_VERSION );
+
+		?>
+			<script type="text/javascript">
+				currentQuestionID = '<?php the_ID(); ?>';
+				apTemplateUrl = '<?php echo ap_get_theme_url( 'js-template', false, false ); ?>';
+				aplang = {};
+				apShowComments  = false;
+			</script>
+		<?php
+
+		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js' , [ 'anspress-main' ], AP_VERSION, true );
+
+		$addon = ap_get_addon( ap_sanitize_unslash( 'addon', 'r' ) );
+		$from_args = array(
+			'form_action' => admin_url( 'admin.php?action=ap_save_addon_options&active_addon=' . $addon['id'] ),
+			'ajax_submit' => false,
+		);
+
+		/**
+		 * Filter AnsPress add-on options form.
+		 *
+		 * @param array $form_args Array for form arguments.
+		 * @since 4.1.0
+		 */
+		$form_args = apply_filters( 'ap_addon_form_args', $from_args );
+
+		$form_name = str_replace( '.php', '', $addon['id'] );
+		$form_name = str_replace( '/', '_', $form_name );
+
+		echo '<div class="ap-thickboxw">';
+		// Show updated notice.
+		if ( ap_isset_post_value( 'updated' ) === '1' ) {
+			echo '<div class="notice notice-success is-dismissible">';
+			echo '<p>' . esc_html__( 'Addon options updated successfully!', 'anspress-question-answer' ) . '</p>';
+			echo '</div>';
+		}
+
+		if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
+			anspress()->get_form( 'addon-' . $form_name )->generate( $form_args );
+		} else {
+			echo '<p class="ap-form-nofields">' . sprintf( esc_attr__( 'There is no option registered by this addon. Custom options can be registered by using hook: %s', 'anspress-question-answer' ), 'ap_form_addon-' . $form_name ) . '</p>';
+		}
+		echo '</div>';
+
+		iframe_footer();
+		exit;
+	}
+
+	/**
+	 * Saves addons options and redirect back to addon form.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public static function save_addon_options() {
+		// Bail if no permission.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			exit;
+		}
+
+		$form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
+		$addon_name = ap_sanitize_unslash( 'active_addon', 'r' );
+
+		$addon = ap_get_active_addons( $addon_name );
+		$updated = false;
+
+		// Process submit form.
+		if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
+			$form = anspress()->get_form( $form_name );
+			$values = $form->get_values();
+
+			if ( ! $form->have_errors() ) {
+				$options = get_option( 'anspress_opt', [] );
+
+				foreach ( $values as $key => $opt ) {
+					$options[ $key ] = $opt['value'];
+				}
+
+				update_option( 'anspress_opt', $options );
+				wp_cache_delete( 'anspress_opt', 'ap' );
+				wp_cache_delete( 'anspress_opt', 'ap' );
+
+				$updated = true;
+			}
+		}
+
+		wp_redirect( admin_url( 'admin.php?action=ap_addon_options&addon=' . $addon_name . '&updated=' . $updated ) );
+		exit;
+	}
+
 }
