@@ -11,9 +11,8 @@ $I->cli('option delete anspress_addons');
 $I->wait(2);
 $I->amOnPage('/wp-admin/admin.php?page=anspress_addons');
 $I->wantTo('Enable addon: Tag');
-$I->click( 'Tag', '.ap-addons-list');
-$I->click('Enable Add-on');
-$I->waitForText("Disable Addon", 20);
+$I->click( 'Enable Addon', '.addon-tag');
+$I->waitForText("Disable Addon", 20, '.addon-tag');
 
 $id = $I->havePostInDatabase( [ 'post_type' => 'page', 'post_title' => 'Ask', 'post_content' => '[anspress page="ask"]' ] );
 

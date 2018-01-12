@@ -25,27 +25,6 @@ add_thickbox();
 do_action( 'ap_before_addons_page' );
 
 $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
-$updated = false;
-
-// Process submit form.
-if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
-	$form = anspress()->get_form( $form_name );
-	$values = $form->get_values();
-
-	if ( ! $form->have_errors() ) {
-		$options = get_option( 'anspress_opt', [] );
-
-		foreach ( $values as $key => $opt ) {
-			$options[ $key ] = $opt['value'];
-		}
-
-		update_option( 'anspress_opt', $options );
-		wp_cache_delete( 'anspress_opt', 'ap' );
-		wp_cache_delete( 'anspress_opt', 'ap' );
-
-		$updated = true;
-	}
-}
 ?>
 
 <div id="anspress" class="wrap">
@@ -61,12 +40,6 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 	<div class="clear"></div>
 
-	<?php if ( true === $updated ) :   ?>
-		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( 'Addon options updated successfully!', 'anspress-question-answer' ); ?></p>
-		</div>
-	<?php endif; ?>
-
 	<div class="ap-addons" method="POST">
 		<div class="ap-addons-list">
 				<?php
@@ -81,7 +54,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 				foreach ( (array) ap_get_addons() as $file => $data ) { ?>
 
-					<div class="ap-addon<?php echo $data['active'] ? ' active' : ''; ?> ">
+					<div class="ap-addon<?php echo $data['active'] ? ' active' : ''; ?> <?php echo $data['class']; ?>">
 						<div class="ap-addon-image">
 							<?php if ( $image = ap_get_addon_image( $data['id'] ) ) : ?>
 								<img src="<?php echo esc_url( $image ); ?>" />

@@ -1444,6 +1444,9 @@ class AnsPress_Admin {
 				wp_cache_delete( 'anspress_opt', 'ap' );
 
 				$updated = true;
+
+				// Flush rewrite rules.
+				ap_opt( 'ap_flush', 'true' );
 			}
 		}
 

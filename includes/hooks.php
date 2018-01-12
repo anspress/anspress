@@ -509,7 +509,7 @@ class AnsPress_Hooks {
 	 */
 	public static function flush_rules() {
 		if ( ap_opt( 'ap_flush' ) != 'false' ) {
-			flush_rewrite_rules();
+			flush_rewrite_rules( true );
 			ap_opt( 'ap_flush', 'false' );
 		}
 	}
@@ -861,7 +861,7 @@ class AnsPress_Hooks {
 	}
 
 	public static function display_question_metas( $metas, $question_id ) {
-		if ( is_user_logged_in() && is_question() && ap_is_addon_active( 'free/email.php' ) ) {
+		if ( is_user_logged_in() && is_question() && ap_is_addon_active( 'email.php' ) ) {
 			$metas['subscribe'] = ap_subscribe_btn( false, false );
 		}
 

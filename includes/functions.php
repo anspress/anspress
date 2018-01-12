@@ -1463,7 +1463,7 @@ function ap_user_link( $user_id = false, $sub = false ) {
 			$link = '#/user/anonymous';
 		} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
 			$link = bp_core_get_userlink( $user_id, false, true );
-		} elseif ( ap_is_addon_active( 'free/profile.php' ) ) {
+		} elseif ( ap_is_addon_active( 'profile.php' ) ) {
 			$slug = get_option( 'ap_user_path' );
 			$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
 		} else {
@@ -1663,7 +1663,7 @@ function ap_get_addons() {
 		$addons[ $k ]['pro']    = isset( $addon['pro'] ) ? $addon['pro'] : false;
 		$addons[ $k ]['active'] = isset( $option[ $k ] ) ? true: false;
 		$addons[ $k ]['id']     = $k;
-		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], $k ) ) );
+		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], 'addon-' . $k ) ) );
 
 		if ( ! empty( $addons[ $k ]['path'] ) && file_exists( $addons[ $k ]['path'] ) ) {
 			$valid_addons[ $k ] = $addons[ $k ];
@@ -1750,6 +1750,9 @@ function ap_activate_addon( $addon_name ) {
 
 		// Delete cache.
 		wp_cache_delete( 'addons', 'anspress' );
+
+		// Flush rewrite rules.
+		ap_opt( 'ap_flush', 'true' );
 
 		return true;
 	}

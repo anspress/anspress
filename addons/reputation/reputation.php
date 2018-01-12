@@ -377,7 +377,7 @@ class AnsPress_Reputation_Hooks {
 			if ( $args['html'] ) {
 				$reputation = ap_get_user_reputation_meta( $args['user_id'] );
 
-				if( ap_is_addon_active( 'free/buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
+				if( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
 					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'qa/reputations" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 				}
 				else {
