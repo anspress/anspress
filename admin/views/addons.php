@@ -62,9 +62,7 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 						</div>
 						<div class="ap-addon-detail">
 							<h4>
-								<a class="ap-addon-name" href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_addons&active_addon=' . $data['id'] ) ) ; ?>" data-id="<?php echo esc_attr( $data['id'] ); ?>">
-									<?php echo esc_attr( $data['name'] ); ?>
-								</a>
+								<?php echo esc_attr( $data['name'] ); ?>
 								<?php if ( $data['active'] ) : ?>
 									<span class="ap-addon-status"><?php esc_attr_e( 'Active', 'anspress-question-answer' ); ?> </span>
 								<?php endif; ?>

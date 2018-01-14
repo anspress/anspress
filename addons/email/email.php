@@ -35,6 +35,13 @@ require_once ANSPRESS_ADDONS_DIR . '/email/class-helper.php';
  * @since 4.1.8 Renamed class from @see AnsPress_Email_Hooks to AnsPress\Addons\Email.
  */
 class Email extends \AnsPress\Singleton {
+	/**
+	 * Refers to a single instance of this class.
+	 *
+	 * @var null|object
+	 * @since 4.1.8
+	 */
+	public static $instance = null;
 
 	/**
 	 * All emails to send notification.

@@ -117,13 +117,13 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/avatar.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/buddypress.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/category/category.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/category/widget.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/categories/categories.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/categories/widget.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/email.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/class-helper.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notification/notification.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notification/functions.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notification/query.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/notifications.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/functions.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/query.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/profile/profile.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/autoload.php' );
@@ -138,7 +138,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/Socket.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/reputation/reputation.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tag/tag.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tags/tags.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/syntaxhighlighter.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . 'readme.txt' );
@@ -270,16 +270,19 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertNotEquals( false, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
 		$this->assertInstanceOf( 'AnsPress\Activity_Helper', anspress()->activity );
 
-		$this->assertTrue( class_exists( 'AnsPress_Avatar_Hook' ) );
-		$this->assertTrue( class_exists( 'AnsPress_BP_Hooks' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Category' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar\Generator' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\BuddyPress' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Categories' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Widgets\Categories' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Email' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Notification_Hook' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Profile_Hooks' ) );
-		$this->assertTrue( class_exists( 'AnsPress_reCcaptcha' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Reputation_Hooks' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Syntax_Highlighter' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Tag' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Notifications' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Notifications' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Profile' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Captcha' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Reputation' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Syntax_Highlighter' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Tags' ) );
 	}
 
 	/**

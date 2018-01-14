@@ -9,14 +9,9 @@
  * @package    AnsPress
  * @subpackage Syntax Highlighter Addon
  * @since      4.1.0
- *
- * @anspress-addon
- * Addon Name:    Syntax Highlighter
- * Addon URI:     https://anspress.io
- * Description:   Add syntax highlighter support in AnsPress form.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
  */
+
+namespace AnsPress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -28,19 +23,32 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 4.1.0
  */
-class AnsPress_Syntax_Highlighter {
-	static $brushes = [];
+class Syntax_Highlighter extends \AnsPress\Singleton {
+	/**
+	 * Instance of this class.
+	 *
+	 * @var 	object
+	 * @since 4.1.8
+	 */
+	protected static $instance = null;
+
+	/**
+	 * The brushes.
+	 *
+	 * @var array
+	 */
+	var $brushes = [];
 
 	/**
 	 * Initialize the addon.
 	 */
-	public static function init() {
-		self::brush();
-		anspress()->add_filter( 'wp_enqueue_scripts', __CLASS__, 'scripts' );
-		anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
-		anspress()->add_action( 'wp_footer', __CLASS__, 'output_scripts', 15 );
-		anspress()->add_action( 'admin_footer', __CLASS__, 'output_scripts' );
-		anspress()->add_filter( 'tiny_mce_before_init', __CLASS__, 'mce_before_init' );
+	protected function __construct() {
+		$this->brush();
+		anspress()->add_filter( 'wp_enqueue_scripts', $this, 'scripts' );
+		anspress()->add_filter( 'mce_external_plugins', $this, 'mce_plugins' );
+		anspress()->add_action( 'wp_footer', $this, 'output_scripts', 15 );
+		anspress()->add_action( 'admin_footer', $this, 'output_scripts' );
+		anspress()->add_filter( 'tiny_mce_before_init', $this, 'mce_before_init' );
 	}
 
 	/**
@@ -48,7 +56,7 @@ class AnsPress_Syntax_Highlighter {
 	 *
 	 * @return void
 	 */
-	public static function scripts() {
+	public function scripts() {
 		$js_url = ANSPRESS_URL . '/assets/syntaxhighlighter/scripts/';
 		$css_url = ANSPRESS_URL . '/assets/syntaxhighlighter/styles/';
 
@@ -83,7 +91,7 @@ class AnsPress_Syntax_Highlighter {
 			'brush-r'          => 'shBrushR.js',
 		);
 
-		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( self::$brushes )  . ';</script>';
+		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes )  . ';</script>';
 		wp_register_script( 'syntaxhighlighter-core',  $js_url . 'shCore.js', [],  AP_VERSION );
 
 		foreach ( $scripts as $key => $script ) {
@@ -100,8 +108,8 @@ class AnsPress_Syntax_Highlighter {
 	 *
 	 * @return void
 	 */
-	public static function brush() {
-		self::$brushes = array(
+	public function brush() {
+		$this->brushes = array(
 			'php'           => 'PHP',
 			'css'           => 'CSS',
 			'xml'           => 'XML/HTML',
@@ -140,7 +148,7 @@ class AnsPress_Syntax_Highlighter {
 	 * @param array $plugins Plugins.
 	 * @return array
 	 */
-	public static function mce_plugins( $plugins ) {
+	public function mce_plugins( $plugins ) {
 		$plugins[ 'apsyntax' ] = ANSPRESS_URL . 'assets/js/min/tinymce-syntax.min.js';
 		return $plugins;
 	}
@@ -150,7 +158,7 @@ class AnsPress_Syntax_Highlighter {
 	 *
 	 * @return void
 	 */
-	public static function output_scripts() {
+	public function output_scripts() {
 		if ( ! is_anspress() ) {
 			return;
 		}
@@ -158,7 +166,7 @@ class AnsPress_Syntax_Highlighter {
 		global $wp_styles;
 
 		$scripts = [];
-		foreach ( self::$brushes as $brush => $label ) {
+		foreach ( $this->brushes as $brush => $label ) {
 			$scripts[] = 'syntaxhighlighter-brush-' . strtolower( $brush );
 		}
 
@@ -202,7 +210,7 @@ class AnsPress_Syntax_Highlighter {
 	 * @param array $options TinyMCE options.
 	 * @return array
 	 */
-	public static function mce_before_init( $options ) {
+	public function mce_before_init( $options ) {
 		if ( ! isset( $options['extended_valid_elements'] ) ) {
 			$options['extended_valid_elements'] = '';
 		} else {
@@ -222,5 +230,5 @@ class AnsPress_Syntax_Highlighter {
 	}
 }
 
-// Time to lunch the rocket.
-AnsPress_Syntax_Highlighter::init();
+// Time to launch the rocket.
+Syntax_Highlighter::init();

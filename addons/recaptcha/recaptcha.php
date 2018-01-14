@@ -10,21 +10,16 @@
  * @link       https://anspress.io
  * @package    AnsPress
  * @subpackage reCaptcha Addon
- *
- * @anspress-addon
- * Addon Name:    reCaptcha
- * Addon URI:     https://anspress.io
- * Description:   Add reCaptcha support in AnsPress form.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
  */
+
+namespace Anspress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-use AnsPress\Form\Field\Captcha as Captcha;
+use ReCaptcha\ReCaptcha;
 
 /**
  * Include captcha field.
@@ -34,28 +29,36 @@ require_once ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/class-captcha.php';
 /**
  * The reCaptcha class.
  */
-class AnsPress_reCcaptcha {
+class Captcha extends \AnsPress\Singleton {
+	/**
+	 * Instance of this class.
+	 *
+	 * @var 	object
+	 * @since 4.1.8
+	 */
+	protected static $instance = null;
+
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 *
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
-	public static function init() {
+	protected function __construct() {
 		ap_add_default_options([
 			'recaptcha_method'  => 'post',
 		]);
 
-		anspress()->add_action( 'ap_form_addon-recaptcha', __CLASS__, 'options' );
-		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
-		anspress()->add_action( 'ap_answer_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
-		anspress()->add_action( 'ap_comment_form_fields', __CLASS__, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_form_addon-recaptcha', $this, 'options' );
+		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_answer_form_fields', $this, 'ap_question_form_fields', 10, 2 );
+		anspress()->add_action( 'ap_comment_form_fields', $this, 'ap_question_form_fields', 10, 2 );
 	}
 
 	/**
 	 * Register Categories options
 	 */
-	public static function options() {
+	public function options() {
 		$opt = ap_opt();
 
 		$form = array(
@@ -93,7 +96,7 @@ class AnsPress_reCcaptcha {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function ap_question_form_fields( $form ) {
+	public function ap_question_form_fields( $form ) {
 		if ( ap_show_captcha_to_user() ) {
 			$form['fields']['captcha'] = array(
 				'label' => __( 'Prove that you are a human', 'anspress-question-answer' ),
@@ -107,4 +110,5 @@ class AnsPress_reCcaptcha {
 
 }
 
-AnsPress_reCcaptcha::init();
+// Initialize the class.
+Captcha::init();

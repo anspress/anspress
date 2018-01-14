@@ -8,14 +8,10 @@
  * @link       https://anspress.io
  * @package    AnsPress
  * @subpackage Categories Addon
- *
- * @anspress-addon
- * Addon Name:    Category
- * Addon URI:     https://anspress.io
- * Description:   Add category support in AnsPress questions.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
+ * @since      4.1.8
  */
+
+namespace AnsPress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -23,59 +19,60 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Category addon for AnsPress
+ * Categories addon class.
  */
-class AnsPress_Category {
+class Categories extends \AnsPress\Singleton {
+
+	/**
+	 * Refers to a single instance of this class.
+	 *
+	 * @var null|object
+	 * @since 4.1.8
+	 */
+	public static $instance = null;
 
 	/**
 	 * Initialize the class.
 	 *
-	 * @since 4.0
+	 * @since 4.0.0
 	 */
-	public static function init() {
-		SELF::includes();
+	protected function __construct() {
+		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( $this, 'category_page' ), false );
+		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categories_page' ) );
 
-		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( __CLASS__, 'category_page' ), false );
-		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( __CLASS__, 'categories_page' ) );
-
-		anspress()->add_action( 'init', __CLASS__, 'register_question_categories', 1 );
-		anspress()->add_action( 'ap_form_addon-category', __CLASS__, 'load_options' );
-		anspress()->add_action( 'admin_enqueue_scripts', __CLASS__, 'admin_enqueue_scripts' );
-		anspress()->add_action( 'ap_load_admin_assets', __CLASS__, 'ap_load_admin_assets' );
-		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_category_menu' );
-		anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'ap_display_question_metas', 10, 2 );
-		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
-		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
-		anspress()->add_action( 'save_post_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
-		anspress()->add_action( 'terms_clauses', __CLASS__, 'terms_clauses', 10, 3 );
-		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
-		anspress()->add_action( 'question_category_add_form_fields', __CLASS__, 'image_field_new' );
-		anspress()->add_action( 'question_category_edit_form_fields', __CLASS__, 'image_field_edit' );
-		anspress()->add_action( 'create_question_category', __CLASS__, 'save_image_field' );
-		anspress()->add_action( 'edited_question_category', __CLASS__, 'save_image_field' );
-		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
-		anspress()->add_filter( 'ap_question_subscribers_action_id', __CLASS__, 'subscribers_action_id' );
-		anspress()->add_filter( 'ap_ask_btn_link', __CLASS__, 'ap_ask_btn_link' );
-		//anspress()->add_filter( 'ap_canonical_url', __CLASS__, 'ap_canonical_url' );
-		anspress()->add_filter( 'wp_head', __CLASS__, 'category_feed' );
-		anspress()->add_filter( 'manage_edit-question_category_columns', __CLASS__, 'column_header' );
-		anspress()->add_filter( 'manage_question_category_custom_column', __CLASS__, 'column_content', 10, 3 );
-		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_category_archive', 9999, 2 );
+		anspress()->add_action( 'init', $this, 'register_question_categories', 1 );
+		anspress()->add_action( 'ap_form_addon-categories', $this, 'load_options' );
+		anspress()->add_action( 'admin_enqueue_scripts', $this, 'admin_enqueue_scripts' );
+		anspress()->add_action( 'ap_load_admin_assets', $this, 'ap_load_admin_assets' );
+		anspress()->add_action( 'ap_admin_menu', $this, 'admin_category_menu' );
+		anspress()->add_action( 'ap_display_question_metas', $this, 'ap_display_question_metas', 10, 2 );
+		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
+		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
+		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
+		anspress()->add_action( 'save_post_question', $this, 'after_new_question', 0, 2 );
+		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
+		anspress()->add_action( 'terms_clauses', $this, 'terms_clauses', 10, 3 );
+		anspress()->add_filter( 'ap_list_filters', $this, 'ap_list_filters' );
+		anspress()->add_action( 'question_category_add_form_fields', $this, 'image_field_new' );
+		anspress()->add_action( 'question_category_edit_form_fields', $this, 'image_field_edit' );
+		anspress()->add_action( 'create_question_category', $this, 'save_image_field' );
+		anspress()->add_action( 'edited_question_category', $this, 'save_image_field' );
+		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
+		anspress()->add_filter( 'ap_main_questions_args', $this, 'ap_main_questions_args' );
+		anspress()->add_filter( 'ap_question_subscribers_action_id', $this, 'subscribers_action_id' );
+		anspress()->add_filter( 'ap_ask_btn_link', $this, 'ap_ask_btn_link' );
+		//anspress()->add_filter( 'ap_canonical_url', $this, 'ap_canonical_url' );
+		anspress()->add_filter( 'wp_head', $this, 'category_feed' );
+		anspress()->add_filter( 'manage_edit-question_category_columns', $this, 'column_header' );
+		anspress()->add_filter( 'manage_question_category_custom_column', $this, 'column_content', 10, 3 );
+		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
+		anspress()->add_action( 'posts_pre_query', $this, 'modify_query_category_archive', 9999, 2 );
 
 		// List filtering.
-		anspress()->add_action( 'ap_ajax_load_filter_category', __CLASS__, 'load_filter_category' );
-		anspress()->add_filter( 'ap_list_filter_active_category', __CLASS__, 'filter_active_category', 10, 2 );
-	}
+		anspress()->add_action( 'ap_ajax_load_filter_category', $this, 'load_filter_category' );
+		anspress()->add_filter( 'ap_list_filter_active_category', $this, 'filter_active_category', 10, 2 );
 
-	/**
-	 * Include required files
-	 */
-	public static function includes() {
-		require_once( ANSPRESS_ADDONS_DIR . '/category/widget.php' );
+		anspress()->add_action( 'widgets_init', $this, 'widget' );
 	}
 
 	/**
@@ -83,7 +80,7 @@ class AnsPress_Category {
 	 *
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
-	public static function category_page() {
+	public function category_page() {
 		$question_args = array(
 			'tax_query' => array(
 				array(
@@ -114,7 +111,7 @@ class AnsPress_Category {
 	/**
 	 * Categories page layout
 	 */
-	public static function categories_page() {
+	public function categories_page() {
 		global $question_categories, $ap_max_num_pages, $ap_per_page;
 
 		$paged 							= max( 1, get_query_var( 'paged' ) );
@@ -152,7 +149,7 @@ class AnsPress_Category {
 	 * @return void
 	 * @since 2.0
 	 */
-	public static function register_question_categories() {
+	public function register_question_categories() {
 		ap_add_default_options([
 			'form_category_orderby'   => 'count',
 			'categories_page_order'   => 'DESC',
@@ -216,7 +213,7 @@ class AnsPress_Category {
 	/**
 	 * Register Categories options
 	 */
-	public static function load_options() {
+	public function load_options() {
 		$opt = ap_opt();
 		$form = array(
 			'fields' => array(
@@ -282,7 +279,7 @@ class AnsPress_Category {
 	/**
 	 * Enqueue required script
 	 */
-	public static function admin_enqueue_scripts() {
+	public function admin_enqueue_scripts() {
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
@@ -298,7 +295,7 @@ class AnsPress_Category {
 	 * @param boolean $return Return.
 	 * @return boolean
 	 */
-	public static function ap_load_admin_assets( $return ) {
+	public function ap_load_admin_assets( $return ) {
 		$page = get_current_screen();
 		if ( 'question_category' === $page->taxonomy ) {
 			return true;
@@ -312,7 +309,7 @@ class AnsPress_Category {
 	 *
 	 * @since 2.0
 	 */
-	public static function admin_category_menu() {
+	public function admin_category_menu() {
 		add_submenu_page( 'anspress', __( 'Questions Category', 'anspress-question-answer' ), __( 'Category', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_category' );
 	}
 
@@ -324,7 +321,7 @@ class AnsPress_Category {
 	 * @return 	array
 	 * @since 	1.0
 	 */
-	public static function ap_display_question_metas( $metas, $question_id ) {
+	public function ap_display_question_metas( $metas, $question_id ) {
 		if ( ap_post_have_terms( $question_id ) ) {
 			$metas['categories'] = ap_question_categories_html( array( 'label' => '<i class="apicon-category"></i>' ) );
 		}
@@ -338,7 +335,7 @@ class AnsPress_Category {
 	 * @param array $js JavaScripts.
 	 * @since 1.0
 	 */
-	public static function ap_assets_js( $js ) {
+	public function ap_assets_js( $js ) {
 		if ( ap_current_page() === 'category' ) {
 			$js['main']['active'] = true;
 		}
@@ -353,7 +350,7 @@ class AnsPress_Category {
 	 * @param  string $taxonomy Current taxonomy slug.
 	 * @return string
 	 */
-	public static function term_link_filter( $url, $term, $taxonomy ) {
+	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_category' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
 				$opt = get_option( 'ap_categories_path', 'categories' );
@@ -373,7 +370,7 @@ class AnsPress_Category {
 	 * @return 	array
 	 * @since 	4.1.0
 	 */
-	public static function ap_question_form_fields( $form ) {
+	public function ap_question_form_fields( $form ) {
 		if ( wp_count_terms( 'question_category' ) == 0 ) { // WPCS: loose comparison okay.
 			return $form;
 		}
@@ -409,7 +406,7 @@ class AnsPress_Category {
 	 * @return 	void
 	 * @since 	1.0
 	 */
-	public static function after_new_question( $post_id, $post ) {
+	public function after_new_question( $post_id, $post ) {
 		$values = anspress()->get_form( 'question' )->get_values();
 
 		if ( isset( $values['category']['value'] ) ) {
@@ -424,7 +421,7 @@ class AnsPress_Category {
 	 * @return string
 	 * @deprecated 4.1.1
 	 */
-	public static function page_title( $title ) {
+	public function page_title( $title ) {
 		if ( is_question_categories() ) {
 			$title = ap_opt( 'categories_page_title' );
 		} elseif ( is_question_category() ) {
@@ -446,7 +443,7 @@ class AnsPress_Category {
 	 * @param  array $navs Breadcrumbs nav array.
 	 * @return array
 	 */
-	public static function ap_breadcrumbs( $navs ) {
+	public function ap_breadcrumbs( $navs ) {
 		if ( is_question() && taxonomy_exists( 'question_category' ) ) {
 			$cats = get_the_terms( get_question_id(), 'question_category' );
 
@@ -484,7 +481,7 @@ class AnsPress_Category {
 	 * @param array $taxonomies Taxonomies.
 	 * @param array $args Args.
 	 */
-	public static function terms_clauses( $pieces, $taxonomies, $args ) {
+	public function terms_clauses( $pieces, $taxonomies, $args ) {
 
 		if ( ! in_array( 'question_category', $taxonomies, true ) || ! isset( $args['ap_query'] ) || 'subscription' !== $args['ap_query'] ) {
 			return $pieces;
@@ -504,7 +501,7 @@ class AnsPress_Category {
 	 * @param array $filters Filters.
 	 * @return array
 	 */
-	public static function ap_list_filters( $filters ) {
+	public function ap_list_filters( $filters ) {
 		global $wp;
 
 		if ( ! isset( $wp->query_vars['ap_categories'] ) && ! is_question_category() ) {
@@ -525,7 +522,7 @@ class AnsPress_Category {
 	 * @param  array $term Term.
 	 * @return void
 	 */
-	public static function image_field_new( $term ) {
+	public function image_field_new( $term ) {
 		?>
 		<div class='form-field term-image-wrap'>
 			<label for='ap_image'><?php esc_attr_e( 'Image', 'anspress-question-answer' ); ?></label>
@@ -560,7 +557,7 @@ class AnsPress_Category {
 	 *
 	 * @param object $term Term.
 	 */
-	public static function image_field_edit( $term ) {
+	public function image_field_edit( $term ) {
 		$term_meta = get_term_meta( $term->term_id, 'ap_category', true );
 		$term_meta = wp_parse_args( $term_meta, array(
 			'image' => [ 'id' => '', 'url' => '' ],
@@ -619,7 +616,7 @@ class AnsPress_Category {
 	 *
 	 * @param  integer $term_id Term id.
 	 */
-	public static function save_image_field( $term_id ) {
+	public function save_image_field( $term_id ) {
 
 		$image_url = ap_isset_post_value( 'ap_category_image_url', '' );
 		$image_id  = ap_isset_post_value( 'ap_category_image_id', '' );
@@ -689,7 +686,7 @@ class AnsPress_Category {
 	 * @since unknown
 	 * @since 4.1.6 Fixed: category pagination.
 	 */
-	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
+	public function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base_slug = get_page_uri( ap_opt( 'categories_page' ) );
 		update_option( 'ap_categories_path', $base_slug, true );
 
@@ -707,7 +704,7 @@ class AnsPress_Category {
 	 * @param  array $args Questions args.
 	 * @return array
 	 */
-	public static function ap_main_questions_args( $args ) {
+	public function ap_main_questions_args( $args ) {
 		global $wp;
 		$query = $wp->query_vars;
 
@@ -738,7 +735,7 @@ class AnsPress_Category {
 	 * @param  integer $action_id Current action ID.
 	 * @return integer
 	 */
-	public static function subscribers_action_id( $action_id ) {
+	public function subscribers_action_id( $action_id ) {
 		if ( is_question_category() ) {
 			global $question_category;
 			$action_id = $question_category->term_id;
@@ -753,7 +750,7 @@ class AnsPress_Category {
 	 * @param  string $link Ask button link.
 	 * @return string
 	 */
-	public static function ap_ask_btn_link( $link ) {
+	public function ap_ask_btn_link( $link ) {
 		if ( is_question_category() ) {
 			$question_category = get_queried_object();
 			return $link . '?category=' . $question_category->term_id;
@@ -769,7 +766,7 @@ class AnsPress_Category {
 	 * @return string
 	 * @deprecated 4.1.1
 	 */
-	public static function ap_canonical_url( $canonical_url ) {
+	public function ap_canonical_url( $canonical_url ) {
 		if ( is_question_category() ) {
 			global $question_category;
 
@@ -786,7 +783,7 @@ class AnsPress_Category {
 	/**
 	 * Category feed link in head.
 	 */
-	public static function category_feed() {
+	public function category_feed() {
 
 		if ( is_question_category() ) {
 			$question_category = get_queried_object();
@@ -799,7 +796,7 @@ class AnsPress_Category {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function load_filter_category() {
+	public function load_filter_category() {
 		$filter = ap_sanitize_unslash( 'filter', 'r' );
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 
@@ -817,7 +814,7 @@ class AnsPress_Category {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function filter_active_category( $active, $filter ) {
+	public function filter_active_category( $active, $filter ) {
 		$current_filters = ap_get_current_list_filters( 'category' );
 
 		if ( ! empty( $current_filters ) ) {
@@ -850,7 +847,7 @@ class AnsPress_Category {
 	 * @param array $columns Category columns.
 	 * @return array
 	 */
-	public static function column_header( $columns ) {
+	public function column_header( $columns ) {
 		$columns['icon'] = 'Icon';
 		return $columns;
 	}
@@ -858,7 +855,7 @@ class AnsPress_Category {
 	/**
 	 * Icon column content.
 	 */
-	public static function column_content( $value, $column_name, $tax_id ) {
+	public function column_content( $value, $column_name, $tax_id ) {
 		if ( 'icon' === $column_name ) {
 			ap_category_icon( $tax_id );
 		}
@@ -871,7 +868,7 @@ class AnsPress_Category {
 	 * @return string
 	 * @since 4.1.0
 	 */
-	public static function ap_current_page( $query_var ) {
+	public function ap_current_page( $query_var ) {
 		if ( 'categories' === $query_var && 'category' === get_query_var( 'ap_page' ) ) {
 			return 'category';
 		}
@@ -887,7 +884,7 @@ class AnsPress_Category {
 	 * @return void|array
 	 * @since 4.1.0
 	 */
-	public static function modify_query_category_archive( $posts, $query ) {
+	public function modify_query_category_archive( $posts, $query ) {
 		if ( $query->is_main_query() && $query->is_tax( 'question_category' ) && 'category' === get_query_var( 'ap_page' ) ) {
 			$query->found_posts = 1;
 			$query->max_num_pages = 1;
@@ -898,7 +895,17 @@ class AnsPress_Category {
 
 		return $posts;
 	}
+
+	/**
+	 * Include required files.
+	 *
+	 * @since 4.1.8
+	 */
+	public function widget() {
+		require_once( ANSPRESS_ADDONS_DIR . '/categories/widget.php' );
+		register_widget( 'Anspress\Widgets\Categories' );
+	}
 }
 
 // Init addon.
-AnsPress_Category::init();
+Categories::init();

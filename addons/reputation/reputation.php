@@ -8,14 +8,9 @@
  * @link         https://anspress.io
  * @package      AnsPress
  * @subpackage   Reputation addon
- *
- * @anspress-addon
- * Addon Name:    Reputation
- * Addon URI:     https://anspress.io
- * Description:   Award reputation to user based on activities.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
  */
+
+namespace Anspress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -25,54 +20,62 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Reputation hooks.
  */
-class AnsPress_Reputation_Hooks {
+class Reputation extends \AnsPress\Singleton {
+
+	/**
+	 * Instance of this class.
+	 *
+	 * @var 	object
+	 * @since 4.1.8
+	 */
+	protected static $instance = null;
 
 	/**
 	 * Init class.
 	 */
-	public static function init() {
-		SELF::register_default_events();
+	protected function __construct() {
+		$this->register_default_events();
 
 		ap_add_default_options([
 			'user_page_title_reputations'  => __( 'Reputations', 'anspress-question-answer' ),
 			'user_page_slug_reputations'   => 'reputations',
 		]);
 
-		anspress()->add_action( 'ap_form_addon-reputation', __CLASS__, 'load_options', 20 );
-		anspress()->add_action( 'wp_ajax_ap_save_events', __CLASS__, 'ap_save_events' );
-		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'new_question', 10, 2 );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_untrash_question', __CLASS__, 'new_question', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_answer', __CLASS__, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
-		anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
-		anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up' );
-		anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
-		anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
-		anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
-		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
-		anspress()->add_filter( 'user_register', __CLASS__, 'user_register' );
-		anspress()->add_action( 'delete_user', __CLASS__, 'delete_user' );
-		anspress()->add_filter( 'ap_user_display_name', __CLASS__, 'display_name', 10, 2 );
-		anspress()->add_filter( 'ap_pre_fetch_question_data', __CLASS__, 'pre_fetch_post' );
-		anspress()->add_filter( 'ap_pre_fetch_answer_data', __CLASS__, 'pre_fetch_post' );
-		anspress()->add_filter( 'bp_before_member_header_meta', __CLASS__, 'bp_profile_header_meta' );
-		anspress()->add_filter( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
-		anspress()->add_filter( 'ap_ajax_load_more_reputation', __CLASS__, 'load_more_reputation' );
-		anspress()->add_filter( 'ap_bp_nav', __CLASS__, 'ap_bp_nav' );
-		anspress()->add_filter( 'ap_bp_page', __CLASS__, 'ap_bp_page', 10, 2 );
-		anspress()->add_filter( 'ap_all_options', __CLASS__, 'ap_all_options', 10, 2 );
+		anspress()->add_action( 'ap_form_addon-reputation', $this, 'load_options', 20 );
+		anspress()->add_action( 'wp_ajax_ap_save_events', $this, 'ap_save_events' );
+		anspress()->add_action( 'ap_after_new_question', $this, 'new_question', 10, 2 );
+		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_untrash_question', $this, 'new_question', 10, 2 );
+		anspress()->add_action( 'ap_trash_question', $this, 'trash_question', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_question', $this, 'trash_question', 10, 2 );
+		anspress()->add_action( 'ap_untrash_answer', $this, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_trash_answer', $this, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_answer', $this, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
+		anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer' );
+		anspress()->add_action( 'ap_vote_up', $this, 'vote_up' );
+		anspress()->add_action( 'ap_vote_down', $this, 'vote_down' );
+		anspress()->add_action( 'ap_undo_vote_up', $this, 'undo_vote_up' );
+		anspress()->add_action( 'ap_undo_vote_down', $this, 'undo_vote_down' );
+		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
+		anspress()->add_action( 'ap_unpublish_comment', $this, 'delete_comment' );
+		anspress()->add_filter( 'user_register', $this, 'user_register' );
+		anspress()->add_action( 'delete_user', $this, 'delete_user' );
+		anspress()->add_filter( 'ap_user_display_name', $this, 'display_name', 10, 2 );
+		anspress()->add_filter( 'ap_pre_fetch_question_data', $this, 'pre_fetch_post' );
+		anspress()->add_filter( 'ap_pre_fetch_answer_data', $this, 'pre_fetch_post' );
+		anspress()->add_filter( 'bp_before_member_header_meta', $this, 'bp_profile_header_meta' );
+		anspress()->add_filter( 'ap_user_pages', $this, 'ap_user_pages' );
+		anspress()->add_filter( 'ap_ajax_load_more_reputation', $this, 'load_more_reputation' );
+		anspress()->add_filter( 'ap_bp_nav', $this, 'ap_bp_nav' );
+		anspress()->add_filter( 'ap_bp_page', $this, 'ap_bp_page', 10, 2 );
+		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 10, 2 );
 	}
 
 	/**
 	 * Register reputation options
 	 */
-	public static function load_options() {
+	public function load_options() {
 		$opt = ap_opt();
 
 		$form = array(
@@ -99,7 +102,7 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Register default reputation events.
 	 */
-	public static function register_default_events() {
+	public function register_default_events() {
 		ap_register_reputation_event( 'register', array(
 			'points'      => 10,
 			'label'       => __( 'Registration', 'anspress-question-answer' ),
@@ -190,7 +193,7 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Save reputation events.
 	 */
-	public static function ap_save_events() {
+	public function ap_save_events() {
 		check_ajax_referer( 'ap-save-events', '__nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -220,7 +223,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function new_question( $post_id, $_post ) {
+	public function new_question( $post_id, $_post ) {
 		ap_insert_reputation( 'ask', $post_id, $_post->post_author );
 	}
 
@@ -229,7 +232,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function new_answer( $post_id, $_post ) {
+	public function new_answer( $post_id, $_post ) {
 		ap_insert_reputation( 'answer', $post_id, $_post->post_author );
 	}
 
@@ -239,7 +242,7 @@ class AnsPress_Reputation_Hooks {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function trash_question( $post_id, $_post ) {
+	public function trash_question( $post_id, $_post ) {
 		ap_delete_reputation( 'ask', $post_id, $_post->post_author );
 	}
 
@@ -249,7 +252,7 @@ class AnsPress_Reputation_Hooks {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function trash_answer( $post_id, $_post ) {
+	public function trash_answer( $post_id, $_post ) {
 		ap_delete_reputation( 'answer', $post_id, $_post->post_author );
 	}
 
@@ -258,7 +261,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param object $_post Post object.
 	 */
-	public static function select_answer( $_post ) {
+	public function select_answer( $_post ) {
 		ap_insert_reputation( 'best_answer', $_post->ID, $_post->post_author );
 		$question = get_post( $_post->post_parent );
 
@@ -273,7 +276,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param object $_post Post object.
 	 */
-	public static function unselect_answer( $_post ) {
+	public function unselect_answer( $_post ) {
 		ap_delete_reputation( 'best_answer', $_post->ID, $_post->post_author );
 		$question = get_post( $_post->post_parent );
 		ap_delete_reputation( 'select_answer', $_post->ID, $question->post_author );
@@ -284,7 +287,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function vote_up( $post_id ) {
+	public function vote_up( $post_id ) {
 		$_post = get_post( $post_id );
 		ap_insert_reputation( 'received_vote_up', $_post->ID, $_post->post_author );
 		ap_insert_reputation( 'given_vote_up', $_post->ID );
@@ -295,7 +298,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function vote_down( $post_id ) {
+	public function vote_down( $post_id ) {
 		$_post = get_post( $post_id );
 		ap_insert_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
 		ap_insert_reputation( 'given_vote_down', $_post->ID );
@@ -306,7 +309,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function undo_vote_up( $post_id ) {
+	public function undo_vote_up( $post_id ) {
 		$_post = get_post( $post_id );
 		ap_delete_reputation( 'received_vote_up', $_post->ID, $_post->post_author );
 		ap_delete_reputation( 'given_vote_up', $_post->ID );
@@ -317,7 +320,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function undo_vote_down( $post_id ) {
+	public function undo_vote_down( $post_id ) {
 		$_post = get_post( $post_id );
 		ap_delete_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
 		ap_delete_reputation( 'given_vote_down', $_post->ID );
@@ -328,7 +331,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param  object $comment WordPress comment object.
 	 */
-	public static function new_comment( $comment ) {
+	public function new_comment( $comment ) {
 		ap_insert_reputation( 'comment', $comment->comment_ID, $comment->user_id );
 	}
 
@@ -337,7 +340,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param  object $comment Comment object.
 	 */
-	public static function delete_comment( $comment ) {
+	public function delete_comment( $comment ) {
 		ap_delete_reputation( 'comment', $comment->comment_ID, $comment->user_id );
 	}
 
@@ -346,7 +349,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $user_id User Id.
 	 */
-	public static function user_register( $user_id ) {
+	public function user_register( $user_id ) {
 		ap_insert_reputation( 'register', $user_id, $user_id );
 	}
 
@@ -355,7 +358,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param integer $user_id User ID.
 	 */
-	public static function delete_user( $user_id ) {
+	public function delete_user( $user_id ) {
 		global $wpdb;
 		$delete = $wpdb->delete( $wpdb->ap_reputations, [ 'repu_user_id' => $user_id ], [ '%d' ] ); // WPCS: db call okay, db cache okay.
 
@@ -371,7 +374,7 @@ class AnsPress_Reputation_Hooks {
 	 * @param array  $args Arguments.
 	 * @return string
 	 */
-	public static function display_name( $name, $args ) {
+	public function display_name( $name, $args ) {
 		if ( $args['user_id'] > 0 ) {
 
 			if ( $args['html'] ) {
@@ -394,7 +397,7 @@ class AnsPress_Reputation_Hooks {
 	 *
 	 * @param array $ids Pre fetching ids.
 	 */
-	public static function pre_fetch_post( $ids ) {
+	public function pre_fetch_post( $ids ) {
 		if ( ! empty( $ids['user_ids'] ) ) {
 			ap_get_users_reputation( $ids['user_ids'] );
 		}
@@ -403,19 +406,19 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Show reputation points of user in BuddyPress profile meta.
 	 */
-	public static function bp_profile_header_meta() {
+	public function bp_profile_header_meta() {
 		echo '<span class="ap-user-meta ap-user-meta-reputation">' . sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_user_reputation_meta( bp_displayed_user_id() ) ) . '</span>';
 	}
 
 	/**
 	 * Adds reputations tab in AnsPress authors page.
 	 */
-	public static function ap_user_pages() {
+	public function ap_user_pages() {
 		anspress()->user_pages[] = array(
 			'slug'  => 'reputations',
 			'label' => __( 'Reputations', 'anspress-question-answer' ),
 			'icon'  => 'apicon-reputation',
-			'cb'    => [ __CLASS__, 'reputation_page' ],
+			'cb'    => [ $this, 'reputation_page' ],
 			'order' => 5,
 		);
 	}
@@ -423,24 +426,24 @@ class AnsPress_Reputation_Hooks {
 	/**
 	 * Display reputation tab content in AnsPress author page.
 	 */
-	public static function reputation_page() {
+	public function reputation_page() {
 		$user_id = get_queried_object_id();
 
-		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
+		$reputations = new \AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
 		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 
 	/**
 	 * Ajax callback for loading more reputations.
 	 */
-	public static function load_more_reputation() {
+	public function load_more_reputation() {
 		check_admin_referer( 'load_more_reputation', '__nonce' );
 
 		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
 		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
 
 		ob_start();
-		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
+		$reputations = new \AnsPress_Reputation_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
 		while ( $reputations->have() ) : $reputations->the_reputation();
 			include ap_get_theme_location( 'addons/reputation/item.php' );
 		endwhile;
@@ -462,7 +465,7 @@ class AnsPress_Reputation_Hooks {
 	 * @param array $nav Nav menu.
 	 * @return array
 	 */
-	public static function ap_bp_nav( $nav ) {
+	public function ap_bp_nav( $nav ) {
 		$nav[] = [ 'name' => __( 'Reputations', 'anspress-question-answer' ), 'slug' => 'reputations' ];
 		return $nav;
 	}
@@ -474,18 +477,18 @@ class AnsPress_Reputation_Hooks {
 	 * @param string $template Template.
 	 * @param array
 	 */
-	public static function ap_bp_page( $cb, $template ) {
+	public function ap_bp_page( $cb, $template ) {
 
 		if ( 'reputations' === $template ) {
-			return [ __CLASS__, 'bp_reputation_page' ];
+			return [ $this, 'bp_reputation_page' ];
 		}
 		return $cb;
 	}
 
-	public static function bp_reputation_page() {
+	public function bp_reputation_page() {
 		$user_id = bp_displayed_user_id();
 
-		$reputations = new AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
+		$reputations = new \AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
 		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 
@@ -496,7 +499,7 @@ class AnsPress_Reputation_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function ap_all_options( $all_options ) {
+	public function ap_all_options( $all_options ) {
 		$all_options['reputations'] = array(
 			'label'    => __( 'Reputations', 'anspress-question-answer' ),
 			'template' => 'reputation-events.php',
@@ -506,4 +509,5 @@ class AnsPress_Reputation_Hooks {
 	}
 }
 
-AnsPress_Reputation_Hooks::init();
+// Initialize addon.
+Reputation::init();

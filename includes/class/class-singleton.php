@@ -22,14 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 4.1.8
  */
-class Singleton {
-	/**
-	 * Refers to a single instance of this class.
-	 *
-	 * @var null|object
-	 * @since 4.1.8
-	 */
-	public static $instance = null;
+abstract class Singleton {
 
 	/**
 	 * Cloning is forbidden.
@@ -39,14 +32,6 @@ class Singleton {
 	 */
 	private function __clone() {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' ); // WPCS: xss okay.
-	}
-
-	/**
-	 * Class constructor must be protected.
-	 *
-	 * @since 4.1.8
-	 */
-	protected function __construct() {
 	}
 
 	/**
@@ -64,9 +49,9 @@ class Singleton {
 	 * @return AnsPress\Singleton A single instance of this class.
 	 * @since 4.1.8
 	 */
-	final public static function init() {
-		if ( ! isset( static::$instance ) ) {
-				static::$instance = new static();
+	public static function init() {
+		if ( is_null( static::$instance ) ) {
+			static::$instance = new static();
 		}
 
 		return static::$instance;

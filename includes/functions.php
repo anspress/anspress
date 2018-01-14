@@ -1607,15 +1607,15 @@ function ap_get_addons() {
 			'name' => __( 'Emails', 'anspress-question-answer' ),
 			'description' => __( 'Notifies users and admins by email for various events and activities.', 'anspress-question-answer' ),
 		),
-		'notification.php' => array(
-			'name' => __( 'Notification', 'anspress-question-answer' ),
+		'notifications.php' => array(
+			'name' => __( 'Notifications', 'anspress-question-answer' ),
 			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),
 		),
-		'category.php' => array(
+		'categories.php' => array(
 			'name' => __( 'Categories', 'anspress-question-answer' ),
 			'description' => __( 'Add category support in AnsPress questions.', 'anspress-question-answer' ),
 		),
-		'tag.php' => array(
+		'tags.php' => array(
 			'name' => __( 'Tags', 'anspress-question-answer' ),
 			'description' => __( 'Add tag support in AnsPress questions.', 'anspress-question-answer' ),
 		),

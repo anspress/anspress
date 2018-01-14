@@ -11,6 +11,8 @@
  * @since 		 4.0.0
  */
 
+namespace AnsPress;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -23,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @param array|string $args arguments passed to class.
  * @since 1.0.0
  */
-class AnsPress_Notification_Query extends AnsPress_Query {
+class Notifications extends \AnsPress_Query {
 
 	/**
 	 * Verbs

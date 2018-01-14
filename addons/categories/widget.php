@@ -10,12 +10,14 @@
  * @copyright    2014 Rahul Aryan
  */
 
+namespace Anspress\Widgets;
+
 /**
  * Register AnsPress category widget.
  *
- * @since unknown
+ * @since 4.1.8
  */
-class AnsPress_Category_Widget extends WP_Widget {
+class Categories extends \WP_Widget {
 	/**
 	 * Construct
 	 */
@@ -178,9 +180,3 @@ class AnsPress_Category_Widget extends WP_Widget {
 		return $instance;
 	}
 }
-
-function ap_category_register_widgets() {
-	register_widget( 'AnsPress_Category_Widget' );
-}
-
-add_action( 'widgets_init', 'ap_category_register_widgets' );

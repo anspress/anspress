@@ -1,6 +1,6 @@
 <?php
 /**
- * An AnsPress user notification addons.
+ * Addon for user notifications.
  *
  * @author     Rahul Aryan <support@anspress.io>
  * @copyright  2017 AnsPress.io & Rahul Aryan
@@ -8,14 +8,10 @@
  * @link       https://anspress.io
  * @package    AnsPress
  * @subpackage Notifications Addon
- *
- * @anspress-addon
- * Addon Name:    Notification
- * Addon URI:     https://anspress.io
- * Description:   Shows a fancy user notification dropdown like Facebook and Stackoverflow.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
+ * @since      4.1.8
  */
+
+namespace AnsPress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -23,61 +19,74 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Require functions.
-require_once( ANSPRESS_ADDONS_DIR . '/notification/functions.php' );
-require_once( ANSPRESS_ADDONS_DIR . '/notification/query.php' );
+require_once( ANSPRESS_ADDONS_DIR . '/notifications/functions.php' );
+require_once( ANSPRESS_ADDONS_DIR . '/notifications/query.php' );
 
 /**
- * AnsPress notification hooks.
+ * AnsPress notifications hooks.
  *
  * @package AnsPress
  * @author  Rahul Aryan <support@anspress.io>
  * @since   4.0.0
  */
-class AnsPress_Notification_Hook {
+class Notifications extends \AnsPress\Singleton {
+
+	/**
+	 * Instance of this class.
+	 *
+	 * @var 	object
+	 * @since 4.1.8
+	 */
+	protected static $instance = null;
 
 	/**
 	 * Initialize the class.
+	 *
+	 * @since 4.1.8
 	 */
-	public static function init() {
+	protected function __construct() {
 		ap_add_default_options([
 			'user_page_title_notifications'  => __( 'Notifications', 'anspress-question-answer' ),
 			'user_page_slug_notifications'   => 'notifications',
 		]);
 
+		anspress()->add_filter( 'ap_form_addon-notifications', $this, 'load_options' );
+
 		// Activate AnsPress notifications only if buddypress not active.
 		if ( ! ap_is_addon_active( 'buddypress.php' ) ) {
 			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
-			//anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
-			anspress()->add_filter( 'ap_menu_object', __CLASS__, 'ap_menu_object' );
-			anspress()->add_filter( 'ap_form_addon-notification', __CLASS__, 'load_options' );
-			anspress()->add_action( 'ap_notification_verbs', __CLASS__, 'register_verbs' );
-			anspress()->add_action( 'ap_user_pages', __CLASS__, 'ap_user_pages' );
-			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer', 10, 2 );
-			anspress()->add_action( 'ap_trash_question', __CLASS__, 'trash_question', 10, 2 );
-			anspress()->add_action( 'ap_before_delete_question', __CLASS__, 'trash_question', 10, 2 );
-			anspress()->add_action( 'ap_trash_answer', __CLASS__, 'trash_answer', 10, 2 );
-			anspress()->add_action( 'ap_before_delete_answer', __CLASS__, 'trash_answer', 10, 2 );
-			anspress()->add_action( 'ap_untrash_answer', __CLASS__, 'new_answer', 10, 2 );
-			anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
-			anspress()->add_action( 'ap_unselect_answer', __CLASS__, 'unselect_answer' );
-			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
-			anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'delete_comment' );
-			anspress()->add_action( 'ap_vote_up', __CLASS__, 'vote_up' );
-			anspress()->add_action( 'ap_vote_down', __CLASS__, 'vote_down' );
-			anspress()->add_action( 'ap_undo_vote_up', __CLASS__, 'undo_vote_up' );
-			anspress()->add_action( 'ap_undo_vote_down', __CLASS__, 'undo_vote_down' );
-			anspress()->add_action( 'ap_insert_reputation', __CLASS__, 'insert_reputation', 10, 4 );
-			anspress()->add_action( 'ap_delete_reputation', __CLASS__, 'delete_reputation', 10, 3 );
-			anspress()->add_action( 'ap_ajax_mark_notifications_seen', __CLASS__, 'mark_notifications_seen' );
-			anspress()->add_action( 'ap_ajax_load_more_notifications', __CLASS__, 'load_more_notifications' );
-			anspress()->add_action( 'ap_ajax_get_notifications', __CLASS__, 'get_notifications' );
+			anspress()->add_filter( 'ap_menu_object', $this, 'ap_menu_object' );
+			anspress()->add_action( 'ap_notification_verbs', $this, 'register_verbs' );
+			anspress()->add_action( 'ap_user_pages', $this, 'ap_user_pages' );
+			anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
+			anspress()->add_action( 'ap_trash_question', $this, 'trash_question', 10, 2 );
+			anspress()->add_action( 'ap_before_delete_question', $this, 'trash_question', 10, 2 );
+			anspress()->add_action( 'ap_trash_answer', $this, 'trash_answer', 10, 2 );
+			anspress()->add_action( 'ap_before_delete_answer', $this, 'trash_answer', 10, 2 );
+			anspress()->add_action( 'ap_untrash_answer', $this, 'new_answer', 10, 2 );
+			anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
+			anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer' );
+			anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
+			anspress()->add_action( 'ap_unpublish_comment', $this, 'delete_comment' );
+			anspress()->add_action( 'ap_vote_up', $this, 'vote_up' );
+			anspress()->add_action( 'ap_vote_down', $this, 'vote_down' );
+			anspress()->add_action( 'ap_undo_vote_up', $this, 'undo_vote_up' );
+			anspress()->add_action( 'ap_undo_vote_down', $this, 'undo_vote_down' );
+			anspress()->add_action( 'ap_insert_reputation', $this, 'insert_reputation', 10, 4 );
+			anspress()->add_action( 'ap_delete_reputation', $this, 'delete_reputation', 10, 3 );
+			anspress()->add_action( 'ap_ajax_mark_notifications_seen', $this, 'mark_notifications_seen' );
+			anspress()->add_action( 'ap_ajax_load_more_notifications', $this, 'load_more_notifications' );
+			anspress()->add_action( 'ap_ajax_get_notifications', $this, 'get_notifications' );
 		}
 	}
 
 	/**
-	 * Register Avatar options
+	 * Register notification addon options.
+	 *
+	 * @return array
+	 * @since 4.1.8
 	 */
-	public static function load_options( $form ) {
+	public function load_options() {
 		$opt = ap_opt();
 
 		$form = array(
@@ -106,7 +115,7 @@ class AnsPress_Notification_Hook {
 	 * @return string
 	 * @deprecated 4.1.2
 	 */
-	public static function menu_link( $url, $item ) {
+	public function menu_link( $url, $item ) {
 		if ( 'notifications' === $item->post_name ) {
 			$url = '#apNotifications';
 		}
@@ -121,7 +130,7 @@ class AnsPress_Notification_Hook {
 	 * @return array
 	 * @deprecated 4.1.2
 	 */
-	public static function ap_menu_items( $items ) {
+	public function ap_menu_items( $items ) {
 		foreach ( $items as $k => $i ) {
 			if ( isset( $i->post_name ) && 'notifications' === $i->post_name ) {
 				$count = ap_count_unseen_notifications();
@@ -140,7 +149,7 @@ class AnsPress_Notification_Hook {
 	 * @param  object $items Menu item object.
 	 * @return array
 	 */
-	public static function ap_menu_object( $items ) {
+	public function ap_menu_object( $items ) {
 		foreach ( $items as $k => $i ) {
 			if ( isset( $i->object ) && 'notifications' === $i->object ) {
 				$items[ $k ]->url = '#apNotifications';
@@ -151,7 +160,7 @@ class AnsPress_Notification_Hook {
 		return $items;
 	}
 
-	public static function register_verbs() {
+	public function register_verbs() {
 		ap_register_notification_verb( 'new_answer', array(
 			'label' => __( 'posted an answer on your question', 'anspress-question-answer' ),
 		) );
@@ -192,13 +201,13 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Adds reputations tab in AnsPress authors page.
 	 */
-	public static function ap_user_pages() {
+	public function ap_user_pages() {
 		anspress()->user_pages[] = array(
 			'slug'    => 'notifications',
 			'label'   => __( 'Notifications', 'anspress-question-answer' ),
 			'count'   => ap_count_unseen_notifications(),
 			'icon'    => 'apicon-globe',
-			'cb'      => [ __CLASS__, 'notification_page' ],
+			'cb'      => [ $this, 'notification_page' ],
 			'private' => true,
 		);
 	}
@@ -206,13 +215,13 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Display reputation tab content in AnsPress author page.
 	 */
-	public static function notification_page() {
+	public function notification_page() {
 		$user_id = ap_current_user_id();
 	 	$seen    = ap_sanitize_unslash( 'seen', 'r', 'all' );
 
 		if ( get_current_user_id() === $user_id ) {
 			$seen = 'all' === $seen ? null : (int) $seen;
-			$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id, 'seen' => $seen ] );
+			$notifications = new \AnsPress\Notifications( [ 'user_id' => $user_id, 'seen' => $seen ] );
 
 			do_action( 'ap_before_notification_page', $notifications );
 
@@ -228,7 +237,7 @@ class AnsPress_Notification_Hook {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function trash_question( $post_id, $_post ) {
+	public function trash_question( $post_id, $_post ) {
 		ap_delete_notifications( array(
 			'parent'   => $post_id,
 			'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
@@ -241,7 +250,7 @@ class AnsPress_Notification_Hook {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function new_answer( $post_id, $_post ) {
+	public function new_answer( $post_id, $_post ) {
 		$_question = get_post( $_post->post_parent );
 		ap_insert_notification( array(
 			'user_id'  => $_question->post_author,
@@ -259,7 +268,7 @@ class AnsPress_Notification_Hook {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function trash_answer( $post_id, $_post ) {
+	public function trash_answer( $post_id, $_post ) {
 		ap_delete_notifications( array(
 			'ref_id'   => $post_id,
 			'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
@@ -271,7 +280,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param object $_post Post object.
 	 */
-	public static function select_answer( $_post ) {
+	public function select_answer( $_post ) {
 		// Award select answer points to question author only.
 		if ( get_current_user_id() !== $_post->post_author ) {
 			ap_insert_notification( array(
@@ -290,7 +299,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param object $_post Post object.
 	 */
-	public static function unselect_answer( $_post ) {
+	public function unselect_answer( $_post ) {
 		ap_delete_notifications( array(
 			'parent'   => $_post->post_parent,
 			'ref_type' => 'answer',
@@ -303,7 +312,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param  object $comment WordPress comment object.
 	 */
-	public static function new_comment( $comment ) {
+	public function new_comment( $comment ) {
 		$_post = get_post( $comment->comment_post_ID );
 
 		if ( get_current_user_id() !== $_post->post_author ) {
@@ -323,7 +332,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param  object $comment Comment object.
 	 */
-	public static function delete_comment( $comment ) {
+	public function delete_comment( $comment ) {
 		ap_delete_notifications( array(
 			'actor'    => $comment->user_id,
 			'parent'   => $comment->comment_post_ID,
@@ -336,7 +345,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function vote_up( $post_id ) {
+	public function vote_up( $post_id ) {
 		$_post = get_post( $post_id );
 
 		if ( get_current_user_id() !== $_post->post_author ) {
@@ -356,7 +365,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function vote_down( $post_id ) {
+	public function vote_down( $post_id ) {
 		$_post = get_post( $post_id );
 
 		if ( get_current_user_id() !== $_post->post_author ) {
@@ -376,7 +385,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function undo_vote_up( $post_id ) {
+	public function undo_vote_up( $post_id ) {
 		ap_delete_notifications( array(
 			'ref_id' => $post_id,
 			'actor'  => get_current_user_id(),
@@ -389,7 +398,7 @@ class AnsPress_Notification_Hook {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function undo_vote_down( $post_id ) {
+	public function undo_vote_down( $post_id ) {
 		ap_delete_notifications( array(
 			'ref_id' => $post_id,
 			'actor'  => get_current_user_id(),
@@ -405,7 +414,7 @@ class AnsPress_Notification_Hook {
 	 * @param string  $event Reputation event.
 	 * @param integer $ref_id Reputation reference id.
 	 */
-	public static function insert_reputation( $reputation_id, $user_id, $event, $ref_id ) {
+	public function insert_reputation( $reputation_id, $user_id, $event, $ref_id ) {
 		ap_insert_notification( array(
 			'user_id'  => $user_id,
 			'ref_id'   => $reputation_id,
@@ -421,7 +430,7 @@ class AnsPress_Notification_Hook {
 	 * @param integer       $user_id User id.
 	 * @param string        $event Reputation event.
 	 */
-	public static function delete_reputation( $deleted, $user_id, $event ) {
+	public function delete_reputation( $deleted, $user_id, $event ) {
 		ap_delete_notifications( array(
 			'ref_type' => 'reputation',
 			'user_id'  => $user_id,
@@ -432,7 +441,7 @@ class AnsPress_Notification_Hook {
 	 * Ajax callback for marking all notification of current user
 	 * as seen.
 	 */
-	public static function mark_notifications_seen() {
+	public function mark_notifications_seen() {
 		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'mark_notifications_seen' ) ) {
 			ap_ajax_json( array(
 				'success' => false,
@@ -456,14 +465,14 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Ajax callback for loading more notifications.
 	 */
-	public static function load_more_notifications() {
+	public function load_more_notifications() {
 		check_admin_referer( 'load_more_notifications', '__nonce' );
 
 		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
 		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
 
 		ob_start();
-		$notifications = new AnsPress_Notification_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
+		$notifications = new \AnsPress\Notifications( [ 'user_id' => $user_id, 'paged' => $paged ] );
 
 		while ( $notifications->have() ) : $notifications->the_notification();
 			$notifications->item_template();
@@ -484,12 +493,12 @@ class AnsPress_Notification_Hook {
 	/**
 	 * Ajax callback for loading user notifications dropdown.
 	 */
-	public static function get_notifications() {
+	public function get_notifications() {
 		if ( ! is_user_logged_in() ) {
 			wp_die();
 		}
 
-		$notifications = new AnsPress_Notification_Query( [ 'user_id' => get_current_user_id() ] );
+		$notifications = new \AnsPress\Notifications( [ 'user_id' => get_current_user_id() ] );
 
 		$items = [];
 		while ( $notifications->have() ) : $notifications->the_notification();
@@ -546,7 +555,7 @@ function ap_notification_addon_activation() {
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $table );
 }
-ap_addon_activation_hook( basename( __FILE__ ), 'ap_notification_addon_activation' );
+ap_addon_activation_hook( basename( __FILE__ ), __NAMESPACE__ . '\ap_notification_addon_activation' );
 
 // Init class.
-AnsPress_Notification_Hook::init();
+Notifications::init();

@@ -302,7 +302,7 @@ class Helper {
 	/**
 	 * Send emails.
 	 *
-	 * @return boolean|WP_Error
+	 * @return boolean|\WP_Error
 	 */
 	public function send_emails() {
 		if ( defined( 'AP_DISABLE_EMAIL' ) && true === AP_DISABLE_EMAIL ) {

@@ -1,7 +1,11 @@
 # .scrutinizer.yml
-tools:
-    external_code_coverage:
-        timeout: 600
+build:
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            tests:
+                override: [php-scrutinizer-run]
 checks:
     php:
         code_rating: true

@@ -8,14 +8,9 @@
  * @link         https://anspress.io
  * @package      AnsPress
  * @subpackage   Tags Addon
- *
- * @anspress-addon
- * Addon Name:    Tag
- * Addon URI:     https://anspress.io
- * Description:   Add tag support in AnsPress questions.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
  */
+
+namespace AnsPress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -25,42 +20,49 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Tags addon for AnsPress
  */
-class AnsPress_Tag {
+class Tags extends \AnsPress\Singleton {
+	/**
+	 * Instance of this class.
+	 *
+	 * @var 	object
+	 * @since 4.1.8
+	 */
+	protected static $instance = null;
 
 	/**
 	 * Initialize the class
 	 */
-	public static function init() {
-		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ __CLASS__, 'tag_page' ], false );
-		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ __CLASS__, 'tags_page' ] );
+	protected function __construct() {
+		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ $this, 'tag_page' ], false );
+		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ $this, 'tags_page' ] );
 
-		anspress()->add_action( 'ap_form_addon-tag', __CLASS__, 'option_fields' );
-		anspress()->add_action( 'widgets_init', __CLASS__, 'widget_positions' );
-		anspress()->add_action( 'init', __CLASS__, 'register_question_tag', 1 );
-		anspress()->add_action( 'ap_admin_menu', __CLASS__, 'admin_tags_menu' );
-		anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'ap_display_question_metas', 10, 2 );
-		anspress()->add_action( 'ap_question_info', __CLASS__, 'ap_question_info' );
-		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
-		anspress()->add_action( 'ap_enqueue', __CLASS__, 'ap_localize_scripts' );
-		anspress()->add_filter( 'term_link', __CLASS__, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_question_form_fields', __CLASS__, 'ap_question_form_fields' );
-		anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'after_new_question', 0, 2 );
-		anspress()->add_filter( 'ap_page_title', __CLASS__, 'page_title' );
-		anspress()->add_filter( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
-		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', __CLASS__, 'ap_tags_suggestion' );
-		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_main_questions_args', __CLASS__, 'ap_main_questions_args' );
-		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_action( 'posts_pre_query', __CLASS__, 'modify_query_archive', 9999, 2 );
+		anspress()->add_action( 'ap_form_addon-tags', $this, 'option_fields' );
+		anspress()->add_action( 'widgets_init', $this, 'widget_positions' );
+		anspress()->add_action( 'init', $this, 'register_question_tag', 1 );
+		anspress()->add_action( 'ap_admin_menu', $this, 'admin_tags_menu' );
+		anspress()->add_action( 'ap_display_question_metas', $this, 'ap_display_question_metas', 10, 2 );
+		anspress()->add_action( 'ap_question_info', $this, 'ap_question_info' );
+		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
+		anspress()->add_action( 'ap_enqueue', $this, 'ap_localize_scripts' );
+		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
+		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
+		anspress()->add_action( 'ap_processed_new_question', $this, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'ap_processed_update_question', $this, 'after_new_question', 0, 2 );
+		anspress()->add_filter( 'ap_page_title', $this, 'page_title' );
+		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
+		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', $this, 'ap_tags_suggestion' );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', $this, 'ap_tags_suggestion' );
+		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
+		anspress()->add_filter( 'ap_main_questions_args', $this, 'ap_main_questions_args' );
+		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
+		anspress()->add_action( 'posts_pre_query', $this, 'modify_query_archive', 9999, 2 );
 
 		// List filtering.
-		anspress()->add_filter( 'ap_list_filters', __CLASS__, 'ap_list_filters' );
-		anspress()->add_action( 'ap_ajax_load_filter_qtag', __CLASS__, 'load_filter_tag' );
-		anspress()->add_action( 'ap_ajax_load_filter_tags_order', __CLASS__, 'load_filter_tags_order' );
-		anspress()->add_filter( 'ap_list_filter_active_qtag', __CLASS__, 'filter_active_tag', 10, 2 );
-		anspress()->add_filter( 'ap_list_filter_active_tags_order', __CLASS__, 'filter_active_tags_order', 10, 2 );
+		anspress()->add_filter( 'ap_list_filters', $this, 'ap_list_filters' );
+		anspress()->add_action( 'ap_ajax_load_filter_qtag', $this, 'load_filter_tag' );
+		anspress()->add_action( 'ap_ajax_load_filter_tags_order', $this, 'load_filter_tags_order' );
+		anspress()->add_filter( 'ap_list_filter_active_qtag', $this, 'filter_active_tag', 10, 2 );
+		anspress()->add_filter( 'ap_list_filter_active_tags_order', $this, 'filter_active_tags_order', 10, 2 );
 	}
 
 	/**
@@ -68,7 +70,7 @@ class AnsPress_Tag {
 	 *
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
 	 */
-	public static function tag_page() {
+	public function tag_page() {
 		global $question_tag;
 		$question_tag = get_queried_object();
 
@@ -95,7 +97,7 @@ class AnsPress_Tag {
 	/**
 	 * Tags page layout
 	 */
-	public static function tags_page() {
+	public function tags_page() {
 
 		global $question_tags, $ap_max_num_pages, $ap_per_page, $tags_rows_found;
 		$paged 				= max( 1, get_query_var( 'paged' ) );
@@ -151,7 +153,7 @@ class AnsPress_Tag {
 	/**
 	 * Register widget position.
 	 */
-	public static function widget_positions() {
+	public function widget_positions() {
 		register_sidebar( array(
 			'name'          => __( '(AnsPress) Tags', 'anspress-question-answer' ),
 			'id'            => 'ap-tags',
@@ -169,7 +171,7 @@ class AnsPress_Tag {
 	 * @return void
 	 * @since 2.0
 	 */
-	public static function register_question_tag() {
+	public function register_question_tag() {
 		ap_add_default_options([
 			'max_tags'        => 5,
 			'min_tags'        => 1,
@@ -217,14 +219,14 @@ class AnsPress_Tag {
 	/**
 	 * Add tags menu in wp-admin.
 	 */
-	public static function admin_tags_menu() {
+	public function admin_tags_menu() {
 		add_submenu_page( 'anspress', __( 'Question Tags', 'anspress-question-answer' ), __( 'Tags', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_tag' );
 	}
 
 	/**
 	 * Register option fields.
 	 */
-	public static function option_fields() {
+	public function option_fields() {
 		$opt = ap_opt();
 
 		$form = array(
@@ -267,7 +269,7 @@ class AnsPress_Tag {
 	 * @return array
 	 * @since 2.0
 	 */
-	public static function ap_display_question_metas( $metas, $question_id ) {
+	public function ap_display_question_metas( $metas, $question_id ) {
 		if ( ap_post_have_terms( $question_id, 'question_tag' ) ) {
 			$metas['tags'] = ap_question_tags_html( array( 'label' => '<i class="apicon-tag"></i>', 'show' => 1 ) ); }
 
@@ -281,7 +283,7 @@ class AnsPress_Tag {
 	 * @return  string
 	 * @since   1.0
 	 */
-	public static function ap_question_info( $post ) {
+	public function ap_question_info( $post ) {
 
 		if ( ap_question_have_tags() ) {
 			echo '<div class="widget"><span class="ap-widget-title">' . esc_attr__( 'Tags', 'anspress-question-answer' ) . '</span>';
@@ -295,7 +297,7 @@ class AnsPress_Tag {
 	 * @param array $js Javacript array.
 	 * @return array
 	 */
-	public static function ap_assets_js( $js ) {
+	public function ap_assets_js( $js ) {
 		$js['tags'] = [ 'dep' => [ 'anspress-main' ], 'footer' => true ];
 
 		return $js;
@@ -304,7 +306,7 @@ class AnsPress_Tag {
 	/**
 	 * Add translated strings to the javascript files
 	 */
-	public static function ap_localize_scripts() {
+	public function ap_localize_scripts() {
 		$l10n_data = array(
 			'deleteTag'            => __( 'Delete Tag', 'anspress-question-answer' ),
 			'addTag'               => __( 'Add Tag', 'anspress-question-answer' ),
@@ -328,7 +330,7 @@ class AnsPress_Tag {
 	 * @param  string $taxonomy Taxonomy type.
 	 * @return string           New URL for term.
 	 */
-	public static function term_link_filter( $url, $term, $taxonomy ) {
+	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_tag' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
 				$opt = get_option( 'ap_tags_path', 'tags' );
@@ -346,7 +348,7 @@ class AnsPress_Tag {
 	 * @param array $form AnsPress form arguments.
 	 * @since 4.1.0
 	 */
-	public static function ap_question_form_fields( $form ) {
+	public function ap_question_form_fields( $form ) {
 		$editing_id = ap_sanitize_unslash( 'id', 'r' );
 
 		$form['fields']['tags'] = array(
@@ -384,7 +386,7 @@ class AnsPress_Tag {
 	 * @param  object  $post Post object.
 	 * @since 1.0
 	 */
-	public static function after_new_question( $post_id, $post ) {
+	public function after_new_question( $post_id, $post ) {
 		$values = anspress()->get_form( 'question' )->get_values();
 		if ( isset( $values['tags'] ) ) {
 			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
@@ -397,7 +399,7 @@ class AnsPress_Tag {
 	 * @param  string $title Title.
 	 * @return string
 	 */
-	public static function page_title( $title ) {
+	public function page_title( $title ) {
 		if ( is_question_tags() ) {
 			$title = ap_opt( 'tags_page_title' );
 		} elseif ( is_question_tag() ) {
@@ -415,7 +417,7 @@ class AnsPress_Tag {
 	 * @param  array $navs Breadcrumbs navs.
 	 * @return array
 	 */
-	public static function ap_breadcrumbs( $navs ) {
+	public function ap_breadcrumbs( $navs ) {
 
 		if ( is_question_tag() ) {
 			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
@@ -439,7 +441,7 @@ class AnsPress_Tag {
 	/**
 	 * Handle tags suggestion on question form
 	 */
-	public static function ap_tags_suggestion() {
+	public function ap_tags_suggestion() {
 		$keyword = ap_sanitize_unslash( 'q', 'r' );
 
 		$tags = get_terms( 'question_tag', array(
@@ -469,7 +471,7 @@ class AnsPress_Tag {
 	 * @param  array $rules AnsPress rules.
 	 * @return array
 	 */
-	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
+	public function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base_slug = get_page_uri( ap_opt( 'tags_page' ) );
 		update_option( 'ap_tags_path', $base_slug, true );
 
@@ -487,7 +489,7 @@ class AnsPress_Tag {
 	 * @param  array $args Questions args.
 	 * @return array
 	 */
-	public static function ap_main_questions_args( $args ) {
+	public function ap_main_questions_args( $args ) {
 		global $wp;
 		$query = $wp->query_vars;
 
@@ -517,7 +519,7 @@ class AnsPress_Tag {
 	 *
 	 * @return array
 	 */
-	public static function ap_list_filters( $filters ) {
+	public function ap_list_filters( $filters ) {
 		global $wp;
 
 		if ( ! isset( $wp->query_vars['ap_tags'] ) ) {
@@ -542,7 +544,7 @@ class AnsPress_Tag {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function load_filter_tag() {
+	public function load_filter_tag() {
 		$filter = ap_sanitize_unslash( 'filter', 'r' );
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 		$search = ap_sanitize_unslash( 'search', 'r', false );
@@ -560,7 +562,7 @@ class AnsPress_Tag {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function load_filter_tags_order() {
+	public function load_filter_tags_order() {
 		$filter = ap_sanitize_unslash( 'filter', 'r' );
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 
@@ -580,7 +582,7 @@ class AnsPress_Tag {
 	 *
 	 * @since 4.0.0
 	 */
-	public static function filter_active_tag( $active, $filter ) {
+	public function filter_active_tag( $active, $filter ) {
 		$current_filters = ap_get_current_list_filters( 'qtag' );
 
 		if ( ! empty( $current_filters ) ) {
@@ -612,7 +614,7 @@ class AnsPress_Tag {
 	 *
 	 * @since 4.1.0
 	 */
-	public static function filter_active_tags_order( $active, $filter ) {
+	public function filter_active_tags_order( $active, $filter ) {
 		$tags_order = ap_get_current_list_filters( 'tags_order' );
 		$tags_order = ! empty ( $tags_order ) ? $tags_order : 'popular';
 
@@ -634,7 +636,7 @@ class AnsPress_Tag {
 	 * @return string
 	 * @since 4.1.0
 	 */
-	public static function ap_current_page( $query_var ) {
+	public function ap_current_page( $query_var ) {
 		if ( 'tags' === $query_var && 'tag' === get_query_var( 'ap_page' ) ) {
 			return 'tag';
 		}
@@ -651,7 +653,7 @@ class AnsPress_Tag {
 	 * @return array|null
 	 * @since 4.1.0
 	 */
-	public static function modify_query_archive( $posts, $query ) {
+	public function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() &&
 			$query->is_tax( 'question_tag' ) &&
 			'tag' === get_query_var( 'ap_page' ) ) {
@@ -669,4 +671,4 @@ class AnsPress_Tag {
 
 
 // Init addons.
-AnsPress_Tag::init();
+Tags::init();

@@ -28,5 +28,4 @@ $I->see('General', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
 $I->see('Posts & Comments', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
 $I->see('User Access Control', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
 $I->see('Tools', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
-$I->see('Reputations', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
 

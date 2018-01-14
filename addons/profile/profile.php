@@ -17,6 +17,8 @@
  * Author URI:    https://anspress.io
  */
 
+namespace AnsPress\Addons;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -25,14 +27,22 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * User profile hooks.
  */
-class AnsPress_Profile_Hooks {
+class Profile extends \AnsPress\Singleton {
+	/**
+	 * Instance of this class.
+	 *
+	 * @var 	object
+	 * @since 4.1.8
+	 */
+	protected static $instance = null;
+
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 *
 	 * @since 4.0.0
 	 */
-	public static function init() {
+	protected function __construct() {
 		ap_add_default_options([
 			'user_page_slug_questions'  => 'questions',
 			'user_page_slug_answers'    => 'answers',
@@ -40,22 +50,22 @@ class AnsPress_Profile_Hooks {
 			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
 		]);
 
-		anspress()->add_action( 'ap_form_addon-profile', __CLASS__, 'options' );
-		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ __CLASS__, 'user_page' ], true, true );
+		anspress()->add_action( 'ap_form_addon-profile', $this, 'options' );
+		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ $this, 'user_page' ], true, true );
 
-		anspress()->add_action( 'ap_rewrites', __CLASS__, 'rewrite_rules', 10, 3 );
-		//anspress()->add_filter( 'ap_menu_link', __CLASS__, 'menu_link', 10, 2 );
-		anspress()->add_action( 'ap_ajax_user_more_answers', __CLASS__, 'load_more_answers', 10, 2 );
-		anspress()->add_filter( 'wp_title', __CLASS__, 'page_title' );
-		anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
-		anspress()->add_filter( 'ap_current_page', __CLASS__, 'ap_current_page' );
-		anspress()->add_filter( 'posts_pre_query', __CLASS__, 'modify_query_archive', 999, 2 );
+		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
+		//anspress()->add_filter( 'ap_menu_link', $this, 'menu_link', 10, 2 );
+		anspress()->add_action( 'ap_ajax_user_more_answers', $this, 'load_more_answers', 10, 2 );
+		anspress()->add_filter( 'wp_title', $this, 'page_title' );
+		anspress()->add_action( 'the_post', $this, 'filter_page_title' );
+		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
+		anspress()->add_filter( 'posts_pre_query', $this, 'modify_query_archive', 999, 2 );
 	}
 
 	/**
 	 * Register profile options
 	 */
-	public static function options() {
+	public function options() {
 		$opt = ap_opt();
 
 		$form = array(
@@ -89,8 +99,8 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Layout of base page
 	 */
-	public static function user_page() {
-		SELF::user_pages();
+	public function user_page() {
+		$this->user_pages();
 		dynamic_sidebar( 'ap-top' );
 
 		echo '<div id="ap-user" class="ap-row">';
@@ -106,7 +116,7 @@ class AnsPress_Profile_Hooks {
 	 * @param  integer $base_page_id Base page ID.
 	 * @return array
 	 */
-	public static function rewrite_rules( $rules, $slug, $base_page_id ) {
+	public function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base_slug = get_page_uri( ap_opt( 'user_page' ) );
 		update_option( 'ap_user_path', $base_slug, true );
 
@@ -129,7 +139,7 @@ class AnsPress_Profile_Hooks {
 	 * @return string
 	 * @deprecated 4.1.2
 	 */
-	public static function menu_link( $url, $item ) {
+	public function menu_link( $url, $item ) {
 		if ( 'user' === $item->object ) {
 			$url = ap_user_link( get_current_user_id() );
 		}
@@ -140,7 +150,7 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Register user profile pages.
 	 */
-	public static function user_pages() {
+	public function user_pages() {
 		if ( ! empty( anspress()->user_pages ) ) {
 			return;
 		}
@@ -150,14 +160,14 @@ class AnsPress_Profile_Hooks {
 				'slug'  => 'questions',
 				'label' => __( 'Questions', 'anspress-question-answer' ),
 				'icon'  => 'apicon-question',
-				'cb'    => [ __CLASS__, 'question_page' ],
+				'cb'    => [ $this, 'question_page' ],
 				'order' => 2,
 			),
 			array(
 				'slug'  => 'answers',
 				'label' => __( 'Answers', 'anspress-question-answer' ),
 				'icon'  => 'apicon-answer',
-				'cb'    => [ __CLASS__, 'answer_page' ],
+				'cb'    => [ $this, 'answer_page' ],
 				'order' => 2,
 			),
 		);
@@ -191,7 +201,7 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Output user profile menu.
 	 */
-	public static function user_menu( $user_id = false, $class = '' ) {
+	public function user_menu( $user_id = false, $class = '' ) {
 		$user_id = false !== $user_id ? $user_id : ap_current_user_id();
 		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
@@ -226,8 +236,8 @@ class AnsPress_Profile_Hooks {
 		echo '</ul>';
 	}
 
-	public static function user_page_title() {
-		SELF::user_pages();
+	public function user_page_title() {
+		$this->user_pages();
 		$title = ap_user_display_name( ap_current_user_id() );
 		$current_tab = sanitize_title( get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) ) );
 		$page = ap_search_array( anspress()->user_pages, 'rewrite', $current_tab );
@@ -243,9 +253,9 @@ class AnsPress_Profile_Hooks {
 	 * @param  string $title AnsPress page title.
 	 * @return string
 	 */
-	public static function page_title( $title ) {
+	public function page_title( $title ) {
 		if ( 'user' === ap_current_page() ) {
-			return self::user_page_title() . ' | ';
+			return $this->user_page_title() . ' | ';
 		}
 
 		return $title;
@@ -257,16 +267,16 @@ class AnsPress_Profile_Hooks {
 	 * @param object $_post WP post object.
 	 * @return void
 	 */
-	public static function filter_page_title( $_post ) {
+	public function filter_page_title( $_post ) {
 		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) {
-			$_post->post_title = self::user_page_title();
+			$_post->post_title = $this->user_page_title();
 		}
 	}
 
 	/**
 	 * Render sub page template.
 	 */
-	public static function sub_page_template() {
+	public function sub_page_template() {
 		$current = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$current_page = ap_search_array( anspress()->user_pages, 'rewrite', $current );
 
@@ -287,7 +297,7 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Display user questions page.
 	 */
-	public static function question_page() {
+	public function question_page() {
 		$user_id = ap_current_user_id();
 		$args['ap_current_user_ignore'] = true;
 		$args['author'] = $user_id;
@@ -299,7 +309,7 @@ class AnsPress_Profile_Hooks {
 		*/
 		$args = apply_filters( 'ap_authors_questions_args', $args );
 
-		anspress()->questions = new Question_Query( $args );
+		anspress()->questions = new \Question_Query( $args );
 
 		include ap_get_theme_location( 'addons/user/questions.php' );
 	}
@@ -307,7 +317,7 @@ class AnsPress_Profile_Hooks {
 	/**
 	 * Display user questions page.
 	 */
-	public static function answer_page() {
+	public function answer_page() {
 		global $answers;
 
 		$user_id = ap_current_user_id();
@@ -327,7 +337,7 @@ class AnsPress_Profile_Hooks {
 		 * @var array
 		 */
 		$args = apply_filters( 'ap_user_answers_args', $args );
-		anspress()->answers = $answers = new Answers_Query( $args );
+		anspress()->answers = $answers = new \Answers_Query( $args );
 
 		ap_get_template_part( 'addons/user/answers' );
 	}
@@ -337,7 +347,7 @@ class AnsPress_Profile_Hooks {
 	 *
 	 * @return void
 	 */
-	public static function load_more_answers() {
+	public function load_more_answers() {
 		global $answers;
 
 		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
@@ -358,7 +368,7 @@ class AnsPress_Profile_Hooks {
 		 * @param array $args WP_Query arguments.
 		 */
 		$args = apply_filters( 'ap_user_answers_args', $args );
-		anspress()->answers = $answers = new Answers_Query( $args );
+		anspress()->answers = $answers = new \Answers_Query( $args );
 
 		ob_start();
 		if ( ap_have_answers() ) {
@@ -390,7 +400,7 @@ class AnsPress_Profile_Hooks {
 	 * @return string
 	 * @since 4.1.0
 	 */
-	public static function ap_current_page( $query_var ) {
+	public function ap_current_page( $query_var ) {
 		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
 			$query_var = 'user';
 		}
@@ -408,13 +418,13 @@ class AnsPress_Profile_Hooks {
 	 * @since 4.1.1 Redirect to current user profile if no author set.
 	 * @since 4.1.2 Check for 404 error.
 	 */
-	public static function modify_query_archive( $posts, $query ) {
+	public function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() && ! $query->is_404 && 'user' === get_query_var( 'ap_page' ) ) {
 			$query_object = get_queried_object();
 
 			if ( ! $query_object && ! get_query_var( 'author_name' ) && is_user_logged_in() ) {
 				wp_safe_redirect( ap_user_link( get_current_user_id() ) ); exit;
-			} elseif ( $query_object && $query_object instanceof WP_User ) {
+			} elseif ( $query_object && $query_object instanceof \WP_User ) {
 				return [ get_post( ap_opt( 'user_page' ) ) ];
 			} else {
 				$query->set_404();
@@ -422,8 +432,7 @@ class AnsPress_Profile_Hooks {
 			}
 		}
 
-        return $posts;
-
+    return $posts;
 	}
 
 	/**
@@ -433,7 +442,7 @@ class AnsPress_Profile_Hooks {
 	 * @return string
 	 * @since 4.1.0
 	 */
-	public static function page_template( $template ) {
+	public function page_template( $template ) {
 		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
 			$user_slug = ap_opt( 'user_page_id' );
 			return locate_template( [ 'page-' . $user_slug . '.php', 'page.php' ] );
@@ -448,7 +457,7 @@ class AnsPress_Profile_Hooks {
 	 * @return integer
 	 * @since 4.1.0
 	 */
-	public static function current_user_id() {
+	public function current_user_id() {
 		$query_object = get_queried_object();
 		$user_id = get_queried_object_id();
 
@@ -463,4 +472,4 @@ class AnsPress_Profile_Hooks {
 }
 
 // Init addon.
-AnsPress_Profile_Hooks::init();
+Profile::init();

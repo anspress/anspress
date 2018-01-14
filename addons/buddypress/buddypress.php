@@ -17,6 +17,8 @@
  * Author URI:    https://anspress.io
  */
 
+namespace AnsPress\Addons;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -26,47 +28,57 @@ define( 'BP_AP_NOTIFIER_SLUG', 'ap_notification' );
 
 /**
  * AnsPress BuddyPress hooks.
+ *
+ * @since 4.1.8 Renamed from AnsPress_BP_Hooks.
  */
-class AnsPress_BP_Hooks {
+class BuddyPress extends \AnsPress\Singleton {
+
+	/**
+	 * Refers to a single instance of this class.
+	 *
+	 * @var null|object
+	 * @since 4.1.8
+	 */
+	public static $instance = null;
 
 	/**
 	 * Initialize the class
 	 *
 	 * @since 2.0.1
 	 */
-	public static function init() {
+	protected function __construct() {
 		add_post_type_support( 'question', 'buddypress-activity' );
 		add_post_type_support( 'answer', 'buddypress-activity' );
 
-		anspress()->add_action( 'bp_init', __CLASS__, 'bp_init' );
-		anspress()->add_action( 'ap_assets_js', __CLASS__, 'ap_assets_js' );
+		anspress()->add_action( 'bp_init', $this, 'bp_init' );
+		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
 		// anspress()->add_action( 'ap_enqueue', 'bp_activity_mentions_script' );
-		anspress()->add_action( 'bp_setup_nav', __CLASS__, 'content_setup_nav' );
-		anspress()->add_action( 'bp_init', __CLASS__, 'question_answer_tracking' );
-		anspress()->add_action( 'bp_activity_entry_meta', __CLASS__, 'activity_buttons' );
-		anspress()->add_filter( 'bp_activity_custom_post_type_post_action', __CLASS__, 'activity_action', 10, 2 );
+		anspress()->add_action( 'bp_setup_nav', $this, 'content_setup_nav' );
+		anspress()->add_action( 'bp_init', $this, 'question_answer_tracking' );
+		anspress()->add_action( 'bp_activity_entry_meta', $this, 'activity_buttons' );
+		anspress()->add_filter( 'bp_activity_custom_post_type_post_action', $this, 'activity_action', 10, 2 );
 
-		anspress()->add_filter( 'ap_the_question_content', __CLASS__, 'ap_the_question_content' );
-		anspress()->add_action( 'bp_setup_globals', __CLASS__, 'notifier_setup_globals' );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'new_answer_notification' );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment_notification' );
-		anspress()->add_action( 'ap_trash_question', __CLASS__, 'remove_answer_notify' );
-		//anspress()->add_action( 'ap_trash_question', __CLASS__, 'remove_comment_notify' );
-		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'remove_answer_notify' );
-		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'remove_comment_notify' );
-		anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'remove_comment_notify' );
-		anspress()->add_action( 'before_delete_post', __CLASS__, 'remove_answer_notify' );
-		//anspress()->add_action( 'before_delete_post', __CLASS__, 'remove_comment_notify' );
-		anspress()->add_action( 'the_post', __CLASS__, 'mark_bp_notify_as_read' );
+		anspress()->add_filter( 'ap_the_question_content', $this, 'ap_the_question_content' );
+		anspress()->add_action( 'bp_setup_globals', $this, 'notifier_setup_globals' );
+		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer_notification' );
+		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment_notification' );
+		anspress()->add_action( 'ap_trash_question', $this, 'remove_answer_notify' );
+		//anspress()->add_action( 'ap_trash_question', $this, 'remove_comment_notify' );
+		anspress()->add_action( 'ap_trash_answer', $this, 'remove_answer_notify' );
+		anspress()->add_action( 'ap_trash_answer', $this, 'remove_comment_notify' );
+		anspress()->add_action( 'ap_unpublish_comment', $this, 'remove_comment_notify' );
+		anspress()->add_action( 'before_delete_post', $this, 'remove_answer_notify' );
+		//anspress()->add_action( 'before_delete_post', $this, 'remove_comment_notify' );
+		anspress()->add_action( 'the_post', $this, 'mark_bp_notify_as_read' );
 
-		anspress()->add_action( 'ap_ajax_bp_loadmore', __CLASS__, 'bp_loadmore' );
+		anspress()->add_action( 'ap_ajax_bp_loadmore', $this, 'bp_loadmore' );
 	}
 
 	/**
 	 * Hook on BuddyPress init.
 	 */
-	public static function bp_init() {
-		anspress()->add_filter( 'the_content', __CLASS__, 'ap_the_answer_content' );
+	public function bp_init() {
+		anspress()->add_filter( 'the_content', $this, 'ap_the_answer_content' );
 	}
 
 	/**
@@ -75,7 +87,7 @@ class AnsPress_BP_Hooks {
 	 * @param array $js Javacript array.
 	 * @return array
 	 */
-	public static function ap_assets_js( $js ) {
+	public function ap_assets_js( $js ) {
 
 		if ( ! function_exists( 'bp_current_action' ) && ! function_exists( 'bp_current_component' ) ) {
 			return $js;
@@ -92,13 +104,13 @@ class AnsPress_BP_Hooks {
 	/**
 	 * BuddyPress nav hook.
 	 */
-	public static function content_setup_nav() {
+	public function content_setup_nav() {
 		global $bp;
 
 		bp_core_new_nav_item( array(
 				'name'                  => __( 'Q&A', 'anspress-question-answer' ),
 				'slug'                  => 'qa',
-				'screen_function'       => [ __CLASS__, 'ap_qa_page' ],
+				'screen_function'       => [ $this, 'ap_qa_page' ],
 				'position'              => 30,// weight on menu, change it to whatever you want.
 				'default_subnav_slug' => 'questions',
 		) );
@@ -110,20 +122,20 @@ class AnsPress_BP_Hooks {
 
 		$subnav = apply_filters( 'ap_bp_nav', $subnav );
 		foreach ( $subnav as $nav ) {
-			SELF::setup_subnav( $nav['name'], $nav['slug'] );
+			$this->setup_subnav( $nav['name'], $nav['slug'] );
 		}
 	}
 
 	/**
 	 * Setup sub nav.
 	 */
-	public static function setup_subnav( $name, $slug ) {
+	public function setup_subnav( $name, $slug ) {
 		bp_core_new_subnav_item( array(
 			'name'            => $name,
 			'slug'            => $slug,
 			'parent_url'      => trailingslashit( bp_displayed_user_domain() . 'qa' ),
 			'parent_slug'     => 'qa',
-			'screen_function' => [ __CLASS__, 'ap_qa_page' ],
+			'screen_function' => [ $this, 'ap_qa_page' ],
 			'position'        => 10,
 			'user_has_access' => 'all',
 		) );
@@ -132,20 +144,20 @@ class AnsPress_BP_Hooks {
 	/**
 	 * AnsPress nav callback.
 	 */
-	public static function ap_qa_page() {
-		add_action( 'bp_template_content', [ __CLASS__, 'ap_qa_page_content' ] );
+	public function ap_qa_page() {
+		add_action( 'bp_template_content', [ $this, 'ap_qa_page_content' ] );
 		bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 	}
 
 	/**
 	 * Callback for QA page content.
 	 */
-	public static function ap_qa_page_content() {
+	public function ap_qa_page_content() {
 		$template = bp_current_action();
 
 		echo '<div id="anspress" class="anspress ' . esc_attr( $template ) . '">';
 
-		$page_cb = apply_filters( 'ap_bp_page', [ __CLASS__, 'page_' . $template ], $template );
+		$page_cb = apply_filters( 'ap_bp_page', [ $this, 'page_' . $template ], $template );
 
 		if ( method_exists( $page_cb[0], $page_cb[1] ) ) {
 			call_user_func( $page_cb );
@@ -159,7 +171,7 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Callback for rendering questions page.
 	 */
-	public static function page_questions( $user_id = false, $paged = false, $only_posts = false ) {
+	public function page_questions( $user_id = false, $paged = false, $only_posts = false ) {
 		$args['ap_current_user_ignore'] = true;
 		$args['showposts'] = 10;
 
@@ -180,7 +192,7 @@ class AnsPress_BP_Hooks {
 		 * @var array
 		 */
 		$args = apply_filters( 'ap_bp_questions_args', $args );
-		anspress()->questions = new Question_Query( $args );
+		anspress()->questions = new \Question_Query( $args );
 
 		if ( false === $only_posts ) {
 			echo '<div class="ap-bp-head clearfix">';
@@ -210,7 +222,7 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Callback for rendering questions page.
 	 */
-	public static function page_answers( $user_id = false, $paged = false, $order_by = false, $only_posts = false ) {
+	public function page_answers( $user_id = false, $paged = false, $order_by = false, $only_posts = false ) {
 		global $answers;
 
 		$order_by = false === $order_by ? 'active' : $order_by;
@@ -231,7 +243,7 @@ class AnsPress_BP_Hooks {
 		 * @var array
 		 */
 		$args = apply_filters( 'ap_bp_answers_args', $args );
-		anspress()->answers = $answers = new Answers_Query( $args );
+		anspress()->answers = $answers = new \Answers_Query( $args );
 
 		if ( false === $only_posts ) {
 			echo '<div class="ap-bp-head clearfix">';
@@ -261,7 +273,7 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Set tracking arguments for question and answer post type.
 	 */
-	public static function question_answer_tracking() {
+	public function question_answer_tracking() {
 		// Check if the Activity component is active before using it.
 		if ( ! function_exists( 'bp_is_active' ) || ! bp_is_active( 'activity' ) ) {
 			return;
@@ -291,7 +303,7 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Custom button for question and answer activities.
 	 */
-	public static function activity_buttons() {
+	public function activity_buttons() {
 		if ( 'new_question' === bp_get_activity_type() ) {
 			echo '<a class="button answer bp-secondary-action" title="' . esc_attr__( 'Answer this question', 'anspress-question-answer' ) . '" href="' . esc_url( ap_answers_link( bp_get_activity_secondary_item_id() ) ) . '">' . esc_attr__( 'Answer', 'anspress-question-answer' ) . '</a>';
 		}
@@ -300,7 +312,7 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Activity action.
 	 */
-	public static function activity_action( $action, $activity ) {
+	public function activity_action( $action, $activity ) {
 		if ( in_array( $activity->type, [ 'new_question', 'new_answer' ], true ) ) {
 			return str_replace( 'AP_CPT_LINK', get_permalink( $activity->secondary_item_id ), $action );
 		}
@@ -314,7 +326,7 @@ class AnsPress_BP_Hooks {
 	 * @param string $content Contents.
 	 * @return string
 	 */
-	public static function ap_the_question_content( $content ) {
+	public function ap_the_question_content( $content ) {
 		return bp_activity_at_name_filter( $content );
 	}
 
@@ -324,7 +336,7 @@ class AnsPress_BP_Hooks {
 	 * @param string $content Contents.
 	 * @return string
 	 */
-	public static function ap_the_answer_content( $content ) {
+	public function ap_the_answer_content( $content ) {
 		global $post;
 
 		if ( ! function_exists( 'bp_activity_at_name_filter' ) ) {
@@ -341,13 +353,13 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Setup AnsPress notification.
 	 */
-	public static function notifier_setup_globals() {
+	public function notifier_setup_globals() {
 		global $bp;
 
-		$bp->ap_notifier = new stdClass();
+		$bp->ap_notifier = new \stdClass();
 		$bp->ap_notifier->id = 'ap_notifier';
 		$bp->ap_notifier->slug = BP_AP_NOTIFIER_SLUG;
-		$bp->ap_notifier->notification_callback = array( __CLASS__, 'ap_notifier_format' );
+		$bp->ap_notifier->notification_callback = array( $this, 'ap_notifier_format' );
 
 		// Register this in the active components array.
 		$bp->active_components[ $bp->ap_notifier->id ] = $bp->ap_notifier->id;
@@ -364,7 +376,7 @@ class AnsPress_BP_Hooks {
 	 * @param integer $total_items Total items.
 	 * @param string  $format Format.
 	 */
-	public static function ap_notifier_format( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
+	public function ap_notifier_format( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
 		$amount = 'single';
 		$notification_link = '';
 		$text = '';
@@ -420,7 +432,7 @@ class AnsPress_BP_Hooks {
 	 *
 	 * @param integer $post_id Post ID.
 	 */
-	public static function new_answer_notification( $post_id ) {
+	public function new_answer_notification( $post_id ) {
 		if ( ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
@@ -453,7 +465,7 @@ class AnsPress_BP_Hooks {
 	 *
 	 * @param object $comment Comment object.
 	 */
-	public static function new_comment_notification( $comment ) {
+	public function new_comment_notification( $comment ) {
 		if ( ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
@@ -486,7 +498,7 @@ class AnsPress_BP_Hooks {
 	 *
 	 * @param  integer $post_id Post ID.
 	 */
-	public static function remove_answer_notify( $post_id ) {
+	public function remove_answer_notify( $post_id ) {
 		if ( ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
@@ -500,7 +512,7 @@ class AnsPress_BP_Hooks {
 	 *
 	 * @param  object $comment Comment object.
 	 */
-	public static function remove_comment_notify( $comment ) {
+	public function remove_comment_notify( $comment ) {
 		if ( ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
@@ -520,7 +532,7 @@ class AnsPress_BP_Hooks {
 	 *
 	 * @param mixed $post_id Post ID or Object.
 	 */
-	public static function mark_bp_notify_as_read( $post_id ) {
+	public function mark_bp_notify_as_read( $post_id ) {
 
 		if ( ! bp_is_active( 'notifications' ) || ! is_question( ) ) {
 			return;
@@ -544,7 +556,7 @@ class AnsPress_BP_Hooks {
 	/**
 	 * Ajax callback for loading more posts.
 	 */
-	public static function bp_loadmore() {
+	public function bp_loadmore() {
 		$type = ap_sanitize_unslash( 'type', 'r' );
 		$order_by = ap_sanitize_unslash( 'order_by', 'r' );
 		$user_id = (int) ap_sanitize_unslash( 'user_id', 'r' );
@@ -553,7 +565,7 @@ class AnsPress_BP_Hooks {
 
 		if ( 'questions' === $type ) {
 			ob_start();
-			SELF::page_questions( $user_id, $paged, true );
+			$this->page_questions( $user_id, $paged, true );
 			$html = ob_get_clean();
 
 			$paged = anspress()->questions->max_num_pages > $paged ? $paged : false;
@@ -566,7 +578,7 @@ class AnsPress_BP_Hooks {
 			));
 		} elseif ( 'answers' === $type ) {
 			ob_start();
-			SELF::page_answers( $user_id, $paged, $order_by, true );
+			$this->page_answers( $user_id, $paged, $order_by, true );
 			$html = ob_get_clean();
 
 			global $answers;
@@ -580,11 +592,10 @@ class AnsPress_BP_Hooks {
 			));
 		}
 	}
-}
 
+}
 
 // Include BuddyPress hooks and files.
-if ( class_exists( 'BuddyPress' ) ) {
-	AnsPress_BP_Hooks::init();
+if ( class_exists( '\BuddyPress' ) ) {
+	\AnsPress\Addons\BuddyPress::init();
 }
-
