@@ -711,7 +711,7 @@ class Email extends \AnsPress\Singleton {
 		check_ajax_referer( 'ap_email_template', '__nonce' );
 		$template_slug = ap_sanitize_unslash( 'template', 'r' );
 
-		AnsPress\Addons\Email::init()->template_form( $template_slug );
+		\AnsPress\Addons\Email::init()->template_form( $template_slug );
 		die();
 	}
 

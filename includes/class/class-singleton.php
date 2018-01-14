@@ -31,9 +31,32 @@ class Singleton {
 	 */
 	public static $instance = null;
 
-	private function __clone() { }
-	private function __construct() { }
-	private function __wakeup() { }
+	/**
+	 * Cloning is forbidden.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	private function __clone() {
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' ); // WPCS: xss okay.
+	}
+
+	/**
+	 * Class constructor must be protected.
+	 *
+	 * @since 4.1.8
+	 */
+	protected function __construct() {
+	}
+
+	/**
+	 * Unserializing instances of this class is forbidden.
+	 *
+	 * @since 4.1.8
+	 */
+	private function __wakeup() {
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' ); // WPCS: xss okay.
+	}
 
 	/**
 	 * Creates or returns an instance of this class.
