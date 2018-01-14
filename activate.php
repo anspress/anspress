@@ -72,6 +72,7 @@ class AP_Activate {
 		$this->disable_ext();
 		$this->delete_options();
 		$this->enable_addons();
+		$this->reactivate_addons();
 
 		// Append table names in $wpdb.
 		ap_append_table_names();
@@ -312,6 +313,32 @@ class AP_Activate {
 			switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
 			$this->activate();
 			restore_current_blog();
+		}
+	}
+
+	/**
+	 * As of version 4.1.8 addons names are changed hence make
+	 * sure to reactivate previously active addons.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public function reactivate_addons() {
+		$active_addons = get_option( 'anspress_addons', [] );
+
+		foreach ( $active_addons as $file => $active ) {
+			if ( false !== strpos( $file, 'free/' ) ) {
+				// Get current addons from database.
+				$addons = get_option( 'anspress_addons', [] );
+
+				// Delete old addon name from option and update.
+				unset( $addons[ $file ] );
+				update_option( 'anspress_addons', $addons );
+
+				// Try to activate by new name.
+				$new_addon_name = str_replace( 'free/', '', $file );
+				ap_activate_addon( $new_addon_name );
+			}
 		}
 	}
 }

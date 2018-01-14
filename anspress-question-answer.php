@@ -629,24 +629,9 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			$tables[] 	= $wpdb->prefix . 'ap_votes';
 			return $tables;
 		}
-
-		/**
-		 * Prevent loading of previous extension.
-		 *
-	 	 * @param boolean $ret Return.
-		 * @param string  $ext Extension slug.
-		 */
-		public static function prevent_ext( $ret, $ext ) {
-			if ( in_array( $ext, [ 'categories-for-anspress', 'tags-for-anspress', 'anspress-email' ] ) ) {
-				return false;
-			}
-
-			return $ret;
-		}
 	}
 } // End if().
 
-add_filter( 'anspress_load_ext', [ 'AnsPress_Init', 'prevent_ext' ], 10, 2 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ], 1 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ], 0 );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
