@@ -11,8 +11,8 @@ $I->cli('option delete anspress_addons');
 $I->wait(2);
 $I->amOnPage('/wp-admin/admin.php?page=anspress_addons');
 $I->wantTo('Enable addon: category');
-$I->click( 'Enable Addon', '.addon-category');
-$I->waitForText("Disable Addon", 20, '.addon-category');
+$I->click( 'Enable Addon', '.addon-categories');
+$I->waitForText("Disable Addon", 20, '.addon-categories');
 
 $I->wantTo('check category creation in wp-admin');
 $I->amOnPage('/wp-admin/edit-tags.php?taxonomy=question_category');

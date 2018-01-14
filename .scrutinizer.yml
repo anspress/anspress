@@ -6,6 +6,9 @@ build:
                 override: true
             tests:
                 override: [php-scrutinizer-run]
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress
 checks:
     php:
         code_rating: true
@@ -14,3 +17,6 @@ filter:
     excluded_paths:
         - tests/*
         - vendor/*
+tools:
+    php_code_sniffer:
+        config: { standard: WordPress }
