@@ -546,7 +546,7 @@ function ap_notification_addon_activation() {
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $table );
 }
-ap_addon_activation_hook( 'free/' . basename( __FILE__ ), 'ap_notification_addon_activation' );
+ap_addon_activation_hook( basename( __FILE__ ), 'ap_notification_addon_activation' );
 
 // Init class.
 AnsPress_Notification_Hook::init();

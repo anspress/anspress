@@ -10,17 +10,15 @@
  * @license    http://opensource.org/licenses/gpl-3.0.php GNU Public License
  */
 
-namespace AnsPress;
-
-use WP_Error;
-use AnsPress_Email_Hooks as Hooks;
+namespace AnsPress\Addons\Email;
 
 /**
- * The email class.
+ * The email helper class.
  *
  * @since 4.1.0
+ * @since 4.1.8 Renamed class From Email to helper.
  */
-class Email {
+class Helper {
 	/**
 	 * The arguments.
 	 *
@@ -218,7 +216,7 @@ class Email {
 
 		// If template not found use default one.
 		if ( empty( $this->template ) ) {
-			$default_template = Hooks::get_default_template( $this->event );
+			$default_template = \AnsPress\Addons\Email::get_default_template( $this->event );
 			$this->template = $default_template['body'];
 			$this->subject = $default_template['subject'];
 		}
@@ -315,7 +313,7 @@ class Email {
 		$this->prepare_emails();
 
 		if ( empty( $this->emails ) ) {
-			return new WP_Error( 'no_emails' );
+			return new \WP_Error( 'no_emails' );
 		}
 
 		$first_email = $this->emails[0];

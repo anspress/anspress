@@ -274,6 +274,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		private function includes() {
 			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
+			require_once ANSPRESS_DIR . 'includes/class/class-singleton.php';
 			require_once ANSPRESS_DIR . 'includes/activity.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
@@ -358,18 +359,22 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 *
 		 * @access public
 		 * @since 0.0.1
-		 * @since 4.1.8 Load all addons by default in test mode.
+		 * @since 4.1.8 Load all addons if constant `ANSPRESS_ENABLE_ADDONS` is set.
 		 */
 		public function site_include() {
 			\AnsPress_Hooks::init();
 			$this->activity = AnsPress\Activity_Helper::get_instance();
 			\AnsPress_Views::init();
 
+			// Load all addons if constant set.
+			if ( defined( 'ANSPRESS_ENABLE_ADDONS' ) && ANSPRESS_ENABLE_ADDONS ) {
+				foreach ( ap_get_addons() as $name => $data ) {
+					ap_activate_addon( $name );
+				}
+			}
+
 			foreach ( (array) ap_get_addons() as $data ) {
 				if ( $data['active'] && file_exists( $data['path'] ) ) {
-					require_once( $data['path'] );
-				} elseif ( defined( 'ANSPRESS_TEST_MODE' ) && file_exists( $data['path'] ) ) {
-					// Load all addons for test mode.
 					require_once( $data['path'] );
 				}
 			}
@@ -421,7 +426,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param int      Optional $priority      The priority at which the function should be fired.
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
 		 * @param integer           $priority      Priority.
-		 * @param integer           $accepted_args Accepted aruments.
+		 * @param integer           $accepted_args Accepted arguments.
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
 		 */

@@ -57,7 +57,7 @@ $i = 1;
 			</th>
 			<td>
 					<div id="template-holder">
-						<?php AnsPress_Email_Hooks::template_form( $active ); ?>
+						<?php AnsPress\Addons\Email::init()->template_form( $active ); ?>
 					</div>
 			</td>
 		</tr>

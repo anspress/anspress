@@ -8,11 +8,7 @@ class EmailAddonTest extends \Codeception\TestCase\WPTestCase
     {
         // before
         parent::setUp();
-
-        // Init addon.
-        AnsPress_Email_Hooks::init();
     }
-
 
     public function tearDown()
     {
@@ -23,12 +19,12 @@ class EmailAddonTest extends \Codeception\TestCase\WPTestCase
     }
 
     /**
-     * @covers AnsPress_Email_Hooks::ap_after_new_question
+     * @covers AnsPress\Addons\Email::ap_after_new_question
      */
     public function testAPAfterNewQuestion()
     {
         // Check hook exists.
-        $this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Email_Hooks', 'ap_after_new_question' ] ) );
+        $this->assertEquals( 10, has_action( 'ap_after_new_question', [ AnsPress\Addons\Email::init(), 'ap_after_new_question' ] ) );
         ap_opt( 'email_admin_emails', 'admin@local.local, admin2@aptext.local, admin@site.com' );
 
         $this->setRole('subscriber');
@@ -47,11 +43,11 @@ class EmailAddonTest extends \Codeception\TestCase\WPTestCase
     }
 
     /**
-     * @covers AnsPress_Email_Hooks::ap_after_new_answer
+     * @covers AnsPress\Addons\Email::ap_after_new_answer
      */
     private function testApAfterNewAnswer(){
         // Check hook exists.
-        $this->assertEquals( 10, has_action( 'ap_after_new_answer', [ 'AnsPress_Email_Hooks', 'ap_after_new_answer' ] ) );
+        $this->assertEquals( 10, has_action( 'ap_after_new_answer', [ AnsPress\Addons\Email::init(), 'ap_after_new_answer' ] ) );
         $this->setRole('subscriber');
         $q_user = get_current_user_id();
 

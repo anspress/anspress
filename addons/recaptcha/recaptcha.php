@@ -29,7 +29,7 @@ use AnsPress\Form\Field\Captcha as Captcha;
 /**
  * Include captcha field.
  */
-require_once ANSPRESS_ADDONS_DIR . '/recaptcha/class-captcha.php';
+require_once ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/class-captcha.php';
 
 /**
  * The reCaptcha class.

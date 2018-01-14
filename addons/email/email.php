@@ -16,85 +16,87 @@
  * Author:        Rahul Aryan
  * Author URI:    https://anspress.io
  */
+namespace Anspress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-use AnsPress\Email as Email;
+use \Anspress\Addons\Email\Helper as EmailHelper;
+
+// Include captcha field.
+require_once ANSPRESS_ADDONS_DIR . '/email/class-helper.php';
 
 /**
- * Include captcha field.
+ * Email addon for AnsPress.
+ *
+ * @since unknown
+ * @since 4.1.8 Renamed class from @see AnsPress_Email_Hooks to AnsPress\Addons\Email.
  */
-require_once ANSPRESS_ADDONS_DIR . '/email/class-email.php';
-
-/**
- * Email addon for AnsPress
- */
-class AnsPress_Email_Hooks {
+class Email extends \AnsPress\Singleton {
 
 	/**
 	 * All emails to send notification.
 	 *
 	 * @var array
 	 */
-	public static $emails = array();
+	public $emails = array();
 
 	/**
 	 * Subject of email to send.
 	 *
 	 * @var string
 	 */
-	public static $subject;
+	public $subject;
 
 	/**
 	 * Email body.
 	 *
 	 * @var string
 	 */
-	public static $message;
+	public $message;
 
 	/**
 	 * Initialize the class.
 	 */
-	public static function init() {
-		SELF::ap_default_options();
-		anspress()->add_filter( 'ap_form_addon-email', __CLASS__, 'register_option' );
-		anspress()->add_filter( 'ap_form_email_template', __CLASS__, 'register_email_template' );
-		anspress()->add_filter( 'ap_all_options', __CLASS__, 'ap_all_options', 10, 2 );
-		anspress()->add_action( 'wp_ajax_ap_email_template', __CLASS__, 'ap_email_template' );
-		anspress()->add_action( 'ap_ajax_form_email_template', __CLASS__, 'save_email_template_form', 11 );
-		anspress()->add_action( 'ap_email_default_template_new_question', __CLASS__, 'template_new_question' );
-		anspress()->add_action( 'ap_email_default_template_new_answer', __CLASS__, 'template_new_answer' );
-		anspress()->add_action( 'ap_email_default_template_select_answer', __CLASS__, 'template_select_answer' );
-		anspress()->add_action( 'ap_email_default_template_new_comment', __CLASS__, 'template_new_comment' );
-		anspress()->add_action( 'ap_email_default_template_edit_question', __CLASS__, 'template_edit_question' );
-		anspress()->add_action( 'ap_email_default_template_edit_answer', __CLASS__, 'template_edit_answer' );
-		anspress()->add_action( 'ap_email_default_template_trash_question', __CLASS__, 'template_trash_question' );
-		anspress()->add_action( 'ap_email_default_template_trash_answer', __CLASS__, 'template_trash_answer' );
-		anspress()->add_action( 'ap_email_form_allowed_tags', __CLASS__, 'form_allowed_tags' );
+	protected function __construct() {
+		$this->ap_default_options();
+		anspress()->add_filter( 'ap_form_addon-email', $this, 'register_option' );
+		anspress()->add_filter( 'ap_form_email_template', $this, 'register_email_template' );
+		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 10, 2 );
+		anspress()->add_action( 'wp_ajax_ap_email_template', $this, 'ap_email_template' );
+		anspress()->add_action( 'ap_ajax_form_email_template', $this, 'save_email_template_form', 11 );
+		anspress()->add_action( 'ap_email_default_template_new_question', $this, 'template_new_question' );
+		anspress()->add_action( 'ap_email_default_template_new_answer', $this, 'template_new_answer' );
+		anspress()->add_action( 'ap_email_default_template_select_answer', $this, 'template_select_answer' );
+		anspress()->add_action( 'ap_email_default_template_new_comment', $this, 'template_new_comment' );
+		anspress()->add_action( 'ap_email_default_template_edit_question', $this, 'template_edit_question' );
+		anspress()->add_action( 'ap_email_default_template_edit_answer', $this, 'template_edit_answer' );
+		anspress()->add_action( 'ap_email_default_template_trash_question', $this, 'template_trash_question' );
+		anspress()->add_action( 'ap_email_default_template_trash_answer', $this, 'template_trash_answer' );
+		anspress()->add_action( 'ap_email_form_allowed_tags', $this, 'form_allowed_tags' );
 
-		anspress()->add_filter( 'comment_notification_recipients', __CLASS__, 'default_recipients', 10, 2 );
+		anspress()->add_filter( 'comment_notification_recipients', $this, 'default_recipients', 10, 2 );
 
-		anspress()->add_action( 'ap_after_new_question', __CLASS__, 'ap_after_new_question' );
-		anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'ap_after_new_answer' );
-		anspress()->add_action( 'ap_select_answer', __CLASS__, 'select_answer' );
-		anspress()->add_action( 'ap_publish_comment', __CLASS__, 'new_comment' );
-		anspress()->add_action( 'ap_processed_update_question', __CLASS__, 'ap_after_update_question', 10, 2 );
-		anspress()->add_action( 'ap_processed_update_answer', __CLASS__, 'ap_after_update_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', __CLASS__, 'ap_trash_question', 10, 2 );
-		anspress()->add_action( 'ap_trash_answer', __CLASS__, 'ap_trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_after_new_question', $this, 'ap_after_new_question' );
+		anspress()->add_action( 'ap_after_new_answer', $this, 'ap_after_new_answer' );
+		anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
+		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
+		anspress()->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 10, 2 );
+		anspress()->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 10, 2 );
+		anspress()->add_action( 'ap_trash_question', $this, 'ap_trash_question', 10, 2 );
+		anspress()->add_action( 'ap_trash_answer', $this, 'ap_trash_answer', 10, 2 );
 	}
 
 	/**
-	 * Return empty reccipients for default comment notifications.
+	 * Return empty recipients for default comment notifications.
 	 *
 	 * @param array   $recipients Array of recipients.
-	 * @param intgere $comment_id Comment ID.
+	 * @param integer $comment_id Comment ID.
 	 * @return array
 	 */
-	public static function default_recipients( $recipients, $comment_id ) {
+	public function default_recipients( $recipients, $comment_id ) {
 		$_comment = get_comment( $comment_id );
 
 		if ( 'anspress' === $_comment->comment_type ) {
@@ -109,7 +111,7 @@ class AnsPress_Email_Hooks {
 	 *
 	 * @since   4.0.0
 	 */
-	public static function ap_default_options() {
+	public function ap_default_options() {
 		$defaults = array(
 			'email_admin_emails'         => get_option( 'admin_email' ),
 			'email_admin_new_question'   => true,
@@ -136,7 +138,7 @@ class AnsPress_Email_Hooks {
 	/**
 	 * Register options
 	 */
-	public static function register_option() {
+	public function register_option() {
 		$opt = ap_opt();
 
 		$form = array(
@@ -242,7 +244,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function register_email_template() {
+	public function register_email_template() {
 		$form = array(
 			'fields' => array(
 				'subject' => array(
@@ -267,7 +269,7 @@ class AnsPress_Email_Hooks {
 	 * @param string $opt Option key.
 	 * @return false|array Return array of emails else false.
 	 */
-	public static function get_admin_emails( $opt ) {
+	public function get_admin_emails( $opt ) {
 		$current_user = wp_get_current_user();
 
 		if ( ap_opt( $opt ) ) {
@@ -289,9 +291,9 @@ class AnsPress_Email_Hooks {
 	 *
 	 * @param  integer $question_id Question ID.
 	 * @since 1.0
-	 * @since 4.1.0 Updated to use new Email class.
+	 * @since 4.1.0 Updated to use new EmailHelper class.
 	 */
-	public static function ap_after_new_question( $question_id ) {
+	public function ap_after_new_question( $question_id ) {
 		$args = [];
 
 		$admin_emails = self::get_admin_emails( 'email_admin_new_question' );
@@ -314,7 +316,7 @@ class AnsPress_Email_Hooks {
 			'{question_excerpt}'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
 		);
 
-		$email = new Email( 'new_question', $args );
+		$email = new EmailHelper( 'new_question', $args );
 		$email->send_emails();
 	}
 
@@ -324,7 +326,7 @@ class AnsPress_Email_Hooks {
 	 * @param integer $answer_id Answer ID.
 	 * @since 4.1.0 Updated to use new email class.
 	 */
-	public static function ap_after_new_answer( $answer_id ) {
+	public function ap_after_new_answer( $answer_id ) {
 		$current_user = wp_get_current_user();
 		$args         = array(
 			'users' => [],
@@ -355,7 +357,7 @@ class AnsPress_Email_Hooks {
 			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
 		);
 
-		$email = new Email( 'new_answer', $args );
+		$email = new EmailHelper( 'new_answer', $args );
 		$email->send_emails();
 	}
 
@@ -365,7 +367,7 @@ class AnsPress_Email_Hooks {
 	 * @param  object $_post Selected answer object.
 	 * @since 4.1.0 Updated to use new email class.
 	 */
-	public static function select_answer( $_post ) {
+	public function select_answer( $_post ) {
 		if ( get_current_user_id() === $_post->post_author || ! ap_opt( 'email_user_select_answer' ) ) {
 			return;
 		}
@@ -384,7 +386,7 @@ class AnsPress_Email_Hooks {
 			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $_post->post_content ), 100 ),
 		);
 
-		$email = new Email( 'select_answer', $args );
+		$email = new EmailHelper( 'select_answer', $args );
 		$email->send_emails();
 	}
 
@@ -394,7 +396,7 @@ class AnsPress_Email_Hooks {
 	 * @param object $comment Comment object.
 	 * @since 4.1.0 Updated to use new email class.
 	 */
-	public static function new_comment( $comment ) {
+	public function new_comment( $comment ) {
 		$args = [];
 
 		$admin_emails = self::get_admin_emails( 'email_admin_new_comment' );
@@ -430,7 +432,7 @@ class AnsPress_Email_Hooks {
 			'{comment_content}'   => $comment->comment_content,
 		);
 
-		$email = new Email( 'new_comment', $args );
+		$email = new EmailHelper( 'new_comment', $args );
 		$email->send_emails();
 	}
 
@@ -440,7 +442,7 @@ class AnsPress_Email_Hooks {
 	 * @param object $question Question object.
 	 * @since 4.1.0 Updated to use new email class.
 	 */
-	public static function ap_after_update_question( $post_id, $question ) {
+	public function ap_after_update_question( $post_id, $question ) {
 		if ( in_array( $question->post_status, [ 'trash', 'draft' ] ) ) {
 			return;
 		}
@@ -452,7 +454,7 @@ class AnsPress_Email_Hooks {
 			$args['users'] = $admin_emails;
 		}
 
-		$email = new Email( 'edit_question', $args );
+		$email = new EmailHelper( 'edit_question', $args );
 
 		$current_user = wp_get_current_user();
 		$subscribers = ap_get_subscribers( [ 'subs_event' => 'question', $question->ID ] );
@@ -488,7 +490,7 @@ class AnsPress_Email_Hooks {
 	 * @param object $answer Answer object.
 	 * @param string $event Event type.
 	 */
-	public static function ap_after_update_answer( $answer_id, $answer ) {
+	public function ap_after_update_answer( $answer_id, $answer ) {
 		if ( in_array( $answer->post_status, [ 'trash', 'draft' ] ) ) {
 			return;
 		}
@@ -502,7 +504,7 @@ class AnsPress_Email_Hooks {
 			$args['users'] = $admin_emails;
 		}
 
-		$email         = new Email( 'edit_answer', $args );
+		$email         = new EmailHelper( 'edit_answer', $args );
 
 		$a_subscribers = (array) ap_get_subscribers( [ 'subs_events' => 'answer_' . $answer->post_parent ] );
 		$q_subscribers = (array) ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => $answer->post_parent ] );
@@ -538,7 +540,7 @@ class AnsPress_Email_Hooks {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function ap_trash_question( $post_id, $_post ) {
+	public function ap_trash_question( $post_id, $_post ) {
 		if ( ! ap_opt( 'email_admin_trash_question' ) ) {
 			return;
 		}
@@ -556,7 +558,7 @@ class AnsPress_Email_Hooks {
 			'{question_link}'     => wp_get_shortlink( $_post->ID ),
 		);
 
-		$email = new Email( 'trash_question', $args );
+		$email = new EmailHelper( 'trash_question', $args );
 		$email->send_emails();
 	}
 
@@ -566,7 +568,7 @@ class AnsPress_Email_Hooks {
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post Post object.
 	 */
-	public static function ap_trash_answer( $post_id, $_post ) {
+	public function ap_trash_answer( $post_id, $_post ) {
 		if ( ! ap_opt( 'email_admin_trash_answer' ) ) {
 			return;
 		}
@@ -584,7 +586,7 @@ class AnsPress_Email_Hooks {
 			'{question_link}'     => wp_get_shortlink( $_post->post_parent ),
 		);
 
-		$email = new Email( 'trash_question', $args );
+		$email = new EmailHelper( 'trash_question', $args );
 		$email->send_emails();
 	}
 
@@ -595,7 +597,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function ap_all_options( $all_options ) {
+	public function ap_all_options( $all_options ) {
 		$all_options['emails'] = array(
 			'label'    => __( 'Email Templates', 'anspress-question-answer' ),
 			'template' => 'emails.php',
@@ -610,7 +612,7 @@ class AnsPress_Email_Hooks {
 	 * @return void
 	 * @since 4.1.0
 	 */
-	public static function save_email_template_form() {
+	public function save_email_template_form() {
 		$editing = false;
 		$template_slug = ap_sanitize_unslash( 'template', 'r' );
 		$template_id = (int) ap_opt( 'email_template_' . $template_slug );
@@ -699,13 +701,17 @@ class AnsPress_Email_Hooks {
 	 *
 	 * @return void
 	 * @since 4.1.0
+	 * @since 4.1.8 Check for permission.
 	 */
-	public static function ap_email_template() {
+	public function ap_email_template() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			die();
+		}
+
 		check_ajax_referer( 'ap_email_template', '__nonce' );
 		$template_slug = ap_sanitize_unslash( 'template', 'r' );
 
-		AnsPress_Email_Hooks::template_form( $template_slug );
-
+		AnsPress\Addons\Email::init()->template_form( $template_slug );
 		die();
 	}
 
@@ -716,7 +722,7 @@ class AnsPress_Email_Hooks {
 	 * @return void
 	 * @since 4.1.0
 	 */
-	public static function template_form( $active ) {
+	public function template_form( $active ) {
 		$form = anspress()->get_form( 'email_template' );
 		$template = get_post( ap_opt( 'email_template_' . $active ) );
 
@@ -726,7 +732,7 @@ class AnsPress_Email_Hooks {
 				'body'    => $template->post_content,
 			) );
 		} else {
-			$default_template = self::get_default_template( $active );
+			$default_template = $this->get_default_template( $active );
 			$form->set_values( array(
 				'subject' => $default_template['subject'],
 				'body'    => $default_template['body'],
@@ -749,7 +755,7 @@ class AnsPress_Email_Hooks {
 	 * @param string $event Event name.
 	 * @return array.
 	 */
-	public static function get_default_template( $event ) {
+	public function get_default_template( $event ) {
 		$template = array(
 			'subject' => '',
 			'body'    => '',
@@ -771,7 +777,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_new_question( $template ) {
+	public function template_new_question( $template ) {
 		$template['subject'] = __( '{asker} have posted a new question', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -795,7 +801,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_new_answer( $template ) {
+	public function template_new_answer( $template ) {
 		$template['subject'] = __( 'New answer posted by {answerer}', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -819,7 +825,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_select_answer( $template ) {
+	public function template_select_answer( $template ) {
 		$template['subject'] = __( 'Your answer is selected as best!', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -843,7 +849,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_new_comment( $template ) {
+	public function template_new_comment( $template ) {
 		$template['subject'] = __( 'New comment by {commenter}', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -867,7 +873,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_edit_question( $template ) {
+	public function template_edit_question( $template ) {
 		$template['subject'] = __( 'A question is edited by {editor}', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -891,7 +897,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_edit_answer( $template ) {
+	public function template_edit_answer( $template ) {
 		$template['subject'] = __( 'A answer is edited by {editor}', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -915,7 +921,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_trash_question( $template ) {
+	public function template_trash_question( $template ) {
 		$template['subject'] = __( 'A question is trashed by {user}', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -936,7 +942,7 @@ class AnsPress_Email_Hooks {
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function template_trash_answer( $template ) {
+	public function template_trash_answer( $template ) {
 		$template['subject'] = __( 'An answer is trashed by {user}', 'anspress-question-answer' );
 		$body = '';
 		$body .= '<div class="ap-email-event">';
@@ -950,7 +956,7 @@ class AnsPress_Email_Hooks {
 		return $template;
 	}
 
-	public static function form_allowed_tags() {
+	public function form_allowed_tags() {
 		$active = ap_isset_post_value( 'template', 'new_question' );
 
 		$tags = array(
@@ -989,4 +995,5 @@ class AnsPress_Email_Hooks {
 }
 
 // Init addon.
-AnsPress_Email_Hooks::init();
+Email::init();
+

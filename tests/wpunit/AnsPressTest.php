@@ -56,6 +56,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		// Check main PHP file exists.
 		$this->assertFileExists( ANSPRESS_DIR . 'anspress-question-answer.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'activate.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-singleton.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/roles-cap.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity-helper.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity.php' );
@@ -114,31 +115,31 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-cli.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-wp-async-task.php' );
 
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/avatar.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/buddypress.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/category.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/category/widget.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/email.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/email/class-email.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/notification.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/notification/functions.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/notification/query.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/profile.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/autoload.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/class-captcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/ReCaptcha.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestParameters.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/Response.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/Curl.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/CurlPost.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/Post.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/Socket.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/reputation.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/tag.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/free/syntaxhighlighter.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/avatar.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/buddypress.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/category/category.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/category/widget.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/email.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/class-helper.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notification/notification.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notification/functions.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notification/query.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/profile/profile.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/autoload.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/class-captcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/ReCaptcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestParameters.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/Response.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/Curl.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/CurlPost.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/Post.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/Socket.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/reputation/reputation.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tag/tag.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/syntaxhighlighter.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . 'readme.txt' );
 
@@ -269,45 +270,16 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertNotEquals( false, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
 		$this->assertInstanceOf( 'AnsPress\Activity_Helper', anspress()->activity );
 
-		// Enable addons to check if they are loading properly.
-		ap_activate_addon( 'free/avatar.php' );
-		ap_activate_addon( 'free/buddypress.php' );
-		ap_activate_addon( 'free/category.php' );
-		ap_activate_addon( 'free/email.php' );
-		ap_activate_addon( 'free/notification.php' );
-		ap_activate_addon( 'free/profile.php' );
-		ap_activate_addon( 'free/recaptcha.php' );
-		ap_activate_addon( 'free/reputation.php' );
-		ap_activate_addon( 'free/syntaxhighlighter.php' );
-		ap_activate_addon( 'free/tag.php' );
-
-		foreach ( (array) ap_get_addons() as $data ) {
-			if ( $data['active'] && file_exists( $data['path'] ) ) {
-				require_once( $data['path'] );
-			}
-		}
-
 		$this->assertTrue( class_exists( 'AnsPress_Avatar_Hook' ) );
 		$this->assertTrue( class_exists( 'AnsPress_BP_Hooks' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Category' ) );
-		$this->assertTrue( class_exists( 'AnsPress_Email_Hooks' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Email' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Notification_Hook' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Profile_Hooks' ) );
 		$this->assertTrue( class_exists( 'AnsPress_reCcaptcha' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Reputation_Hooks' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Syntax_Highlighter' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Tag' ) );
-
-		ap_deactivate_addon( 'free/avatar.php' );
-		ap_deactivate_addon( 'free/buddypress.php' );
-		ap_deactivate_addon( 'free/category.php' );
-		ap_deactivate_addon( 'free/email.php' );
-		ap_deactivate_addon( 'free/notification.php' );
-		ap_deactivate_addon( 'free/profile.php' );
-		ap_deactivate_addon( 'free/recaptcha.php' );
-		ap_deactivate_addon( 'free/reputation.php' );
-		ap_deactivate_addon( 'free/syntaxhighlighter.php' );
-		ap_deactivate_addon( 'free/tag.php' );
 	}
 
 	/**
