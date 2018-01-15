@@ -55,7 +55,7 @@ class Captcha extends Field {
 			return $this->sanitized_value;
 		}
 
-		require_once( ANSPRESS_ADDONS_DIR . '/free/recaptcha/autoload.php' );
+		require_once( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/autoload.php' );
 
 		if ( ap_opt( 'recaptcha_method' ) === 'curl' ) {
 			$method = new \ReCaptcha\RequestMethod\CurlPost();

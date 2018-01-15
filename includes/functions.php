@@ -1601,7 +1601,6 @@ function ap_get_addons() {
 		}
 	}
 
-	$all_files = apply_filters( 'ap_addon_files', $all_files );
 	$addons = array(
 		'email.php' => array(
 			'name' => __( 'Emails', 'anspress-question-answer' ),
@@ -1644,6 +1643,13 @@ function ap_get_addons() {
 			'description' => __( 'Add syntax highlighter support.', 'anspress-question-answer' ),
 		),
 	);
+
+	/**
+	 * This hooks can be used to filter existing addons or for adding new addons.
+	 *
+	 * @since 4.1.8
+	 */
+	$addons = apply_filters( 'ap_addons', $addons );
 
 	$valid_addons = [];
 	foreach ( (array) $addons as $k => $addon ) {

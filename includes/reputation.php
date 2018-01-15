@@ -680,7 +680,7 @@ class AnsPress_Reputation_Query {
 	}
 
 	/**
-	 * Out put refernece content.
+	 * Out put reference content.
 	 */
 	public function the_ref_content() {
 		if ( in_array( $this->reputation->parent, [ 'post', 'question', 'answer' ], true ) ) {
