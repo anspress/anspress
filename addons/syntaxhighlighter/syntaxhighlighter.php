@@ -209,6 +209,8 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 *
 	 * @param array $options TinyMCE options.
 	 * @return array
+	 *
+	 * @since 4.1.8 Fixed: SCRIPT5022: InvalidCharacterError showing in Edge browser.
 	 */
 	public function mce_before_init( $options ) {
 		if ( ! isset( $options['extended_valid_elements'] ) ) {
@@ -217,14 +219,14 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			$options['extended_valid_elements'] .= ',';
 		}
 
-		if ( ! isset( $options['custom_elements'] ) ) {
-			$options['custom_elements'] = '';
+		if ( ! isset( $options['valid_elements'] ) ) {
+			$options['valid_elements'] = '';
 		} else {
-			$options['custom_elements'] .= ',';
+			$options['valid_elements'] .= ',';
 		}
 
-		$options['extended_valid_elements'] .= 'pre[aplang|contenteditable]';
-		$options['custom_elements']         .= 'pre[aplang|contenteditable]';
+		$options['extended_valid_elements'] .= 'pre[aplang|contenteditable=false]';
+		$options['valid_elements']          .= 'pre[aplang|contenteditable=false]';
 
 		return $options;
 	}

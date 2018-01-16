@@ -216,7 +216,7 @@ class Helper {
 
 		// If template not found use default one.
 		if ( empty( $this->template ) ) {
-			$default_template = \AnsPress\Addons\Email::get_default_template( $this->event );
+			$default_template = \AnsPress\Addons\Email::init()->get_default_template( $this->event );
 			$this->template = $default_template['body'];
 			$this->subject = $default_template['subject'];
 		}
