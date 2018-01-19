@@ -138,11 +138,11 @@ class Tags extends \AnsPress\Singleton {
 		 */
 		$tag_args = apply_filters( 'ap_tags_shortcode_args', $tag_args );
 
-		$query 		          = new WP_Term_Query( $tag_args );
+		$query 		          = new \WP_Term_Query( $tag_args );
 
 		// Count terms.
 		$tag_args['fields'] = 'count';
-		$found_query        = new WP_Term_Query( $tag_args );
+		$found_query        = new \WP_Term_Query( $tag_args );
 		$tags_rows_found    = $found_query->get_terms();
 		$ap_max_num_pages   = ceil( $tags_rows_found / $per_page );
 		$question_tags      = $query->get_terms();
