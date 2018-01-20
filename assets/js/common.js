@@ -101,7 +101,6 @@ window.AnsPress = _.extend({
 			$loading.height(jQuery(elm).height());
 			$loading.width(jQuery(elm).height());
 			jQuery(elm).append($loading);
-			jQuery(elm).prop('disabled', true);
 		} else {
 			var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
 			jQuery('body').append(el);
