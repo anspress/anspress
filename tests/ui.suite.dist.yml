@@ -4,6 +4,7 @@ actor: UiTester
 modules:
     enabled:
         - WPDb
+        - Asserts
         - \Helper\Acceptance
         - \Helper\Ui
         - WPCLI

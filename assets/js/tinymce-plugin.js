@@ -11,9 +11,7 @@
       //   });
       // });
 
-      // Replace blob image src.
-      ed.on('SaveContent', function (e) {
-
+      var replaceImages = function(e){
         //jQuery(e.content).find('').
         e.content = e.content.replace(/<img([^>]+data-apimagename.*?[\w\W]+?)\/>/g, function(match, t) {
           regex = /data-apimagename\=\"(.*)\"/g;
@@ -21,6 +19,14 @@
           if(apimagename)
             return '{{apimage "'+apimagename[1]+'"}}';
         });
+      }
+
+      // Replace blob image src.
+      ed.on('SaveContent', function (e) {
+        replaceImages(e);
+      });
+      ed.on('GetContent', function (e) {
+        replaceImages(e);
       });
 
       ed.addButton('apmedia', {
