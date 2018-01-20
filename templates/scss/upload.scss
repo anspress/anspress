@@ -1,0 +1,35 @@
+#ap-imgdrop-area {
+  background: #E1F5FE;
+  border: dashed 2px #81D4FA;
+  padding: 40px;
+  border-radius: 4px;
+  text-align: center;
+}
+#ap-image-preview {
+  overflow: hidden;
+  max-height: 200px;
+  border: dashed 2px #81D4FA;
+  padding: 10px;
+  border-radius: 4px;
+  display: none;
+  canvas{
+    width: 100%;
+    height: auto;
+  }
+}
+#ap-modal-selectImage{
+  .ap-modal-footer{
+    margin-top: 15px;
+    text-align: right;
+  }
+  span.ap-upload-err {
+    display: block;
+    background: #ffe7e7;
+    margin-bottom: 10px;
+    padding: 6px;
+    border-radius: 3px;
+    text-align: center;
+    border: dotted 1px #ff6e6e;
+    color: #f52424;
+  }
+}

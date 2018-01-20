@@ -44,5 +44,25 @@
       }
 
     });
-  })
+  });
+
+  AnsPress.on('openSelectImage', function(form, fieldname, cb){
+    cb = cb||false;
+    $form = $(form);
+    $field = $('<input type="file" name="'+fieldname+'" />').hide();
+    $form.append($field);
+    $field.on('change', function(){
+      var self = this;
+      if (this.files && this.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          if(cb) cb(e.target.result, self.files);
+        }
+
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+    $field.click();
+  });
 })(jQuery);

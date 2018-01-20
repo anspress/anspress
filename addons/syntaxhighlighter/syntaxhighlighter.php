@@ -226,7 +226,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		}
 
 		$options['extended_valid_elements'] .= 'pre[aplang|contenteditable=false]';
-		$options['valid_elements']          .= 'pre[aplang|contenteditable=false]';
+		$options['valid_elements']          .= 'pre[aplang|contenteditable=false],img[src]';
 
 		return $options;
 	}

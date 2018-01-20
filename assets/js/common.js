@@ -101,6 +101,7 @@ window.AnsPress = _.extend({
 			$loading.height(jQuery(elm).height());
 			$loading.width(jQuery(elm).height());
 			jQuery(elm).append($loading);
+			jQuery(elm).prop('disabled', true);
 		} else {
 			var el = jQuery('<div class="ap-loading-icon ap-uid '+customClass+ (isText ? ' is-text' : '') +'" id="apuid-' + uid + '"><i></i></div>');
 			jQuery('body').append(el);
@@ -123,6 +124,7 @@ window.AnsPress = _.extend({
 		if(jQuery(elm).is('button')||jQuery(elm).is('.ap-btn')){
 			jQuery(elm).removeClass('show-loading');
 			jQuery(elm).find('.ap-loading-span').remove();
+			jQuery(elm).prop('disabled', false);
 		}else if( 'all' == elm ){
 			jQuery('.ap-loading-icon').hide();
 		}else{
@@ -387,12 +389,18 @@ _.templateSettings = {
 			this.remove();
 			$('html').css('overflow', '');
 			if(this.data.hideCb&&runCb) this.data.hideCb(this); // Callback
+			var name = this.data.id.replace('ap-modal-', '');
+			if(typeof AnsPress.modals[name] !== 'undefined')
+				delete AnsPress.modals[name];
 		},
 		setContent: function(html){
 			this.$el.find('.ap-modal-content').html(html);
 		},
 		setTitle: function(title){
 			this.$el.find('.ap-modal-header strong').text(title);
+		},
+		setFooter: function(content){
+			this.$el.find('.ap-modal-footer').html(content);
 		},
 		clickAction: function(e){
 			e.preventDefault();
