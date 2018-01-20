@@ -635,14 +635,7 @@ class AnsPress_Hooks {
 		}
 
 		$form = anspress()->get_form( 'question' );
-
-		// Return if form is not submitted.
-		if ( ! $form->is_submitted() ) {
-			return;
-		}
-
 		$values = $form->get_values();
-		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_question' : 'new_question';
 
 		$qameta = array(
 			'last_updated' => current_time( 'mysql' ),
@@ -650,7 +643,7 @@ class AnsPress_Hooks {
 		);
 
 		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
+		if ( $form->is_submitted() && ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
 			$qameta['fields'] = array(
 				'anonymous_name' => $values['anonymous_name']['value'],
 			);
@@ -693,13 +686,6 @@ class AnsPress_Hooks {
 
 		// Update qameta terms.
 		ap_update_qameta_terms( $post_id );
-		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_q' : 'new_q';
-
-		// Insert activity.
-		ap_activity_add( array(
-			'q_id'   => $post_id,
-			'action' => $activity_type,
-		) );
 	}
 
 	/**
@@ -718,11 +704,6 @@ class AnsPress_Hooks {
 
 		$form = anspress()->get_form( 'answer' );
 
-		// Return if form is not submitted.
-		if ( ! $form->is_submitted() ) {
-			return;
-		}
-
 		$values = $form->get_values();
 		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_answer' : 'new_answer';
 
@@ -739,7 +720,7 @@ class AnsPress_Hooks {
 		);
 
 		// Check if anonymous post and have name.
-		if ( ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
+		if ( $form->is_submitted() && ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
 			$qameta['fields'] = array(
 				'anonymous_name' => $values['anonymous_name']['value'],
 			);
@@ -782,15 +763,6 @@ class AnsPress_Hooks {
 
 		// Update qameta terms.
 		ap_update_qameta_terms( $post_id );
-
-		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_a' : 'new_a';
-
-		// Insert activity.
-		ap_activity_add( array(
-			'q_id'   => $post->post_parent,
-			'a_id'   => $post_id,
-			'action' => $activity_type,
-		) );
 	}
 
 	/**

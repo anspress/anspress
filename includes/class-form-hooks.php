@@ -431,6 +431,14 @@ class AP_Form_Hooks {
 			}
 		}
 
+		$activity_type = $editing ? 'edit_q' : 'new_q';
+
+		// Insert activity.
+		ap_activity_add( array(
+			'q_id'   => $post_id,
+			'action' => $activity_type,
+		) );
+
 		$form->after_save( false, array(
 			'post_id' => $post_id,
 		) );
@@ -598,7 +606,19 @@ class AP_Form_Hooks {
 			}
 		}
 
+		$post = ap_get_post( $post_id );
+
 		$form->delete_values_session( $question_id );
+
+		$activity_type = $editing ? 'edit_a' : 'new_a';
+
+		// Insert activity.
+		ap_activity_add( array(
+			'q_id'   => $post->post_parent,
+			'a_id'   => $post_id,
+			'action' => $activity_type,
+		) );
+
 		$form->after_save( false, array(
 			'post_id' => $post_id,
 		) );

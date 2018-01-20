@@ -465,11 +465,15 @@ class Email extends \AnsPress\Singleton {
 
 		$current_user = wp_get_current_user();
 		$subscribers = ap_get_subscribers( [ 'subs_event' => 'question', $question->ID ] );
-		$post_author  = get_user_by( 'id', $question->post_author );
 
-		if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
-			$post_author->data->user_email !== $current_user->user_email ) {
-			$email->add_email( $post_author->data->user_email );
+		// Exclude current author.
+		if ( ! empty( $question->post_author ) ) {
+			$post_author  = get_user_by( 'id', $question->post_author );
+
+			if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
+				$post_author->data->user_email !== $current_user->user_email ) {
+				$email->add_email( $post_author->data->user_email );
+			}
 		}
 
 		foreach ( (array) $subscribers as $s ) {
@@ -516,11 +520,15 @@ class Email extends \AnsPress\Singleton {
 		$a_subscribers = (array) ap_get_subscribers( [ 'subs_events' => 'answer_' . $answer->post_parent ] );
 		$q_subscribers = (array) ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => $answer->post_parent ] );
 		$subscribers   = array_merge( $a_subscribers, $q_subscribers );
-		$post_author   = get_user_by( 'id', $answer->post_author );
 
-		if ( ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
-			$current_user->user_email !== $post_author->data->user_email ) {
-			$email->add_email( $post_author->data->user_email );
+		// Exclude current post author email.
+		if ( ! empty( $answer->post_author ) ) {
+			$post_author   = get_user_by( 'id', $answer->post_author );
+
+			if ( $post_author && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
+				$current_user->user_email !== $post_author->data->user_email ) {
+				$email->add_email( $post_author->data->user_email );
+			}
 		}
 
 		foreach ( (array) $subscribers as $s ) {
