@@ -281,7 +281,6 @@ class Email extends \AnsPress\Singleton {
 
 		if ( ap_opt( $opt ) ) {
 			$admin_emails = explode( ',', preg_replace( '/\s+/', '', ap_opt( 'email_admin_emails' ) ) );
-
 			// Don't bother if current user is admin.
 			if ( empty( $admin_emails ) || in_array( $current_user->user_email, $admin_emails, true ) ) {
 				return false;
@@ -303,7 +302,7 @@ class Email extends \AnsPress\Singleton {
 	public function ap_after_new_question( $question_id ) {
 		$args = [];
 
-		$admin_emails = self::get_admin_emails( 'email_admin_new_question' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_new_question' );
 
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
@@ -339,7 +338,7 @@ class Email extends \AnsPress\Singleton {
 			'users' => [],
 		);
 
-		$admin_emails = self::get_admin_emails( 'email_admin_new_answer' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_new_answer' );
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -406,7 +405,7 @@ class Email extends \AnsPress\Singleton {
 	public function new_comment( $comment ) {
 		$args = [];
 
-		$admin_emails = self::get_admin_emails( 'email_admin_new_comment' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_new_comment' );
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -456,7 +455,7 @@ class Email extends \AnsPress\Singleton {
 
 		$args = [];
 
-		$admin_emails = self::get_admin_emails( 'email_admin_edit_question' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_edit_question' );
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -510,7 +509,7 @@ class Email extends \AnsPress\Singleton {
 
 		$args = [];
 
-		$admin_emails = self::get_admin_emails( 'email_admin_edit_answer' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_edit_answer' );
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -562,7 +561,7 @@ class Email extends \AnsPress\Singleton {
 
 		$args = [];
 		$current_user = wp_get_current_user();
-		$admin_emails = self::get_admin_emails( 'email_admin_trash_question' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_trash_question' );
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -590,7 +589,7 @@ class Email extends \AnsPress\Singleton {
 
 		$args = [];
 		$current_user = wp_get_current_user();
-		$admin_emails = self::get_admin_emails( 'email_admin_trash_question' );
+		$admin_emails = $this->get_admin_emails( 'email_admin_trash_question' );
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
