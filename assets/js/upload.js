@@ -50,7 +50,10 @@
     cb = cb||false;
     $form = $(form);
     $field = $('<input type="file" name="'+fieldname+'" />').hide();
-    $form.append($field);
+    if($form.find('.image-hidden-wrap').length == 0)
+      $form.append('<div class="image-hidden-wrap" style="height:0;overflow:hidden"></div>');
+    $wrap = $('.image-hidden-wrap');
+    $wrap.append($field);
     $field.on('change', function(){
       var self = this;
       if (this.files && this.files[0]) {
