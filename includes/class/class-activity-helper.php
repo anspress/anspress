@@ -306,6 +306,7 @@ class Activity_Helper {
 	 * 		@type string  $date    Date of activity. Current time is used by default.
 	 * }
 	 * @since 4.1.2
+	 * @since 4.1.8 Add GMT offset in `current_time`.
 	 */
 	public function insert( $args = [] ) {
 		global $wpdb;
@@ -316,7 +317,7 @@ class Activity_Helper {
 			'a_id'    => 0,
 			'c_id'    => 0,
 			'user_id' => get_current_user_id(),
-			'date'    => current_time( 'mysql' ),
+			'date'    => current_time( 'mysql', true ),
 		) );
 
 		// Check if question id exists.
