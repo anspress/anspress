@@ -219,14 +219,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			$options['extended_valid_elements'] .= ',';
 		}
 
-		if ( ! isset( $options['valid_elements'] ) ) {
-			$options['valid_elements'] = '';
-		} else {
-			$options['valid_elements'] .= ',';
-		}
-
 		$options['extended_valid_elements'] .= 'pre[aplang|contenteditable=false]';
-		$options['valid_elements']          .= 'pre[aplang|contenteditable=false],img[src]';
 
 		return $options;
 	}
