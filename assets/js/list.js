@@ -173,6 +173,8 @@
     }
   });
 
-  new AnsPress.views.List();
+  $(document).ready(function(){
+    new AnsPress.views.List();
+  });
 
 })(jQuery);
