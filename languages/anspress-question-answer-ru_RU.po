@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress 2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/anspress-question-"
 "answer\n"
-"POT-Creation-Date: 2018-01-04 04:14:04+00:00\n"
+"POT-Creation-Date: 2018-01-22 10:50:33+00:00\n"
 "PO-Revision-Date: 2015-12-15 09:20+0530\n"
 "Last-Translator: Zhandos Ulan <jandosul@mono.kz>\n"
 "Language-Team: \n"
@@ -24,139 +24,351 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: addons/free/avatar.php:88
+#: addons/avatar/avatar.php:93
 #, fuzzy
 msgid "Save add-on options"
 msgstr "Сохранить настройки"
 
-#: addons/free/avatar.php:91
+#: addons/avatar/avatar.php:96
 msgid "Clear Cache"
 msgstr ""
 
-#: addons/free/avatar.php:92
+#: addons/avatar/avatar.php:97
 msgid "Clear avatar cache"
 msgstr ""
 
-#: addons/free/avatar.php:95
+#: addons/avatar/avatar.php:100
 msgid "Font family"
 msgstr ""
 
-#: addons/free/avatar.php:96
+#: addons/avatar/avatar.php:101
 msgid "Select font family for avatar letters."
 msgstr ""
 
-#: addons/free/avatar.php:108
+#: addons/avatar/avatar.php:113
 msgid "Force avatar"
 msgstr ""
 
-#: addons/free/avatar.php:109
+#: addons/avatar/avatar.php:114
 msgid ""
 "Show AnsPress avatars by default instead of gravatar fallback. Useful in "
 "localhost development."
 msgstr ""
 
-#: addons/free/buddypress.php:99
+#: addons/buddypress/buddypress.php:111
 msgid "Q&A"
 msgstr ""
 
-#: addons/free/buddypress.php:107 addons/free/buddypress.php:187
-#: addons/free/profile.php:39 addons/free/profile.php:151
+#: addons/buddypress/buddypress.php:119 addons/buddypress/buddypress.php:199
+#: addons/profile/profile.php:49 addons/profile/profile.php:161
 #: admin/views/dashboard.php:30 admin/views/dashboard.php:212
-#: includes/functions.php:2222 includes/options.php:102
+#: includes/functions.php:2295 includes/options.php:102
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:372
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
 msgstr "Вопросы"
 
-#: addons/free/buddypress.php:108 addons/free/buddypress.php:238
-#: addons/free/profile.php:40 addons/free/profile.php:158
+#: addons/buddypress/buddypress.php:120 addons/buddypress/buddypress.php:250
+#: addons/profile/profile.php:50 addons/profile/profile.php:168
 #: admin/views/dashboard.php:226 admin/views/recount.php:71
 #: includes/post-types.php:160 includes/theme.php:370
 #: widgets/question_stats.php:49 widgets/questions.php:117
 msgid "Answers"
 msgstr "Ответы"
 
-#: addons/free/buddypress.php:153
+#: addons/buddypress/buddypress.php:165
 msgid "No AnsPress template found for rendering this page."
 msgstr ""
 
-#: addons/free/buddypress.php:206
+#: addons/buddypress/buddypress.php:218
 #, fuzzy
 msgid "Load more questions"
 msgstr "Найти вопрос"
 
-#: addons/free/buddypress.php:257 templates/addons/user/answers.php:29
+#: addons/buddypress/buddypress.php:269 templates/addons/user/answers.php:29
 #, fuzzy
 msgid "Load more answers"
 msgstr "Ваш ответ"
 
-#: addons/free/buddypress.php:274 addons/free/buddypress.php:275
+#: addons/buddypress/buddypress.php:286 addons/buddypress/buddypress.php:287
 #: admin/meta-box.php:41 includes/ajax-hooks.php:216 includes/comments.php:71
 #: includes/common-pages.php:21 includes/post-status.php:92
 #: includes/post-types.php:106
 msgid "Question"
 msgstr "Вопрос"
 
-#: addons/free/buddypress.php:276
+#: addons/buddypress/buddypress.php:288
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>"
 msgstr ""
 
-#: addons/free/buddypress.php:277
+#: addons/buddypress/buddypress.php:289
 msgid "%1$s asked a new <a href=\"AP_CPT_LINK\">question</a>, on the site %3$s"
 msgstr ""
 
-#: addons/free/buddypress.php:284 addons/free/buddypress.php:285
-#: addons/free/buddypress.php:296 admin/views/dashboard.php:34
+#: addons/buddypress/buddypress.php:296 addons/buddypress/buddypress.php:297
+#: addons/buddypress/buddypress.php:308 admin/views/dashboard.php:34
 #: includes/ajax-hooks.php:216 includes/comments.php:71
 #: includes/post-status.php:92 includes/post-types.php:183
 #: templates/answers.php:20
 msgid "Answer"
 msgstr "Ответ"
 
-#: addons/free/buddypress.php:286
+#: addons/buddypress/buddypress.php:298
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question"
 msgstr ""
 
-#: addons/free/buddypress.php:287
+#: addons/buddypress/buddypress.php:299
 msgid "%1$s <a href=\"AP_CPT_LINK\">answered</a> a question, on the site %3$s"
 msgstr ""
 
-#: addons/free/buddypress.php:296
+#: addons/buddypress/buddypress.php:308
 msgid "Answer this question"
 msgstr "Ответить на вопрос"
 
-#: addons/free/buddypress.php:380
+#: addons/buddypress/buddypress.php:392
 msgid "%1$d answers on - %2$s"
 msgstr ""
 
-#: addons/free/buddypress.php:384
+#: addons/buddypress/buddypress.php:396
 msgid "%1$s answered on - %2$s"
 msgstr ""
 
-#: addons/free/buddypress.php:391 addons/free/notification/query.php:314
-#: includes/class-form-hooks.php:730 includes/post-types.php:105
+#: addons/buddypress/buddypress.php:403 addons/notifications/query.php:316
+#: includes/class-form-hooks.php:758 includes/post-types.php:105
 msgid "question"
 msgstr "вопрос"
 
-#: addons/free/buddypress.php:391 addons/free/notification/query.php:316
-#: includes/class-form-hooks.php:730 includes/post-types.php:182
+#: addons/buddypress/buddypress.php:403 addons/notifications/query.php:318
+#: includes/class-form-hooks.php:758 includes/post-types.php:182
 msgid "answer"
 msgstr "ответ"
 
-#: addons/free/buddypress.php:396
+#: addons/buddypress/buddypress.php:408
 msgid "%1$d comments on your %3$s - %2$s"
 msgstr ""
 
-#: addons/free/buddypress.php:400
+#: addons/buddypress/buddypress.php:412
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr ""
 
-#: addons/free/category/widget.php:27
+#: addons/categories/categories.php:40 addons/categories/categories.php:169
+#: addons/categories/categories.php:313 addons/categories/categories.php:381
+#: addons/categories/categories.php:509 admin/class-list-table-hooks.php:189
+#: includes/taxo.php:202
+msgid "Category"
+msgstr "Категория"
+
+#: addons/categories/categories.php:41 addons/categories/categories.php:456
+#: addons/categories/categories.php:468 addons/categories/widget.php:83
+#: includes/functions.php:1614 includes/functions.php:2313 includes/taxo.php:29
+msgid "Categories"
+msgstr "Категории"
+
+#: addons/categories/categories.php:168
+#, fuzzy
+msgid "Question Categories"
+msgstr "Статистика вопроса"
+
+#: addons/categories/categories.php:170
+#, fuzzy
+msgid "All Categories"
+msgstr "Категории"
+
+#: addons/categories/categories.php:171
+#, fuzzy
+msgid "Add New Category"
+msgstr "Категория"
+
+#: addons/categories/categories.php:172
+#, fuzzy
+msgid "Edit Category"
+msgstr "Категория"
+
+#: addons/categories/categories.php:173
+#, fuzzy
+msgid "New Category"
+msgstr "Категория"
+
+#: addons/categories/categories.php:174
+#, fuzzy
+msgid "View Category"
+msgstr "Категория"
+
+#: addons/categories/categories.php:175
+#, fuzzy
+msgid "Search Category"
+msgstr "Поиск ответа"
+
+#: addons/categories/categories.php:176 addons/tags/tags.php:191
+#, fuzzy
+msgid "Nothing Found"
+msgstr "Вопросов нет пока"
+
+#: addons/categories/categories.php:177 addons/tags/tags.php:192
+msgid "Nothing found in Trash"
+msgstr ""
+
+#: addons/categories/categories.php:221
+msgid "Ask form category order"
+msgstr ""
+
+#: addons/categories/categories.php:222
+msgid "Set how you want to order categories in form."
+msgstr ""
+
+#: addons/categories/categories.php:225 addons/categories/categories.php:238
+#: addons/categories/widget.php:133
+msgid "ID"
+msgstr "ID"
+
+#: addons/categories/categories.php:226 addons/categories/categories.php:239
+#: addons/categories/widget.php:134 addons/tags/tags.php:574
+#: addons/tags/tags.php:624 includes/deprecated.php:291
+#: includes/deprecated.php:434 includes/deprecated.php:875
+msgid "Name"
+msgstr "Имя"
+
+#: addons/categories/categories.php:227 addons/categories/categories.php:240
+#: addons/categories/widget.php:135
+msgid "Slug"
+msgstr ""
+
+#: addons/categories/categories.php:228 addons/categories/categories.php:241
+#: addons/categories/widget.php:132
+msgid "Count"
+msgstr "Количество"
+
+#: addons/categories/categories.php:229 addons/categories/categories.php:242
+msgid "Group"
+msgstr ""
+
+#: addons/categories/categories.php:234
+msgid "Categries page order by"
+msgstr ""
+
+#: addons/categories/categories.php:235 addons/categories/categories.php:248
+msgid "Set how you want to order categories in categories page."
+msgstr ""
+
+#: addons/categories/categories.php:247
+#, fuzzy
+msgid "Categries page order"
+msgstr "Категории"
+
+#: addons/categories/categories.php:251
+#, fuzzy
+msgid "Ascending"
+msgstr "Ожидает модерации"
+
+#: addons/categories/categories.php:252
+#, fuzzy
+msgid "Descending"
+msgstr "Ожидает модерации"
+
+#: addons/categories/categories.php:257
+#, fuzzy
+msgid "Category page slug"
+msgstr "Категории"
+
+#: addons/categories/categories.php:258
+msgid "Slug for category page"
+msgstr ""
+
+#: addons/categories/categories.php:262
+#, fuzzy
+msgid "Category per page"
+msgstr "Пользователей на каждой странице"
+
+#: addons/categories/categories.php:263
+#, fuzzy
+msgid "Category to show per page"
+msgstr "Количество на каждой странице"
+
+#: addons/categories/categories.php:268
+#, fuzzy
+msgid "Categories image height"
+msgstr "Категории"
+
+#: addons/categories/categories.php:269
+msgid "Image height in categories page"
+msgstr ""
+
+#: addons/categories/categories.php:313
+#, fuzzy
+msgid "Questions Category"
+msgstr "Статистика вопроса"
+
+#: addons/categories/categories.php:382
+#, fuzzy
+msgid "Select a topic that best fits your question."
+msgstr "Задайте статус изменённых вопросов."
+
+#: addons/categories/categories.php:433
+#, fuzzy
+msgid "No matching category found"
+msgstr "Ответов пока нет"
+
+#: addons/categories/categories.php:528 addons/categories/categories.php:571
+msgid "Image"
+msgstr ""
+
+#: addons/categories/categories.php:529 addons/categories/categories.php:574
+#, fuzzy
+msgid "Upload image"
+msgstr "Загрузка"
+
+#: addons/categories/categories.php:533
+#, fuzzy
+msgid "Category image"
+msgstr "Категории"
+
+#: addons/categories/categories.php:537 addons/categories/categories.php:590
+#, fuzzy
+msgid "Category icon class"
+msgstr "Категории"
+
+#: addons/categories/categories.php:539 addons/categories/categories.php:594
+#: addons/categories/categories.php:603
+msgid "Font icon class, if image not set"
+msgstr ""
+
+#: addons/categories/categories.php:543
+msgid "Icon background color"
+msgstr ""
+
+#: addons/categories/categories.php:545
+msgid "Set background color to be used with icon"
+msgstr ""
+
+#: addons/categories/categories.php:583
+#, fuzzy
+msgid "Remove image"
+msgstr "Удалить"
+
+#: addons/categories/categories.php:585
+msgid "Featured image for category"
+msgstr ""
+
+#: addons/categories/categories.php:599
+#, fuzzy
+msgid "Category icon color"
+msgstr "Категории"
+
+#: addons/categories/categories.php:790
+#, fuzzy
+msgid "Question category feed"
+msgstr "Вопрос >> Лента"
+
+#: addons/categories/categories.php:837 addons/tags/tags.php:605
+msgid ", %d+"
+msgstr ""
+
+#: addons/categories/widget.php:29
 #, fuzzy
 msgid "Display AnsPress categories"
 msgstr "Страницы AnsPress"
 
-#: addons/free/category/widget.php:68 includes/ajax-hooks.php:640
+#: addons/categories/widget.php:70 includes/ajax-hooks.php:640
 #: templates/addons/category/categories.php:33
 #: templates/addons/category/single-category.php:43
 #: templates/addons/tag/tags.php:39
@@ -167,993 +379,785 @@ msgstr[0] "Вопрос"
 msgstr[1] "Вопрос"
 msgstr[2] "Вопрос"
 
-#: addons/free/category/widget.php:70
+#: addons/categories/widget.php:72
 msgid "%d Child"
 msgstr ""
 
-#: addons/free/category/widget.php:81 addons/free/category.php:39
-#: addons/free/category.php:459 addons/free/category.php:471
-#: includes/functions.php:2240 includes/taxo.php:29
-msgid "Categories"
-msgstr "Категории"
-
-#: addons/free/category/widget.php:99 widgets/ask-form.php:74
+#: addons/categories/widget.php:101 widgets/ask-form.php:74
 #: widgets/question_stats.php:68 widgets/questions.php:108
 #: widgets/search.php:69
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: addons/free/category/widget.php:104
+#: addons/categories/widget.php:106
 #, fuzzy
 msgid "Hide empty:"
 msgstr "Скрыть детали"
 
-#: addons/free/category/widget.php:109
+#: addons/categories/widget.php:111
 #, fuzzy
 msgid "Parent:"
 msgstr "Родительский ответ:"
 
-#: addons/free/category/widget.php:111
+#: addons/categories/widget.php:113
 msgid "Top level"
 msgstr ""
 
-#: addons/free/category/widget.php:122
+#: addons/categories/widget.php:124
 msgid "Number:"
 msgstr ""
 
-#: addons/free/category/widget.php:127
+#: addons/categories/widget.php:129
 msgid "Order By:"
 msgstr "Сортировать по:"
 
-#: addons/free/category/widget.php:129
+#: addons/categories/widget.php:131
 msgid "None"
 msgstr ""
 
-#: addons/free/category/widget.php:130 addons/free/category.php:231
-#: addons/free/category.php:244
-msgid "Count"
-msgstr "Количество"
-
-#: addons/free/category/widget.php:131 addons/free/category.php:228
-#: addons/free/category.php:241
-msgid "ID"
-msgstr "ID"
-
-#: addons/free/category/widget.php:132 addons/free/category.php:229
-#: addons/free/category.php:242 addons/free/tag.php:572 addons/free/tag.php:622
-#: includes/deprecated.php:291 includes/deprecated.php:434
-#: includes/deprecated.php:875
-msgid "Name"
-msgstr "Имя"
-
-#: addons/free/category/widget.php:133 addons/free/category.php:230
-#: addons/free/category.php:243
-msgid "Slug"
-msgstr ""
-
-#: addons/free/category/widget.php:134
+#: addons/categories/widget.php:136
 msgid "Term group"
 msgstr ""
 
-#: addons/free/category/widget.php:138
+#: addons/categories/widget.php:140
 msgid "Order:"
 msgstr "Сортировать"
 
-#: addons/free/category/widget.php:140
+#: addons/categories/widget.php:142
 msgid "DESC"
 msgstr "DESC"
 
-#: addons/free/category/widget.php:141
+#: addons/categories/widget.php:143
 msgid "ASC"
 msgstr "ASC"
 
-#: addons/free/category/widget.php:145
+#: addons/categories/widget.php:147
 msgid "Icon width:"
 msgstr ""
 
-#: addons/free/category/widget.php:150
+#: addons/categories/widget.php:152
 msgid "Icon height:"
 msgstr ""
 
-#: addons/free/category.php:38 addons/free/category.php:172
-#: addons/free/category.php:316 addons/free/category.php:384
-#: addons/free/category.php:512 admin/class-list-table-hooks.php:189
-#: includes/taxo.php:202
-msgid "Category"
-msgstr "Категория"
-
-#: addons/free/category.php:171
-#, fuzzy
-msgid "Question Categories"
-msgstr "Статистика вопроса"
-
-#: addons/free/category.php:173
-#, fuzzy
-msgid "All Categories"
-msgstr "Категории"
-
-#: addons/free/category.php:174
-#, fuzzy
-msgid "Add New Category"
-msgstr "Категория"
-
-#: addons/free/category.php:175
-#, fuzzy
-msgid "Edit Category"
-msgstr "Категория"
-
-#: addons/free/category.php:176
-#, fuzzy
-msgid "New Category"
-msgstr "Категория"
-
-#: addons/free/category.php:177
-#, fuzzy
-msgid "View Category"
-msgstr "Категория"
-
-#: addons/free/category.php:178
-#, fuzzy
-msgid "Search Category"
-msgstr "Поиск ответа"
-
-#: addons/free/category.php:179 addons/free/tag.php:189
-#, fuzzy
-msgid "Nothing Found"
-msgstr "Вопросов нет пока"
-
-#: addons/free/category.php:180 addons/free/tag.php:190
-msgid "Nothing found in Trash"
-msgstr ""
-
-#: addons/free/category.php:224
-msgid "Ask form category order"
-msgstr ""
-
-#: addons/free/category.php:225
-msgid "Set how you want to order categories in form."
-msgstr ""
-
-#: addons/free/category.php:232 addons/free/category.php:245
-msgid "Group"
-msgstr ""
-
-#: addons/free/category.php:237
-msgid "Categries page order by"
-msgstr ""
-
-#: addons/free/category.php:238 addons/free/category.php:251
-msgid "Set how you want to order categories in categories page."
-msgstr ""
-
-#: addons/free/category.php:250
-#, fuzzy
-msgid "Categries page order"
-msgstr "Категории"
-
-#: addons/free/category.php:254
-#, fuzzy
-msgid "Ascending"
-msgstr "Ожидает модерации"
-
-#: addons/free/category.php:255
-#, fuzzy
-msgid "Descending"
-msgstr "Ожидает модерации"
-
-#: addons/free/category.php:260
-#, fuzzy
-msgid "Category page slug"
-msgstr "Категории"
-
-#: addons/free/category.php:261
-msgid "Slug for category page"
-msgstr ""
-
-#: addons/free/category.php:265
-#, fuzzy
-msgid "Category per page"
-msgstr "Пользователей на каждой странице"
-
-#: addons/free/category.php:266
-#, fuzzy
-msgid "Category to show per page"
-msgstr "Количество на каждой странице"
-
-#: addons/free/category.php:271
-#, fuzzy
-msgid "Categories image height"
-msgstr "Категории"
-
-#: addons/free/category.php:272
-msgid "Image height in categories page"
-msgstr ""
-
-#: addons/free/category.php:316
-#, fuzzy
-msgid "Questions Category"
-msgstr "Статистика вопроса"
-
-#: addons/free/category.php:385
-#, fuzzy
-msgid "Select a topic that best fits your question."
-msgstr "Задайте статус изменённых вопросов."
-
-#: addons/free/category.php:436
-#, fuzzy
-msgid "No matching category found"
-msgstr "Ответов пока нет"
-
-#: addons/free/category.php:531 addons/free/category.php:574
-msgid "Image"
-msgstr ""
-
-#: addons/free/category.php:532 addons/free/category.php:577
-#, fuzzy
-msgid "Upload image"
-msgstr "Загрузка"
-
-#: addons/free/category.php:536
-#, fuzzy
-msgid "Category image"
-msgstr "Категории"
-
-#: addons/free/category.php:540 addons/free/category.php:593
-#, fuzzy
-msgid "Category icon class"
-msgstr "Категории"
-
-#: addons/free/category.php:542 addons/free/category.php:597
-#: addons/free/category.php:606
-msgid "Font icon class, if image not set"
-msgstr ""
-
-#: addons/free/category.php:546
-msgid "Icon background color"
-msgstr ""
-
-#: addons/free/category.php:548
-msgid "Set background color to be used with icon"
-msgstr ""
-
-#: addons/free/category.php:586
-#, fuzzy
-msgid "Remove image"
-msgstr "Удалить"
-
-#: addons/free/category.php:588
-msgid "Featured image for category"
-msgstr ""
-
-#: addons/free/category.php:602
-#, fuzzy
-msgid "Category icon color"
-msgstr "Категории"
-
-#: addons/free/category.php:793
-#, fuzzy
-msgid "Question category feed"
-msgstr "Вопрос >> Лента"
-
-#: addons/free/category.php:840 addons/free/tag.php:603
-msgid ", %d+"
-msgstr ""
-
-#: addons/free/email.php:130 addons/free/email.php:940
+#: addons/email/email.php:139 addons/email/email.php:960
 msgid "An answer is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:131
+#: addons/email/email.php:140
 msgid ""
 "Hello!\n"
 "Answer on '{question_title}' is trashed by {user}.\n"
 msgstr ""
 
-#: addons/free/email.php:145
+#: addons/email/email.php:154
 #, fuzzy
 msgid "Admin Notifications"
 msgstr "Запретить удаление через"
 
-#: addons/free/email.php:145
+#: addons/email/email.php:154
 msgid "Select types of notification which will be sent to admin."
 msgstr ""
 
-#: addons/free/email.php:148
+#: addons/email/email.php:157
 msgid "Admin email(s)"
 msgstr ""
 
-#: addons/free/email.php:149
+#: addons/email/email.php:158
 msgid ""
 "Email where all admin notification will be sent. It can have multiple emails "
 "separated by comma."
 msgstr ""
 
-#: addons/free/email.php:153 addons/free/email.php:198
+#: addons/email/email.php:162 addons/email/email.php:207
 #: includes/post-types.php:88
 #, fuzzy
 msgid "New question"
 msgstr "Новый вопрос"
 
-#: addons/free/email.php:154
+#: addons/email/email.php:163
 msgid "Send new question notification to admin."
 msgstr ""
 
-#: addons/free/email.php:159 addons/free/email.php:204
+#: addons/email/email.php:168 addons/email/email.php:213
 #: includes/post-types.php:165
 msgid "New answer"
 msgstr "Новый ответ"
 
-#: addons/free/email.php:160
+#: addons/email/email.php:169
 msgid "Send new answer notification to admin."
 msgstr ""
 
-#: addons/free/email.php:165 addons/free/email.php:210
+#: addons/email/email.php:174 addons/email/email.php:219
 #, fuzzy
 msgid "New comment"
 msgstr "Показать комментарии"
 
-#: addons/free/email.php:166
+#: addons/email/email.php:175
 msgid "Send new comment notification to admin."
 msgstr ""
 
-#: addons/free/email.php:171 addons/free/email.php:216
+#: addons/email/email.php:180 addons/email/email.php:225
 #: admin/class-list-table-hooks.php:347 includes/post-types.php:89
 msgid "Edit question"
 msgstr "Изменить вопрос"
 
-#: addons/free/email.php:172
+#: addons/email/email.php:181
 #, fuzzy
 msgid "Send notification to admin when question is edited."
 msgstr "Разрешить только админу отвечать на вопросы"
 
-#: addons/free/email.php:177 addons/free/email.php:222
+#: addons/email/email.php:186 addons/email/email.php:231
 #: includes/post-types.php:166
 msgid "Edit answer"
 msgstr "Изменить ответ"
 
-#: addons/free/email.php:178
+#: addons/email/email.php:187
 #, fuzzy
 msgid "Send email to admin when answer is edited."
 msgstr "Выберите вопрос для нового ответа"
 
-#: addons/free/email.php:183
+#: addons/email/email.php:192
 #, fuzzy
 msgid "Delete question"
 msgstr "Выбрать вопрос"
 
-#: addons/free/email.php:184
+#: addons/email/email.php:193
 #, fuzzy
 msgid "Send email to admin when question is trashed."
 msgstr "Разрешить только админу отвечать на вопросы"
 
-#: addons/free/email.php:189
+#: addons/email/email.php:198
 #, fuzzy
 msgid "Delete answer"
 msgstr "выбрал ответ"
 
-#: addons/free/email.php:190
+#: addons/email/email.php:199
 #, fuzzy
 msgid "Send email to admin when answer is trashed."
 msgstr "Выберите вопрос для нового ответа"
 
-#: addons/free/email.php:195
+#: addons/email/email.php:204
 #, fuzzy
 msgid "User Notifications"
 msgstr "Запретить удаление через"
 
-#: addons/free/email.php:195
+#: addons/email/email.php:204
 msgid "Select the types of notification which will be sent to user."
 msgstr ""
 
-#: addons/free/email.php:199
+#: addons/email/email.php:208
 msgid "Send new question notification to user?"
 msgstr ""
 
-#: addons/free/email.php:205
+#: addons/email/email.php:214
 msgid "Send new answer notification to user?"
 msgstr ""
 
-#: addons/free/email.php:211
+#: addons/email/email.php:220
 msgid "Send new comment notification to user?"
 msgstr ""
 
-#: addons/free/email.php:217
+#: addons/email/email.php:226
 msgid "Send edit question notification to user?"
 msgstr ""
 
-#: addons/free/email.php:223
+#: addons/email/email.php:232
 msgid "Send edit answer notification to user?"
 msgstr ""
 
-#: addons/free/email.php:228
+#: addons/email/email.php:237
 #, fuzzy
 msgid "Answer selected"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/email.php:229
+#: addons/email/email.php:238
 #, fuzzy
 msgid "Send notification to user when their answer get selected?"
 msgstr "Разрешить только админу отвечать на вопросы"
 
-#: addons/free/email.php:249
+#: addons/email/email.php:258
 #, fuzzy
 msgid "Email subject"
 msgstr "Изменить ответ"
 
-#: addons/free/email.php:252
+#: addons/email/email.php:261
 msgid "Email body"
 msgstr ""
 
-#: addons/free/email.php:256
+#: addons/email/email.php:265
 msgid "Allowed tags"
 msgstr ""
 
-#: addons/free/email.php:600
+#: addons/email/email.php:616
 msgid "Email Templates"
 msgstr ""
 
-#: addons/free/email.php:625 includes/class-form-hooks.php:298
-#: includes/class-form-hooks.php:485 includes/class-form-hooks.php:654
+#: addons/email/email.php:641 includes/class-form-hooks.php:306
+#: includes/class-form-hooks.php:501 includes/class-form-hooks.php:682
 msgid "Trying to cheat?!"
 msgstr ""
 
-#: addons/free/email.php:650 includes/class-form-hooks.php:523
+#: addons/email/email.php:666 includes/class-form-hooks.php:539
 #, fuzzy
 msgid "Unable to post answer."
 msgstr "Запретить комментарии"
 
 #. Translators: placeholder contain error message.
-#: addons/free/email.php:670
+#: addons/email/email.php:686
 #, fuzzy
 msgid "Unable to save template. Error: %s"
 msgstr "Выбрал лучший ответ для %s"
 
-#: addons/free/email.php:691
+#: addons/email/email.php:707
 #, fuzzy
 msgid "Post updated successfully"
 msgstr "Вопрос успешно обновлён"
 
-#: addons/free/email.php:775
+#: addons/email/email.php:795
 #, fuzzy
 msgid "{asker} have posted a new question"
 msgstr "Статус нового вопроса"
 
-#: addons/free/email.php:778
+#: addons/email/email.php:798
 #, fuzzy
 msgid "A new question is posted by"
 msgstr "Новый вопрос"
 
-#: addons/free/email.php:799
+#: addons/email/email.php:819
 msgid "New answer posted by {answerer}"
 msgstr ""
 
-#: addons/free/email.php:802
+#: addons/email/email.php:822
 #, fuzzy
 msgid "A new answer is posted by"
 msgstr "Вопросов %s"
 
-#: addons/free/email.php:823
+#: addons/email/email.php:843
 #, fuzzy
 msgid "Your answer is selected as best!"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/email.php:826
+#: addons/email/email.php:846
 #, fuzzy
 msgid "Your answer is selected as best by "
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/email.php:847
+#: addons/email/email.php:867
 msgid "New comment by {commenter}"
 msgstr ""
 
-#: addons/free/email.php:850
+#: addons/email/email.php:870
 #, fuzzy
 msgid "A new comment posted by"
 msgstr "Показать комментарии"
 
-#: addons/free/email.php:871
+#: addons/email/email.php:891
 msgid "A question is edited by {editor}"
 msgstr ""
 
-#: addons/free/email.php:874
+#: addons/email/email.php:894
 #, fuzzy
 msgid "A question is edited by"
 msgstr "Вопрос >> Лента"
 
-#: addons/free/email.php:895
+#: addons/email/email.php:915
 #, fuzzy
 msgid "A answer is edited by {editor}"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/email.php:898
+#: addons/email/email.php:918
 #, fuzzy
 msgid "A answer is edited by"
 msgstr "Ответы"
 
-#: addons/free/email.php:919
+#: addons/email/email.php:939
 msgid "A question is trashed by {user}"
 msgstr ""
 
-#: addons/free/email.php:922
+#: addons/email/email.php:942
 #, fuzzy
 msgid "A question is trashed by"
 msgstr "Вопросов нет пока"
 
-#: addons/free/email.php:943
+#: addons/email/email.php:963
 #, fuzzy
 msgid "An answer is trashed by"
 msgstr "Вопросов %s"
 
-#: addons/free/notification/query.php:261
-msgid "Someone"
-msgstr ""
-
-#: addons/free/notification/query.php:307
-#, fuzzy
-msgid "post"
-msgstr "Редактировать"
-
-#: addons/free/notification.php:43 addons/free/notification.php:49
-#: addons/free/notification.php:198 templates/functions.php:45
+#: addons/notifications/notifications.php:49
+#: addons/notifications/notifications.php:57
+#: addons/notifications/notifications.php:207 includes/functions.php:1610
+#: templates/functions.php:45
 msgid "Notifications"
 msgstr ""
 
-#: addons/free/notification.php:86
+#: addons/notifications/notifications.php:95
 #, fuzzy
 msgid "Notifications page title"
 msgstr "Загловок базовой страницы"
 
-#: addons/free/notification.php:87
+#: addons/notifications/notifications.php:96
 msgid "Custom title for user profile notifications page"
 msgstr ""
 
-#: addons/free/notification.php:91
+#: addons/notifications/notifications.php:100
 #, fuzzy
 msgid "Notifications page slug"
 msgstr "Категории"
 
-#: addons/free/notification.php:92
+#: addons/notifications/notifications.php:101
 msgid "Custom slug for user profile notifications page"
 msgstr ""
 
-#: addons/free/notification.php:156
+#: addons/notifications/notifications.php:165
 #, fuzzy
 msgid "posted an answer on your question"
 msgstr "Лучший ответ выбран для вашего вопроса."
 
-#: addons/free/notification.php:161
+#: addons/notifications/notifications.php:170
 #, fuzzy
 msgid "commented on your %cpt%"
 msgstr "написал на вопрос"
 
-#: addons/free/notification.php:166
+#: addons/notifications/notifications.php:175
 msgid "up voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:173
+#: addons/notifications/notifications.php:182
 msgid "down voted your %cpt%"
 msgstr ""
 
-#: addons/free/notification.php:178
+#: addons/notifications/notifications.php:187
 #, fuzzy
 msgid "selected your answer"
 msgstr "выбрал ответ"
 
-#: addons/free/notification.php:183
+#: addons/notifications/notifications.php:192
 msgid "You have earned %points% points"
 msgstr ""
 
-#: addons/free/notification.php:188
+#: addons/notifications/notifications.php:197
 msgid "You lose %points% points"
 msgstr ""
 
-#: addons/free/notification.php:221
+#: addons/notifications/notifications.php:230
 msgid "You do not have permission to view this page"
 msgstr ""
 
-#: addons/free/notification.php:439
+#: addons/notifications/notifications.php:448
 msgid "There was a problem processing your request"
 msgstr ""
 
-#: addons/free/notification.php:449
+#: addons/notifications/notifications.php:458
 msgid "Successfully updated all notifications"
 msgstr ""
 
-#: addons/free/profile.php:44
+#: addons/notifications/query.php:263
+msgid "Someone"
+msgstr ""
+
+#: addons/notifications/query.php:309
+#, fuzzy
+msgid "post"
+msgstr "Редактировать"
+
+#: addons/profile/profile.php:54
 msgid "User profile"
 msgstr ""
 
-#: addons/free/profile.php:64
+#: addons/profile/profile.php:74
 #, fuzzy
 msgid "Questions page title"
 msgstr "Вопросов на каждой странице"
 
-#: addons/free/profile.php:65
+#: addons/profile/profile.php:75
 #, fuzzy
 msgid "Custom title for user profile questions page"
 msgstr "Показать заголовок вопроса на странице вопроса."
 
-#: addons/free/profile.php:69
+#: addons/profile/profile.php:79
 #, fuzzy
 msgid "Questions page slug"
 msgstr "Вопросов на каждой странице"
 
-#: addons/free/profile.php:70
+#: addons/profile/profile.php:80
 #, fuzzy
 msgid "Custom slug for user profile questions page"
 msgstr "Показать заголовок вопроса на странице вопроса."
 
-#: addons/free/profile.php:74
+#: addons/profile/profile.php:84
 #, fuzzy
 msgid "Answers page title"
 msgstr "Заголовок для страницы спросить"
 
-#: addons/free/profile.php:75
+#: addons/profile/profile.php:85
 msgid "Custom title for user profile answers page"
 msgstr ""
 
-#: addons/free/profile.php:79
+#: addons/profile/profile.php:89
 #, fuzzy
 msgid "Answers page slug"
 msgstr "Ответов на каждой странице"
 
-#: addons/free/profile.php:80
+#: addons/profile/profile.php:90
 msgid "Custom slug for user profile answers page"
 msgstr ""
 
-#: addons/free/profile.php:282
+#: addons/profile/profile.php:292
 msgid "Callback function not found for rendering this page"
 msgstr ""
 
-#: addons/free/recaptcha/class-captcha.php:44
+#: addons/recaptcha/recaptcha/class-captcha.php:44
 #, fuzzy
 msgid "AnsPress reCaptcha Field"
 msgstr "Страницы AnsPress"
 
-#: addons/free/recaptcha/class-captcha.php:80
+#: addons/recaptcha/recaptcha/class-captcha.php:80
 msgid "Failed to verify captcha. Please try again."
 msgstr ""
 
-#: addons/free/recaptcha/class-captcha.php:94
+#: addons/recaptcha/recaptcha/class-captcha.php:94
 msgid ""
 "Unable to render captcha. Please add reCpatcha keys in AnsPress options."
 msgstr ""
 
-#: addons/free/recaptcha.php:64
+#: addons/recaptcha/recaptcha.php:67
 msgid "Recaptcha site key"
 msgstr ""
 
-#: addons/free/recaptcha.php:65
+#: addons/recaptcha/recaptcha.php:68
 msgid ""
 "Enter your site key, if you dont have it get it from here https://www.google."
 "com/recaptcha/admin"
 msgstr ""
 
-#: addons/free/recaptcha.php:69
+#: addons/recaptcha/recaptcha.php:72
 msgid "Recaptcha secret key"
 msgstr ""
 
-#: addons/free/recaptcha.php:70
+#: addons/recaptcha/recaptcha.php:73
 msgid "Enter your secret key"
 msgstr "Введите секретный ключ"
 
-#: addons/free/recaptcha.php:74
+#: addons/recaptcha/recaptcha.php:77
 msgid "Recaptcha Method"
 msgstr ""
 
-#: addons/free/recaptcha.php:75
+#: addons/recaptcha/recaptcha.php:78
 msgid "Select method to use when verification keeps failing"
 msgstr ""
 
-#: addons/free/recaptcha.php:99
+#: addons/recaptcha/recaptcha.php:102
 msgid "Prove that you are a human"
 msgstr ""
 
-#: addons/free/reputation.php:37 addons/free/reputation.php:416
-#: addons/free/reputation.php:466 addons/free/reputation.php:501
+#: addons/reputation/reputation.php:40 addons/reputation/reputation.php:419
+#: addons/reputation/reputation.php:469 addons/reputation/reputation.php:504
 #: admin/views/recount.php:122
 #, fuzzy
 msgid "Reputations"
 msgstr "Репутация"
 
-#: addons/free/reputation.php:81
+#: addons/reputation/reputation.php:84
 #, fuzzy
 msgid "Reputations page title"
 msgstr "Заголовок для страницы спросить"
 
-#: addons/free/reputation.php:82
+#: addons/reputation/reputation.php:85
 msgid "Custom title for user profile reputations page"
 msgstr ""
 
-#: addons/free/reputation.php:86
+#: addons/reputation/reputation.php:89
 #, fuzzy
 msgid "Reputations page slug"
 msgstr "Задать вопрос"
 
-#: addons/free/reputation.php:87
+#: addons/reputation/reputation.php:90
 #, fuzzy
 msgid "Custom slug for user profile reputations page"
 msgstr "Показать заголовок вопроса на странице вопроса."
 
-#: addons/free/reputation.php:91
+#: addons/reputation/reputation.php:94
 msgid "Reputation event points can be adjusted here :"
 msgstr ""
 
-#: addons/free/reputation.php:91
+#: addons/reputation/reputation.php:94
 #, fuzzy
 msgid "Reputation Points"
 msgstr "Репутация"
 
-#: addons/free/reputation.php:105
+#: addons/reputation/reputation.php:108
 #, fuzzy
 msgid "Registration"
 msgstr "Новая регистрация"
 
-#: addons/free/reputation.php:106
+#: addons/reputation/reputation.php:109
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/free/reputation.php:108
+#: addons/reputation/reputation.php:111
 #, fuzzy
 msgid "Registered"
 msgstr "Зарегистрируйтесь"
 
-#: addons/free/reputation.php:114
+#: addons/reputation/reputation.php:117
 msgid "Asking"
 msgstr ""
 
-#: addons/free/reputation.php:115
+#: addons/reputation/reputation.php:118
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/free/reputation.php:117
+#: addons/reputation/reputation.php:120
 #, fuzzy
 msgid "Asked a question"
 msgstr "Задать вопрос"
 
-#: addons/free/reputation.php:123
+#: addons/reputation/reputation.php:126
 #, fuzzy
 msgid "Answering"
 msgstr "Ответ"
 
-#: addons/free/reputation.php:124
+#: addons/reputation/reputation.php:127
 #, fuzzy
 msgid "Points awarded when user answer a question"
 msgstr "Разрешить только админу отвечать на вопросы"
 
-#: addons/free/reputation.php:126
+#: addons/reputation/reputation.php:129
 #, fuzzy
 msgid "Posted an answer"
 msgstr "Отправить ответ"
 
-#: addons/free/reputation.php:132
+#: addons/reputation/reputation.php:135
 #, fuzzy
 msgid "Commenting"
 msgstr "Комментировать"
 
-#: addons/free/reputation.php:133
+#: addons/reputation/reputation.php:136
 #, fuzzy
 msgid "Points awarded when user comment on question or answer"
 msgstr "Вы не можете голосовать за свой вопрос или ответ."
 
-#: addons/free/reputation.php:135
+#: addons/reputation/reputation.php:138
 #, fuzzy
 msgid "Commented on a post"
 msgstr "Прокомментировал %s"
 
-#: addons/free/reputation.php:141
+#: addons/reputation/reputation.php:144
 #, fuzzy
 msgid "Selecting an Answer"
 msgstr "выбрал ответ"
 
-#: addons/free/reputation.php:142
+#: addons/reputation/reputation.php:145
 msgid "Points awarded when user select an answer for thier question"
 msgstr ""
 
-#: addons/free/reputation.php:144
+#: addons/reputation/reputation.php:147
 #, fuzzy
 msgid "Selected an answer as best"
 msgstr "Выбрать этот ответ как лучший"
 
-#: addons/free/reputation.php:150
+#: addons/reputation/reputation.php:153
 #, fuzzy
 msgid "Answer selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:151
+#: addons/reputation/reputation.php:154
 #, fuzzy
 msgid "Points awarded when user's answer selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:153
+#: addons/reputation/reputation.php:156
 #, fuzzy
 msgid "Answer was selected as best"
 msgstr "Когда ответ пользователя выбран как лучший"
 
-#: addons/free/reputation.php:159
+#: addons/reputation/reputation.php:162
 msgid "Received up vote"
 msgstr ""
 
-#: addons/free/reputation.php:160
+#: addons/reputation/reputation.php:163
 msgid "Points awarded when user receive an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:162
+#: addons/reputation/reputation.php:165
 msgid "Received an upvote"
 msgstr ""
 
-#: addons/free/reputation.php:167
+#: addons/reputation/reputation.php:170
 msgid "Received down vote"
 msgstr ""
 
-#: addons/free/reputation.php:168
+#: addons/reputation/reputation.php:171
 msgid "Points awarded when user receive a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:170
+#: addons/reputation/reputation.php:173
 msgid "Received a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:175
+#: addons/reputation/reputation.php:178
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:176
+#: addons/reputation/reputation.php:179
 msgid "Points taken from user when they give a vote up"
 msgstr ""
 
-#: addons/free/reputation.php:178
+#: addons/reputation/reputation.php:181
 msgid "Given an up vote"
 msgstr ""
 
-#: addons/free/reputation.php:183
+#: addons/reputation/reputation.php:186
 msgid "Gives down vote"
 msgstr ""
 
-#: addons/free/reputation.php:184
+#: addons/reputation/reputation.php:187
 msgid "Points taken from user when user give a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:186
+#: addons/reputation/reputation.php:189
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/free/reputation.php:213
+#: addons/reputation/reputation.php:216
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/free/reputation.php:381 addons/free/reputation.php:384
+#: addons/reputation/reputation.php:384 addons/reputation/reputation.php:387
+#: includes/functions.php:1622
 msgid "Reputation"
 msgstr "Репутация"
 
-#: addons/free/reputation.php:407
+#: addons/reputation/reputation.php:410
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/free/tag.php:34 addons/free/tag.php:525
+#: addons/tags/tags.php:36 addons/tags/tags.php:527
 #: admin/class-list-table-hooks.php:193
 msgid "Tag"
 msgstr ""
 
-#: addons/free/tag.php:35 addons/free/tag.php:221 addons/free/tag.php:287
-#: addons/free/tag.php:353 addons/free/tag.php:423 addons/free/tag.php:433
-#: includes/functions.php:2246
+#: addons/tags/tags.php:37 addons/tags/tags.php:223 addons/tags/tags.php:289
+#: addons/tags/tags.php:355 addons/tags/tags.php:425 addons/tags/tags.php:435
+#: includes/functions.php:1618 includes/functions.php:2319
 msgid "Tags"
 msgstr "Метки"
 
-#: addons/free/tag.php:156
+#: addons/tags/tags.php:158
 #, fuzzy
 msgid "(AnsPress) Tags"
 msgstr "Страницы AnsPress"
 
-#: addons/free/tag.php:160
+#: addons/tags/tags.php:162
 msgid "Widgets in this area will be shown in anspress tags page."
 msgstr ""
 
-#: addons/free/tag.php:181 addons/free/tag.php:221
+#: addons/tags/tags.php:183 addons/tags/tags.php:223
 #, fuzzy
 msgid "Question Tags"
 msgstr "Вопросы"
 
-#: addons/free/tag.php:183
+#: addons/tags/tags.php:185
 #, fuzzy
 msgid "All Tags"
 msgstr "Метки"
 
-#: addons/free/tag.php:185
+#: addons/tags/tags.php:187
 #, fuzzy
 msgid "Edit Tag"
 msgstr "Изменить пометки"
 
-#: addons/free/tag.php:186
+#: addons/tags/tags.php:188
 #, fuzzy
 msgid "New Tag"
 msgstr "Новый значок"
 
-#: addons/free/tag.php:187
+#: addons/tags/tags.php:189
 #, fuzzy
 msgid "View Tag"
 msgstr "Просмотр"
 
-#: addons/free/tag.php:188
+#: addons/tags/tags.php:190
 #, fuzzy
 msgid "Search Tag"
 msgstr "Поиск"
 
-#: addons/free/tag.php:233
+#: addons/tags/tags.php:235
 msgid "Tags to show"
 msgstr ""
 
-#: addons/free/tag.php:234
+#: addons/tags/tags.php:236
 #, fuzzy
 msgid "Numbers of tags to show in tags page."
 msgstr "Вопросов на каждой странице"
 
-#: addons/free/tag.php:239
+#: addons/tags/tags.php:241
 msgid "Maximum tags"
 msgstr ""
 
-#: addons/free/tag.php:240
+#: addons/tags/tags.php:242
 msgid "Maximum numbers of tags that user can add when asking."
 msgstr ""
 
-#: addons/free/tag.php:245
+#: addons/tags/tags.php:247
 #, fuzzy
 msgid "Minimum tags"
 msgstr "Минимальная длина заголовка"
 
-#: addons/free/tag.php:246
+#: addons/tags/tags.php:248
 msgid "minimum numbers of tags that user must add when asking."
 msgstr ""
 
-#: addons/free/tag.php:251
+#: addons/tags/tags.php:253
 msgid "Tag page slug"
 msgstr ""
 
-#: addons/free/tag.php:252
+#: addons/tags/tags.php:254
 msgid "Slug for tag page"
 msgstr ""
 
-#: addons/free/tag.php:309
+#: addons/tags/tags.php:311
 #, fuzzy
 msgid "Delete Tag"
 msgstr "Удалить"
 
-#: addons/free/tag.php:310
+#: addons/tags/tags.php:312
 msgid "Add Tag"
 msgstr ""
 
-#: addons/free/tag.php:311
+#: addons/tags/tags.php:313
 msgid "added to the tags list."
 msgstr ""
 
-#: addons/free/tag.php:312
+#: addons/tags/tags.php:314
 msgid "removed from the tags list."
 msgstr ""
 
-#: addons/free/tag.php:313
+#: addons/tags/tags.php:315
 msgid "Suggestions are available. Use the up and down arrow keys to read it."
 msgstr ""
 
 #. Translators: %1$d contain minimum tags required and %2$d contain maximum
 #. tags allowed.
-#: addons/free/tag.php:356
+#: addons/tags/tags.php:358
 msgid ""
 "Tagging will helps others to easily find your question. Minimum %1$d and "
 "maximum %2$d tags."
 msgstr ""
 
-#: addons/free/tag.php:533
+#: addons/tags/tags.php:535
 #, fuzzy
 msgid "Order"
 msgstr "Сортировать"
 
-#: addons/free/tag.php:570 addons/free/tag.php:620 includes/deprecated.php:873
+#: addons/tags/tags.php:572 addons/tags/tags.php:622
+#: includes/deprecated.php:873
 msgid "Popular"
 msgstr ""
 
-#: addons/free/tag.php:571 addons/free/tag.php:621 includes/deprecated.php:874
-#: includes/theme.php:363
+#: addons/tags/tags.php:573 addons/tags/tags.php:623
+#: includes/deprecated.php:874 includes/theme.php:363
 #, fuzzy
 msgid "New"
 msgstr "Самые свежие"
@@ -1168,619 +1172,630 @@ msgstr "Ответить на вопрос"
 msgid "Successfully enabled addon. Redirecting!"
 msgstr "Успешно отписаны."
 
-#: admin/anspress-admin.php:188
+#: admin/anspress-admin.php:190
 msgid "All Questions"
 msgstr "Все вопросы"
 
-#: admin/anspress-admin.php:190 admin/views/emails.php:39
+#: admin/anspress-admin.php:192 admin/views/emails.php:39
 msgid "New Question"
 msgstr "Новый вопрос"
 
-#: admin/anspress-admin.php:192
+#: admin/anspress-admin.php:194
 msgid "All Answers"
 msgstr "Все ответы"
 
-#: admin/anspress-admin.php:194 admin/views/emails.php:40
+#: admin/anspress-admin.php:196 admin/views/emails.php:40
 #, fuzzy
 msgid "New Answer"
 msgstr "Новый ответ"
 
-#: admin/anspress-admin.php:203 admin/views/dashboard.php:352
-#: admin/views/options.php:131
+#: admin/anspress-admin.php:205 admin/views/dashboard.php:352
+#: admin/views/options.php:132
 msgid "AnsPress Options"
 msgstr "Параметры AnsPress"
 
-#: admin/anspress-admin.php:203
+#: admin/anspress-admin.php:205 admin/views/addons.php:95
 msgid "Options"
 msgstr "Параметры"
 
-#: admin/anspress-admin.php:205 admin/views/addons.php:51
+#: admin/anspress-admin.php:207 admin/views/addons.php:32
 #, fuzzy
 msgid "AnsPress Add-ons"
 msgstr "Параметры AnsPress"
 
-#: admin/anspress-admin.php:205
+#: admin/anspress-admin.php:207
 msgid "Add-ons"
 msgstr ""
 
-#: admin/anspress-admin.php:209 admin/views/sidebar.php:4
+#: admin/anspress-admin.php:211 admin/views/sidebar.php:4
 msgid "About AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:314
+#: admin/anspress-admin.php:316
 msgid "Settings"
 msgstr "Настройки"
 
-#: admin/anspress-admin.php:315
+#: admin/anspress-admin.php:317
 msgid "About"
 msgstr ""
 
-#: admin/anspress-admin.php:514
+#: admin/anspress-admin.php:516
 #, fuzzy
 msgid "Select All"
 msgstr "Выбрать"
 
-#: admin/anspress-admin.php:518
+#: admin/anspress-admin.php:520
 msgid "Add to Menu"
 msgstr "Добавить в меню"
 
-#: admin/anspress-admin.php:645 admin/anspress-admin.php:654
-#: admin/anspress-admin.php:1070 admin/anspress-admin.php:1080
-#: admin/anspress-admin.php:1090 admin/anspress-admin.php:1100
-#: admin/anspress-admin.php:1110 includes/post-status.php:23
+#: admin/anspress-admin.php:647 admin/anspress-admin.php:656
+#: admin/anspress-admin.php:1072 admin/anspress-admin.php:1082
+#: admin/anspress-admin.php:1092 admin/anspress-admin.php:1102
+#: admin/anspress-admin.php:1112 includes/post-status.php:23
 msgid "Moderate"
 msgstr "Модерация"
 
-#: admin/anspress-admin.php:648 admin/anspress-admin.php:655
+#: admin/anspress-admin.php:650 admin/anspress-admin.php:657
 #, fuzzy
 msgid "Private Post"
 msgstr "Разрешить частные вопросы"
 
-#: admin/anspress-admin.php:674
+#: admin/anspress-admin.php:676
 #, fuzzy
 msgid "AnsPress database is not updated."
 msgstr "Параметры успешно обновлены"
 
-#: admin/anspress-admin.php:675
+#: admin/anspress-admin.php:677
 #, fuzzy
 msgid "Update now"
 msgstr "Обновить ответ"
 
-#: admin/anspress-admin.php:680
+#: admin/anspress-admin.php:682
 msgid "One or more AnsPress page(s) does not exists."
 msgstr ""
 
-#: admin/anspress-admin.php:681
+#: admin/anspress-admin.php:683
 msgid "Set automatically"
 msgstr ""
 
-#: admin/anspress-admin.php:681
+#: admin/anspress-admin.php:683
 msgid "Or"
 msgstr ""
 
-#: admin/anspress-admin.php:681
+#: admin/anspress-admin.php:683
 #, fuzzy
 msgid "Set set by yourself"
 msgstr "Напишите что-нибудь о себе"
 
-#: admin/anspress-admin.php:789
+#: admin/anspress-admin.php:791
 #, fuzzy
 msgid "Save Pages"
 msgstr "Сохранить значок"
 
-#: admin/anspress-admin.php:792
+#: admin/anspress-admin.php:794
 msgid "Hide author credits"
 msgstr "Скрыть ссылку авторов"
 
-#: admin/anspress-admin.php:793
+#: admin/anspress-admin.php:795
 msgid "Hide link to AnsPress project site."
 msgstr ""
 
-#: admin/anspress-admin.php:799
+#: admin/anspress-admin.php:801
 msgid ""
 "If you have created main pages manually then make sure to have [anspress] "
 "shortcode in all pages."
 msgstr ""
 
-#: admin/anspress-admin.php:838
+#: admin/anspress-admin.php:840
 #, fuzzy
 msgid "Save Permalinks"
 msgstr "Вопросов на каждой странице"
 
-#: admin/anspress-admin.php:841
+#: admin/anspress-admin.php:843
 #, fuzzy
 msgid "Question slug"
 msgstr "Вопросы"
 
-#: admin/anspress-admin.php:842
+#: admin/anspress-admin.php:844
 #, fuzzy
 msgid "Slug for single question page."
 msgstr "Показать заголовок вопроса на странице вопроса."
 
-#: admin/anspress-admin.php:847
+#: admin/anspress-admin.php:849
 #, fuzzy
 msgid "Question permalink"
 msgstr "Вопросов на каждой странице"
 
-#: admin/anspress-admin.php:848
+#: admin/anspress-admin.php:850
 msgid "Select single question permalink structure."
 msgstr ""
 
-#: admin/anspress-admin.php:863
+#: admin/anspress-admin.php:865
 msgid "Base page title"
 msgstr "Загловок базовой страницы"
 
-#: admin/anspress-admin.php:864
+#: admin/anspress-admin.php:866
 msgid "Main questions list page title"
 msgstr "Заголовок страницы главного списка вопросов"
 
-#: admin/anspress-admin.php:869
+#: admin/anspress-admin.php:871
 #, fuzzy
 msgid "Search page title"
 msgstr "Загловок базовой страницы"
 
-#: admin/anspress-admin.php:870
+#: admin/anspress-admin.php:872
 #, fuzzy
 msgid "Title of the search page"
 msgstr "Заголовок страницы спросить"
 
-#: admin/anspress-admin.php:875
+#: admin/anspress-admin.php:877
 #, fuzzy
 msgid "Author page title"
 msgstr "Заголовок для страницы спросить"
 
-#: admin/anspress-admin.php:876
+#: admin/anspress-admin.php:878
 #, fuzzy
 msgid "Title of the author page"
 msgstr "Заголовок страницы спросить"
 
-#: admin/anspress-admin.php:905
+#: admin/anspress-admin.php:907
 msgid "Load assets in AnsPress page only?"
 msgstr ""
 
-#: admin/anspress-admin.php:906
+#: admin/anspress-admin.php:908
 msgid ""
 "Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
 "careful, this might break layout."
 msgstr ""
 
-#: admin/anspress-admin.php:911
+#: admin/anspress-admin.php:913
 msgid "List avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:912
+#: admin/anspress-admin.php:914
 msgid "User avatar size for questions list."
 msgstr ""
 
-#: admin/anspress-admin.php:917
+#: admin/anspress-admin.php:919
 msgid "Question avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:918
+#: admin/anspress-admin.php:920
 msgid "User avatar size for question."
 msgstr ""
 
-#: admin/anspress-admin.php:923
+#: admin/anspress-admin.php:925
 msgid "Answer avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:924
+#: admin/anspress-admin.php:926
 msgid "User avatar size for answer."
 msgstr ""
 
-#: admin/anspress-admin.php:929
+#: admin/anspress-admin.php:931
 msgid "Comment avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:930
+#: admin/anspress-admin.php:932
 msgid "User avatar size for comments."
 msgstr ""
 
-#: admin/anspress-admin.php:935
+#: admin/anspress-admin.php:937
 msgid "Questions per page"
 msgstr "Вопросов на каждой странице"
 
-#: admin/anspress-admin.php:936
+#: admin/anspress-admin.php:938
 msgid "Questions to show per page."
 msgstr "Вопросов на каждой странице"
 
-#: admin/anspress-admin.php:941
+#: admin/anspress-admin.php:943
 msgid "Answers per page"
 msgstr "Ответов на каждой странице"
 
-#: admin/anspress-admin.php:942
+#: admin/anspress-admin.php:944
 msgid "Answers to show per page."
 msgstr "Ответов на каждой странице."
 
-#: admin/anspress-admin.php:970
+#: admin/anspress-admin.php:972
 #, fuzzy
 msgid "Who can read question?"
 msgstr "Чтобы ответить."
 
-#: admin/anspress-admin.php:971
+#: admin/anspress-admin.php:973
 #, fuzzy
 msgid "Set who can view or read a question."
 msgstr "Задайте статус изменённых вопросов."
 
-#: admin/anspress-admin.php:975 admin/anspress-admin.php:986
-#: admin/anspress-admin.php:997 admin/anspress-admin.php:1025
-#: admin/anspress-admin.php:1036 admin/anspress-admin.php:1059
+#: admin/anspress-admin.php:977 admin/anspress-admin.php:988
+#: admin/anspress-admin.php:999 admin/anspress-admin.php:1027
+#: admin/anspress-admin.php:1038 admin/anspress-admin.php:1061
 msgid "Anyone, including anonymous"
 msgstr ""
 
-#: admin/anspress-admin.php:976 admin/anspress-admin.php:987
-#: admin/anspress-admin.php:998 admin/anspress-admin.php:1026
-#: admin/anspress-admin.php:1037 admin/anspress-admin.php:1060
+#: admin/anspress-admin.php:978 admin/anspress-admin.php:989
+#: admin/anspress-admin.php:1000 admin/anspress-admin.php:1028
+#: admin/anspress-admin.php:1039 admin/anspress-admin.php:1062
 #, fuzzy
 msgid "Only logged in"
 msgstr "Только авторизованные пользователи могут видеть ответы"
 
-#: admin/anspress-admin.php:977
+#: admin/anspress-admin.php:979
 msgid "Only user having ap_read_question capability"
 msgstr ""
 
-#: admin/anspress-admin.php:981
+#: admin/anspress-admin.php:983
 #, fuzzy
 msgid "Who can read answers?"
 msgstr "Ваш ответ"
 
-#: admin/anspress-admin.php:982
+#: admin/anspress-admin.php:984
 msgid "Set who can view or read a answer."
 msgstr ""
 
-#: admin/anspress-admin.php:988
+#: admin/anspress-admin.php:990
 msgid "Only user having ap_read_answer capability"
 msgstr ""
 
-#: admin/anspress-admin.php:992
+#: admin/anspress-admin.php:994
 #, fuzzy
 msgid "Who can read comment?"
 msgstr "Показать комментарии"
 
-#: admin/anspress-admin.php:993
+#: admin/anspress-admin.php:995
 msgid "Set who can view or read a comment."
 msgstr ""
 
-#: admin/anspress-admin.php:999
+#: admin/anspress-admin.php:1001
 msgid "Only user having ap_read_comment capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1020
+#: admin/anspress-admin.php:1022
 #, fuzzy
 msgid "Who can post question?"
 msgstr "Чтобы ответить."
 
-#: admin/anspress-admin.php:1021
+#: admin/anspress-admin.php:1023
 msgid "Set who can submit a question from frontend."
 msgstr ""
 
-#: admin/anspress-admin.php:1027
+#: admin/anspress-admin.php:1029
 msgid "Only user having ap_new_question capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1031
+#: admin/anspress-admin.php:1033
 #, fuzzy
 msgid "Who can post answer?"
 msgstr "Спросивший не может ответить"
 
-#: admin/anspress-admin.php:1032
+#: admin/anspress-admin.php:1034
 msgid "Set who can submit an answer from frontend."
 msgstr ""
 
-#: admin/anspress-admin.php:1038
+#: admin/anspress-admin.php:1040
 msgid "Only user having ap_new_answer capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1042
+#: admin/anspress-admin.php:1044
 msgid "Multiple answers"
 msgstr "Несколько ответов"
 
-#: admin/anspress-admin.php:1043
+#: admin/anspress-admin.php:1045
 #, fuzzy
 msgid "Allow users to submit multiple answer per question."
 msgstr "Разрешить отвечать несколько раз на вопрос."
 
-#: admin/anspress-admin.php:1048
+#: admin/anspress-admin.php:1050
 #, fuzzy
 msgid "OP can answer?"
 msgstr "Отправить ответ"
 
-#: admin/anspress-admin.php:1049
+#: admin/anspress-admin.php:1051
 msgid ""
 "OP: Original poster/asker. Enabling this option will prevent users to post "
 "an answer on their question."
 msgstr ""
 
-#: admin/anspress-admin.php:1054
+#: admin/anspress-admin.php:1056
 #, fuzzy
 msgid "Who can post comment?"
 msgstr "Запретить комментарии"
 
-#: admin/anspress-admin.php:1055
+#: admin/anspress-admin.php:1057
 msgid "Set who can submit a comment from frontend."
 msgstr ""
 
-#: admin/anspress-admin.php:1061
+#: admin/anspress-admin.php:1063
 msgid "Only user having ap_new_comment capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1065
+#: admin/anspress-admin.php:1067
 msgid "Status of new question"
 msgstr "Статус нового вопроса"
 
-#: admin/anspress-admin.php:1066
+#: admin/anspress-admin.php:1068
 #, fuzzy
 msgid "Default status of new question."
 msgstr "Статус новый вопросов."
 
-#: admin/anspress-admin.php:1069 admin/anspress-admin.php:1079
-#: admin/anspress-admin.php:1089 admin/anspress-admin.php:1099
-#: admin/anspress-admin.php:1109
+#: admin/anspress-admin.php:1071 admin/anspress-admin.php:1081
+#: admin/anspress-admin.php:1091 admin/anspress-admin.php:1101
+#: admin/anspress-admin.php:1111
 msgid "Publish"
 msgstr "Опубликован"
 
-#: admin/anspress-admin.php:1075
+#: admin/anspress-admin.php:1077
 msgid "Status of edited question"
 msgstr "Статус изменённых вопросов"
 
-#: admin/anspress-admin.php:1076
+#: admin/anspress-admin.php:1078
 #, fuzzy
 msgid "Default status of edited question."
 msgstr "Задайте статус изменённых вопросов."
 
-#: admin/anspress-admin.php:1085
+#: admin/anspress-admin.php:1087
 msgid "Status of new answer"
 msgstr "Статус нового ответа"
 
-#: admin/anspress-admin.php:1086
+#: admin/anspress-admin.php:1088
 #, fuzzy
 msgid "Default status of new answer."
 msgstr "Задайте статус новых ответов"
 
-#: admin/anspress-admin.php:1095
+#: admin/anspress-admin.php:1097
 msgid "Status of edited answer"
 msgstr "Статус изменённого ответа"
 
-#: admin/anspress-admin.php:1096
+#: admin/anspress-admin.php:1098
 #, fuzzy
 msgid "Default status of edited answer."
 msgstr "Статус изменённого ответа"
 
-#: admin/anspress-admin.php:1105
+#: admin/anspress-admin.php:1107
 #, fuzzy
 msgid "Status of anonymous post"
 msgstr "Статус нового вопроса"
 
-#: admin/anspress-admin.php:1106
+#: admin/anspress-admin.php:1108
 #, fuzzy
 msgid "Default status of question or answer submitted by anonymous user."
 msgstr "Задайте статус новых ответов"
 
-#: admin/anspress-admin.php:1138
+#: admin/anspress-admin.php:1140
 msgid "Allow image upload"
 msgstr ""
 
-#: admin/anspress-admin.php:1139
+#: admin/anspress-admin.php:1141
 msgid "Allow logged-in users to upload image."
 msgstr ""
 
-#: admin/anspress-admin.php:1144
+#: admin/anspress-admin.php:1146
 msgid "Max uploads per post"
 msgstr ""
 
-#: admin/anspress-admin.php:1145
+#: admin/anspress-admin.php:1147
 msgid "Set numbers of media user can upload for each post."
 msgstr ""
 
-#: admin/anspress-admin.php:1149
+#: admin/anspress-admin.php:1151
 msgid "Max upload size"
 msgstr ""
 
-#: admin/anspress-admin.php:1150
+#: admin/anspress-admin.php:1152
 msgid "Set maximum upload size."
 msgstr ""
 
-#: admin/anspress-admin.php:1154
+#: admin/anspress-admin.php:1156
 msgid "Allow private posts"
 msgstr "Разрешить частные вопросы"
 
-#: admin/anspress-admin.php:1155
+#: admin/anspress-admin.php:1157
 msgid ""
 "Allows users to create private question and answer. Private Q&A are only "
 "visible to admin and moderators."
 msgstr ""
 
-#: admin/anspress-admin.php:1160
+#: admin/anspress-admin.php:1162
 msgid "Multiple Answers"
 msgstr "Несколько ответов"
 
-#: admin/anspress-admin.php:1161
+#: admin/anspress-admin.php:1163
 #, fuzzy
 msgid "Allows users to post multiple answers on a question."
 msgstr "Разрешить отвечать несколько раз на вопрос."
 
-#: admin/anspress-admin.php:1183
+#: admin/anspress-admin.php:1185
 #, fuzzy
 msgid "Numbers of comments to show"
 msgstr "Вопросов на каждой странице"
 
-#: admin/anspress-admin.php:1184
+#: admin/anspress-admin.php:1186
 #, fuzzy
 msgid "Numbers of comments to load in each query?"
 msgstr "Вопросов на каждой странице"
 
-#: admin/anspress-admin.php:1189
+#: admin/anspress-admin.php:1191
 msgid "Check duplicate"
 msgstr ""
 
-#: admin/anspress-admin.php:1190
+#: admin/anspress-admin.php:1192
 msgid "Check for duplicate posts before posting"
 msgstr ""
 
-#: admin/anspress-admin.php:1195
+#: admin/anspress-admin.php:1197
 #, fuzzy
 msgid "Disable question suggestion"
 msgstr "Запретить голосование в вопросах."
 
-#: admin/anspress-admin.php:1196
+#: admin/anspress-admin.php:1198
 msgid "Checking this will disable question suggestion in ask form"
 msgstr ""
 
-#: admin/anspress-admin.php:1201
+#: admin/anspress-admin.php:1203
 #, fuzzy
 msgid "Show default date format"
 msgstr "Сортировка по умолчанию для вопросов"
 
-#: admin/anspress-admin.php:1202
+#: admin/anspress-admin.php:1204
 msgid ""
 "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/anspress-admin.php:1207
+#: admin/anspress-admin.php:1209
 msgid "Show solved prefix"
 msgstr ""
 
-#: admin/anspress-admin.php:1208
+#: admin/anspress-admin.php:1210
 msgid ""
 "If an answer is selected for question then [solved] prefix will be added in "
 "title."
 msgstr ""
 
-#: admin/anspress-admin.php:1214
+#: admin/anspress-admin.php:1216
 #, fuzzy
 msgid "Default question order"
 msgstr "Выбрать вопрос"
 
-#: admin/anspress-admin.php:1215
+#: admin/anspress-admin.php:1217
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1218 admin/anspress-admin.php:1284
+#: admin/anspress-admin.php:1220 admin/anspress-admin.php:1286
 #: includes/theme.php:411 widgets/questions.php:116
 msgid "Voted"
 msgstr "Голосовали"
 
-#: admin/anspress-admin.php:1219 admin/anspress-admin.php:1285
-#: admin/views/addons.php:94 includes/theme.php:362 includes/theme.php:407
+#: admin/anspress-admin.php:1221 admin/anspress-admin.php:1287
+#: admin/views/addons.php:67 includes/theme.php:362 includes/theme.php:407
 #: widgets/question_stats.php:47 widgets/questions.php:114
 msgid "Active"
 msgstr "Активный"
 
-#: admin/anspress-admin.php:1220 admin/anspress-admin.php:1286
+#: admin/anspress-admin.php:1222 admin/anspress-admin.php:1288
 #: includes/theme.php:414 widgets/questions.php:115
 msgid "Newest"
 msgstr "Самые свежие"
 
-#: admin/anspress-admin.php:1221 admin/anspress-admin.php:1287
+#: admin/anspress-admin.php:1223 admin/anspress-admin.php:1289
 #: includes/theme.php:415
 msgid "Oldest"
 msgstr "Самые старые"
 
-#: admin/anspress-admin.php:1226
+#: admin/anspress-admin.php:1228
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/anspress-admin.php:1227
+#: admin/anspress-admin.php:1229
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/anspress-admin.php:1232
+#: admin/anspress-admin.php:1234
 msgid "Minimum title length"
 msgstr "Минимальная длина заголовка"
 
-#: admin/anspress-admin.php:1233
+#: admin/anspress-admin.php:1235
 msgid "Set minimum letters for a question title."
 msgstr "Укажите мин. длину для заголовка вопроса."
 
-#: admin/anspress-admin.php:1238 admin/anspress-admin.php:1292
+#: admin/anspress-admin.php:1240 admin/anspress-admin.php:1294
 msgid "Minimum question content"
 msgstr "Мин. длина для описания вопроса"
 
-#: admin/anspress-admin.php:1239
+#: admin/anspress-admin.php:1241
 msgid "Set minimum letters for a question contents."
 msgstr "Укажите мин. длину для полного описания вопроса."
 
-#: admin/anspress-admin.php:1244
+#: admin/anspress-admin.php:1246
 #, fuzzy
 msgid "Question editor?"
 msgstr "Вопросы"
 
-#: admin/anspress-admin.php:1245 admin/anspress-admin.php:1251
+#: admin/anspress-admin.php:1247 admin/anspress-admin.php:1253
 msgid "Quick tags editor"
 msgstr ""
 
-#: admin/anspress-admin.php:1250
+#: admin/anspress-admin.php:1252
 #, fuzzy
 msgid "Answer editor?"
 msgstr "Ответы"
 
-#: admin/anspress-admin.php:1256 admin/anspress-admin.php:1298
+#: admin/anspress-admin.php:1258 admin/anspress-admin.php:1300
 msgid "Disable comments"
 msgstr "Запретить комментарии"
 
-#: admin/anspress-admin.php:1257
+#: admin/anspress-admin.php:1259
 msgid "Disable comments on questions."
 msgstr "Запретить комментарии в вопросах."
 
-#: admin/anspress-admin.php:1262 admin/anspress-admin.php:1304
+#: admin/anspress-admin.php:1264 admin/anspress-admin.php:1306
 msgid "Disable voting"
 msgstr "Запретить голосование"
 
-#: admin/anspress-admin.php:1263
+#: admin/anspress-admin.php:1265
 msgid "Disable voting on questions."
 msgstr "Запретить голосование в вопросах."
 
-#: admin/anspress-admin.php:1268 admin/anspress-admin.php:1310
+#: admin/anspress-admin.php:1270 admin/anspress-admin.php:1312
 msgid "Disable down voting"
 msgstr ""
 
-#: admin/anspress-admin.php:1269
+#: admin/anspress-admin.php:1271
 msgid "Disable down voting on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1274
+#: admin/anspress-admin.php:1276
 msgid "Close question after selecting answer"
 msgstr ""
 
-#: admin/anspress-admin.php:1275
+#: admin/anspress-admin.php:1277
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
 
-#: admin/anspress-admin.php:1280
+#: admin/anspress-admin.php:1282
 #, fuzzy
 msgid "Default answers order"
 msgstr "Сортировка по умолчанию для вопросов"
 
-#: admin/anspress-admin.php:1281
+#: admin/anspress-admin.php:1283
 #, fuzzy
 msgid "Order answers by by default using selected"
 msgstr "Сортировка вопросов по умолчанию."
 
-#: admin/anspress-admin.php:1293
+#: admin/anspress-admin.php:1295
 msgid "Set minimum letters for a answer contents."
 msgstr "Укажите мин. длину для полного описания ответа."
 
-#: admin/anspress-admin.php:1299
+#: admin/anspress-admin.php:1301
 msgid "Disable comments on answer."
 msgstr ""
 
-#: admin/anspress-admin.php:1305
+#: admin/anspress-admin.php:1307
 msgid "Disable voting on answers."
 msgstr ""
 
-#: admin/anspress-admin.php:1311
+#: admin/anspress-admin.php:1313
 msgid "Disable down voting on answers."
 msgstr ""
 
-#: admin/anspress-admin.php:1341
+#: admin/anspress-admin.php:1343
 #, fuzzy
 msgid "View page"
 msgstr "Просмотр"
 
-#: admin/anspress-admin.php:1342
+#: admin/anspress-admin.php:1344
 #, fuzzy
 msgid "Edit page"
 msgstr "Изменить пометки"
+
+#: admin/anspress-admin.php:1397
+#, fuzzy
+msgid "Addon options updated successfully!"
+msgstr "Вопрос успешно обновлён"
+
+#: admin/anspress-admin.php:1404
+msgid ""
+"There is no option registered by this addon. Custom options can be "
+"registered by using hook: %s"
+msgstr ""
 
 #: admin/class-list-table-hooks.php:57 admin/class-list-table-hooks.php:397
 msgid "Flagged"
@@ -1884,7 +1899,7 @@ msgstr "--"
 #: admin/class-list-table-hooks.php:269 admin/class-list-table-hooks.php:343
 #: admin/views/select_question.php:43 includes/ajax-hooks.php:107
 #: includes/ajax-hooks.php:109 includes/ajax-hooks.php:301
-#: includes/functions.php:2039 templates/buddypress/question-item.php:38
+#: includes/functions.php:2112 templates/buddypress/question-item.php:38
 #, fuzzy
 msgid "%d Answer"
 msgid_plural "%d Answers"
@@ -2056,27 +2071,20 @@ msgstr ""
 msgid "Error"
 msgstr "Ошибка 404"
 
-#: admin/views/addons.php:64
-#, fuzzy
-msgid "Addon options updated successfully!"
-msgstr "Вопрос успешно обновлён"
-
-#: admin/views/addons.php:134
+#: admin/views/addons.php:82
 #, fuzzy
 msgid "Disable Addon"
 msgstr "Запретить голосование"
 
-#: admin/views/addons.php:134
-msgid "Enable Add-on"
-msgstr ""
+#: admin/views/addons.php:95
+#, fuzzy
+msgid "%s Options"
+msgstr "Параметры"
 
-#: admin/views/addons.php:150
-msgid "Please enable addon to view options."
-msgstr ""
-
-#: admin/views/addons.php:172
-msgid "There is no option registered by this addon."
-msgstr ""
+#: admin/views/addons.php:99
+#, fuzzy
+msgid "Enable Addon"
+msgstr "Запретить голосование"
 
 #: admin/views/dashboard.php:26
 msgid "Require Attention"
@@ -2325,7 +2333,7 @@ msgstr "Количество"
 msgid "Uninstall"
 msgstr "Установка"
 
-#: admin/views/options.php:191
+#: admin/views/options.php:192
 #, fuzzy
 msgid "AnsPress option updated successfully!"
 msgstr "Вопрос успешно обновлён"
@@ -2999,29 +3007,29 @@ msgstr "Выбрать этот ответ как лучший"
 msgid "Unselected an answer"
 msgstr "выбрал ответ"
 
-#: includes/class/class-activity-helper.php:324
+#: includes/class/class-activity-helper.php:325
 #, fuzzy
 msgid "Question id is required."
 msgstr "Вопрос >> Лента"
 
-#: includes/class/class-activity-helper.php:329
+#: includes/class/class-activity-helper.php:330
 msgid "Not a valid action"
 msgstr ""
 
-#: includes/class/class-activity-helper.php:340
+#: includes/class/class-activity-helper.php:341
 msgid "Invalid date"
 msgstr ""
 
-#: includes/class/class-activity-helper.php:360
+#: includes/class/class-activity-helper.php:361
 #, fuzzy
 msgid "Failed to insert activity"
 msgstr "изменил комментарий"
 
-#: includes/class/class-activity-helper.php:426
+#: includes/class/class-activity-helper.php:427
 msgid "No columns found in where clue"
 msgstr ""
 
-#: includes/class/class-activity-helper.php:432
+#: includes/class/class-activity-helper.php:433
 #, fuzzy
 msgid "Failed to delete activity rows."
 msgstr "изменил комментарий"
@@ -3047,6 +3055,10 @@ msgstr "Зарегистрируйтесь"
 msgid "Load More"
 msgstr "Показать комментарии"
 
+#: includes/class/class-singleton.php:34 includes/class/class-singleton.php:43
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
 #: includes/class/roles-cap.php:64
 msgid "AnsPress Moderator"
 msgstr ""
@@ -3059,15 +3071,15 @@ msgstr ""
 msgid "AnsPress Banned"
 msgstr ""
 
-#: includes/class/roles-cap.php:1314
+#: includes/class/roles-cap.php:1315
 msgid "Voting on own post is not allowed"
 msgstr ""
 
-#: includes/class/roles-cap.php:1322
+#: includes/class/roles-cap.php:1323
 msgid "Voting on restricted posts are not allowed."
 msgstr ""
 
-#: includes/class/roles-cap.php:1332
+#: includes/class/roles-cap.php:1333
 msgid "You do not have permission to vote."
 msgstr ""
 
@@ -3085,149 +3097,149 @@ msgstr "Вопрос вкратце"
 msgid "Question title"
 msgstr "Вопросов на каждой странице"
 
-#: includes/class-form-hooks.php:58 includes/class-form-hooks.php:144
+#: includes/class-form-hooks.php:58 includes/class-form-hooks.php:152
 #: includes/deprecated.php:265
 msgid "Description"
 msgstr "Описание"
 
-#: includes/class-form-hooks.php:72 includes/class-form-hooks.php:158
+#: includes/class-form-hooks.php:72 includes/class-form-hooks.php:166
 msgid "Is private?"
 msgstr ""
 
-#: includes/class-form-hooks.php:73 includes/class-form-hooks.php:159
+#: includes/class-form-hooks.php:73 includes/class-form-hooks.php:167
 #: includes/deprecated.php:305 includes/deprecated.php:448
 msgid "Only visible to admin and moderator."
 msgstr ""
 
-#: includes/class-form-hooks.php:80 includes/class-form-hooks.php:166
-#: includes/class-form-hooks.php:230
+#: includes/class-form-hooks.php:80 includes/class-form-hooks.php:174
+#: includes/class-form-hooks.php:238
 #, fuzzy
 msgid "Your Name"
 msgstr "Ваше имя"
 
-#: includes/class-form-hooks.php:82 includes/class-form-hooks.php:168
+#: includes/class-form-hooks.php:82 includes/class-form-hooks.php:176
 #: includes/deprecated.php:293 includes/deprecated.php:436
 #: tests/wpunit/askFormTest.php:69
 msgid "Enter your name to display"
 msgstr "Введите ваше имя для отображения"
 
-#: includes/class-form-hooks.php:103 includes/class-form-hooks.php:187
-#: includes/functions.php:1956
+#: includes/class-form-hooks.php:112 includes/class-form-hooks.php:195
+#: includes/functions.php:2040
 msgid "Update Question"
 msgstr "Обновить вопрос"
 
-#: includes/class-form-hooks.php:140
+#: includes/class-form-hooks.php:148
 #, fuzzy
 msgid "Post Answer"
 msgstr "Отправить ответ"
 
-#: includes/class-form-hooks.php:208
+#: includes/class-form-hooks.php:216
 #, fuzzy
 msgid "Submit Comment"
 msgstr "Комментировать"
 
-#: includes/class-form-hooks.php:212 templates/answer.php:36
+#: includes/class-form-hooks.php:220 templates/answer.php:36
 #: templates/functions.php:41
 msgid "Comment"
 msgstr "Комментировать"
 
-#: includes/class-form-hooks.php:216
+#: includes/class-form-hooks.php:224
 #, fuzzy
 msgid "Write your comment here.."
 msgstr "изменил комментарий"
 
-#: includes/class-form-hooks.php:232
+#: includes/class-form-hooks.php:240
 #, fuzzy
 msgid "Enter your name to display."
 msgstr "Введите ваше имя для отображения"
 
-#: includes/class-form-hooks.php:239
+#: includes/class-form-hooks.php:247
 #, fuzzy
 msgid "Your Email"
 msgstr "Email"
 
-#: includes/class-form-hooks.php:241
+#: includes/class-form-hooks.php:249
 msgid "Enter your email to get follow up notifications."
 msgstr ""
 
-#: includes/class-form-hooks.php:249
+#: includes/class-form-hooks.php:257
 msgid "Your Website"
 msgstr ""
 
-#: includes/class-form-hooks.php:251
+#: includes/class-form-hooks.php:259
 msgid "Enter link to your website."
 msgstr ""
 
-#: includes/class-form-hooks.php:334 includes/class-form-hooks.php:361
+#: includes/class-form-hooks.php:342 includes/class-form-hooks.php:369
 #, fuzzy
 msgid "Unable to post question."
 msgstr "Статус нового вопроса"
 
-#: includes/class-form-hooks.php:339 includes/class-form-hooks.php:366
+#: includes/class-form-hooks.php:347 includes/class-form-hooks.php:374
 #, fuzzy
 msgid "Failed to insert question"
 msgstr "изменил комментарий"
 
-#: includes/class-form-hooks.php:356
+#: includes/class-form-hooks.php:364
 msgid ""
 "You are trying to post a duplicate question. Please search existing "
 "questions before posting a new one."
 msgstr ""
 
 #. Translators: placeholder contain error message.
-#: includes/class-form-hooks.php:416
+#: includes/class-form-hooks.php:424
 #, fuzzy
 msgid "Unable to post question. Error: %s"
 msgstr "Статус нового вопроса"
 
-#: includes/class-form-hooks.php:436
+#: includes/class-form-hooks.php:452
 #, fuzzy
 msgid "Question updated successfully, you'll be redirected in a moment."
 msgstr "Вопрос успешно обновлён"
 
-#: includes/class-form-hooks.php:438
+#: includes/class-form-hooks.php:454
 #, fuzzy
 msgid "Your question is posted successfully, you'll be redirected in a moment."
 msgstr "Вопрос успешно обновлён"
 
-#: includes/class-form-hooks.php:528
+#: includes/class-form-hooks.php:544
 #, fuzzy
 msgid "Please check field"
 msgstr "AnsPress Роли"
 
 #. Translators: placeholder contain error message.
-#: includes/class-form-hooks.php:583
+#: includes/class-form-hooks.php:599
 #, fuzzy
 msgid "Unable to post answer. Error: %s"
 msgstr "Выбрал лучший ответ для %s"
 
-#: includes/class-form-hooks.php:609
+#: includes/class-form-hooks.php:637
 #, fuzzy
 msgid "Answer updated successfully. Redirecting you to question page."
 msgstr "Вопрос успешно обновлён"
 
-#: includes/class-form-hooks.php:611
+#: includes/class-form-hooks.php:639
 #, fuzzy
 msgid "Your answer is posted successfully."
 msgstr "Ответ успешно обновлён"
 
-#: includes/class-form-hooks.php:661
+#: includes/class-form-hooks.php:689
 #, fuzzy
 msgid "Unable to post comment."
 msgstr "Запретить комментарии"
 
-#: includes/class-form-hooks.php:674
+#: includes/class-form-hooks.php:702
 #, fuzzy
 msgid "You cannot edit this comment."
 msgstr "Редактировать этот вопрос"
 
-#: includes/class-form-hooks.php:682
+#: includes/class-form-hooks.php:710
 #, fuzzy
 msgid "There is no change in your comment."
 msgstr "Ещё нет вопросов."
 
 #. Translators: %d contains count of comments.
-#: includes/class-form-hooks.php:712 includes/class-form-hooks.php:798
+#: includes/class-form-hooks.php:740 includes/class-form-hooks.php:826
 #: includes/comments.php:120 includes/comments.php:172
 #: includes/comments.php:288
 #, fuzzy
@@ -3237,17 +3249,17 @@ msgstr[0] "Комментировать"
 msgstr[1] "Комментировать"
 msgstr[2] "Комментировать"
 
-#: includes/class-form-hooks.php:713
+#: includes/class-form-hooks.php:741
 #, fuzzy
 msgid "Comment updated successfully"
 msgstr "Вопрос успешно обновлён"
 
 #. Translators: %s contain post type name.
-#: includes/class-form-hooks.php:739
+#: includes/class-form-hooks.php:767
 msgid "Commenting is not allowed on draft, pending or deleted %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:804
+#: includes/class-form-hooks.php:832
 msgid "Comment successfully posted"
 msgstr ""
 
@@ -3340,38 +3352,38 @@ msgstr "Задать вопрос"
 msgid "Search"
 msgstr "Поиск"
 
-#: includes/common-pages.php:25 includes/functions.php:2252
+#: includes/common-pages.php:25 includes/functions.php:2325
 #, fuzzy
 msgid "Activities"
 msgstr "Активность"
 
-#: includes/common-pages.php:72
+#: includes/common-pages.php:77
 msgid ""
 "This question is awaiting moderation and cannot be viewed. Please check back "
 "later."
 msgstr ""
 
-#: includes/common-pages.php:74
+#: includes/common-pages.php:79
 msgid "Sorry! you are not allowed to read this question."
 msgstr ""
 
 #. Translators: %s contain time to publish.
-#: includes/common-pages.php:81
+#: includes/common-pages.php:86
 msgid "Question will be published in %s"
 msgstr ""
 
-#: includes/common-pages.php:85
+#: includes/common-pages.php:90
 msgid ""
 "This question is not published yet and is not accessible to anyone until it "
 "get published."
 msgstr ""
 
-#: includes/common-pages.php:142
+#: includes/common-pages.php:147
 #, fuzzy
 msgid "Something went wrong, please try again"
 msgstr "Что то пошло не так, попробуйте ещё."
 
-#: includes/common-pages.php:164
+#: includes/common-pages.php:169
 #, fuzzy
 msgid "Sorry, you cannot edit this answer."
 msgstr "Редактировать этот ответ"
@@ -3573,140 +3585,211 @@ msgstr "Аноним"
 msgid " (anonymous)"
 msgstr " (аноним)"
 
-#: includes/functions.php:1929
+#: includes/functions.php:1606
+#, fuzzy
+msgid "Emails"
+msgstr "Изменить ответ"
+
+#: includes/functions.php:1607
+msgid "Notifies users and admins by email for various events and activities."
+msgstr ""
+
+#: includes/functions.php:1611
+msgid ""
+"Adds a fancy user notification dropdown like Facebook and Stackoverflow."
+msgstr ""
+
+#: includes/functions.php:1615
+msgid "Add category support in AnsPress questions."
+msgstr ""
+
+#: includes/functions.php:1619
+msgid "Add tag support in AnsPress questions."
+msgstr ""
+
+#: includes/functions.php:1623
+msgid "Award points to user based on activities."
+msgstr ""
+
+#: includes/functions.php:1626
+#, fuzzy
+msgid "Dynamic Avatar"
+msgstr "Аватар"
+
+#: includes/functions.php:1627
+msgid "Generate user avatar based on display name initials."
+msgstr ""
+
+#: includes/functions.php:1630
+msgid "BuddyPress"
+msgstr ""
+
+#: includes/functions.php:1631
+msgid "Integrate AnsPress with BuddyPress."
+msgstr ""
+
+#: includes/functions.php:1634
+#, fuzzy
+msgid "User Profile"
+msgstr "Пользователи"
+
+#: includes/functions.php:1635
+#, fuzzy
+msgid "User profile for users."
+msgstr "Пользователи"
+
+#: includes/functions.php:1638
+#, fuzzy
+msgid "reCaptcha"
+msgstr "reCaptacha"
+
+#: includes/functions.php:1639
+#, fuzzy
+msgid "Add reCaptcha verification in question, answer and comment forms."
+msgstr "Только авторизованные пользователи могут видеть комментарии"
+
+#: includes/functions.php:1642
+msgid "Syntax Highlighter"
+msgstr ""
+
+#: includes/functions.php:1643
+msgid "Add syntax highlighter support."
+msgstr ""
+
+#: includes/functions.php:2013
 #, fuzzy
 msgid "You cannot edit this question."
 msgstr "Редактировать этот вопрос"
 
-#: includes/functions.php:1934 templates/ask.php:17
+#: includes/functions.php:2018 templates/ask.php:17
 #, fuzzy
 msgid "You do not have permission to ask a question."
 msgstr "Редактировать этот вопрос"
 
-#: includes/functions.php:2048
+#: includes/functions.php:2121
 msgid "Answer submitted successfully"
 msgstr "Ответ успешно сохранён"
 
-#: includes/functions.php:2076
+#: includes/functions.php:2149
 #, fuzzy
 msgid "You cannot edit this answer."
 msgstr "Редактировать этот ответ"
 
-#: includes/functions.php:2081
+#: includes/functions.php:2154
 #, fuzzy
 msgid "You do not have permission to answer this question."
 msgstr "Редактировать этот вопрос"
 
-#: includes/functions.php:2107
+#: includes/functions.php:2180
 msgid "Update Answer"
 msgstr "Обновить ответ"
 
-#: includes/functions.php:2220
+#: includes/functions.php:2293
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2221
+#: includes/functions.php:2294
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred as "
 "<b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2226
+#: includes/functions.php:2299
 #, fuzzy
 msgid "Ask page"
 msgstr "Заголовок для страницы спросить"
 
-#: includes/functions.php:2227
+#: includes/functions.php:2300
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2228
+#: includes/functions.php:2301
 #, fuzzy
 msgid "Ask a question"
 msgstr "Задать вопрос"
 
-#: includes/functions.php:2232
+#: includes/functions.php:2305
 #, fuzzy
 msgid "User page"
 msgstr "Логин"
 
-#: includes/functions.php:2233
+#: includes/functions.php:2306
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2234
+#: includes/functions.php:2307
 msgid "Profile"
 msgstr "Профайл"
 
-#: includes/functions.php:2238
+#: includes/functions.php:2311
 #, fuzzy
 msgid "Categories page"
 msgstr "Категории"
 
-#: includes/functions.php:2239
+#: includes/functions.php:2312
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2244
+#: includes/functions.php:2317
 #, fuzzy
 msgid "Tags page"
 msgstr "Загловок базовой страницы"
 
-#: includes/functions.php:2245
+#: includes/functions.php:2318
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2250
+#: includes/functions.php:2323
 #, fuzzy
 msgid "Activities page"
 msgstr "Был автивен %s назад"
 
-#: includes/functions.php:2251
+#: includes/functions.php:2324
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:880
+#: includes/hooks.php:852
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:881
+#: includes/hooks.php:853
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:882
+#: includes/hooks.php:854
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:883
+#: includes/hooks.php:855
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:884
+#: includes/hooks.php:856
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:885
+#: includes/hooks.php:857
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:886
+#: includes/hooks.php:858
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:887
+#: includes/hooks.php:859
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:888
+#: includes/hooks.php:860
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:889
+#: includes/hooks.php:861
 msgid "years"
 msgstr ""
 
@@ -3893,12 +3976,12 @@ msgstr "Ответов пока нет"
 msgid "No answer found in trash"
 msgstr "Ответов пока нет"
 
-#: includes/qaquery-hooks.php:194
+#: includes/qaquery-hooks.php:201
 #, fuzzy
 msgid "No permission"
 msgstr "Разрешения"
 
-#: includes/qaquery-hooks.php:195
+#: includes/qaquery-hooks.php:202
 #, fuzzy
 msgid "You do not have permission to read this question."
 msgstr "Редактировать этот вопрос"
@@ -4071,11 +4154,11 @@ msgid "Submit"
 msgstr "Отправить"
 
 #. Translators: Placeholder contain form name.
-#: lib/class-form.php:178
+#: lib/class-form.php:180
 msgid "No fields found for form: %s"
 msgstr ""
 
-#: lib/class-form.php:381 lib/form/class-field.php:380
+#: lib/class-form.php:387 lib/form/class-field.php:380
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
@@ -5016,13 +5099,13 @@ msgstr ""
 msgid "Rahul Aryan"
 msgstr "Rahul Aryan"
 
-#: addons/free/tag.php:182
+#: addons/tags/tags.php:184
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Tag"
 msgstr "Метки"
 
-#: addons/free/tag.php:184
+#: addons/tags/tags.php:186
 #, fuzzy
 msgctxt "anspress-question-answer"
 msgid "Add New Tag"
@@ -5096,10 +5179,6 @@ msgstr "Категории"
 #~ msgid "Add New Tag."
 #~ msgstr "Добавить новый ответ"
 
-#, fuzzy
-#~ msgid "Dynamic Avatar"
-#~ msgstr "Аватар"
-
 #~ msgid "Closed"
 #~ msgstr "Закрыт"
 
@@ -5160,14 +5239,6 @@ msgstr "Категории"
 #~ msgstr "Заголовок страницы спросить"
 
 #, fuzzy
-#~ msgid "User Profile"
-#~ msgstr "Пользователи"
-
-#, fuzzy
-#~ msgid "reCaptcha"
-#~ msgstr "reCaptacha"
-
-#, fuzzy
 #~ msgid "Events"
 #~ msgstr "Событие"
 
@@ -5226,10 +5297,6 @@ msgstr "Категории"
 
 #~ msgid "Allow an user to submit multiple answers on a single question."
 #~ msgstr "Разрешить отправлять несколько ответов на один вопрос."
-
-#, fuzzy
-#~ msgid "Only logged in can see questions, answer and comments?"
-#~ msgstr "Только авторизованные пользователи могут видеть комментарии"
 
 #~ msgid "Allow anonymous"
 #~ msgstr "Разрешить аноним"

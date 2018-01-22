@@ -337,6 +337,19 @@ class AP_Activate {
 
 				// Try to activate by new name.
 				$new_addon_name = str_replace( 'free/', '', $file );
+
+				// New names of addon.
+				$new_name = array(
+					'category'     => 'categories',
+					'tag'          => 'tags',
+					'notification' => 'notifications',
+				);
+
+				// Replace old name by new name.
+				if ( isset( $new_name[ $new_addon_name ] ) ) {
+					$new_addon_name = $new_name[ $new_addon_name ];
+				}
+
 				ap_activate_addon( $new_addon_name );
 			}
 		}
