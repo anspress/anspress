@@ -192,7 +192,7 @@ class AP_Form_Hooks {
 		if ( ! empty( $editing_id ) ) {
 			$form['editing']      = true;
 			$form['editing_id']   = $editing_id;
-			$form['submit_label'] = __( 'Update Question', 'anspress-question-answer' );
+			$form['submit_label'] = __( 'Update Answer', 'anspress-question-answer' );
 		}
 
 		/**
