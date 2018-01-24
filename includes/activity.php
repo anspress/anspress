@@ -198,7 +198,7 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = false ) {
 		} elseif( 'comment' === $activity->action['ref_type'] ) {
 			$link = ap_get_short_link( [ 'ap_c' => $activity->c_id ] );
 		} else {
-			$link = ap_get_short_link( [ 'ap_q' => $activity->c_id ] );
+			$link = ap_get_short_link( [ 'ap_q' => $activity->q_id ] );
 		}
 
 		$html .= ' <a href="' . esc_url( $link ) . '">';
