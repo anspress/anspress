@@ -31,10 +31,9 @@ class AnsPress_Common_Pages {
 	public static function base_page() {
 		global $wp;
 
-		$keywords   = get_search_query();
-
-		$tax_relation = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
-		$args = array();
+		$keywords          = get_search_query();
+		$tax_relation      = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
+		$args              = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
 
 		if ( false !== $keywords ) {
@@ -115,17 +114,17 @@ class AnsPress_Common_Pages {
 		setup_postdata( get_the_ID() );
 
 		$question_rendered = false;
-		$msg = self::question_permission_msg( $post );
+		$msg               = self::question_permission_msg( $post );
 
 		// Check if user have permission.
 		if ( false !== $msg ) {
 			status_header( 403 );
-			echo '<div class="ap-no-permission">' . $msg . '</div>';
+			echo '<div class="ap-no-permission">' . $msg . '</div>'; // WPCS: xss okay.
 			$question_rendered = true;
 			return;
 		}
 
-		include( ap_get_theme_location( 'single-question.php' ) );
+		include ap_get_theme_location( 'single-question.php' );
 
 		/**
 		 * An action triggered after rendering single question page.
@@ -155,7 +154,7 @@ class AnsPress_Common_Pages {
 	 * Load search page template
 	 */
 	public static function search_page() {
-		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var', false );
+		$keywords = ap_sanitize_unslash( 'ap_s', 'query_var', false );
 		wp_safe_redirect( add_query_arg( [ 'ap_s' => $keywords ], ap_get_link_to( '/' ) ) );
 	}
 

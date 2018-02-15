@@ -230,8 +230,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				if ( class_exists( 'WP_CLI' ) ) {
 					WP_CLI::add_command( 'anspress', 'AnsPress_Cli' );
 				}
-
-				self::$instance->setup_hooks();
 			} // End if().
 
 			return self::$instance;
@@ -273,8 +271,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 */
 		private function includes() {
-			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
-			require_once ANSPRESS_DIR . 'includes/class/class-singleton.php';
 			require_once ANSPRESS_DIR . 'includes/activity.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
@@ -445,9 +441,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		/**
 		 * Register the filters and actions with WordPress.
 		 *
-		 * @access private
+		 * @access public
 		 */
-		private function setup_hooks() {
+		public function setup_hooks() {
 			foreach ( $this->filters as $hook ) {
 				add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 			}
@@ -548,7 +544,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			 * @since 2.4.7
 			 */
 			do_action( 'before_loading_anspress' );
-			anspress();
+			anspress()->setup_hooks();
 		}
 
 		/**
@@ -636,6 +632,9 @@ add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ], 1 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ], 0 );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
+
+require_once dirname( __FILE__ ) . '/includes/class/roles-cap.php';
+require_once dirname( __FILE__ ) . '/includes/class/class-singleton.php';
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

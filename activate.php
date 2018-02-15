@@ -100,7 +100,7 @@ class AP_Activate {
 	/**
 	 * Delete old AnsPress options.
 	 *
- 	 * @since 4.1.5
+	 * @since 4.1.5
 	 */
 	public function delete_options() {
 		$settings = get_option( 'anspress_opt' , [] );
