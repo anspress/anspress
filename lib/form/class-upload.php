@@ -86,17 +86,21 @@ class Upload extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label' => __( 'AnsPress Upload Field', 'anspress-question-answer' ),
-			'upload_options' => [],
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label'          => __( 'AnsPress Upload Field', 'anspress-question-answer' ),
+				'upload_options' => [],
+			)
+		);
 
-		$this->args['upload_options'] = wp_parse_args( $this->args['upload_options'], array(
-			'allowed_mimes'   => ap_allowed_mimes(),
-			'max_files'       => 1,
-			'multiple'        => false,
-			'label_deny_type' => __( 'This file type is not allowed to upload.', 'anspress-question-answer' ),
-		));
+		$this->args['upload_options'] = wp_parse_args(
+			$this->args['upload_options'], array(
+				'allowed_mimes'   => ap_allowed_mimes(),
+				'max_files'       => 1,
+				'multiple'        => false,
+				'label_deny_type' => __( 'This file type is not allowed to upload.', 'anspress-question-answer' ),
+			)
+		);
 
 		if ( ! isset( $this->args['upload_options']['label_max_added'] ) ) {
 			$this->args['upload_options']['label_max_added'] = sprintf(
@@ -141,9 +145,11 @@ class Upload extends Field {
 			}
 		}
 
-		return array_filter( $file_ary, function( $a ) {
-			return ! empty( $a['name'] );
-		});
+		return array_filter(
+			$file_ary, function( $a ) {
+				return ! empty( $a['name'] );
+			}
+		);
 	}
 
 	/**
@@ -166,15 +172,17 @@ class Upload extends Field {
 	public function field_markup() {
 		parent::field_markup();
 
-		$args = $this->get( 'upload_options' );
+		$args        = $this->get( 'upload_options' );
 		$allowed_ext = '.' . str_replace( '|', ',.', implode( ',.', array_keys( $args['allowed_mimes'] ) ) );
 		unset( $args['allowed_mimes'] );
 
-		$medias = get_posts( [
-			'post_type'   => 'attachment',
-			'title'       => '_ap_temp_media',
-			'post_author' => get_current_user_id(),
-		]);
+		$medias = get_posts(
+			[
+				'post_type'   => 'attachment',
+				'title'       => '_ap_temp_media',
+				'post_author' => get_current_user_id(),
+			]
+		);
 
 		// Show temporary images uploaded.
 		if ( $medias ) {
@@ -280,7 +288,7 @@ class Upload extends Field {
 			$this->upload_file( $value );
 		}
 
-		$this->value = $this->uploaded_files;
+		$this->value    = $this->uploaded_files;
 		$this->uploaded = true;
 	}
 

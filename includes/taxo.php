@@ -21,18 +21,18 @@ if ( ! defined( 'WPINC' ) ) {
  * @return string
  */
 function ap_question_categories_html( $args = [] ) {
-	$defaults  = array(
-		'question_id'   => get_the_ID(),
-		'list'          => false,
-		'tag'           => 'span',
-		'class'         => 'question-categories',
-		'label'         => __( 'Categories', 'categories-for-anspress' ),
-		'echo'          => false,
+	$defaults = array(
+		'question_id' => get_the_ID(),
+		'list'        => false,
+		'tag'         => 'span',
+		'class'       => 'question-categories',
+		'label'       => __( 'Categories', 'categories-for-anspress' ),
+		'echo'        => false,
 	);
 
 	if ( ! is_array( $args ) ) {
 		$defaults['question_id'] = $args;
-		$args = $defaults;
+		$args                    = $defaults;
 	} else {
 		$args = wp_parse_args( $args, $defaults );
 	}
@@ -70,7 +70,7 @@ function ap_question_categories_html( $args = [] ) {
  * Get category details.
  */
 function ap_category_details() {
-	$var = get_query_var( 'question_category' );
+	$var      = get_query_var( 'question_category' );
 	$category = get_term_by( 'slug', $var, 'question_category' );
 
 	echo '<div class="clearfix">';
@@ -83,7 +83,13 @@ function ap_category_details() {
 
 	echo '<p class="desc clearfix">' . $category->description . '</p>';
 
-	$child = get_terms( array( 'taxonomy' => 'question_category' ), array( 'parent' => $category->term_id, 'hierarchical' => false, 'hide_empty' => false ) );
+	$child = get_terms(
+		array( 'taxonomy' => 'question_category' ), array(
+			'parent'       => $category->term_id,
+			'hierarchical' => false,
+			'hide_empty'   => false,
+		)
+	);
 
 	if ( $child ) :
 		echo '<ul class="ap-child-list clearfix">';
@@ -91,12 +97,17 @@ function ap_category_details() {
 			echo '<li><a class="taxo-title" href="' . get_category_link( $c ) . '">' . $c->name . '<span>' . $c->count . '</span></a>';
 			echo '</li>';
 			endforeach;
-		echo'</ul>';
+		echo '</ul>';
 	endif;
 }
 
 function ap_sub_category_list( $parent ) {
-	$categories = get_terms( array( 'taxonomy' => 'question_category' ), array( 'parent' => $parent, 'hide_empty' => false ) );
+	$categories = get_terms(
+		array( 'taxonomy' => 'question_category' ), array(
+			'parent'     => $parent,
+			'hide_empty' => false,
+		)
+	);
 
 	if ( $categories ) {
 		echo '<ul class="ap-category-subitems ap-ul-inline clearfix">';
@@ -160,16 +171,16 @@ function is_question_category() {
  */
 function ap_get_category_filter( $search = false ) {
 	$args = array(
-		'hierarchical'      => true,
-		'hide_if_empty'     => true,
-		'number'            => 10,
+		'hierarchical'  => true,
+		'hide_if_empty' => true,
+		'number'        => 10,
 	);
 
 	if ( false !== $search ) {
 		$args['search'] = $search;
 	}
 
-	$terms = get_terms( 'question_category', $args );
+	$terms    = get_terms( 'question_category', $args );
 	$selected = ap_get_current_list_filters( 'category' );
 
 	if ( ! $terms ) {
@@ -179,7 +190,11 @@ function ap_get_category_filter( $search = false ) {
 	$items = array();
 
 	foreach ( (array) $terms as $t ) {
-		$item = [ 'key' => 'category', 'value' => (string) $t->term_id, 'label' => $t->name ];
+		$item = [
+			'key'   => 'category',
+			'value' => (string) $t->term_id,
+			'label' => $t->name,
+		];
 		// Check if active.
 		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;
@@ -195,17 +210,17 @@ function ap_get_category_filter( $search = false ) {
  * Output category filter dropdown.
  */
 function ap_category_sorting() {
-	$filters = ap_get_category_filter();
+	$filters  = ap_get_category_filter();
 	$selected = isset( $_GET['ap_cat_sort'] ) ? (int) $_GET['ap_cat_sort'] : '';
 	if ( $filters ) {
 		echo '<div class="ap-dropdown">';
-			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle' . ($selected != '' ? ' active' : '') . '" href="#">' . __( 'Category', 'categories-for-anspress' ) . '</a>';
+			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle' . ( $selected != '' ? ' active' : '' ) . '" href="#">' . __( 'Category', 'categories-for-anspress' ) . '</a>';
 			echo '<div class="ap-dropdown-menu">';
 
 		foreach ( $filters as $category_id => $category_name ) {
-			echo '<li ' . ($selected == $category_id ? 'class="active" ' : '') . '><a href="#" data-value="' . $category_id . '">'. $category_name . '</a></li>';
+			echo '<li ' . ( $selected == $category_id ? 'class="active" ' : '' ) . '><a href="#" data-value="' . $category_id . '">' . $category_name . '</a></li>';
 		}
-			echo '<input name="ap_cat_sort" type="hidden" value="'.$selected.'" />';
+			echo '<input name="ap_cat_sort" type="hidden" value="' . $selected . '" />';
 			echo '</div>';
 		echo '</div>';
 	}
@@ -219,7 +234,7 @@ function ap_category_sorting() {
  */
 function ap_get_category_image( $term_id, $height = 32 ) {
 	$option = get_term_meta( $term_id, 'ap_category', true );
-	$color = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : 'background:#333;';
+	$color  = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : 'background:#333;';
 
 	$style = 'style="' . $color . 'height:' . $height . 'px;"';
 
@@ -244,12 +259,12 @@ function ap_category_image( $term_id, $height = 32 ) {
 /**
  * Return category icon.
  *
- * @param  integer $term_id 	Term ID.
- * @param  string  $attributes 	Custom attributes.
+ * @param  integer $term_id     Term ID.
+ * @param  string  $attributes  Custom attributes.
  */
 function ap_get_category_icon( $term_id, $attributes = '' ) {
 	$option = get_term_meta( $term_id, 'ap_category', true );
-	$color = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : '';
+	$color  = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : '';
 
 	$style = 'style="' . $color . $attributes . '"';
 
@@ -261,8 +276,8 @@ function ap_get_category_icon( $term_id, $attributes = '' ) {
 /**
  * Output category icon.
  *
- * @param  integer $term_id 	Term ID.
- * @param  string  $attributes 	Custom attributes.
+ * @param  integer $term_id     Term ID.
+ * @param  string  $attributes  Custom attributes.
  */
 function ap_category_icon( $term_id, $attributes = '' ) {
 	echo ap_get_category_icon( $term_id, $attributes ); // xss okay.
@@ -314,19 +329,19 @@ function ap_category_have_image( $term_id ) {
  */
 function ap_question_tags_html( $args = [] ) {
 
-	$defaults  = array(
-		'question_id'   => get_the_ID(),
-		'list'          => false,
-		'tag'           => 'span',
-		'class'         => 'question-tags',
-		'label'         => __( 'Tagged', 'anspress-question-answer' ),
-		'echo'          => false,
-		'show'          => 0,
+	$defaults = array(
+		'question_id' => get_the_ID(),
+		'list'        => false,
+		'tag'         => 'span',
+		'class'       => 'question-tags',
+		'label'       => __( 'Tagged', 'anspress-question-answer' ),
+		'echo'        => false,
+		'show'        => 0,
 	);
 
 	if ( ! is_array( $args ) ) {
 		$defaults['question_id '] = $args;
-		$args = $defaults;
+		$args                     = $defaults;
 	} else {
 		$args = wp_parse_args( $args, $defaults );
 	}
@@ -344,7 +359,7 @@ function ap_question_tags_html( $args = [] ) {
 		} else {
 			$o .= $args['label'];
 			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '" itemprop="keywords">';
-			$i = 1;
+			$i  = 1;
 			foreach ( $tags as $t ) {
 				$o .= '<a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . '</a> ';
 				$i++;
@@ -367,17 +382,17 @@ function ap_tag_details() {
 
 	$tag = get_term_by( 'slug', $var, 'question_tag' );
 	echo '<div class="clearfix">';
-	echo '<h3><a href="'.get_tag_link( $tag ).'">'. $tag->name .'</a></h3>';
+	echo '<h3><a href="' . get_tag_link( $tag ) . '">' . $tag->name . '</a></h3>';
 	echo '<div class="ap-taxo-meta">';
-	echo '<span class="count">'. $tag->count .' '.__( 'Questions', 'anspress-question-answer' ).'</span>';
-	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $tag->term_id, 'question_tag' ) . '" title="Subscribe to '. $tag->name .'" rel="nofollow"></a>';
+	echo '<span class="count">' . $tag->count . ' ' . __( 'Questions', 'anspress-question-answer' ) . '</span>';
+	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $tag->term_id, 'question_tag' ) . '" title="Subscribe to ' . $tag->name . '" rel="nofollow"></a>';
 	echo '</div>';
 	echo '</div>';
 
-	echo '<p class="desc clearfix">'. $tag->description .'</p>';
+	echo '<p class="desc clearfix">' . $tag->description . '</p>';
 }
 
-function ap_question_have_tags($question_id = false) {
+function ap_question_have_tags( $question_id = false ) {
 	if ( ! $question_id ) {
 		$question_id = get_the_ID(); }
 
@@ -391,21 +406,21 @@ function ap_question_have_tags($question_id = false) {
 
 function is_question_tag() {
 
-  if ( ap_get_tag_slug() == get_query_var( 'ap_page' ) ) {
-    return true;
-  }
+	if ( ap_get_tag_slug() == get_query_var( 'ap_page' ) ) {
+		return true;
+	}
 
-  return false;
+	return false;
 }
 
 
 function is_question_tags() {
 
-  if ( ap_get_tags_slug() == get_query_var( 'ap_page' ) ) {
-    return true;
-  }
+	if ( ap_get_tags_slug() == get_query_var( 'ap_page' ) ) {
+		return true;
+	}
 
-  return false;
+	return false;
 }
 
 /**
@@ -415,16 +430,16 @@ function is_question_tags() {
  */
 function ap_get_tag_filter( $search = false ) {
 	$args = array(
-		'hierarchical'      => true,
-		'hide_if_empty'     => true,
-		'number'            => 10,
+		'hierarchical'  => true,
+		'hide_if_empty' => true,
+		'number'        => 10,
 	);
 
 	if ( false !== $search ) {
 		$args['search'] = $search;
 	}
 
-	$terms = get_terms( 'question_tag', $args );
+	$terms    = get_terms( 'question_tag', $args );
 	$selected = ap_get_current_list_filters( 'qtag' );
 
 	if ( ! $terms ) {
@@ -434,7 +449,11 @@ function ap_get_tag_filter( $search = false ) {
 	$items = array();
 
 	foreach ( (array) $terms as $t ) {
-		$item = [ 'key' => 'qtag', 'value' => (string) $t->term_id, 'label' => $t->name ];
+		$item = [
+			'key'   => 'qtag',
+			'value' => (string) $t->term_id,
+			'label' => $t->name,
+		];
 		// Check if active.
 		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;

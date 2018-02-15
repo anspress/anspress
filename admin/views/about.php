@@ -113,7 +113,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 		<div class="ap-assets">
 			<span class="flaticon-cp">All colored icons used in this page were taken from flaticon.com</span>
 		</div>
-	<?php else: ?>
+	<?php else : ?>
 		<p class="about-description">AnsPress exists because of friendly folks like these.</p>
 
 		<h3 class="wp-people-group">AnsPress Team</h3>

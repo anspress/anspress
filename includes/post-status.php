@@ -19,21 +19,25 @@ class AnsPress_Post_Status {
 	 * Register post status for question and answer CPT
 	 */
 	public static function register_post_status() {
-		 register_post_status( 'moderate', array(
-			  'label'                     => __( 'Moderate', 'anspress-question-answer' ),
-			  'public'                    => true,
-			  'show_in_admin_all_list'    => false,
-			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>', 'anspress-question-answer' ),
-		 ) );
+		register_post_status(
+			'moderate', array(
+				'label'                     => __( 'Moderate', 'anspress-question-answer' ),
+				'public'                    => true,
+				'show_in_admin_all_list'    => false,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>', 'anspress-question-answer' ),
+			)
+		);
 
-		 register_post_status( 'private_post', array(
-			  'label'                     => __( 'Private', 'anspress-question-answer' ),
-			  'public'                    => true,
-			  'show_in_admin_all_list'    => false,
-			  'show_in_admin_status_list' => true,
-			  'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>', 'anspress-question-answer' ),
-		 ) );
+		register_post_status(
+			'private_post', array(
+				'label'                     => __( 'Private', 'anspress-question-answer' ),
+				'public'                    => true,
+				'show_in_admin_all_list'    => false,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>', 'anspress-question-answer' ),
+			)
+		);
 	}
 
 	/**
@@ -43,20 +47,22 @@ class AnsPress_Post_Status {
 	 */
 	public static function change_post_status() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
-		$status = ap_sanitize_unslash( 'status', 'request' );
+		$status  = ap_sanitize_unslash( 'status', 'request' );
 
 		// Check if user has permission else die.
 		if ( ! is_user_logged_in() || ! in_array( $status, [ 'publish', 'moderate', 'private_post', 'trash' ], true ) || ! ap_verify_nonce( 'change-status-' . $status . '-' . $post_id ) || ! ap_user_can_change_status( $post_id ) ) {
-			ap_ajax_json( array(
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'You are not allowed to change post status', 'anspress-question-answer' ) ],
-			));
+			ap_ajax_json(
+				array(
+					'success'  => false,
+					'snackbar' => [ 'message' => __( 'You are not allowed to change post status', 'anspress-question-answer' ) ],
+				)
+			);
 		}
 
-		$post = ap_get_post( $post_id );
-		$update_data = array();
+		$post                       = ap_get_post( $post_id );
+		$update_data                = array();
 		$update_data['post_status'] = $status;
-		$update_data['ID'] = $post->ID;
+		$update_data['ID']          = $post->ID;
 
 		wp_update_post( $update_data );
 
@@ -70,13 +76,15 @@ class AnsPress_Post_Status {
 		$activity_type = 'moderate' === $post->post_status ? 'approved_' . $post->post_type : 'changed_status';
 		ap_update_post_activity_meta( $post_id, $activity_type, get_current_user_id() );
 
-		ap_ajax_json( array(
-			'success'     => true,
-			'snackbar'    => [ 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ],
-			'action'      => [ 'active'  => true ],
-			'postmessage' => ap_get_post_status_message( $post->ID ),
-			'newStatus'   => $status,
-		));
+		ap_ajax_json(
+			array(
+				'success'     => true,
+				'snackbar'    => [ 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ],
+				'action'      => [ 'active' => true ],
+				'postmessage' => ap_get_post_status_message( $post->ID ),
+				'newStatus'   => $status,
+			)
+		);
 	}
 }
 
@@ -88,7 +96,7 @@ class AnsPress_Post_Status {
  * @since 4.0.0
  */
 function ap_get_post_status_message( $post_id = false ) {
-	$post = ap_get_post( $post_id );
+	$post      = ap_get_post( $post_id );
 	$post_type = 'question' === $post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
 
 	$ret = '';
@@ -109,7 +117,7 @@ function ap_get_post_status_message( $post_id = false ) {
 		$msg = '<div class="ap-notice status-' . $post->post_status . ( is_post_closed( $post_id ) ? ' closed' : '' ) . '">' . $ret . '</div>';
 	}
 
-	return apply_filters( 'ap_get_post_status_message',  $msg, $post_id );
+	return apply_filters( 'ap_get_post_status_message', $msg, $post_id );
 }
 
 /**

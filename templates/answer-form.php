@@ -8,10 +8,12 @@
  * @package AnsPress
  */
 
-$ajax_query = wp_json_encode( array(
-	'ap_ajax_action' => 'load_tinymce',
-	'question_id'    => get_question_id(),
-));
+$ajax_query = wp_json_encode(
+	array(
+		'ap_ajax_action' => 'load_tinymce',
+		'question_id'    => get_question_id(),
+	)
+);
 ?>
 
 <?php if ( ap_user_can_answer( get_question_id() ) ) : ?>
@@ -35,4 +37,4 @@ $ajax_query = wp_json_encode( array(
 	</div>
 <?php endif; ?>
 
-<?php ap_get_template_part('login-signup' ); ?>
+<?php ap_get_template_part( 'login-signup' ); ?>

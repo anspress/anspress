@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -37,12 +38,14 @@ class Textarea extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label' => __( 'AnsPress Textarea Field', 'anspress-question-answer' ),
-			'attr'  => array(
-				'rows' => 8,
-			),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label' => __( 'AnsPress Textarea Field', 'anspress-question-answer' ),
+				'attr'  => array(
+					'rows' => 8,
+				),
+			)
+		);
 
 		// Call parent prepare().
 		parent::prepare();

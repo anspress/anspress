@@ -150,39 +150,39 @@ class Email extends \AnsPress\Singleton {
 
 		$form = array(
 			'fields' => array(
-				'sep1' => array(
-					'html'    => '<h3>' . __( 'Admin Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select types of notification which will be sent to admin.', 'anspress-question-answer' ) . '</p></h3>',
+				'sep1'                       => array(
+					'html' => '<h3>' . __( 'Admin Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select types of notification which will be sent to admin.', 'anspress-question-answer' ) . '</p></h3>',
 				),
-				'email_admin_emails' => array(
-					'label'   => __( 'Admin email(s)', 'anspress-question-answer' ),
-					'desc'    => __( 'Email where all admin notification will be sent. It can have multiple emails separated by comma.', 'anspress-question-answer' ),
-					'value'   => $opt['email_admin_emails'],
+				'email_admin_emails'         => array(
+					'label' => __( 'Admin email(s)', 'anspress-question-answer' ),
+					'desc'  => __( 'Email where all admin notification will be sent. It can have multiple emails separated by comma.', 'anspress-question-answer' ),
+					'value' => $opt['email_admin_emails'],
 				),
-				'email_admin_new_question' => array(
+				'email_admin_new_question'   => array(
 					'label' => __( 'New question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new question notification to admin.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_admin_new_question'],
 				),
-				'email_admin_new_answer' => array(
+				'email_admin_new_answer'     => array(
 					'label' => __( 'New answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new answer notification to admin.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_admin_new_answer'],
 				),
-				'email_admin_new_comment' => array(
+				'email_admin_new_comment'    => array(
 					'label' => __( 'New comment', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new comment notification to admin.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_admin_new_comment'],
 				),
-				'email_admin_edit_question' => array(
+				'email_admin_edit_question'  => array(
 					'label' => __( 'Edit question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send notification to admin when question is edited.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_admin_edit_question'],
 				),
-				'email_admin_edit_answer' => array(
+				'email_admin_edit_answer'    => array(
 					'label' => __( 'Edit answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send email to admin when answer is edited.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -194,46 +194,46 @@ class Email extends \AnsPress\Singleton {
 					'type'  => 'checkbox',
 					'value' => $opt['email_admin_trash_question'],
 				),
-				'email_admin_trash_answer' => array(
+				'email_admin_trash_answer'   => array(
 					'label' => __( 'Delete answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send email to admin when answer is trashed.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_admin_trash_answer'],
 				),
-				'sep2' => array(
-					'html'    => '<h3>' . __( 'User Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select the types of notification which will be sent to user.', 'anspress-question-answer' ) . '</p></h3>',
+				'sep2'                       => array(
+					'html' => '<h3>' . __( 'User Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select the types of notification which will be sent to user.', 'anspress-question-answer' ) . '</p></h3>',
 				),
-				'email_user_new_question' => array(
+				'email_user_new_question'    => array(
 					'label' => __( 'New question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new question notification to user?', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_user_new_question'],
 				),
-				'email_user_new_answer' => array(
+				'email_user_new_answer'      => array(
 					'label' => __( 'New answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new answer notification to user?', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_user_new_answer'],
 				),
-				'email_user_new_comment' => array(
+				'email_user_new_comment'     => array(
 					'label' => __( 'New comment', 'anspress-question-answer' ),
 					'desc'  => __( 'Send new comment notification to user?', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_user_new_comment'],
 				),
-				'email_user_edit_question' => array(
+				'email_user_edit_question'   => array(
 					'label' => __( 'Edit question', 'anspress-question-answer' ),
 					'desc'  => __( 'Send edit question notification to user?', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_user_edit_question'],
 				),
-				'email_user_edit_answer' => array(
+				'email_user_edit_answer'     => array(
 					'label' => __( 'Edit answer', 'anspress-question-answer' ),
 					'desc'  => __( 'Send edit answer notification to user?', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['email_user_edit_answer'],
 				),
-				'email_user_select_answer' => array(
+				'email_user_select_answer'   => array(
 					'label' => __( 'Answer selected', 'anspress-question-answer' ),
 					'desc'  => __( 'Send notification to user when their answer get selected?', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -257,12 +257,12 @@ class Email extends \AnsPress\Singleton {
 				'subject' => array(
 					'label' => __( 'Email subject', 'anspress-question-answer' ),
 				),
-				'body' => array(
+				'body'    => array(
 					'label' => __( 'Email body', 'anspress-question-answer' ),
 					'type'  => 'editor',
 				),
-				'tags' => array(
-					'html'  => '<label class="ap-form-label" for="form_email_template-allowed_tags">' . __( 'Allowed tags', 'anspress-question-answer' ) . '</label><div class="ap-email-allowed-tags">' . apply_filters( 'ap_email_form_allowed_tags', '' ) . '</div>',
+				'tags'    => array(
+					'html' => '<label class="ap-form-label" for="form_email_template-allowed_tags">' . __( 'Allowed tags', 'anspress-question-answer' ) . '</label><div class="ap-email-allowed-tags">' . apply_filters( 'ap_email_form_allowed_tags', '' ) . '</div>',
 				),
 			),
 		);
@@ -313,13 +313,13 @@ class Email extends \AnsPress\Singleton {
 			return;
 		}
 
-		$question = ap_get_post( $question_id );
+		$question     = ap_get_post( $question_id );
 		$args['tags'] = array(
-			'{asker}'             => ap_user_display_name( $question->post_author ),
-			'{question_title}'    => $question->post_title,
-			'{question_link}'     => wp_get_shortlink( $question->ID ),
-			'{question_content}'  => apply_filters( 'the_content', $question->post_content ),
-			'{question_excerpt}'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
+			'{asker}'            => ap_user_display_name( $question->post_author ),
+			'{question_title}'   => $question->post_title,
+			'{question_link}'    => wp_get_shortlink( $question->ID ),
+			'{question_content}' => apply_filters( 'the_content', $question->post_content ),
+			'{question_excerpt}' => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
 		);
 
 		$email = new EmailHelper( 'new_question', $args );
@@ -346,7 +346,12 @@ class Email extends \AnsPress\Singleton {
 		$answer = ap_get_post( $answer_id );
 
 		if ( ap_opt( 'email_user_new_answer' ) && 'private_post' !== $answer->post_status && 'moderate' !== $answer->post_status ) {
-			$subscribers = ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => $answer->post_parent ] );
+			$subscribers = ap_get_subscribers(
+				[
+					'subs_event'  => 'question',
+					'subs_ref_id' => $answer->post_parent,
+				]
+			);
 
 			foreach ( (array) $subscribers as $s ) {
 				if ( ap_user_can_view_post( $answer ) && $s->user_email !== $current_user->user_email ) {
@@ -356,11 +361,11 @@ class Email extends \AnsPress\Singleton {
 		}
 
 		$args['tags'] = array(
-			'{answerer}'        => ap_user_display_name( $answer->post_author ),
-			'{question_title}'  => get_the_title( $answer->post_parent ),
-			'{answer_link}'     => wp_get_shortlink( $answer->ID ),
-			'{answer_content}'  => $answer->post_content,
-			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
+			'{answerer}'       => ap_user_display_name( $answer->post_author ),
+			'{question_title}' => get_the_title( $answer->post_parent ),
+			'{answer_link}'    => wp_get_shortlink( $answer->ID ),
+			'{answer_content}' => $answer->post_content,
+			'{answer_excerpt}' => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
 		);
 
 		$email = new EmailHelper( 'new_answer', $args );
@@ -380,16 +385,16 @@ class Email extends \AnsPress\Singleton {
 
 		$args = array(
 			'users' => [
-				get_the_author_meta( 'email', $_post->post_author )
+				get_the_author_meta( 'email', $_post->post_author ),
 			],
 		);
 
 		$args['tags'] = array(
-			'{selector}'        => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'  => $_post->post_title,
-			'{answer_link}'     => wp_get_shortlink( $_post->ID ),
-			'{answer_content}'  => $_post->post_content,
-			'{answer_excerpt}'  => ap_truncate_chars( strip_tags( $_post->post_content ), 100 ),
+			'{selector}'       => ap_user_display_name( get_current_user_id() ),
+			'{question_title}' => $_post->post_title,
+			'{answer_link}'    => wp_get_shortlink( $_post->ID ),
+			'{answer_content}' => $_post->post_content,
+			'{answer_excerpt}' => ap_truncate_chars( strip_tags( $_post->post_content ), 100 ),
 		);
 
 		$email = new EmailHelper( 'select_answer', $args );
@@ -432,10 +437,10 @@ class Email extends \AnsPress\Singleton {
 		}
 
 		$args['tags'] = array(
-			'{commenter}'         => ap_user_display_name( $comment->user_id ),
-			'{question_title}'    => $post->post_title,
-			'{comment_link}'      => get_comment_link( $comment ),
-			'{comment_content}'   => $comment->comment_content,
+			'{commenter}'       => ap_user_display_name( $comment->user_id ),
+			'{question_title}'  => $post->post_title,
+			'{comment_link}'    => get_comment_link( $comment ),
+			'{comment_content}' => $comment->comment_content,
 		);
 
 		$email = new EmailHelper( 'new_comment', $args );
@@ -463,11 +468,16 @@ class Email extends \AnsPress\Singleton {
 		$email = new EmailHelper( 'edit_question', $args );
 
 		$current_user = wp_get_current_user();
-		$subscribers = ap_get_subscribers( [ 'subs_event' => 'question', $question->ID ] );
+		$subscribers  = ap_get_subscribers(
+			[
+				'subs_event' => 'question',
+				$question->ID,
+			]
+		);
 
 		// Exclude current author.
 		if ( ! empty( $question->post_author ) ) {
-			$post_author  = get_user_by( 'id', $question->post_author );
+			$post_author = get_user_by( 'id', $question->post_author );
 
 			if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
 				$post_author->data->user_email !== $current_user->user_email ) {
@@ -482,14 +492,16 @@ class Email extends \AnsPress\Singleton {
 			}
 		}
 
-		$email->add_template_tags( array(
-			'asker'             => ap_user_display_name( $question->post_author ),
-			'editor'            => ap_user_display_name( get_current_user_id() ),
-			'question_title'    => $question->post_title,
-			'question_link'     => get_permalink( $question->ID ),
-			'question_content'  => $question->post_content,
-			'question_excerpt'  => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
-		));
+		$email->add_template_tags(
+			array(
+				'asker'            => ap_user_display_name( $question->post_author ),
+				'editor'           => ap_user_display_name( get_current_user_id() ),
+				'question_title'   => $question->post_title,
+				'question_link'    => get_permalink( $question->ID ),
+				'question_content' => $question->post_content,
+				'question_excerpt' => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
+			)
+		);
 
 		$email->send_emails();
 	}
@@ -514,15 +526,20 @@ class Email extends \AnsPress\Singleton {
 			$args['users'] = $admin_emails;
 		}
 
-		$email         = new EmailHelper( 'edit_answer', $args );
+		$email = new EmailHelper( 'edit_answer', $args );
 
 		$a_subscribers = (array) ap_get_subscribers( [ 'subs_events' => 'answer_' . $answer->post_parent ] );
-		$q_subscribers = (array) ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => $answer->post_parent ] );
+		$q_subscribers = (array) ap_get_subscribers(
+			[
+				'subs_event'  => 'question',
+				'subs_ref_id' => $answer->post_parent,
+			]
+		);
 		$subscribers   = array_merge( $a_subscribers, $q_subscribers );
 
 		// Exclude current post author email.
 		if ( ! empty( $answer->post_author ) ) {
-			$post_author   = get_user_by( 'id', $answer->post_author );
+			$post_author = get_user_by( 'id', $answer->post_author );
 
 			if ( $post_author && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
 				$current_user->user_email !== $post_author->data->user_email ) {
@@ -537,13 +554,15 @@ class Email extends \AnsPress\Singleton {
 			}
 		}
 
-		$email->add_template_tags( array(
-			'answerer'          => ap_user_display_name( $answer->post_author ),
-			'editor'            => ap_user_display_name( get_current_user_id() ),
-			'question_title'    => $answer->post_title,
-			'answer_link'       => get_permalink( $answer->ID ),
-			'answer_content'    => $answer->post_content,
-		) );
+		$email->add_template_tags(
+			array(
+				'answerer'       => ap_user_display_name( $answer->post_author ),
+				'editor'         => ap_user_display_name( get_current_user_id() ),
+				'question_title' => $answer->post_title,
+				'answer_link'    => get_permalink( $answer->ID ),
+				'answer_content' => $answer->post_content,
+			)
+		);
 
 		$email->send_emails();
 	}
@@ -559,7 +578,7 @@ class Email extends \AnsPress\Singleton {
 			return;
 		}
 
-		$args = [];
+		$args         = [];
 		$current_user = wp_get_current_user();
 		$admin_emails = $this->get_admin_emails( 'email_admin_trash_question' );
 		if ( ! empty( $admin_emails ) ) {
@@ -567,9 +586,9 @@ class Email extends \AnsPress\Singleton {
 		}
 
 		$args['tags'] = array(
-			'{user}'              => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'    => $_post->post_title,
-			'{question_link}'     => wp_get_shortlink( $_post->ID ),
+			'{user}'           => ap_user_display_name( get_current_user_id() ),
+			'{question_title}' => $_post->post_title,
+			'{question_link}'  => wp_get_shortlink( $_post->ID ),
 		);
 
 		$email = new EmailHelper( 'trash_question', $args );
@@ -587,7 +606,7 @@ class Email extends \AnsPress\Singleton {
 			return;
 		}
 
-		$args = [];
+		$args         = [];
 		$current_user = wp_get_current_user();
 		$admin_emails = $this->get_admin_emails( 'email_admin_trash_question' );
 		if ( ! empty( $admin_emails ) ) {
@@ -595,9 +614,9 @@ class Email extends \AnsPress\Singleton {
 		}
 
 		$args['tags'] = array(
-			'{user}'              => ap_user_display_name( get_current_user_id() ),
-			'{question_title}'    => $_post->post_title,
-			'{question_link}'     => wp_get_shortlink( $_post->post_parent ),
+			'{user}'           => ap_user_display_name( get_current_user_id() ),
+			'{question_title}' => $_post->post_title,
+			'{question_link}'  => wp_get_shortlink( $_post->post_parent ),
 		);
 
 		$email = new EmailHelper( 'trash_question', $args );
@@ -627,29 +646,31 @@ class Email extends \AnsPress\Singleton {
 	 * @since 4.1.0
 	 */
 	public function save_email_template_form() {
-		$editing = false;
+		$editing       = false;
 		$template_slug = ap_sanitize_unslash( 'template', 'r' );
-		$template_id = (int) ap_opt( 'email_template_' . $template_slug );
+		$template_id   = (int) ap_opt( 'email_template_' . $template_slug );
 
-		$form = anspress()->get_form( 'email_template' );
+		$form   = anspress()->get_form( 'email_template' );
 		$values = $form->get_values();
 
 		// Check nonce and is valid form.
 		if ( ! $form->is_submitted() || ! current_user_can( 'manage_options' ) ) {
-			ap_ajax_json([
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
-			] );
+			ap_ajax_json(
+				[
+					'success'  => false,
+					'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
+				]
+			);
 		}
 
 		$post_args = array(
-			'post_title'		   => $values['subject']['value'],
-			'post_content' 		 => $values['body']['value'],
+			'post_title'   => $values['subject']['value'],
+			'post_content' => $values['body']['value'],
 		);
 
 		$_post = get_post( $template_id );
 		if ( $_post ) {
-			$editing = true;
+			$editing         = true;
 			$post_args['ID'] = $_post->ID;
 			// Check if valid post type and user can edit.
 			if ( $_post && 'anspress_email' !== $_post->post_type ) {
@@ -661,53 +682,61 @@ class Email extends \AnsPress\Singleton {
 		$post_args['post_status'] = 'publish';
 
 		if ( $form->have_errors() ) {
-			ap_ajax_json([
-				'success'       => false,
-				'snackbar'      => [ 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ],
-				'form_errors'   => $form->errors,
-				'fields_errors' => $form->get_fields_errors(),
-			] );
+			ap_ajax_json(
+				[
+					'success'       => false,
+					'snackbar'      => [ 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ],
+					'form_errors'   => $form->errors,
+					'fields_errors' => $form->get_fields_errors(),
+				]
+			);
 		}
 
 		if ( ! $editing ) {
 			$post_args['post_type'] = 'anspress_email';
-			$post_id = wp_insert_post( $post_args, true );
+			$post_id                = wp_insert_post( $post_args, true );
 		} else {
 			$post_id = wp_update_post( $post_args, true );
 		}
 
 		// If error return and send error message.
 		if ( is_wp_error( $post_id ) ) {
-			ap_ajax_json([
-				'success'       => false,
-				'snackbar'      => array(
-					'message' => sprintf(
-						// Translators: placeholder contain error message.
-						__( 'Unable to save template. Error: %s', 'anspress-question-answer' ),
-						$post_id->get_error_message()
+			ap_ajax_json(
+				[
+					'success'  => false,
+					'snackbar' => array(
+						'message' => sprintf(
+							// Translators: placeholder contain error message.
+							__( 'Unable to save template. Error: %s', 'anspress-question-answer' ),
+							$post_id->get_error_message()
+						),
 					),
-				),
-			] );
+				]
+			);
 		}
 
 		ap_opt( 'email_template_' . $template_slug, $post_id );
 
-		$form->after_save( false, array(
-			'post_id' => $post_id,
-		) );
+		$form->after_save(
+			false, array(
+				'post_id' => $post_id,
+			)
+		);
 
 		// Clear temporary images.
 		if ( $post_id ) {
 			ap_clear_unattached_media();
 		}
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'snackbar' => [
-				'message' => __( 'Post updated successfully', 'anspress-question-answer' ),
-			],
-			'post_id'  => $post_id,
-		) );
+		ap_ajax_json(
+			array(
+				'success'  => true,
+				'snackbar' => [
+					'message' => __( 'Post updated successfully', 'anspress-question-answer' ),
+				],
+				'post_id'  => $post_id,
+			)
+		);
 	}
 
 	/**
@@ -737,30 +766,45 @@ class Email extends \AnsPress\Singleton {
 	 * @since 4.1.0
 	 */
 	public function template_form( $active ) {
-		$form = anspress()->get_form( 'email_template' );
+		$form     = anspress()->get_form( 'email_template' );
 		$template = get_post( ap_opt( 'email_template_' . $active ) );
 
 		if ( $template ) {
-			$form->set_values( array(
-				'subject' => $template->post_title,
-				'body'    => $template->post_content,
-			) );
+			$form->set_values(
+				array(
+					'subject' => $template->post_title,
+					'body'    => $template->post_content,
+				)
+			);
 		} else {
 			$default_template = $this->get_default_template( $active );
-			$form->set_values( array(
-				'subject' => $default_template['subject'],
-				'body'    => $default_template['body'],
-			) );
+			$form->set_values(
+				array(
+					'subject' => $default_template['subject'],
+					'body'    => $default_template['body'],
+				)
+			);
 		}
 
-		$form->generate(array(
-			'ajax_submit' => true,
-			'hidden_fields' => array(
-				[ 'name' => 'action', 'value' => 'ap_ajax' ],
-				[ 'name' => 'ap_ajax_action', 'value' => 'form_email_template' ],
-				[ 'name' => 'template', 'value' => $active ],
-			),
-		));
+		$form->generate(
+			array(
+				'ajax_submit'   => true,
+				'hidden_fields' => array(
+					[
+						'name'  => 'action',
+						'value' => 'ap_ajax',
+					],
+					[
+						'name'  => 'ap_ajax_action',
+						'value' => 'form_email_template',
+					],
+					[
+						'name'  => 'template',
+						'value' => $active,
+					],
+				),
+			)
+		);
 	}
 
 	/**
@@ -793,17 +837,17 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_new_question( $template ) {
 		$template['subject'] = __( '{asker} have posted a new question', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'A new question is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{asker}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{question_content}';
-		$body .= '</div>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'A new question is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{asker}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body               .= '<div class="ap-email-content">';
+		$body               .= '{question_content}';
+		$body               .= '</div>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -817,17 +861,17 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_new_answer( $template ) {
 		$template['subject'] = __( 'New answer posted by {answerer}', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'A new answer is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{answerer}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{answer_excerpt} ';
-		$body .= '</div>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'A new answer is posted by', 'anspress-question-answer' ) . ' <b class="user-name">{answerer}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body               .= '<div class="ap-email-content">';
+		$body               .= '{answer_excerpt} ';
+		$body               .= '</div>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -841,17 +885,17 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_select_answer( $template ) {
 		$template['subject'] = __( 'Your answer is selected as best!', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'Your answer is selected as best by ', 'anspress-question-answer' ) . ' <b class="user-name">{selector}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{answer_content}';
-		$body .= '</div>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'Your answer is selected as best by ', 'anspress-question-answer' ) . ' <b class="user-name">{selector}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body               .= '<div class="ap-email-content">';
+		$body               .= '{answer_content}';
+		$body               .= '</div>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -865,17 +909,17 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_new_comment( $template ) {
 		$template['subject'] = __( 'New comment by {commenter}', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'A new comment posted by', 'anspress-question-answer' ) . ' <b class="user-name">{commenter}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{comment_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{comment_content}';
-		$body .= '</div>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'A new comment posted by', 'anspress-question-answer' ) . ' <b class="user-name">{commenter}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{comment_link}">{question_title}</a></h1>';
+		$body               .= '<div class="ap-email-content">';
+		$body               .= '{comment_content}';
+		$body               .= '</div>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -889,17 +933,17 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_edit_question( $template ) {
 		$template['subject'] = __( 'A question is edited by {editor}', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'A question is edited by', 'anspress-question-answer' ) . ' <b class="user-name">{editor}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{question_content}';
-		$body .= '</div>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'A question is edited by', 'anspress-question-answer' ) . ' <b class="user-name">{editor}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body               .= '<div class="ap-email-content">';
+		$body               .= '{question_content}';
+		$body               .= '</div>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -913,17 +957,17 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_edit_answer( $template ) {
 		$template['subject'] = __( 'A answer is edited by {editor}', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'A answer is edited by', 'anspress-question-answer' ) . ' <b class="user-name">{editor}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
-		$body .= '<div class="ap-email-content">';
-		$body .= '{answer_content}';
-		$body .= '</div>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'A answer is edited by', 'anspress-question-answer' ) . ' <b class="user-name">{editor}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body               .= '<div class="ap-email-content">';
+		$body               .= '{answer_content}';
+		$body               .= '</div>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -937,14 +981,14 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_trash_question( $template ) {
 		$template['subject'] = __( 'A question is trashed by {user}', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'A question is trashed by', 'anspress-question-answer' ) . ' <b class="user-name">{user}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'A question is trashed by', 'anspress-question-answer' ) . ' <b class="user-name">{user}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -958,14 +1002,14 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function template_trash_answer( $template ) {
 		$template['subject'] = __( 'An answer is trashed by {user}', 'anspress-question-answer' );
-		$body = '';
-		$body .= '<div class="ap-email-event">';
-		$body .= __( 'An answer is trashed by', 'anspress-question-answer' ) . ' <b class="user-name">{user}</b>';
-		$body .= '</div>';
-		$body .= '<div class="ap-email-body">';
-		$body .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
-		$body .= '</div>';
-		$template['body'] = $body;
+		$body                = '';
+		$body               .= '<div class="ap-email-event">';
+		$body               .= __( 'An answer is trashed by', 'anspress-question-answer' ) . ' <b class="user-name">{user}</b>';
+		$body               .= '</div>';
+		$body               .= '<div class="ap-email-body">';
+		$body               .= '<h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>';
+		$body               .= '</div>';
+		$template['body']    = $body;
 
 		return $template;
 	}
@@ -974,26 +1018,43 @@ class Email extends \AnsPress\Singleton {
 		$active = ap_isset_post_value( 'template', 'new_question' );
 
 		$tags = array(
-			'site_name', 'site_url', 'site_description',
+			'site_name',
+			'site_url',
+			'site_description',
 		);
 
 		$type_tags = [];
 
 		if ( in_array( $active, [ 'new_question', 'edit_question' ] ) ) {
 			$type_tags = array(
-				'asker', 'question_title', 'question_link', 'question_content', 'question_excerpt',
+				'asker',
+				'question_title',
+				'question_link',
+				'question_content',
+				'question_excerpt',
 			);
 		} elseif ( in_array( $active, [ 'new_answer', 'edit_answer' ] ) ) {
 			$type_tags = array(
-				'answerer', 'question_title', 'answer_link', 'answer_content', 'answer_excerpt',
+				'answerer',
+				'question_title',
+				'answer_link',
+				'answer_content',
+				'answer_excerpt',
 			);
 		} elseif ( 'select_answer' === $active ) {
 			$type_tags = array(
-				'selector', 'question_title', 'answer_link', 'answer_content', 'answer_excerpt',
+				'selector',
+				'question_title',
+				'answer_link',
+				'answer_content',
+				'answer_excerpt',
 			);
 		} elseif ( 'new_comment' === $active ) {
 			$type_tags = array(
-				'commenter', 'question_title', 'comment_link', 'comment_content',
+				'commenter',
+				'question_title',
+				'comment_link',
+				'comment_content',
 			);
 		}
 

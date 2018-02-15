@@ -15,24 +15,26 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
-if ( ! function_exists('ap_get_questions' ) ) {
+if ( ! function_exists( 'ap_get_questions' ) ) {
 	function ap_get_questions( $args = [] ) {
 
 		if ( is_front_page() ) {
-			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1;
+			$paged = ( isset( $_GET['ap_paged'] ) ) ? (int) $_GET['ap_paged'] : 1;
 		} else {
-			$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
+			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 		}
 
 		if ( ! isset( $args['post_parent'] ) ) {
 			$args['post_parent'] = get_query_var( 'parent' ) ? get_query_var( 'parent' ) : false;
 		}
 
-		$args = wp_parse_args( $args, array(
-			'showposts' => ap_opt( 'question_per_page' ),
-			'paged'     => $paged,
-			'ap_query'  => 'featured_post',
-		));
+		$args = wp_parse_args(
+			$args, array(
+				'showposts' => ap_opt( 'question_per_page' ),
+				'paged'     => $paged,
+				'ap_query'  => 'featured_post',
+			)
+		);
 
 		return new Question_Query( $args );
 	}
@@ -47,7 +49,10 @@ if ( ! function_exists('ap_get_questions' ) ) {
  * @since 2.1
  */
 function ap_get_question( $question_id ) {
-	$args = array( 'p' => $question_id, 'ap_query' => 'single_question' );
+	$args = array(
+		'p'        => $question_id,
+		'ap_query' => 'single_question',
+	);
 
 	if ( ap_user_can_view_future_post( $question_id ) ) {
 		$args['post_status'][] = 'future';

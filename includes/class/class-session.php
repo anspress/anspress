@@ -68,7 +68,7 @@ class Session {
 	 */
 	public static function init() {
 		// Create an object.
-		null === self::$instance && self::$instance = new self;
+		null === self::$instance && self::$instance = new self();
 		return self::$instance; // Return the object.
 	}
 
@@ -87,7 +87,7 @@ class Session {
 	/**
 	 * Set the session cookie.
 	 */
-	protected function set_cookie()	{
+	protected function set_cookie() {
 		if ( ! headers_sent() ) {
 			@setcookie( $this->name, $this->id, time() + $this->expires, $this->cookie_path, $this->cookie_domain );
 		}
@@ -220,8 +220,8 @@ class Session {
 	 * @since 4.1.5
 	 */
 	public function post_in_session( $_post ) {
-		$_post = ap_get_post( $_post );
-		$session_type = 'answer' === $_post->post_type ? 'answers' : 'questions';
+		$_post         = ap_get_post( $_post );
+		$session_type  = 'answer' === $_post->post_type ? 'answers' : 'questions';
 		$session_posts = anspress()->session->get( $session_type );
 
 		if ( ! empty( $session_posts ) && ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {

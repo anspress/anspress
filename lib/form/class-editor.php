@@ -39,15 +39,17 @@ class Editor extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label' => __( 'AnsPress Editor Field', 'anspress-question-answer' ),
-			'editor_args' => array(
-				'quicktags' => false,
-			),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label'       => __( 'AnsPress Editor Field', 'anspress-question-answer' ),
+				'editor_args' => array(
+					'quicktags' => false,
+				),
+			)
+		);
 
 		$this->args['fields'] = array(
-			'images'          => array(
+			'images' => array(
 				'label'          => sprintf(
 					// Translators: %s contain label of editor field.
 					__( '%s images', 'anspress-question-answer' ),
@@ -81,21 +83,21 @@ class Editor extends Field {
 		$args = $this->get( 'editor_args', [] );
 
 		$settings = array(
-			'textarea_rows'     => 10,
-			'tinymce'           => array(
+			'textarea_rows' => 10,
+			'tinymce'       => array(
 				'content_css'      => ap_get_theme_url( 'css/editor.css' ),
 				'wp_autoresize_on' => true,
 				'statusbar'        => false,
 				'codesample'       => true,
 				'anspress'         => true,
-				'toolbar1' => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apmedia,apcode',
-				'toolbar2' => '',
-				'toolbar3' => '',
-				'toolbar4' => '',
+				'toolbar1'         => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apmedia,apcode',
+				'toolbar2'         => '',
+				'toolbar3'         => '',
+				'toolbar4'         => '',
 			),
-			'quicktags'         => false,
-			'media_buttons'     => false,
-			'textarea_name'     => $this->field_name,
+			'quicktags'     => false,
+			'media_buttons' => false,
+			'textarea_name' => $this->field_name,
 		);
 
 		if ( true === $args['quicktags'] ) {
@@ -195,7 +197,7 @@ class Editor extends Field {
 		if ( $uploaded ) {
 			foreach ( $uploaded as $attach ) {
 				$filename = basename( $attach->guid );
-				$re = '/<img.+?src=[\"\']((?:.*' . preg_quote( $filename ) . '\b).*)[\"\'].*?>/';
+				$re       = '/<img.+?src=[\"\']((?:.*' . preg_quote( $filename ) . '\b).*)[\"\'].*?>/';
 				preg_match( $re, $this->value(), $matches );
 
 				// Delete attachment if user can.

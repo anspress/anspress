@@ -19,18 +19,19 @@ class AnsPress_Question_Shortcode {
 	public static function get_instance() {
 
 		// create an object
-		null === self::$instance && self::$instance = new self;
+		null === self::$instance && self::$instance = new self();
 
 		return self::$instance; // return the object
 	}
 
 	/**
 	 * Control the output of [question] shortcode
+	 *
 	 * @param  string $content
 	 * @return string
 	 * @since 2.0.0-beta
 	 */
-	public function anspress_question_sc( $atts, $content='' ) {
+	public function anspress_question_sc( $atts, $content = '' ) {
 
 		ob_start();
 		echo '<div id="anspress" class="ap-eq">';
@@ -46,11 +47,13 @@ class AnsPress_Question_Shortcode {
 		if ( $questions->have_posts() ) {
 			/**
 			 * Set current question as global post
+			 *
 			 * @since 2.3.3
 			 */
 
-			while ( $questions->have_posts() ) : $questions->the_post();
-				include( ap_get_theme_location( 'shortcode/question.php' ) );
+			while ( $questions->have_posts() ) :
+				$questions->the_post();
+				include ap_get_theme_location( 'shortcode/question.php' );
 			endwhile;
 		}
 

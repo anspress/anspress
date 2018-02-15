@@ -25,7 +25,7 @@ class Reputation extends \AnsPress\Singleton {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var 	object
+	 * @var     object
 	 * @since 4.1.8
 	 */
 	protected static $instance = null;
@@ -36,10 +36,12 @@ class Reputation extends \AnsPress\Singleton {
 	protected function __construct() {
 		$this->register_default_events();
 
-		ap_add_default_options([
-			'user_page_title_reputations'  => __( 'Reputations', 'anspress-question-answer' ),
-			'user_page_slug_reputations'   => 'reputations',
-		]);
+		ap_add_default_options(
+			[
+				'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
+				'user_page_slug_reputations'  => 'reputations',
+			]
+		);
 
 		anspress()->add_action( 'ap_form_addon-reputation', $this, 'load_options', 20 );
 		anspress()->add_action( 'wp_ajax_ap_save_events', $this, 'ap_save_events' );
@@ -85,13 +87,13 @@ class Reputation extends \AnsPress\Singleton {
 					'desc'  => __( 'Custom title for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_title_reputations'],
 				),
-				'user_page_slug_reputations' => array(
+				'user_page_slug_reputations'  => array(
 					'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_slug_reputations'],
 				),
-				'sep1' => array(
-					'html' => '<p>' . __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ). ' <a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) . '" class="button">' . __( 'Reputation Points' ) . '</a></p>',
+				'sep1'                        => array(
+					'html' => '<p>' . __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) . '" class="button">' . __( 'Reputation Points' ) . '</a></p>',
 				),
 			),
 		);
@@ -103,91 +105,111 @@ class Reputation extends \AnsPress\Singleton {
 	 * Register default reputation events.
 	 */
 	public function register_default_events() {
-		ap_register_reputation_event( 'register', array(
-			'points'      => 10,
-			'label'       => __( 'Registration', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
-			'icon'        => 'apicon-question',
-			'activity'    => __( 'Registered', 'anspress-question-answer' ),
-			'parent' 			=> 'question',
-		) );
+		ap_register_reputation_event(
+			'register', array(
+				'points'      => 10,
+				'label'       => __( 'Registration', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
+				'icon'        => 'apicon-question',
+				'activity'    => __( 'Registered', 'anspress-question-answer' ),
+				'parent'      => 'question',
+			)
+		);
 
-		ap_register_reputation_event( 'ask', array(
-			'points'      => 2,
-			'label'       => __( 'Asking', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
-			'icon'        => 'apicon-question',
-			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
-			'parent' 			=> 'question',
-		) );
+		ap_register_reputation_event(
+			'ask', array(
+				'points'      => 2,
+				'label'       => __( 'Asking', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+				'icon'        => 'apicon-question',
+				'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+				'parent'      => 'question',
+			)
+		);
 
-		ap_register_reputation_event( 'answer', array(
-			'points'      => 5,
-			'label'       => __( 'Answering', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user answer a question', 'anspress-question-answer' ),
-			'icon'        => 'apicon-answer',
-			'activity'    => __( 'Posted an answer', 'anspress-question-answer' ),
-			'parent' 			=> 'answer',
-		) );
+		ap_register_reputation_event(
+			'answer', array(
+				'points'      => 5,
+				'label'       => __( 'Answering', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user answer a question', 'anspress-question-answer' ),
+				'icon'        => 'apicon-answer',
+				'activity'    => __( 'Posted an answer', 'anspress-question-answer' ),
+				'parent'      => 'answer',
+			)
+		);
 
-		ap_register_reputation_event( 'comment', array(
-			'points'      => 2,
-			'label'       => __( 'Commenting', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user comment on question or answer', 'anspress-question-answer' ),
-			'icon'        => 'apicon-comments',
-			'activity'    => __( 'Commented on a post', 'anspress-question-answer' ),
-			'parent' 			=> 'comment',
-		) );
+		ap_register_reputation_event(
+			'comment', array(
+				'points'      => 2,
+				'label'       => __( 'Commenting', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user comment on question or answer', 'anspress-question-answer' ),
+				'icon'        => 'apicon-comments',
+				'activity'    => __( 'Commented on a post', 'anspress-question-answer' ),
+				'parent'      => 'comment',
+			)
+		);
 
-		ap_register_reputation_event( 'select_answer', array(
-			'points'      => 2,
-			'label'       => __( 'Selecting an Answer', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user select an answer for thier question', 'anspress-question-answer' ),
-			'icon'        => 'apicon-check',
-			'activity'    => __( 'Selected an answer as best', 'anspress-question-answer' ),
-			'parent' 			=> 'question',
-		) );
+		ap_register_reputation_event(
+			'select_answer', array(
+				'points'      => 2,
+				'label'       => __( 'Selecting an Answer', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user select an answer for thier question', 'anspress-question-answer' ),
+				'icon'        => 'apicon-check',
+				'activity'    => __( 'Selected an answer as best', 'anspress-question-answer' ),
+				'parent'      => 'question',
+			)
+		);
 
-		ap_register_reputation_event( 'best_answer', array(
-			'points'      => 10,
-			'label'       => __( 'Answer selected as best', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user\'s answer selected as best', 'anspress-question-answer' ),
-			'icon'        => 'apicon-check',
-			'activity'    => __( 'Answer was selected as best', 'anspress-question-answer' ),
-			'parent' 			=> 'answer',
-		) );
+		ap_register_reputation_event(
+			'best_answer', array(
+				'points'      => 10,
+				'label'       => __( 'Answer selected as best', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user\'s answer selected as best', 'anspress-question-answer' ),
+				'icon'        => 'apicon-check',
+				'activity'    => __( 'Answer was selected as best', 'anspress-question-answer' ),
+				'parent'      => 'answer',
+			)
+		);
 
-		ap_register_reputation_event( 'received_vote_up', array(
-			'points'      => 10,
-			'label'       => __( 'Received up vote', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user receive an upvote', 'anspress-question-answer' ),
-			'icon'        => 'apicon-thumb-up',
-			'activity'    => __( 'Received an upvote', 'anspress-question-answer' ),
-		) );
+		ap_register_reputation_event(
+			'received_vote_up', array(
+				'points'      => 10,
+				'label'       => __( 'Received up vote', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user receive an upvote', 'anspress-question-answer' ),
+				'icon'        => 'apicon-thumb-up',
+				'activity'    => __( 'Received an upvote', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_reputation_event( 'received_vote_down', array(
-			'points'      => -2,
-			'label'       => __( 'Received down vote', 'anspress-question-answer' ),
-			'description' => __( 'Points awarded when user receive a down vote', 'anspress-question-answer' ),
-			'icon'        => 'apicon-thumb-down',
-			'activity'    => __( 'Received a down vote', 'anspress-question-answer' ),
-		) );
+		ap_register_reputation_event(
+			'received_vote_down', array(
+				'points'      => -2,
+				'label'       => __( 'Received down vote', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user receive a down vote', 'anspress-question-answer' ),
+				'icon'        => 'apicon-thumb-down',
+				'activity'    => __( 'Received a down vote', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_reputation_event( 'given_vote_up', array(
-			'points'      => 0,
-			'label'       => __( 'Gives an up vote', 'anspress-question-answer' ),
-			'description' => __( 'Points taken from user when they give a vote up', 'anspress-question-answer' ),
-			'icon'        => 'apicon-thumb-up',
-			'activity'    => __( 'Given an up vote', 'anspress-question-answer' ),
-		) );
+		ap_register_reputation_event(
+			'given_vote_up', array(
+				'points'      => 0,
+				'label'       => __( 'Gives an up vote', 'anspress-question-answer' ),
+				'description' => __( 'Points taken from user when they give a vote up', 'anspress-question-answer' ),
+				'icon'        => 'apicon-thumb-up',
+				'activity'    => __( 'Given an up vote', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_reputation_event( 'given_vote_down', array(
-			'points'      => 0,
-			'label'       => __( 'Gives down vote', 'anspress-question-answer' ),
-			'description' => __( 'Points taken from user when user give a down vote', 'anspress-question-answer' ),
-			'icon'        => 'apicon-thumb-down',
-			'activity'    => __( 'Given a down vote', 'anspress-question-answer' ),
-		) );
+		ap_register_reputation_event(
+			'given_vote_down', array(
+				'points'      => 0,
+				'label'       => __( 'Gives down vote', 'anspress-question-answer' ),
+				'description' => __( 'Points taken from user when user give a down vote', 'anspress-question-answer' ),
+				'icon'        => 'apicon-thumb-down',
+				'activity'    => __( 'Given a down vote', 'anspress-question-answer' ),
+			)
+		);
 	}
 
 	/**
@@ -201,7 +223,7 @@ class Reputation extends \AnsPress\Singleton {
 		}
 
 		$events_point = ap_isset_post_value( 'events', 'r' );
-		$points = [];
+		$points       = [];
 
 		foreach ( ap_get_reputation_events() as $slug => $event ) {
 			if ( isset( $events_point[ $slug ] ) ) {
@@ -380,10 +402,9 @@ class Reputation extends \AnsPress\Singleton {
 			if ( $args['html'] ) {
 				$reputation = ap_get_user_reputation_meta( $args['user_id'] );
 
-				if( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
+				if ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
 					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'qa/reputations" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
-				}
-				else {
+				} else {
 					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . '?tab=reputations" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 				}
 			}
@@ -440,23 +461,36 @@ class Reputation extends \AnsPress\Singleton {
 		check_admin_referer( 'load_more_reputation', '__nonce' );
 
 		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
-		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
+		$paged   = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
 
 		ob_start();
-		$reputations = new \AnsPress_Reputation_Query( [ 'user_id' => $user_id, 'paged' => $paged ] );
-		while ( $reputations->have() ) : $reputations->the_reputation();
+		$reputations = new \AnsPress_Reputation_Query(
+			[
+				'user_id' => $user_id,
+				'paged'   => $paged,
+			]
+		);
+		while ( $reputations->have() ) :
+			$reputations->the_reputation();
 			include ap_get_theme_location( 'addons/reputation/item.php' );
 		endwhile;
 		$html = ob_get_clean();
 
 		$paged = $reputations->total_pages > $paged ? $paged : 0;
 
-		ap_ajax_json( array(
-			'success' => true,
-			'args'    => [ 'ap_ajax_action' => 'load_more_reputation', '__nonce' => wp_create_nonce( 'load_more_reputation' ), 'current' => (int) $paged, 'user_id' => $user_id ],
-			'html'    => $html,
-			'element' => '.ap-reputations tbody',
-		) );
+		ap_ajax_json(
+			array(
+				'success' => true,
+				'args'    => [
+					'ap_ajax_action' => 'load_more_reputation',
+					'__nonce'        => wp_create_nonce( 'load_more_reputation' ),
+					'current'        => (int) $paged,
+					'user_id'        => $user_id,
+				],
+				'html'    => $html,
+				'element' => '.ap-reputations tbody',
+			)
+		);
 	}
 
 	/**
@@ -466,14 +500,17 @@ class Reputation extends \AnsPress\Singleton {
 	 * @return array
 	 */
 	public function ap_bp_nav( $nav ) {
-		$nav[] = [ 'name' => __( 'Reputations', 'anspress-question-answer' ), 'slug' => 'reputations' ];
+		$nav[] = [
+			'name' => __( 'Reputations', 'anspress-question-answer' ),
+			'slug' => 'reputations',
+		];
 		return $nav;
 	}
 
 	/**
 	 * Add BuddyPress reputation page callback.
 	 *
-	 * @param array $cb Callback function.
+	 * @param array  $cb Callback function.
 	 * @param string $template Template.
 	 * @param array
 	 */

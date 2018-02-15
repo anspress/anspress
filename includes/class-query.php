@@ -107,8 +107,20 @@ abstract class AnsPress_Query {
 	 *
 	 * @var array
 	 */
-	var $ids = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
-	var $pos = [ 'post' => [], 'comment' => [], 'question' => [], 'answer' => [], 'user' => [] ];
+	var $ids = [
+		'post'     => [],
+		'comment'  => [],
+		'question' => [],
+		'answer'   => [],
+		'user'     => [],
+	];
+	var $pos = [
+		'post'     => [],
+		'comment'  => [],
+		'question' => [],
+		'answer'   => [],
+		'user'     => [],
+	];
 
 	/**
 	 * Initialize the class.
@@ -116,15 +128,17 @@ abstract class AnsPress_Query {
 	 * @param array $args Arguments.
 	 */
 	public function __construct( $args = [] ) {
-		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
-		$this->offset = $this->per_page * ($this->paged - 1);
+		$this->paged  = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
+		$this->offset = $this->per_page * ( $this->paged - 1 );
 
-		$this->args = wp_parse_args( $args, array(
-			'user_id' => get_current_user_id(),
-			'number' 	=> $this->per_page,
-			'offset' 	=> $this->offset,
-			'order' 	=> 'DESC',
-		));
+		$this->args = wp_parse_args(
+			$args, array(
+				'user_id' => get_current_user_id(),
+				'number'  => $this->per_page,
+				'offset'  => $this->offset,
+				'order'   => 'DESC',
+			)
+		);
 
 		$this->per_page = $this->args['number'];
 		$this->query();
@@ -149,8 +163,8 @@ abstract class AnsPress_Query {
 	 * Fetch results from database.
 	 */
 	public function query() {
-		$this->total_pages 	= ceil( $this->total_count / $this->per_page );
-		$this->count = count( $this->objects );
+		$this->total_pages = ceil( $this->total_count / $this->per_page );
+		$this->count       = count( $this->objects );
 	}
 
 	/**
@@ -187,7 +201,7 @@ abstract class AnsPress_Query {
 	 *
 	 * @return bool
 	 */
-	public  function has() {
+	public function has() {
 		if ( $this->count ) {
 			return true;
 		}
@@ -210,8 +224,8 @@ abstract class AnsPress_Query {
 	 * Set up the current object inside the loop.
 	 */
 	public function the_object() {
-		$this->in_the_loop 		= true;
-		$this->object   			= $this->next();
+		$this->in_the_loop = true;
+		$this->object      = $this->next();
 
 		// Loop has just started.
 		if ( 0 === $this->current ) {

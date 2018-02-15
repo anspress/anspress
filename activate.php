@@ -56,7 +56,7 @@ class AP_Activate {
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
 			anspress();
-			self::$instance = new self;
+			self::$instance          = new self();
 			$GLOBALS['network_wide'] = $network_wide;
 		}
 
@@ -88,13 +88,15 @@ class AP_Activate {
 	 * Disable old AnsPress extensions.
 	 */
 	public function disable_ext() {
-		deactivate_plugins( [
-			'categories-for-anspress/categories-for-anspress.php',
-			'tags-for-anspress/tags-for-anspress.php',
-			'anspress-email/anspress-email.php',
-			'question-labels/question-labels.php',
-			'anspress-paid-membership/anspress-paid-membership.php',
-		] );
+		deactivate_plugins(
+			[
+				'categories-for-anspress/categories-for-anspress.php',
+				'tags-for-anspress/tags-for-anspress.php',
+				'anspress-email/anspress-email.php',
+				'question-labels/question-labels.php',
+				'anspress-paid-membership/anspress-paid-membership.php',
+			]
+		);
 	}
 
 	/**
@@ -103,7 +105,7 @@ class AP_Activate {
 	 * @since 4.1.5
 	 */
 	public function delete_options() {
-		$settings = get_option( 'anspress_opt' , [] );
+		$settings = get_option( 'anspress_opt', [] );
 		unset( $settings['user_page_title_questions'] );
 		unset( $settings['user_page_slug_questions'] );
 		unset( $settings['user_page_title_answers'] );
@@ -231,7 +233,7 @@ class AP_Activate {
 		global $wpdb;
 
 		// Delete old activity table if exists.
-		$existing_table = $wpdb->get_row("SHOW COLUMNS FROM `$wpdb->ap_activity` LIKE 'secondary_user'");
+		$existing_table = $wpdb->get_row( "SHOW COLUMNS FROM `$wpdb->ap_activity` LIKE 'secondary_user'" );
 		if ( ! empty( $existing_table ) && 'secondary_user' === $existing_table->Field ) {
 			$wpdb->query( "DROP TABLE IF EXISTS `$wpdb->ap_activity`" );
 		}
@@ -262,7 +264,7 @@ class AP_Activate {
 		$this->subscribers_table();
 		$this->activity_table();
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
 		if ( count( $this->tables ) > 0 ) {
 			foreach ( $this->tables as $table ) {
@@ -277,7 +279,7 @@ class AP_Activate {
 	public function activate() {
 
 		// add roles.
-		$ap_roles = new AP_Roles;
+		$ap_roles = new AP_Roles();
 		$ap_roles->add_roles();
 		$ap_roles->add_capabilities();
 
@@ -355,5 +357,3 @@ class AP_Activate {
 		}
 	}
 }
-
-

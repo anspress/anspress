@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once( 'license.php' );
+require_once 'license.php';
 
 /**
  * This class should ideally be used to work with the
@@ -86,7 +86,7 @@ class AnsPress_Admin {
 	 * Include files required in wp-admin
 	 */
 	public static function includes() {
-		require_once( 'functions.php' );
+		require_once 'functions.php';
 
 		new AP_license();
 	}
@@ -120,7 +120,7 @@ class AnsPress_Admin {
 			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
 		}
 
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js' , [ 'anspress-main' ], AP_VERSION, true );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js', [ 'anspress-main' ], AP_VERSION, true );
 
 		?>
 			<script type="text/javascript">
@@ -132,7 +132,7 @@ class AnsPress_Admin {
 		<?php
 
 		if ( 'post' === $page->base && 'question' === $page->post_type ) {
-			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/min/admin-app.min.js' , [], AP_VERSION, true );
+			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/min/admin-app.min.js', [], AP_VERSION, true );
 		}
 
 		wp_enqueue_script( 'postbox' );
@@ -151,15 +151,15 @@ class AnsPress_Admin {
 		$a_flagged = $flagged['answers'];
 
 		$question_count = wp_count_posts( 'question', 'readable' );
-		$answer_count = wp_count_posts( 'answer', 'readable' );
-		$types = array(
-			'question' 	=> ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged->total,
-			'answer' 	=> ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged->total,
-			'flagged' 	=> $q_flagged->total + $a_flagged->total,
+		$answer_count   = wp_count_posts( 'answer', 'readable' );
+		$types          = array(
+			'question' => ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged->total,
+			'answer'   => ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged->total,
+			'flagged'  => $q_flagged->total + $a_flagged->total,
 		);
 
 		$types['total'] = array_sum( $types );
-		$types_html = array();
+		$types_html     = array();
 
 		foreach ( (array) $types as $k => $count ) {
 			if ( $count > 0 ) {
@@ -183,7 +183,7 @@ class AnsPress_Admin {
 		global $submenu;
 
 		$counts = self::menu_counts();
-		$pos = self::get_free_menu_position( 42.9 );
+		$pos    = self::get_free_menu_position( 42.9 );
 
 		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
 
@@ -206,7 +206,7 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Add-ons', 'anspress-question-answer' ), __( 'Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_addons', array( __CLASS__, 'display_plugin_addons_page' ) );
 
-		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options' , 'https://anspress.io/themes/' );
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.io/themes/' );
 
 		add_submenu_page( 'anspress-hidden', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
 
@@ -218,10 +218,10 @@ class AnsPress_Admin {
 		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
 		if ( $current_screen->post_type == 'question' ) {
 			$submenu_file = 'edit.php?post_type=question';
-			$parent_file = 'anspress';
+			$parent_file  = 'anspress';
 		} elseif ( $current_screen->post_type == 'answer' ) {
 			$submenu_file = 'edit.php?post_type=answer';
-			$parent_file = 'anspress';
+			$parent_file  = 'anspress';
 		}
 
 		return $parent_file;
@@ -251,8 +251,8 @@ class AnsPress_Admin {
 	/**
 	 * Highlight the proper top level menu.
 	 *
-	 * @param  	string $parent_file	parent menu item.
-	 * @return 	string
+	 * @param   string $parent_file parent menu item.
+	 * @return  string
 	 */
 	public static function tax_menu_correction( $parent_file ) {
 		global $current_screen;
@@ -268,21 +268,21 @@ class AnsPress_Admin {
 	 * Render the settings page for this plugin.
 	 */
 	public static function display_plugin_options_page() {
-		include_once( 'views/options.php' );
+		include_once 'views/options.php';
 	}
 
 	/**
 	 * Load extensions page layout
 	 */
 	public static function display_plugin_addons_page() {
-		include_once( 'views/addons.php' );
+		include_once 'views/addons.php';
 	}
 
 	/**
 	 * Load about page layout
 	 */
 	public static function display_plugin_about_page() {
-		include_once( 'views/about.php' );
+		include_once 'views/about.php';
 	}
 
 	/**
@@ -291,7 +291,7 @@ class AnsPress_Admin {
 	 * @since 2.4
 	 */
 	public static function dashboard_page() {
-		include_once( 'views/dashboard.php' );
+		include_once 'views/dashboard.php';
 	}
 
 	/**
@@ -301,7 +301,7 @@ class AnsPress_Admin {
 	 * @since 2.0.0
 	 */
 	public static function display_select_question() {
-		include_once( 'views/select_question.php' );
+		include_once 'views/select_question.php';
 	}
 
 	/**
@@ -314,7 +314,7 @@ class AnsPress_Admin {
 			$links,
 			array(
 				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'anspress-question-answer' ) . '</a>',
-				'about' => '<a href="' . admin_url( 'admin.php?page=anspress_about' ) . '">' . __( 'About', 'anspress-question-answer' ) . '</a>',
+				'about'    => '<a href="' . admin_url( 'admin.php?page=anspress_about' ) . '">' . __( 'About', 'anspress-question-answer' ) . '</a>',
 			)
 		);
 	}
@@ -327,8 +327,8 @@ class AnsPress_Admin {
 
 		// Flush_rules if option updated.
 		if ( isset( $_GET['page'] ) && ('anspress_options' === $_GET['page']) && isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) { // @codingStandardsIgnoreLine.
-			$options = ap_opt();
-			$page = get_page( ap_opt( 'base_page' ) );
+			$options                   = ap_opt();
+			$page                      = get_page( ap_opt( 'base_page' ) );
 			$options['base_page_slug'] = $page->post_name;
 			update_option( 'anspress_opt', $options );
 			ap_opt( 'ap_flush', 'true' );
@@ -353,7 +353,7 @@ class AnsPress_Admin {
 	 * Question meta box.
 	 */
 	public static function question_meta_box_class() {
-		require_once( 'meta-box.php' );
+		require_once 'meta-box.php';
 		new AP_Question_Meta_Box();
 	}
 
@@ -416,8 +416,8 @@ class AnsPress_Admin {
 
 		if ( 'page' === $_post->post_type ) {
 			$pages_slug = [ 'base_page', 'ask_page' ];
-			$page_ids = [];
-			$opt = ap_opt();
+			$page_ids   = [];
+			$opt        = ap_opt();
 
 			foreach ( $pages_slug as $slug ) {
 				$page_ids[] = $opt[ $slug ];
@@ -485,7 +485,7 @@ class AnsPress_Admin {
 		global $nav_menu_selected_id;
 		$menu_items = ap_menu_obejct();
 
-		$walker = new Walker_Nav_Menu_Checklist( false );
+		$walker       = new Walker_Nav_Menu_Checklist( false );
 		$removed_args = array(
 			'action',
 			'customlink-tab',
@@ -493,7 +493,8 @@ class AnsPress_Admin {
 			'menu-item',
 			'page-tab',
 			'_wpnonce',
-		); ?>
+		);
+		?>
 
 		<div id="anspress-div">
 			<div id="tabs-panel-anspress-all" class="tabs-panel tabs-panel-active">
@@ -505,15 +506,19 @@ class AnsPress_Admin {
 
 			<p class="button-controls">
 				<span class="list-controls">
-					<a href="<?php
-						echo esc_url(add_query_arg(
-							array(
-								'anspress-all' => 'all',
-								'selectall'     => 1,
-							),
-							remove_query_arg( $removed_args )
-						));
-					?>#anspress-menu-mb" class="select-all"><?php _e( 'Select All', 'anspress-question-answer' ); ?></a>
+					<a href="
+					<?php
+						echo esc_url(
+							add_query_arg(
+								array(
+									'anspress-all' => 'all',
+									'selectall'    => 1,
+								),
+								remove_query_arg( $removed_args )
+							)
+						);
+					?>
+					#anspress-menu-mb" class="select-all"><?php _e( 'Select All', 'anspress-question-answer' ); ?></a>
 				</span>
 
 				<span class="add-to-menu">
@@ -537,7 +542,7 @@ class AnsPress_Admin {
 			( 'edit-question' === $screen->id && 'question' === $screen->post_type || 'edit-answer' === $screen->id && 'answer' === $screen->post_type ) &&
 			$query->is_main_query() ) {
 
-			$search_q = ap_parse_search_string( get_search_query( ) );
+			$search_q = ap_parse_search_string( get_search_query() );
 
 			// Set author args.
 			if ( ! empty( $search_q['author_id'] ) && is_array( $search_q['author_id'] ) ) {
@@ -591,9 +596,9 @@ class AnsPress_Admin {
 		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 ) {
 
 			global $wpdb;
-			$authors = $query->query_vars['ap_author_name'];
-			$authors = implode( "','", array_map( 'sanitize_title_for_query', array_unique( (array) $authors ) ) );
-			$authors = "'" . rtrim( $authors, ",'" ) . "'";
+			$authors        = $query->query_vars['ap_author_name'];
+			$authors        = implode( "','", array_map( 'sanitize_title_for_query', array_unique( (array) $authors ) ) );
+			$authors        = "'" . rtrim( $authors, ",'" ) . "'";
 			$pieces['join'] = " JOIN $wpdb->users users ON users.ID = $wpdb->posts.post_author AND users.user_login IN ($authors)"; // @codingStandardsIgnoreLine.
 		}
 
@@ -639,15 +644,15 @@ class AnsPress_Admin {
 	public static function append_post_status_list() {
 		 global $post;
 		 $complete = '';
-		 $label = '';
+		 $label    = '';
 
 		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
 			if ( 'moderate' === $post->post_status ) {
 				 $complete = ' selected=\'selected\'';
-				 $label = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
+				 $label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
 			} elseif ( 'private_post' === $post->post_status ) {
 				 $complete = ' selected=\'selected\'';
-				 $label = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
+				 $label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
 			}
 
 			// @codingStandardsIgnoreStart
@@ -666,16 +671,16 @@ class AnsPress_Admin {
 	 * Show AnsPress notices.
 	 */
 	public static function anspress_notice() {
-		$page = get_current_screen();
+		$page             = get_current_screen();
 		$anspress_updates = get_option( 'anspress_updates', [] );
-		$have_updates = empty( $anspress_updates ) || in_array( false, $anspress_updates, true );
+		$have_updates     = empty( $anspress_updates ) || in_array( false, $anspress_updates, true );
 
 		$messages = array(
-			'db' => [
+			'db'            => [
 				'type'    => 'error',
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION )
+				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ),
 			],
 			'missing_pages' => [
 				'type'    => 'error',
@@ -709,7 +714,7 @@ class AnsPress_Admin {
 		$cache = get_transient( 'ap_pages_check' );
 
 		if ( false === $cache ) {
-			$opt = ap_opt();
+			$opt        = ap_opt();
 			$pages_slug = array_keys( ap_main_pages() );
 
 			$pages_in = [];
@@ -786,18 +791,18 @@ class AnsPress_Admin {
 	 * @since 4.1.0
 	 */
 	public static function options_general_pages() {
-		$opt = ap_opt();
+		$opt  = ap_opt();
 		$form = array(
 			'submit_label' => __( 'Save Pages', 'anspress-question-answer' ),
-			'fields' => array(
+			'fields'       => array(
 				'author_credits' => array(
-					'label'    => __( 'Hide author credits', 'anspress-question-answer' ),
-					'desc'     => __( 'Hide link to AnsPress project site.', 'anspress-question-answer' ),
-					'type'     => 'checkbox',
-					'order'    => 0,
-					'value'    => $opt['author_credits'],
+					'label' => __( 'Hide author credits', 'anspress-question-answer' ),
+					'desc'  => __( 'Hide link to AnsPress project site.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'order' => 0,
+					'value' => $opt['author_credits'],
 				),
-				'sep-warning' => array(
+				'sep-warning'    => array(
 					'html' => '<div class="ap-uninstall-warning">' . __( 'If you have created main pages manually then make sure to have [anspress] shortcode in all pages.', 'anspress-question-answer' ) . '</div>',
 				),
 			),
@@ -805,16 +810,16 @@ class AnsPress_Admin {
 
 		foreach ( ap_main_pages() as $slug => $args ) {
 			$form['fields'][ $slug ] = array(
-				'label'   => $args['label'],
-				'desc'    => $args['desc'],
-				'type'    => 'select',
-				'options' => 'posts',
+				'label'      => $args['label'],
+				'desc'       => $args['desc'],
+				'type'       => 'select',
+				'options'    => 'posts',
 				'posts_args' => array(
 					'post_type' => 'page',
 					'showposts' => -1,
 				),
-				'value'    => $opt[ $slug ],
-				'sanitize' => 'absint',
+				'value'      => $opt[ $slug ],
+				'sanitize'   => 'absint',
 			);
 		}
 
@@ -838,42 +843,42 @@ class AnsPress_Admin {
 
 		$form = array(
 			'submit_label' => __( 'Save Permalinks', 'anspress-question-answer' ),
-			'fields' => array(
-				'question_page_slug' => array(
-					'label' => __( 'Question slug', 'anspress-question-answer' ),
-					'desc'  => __( 'Slug for single question page.', 'anspress-question-answer' ),
-					'value' => $opt['question_page_slug'],
+			'fields'       => array(
+				'question_page_slug'      => array(
+					'label'    => __( 'Question slug', 'anspress-question-answer' ),
+					'desc'     => __( 'Slug for single question page.', 'anspress-question-answer' ),
+					'value'    => $opt['question_page_slug'],
 					'validate' => 'required',
 				),
 				'question_page_permalink' => array(
-					'label' => __( 'Question permalink', 'anspress-question-answer' ),
-					'desc'  => __( 'Select single question permalink structure.', 'anspress-question-answer' ),
-					'type'  => 'radio',
-					'options' => [
-						'question_perma_1' => home_url( '/' . ap_base_page_slug() ) . '/<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name/',
-						'question_perma_2' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name/',
-						'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213/',
-						'question_perma_4' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213/question-name/',
-						'question_perma_5' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name/213/',
-						'question_perma_6' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/213-question-name/',
-						'question_perma_7' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ). '</b>/question-name-213/',
+					'label'    => __( 'Question permalink', 'anspress-question-answer' ),
+					'desc'     => __( 'Select single question permalink structure.', 'anspress-question-answer' ),
+					'type'     => 'radio',
+					'options'  => [
+						'question_perma_1' => home_url( '/' . ap_base_page_slug() ) . '/<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/',
+						'question_perma_2' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/',
+						'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213/',
+						'question_perma_4' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213/question-name/',
+						'question_perma_5' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/213/',
+						'question_perma_6' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213-question-name/',
+						'question_perma_7' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name-213/',
 					],
-					'value' => $opt['question_page_permalink'],
+					'value'    => $opt['question_page_permalink'],
 					'validate' => 'required',
 				),
-				'base_page_title' => array(
+				'base_page_title'         => array(
 					'label'    => __( 'Base page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Main questions list page title', 'anspress-question-answer' ),
 					'value'    => $opt['base_page_title'],
 					'validate' => 'required',
 				),
-				'search_page_title' => array(
+				'search_page_title'       => array(
 					'label'    => __( 'Search page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Title of the search page', 'anspress-question-answer' ),
 					'value'    => $opt['search_page_title'],
 					'validate' => 'required',
 				),
-				'author_page_title' => array(
+				'author_page_title'       => array(
 					'label'    => __( 'Author page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Title of the author page', 'anspress-question-answer' ),
 					'value'    => $opt['author_page_title'],
@@ -909,37 +914,37 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['load_assets_in_anspress_only'],
 				),
-				'avatar_size_list' => array(
+				'avatar_size_list'             => array(
 					'label'   => __( 'List avatar size', 'anspress-question-answer' ),
 					'desc'    => __( 'User avatar size for questions list.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['avatar_size_list'],
 				),
-				'avatar_size_qquestion' => array(
+				'avatar_size_qquestion'        => array(
 					'label'   => __( 'Question avatar size', 'anspress-question-answer' ),
 					'desc'    => __( 'User avatar size for question.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['avatar_size_qquestion'],
 				),
-				'avatar_size_qanswer' => array(
+				'avatar_size_qanswer'          => array(
 					'label'   => __( 'Answer avatar size', 'anspress-question-answer' ),
 					'desc'    => __( 'User avatar size for answer.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['avatar_size_qanswer'],
 				),
-				'avatar_size_qcomment' => array(
+				'avatar_size_qcomment'         => array(
 					'label'   => __( 'Comment avatar size', 'anspress-question-answer' ),
 					'desc'    => __( 'User avatar size for comments.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['avatar_size_qcomment'],
 				),
-				'question_per_page' => array(
+				'question_per_page'            => array(
 					'label'   => __( 'Questions per page', 'anspress-question-answer' ),
 					'desc'    => __( 'Questions to show per page.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['question_per_page'],
 				),
-				'answers_per_page' => array(
+				'answers_per_page'             => array(
 					'label'   => __( 'Answers per page', 'anspress-question-answer' ),
 					'desc'    => __( 'Answers to show per page.', 'anspress-question-answer' ),
 					'subtype' => 'number',
@@ -969,32 +974,32 @@ class AnsPress_Admin {
 		$form = array(
 			'fields' => array(
 				'read_question_per' => array(
-					'label' => __( 'Who can read question?', 'anspress-question-answer' ),
-					'desc'  => __( 'Set who can view or read a question.', 'anspress-question-answer' ),
-					'type'  => 'select',
-					'value'  => $opt['read_question_per'],
+					'label'   => __( 'Who can read question?', 'anspress-question-answer' ),
+					'desc'    => __( 'Set who can view or read a question.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'value'   => $opt['read_question_per'],
 					'options' => array(
 						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_read_question capability', 'anspress-question-answer' ),
 					),
 				),
-				'read_answer_per' => array(
-					'label' => __( 'Who can read answers?', 'anspress-question-answer' ),
-					'desc'  => __( 'Set who can view or read a answer.', 'anspress-question-answer' ),
-					'type'  => 'select',
-					'value'  => $opt['read_answer_per'],
+				'read_answer_per'   => array(
+					'label'   => __( 'Who can read answers?', 'anspress-question-answer' ),
+					'desc'    => __( 'Set who can view or read a answer.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'value'   => $opt['read_answer_per'],
 					'options' => array(
 						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_read_answer capability', 'anspress-question-answer' ),
 					),
 				),
-				'read_comment_per' => array(
-					'label' => __( 'Who can read comment?', 'anspress-question-answer' ),
-					'desc'  => __( 'Set who can view or read a comment.', 'anspress-question-answer' ),
-					'type'  => 'select',
-					'value'  => $opt['read_comment_per'],
+				'read_comment_per'  => array(
+					'label'   => __( 'Who can read comment?', 'anspress-question-answer' ),
+					'desc'    => __( 'Set who can view or read a comment.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'value'   => $opt['read_comment_per'],
 					'options' => array(
 						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
@@ -1018,29 +1023,29 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'post_question_per' => array(
-					'label' => __( 'Who can post question?', 'anspress-question-answer' ),
-					'desc'  => __( 'Set who can submit a question from frontend.', 'anspress-question-answer' ),
-					'type'  => 'select',
-					'value'  => $opt['post_question_per'],
+				'post_question_per'     => array(
+					'label'   => __( 'Who can post question?', 'anspress-question-answer' ),
+					'desc'    => __( 'Set who can submit a question from frontend.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'value'   => $opt['post_question_per'],
 					'options' => array(
 						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_question capability', 'anspress-question-answer' ),
 					),
 				),
-				'post_answer_per' => array(
-					'label' => __( 'Who can post answer?', 'anspress-question-answer' ),
-					'desc'  => __( 'Set who can submit an answer from frontend.', 'anspress-question-answer' ),
-					'type'  => 'select',
-					'value'  => $opt['post_answer_per'],
+				'post_answer_per'       => array(
+					'label'   => __( 'Who can post answer?', 'anspress-question-answer' ),
+					'desc'    => __( 'Set who can submit an answer from frontend.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'value'   => $opt['post_answer_per'],
 					'options' => array(
 						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_answer capability', 'anspress-question-answer' ),
 					),
 				),
-				'multiple_answers' => array(
+				'multiple_answers'      => array(
 					'label' => __( 'Multiple answers', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow users to submit multiple answer per question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -1052,66 +1057,66 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['disallow_op_to_answer'],
 				),
-				'post_comment_per' => array(
-					'label' => __( 'Who can post comment?', 'anspress-question-answer' ),
-					'desc'  => __( 'Set who can submit a comment from frontend.', 'anspress-question-answer' ),
-					'type'  => 'select',
-					'value'  => $opt['post_comment_per'],
+				'post_comment_per'      => array(
+					'label'   => __( 'Who can post comment?', 'anspress-question-answer' ),
+					'desc'    => __( 'Set who can submit a comment from frontend.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'value'   => $opt['post_comment_per'],
 					'options' => array(
 						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_comment capability', 'anspress-question-answer' ),
 					),
 				),
-				'new_question_status' => array(
-					'label'     => __( 'Status of new question', 'anspress-question-answer' ),
-					'desc'      => __( 'Default status of new question.', 'anspress-question-answer' ),
-					'type'      => 'select',
-					'options'   => array(
+				'new_question_status'   => array(
+					'label'   => __( 'Status of new question', 'anspress-question-answer' ),
+					'desc'    => __( 'Default status of new question.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
 						'publish'  => __( 'Publish', 'anspress-question-answer' ),
 						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 					),
-					'value'     => $opt['new_question_status'],
+					'value'   => $opt['new_question_status'],
 				),
-				'edit_question_status' => array(
-					'label'     => __( 'Status of edited question', 'anspress-question-answer' ),
-					'desc'      => __( 'Default status of edited question.', 'anspress-question-answer' ),
-					'type'      => 'select',
-					'options'   => array(
+				'edit_question_status'  => array(
+					'label'   => __( 'Status of edited question', 'anspress-question-answer' ),
+					'desc'    => __( 'Default status of edited question.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
 						'publish'  => __( 'Publish', 'anspress-question-answer' ),
 						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 					),
-					'value'     => $opt['edit_question_status'],
+					'value'   => $opt['edit_question_status'],
 				),
-				'new_answer_status' => array(
-					'label'     => __( 'Status of new answer', 'anspress-question-answer' ),
-					'desc'      => __( 'Default status of new answer.', 'anspress-question-answer' ),
-					'type'      => 'select',
-					'options'   => array(
+				'new_answer_status'     => array(
+					'label'   => __( 'Status of new answer', 'anspress-question-answer' ),
+					'desc'    => __( 'Default status of new answer.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
 						'publish'  => __( 'Publish', 'anspress-question-answer' ),
 						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 					),
-					'value'     => $opt['new_answer_status'],
+					'value'   => $opt['new_answer_status'],
 				),
-				'edit_answer_status' => array(
-					'label'     => __( 'Status of edited answer', 'anspress-question-answer' ),
-					'desc'      => __( 'Default status of edited answer.', 'anspress-question-answer' ),
-					'type'      => 'select',
-					'options'   => array(
+				'edit_answer_status'    => array(
+					'label'   => __( 'Status of edited answer', 'anspress-question-answer' ),
+					'desc'    => __( 'Default status of edited answer.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
 						'publish'  => __( 'Publish', 'anspress-question-answer' ),
 						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 					),
-					'value'     => $opt['edit_answer_status'],
+					'value'   => $opt['edit_answer_status'],
 				),
 				'anonymous_post_status' => array(
-					'label'     => __( 'Status of anonymous post', 'anspress-question-answer' ),
-					'desc'      => __( 'Default status of question or answer submitted by anonymous user.', 'anspress-question-answer' ),
-					'type'      => 'select',
-					'options'   => array(
+					'label'   => __( 'Status of anonymous post', 'anspress-question-answer' ),
+					'desc'    => __( 'Default status of question or answer submitted by anonymous user.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
 						'publish'  => __( 'Publish', 'anspress-question-answer' ),
 						'moderate' => __( 'Moderate', 'anspress-question-answer' ),
 					),
-					'value'     => $opt['anonymous_post_status'],
+					'value'   => $opt['anonymous_post_status'],
 				),
 			),
 		);
@@ -1136,18 +1141,18 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'allow_upload' => array(
+				'allow_upload'        => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['allow_upload'],
 				),
-				'uploads_per_post' => array(
+				'uploads_per_post'    => array(
 					'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
 					'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
-					'value'  => $opt['uploads_per_post'],
+					'value' => $opt['uploads_per_post'],
 				),
-				'max_upload_size' => array(
+				'max_upload_size'     => array(
 					'label' => __( 'Max upload size', 'anspress-question-answer' ),
 					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
 					'value' => $opt['max_upload_size'],
@@ -1158,7 +1163,7 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['allow_private_posts'],
 				),
-				'multiple_answers' => array(
+				'multiple_answers'    => array(
 					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
 					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -1181,38 +1186,38 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'comment_number' => array(
+				'comment_number'                => array(
 					'label'   => __( 'Numbers of comments to show', 'anspress-question-answer' ),
 					'desc'    => __( 'Numbers of comments to load in each query?', 'anspress-question-answer' ),
 					'value'   => $opt['comment_number'],
 					'subtype' => 'number',
 				),
-				'duplicate_check' => array(
+				'duplicate_check'               => array(
 					'label' => __( 'Check duplicate', 'anspress-question-answer' ),
 					'desc'  => __( 'Check for duplicate posts before posting', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['duplicate_check'],
 				),
-				'disable_q_suggestion' => array(
+				'disable_q_suggestion'          => array(
 					'label' => __( 'Disable question suggestion', 'anspress-question-answer' ),
 					'desc'  => __( 'Checking this will disable question suggestion in ask form', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['disable_q_suggestion'],
 				),
-				'default_date_format' => array(
+				'default_date_format'           => array(
 					'label' => __( 'Show default date format', 'anspress-question-answer' ),
 					'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['default_date_format'],
 				),
-				'show_solved_prefix' => array(
+				'show_solved_prefix'            => array(
 					'label'    => __( 'Show solved prefix', 'anspress-question-answer' ),
 					'desc'     => __( 'If an answer is selected for question then [solved] prefix will be added in title.', 'anspress-question-answer' ),
 					'type'     => 'checkbox',
 					'value'    => $opt['show_solved_prefix'],
 					'validate' => 'required',
 				),
-				'question_order_by' => array(
+				'question_order_by'             => array(
 					'label'   => __( 'Default question order', 'anspress-question-answer' ),
 					'desc'    => __( 'Order question list by default using selected', 'anspress-question-answer' ),
 					'type'    => 'select',
@@ -1222,45 +1227,45 @@ class AnsPress_Admin {
 						'newest' => __( 'Newest', 'anspress-question-answer' ),
 						'oldest' => __( 'Oldest', 'anspress-question-answer' ),
 					),
-					'value' => $opt['question_order_by'],
+					'value'   => $opt['question_order_by'],
 				),
-				'keep_stop_words' => array(
+				'keep_stop_words'               => array(
 					'label' => __( 'Keep stop words in question slug', 'anspress-question-answer' ),
 					'desc'  => __( 'AnsPress will not strip stop words in question slug.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['keep_stop_words'],
 				),
-				'minimum_qtitle_length' => array(
-					'label' => __( 'Minimum title length', 'anspress-question-answer' ),
-					'desc'  => __( 'Set minimum letters for a question title.', 'anspress-question-answer' ),
-					'subtype'  => 'number',
-					'value' => $opt['minimum_qtitle_length'],
+				'minimum_qtitle_length'         => array(
+					'label'   => __( 'Minimum title length', 'anspress-question-answer' ),
+					'desc'    => __( 'Set minimum letters for a question title.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['minimum_qtitle_length'],
 				),
-				'minimum_question_length' => array(
-					'label' => __( 'Minimum question content', 'anspress-question-answer' ),
-					'desc'  => __( 'Set minimum letters for a question contents.', 'anspress-question-answer' ),
-					'subtype'  => 'number',
-					'value' => $opt['minimum_question_length'],
+				'minimum_question_length'       => array(
+					'label'   => __( 'Minimum question content', 'anspress-question-answer' ),
+					'desc'    => __( 'Set minimum letters for a question contents.', 'anspress-question-answer' ),
+					'subtype' => 'number',
+					'value'   => $opt['minimum_question_length'],
 				),
-				'question_text_editor' => array(
+				'question_text_editor'          => array(
 					'label' => __( 'Question editor?', 'anspress-question-answer' ),
 					'desc'  => __( 'Quick tags editor', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['question_text_editor'],
 				),
-				'answer_text_editor' => array(
+				'answer_text_editor'            => array(
 					'label' => __( 'Answer editor?', 'anspress-question-answer' ),
 					'desc'  => __( 'Quick tags editor', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['answer_text_editor'],
 				),
-				'disable_comments_on_question' => array(
+				'disable_comments_on_question'  => array(
 					'label' => __( 'Disable comments', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable comments on questions.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['disable_comments_on_question'],
 				),
-				'disable_voting_on_question' => array(
+				'disable_voting_on_question'    => array(
 					'label' => __( 'Disable voting', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable voting on questions.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -1272,13 +1277,13 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['disable_down_vote_on_question'],
 				),
-				'close_selected' => array(
+				'close_selected'                => array(
 					'label' => __( 'Close question after selecting answer', 'anspress-question-answer' ),
 					'desc'  => __( 'If enabled this will prevent user to submit answer on solved question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['close_selected'],
 				),
-				'answers_sort' => array(
+				'answers_sort'                  => array(
 					'label'   => __( 'Default answers order', 'anspress-question-answer' ),
 					'desc'    => __( 'Order answers by by default using selected', 'anspress-question-answer' ),
 					'type'    => 'select',
@@ -1288,27 +1293,27 @@ class AnsPress_Admin {
 						'newest' => __( 'Newest', 'anspress-question-answer' ),
 						'oldest' => __( 'Oldest', 'anspress-question-answer' ),
 					),
-					'value' => $opt['answers_sort'],
+					'value'   => $opt['answers_sort'],
 				),
-				'minimum_ans_length' => array(
+				'minimum_ans_length'            => array(
 					'label'   => __( 'Minimum question content', 'anspress-question-answer' ),
 					'desc'    => __( 'Set minimum letters for a answer contents.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['minimum_ans_length'],
 				),
-				'disable_comments_on_answer' => array(
+				'disable_comments_on_answer'    => array(
 					'label' => __( 'Disable comments', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable comments on answer.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['disable_comments_on_answer'],
 				),
-				'disable_voting_on_answer' => array(
+				'disable_voting_on_answer'      => array(
 					'label' => __( 'Disable voting', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable voting on answers.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['disable_voting_on_answer'],
 				),
-				'disable_down_vote_on_answer' => array(
+				'disable_down_vote_on_answer'   => array(
 					'label' => __( 'Disable down voting', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable down voting on answers.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -1341,7 +1346,7 @@ class AnsPress_Admin {
 		}
 
 		$field->add_html( '&nbsp;&nbsp;&nbsp;<a href="' . esc_url( get_permalink( $field->value() ) ) . '">' . __( 'View page', 'anspress-question-answer' ) . '</a>&nbsp;&nbsp;&nbsp;' );
-		$field->add_html( '<a href="' . esc_url( get_edit_post_link( $field->value() ) ) .  '">' . __( 'Edit page', 'anspress-question-answer' ) . '</a>' );
+		$field->add_html( '<a href="' . esc_url( get_edit_post_link( $field->value() ) ) . '">' . __( 'Edit page', 'anspress-question-answer' ) . '</a>' );
 	}
 
 	/**
@@ -1371,9 +1376,9 @@ class AnsPress_Admin {
 		<?php
 
 		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js' , [ 'anspress-main' ], AP_VERSION, true );
+		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js', [ 'anspress-main' ], AP_VERSION, true );
 
-		$addon = ap_get_addon( ap_sanitize_unslash( 'addon', 'r' ) );
+		$addon     = ap_get_addon( ap_sanitize_unslash( 'addon', 'r' ) );
 		$from_args = array(
 			'form_action' => admin_url( 'admin.php?action=ap_save_addon_options&active_addon=' . $addon['id'] ),
 			'ajax_submit' => false,
@@ -1421,15 +1426,15 @@ class AnsPress_Admin {
 			exit;
 		}
 
-		$form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
+		$form_name  = ap_sanitize_unslash( 'ap_form_name', 'r' );
 		$addon_name = ap_sanitize_unslash( 'active_addon', 'r' );
 
-		$addon = ap_get_active_addons( $addon_name );
+		$addon   = ap_get_active_addons( $addon_name );
 		$updated = false;
 
 		// Process submit form.
 		if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
-			$form = anspress()->get_form( $form_name );
+			$form   = anspress()->get_form( $form_name );
 			$values = $form->get_values();
 
 			if ( ! $form->have_errors() ) {

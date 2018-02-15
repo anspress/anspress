@@ -119,10 +119,12 @@ class AnsPress_Theme {
 	 */
 	public static function wpseo_title( $title ) {
 		if ( is_anspress() ) {
-			remove_filter( 'wpseo_title', array(
-				__CLASS__,
-				'wpseo_title',
-			));
+			remove_filter(
+				'wpseo_title', array(
+					__CLASS__,
+					'wpseo_title',
+				)
+			);
 
 			$new_title = ap_page_title();
 
@@ -151,7 +153,7 @@ class AnsPress_Theme {
 	public static function the_title( $title, $id = null ) {
 		_deprecated_function( __FUNCTION__, '4.1.1' );
 
-		if ( ap_opt( 'base_page' ) == $id  ) { // WPCS: loose comparison ok.
+		if ( ap_opt( 'base_page' ) == $id ) { // WPCS: loose comparison ok.
 			remove_filter( 'the_title', [ __CLASS__, 'the_title' ] );
 			return ap_page_title();
 		}
@@ -176,12 +178,14 @@ class AnsPress_Theme {
 	public static function ap_before_html_body() {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			$data = wp_json_encode( array(
-				'user_login'   => $current_user->data->user_login,
-				'display_name' => $current_user->data->display_name,
-				'user_email'   => $current_user->data->user_email,
-				'avatar'       => get_avatar( $current_user->ID ),
-			));
+			$data         = wp_json_encode(
+				array(
+					'user_login'   => $current_user->data->user_login,
+					'display_name' => $current_user->data->display_name,
+					'user_email'   => $current_user->data->user_email,
+					'avatar'       => get_avatar( $current_user->ID ),
+				)
+			);
 			?>
 				<script type="text/javascript">
 					apCurrentUser = <?php echo $data; // xss okay. ?>;
@@ -256,7 +260,12 @@ class AnsPress_Theme {
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		ap_ajax_json( [ 'success' => true, 'actions' => ap_post_actions( $post_id ) ] );
+		ap_ajax_json(
+			[
+				'success' => true,
+				'actions' => ap_post_actions( $post_id ),
+			]
+		);
 	}
 
 	/**
@@ -300,7 +309,7 @@ class AnsPress_Theme {
 				array_unshift( $templates, 'single-' . $_post->post_name . '.php' );
 				array_unshift( $templates, 'single-' . $_post->post_type . '.php' );
 			} elseif ( is_tax() ) {
-				$_term = get_queried_object();
+				$_term     = get_queried_object();
 				$term_type = str_replace( 'question_', '', $_term->taxonomy );
 				array_unshift( $templates, 'anspress-' . $term_type . '.php' );
 			}
@@ -308,7 +317,7 @@ class AnsPress_Theme {
 			$new_template = locate_template( $templates );
 
 			if ( '' !== $new_template ) {
-				return $new_template ;
+				return $new_template;
 			}
 		}
 
@@ -385,7 +394,7 @@ class AnsPress_Theme {
 			}
 
 			$excerpt_length = apply_filters( 'excerpt_length', 55 );
-			$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+			$excerpt_more   = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
 			return wp_trim_words( $post->post_content, $excerpt_length, $excerpt_more );
 		}
 
@@ -420,7 +429,7 @@ class AnsPress_Theme {
 	public static function after_question_content() {
 		echo ap_post_status_badge(); // xss safe.
 
-		$_post = ap_get_post();
+		$_post    = ap_get_post();
 		$query_db = 'answer' === $_post->post_type ? false : true;
 		$activity = ap_recent_activity( null, false, $query_db );
 

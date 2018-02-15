@@ -87,11 +87,13 @@ class Form {
 	 */
 	public function __construct( $form_name, $args ) {
 		$this->form_name = $form_name;
-		$this->args      = wp_parse_args( $args, array(
-			'submit_label' => __( 'Submit', 'anspress-question-answer' ),
-			'editing'      => false,
-			'editing_id'   => 0,
-		));
+		$this->args      = wp_parse_args(
+			$args, array(
+				'submit_label' => __( 'Submit', 'anspress-question-answer' ),
+				'editing'      => false,
+				'editing_id'   => 0,
+			)
+		);
 
 		$this->editing    = $this->args['editing'];
 		$this->editing_id = $this->args['editing_id'];
@@ -115,7 +117,7 @@ class Form {
 				$field_args['type'] = 'input';
 			}
 
-			$type_class = ucfirst( trim( $field_args['type'] ) );
+			$type_class  = ucfirst( trim( $field_args['type'] ) );
 			$field_class = 'AnsPress\\Form\\Field\\' . $type_class;
 
 			if ( class_exists( $field_class ) ) {
@@ -126,7 +128,7 @@ class Form {
 				 * @param object $form Form class, passed by reference.
 				 * @since 4.1.0
 				 */
-				$field_args = apply_filters_ref_array( 'ap_before_prepare_field', [ $field_args, $this ] );
+				$field_args                  = apply_filters_ref_array( 'ap_before_prepare_field', [ $field_args, $this ] );
 				$this->fields[ $field_name ] = new $field_class( $this->form_name, $field_name, $field_args, $this );
 			}
 		}
@@ -162,10 +164,10 @@ class Form {
 	 * Generate form.
 	 *
 	 * @param array $form_args {
-	 * 		Form generate arguments.
+	 *      Form generate arguments.
 	 *
-	 * 		@type string $form_action   Custom form action url.
-	 * 		@type array  $hidden_fields Custom hidden input fields.
+	 *      @type string $form_action   Custom form action url.
+	 *      @type array  $hidden_fields Custom hidden input fields.
 	 * }
 	 * @return void
 	 * @since 4.1.0
@@ -185,11 +187,13 @@ class Form {
 			return;
 		}
 
-		$form_args = wp_parse_args( $form_args, array(
-			'form_action'   => '',
-			'hidden_fields' => false,
-			'ajax_submit'   => true,
-		) );
+		$form_args = wp_parse_args(
+			$form_args, array(
+				'form_action'   => '',
+				'hidden_fields' => false,
+				'ajax_submit'   => true,
+			)
+		);
 
 		if ( ! empty( $this->args['hidden_fields'] ) ) {
 			$form_args['hidden_fields'] = wp_parse_args( $form_args['hidden_fields'], $this->args['hidden_fields'] );
@@ -273,7 +277,7 @@ class Form {
 		}
 
 		$fields = false === $fields ? $this->fields : $fields;
-		$found = wp_filter_object_list( $fields, [ $key => $value ] );
+		$found  = wp_filter_object_list( $fields, [ $key => $value ] );
 
 		if ( empty( $found ) ) {
 			foreach ( $fields as $field ) {
@@ -346,7 +350,7 @@ class Form {
 	 * @return void.
 	 */
 	public function add_field( $path, $val ) {
-		$path = is_string( $path ) ? explode( '.', $path ): $path;
+		$path = is_string( $path ) ? explode( '.', $path ) : $path;
 		$loc  = &$this->args['fields'];
 
 		foreach ( (array) $path as $step ) {
@@ -461,9 +465,8 @@ class Form {
 	 */
 	public function get_values() {
 		// if ( $this->have_errors() ) {
-		// 	return false;
+		// return false;
 		// }
-
 		if ( ! is_null( $this->values ) ) {
 			return $this->values;
 		}

@@ -63,12 +63,12 @@ class BuddyPress extends \AnsPress\Singleton {
 		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer_notification' );
 		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment_notification' );
 		anspress()->add_action( 'ap_trash_question', $this, 'remove_answer_notify' );
-		//anspress()->add_action( 'ap_trash_question', $this, 'remove_comment_notify' );
+		// anspress()->add_action( 'ap_trash_question', $this, 'remove_comment_notify' );
 		anspress()->add_action( 'ap_trash_answer', $this, 'remove_answer_notify' );
 		anspress()->add_action( 'ap_trash_answer', $this, 'remove_comment_notify' );
 		anspress()->add_action( 'ap_unpublish_comment', $this, 'remove_comment_notify' );
 		anspress()->add_action( 'before_delete_post', $this, 'remove_answer_notify' );
-		//anspress()->add_action( 'before_delete_post', $this, 'remove_comment_notify' );
+		// anspress()->add_action( 'before_delete_post', $this, 'remove_comment_notify' );
 		anspress()->add_action( 'the_post', $this, 'mark_bp_notify_as_read' );
 
 		anspress()->add_action( 'ap_ajax_bp_loadmore', $this, 'bp_loadmore' );
@@ -94,7 +94,7 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		if ( bp_current_component() === 'qa' ) {
-			$js['main']['active'] = true;
+			$js['main']['active']  = true;
 			$js['theme']['active'] = true;
 		}
 
@@ -107,17 +107,25 @@ class BuddyPress extends \AnsPress\Singleton {
 	public function content_setup_nav() {
 		global $bp;
 
-		bp_core_new_nav_item( array(
-				'name'                  => __( 'Q&A', 'anspress-question-answer' ),
-				'slug'                  => 'qa',
-				'screen_function'       => [ $this, 'ap_qa_page' ],
-				'position'              => 30,// weight on menu, change it to whatever you want.
+		bp_core_new_nav_item(
+			array(
+				'name'                => __( 'Q&A', 'anspress-question-answer' ),
+				'slug'                => 'qa',
+				'screen_function'     => [ $this, 'ap_qa_page' ],
+				'position'            => 30, // weight on menu, change it to whatever you want.
 				'default_subnav_slug' => 'questions',
-		) );
+			)
+		);
 
 		$subnav = array(
-			[ 'name' => __( 'Questions', 'anspress-question-answer' ), 'slug' => 'questions' ],
-			[ 'name' => __( 'Answers', 'anspress-question-answer' ), 'slug' => 'answers' ],
+			[
+				'name' => __( 'Questions', 'anspress-question-answer' ),
+				'slug' => 'questions',
+			],
+			[
+				'name' => __( 'Answers', 'anspress-question-answer' ),
+				'slug' => 'answers',
+			],
 		);
 
 		$subnav = apply_filters( 'ap_bp_nav', $subnav );
@@ -130,15 +138,17 @@ class BuddyPress extends \AnsPress\Singleton {
 	 * Setup sub nav.
 	 */
 	public function setup_subnav( $name, $slug ) {
-		bp_core_new_subnav_item( array(
-			'name'            => $name,
-			'slug'            => $slug,
-			'parent_url'      => trailingslashit( bp_displayed_user_domain() . 'qa' ),
-			'parent_slug'     => 'qa',
-			'screen_function' => [ $this, 'ap_qa_page' ],
-			'position'        => 10,
-			'user_has_access' => 'all',
-		) );
+		bp_core_new_subnav_item(
+			array(
+				'name'            => $name,
+				'slug'            => $slug,
+				'parent_url'      => trailingslashit( bp_displayed_user_domain() . 'qa' ),
+				'parent_slug'     => 'qa',
+				'screen_function' => [ $this, 'ap_qa_page' ],
+				'position'        => 10,
+				'user_has_access' => 'all',
+			)
+		);
 	}
 
 	/**
@@ -173,7 +183,7 @@ class BuddyPress extends \AnsPress\Singleton {
 	 */
 	public function page_questions( $user_id = false, $paged = false, $only_posts = false ) {
 		$args['ap_current_user_ignore'] = true;
-		$args['showposts'] = 10;
+		$args['showposts']              = 10;
 
 		if ( false === $user_id ) {
 			$user_id = bp_displayed_user_id();
@@ -191,7 +201,7 @@ class BuddyPress extends \AnsPress\Singleton {
 		 *
 		 * @var array
 		 */
-		$args = apply_filters( 'ap_bp_questions_args', $args );
+		$args                 = apply_filters( 'ap_bp_questions_args', $args );
 		anspress()->questions = new \Question_Query( $args );
 
 		if ( false === $only_posts ) {
@@ -204,7 +214,8 @@ class BuddyPress extends \AnsPress\Singleton {
 
 		if ( ap_have_questions() ) {
 			/* Start the Loop */
-			while ( ap_have_questions() ) : ap_the_question();
+			while ( ap_have_questions() ) :
+				ap_the_question();
 				ap_get_template_part( 'buddypress/question-item' );
 			endwhile;
 		}
@@ -214,8 +225,15 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		if ( anspress()->questions->max_num_pages > 1 && false === $only_posts ) {
-			$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'loadmore-questions' ), 'type' => 'questions', 'current' => 1, 'user_id' => bp_displayed_user_id() ] );
-			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more questions', 'anspress-question-answer' ) .'</a>';
+			$args = wp_json_encode(
+				[
+					'__nonce' => wp_create_nonce( 'loadmore-questions' ),
+					'type'    => 'questions',
+					'current' => 1,
+					'user_id' => bp_displayed_user_id(),
+				]
+			);
+			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more questions', 'anspress-question-answer' ) . '</a>';
 		}
 	}
 
@@ -225,12 +243,12 @@ class BuddyPress extends \AnsPress\Singleton {
 	public function page_answers( $user_id = false, $paged = false, $order_by = false, $only_posts = false ) {
 		global $answers;
 
-		$order_by = false === $order_by ? 'active' : $order_by;
+		$order_by                       = false === $order_by ? 'active' : $order_by;
 		$args['ap_current_user_ignore'] = true;
 		$args['ignore_selected_answer'] = true;
-		$args['showposts'] = 10;
-		$args['author'] = bp_displayed_user_id();
-		$args['ap_order_by'] = ap_sanitize_unslash( 'order_by', 'r', $order_by );
+		$args['showposts']              = 10;
+		$args['author']                 = bp_displayed_user_id();
+		$args['ap_order_by']            = ap_sanitize_unslash( 'order_by', 'r', $order_by );
 
 		if ( false !== $paged ) {
 			$args['paged'] = $paged;
@@ -242,7 +260,7 @@ class BuddyPress extends \AnsPress\Singleton {
 		 *
 		 * @var array
 		 */
-		$args = apply_filters( 'ap_bp_answers_args', $args );
+		$args               = apply_filters( 'ap_bp_answers_args', $args );
 		anspress()->answers = $answers = new \Answers_Query( $args );
 
 		if ( false === $only_posts ) {
@@ -255,7 +273,8 @@ class BuddyPress extends \AnsPress\Singleton {
 
 		if ( ap_have_answers() ) {
 			/* Start the Loop */
-			while ( ap_have_answers() ) : ap_the_answer();
+			while ( ap_have_answers() ) :
+				ap_the_answer();
 				ap_get_template_part( 'buddypress/answer-item' );
 			endwhile;
 		}
@@ -265,7 +284,15 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		if ( $answers->max_num_pages > 1 && false === $only_posts ) {
-			$args = wp_json_encode( [ '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => 1, 'user_id' => bp_displayed_user_id(), 'order_by' => ap_sanitize_unslash( 'order_by', 'r' ) ] );
+			$args = wp_json_encode(
+				[
+					'__nonce'  => wp_create_nonce( 'loadmore-answers' ),
+					'type'     => 'answers',
+					'current'  => 1,
+					'user_id'  => bp_displayed_user_id(),
+					'order_by' => ap_sanitize_unslash( 'order_by', 'r' ),
+				]
+			);
 			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more answers', 'anspress-question-answer' ) . '</a>';
 		}
 	}
@@ -279,25 +306,29 @@ class BuddyPress extends \AnsPress\Singleton {
 			return;
 		}
 
-		bp_activity_set_post_type_tracking_args( 'question', array(
-			'component_id'             => 'activity',
-			'action_id'                => 'new_question',
-			'contexts'                 => array( 'activity', 'member' ),
-			'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
-			'bp_activity_front_filter' => __( 'Question', 'anspress-question-answer' ),
-			'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
-			'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
-		) );
+		bp_activity_set_post_type_tracking_args(
+			'question', array(
+				'component_id'             => 'activity',
+				'action_id'                => 'new_question',
+				'contexts'                 => array( 'activity', 'member' ),
+				'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
+				'bp_activity_front_filter' => __( 'Question', 'anspress-question-answer' ),
+				'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
+				'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
+			)
+		);
 
-		bp_activity_set_post_type_tracking_args( 'answer', array(
-			'component_id'             => 'activity',
-			'action_id'                => 'new_answer',
-			'contexts'                 => array( 'activity', 'member' ),
-			'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
-			'bp_activity_front_filter' => __( 'Answer', 'anspress-question-answer' ),
-			'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
-			'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
-		) );
+		bp_activity_set_post_type_tracking_args(
+			'answer', array(
+				'component_id'             => 'activity',
+				'action_id'                => 'new_answer',
+				'contexts'                 => array( 'activity', 'member' ),
+				'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
+				'bp_activity_front_filter' => __( 'Answer', 'anspress-question-answer' ),
+				'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
+				'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
+			)
+		);
 	}
 
 	/**
@@ -356,9 +387,9 @@ class BuddyPress extends \AnsPress\Singleton {
 	public function notifier_setup_globals() {
 		global $bp;
 
-		$bp->ap_notifier = new \stdClass();
-		$bp->ap_notifier->id = 'ap_notifier';
-		$bp->ap_notifier->slug = BP_AP_NOTIFIER_SLUG;
+		$bp->ap_notifier                        = new \stdClass();
+		$bp->ap_notifier->id                    = 'ap_notifier';
+		$bp->ap_notifier->slug                  = BP_AP_NOTIFIER_SLUG;
 		$bp->ap_notifier->notification_callback = array( $this, 'ap_notifier_format' );
 
 		// Register this in the active components array.
@@ -377,49 +408,51 @@ class BuddyPress extends \AnsPress\Singleton {
 	 * @param string  $format Format.
 	 */
 	public function ap_notifier_format( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
-		$amount = 'single';
+		$amount            = 'single';
 		$notification_link = '';
-		$text = '';
+		$text              = '';
 
 		if ( strrpos( $action, 'new_answer' ) !== false ) {
-		 	$answer = get_post( $activity_id );
+			$answer = get_post( $activity_id );
 
 			if ( $answer ) {
 				$notification_link = get_permalink( $answer->ID );
-				$title = substr( strip_tags( $answer->post_title ), 0, 35 ) . (strlen( $answer->post_title ) > 35 ? '...' : '') ;
+				$title             = substr( strip_tags( $answer->post_title ), 0, 35 ) . ( strlen( $answer->post_title ) > 35 ? '...' : '' );
 
 				if ( (int) $total_items > 1 ) {
-					$text = sprintf( __( '%1$d answers on - %2$s', 'anspress-question-answer' ), (int) $total_items, $title );
+					$text   = sprintf( __( '%1$d answers on - %2$s', 'anspress-question-answer' ), (int) $total_items, $title );
 					$amount = 'multiple';
 				} else {
 					$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-					$text = sprintf( __( '%1$s answered on - %2$s', 'anspress-question-answer' ), $user_fullname, $title );
+					$text          = sprintf( __( '%1$s answered on - %2$s', 'anspress-question-answer' ), $user_fullname, $title );
 				}
 			}
 		} elseif ( strrpos( $action, 'new_comment' ) !== false ) {
-			$comment = get_comment( $activity_id );
-			$post = get_post( $comment->comment_post_ID ); // WPCS: override okay.
-			$notification_link  = get_permalink( $comment->comment_post_ID );
-			$type = 'question' === $post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
-			$amount = 'single';
-			$title = substr( strip_tags( $post->post_title ), 0, 35 ) . ( strlen( $post->post_title ) > 35 ? '...' : '') ;
+			$comment           = get_comment( $activity_id );
+			$post              = get_post( $comment->comment_post_ID ); // WPCS: override okay.
+			$notification_link = get_permalink( $comment->comment_post_ID );
+			$type              = 'question' === $post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
+			$amount            = 'single';
+			$title             = substr( strip_tags( $post->post_title ), 0, 35 ) . ( strlen( $post->post_title ) > 35 ? '...' : '' );
 
 			if ( (int) $total_items > 1 ) {
-				$text = sprintf( __( '%1$d comments on your %3$s - %2$s', 'anspress-question-answer' ), (int) $total_items, $title, $type );
+				$text   = sprintf( __( '%1$d comments on your %3$s - %2$s', 'anspress-question-answer' ), (int) $total_items, $title, $type );
 				$amount = 'multiple';
 			} else {
 				$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-				$text = sprintf( __( '%1$s commented on your %3$s - %2$s', 'anspress-question-answer' ), $user_fullname, $title, $type );
+				$text          = sprintf( __( '%1$s commented on your %3$s - %2$s', 'anspress-question-answer' ), $user_fullname, $title, $type );
 			}
 		}
 
 		if ( 'string' === $format ) {
 			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', '<a href="' . esc_url( $notification_link ) . '">' . esc_html( $text ) . '</a>', $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
 		} else {
-			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', array(
-				'text' => $text,
-				'link' => $notification_link,
-			), $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
+			$return = apply_filters(
+				'ap_notifier_' . $amount . '_at_mentions_notification', array(
+					'text' => $text,
+					'link' => $notification_link,
+				), $notification_link, (int) $total_items, $activity_id, $secondary_item_id
+			);
 		}
 
 		do_action( 'ap_notifier_format_notifications', $action, $activity_id, $secondary_item_id, $total_items );
@@ -439,15 +472,15 @@ class BuddyPress extends \AnsPress\Singleton {
 
 		global $bp;
 
-		$answer = get_post( $post_id );
-		$answer = get_post( $answer->post_parent );
+		$answer      = get_post( $post_id );
+		$answer      = get_post( $answer->post_parent );
 		$subscribers = [ $answer->post_author ];
 
 		$notification_args = array(
 			'item_id'           => $answer->ID,
 			'secondary_item_id' => $answer->post_author,
 			'component_name'    => $bp->ap_notifier->id,
-			'component_action'  => 'new_answer_'.$answer->post_parent,
+			'component_action'  => 'new_answer_' . $answer->post_parent,
 			'date_notified'     => bp_core_current_time(),
 			'is_new'            => 1,
 		);
@@ -472,8 +505,8 @@ class BuddyPress extends \AnsPress\Singleton {
 
 		global $bp;
 
-		$comment = (object) $comment;
-		$post = get_post( $comment->comment_post_ID );
+		$comment     = (object) $comment;
+		$post        = get_post( $comment->comment_post_ID );
 		$subscribers = [ $post->post_author ];
 
 		$notification_args = array(
@@ -534,7 +567,7 @@ class BuddyPress extends \AnsPress\Singleton {
 	 */
 	public function mark_bp_notify_as_read( $post_id ) {
 
-		if ( ! bp_is_active( 'notifications' ) || ! is_question( ) ) {
+		if ( ! bp_is_active( 'notifications' ) || ! is_question() ) {
 			return;
 		}
 
@@ -557,10 +590,10 @@ class BuddyPress extends \AnsPress\Singleton {
 	 * Ajax callback for loading more posts.
 	 */
 	public function bp_loadmore() {
-		$type = ap_sanitize_unslash( 'type', 'r' );
+		$type     = ap_sanitize_unslash( 'type', 'r' );
 		$order_by = ap_sanitize_unslash( 'order_by', 'r' );
-		$user_id = (int) ap_sanitize_unslash( 'user_id', 'r' );
-		$paged = (int) ap_sanitize_unslash( 'current', 'r' ) + 1;
+		$user_id  = (int) ap_sanitize_unslash( 'user_id', 'r' );
+		$paged    = (int) ap_sanitize_unslash( 'current', 'r' ) + 1;
 		check_ajax_referer( 'loadmore-' . $type, '__nonce' );
 
 		if ( 'questions' === $type ) {
@@ -570,12 +603,19 @@ class BuddyPress extends \AnsPress\Singleton {
 
 			$paged = anspress()->questions->max_num_pages > $paged ? $paged : false;
 
-			ap_ajax_json(array(
-				'success'  => true,
-				'element'  => '#ap-bp-questions',
-				'args'     => [ '__nonce' => wp_create_nonce( 'loadmore-questions' ), 'type' => 'questions', 'current' => $paged, 'user_id' => bp_displayed_user_id() ],
-				'html'   	 => $html,
-			));
+			ap_ajax_json(
+				array(
+					'success' => true,
+					'element' => '#ap-bp-questions',
+					'args'    => [
+						'__nonce' => wp_create_nonce( 'loadmore-questions' ),
+						'type'    => 'questions',
+						'current' => $paged,
+						'user_id' => bp_displayed_user_id(),
+					],
+					'html'    => $html,
+				)
+			);
 		} elseif ( 'answers' === $type ) {
 			ob_start();
 			$this->page_answers( $user_id, $paged, $order_by, true );
@@ -584,12 +624,20 @@ class BuddyPress extends \AnsPress\Singleton {
 			global $answers;
 			$paged = $answers->max_num_pages > $paged ? $paged : false;
 
-			ap_ajax_json(array(
-				'success'  => true,
-				'element'  => '#ap-bp-answers',
-				'args'  => [ '__nonce' => wp_create_nonce( 'loadmore-answers' ), 'type' => 'answers', 'current' => $paged, 'user_id' => bp_displayed_user_id(), 'order_by' => $order_by ],
-				'html'   	 => $html,
-			));
+			ap_ajax_json(
+				array(
+					'success' => true,
+					'element' => '#ap-bp-answers',
+					'args'    => [
+						'__nonce'  => wp_create_nonce( 'loadmore-answers' ),
+						'type'     => 'answers',
+						'current'  => $paged,
+						'user_id'  => bp_displayed_user_id(),
+						'order_by' => $order_by,
+					],
+					'html'    => $html,
+				)
+			);
 		}
 	}
 

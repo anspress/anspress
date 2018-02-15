@@ -9,7 +9,8 @@
  * @package AnsPress
  */
 
-if($editing_post->post_type == 'question')
+if ( $editing_post->post_type == 'question' ) {
 	ap_edit_question_form();
-elseif($editing_post->post_type == 'answer')
-	ap_edit_answer_form($editing_post->post_parent);
+} elseif ( $editing_post->post_type == 'answer' ) {
+	ap_edit_answer_form( $editing_post->post_parent );
+}

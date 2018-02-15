@@ -48,10 +48,12 @@ class Avatar extends \AnsPress\Singleton {
 	 * Initialize the class.
 	 */
 	protected function __construct() {
-		ap_add_default_options([
-			'avatar_font'   => 'Pacifico',
-			'avatar_force'  => false,
-		]);
+		ap_add_default_options(
+			[
+				'avatar_font'  => 'Pacifico',
+				'avatar_force' => false,
+			]
+		);
 
 		anspress()->add_action( 'ap_form_addon-avatar', __CLASS__, 'option_form' );
 		anspress()->add_filter( 'pre_get_avatar_data', __CLASS__, 'get_avatar', 1000, 3 );
@@ -74,10 +76,10 @@ class Avatar extends \AnsPress\Singleton {
 					$('#ap-clear-avatar').click(function(e){
 						e.preventDefault();
 						$.ajax({
-							url: '<?php echo admin_url( "admin-ajax.php" ); ?>',
+							url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
 							data: {
 								action: 'ap_clear_avatar_cache',
-								__nonce: '<?php echo wp_create_nonce( "clear_avatar_cache" ); ?>'
+								__nonce: '<?php echo wp_create_nonce( 'clear_avatar_cache' ); ?>'
 							},
 							success: function(data){
 								if(data==='success') alert('All avatar deleted');
@@ -91,12 +93,12 @@ class Avatar extends \AnsPress\Singleton {
 
 		$form = array(
 			'submit_label' => __( 'Save add-on options', 'anspress-question-answer' ),
-			'fields' => array(
+			'fields'       => array(
 				'clear_avatar_cache' => array(
 					'label' => __( 'Clear Cache', 'anspress-question-answer' ),
-					'html' => '<div class="ap-form-fields-in"><a id="ap-clear-avatar" href="#" class="button">' . __( 'Clear avatar cache', 'anspress-question-answer' ) . '</a></div>' .$js,
+					'html'  => '<div class="ap-form-fields-in"><a id="ap-clear-avatar" href="#" class="button">' . __( 'Clear avatar cache', 'anspress-question-answer' ) . '</a></div>' . $js,
 				),
-				'avatar_font' => array(
+				'avatar_font'        => array(
 					'label'   => __( 'Font family', 'anspress-question-answer' ),
 					'desc'    => __( 'Select font family for avatar letters.', 'anspress-question-answer' ),
 					'type'    => 'select',
@@ -107,9 +109,9 @@ class Avatar extends \AnsPress\Singleton {
 						'Glegoo-Bold'     => 'Glegoo Bold',
 						'DeliusSwashCaps' => 'Delius Swash Caps',
 					),
-					'value' => $opt['avatar_font'],
+					'value'   => $opt['avatar_font'],
 				),
-				'avatar_force' => array(
+				'avatar_force'       => array(
 					'label' => __( 'Force avatar', 'anspress-question-answer' ),
 					'desc'  => __( 'Show AnsPress avatars by default instead of gravatar fallback. Useful in localhost development.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -124,8 +126,8 @@ class Avatar extends \AnsPress\Singleton {
 	/**
 	 * Override get_avatar.
 	 *
-	 * @param  string         $args 		Avatar image.
-	 * @param  integer|string $id_or_email 	User id or email.
+	 * @param  string         $args         Avatar image.
+	 * @param  integer|string $id_or_email  User id or email.
 	 * @return string
 	 */
 	public static function get_avatar( $args, $id_or_email ) {
@@ -160,7 +162,7 @@ class Avatar extends \AnsPress\Singleton {
 			wp_die( 'success' );
 		}
 
-		wp_die('failed');
+		wp_die( 'failed' );
 	}
 }
 
@@ -171,7 +173,7 @@ class Avatar extends \AnsPress\Singleton {
  * @return boolean
  */
 function ap_is_avatar_exists( $user_id ) {
-	$filename = md5( $user_id );
+	$filename   = md5( $user_id );
 	$upload_dir = wp_upload_dir();
 	$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
 

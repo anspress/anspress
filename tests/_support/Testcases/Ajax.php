@@ -14,7 +14,7 @@ trait Ajax {
 		}
 		if ( false !== $key ) {
 			$this->assertObjectHasAttribute( $key, $res );
-			if ( ! isset($res->$key ) ) {
+			if ( ! isset( $res->$key ) ) {
 				return false;
 			}
 			return $res->$key;

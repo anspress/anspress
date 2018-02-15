@@ -17,7 +17,7 @@ $class = 'is-dismissible';
 
 
 // if ( ! empty( $message ) ) {
-// 	printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
+// printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
 // }
 ?>
 <style>
@@ -46,7 +46,7 @@ $class = 'is-dismissible';
 </style>
 
 <div class="wrap">
-	<?php do_action( 'ap_before_admin_page_title' ) ?>
+	<?php do_action( 'ap_before_admin_page_title' ); ?>
 	<table class="form-table">
 		<tbody>
 			<tr>
@@ -172,7 +172,7 @@ $class = 'is-dismissible';
 </div>
 
 <script type="text/javascript">
-	var __nonce = '<?php echo wp_create_nonce('recount'); ?>';
+	var __nonce = '<?php echo wp_create_nonce( 'recount' ); ?>';
 	// First, checks if it isn't implemented yet.
 	if (!String.prototype.format) {
 		String.prototype.apFormat = function() {

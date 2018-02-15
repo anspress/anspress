@@ -31,17 +31,19 @@ class AnsPress_Uploader {
 		}
 
 		$attach = get_post( $attachment_id );
-		$row = wp_delete_attachment( $attachment_id, true );
+		$row    = wp_delete_attachment( $attachment_id, true );
 
 		if ( false !== $row ) {
 			ap_update_post_attach_ids( $attach->post_parent );
 			ap_ajax_json( [ 'success' => true ] );
 		}
 
-		ap_ajax_json( [
-			'success'  => false,
-			'snackbar' => [ 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ],
-		] );
+		ap_ajax_json(
+			[
+				'success'  => false,
+				'snackbar' => [ 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ],
+			]
+		);
 	}
 
 	/**
@@ -109,14 +111,16 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '', 
 	require_once ABSPATH . 'wp-admin/includes/admin.php';
 
 	// Check if file is greater then allowed size.
-	if ( $file['size'] > ap_opt( 'max_upload_size' )  ) {
+	if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
 		return new WP_Error( 'file_size_error', sprintf( __( 'File cannot be uploaded, size is bigger than %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) );
 	}
 
-	$file_return = wp_handle_upload( $file, array(
-		'test_form' => false,
-		'mimes'     => false === $mimes ? ap_allowed_mimes() : $mimes,
-	));
+	$file_return = wp_handle_upload(
+		$file, array(
+			'test_form' => false,
+			'mimes'     => false === $mimes ? ap_allowed_mimes() : $mimes,
+		)
+	);
 
 	if ( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
 		return new WP_Error( 'upload_error', $file_return['error'], $file_return );
@@ -209,7 +213,7 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 			$postarr = array(
 				'ID'          => $attach->ID,
 				'post_parent' => $post_parent,
-				'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $attach->guid ) ),
+				'post_title'  => preg_replace( '/\.[^.]+$/', '', basename( $attach->guid ) ),
 			);
 
 			wp_update_post( $postarr );

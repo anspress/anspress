@@ -27,7 +27,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var 	object
+	 * @var     object
 	 * @since 4.1.8
 	 */
 	protected static $instance = null;
@@ -57,7 +57,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function scripts() {
-		$js_url = ANSPRESS_URL . '/assets/syntaxhighlighter/scripts/';
+		$js_url  = ANSPRESS_URL . '/assets/syntaxhighlighter/scripts/';
 		$css_url = ANSPRESS_URL . '/assets/syntaxhighlighter/styles/';
 
 		$scripts = array(
@@ -91,11 +91,11 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			'brush-r'          => 'shBrushR.js',
 		);
 
-		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes )  . ';</script>';
-		wp_register_script( 'syntaxhighlighter-core',  $js_url . 'shCore.js', [],  AP_VERSION );
+		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
+		wp_register_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', [], AP_VERSION );
 
 		foreach ( $scripts as $key => $script ) {
-			wp_register_script( 'syntaxhighlighter-' . $key,  $js_url . $script, [ 'syntaxhighlighter-core' ],  AP_VERSION );
+			wp_register_script( 'syntaxhighlighter-' . $key, $js_url . $script, [ 'syntaxhighlighter-core' ], AP_VERSION );
 		}
 
 		// Register theme stylesheets.
@@ -110,35 +110,35 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 */
 	public function brush() {
 		$this->brushes = array(
-			'php'           => 'PHP',
-			'css'           => 'CSS',
-			'xml'           => 'XML/HTML',
-			'jscript'       => 'Javascript',
-			'sql'           => 'SQL',
-			'as3'           => 'Action Script',
-			'bash'          => 'Bash/Shell',
-			'colfusion'     => 'ColdFusion',
-			'clojure'       => 'Clojure',
-			'cpp'           => 'C++/C',
-			'csharp'        => 'C#',
-			'delphi'        => 'Delphi',
-			'diff'          => 'Diff',
-			'erlang'        => 'Erlang',
-			'fsharp'        => 'F#',
-			'groovy'        => 'Groovy',
-			'java'          => 'Java',
-			'javafx'        => 'JavaFX',
-			'latex'         => 'Latex',
-			'plain'         => 'Plain text',
-			'matlab'        => 'Matlabkey',
-			'objc'          => 'Object',
-			'perl'          => 'Perl',
-			'powershell'    => 'PowerShell',
-			'python'        => 'Python',
-			'r'             => 'R',
-			'ruby'          => 'Ruby/Rails',
-			'scala'         => 'Scala',
-			'vb'            => 'VisualBasic',
+			'php'        => 'PHP',
+			'css'        => 'CSS',
+			'xml'        => 'XML/HTML',
+			'jscript'    => 'Javascript',
+			'sql'        => 'SQL',
+			'as3'        => 'Action Script',
+			'bash'       => 'Bash/Shell',
+			'colfusion'  => 'ColdFusion',
+			'clojure'    => 'Clojure',
+			'cpp'        => 'C++/C',
+			'csharp'     => 'C#',
+			'delphi'     => 'Delphi',
+			'diff'       => 'Diff',
+			'erlang'     => 'Erlang',
+			'fsharp'     => 'F#',
+			'groovy'     => 'Groovy',
+			'java'       => 'Java',
+			'javafx'     => 'JavaFX',
+			'latex'      => 'Latex',
+			'plain'      => 'Plain text',
+			'matlab'     => 'Matlabkey',
+			'objc'       => 'Object',
+			'perl'       => 'Perl',
+			'powershell' => 'PowerShell',
+			'python'     => 'Python',
+			'r'          => 'R',
+			'ruby'       => 'Ruby/Rails',
+			'scala'      => 'Scala',
+			'vb'         => 'VisualBasic',
 		);
 	}
 
@@ -149,7 +149,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 * @return array
 	 */
 	public function mce_plugins( $plugins ) {
-		$plugins[ 'apsyntax' ] = ANSPRESS_URL . 'assets/js/min/tinymce-syntax.min.js';
+		$plugins['apsyntax'] = ANSPRESS_URL . 'assets/js/min/tinymce-syntax.min.js';
 		return $plugins;
 	}
 
@@ -176,13 +176,13 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			$wp_styles = new WP_Styles();
 		}
 
-		$sh_css = '';
+		$sh_css    = '';
 		$theme_css = '';
 
 		if ( ! empty( $wp_styles ) && ! empty( $wp_styles->registered ) &&
 			! empty( $wp_styles->registered['syntaxhighlighter-core'] ) &&
 			! empty( $wp_styles->registered['syntaxhighlighter-core']->src ) ) {
-				$sh_css = add_query_arg( 'ver', AP_VERSION, $wp_styles->registered['syntaxhighlighter-core']->src );
+				$sh_css    = add_query_arg( 'ver', AP_VERSION, $wp_styles->registered['syntaxhighlighter-core']->src );
 				$theme_css = add_query_arg( 'ver', AP_VERSION, $wp_styles->registered['syntaxhighlighter-theme-default']->src );
 		}
 		?>

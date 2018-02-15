@@ -17,7 +17,8 @@
 
 		<?php
 		// Loop for getting activities.
-		while ( $activities->have() ) : $activities->the_object();
+		while ( $activities->have() ) :
+			$activities->the_object();
 			// Shows date and time for timeline.
 			$activities->the_when();
 
@@ -31,8 +32,8 @@
 
 		<?php
 		// Wether to show load more button or not.
-
-		if ( ! $activities->have_pages() ) : ?>
+		if ( ! $activities->have_pages() ) :
+		?>
 			<div class="ap-activity-end ap-activity-item">
 				<div class="ap-activity-icon">
 					<i class="apicon-check"></i>
@@ -50,7 +51,8 @@
 			</div>
 		<?php endif; ?>
 
-	<?php else :
+	<?php
+	else :
 		// When no activities found.
 		?>
 		<p><?php esc_attr_e( 'No activities found!', 'anspress-question-answer' ); ?></p>

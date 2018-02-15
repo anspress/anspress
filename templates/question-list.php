@@ -19,8 +19,9 @@
 	<div class="ap-questions">
 		<?php
 			/* Start the Loop */
-			while ( ap_have_questions() ) : ap_the_question();
-				ap_get_template_part( 'question-list-item' );
+		while ( ap_have_questions() ) :
+			ap_the_question();
+			ap_get_template_part( 'question-list-item' );
 			endwhile;
 		?>
 	</div>

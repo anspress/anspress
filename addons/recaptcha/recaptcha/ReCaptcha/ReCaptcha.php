@@ -28,74 +28,76 @@ namespace ReCaptcha;
 
 /**
  * reCAPTCHA client.
+ *
  * @ignore
  */
-class ReCaptcha
-{
-    /**
-     * Version of this client library.
-     * @const string
-     */
-    const VERSION = 'php_1.1.2';
+class ReCaptcha {
 
-    /**
-     * Shared secret for the site.
-     * @var string
-     */
-    private $secret;
+	/**
+	 * Version of this client library.
+	 *
+	 * @const string
+	 */
+	const VERSION = 'php_1.1.2';
 
-    /**
-     * Method used to communicate with service. Defaults to POST request.
-     * @var RequestMethod
-     */
-    private $requestMethod;
+	/**
+	 * Shared secret for the site.
+	 *
+	 * @var string
+	 */
+	private $secret;
 
-    /**
-     * Create a configured instance to use the reCAPTCHA service.
-     *
-     * @param string $secret shared secret between site and reCAPTCHA server.
-     * @param RequestMethod $requestMethod method used to send the request. Defaults to POST.
-     * @throws \RuntimeException if $secret is invalid
-     * @ignore
-     */
-    public function __construct($secret, RequestMethod $requestMethod = null)
-    {
-        if (empty($secret)) {
-            throw new \RuntimeException('No secret provided');
-        }
+	/**
+	 * Method used to communicate with service. Defaults to POST request.
+	 *
+	 * @var RequestMethod
+	 */
+	private $requestMethod;
 
-        if (!is_string($secret)) {
-            throw new \RuntimeException('The provided secret must be a string');
-        }
+	/**
+	 * Create a configured instance to use the reCAPTCHA service.
+	 *
+	 * @param string        $secret shared secret between site and reCAPTCHA server.
+	 * @param RequestMethod $requestMethod method used to send the request. Defaults to POST.
+	 * @throws \RuntimeException if $secret is invalid
+	 * @ignore
+	 */
+	public function __construct( $secret, RequestMethod $requestMethod = null ) {
+		if ( empty( $secret ) ) {
+			throw new \RuntimeException( 'No secret provided' );
+		}
 
-        $this->secret = $secret;
+		if ( ! is_string( $secret ) ) {
+			throw new \RuntimeException( 'The provided secret must be a string' );
+		}
 
-        if (!is_null($requestMethod)) {
-            $this->requestMethod = $requestMethod;
-        } else {
-            $this->requestMethod = new RequestMethod\Post();
-        }
-    }
+		$this->secret = $secret;
 
-    /**
-     * Calls the reCAPTCHA siteverify API to verify whether the user passes
-     * CAPTCHA test.
-     *
-     * @param string $response The value of 'g-recaptcha-response' in the submitted form.
-     * @param string $remoteIp The end user's IP address.
-     * @return Response Response from the service.
-     * @ignore
-     */
-    public function verify($response, $remoteIp = null)
-    {
-        // Discard empty solution submissions
-        if (empty($response)) {
-            $recaptchaResponse = new Response(false, array('missing-input-response'));
-            return $recaptchaResponse;
-        }
+		if ( ! is_null( $requestMethod ) ) {
+			$this->requestMethod = $requestMethod;
+		} else {
+			$this->requestMethod = new RequestMethod\Post();
+		}
+	}
 
-        $params = new RequestParameters($this->secret, $response, $remoteIp, self::VERSION);
-        $rawResponse = $this->requestMethod->submit($params);
-        return Response::fromJson($rawResponse);
-    }
+	/**
+	 * Calls the reCAPTCHA siteverify API to verify whether the user passes
+	 * CAPTCHA test.
+	 *
+	 * @param string $response The value of 'g-recaptcha-response' in the submitted form.
+	 * @param string $remoteIp The end user's IP address.
+	 * @return Response Response from the service.
+	 * @ignore
+	 */
+	public function verify( $response, $remoteIp = null ) {
+		// Discard empty solution submissions
+		if ( empty( $response ) ) {
+			$recaptchaResponse = new Response( false, array( 'missing-input-response' ) );
+			return $recaptchaResponse;
+		}
+
+		$params      = new RequestParameters( $this->secret, $response, $remoteIp, self::VERSION );
+		$rawResponse = $this->requestMethod->submit( $params );
+		return Response::fromJson( $rawResponse );
+	}
 }

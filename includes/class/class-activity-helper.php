@@ -55,7 +55,7 @@ class Activity_Helper {
 	 */
 	public static function get_instance() {
 		if ( null == self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 			self::hooks();
 		}
 
@@ -124,19 +124,23 @@ class Activity_Helper {
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$activities = new \AnsPress\Activity( array(
-			'paged' => max( 1, ap_isset_post_value( 'paged', 1 ) ),
-		) );
+		$activities = new \AnsPress\Activity(
+			array(
+				'paged' => max( 1, ap_isset_post_value( 'paged', 1 ) ),
+			)
+		);
 
 		ob_start();
 		include ap_get_theme_location( 'activities/activities.php' );
 		$html = ob_get_clean();
 
-		ap_ajax_json( array(
-			'success' => true,
-			'html'    => $html,
-			'cb'      => 'loadedMoreActivities',
-		) );
+		ap_ajax_json(
+			array(
+				'success' => true,
+				'html'    => $html,
+				'cb'      => 'loadedMoreActivities',
+			)
+		);
 	}
 
 	/**
@@ -161,37 +165,37 @@ class Activity_Helper {
 	 */
 	public function prepare_actions() {
 		$defaults = array(
-			'new_q' => array(
+			'new_q'               => array(
 				'ref_type' => 'question',
 				'verb'     => __( 'Asked question', 'anspress-question-answer' ),
 				'icon'     => 'apicon-question',
 			),
-			'edit_q' => array(
+			'edit_q'              => array(
 				'ref_type' => 'question',
 				'verb'     => __( 'Edited question', 'anspress-question-answer' ),
 				'icon'     => 'apicon-pencil',
 			),
-			'new_a' => array(
+			'new_a'               => array(
 				'ref_type' => 'answer',
 				'verb'     => __( 'Answered question', 'anspress-question-answer' ),
 				'icon'     => 'apicon-answer',
 			),
-			'edit_a' => array(
+			'edit_a'              => array(
 				'ref_type' => 'answer',
 				'verb'     => __( 'Edited answer', 'anspress-question-answer' ),
 				'icon'     => 'apicon-answer',
 			),
-			'status_publish' => array(
+			'status_publish'      => array(
 				'ref_type' => 'post',
 				'verb'     => __( 'Changed status to publish', 'anspress-question-answer' ),
 				'icon'     => 'apicon-flag',
 			),
-			'status_future' => array(
+			'status_future'       => array(
 				'ref_type' => 'post',
 				'verb'     => __( 'Changed publish date to future', 'anspress-question-answer' ),
 				'icon'     => 'apicon-flag',
 			),
-			'status_moderate' => array(
+			'status_moderate'     => array(
 				'ref_type' => 'post',
 				'verb'     => __( 'Changed status to moderate', 'anspress-question-answer' ),
 				'icon'     => 'apicon-flag',
@@ -201,37 +205,37 @@ class Activity_Helper {
 				'verb'     => __( 'Changed visibility to private', 'anspress-question-answer' ),
 				'icon'     => 'apicon-flag',
 			),
-			'status_trash' => array(
+			'status_trash'        => array(
 				'ref_type' => 'post',
 				'verb'     => __( 'Trashed', 'anspress-question-answer' ),
 				'icon'     => 'apicon-trashcan',
 			),
-			'featured' => array(
+			'featured'            => array(
 				'ref_type' => 'question',
 				'verb'     => __( 'Marked as featured question', 'anspress-question-answer' ),
 				'icon'     => 'apicon-star',
 			),
-			'closed_q' => array(
+			'closed_q'            => array(
 				'ref_type' => 'question',
 				'verb'     => __( 'Marked as closed', 'anspress-question-answer' ),
 				'icon'     => 'apicon-alert',
 			),
-			'new_c' => array(
+			'new_c'               => array(
 				'ref_type' => 'comment',
 				'verb'     => __( 'Posted new comment', 'anspress-question-answer' ),
 				'icon'     => 'apicon-comments',
 			),
-			'edit_c' => array(
+			'edit_c'              => array(
 				'ref_type' => 'comment',
 				'verb'     => __( 'Edited comment', 'anspress-question-answer' ),
 				'icon'     => 'apicon-comments',
 			),
-			'selected' => array(
+			'selected'            => array(
 				'ref_type' => 'answer',
 				'verb'     => __( 'Selected answer as best', 'anspress-question-answer' ),
 				'icon'     => 'apicon-check',
 			),
-			'unselected' => array(
+			'unselected'          => array(
 				'ref_type' => 'answer',
 				'verb'     => __( 'Unselected an answer', 'anspress-question-answer' ),
 				'icon'     => 'apicon-check',
@@ -296,14 +300,14 @@ class Activity_Helper {
 	 * left blank as it is required.
 	 *
 	 * @param array $args {
-	 * 		Arguments for insert query.
+	 *      Arguments for insert query.
 	 *
-	 * 		@type string  $action  Registered action key.
-	 * 		@type integer $q_id    Question id. This is a required argument.
-	 * 		@type integer $a_id    Answer id. This argument is optional.
-	 * 		@type integer $c_id    Comment id. This argument is optional.
-	 * 		@type integer $user_id User id. This is optional.
-	 * 		@type string  $date    Date of activity. Current time is used by default.
+	 *      @type string  $action  Registered action key.
+	 *      @type integer $q_id    Question id. This is a required argument.
+	 *      @type integer $a_id    Answer id. This argument is optional.
+	 *      @type integer $c_id    Comment id. This argument is optional.
+	 *      @type integer $user_id User id. This is optional.
+	 *      @type string  $date    Date of activity. Current time is used by default.
 	 * }
 	 * @since 4.1.2
 	 * @since 4.1.8 Add GMT offset in `current_time`.
@@ -311,14 +315,16 @@ class Activity_Helper {
 	public function insert( $args = [] ) {
 		global $wpdb;
 
-		$args = wp_parse_args( $args, array(
-			'action'  => '',
-			'q_id'    => 0,
-			'a_id'    => 0,
-			'c_id'    => 0,
-			'user_id' => get_current_user_id(),
-			'date'    => current_time( 'mysql', true ),
-		) );
+		$args = wp_parse_args(
+			$args, array(
+				'action'  => '',
+				'q_id'    => 0,
+				'a_id'    => 0,
+				'c_id'    => 0,
+				'user_id' => get_current_user_id(),
+				'date'    => current_time( 'mysql', true ),
+			)
+		);
 
 		// Check if question id exists.
 		if ( empty( $args['q_id'] ) ) {
@@ -331,9 +337,9 @@ class Activity_Helper {
 		}
 
 		// split date for validation.
-		$mm = substr( $args['date'], 5, 2 );
-		$jj = substr( $args['date'], 8, 2 );
-		$aa = substr( $args['date'], 0, 4 );
+		$mm         = substr( $args['date'], 5, 2 );
+		$jj         = substr( $args['date'], 8, 2 );
+		$aa         = substr( $args['date'], 0, 4 );
 		$valid_date = wp_checkdate( $mm, $jj, $aa, $args['date'] );
 
 		// Validate date.
@@ -353,7 +359,12 @@ class Activity_Helper {
 				'activity_date'    => $args['date'],
 			),
 			array(
-				'%s', '%d', '%d', '%d', '%d', '%s',
+				'%s',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%s',
 			)
 		);
 
@@ -393,14 +404,14 @@ class Activity_Helper {
 	 * Delete single and multiple activity from database.
 	 *
 	 * @param array $where {
-	 * 		Where clause for delete query.
+	 *      Where clause for delete query.
 	 *
-	 * 		@type string  $action  Activity action name.
-	 * 		@type integer $q_id    Question id. This is a required argument.
-	 * 		@type integer $a_id    Answer id. This is optional.
-	 * 		@type integer $c_id    Comment id. This is optional.
-	 * 		@type integer $user_id Activity user id. This is optional.
-	 * 		@type string  $date    Activity date. This is optional.
+	 *      @type string  $action  Activity action name.
+	 *      @type integer $q_id    Question id. This is a required argument.
+	 *      @type integer $a_id    Answer id. This is optional.
+	 *      @type integer $c_id    Comment id. This is optional.
+	 *      @type integer $user_id Activity user id. This is optional.
+	 *      @type string  $date    Activity date. This is optional.
 	 * }
 	 * @return WP_Error|integer Return numbers of rows deleted on success.
 	 * @since 4.1.2

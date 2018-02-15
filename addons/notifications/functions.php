@@ -8,7 +8,7 @@
  * @license   GPL-3.0+
  * @link      https://anspress.io
  * @copyright 2014 Rahul Aryan
- * @since 		1.0.0
+ * @since       1.0.0
  */
 
 // If this file is called directly, abort.
@@ -29,16 +29,18 @@ function ap_insert_notification( $args = [] ) {
 		return;
 	}
 
-	$args = wp_parse_args( $args, array(
-		'user_id'  => get_current_user_id(),
-		'actor'  	 => 0,
-		'parent'   => '',
-		'ref_id'   => 0,
-		'ref_type' => '',
-		'verb'     => '',
-		'seen'     => 0,
-		'date'     => current_time( 'mysql' ),
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'user_id'  => get_current_user_id(),
+			'actor'    => 0,
+			'parent'   => '',
+			'ref_id'   => 0,
+			'ref_type' => '',
+			'verb'     => '',
+			'seen'     => 0,
+			'date'     => current_time( 'mysql' ),
+		)
+	);
 
 	// Return if user_id is empty or 0.
 	if ( empty( $args['user_id'] ) ) {
@@ -61,11 +63,11 @@ function ap_insert_notification( $args = [] ) {
 		return $wpdb->update(
 			$wpdb->prefix . 'ap_notifications',
 			array(
-				'noti_ref_id'   => $args['ref_id'],
-				'noti_actor'    => $args['actor'],
-				'noti_date'     => $args['date'],
-				'noti_verb'     => $args['verb'],
-				'noti_seen'     => 0,
+				'noti_ref_id' => $args['ref_id'],
+				'noti_actor'  => $args['actor'],
+				'noti_date'   => $args['date'],
+				'noti_verb'   => $args['verb'],
+				'noti_seen'   => 0,
 			),
 			array(
 				'noti_id' => $exists[0]->noti_id,
@@ -103,11 +105,13 @@ function ap_insert_notification( $args = [] ) {
 function ap_get_notifications( $args = [] ) {
 	global $wpdb;
 
-	$args = wp_parse_args( $args, array(
-		'number' => 20,
-		'offset' => 0,
-		'user_id'  => get_current_user_id(),
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'number'  => 20,
+			'offset'  => 0,
+			'user_id' => get_current_user_id(),
+		)
+	);
 
 	$number = (int) $args['number'];
 	$offset = (int) $args['offset'];
@@ -144,7 +148,7 @@ function ap_get_notifications( $args = [] ) {
 
 	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_parent_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
 
-	$key = md5( $query );
+	$key   = md5( $query );
 	$cache = wp_cache_get( $key, 'ap_notifications' );
 
 	if ( false !== $cache ) {
@@ -209,7 +213,7 @@ function ap_delete_notifications( $args = [] ) {
 	}
 
 	$where_claue = implode( ' ', $where );
-	$delete = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_notifications WHERE 1=1 {$where_claue}"	); // WPCS: db call okay, cache okay.
+	$delete      = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_notifications WHERE 1=1 {$where_claue}" ); // WPCS: db call okay, cache okay.
 
 	if ( false === $delete ) {
 		return $delete;
@@ -271,12 +275,14 @@ function ap_set_notifications_as_seen( $user_id ) {
 function ap_register_notification_verb( $key, $args = [] ) {
 	global $ap_notification_verbs;
 
-	$args = wp_parse_args( $args, array(
-		'ref_type'   => 'post',
-		'label'      => '',
-		'hide_actor' => false,
-		'icon' 			 => '',
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'ref_type'   => 'post',
+			'label'      => '',
+			'hide_actor' => false,
+			'icon'       => '',
+		)
+	);
 
 	$ap_notification_verbs[ $key ] = $args;
 }

@@ -24,7 +24,8 @@ $current_url = add_query_arg( [ 'paged' => 1 ], esc_url( $_SERVER['REQUEST_URI']
 							__( 'Showing results with pagination active, you are currently on page %d. Click here to return to the initial page', 'anspress-question-answer' ),
 							(int) $paged
 						);
-					?> <a href="<?php echo esc_url( $current_url ); ?>"><?php _e( 'go to page 1', 'anspress-question-answer' ); ?></a>
+					?>
+					 <a href="<?php echo esc_url( $current_url ); ?>"><?php _e( 'go to page 1', 'anspress-question-answer' ); ?></a>
 				</div>
 			<?php endif; ?>
 

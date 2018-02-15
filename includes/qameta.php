@@ -13,26 +13,26 @@
  */
 function ap_qameta_fields() {
 	return array(
-		'post_id'        => '',
-		'selected' 		   => false,
-		'selected_id' 	 => 0,
-		'comments' 		   => 0,
-		'answers' 		   => 0,
-		'ptype' 		     => 'question',
-		'featured' 		   => 0,
-		'closed' 		     => 0,
-		'views' 		     => 0,
-		'votes_up' 		   => 0,
-		'votes_down' 	   => 0,
-		'subscribers' 	 => 0,
-		'flags' 		     => 0,
-		'terms' 		     => '',
-		'attach' 		     => '',
-		'activities' 	 	 => '',
-		'fields' 	 	 		 => '',
-		'roles' 		     => '',
-		'last_updated' 	 => '',
-		'is_new' 		     => false,
+		'post_id'      => '',
+		'selected'     => false,
+		'selected_id'  => 0,
+		'comments'     => 0,
+		'answers'      => 0,
+		'ptype'        => 'question',
+		'featured'     => 0,
+		'closed'       => 0,
+		'views'        => 0,
+		'votes_up'     => 0,
+		'votes_down'   => 0,
+		'subscribers'  => 0,
+		'flags'        => 0,
+		'terms'        => '',
+		'attach'       => '',
+		'activities'   => '',
+		'fields'       => '',
+		'roles'        => '',
+		'last_updated' => '',
+		'is_new'       => false,
 	);
 }
 
@@ -43,7 +43,7 @@ function ap_qameta_fields() {
  * @param boolean $args Arguments.
  * @param boolean $wp_error Return wp_error on fail.
  * @return boolean|integer qameta id on success else false.
- * @since  	4.0.0
+ * @since   4.0.0
  */
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
@@ -51,19 +51,23 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		return $wp_error ? new WP_Error( 'Post ID is required' ) : false;
 	}
 
-	$_post = get_post( $post_id );
+	$_post  = get_post( $post_id );
 	$exists = ap_get_qameta( $post_id );
 
 	if ( ! is_object( $_post ) || ! isset( $_post->post_type ) || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 		return false;
 	}
 
-	$args = wp_unslash( wp_parse_args( $args, [
-		'ptype' => $_post->post_type,
-	]));
+	$args = wp_unslash(
+		wp_parse_args(
+			$args, [
+				'ptype' => $_post->post_type,
+			]
+		)
+	);
 
 	$sanitized_values = [];
-	$formats = [];
+	$formats          = [];
 
 	// Include and sanitize valid fields.
 	foreach ( (array) ap_qameta_fields() as $field => $type ) {
@@ -71,22 +75,22 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			$value = $args[ $field ];
 
 			if ( 'fields' === $field ) {
-				$value = maybe_serialize( array_merge( (array) $exists->$field, (array) $value ) );
+				$value     = maybe_serialize( array_merge( (array) $exists->$field, (array) $value ) );
 				$formats[] = '%s';
 			} elseif ( 'activities' === $field ) {
-				$value = maybe_serialize( $value );
+				$value     = maybe_serialize( $value );
 				$formats[] = '%s';
 			} elseif ( 'terms' === $field || 'attach' === $field ) {
-				$value = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
+				$value     = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
 				$formats[] = '%s';
 			} elseif ( in_array( $field, [ 'selected', 'featured', 'closed' ], true ) ) {
-				$value = (bool) $value;
+				$value     = (bool) $value;
 				$formats[] = '%d';
 			} elseif ( in_array( $field, [ 'selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags' ], true ) ) {
-				$value = (int) $value;
+				$value     = (int) $value;
 				$formats[] = '%d';
 			} else {
-				$value = sanitize_text_field( $value );
+				$value     = sanitize_text_field( $value );
 				$formats[] = '%s';
 			}
 
@@ -117,7 +121,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	if ( false !== $inserted ) {
 		$cache = wp_cache_get( $post_id, 'posts' );
 
-		if ( false !== $cache  ) {
+		if ( false !== $cache ) {
 			foreach ( (array) $sanitized_values as $key => $val ) {
 				$cache->$key = $val;
 			}
@@ -171,8 +175,8 @@ function ap_get_qameta( $post_id ) {
 			$qameta['activities'] = [];
 		}
 
-		$qameta['fields'] 	  = maybe_unserialize( $qameta['fields'] );
-		$qameta = (object) $qameta;
+		$qameta['fields'] = maybe_unserialize( $qameta['fields'] );
+		$qameta           = (object) $qameta;
 		wp_cache_set( $post_id, $qameta, 'ap_qameta' );
 	}
 
@@ -210,7 +214,7 @@ function ap_append_qameta( $post ) {
 			}
 		}
 
-		$post->terms = maybe_unserialize( $post->terms );
+		$post->terms      = maybe_unserialize( $post->terms );
 		$post->activities = maybe_unserialize( $post->activities );
 
 		$post->votes_net = $post->votes_up - $post->votes_down;
@@ -265,14 +269,26 @@ function ap_update_votes_count( $post_id ) {
  */
 function ap_set_selected_answer( $question_id, $answer_id ) {
 	// Log to activity table.
-	ap_activity_add( array(
-		'q_id'   => $question_id,
-		'a_id'   => $answer_id,
-		'action' => 'selected',
-	) );
+	ap_activity_add(
+		array(
+			'q_id'   => $question_id,
+			'a_id'   => $answer_id,
+			'action' => 'selected',
+		)
+	);
 
-	ap_insert_qameta( $answer_id, [ 'selected' => 1, 'last_updated' => current_time( 'mysql' ) ] );
-	ap_insert_qameta( $question_id, [ 'selected_id' => $answer_id, 'last_updated' => current_time( 'mysql' ) ] );
+	ap_insert_qameta(
+		$answer_id, [
+			'selected'     => 1,
+			'last_updated' => current_time( 'mysql' ),
+		]
+	);
+	ap_insert_qameta(
+		$question_id, [
+			'selected_id'  => $answer_id,
+			'last_updated' => current_time( 'mysql' ),
+		]
+	);
 	return ap_update_answer_selected( $answer_id );
 }
 
@@ -288,15 +304,27 @@ function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
 
 	// Log to activity table.
-	ap_activity_add( array(
-		'q_id'   => $question_id,
-		'a_id'   => $qameta->selected_id,
-		'action' => 'unselected',
-	) );
+	ap_activity_add(
+		array(
+			'q_id'   => $question_id,
+			'a_id'   => $qameta->selected_id,
+			'action' => 'unselected',
+		)
+	);
 
 	// Clear selected column from answer qameta.
-	ap_insert_qameta( $qameta->selected_id, [ 'selected' => 0, 'last_updated' => current_time( 'mysql' ) ] );
-	return ap_insert_qameta( $question_id, [ 'selected_id' => '', 'last_updated' => current_time( 'mysql' ) ] );
+	ap_insert_qameta(
+		$qameta->selected_id, [
+			'selected'     => 0,
+			'last_updated' => current_time( 'mysql' ),
+		]
+	);
+	return ap_insert_qameta(
+		$question_id, [
+			'selected_id'  => '',
+			'last_updated' => current_time( 'mysql' ),
+		]
+	);
 }
 
 /**
@@ -310,7 +338,7 @@ function ap_unset_selected_answer( $question_id ) {
 function ap_update_views_count( $post_id, $views = false ) {
 	if ( false === $views ) {
 		$qameta = ap_get_qameta( $post_id );
-		$views = (int) $qameta->views + 1;
+		$views  = (int) $qameta->views + 1;
 	}
 
 	ap_insert_qameta( $post_id, [ 'views' => $views ] );
@@ -461,7 +489,7 @@ function ap_unset_featured_question( $post_id ) {
 function ap_update_post_attach_ids( $post_id ) {
 	global $wpdb;
 
-	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} where post_type = 'attachment' AND post_parent = %d", $post_id ));
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} where post_type = 'attachment' AND post_parent = %d", $post_id ) );
 
 	$insert = ap_insert_qameta( (int) $post_id, [ 'attach' => $ids ] );
 	return $ids;
@@ -475,17 +503,22 @@ function ap_update_post_attach_ids( $post_id ) {
  * @return boolean|integer
  */
 function ap_update_post_activities( $post_id, $activities = array() ) {
-	return ap_insert_qameta( $post_id, [ 'activities' => $activities, 'last_updated' => current_time( 'mysql' ) ] );
+	return ap_insert_qameta(
+		$post_id, [
+			'activities'   => $activities,
+			'last_updated' => current_time( 'mysql' ),
+		]
+	);
 }
 
 /**
  * Update post activity meta.
  *
- * @param  object|integer $post    				Question or answer.
- * @param  string         $type    				Activity type.
- * @param  integer        $user_id 				ID of user doing activity.
+ * @param  object|integer $post                 Question or answer.
+ * @param  string         $type                 Activity type.
+ * @param  integer        $user_id              ID of user doing activity.
  * @param  boolean        $append_to_question   Append activity to question.
- * @param  boolean|string $date    				Activity date in mysql timestamp format.
+ * @param  boolean|string $date                 Activity date in mysql timestamp format.
  * @return boolean
  * @since  2.4.7
  * @deprecated 4.1.2  Use @see ap_activity_add(). Activities are inserted in `ap_activity` table.
@@ -499,13 +532,13 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
 		$date = current_time( 'mysql' );
 	}
 
-	$post_o = ap_get_post( $post );
+	$post_o   = ap_get_post( $post );
 	$meta_val = compact( 'type', 'user_id', 'date' );
 
 	// Append to question activity meta. So that it can shown in question list.
 	if ( 'answer' === $post_o->post_type && $append_to_question ) {
-		$_post = ap_get_post( $post_o->post_parent );
-		$meta = $_post->activities;
+		$_post         = ap_get_post( $post_o->post_parent );
+		$meta          = $_post->activities;
 		$meta['child'] = $meta_val;
 		ap_update_post_activities( $post_o->post_parent, $meta );
 	}

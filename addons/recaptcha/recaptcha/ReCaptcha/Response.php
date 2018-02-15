@@ -31,74 +31,72 @@ namespace ReCaptcha;
  *
  * @ignore
  */
-class Response
-{
-    /**
-     * Success or failure.
-     * @var boolean
-     */
-    private $success = false;
+class Response {
 
-    /**
-     * Error code strings.
-     * @var array
-     */
-    private $errorCodes = array();
+	/**
+	 * Success or failure.
+	 *
+	 * @var boolean
+	 */
+	private $success = false;
 
-    /**
-     * Build the response from the expected JSON returned by the service.
-     *
-     * @param string $json
-     * @return \ReCaptcha\Response
-     */
-    public static function fromJson($json)
-    {
-        $responseData = json_decode($json, true);
+	/**
+	 * Error code strings.
+	 *
+	 * @var array
+	 */
+	private $errorCodes = array();
 
-        if (!$responseData) {
-            return new Response(false, array('invalid-json'));
-        }
+	/**
+	 * Build the response from the expected JSON returned by the service.
+	 *
+	 * @param string $json
+	 * @return \ReCaptcha\Response
+	 */
+	public static function fromJson( $json ) {
+		$responseData = json_decode( $json, true );
 
-        if (isset($responseData['success']) && $responseData['success'] == true) {
-            return new Response(true);
-        }
+		if ( ! $responseData ) {
+			return new Response( false, array( 'invalid-json' ) );
+		}
 
-        if (isset($responseData['error-codes']) && is_array($responseData['error-codes'])) {
-            return new Response(false, $responseData['error-codes']);
-        }
+		if ( isset( $responseData['success'] ) && $responseData['success'] == true ) {
+			return new Response( true );
+		}
 
-        return new Response(false);
-    }
+		if ( isset( $responseData['error-codes'] ) && is_array( $responseData['error-codes'] ) ) {
+			return new Response( false, $responseData['error-codes'] );
+		}
 
-    /**
-     * Constructor.
-     *
-     * @param boolean $success
-     * @param array $errorCodes
-     */
-    public function __construct($success, array $errorCodes = array())
-    {
-        $this->success = $success;
-        $this->errorCodes = $errorCodes;
-    }
+		return new Response( false );
+	}
 
-    /**
-     * Is success?
-     *
-     * @return boolean
-     */
-    public function isSuccess()
-    {
-        return $this->success;
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param boolean $success
+	 * @param array   $errorCodes
+	 */
+	public function __construct( $success, array $errorCodes = array() ) {
+		$this->success    = $success;
+		$this->errorCodes = $errorCodes;
+	}
 
-    /**
-     * Get error codes.
-     *
-     * @return array
-     */
-    public function getErrorCodes()
-    {
-        return $this->errorCodes;
-    }
+	/**
+	 * Is success?
+	 *
+	 * @return boolean
+	 */
+	public function isSuccess() {
+		return $this->success;
+	}
+
+	/**
+	 * Get error codes.
+	 *
+	 * @return array
+	 */
+	public function getErrorCodes() {
+		return $this->errorCodes;
+	}
 }

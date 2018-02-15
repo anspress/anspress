@@ -25,7 +25,7 @@ class AnsPress_Admin_Ajax {
 	 * Initialize admin ajax
 	 */
 	public static function init() {
-		//anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
+		// anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
 		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
 		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
@@ -95,7 +95,7 @@ class AnsPress_Admin_Ajax {
 			$post = ap_get_post( $args[0] );
 
 			if ( $post ) {
-				$value = 'up' === $args[1] ? '1'  : '-1';
+				$value  = 'up' === $args[1] ? '1' : '-1';
 				$counts = ap_add_post_vote( $post->ID, 0, 'vote', $value );
 				echo esc_attr( $counts['votes_net'] );
 			}
@@ -114,9 +114,10 @@ class AnsPress_Admin_Ajax {
 
 		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
 		$answers_arr = [];
-		$answers = ap_get_answers( [ 'question_id' => $question_id ] );
+		$answers     = ap_get_answers( [ 'question_id' => $question_id ] );
 
-		while ( ap_have_answers() ) : ap_the_answer();
+		while ( ap_have_answers() ) :
+			ap_the_answer();
 			global $post, $wp_post_statuses;
 			if ( ap_user_can_view_post() ) :
 				$answers_arr[] = array(
@@ -146,19 +147,19 @@ class AnsPress_Admin_Ajax {
 	public static function ap_uninstall_data() {
 		check_ajax_referer( 'ap_uninstall_data', '__nonce' );
 
-		$data_type = ap_sanitize_unslash( 'data_type', 'r' );
+		$data_type  = ap_sanitize_unslash( 'data_type', 'r' );
 		$valid_data = [ 'qa', 'answers', 'options', 'userdata', 'terms', 'tables' ];
 
 		global $wpdb;
 
 		// Only allow super admin to delete data.
-		if ( is_super_admin( ) && in_array( $data_type, $valid_data, true ) ) {
+		if ( is_super_admin() && in_array( $data_type, $valid_data, true ) ) {
 			$done = 0;
 
 			if ( 'qa' === $data_type ) {
 
 				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='question' OR post_type='answer'" );
-				$ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='question' OR post_type='answer' LIMIT 30" );
+				$ids   = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='question' OR post_type='answer' LIMIT 30" );
 
 				foreach ( (array) $ids as $id ) {
 					if ( false !== wp_delete_post( $id, true ) ) {
@@ -166,11 +167,16 @@ class AnsPress_Admin_Ajax {
 					}
 				}
 
-				wp_send_json( [ 'done' => (int) $done, 'total' => (int) $count ] );
+				wp_send_json(
+					[
+						'done'  => (int) $done,
+						'total' => (int) $count,
+					]
+				);
 			} elseif ( 'answers' === $data_type ) {
 
 				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" );
-				$ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='answer' LIMIT 30" );
+				$ids   = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='answer' LIMIT 30" );
 
 				foreach ( (array) $ids as $id ) {
 					if ( false !== wp_delete_post( $id, true ) ) {
@@ -178,7 +184,12 @@ class AnsPress_Admin_Ajax {
 					}
 				}
 
-				wp_send_json( [ 'done' => (int) $done, 'total' => (int) $count ] );
+				wp_send_json(
+					[
+						'done'  => (int) $done,
+						'total' => (int) $count,
+					]
+				);
 			} elseif ( 'userdata' === $data_type ) {
 
 				$upload_dir = wp_upload_dir();
@@ -193,34 +204,51 @@ class AnsPress_Admin_Ajax {
 				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__up_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
 				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__down_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
 
-				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
+				wp_send_json(
+					[
+						'done'  => 1,
+						'total' => 0,
+					]
+				);
 			} elseif ( 'options' === $data_type ) {
 
 				delete_option( 'anspress_opt' );
 				delete_option( 'anspress_reputation_events' );
 				delete_option( 'anspress_addons' );
 
-				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
+				wp_send_json(
+					[
+						'done'  => 1,
+						'total' => 0,
+					]
+				);
 			} elseif ( 'terms' === $data_type ) {
 
 				$question_taxo = (array) get_object_taxonomies( 'question', 'names' );
-				$answer_taxo = (array) get_object_taxonomies( 'answer', 'names' );
+				$answer_taxo   = (array) get_object_taxonomies( 'answer', 'names' );
 
 				$taxos = $question_taxo + $answer_taxo;
 
 				foreach ( (array) $taxos as $tax ) {
-					$terms = get_terms( array(
-						'taxonomy' 		=> $tax,
-						'hide_empty' 	=> false,
-						'fields' 			=> 'ids',
-					) );
+					$terms = get_terms(
+						array(
+							'taxonomy'   => $tax,
+							'hide_empty' => false,
+							'fields'     => 'ids',
+						)
+					);
 
 					foreach ( (array) $terms as $t ) {
 						wp_delete_term( $t, $tax );
 					}
 				}
 
-				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
+				wp_send_json(
+					[
+						'done'  => 1,
+						'total' => 0,
+					]
+				);
 			} elseif ( 'tables' === $data_type ) {
 
 				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations, $wpdb->ap_subscribers, $wpdb->prefix . 'ap_notifications' ];
@@ -229,7 +257,12 @@ class AnsPress_Admin_Ajax {
 					$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
 				}
 
-				wp_send_json( [ 'done' => 1, 'total' => 0 ] );
+				wp_send_json(
+					[
+						'done'  => 1,
+						'total' => 0,
+					]
+				);
 			}
 		}
 
@@ -244,10 +277,12 @@ class AnsPress_Admin_Ajax {
 		check_ajax_referer( 'toggle_addon', '__nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			ap_ajax_json( array(
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'Sorry, you do not have permission!', 'anspress-question-answer' ) ],
-			) );
+			ap_ajax_json(
+				array(
+					'success'  => false,
+					'snackbar' => [ 'message' => __( 'Sorry, you do not have permission!', 'anspress-question-answer' ) ],
+				)
+			);
 		}
 
 		$addon_id = ap_sanitize_unslash( 'addon_id', 'r' );
@@ -260,12 +295,14 @@ class AnsPress_Admin_Ajax {
 		// Delete page check transient.
 		delete_transient( 'ap_pages_check' );
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'addon_id' => $addon_id,
-			'snackbar' => [ 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ],
-			'cb'       => 'toggleAddon',
-		) );
+		ap_ajax_json(
+			array(
+				'success'  => true,
+				'addon_id' => $addon_id,
+				'snackbar' => [ 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ],
+				'cb'       => 'toggleAddon',
+			)
+		);
 	}
 
 	/**
@@ -279,14 +316,16 @@ class AnsPress_Admin_Ajax {
 
 		// Check if user have permission to do this action.
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json( [
-				'error' => true,
-			] );
+			wp_send_json(
+				[
+					'error' => true,
+				]
+			);
 		}
 
 		$sub_action = ap_sanitize_unslash( 'sub_action', 'r', '' );
-		$current = (int) ap_sanitize_unslash( 'current', 'r', 0 );
-		$offset = 50 * $current;
+		$current    = (int) ap_sanitize_unslash( 'current', 'r', 0 );
+		$offset     = 50 * $current;
 
 		$method_name = 'recount_' . $sub_action;
 
@@ -294,9 +333,11 @@ class AnsPress_Admin_Ajax {
 			self::$method_name( $current, $offset );
 		}
 
-		wp_send_json( [
-			'error' => true,
-		] );
+		wp_send_json(
+			[
+				'error' => true,
+			]
+		);
 	}
 
 	/**
@@ -324,11 +365,13 @@ class AnsPress_Admin_Ajax {
 			$action = 'success';
 		}
 
-		wp_send_json( [
-			'action'    => $action,
-			'total'     => $total_found,
-			'processed' => count( $ids ),
-		] );
+		wp_send_json(
+			[
+				'action'    => $action,
+				'total'     => $total_found,
+				'processed' => count( $ids ),
+			]
+		);
 	}
 
 	/**
@@ -356,11 +399,13 @@ class AnsPress_Admin_Ajax {
 			$action = 'success';
 		}
 
-		wp_send_json( [
-			'action'    => $action,
-			'total'     => $total_found,
-			'processed' => count( $ids ),
-		] );
+		wp_send_json(
+			[
+				'action'    => $action,
+				'total'     => $total_found,
+				'processed' => count( $ids ),
+			]
+		);
 	}
 
 	/**
@@ -388,11 +433,13 @@ class AnsPress_Admin_Ajax {
 			$action = 'success';
 		}
 
-		wp_send_json( [
-			'action'    => $action,
-			'total'     => $total_found,
-			'processed' => count( $ids ),
-		] );
+		wp_send_json(
+			[
+				'action'    => $action,
+				'total'     => $total_found,
+				'processed' => count( $ids ),
+			]
+		);
 	}
 
 	/**
@@ -420,11 +467,13 @@ class AnsPress_Admin_Ajax {
 			$action = 'success';
 		}
 
-		wp_send_json( [
-			'action'    => $action,
-			'total'     => $total_found,
-			'processed' => count( $ids ),
-		] );
+		wp_send_json(
+			[
+				'action'    => $action,
+				'total'     => $total_found,
+				'processed' => count( $ids ),
+			]
+		);
 	}
 
 	/**
@@ -452,11 +501,13 @@ class AnsPress_Admin_Ajax {
 			$action = 'success';
 		}
 
-		wp_send_json( [
-			'action'    => $action,
-			'total'     => $total_found,
-			'processed' => $offset + count( $ids ),
-		] );
+		wp_send_json(
+			[
+				'action'    => $action,
+				'total'     => $total_found,
+				'processed' => $offset + count( $ids ),
+			]
+		);
 	}
 
 	/**
@@ -469,18 +520,20 @@ class AnsPress_Admin_Ajax {
 	 */
 	public static function recount_views( $current, $offset ) {
 		global $wpdb;
-		$args = wp_parse_args( ap_isset_post_value( 'args' ), array(
-			'fake_views' => false,
-			'min_views'  => 100,
-			'max_views'  => 200,
-		));
+		$args = wp_parse_args(
+			ap_isset_post_value( 'args' ), array(
+				'fake_views' => false,
+				'min_views'  => 100,
+				'max_views'  => 200,
+			)
+		);
 
 		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
 		foreach ( (array) $ids as $id ) {
-			$table_views = (int) ap_get_views( $id );
+			$table_views  = (int) ap_get_views( $id );
 			$qameta_views = (int) ap_get_post_field( 'views', $id );
 
 			if ( $qameta_views < $table_views ) {
@@ -502,10 +555,12 @@ class AnsPress_Admin_Ajax {
 			$action = 'success';
 		}
 
-		wp_send_json( [
-			'action'    => $action,
-			'total'     => $total_found,
-			'processed' => count( $ids ),
-		] );
+		wp_send_json(
+			[
+				'action'    => $action,
+				'total'     => $total_found,
+				'processed' => count( $ids ),
+			]
+		);
 	}
 }

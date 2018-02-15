@@ -24,7 +24,7 @@ class Tags extends \AnsPress\Singleton {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var 	object
+	 * @var     object
 	 * @since 4.1.8
 	 */
 	protected static $instance = null;
@@ -75,8 +75,8 @@ class Tags extends \AnsPress\Singleton {
 		$question_tag = get_queried_object();
 
 		$question_args = array(
-			'paged'      => max( 1, get_query_var( 'ap_paged' ) ),
-			'tax_query'  => array(
+			'paged'     => max( 1, get_query_var( 'ap_paged' ) ),
+			'tax_query' => array(
 				array(
 					'taxonomy' => 'question_tag',
 					'field'    => 'id',
@@ -89,7 +89,7 @@ class Tags extends \AnsPress\Singleton {
 
 		if ( $question_tag ) {
 			anspress()->questions = ap_get_questions( $question_args );
-			include( ap_get_theme_location( 'addons/tag/tag.php' ) );
+			include ap_get_theme_location( 'addons/tag/tag.php' );
 		}
 
 	}
@@ -100,13 +100,13 @@ class Tags extends \AnsPress\Singleton {
 	public function tags_page() {
 
 		global $question_tags, $ap_max_num_pages, $ap_per_page, $tags_rows_found;
-		$paged 				= max( 1, get_query_var( 'paged' ) );
-		$per_page     = (int) ap_opt( 'tags_per_page' );
-		$per_page     = 0 === $per_page ? 1 : $per_page;
-		$offset       = $per_page * ( $paged - 1);
+		$paged    = max( 1, get_query_var( 'paged' ) );
+		$per_page = (int) ap_opt( 'tags_per_page' );
+		$per_page = 0 === $per_page ? 1 : $per_page;
+		$offset   = $per_page * ( $paged - 1 );
 
 		$tag_args = array(
-			'taxonomy' => 'question_tag',
+			'taxonomy'      => 'question_tag',
 			'ap_tags_query' => true,
 			'parent'        => 0,
 			'number'        => $per_page,
@@ -121,8 +121,8 @@ class Tags extends \AnsPress\Singleton {
 			$tag_args['orderby'] = 'id';
 			$tag_args['order']   = 'DESC';
 		} elseif ( 'name' === $ap_sort ) {
-			$tag_args['orderby']    = 'name';
-			$tag_args['order']      = 'ASC';
+			$tag_args['orderby'] = 'name';
+			$tag_args['order']   = 'ASC';
 		} else {
 			$tag_args['orderby'] = 'count';
 		}
@@ -138,7 +138,7 @@ class Tags extends \AnsPress\Singleton {
 		 */
 		$tag_args = apply_filters( 'ap_tags_shortcode_args', $tag_args );
 
-		$query 		          = new \WP_Term_Query( $tag_args );
+		$query = new \WP_Term_Query( $tag_args );
 
 		// Count terms.
 		$tag_args['fields'] = 'count';
@@ -154,15 +154,17 @@ class Tags extends \AnsPress\Singleton {
 	 * Register widget position.
 	 */
 	public function widget_positions() {
-		register_sidebar( array(
-			'name'          => __( '(AnsPress) Tags', 'anspress-question-answer' ),
-			'id'            => 'ap-tags',
-			'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
-			'after_widget'  => '</div>',
-			'description'   => __( 'Widgets in this area will be shown in anspress tags page.', 'anspress-question-answer' ),
-			'before_title'  => '<h3 class="ap-widget-title">',
-			'after_title'   => '</h3>',
-		) );
+		register_sidebar(
+			array(
+				'name'          => __( '(AnsPress) Tags', 'anspress-question-answer' ),
+				'id'            => 'ap-tags',
+				'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
+				'after_widget'  => '</div>',
+				'description'   => __( 'Widgets in this area will be shown in anspress tags page.', 'anspress-question-answer' ),
+				'before_title'  => '<h3 class="ap-widget-title">',
+				'after_title'   => '</h3>',
+			)
+		);
 	}
 
 	/**
@@ -172,33 +174,35 @@ class Tags extends \AnsPress\Singleton {
 	 * @since 2.0
 	 */
 	public function register_question_tag() {
-		ap_add_default_options([
-			'max_tags'        => 5,
-			'min_tags'        => 1,
-			'tags_per_page'   => 20,
-			'tag_page_slug'   => 'tag',
-		]);
+		ap_add_default_options(
+			[
+				'max_tags'      => 5,
+				'min_tags'      => 1,
+				'tags_per_page' => 20,
+				'tag_page_slug' => 'tag',
+			]
+		);
 
 		$tag_labels = array(
-			'name' 				        => __( 'Question Tags', 'anspress-question-answer' ),
-			'singular_name' 	    => _x( 'Tag', 'anspress-question-answer' ),
-			'all_items' 		      => __( 'All Tags', 'anspress-question-answer' ),
-			'add_new_item' 		    => _x( 'Add New Tag', 'anspress-question-answer' ),
-			'edit_item' 		      => __( 'Edit Tag', 'anspress-question-answer' ),
-			'new_item' 			      => __( 'New Tag', 'anspress-question-answer' ),
-			'view_item' 		      => __( 'View Tag', 'anspress-question-answer' ),
-			'search_items' 		    => __( 'Search Tag', 'anspress-question-answer' ),
-			'not_found' 		      => __( 'Nothing Found', 'anspress-question-answer' ),
-			'not_found_in_trash'  => __( 'Nothing found in Trash', 'anspress-question-answer' ),
-			'parent_item_colon'   => '',
+			'name'               => __( 'Question Tags', 'anspress-question-answer' ),
+			'singular_name'      => _x( 'Tag', 'anspress-question-answer' ),
+			'all_items'          => __( 'All Tags', 'anspress-question-answer' ),
+			'add_new_item'       => _x( 'Add New Tag', 'anspress-question-answer' ),
+			'edit_item'          => __( 'Edit Tag', 'anspress-question-answer' ),
+			'new_item'           => __( 'New Tag', 'anspress-question-answer' ),
+			'view_item'          => __( 'View Tag', 'anspress-question-answer' ),
+			'search_items'       => __( 'Search Tag', 'anspress-question-answer' ),
+			'not_found'          => __( 'Nothing Found', 'anspress-question-answer' ),
+			'not_found_in_trash' => __( 'Nothing found in Trash', 'anspress-question-answer' ),
+			'parent_item_colon'  => '',
 		);
 
 		/**
 		 * FILTER: ap_question_tag_labels
 		 * Filter ic called before registering question_tag taxonomy
 		 */
-		$tag_labels = apply_filters( 'ap_question_tag_labels',  $tag_labels );
-		$tag_args = array(
+		$tag_labels = apply_filters( 'ap_question_tag_labels', $tag_labels );
+		$tag_args   = array(
 			'hierarchical' => true,
 			'labels'       => $tag_labels,
 			'rewrite'      => false,
@@ -208,7 +212,7 @@ class Tags extends \AnsPress\Singleton {
 		 * FILTER: ap_question_tag_args
 		 * Filter ic called before registering question_tag taxonomy
 		 */
-		$tag_args = apply_filters( 'ap_question_tag_args',  $tag_args );
+		$tag_args = apply_filters( 'ap_question_tag_args', $tag_args );
 
 		/**
 		 * Now let WordPress know about our taxonomy
@@ -237,22 +241,22 @@ class Tags extends \AnsPress\Singleton {
 					'subtype'     => 'number',
 					'value'       => $opt['tags_per_page'],
 				),
-				'max_tags' => array(
-					'label'             => __( 'Maximum tags', 'anspress-question-answer' ),
-					'description'       => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
+				'max_tags'      => array(
+					'label'       => __( 'Maximum tags', 'anspress-question-answer' ),
+					'description' => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
 					'subtype'     => 'number',
 					'value'       => $opt['max_tags'],
 				),
-				'min_tags' => array(
-					'label'             => __( 'Minimum tags', 'anspress-question-answer' ),
-					'description'       => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
+				'min_tags'      => array(
+					'label'       => __( 'Minimum tags', 'anspress-question-answer' ),
+					'description' => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
 					'subtype'     => 'number',
 					'value'       => $opt['min_tags'],
 				),
 				'tag_page_slug' => array(
-					'label' 	=> __( 'Tag page slug', 'anspress-question-answer' ),
-					'desc' 		=> __( 'Slug for tag page', 'anspress-question-answer' ),
-					'value'   => $opt['tag_page_slug'],
+					'label' => __( 'Tag page slug', 'anspress-question-answer' ),
+					'desc'  => __( 'Slug for tag page', 'anspress-question-answer' ),
+					'value' => $opt['tag_page_slug'],
 				),
 			),
 		);
@@ -271,7 +275,12 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function ap_display_question_metas( $metas, $question_id ) {
 		if ( ap_post_have_terms( $question_id, 'question_tag' ) ) {
-			$metas['tags'] = ap_question_tags_html( array( 'label' => '<i class="apicon-tag"></i>', 'show' => 1 ) ); }
+			$metas['tags'] = ap_question_tags_html(
+				array(
+					'label' => '<i class="apicon-tag"></i>',
+					'show'  => 1,
+				)
+			); }
 
 		return $metas;
 	}
@@ -287,7 +296,12 @@ class Tags extends \AnsPress\Singleton {
 
 		if ( ap_question_have_tags() ) {
 			echo '<div class="widget"><span class="ap-widget-title">' . esc_attr__( 'Tags', 'anspress-question-answer' ) . '</span>';
-			echo '<div class="ap-post-tags clearfix">' . ap_question_tags_html( [ 'list' => true, 'label' => '' ] ) . '</div></div>'; // WPCS: xss okay.
+			echo '<div class="ap-post-tags clearfix">' . ap_question_tags_html(
+				[
+					'list'  => true,
+					'label' => '',
+				]
+			) . '</div></div>'; // WPCS: xss okay.
 		}
 	}
 
@@ -298,7 +312,10 @@ class Tags extends \AnsPress\Singleton {
 	 * @return array
 	 */
 	public function ap_assets_js( $js ) {
-		$js['tags'] = [ 'dep' => [ 'anspress-main' ], 'footer' => true ];
+		$js['tags'] = [
+			'dep'    => [ 'anspress-main' ],
+			'footer' => true,
+		];
 
 		return $js;
 	}
@@ -336,7 +353,12 @@ class Tags extends \AnsPress\Singleton {
 				$opt = get_option( 'ap_tags_path', 'tags' );
 				return home_url( $opt ) . '/' . $term->slug . '/';
 			} else {
-				return add_query_arg( [ 'ap_page' => 'tag', 'question_tag' => $term->slug ], home_url() );
+				return add_query_arg(
+					[
+						'ap_page'      => 'tag',
+						'question_tag' => $term->slug,
+					], home_url()
+				);
 			}
 		}
 		return $url;
@@ -352,16 +374,16 @@ class Tags extends \AnsPress\Singleton {
 		$editing_id = ap_sanitize_unslash( 'id', 'r' );
 
 		$form['fields']['tags'] = array(
-			'label'     => __( 'Tags', 'anspress-question-answer' ),
-			'desc' 		  => sprintf(
+			'label'      => __( 'Tags', 'anspress-question-answer' ),
+			'desc'       => sprintf(
 				// Translators: %1$d contain minimum tags required and %2$d contain maximum tags allowed.
 				__( 'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.', 'anspress-question-answer' ),
 				ap_opt( 'min_tags' ),
 				ap_opt( 'max_tags' )
 			),
-			'type'      => 'tags',
-			'array_max' => ap_opt( 'max_tags' ),
-			'array_min' => ap_opt( 'min_tags' ),
+			'type'       => 'tags',
+			'array_max'  => ap_opt( 'max_tags' ),
+			'array_min'  => ap_opt( 'min_tags' ),
 			'js_options' => array(
 				'create' => true,
 			),
@@ -371,7 +393,7 @@ class Tags extends \AnsPress\Singleton {
 		if ( ! empty( $editing_id ) ) {
 			$tags = get_the_terms( $editing_id, 'question_tag' );
 			if ( $tags ) {
-				$tags = wp_list_pluck( $tags, 'term_id' );
+				$tags                            = wp_list_pluck( $tags, 'term_id' );
 				$form['fields']['tags']['value'] = $tags;
 			}
 		}
@@ -405,7 +427,7 @@ class Tags extends \AnsPress\Singleton {
 		} elseif ( is_question_tag() ) {
 			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 			$tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
-			$title = $tag->name;
+			$title  = $tag->name;
 		}
 
 		return $title;
@@ -420,9 +442,13 @@ class Tags extends \AnsPress\Singleton {
 	public function ap_breadcrumbs( $navs ) {
 
 		if ( is_question_tag() ) {
-			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
+			$tag_id       = sanitize_title( get_query_var( 'q_tag' ) );
 			$tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
-			$navs['page'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'tags' ), 'order' => 8 );
+			$navs['page'] = array(
+				'title' => __( 'Tags', 'anspress-question-answer' ),
+				'link'  => ap_get_link_to( 'tags' ),
+				'order' => 8,
+			);
 
 			if ( $tag ) {
 				$navs['tag'] = array(
@@ -432,7 +458,11 @@ class Tags extends \AnsPress\Singleton {
 				);
 			}
 		} elseif ( is_question_tags() ) {
-			$navs['page'] = array( 'title' => __( 'Tags', 'anspress-question-answer' ), 'link' => ap_get_link_to( 'tags' ), 'order' => 8 );
+			$navs['page'] = array(
+				'title' => __( 'Tags', 'anspress-question-answer' ),
+				'link'  => ap_get_link_to( 'tags' ),
+				'order' => 8,
+			);
 		}
 
 		return $navs;
@@ -444,13 +474,15 @@ class Tags extends \AnsPress\Singleton {
 	public function ap_tags_suggestion() {
 		$keyword = ap_sanitize_unslash( 'q', 'r' );
 
-		$tags = get_terms( 'question_tag', array(
-			'orderby'    => 'count',
-			'order'      => 'DESC',
-			'hide_empty' => false,
-			'search'     => $keyword,
-			'number'     => 8,
-		));
+		$tags = get_terms(
+			'question_tag', array(
+				'orderby'    => 'count',
+				'order'      => 'DESC',
+				'hide_empty' => false,
+				'search'     => $keyword,
+				'number'     => 8,
+			)
+		);
 
 		if ( $tags ) {
 			$items = array();
@@ -458,7 +490,10 @@ class Tags extends \AnsPress\Singleton {
 				$items [ $k ] = $t->slug;
 			}
 
-			$result = array( 'status' => true, 'items' => $items );
+			$result = array(
+				'status' => true,
+				'items'  => $items,
+			);
 			wp_send_json( $result );
 		}
 
@@ -477,7 +512,7 @@ class Tags extends \AnsPress\Singleton {
 
 		$cat_rules = array(
 			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_tag=$matches[#]&ap_paged=$matches[#]&ap_page=tag',
-			$base_slug . '/([^/]+)/?$' => 'index.php?question_tag=$matches[#]&ap_page=tag',
+			$base_slug . '/([^/]+)/?$'                   => 'index.php?question_tag=$matches[#]&ap_page=tag',
 		);
 
 		return $cat_rules + $rules;
@@ -494,7 +529,7 @@ class Tags extends \AnsPress\Singleton {
 		$query = $wp->query_vars;
 
 		$current_filter = ap_get_current_list_filters( 'qtag' );
-		$tags_operator = ! empty( $wp->query_vars['ap_tags_operator'] ) ? $wp->query_vars['ap_tags_operator'] : 'IN';
+		$tags_operator  = ! empty( $wp->query_vars['ap_tags_operator'] ) ? $wp->query_vars['ap_tags_operator'] : 'IN';
 
 		if ( isset( $query['ap_tags'] ) && is_array( $query['ap_tags'] ) ) {
 			$args['tax_query'][] = array(
@@ -531,9 +566,11 @@ class Tags extends \AnsPress\Singleton {
 		}
 
 		if ( 'tags' === ap_current_page() ) {
-			return array( 'tags_order' => array(
-				'title'    => __( 'Order', 'anspress-question-answer' ),
-			) );
+			return array(
+				'tags_order' => array(
+					'title' => __( 'Order', 'anspress-question-answer' ),
+				),
+			);
 		}
 
 		return $filters;
@@ -549,12 +586,14 @@ class Tags extends \AnsPress\Singleton {
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 		$search = ap_sanitize_unslash( 'search', 'r', false );
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'items'    => ap_get_tag_filter( $search ),
-			'multiple' => true,
-			'nonce'    => wp_create_nonce( 'filter_' . $filter ),
-		));
+		ap_ajax_json(
+			array(
+				'success'  => true,
+				'items'    => ap_get_tag_filter( $search ),
+				'multiple' => true,
+				'nonce'    => wp_create_nonce( 'filter_' . $filter ),
+			)
+		);
 	}
 
 	/**
@@ -566,15 +605,29 @@ class Tags extends \AnsPress\Singleton {
 		$filter = ap_sanitize_unslash( 'filter', 'r' );
 		check_ajax_referer( 'filter_' . $filter, '__nonce' );
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'items'    => array(
-				[ 'key' => 'tags_order', 'value' => 'popular', 'label' => __( 'Popular', 'anspress-question-answer' ) ],
-				[ 'key' => 'tags_order', 'value' => 'new', 'label' => __( 'New', 'anspress-question-answer' ) ],
-				[ 'key' => 'tags_order', 'value' => 'name', 'label' => __( 'Name', 'anspress-question-answer' ) ],
-			),
-			'nonce'    => wp_create_nonce( 'filter_' . $filter ),
-		));
+		ap_ajax_json(
+			array(
+				'success' => true,
+				'items'   => array(
+					[
+						'key'   => 'tags_order',
+						'value' => 'popular',
+						'label' => __( 'Popular', 'anspress-question-answer' ),
+					],
+					[
+						'key'   => 'tags_order',
+						'value' => 'new',
+						'label' => __( 'New', 'anspress-question-answer' ),
+					],
+					[
+						'key'   => 'tags_order',
+						'value' => 'name',
+						'label' => __( 'Name', 'anspress-question-answer' ),
+					],
+				),
+				'nonce'   => wp_create_nonce( 'filter_' . $filter ),
+			)
+		);
 	}
 
 	/**
@@ -601,10 +654,10 @@ class Tags extends \AnsPress\Singleton {
 					$active_terms[] = $t->name;
 				}
 
-				$count = count( $current_filters );
+				$count      = count( $current_filters );
 				$more_label = sprintf( __( ', %d+', 'anspress-question-answer' ), $count - 2 );
 
-				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : ''  ) . '</span>';
+				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : '' ) . '</span>';
 			}
 		}
 	}
@@ -616,7 +669,7 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function filter_active_tags_order( $active, $filter ) {
 		$tags_order = ap_get_current_list_filters( 'tags_order' );
-		$tags_order = ! empty ( $tags_order ) ? $tags_order : 'popular';
+		$tags_order = ! empty( $tags_order ) ? $tags_order : 'popular';
 
 		$orders = array(
 			'popular' => __( 'Popular', 'anspress-question-answer' ),
@@ -658,11 +711,11 @@ class Tags extends \AnsPress\Singleton {
 			$query->is_tax( 'question_tag' ) &&
 			'tag' === get_query_var( 'ap_page' ) ) {
 
-			$query->found_posts = 1;
+			$query->found_posts   = 1;
 			$query->max_num_pages = 1;
-			$page = get_page( ap_opt( 'tags_page' ) );
-			$page->post_title = get_queried_object()->name;
-			$posts = [ $page ];
+			$page                 = get_page( ap_opt( 'tags_page' ) );
+			$page->post_title     = get_queried_object()->name;
+			$posts                = [ $page ];
 		}
 
 		return $posts;

@@ -90,7 +90,7 @@ function ap_get_subscriber( $user_id = false, $event, $ref_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	$key = $user_id . '_' . $event . '_' . $ref_id;
+	$key   = $user_id . '_' . $event . '_' . $ref_id;
 	$cache = wp_cache_get( $key, 'ap_subscriber' );
 
 	if ( false !== $cache ) {
@@ -121,7 +121,7 @@ function ap_get_subscriber( $user_id = false, $event, $ref_id ) {
 function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 	global $wpdb;
 
-	$key = $event . '_' . $ref_id;
+	$key   = $event . '_' . $ref_id;
 	$cache = wp_cache_get( $key, 'ap_subscribers_count' );
 
 	if ( false !== $cache ) {
@@ -131,17 +131,16 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 	$ref_query = '';
 
 	if ( $ref_id > 0 ) {
-		$ref_query = $wpdb->prepare( " AND subs_ref_id = %d", $ref_id );
+		$ref_query = $wpdb->prepare( ' AND subs_ref_id = %d', $ref_id );
 	}
 
 	$event_query = '';
 
 	if ( ! empty( $event ) ) {
-		$event_query = $wpdb->prepare( " AND subs_event = %s", $event );
+		$event_query = $wpdb->prepare( ' AND subs_event = %s', $event );
 	}
 
 	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); // WPCS: db call okay, cache okay.
-
 
 	wp_cache_set( $key, $results, 'ap_subscribers_count' );
 
@@ -153,11 +152,11 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
  * if no argument is passed.
  *
  * @param  array $where {
- * 			Where clauses.
+ *          Where clauses.
  *
- * 			@type string  $subs_event   Event type.
- * 			@type integer $subs_ref_id  Reference id.
- * 			@type integer $subs_user_id User id.
+ *          @type string  $subs_event   Event type.
+ *          @type integer $subs_ref_id  Reference id.
+ *          @type integer $subs_user_id User id.
  * }
  * @param  null  $event  Deprecated.
  * @param  null  $ref_id Deprecated.
@@ -176,11 +175,13 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
 
 	global $wpdb;
 
-	$where = wp_parse_args( $where, array(
-		'subs_event'   => '',
-		'subs_ref_id'  => '',
-		'subs_user_id' => '',
-	) );
+	$where = wp_parse_args(
+		$where, array(
+			'subs_event'   => '',
+			'subs_ref_id'  => '',
+			'subs_user_id' => '',
+		)
+	);
 
 	$where = wp_array_slice_assoc( $where, [ 'subs_event', 'subs_ref_id', 'subs_user_id' ] );
 
@@ -189,7 +190,7 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
 		return;
 	}
 
-	$key = $where['subs_event'] . '_' . $where['subs_ref_id'];
+	$key   = $where['subs_event'] . '_' . $where['subs_ref_id'];
 	$cache = wp_cache_get( $key, 'ap_subscribers' );
 
 	if ( false !== $cache ) {
@@ -226,11 +227,11 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
  * function does not properly handles hooks. Instead use @see ap_delete_subscriber().
  *
  * @param array   $where {
- * 			Where clauses.
+ *          Where clauses.
  *
- * 			@type string  $subs_event   Event type.
- * 			@type integer $subs_ref_id  Reference id.
- * 			@type integer $subs_user_id User id.
+ *          @type string  $subs_event   Event type.
+ *          @type integer $subs_ref_id  Reference id.
+ *          @type integer $subs_user_id User id.
  * }
  * @param string  $event   Deprecated.
  * @param integer $ref_id  Deprecated.
@@ -261,11 +262,11 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 	 * Action triggered right after deleting subscribers.
 	 *
 	 * @param string  $where   $where {
-	 * 			Where clauses.
+	 *          Where clauses.
 	 *
-	 * 			@type string  $subs_event   Event type.
-	 * 			@type integer $subs_ref_id  Reference id.
-	 * 			@type integer $subs_user_id User id.
+	 *          @type string  $subs_event   Event type.
+	 *          @type integer $subs_ref_id  Reference id.
+	 *          @type integer $subs_user_id User id.
 	 * }
 	 *
 	 * @category haveTest
@@ -278,7 +279,7 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 
 	if ( false !== $rows ) {
 		$ref_id = isset( $where['subs_ref_id'] ) ? $where['subs_ref_id'] : 0;
-		$event = isset( $where['subs_event'] ) ? $where['subs_event'] : '';
+		$event  = isset( $where['subs_event'] ) ? $where['subs_event'] : '';
 		ap_delete_subscribers_cache( $ref_id, $event );
 
 		/**
@@ -286,11 +287,11 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 		 *
 		 * @param integer $rows    Number of rows deleted.
 		 * @param string  $where   $where {
-		 * 			Where clauses.
+		 *          Where clauses.
 		 *
-		 * 			@type string  $subs_event   Event type.
-		 * 			@type integer $subs_ref_id  Reference id.
-		 * 			@type integer $subs_user_id User id.
+		 *          @type string  $subs_event   Event type.
+		 *          @type integer $subs_ref_id  Reference id.
+		 *          @type integer $subs_user_id User id.
 		 * }
 		 *
 		 * @since 4.0.0
@@ -320,11 +321,13 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 function ap_delete_subscriber( $ref_id, $user_id, $event ) {
 	global $wpdb;
 
-	$rows = $wpdb->delete( $wpdb->ap_subscribers, array(
-		'subs_ref_id'  => $ref_id,
-		'subs_user_id' => $user_id,
-		'subs_event'   => $event,
-	), array( '%d', '%d', '%s' ) ); // WPCS: db call okay, cache okay.
+	$rows = $wpdb->delete(
+		$wpdb->ap_subscribers, array(
+			'subs_ref_id'  => $ref_id,
+			'subs_user_id' => $user_id,
+			'subs_event'   => $event,
+		), array( '%d', '%d', '%s' )
+	); // WPCS: db call okay, cache okay.
 
 	if ( false !== $rows ) {
 		// Delete cache.

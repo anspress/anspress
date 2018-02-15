@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -47,10 +48,12 @@ class Input extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'subtype' => 'text',
-			'label'   => __( 'AnsPress Input Field', 'anspress-question-answer' ),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'subtype' => 'text',
+				'label'   => __( 'AnsPress Input Field', 'anspress-question-answer' ),
+			)
+		);
 
 		// Remove label if custom html.
 		if ( ! empty( $this->args['html'] ) ) {
@@ -63,9 +66,9 @@ class Input extends Field {
 		parent::prepare();
 
 		$sanitize_subtype = array(
-			'number'         => 'intval',
-			'email'          => 'email',
-			'url'            => 'esc_url',
+			'number' => 'intval',
+			'email'  => 'email',
+			'url'    => 'esc_url',
 		);
 
 		// Make sure all text field are sanitized.

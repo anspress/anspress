@@ -2,7 +2,7 @@
 /**
  * Display single question category page.
  *
-  * Display category page.
+ * Display category page.
  *
  * @link        http://anspress.io
  * @since       4.0
@@ -17,7 +17,7 @@ $icon = ap_get_category_icon( $question_category->term_id );
 <?php dynamic_sidebar( 'ap-top' ); ?>
 
 <div class="ap-row">
-	<div id="ap-category" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
+	<div id="ap-category" class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12'; ?>">
 
 		<?php if ( ap_category_have_image( $question_category->term_id ) ) : ?>
 			<div class="ap-category-feat" style="height: 300px;">
@@ -34,7 +34,7 @@ $icon = ap_get_category_icon( $question_category->term_id );
 
 			<div class="no-overflow">
 				<div>
-					<a class="entry-title" href="<?php echo get_category_link( $question_category );?>">
+					<a class="entry-title" href="<?php echo get_category_link( $question_category ); ?>">
 						<?php echo esc_html( $question_category->name ); ?>
 					</a>
 					<span class="ap-tax-count">
@@ -57,12 +57,12 @@ $icon = ap_get_category_icon( $question_category->term_id );
 				<?php
 					$sub_cat_count = count( get_term_children( $question_category->term_id, 'question_category' ) );
 
-					if ( $sub_cat_count > 0 ) {
-						echo '<div class="ap-term-sub">';
-						echo '<div class="sub-taxo-label">' . $sub_cat_count . ' ' . __( 'Sub Categories', 'anspress-question-answer' ) . '</div>';
-						ap_sub_category_list( $question_category->term_id );
-						echo '</div>';
-					}
+				if ( $sub_cat_count > 0 ) {
+					echo '<div class="ap-term-sub">';
+					echo '<div class="sub-taxo-label">' . $sub_cat_count . ' ' . __( 'Sub Categories', 'anspress-question-answer' ) . '</div>';
+					ap_sub_category_list( $question_category->term_id );
+					echo '</div>';
+				}
 				?>
 			</div>
 		</div><!-- close .ap-taxo-detail -->
@@ -72,7 +72,7 @@ $icon = ap_get_category_icon( $question_category->term_id );
 
 	</div><!-- close #ap-lists -->
 
-	<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress() ){ ?>
+	<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress() ) { ?>
 		<div class="ap-question-right ap-col-3">
 			<?php dynamic_sidebar( 'ap-category' ); ?>
 		</div>

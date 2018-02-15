@@ -14,7 +14,7 @@
  * Plugin Name:       AnsPress Question Answer
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
- * Donate link: 	    https://goo.gl/ffainr
+ * Donate link:         https://goo.gl/ffainr
  * Version:           4.1.8
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
@@ -42,8 +42,8 @@ if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
 	 * Checks PHP version before initiating AnsPress.
 	 */
 	function ap_admin_php_version__error() {
-		$class = 'notice notice-error';
-		$message = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
+		$class    = 'notice notice-error';
+		$message  = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
 		$message .= sprintf( __( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ), PHP_VERSION );
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 	}
@@ -245,16 +245,16 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
 
 			$constants = array(
-				'DS' 										=> DIRECTORY_SEPARATOR,
-				'AP_VERSION' 						=> $this->_plugin_version,
-				'ANSPRESS_DIR' 					=> $plugin_dir,
-				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
-				'ANSPRESS_WIDGET_DIR' 	=> $plugin_dir . 'widgets/',
-				'ANSPRESS_THEME_DIR' 		=> $plugin_dir . 'templates',
-				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'templates',
-				'ANSPRESS_CACHE_DIR' 		=> WP_CONTENT_DIR . '/cache/anspress',
-				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
-				'ANSPRESS_ADDONS_DIR' 	=> $plugin_dir . 'addons',
+				'DS'                  => DIRECTORY_SEPARATOR,
+				'AP_VERSION'          => $this->_plugin_version,
+				'ANSPRESS_DIR'        => $plugin_dir,
+				'ANSPRESS_URL'        => plugin_dir_url( __FILE__ ),
+				'ANSPRESS_WIDGET_DIR' => $plugin_dir . 'widgets/',
+				'ANSPRESS_THEME_DIR'  => $plugin_dir . 'templates',
+				'ANSPRESS_THEME_URL'  => plugin_dir_url( __FILE__ ) . 'templates',
+				'ANSPRESS_CACHE_DIR'  => WP_CONTENT_DIR . '/cache/anspress',
+				'ANSPRESS_CACHE_TIME' => HOUR_IN_SECONDS,
+				'ANSPRESS_ADDONS_DIR' => $plugin_dir . 'addons',
 			);
 
 			foreach ( $constants as $k => $val ) {
@@ -371,7 +371,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			foreach ( (array) ap_get_addons() as $data ) {
 				if ( $data['active'] && file_exists( $data['path'] ) ) {
-					require_once( $data['path'] );
+					require_once $data['path'];
 				}
 			}
 		}
@@ -428,10 +428,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
 			$hooks[] = array(
-				'hook'      => $hook,
-				'component' => $component,
-				'callback'  => $callback,
-				'priority'  => $priority,
+				'hook'          => $hook,
+				'component'     => $component,
+				'callback'      => $callback,
+				'priority'      => $priority,
 				'accepted_args' => $accepted_args,
 			);
 
@@ -488,12 +488,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			 * Register a form in AnsPress.
 			 *
 			 * @param array $form {
-			 * 		Form options and fields. Check @see `AnsPress\Form` for more detail.
+			 *      Form options and fields. Check @see `AnsPress\Form` for more detail.
 			 *
-			 * 		@type string  $submit_label Custom submit button label.
-			 * 		@type boolean $editing      Pass true if currently in editing mode.
-			 * 		@type integer $editing_id   If editing then pass editing post or comment id.
-			 * 		@type array   $fields       Fields. For more detail on field option check documentations.
+			 *      @type string  $submit_label Custom submit button label.
+			 *      @type boolean $editing      Pass true if currently in editing mode.
+			 *      @type integer $editing_id   If editing then pass editing post or comment id.
+			 *      @type array   $fields       Fields. For more detail on field option check documentations.
 			 * }
 			 * @since 4.1.0
 			 * @todo  Add detailed docs for `$fields`.
@@ -619,10 +619,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			global $wpdb;
 
-			$tables[] 	= $wpdb->prefix . 'ap_views';
-			$tables[] 	= $wpdb->prefix . 'ap_qameta';
-			$tables[] 	= $wpdb->prefix . 'ap_activity';
-			$tables[] 	= $wpdb->prefix . 'ap_votes';
+			$tables[] = $wpdb->prefix . 'ap_views';
+			$tables[] = $wpdb->prefix . 'ap_qameta';
+			$tables[] = $wpdb->prefix . 'ap_activity';
+			$tables[] = $wpdb->prefix . 'ap_votes';
 			return $tables;
 		}
 	}

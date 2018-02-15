@@ -1,11 +1,12 @@
 <?php
 /**
  * Check post for spam, if spam then hold it for moderation.
+ *
  * @param  integer $post_id Post id.
  */
 function ap_check_spam( $post_id ) {
 	// Return if akisment is not enabled.
-	if ( ! class_exists( 'Akismet' ) || is_super_admin(  ) ) {
+	if ( ! class_exists( 'Akismet' ) || is_super_admin() ) {
 		return;
 	}
 
@@ -13,12 +14,12 @@ function ap_check_spam( $post_id ) {
 
 	// Set default arguments to pass.
 	$defaults = array(
-		'blog' 			           => home_url( '/' ),
-		'user_ip' 		         => get_post_meta( $post->ID, 'create_ip', true ),
-		'user_agent' 	         => $_SERVER['HTTP_USER_AGENT'],
-		'referrer' 		         => $_SERVER['HTTP_REFERER'],
-		'permalink' 	         => get_permalink( $post->ID ),
-		'comment_type' 	       => 'forum-post',
+		'blog'                 => home_url( '/' ),
+		'user_ip'              => get_post_meta( $post->ID, 'create_ip', true ),
+		'user_agent'           => $_SERVER['HTTP_USER_AGENT'],
+		'referrer'             => $_SERVER['HTTP_REFERER'],
+		'permalink'            => get_permalink( $post->ID ),
+		'comment_type'         => 'forum-post',
 		'comment_author'       => get_the_author_meta( 'nicename', $post->post_author ),
 		'comment_author_email' => get_the_author_meta( 'user_email', $post->post_author ),
 		'comment_author_url'   => get_the_author_meta( 'url', $post->post_author ),
@@ -27,23 +28,23 @@ function ap_check_spam( $post_id ) {
 
 	$akismet_ua = sprintf( 'WordPress/%s | Akismet/%s', $GLOBALS['wp_version'], constant( 'AKISMET_VERSION' ) );
 	$akismet_ua = apply_filters( 'akismet_ua', $akismet_ua );
-	$api_key   = Akismet::get_api_key();
-	$host      = Akismet::API_HOST;
+	$api_key    = Akismet::get_api_key();
+	$host       = Akismet::API_HOST;
 
 	if ( ! empty( $api_key ) ) {
-		$host = $api_key.'.'.$host;
+		$host = $api_key . '.' . $host;
 	}
 
 	$http_host = $host;
 	$http_args = array(
-		'body' => $defaults,
-		'headers' => array(
+		'body'        => $defaults,
+		'headers'     => array(
 			'Content-Type' => 'application/x-www-form-urlencoded; charset=' . get_option( 'blog_charset' ),
-			'Host' => $host,
-			'User-Agent' => $akismet_ua,
-			),
+			'Host'         => $host,
+			'User-Agent'   => $akismet_ua,
+		),
 		'httpversion' => '1.0',
-		'timeout' => 15,
+		'timeout'     => 15,
 	);
 
 	$akismet_url = $http_akismet_url = "http://{$http_host}/1.1/comment-check";
@@ -97,7 +98,12 @@ function ap_check_spam( $post_id ) {
 	}
 
 	if ( $response['body'] ) {
-		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'moderate' ) );
+		wp_update_post(
+			array(
+				'ID'          => $post_id,
+				'post_status' => 'moderate',
+			)
+		);
 	}
 
 }

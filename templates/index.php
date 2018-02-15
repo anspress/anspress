@@ -1,2 +1,2 @@
-<?php 
- //initially left blank
+<?php
+ // initially left blank

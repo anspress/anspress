@@ -374,7 +374,7 @@ class Field {
 	 */
 	public function add_error( $code, $message = '' ) {
 		$this->errors[ $code ] = $message;
-		$name = explode( '.', ap_to_dot_notation( $this->form_name ) );
+		$name                  = explode( '.', ap_to_dot_notation( $this->form_name ) );
 
 		if ( is_array( $name ) ) {
 			anspress()->get_form( $name[0] )->add_error( 'fields-error', __( 'Error found in fields, please check and re-submit', 'anspress-question-answer' ) );
@@ -533,7 +533,7 @@ class Field {
 		}
 
 		if ( ! empty( $this->sanitize_cb ) ) {
-			$unsafe_value = $this->unsafe_value();
+			$unsafe_value     = $this->unsafe_value();
 			$sanitize_applied = false;
 
 			foreach ( (array) $this->sanitize_cb as $sanitize ) {
@@ -546,7 +546,7 @@ class Field {
 					// If callback is null then do not apply.
 					if ( null !== $sanitized_val ) {
 						$sanitize_applied = true;
-						$unsafe_value = $sanitized_val;
+						$unsafe_value     = $sanitized_val;
 					}
 				}
 			} // End foreach().

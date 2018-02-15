@@ -14,7 +14,7 @@
 			<?php ap_ask_form(); ?>
 	<?php elseif ( is_user_logged_in() ) : ?>
 		<div class="ap-no-permission">
-			<?php _e('You do not have permission to ask a question.', 'anspress-question-answer'); ?>
+			<?php _e( 'You do not have permission to ask a question.', 'anspress-question-answer' ); ?>
 		</div>
 	<?php endif; ?>
 

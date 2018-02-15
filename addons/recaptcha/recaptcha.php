@@ -33,7 +33,7 @@ class Captcha extends \AnsPress\Singleton {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var 	object
+	 * @var     object
 	 * @since 4.1.8
 	 */
 	protected static $instance = null;
@@ -45,9 +45,11 @@ class Captcha extends \AnsPress\Singleton {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	protected function __construct() {
-		ap_add_default_options([
-			'recaptcha_method'  => 'post',
-		]);
+		ap_add_default_options(
+			[
+				'recaptcha_method' => 'post',
+			]
+		);
 
 		anspress()->add_action( 'ap_form_addon-recaptcha', $this, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
@@ -63,7 +65,7 @@ class Captcha extends \AnsPress\Singleton {
 
 		$form = array(
 			'fields' => array(
-				'recaptcha_site_key' => array(
+				'recaptcha_site_key'   => array(
 					'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
 					'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
 					'value' => $opt['recaptcha_site_key'],
@@ -73,7 +75,7 @@ class Captcha extends \AnsPress\Singleton {
 					'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
 					'value' => $opt['recaptcha_secret_key'],
 				),
-				'recaptcha_method' => array(
+				'recaptcha_method'     => array(
 					'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
 					'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
 					'type'    => 'select',

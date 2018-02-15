@@ -15,8 +15,9 @@
 	<?php if ( ap_have_answers() ) : ?>
 		<?php
 			/* Start the Loop */
-			while ( ap_have_answers() ) : ap_the_answer();
-				ap_get_template_part( 'buddypress/answer-item' );
+		while ( ap_have_answers() ) :
+			ap_the_answer();
+			ap_get_template_part( 'buddypress/answer-item' );
 			endwhile;
 		?>
 	<?php ap_answers_the_pagination(); ?>

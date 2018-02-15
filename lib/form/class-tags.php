@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -46,18 +47,20 @@ class Tags extends Field {
 			'create'   => false,
 		);
 
-		$this->args = wp_parse_args( $this->args, array(
-			'label'      => __( 'AnsPress Tags Field', 'anspress-question-answer' ),
-			'array_max'  => 3,
-			'array_min'  => 2,
-			'terms_args'  => array(
-				'taxonomy'   => 'question_tag',
-				'hide_empty' => false,
-				'fields'     => 'id=>name',
-			),
-			'options' => 'terms',
-			'js_options' => [],
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label'      => __( 'AnsPress Tags Field', 'anspress-question-answer' ),
+				'array_max'  => 3,
+				'array_min'  => 2,
+				'terms_args' => array(
+					'taxonomy'   => 'question_tag',
+					'hide_empty' => false,
+					'fields'     => 'id=>name',
+				),
+				'options'    => 'terms',
+				'js_options' => [],
+			)
+		);
 
 		$this->args['js_options'] = wp_parse_args( $this->args['js_options'], $js_options );
 
@@ -91,13 +94,15 @@ class Tags extends Field {
 			$options = [];
 			if ( ! empty( $this->value() ) ) {
 				$value = $this->value();
-				$terms = get_terms( array(
-					'taxonomy'   => $this->get( 'terms_args.taxonomy' ),
-					'hide_empty' => false,
-					'include'    => $value,
-					'count'      => true,
-					'number'     => 20,
-				) );
+				$terms = get_terms(
+					array(
+						'taxonomy'   => $this->get( 'terms_args.taxonomy' ),
+						'hide_empty' => false,
+						'include'    => $value,
+						'count'      => true,
+						'number'     => 20,
+					)
+				);
 
 				if ( $terms ) {
 					foreach ( $terms as $tag ) {
@@ -128,8 +133,8 @@ class Tags extends Field {
 		parent::field_markup();
 
 		$options = $this->get_options();
-		$value = ! empty( $this->value() ) ? implode( ',', $this->value() ) : '';
-		$type = is_string( $options ) ? $options : 'tags';
+		$value   = ! empty( $this->value() ) ? implode( ',', $this->value() ) : '';
+		$type    = is_string( $options ) ? $options : 'tags';
 
 		$this->add_html( '<input type="text" id="' . $this->id() . '" data-type="' . $type . '" data-options="' . esc_js( wp_json_encode( $this->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" ap-tag-field' . $this->custom_attr() . ' name="' . esc_attr( $this->field_name ) . '" value="' . $value . '" />' );
 

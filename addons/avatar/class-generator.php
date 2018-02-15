@@ -104,20 +104,20 @@ class Generator {
 
 		if ( is_object( $user ) && ! empty( $user->user_id ) ) {
 			$this->user_id = (int) $user->user_id;
-			$user = get_userdata( $this->user_id );
-			$this->name = esc_attr( $user->display_name );
+			$user          = get_userdata( $this->user_id );
+			$this->name    = esc_attr( $user->display_name );
 		} elseif ( is_object( $user ) && $user instanceof WP_user ) {
-			$this->name = esc_attr( $user->display_name );
+			$this->name    = esc_attr( $user->display_name );
 			$this->user_id = $user->ID;
 		} elseif ( is_object( $user ) && $user instanceof WP_Comment ) {
-			$this->name = esc_attr( $user->comment_author );
+			$this->name    = esc_attr( $user->comment_author );
 			$this->user_id = $user->user_id;
 		} elseif ( is_numeric( $user ) && ! empty( $user ) ) {
-			$user = get_user_by( 'id', $user );
-			$this->name = esc_attr( $user->display_name );
+			$user          = get_user_by( 'id', $user );
+			$this->name    = esc_attr( $user->display_name );
 			$this->user_id = $user->ID;
 		} else {
-			$this->name = empty( $user ) ? 'anonymous' : esc_attr( $user );
+			$this->name    = empty( $user ) ? 'anonymous' : esc_attr( $user );
 			$this->user_id = empty( $user ) ? 'anonymous' : $this->name;
 		}
 
@@ -203,9 +203,9 @@ class Generator {
 			return;
 		}
 
-		$font = ap_get_theme_location( 'avatar-fonts/' . ap_opt( 'avatar_font' ) . '.ttf' );
+		$font  = ap_get_theme_location( 'avatar-fonts/' . ap_opt( 'avatar_font' ) . '.ttf' );
 		$words = explode( ' ', $this->name );
-		$text = '';
+		$text  = '';
 
 		foreach ( $words as $w ) {
 			$text .= strtoupper( $w[0] );
@@ -216,7 +216,7 @@ class Generator {
 		// Convert hex code to RGB.
 		$text_color = $this->hex_to_rgb( $this->text_color );
 
-		$im = imagecreatetruecolor( 90, 90 );
+		$im         = imagecreatetruecolor( 90, 90 );
 		$text_color = imagecolorallocate( $im, $text_color['r'], $text_color['g'], $text_color['b'] );
 
 		// Random background Colors.
@@ -256,7 +256,11 @@ class Generator {
 		$g = hexdec( $g );
 		$b = hexdec( $b );
 
-		return [ 'r' => $r, 'g' => $g, 'b' => $b ];
+		return [
+			'r' => $r,
+			'g' => $g,
+			'b' => $b,
+		];
 	}
 
 	/**
@@ -270,13 +274,13 @@ class Generator {
 	 * @return array
 	 */
 	protected function image_center( $image, $text, $font, $size, $angle = 8 ) {
-		$xi = imagesx( $image );
-		$yi = imagesy( $image );
+		$xi  = imagesx( $image );
+		$yi  = imagesy( $image );
 		$box = imagettfbbox( $size, $angle, $font, $text );
-		$xr = abs( max( $box[2], $box[4] ) );
-		$yr = abs( max( $box[5], $box[7] ) );
-		$x = intval( ( $xi - $xr ) / 2 );
-		$y = intval( ( $yi + $yr ) / 2 );
+		$xr  = abs( max( $box[2], $box[4] ) );
+		$yr  = abs( max( $box[5], $box[7] ) );
+		$x   = intval( ( $xi - $xr ) / 2 );
+		$y   = intval( ( $yi + $yr ) / 2 );
 
 		return array( $x, $y );
 	}
@@ -290,8 +294,8 @@ class Generator {
 	 * @return boolean
 	 */
 	private function image_gradientrect( $img, $start, $end ) {
-		$x = 0;
-		$y = 0;
+		$x  = 0;
+		$y  = 0;
 		$x1 = 90;
 		$y1 = 90;
 
@@ -300,7 +304,7 @@ class Generator {
 		}
 
 		$start = str_replace( '#', '', $start );
-		$end = str_replace( '#', '', $end );
+		$end   = str_replace( '#', '', $end );
 
 		$s = array(
 			hexdec( substr( $start, 0, 2 ) ),
@@ -316,9 +320,9 @@ class Generator {
 
 		$steps = $y1 - $y;
 		for ( $i = 0; $i < $steps; $i++ ) {
-			$r = $s[0] - ( ( ( $s[0] - $e[0] ) / $steps ) * $i );
-			$g = $s[1] - ( ( ( $s[1] - $e[1] ) / $steps ) * $i );
-			$b = $s[2] - ( ( ( $s[2] - $e[2]) / $steps ) * $i );
+			$r     = $s[0] - ( ( ( $s[0] - $e[0] ) / $steps ) * $i );
+			$g     = $s[1] - ( ( ( $s[1] - $e[1] ) / $steps ) * $i );
+			$b     = $s[2] - ( ( ( $s[2] - $e[2] ) / $steps ) * $i );
 			$color = imagecolorallocate( $img, $r, $g, $b );
 			imagefilledrectangle( $img, $x, $y + $i, $x1, $y + $i + 1, $color );
 		}
@@ -335,7 +339,7 @@ class Generator {
 	 */
 	private function color_luminance( $hex, $percent ) {
 		// Validate hex string.
-		$hex = preg_replace( '/[^0-9a-f]/i', '', $hex );
+		$hex     = preg_replace( '/[^0-9a-f]/i', '', $hex );
 		$new_hex = '#';
 
 		if ( strlen( $hex ) < 6 ) {
@@ -344,9 +348,9 @@ class Generator {
 
 		// Convert to decimal and change luminosity.
 		for ( $i = 0; $i < 3; $i++ ) {
-			$dec = hexdec( substr( $hex, $i * 2, 2 ) );
-			$dec = min( max( 0, $dec + $dec * $percent ), 255 );
-			$new_hex .= str_pad( dechex( $dec ) , 2, 0, STR_PAD_LEFT );
+			$dec      = hexdec( substr( $hex, $i * 2, 2 ) );
+			$dec      = min( max( 0, $dec + $dec * $percent ), 255 );
+			$new_hex .= str_pad( dechex( $dec ), 2, 0, STR_PAD_LEFT );
 		}
 
 		return $new_hex;

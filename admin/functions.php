@@ -31,13 +31,13 @@ function ap_flagged_posts_count() {
  */
 function ap_update_caps_for_role( $role_slug, $caps = array() ) {
 	$role_slug = sanitize_text_field( $role_slug );
-	$role = get_role( $role_slug );
+	$role      = get_role( $role_slug );
 
 	if ( ! $role || ! is_array( $caps ) ) {
 		return false;
 	}
 
-	$ap_roles = new AP_Roles;
+	$ap_roles = new AP_Roles();
 	$all_caps = $ap_roles->base_caps + $ap_roles->mod_caps;
 
 	foreach ( (array) $all_caps as $cap => $val ) {

@@ -112,7 +112,7 @@ class AnsPress_Upgrader {
 		$question = get_post( $id );
 
 		$last_active = get_post_meta( $id, '_ap_updated', true );
-		$views = get_post_meta( $id, '_views', true );
+		$views       = get_post_meta( $id, '_views', true );
 
 		// Get all answers associated with current question.
 		$this->answer_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} p WHERE post_type = 'answer' AND post_parent = %d ORDER BY post_date ASC", $id ) );
@@ -121,20 +121,22 @@ class AnsPress_Upgrader {
 			$this->answer_tasks( $answer_id );
 		}
 
-		$answers_counts = ap_count_published_answers( $id );
-		$answer_id = (int) get_post_meta( $id, '_ap_selected', true );
+		$answers_counts     = ap_count_published_answers( $id );
+		$answer_id          = (int) get_post_meta( $id, '_ap_selected', true );
 		$featured_questions = (array) get_option( 'featured_questions' );
 
-		ap_insert_qameta( $id, array(
-			'answers'     => $answers_counts,
-			'views'       => (int) get_post_meta( $id, '_views', true ),
-			'subscribers' => (int) get_post_meta( $id, '_ap_subscriber', true ),
-			'closed'      => ( 'closed' === $question->post_status ? 1: 0 ),
-			'flags'       => (int) get_post_meta( $id, '_ap_flag', true ),
-			'selected_id' => $answer_id,
-			'featured' 		=> in_array( $id, $featured_questions ),
-			'last_updated' => empty( $last_active ) ? $question->post_date : $last_active,
-		) );
+		ap_insert_qameta(
+			$id, array(
+				'answers'      => $answers_counts,
+				'views'        => (int) get_post_meta( $id, '_views', true ),
+				'subscribers'  => (int) get_post_meta( $id, '_ap_subscriber', true ),
+				'closed'       => ( 'closed' === $question->post_status ? 1 : 0 ),
+				'flags'        => (int) get_post_meta( $id, '_ap_flag', true ),
+				'selected_id'  => $answer_id,
+				'featured'     => in_array( $id, $featured_questions ),
+				'last_updated' => empty( $last_active ) ? $question->post_date : $last_active,
+			)
+		);
 
 		ap_update_qameta_terms( $id );
 		ap_update_post_attach_ids( $id );
@@ -167,7 +169,7 @@ class AnsPress_Upgrader {
 			return;
 		}
 
-		$post_id = (int) $post_id;
+		$post_id   = (int) $post_id;
 		$old_votes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type IN ('vote_up', 'vote_down') AND apmeta_actionid = {$post_id}" ); // @codingStandardsIgnoreLine
 
 		$apmeta_to_delete = [];
@@ -207,10 +209,10 @@ class AnsPress_Upgrader {
 	 * @return void
 	 */
 	private function answer_tasks( $answer_id ) {
-		$answer = get_post( $answer_id );
+		$answer      = get_post( $answer_id );
 		$last_active = get_post_meta( $answer_id, '_ap_updated', true );
 		$best_answer = get_post_meta( $answer_id, '_ap_best_answer', true );
-		$flags = (int) get_post_meta( $answer_id, '_ap_flag', true );
+		$flags       = (int) get_post_meta( $answer_id, '_ap_flag', true );
 
 		$args = array(
 			'flags'        => $flags,
@@ -322,7 +324,7 @@ class AnsPress_Upgrader {
 			return $found;
 		}
 
-		return  $old_event;
+		return $old_event;
 	}
 
 	/**

@@ -26,7 +26,7 @@ class AnsPress_BasePage_Shortcode {
 	public static function get_instance() {
 
 		// Create an object.
-		null === self::$instance && self::$instance = new self;
+		null === self::$instance && self::$instance = new self();
 		return self::$instance; // Return the object.
 	}
 
@@ -36,14 +36,14 @@ class AnsPress_BasePage_Shortcode {
 	 * @param array  $atts {
 	 *     Attributes of the shortcode.
 	 *
-	 *     @type string  $categories 			     Slug of question_category
-	 *     @type string  $tags 				         Slug of question_tag
-	 *     @type string  $tax_relation 		     Taxonomy relation, see here @link https://codex.wordpress.org/Taxonomies
-	 *     @type string  $tags_operator 		   Operator for question_tag taxonomy
+	 *     @type string  $categories                 Slug of question_category
+	 *     @type string  $tags                       Slug of question_tag
+	 *     @type string  $tax_relation           Taxonomy relation, see here @link https://codex.wordpress.org/Taxonomies
+	 *     @type string  $tags_operator            Operator for question_tag taxonomy
 	 *     @type string  $categories_operator  Operator for question_category taxonomy
-	 *     @type string  $page 				         Select a page to display.
-	 *     @type boolean $hide_list_head 		   Hide list head?
-	 *     @type string  $order_by 				     Sort by.
+	 *     @type string  $page                       Select a page to display.
+	 *     @type boolean $hide_list_head           Hide list head?
+	 *     @type string  $order_by                   Sort by.
 	 *  }
 	 * @param string $content Shortcode content.
 	 * @return string
@@ -81,7 +81,7 @@ class AnsPress_BasePage_Shortcode {
 		echo '</div>';
 		// Linkback to author.
 		if ( ! ap_opt( 'author_credits' ) ) {
-			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ). ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a></div>';
+			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ) . ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a></div>';
 		}
 
 		wp_reset_postdata();

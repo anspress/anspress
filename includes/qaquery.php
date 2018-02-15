@@ -36,15 +36,15 @@ class Question_Query extends WP_Query {
 	 */
 	public function __construct( $args = [] ) {
 		if ( is_front_page() ) {
-			$paged = (isset( $_GET['ap_paged'] )) ? (int) $_GET['ap_paged'] : 1; // input var ok.
+			$paged = ( isset( $_GET['ap_paged'] ) ) ? (int) $_GET['ap_paged'] : 1; // input var ok.
 		} else {
-			$paged = (get_query_var( 'paged' )) ? get_query_var( 'paged' ) : 1;
+			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 		}
 
 		if ( isset( $args['post_parent'] ) ) {
 			$post_parent = $args['post_parent'];
 		} else {
-			$post_parent = (get_query_var( 'parent' )) ? get_query_var( 'parent' ) : false;
+			$post_parent = ( get_query_var( 'parent' ) ) ? get_query_var( 'parent' ) : false;
 		}
 
 		if ( ! isset( $args['ap_order_by'] ) ) {
@@ -52,35 +52,35 @@ class Question_Query extends WP_Query {
 		}
 
 		$defaults = array(
-			'showposts' 	      => ap_opt( 'question_per_page' ),
-			'paged' 	          => $paged,
-			'ap_query' 	        => true,
-			'ap_order_by' 	    => 'active',
-			'ap_question_query' => true,
-			'post_status' 		  => [ 'publish' ],
+			'showposts'              => ap_opt( 'question_per_page' ),
+			'paged'                  => $paged,
+			'ap_query'               => true,
+			'ap_order_by'            => 'active',
+			'ap_question_query'      => true,
+			'post_status'            => [ 'publish' ],
 			'ap_current_user_ignore' => false,
 		);
 
-		$this->args = wp_parse_args( $args, $defaults );
+		$this->args                = wp_parse_args( $args, $defaults );
 		$this->args['ap_order_by'] = sanitize_title( $this->args['ap_order_by'] );
 
 		// Check if user can read private post.
-		if ( ap_user_can_view_private_post( ) ) {
+		if ( ap_user_can_view_private_post() ) {
 			$this->args['post_status'][] = 'private_post';
 		}
 
 		// Check if user can read moderate posts.
-		if ( ap_user_can_view_moderate_post( ) ) {
+		if ( ap_user_can_view_moderate_post() ) {
 			$this->args['post_status'][] = 'moderate';
 		}
 
 		// Check if user can read moderate posts.
-		if ( ap_user_can_view_future_post( ) ) {
+		if ( ap_user_can_view_future_post() ) {
 			$this->args['post_status'][] = 'future';
 		}
 
 		// Show trash posts to super admin.
-		if ( is_super_admin( ) ) {
+		if ( is_super_admin() ) {
 			$this->args['post_status'][] = 'trash';
 		}
 
@@ -184,7 +184,11 @@ class Question_Query extends WP_Query {
 			return;
 		}
 
-		$this->ap_ids = [ 'post_ids' => [], 'attach_ids' => [], 'user_ids' => [] ];
+		$this->ap_ids = [
+			'post_ids'   => [],
+			'attach_ids' => [],
+			'user_ids'   => [],
+		];
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
 			$this->ap_ids['attach_ids'] = array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] );
@@ -458,11 +462,11 @@ function ap_question_metas( $question_id = false ) {
 		$metas['solved'] = '<i class="apicon-check"></i><i>' . __( 'Solved', 'anspress-question-answer' ) . '</i>';
 	}
 
-	$view_count = ap_get_post_field( 'views' );
+	$view_count     = ap_get_post_field( 'views' );
 	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
 
 	if ( is_question() ) {
-		$last_active 	= ap_get_last_active( get_question_id() );
+		$last_active     = ap_get_last_active( get_question_id() );
 		$metas['active'] = '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>';
 	}
 
@@ -513,7 +517,7 @@ function ap_recent_post_activity() {
  * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_get_last_active( $post_id = null ) {
-	$p = ap_get_post( $post_id );
+	$p    = ap_get_post( $post_id );
 	$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
 	return ap_human_time( get_gmt_from_date( $date ), false );
 }
@@ -681,7 +685,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$post_id = get_the_ID();
 	}
 
-	$_post = ap_get_post( $post_id );
+	$_post    = ap_get_post( $post_id );
 	$activity = $_post->activities;
 
 	if ( false !== $answer_activities && ! empty( $_post->activities['child'] ) ) {
@@ -699,11 +703,11 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 	$html = '';
 
 	if ( $activity ) {
-		$user_id = ! empty( $activity['user_id'] ) ? $activity['user_id'] : 0;
+		$user_id       = ! empty( $activity['user_id'] ) ? $activity['user_id'] : 0;
 		$activity_type = ! empty( $activity['type'] ) ? $activity['type'] : '';
-		$html .= '<span class="ap-post-history">';
-		$html .= '<a href="' . ap_user_link( $user_id ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( $user_id ) . '</span></a>';
-		$html .= ' ' . ap_activity_short_title( $activity_type );
+		$html         .= '<span class="ap-post-history">';
+		$html         .= '<a href="' . ap_user_link( $user_id ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( $user_id ) . '</span></a>';
+		$html         .= ' ' . ap_activity_short_title( $activity_type );
 
 		if ( ! empty( $activity['date'] ) ) {
 			$html .= ' <a href="' . get_permalink( $_post ) . '">';

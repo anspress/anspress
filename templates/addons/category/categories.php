@@ -13,10 +13,10 @@
 global $question_categories;
 ?>
 
-<?php dynamic_sidebar('ap-top');?>
+<?php dynamic_sidebar( 'ap-top' ); ?>
 
 <div class="ap-row">
-	<div class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
+	<div class="<?php echo is_active_sidebar( 'ap-category' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12'; ?>">
 		<div id="ap-categories" class="clearfix">
 			<ul class="ap-term-category-box clearfix">
 
@@ -25,7 +25,7 @@ global $question_categories;
 						<div class="ap-category-item">
 							<div class="ap-cat-img-c">
 
-								<?php ap_category_icon( $category->term_id );?>
+								<?php ap_category_icon( $category->term_id ); ?>
 
 								<span class="ap-term-count">
 									<?php
@@ -66,7 +66,7 @@ global $question_categories;
 								<div class="ap-taxo-description">
 									<?php echo ap_truncate_chars( $category->description, 120 ); ?>
 								</div>
-							<?php endif;?>
+							<?php endif; ?>
 
 						</div>
 					</li>
@@ -74,12 +74,12 @@ global $question_categories;
 
 			</ul>
 		</div>
-		<?php ap_pagination();?>
+		<?php ap_pagination(); ?>
 	</div>
 
 	<?php if ( is_active_sidebar( 'ap-category' ) && is_anspress() ) : ?>
 		<div class="ap-question-right ap-col-3">
-			<?php dynamic_sidebar( 'ap-category' );?>
+			<?php dynamic_sidebar( 'ap-category' ); ?>
 		</div>
 	<?php endif; ?>
 </div>

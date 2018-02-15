@@ -11,7 +11,7 @@
 AP_License::ap_product_license();
 
 
-$fields = ap_product_license_fields();
+$fields   = ap_product_license_fields();
 $licenses = get_option( 'anspress_license' );
 ?>
 
@@ -19,24 +19,24 @@ $licenses = get_option( 'anspress_license' );
 	<h2>
 		<?php esc_html_e( 'Licenses', 'anspress-question-answer' ); ?>
 	</h2>
-	<p class="lead"><?php _e('License keys for AnsPress products, i.e. extensions and themes.', 'anspress-question-answer' ); ?></p>
+	<p class="lead"><?php _e( 'License keys for AnsPress products, i.e. extensions and themes.', 'anspress-question-answer' ); ?></p>
 
-	<?php if ( ! empty( $fields ) ) :   ?>
+	<?php if ( ! empty( $fields ) ) : ?>
 				<form method="post" action="<?php echo admin_url( 'admin.php?page=anspress_licenses' ); ?>">
 						<table class="form-table">
 								<tbody>
-					<?php foreach ( $fields as $slug => $prod ) :   ?>
+					<?php foreach ( $fields as $slug => $prod ) : ?>
 												<tr valign="top">
 							<th scope="row" valign="top"><?php echo $prod['name']; ?></th>
 														<td>
-								<input id="ap_license_<?php echo $slug; ?>" name="ap_license_<?php echo $slug; ?>" type="text" class="regular-text" value="<?php esc_attr_e( @$licenses[$slug]['key'] ); ?>" placeholder="<?php printf(__('Enter license key for %s' ), $prod['name'] ); ?>" />
+								<input id="ap_license_<?php echo $slug; ?>" name="ap_license_<?php echo $slug; ?>" type="text" class="regular-text" value="<?php esc_attr_e( @$licenses[ $slug ]['key'] ); ?>" placeholder="<?php printf( __( 'Enter license key for %s' ), $prod['name'] ); ?>" />
 
-								<?php if ( ! empty( $licenses[$slug]['key'] ) ) { ?>
-									<?php if ( $licenses[$slug]['status'] !== false && $licenses[$slug]['status'] == 'valid' ) { ?>
-										<span class="ap-license-check"><i class="apicon-check"></i><?php _e('active', 'anspress-question-answer' ); ?></span><br />
-										<input type="submit" class="button-secondary" name="ap_license_deactivate_<?php echo $slug; ?>" value="<?php _e('Deactivate License' ); ?>"/>
+								<?php if ( ! empty( $licenses[ $slug ]['key'] ) ) { ?>
+									<?php if ( $licenses[ $slug ]['status'] !== false && $licenses[ $slug ]['status'] == 'valid' ) { ?>
+										<span class="ap-license-check"><i class="apicon-check"></i><?php _e( 'active', 'anspress-question-answer' ); ?></span><br />
+										<input type="submit" class="button-secondary" name="ap_license_deactivate_<?php echo $slug; ?>" value="<?php _e( 'Deactivate License' ); ?>"/>
 									<?php } else { ?>
-										<input type="submit" class="button-secondary" name="ap_license_activate_<?php echo $slug; ?>" value="<?php _e('Activate License' ); ?>"/>
+										<input type="submit" class="button-secondary" name="ap_license_activate_<?php echo $slug; ?>" value="<?php _e( 'Activate License' ); ?>"/>
 									<?php } ?>
 								<?php } ?>
 														</td>
@@ -45,10 +45,10 @@ $licenses = get_option( 'anspress_license' );
 								</tbody>
 						</table>
 						<input type="hidden" name="action" value="ap_product_license">
-						<input type="submit" name="save_licenses" class="button button-primary" value="<?php _e('Save', 'anspress-question-answer' ); ?>" />
+						<input type="submit" name="save_licenses" class="button button-primary" value="<?php _e( 'Save', 'anspress-question-answer' ); ?>" />
 						<?php wp_nonce_field( 'ap_licenses_nonce', '__nonce' ); ?>
 				</form>
 	<?php else : ?>
-		<?php _e('No license yet.' ); ?>
+		<?php _e( 'No license yet.' ); ?>
 	<?php endif; ?>
 </div>
