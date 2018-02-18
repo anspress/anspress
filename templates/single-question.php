@@ -117,6 +117,15 @@
 			</div>
 
 			<?php
+				/**
+				 * Action triggered before answers.
+				 *
+				 * @since   4.1.8
+				 */
+				do_action( 'ap_before_answers' );
+			?>
+
+			<?php
 				// Get answers.
 				ap_answers();
 

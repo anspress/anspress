@@ -330,8 +330,11 @@ function ap_post_edit_link( $_post ) {
  * @param int    $limit Limit string to.
  * @param string $ellipsis Ellipsis.
  * @return string
+ *
+ * @since 4.1.8 Strip tags.
  */
 function ap_truncate_chars( $text, $limit = 40, $ellipsis = '...' ) {
+	$text = strip_tags( $text );
 	$text = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text );
 	if ( strlen( $text ) > $limit ) {
 		$endpos = strpos( $text, ' ', (string) $limit );
