@@ -164,16 +164,17 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 	}
 
 	echo '<div class="ap-pagination clearfix">';
-	echo paginate_links(
-		array( // WPCS: xss okay.
-			'base'     => $base,
-			'format'   => $format,
-			'current'  => $current,
-			'total'    => $total,
-			'end_size' => 2,
-			'mid_size' => 2,
-		)
-	);
+	$links = paginate_links( array( // WPCS: xss okay.
+		'base'     => $base,
+		'format'   => $format,
+		'current'  => $current,
+		'total'    => $total,
+		'end_size' => 2,
+		'mid_size' => 2,
+	) );
+	$links = str_replace('<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links);
+	$links = str_replace('<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links);
+	echo $links;
 	echo '</div>';
 }
 
