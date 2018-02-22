@@ -566,6 +566,12 @@ function ap_get_template_part( $file, $args = false ) {
  * @since 4.1.2 If 404 do not return anything.
  */
 function ap_current_page() {
+	$cache = wp_cache_get( 'current_page', 'anspress' );
+
+	if ( false !== $cache ) {
+		return $cache;
+	}
+
 	$query_var  = get_query_var( 'ap_page', '' );
 	$main_pages = array_keys( ap_main_pages() );
 	$page_ids   = [];
@@ -578,6 +584,8 @@ function ap_current_page() {
 		$query_var = 'question';
 	} elseif ( 'edit' === $query_var ) {
 		$query_var = 'edit';
+	}  elseif ( in_array( $query_var . '_page', $main_pages, true ) ) {
+		$query_var = $query_var;
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
 	} elseif ( 'base' === $query_var ) {
@@ -591,7 +599,10 @@ function ap_current_page() {
 	 *
 	 * @param    string $query_var Current page slug.
 	 */
-	return apply_filters( 'ap_current_page', esc_attr( $query_var ) );
+	$query_var = apply_filters( 'ap_current_page', esc_attr( $query_var ) );
+	wp_cache_set( 'current_page', $query_var, 'anspress' );
+
+	return $query_var;
 }
 
 /**

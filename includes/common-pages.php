@@ -26,7 +26,7 @@ class AnsPress_Common_Pages {
 	}
 
 	/**
-	 * Layout of base page
+	 * Layout of base page.
 	 */
 	public static function base_page() {
 		global $wp;

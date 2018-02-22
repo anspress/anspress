@@ -153,7 +153,6 @@ class AnsPress_Rewrite {
 		 * @since 4.1.0
 		 */
 		$all_rules = apply_filters( 'ap_rewrites', $all_rules, $slug, $base_page_id );
-
 		$ap_rules = [];
 
 		foreach ( $all_rules as $r => $re ) {
