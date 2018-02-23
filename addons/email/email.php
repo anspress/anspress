@@ -471,7 +471,7 @@ class Email extends \AnsPress\Singleton {
 		$subscribers  = ap_get_subscribers(
 			[
 				'subs_event' => 'question',
-				$question->ID,
+				'subs_ref_id' => $question->ID,
 			]
 		);
 
@@ -528,7 +528,7 @@ class Email extends \AnsPress\Singleton {
 
 		$email = new EmailHelper( 'edit_answer', $args );
 
-		$a_subscribers = (array) ap_get_subscribers( [ 'subs_events' => 'answer_' . $answer->post_parent ] );
+		$a_subscribers = (array) ap_get_subscribers( [ 'subs_event' => 'answer_' . $answer->post_parent ] );
 		$q_subscribers = (array) ap_get_subscribers(
 			[
 				'subs_event'  => 'question',
