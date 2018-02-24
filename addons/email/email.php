@@ -465,24 +465,17 @@ class Email extends \AnsPress\Singleton {
 			$args['users'] = $admin_emails;
 		}
 
-		$email = new EmailHelper( 'edit_question', $args );
-
 		$current_user = wp_get_current_user();
-		$subscribers  = ap_get_subscribers(
-			[
-				'subs_event' => 'question',
-				'subs_ref_id' => $question->ID,
-			]
-		);
+		$email        = new EmailHelper( 'edit_question', $args );
+
+		$subscribers  = ap_get_subscribers( array(
+			'subs_event'  => 'question',
+			'subs_ref_id' => $question->ID,
+		) );
 
 		// Exclude current author.
-		if ( ! empty( $question->post_author ) ) {
-			$post_author = get_user_by( 'id', $question->post_author );
-
-			if ( $subscribers && ! ap_in_array_r( $post_author->data->user_email, $subscribers ) &&
-				$post_author->data->user_email !== $current_user->user_email ) {
-				$email->add_email( $post_author->data->user_email );
-			}
+		if ( get_current_user_id() != $question->post_author ) {
+			$email->add_user( $question->post_author );
 		}
 
 		foreach ( (array) $subscribers as $s ) {
