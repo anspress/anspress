@@ -229,6 +229,8 @@ class Validate {
 			$sanitized     = [];
 			$existing_tags = [];
 
+			$args['value_field'] = empty( $args['value_field'] ) || 'name' === $args['value_field'] ? 'name' : 'id';
+
 			foreach ( (array) $value as $tag ) {
 				if ( is_numeric( $tag ) ) {
 					$existing_tags[] = $tag;
@@ -244,15 +246,15 @@ class Validate {
 					array(
 						'taxonomy'   => $taxo,
 						'include'    => $existing_tags,
-						'fields'     => 'names',
+						'fields'     => 'id=>name',
 						'hide_empty' => false,
 					)
 				);
 
 				// If allowed add new tags as well.
 				if ( $terms ) {
-					foreach ( $terms as $tname ) {
-						$sanitized[] = $tname;
+					foreach ( $terms as $id => $tname ) {
+						$sanitized[] = 'name' === $args['value_field'] ? $tname : $id;
 					}
 				}
 			}

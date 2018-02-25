@@ -1363,9 +1363,9 @@ class AnsPress_Admin {
 		define( 'IFRAME_REQUEST', true );
 		iframe_header();
 
+		wp_enqueue_style( 'anspress-main', ap_get_theme_url( 'css/main.css' ), [], AP_VERSION );
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', [], AP_VERSION );
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), [], AP_VERSION );
-
 		?>
 			<script type="text/javascript">
 				currentQuestionID = '<?php the_ID(); ?>';
@@ -1374,7 +1374,7 @@ class AnsPress_Admin {
 				apShowComments  = false;
 			</script>
 		<?php
-
+		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/min/selectize.min.js', [ 'jquery' ], AP_VERSION );
 		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
 		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js', [ 'anspress-main' ], AP_VERSION, true );
 
