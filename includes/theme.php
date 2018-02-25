@@ -585,7 +585,7 @@ function ap_current_page() {
 		$query_var = 'question';
 	} elseif ( 'edit' === $query_var ) {
 		$query_var = 'edit';
-	}  elseif ( in_array( $query_var . '_page', $main_pages, true ) ) {
+	} elseif ( in_array( $query_var . '_page', $main_pages, true ) ) {
 		$query_var = $query_var;
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
