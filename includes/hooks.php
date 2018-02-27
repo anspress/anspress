@@ -431,7 +431,10 @@ class AnsPress_Hooks {
 		}
 
 		$count = get_comment_count( $comment->comment_post_ID );
-		ap_insert_qameta( $comment->comment_post_ID, [ 'fields' => [ 'unapproved_comments' => $count['awaiting_moderation'] ] ] );
+		ap_insert_qameta( $comment->comment_post_ID, array(
+			'fields'       => [ 'unapproved_comments' => $count['awaiting_moderation'] ],
+			'last_updated' => current_time( 'mysql' ),
+		) );
 
 		// Log to activity table.
 		ap_activity_add( array(
@@ -476,7 +479,7 @@ class AnsPress_Hooks {
 			'q_id'   => $q_id,
 			'a_id'   => $a_id,
 			'action' => 'edit_c',
-            'c_id'   => $comment_id,
+      'c_id'   => $comment_id,
 		) );
 	}
 

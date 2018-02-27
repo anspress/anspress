@@ -148,6 +148,13 @@ class AnsPress_Common_Pages {
 		}
 
 		include ap_get_theme_location( 'ask.php' );
+
+		/**
+		 * Action called after ask page (shortcode) is rendered.
+		 *
+		 * @since 4.1.8
+		 */
+		do_action( 'ap_after_ask_page' );
 	}
 
 	/**
