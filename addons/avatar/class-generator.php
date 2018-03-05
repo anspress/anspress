@@ -98,7 +98,7 @@ class Generator {
 	/**
 	 * Initialize the class.
 	 *
-	 * @param integer|string $user User ID or name if anonymous.
+	 * @param integer|string $user User ID or name if non-loggedin user.
 	 */
 	public function __construct( $user ) {
 

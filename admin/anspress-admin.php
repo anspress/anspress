@@ -979,7 +979,7 @@ class AnsPress_Admin {
 					'type'    => 'select',
 					'value'   => $opt['read_question_per'],
 					'options' => array(
-						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_read_question capability', 'anspress-question-answer' ),
 					),
@@ -990,7 +990,7 @@ class AnsPress_Admin {
 					'type'    => 'select',
 					'value'   => $opt['read_answer_per'],
 					'options' => array(
-						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_read_answer capability', 'anspress-question-answer' ),
 					),
@@ -1001,7 +1001,7 @@ class AnsPress_Admin {
 					'type'    => 'select',
 					'value'   => $opt['read_comment_per'],
 					'options' => array(
-						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_read_comment capability', 'anspress-question-answer' ),
 					),
@@ -1029,7 +1029,7 @@ class AnsPress_Admin {
 					'type'    => 'select',
 					'value'   => $opt['post_question_per'],
 					'options' => array(
-						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_question capability', 'anspress-question-answer' ),
 					),
@@ -1040,7 +1040,7 @@ class AnsPress_Admin {
 					'type'    => 'select',
 					'value'   => $opt['post_answer_per'],
 					'options' => array(
-						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_answer capability', 'anspress-question-answer' ),
 					),
@@ -1063,7 +1063,7 @@ class AnsPress_Admin {
 					'type'    => 'select',
 					'value'   => $opt['post_comment_per'],
 					'options' => array(
-						'anyone'    => __( 'Anyone, including anonymous', 'anspress-question-answer' ),
+						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_comment capability', 'anspress-question-answer' ),
 					),
@@ -1109,8 +1109,8 @@ class AnsPress_Admin {
 					'value'   => $opt['edit_answer_status'],
 				),
 				'anonymous_post_status' => array(
-					'label'   => __( 'Status of anonymous post', 'anspress-question-answer' ),
-					'desc'    => __( 'Default status of question or answer submitted by anonymous user.', 'anspress-question-answer' ),
+					'label'   => __( 'Status of non-loggedin post', 'anspress-question-answer' ),
+					'desc'    => __( 'Default status of question or answer submitted by non-loggedin user.', 'anspress-question-answer' ),
 					'type'    => 'select',
 					'options' => array(
 						'publish'  => __( 'Publish', 'anspress-question-answer' ),

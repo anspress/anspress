@@ -83,7 +83,7 @@ class AnsPress_Admin_Ajax {
 
 	/**
 	 * Handle ajax vote in wp-admin post edit screen.
-	 * Cast vote as anonymous use with ID 0, so that when this vote never get
+	 * Cast vote as guest user with ID 0, so that when this vote never get
 	 * rest if user vote.
 	 *
 	 * @since 2.5

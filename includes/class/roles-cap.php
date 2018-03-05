@@ -805,7 +805,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
  * @param  integer $user_id User ID.
  * @return boolean
  * @since  unknown
- * @since  4.1.5 Let user view if post is in their session. This is useful for anonymous users.
+ * @since  4.1.5 Let user view if post is in their session. This is useful for guest users.
  */
 function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 
