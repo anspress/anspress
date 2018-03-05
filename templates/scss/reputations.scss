@@ -22,7 +22,7 @@
           border-radius: 50%;
           color: #fff;
           &.answer{
-            background: $main-color;
+            background: $color1;
           }
           &.ask{
             background: #F44336;
@@ -54,7 +54,7 @@
         text-align: right;
         width: 55px;
         span{
-          background: $yellow-color;
+          background: $color9;
           color: #fff;
           width: 40px;
           display: block;

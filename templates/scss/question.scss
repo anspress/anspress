@@ -90,7 +90,7 @@
 			i {
 				margin-right: 4px;
 				vertical-align: middle;
-				color: $light-color;
+				color: $color5;
 			}
 			>span {
 				vertical-align: middle;
@@ -114,7 +114,7 @@
 		}
 		.solved {
 			margin-right: 20px;
-			background: $main-color;
+			background: $color1;
 			i {
 				margin-right: 0;
 				color: #fff;
@@ -126,7 +126,7 @@
 	}
 	.ap-user-meta {
 		a {
-			color: $link-color;
+			color: $color6;
 		}
 		&-reputation {
 			font-size: 12px;
@@ -257,13 +257,13 @@
 		text-decoration: none;
 		color: #fff;
 		border-radius: 10px;
-		background: $blue-color;
+		background: $color7;
 		.tax-count {
 			font-style: normal;
 		}
 		&:hover {
-			color: $default-color;
-			border-color: $main-color;
+			color: $color3;
+			border-color: $color1;
 		}
 	}
 	li:last-child a {
@@ -407,9 +407,9 @@ postmessage {
 			margin: -1px;
 			padding: 6px 10px;
 			color: #fff;
-			background: $main-color;
+			background: $color1;
 			&:hover {
-				background: lighten($main-color, 10%);
+				background: lighten($color1, 10%);
 			}
 		}
 		a {
@@ -438,7 +438,7 @@ postmessage {
 .ap-all-answers {
 	display: table;
 	text-align: center;
-	border: solid 1px $yellow-color;
+	border: solid 1px $color9;
 	text-decoration: none;
 	border-radius: 3px;
 	font-size: 13px;

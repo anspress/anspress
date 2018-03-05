@@ -8,15 +8,15 @@ $favorite-color	: #ff763b;
 
 
 //Color
-$main-color		: #8bc34a;
-$ap-color		  : #f14f4f;
-$default-color 	: #333;
-$light-color	: #888;
-$meta-color		: #777;
-$link-color		: #2488B7;
-$blue-color		: #11a7db;
-$error-color	: #eb5837;
-$yellow-color	: #F4AC20;
+$color1:  #8bc34a;
+$color2:  #f14f4f;
+$color3:  #333;
+$color4:  #888;
+$color5:  #777;
+$color6:  #2488B7;
+$color7:  #11a7db;
+$color8:  #eb5837;
+$color9:  #F4AC20;
 
 //Font
 
@@ -37,3 +37,16 @@ $default-border-color: #eee;
 $default-border-radius : 0;
 $avatar-border-radius: 0;
 $user-nav-width: 200px;
+
+$anspress-vars: () !default;
+$anspress-vars: map-merge((
+  "color1":    $color1,
+  "color2":    $color2,
+  "color3":    $color3,
+  "color4":    $color4,
+  "color5":    $color5,
+  "color6":    $color6,
+  "color7":    $color7,
+  "color8":    $color8,
+  "color9":    $color9,
+), $anspress-vars);
