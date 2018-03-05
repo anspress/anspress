@@ -31,10 +31,10 @@ $font-size-post-content: 13px;
 $line-height-post-content: 1.6;
 
 //Border variables
-$default-border-color: #eee;
+$border-color: rgba(0, 0, 0, 0.1);
 
 //Border radius
-$default-border-radius : 0;
+$border-radius : 4px;
 $avatar-border-radius: 0;
 $user-nav-width: 200px;
 
@@ -49,4 +49,6 @@ $anspress-vars: map-merge((
   "color7":    $color7,
   "color8":    $color8,
   "color9":    $color9,
+  "border-radius":    $border-radius,
+  "border-color":    $border-color,
 ), $anspress-vars);

@@ -770,6 +770,12 @@ jQuery(document).ready(function($){
 	$('[ap-tag-field]').each(function(){
 		tagElements($(this));
 	});
+
+	$('#anspress').on('click', '.ap-remove-parent', function(e){
+		console.log(e);
+		e.preventDefault();
+		$(this).parent().remove();
+	})
 });
 
 window.AnsPress.Helper = {

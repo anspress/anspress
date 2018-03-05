@@ -163,12 +163,12 @@
     border-radius: 2px;
 	}
 	span{
-		background: $default-border-color;
+		background: $border-color;
 	}
 }
 
 .border-top{
-	border-top: solid 1px $default-border-color;
+	border-top: solid 1px $border-color;
 }
 .margin-top-20{
 	margin-top: 20px;
@@ -368,4 +368,15 @@ ul{
 }
 .ap-display-flex{
 	display: flex;
+}
+.ap-block{
+	background-color: #fff;
+	border: solid 1px var(--ap_border-color);
+	padding: 10px;
+	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.07);
+	border-radius: var(--ap_border-radius);
+}
+
+.ap-mb-10{
+	margin-bottom: 10px;
 }
