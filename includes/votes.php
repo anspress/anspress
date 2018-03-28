@@ -273,7 +273,7 @@ function ap_get_votes( $args = array() ) {
  *                     {
  *                      'vote_post_id' => 1,
  *                      'vote_type' => 'vote', String or Array
- *                      'vote_use_id' => 1,
+ *                      'vote_user_id' => 1,
  *                      'vote_date' => 'date' // Array or string
  *                     }
  * @return array|boolean
@@ -653,13 +653,11 @@ function ap_vote_btn( $post = null, $echo = true ) {
  */
 function ap_user_votes_pre_fetch( $ids ) {
 	if ( $ids && is_user_logged_in() ) {
-		$votes = ap_get_votes(
-			[
-				'vote_post_id' => (array) $ids,
-				'vote_user_id' => get_current_user_id(),
-				'vote_type'    => [ 'flag', 'vote' ],
-			]
-		);
+		$votes = ap_get_votes( [
+			'vote_post_id' => (array) $ids,
+			'vote_user_id' => get_current_user_id(),
+			'vote_type'    => [ 'flag', 'vote' ],
+		] );
 
 		$cache_keys = [];
 		foreach ( (array) $ids as $post_id ) {

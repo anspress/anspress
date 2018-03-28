@@ -93,6 +93,7 @@ class Input extends Field {
 	 * Check and set sub type of a field.
 	 *
 	 * @return void
+	 * @since 4.1.8 Added date type.
 	 */
 	private function set_subtype() {
 		$allowed_subtype = array(
@@ -101,6 +102,7 @@ class Input extends Field {
 			'number',
 			'email',
 			'password',
+			'date',
 			'datetime-local',
 			'color',
 			'url',

@@ -116,9 +116,17 @@ class Editor extends Field {
 
 		$this->add_html( '<div class="ap-editor">' );
 
+		$images = $this->child->find( 'images' );
+
 		ob_start();
 		wp_editor( $this->value(), $this->id(), $editor_args );
 		$this->add_html( ob_get_clean() );
+
+		// Image upload field.
+		$this->add_html( '<div class="ap-editor-imgesel ap-upload-c position-relative d-table ap-border py-5 px-10 ap-border-radius ap-font-size-md" id="' . esc_attr( $images->id() ) . '">' );
+		$this->add_html( '<input type="file" name="' . esc_attr( $images->field_name ) . '" data-upload="' . esc_js( $images->js_args() ) . '" >' );
+		$this->add_html( '<i class="apicon-image mr-5"></i><span>' . __( 'Attach files by', 'anspress-question-answer' ) . ' <i>' . __( 'selecting them', 'anspress-question-answer' ) . '</i>' . '</span>' );
+		$this->add_html( '</div>' );
 
 		$this->add_html( '</div>' );
 

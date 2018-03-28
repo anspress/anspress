@@ -256,9 +256,14 @@ class Field {
 	 * Order of HTML markup.
 	 *
 	 * @return void
+	 * @since 4.1.8 Allow overriding order from arguments.
 	 */
 	protected function html_order() {
-		$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		if ( empty( $this->args['output_order'] ) ) {
+			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		} else {
+			$this->output_order = $this->args['output_order'];
+		}
 	}
 
 	/**
@@ -310,9 +315,17 @@ class Field {
 	/**
 	 * Get value of a field.
 	 *
+	 * @param mixed $custom_val Set custom value for field.
 	 * @return mixed
+	 *
+	 * @since 4.1.8 Pass a value to set it as value of field.
 	 */
-	public function value() {
+	public function value( $custom_val = null ) {
+		if ( null !== $custom_val ) {
+			$this->value = $custom_val;
+			return true;
+		}
+
 		if ( ! is_null( $this->value ) ) {
 			return $this->value;
 		}

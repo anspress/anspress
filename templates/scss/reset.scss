@@ -55,6 +55,71 @@
 		@include col(1, 12);
 	}
 }
+
+@each $prop, $abbrev in (margin: m, padding: p) {
+	@each $size, $lengths in $space-breaks {
+			$length-x: map-get($lengths, x);
+			$length-y: map-get($lengths, y);
+
+			.#{$abbrev}-#{$size}  { #{$prop}:        $length-y $length-x !important; }
+
+			.#{$abbrev}t-#{$size},
+			.#{$abbrev}y-#{$size} {
+					#{$prop}-top:    $length-y !important;
+			}
+
+			.#{$abbrev}r-#{$size},
+			.#{$abbrev}x-#{$size} {
+					#{$prop}-right:  $length-x !important;
+			}
+
+			.#{$abbrev}b-#{$size},
+			.#{$abbrev}y-#{$size} {
+					#{$prop}-bottom: $length-y !important;
+			}
+
+			.#{$abbrev}l-#{$size},
+			.#{$abbrev}x-#{$size} {
+					#{$prop}-left:   $length-x !important;
+			}
+	}
+}
+
+// Text color and bg.
+@each $key, $value in $anspress-vars {
+	.ap-text-#{$key} {
+		color: #{$value};
+	}
+	.ap-bg-#{$key} {
+		color: #{$value};
+	}
+}
+.ap-text-muted{
+	color: #999;
+}
+.ap-font-size-md{
+	font-size: $medium-font-size;
+}
+
+.d-block{
+	display: block;
+}
+.d-table{
+	display: table;
+}
+.position-relative{
+	position: relative;
+}
+.position-absolute{
+	position: relative;
+}
+.ap-border{
+	border: solid 1px var(--ap_border-color);
+}
+.ap-border-radius{
+	border-radius: var(--ap_border-radius);
+}
+
 .anspress{
 	font-size: 14px;
 	line-height: 1.6;

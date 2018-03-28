@@ -89,9 +89,11 @@ class Form {
 		$this->form_name = $form_name;
 		$this->args      = wp_parse_args(
 			$args, array(
-				'submit_label' => __( 'Submit', 'anspress-question-answer' ),
-				'editing'      => false,
-				'editing_id'   => 0,
+				'form_tag'      => true,
+				'submit_button' => true,
+				'submit_label'  => __( 'Submit', 'anspress-question-answer' ),
+				'editing'       => false,
+				'editing_id'    => 0,
 			)
 		);
 
@@ -192,6 +194,8 @@ class Form {
 				'form_action'   => '',
 				'hidden_fields' => false,
 				'ajax_submit'   => true,
+				'submit_button' => $this->args['submit_button'],
+				'form_tag'      => $this->args['form_tag'],
 			)
 		);
 
@@ -211,7 +215,9 @@ class Form {
 
 		$action = ! empty( $form_args['form_action'] ) ? ' action="' . esc_url( $form_args['form_action'] ) . '"' : '';
 
-		echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
+		if ( true === $form_args['form_tag'] ) {
+			echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
+		}
 
 		// Output form errors.
 		if ( $this->have_errors() ) {
@@ -225,7 +231,11 @@ class Form {
 		echo $this->generate_fields(); // xss okay.
 
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
-		echo '<button type="submit" class="ap-btn ap-btn-submit">' . esc_html( $this->args['submit_label'] ) . '</button>';
+
+		if ( true === $form_args['submit_button'] ) {
+			echo '<button type="submit" class="ap-btn ap-btn-submit">' . esc_html( $this->args['submit_label'] ) . '</button>';
+		}
+
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_nonce" value="' . esc_attr( wp_create_nonce( $this->form_name ) ) . '" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_submit" value="true" />';
 
@@ -244,7 +254,9 @@ class Form {
 		 */
 		do_action_ref_array( 'ap_after_form_field', [ $this ] );
 
-		echo '</form>';
+		if ( true === $this->args['form_tag'] ) {
+			echo '</form>';
+		}
 	}
 
 	/**

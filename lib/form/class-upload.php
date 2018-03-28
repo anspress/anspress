@@ -90,6 +90,7 @@ class Upload extends Field {
 			$this->args, array(
 				'label'          => __( 'AnsPress Upload Field', 'anspress-question-answer' ),
 				'upload_options' => [],
+				'browse_label'   => __( 'Browse file(s)', 'anspress-question-answer' ),
 			)
 		);
 
@@ -112,6 +113,20 @@ class Upload extends Field {
 
 		// Call parent prepare().
 		parent::prepare();
+	}
+
+	/**
+	 * Order of HTML markup.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	protected function html_order() {
+		if ( empty( $this->args['output_order'] ) ) {
+			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'file_list', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		} else {
+			$this->output_order = $this->args['output_order'];
+		}
 	}
 
 	/**
@@ -165,6 +180,46 @@ class Upload extends Field {
 	}
 
 	/**
+	 * Show the list of previously attached media.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public function file_list() {
+		$medias = get_posts( array(
+			'post_type'   => 'attachment',
+			'title'       => '_ap_temp_media',
+			'post_author' => get_current_user_id(),
+		) );
+
+		// Show temporary images uploaded.
+		$this->add_html( '<div class="ap-upload-list">' );
+
+		if ( $medias ) {
+			foreach ( $medias as $media ) {
+				$this->add_html( '<div><span class="ext">' . pathinfo( $media->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media->ID ) ), 2 ) . '</span></div>' );
+			}
+		}
+
+		$this->add_html( '</div>' );
+	}
+
+	/**
+	 * Return arguments for used by JS.
+	 *
+	 * @return string JSON
+	 * @since 4.1.8
+	 */
+	public function js_args() {
+		$args        = $this->get( 'upload_options' );
+		$allowed_ext = '.' . str_replace( '|', ',.', implode( ',.', array_keys( $args['allowed_mimes'] ) ) );
+
+		unset( $args['allowed_mimes'] );
+
+		return wp_json_encode( $args );
+	}
+
+	/**
 	 * Field markup.
 	 *
 	 * @return void
@@ -172,33 +227,24 @@ class Upload extends Field {
 	public function field_markup() {
 		parent::field_markup();
 
-		$args        = $this->get( 'upload_options' );
-		$allowed_ext = '.' . str_replace( '|', ',.', implode( ',.', array_keys( $args['allowed_mimes'] ) ) );
-		unset( $args['allowed_mimes'] );
+		$insert_to   = '';
 
-		$medias = get_posts(
-			[
-				'post_type'   => 'attachment',
-				'title'       => '_ap_temp_media',
-				'post_author' => get_current_user_id(),
-			]
-		);
 
-		// Show temporary images uploaded.
-		if ( $medias ) {
-			$this->add_html( '<div class="ap-upload-list">' );
-
-			foreach ( $medias as $media ) {
-				$this->add_html( '<div><span class="ext">' . pathinfo( $media->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media->ID ) ), 2 ) . '</span></div>' );
-			}
-
-			$this->add_html( '</div>' );
+		if ( ! empty( $args['insert_to'] ) ) {
+			$insert_to = ' data-insertto="' . esc_attr( $args['insert_to'] ) . '" ';
+			unset( $args['insert_to'] );
 		}
 
-		$this->add_html( '<div class="ap-upload-c">' );
-		$this->add_html( '<input type="file" data-upload="' . esc_js( wp_json_encode( $args ) ) . '"' . $this->common_attr() . $this->custom_attr() . ( $args['multiple'] ? ' multiple="multiple"' : '' ) . ' accept="' . esc_attr( $allowed_ext ) . '" />' );
-		$this->add_html( '<span>' . esc_attr__( 'Browse file(s)', 'anspress-question-answer' ) . '</span>' );
-		$this->add_html( '<b>' . esc_html( number_format_i18n( 0 ) ) . '</b>' );
+		$this->add_html( '<div class="ap-upload-c position-relative d-table ap-border py-5 px-10 ap-border-radius ap-font-size-md">' );
+		$this->add_html( '<input type="file"' );
+		$this->add_html( 'data-upload="' . esc_js( $this->js_args() ) . '"' . $this->common_attr() );
+		$this->add_html( $this->custom_attr() );
+		$this->add_html( $args['multiple'] ? ' multiple="multiple"' : '' );
+		$this->add_html( ' accept="' . esc_attr( $allowed_ext ) . '" ' );
+		$this->add_html( $insert_to );
+		$this->add_html( ' />' );
+		$this->add_html( '<i class="apicon-image mr-5"></i><span>' . $this->args['browse_label'] . '</span>' );
+		$this->add_html( '<b class="ap-files-count mr-5">' . esc_html( number_format_i18n( 0 ) ) . '</b>' );
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */

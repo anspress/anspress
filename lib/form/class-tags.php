@@ -38,15 +38,6 @@ class Tags extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$js_options = array(
-			'maxItems' => $this->args['array_max'],
-			'form'     => $this->form_name,
-			'id'       => $this->id(),
-			'field'    => $this->original_name,
-			'nonce'    => wp_create_nonce( 'tags_' . $this->form_name . $this->original_name ),
-			'create'   => false,
-		);
-
 		$this->args = wp_parse_args(
 			$this->args, array(
 				'label'      => __( 'AnsPress Tags Field', 'anspress-question-answer' ),
@@ -60,6 +51,15 @@ class Tags extends Field {
 				'options'    => 'terms',
 				'js_options' => [],
 			)
+		);
+
+		$js_options = array(
+			'maxItems' => $this->args['array_max'],
+			'form'     => $this->form_name,
+			'id'       => $this->id(),
+			'field'    => $this->original_name,
+			'nonce'    => wp_create_nonce( 'tags_' . $this->form_name . $this->original_name ),
+			'create'   => false,
 		);
 
 		$this->args['js_options'] = wp_parse_args( $this->args['js_options'], $js_options );
@@ -86,6 +86,7 @@ class Tags extends Field {
 	 * Return options of a tags field.
 	 *
 	 * @return array
+	 * @since 4.1.8 Use `include` args only if value is not empty.
 	 */
 	private function get_options() {
 		$options = $this->get( 'options' );
@@ -94,15 +95,18 @@ class Tags extends Field {
 			$options = [];
 			if ( ! empty( $this->value() ) ) {
 				$value = $this->value();
-				$terms = get_terms(
-					array(
-						'taxonomy'   => $this->get( 'terms_args.taxonomy' ),
-						'hide_empty' => false,
-						'include'    => $value,
-						'count'      => true,
-						'number'     => 20,
-					)
+				$tax_args = array(
+					'taxonomy'   => $this->get( 'terms_args.taxonomy' ),
+					'hide_empty' => false,
+					'count'      => true,
+					'number'     => 20,
 				);
+
+				if ( ! empty( $value ) ) {
+					$tax_args['include'] = $value;
+				}
+
+				$terms = get_terms( $tax_args );
 
 				if ( $terms ) {
 					foreach ( $terms as $tag ) {

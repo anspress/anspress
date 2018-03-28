@@ -640,7 +640,9 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 		var self = $(this);
 		var submitBtn = $(this).find('button[type="submit"]');
-		AnsPress.showLoading(submitBtn);
+
+		if(submitBtn.length>0)
+			AnsPress.showLoading(submitBtn);
 
     $(this).ajaxSubmit({
 			url: ajaxurl,
@@ -652,7 +654,9 @@ jQuery(document).ready(function($){
 				$('.ap-have-errors').removeClass('ap-have-errors');
 			},
 			success: function(data) {
-				AnsPress.hideLoading(submitBtn);
+				if(submitBtn.length>0)
+					AnsPress.hideLoading(submitBtn);
+
 				data = AnsPress.ajaxResponse(data);
 				if(data.snackbar){
 					AnsPress.trigger('snackbar', data)
@@ -724,7 +728,7 @@ jQuery(document).ready(function($){
 		}
 	}
 
-	function tagElements($el){
+	AnsPress.tagElements = function ($el){
 		var type = $el.data('type');
 		var jsoptions = $el.data('options');
 		var options = $('#'+jsoptions.id+'-options').length > 0 ? JSON.parse($('#'+jsoptions.id+'-options').html()) : {};
@@ -768,11 +772,10 @@ jQuery(document).ready(function($){
 	}
 
 	$('[ap-tag-field]').each(function(){
-		tagElements($(this));
+		AnsPress.tagElements($(this));
 	});
 
 	$('#anspress').on('click', '.ap-remove-parent', function(e){
-		console.log(e);
 		e.preventDefault();
 		$(this).parent().remove();
 	})
