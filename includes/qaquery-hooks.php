@@ -18,7 +18,8 @@ class AP_QA_Query_Hooks {
 	 * @param  Object $wp_query Instance.
 	 * @return array
 	 * @since unknown
-	 * @since 4.1.7 Fixed: session answers are included in wrong question.
+	 * @since 4.1.7 Fixed: Session answers are included in wrong question.
+	 * @since 4.1.8 Fixed: Sorting issue with best answer.
 	 */
 	public static function sql_filter( $sql, $wp_query ) {
 		global $wpdb;
@@ -120,7 +121,7 @@ class AP_QA_Query_Hooks {
 
 			// Keep best answer to top.
 			if ( $answer_query && ! $wp_query->query['ignore_selected_answer'] ) {
-				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
+				$sql['orderby'] = 'case when qameta.selected = 1 then 1 else 2 end, ' . $sql['orderby'];
 			}
 
 			// Allow filtering sql query.
