@@ -70,23 +70,17 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
 			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
 			anspress()->add_filter( 'wp_title', 'AnsPress_Theme', 'ap_title', 0 );
-			// anspress()->add_filter( 'wpseo_title', 'AnsPress_Theme', 'wpseo_title' , 10, 2 );
-			// anspress()->add_filter( 'wp_head', 'AnsPress_Theme', 'feed_link', 9 );
-			// anspress()->add_filter( 'wpseo_canonical', 'AnsPress_Theme', 'wpseo_canonical' );
 			anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
-			// anspress()->add_action( 'wp', 'AnsPress_Theme', 'remove_head_items', 10 );
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-			anspress()->add_filter( 'mce_external_plugins', __CLASS__, 'mce_plugins' );
-		anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
+			//anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
-			// anspress()->add_filter( 'the_content', 'AnsPress_Theme', 'the_content_single_question', 9999999999999999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
 			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
 			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );
@@ -514,18 +508,6 @@ class AnsPress_Hooks {
 			flush_rewrite_rules( true );
 			ap_opt( 'ap_flush', 'false' );
 		}
-	}
-
-	/**
-	 * Include AnsPress tinymce plugin.
-	 *
-	 * @param array $plugin_array Tinymce plugins.
-	 * @return array
-	 * @since 4.1.0
-	 */
-	public static function mce_plugins( $plugin_array ) {
-		$plugin_array[ 'anspress' ] = ANSPRESS_URL . 'assets/js/min/tinymce-plugin.min.js';
-		return $plugin_array;
 	}
 
 	/**

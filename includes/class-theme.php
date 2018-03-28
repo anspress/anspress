@@ -111,38 +111,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Filter wpseo plugin title.
-	 *
-	 * @param  string $title Page title.
-	 * @return string
-	 * @deprecated 4.1.0
-	 */
-	public static function wpseo_title( $title ) {
-		if ( is_anspress() ) {
-			remove_filter(
-				'wpseo_title', array(
-					__CLASS__,
-					'wpseo_title',
-				)
-			);
-
-			$new_title = ap_page_title();
-
-			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
-				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ) . ' | ' . get_bloginfo( 'name' );
-			} else {
-				$new_title = $new_title . ' | ' . get_bloginfo( 'name' );
-			}
-
-			$new_title = apply_filters( 'ap_wpseo_title', $new_title );
-
-			return $new_title;
-		}
-
-		return $title;
-	}
-
-	/**
 	 * Filter the_title().
 	 *
 	 * @param  string $title Current page/post title.
@@ -159,17 +127,6 @@ class AnsPress_Theme {
 		}
 
 		return $title;
-	}
-
-	/**
-	 * Add feed link in wp_head
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function feed_link() {
-		if ( is_anspress() ) {
-			echo '<link href="' . esc_url( home_url( '/feed/question-feed' ) ) . '" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
-		}
 	}
 
 	/**
@@ -196,31 +153,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Remove some unwanted things from wp_head
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function remove_head_items() {
-		if ( is_anspress() ) {
-			global $wp_query;
-
-			// Check if quesied object is set, if not then set base page object.
-			if ( ! isset( $wp_query->queried_object ) ) {
-				$wp_query->queried_object = ap_get_post( ap_opt( 'base_page' ) );
-			}
-
-			$wp_query->queried_object->post_title = ap_page_title();
-			remove_action( 'wp_head', 'rsd_link' );
-			remove_action( 'wp_head', 'wlwmanifest_link' );
-			remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-			remove_action( 'wp_head', 'rel_canonical' );
-			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
-			remove_action( 'wp_head', 'feed_links_extra', 3 );
-			remove_action( 'wp_head', 'feed_links', 2 );
-		}
-	}
-
-	/**
 	 * Add feed and links in HEAD of the document
 	 *
 	 * @since 4.1.0 Removed question sortlink override.
@@ -232,20 +164,6 @@ class AnsPress_Theme {
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $q_feed ) . '" />';
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Answers Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $a_feed ) . '" />';
 		}
-	}
-
-	/**
-	 * Update concal link when wpseo plugin installed.
-	 *
-	 * @return string
-	 * @deprecated 4.1.0
-	 */
-	public static function wpseo_canonical( $url ) {
-		if ( is_question() ) {
-			return get_permalink( get_question_id() );
-		}
-
-		return $url;
 	}
 
 	/**
@@ -322,34 +240,6 @@ class AnsPress_Theme {
 		}
 
 		return $template;
-	}
-
-	/**
-	 * Filter single question content to render [anspress] shortcode.
-	 *
-	 * @param string $content Content.
-	 * @return string
-	 *
-	 * @since 4.1.0
-	 * @since 4.1.2 Do not replace content once question is loaded.
-	 */
-	public static function the_content_single_question( $content ) {
-		global $ap_shortcode_loaded, $post, $question_rendered;
-
-		if ( ! $post || true === $question_rendered ) {
-			return $content;
-		}
-
-		if ( true !== $ap_shortcode_loaded && is_singular( 'question' ) ) {
-			return do_shortcode( '[anspress]' );
-		}
-
-		// Check if user have permission.
-		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) && ! ap_user_can_read_post( $post->ID, false, $post->post_type ) ) {
-			return '<p>' . esc_attr__( 'Sorry, you do not have permission to read this post.', 'anspress-question-answer' ) . '</p>';
-		}
-
-		return $content;
 	}
 
 	/**
