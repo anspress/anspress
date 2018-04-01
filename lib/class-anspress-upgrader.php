@@ -44,9 +44,9 @@ class AnsPress_Upgrader {
 	private function __construct() {
 		$this->check_tables();
 		// Enable required addons.
-		ap_activate_addon( 'free/tag.php' );
-		ap_activate_addon( 'free/category.php' );
-		ap_activate_addon( 'free/reputation.php' );
+		ap_activate_addon( 'tag.php' );
+		ap_activate_addon( 'category.php' );
+		ap_activate_addon( 'reputation.php' );
 
 		// Disable sending email while upgrading.
 		define( 'AP_DISABLE_EMAIL', true );
