@@ -73,22 +73,40 @@ class AnsPress_Uploader {
 
 	/**
 	 * Delete temporary media which are older then today.
+	 *
+	 * @since 4.1.8 Delete files from temporary directory as we well.
 	 */
 	public static function cron_delete_temp_attachments() {
 		global $wpdb;
+
 		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // db call okay, db cache okay.
 
 		$authors = [];
 
-		foreach ( (array) $posts as $_post ) {
-			wp_delete_attachment( $_post->ID, true );
-			ap_update_post_attach_ids( $_post->post_parent );
-			$authors[] = $_post->post_author;
+		if ( $posts ) {
+			foreach ( (array) $posts as $_post ) {
+				wp_delete_attachment( $_post->ID, true );
+				ap_update_post_attach_ids( $_post->post_parent );
+				$authors[] = $_post->post_author;
+			}
+
+			// Update temporary attachment counts of a user.
+			foreach ( (array) array_unique( $authors ) as $author ) {
+				ap_update_user_temp_media_count( $author );
+			}
 		}
 
-		// Update temporary attachment counts of a user.
-		foreach ( (array) array_unique( $authors ) as $author ) {
-			ap_update_user_temp_media_count( $author );
+		// Delete all temporary files.
+		$uploads  = wp_upload_dir();
+		$files    = glob( $uploads['basedir'] . "/anspress-temp/*" );
+		$interval = strtotime( '-2 hours' );
+
+		if ( $files ) {
+			foreach ( $files as $file ) {
+				if ( filemtime( $file ) <= $interval ) {
+					unlink( $file );
+				}
+			}
 		}
 	}
 

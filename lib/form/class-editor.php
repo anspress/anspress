@@ -231,6 +231,9 @@ class Editor extends Field {
 		foreach ( $this->images as $img ) {
 			add_post_meta( $args['post_id'], 'anspress-image', $img );
 		}
+
+		// Delete file from session.
+		anspress()->session->delete( 'files' );
 	}
 
 }
