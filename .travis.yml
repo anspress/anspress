@@ -19,7 +19,7 @@ addons:
 
 install:
   - wget http://selenium-release.storage.googleapis.com/3.8/selenium-server-standalone-3.8.1.jar
-  - wget https://chromedriver.storage.googleapis.com/2.34/chromedriver_linux64.zip && unzip chromedriver_linux64.zip
+  - wget https://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip && unzip chromedriver_linux64.zip
 
 before_script:
   - sudo apt-get update

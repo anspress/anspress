@@ -35,7 +35,7 @@ $I->fillField( [ 'css' => '#form_question-tags-selectized' ], 'AwesomeTag' );
 $I->pressKey( '#form_question-tags-selectized', ',' );
 $I->fillField( [ 'name' => 'form_question[post_title]' ], 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.' );
 $I->fillTinyMceEditorById( 'form_question-post_content', 'Nulla vestibulum ultricies neque eu semper. Phasellus hendrerit ullamcorper est eget tincidunt.' );
-$I->click( '//*[@id="form_question"]/button' );
+$I->click( '#form_question button[type="submit"]' );
 $I->waitForJS( 'return jQuery.active == 0;', 10 );
 $I->seeElement( '#ap-single' );
 $I->see( 'AwesomeTag', '.question-tags' );
