@@ -30,6 +30,7 @@ $I->seeInField( 'form_email_template[subject]', 'A question is edited by {editor
 $I->seeInField( 'form_email_template[body]', '<div class="ap-email-event">A question is edited by <b class="user-name">{editor}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1><div class="ap-email-content">{question_content}</div></div>' );
 $I->fillField( 'form_email_template[subject]', 'Hello subject' );
 $I->fillTinyMceEditorById( 'form_email_template-body', 'Hello Lorem' );
+$I->scrollTo(['css' => '#form_email_template button[type=submit]'], 0, 0);
 $I->click( '#form_email_template button[type=submit]' );
 $I->waitForJS( 'return jQuery.active == 0;', 10 );
 $I->seeInField( 'form_email_template[subject]', 'Hello subject' );
