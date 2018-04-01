@@ -55,6 +55,13 @@ class Upload extends Field {
 	public $uploaded_files = false;
 
 	/**
+	 * Check weather this is async upload.
+	 *
+	 * @var boolean
+	 */
+	public $async_upload = false;
+
+	/**
 	 * Initialize the class.
 	 *
 	 * @param string $form_name Name of parent form.
@@ -90,7 +97,7 @@ class Upload extends Field {
 			$this->args, array(
 				'label'          => __( 'AnsPress Upload Field', 'anspress-question-answer' ),
 				'upload_options' => [],
-				'browse_label'   => __( 'Browse file(s)', 'anspress-question-answer' ),
+				'browse_label'   => __( 'Select file(s) to upload', 'anspress-question-answer' ),
 			)
 		);
 
@@ -100,6 +107,7 @@ class Upload extends Field {
 				'max_files'       => 1,
 				'multiple'        => false,
 				'label_deny_type' => __( 'This file type is not allowed to upload.', 'anspress-question-answer' ),
+				'async_upload'    => false,
 			)
 		);
 
@@ -123,7 +131,7 @@ class Upload extends Field {
 	 */
 	protected function html_order() {
 		if ( empty( $this->args['output_order'] ) ) {
-			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'file_list', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'file_list', 'field_wrap_end', 'wrapper_end' ];
 		} else {
 			$this->output_order = $this->args['output_order'];
 		}
@@ -174,6 +182,7 @@ class Upload extends Field {
 	 */
 	public function unsafe_value() {
 		$request_value = $this->get( $this->id( $this->field_name ), null, $_FILES );
+
 		if ( $request_value ) {
 			return $this->format_multiple_files( $request_value );
 		}
@@ -215,6 +224,8 @@ class Upload extends Field {
 		$allowed_ext = '.' . str_replace( '|', ',.', implode( ',.', array_keys( $args['allowed_mimes'] ) ) );
 
 		unset( $args['allowed_mimes'] );
+		$args['field_name'] = $this->original_name;
+		$args['form_name'] = $this->form_name;
 
 		return wp_json_encode( $args );
 	}
@@ -227,24 +238,18 @@ class Upload extends Field {
 	public function field_markup() {
 		parent::field_markup();
 
-		$insert_to   = '';
+		$args        = $this->get( 'upload_options' );
+		$allowed_ext = '.' . str_replace( '|', ',.', implode( ',.', array_keys( $args['allowed_mimes'] ) ) );
 
-
-		if ( ! empty( $args['insert_to'] ) ) {
-			$insert_to = ' data-insertto="' . esc_attr( $args['insert_to'] ) . '" ';
-			unset( $args['insert_to'] );
-		}
-
-		$this->add_html( '<div class="ap-upload-c position-relative d-table ap-border py-5 px-10 ap-border-radius ap-font-size-md">' );
+		$this->add_html( '<div class="ap-upload-c">' );
 		$this->add_html( '<input type="file"' );
 		$this->add_html( 'data-upload="' . esc_js( $this->js_args() ) . '"' . $this->common_attr() );
 		$this->add_html( $this->custom_attr() );
 		$this->add_html( $args['multiple'] ? ' multiple="multiple"' : '' );
 		$this->add_html( ' accept="' . esc_attr( $allowed_ext ) . '" ' );
-		$this->add_html( $insert_to );
+
 		$this->add_html( ' />' );
-		$this->add_html( '<i class="apicon-image mr-5"></i><span>' . $this->args['browse_label'] . '</span>' );
-		$this->add_html( '<b class="ap-files-count mr-5">' . esc_html( number_format_i18n( 0 ) ) . '</b>' );
+		//$this->add_html( '<span>' . $this->args['browse_label'] . '</span>' );
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
@@ -306,7 +311,8 @@ class Upload extends Field {
 	 * @since 4.1.5 Fixed: custom mimes are not working.
 	 */
 	private function upload_file( $file ) {
-		$id = ap_upload_user_file( $file, true, '', $this->get( 'upload_options.allowed_mimes' ) );
+		$id = $this->upload( $file );
+
 		if ( is_wp_error( $id ) ) {
 			$this->add_error( $id->get_error_code(), $id->get_error_message() );
 		} else {
@@ -356,5 +362,136 @@ class Upload extends Field {
 				ap_set_media_post_parent( $id, $args['post_id'] );
 			}
 		}
+	}
+
+	/**
+	 * Upload file and store it in temporary directory.
+	 *
+	 * Copied directly from WordPress Core. Only difference is upload directory.
+	 * All files were uploaded to `anspress-temp` directory and it need to moved
+	 * manually. All files older then 2 hours are deleted from `anspress-temp` directory.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	private function upload( $file ) {
+		// If there is error in file then return.
+		if ( isset( $file['error'] ) && ! is_numeric( $file['error'] ) && $file['error'] ) {
+			return new \WP_Error( 'upload_file_error', $file['error'] );
+		}
+
+		// Courtesy of php.net, the strings that describe the error indicated in $_FILES[{form field}]['error'].
+		$upload_error_strings = array(
+			false,
+			__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' ),
+			__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' ),
+			__( 'The uploaded file was only partially uploaded.' ),
+			__( 'No file was uploaded.' ),
+			'',
+			__( 'Missing a temporary folder.' ),
+			__( 'Failed to write file to disk.' ),
+			__( 'File upload stopped by extension.' ),
+		);
+
+		// Check error.
+		if ( isset( $file['error'] ) && $file['error'] > 0 ) {
+			return new \WP_Error( 'upload_file_size', $upload_error_strings[ $file['error'] ] );
+		}
+
+		$file_size = $file['size'];
+
+		// A non-empty file will pass this test.
+		if ( ! ( $file_size > 0 ) ) {
+			return new \WP_Error( 'upload_file_size', __( 'File is empty. Please upload something more substantial.' ) );
+		}
+
+		// Check file size.
+		if ( $file_size > ap_opt( 'max_upload_size' ) ) {
+			return new \WP_Error( 'upload_file_size', __( 'File is bigger then the allowed limit.' ) );
+		}
+
+		// Check file uploaded using proper method.
+		if ( true !== is_uploaded_file( $file['tmp_name'] ) ) {
+			return new \WP_Error( 'upload_file_failed', __( 'Specified file failed upload test.' ) );
+		}
+
+		$mimes = $this->get( 'upload_options.allowed_mimes' );
+		$mimes = ! empty( $mimes ) ? $mimes : false;
+
+		// A correct MIME type will pass this test.
+		$wp_filetype     = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'], $mimes );
+		$ext             = empty( $wp_filetype['ext'] ) ? '' : $wp_filetype['ext'];
+		$type            = empty( $wp_filetype['type'] ) ? '' : $wp_filetype['type'];
+		$proper_filename = empty( $wp_filetype['proper_filename'] ) ? '' : $wp_filetype['proper_filename'];
+
+		// Check to see if wp_check_filetype_and_ext() determined the filename was incorrect
+		if ( $proper_filename ) {
+			$file['name'] = $proper_filename;
+		}
+
+		if ( ! $type || !$ext ) {
+			return new \WP_Error( 'upload_file_ext', __( 'Sorry, this file type is not permitted for security reasons.' ) );
+		}
+
+		if ( ! $type ) {
+			$type = $file['type'];
+		}
+
+		$uploads = wp_upload_dir();
+
+		/**
+		 * A writable uploads dir will pass this test.
+		 */
+		if ( false !== $uploads['error'] ) {
+			return new \WP_Error( 'upload_file_dir', $uploads['error'] );
+		}
+
+		$temp_dir = $uploads['basedir'] . '/anspress-temp/';
+
+		// Make dir if not exists.
+		if ( ! file_exists( $temp_dir ) ) {
+			mkdir( $temp_dir );
+		}
+
+		$sha           = sha1_file( $file['tmp_name'] );
+		$user_id       = get_current_user_id();
+		$new_file_name = "{$sha}_$user_id.$ext";
+		$new_file      = $temp_dir . "$new_file_name";
+
+		$move_new_file = move_uploaded_file( $file['tmp_name'], $new_file );
+
+		// Return if unable to move file.
+		if ( false === $move_new_file ) {
+			return new \WP_Error( 'upload_file_move', 'The uploaded file could not be moved' );
+		}
+
+		// Set correct file permissions.
+		$stat = stat( dirname( $new_file ) );
+		$perms = $stat['mode'] & 0000666;
+		@ chmod( $new_file, $perms );
+
+		return $new_file_name;
+	}
+
+	/**
+	 * Return url of all uploaded files.
+	 *
+	 * @return array
+	 * @since 4.1.8
+	 */
+	public function get_uploaded_files_url() {
+		if ( true !== $this->uploaded || empty( $this->uploaded_files ) ) {
+			return [];
+		}
+
+		$uploads = wp_upload_dir();
+		$temp_dir = $uploads['baseurl'] . '/anspress-temp/';
+
+		$ret = [];
+		foreach ( $this->uploaded_files as $old => $new ) {
+			$ret[ $old ] = $temp_dir . $new;
+		}
+
+		return $ret;
 	}
 }

@@ -79,6 +79,8 @@ class Form {
 
 	public $submitted = false;
 
+	public $after_form = '';
+
 	/**
 	 * Initialize the class.
 	 *
@@ -176,6 +178,9 @@ class Form {
 	 * @since 4.1.8 Inherit `hidden_fields` from form args.
 	 */
 	public function generate( $form_args = [] ) {
+		// Enqueue upload script.
+		wp_enqueue_script( 'anspress-upload' );
+
 		// Dont do anything if no fields.
 		if ( empty( $this->args['fields'] ) ) {
 			echo '<p class="ap-form-nofields">';
@@ -256,6 +261,16 @@ class Form {
 
 		if ( true === $this->args['form_tag'] ) {
 			echo '</form>';
+		}
+
+		// Async upload form.
+		echo '<form id="ap_async_upload" method="post" apform enctype="multipart/form-data" style="display:none!important">';
+		wp_nonce_field( 'ap_async_upload', '__nonce' );
+		echo '<input type="hidden" name="action" value="ap_async_upload" />';
+		echo '</form>';
+
+		if ( ! empty( $this->after_form ) ) {
+			echo $this->after_form;
 		}
 	}
 

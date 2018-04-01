@@ -34,9 +34,18 @@ class Editor extends Field {
 	public $type = 'editor';
 
 	/**
+	 * Uploaded images.
+	 *
+	 * @var array
+	 * @since 4.1.8
+	 */
+	public $images = [];
+
+	/**
 	 * Prepare field.
 	 *
 	 * @return void
+	 * @since 4.1.8 Remove child `image` field.
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
@@ -48,24 +57,6 @@ class Editor extends Field {
 			)
 		);
 
-		$this->args['fields'] = array(
-			'images' => array(
-				'label'          => sprintf(
-					// Translators: %s contain label of editor field.
-					__( '%s images', 'anspress-question-answer' ),
-					$this->get( 'label' )
-				),
-				'type'           => 'upload',
-				'upload_options' => array(
-					'multiple'  => true,
-					'max_files' => ap_opt( 'uploads_per_post' ),
-				),
-			),
-		);
-
-		$this->child = new Form( $this->field_name, $this->args );
-		$this->child->prepare();
-
 		// Call parent prepare().
 		parent::prepare();
 
@@ -74,9 +65,26 @@ class Editor extends Field {
 	}
 
 	/**
+	 * Image upload button.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public function image_button() {
+		$btn_args = wp_json_encode( array(
+			'__nonce'   => wp_create_nonce( 'ap_upload_image' ),
+			'action'    => 'ap_upload_modal',
+			'form_name' => $this->form_name,
+		) );
+
+		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10" ap-ajax-btn aponce="false" ap-query="' . esc_js( $btn_args ) . '"><i class="apicon-image mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
+	}
+
+	/**
 	 * Field markup.
 	 *
 	 * @return void
+	 * @since 4.1.8 Added image button.
 	 */
 	public function field_markup() {
 		parent::field_markup();
@@ -90,7 +98,7 @@ class Editor extends Field {
 				'statusbar'        => false,
 				'codesample'       => true,
 				'anspress'         => true,
-				'toolbar1'         => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apmedia,apcode',
+				'toolbar1'         => 'bold,italic,underline,strikethrough,bullist,numlist,link,unlink,blockquote,fullscreen,apcode',
 				'toolbar2'         => '',
 				'toolbar3'         => '',
 				'toolbar4'         => '',
@@ -115,20 +123,11 @@ class Editor extends Field {
 		$editor_args = apply_filters( 'ap_pre_editor_settings', $editor_args );
 
 		$this->add_html( '<div class="ap-editor">' );
-
-		$images = $this->child->find( 'images' );
+		$this->image_button();
 
 		ob_start();
 		wp_editor( $this->value(), $this->id(), $editor_args );
 		$this->add_html( ob_get_clean() );
-
-		// Image upload field.
-		$this->add_html( '<div class="ap-editor-imgesel ap-upload-c position-relative d-table ap-border py-5 px-10 ap-border-radius ap-font-size-md" id="' . esc_attr( $images->id() ) . '">' );
-		$this->add_html( '<input type="file" name="' . esc_attr( $images->field_name ) . '" data-upload="' . esc_js( $images->js_args() ) . '" >' );
-		$this->add_html( '<i class="apicon-image mr-5"></i><span>' . __( 'Attach files by', 'anspress-question-answer' ) . ' <i>' . __( 'selecting them', 'anspress-question-answer' ) . '</i>' . '</span>' );
-		$this->add_html( '</div>' );
-
-		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
@@ -154,10 +153,52 @@ class Editor extends Field {
 	}
 
 	/**
+	 * Callback called in @see ::pre_get.
+	 *
+	 * Checks if current image is in `anspress-temp` directory and
+	 * if so then moves it to `anspress-uploads` directory and return
+	 * new `img` tag with new src.
+	 *
+	 * @param array $matches Regex matches.
+	 * @return string Updated `img` tag.
+	 */
+	public function image_process( $matches ) {
+		if ( false === strpos( $matches[1], 'anspress-temp/' ) ) {
+			return $matches[0];
+		}
+
+		$files = anspress()->session->get( 'files' );
+
+		$uploads    = wp_upload_dir();
+		$basename   = basename( $matches[1] );
+		$upload_dir = $uploads['basedir'] . "/anspress-uploads/";
+
+		// Make dir if not exists.
+		if ( ! file_exists( $upload_dir ) ) {
+			mkdir( $upload_dir );
+		}
+
+		// Check file in session and then move.
+		if ( in_array( $basename, $files, true ) ) {
+			$this->images[] = $basename;
+
+			$newfile = $upload_dir . "/$basename";
+
+			$new_file_url = $uploads['baseurl'] . "/anspress-uploads/$basename";
+			rename( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
+
+			return '<img src="' . esc_url( $new_file_url ) . '" />';
+		}
+
+		return $matches;
+	}
+
+	/**
 	 *
 	 * Replace temporary images with img tags.
 	 *
 	 * @return void
+	 * @since 4.1.8 Process uploaded images.
 	 */
 	public function pre_get() {
 		$value = $this->value();
@@ -166,53 +207,29 @@ class Editor extends Field {
 			return;
 		}
 
-		$image_field = $this->child->find( 'images' );
-
-		if ( $image_field && ! empty( $image_field->value() ) ) {
-			if ( ! $image_field->have_errors() ) {
-				$this->value = $image_field->replace_temp_image( $value, $this->get_attached_images() );
-			}
-
-			if ( $image_field->have_errors() ) {
-				foreach ( (array) $image_field->errors as $code => $msg ) {
-					$this->add_error( $code, $msg );
-				}
-			}
-		}
+		$this->value = preg_replace_callback( '/<img\s+src="([^"]+)"[^>]+>/i', [ $this, 'image_process' ], $value );
 	}
 
 	/**
-	 * Delete attachments if images were not found in content.
+	 * Action to do after post is saved.
+	 *
+	 * Add uploaded images to post meta and delete post meta on delete.
 	 *
 	 * @param array $args Array of arguments.
 	 * @return void
+	 *
+	 * @since 4.1.8 Removed adding and deleting of attachment.
 	 */
 	public function after_save( $args = [] ) {
 		parent::after_save();
 
-		if ( empty( $args ) || empty( $args['post_id'] ) ) {
+		if ( empty( $args ) || empty( $args['post_id'] ) || empty( $this->images ) ) {
 			return;
 		}
 
-		// Remove deleted images.
-		$args = array(
-			'post_type'   => 'attachment',
-			'post_parent' => $args['post_id'],
-		);
-
-		$uploaded = get_posts( $args );// @codingStandardsIgnoreLine
-
-		if ( $uploaded ) {
-			foreach ( $uploaded as $attach ) {
-				$filename = basename( $attach->guid );
-				$re       = '/<img.+?src=[\"\']((?:.*' . preg_quote( $filename ) . '\b).*)[\"\'].*?>/';
-				preg_match( $re, $this->value(), $matches );
-
-				// Delete attachment if user can.
-				if ( empty( $matches ) && ap_user_can_delete_attachment( $attach->ID ) ) {
-					wp_delete_attachment( $attach->ID, true );
-				}
-			}
+		// Add images to post meta.
+		foreach ( $this->images as $img ) {
+			add_post_meta( $args['post_id'], 'anspress-image', $img );
 		}
 	}
 

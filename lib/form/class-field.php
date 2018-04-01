@@ -605,4 +605,19 @@ class Field {
 
 	}
 
+	/**
+	 * Call save callback.
+	 *
+	 * This will call save callback with two parameter `value`
+	 * and current field object.
+	 *
+	 * @return mixed
+	 * @since 4.1.8
+	 */
+	public function save_cb() {
+		if ( ! empty( $this->args['save'] ) && is_callable( $this->args['save'] ) ) {
+			return call_user_func( $this->args['save'], $this->value(), $this );
+		}
+	}
+
 }

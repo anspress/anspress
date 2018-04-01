@@ -65,6 +65,9 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'wp_ajax_nopriv_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
 		anspress()->add_action( 'wp_ajax_ap_search_tags', __CLASS__, 'search_tags' );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_search_tags', __CLASS__, 'search_tags' );
+		anspress()->add_action( 'wp_ajax_ap_image_upload', 'AnsPress_Uploader', 'image_upload' );
+		anspress()->add_action( 'wp_ajax_ap_upload_modal', 'AnsPress_Uploader', 'upload_modal' );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_upload_modal', 'AnsPress_Uploader', 'upload_modal' );
 	}
 
 	/**

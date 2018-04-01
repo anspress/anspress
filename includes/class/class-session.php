@@ -230,4 +230,22 @@ class Session {
 
 		return false;
 	}
+
+	/**
+	 * Set a file in user's session.
+	 *
+	 * @param string $filename File name.
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public function set_file( $filename ) {
+		$files = $this->get( 'files' );
+
+		if ( ! $files ) {
+			$files = [];
+		}
+
+		$files[] = $filename;
+		$this->set( 'files', $files );
+	}
 }

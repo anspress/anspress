@@ -488,7 +488,59 @@ _.templateSettings = {
 	};
 })(jQuery);
 
+(function($){
+	AnsPress.Common = {
+		init: function(){
+			$('[apuploadmodal]').on('click', this.uploadModal);
+			AnsPress.on('showImgPreview', this.showImgPreview);
+			AnsPress.on('formPosted', this.imageUploaded);
+			AnsPress.on('ajaxBtnDone', this.uploadModal);
+		},
+		readUrl: function(input, el) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					AnsPress.trigger('showImgPreview', e.target.result, el.find('.ap-upload-list'));
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		},
+		uploadModal: function(data){
+			if(data.action != 'ap_upload_modal' || ! data.html)
+				return;
+
+			$modal = AnsPress.modal('imageUpload', {
+				title: data.title,
+				content: data.html,
+				size: 'small',
+			});
+
+			var file = $modal.$el.find('input[type="file"]');
+			file.on('change', function(){
+				$modal.$el.find('.ap-img-preview').remove();
+				AnsPress.Common.readUrl(this, $modal.$el);
+			});
+		},
+		showImgPreview: function(src, el){
+			$('<img class="ap-img-preview" src="'+src+'" />').appendTo(el);
+		},
+		imageUploaded: function(data){
+			if(data.action!=='ap_image_upload' || typeof tinymce === 'undefined')
+				return;
+
+			if(data.files)
+				$.each(data.files, function(old, newFile){
+					tinymce.activeEditor.insertContent('<img src="'+newFile+'" />');
+				});
+
+			AnsPress.hideModal('imageUpload');
+		}
+	};
+})(jQuery);
+
 jQuery(document).ready(function($){
+	AnsPress.Common.init();
+
 	var apSnackbarView = new AnsPress.views.Snackbar();
 	$('body').append(apSnackbarView.render().$el);
 
@@ -533,7 +585,7 @@ jQuery(document).ready(function($){
 		var self = this;
 		e.preventDefault();
 
-		if($(this).is('.loaded'))
+		if($(this).attr('aponce') != 'false' && $(this).is('.loaded'))
 			return;
 
 		var self = $(this);
@@ -543,8 +595,13 @@ jQuery(document).ready(function($){
 		AnsPress.ajax({
 			data: query,
 			success: function(data){
-				$(self).addClass('loaded');
+				if($(this).attr('aponce')!= 'false')
+					$(self).addClass('loaded');
+
 				AnsPress.hideLoading(e.target);
+
+				AnsPress.trigger('ajaxBtnDone', data);
+
 				if(typeof data.btn !== 'undefined')
 					if(data.btn.hide) self.hide();
 

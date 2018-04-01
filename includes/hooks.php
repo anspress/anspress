@@ -110,6 +110,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'deleted_post', 'AnsPress_Uploader', 'deleted_attachment' );
 			anspress()->add_action( 'init', 'AnsPress_Uploader', 'create_single_schedule' );
 			anspress()->add_action( 'ap_delete_temp_attachments', 'AnsPress_Uploader', 'cron_delete_temp_attachments' );
+			anspress()->add_action( 'intermediate_image_sizes_advanced', 'AnsPress_Uploader', 'image_sizes_advanced' );
 
 			// Vote hooks.
 			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
@@ -120,6 +121,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
 			anspress()->add_action( 'ap_form_answer', 'AP_Form_Hooks', 'answer_form', 11 );
 			anspress()->add_action( 'ap_form_comment', 'AP_Form_Hooks', 'comment_form', 11 );
+			anspress()->add_action( 'ap_form_image_upload', 'AP_Form_Hooks', 'image_upload_form', 11 );
 
 			// Subscriptions
 			anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
@@ -136,7 +138,7 @@ class AnsPress_Hooks {
 	 * Add AnsPress tables in $wpdb.
 	 */
 	public static function add_ap_tables() {
-			ap_append_table_names();
+		ap_append_table_names();
 	}
 
 	/**
@@ -187,10 +189,30 @@ class AnsPress_Hooks {
 	 * @param   integer $post_id Question or answer ID.
 	 * @since unknown
 	 * @since 4.1.6 Delete cache for `ap_is_answered`.
+	 * @since 4.1.8 Delete uploaded images and `anspress-images` meta.
 	 */
 	public static function before_delete( $post_id ) {
-
 		$post = ap_get_post( $post_id );
+
+		if ( ! ap_is_cpt( $post ) ) {
+			return;
+		}
+
+		// Get anspress uploads.
+		$images = get_post_meta( $post_id, 'anspress-image' );
+		if ( ! empty( $images ) ) {
+
+			// Delete all uploaded images.
+			foreach ( $images as $img ) {
+				$uploads = wp_upload_dir();
+				$file    = $uploads['basedir'] . "/anspress-uploads/$img";
+
+				if ( file_exists( $file ) ) {
+					unlink( $file );
+				}
+			}
+		}
+
 		if ( 'question' === $post->post_type ) {
 
 			/**
@@ -612,11 +634,15 @@ class AnsPress_Hooks {
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
 	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
+	 * @since 4.1.8 Add `ap_delete_images_not_in_content`.
 	 */
 	public static function save_question_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
 			return;
 		}
+
+		// Deleted unused images from meta.
+		ap_delete_images_not_in_content( $post_id );
 
 		$form = anspress()->get_form( 'question' );
 		$values = $form->get_values();
@@ -680,11 +706,15 @@ class AnsPress_Hooks {
 	 * @param	boolean $updated Is updating post
 	 * @since 4.1.0
 	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
+	 * @since 4.1.8 Add `ap_delete_images_not_in_content`.
 	 */
 	public static function save_answer_hooks( $post_id, $post, $updated ) {
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
 			return;
 		}
+
+		// Deleted unused images from meta.
+		ap_delete_images_not_in_content( $post_id );
 
 		$form = anspress()->get_form( 'answer' );
 

@@ -361,17 +361,6 @@
 	}
 }
 
-.ap-upload-c {
-	input{
-		opacity: 0;
-		position: absolute;
-		left: 0;
-		top: 0;
-		height: 100%;
-		width: 100%;
-	}
-}
-
 #ap-search-form {
 	margin-bottom: 0;
 	.ap-search-inner{
@@ -507,15 +496,14 @@
 	background: rgba(236, 236, 236, 0.85);
 	z-index: 9;
 }
-.ap-editor{
-	.ap-upload-c{
-    display: block;
-    margin-top: -2px;
-    background: #fff;
-		border-top-style: dashed;
-		span > i{
-			color: $color6;
-			font-style: normal;
-		}
+
+#form_image_upload{
+	.ap-form-label{
+		display: none;
+	}
+	.ap-img-preview{
+    max-width: 80px;
+    height: auto;
+    margin-top: 10px;
 	}
 }

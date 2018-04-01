@@ -900,4 +900,56 @@ class AP_Form_Hooks {
 			)
 		);
 	}
+
+	/**
+	 * Callback for image field in `image_upload` form.
+	 *
+	 * @param array $values Values.
+	 * @param \AnsPress\Field\Upload $field AnsPress field object.
+	 * @return array
+	 * @since 4.1.8
+	 */
+	public static function image_upload_save( $values, $field ) {
+		$field->save_uploads();
+
+		// Set files in session, so that it can be validated while saving post.
+		if ( ! empty( $field->uploaded_files ) ) {
+			foreach ( $field->uploaded_files as $new ) {
+				anspress()->session->set_file( $new );
+			}
+		}
+
+		return $field->get_uploaded_files_url();
+	}
+
+	/**
+	 * Image upload form.
+	 *
+	 * This form is used for uploading images in AnsPress.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public static function image_upload_form() {
+		return array(
+			'submit_label' => __( 'Upload & insert', 'anspress-question-answer' ),
+			'fields' => array(
+				'image' => array(
+					'label' => __( 'Image', 'anspress-question-answer' ),
+					'desc'  => __( 'Select image(s) to upload. Only .jpg, .png and .gif files allowed.', 'anspress-question-answer' ),
+					'type'  => 'upload',
+					'save'  => [ __CLASS__, 'image_upload_save' ],
+					'upload_options' => array(
+						'multiple'  => false,
+						'max_files' => 1,
+						'allowed_mimes' => array(
+							'jpg|jpeg' => 'image/jpeg',
+							'gif'      => 'image/gif',
+							'png'      => 'image/png',
+						),
+					),
+				),
+			),
+		);
+	}
 }

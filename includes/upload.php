@@ -47,7 +47,7 @@ class AnsPress_Uploader {
 	}
 
 	/**
-	 * Update users temproary attachment count before a attachment deleted.
+	 * Update users temporary attachment count before a attachment deleted.
 	 *
 	 * @param integer $post_id Post ID.
 	 */
@@ -91,6 +91,124 @@ class AnsPress_Uploader {
 			ap_update_user_temp_media_count( $author );
 		}
 	}
+
+	/**
+	 * Ajax callback for image upload form.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public static function upload_modal() {
+		// Check nonce.
+		if ( ! ap_verify_nonce( 'ap_upload_image' ) ) {
+			ap_send_json( 'something_wrong' );
+		}
+
+		$form_name = ap_sanitize_unslash( 'form_name', 'r' );
+		$nonce     = wp_create_nonce( $form_name );
+
+		// Check if user have permission to upload tem image.
+		if ( ! ap_user_can_upload() ) {
+			ap_send_json( array(
+				'success'  => false,
+				'snackbar' => array(
+					'message' => __( 'Sorry! you do not have permission to upload image.', 'anspress-question-answer' ),
+				),
+			) );
+		}
+
+		ob_start();
+		anspress()->get_form( 'image_upload' )->generate( array(
+			'hidden_fields' => array(
+				array(
+					'name'  => 'action',
+					'value' => 'ap_image_upload',
+				),
+			),
+		));
+		$html = ob_get_clean();
+
+		ap_send_json( array(
+			'success' => true,
+			'action'  => 'ap_upload_modal',
+			'html'    => $html,
+			'title'   => __( 'Select image file to upload', 'anspress-question-answer' ),
+		) );
+	}
+
+	/**
+	 * Ajax callback for `ap_image_upload`. Process `image_upload` form.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public static function image_upload() {
+		$form = anspress()->get_form( 'image_upload' );
+
+		// Check if user have permission to upload tem image.
+		if ( ! ap_user_can_upload() ) {
+			ap_send_json( array(
+				'success'  => false,
+				'snackbar' => array(
+					'message' => __( 'Sorry! you do not have permission to upload image.', 'anspress-question-answer' ),
+				),
+			) );
+		}
+
+		// Nonce check.
+		if ( ! $form->is_submitted() ) {
+			ap_send_json( 'something_wrong' );
+		}
+
+		$values = $form->get_values();
+
+		// Check for errors.
+		if ( $form->have_errors() ) {
+			ap_send_json( array(
+				'success'       => false,
+				'snackbar'      => array(
+					'message'      => __( 'Unable to upload image(s). Please check errors.', 'anspress-question-answer' ),
+				),
+				'form_errors'   => $form->errors,
+				'fields_errors' => $form->get_fields_errors(),
+			) );
+		}
+
+		$field = $form->find( 'image' );
+
+		// Call save.
+		$files = $field->save_cb();
+
+		$res = array(
+			'success'   => true,
+			'action'    => 'ap_image_upload',
+			'snackbar'  => [ 'message' => __( 'Successfully uploaded image', 'anspress-question-answer' ) ],
+			'files'     => $files,
+		);
+
+		// Send response.
+		if ( is_array( $res ) ) {
+			ap_send_json( $res );
+		}
+
+		ap_send_json( 'something_wrong' );
+	}
+
+	public static function image_sizes_advanced( $sizes ) {
+		global $ap_thumbnail_only;
+
+		if ( true === $ap_thumbnail_only ) {
+			return array(
+				'thumbnail' => array(
+					'width'  => 150,
+					'height' => 150,
+					'crop'   => true,
+				),
+			);
+		}
+
+		return $sizes;
+	}
 }
 
 /**
@@ -101,7 +219,7 @@ class AnsPress_Uploader {
  * numbers of un-attached medias.
  *
  * @param array   $file           $_FILE variable.
- * @param boolean $temp           Is temproary image? If so it will be deleted if no post parent.
+ * @param boolean $temp           Is temporary image? If so it will be deleted if no post parent.
  * @param boolean $parent_post    Attachment parent post ID.
  * @return integer|boolean|object
  * @since  3.0.0 Added new argument `$post_parent`.
@@ -133,7 +251,7 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '', 
 		'guid'           => $file_return['url'],
 	);
 
-	// Add special post status if is temproary attachment.
+	// Add special post status if is temporary attachment.
 	if ( false !== $temp ) {
 		$attachment['post_title'] = '_ap_temp_media';
 	}
@@ -297,5 +415,46 @@ function ap_post_attach_pre_fetch( $ids ) {
 
 		$posts = get_posts( $args );// @codingStandardsIgnoreLine
 		update_post_cache( $posts );
+	}
+}
+
+/**
+ * Delete images uploaded in post.
+ *
+ * This function should be called after saving post content. This
+ * will find previously uploaded images from post meta and then
+ * compare with the image `src` present in content and if any image
+ * does not exists then image file and post meta is deleted.
+ *
+ * @param integer $post_id Post ID.
+ * @return void
+ * @since 4.1.8
+ */
+function ap_delete_images_not_in_content( $post_id ) {
+	$_post  = ap_get_post( $post_id );
+
+	preg_match_all( '/<img.*?src\s*="([^"]+)".*?>/', $_post->post_content, $matches, PREG_SET_ORDER );
+
+	$new_matches = [];
+
+	if ( ! empty( $matches ) ) {
+		foreach ( $matches as $m ) {
+			$new_matches[] = basename( $m[1] );
+		}
+	}
+
+	$images  = get_post_meta( $post_id, 'anspress-image' );
+
+	if ( ! empty( $images ) ) {
+		// Delete image if not in $matches.
+		foreach ( $images as $img ) {
+			if ( ! in_array( $img, $new_matches, true ) ) {
+				delete_post_meta( $post_id, 'anspress-image', $img );
+
+				$uploads = wp_upload_dir();
+				$file    = $uploads['basedir'] . "/anspress-uploads/$img";
+				unlink( $file );
+			}
+		}
 	}
 }
