@@ -45,9 +45,14 @@ class AnsPress_Theme {
 	 * @param  array $classes Post class attribute.
 	 * @return array
 	 * @since 2.0.1
+	 * @since 4.1.8 Fixes #426: Undefined property `post_type`.
 	 */
 	public static function question_answer_post_class( $classes ) {
 		global $post;
+
+		if ( ! $post ) {
+			return $classes;
+		}
 
 		if ( 'question' === $post->post_type ) {
 			if ( ap_have_answer_selected( $post->ID ) ) {
