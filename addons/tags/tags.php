@@ -31,6 +31,8 @@ class Tags extends \AnsPress\Singleton {
 
 	/**
 	 * Initialize the class
+	 *
+	 * @since 4.1.8 Added filter `ap_category_questions_args`.
 	 */
 	protected function __construct() {
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ $this, 'tag_page' ], false );
@@ -54,6 +56,7 @@ class Tags extends \AnsPress\Singleton {
 		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', $this, 'ap_tags_suggestion' );
 		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
 		anspress()->add_filter( 'ap_main_questions_args', $this, 'ap_main_questions_args' );
+		anspress()->add_filter( 'ap_category_questions_args', $this, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
 		anspress()->add_action( 'posts_pre_query', $this, 'modify_query_archive', 9999, 2 );
 
@@ -543,6 +546,7 @@ class Tags extends \AnsPress\Singleton {
 				'taxonomy' => 'question_tag',
 				'field'    => 'term_id',
 				'terms'    => $current_filter,
+				'operator' => 'IN',
 			);
 		}
 

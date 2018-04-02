@@ -51,7 +51,7 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
 
 		try {
 			$this->_handleAjax( 'ap_ajax' );
-		} catch ( WPAjaxDieStopException $e ) {
+		} catch ( \WPAjaxDieStopException $e ) {
 			$this->_last_response = $e->getMessage();
 		}
 
@@ -70,7 +70,7 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
 		$this->_set_post_data( 'post_id=' . $this->current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
 		try {
 			$this->_handleAjax( 'ap_ajax' );
-		} catch ( WPAjaxDieStopException $e ) {
+		} catch ( \WPAjaxDieStopException $e ) {
 			$this->_last_response = $e->getMessage();
 		}
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
@@ -83,7 +83,7 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
 		$this->_set_post_data( 'action=ap_ajax&post_id=' . $this->current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
 		try {
 			$this->_handleAjax( 'ap_ajax' );
-		} catch ( WPAjaxDieStopException $e ) {
+		} catch ( \WPAjaxDieStopException $e ) {
 			$this->_last_response = $e->getMessage();
 		}
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
@@ -111,7 +111,7 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
 		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		try {
 			$this->_handleAjax( 'ap_ajax' );
-		} catch ( WPAjaxDieStopException $e ) {
+		} catch ( \WPAjaxDieStopException $e ) {
 			$this->_last_response = $e->getMessage();
 		}
 
@@ -119,25 +119,4 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
 		$this->assertContains( 'apcomment', $this->ap_ajax_success( 'html' ) );
 	}
 
-	/**
-	 * @covers AnsPress_Ajax::toggle_best_answer
-	 */
-	// public function testToggleBestAnswer() {
-	// $id = $this->insert_answer();
-	// $nonce = wp_create_nonce( 'select-answer-' . $id->a );
-	// $this->_setRole( 'ap_moderator' );
-	// $this->_set_post_data( 'answer_id='.$id->a.'&nonce=' . $nonce .'&action=ap_toggle_best_answer' );
-	// codecept_debug($_POST);
-	// add_action( 'wp_ajax_ap_toggle_best_answer', array( 'AnsPress_Ajax', 'toggle_best_answer' ) );
-	// do_action('wp_ajax_ap_toggle_best_answer');
-	// try {
-	// $this->_handleAjax( 'ap_toggle_best_answer' );
-	// } catch ( WPAjaxDieStopException $e ) {
-	// $this->_last_response = $e->getMessage();
-	// }
-	// codecept_debug($this->_last_response);
-	// codecept_debug('hhhhhhhhhhhhhhhhh');
-	// $this->assertTrue( $this->ap_ajax_success( 'success' ) );
-	// $this->assertEquals( 'selected', $this->ap_ajax_success( 'action' ) );
-	// }
 }

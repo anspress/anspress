@@ -79,6 +79,7 @@ class Categories extends \AnsPress\Singleton {
 	 * Category page layout.
 	 *
 	 * @since 4.1.0 Use `get_queried_object()` to get current term.
+	 * @since 4.1.8 Added new filter `ap_category_questions_args`.
 	 */
 	public function category_page() {
 		$question_args = array(
@@ -94,6 +95,15 @@ class Categories extends \AnsPress\Singleton {
 		$question_category = get_queried_object();
 
 		if ( $question_category ) {
+
+			/**
+			 * Filter category page question list query arguments.
+			 *
+			 * @param array $args Wp_Query arguments.
+			 * @since 4.1.8
+			 */
+			$question_args = apply_filters( 'ap_category_questions_args', $question_args );
+
 			anspress()->questions = ap_get_questions( $question_args );
 
 			/**
