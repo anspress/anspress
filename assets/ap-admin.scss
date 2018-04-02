@@ -1137,7 +1137,10 @@ ul.ap-meta-list {
 		border-top: 1px solid #dedede;
     margin-top: 0px;
     padding-top: 10px;
-	}
+  }
+  .ap-form-group {
+    display: flex;
+  }
 }
 
 .ap-uninstall-warning {

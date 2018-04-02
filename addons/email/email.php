@@ -260,6 +260,10 @@ class Email extends \AnsPress\Singleton {
 				'body'    => array(
 					'label' => __( 'Email body', 'anspress-question-answer' ),
 					'type'  => 'editor',
+					'editor_args' => array(
+						'quicktags' => true,
+						'tinymce'   => true,
+					),
 				),
 				'tags'    => array(
 					'html' => '<label class="ap-form-label" for="form_email_template-allowed_tags">' . __( 'Allowed tags', 'anspress-question-answer' ) . '</label><div class="ap-email-allowed-tags">' . apply_filters( 'ap_email_form_allowed_tags', '' ) . '</div>',

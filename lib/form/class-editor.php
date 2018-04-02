@@ -129,6 +129,8 @@ class Editor extends Field {
 		wp_editor( $this->value(), $this->id(), $editor_args );
 		$this->add_html( ob_get_clean() );
 
+		$this->add_html( '</div>' );
+
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
 	}
