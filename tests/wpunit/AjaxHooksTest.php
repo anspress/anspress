@@ -1,6 +1,6 @@
 <?php
 
-class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
+class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase{
 
 	use AnsPress\Tests\Testcases\Common;
 	use AnsPress\Tests\Testcases\Ajax;
@@ -25,7 +25,7 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase {
 	public function tearDown() {
 		parent::tearDown();
 		$_POST = array();
-		remove_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
+		//remove_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 	}
 
 	public function _set_post_data( $query ) {

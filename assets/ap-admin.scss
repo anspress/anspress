@@ -333,8 +333,12 @@ th.column-category {
   font-size: 110%;
   flex-basis: 18%;
 }
+
 .ap-field-group-w {
   flex: 1;
+  label{
+    display: block;
+  }
 }
 .ap-field-desc {
   margin-top: 6px;

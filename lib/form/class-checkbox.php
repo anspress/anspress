@@ -49,26 +49,9 @@ class Checkbox extends Field {
 
 		// Make sure checkbox value are sanitized.
 		if ( $this->get( 'options' ) ) {
-			$this->sanitize_cb = array_merge( [ 'array_remove_empty, array_map_boolean' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( [ 'array_remove_empty', 'text_field' ], $this->sanitize_cb );
 		} else {
 			$this->sanitize_cb = array_merge( [ 'boolean' ], $this->sanitize_cb );
-		}
-	}
-
-	/**
-	 * Get POST (unsafe) value of a field.
-	 *
-	 * @return null|mixed
-	 */
-	public function unsafe_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), 0, $_REQUEST );
-
-		if ( $request_value ) {
-			return true;
-		}
-
-		if ( 0 === $request_value ) {
-			$this->value = false;
 		}
 	}
 

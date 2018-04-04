@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34333ad14f64034f8ade29ff9a76a042",
+    "content-hash": "3069b900977be3052cae5a33bf5a702e",
     "packages": [],
     "packages-dev": [
         {
@@ -1326,25 +1326,26 @@
         },
         {
             "name": "lucatume/wp-browser",
-            "version": "1.23.3.2",
+            "version": "2.0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lucatume/wp-browser.git",
-                "reference": "8124e90de3ced02ae629cc5fb6d41187ea6bf8fd"
+                "reference": "61af82e3bbd362ccf1e425fccc96ea666aa8fbe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lucatume/wp-browser/zipball/8124e90de3ced02ae629cc5fb6d41187ea6bf8fd",
-                "reference": "8124e90de3ced02ae629cc5fb6d41187ea6bf8fd",
+                "url": "https://api.github.com/repos/lucatume/wp-browser/zipball/61af82e3bbd362ccf1e425fccc96ea666aa8fbe9",
+                "reference": "61af82e3bbd362ccf1e425fccc96ea666aa8fbe9",
                 "shasum": ""
             },
             "require": {
                 "antecedent/patchwork": "^2.0",
                 "codeception/codeception": "^2.3",
-                "electrolinux/phpquery": "^0.9.6",
                 "gumlet/php-image-resize": "^1.6",
                 "lucatume/codeception-setup-local": "~1.0",
                 "lucatume/wp-browser-commons": "^1.2.5",
+                "lucatume/wp-snaphot-assertions": "~1.0",
+                "php": "^7.0",
                 "symfony/process": ">=2.7 <5.0",
                 "wp-cli/wp-cli": "^1.1"
             },
@@ -1352,6 +1353,7 @@
                 "mikey179/vfsstream": "^1.6",
                 "ofbeaton/console-tester": "^1.1",
                 "site5/phantoman": "^1.1",
+                "spatie/phpunit-snapshot-assertions": "^1.2",
                 "vlucas/phpdotenv": "^2.4"
             },
             "bin": [
@@ -1385,7 +1387,7 @@
                 "codeception",
                 "wordpress"
             ],
-            "time": "2018-03-20T11:15:18+00:00"
+            "time": "2018-03-20T11:17:29+00:00"
         },
         {
             "name": "lucatume/wp-browser-commons",
@@ -1431,6 +1433,50 @@
             ],
             "description": "Common libraries of the WP-Browser package.",
             "time": "2017-01-25T18:09:43+00:00"
+        },
+        {
+            "name": "lucatume/wp-snaphot-assertions",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucatume/wp-snapshot-assertions.git",
+                "reference": "b44c9716cf497f969f04dd0663bbe85917443512"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucatume/wp-snapshot-assertions/zipball/b44c9716cf497f969f04dd0663bbe85917443512",
+                "reference": "b44c9716cf497f969f04dd0663bbe85917443512",
+                "shasum": ""
+            },
+            "require": {
+                "electrolinux/phpquery": "^0.9.6",
+                "php": ">=7.0",
+                "spatie/phpunit-snapshot-assertions": "^1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "tad\\WP\\Snapshots\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "theAverageDev (Luca Tumedei)",
+                    "email": "luca@theaveragedev.com"
+                }
+            ],
+            "description": "A set of utilities to support snapshot testing of WordPress code.",
+            "homepage": "https://github.com/lucatume/wp-snaphot-assertions",
+            "keywords": [
+                "snapshot",
+                "testing",
+                "wordpress"
+            ],
+            "time": "2018-03-10T13:04:35+00:00"
         },
         {
             "name": "mikemclin/laravel-wp-password",
@@ -3374,6 +3420,54 @@
                 "phra"
             ],
             "time": "2015-10-13T18:44:15+00:00"
+        },
+        {
+            "name": "spatie/phpunit-snapshot-assertions",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/phpunit-snapshot-assertions.git",
+                "reference": "bb8f919800cf753da12bd12702d975d10aa55824"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/phpunit-snapshot-assertions/zipball/bb8f919800cf753da12bd12702d975d10aa55824",
+                "reference": "bb8f919800cf753da12bd12702d975d10aa55824",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "phpunit/phpunit": "~6.0.5|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Snapshots\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Snapshot testing with PHPUnit",
+            "homepage": "https://github.com/spatie/phpunit-snapshot-assertions",
+            "keywords": [
+                "assert",
+                "phpunit",
+                "phpunit-snapshot-assertions",
+                "snapshot",
+                "spatie",
+                "testing"
+            ],
+            "time": "2018-03-15T10:21:29+00:00"
         },
         {
             "name": "symfony/browser-kit",

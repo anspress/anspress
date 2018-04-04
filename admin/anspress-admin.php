@@ -782,6 +782,7 @@ class AnsPress_Admin {
 		add_filter( 'ap_form_options_uac_reading', [ __CLASS__, 'options_uac_reading' ] );
 		add_filter( 'ap_form_options_uac_posting', [ __CLASS__, 'options_uac_posting' ] );
 		add_filter( 'ap_form_options_uac_other', [ __CLASS__, 'options_uac_other' ] );
+		add_filter( 'ap_form_options_user_activity', [ __CLASS__, 'options_user_activity' ] );
 	}
 
 	/**
@@ -1329,6 +1330,47 @@ class AnsPress_Admin {
 		 * @since 4.1.0
 		 */
 		return apply_filters( 'ap_options_form_postscomments', $form );
+	}
+
+	/**
+	 * Register AnsPress user's activity options.
+	 *
+	 * @return array
+	 * @since 4.1.8
+	 */
+	public static function options_user_activity() {
+		global $wp_roles;
+		$opt = ap_opt();
+
+		$roles = [];
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$roles[ $key ] = $role['name'];
+		}
+
+		$form = array(
+			'fields' => array(
+				'activity_exclude_roles' => array(
+					'label'   => __( 'Select the roles to exclude in activity feed.', 'anspress-question-answer' ),
+					'desc'    => __( 'Selected roles activities will be excluded in site activity feed.', 'anspress-question-answer' ),
+					'type'    => 'checkbox',
+					'value'   => $opt['activity_exclude_roles'],
+					'options' => $roles,
+				),
+				'activity_sample' => array(
+					'label'   => __( 'Select the roles to exclude in activity feed.', 'anspress-question-answer' ),
+					'desc'    => __( 'Selected roles activities will be excluded in site activity feed.', 'anspress-question-answer' ),
+					'value'   => $opt['activity_sample'],
+				),
+			),
+		);
+
+		/**
+		 * Filter to user's activity option form.
+		 *
+		 * @param array $form Form arguments.
+		 * @since 4.1.8
+		 */
+		return apply_filters( 'ap_options_form_user_activity', $form );
 	}
 
 	/**

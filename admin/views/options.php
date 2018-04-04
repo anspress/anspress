@@ -44,6 +44,14 @@ $all_options = array(
 	'postscomments' => array(
 		'label' => __( 'Posts & Comments', 'anspress-question-answer' ),
 	),
+	'user' => array(
+		'label' => __( 'User', 'anspress-question-answer' ),
+		'groups' => array(
+			'activity' => array(
+				'label' => __( 'Activity', 'anspress-question-answer' ),
+			),
+		),
+	),
 	'uac'           => array(
 		'label'  => __( 'User Access Control', 'anspress-question-answer' ),
 		'groups' => array(
