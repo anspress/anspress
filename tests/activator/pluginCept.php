@@ -24,8 +24,8 @@ $I->see( 'AnsPress', '//*[@id="toplevel_page_anspress"]/a/div[3]' );
 $I->wantTo( 'Check option tabs' );
 $I->amOnPage( 'wp-admin/admin.php?page=anspress_options' );
 $I->makeScreenshot( ap_screenshot_inc() . 'options' );
-$I->see( 'General', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
-$I->see( 'Posts & Comments', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
-$I->see( 'User Access Control', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
-$I->see( 'Tools', [ 'css' => '.anspress-options .nav-tab-wrapper a' ] );
+$I->see( 'General', '//*[@id="anspress"]/div[2]/div/div/div[1]/div/h2' );
+$I->see( 'Posts & Comments', '//*[@id="anspress"]/div[2]/div/div/div[1]/div/h2' );
+$I->see( 'User Access Control', '//*[@id="anspress"]/div[2]/div/div/div[1]/div/h2' );
+$I->see( 'Tools', '//*[@id="anspress"]/div[2]/div/div/div[1]/div/h2' );
 
