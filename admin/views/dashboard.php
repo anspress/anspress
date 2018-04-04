@@ -25,8 +25,6 @@ class AnsPress_Dashboard {
 
 		add_meta_box( 'ap-mb-attn', '<i class="apicon-alert"></i>' . __( 'Require Attention', 'anspress-question-answer' ), array( __CLASS__, 'anspress_attn' ), 'anspress', 'column1', 'core' );
 
-		add_meta_box( 'anspress_feed', __( 'AnsPress Feed', 'anspress-question-answer' ), array( __CLASS__, 'anspress_feed' ), 'anspress', 'column1', 'core' );
-
 		add_meta_box( 'ap-mb-qstats', '<i class="apicon-question"></i>' . __( 'Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_stats' ), 'anspress', 'column2', 'core' );
 
 		add_meta_box( 'ap-mb-latestq', __( 'Latest Questions', 'anspress-question-answer' ), array( __CLASS__, 'anspress_latestq' ), 'anspress', 'column2', 'core' );
@@ -118,7 +116,7 @@ class AnsPress_Dashboard {
 		<?php if ( $results ) : ?>
 		<script>
 			var latestquestionChartData = {
-				labels: [ 
+				labels: [
 				<?php
 					echo "'" . implode( "','", $days ) . "'"; // xss okay.
 					?>
@@ -304,39 +302,6 @@ class AnsPress_Dashboard {
 				</li>
 			</ul>
 		</div>
-		<?php
-	}
-
-	/**
-	 * AnsPress feed.
-	 */
-	public static function anspress_feed() {
-		$rss = fetch_feed( 'https://anspress.io/feed/' );
-		set_transient( 'anspress_feed', $rss );
-
-		?>
-			<div class="anspress_feed">
-				<?php
-				if ( ! $rss->get_item_quantity() ) {
-					echo '<p>' . __( 'Apparently, there are no updates to show!', 'anspress-question-answer' ) . '</p>';
-					$rss->__destruct();
-					unset( $rss );
-					return;
-				}
-				?>
-				<ul class="post-list">
-					<?php foreach ( $rss->get_items( 0, 5 ) as $item ) : ?>
-						<li>
-							<a target="_blank" href="<?php echo esc_url( strip_tags( $item->get_link() ) ); ?>"><?php echo esc_html( $item->get_title() ); ?></a> -
-							<span class="posted"><?php echo $item->get_date( 'j F Y | g:i a' ); ?></span>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				<?php
-					$rss->__destruct();
-					unset( $rss );
-				?>
-			</div>
 		<?php
 	}
 
