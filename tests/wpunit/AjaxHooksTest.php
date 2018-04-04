@@ -8,6 +8,8 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase{
 	public $current_post;
 
 	public function setUp() {
+		include_once str_replace( 'includes/../data', '', DIR_TESTDATA ) . '/includes/exceptions.php';
+
 		// before
 		parent::setUp();
 		$this->current_post = $this->factory->post->create(

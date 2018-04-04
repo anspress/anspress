@@ -1351,15 +1351,10 @@ class AnsPress_Admin {
 			'fields' => array(
 				'activity_exclude_roles' => array(
 					'label'   => __( 'Select the roles to exclude in activity feed.', 'anspress-question-answer' ),
-					'desc'    => __( 'Selected roles activities will be excluded in site activity feed.', 'anspress-question-answer' ),
+					'desc'    => __( 'Selected role\'s activities will be excluded in site activity feed.', 'anspress-question-answer' ),
 					'type'    => 'checkbox',
 					'value'   => $opt['activity_exclude_roles'],
 					'options' => $roles,
-				),
-				'activity_sample' => array(
-					'label'   => __( 'Select the roles to exclude in activity feed.', 'anspress-question-answer' ),
-					'desc'    => __( 'Selected roles activities will be excluded in site activity feed.', 'anspress-question-answer' ),
-					'value'   => $opt['activity_sample'],
 				),
 			),
 		);

@@ -2,8 +2,6 @@
 
 namespace AnsPress\Tests\Testcases;
 
-include_once str_replace( 'includes/../data', '', DIR_TESTDATA ) . '/includes/exceptions.php';
-
 trait Ajax {
 	public function ap_ajax_success( $key = false, $return_json = false ) {
 		preg_match( '#<div[^>]*>(.*?)</div>#', $this->_last_response, $match );
