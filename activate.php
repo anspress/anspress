@@ -137,27 +137,27 @@ class AP_Activate {
 		global $wpdb;
 
 		// @codingStandardsIgnoreLine
-		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_qameta . '` (
-			`post_id` bigint(20) NOT NULL,
-			`selected_id` bigint(20) DEFAULT NULL,
-			`comments` bigint(20) DEFAULT 0,
-			`answers` bigint(20) DEFAULT 0,
-			`ptype` varchar(100) DEFAULT NULL,
-			`featured` tinyint(1) DEFAULT 0,
-			`selected` tinyint(1) DEFAULT 0,
-			`votes_up` bigint(20) DEFAULT 0,
-			`votes_down` bigint(20) DEFAULT 0,
-			`subscribers` TEXT DEFAULT NULL,
-			`views` bigint(20) DEFAULT 0,
-			`closed` tinyint(1) DEFAULT 0,
-			`flags` bigint(20) DEFAULT 0,
-			`terms` LONGTEXT DEFAULT NULL,
-			`attach` LONGTEXT DEFAULT NULL,
-			`activities` LONGTEXT DEFAULT NULL,
-			`fields` LONGTEXT DEFAULT NULL,
-			`roles` varchar(100) DEFAULT NULL,
-			`last_updated` timestamp NULL DEFAULT NULL,
-			PRIMARY KEY `post_id` (`post_id`)
+		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_qameta . ' (
+			post_id bigint(20) NOT NULL,
+			selected_id bigint(20) DEFAULT NULL,
+			comments bigint(20) DEFAULT 0,
+			answers bigint(20) DEFAULT 0,
+			ptype varchar(100) DEFAULT NULL,
+			featured tinyint(1) DEFAULT 0,
+			selected tinyint(1) DEFAULT 0,
+			votes_up bigint(20) DEFAULT 0,
+			votes_down bigint(20) DEFAULT 0,
+			subscribers TEXT DEFAULT NULL,
+			views bigint(20) DEFAULT 0,
+			closed tinyint(1) DEFAULT 0,
+			flags bigint(20) DEFAULT 0,
+			terms LONGTEXT DEFAULT NULL,
+			attach LONGTEXT DEFAULT NULL,
+			activities LONGTEXT DEFAULT NULL,
+			fields LONGTEXT DEFAULT NULL,
+			roles varchar(100) DEFAULT NULL,
+			last_updated timestamp NULL DEFAULT NULL,
+			PRIMARY KEY  (post_id)
 		)' . $this->charset_collate . ';';
 	}
 
@@ -167,15 +167,16 @@ class AP_Activate {
 	public function votes_table() {
 		global $wpdb;
 
-		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_votes . '` (
-				`vote_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`vote_post_id` bigint(20) NOT NULL,
-				`vote_user_id` bigint(20) NOT NULL,
-				`vote_rec_user` bigint(20) NOT NULL,
-				`vote_type` varchar(100) DEFAULT NULL,
-				`vote_value` varchar(100) DEFAULT NULL,
-				`vote_date` timestamp NULL DEFAULT NULL,
-				PRIMARY KEY (`vote_id`)
+		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_votes . ' (
+				vote_id bigint(20) NOT NULL AUTO_INCREMENT,
+				vote_post_id bigint(20) NOT NULL,
+				vote_user_id bigint(20) NOT NULL,
+				vote_rec_user bigint(20) NOT NULL,
+				vote_type varchar(100) DEFAULT NULL,
+				vote_value varchar(100) DEFAULT NULL,
+				vote_date timestamp NULL DEFAULT NULL,
+				PRIMARY KEY  (vote_id),
+				KEY vote_post_id (vote_post_id)
 			)' . $this->charset_collate . ';';
 	}
 
@@ -185,53 +186,54 @@ class AP_Activate {
 	public function views_table() {
 		global $wpdb;
 
-		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_views . '` (
-				`view_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`view_user_id` bigint(20) DEFAULT NULL,
-				`view_type` varchar(100) DEFAULT NULL,
-				`view_ref_id` bigint(20) DEFAULT NULL,
-				`view_ip` varchar(39),
-				`view_date` timestamp NULL DEFAULT NULL,
-				PRIMARY KEY (`view_id`)
+		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_views . ' (
+				view_id bigint(20) NOT NULL AUTO_INCREMENT,
+				view_user_id bigint(20) DEFAULT NULL,
+				view_type varchar(100) DEFAULT NULL,
+				view_ref_id bigint(20) DEFAULT NULL,
+				view_ip varchar(39),
+				view_date timestamp NULL DEFAULT NULL,
+				PRIMARY KEY  (view_id),
+				KEY view_user_id (view_user_id)
 			)' . $this->charset_collate . ';';
 	}
 
 	/**
 	 * AnsPress reputation table.
 	 *
-	 * @since 4.1.8 Added index for column `rep_user_id` and `rep_ref_id`.
+	 * @since 4.1.8 Added index for column rep_user_id and rep_ref_id.
 	 */
 	public function reputation_table() {
 		global $wpdb;
 
-		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_reputations . '` (
-				`rep_id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`rep_user_id` bigint(20) DEFAULT NULL,
-				`rep_event` varchar(100) DEFAULT NULL,
-				`rep_ref_id` bigint(20) DEFAULT NULL,
-				`rep_date` timestamp NULL DEFAULT NULL,
-				PRIMARY KEY (`rep_id`),
-				INDEX `index_rep_user_id` (`rep_user_id`),
-				INDEX `index_rep_ref_id` (`rep_ref_id`)
+		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_reputations . ' (
+				rep_id bigint(20) NOT NULL AUTO_INCREMENT,
+				rep_user_id bigint(20) DEFAULT NULL,
+				rep_event varchar(100) DEFAULT NULL,
+				rep_ref_id bigint(20) DEFAULT NULL,
+				rep_date timestamp NULL DEFAULT NULL,
+				PRIMARY KEY  (rep_id),
+				KEY rep_user_id (rep_user_id),
+				KEY rep_ref_id (rep_ref_id)
 			)' . $this->charset_collate . ';';
 	}
 
 	/**
 	 * AnsPress email subscription related table.
 	 *
-	 * @since 4.1.8 Added index for column `subs_user_id` and `subs_ref_id`.
+	 * @since 4.1.8 Added index for column subs_user_id and subs_ref_id.
 	 */
 	public function subscribers_table() {
 		global $wpdb;
 
-		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_subscribers . '` (
-				`subs_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`subs_user_id` bigint(20) UNSIGNED NOT NULL,
-				`subs_ref_id` bigint(20) UNSIGNED NOT NULL,
-				`subs_event` varchar(100) NOT NULL,
-				PRIMARY KEY (`subs_id`),
-				INDEX `index_subs_user_id` (`subs_user_id`),
-				INDEX `index_subs_ref_id` (`subs_ref_id`)
+		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_subscribers . ' (
+				subs_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				subs_user_id bigint(20) UNSIGNED NOT NULL,
+				subs_ref_id bigint(20) UNSIGNED NOT NULL,
+				subs_event varchar(100) NOT NULL,
+				PRIMARY KEY  (subs_id),
+				KEY subs_user_id (subs_user_id),
+				KEY subs_ref_id (subs_ref_id)
 			)' . $this->charset_collate . ';';
 	}
 
@@ -239,29 +241,29 @@ class AP_Activate {
 	 * AnsPress activity table.
 	 *
 	 * @since 4.1.2
-	 * @since 4.1.8 Added index column for `activity_q_id`, `activity_a_id`, `activity_user_id`.
+	 * @since 4.1.8 Added index column for activity_q_id, activity_a_id, activity_user_id.
 	 */
 	public function activity_table() {
 		global $wpdb;
 
 		// Delete old activity table if exists.
-		$existing_table = $wpdb->get_row( "SHOW COLUMNS FROM `$wpdb->ap_activity` LIKE 'secondary_user'" );
+		$existing_table = $wpdb->get_row( "SHOW COLUMNS FROM $wpdb->ap_activity LIKE 'secondary_user'" );
 		if ( ! empty( $existing_table ) && 'secondary_user' === $existing_table->Field ) {
-			$wpdb->query( "DROP TABLE IF EXISTS `$wpdb->ap_activity`" );
+			$wpdb->query( "DROP TABLE IF EXISTS $wpdb->ap_activity" );
 		}
 
-		$this->tables[] = 'CREATE TABLE `' . $wpdb->ap_activity . '` (
-				`activity_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				`activity_action` varchar(45) NOT NULL,
-				`activity_q_id` bigint(20) UNSIGNED NOT NULL,
-				`activity_a_id` bigint(20) UNSIGNED NULL,
-				`activity_c_id` bigint(20) UNSIGNED NULL,
-				`activity_user_id` bigint(20) UNSIGNED NOT NULL,
-				`activity_date` timestamp NULL DEFAULT NULL,
-				PRIMARY KEY (`activity_id`),
-				INDEX `index_activity_q_id` (`activity_q_id`),
-				INDEX `index_activity_a_id` (`activity_a_id`),
-				INDEX `index_activity_user_id` (`activity_user_id`)
+		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_activity . ' (
+				activity_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				activity_action varchar(45) NOT NULL,
+				activity_q_id bigint(20) UNSIGNED NOT NULL,
+				activity_a_id bigint(20) UNSIGNED NULL,
+				activity_c_id bigint(20) UNSIGNED NULL,
+				activity_user_id bigint(20) UNSIGNED NOT NULL,
+				activity_date timestamp NULL DEFAULT NULL,
+				PRIMARY KEY  (activity_id),
+				KEY activity_q_id (activity_q_id),
+				KEY activity_a_id (activity_a_id),
+				KEY activity_user_id (activity_user_id)
 			)' . $this->charset_collate . ';';
 	}
 
