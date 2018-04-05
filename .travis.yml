@@ -42,7 +42,7 @@ before_script:
   - mysql -e 'create database apwploader;'
 
   - sudo apt-get install git
-  - composer require lucatume/wp-browser ^1.21
+  - composer install
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - screen -d -m java -Dwebdriver.chrome.driver=chromedriver -jar selenium-server-standalone-3.8.1.jar -port 4444 2>&1 &
