@@ -80,10 +80,11 @@ class Activity extends AnsPress_Query {
 
 		$this->args = wp_parse_args(
 			$args, array(
-				'number'  => $this->per_page,
-				'offset'  => $this->offset,
-				'orderby' => 'activity_date',
-				'order'   => 'DESC',
+				'number'        => $this->per_page,
+				'offset'        => $this->offset,
+				'orderby'       => 'activity_date',
+				'order'         => 'DESC',
+				'exclude_roles' => [ 'administrator' ],
 			)
 		);
 
@@ -101,40 +102,65 @@ class Activity extends AnsPress_Query {
 	 * Prepare and fetch notifications from database.
 	 *
 	 * @since 4.1.2
+	 * @since 4.1.8 Added `exclude_roles`.
 	 */
 	public function query() {
 		global $wpdb;
 
 		$sql = array(
-			'fields'  => '*',
+			'fields'  => 'a.*',
 			'where'   => [],
-			'orderby' => $this->args['orderby'],
+			'orderby' => 'a.' . $this->args['orderby'],
 			'order'   => ( 'DESC' === $this->args['order'] ? 'DESC' : 'ASC' ),
 		);
 
 		// Add q_id to where clause.
 		if ( isset( $this->args['q_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_q_id = %d', (int) $this->args['q_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_q_id = %d', (int) $this->args['q_id'] );
 		}
 
 		// Add a_id to where clause.
 		if ( isset( $this->args['a_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_a_id = %d', (int) $this->args['a_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_a_id = %d', (int) $this->args['a_id'] );
 		}
 
 		// Add c_id to where clause.
 		if ( isset( $this->args['c_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_c_id = %d', (int) $this->args['c_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_c_id = %d', (int) $this->args['c_id'] );
 		}
 
 		// Add user_id to where clause.
 		if ( isset( $this->args['user_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_user_id = %d', (int) $this->args['user_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_user_id = %d', (int) $this->args['user_id'] );
+		}
+
+		$exclude = '';
+		// Add user_id to where clause.
+		if ( ! empty( $this->args['exclude_roles'] ) ) {
+			$cap_key = $wpdb->prefix . 'capabilities';
+
+			$role_like = '';
+			$total     = count( $this->args['exclude_roles'] );
+			$i         = 1;
+
+			foreach ( $this->args['exclude_roles'] as $r ) {
+				$role_like .= $wpdb->prepare( 'um.meta_value NOT LIKE %s', '%' . sanitize_title( $wpdb->esc_like( $r ) ) . '%' );
+				if ( $total > $i ) {
+					$role_like .= ' AND ';
+				}
+
+				$i++;
+			}
+
+			if ( ! empty( $role_like ) ) {
+				$exclude = "LEFT JOIN {$wpdb->usermeta} um ON um.user_id = a.activity_user_id";
+				$sql['where'][] = "AND ( um.meta_key = '{$cap_key}' AND ( {$role_like} ) )";
+			}
 		}
 
 		$where = implode( ' ', $sql['where'] );
 
-		$query = "SELECT SQL_CALC_FOUND_ROWS {$sql['fields']} FROM {$wpdb->ap_activity} WHERE 1=1 {$where} ORDER BY {$sql['orderby']} {$sql['order']} LIMIT {$this->offset},{$this->per_page}";
+		$query = "SELECT SQL_CALC_FOUND_ROWS {$sql['fields']} FROM {$wpdb->ap_activity} a $exclude WHERE 1=1 {$where} ORDER BY {$sql['orderby']} {$sql['order']} LIMIT {$this->offset},{$this->per_page}";
 
 		$key               = md5( $query );
 		$this->objects     = wp_cache_get( $key, 'ap_activities' );

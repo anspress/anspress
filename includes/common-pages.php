@@ -187,9 +187,17 @@ class AnsPress_Common_Pages {
 	 *
 	 * @return void
 	 * @since 4.1.2
+	 * @since 4.1.8 Added Exclude roles arguments.
 	 */
 	public static function activities_page() {
-		$activities = new AnsPress\Activity();
+		$roles = array_keys( ap_opt( 'activity_exclude_roles' ) );
+		$args  = [];
+
+		if ( ! empty( $roles ) ) {
+			$args['exclude_roles'] = $roles;
+		}
+
+		$activities = new AnsPress\Activity( $args );
 		include ap_get_theme_location( 'activities/activities.php' );
 	}
 

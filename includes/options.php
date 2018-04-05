@@ -139,6 +139,7 @@ function ap_default_options() {
 		'post_question_per'             => 'anyone',
 		'post_answer_per'               => 'logged_in',
 		'post_comment_per'              => 'logged_in',
+		'activity_exclude_roles'        => [],
 	);
 
 	/**
