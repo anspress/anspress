@@ -281,20 +281,7 @@ function ap_comment_btn_html( $_post = null ) {
 		$output .= $unapproved . '</a>';
 	}
 
-	// Add comment button.
-	$q = '';
-
-	if ( ap_user_can_comment( $_post->ID ) ) {
-		$btn_args = wp_json_encode( array(
-			'action'  => 'comment_modal',
-			'post_id' => $_post->ID,
-			'__nonce' => wp_create_nonce( 'new_comment_' . $_post->ID ),
-		) );
-
-		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
-		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
-		$output .= '</a>';
-	}
+	$output .= ap_new_comment_btn( $_post->ID, false );
 
 	return $output;
 }
@@ -461,7 +448,9 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '/all">' . sprintf( __( 'Show %s more comments', 'anspress-question-answer' ), $query->found_comments - ap_opt( 'comment_number' ) ) . '</a>';
 	}
 
-	echo '<a class="ap-new-comment" href="#/comments/' . $_post->ID . '/new">' . __( 'Add a comment', 'anspress-question-answer' ) . '</a>';
+	// New comment button.
+	ap_new_comment_btn( $_post->ID );
+
 	echo '</div>';
 }
 
@@ -476,4 +465,35 @@ function ap_post_comments() {
 	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '" class="have-comments">';
 	ap_the_comments( null, [], true );
 	echo '</apcomments>';
+}
+
+/**
+ * Return or print new comment button.
+ *
+ * @param integer $post_id Post id.
+ * @param boolean $echo    Return or echo. Default is echo.
+ * @return string|void
+ * @since 4.1.8
+ */
+function ap_new_comment_btn( $post_id, $echo = true ) {
+	if ( ap_user_can_comment( $post_id ) ) {
+		$output = '';
+
+		$btn_args = wp_json_encode( array(
+			'action'  => 'comment_modal',
+			'post_id' => $post_id,
+			'__nonce' => wp_create_nonce( 'new_comment_' . $post_id ),
+		) );
+
+		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
+		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
+		$output .= '</a>';
+
+		if ( false === $echo ) {
+			return $output;
+
+		}
+
+		echo $output;
+	}
 }
