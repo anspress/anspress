@@ -80,7 +80,7 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Add anspress classess to body.
+	 * Add anspress classes to body.
 	 *
 	 * @param  array $classes Body class attribute.
 	 * @return array

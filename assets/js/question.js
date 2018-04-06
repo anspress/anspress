@@ -455,7 +455,7 @@
 		routes: {
 			'comment/:commentID': 'commentRoute',
 			'comment/:commentID/edit': 'editCommentsRoute',
-			'comments/:postID/new': 'newCommentsRoute',
+			//'comments/:postID/new': 'newCommentsRoute',
 			'comments/:postID/all': 'commentsRoute',
 			'comments/:postID': 'commentsRoute',
 		},
@@ -548,12 +548,3 @@
 
 
 })(jQuery);
-
-
-
-
-
-
-
-
-

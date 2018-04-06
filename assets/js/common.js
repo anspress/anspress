@@ -491,10 +491,10 @@ _.templateSettings = {
 (function($){
 	AnsPress.Common = {
 		init: function(){
-			$('[apuploadmodal]').on('click', this.uploadModal);
 			AnsPress.on('showImgPreview', this.showImgPreview);
 			AnsPress.on('formPosted', this.imageUploaded);
 			AnsPress.on('ajaxBtnDone', this.uploadModal);
+			AnsPress.on('ajaxBtnDone', this.commentModal);
 		},
 		readUrl: function(input, el) {
 			if (input.files && input.files[0]) {
@@ -519,6 +519,16 @@ _.templateSettings = {
 			file.on('change', function(){
 				$modal.$el.find('.ap-img-preview').remove();
 				AnsPress.Common.readUrl(this, $modal.$el);
+			});
+		},
+		commentModal: function(data){
+			if(data.action != 'ap_comment_modal' || ! data.html)
+				return;
+
+			$modal = AnsPress.modal('comment', {
+				title: data.title,
+				content: data.html,
+				size: 'medium',
 			});
 		},
 		showImgPreview: function(src, el){

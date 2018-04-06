@@ -213,35 +213,6 @@ class AnsPress_Comment_Hooks {
 	}
 
 	/**
-	 * Callback for loading comment form.
-	 *
-	 * @return void
-	 * @since 4.1.0
-	 */
-	public static function comment_form() {
-		$comment_id = ap_sanitize_unslash( 'comment', 'r' );
-		$_comment   = get_comment( $comment_id );
-
-		if ( $_comment ) {
-			$_post = ap_get_post( $_comment->comment_post_ID );
-		} else {
-			$_post = ap_get_post( ap_sanitize_unslash( 'post_id', 'r' ) );
-		}
-
-		ob_start();
-		ap_comment_form( $_post->ID, $_comment );
-		$html = ob_get_clean();
-
-		ap_ajax_json(
-			array(
-				'success'     => true,
-				'html'        => $html,
-				'modal_title' => __( 'Add comment on post', 'anspress-question-answer' ),
-			)
-		);
-	}
-
-	/**
 	 * Change comment_type while adding comments for question or answer.
 	 *
 	 * @param array $commentdata Comment data array.
@@ -314,7 +285,13 @@ function ap_comment_btn_html( $_post = null ) {
 	$q = '';
 
 	if ( ap_user_can_comment( $_post->ID ) ) {
-		$output .= '<a href="#/comments/' . $_post->ID . '/new" class="ap-btn-newcomment ap-btn ap-btn-small" ap="new-comment">';
+		$btn_args = wp_json_encode( array(
+			'action'  => 'comment_modal',
+			'post_id' => $_post->ID,
+			'__nonce' => wp_create_nonce( 'new_comment_' . $_post->ID ),
+		) );
+
+		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" aponce="false" ap-ajax-btn ap-query="' . esc_js( $btn_args ) . '">';
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
 		$output .= '</a>';
 	}
