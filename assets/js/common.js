@@ -495,6 +495,8 @@ _.templateSettings = {
 			AnsPress.on('formPosted', this.imageUploaded);
 			AnsPress.on('ajaxBtnDone', this.uploadModal);
 			AnsPress.on('ajaxBtnDone', this.commentModal);
+
+			AnsPress.on('showModal', this.showModal);
 		},
 		readUrl: function(input, el) {
 			if (input.files && input.files[0]) {
@@ -521,16 +523,6 @@ _.templateSettings = {
 				AnsPress.Common.readUrl(this, $modal.$el);
 			});
 		},
-		commentModal: function(data){
-			if(data.action != 'ap_comment_modal' || ! data.html)
-				return;
-
-			$modal = AnsPress.modal('comment', {
-				title: data.title,
-				content: data.html,
-				size: 'medium',
-			});
-		},
 		showImgPreview: function(src, el){
 			$('<img class="ap-img-preview" src="'+src+'" />').appendTo(el);
 		},
@@ -544,6 +536,14 @@ _.templateSettings = {
 				});
 
 			AnsPress.hideModal('imageUpload');
+		},
+		showModal: function(modal){
+			modal.size = modal.size||'medium';
+			AnsPress.modal(modal.name, {
+				title: modal.title,
+				content: modal.content,
+				size: modal.size,
+			});
 		}
 	};
 })(jQuery);
@@ -617,6 +617,11 @@ jQuery(document).ready(function($){
 
 				if(typeof data.cb !== 'undefined')
 					AnsPress.trigger(data.cb, data, e.target);
+
+				// Open modal.
+				if(data.modal){
+					AnsPress.trigger('showModal', data.modal);
+				}
 			}
 		})
 	});
@@ -751,6 +756,9 @@ jQuery(document).ready(function($){
 					});
 
 					self.apScrollTo();
+				} else if(typeof data.hide_modal !== undefined){
+					// Hide modal
+					AnsPress.hideModal(data.hide_modal);
 				}
 
 				if(typeof data.redirect !== 'undefined'){

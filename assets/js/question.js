@@ -454,8 +454,7 @@
   var AnsPressRouter = Backbone.Router.extend({
 		routes: {
 			'comment/:commentID': 'commentRoute',
-			'comment/:commentID/edit': 'editCommentsRoute',
-			//'comments/:postID/new': 'newCommentsRoute',
+			//'comment/:commentID/edit': 'editCommentsRoute',
 			'comments/:postID/all': 'commentsRoute',
 			'comments/:postID': 'commentsRoute',
 		},
@@ -483,24 +482,7 @@
 				}
 			});
 		},
-		newCommentsRoute: function(postId){
-			self = this;
-			AnsPress.hideModal('commentForm', false);
-			$modal = AnsPress.modal('commentForm', {
-				hideCb: function(){
-					AnsPress.removeHash();
-				}
-			});
-			AnsPress.showLoading($modal.$el.find('.ap-modal-content'));
-			AnsPress.ajax({
-				data: {post_id: postId, ap_ajax_action: 'comment_form'},
-				success: function(data){
-					AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
-					$modal.setTitle(data.modal_title);
-					$modal.setContent(data.html);
-				}
-			});
-		},
+
 		commentsRoute: function(postId, paged){
 			self = this;
 			AnsPress.ajax({

@@ -313,8 +313,12 @@ function ap_comment_actions( $comment ) {
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
 		$actions[] = array(
 			'label' => __( 'Edit', 'anspress-question-answer' ),
-			'cb'    => 'edit_comment',
-			'href'  => get_permalink() . '#/comment/' . $comment->comment_ID . '/edit',
+			'href'  => '#',
+			'query' => array(
+				'action'     => 'comment_modal',
+				'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+				'comment_id' => $comment->comment_ID,
+			),
 		);
 	}
 

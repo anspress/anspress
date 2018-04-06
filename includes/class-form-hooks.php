@@ -792,6 +792,7 @@ class AP_Form_Hooks {
 					'html'          => $html,
 					'post_id'       => $c->comment_post_ID,
 					'comment_id'    => $c->comment_ID,
+					'hide_modal'    => 'comment',
 				);
 
 				ap_ajax_json( $result );
@@ -887,6 +888,7 @@ class AP_Form_Hooks {
 				'html'          => $html,
 				'post_id'       => $c->comment_post_ID,
 				'comment_id'    => $c->comment_ID,
+				'hide_modal'    => 'comment',
 			);
 
 			ap_ajax_json( $result );

@@ -29,10 +29,11 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
-		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks','edit_comment' );
-		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
+		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks', 'edit_comment' );
+		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks', 'approve_comment' );
 		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_comment_form', 'AnsPress_Comment_Hooks', 'comment_form' );
+		anspress()->add_action( 'wp_ajax_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
+		anspress()->add_action( 'wp_ajax_nopriv_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
 
 		// Post actions.
@@ -77,7 +78,7 @@ class AnsPress_Ajax {
 	 */
 	public static function suggest_similar_questions() {
 		// Die if question suggestion is disabled.
-		if ( ap_disable_question_suggestion( ) ) {
+		if ( ap_disable_question_suggestion() ) {
 			wp_die( 'false' );
 		}
 

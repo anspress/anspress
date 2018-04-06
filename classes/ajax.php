@@ -185,6 +185,10 @@ abstract class Ajax extends \AnsPress\Singleton {
 	 * @return mixed
 	 */
 	public function req( $key, $val = null ) {
+		if ( null === $val && ! isset( $this->req[ $key ] ) ) {
+			return;
+		}
+
 		if ( null === $val ) {
 			return $this->req[ $key ];
 		}
