@@ -22,7 +22,7 @@ $user_id = get_query_var( 'ap_user_id' );
 			)
 		);
 	?>
-	<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" ap-ajax-btn ap-query="<?php echo esc_js( $btn_args ); ?>">
+	<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" apajaxbtn ap-query="<?php echo esc_js( $btn_args ); ?>">
 		<?php _e( 'Mark all as seen', 'anspress-question-answer' ); // xss okay. ?>
 	</a>
 <?php endif; ?>

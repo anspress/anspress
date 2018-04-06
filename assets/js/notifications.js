@@ -47,7 +47,7 @@
 	});
 
 	AnsPress.views.Notifications = Backbone.View.extend({
-		template: "<button class=\"ap-droptogg apicon-x\"></button><div class=\"ap-noti-head\">{{aplang.notifications}}<# if(total > 0) { #><i class=\"ap-noti-unseen\">{{total}}</i><a href=\"#\" class=\"ap-btn ap-btn-markall-read ap-btn-small\" ap-ajax-btn ap-query=\"{{JSON.stringify(mark_args)}}\">{{aplang.mark_all_seen}}</a><# } #></div><div class=\"scroll-wrap\"></div>",
+		template: "<button class=\"ap-droptogg apicon-x\"></button><div class=\"ap-noti-head\">{{aplang.notifications}}<# if(total > 0) { #><i class=\"ap-noti-unseen\">{{total}}</i><a href=\"#\" class=\"ap-btn ap-btn-markall-read ap-btn-small\" apajaxbtn ap-query=\"{{JSON.stringify(mark_args)}}\">{{aplang.mark_all_seen}}</a><# } #></div><div class=\"scroll-wrap\"></div>",
 		initialize: function(options){
 			this.model = options.model;
 			this.mark_args = options.mark_args;

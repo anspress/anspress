@@ -291,7 +291,7 @@ function ap_comment_btn_html( $_post = null ) {
 			'__nonce' => wp_create_nonce( 'new_comment_' . $_post->ID ),
 		) );
 
-		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" aponce="false" ap-ajax-btn ap-query="' . esc_js( $btn_args ) . '">';
+		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" aponce="false" apajaxbtn ap-query="' . esc_js( $btn_args ) . '">';
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
 		$output .= '</a>';
 	}

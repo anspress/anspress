@@ -591,7 +591,7 @@ jQuery(document).ready(function($){
 	});
 
 	// Ajax button.
-	$('body').on('click', '[ap-ajax-btn]', function(e){
+	$('body').on('click', '[apajaxbtn]', function(e){
 		var self = this;
 		e.preventDefault();
 

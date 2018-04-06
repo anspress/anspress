@@ -82,7 +82,7 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 							?>
 
 							<?php if ( $data['active'] ) : ?>
-								<button class="button button-small ap-addon-toggle" ap-ajax-btn ap-query="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Disable Addon', 'anspress-question-answer' ); ?></button>
+								<button class="button button-small ap-addon-toggle" apajaxbtn ap-query="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Disable Addon', 'anspress-question-answer' ); ?></button>
 
 								<?php
 									// Show options button if have options.
@@ -101,7 +101,7 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 								}
 								?>
 							<?php else : ?>
-								<button class="button button-small button-primary ap-addon-toggle" ap-ajax-btn ap-query="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Enable Addon', 'anspress-question-answer' ); ?></button>
+								<button class="button button-small button-primary ap-addon-toggle" apajaxbtn ap-query="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Enable Addon', 'anspress-question-answer' ); ?></button>
 							<?php endif; ?>
 						</div>
 					</div>
