@@ -140,7 +140,7 @@ class Tags extends Field {
 		$value   = ! empty( $this->value() ) ? implode( ',', $this->value() ) : '';
 		$type    = is_string( $options ) ? $options : 'tags';
 
-		$this->add_html( '<input type="text" id="' . $this->id() . '" data-type="' . $type . '" data-options="' . esc_js( wp_json_encode( $this->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" ap-tag-field' . $this->custom_attr() . ' name="' . esc_attr( $this->field_name ) . '" value="' . $value . '" />' );
+		$this->add_html( '<input type="text" id="' . $this->id() . '" data-type="' . $type . '" data-options="' . esc_js( wp_json_encode( $this->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" aptagfield' . $this->custom_attr() . ' name="' . esc_attr( $this->field_name ) . '" value="' . $value . '" />' );
 
 		$this->add_html( '<script id="' . $this->id() . '-options" type="application/json">' . wp_json_encode( $options ) . '</script>' );
 

@@ -629,7 +629,7 @@ jQuery(document).ready(function($){
 	function apAddRepeatField(el, values){
 		values = values||false;
 		var args = $(el).data('args');
-		args['index'] = $(el).find('[data-repeat-id]').length;
+		args['index'] = $(el).find('[datarepeatid]').length;
 		var template = $('#'+args.key+'-template').text();
 
 		var t = _.template(template);
@@ -640,7 +640,7 @@ jQuery(document).ready(function($){
 			return match.replace(/[[\]]/g, '');
 		});
 
-		var html = $('<div class="ap-repeatable-item" data-repeat-id="'+args.index+'">'+ t +'<a href="#" class="ap-repeatable-delete">'+args.label_delete+'</a></div>');
+		var html = $('<div class="ap-repeatable-item" datarepeatid="'+args.index+'">'+ t +'<a href="#" class="ap-repeatable-delete">'+args.label_delete+'</a></div>');
 		$.each(values, function(childName, v){
 			html.find('[name="'+args.key+'['+args.index+']['+childName+']"]').val(v);
 		});
@@ -846,7 +846,7 @@ jQuery(document).ready(function($){
 		$el.selectize(defaults);
 	}
 
-	$('[ap-tag-field]').each(function(){
+	$('[aptagfield]').each(function(){
 		AnsPress.tagElements($(this));
 	});
 
