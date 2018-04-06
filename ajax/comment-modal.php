@@ -54,10 +54,9 @@ class Comment_Modal extends \AnsPress\Classes\Ajax {
 	 */
 	protected function verify_permission() {
 		$comment_id = $this->req( 'comment_id' );
+		$post_id    = $this->req( 'post_id' );
 
-		if ( ! empty( $comment_id ) && ! ap_user_can_edit_comment( $comment_id ) ) {
-			parent::verify_permission();
-		} elseif ( ! ap_user_can_comment( $this->req( 'post_id' ) ) ) {
+		if ( ( ! empty( $comment_id ) && ! ap_user_can_edit_comment( $comment_id ) ) || ( ! empty( $post_id ) && ! ap_user_can_comment( $post_id ) ) ) {
 			parent::verify_permission();
 		}
 
@@ -79,9 +78,12 @@ class Comment_Modal extends \AnsPress\Classes\Ajax {
 		$html = ob_get_clean();
 
 		$this->set_success();
+
+		$title = $this->req( 'comment_id' ) ? __( 'Edit comment', 'anspress-question-answer' ) : __( 'Add a comment', 'anspress-question-answer' );
+
 		$this->add_res( 'modal', array(
 			'name'    => 'comment',
-			'title'   => __( 'Add a comment on post', 'anspress-question-answer' ),
+			'title'   => $title,
 			'content' => $html,
 		) );
 	}

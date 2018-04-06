@@ -15,20 +15,20 @@ $I->submitForm(
 );
 $I->amOnPage( '?p=' . $id );
 $I->click( "[apid='$id'] .ap-btn-newcomment" );
-$I->waitForElement( '#form_comment', 30 );
+$I->waitForElement( '#form_comment', 5 );
 $I->makeScreenshot( 'new-comment' );
 $comment_text = 'Suspendisse malesuada mattis eleifend. Phasellus sed dui massa, vitae dapibus augue. Nulla mauris sem, hendrerit sed fringilla a, facilisis vitae eros.';
 $I->fillField( '#form_comment-content', $comment_text );
 $I->click( '#form_comment [type=submit]' );
-$I->waitForElementNotVisible( '#form_comment', 30 );
-$I->waitForElementVisible( "#comments-$id apcomment:first-child", 30 );
+$I->waitForElementNotVisible( '#form_comment', 5 );
+$I->waitForElementVisible( "#comments-$id apcomment:first-child", 5 );
 $I->see( $comment_text, "#comments-$id apcomment" );
 $I->scrollTo( "#comments-$id", 0, -100 );
 $I->makeScreenshot( 'comment' );
 
 $I->wantTo( 'Test comment edit' );
 $I->click( "#comments-$id apcomment:first-child .ap-comment-actions a:first-child" );
-$I->waitForElement( '#form_comment', 30 );
+$I->waitForElement( '#form_comment', 5 );
 $I->makeScreenshot( 'edit-comment' );
 
 $comment_text = 'Nam ut urna sit amet libero ultrices cursus. Integer vulputate nibh et diam sagittis in dictum mauris dapibus.';

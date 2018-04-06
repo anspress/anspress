@@ -24,4 +24,12 @@ trait Ajax {
 	public function getAjaxResponse() {
 		return $this->ap_ajax_success( false, true );
 	}
+
+	public function handle( $action ) {
+		try {
+			$this->_handleAjax( $action );
+		} catch ( \WPAjaxDieStopException $e ) {
+			$this->_last_response = $e->getMessage();
+		}
+	}
 }
