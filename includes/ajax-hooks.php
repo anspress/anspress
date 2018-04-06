@@ -31,7 +31,7 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
 		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks', 'edit_comment' );
 		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks', 'approve_comment' );
-		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
+		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress\Ajax\Comment_Delete', 'init' );
 		anspress()->add_action( 'wp_ajax_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
 		anspress()->add_action( 'wp_ajax_nopriv_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );

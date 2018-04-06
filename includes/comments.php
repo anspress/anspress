@@ -83,53 +83,9 @@ class AnsPress_Comment_Hooks {
 	 *
 	 * @since 2.0.0
 	 * @since 3.0.0 Moved from ajax.php to here.
+	 * @deprecated 4.1.8 Replaced by \AnsPress\Ajax\Comment_Delete::init
 	 */
 	public static function delete_comment() {
-		$comment_id = (int) ap_sanitize_unslash( 'comment_id', 'r' );
-
-		if ( ! $comment_id || ! ap_user_can_delete_comment( $comment_id ) || ! ap_verify_nonce( 'delete_comment_' . $comment_id ) ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Failed to delete comment', 'anspress-question-answer' ) ],
-				)
-			);
-		}
-
-		$_comment = get_comment( $comment_id );
-
-		// Check if deleting comment is locked.
-		if ( ap_comment_delete_locked( $_comment->comment_ID ) && ! is_super_admin() ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => [ 'message' => sprintf( __( 'This comment was created %s. Its locked hence you cannot delete it.', 'anspress-question-answer' ), ap_human_time( $_comment->comment_date_gmt, false ) ) ],
-				)
-			);
-		}
-
-		$delete = wp_delete_comment( (integer) $_comment->comment_ID, true );
-
-		if ( $delete ) {
-			do_action( 'ap_unpublish_comment', $_comment );
-			do_action( 'ap_after_deleting_comment', $_comment );
-
-			$count = get_comment_count( $_comment->comment_post_ID );
-
-			ap_ajax_json(
-				array(
-					'success'       => true,
-					'snackbar'      => [ 'message' => __( 'Comment successfully deleted', 'anspress-question-answer' ) ],
-					'cb'            => 'commentDeleted',
-					'post_ID'       => $_comment->comment_post_ID,
-					'commentsCount' => [
-						'text'       => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ),
-						'number'     => $count['all'],
-						'unapproved' => $count['awaiting_moderation'],
-					],
-				)
-			);
-		}
 	}
 
 	/**
