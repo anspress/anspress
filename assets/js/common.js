@@ -363,7 +363,7 @@ _.templateSettings = {
 
 	AnsPress.views.Modal = Backbone.View.extend({
 		className: 'ap-modal',
-		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" ap-query=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
+		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" apquery=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
 		events: {
 			'click [ap="close-modal"]': 'clickHide',
 			'click [ap="modal-click"]': 'clickAction',
@@ -404,7 +404,7 @@ _.templateSettings = {
 		clickAction: function(e){
 			e.preventDefault();
 			var targ = $(e.target);
-			q = targ.data('ap-query');
+			q = targ.data('apquery');
 
 			if(q.cb){
 				q.element = targ;
@@ -569,10 +569,10 @@ jQuery(document).ready(function($){
 	});
 
 	// Subscribe button.
-	$('[ap-subscribe]').click(function(e){
+	$('[apsubscribe]').click(function(e){
 		e.preventDefault();
 		var self = $(this);
-		var query = JSON.parse(self.attr('ap-query'));
+		var query = JSON.parse(self.attr('apquery'));
 		query.ap_ajax_action = 'subscribe';
 
 		AnsPress.ajax({
@@ -599,7 +599,7 @@ jQuery(document).ready(function($){
 			return;
 
 		var self = $(this);
-		var query = JSON.parse(self.attr('ap-query'));
+		var query = JSON.parse(self.attr('apquery'));
 
 		AnsPress.showLoading(self);
 		AnsPress.ajax({
@@ -673,7 +673,7 @@ jQuery(document).ready(function($){
 			e.preventDefault();
 
 			var self = $(this);
-			var query = JSON.parse(self.attr('ap-query'));
+			var query = JSON.parse(self.attr('apquery'));
 			AnsPress.showLoading(self);
 
 			$count = $('[name="'+query.id+'-groups"]');

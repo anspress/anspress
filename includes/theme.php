@@ -357,7 +357,7 @@ function ap_post_actions_buttons() {
 		]
 	);
 
-	echo '<postActions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" ap-query="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>';
+	echo '<postActions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" apquery="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>';
 }
 
 /**
@@ -750,7 +750,7 @@ function ap_list_filters( $current_url = '' ) {
 			]
 		);
 		echo '<div class="ap-dropdown ap-filter filter-' . esc_attr( $key ) . '">';
-		echo '<a class="ap-dropdown-toggle ap-filter-toggle" href="#" ap-filter ap-query="' . esc_js( $args ) . '">' . esc_attr( $filter['title'] ) . $active . '</a>'; // xss okay.
+		echo '<a class="ap-dropdown-toggle ap-filter-toggle" href="#" ap-filter apquery="' . esc_js( $args ) . '">' . esc_attr( $filter['title'] ) . $active . '</a>'; // xss okay.
 		echo '</div>';
 	}
 
@@ -810,7 +810,7 @@ function ap_select_answer_btn_html( $_post = null ) {
 		$hide = true;
 	}
 
-	return '<a href="#" class="ap-btn-select ap-btn ' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" ap-query="' . $q . '" title="' . $title . '">' . $label . '</a>';
+	return '<a href="#" class="ap-btn-select ap-btn ' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" apquery="' . $q . '" title="' . $title . '">' . $label . '</a>';
 }
 
 /**
@@ -919,7 +919,7 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 	$subscribed  = ap_is_user_subscriber( 'question', $_post->ID );
 	$label       = $subscribed ? __( 'Unsubscribe', 'anspress-question-answer' ) : __( 'Subscribe', 'anspress-question-answer' );
 
-	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" ap-subscribe ap-query="' . esc_js( $args ) . '">' . $label . '</a>' . '<span class="ap-btn ap-subscribers-count ap-btn-small">' . $subscribers . '</span>';
+	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '">' . $label . '</a>' . '<span class="ap-btn apsubscribers-count ap-btn-small">' . $subscribers . '</span>';
 
 	if ( ! $echo ) {
 		return $html;

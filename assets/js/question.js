@@ -264,7 +264,7 @@
 		},
 		postActions: function(e){
 			var self = this;
-			var q = $.parseJSON($(e.target).attr('ap-query'));
+			var q = $.parseJSON($(e.target).attr('apquery'));
 			if(typeof q.ap_ajax_action === 'undefined')
 				q.ap_ajax_action = 'post_actions';
 
@@ -283,7 +283,7 @@
 		selectAnswer: function(e){
 			e.preventDefault();
 			var self = this;
-			var q = $.parseJSON($(e.target).attr('ap-query'));
+			var q = $.parseJSON($(e.target).attr('apquery'));
 			q.action = 'ap_toggle_best_answer';
 
 			AnsPress.showLoading(e.target);

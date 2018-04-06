@@ -165,7 +165,7 @@ class Repeatable extends Field {
 			)
 		);
 
-		$this->add_html( '<a class="ap-btn ap-repeatable-add" href="#" ap-query="' . esc_js( $add_button_args ) . '">' . sprintf( __( 'Add More %s', 'anspress-question-answer' ), $this->get( 'label' ) ) . '</a>' );
+		$this->add_html( '<a class="ap-btn ap-repeatable-add" href="#" apquery="' . esc_js( $add_button_args ) . '">' . sprintf( __( 'Add More %s', 'anspress-question-answer' ), $this->get( 'label' ) ) . '</a>' );
 
 		$this->add_html( '<input name="' . sanitize_title( $this->field_name ) . '-groups" value="' . $this->total_items . '" type="hidden" />' );
 

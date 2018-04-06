@@ -153,7 +153,7 @@
       e.preventDefault();
 			var self = this;
 			AnsPress.showLoading(e.currentTarget);
-      var q = $.parseJSON($(e.currentTarget).attr('ap-query'));
+      var q = $.parseJSON($(e.currentTarget).attr('apquery'));
 			q.ap_ajax_action = 'load_filter_'+q.filter;
 
 			AnsPress.ajax({

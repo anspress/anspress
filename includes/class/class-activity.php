@@ -555,6 +555,6 @@ class Activity extends AnsPress_Query {
 			)
 		);
 
-		echo '<a href="#" class="ap-btn" apajaxbtn ap-query="' . esc_js( $args ) . '">' . __( 'Load More', 'anspress-question-answer' ) . '</a>';
+		echo '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">' . __( 'Load More', 'anspress-question-answer' ) . '</a>';
 	}
 }

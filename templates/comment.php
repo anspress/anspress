@@ -34,7 +34,7 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 					<?php foreach ( ap_comment_actions( $comment ) as $action ) : ?>
 						<a href="<?php echo esc_url( $action['href'] ); ?>"
 							<?php echo ! empty( $action['title'] ) ? ' title="' . $action['title'] . '"' : ''; ?>
-							<?php echo ! empty( $action['query'] ) ? ' apajaxbtn ap-query="' . esc_js( wp_json_encode( $action['query'] ) ) . '"' : ''; ?>
+							<?php echo ! empty( $action['query'] ) ? ' apajaxbtn apquery="' . esc_js( wp_json_encode( $action['query'] ) ) . '"' : ''; ?>
 							>
 							<?php echo esc_html( $action['label'] ); ?>
 						</a>

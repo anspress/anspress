@@ -77,7 +77,7 @@ class Editor extends Field {
 			'form_name' => $this->form_name,
 		) );
 
-		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10" apajaxbtn aponce="false" ap-query="' . esc_js( $btn_args ) . '"><i class="apicon-image mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
+		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
 	}
 
 	/**
