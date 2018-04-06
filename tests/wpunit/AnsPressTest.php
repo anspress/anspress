@@ -92,6 +92,10 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-query.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-session.php' );
 
+		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-modal.php' );
+
+		$this->assertFileExists( ANSPRESS_DIR . 'classes/ajax.php' );
+
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/search.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/question_stats.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/questions.php' );
@@ -174,7 +178,6 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase {
 
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/admin-app.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/ap-admin.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/common.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/main.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-syntax.min.js' );
 
