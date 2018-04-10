@@ -116,10 +116,6 @@ class AnsPress_Admin {
 
 		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
 
-		if ( 'toplevel_page_anspress' === $page->base ) {
-			wp_enqueue_script( 'ap-chart-js', '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js' );
-		}
-
 		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js', [ 'anspress-main' ], AP_VERSION, true );
 
 		?>

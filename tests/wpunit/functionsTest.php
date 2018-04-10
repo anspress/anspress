@@ -275,7 +275,7 @@ class functionsTest extends \Codeception\TestCase\WPTestCase {
 				),
 			], $tags['strong']
 		);
-		$this->assertArraySubset( [ 'class' => [] ], $tags['pre'] );
+		$this->assertEquals( [], $tags['pre'] );
 		$this->assertEquals( [], $tags['code'] );
 		$this->assertEquals( [], $tags['blockquote'] );
 		$this->assertArraySubset(

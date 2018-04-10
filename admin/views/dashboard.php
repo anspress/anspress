@@ -58,26 +58,7 @@ class AnsPress_Dashboard {
 	public static function anspress_stats() {
 		$question_count = ap_total_posts_count( 'question' );
 		?>
-		<script>
-			var questionChartData = {
-				labels: ["Published","Private","Moderate"],
-				datasets: [{
-						data: [<?php echo esc_attr( $question_count->publish ) . ',' . esc_attr( $question_count->private_post ) . ',' . esc_attr( $question_count->moderate ); ?>],
-						backgroundColor: [
-							"#4d97fe",
-							"#929292",
-							"#f9a341"
-						],
-						hoverBackgroundColor: [
-							"#ddd",
-							"#ddd",
-							"#ddd"
-						]
-					}]
-			};
-		</script>
 		<div class="main">
-			<canvas id="question-chart"></canvas>
 			<ul>
 				<li class="post-count">
 					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=question' ) ); ?>" class="publish">
@@ -114,23 +95,9 @@ class AnsPress_Dashboard {
 		}
 		?>
 		<?php if ( $results ) : ?>
-		<script>
-			var latestquestionChartData = {
-				labels: [
-				<?php
-					echo "'" . implode( "','", $days ) . "'"; // xss okay.
-					?>
-					 ],
-				datasets: [{
-					backgroundColor: 'rgba(53, 209, 252, 0.3)',
-					borderColor: 'rgba(53, 209, 252, 0.7)',
-					data: [ <?php echo esc_html( implode( ',', $counts ) ); ?> ]
-				}]
-			};
-		</script>
+
 		<?php endif; ?>
 		<div class="main">
-			<canvas id="latestquestion-chart" height="80"></canvas>
 
 			<?php
 			anspress()->questions = ap_get_questions(
@@ -177,19 +144,8 @@ class AnsPress_Dashboard {
 		}
 		?>
 		<?php if ( $results ) : ?>
-		<script>
-			var latestanswerChartData = {
-				labels: [ <?php echo "'" . implode( "','", $days ) . "'"; ?> ],
-				datasets: [{
-					backgroundColor: 'rgba(78, 207, 158, 0.3)',
-					borderColor: 'rgba(78, 207, 158, 0.7)',
-					data: [ <?php echo esc_html( implode( ',', $counts ) ); ?> ]
-				}]
-			};
-		</script>
 		<?php endif; ?>
 		<div class="main">
-			<canvas id="latestanswer-chart" height="80"></canvas>
 			<?php
 			$answers = ap_get_answers(
 				array(
@@ -270,26 +226,7 @@ class AnsPress_Dashboard {
 		global $answers;
 		$answer_count = ap_total_posts_count( 'answer' );
 		?>
-		<script>
-			var answerChartData = {
-				labels: ["Published","Private","Moderate"],
-				datasets: [{
-					data: [<?php echo $answer_count->publish . ',' . $answer_count->private_post . ',' . $answer_count->moderate; ?>],
-					backgroundColor: [
-						"#4d97fe",
-						"#929292",
-						"#f9a341"
-					],
-					hoverBackgroundColor: [
-						"#ddd",
-						"#ddd",
-						"#ddd"
-					]
-				}]
-			};
-		</script>
 		<div class="main">
-			<canvas id="answer-chart"></canvas>
 			<ul>
 				<li class="post-count">
 					<a href="<?php echo admin_url( 'edit.php?post_type=answer' ); ?>" class="publish"><?php printf( __( '%d Published', 'anspress-question-answer' ), $answer_count->publish ); ?></a>
@@ -323,8 +260,6 @@ if ( $columns ) {
 ?>
 
 <div id="anspress-metaboxes" class="wrap">
-	<?php screen_icon( 'options-general' ); ?>
-
 	<h1>AnsPress</h1>
 	<div class="welcome-panel" id="welcome-panel">
 		<div class="welcome-panel-content">

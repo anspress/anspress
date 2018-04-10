@@ -179,7 +179,6 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/admin-app.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/ap-admin.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/main.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-syntax.min.js' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/ajax.php' );
