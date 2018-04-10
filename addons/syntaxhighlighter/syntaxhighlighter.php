@@ -45,10 +45,12 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	protected function __construct() {
 		$this->brush();
 		anspress()->add_filter( 'wp_enqueue_scripts', $this, 'scripts' );
-		anspress()->add_filter( 'mce_external_plugins', $this, 'mce_plugins' );
 		anspress()->add_action( 'wp_footer', $this, 'output_scripts', 15 );
 		anspress()->add_action( 'admin_footer', $this, 'output_scripts' );
 		anspress()->add_filter( 'tiny_mce_before_init', $this, 'mce_before_init' );
+		anspress()->add_filter( 'ap_editor_buttons', $this, 'editor_buttons', 10, 2 );
+
+		add_shortcode( 'apcode', [ $this, 'shortcode' ] );
 	}
 
 	/**
@@ -57,12 +59,11 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function scripts() {
-		$js_url  = ANSPRESS_URL . '/assets/syntaxhighlighter/scripts/';
-		$css_url = ANSPRESS_URL . '/assets/syntaxhighlighter/styles/';
+		$js_url  = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/';
+		$css_url = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/styles/';
 
 		$scripts = array(
 			'brush-bash'       => 'shBrushBash.js',
-			'brush-coldfusion' => 'shBrushColdFusion.js',
 			'brush-cpp'        => 'shBrushCpp.js',
 			'brush-csharp'     => 'shBrushCSharp.js',
 			'brush-css'        => 'shBrushCss.js',
@@ -91,12 +92,13 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			'brush-r'          => 'shBrushR.js',
 		);
 
-		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
-		wp_register_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', [], AP_VERSION );
-
 		foreach ( $scripts as $key => $script ) {
 			wp_register_script( 'syntaxhighlighter-' . $key, $js_url . $script, [ 'syntaxhighlighter-core' ], AP_VERSION );
 		}
+
+		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
+		wp_register_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', [], AP_VERSION );
+		wp_register_script( 'syntaxhighlighter', ANSPRESS_URL . 'addons/syntaxhighlighter/script.js', [ 'syntaxhighlighter-core' ], AP_VERSION );
 
 		// Register theme stylesheets.
 		wp_register_style( 'syntaxhighlighter-core', $css_url . 'shCore.css', [], AP_VERSION );
@@ -115,9 +117,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			'xml'        => 'XML/HTML',
 			'jscript'    => 'Javascript',
 			'sql'        => 'SQL',
-			'as3'        => 'Action Script',
 			'bash'       => 'Bash/Shell',
-			'colfusion'  => 'ColdFusion',
 			'clojure'    => 'Clojure',
 			'cpp'        => 'C++/C',
 			'csharp'     => 'C#',
@@ -143,17 +143,6 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Add tinyMCE plugin.
-	 *
-	 * @param array $plugins Plugins.
-	 * @return array
-	 */
-	public function mce_plugins( $plugins ) {
-		$plugins['apsyntax'] = ANSPRESS_URL . 'assets/js/min/tinymce-syntax.min.js';
-		return $plugins;
-	}
-
-	/**
 	 * Output required scripts in footer.
 	 *
 	 * @return void
@@ -169,6 +158,8 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		foreach ( $this->brushes as $brush => $label ) {
 			$scripts[] = 'syntaxhighlighter-brush-' . strtolower( $brush );
 		}
+
+		$scripts[] = 'syntaxhighlighter';
 
 		wp_print_scripts( $scripts );
 
@@ -187,16 +178,17 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		}
 		?>
 		<script type='text/javascript'>
-			(function($){
-				SyntaxHighlighter.defaults.toolbar = false;
+			AnsPress.loadCSS('<?php echo esc_url( $sh_css ); ?>');
+			AnsPress.loadCSS('<?php echo esc_url( $theme_css ); ?>');
 
-				$(document).ready(function(){
-					AnsPress.loadCSS('<?php echo esc_url( $sh_css ); ?>');
-					AnsPress.loadCSS('<?php echo esc_url( $theme_css ); ?>');
+			aplang = aplang||{};
+			aplang.shLanguage = '<?php esc_attr_e( 'Language', 'anspress-question-answer' ); ?>';
+			aplang.shInline = '<?php esc_attr_e( 'Is inline?', 'anspress-question-answer' ); ?>';
+			aplang.shTxtPlholder = '<?php esc_attr_e( 'Insert code snippet here ...', 'anspress-question-answer' ); ?>';
+			aplang.shButton = '<?php esc_attr_e( 'Insert to editor', 'anspress-question-answer' ); ?>';
+			aplang.shTitle = '<?php esc_attr_e( 'Insert code', 'anspress-question-answer' ); ?>';
 
-					SyntaxHighlighter.highlight();
-				});
-			})(jQuery);
+			SyntaxHighlighter.highlight();
 		</script>
 		<?php
 	}
@@ -219,9 +211,42 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			$options['extended_valid_elements'] .= ',';
 		}
 
-		$options['extended_valid_elements'] .= 'pre[aplang|contenteditable=false]';
+		$options['extended_valid_elements'] = 'pre,code';
 
 		return $options;
+	}
+
+	/**
+	 * Add insert code button before editor.
+	 *
+	 * @param string $name  Field name.
+	 * @param object $field Field object.
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public function editor_buttons( $name, $field ) {
+		$field->add_html( '<button type="button" class="ap-btn-insertcode ap-btn-small ap-btn mb-10 mr-5" apinsertcode><i class="apicon-code mr-3"></i>' . __( 'Insert Code', 'anspress-question-answer' ) . '</button>' );
+	}
+
+	/**
+	 * Render shortcode `[apcode]`.
+	 *
+	 * @param array  $atts    Attributes.
+	 * @param string $content Content
+	 * @return string
+	 */
+	public function shortcode( $atts, $content = '' ) {
+		$atts = wp_parse_args( $atts, array(
+			'language' => 'plain',
+			'inline'   => false,
+		) );
+
+		$tag     = $atts['inline'] ? 'code': 'pre';
+		$content = preg_replace( '/<br(\s+)?\/?>/i', "", $content );
+		$klass = 'class="brush: ' . esc_attr( $atts['language'] ) . '"';
+		$content = str_replace( [ '<pre', '<code' ], [ '<pre ' . $klass, '<code ' . $klass ], $content );
+
+ 		return $content;
 	}
 }
 

@@ -100,7 +100,6 @@
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
 						'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],
-						'assets/js/min/tinymce-syntax.min.js': ['assets/js/tinymce-syntax.js']
 					}
 				}
 			},

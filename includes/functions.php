@@ -443,9 +443,7 @@ function ap_form_allowed_tags() {
 		'strong'     => array(
 			'style' => $allowed_style,
 		),
-		'pre'        => array(
-			'class' => [],
-		),
+		'pre'        => array(),
 		'code'       => array(),
 		'blockquote' => array(),
 		'img'        => array(
@@ -914,7 +912,8 @@ function ap_register_menu( $slug, $title, $link ) {
  * @return string
  */
 function ap_trim_traling_space( $contents ) {
-	return preg_replace( '#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $contents );
+	$contents = preg_replace( '#(^(&nbsp;|\s)+|(&nbsp;|\s)+$)#', '', $contents );
+	return $contents;
 }
 
 /**

@@ -77,7 +77,16 @@ class Editor extends Field {
 			'form_name' => $this->form_name,
 		) );
 
-		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
+		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
+
+		/**
+		 * Action trigged after image button before editor.
+		 *
+		 * @param string $field_name Original name of the field.
+		 * @param object $field      Field object.
+		 * @since 4.1.8
+		 */
+		do_action( 'ap_editor_buttons', $this->original_name, $this );
 	}
 
 	/**
@@ -125,14 +134,43 @@ class Editor extends Field {
 		$this->add_html( '<div class="ap-editor">' );
 		$this->image_button();
 
+		/**
+		 * Filter value before passing it to wp editor.
+		 *
+		 * @param string $value Value.
+		 *
+		 * @since 4.1.8
+		 */
+		$value = apply_filters( 'ap_editor_pre_value', $this->value() );
+
 		ob_start();
-		wp_editor( $this->value(), $this->id(), $editor_args );
+		wp_editor( $value, $this->id(), $editor_args );
 		$this->add_html( ob_get_clean() );
 
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+	}
+
+	// public function unsafe_value() {
+	// 	$value = parent::unsafe_value();
+
+	// 	if ( ! empty( $value ) ) {
+	// 		$value = preg_replace_callback( '/\[(\[?)(apcode)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)/', [ $this, 'apcode_cb' ], $value );
+	// 	}
+
+	// 	return $value;
+	// }
+
+	/**
+	 * Callback for replacing `apcode` shortcode.
+	 *
+	 * @param array $matches Matches.
+	 * @return string
+	 */
+	public function apcode_cb( $matches ) {
+		return '[apcode' . $matches[3] . ']' . esc_html( $matches[5] ) . '[/apcode]';
 	}
 
 	/**

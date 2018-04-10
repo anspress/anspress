@@ -251,4 +251,22 @@ class AP_QA_Query_Hooks {
 			$query->posts[0]->post_content = '[anspress]';
 		}
 	}
+
+	/**
+	 * Whitelist shortcode tags for AnsPress content.
+	 *
+	 * Removes all shortcodes from a content and keeps only `[apcode]`.
+	 *
+	 * @param array $tags_to_remove Tags to remove.
+	 * @return array
+	 */
+	public static function strip_shortcodes_tagnames( $tags_to_remove ) {
+		global $ap_strip_shortcodes;
+
+		if ( true === $ap_strip_shortcodes ) {
+			return array_diff( $tags_to_remove, [ 'apcode' ] );
+		}
+
+		return $tags_to_remove;
+	}
 }

@@ -22,3 +22,15 @@ img {
 	float: right;
 	margin-left: 15px;
 }
+pre{
+	white-space: pre-wrap;
+	font-size: 13px;
+	position: relative;
+	background: #f7f7f7;
+	padding: 10px;
+	border: solid 1px transparent;
+	cursor: pointer;
+}
+pre[data-mce-selected]{
+	border-color: #90CAF9;
+}

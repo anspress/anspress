@@ -166,20 +166,33 @@ class Validate {
 	 * Sanitize description field.
 	 *
 	 * Remove more, encode contents of code and pre tag.
-	 * Replace square brackets so that shotcode dont get rendered.
+	 * Replace square brackets so that shortcode don't get rendered.
 	 *
 	 * @param null|string $value String to sanitize.
 	 *
 	 * @return null|string
+	 * @since 4.1.8 Remove multiple new line and remove single space.
 	 */
 	public static function sanitize_description( $value = null ) {
+		global $ap_strip_shortcodes;
 		if ( ! empty( $value ) ) {
-			$value = str_replace( '<!--more-->', '', $value );
-			$value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $value );
-			$value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $value );
-			$value = str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $value );
 
-			return $value;
+			$new_value           = $value;
+			$new_value           = str_replace( '<!--more-->', '', $new_value );
+			$ap_strip_shortcodes = true;
+			$new_value           = strip_shortcodes( $new_value );
+			$ap_strip_shortcodes = false;
+
+			$new_value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $new_value );
+			$new_value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $new_value );
+
+			// Remove multiple new lines.
+			$new_value           = preg_replace( '/[\r\n]\s*[\r\n]/', "\n", $new_value );
+
+			// Remove single white single space in line.
+			$new_value           = preg_replace( '/&nbsp;/', "\n", $new_value );
+
+			return $new_value;
 		}
 	}
 
@@ -195,7 +208,7 @@ class Validate {
 		preg_match( '/aplang\=\\"([A-Za-z0-9 _]*)\\"/', $matches[1], $lang );
 		$lang = empty( $lang ) ? 'text' : esc_attr( $lang[1] );
 
-		return '<pre class="brush: ' . sanitize_key( $lang ) . '">' . esc_html( $matches[2] ) . '</pre>';
+		return '<pre>' . esc_html( $matches[2] ) . '</pre>';
 	}
 
 	/**
