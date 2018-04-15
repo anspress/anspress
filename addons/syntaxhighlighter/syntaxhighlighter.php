@@ -178,17 +178,19 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		}
 		?>
 		<script type='text/javascript'>
-			AnsPress.loadCSS('<?php echo esc_url( $sh_css ); ?>');
-			AnsPress.loadCSS('<?php echo esc_url( $theme_css ); ?>');
+			if(typeof SyntaxHighlighter !== 'undefined'){
+				AnsPress.loadCSS('<?php echo esc_url( $sh_css ); ?>');
+				AnsPress.loadCSS('<?php echo esc_url( $theme_css ); ?>');
 
-			aplang = aplang||{};
-			aplang.shLanguage = '<?php esc_attr_e( 'Language', 'anspress-question-answer' ); ?>';
-			aplang.shInline = '<?php esc_attr_e( 'Is inline?', 'anspress-question-answer' ); ?>';
-			aplang.shTxtPlholder = '<?php esc_attr_e( 'Insert code snippet here ...', 'anspress-question-answer' ); ?>';
-			aplang.shButton = '<?php esc_attr_e( 'Insert to editor', 'anspress-question-answer' ); ?>';
-			aplang.shTitle = '<?php esc_attr_e( 'Insert code', 'anspress-question-answer' ); ?>';
+				aplang = aplang||{};
+				aplang.shLanguage = '<?php esc_attr_e( 'Language', 'anspress-question-answer' ); ?>';
+				aplang.shInline = '<?php esc_attr_e( 'Is inline?', 'anspress-question-answer' ); ?>';
+				aplang.shTxtPlholder = '<?php esc_attr_e( 'Insert code snippet here ...', 'anspress-question-answer' ); ?>';
+				aplang.shButton = '<?php esc_attr_e( 'Insert to editor', 'anspress-question-answer' ); ?>';
+				aplang.shTitle = '<?php esc_attr_e( 'Insert code', 'anspress-question-answer' ); ?>';
 
-			SyntaxHighlighter.highlight();
+				SyntaxHighlighter.highlight();
+			}
 		</script>
 		<?php
 	}

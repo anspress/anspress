@@ -129,13 +129,16 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
  * @return boolean
  * @since 4.1.0 Improved check. Check for main pages.
  * @since 4.1.1 Check for @see ap_current_page().
+ * @since 4.1.8 Added filter `is_anspress`.
  */
 function is_anspress() {
+	$ret = false;
+
 	// If BuddyPress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
 		$bp_com = bp_current_component();
 		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
-			return true;
+			$ret = true;
 		}
 	}
 
@@ -150,18 +153,24 @@ function is_anspress() {
 		}
 
 		if ( in_array( $queried_object->ID, $page_ids ) ) {
-			return true;
+			$ret = true;
 		}
 	}
 
 	// Check if ap_page.
 	if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
-		return true;
+		$ret = true;
 	} elseif ( '' !== ap_current_page() ) {
-		return true;
+		$ret = true;
 	}
 
-	return false;
+	/**
+	 * Filter for overriding is_anspress() return value.
+	 *
+	 * @param boolean $ret True or false.
+	 * @since 4.1.8
+	 */
+	return apply_filters( 'is_anspress', $ret );
 }
 
 /**

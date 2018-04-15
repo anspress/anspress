@@ -54,6 +54,10 @@ $anspress-vars: map-merge((
 ), $anspress-vars);
 
 $space-breaks: (
+  0: (
+    x: 0px,
+    y: 0px
+  ),
   3: (
     x: 3px,
     y: 3px
