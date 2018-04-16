@@ -13,7 +13,20 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-$class = 'is-dismissible';
+$recounts = array(
+	'votes' => array(
+		'label' => __( 'Recount Votes', 'anspress-question-answer' ),
+		'desc'  => __( 'Recount votes of questions and answers.', 'anspress-question-answer' ),
+	),
+	'answers' => array(
+		'label' => __( 'Recount Answers', 'anspress-question-answer' ),
+		'desc'  => __( 'Recount answers of every question.', 'anspress-question-answer' ),
+	),
+	'flagged' => array(
+		'label' => __( 'Recount Flags', 'anspress-question-answer' ),
+		'desc'  => __( 'Recount flags on questions and answers.', 'anspress-question-answer' ),
+	),
+);
 
 ?>
 <style>
@@ -34,59 +47,28 @@ $class = 'is-dismissible';
 	<?php do_action( 'ap_before_admin_page_title' ); ?>
 	<table class="form-table">
 		<tbody>
-			<tr>
-				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Votes', 'anspress-question-answer' ); ?></label>
-				</th>
-				<td>
-					<?php
-						$btn_args = wp_json_encode( array(
-							'action'  => 'ap_recount_votes',
-							'__nonce' => wp_create_nonce( 'recount_votes' ),
-						) );
-					?>
-					<div class="btn-container ap-recount-votes">
-						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Recount votes', 'anspress-question-answer' ); ?></button>
-						<span class="recount-msg"></span>
-					</div>
-					<p class="description"><?php esc_attr_e( 'Recount all votes of question and answers.', 'anspress-question-answer' ); ?></p>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Answers', 'anspress-question-answer' ); ?></label>
-				</th>
-				<td>
-					<?php
-						$btn_args = wp_json_encode( array(
-							'action'  => 'ap_recount_answers',
-							'__nonce' => wp_create_nonce( 'recount_answers' ),
-						) );
-					?>
-					<div class="btn-container ap-recount-answers">
-						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Recount answers', 'anspress-question-answer' ); ?></button>
-						<span class="recount-msg"></span>
-					</div>
-					<p class="description"><?php esc_attr_e( 'Recount answers of all questions.', 'anspress-question-answer' ); ?></p>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Flagged posts', 'anspress-question-answer' ); ?></label>
-				</th>
-				<td>
-					<div class="btn-container">
-						<button class="button ap-recount-btn" data-action="flags"><?php esc_attr_e( 'Re-count flagged posts', 'anspress-question-answer' ); ?></button>
-						<span class="hide"
-							data-start="<?php _e( 'Re-counting flagged posts...', 'anspress-question-answer' ); ?>"
-							data-continue="<?php _e( '{0} out of {1} posts processed', 'anspress-question-answer' ); ?>"
-							data-success="<?php _e( 'Successfully updated flagged posts count!', 'anspress-question-answer' ); ?>"
-							data-failed="<?php _e( 'Failed to count flagged posts, please try again or submit a help request', 'anspress-question-answer' ); ?>">
-						</span>
-					</div>
-					<p class="description"><?php esc_attr_e( 'Re-count flagged posts.', 'anspress-question-answer' ); ?></p>
-				</td>
-			</tr>
+
+			<?php foreach ( $recounts as $rc => $args ) : ?>
+				<tr>
+					<th scope="row" valign="top">
+						<label><?php echo esc_attr( $args['label'] ); ?></label>
+					</th>
+					<td>
+						<?php
+							$btn_args = wp_json_encode( array(
+								'action'  => 'ap_recount_' . $rc,
+								'__nonce' => wp_create_nonce( 'recount_' . $rc ),
+							) );
+						?>
+						<div class="btn-container ap-recount-<?php echo esc_attr( $rc ); ?>">
+							<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php echo esc_attr( $args['label'] ); ?></button>
+							<span class="recount-msg"></span>
+						</div>
+						<p class="description"><?php echo esc_attr( $args['desc'] ); ?></p>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+
 			<tr>
 				<th scope="row" valign="top">
 					<label><?php esc_attr_e( 'Subscribers', 'anspress-question-answer' ); ?></label>

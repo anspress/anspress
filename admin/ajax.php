@@ -34,6 +34,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'wp_ajax_ap_toggle_addon', __CLASS__, 'ap_toggle_addon' );
 		anspress()->add_action( 'wp_ajax_ap_recount_votes', __CLASS__, 'recount_votes' );
 		anspress()->add_action( 'wp_ajax_ap_recount_answers', __CLASS__, 'recount_answers' );
+		anspress()->add_action( 'wp_ajax_ap_recount_flagged', __CLASS__, 'recount_flagged' );
 	}
 
 	/**
@@ -400,13 +401,18 @@ class AnsPress_Admin_Ajax {
 	/**
 	 * Recount flags of posts.
 	 *
-	 * @param integer $current Current index.
-	 * @param integer $offset Current offset.
 	 * @return void
 	 * @since 4.0.5
 	 */
-	public static function recount_flags( $current, $offset ) {
+	public static function recount_flagged() {
+		if ( ! ap_verify_nonce( 'recount_flagged' ) || ! current_user_can( 'manage_options' ) ) {
+			wp_die();
+		}
+
 		global $wpdb;
+
+		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
+		$offset = absint( $paged * 100 );
 
 		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
 
@@ -416,19 +422,26 @@ class AnsPress_Admin_Ajax {
 			ap_update_flags_count( $id );
 		}
 
-		$action = 'continue';
+		$done   = $offset + count( $ids );
+		$remain = $total_found - ( $offset + count( $ids ) );
 
-		if ( count( $ids ) < 50 ) {
-			$action = 'success';
+		$json = array(
+			'success' => true,
+			'total'   => $total_found,
+			'remain'  => $remain,
+			'el'      => '.ap-recount-flagged',
+			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+		);
+
+		if ( $remain > 0 ) {
+			$json['q'] = array(
+				'action'  => 'ap_recount_flagged',
+				'__nonce' => wp_create_nonce( 'recount_flagged' ),
+				'paged'   => $paged + 1,
+			);
 		}
 
-		wp_send_json(
-			[
-				'action'    => $action,
-				'total'     => $total_found,
-				'processed' => count( $ids ),
-			]
-		);
+		ap_send_json( $json );
 	}
 
 	/**
