@@ -39,16 +39,17 @@ $class = 'is-dismissible';
 					<label><?php esc_attr_e( 'Votes', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
-					<div class="btn-container">
-						<button class="button ap-recount-btn" data-action="votes"><?php esc_attr_e( 'Re-count votes', 'anspress-question-answer' ); ?></button>
-						<span class="hide"
-							data-start="<?php _e( 'Re-counting all AnsPress post votes...', 'anspress-question-answer' ); ?>"
-							data-continue="<?php _e( '{0} out of {1} posts processed', 'anspress-question-answer' ); ?>"
-							data-success="<?php _e( 'Successfully counted all votes!', 'anspress-question-answer' ); ?>"
-							data-failed="<?php _e( 'Failed to count all votes, please try again or submit a help request', 'anspress-question-answer' ); ?>">
-						</span>
+					<?php
+						$btn_args = wp_json_encode( array(
+							'action'  => 'ap_recount_votes',
+							'__nonce' => wp_create_nonce( 'recount_votes' ),
+						) );
+					?>
+					<div class="btn-container ap-recount-votes">
+						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Recount votes', 'anspress-question-answer' ); ?></button>
+						<span class="recount-msg"></span>
 					</div>
-					<p class="description"><?php esc_attr_e( 'Re-count all votes of question and answers.', 'anspress-question-answer' ); ?></p>
+					<p class="description"><?php esc_attr_e( 'Recount all votes of question and answers.', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
 			<tr>
@@ -63,10 +64,10 @@ $class = 'is-dismissible';
 						) );
 					?>
 					<div class="btn-container ap-recount-answers">
-						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Re count answers', 'anspress-question-answer' ); ?></button>
+						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Recount answers', 'anspress-question-answer' ); ?></button>
 						<span class="recount-msg"></span>
 					</div>
-					<p class="description"><?php esc_attr_e( 'Re-count answers of all questions.', 'anspress-question-answer' ); ?></p>
+					<p class="description"><?php esc_attr_e( 'Recount answers of all questions.', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
 			<tr>

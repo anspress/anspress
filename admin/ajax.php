@@ -32,7 +32,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
 		anspress()->add_action( 'wp_ajax_ap_toggle_addon', __CLASS__, 'ap_toggle_addon' );
-		anspress()->add_action( 'wp_ajax_anspress_recount', __CLASS__, 'anspress_recount' );
+		anspress()->add_action( 'wp_ajax_ap_recount_votes', __CLASS__, 'recount_votes' );
 		anspress()->add_action( 'wp_ajax_ap_recount_answers', __CLASS__, 'recount_answers' );
 	}
 
@@ -307,48 +307,22 @@ class AnsPress_Admin_Ajax {
 	}
 
 	/**
-	 * Ajax callback for performing recount actions.
+	 * Ajax callback for 'ap_recount_votes` which recounting votes of posts.
 	 *
-	 * @since 4.0.5
-	 * @return void
-	 */
-	public static function anspress_recount() {
-		check_ajax_referer( 'recount', '__nonce' );
-
-		// Check if user have permission to do this action.
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json([
-				'error' => true,
-			]);
-		}
-
-		$sub_action = ap_sanitize_unslash( 'sub_action', 'r', '' );
-		$current    = (int) ap_sanitize_unslash( 'offset', 'r', 0 );
-		$offset     = 100 * $current;
-
-		$method_name = 'recount_' . $sub_action;
-
-		if ( ! empty( $sub_action ) && method_exists( __CLASS__, $method_name ) ) {
-			self::$method_name( $current, $offset );
-		}
-
-		wp_send_json([
-			'error' => true,
-		]);
-	}
-
-	/**
-	 * Recount all votes
-	 *
-	 * @param integer $current Current index.
-	 * @param integer $offset Current offset.
 	 * @return void
 	 * @since 4.0.5
 	 */
-	public static function recount_votes( $current, $offset ) {
+	public static function recount_votes() {
+		if ( ! ap_verify_nonce( 'recount_votes' ) || ! current_user_can( 'manage_options' ) ) {
+			wp_die();
+		}
+
+		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
+		$offset = absint( $paged * 100 );
+
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
@@ -356,19 +330,26 @@ class AnsPress_Admin_Ajax {
 			ap_update_votes_count( $id );
 		}
 
-		$action = 'continue';
+		$done   = $offset + count( $ids );
+		$remain = $total_found - ( $offset + count( $ids ) );
 
-		if ( count( $ids ) < 50 ) {
-			$action = 'success';
+		$json = array(
+			'success' => true,
+			'total'   => $total_found,
+			'remain'  => $remain,
+			'el'      => '.ap-recount-votes',
+			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+		);
+
+		if ( $remain > 0 ) {
+			$json['q'] = array(
+				'action'  => 'ap_recount_votes',
+				'__nonce' => wp_create_nonce( 'recount_votes' ),
+				'paged'   => $paged + 1,
+			);
 		}
 
-		wp_send_json(
-			[
-				'action'    => $action,
-				'total'     => $total_found,
-				'processed' => count( $ids ),
-			]
-		);
+		ap_send_json( $json );
 	}
 
 	/**
@@ -381,7 +362,6 @@ class AnsPress_Admin_Ajax {
 		if ( ! ap_verify_nonce( 'recount_answers' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
-
 
 		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
 		$offset = absint( $paged * 100 );
