@@ -1502,3 +1502,22 @@ span.ap-category-icon {
 .ap-thickboxw{
   padding: 20px;
 }
+.ap-loading-span{
+	background-image: url(../templates/images/loading.svg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	display: block;
+	height: 16px;
+	width: 16px;
+	right: 16px;
+	float: right;
+	margin-left: 10px;
+}
+span.recount-msg {
+  padding: 12px;
+  line-height: 28px;
+  color: #2aab02;
+  font-weight: bold;
+  font-style: italic;
+}

@@ -33,6 +33,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
 		anspress()->add_action( 'wp_ajax_ap_toggle_addon', __CLASS__, 'ap_toggle_addon' );
 		anspress()->add_action( 'wp_ajax_anspress_recount', __CLASS__, 'anspress_recount' );
+		anspress()->add_action( 'wp_ajax_ap_recount_answers', __CLASS__, 'recount_answers' );
 	}
 
 	/**
@@ -316,16 +317,14 @@ class AnsPress_Admin_Ajax {
 
 		// Check if user have permission to do this action.
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json(
-				[
-					'error' => true,
-				]
-			);
+			wp_send_json([
+				'error' => true,
+			]);
 		}
 
 		$sub_action = ap_sanitize_unslash( 'sub_action', 'r', '' );
-		$current    = (int) ap_sanitize_unslash( 'current', 'r', 0 );
-		$offset     = 50 * $current;
+		$current    = (int) ap_sanitize_unslash( 'offset', 'r', 0 );
+		$offset     = 100 * $current;
 
 		$method_name = 'recount_' . $sub_action;
 
@@ -333,11 +332,9 @@ class AnsPress_Admin_Ajax {
 			self::$method_name( $current, $offset );
 		}
 
-		wp_send_json(
-			[
-				'error' => true,
-			]
-		);
+		wp_send_json([
+			'error' => true,
+		]);
 	}
 
 	/**
@@ -375,37 +372,49 @@ class AnsPress_Admin_Ajax {
 	}
 
 	/**
-	 * Recount answers of questions.
+	 * Ajax callback for 'ap_recount_answers` which recounting answers of questions.
 	 *
-	 * @param integer $current Current index.
-	 * @param integer $offset Current offset.
 	 * @return void
 	 * @since 4.0.5
 	 */
-	public static function recount_answers( $current, $offset ) {
+	public static function recount_answers() {
+		if ( ! ap_verify_nonce( 'recount_answers' ) || ! current_user_can( 'manage_options' ) ) {
+			wp_die();
+		}
+
+
+		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
+		$offset = absint( $paged * 100 );
+
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
-
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_answers_count( $id, false, false );
 		}
 
-		$action = 'continue';
+		$done   = $offset + count( $ids );
+		$remain = $total_found - ( $offset + count( $ids ) );
 
-		if ( count( $ids ) < 50 ) {
-			$action = 'success';
+		$json = array(
+			'success' => true,
+			'total'   => $total_found,
+			'remain'  => $remain,
+			'el'      => '.ap-recount-answers',
+			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+		);
+
+		if ( $remain > 0 ) {
+			$json['q'] = array(
+				'action'  => 'ap_recount_answers',
+				'__nonce' => wp_create_nonce( 'recount_answers' ),
+				'paged'   => $paged + 1,
+			);
 		}
 
-		wp_send_json(
-			[
-				'action'    => $action,
-				'total'     => $total_found,
-				'processed' => count( $ids ),
-			]
-		);
+		ap_send_json( $json );
 	}
 
 	/**
