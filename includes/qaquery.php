@@ -445,6 +445,7 @@ function ap_question_status( $_post = null ) {
  * @param false|integer $question_id question id.
  * @since unknown
  * @since 4.1.2 Use @see ap_recent_activity() for showing activity.
+ * @since 4.1.8 Show short views count.
  */
 function ap_question_metas( $question_id = false ) {
 	if ( false === $question_id ) {
@@ -463,7 +464,7 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	$view_count     = ap_get_post_field( 'views' );
-	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%d views', 'anspress-question-answer' ), $view_count ) . '</i>';
+	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%s views', 'anspress-question-answer' ),  ap_short_num( $view_count ) ) . '</i>';
 
 	if ( is_question() ) {
 		$last_active     = ap_get_last_active( get_question_id() );
