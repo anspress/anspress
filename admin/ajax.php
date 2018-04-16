@@ -37,6 +37,7 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'wp_ajax_ap_recount_flagged', __CLASS__, 'recount_flagged' );
 		anspress()->add_action( 'wp_ajax_ap_recount_subscribers', __CLASS__, 'recount_subscribers' );
 		anspress()->add_action( 'wp_ajax_ap_recount_reputation', __CLASS__, 'recount_reputation' );
+		anspress()->add_action( 'wp_ajax_ap_recount_views', __CLASS__, 'recount_views' );
 	}
 
 	/**
@@ -541,22 +542,26 @@ class AnsPress_Admin_Ajax {
 	/**
 	 * Recount question views.
 	 *
-	 * @param integer $current Current index.
-	 * @param integer $offset Current offset.
 	 * @return void
 	 * @since 4.0.5
 	 */
-	public static function recount_views( $current, $offset ) {
-		global $wpdb;
-		$args = wp_parse_args(
-			ap_isset_post_value( 'args' ), array(
-				'fake_views' => false,
-				'min_views'  => 100,
-				'max_views'  => 200,
-			)
-		);
+	public static function recount_views() {
+		if ( ! ap_verify_nonce( 'recount_views' ) || ! current_user_can( 'manage_options' ) ) {
+			wp_die();
+		}
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},50" ); // @codingStandardsIgnoreLine.
+		global $wpdb;
+
+		$args = wp_parse_args( ap_sanitize_unslash( 'args', 'r', '' ), array(
+			'fake_views' => false,
+			'min_views'  => 100,
+			'max_views'  => 200,
+		) );
+
+		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
+		$offset = absint( $paged * 100 );
+
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
 
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
 
@@ -577,18 +582,25 @@ class AnsPress_Admin_Ajax {
 			ap_update_views_count( $id, $views );
 		}
 
-		$action = 'continue';
+		$done   = $offset + count( $ids );
+		$remain = $total_found - ( $offset + count( $ids ) );
 
-		if ( count( $ids ) < 50 ) {
-			$action = 'success';
+		$json = array(
+			'success' => true,
+			'total'   => $total_found,
+			'remain'  => $remain,
+			'el'      => '.ap-recount-views',
+			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+		);
+
+		if ( $remain > 0 ) {
+			$json['q'] = array(
+				'action'  => 'ap_recount_views',
+				'__nonce' => wp_create_nonce( 'recount_views' ),
+				'paged'   => $paged + 1,
+			);
 		}
 
-		wp_send_json(
-			[
-				'action'    => $action,
-				'total'     => $total_found,
-				'processed' => count( $ids ),
-			]
-		);
+		ap_send_json( $json );
 	}
 }

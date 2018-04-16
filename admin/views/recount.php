@@ -82,21 +82,21 @@ $recounts = array(
 					<label><?php esc_attr_e( 'Views', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
-					<div class="btn-container">
-						<button class="button ap-recount-btn" data-action="views"><?php esc_attr_e( 'Re-count question views', 'anspress-question-answer' ); ?></button>
+					<?php
+						$btn_args = wp_json_encode( array(
+							'action'  => 'ap_recount_views',
+							'__nonce' => wp_create_nonce( 'recount_views' ),
+						) );
+					?>
+					<div class="btn-container ap-recount-views">
+						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Recount question views', 'anspress-question-answer' ); ?></button>
 
-						<span class="hide"
-							data-start="<?php _e( 'Re-counting post views...', 'anspress-question-answer' ); ?>"
-							data-continue="<?php _e( '{0} out of {1} question processed', 'anspress-question-answer' ); ?>"
-							data-success="<?php _e( 'Successfully updated question views!', 'anspress-question-answer' ); ?>"
-							data-failed="<?php _e( 'Failed to count views, please try again or submit a help request', 'anspress-question-answer' ); ?>">
-						</span>
+						<span class="recount-msg"></span>
 					</div>
-					<p class="description"><?php esc_attr_e( 'Re-count all questions views.', 'anspress-question-answer' ); ?></p>
-					<br />
+					<p class="description"><?php esc_attr_e( 'Recount views count of all questions.', 'anspress-question-answer' ); ?></p>
 					<br />
 					<form class="counter-args">
-						<p><strong><?php _e( 'Add fake views if views table is empty', 'anspress-question-answer' ); ?></strong></p>
+						<p><strong><?php esc_attr_e( 'Add fake views if views table is empty', 'anspress-question-answer' ); ?></strong></p>
 						<label>
 							<?php _e( 'Add fake views', 'anspress-question-answer' ); ?>
 							<input type="checkbox" name="fake_views" value="1" />
@@ -115,7 +115,10 @@ $recounts = array(
 
 <script type="text/javascript">
 	(function($){
+		var viewsArgs;
+
 		function apRecount(query){
+			query.args = viewsArgs;
 			AnsPress.ajax({
 				data: query,
 				success: function(data){
@@ -133,6 +136,7 @@ $recounts = array(
 			e.preventDefault();
 			var query = $(this).data('query');
 			AnsPress.showLoading($(this));
+			viewsArgs = $(this).closest('td').find('form').serialize();
 			apRecount(query);
 		})
 	})(jQuery);
