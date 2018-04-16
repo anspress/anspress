@@ -30,6 +30,10 @@ $recounts = array(
 		'label' => __( 'Recount Subscribers', 'anspress-question-answer' ),
 		'desc'  => __( 'Recount subscribers of questions.', 'anspress-question-answer' ),
 	),
+	'reputation' => array(
+		'label' => __( 'Recount Reputation', 'anspress-question-answer' ),
+		'desc'  => __( 'Recount reputation of all users.', 'anspress-question-answer' ),
+	),
 );
 
 ?>
@@ -72,24 +76,6 @@ $recounts = array(
 					</td>
 				</tr>
 			<?php endforeach; ?>
-
-			<tr>
-				<th scope="row" valign="top">
-					<label><?php esc_attr_e( 'Reputations', 'anspress-question-answer' ); ?></label>
-				</th>
-				<td>
-					<div class="btn-container">
-						<button class="button ap-recount-btn" data-action="reputation"><?php esc_attr_e( 'Re-count user reputation', 'anspress-question-answer' ); ?></button>
-						<span class="hide"
-							data-start="<?php _e( 'Re-counting user reputation...', 'anspress-question-answer' ); ?>"
-							data-continue="<?php _e( '{0} out of {1} user processed', 'anspress-question-answer' ); ?>"
-							data-success="<?php _e( 'Successfully updated users reputation!', 'anspress-question-answer' ); ?>"
-							data-failed="<?php _e( 'Failed to count users reputation, please try again or submit a help request', 'anspress-question-answer' ); ?>">
-						</span>
-					</div>
-					<p class="description"><?php esc_attr_e( 'Re-count all users reputation points.', 'anspress-question-answer' ); ?></p>
-				</td>
-			</tr>
 
 			<tr>
 				<th scope="row" valign="top">
