@@ -291,7 +291,7 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Control the ouput of question selection.
+	 * Control the output of question selection.
 	 *
 	 * @return void
 	 * @since 2.0.0

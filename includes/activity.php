@@ -136,12 +136,17 @@ function ap_activity_parse( $activity ) {
 /**
  * Return recent activity of question or answer.
  *
- * @param Wp_Post|integer|false $_post WordPress post object or false for global post.
- * @param boolean               $get_cached  Get rows from cache do not query database. Default is `true`.
+ * @param Wp_Post|integer|false $_post       WordPress post object or false for global post.
+ * @param null                  $deprecated  Deprecated.
  * @return object|false Return parsed activity on success else false.
  * @since 4.1.2
+ * @since 4.1.8 Deprecated argument `$get_cached`.
  */
-function ap_get_recent_activity( $_post = false, $get_cached = true ) {
+function ap_get_recent_activity( $_post = false, $deprecated = null ) {
+	if ( null !== $deprecated ) {
+		_deprecated_argument( __FUNCTION__, '4.1.8' );
+	}
+
 	global $wpdb;
 	$_post = ap_get_post( $_post );
 
@@ -154,7 +159,7 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
 	$column   = 'answer' === $type ? 'a_id' : 'q_id';
 	$activity = wp_cache_get( $_post->ID, 'ap_' . $column . '_activity' );
 
-	if ( false === $activity && false !== $get_cached ) {
+	if ( false === $activity ) {
 		$q_where = '';
 
 		if ( 'q_id' === $column && is_question() ) {
@@ -183,10 +188,10 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
  * @param boolean              $query_db  Get rows from database. Default is `false`.
  * @return void|string
  */
-function ap_recent_activity( $_post = null, $echo = true, $query_db = false ) {
+function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
 	$html     = '';
 	$_post    = ap_get_post( $_post );
-	$activity = ap_get_recent_activity( $_post, $query_db );
+	$activity = ap_get_recent_activity( $_post );
 
 	if ( $activity ) {
 		$html .= '<span class="ap-post-history">';

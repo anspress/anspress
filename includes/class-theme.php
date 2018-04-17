@@ -325,8 +325,7 @@ class AnsPress_Theme {
 		echo ap_post_status_badge(); // xss safe.
 
 		$_post    = ap_get_post();
-		$query_db = 'answer' === $_post->post_type ? false : true;
-		$activity = ap_recent_activity( null, false, $query_db );
+		$activity = ap_recent_activity( null, false );
 
 		if ( ! empty( $activity ) ) {
 			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . $activity . '</div>';
