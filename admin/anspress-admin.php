@@ -80,6 +80,7 @@ class AnsPress_Admin {
 		anspress()->add_action( 'ap_after_field_markup', __CLASS__, 'page_select_field_opt' );
 		anspress()->add_action( 'admin_action_ap_addon_options', __CLASS__, 'ap_addon_options' );
 		anspress()->add_action( 'admin_action_ap_save_addon_options', __CLASS__, 'save_addon_options' );
+		anspress()->add_action( 'admin_footer', __CLASS__, 'admin_footer' );
 	}
 
 	/**
@@ -141,13 +142,13 @@ class AnsPress_Admin {
 	 * @since 2.4.6
 	 */
 	public static function menu_counts() {
-		$flagged = ap_total_flagged_count();
-
+		$flagged   = ap_total_flagged_count();
 		$q_flagged = $flagged['questions'];
 		$a_flagged = $flagged['answers'];
 
 		$question_count = wp_count_posts( 'question', 'readable' );
 		$answer_count   = wp_count_posts( 'answer', 'readable' );
+
 		$types          = array(
 			'question' => ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged->total,
 			'answer'   => ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged->total,
@@ -159,7 +160,7 @@ class AnsPress_Admin {
 
 		foreach ( (array) $types as $k => $count ) {
 			if ( $count > 0 ) {
-				$types_html[ $k ] = ' <span class="update-plugins count"><span class="plugin-count">' . number_format_i18n( $count ) . '</span></span>';
+				$types_html[ $k ] = ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">' . number_format_i18n( $count ) . '</span></span>';
 			} else {
 				$types_html[ $k ] = '';
 			}
@@ -1490,6 +1491,22 @@ class AnsPress_Admin {
 
 		wp_redirect( admin_url( 'admin.php?action=ap_addon_options&addon=' . $addon_name . '&updated=' . $updated ) );
 		exit;
+	}
+
+	/**
+	 * Output custom script and styles in admin_footer.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public static function admin_footer() {
+		?>
+			<style>
+				#adminmenu .anspress-license-count{
+					background: #0073aa;
+				}
+			</style>
+		<?php
 	}
 
 }

@@ -832,9 +832,12 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_
 
 	$counts['total'] = 0;
 
-	foreach ( (array) $count as $row ) {
-		$counts[ $row['post_status'] ] = $row['count'];
-		$counts['total']              += $row['count'];
+
+	if ( ! empty( $count ) ) {
+		foreach ( $count as $row ) {
+			$counts[ $row['post_status'] ] = (int) $row['count'];
+			$counts['total']              += (int) $row['count'];
+		}
 	}
 
 	wp_cache_set( $cache_key, (object) $counts, 'counts' );

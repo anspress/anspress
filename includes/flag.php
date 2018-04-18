@@ -69,10 +69,6 @@ function ap_add_flag( $post_id, $user_id = false ) {
 
 	$inserted = ap_vote_insert( $post_id, $user_id, 'flag' );
 
-	if ( $inserted ) {
-		ap_update_total_flags_count();
-	}
-
 	return $inserted;
 }
 
@@ -176,22 +172,11 @@ function ap_update_total_flags_count() {
  * @since 4.0.0
  */
 function ap_total_flagged_count() {
-	$opt     = get_option( 'anspress_global', [] );
-	$updated = false;
+	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
+	$updated                  = true;
 
-	if ( empty( $opt['flagged_questions'] ) ) {
-		$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
-		$updated                  = true;
-	}
-
-	if ( empty( $opt['flagged_answers'] ) ) {
-		$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
-		$updated                = true;
-	}
-
-	if ( $updated ) {
-		update_option( 'anspress_global', $opt );
-	}
+	$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
+	$updated                = true;
 
 	return array(
 		'questions' => $opt['flagged_questions'],

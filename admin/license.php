@@ -35,7 +35,7 @@ class AP_License {
 	public function menu() {
 		$fields = ap_product_license_fields();
 		if ( ! empty( $fields ) ) {
-			$count = ' <span class="update-plugins count"><span class="plugin-count">' . number_format_i18n( count( $fields ) ) . '</span></span>';
+			$count = ' <span class="update-plugins count anspress-license-count"><span class="plugin-count">' . number_format_i18n( count( $fields ) ) . '</span></span>';
 			add_submenu_page( 'anspress', __( 'Licenses', 'anspress-question-answer' ), __( 'Licenses', 'anspress-question-answer' ) . $count, 'manage_options', 'anspress_licenses', array( $this, 'display_plugin_licenses' ) );
 		}
 	}

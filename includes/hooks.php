@@ -63,7 +63,6 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'posts_pre_query', 'AP_QA_Query_Hooks', 'modify_main_posts', 999999, 2 );
 			anspress()->add_filter( 'pre_get_posts', 'AP_QA_Query_Hooks', 'pre_get_posts' );
 			anspress()->add_action( 'loop_start', 'AP_QA_Query_Hooks', 'loop_start' );
-			anspress()->add_filter( 'strip_shortcodes_tagnames', 'AP_QA_Query_Hooks', 'strip_shortcodes_tagnames' );
 
 			// Theme	hooks.
 			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
