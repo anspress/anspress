@@ -49,6 +49,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		anspress()->add_action( 'admin_footer', $this, 'output_scripts' );
 		anspress()->add_filter( 'tiny_mce_before_init', $this, 'mce_before_init' );
 		anspress()->add_filter( 'ap_editor_buttons', $this, 'editor_buttons', 10, 2 );
+		anspress()->add_filter( 'ap_allowed_shortcodes', $this, 'allowed_shortcodes' );
 
 		add_shortcode( 'apcode', [ $this, 'shortcode' ] );
 	}
@@ -228,6 +229,19 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 */
 	public function editor_buttons( $name, $field ) {
 		$field->add_html( '<button type="button" class="ap-btn-insertcode ap-btn-small ap-btn mb-10 mr-5" apinsertcode><i class="apicon-code mr-3"></i>' . __( 'Insert Code', 'anspress-question-answer' ) . '</button>' );
+	}
+
+	/**
+	 * Add `apcode` to allowed shortcode.
+	 *
+	 * @param array $allowed Allowed shortcode.
+	 * @return array
+	 * @since 4.1.8
+	 */
+	public function allowed_shortcodes( $allowed ) {
+		$allowed[] = 'apcode';
+
+		return $allowed;
 	}
 
 	/**

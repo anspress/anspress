@@ -174,14 +174,11 @@ class Validate {
 	 * @since 4.1.8 Remove multiple new line and remove single space.
 	 */
 	public static function sanitize_description( $value = null ) {
-		global $ap_strip_shortcodes;
 		if ( ! empty( $value ) ) {
-
-			$new_value           = $value;
-			$new_value           = str_replace( '<!--more-->', '', $new_value );
-			$ap_strip_shortcodes = true;
-			$new_value           = strip_shortcodes( $new_value );
-			$ap_strip_shortcodes = false;
+			$new_value = $value;
+			$new_value = str_replace( '<!--more-->', '', $new_value );
+			$patt      = get_shortcode_regex();
+			$new_value = preg_replace_callback( "/$patt/", [ __CLASS__, 'whitelist_shortcodes' ], $new_value );
 
 			$new_value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $new_value );
 			$new_value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $new_value );
@@ -194,6 +191,22 @@ class Validate {
 
 			return $new_value;
 		}
+	}
+
+	private static function whitelist_shortcodes( $m ) {
+		/**
+		 * Filter for overriding allowed shortcodes.
+		 *
+		 * @since 4.1.8
+		 */
+		$allowed_shortcodes = apply_filters( 'ap_allowed_shortcodes', [] );
+
+		// if not allowed shortcode then change square brackets.
+		if ( ! in_array( $m[2], $allowed_shortcodes, true ) ) {
+			return ap_replace_square_bracket( $m[0] );
+		}
+
+		return $m[0];
 	}
 
 	/**
