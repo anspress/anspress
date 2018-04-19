@@ -59,7 +59,9 @@ class BuddyPress extends \AnsPress\Singleton {
 		anspress()->add_filter( 'bp_activity_custom_post_type_post_action', $this, 'activity_action', 10, 2 );
 
 		anspress()->add_filter( 'ap_the_question_content', $this, 'ap_the_question_content' );
-		anspress()->add_action( 'bp_setup_globals', $this, 'notifier_setup_globals' );
+		anspress()->add_action( 'bp_notifications_get_registered_components', $this, 'registered_components' );
+		anspress()->add_action( 'bp_notifications_get_notifications_for_user', $this, 'notifications_for_user', 10, 8 );
+
 		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer_notification' );
 		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment_notification' );
 		anspress()->add_action( 'ap_trash_question', $this, 'remove_answer_notify' );
@@ -382,82 +384,105 @@ class BuddyPress extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Setup AnsPress notification.
+	 * Register anspress component.
+	 *
+	 * @return array
+	 * @since 4.1.8
 	 */
-	public function notifier_setup_globals() {
-		global $bp;
+	public function registered_components( array $components ) {
+		array_push( $components, 'anspress' );
 
-		$bp->ap_notifier                        = new \stdClass();
-		$bp->ap_notifier->id                    = 'ap_notifier';
-		$bp->ap_notifier->slug                  = BP_AP_NOTIFIER_SLUG;
-		$bp->ap_notifier->notification_callback = array( $this, 'ap_notifier_format' );
-
-		// Register this in the active components array.
-		$bp->active_components[ $bp->ap_notifier->id ] = $bp->ap_notifier->id;
-
-		do_action( 'notifier_setup_globals' );
+		return $components;
 	}
 
 	/**
-	 * Format notifications.
+	 * Format custom notification of AnsPress.
 	 *
-	 * @param string  $action Action name.
-	 * @param integer $activity_id Activity name.
-	 * @param integer $secondary_item_id Secondary item ID.
-	 * @param integer $total_items Total items.
-	 * @param string  $format Format.
+	 * @param string $action               Component action.
+	 * @param int    $item_id               Notification item ID.
+	 * @param int    $secondary_item_id     Notification secondary item ID.
+	 * @param int    $total_items           Number of notifications with the same action.
+	 * @param string $format                Format of return. Either 'string' or 'object'.
+	 * @param string $component_action_name Canonical notification action.
+	 * @param string $component_name        Notification component ID.
+	 * @param int    $id                    Notification ID.
+	 * @return mixed
+	 *
+	 * @since 4.1.8
 	 */
-	public function ap_notifier_format( $action, $activity_id, $secondary_item_id, $total_items, $format = 'string' ) {
-		$amount            = 'single';
-		$notification_link = '';
-		$text              = '';
-
-		if ( strrpos( $action, 'new_answer' ) !== false ) {
-			$answer = get_post( $activity_id );
-
-			if ( $answer ) {
-				$notification_link = get_permalink( $answer->ID );
-				$title             = substr( strip_tags( $answer->post_title ), 0, 35 ) . ( strlen( $answer->post_title ) > 35 ? '...' : '' );
-
-				if ( (int) $total_items > 1 ) {
-					$text   = sprintf( __( '%1$d answers on - %2$s', 'anspress-question-answer' ), (int) $total_items, $title );
-					$amount = 'multiple';
-				} else {
-					$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-					$text          = sprintf( __( '%1$s answered on - %2$s', 'anspress-question-answer' ), $user_fullname, $title );
-				}
-			}
-		} elseif ( strrpos( $action, 'new_comment' ) !== false ) {
-			$comment           = get_comment( $activity_id );
-			$post              = get_post( $comment->comment_post_ID ); // WPCS: override okay.
-			$notification_link = get_permalink( $comment->comment_post_ID );
-			$type              = 'question' === $post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
-			$amount            = 'single';
-			$title             = substr( strip_tags( $post->post_title ), 0, 35 ) . ( strlen( $post->post_title ) > 35 ? '...' : '' );
-
-			if ( (int) $total_items > 1 ) {
-				$text   = sprintf( __( '%1$d comments on your %3$s - %2$s', 'anspress-question-answer' ), (int) $total_items, $title, $type );
-				$amount = 'multiple';
-			} else {
-				$user_fullname = bp_core_get_user_displayname( $secondary_item_id );
-				$text          = sprintf( __( '%1$s commented on your %3$s - %2$s', 'anspress-question-answer' ), $user_fullname, $title, $type );
-			}
+	public function notifications_for_user( $action, $item_id, $secondary_item_id, $total_items, $format = 'string', $component_action_name, $component_name, $id ) {
+		if ( method_exists( $this, 'notification_' . $component_action_name ) ) {
+			$method = 'notification_' . $action;
+			return $this->$method( $item_id, $secondary_item_id, $total_items, $format, $id );
 		}
+	}
+
+	/**
+	 * Format answer notifications.
+	 *
+	 * @param integer $item_id           Item id.
+	 * @param integer $secondary_item_id Secondary item.
+	 * @param integer $total_items       Total items.
+	 * @param string  $format            Notification type.
+	 * @param integer $id                Notification id.
+	 *
+	 * @return string
+	 * @since 4.1.8
+	 */
+	private function notification_new_answer( $item_id, $secondary_item_id, $total_items, $format, $id ) {
+		$post    = get_post( $item_id );
+		$link    = get_permalink( $post );
+		$author  = bp_core_get_user_displayname( $secondary_item_id );
+
+		$title   = substr( strip_tags( $post->post_title ), 0, 35 ) . ( strlen( $post->post_title ) > 35 ? '...' : '' );
 
 		if ( 'string' === $format ) {
-			$return = apply_filters( 'ap_notifier_' . $amount . '_at_mentions_notification', '<a href="' . esc_url( $notification_link ) . '">' . esc_html( $text ) . '</a>', $notification_link, (int) $total_items, $activity_id, $secondary_item_id );
-		} else {
-			$return = apply_filters(
-				'ap_notifier_' . $amount . '_at_mentions_notification', array(
-					'text' => $text,
-					'link' => $notification_link,
-				), $notification_link, (int) $total_items, $activity_id, $secondary_item_id
-			);
+			if ( (int) $total_items > 1 ) {
+				return '<a href="' . esc_url( $link ) . '">' . sprintf( __( '%1$d answers on your question - %2$s', 'anspress-question-answer' ), (int) $total_items, $title ) . '</a>';
+			}
+
+			return '<a href="' . esc_url( $link ) . '">' . sprintf( __( '%1$s answered on your question - %2$s', 'anspress-question-answer' ), $author, $title ) . '</a>';
 		}
 
-		do_action( 'ap_notifier_format_notifications', $action, $activity_id, $secondary_item_id, $total_items );
+		return array(
+			'link' => $link,
+			'text' => sprintf( __( 'New answer on %s', 'anspress-question-answer' ), $title ),
+		);
+	}
 
-		return $return;
+	/**
+	 * Format comments notifications.
+	 *
+	 * @param integer $item_id           Item id.
+	 * @param integer $secondary_item_id Secondary item.
+	 * @param integer $total_items       Total items.
+	 * @param string  $format            Notification type.
+	 * @param integer $id                Notification id.
+	 *
+	 * @return string
+	 * @since 4.1.8
+	 */
+	private function notification_new_comment( $item_id, $secondary_item_id, $total_items, $format, $id ) {
+		$comment = get_comment( $item_id );
+		$post    = get_post( $comment->comment_post_ID );
+		$link    = get_comment_link( $comment );
+		$author  = get_comment_author( $comment );
+		$type    = 'question' ===	$post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
+
+		$title   = substr( strip_tags( $post->post_title ), 0, 35 ) . ( strlen( $post->post_title ) > 35 ? '...' : '' );
+
+		if ( 'string' === $format ) {
+			if ( (int) $total_items > 1 ) {
+				return '<a href="' . esc_url( $link ) . '">' . sprintf( __( '%1$d comments on your %3$s - %2$s', 'anspress-question-answer' ), (int) $total_items, $title, $type ) . '</a>';
+			}
+
+			return '<a href="' . esc_url( $link ) . '">' . sprintf( __( '%1$s commented on your %3$s - %2$s', 'anspress-question-answer' ), $author, $title, $type ) . '</a>';
+		}
+
+		return array(
+			'link' => $link,
+			'text' => $title,
+		);
 	}
 
 	/**
@@ -470,27 +495,18 @@ class BuddyPress extends \AnsPress\Singleton {
 			return;
 		}
 
-		global $bp;
+		$post     = get_post( $post_id );
+		$question = get_post( $post->post_parent );
 
-		$answer      = get_post( $post_id );
-		$answer      = get_post( $answer->post_parent );
-		$subscribers = [ $answer->post_author ];
-
-		$notification_args = array(
-			'item_id'           => $answer->ID,
-			'secondary_item_id' => $answer->post_author,
-			'component_name'    => $bp->ap_notifier->id,
-			'component_action'  => 'new_answer_' . $answer->post_parent,
+		bp_notifications_add_notification( array(
+			'user_id'           => $question->post_author,
+			'item_id'           => $post->ID,
+			'secondary_item_id' => $post->post_author,
+			'component_name'    => 'anspress',
+			'component_action'  => 'new_answer',
 			'date_notified'     => bp_core_current_time(),
 			'is_new'            => 1,
-		);
-
-		foreach ( (array) $subscribers as $s ) {
-			if ( $s != $answer->post_author ) {
-				$notification_args['user_id'] = $s;
-				bp_notifications_add_notification( $notification_args );
-			}
-		}
+		) );
 	}
 
 	/**
@@ -505,25 +521,17 @@ class BuddyPress extends \AnsPress\Singleton {
 
 		global $bp;
 
-		$comment     = (object) $comment;
-		$post        = get_post( $comment->comment_post_ID );
-		$subscribers = [ $post->post_author ];
+		$comment = (object) $comment;
+		$post    = get_post( $comment->comment_post_ID );
 
-		$notification_args = array(
-			'item_id'           => $comment->comment_ID,
-			'secondary_item_id' => $comment->user_id,
-			'component_name'    => $bp->ap_notifier->id,
-			'component_action'  => 'new_comment_' . $post->ID,
-			'date_notified'     => bp_core_current_time(),
-			'is_new'            => 1,
-		);
-
-		foreach ( (array) $subscribers as $s ) {
-			if ( $s != $comment->user_id ) {
-				$notification_args['user_id'] = $s;
-				bp_notifications_add_notification( $notification_args );
-			}
-		}
+		bp_notifications_add_notification( array(
+			'user_id'          => $post->post_author,
+			'item_id'          => $comment->comment_ID,
+			'component_name'   => 'anspress',
+			'component_action' => 'new_comment',
+			'date_notified'    => bp_core_current_time(),
+			'is_new'           => 1,
+		) );
 	}
 
 	/**
@@ -537,7 +545,7 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		$post = get_post( $post_id );
-		bp_notifications_delete_all_notifications_by_type( $post->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post->post_parent );
+		bp_notifications_delete_all_notifications_by_type( $post->ID, 'anspress', 'new_answer' );
 	}
 
 	/**
@@ -551,11 +559,11 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		if ( $comment->comment_ID ) {
-			bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID );
+			bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, 'anspress', 'new_comment' );
 		} else {
 			$comments = get_comments( [ 'post_id' => $comment ] );
 			foreach ( (array) $comments as $comment ) {
-				bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $comment->comment_post_ID );
+				bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, 'anspress', 'new_comment' );
 			}
 		}
 	}
@@ -574,14 +582,14 @@ class BuddyPress extends \AnsPress\Singleton {
 		$user_id = get_current_user_id();
 
 		if ( 'answer' === $post_id->post_type ) {
-			bp_notifications_mark_notifications_by_item_id( $user_id, $post_id->ID, buddypress()->ap_notifier->id, 'new_answer_' . $post_id->post_parent );
+			bp_notifications_mark_notifications_by_item_id( $user_id, $post_id->ID, 'anspress', 'new_answer' );
 		}
 
 		if ( $post_id->comment_count >= 1 ) {
 			$comments = get_comments( [ 'post_id' => $post_id->ID ] );
 
 			foreach ( (array) $comments as $comment ) {
-				bp_notifications_mark_notifications_by_item_id( $user_id, $comment->comment_ID, buddypress()->ap_notifier->id, 'new_comment_' . $post_id->ID );
+				bp_notifications_mark_notifications_by_item_id( $user_id, $comment->comment_ID, 'anspress', 'new_comment' );
 			}
 		}
 	}
