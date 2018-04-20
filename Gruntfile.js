@@ -23,22 +23,6 @@
 					}
 				}
 			},
-
-			potomo: {
-				dist: {
-					options: {
-						poDel: false
-					},
-					files: [{
-						expand: true,
-						cwd: '<%= dirs.lang %>',
-						src: ['*.po'],
-						dest: '<%= dirs.lang %>',
-						ext: '.mo',
-						nonull: true
-					}]
-				}
-			},
 			csscomb: {
 				files: ['**/*.css', '!**/node_modules/**'],
 				tasks: ['csscomb'],
@@ -140,7 +124,7 @@
 			}
 		});
 
-		grunt.registerTask('translate', ['makepot', 'potomo']);
+		grunt.registerTask('translate', ['makepot']);
 		grunt.registerTask('build', ['sass', 'uglify', 'translate']);
 
 	}
