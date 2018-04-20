@@ -45,11 +45,10 @@ class Captcha extends \AnsPress\Singleton {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	protected function __construct() {
-		ap_add_default_options(
-			[
-				'recaptcha_method' => 'post',
-			]
-		);
+		ap_add_default_options( [
+			'recaptcha_method'        => 'post',
+			'recaptcha_exclude_roles' => [ 'ap_moderator' => 1 ],
+		]);
 
 		anspress()->add_action( 'ap_form_addon-recaptcha', $this, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
@@ -61,7 +60,13 @@ class Captcha extends \AnsPress\Singleton {
 	 * Register Categories options
 	 */
 	public function options() {
+		global $wp_roles;
 		$opt = ap_opt();
+
+		$roles = [];
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$roles[ $key ] = $role['name'];
+		}
 
 		$form = array(
 			'fields' => array(
@@ -75,7 +80,7 @@ class Captcha extends \AnsPress\Singleton {
 					'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
 					'value' => $opt['recaptcha_secret_key'],
 				),
-				'recaptcha_method'     => array(
+				'recaptcha_method' => array(
 					'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
 					'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
 					'type'    => 'select',
@@ -84,6 +89,13 @@ class Captcha extends \AnsPress\Singleton {
 						'post' => 'POST',
 					),
 					'value'   => $opt['recaptcha_method'],
+				),
+				'recaptcha_exclude_roles' => array(
+					'label'   => __( 'Hide reCaptcha for roles', 'anspress-question-answer' ),
+					'desc'    => __( 'Select roles for which reCaptcha will be hidden.', 'anspress-question-answer' ),
+					'type'    => 'checkbox',
+					'options' => $roles,
+					'value'   => $opt['recaptcha_exclude_roles'],
 				),
 			),
 		);

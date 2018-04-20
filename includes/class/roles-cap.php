@@ -1073,6 +1073,8 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
  * Check if user can by pass a captcha.
  *
  * @param integer|false $user_id User ID.
+ *
+ * @since 4.1.8 Exclude defined user roles.
  */
 function ap_show_captcha_to_user( $user_id = false ) {
 	if ( false === $user_id ) {
@@ -1085,6 +1087,14 @@ function ap_show_captcha_to_user( $user_id = false ) {
 	}
 
 	if ( apply_filters( 'ap_show_captcha', false, $user_id ) ) {
+		return false;
+	}
+
+	$current_user = wp_get_current_user();
+	$opt          = array_keys( ap_opt( 'recaptcha_exclude_roles' ) );
+	$intersect    = array_intersect( $current_user->roles, $opt );
+
+	if ( ! empty( $intersect ) && count( $intersect ) > 0 ) {
 		return false;
 	}
 
