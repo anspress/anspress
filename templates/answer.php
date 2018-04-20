@@ -69,7 +69,7 @@ if ( ap_user_can_read_answer() ) :
 				<div class="ap-post-footer clearfix">
 					<?php echo ap_select_answer_btn_html(); // xss okay ?>
 					<?php ap_post_actions_buttons(); ?>
-					<?php echo ap_comment_btn_html(); // xss okay. ?>
+					<?php do_action( 'ap_answer_footer' ); ?>
 				</div>
 
 			</div>

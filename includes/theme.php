@@ -345,19 +345,16 @@ function ap_post_actions( $_post = null ) {
  * @since   2.0
  */
 function ap_post_actions_buttons() {
-
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
 
-	$args = wp_json_encode(
-		[
-			'post_id' => get_the_ID(),
-			'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
-		]
-	);
+	$args = wp_json_encode( [
+		'post_id' => get_the_ID(),
+		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
+	] );
 
-	echo '<postActions class="ap-dropdown"><button class="ap-btn apicon-dots ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" apquery="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>';
+	echo '<postActions class="ap-dropdown"><button class="ap-btn apicon-gear ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" apquery="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>';
 }
 
 /**
@@ -376,16 +373,16 @@ function ap_get_questions_orderby( $current_url = '' ) {
 	}
 
 	$navs = array(
-		[
+		array(
 			'key'   => 'order_by',
 			'value' => 'active',
 			'label' => __( 'Active', 'anspress-question-answer' ),
-		],
-		[
+		),
+		array(
 			'key'   => 'order_by',
 			'value' => 'newest',
 			'label' => __( 'New', 'anspress-question-answer' ),
-		],
+		),
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {

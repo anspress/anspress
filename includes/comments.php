@@ -404,9 +404,6 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '/all">' . sprintf( __( 'Show %s more comments', 'anspress-question-answer' ), $query->found_comments - ap_opt( 'comment_number' ) ) . '</a>';
 	}
 
-	// New comment button.
-	ap_new_comment_btn( $_post->ID );
-
 	echo '</div>';
 }
 
@@ -421,6 +418,9 @@ function ap_post_comments() {
 	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '" class="have-comments">';
 	ap_the_comments( null, [], true );
 	echo '</apcomments>';
+
+	// New comment button.
+	ap_new_comment_btn( get_the_ID() );
 }
 
 /**
@@ -441,7 +441,7 @@ function ap_new_comment_btn( $post_id, $echo = true ) {
 			'__nonce' => wp_create_nonce( 'new_comment_' . $post_id ),
 		) );
 
-		$output .= '<a href="#" class="ap-btn-newcomment ap-btn ap-btn-small" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
+		$output .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
 		$output .= '</a>';
 
