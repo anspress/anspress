@@ -266,6 +266,7 @@ function ap_update_votes_count( $post_id ) {
  * @return integer|false
  * @since  3.1.0
  * @since  4.1.2 Insert activity to log.
+ * @since  4.1.8 Close question after selecting an answer.
  */
 function ap_set_selected_answer( $question_id, $answer_id ) {
 	// Log to activity table.
@@ -283,13 +284,33 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
 			'last_updated' => current_time( 'mysql' ),
 		]
 	);
-	ap_insert_qameta(
-		$question_id, [
-			'selected_id'  => $answer_id,
-			'last_updated' => current_time( 'mysql' ),
-		]
+
+	$q_args = array(
+		'selected_id'  => $answer_id,
+		'last_updated' => current_time( 'mysql' ),
 	);
-	return ap_update_answer_selected( $answer_id );
+
+	// Close question if enabled in option.
+	if ( ap_opt( 'close_selected' ) ) {
+		$q_args['closed'] = 1;
+	}
+
+	ap_insert_qameta( $question_id, $q_args );
+	$ret = ap_update_answer_selected( $answer_id );
+
+	$_post = ap_get_post( $answer_id );
+
+	/**
+	 * Trigger right after selecting an answer.
+	 *
+	 * @param WP_Post $_post       WordPress post object.
+	 * @param object  $answer_id   Answer ID.
+	 *
+	 * @since 4.1.8 Moved from ajax-hooks.php.
+	 */
+	do_action( 'ap_select_answer', $_post, $question_id );
+
+	return $ret;
 }
 
 /**
@@ -299,18 +320,17 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
  * @return integer|false
  * @since  3.1.0
  * @since  4.1.2 Insert activity to `ap_activity` table.
+ * @since  4.1.8 Reopen question after unselecting.
  */
 function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
 
 	// Log to activity table.
-	ap_activity_add(
-		array(
-			'q_id'   => $question_id,
-			'a_id'   => $qameta->selected_id,
-			'action' => 'unselected',
-		)
-	);
+	ap_activity_add( array(
+		'q_id'   => $question_id,
+		'a_id'   => $qameta->selected_id,
+		'action' => 'unselected',
+	) );
 
 	// Clear selected column from answer qameta.
 	ap_insert_qameta(
@@ -319,12 +339,27 @@ function ap_unset_selected_answer( $question_id ) {
 			'last_updated' => current_time( 'mysql' ),
 		]
 	);
-	return ap_insert_qameta(
-		$question_id, [
-			'selected_id'  => '',
-			'last_updated' => current_time( 'mysql' ),
-		]
-	);
+
+	$ret = ap_insert_qameta( $question_id, array(
+		'selected_id'  => '',
+		'last_updated' => current_time( 'mysql' ),
+		'closed'       => 0,
+	));
+
+	$_post = ap_get_post( $qameta->selected_id );
+
+	/**
+	 * Action triggered after an answer is unselected as best.
+	 *
+	 * @param WP_Post $_post       Answer post object.
+	 * @param WP_Post $question_id Question id.
+	 *
+	 * @since unknown
+	 * @since 4.1.8 Moved from ajax-hooks.php.
+	 */
+	do_action( 'ap_unselect_answer', $_post, $question_id );
+
+	return $ret;
 }
 
 /**

@@ -292,7 +292,7 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					if(data.success){
-						if(data.action === 'selected'){
+						if(data.selected){
 							self.$el.addClass('best-answer');
 							$(e.target).addClass('active').text(data.label);
 							AnsPress.trigger('answerToggle', [self.model, true]);

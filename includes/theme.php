@@ -780,14 +780,11 @@ function ap_select_answer_btn_html( $_post = null ) {
 	$_post = ap_get_post( $_post );
 	$nonce = wp_create_nonce( 'select-answer-' . $_post->ID );
 
-	$q      = esc_js(
-		wp_json_encode(
-			[
-				'answer_id' => $_post->ID,
-				'nonce'     => $nonce,
-			]
-		)
-	);
+	$q = esc_js( wp_json_encode( [
+		'answer_id' => $_post->ID,
+		'__nonce'   => $nonce,
+	] ) );
+
 	$active = false;
 
 	$title = __( 'Select this answer as best', 'anspress-question-answer' );
