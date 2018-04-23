@@ -75,6 +75,7 @@ class Checkbox extends Field {
 	 */
 	public function field_markup() {
 		parent::field_markup();
+
 		if ( $this->get( 'options' ) ) {
 			$value = $this->value();
 
@@ -93,6 +94,25 @@ class Checkbox extends Field {
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+	}
+
+	/**
+	 * Get POST (unsafe) value of a field.
+	 *
+	 * @return null|mixed
+	 * @since 4.1.8 Return `false` for unchecked checkbox.
+	 */
+	public function unsafe_value() {
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+
+		if ( isset( $request_value ) ) {
+			return wp_unslash( $request_value );
+		}
+
+		// Return `false` if form submitted but is not set.
+		if ( $this->form()->is_submitted() ) {
+			return false;
+		}
 	}
 
 }

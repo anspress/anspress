@@ -420,7 +420,7 @@ function ap_post_comments() {
 	echo '</apcomments>';
 
 	// New comment button.
-	ap_new_comment_btn( get_the_ID() );
+	echo ap_comment_btn_html( get_the_ID() );
 }
 
 /**

@@ -45,8 +45,6 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	protected function __construct() {
 		$this->brush();
 		anspress()->add_filter( 'wp_enqueue_scripts', $this, 'scripts' );
-		anspress()->add_action( 'wp_footer', $this, 'output_scripts', 15 );
-		anspress()->add_action( 'admin_footer', $this, 'output_scripts' );
 		anspress()->add_filter( 'tiny_mce_before_init', $this, 'mce_before_init' );
 		anspress()->add_filter( 'ap_editor_buttons', $this, 'editor_buttons', 10, 2 );
 		anspress()->add_filter( 'ap_allowed_shortcodes', $this, 'allowed_shortcodes' );
@@ -63,47 +61,28 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		$js_url  = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/';
 		$css_url = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/styles/';
 
-		$scripts = array(
-			'brush-bash'       => 'shBrushBash.js',
-			'brush-cpp'        => 'shBrushCpp.js',
-			'brush-csharp'     => 'shBrushCSharp.js',
-			'brush-css'        => 'shBrushCss.js',
-			'brush-delphi'     => 'shBrushDelphi.js',
-			'brush-diff'       => 'shBrushDiff.js',
-			'brush-groovy'     => 'shBrushGroovy.js',
-			'brush-java'       => 'shBrushJava.js',
-			'brush-javafx'     => 'shBrushJavaFX.js',
-			'brush-jscript'    => 'shBrushJScript.js',
-			'brush-perl'       => 'shBrushPerl.js',
-			'brush-perl'       => 'shBrushPerl.js',
-			'brush-php'        => 'shBrushPhp.js',
-			'brush-plain'      => 'shBrushPlain.js',
-			'brush-powershell' => 'shBrushPowerShell.js',
-			'brush-python'     => 'shBrushPython.js',
-			'brush-ruby'       => 'shBrushRuby.js',
-			'brush-scala'      => 'shBrushScala.js',
-			'brush-sql'        => 'shBrushSql.js',
-			'brush-vb'         => 'shBrushVb.js',
-			'brush-xml'        => 'shBrushXml.js',
-			'brush-clojure'    => 'shBrushClojure.js',
-			'brush-fsharp'     => 'shBrushFSharp.js',
-			'brush-latex'      => 'shBrushLatex.js',
-			'brush-matlabkey'  => 'shBrushMatlabKey.js',
-			'brush-objc'       => 'shBrushObjC.js',
-			'brush-r'          => 'shBrushR.js',
-		);
-
-		foreach ( $scripts as $key => $script ) {
-			wp_register_script( 'syntaxhighlighter-' . $key, $js_url . $script, [ 'syntaxhighlighter-core' ], AP_VERSION );
-		}
-
 		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
-		wp_register_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', [], AP_VERSION );
-		wp_register_script( 'syntaxhighlighter', ANSPRESS_URL . 'addons/syntaxhighlighter/script.js', [ 'syntaxhighlighter-core' ], AP_VERSION );
+		wp_enqueue_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', ['jquery'], AP_VERSION );
+		wp_enqueue_script( 'syntaxhighlighter-autoloader', $js_url . 'shAutoloader.js', [ 'syntaxhighlighter-core' ], AP_VERSION );
+		wp_enqueue_script( 'syntaxhighlighter', ANSPRESS_URL . 'addons/syntaxhighlighter/script.js', [ 'syntaxhighlighter-core' ], AP_VERSION, true );
 
 		// Register theme stylesheets.
-		wp_register_style( 'syntaxhighlighter-core', $css_url . 'shCore.css', [], AP_VERSION );
-		wp_register_style( 'syntaxhighlighter-theme-default', $css_url . 'shThemeDefault.css', [ 'syntaxhighlighter-core' ], AP_VERSION );
+		wp_enqueue_style( 'syntaxhighlighter-core', $css_url . 'shCore.css', [], AP_VERSION );
+		wp_enqueue_style( 'syntaxhighlighter-theme-default', $css_url . 'shThemeDefault.css', [ 'syntaxhighlighter-core' ], AP_VERSION );
+
+		ob_start();
+		?>
+			aplang = aplang||{};
+			aplang.shLanguage = '<?php esc_attr_e( 'Language', 'anspress-question-answer' ); ?>';
+			aplang.shInline = '<?php esc_attr_e( 'Is inline?', 'anspress-question-answer' ); ?>';
+			aplang.shTxtPlholder = '<?php esc_attr_e( 'Insert code snippet here ...', 'anspress-question-answer' ); ?>';
+			aplang.shButton = '<?php esc_attr_e( 'Insert to editor', 'anspress-question-answer' ); ?>';
+			aplang.shTitle = '<?php esc_attr_e( 'Insert code', 'anspress-question-answer' ); ?>';
+
+			window.apBrushPath = "<?php echo ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/'; ?>";
+		<?php
+		$script = ob_get_clean();
+		wp_add_inline_script( 'syntaxhighlighter', $script, 'before' );
 	}
 
 	/**
@@ -141,59 +120,6 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			'scala'      => 'Scala',
 			'vb'         => 'VisualBasic',
 		);
-	}
-
-	/**
-	 * Output required scripts in footer.
-	 *
-	 * @return void
-	 */
-	public function output_scripts() {
-		if ( ! is_anspress() ) {
-			return;
-		}
-
-		global $wp_styles;
-
-		$scripts = [];
-		foreach ( $this->brushes as $brush => $label ) {
-			$scripts[] = 'syntaxhighlighter-brush-' . strtolower( $brush );
-		}
-
-		$scripts[] = 'syntaxhighlighter';
-
-		wp_print_scripts( $scripts );
-
-		if ( ! is_a( $wp_styles, 'WP_Styles' ) ) {
-			$wp_styles = new WP_Styles();
-		}
-
-		$sh_css    = '';
-		$theme_css = '';
-
-		if ( ! empty( $wp_styles ) && ! empty( $wp_styles->registered ) &&
-			! empty( $wp_styles->registered['syntaxhighlighter-core'] ) &&
-			! empty( $wp_styles->registered['syntaxhighlighter-core']->src ) ) {
-				$sh_css    = add_query_arg( 'ver', AP_VERSION, $wp_styles->registered['syntaxhighlighter-core']->src );
-				$theme_css = add_query_arg( 'ver', AP_VERSION, $wp_styles->registered['syntaxhighlighter-theme-default']->src );
-		}
-		?>
-		<script type='text/javascript'>
-			if(typeof SyntaxHighlighter !== 'undefined'){
-				AnsPress.loadCSS('<?php echo esc_url( $sh_css ); ?>');
-				AnsPress.loadCSS('<?php echo esc_url( $theme_css ); ?>');
-
-				aplang = aplang||{};
-				aplang.shLanguage = '<?php esc_attr_e( 'Language', 'anspress-question-answer' ); ?>';
-				aplang.shInline = '<?php esc_attr_e( 'Is inline?', 'anspress-question-answer' ); ?>';
-				aplang.shTxtPlholder = '<?php esc_attr_e( 'Insert code snippet here ...', 'anspress-question-answer' ); ?>';
-				aplang.shButton = '<?php esc_attr_e( 'Insert to editor', 'anspress-question-answer' ); ?>';
-				aplang.shTitle = '<?php esc_attr_e( 'Insert code', 'anspress-question-answer' ); ?>';
-
-				SyntaxHighlighter.highlight();
-			}
-		</script>
-		<?php
 	}
 
 	/**
