@@ -562,12 +562,13 @@ function ap_get_template_part( $file, $args = false ) {
  * @since 4.1.0 Check if ask question page.
  * @since 4.1.1 Do not return `base` by default.
  * @since 4.1.2 If 404 do not return anything.
+ * @since 4.1.9 Changed cache key which was causing conflict with core.
  */
 function ap_current_page() {
-	$cache = wp_cache_get( 'current_page', 'anspress' );
+	static $ret = null;
 
-	if ( false !== $cache ) {
-		return $cache;
+	if ( null !== $ret ) {
+		return $ret;
 	}
 
 	$query_var  = get_query_var( 'ap_page', '' );
@@ -597,10 +598,9 @@ function ap_current_page() {
 	 *
 	 * @param    string $query_var Current page slug.
 	 */
-	$query_var = apply_filters( 'ap_current_page', esc_attr( $query_var ) );
-	wp_cache_set( 'current_page', $query_var, 'anspress' );
+	$ret = apply_filters( 'ap_current_page', esc_attr( $query_var ) );
 
-	return $query_var;
+	return $ret;
 }
 
 /**
