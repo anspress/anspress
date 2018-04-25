@@ -950,6 +950,7 @@ class AP_Form_Hooks {
 							'png'      => 'image/png',
 						),
 					),
+					'validate' => 'required',
 				),
 			),
 		);
