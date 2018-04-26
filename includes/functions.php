@@ -1788,6 +1788,8 @@ function ap_get_addon( $file ) {
  *
  * @param string $addon_name Addon file name.
  * @return boolean
+ *
+ * @since 4.1.8 Fixed fatal error if addon does not exists.
  */
 function ap_activate_addon( $addon_name ) {
 	if ( ap_is_addon_active( $addon_name ) ) {
@@ -1804,7 +1806,14 @@ function ap_activate_addon( $addon_name ) {
 		$opt[ $addon_name ] = true;
 		update_option( 'anspress_addons', $opt );
 
-		require_once $all_addons[ $addon_name ]['path'];
+		$file = $all_addons[ $addon_name ]['path'];
+
+		// Check file exists before requiring.
+		if ( ! file_exists( $file ) ) {
+			return false;
+		}
+
+		require_once $file;
 
 		if ( isset( $ap_addons_activation[ $addon_name ] ) ) {
 			call_user_func( $ap_addons_activation[ $addon_name ] );

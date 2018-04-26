@@ -175,7 +175,14 @@ class Validate {
 	 */
 	public static function sanitize_description( $value = null ) {
 		if ( ! empty( $value ) ) {
-			$new_value = $value;
+			/**
+			 * Filter called before applying sanitization to a description fields.
+			 *
+			 * @param string $value Value.
+			 * @since 4.1.9
+			 */
+			$new_value = apply_filters( 'ap_pre_sanitize_description', $value );
+
 			$new_value = str_replace( '<!--more-->', '', $new_value );
 			$patt      = get_shortcode_regex();
 			$new_value = preg_replace_callback( "/$patt/", [ __CLASS__, 'whitelist_shortcodes' ], $new_value );
