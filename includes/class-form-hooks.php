@@ -227,7 +227,7 @@ class AP_Form_Hooks {
 					'min_length'  => 5,
 					'validate'    => 'required,min_string_length,badwords',
 					'attr'        => array(
-						'placeholder' => __( 'Write your comment here..', 'anspress-question-answer' ),
+						'placeholder' => __( 'Write your comment here...', 'anspress-question-answer' ),
 						'rows'        => 5,
 					),
 					'editor_args' => array(
