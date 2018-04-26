@@ -276,4 +276,16 @@ class Editor extends Field {
 		anspress()->session->delete( 'files' );
 	}
 
+	/**
+	 * Get POST (unsafe) value of a field.
+	 *
+	 * @return null|mixed
+	 */
+	public function unsafe_value() {
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		if ( isset( $request_value ) ) {
+			return $request_value;
+		}
+	}
+
 }
