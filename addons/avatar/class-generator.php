@@ -101,15 +101,14 @@ class Generator {
 	 * @param integer|string $user User ID or name if non-loggedin user.
 	 */
 	public function __construct( $user ) {
-
 		if ( is_object( $user ) && ! empty( $user->user_id ) ) {
 			$this->user_id = (int) $user->user_id;
 			$user          = get_userdata( $this->user_id );
 			$this->name    = esc_attr( $user->display_name );
-		} elseif ( is_object( $user ) && $user instanceof WP_user ) {
+		} elseif ( is_object( $user ) && $user instanceof \WP_user ) {
 			$this->name    = esc_attr( $user->display_name );
 			$this->user_id = $user->ID;
-		} elseif ( is_object( $user ) && $user instanceof WP_Comment ) {
+		} elseif ( is_object( $user ) && $user instanceof \WP_Comment ) {
 			$this->name    = esc_attr( $user->comment_author );
 			$this->user_id = $user->user_id;
 		} elseif ( is_numeric( $user ) && ! empty( $user ) ) {
