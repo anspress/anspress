@@ -17,3 +17,6 @@
 /tests/ui.suite.yml
 /tests/ui.suite.dist.yml
 /tests/activator.suite.yml
+/.DS_Store
+/templates/.DS_Store
+/templates/addons/.DS_Store
