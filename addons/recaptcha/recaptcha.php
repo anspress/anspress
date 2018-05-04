@@ -50,10 +50,22 @@ class Captcha extends \AnsPress\Singleton {
 			'recaptcha_exclude_roles' => [ 'ap_moderator' => 1 ],
 		]);
 
+		anspress()->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
 		anspress()->add_action( 'ap_form_addon-recaptcha', $this, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_answer_form_fields', $this, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_comment_form_fields', $this, 'ap_question_form_fields', 10, 2 );
+	}
+
+	/**
+	 * Enqueue script.
+	 *
+	 * @return void
+	 * @since 4.1.9
+	 */
+	public function enqueue_scripts() {
+		wp_register_script( 'grecaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&render=explicit' );
+		wp_enqueue_script( 'ap-recaptcha', ANSPRESS_URL . 'addons/recaptcha/script.js', [], true );
 	}
 
 	/**
