@@ -263,12 +263,6 @@ class Form {
 			echo '</form>';
 		}
 
-		// Async upload form.
-		echo '<form id="ap_async_upload" method="post" apform enctype="multipart/form-data" style="display:none!important">';
-		wp_nonce_field( 'ap_async_upload', '__nonce' );
-		echo '<input type="hidden" name="action" value="ap_async_upload" />';
-		echo '</form>';
-
 		if ( ! empty( $this->after_form ) ) {
 			echo $this->after_form;
 		}

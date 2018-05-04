@@ -98,32 +98,9 @@ class Captcha extends Field {
 			return;
 		}
 
-		$this->add_html( '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>' );
-		$this->add_html( '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>' );
+		$this->add_html( '<div class="g-recaptcha load-recaptcha" id="' . $this->id() . '" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>' );
 
-		ob_start();
-		?>
-			<script type="text/javascript">
-				var onloadCallback = function() {
-				widgetId1 = grecaptcha.render("recaptcha", {
-					"sitekey" : "<?php echo ap_opt( 'recaptcha_site_key' ); ?>"
-					});
-				};
-
-				jQuery(document).ready(function(){
-					// Rest widget after answer form get submitted
-					if(typeof AnsPress !== 'undefined'){
-						AnsPress.on('answerFormPosted', function(){
-							if(typeof grecaptcha !== 'undefined')
-								grecaptcha.reset(widgetId1);
-						});
-					}
-				});
-
-			</script>
-		<?php
-
-		$this->add_html( ob_get_clean() );
+		$this->add_html( "<script type=\"text/javascript\" src=\"https://www.google.com/recaptcha/api.js?hl=" . get_locale() . "&onload=apCpatchaLoaded&render=explicit\"></script>" );
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );

@@ -228,16 +228,7 @@ function ap_comment_btn_html( $_post = null ) {
 		$unapproved       = '<b class="unapproved' . ( $unapproved_count > 0 ? ' have' : '' ) . '" ap-un-commentscount title="' . esc_attr__( 'Comments awaiting moderation', 'anspress-question-answer' ) . '">' . $unapproved_count . '</b>';
 	}
 
-	$output = '';
-	// Hide comments button if comments are already shown.
-	if ( ! ( is_single() && ap_opt( 'comment_number' ) > 0 ) ) {
-		// Show comments button.
-		$output .= '<a href="#/comments/' . $_post->ID . '" class="ap-btn ap-btn-comments">';
-		$output .= '<span ap-commentscount-text itemprop="commentCount">' . sprintf( _n( '%d Comment', '%d Comments', $comment_count, 'anspress-question-answer' ), $comment_count ) . '</span>';
-		$output .= $unapproved . '</a>';
-	}
-
-	$output .= ap_new_comment_btn( $_post->ID, false );
+	$output = ap_new_comment_btn( $_post->ID, false );
 
 	return $output;
 }

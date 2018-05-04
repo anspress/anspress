@@ -332,6 +332,11 @@ class Upload extends Field {
 
 		$value = $this->value();
 
+		// Return if value is empty.
+		if ( empty( $value ) ) {
+			return;
+		}
+
 		if ( $this->get( 'upload_options.multiple', false ) ) {
 			foreach ( (array) $value as $file ) {
 				$this->upload_file( $file );
