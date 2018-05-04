@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress Question Answer 4.1.8\n"
+"Project-Id-Version: AnsPress Question Answer 4.1.9\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2018-04-20 16:21:40+00:00\n"
+"POT-Creation-Date: 2018-05-04 16:17:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -62,7 +62,7 @@ msgstr ""
 #: addons/buddypress/buddypress.php:124 addons/buddypress/buddypress.php:211
 #: addons/profile/profile.php:50 addons/profile/profile.php:163
 #: admin/views/dashboard.php:28 admin/views/dashboard.php:188
-#: includes/functions.php:2363 includes/options.php:103
+#: includes/functions.php:2372 includes/options.php:103
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:387
 #: widgets/questions.php:43 widgets/questions.php:85
 msgid "Questions"
@@ -162,7 +162,7 @@ msgstr ""
 
 #: addons/categories/categories.php:41 addons/categories/categories.php:478
 #: addons/categories/categories.php:490 addons/categories/widget.php:89
-#: includes/functions.php:1679 includes/functions.php:2381 includes/taxo.php:29
+#: includes/functions.php:1679 includes/functions.php:2390 includes/taxo.php:29
 msgid "Categories"
 msgstr ""
 
@@ -755,41 +755,41 @@ msgstr ""
 msgid "Unable to render captcha. Please add reCpatcha keys in AnsPress options."
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:74
+#: addons/recaptcha/recaptcha.php:86
 msgid "Recaptcha site key"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:75
+#: addons/recaptcha/recaptcha.php:87
 msgid ""
 "Enter your site key, if you dont have it get it from here "
 "https://www.google.com/recaptcha/admin"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:79
+#: addons/recaptcha/recaptcha.php:91
 msgid "Recaptcha secret key"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:80
+#: addons/recaptcha/recaptcha.php:92
 msgid "Enter your secret key"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:84
+#: addons/recaptcha/recaptcha.php:96
 msgid "Recaptcha Method"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:85
+#: addons/recaptcha/recaptcha.php:97
 msgid "Select method to use when verification keeps failing"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:94
+#: addons/recaptcha/recaptcha.php:106
 msgid "Hide reCaptcha for roles"
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:95
+#: addons/recaptcha/recaptcha.php:107
 msgid "Select roles for which reCaptcha will be hidden."
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:116
+#: addons/recaptcha/recaptcha.php:128
 msgid "Prove that you are a human"
 msgstr ""
 
@@ -955,28 +955,28 @@ msgstr ""
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/syntaxhighlighter/syntaxhighlighter.php:187
+#: addons/syntaxhighlighter/syntaxhighlighter.php:76
 msgid "Language"
 msgstr ""
 
-#: addons/syntaxhighlighter/syntaxhighlighter.php:188
+#: addons/syntaxhighlighter/syntaxhighlighter.php:77
 msgid "Is inline?"
 msgstr ""
 
-#: addons/syntaxhighlighter/syntaxhighlighter.php:189
+#: addons/syntaxhighlighter/syntaxhighlighter.php:78
 msgid "Insert code snippet here ..."
 msgstr ""
 
-#: addons/syntaxhighlighter/syntaxhighlighter.php:190
+#: addons/syntaxhighlighter/syntaxhighlighter.php:79
 msgid "Insert to editor"
 msgstr ""
 
-#: addons/syntaxhighlighter/syntaxhighlighter.php:191
+#: addons/syntaxhighlighter/syntaxhighlighter.php:80
 #: includes/mce-languages.php:34
 msgid "Insert code"
 msgstr ""
 
-#: addons/syntaxhighlighter/syntaxhighlighter.php:231
+#: addons/syntaxhighlighter/syntaxhighlighter.php:157
 msgid "Insert Code"
 msgstr ""
 
@@ -987,7 +987,7 @@ msgstr ""
 
 #: addons/tags/tags.php:39 addons/tags/tags.php:230 addons/tags/tags.php:301
 #: addons/tags/tags.php:380 addons/tags/tags.php:451 addons/tags/tags.php:465
-#: includes/functions.php:1683 includes/functions.php:2387
+#: includes/functions.php:1683 includes/functions.php:2396
 msgid "Tags"
 msgstr ""
 
@@ -1730,7 +1730,7 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:143 admin/meta-box.php:69
-#: includes/comments.php:258 includes/theme.php:264
+#: includes/comments.php:249 includes/theme.php:264
 msgid "Edit"
 msgstr ""
 
@@ -1797,7 +1797,7 @@ msgstr ""
 #: admin/class-list-table-hooks.php:281 admin/class-list-table-hooks.php:360
 #: admin/views/select_question.php:51 includes/ajax-hooks.php:113
 #: includes/ajax-hooks.php:115 includes/ajax-hooks.php:230
-#: includes/functions.php:2177 templates/buddypress/question-item.php:38
+#: includes/functions.php:2186 templates/buddypress/question-item.php:38
 msgid "%d Answer"
 msgid_plural "%d Answers"
 msgstr[0] ""
@@ -2449,7 +2449,6 @@ msgstr ""
 
 #: ajax/comment-delete.php:94 includes/class-form-hooks.php:787
 #: includes/class-form-hooks.php:881 includes/comments.php:141
-#: includes/comments.php:236
 #. Translators: %d contain comment count.
 #. Translators: %d contains count of comments.
 msgid "%d Comment"
@@ -2523,7 +2522,7 @@ msgstr ""
 msgid "Unable to trash this post"
 msgstr ""
 
-#: includes/ajax-hooks.php:157 includes/comments.php:270 includes/theme.php:290
+#: includes/ajax-hooks.php:157 includes/comments.php:261 includes/theme.php:290
 #: lib/form/class-group.php:83
 msgid "Delete"
 msgstr ""
@@ -2832,7 +2831,7 @@ msgstr ""
 msgid "Enter your name to display"
 msgstr ""
 
-#: includes/class-form-hooks.php:118 includes/functions.php:2105
+#: includes/class-form-hooks.php:118 includes/functions.php:2114
 msgid "Update Question"
 msgstr ""
 
@@ -2840,7 +2839,7 @@ msgstr ""
 msgid "Post Answer"
 msgstr ""
 
-#: includes/class-form-hooks.php:201 includes/functions.php:2248
+#: includes/class-form-hooks.php:201 includes/functions.php:2257
 msgid "Update Answer"
 msgstr ""
 
@@ -2854,7 +2853,7 @@ msgid "Comment"
 msgstr ""
 
 #: includes/class-form-hooks.php:230
-msgid "Write your comment here.."
+msgid "Write your comment here..."
 msgstr ""
 
 #: includes/class-form-hooks.php:246
@@ -2974,27 +2973,27 @@ msgstr ""
 msgid "Comments awaiting moderation"
 msgstr ""
 
-#: includes/comments.php:282
+#: includes/comments.php:273
 msgid "Approve"
 msgstr ""
 
-#: includes/comments.php:339
+#: includes/comments.php:330
 msgid "Not a valid post ID."
 msgstr ""
 
-#: includes/comments.php:344
+#: includes/comments.php:335
 msgid "Sorry, you do not have permission to read comments."
 msgstr ""
 
-#: includes/comments.php:359 includes/comments.php:393
+#: includes/comments.php:350 includes/comments.php:384
 msgid "No comments found."
 msgstr ""
 
-#: includes/comments.php:404
+#: includes/comments.php:395
 msgid "Show %s more comments"
 msgstr ""
 
-#: includes/comments.php:445
+#: includes/comments.php:436
 msgid "Add a Comment"
 msgstr ""
 
@@ -3007,7 +3006,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:25 includes/functions.php:2393
+#: includes/common-pages.php:25 includes/functions.php:2402
 msgid "Activities"
 msgstr ""
 
@@ -3294,86 +3293,86 @@ msgstr ""
 msgid "Add syntax highlighter support."
 msgstr ""
 
-#: includes/functions.php:2078
+#: includes/functions.php:2087
 msgid "You cannot edit this question."
 msgstr ""
 
-#: includes/functions.php:2083 templates/ask.php:17
+#: includes/functions.php:2092 templates/ask.php:17
 msgid "You do not have permission to ask a question."
 msgstr ""
 
-#: includes/functions.php:2186
+#: includes/functions.php:2195
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:2217
+#: includes/functions.php:2226
 msgid "You cannot edit this answer."
 msgstr ""
 
-#: includes/functions.php:2222
+#: includes/functions.php:2231
 msgid "You do not have permission to answer this question."
 msgstr ""
 
-#: includes/functions.php:2361
+#: includes/functions.php:2370
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2362
+#: includes/functions.php:2371
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred "
 "as <b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2367
+#: includes/functions.php:2376
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2368
+#: includes/functions.php:2377
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2369
+#: includes/functions.php:2378
 msgid "Ask a question"
 msgstr ""
 
-#: includes/functions.php:2373
+#: includes/functions.php:2382
 msgid "User page"
 msgstr ""
 
-#: includes/functions.php:2374
+#: includes/functions.php:2383
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2375
+#: includes/functions.php:2384
 msgid "Profile"
 msgstr ""
 
-#: includes/functions.php:2379
+#: includes/functions.php:2388
 msgid "Categories page"
 msgstr ""
 
-#: includes/functions.php:2380
+#: includes/functions.php:2389
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2385
+#: includes/functions.php:2394
 msgid "Tags page"
 msgstr ""
 
-#: includes/functions.php:2386
+#: includes/functions.php:2395
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2391
+#: includes/functions.php:2400
 msgid "Activities page"
 msgstr ""
 
-#: includes/functions.php:2392
+#: includes/functions.php:2401
 msgid "Page used to display all anspress activities."
 msgstr ""
 
@@ -3758,109 +3757,109 @@ msgstr ""
 msgid "No fields found for form: %s"
 msgstr ""
 
-#: lib/class-form.php:418 lib/form/class-field.php:393
+#: lib/class-form.php:412 lib/form/class-field.php:393
 msgid "Error found in fields, please check and re-submit"
 msgstr ""
 
-#: lib/class-validate.php:330 lib/class-validate.php:348
+#: lib/class-validate.php:337 lib/class-validate.php:355
 #. Translators: placeholder contain field label.
 msgid "%s field is required."
 msgstr ""
 
-#: lib/class-validate.php:366
+#: lib/class-validate.php:373
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not a valid email."
 msgstr ""
 
-#: lib/class-validate.php:384
+#: lib/class-validate.php:391
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not a valid URL."
 msgstr ""
 
-#: lib/class-validate.php:402
+#: lib/class-validate.php:409
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not numeric."
 msgstr ""
 
-#: lib/class-validate.php:427
+#: lib/class-validate.php:434
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %1$s must be at least %2$d characters long."
 msgstr ""
 
-#: lib/class-validate.php:453
+#: lib/class-validate.php:460
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %1$s must not exceeds %2$d characters."
 msgstr ""
 
-#: lib/class-validate.php:474
+#: lib/class-validate.php:481
 #. Translators: placeholder contain field label.
 msgid "Value provided in field %s is not an array."
 msgstr ""
 
-#: lib/class-validate.php:495
+#: lib/class-validate.php:502
 #. Translators: placeholder contain field label.
 msgid "Minimum %1$d values are required in field %2$s."
 msgstr ""
 
-#: lib/class-validate.php:516
+#: lib/class-validate.php:523
 #. Translators: placeholder contain field label.
 msgid "Maximum values allowed in field %2$s is %1$d."
 msgstr ""
 
-#: lib/class-validate.php:569
+#: lib/class-validate.php:576
 #. Translators: placeholder contain field label.
 msgid "Found bad words in field %s. Remove them and try again."
 msgstr ""
 
-#: lib/class-validate.php:587
+#: lib/class-validate.php:594
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: lib/class-validate.php:588
+#: lib/class-validate.php:595
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: lib/class-validate.php:589
+#: lib/class-validate.php:596
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr ""
 
-#: lib/class-validate.php:590
+#: lib/class-validate.php:597
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: lib/class-validate.php:591
+#: lib/class-validate.php:598
 msgid "No file was uploaded"
 msgstr ""
 
-#: lib/class-validate.php:592
+#: lib/class-validate.php:599
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: lib/class-validate.php:593 lib/form/class-upload.php:392
+#: lib/class-validate.php:600 lib/form/class-upload.php:397
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: lib/class-validate.php:594
+#: lib/class-validate.php:601
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: lib/class-validate.php:684
+#: lib/class-validate.php:691
 msgid "You are not allowed to upload file(s)"
 msgstr ""
 
-#: lib/class-validate.php:694
+#: lib/class-validate.php:701
 #. Translators: %1$d contain maximum files user can upload, %2$s contain label
 #. of field.
 msgid "You cannot upload more than %1$d file in field %2$s"
 msgstr ""
 
-#: lib/class-validate.php:702
+#: lib/class-validate.php:709
 msgid "File type is not allowed to upload."
 msgstr ""
 
-#: lib/class-validate.php:717
+#: lib/class-validate.php:724
 #. Translators: %s contain maximum file size user can upload.
 msgid "File(s) size is bigger than %s MB"
 msgstr ""
@@ -3926,45 +3925,45 @@ msgstr ""
 msgid "You cannot add more then %d files"
 msgstr ""
 
-#: lib/form/class-upload.php:386
+#: lib/form/class-upload.php:391
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgstr ""
 
-#: lib/form/class-upload.php:387
+#: lib/form/class-upload.php:392
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form."
 msgstr ""
 
-#: lib/form/class-upload.php:388
+#: lib/form/class-upload.php:393
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: lib/form/class-upload.php:389
+#: lib/form/class-upload.php:394
 msgid "No file was uploaded."
 msgstr ""
 
-#: lib/form/class-upload.php:391
+#: lib/form/class-upload.php:396
 msgid "Missing a temporary folder."
 msgstr ""
 
-#: lib/form/class-upload.php:393
+#: lib/form/class-upload.php:398
 msgid "File upload stopped by extension."
 msgstr ""
 
-#: lib/form/class-upload.php:405
+#: lib/form/class-upload.php:410
 msgid "File is empty. Please upload something more substantial."
 msgstr ""
 
-#: lib/form/class-upload.php:410
+#: lib/form/class-upload.php:415
 msgid "File is bigger then the allowed limit."
 msgstr ""
 
-#: lib/form/class-upload.php:415
+#: lib/form/class-upload.php:420
 msgid "Specified file failed upload test."
 msgstr ""
 
-#: lib/form/class-upload.php:433
+#: lib/form/class-upload.php:438
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr ""
 
