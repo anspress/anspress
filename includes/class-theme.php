@@ -45,9 +45,14 @@ class AnsPress_Theme {
 	 * @param  array $classes Post class attribute.
 	 * @return array
 	 * @since 2.0.1
+	 * @since 4.1.8 Fixes #426: Undefined property `post_type`.
 	 */
 	public static function question_answer_post_class( $classes ) {
 		global $post;
+
+		if ( ! $post ) {
+			return $classes;
+		}
 
 		if ( 'question' === $post->post_type ) {
 			if ( ap_have_answer_selected( $post->ID ) ) {
@@ -75,7 +80,7 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Add anspress classess to body.
+	 * Add anspress classes to body.
 	 *
 	 * @param  array $classes Body class attribute.
 	 * @return array
@@ -111,36 +116,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Filter wpseo plugin title.
-	 *
-	 * @param  string $title Page title.
-	 * @return string
-	 * @deprecated 4.1.0
-	 */
-	public static function wpseo_title( $title ) {
-		if ( is_anspress() ) {
-			remove_filter( 'wpseo_title', array(
-				__CLASS__,
-				'wpseo_title',
-			));
-
-			$new_title = ap_page_title();
-
-			if ( strpos( $title, 'ANSPRESS_TITLE' ) !== false ) {
-				$new_title = str_replace( 'ANSPRESS_TITLE', $new_title, $title ) . ' | ' . get_bloginfo( 'name' );
-			} else {
-				$new_title = $new_title . ' | ' . get_bloginfo( 'name' );
-			}
-
-			$new_title = apply_filters( 'ap_wpseo_title', $new_title );
-
-			return $new_title;
-		}
-
-		return $title;
-	}
-
-	/**
 	 * Filter the_title().
 	 *
 	 * @param  string $title Current page/post title.
@@ -151,7 +126,7 @@ class AnsPress_Theme {
 	public static function the_title( $title, $id = null ) {
 		_deprecated_function( __FUNCTION__, '4.1.1' );
 
-		if ( ap_opt( 'base_page' ) == $id  ) { // WPCS: loose comparison ok.
+		if ( ap_opt( 'base_page' ) == $id ) { // WPCS: loose comparison ok.
 			remove_filter( 'the_title', [ __CLASS__, 'the_title' ] );
 			return ap_page_title();
 		}
@@ -160,28 +135,19 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Add feed link in wp_head
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function feed_link() {
-		if ( is_anspress() ) {
-			echo '<link href="' . esc_url( home_url( '/feed/question-feed' ) ) . '" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
-		}
-	}
-
-	/**
 	 * Add default before body sidebar in AnsPress contents
 	 */
 	public static function ap_before_html_body() {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			$data = wp_json_encode( array(
-				'user_login'   => $current_user->data->user_login,
-				'display_name' => $current_user->data->display_name,
-				'user_email'   => $current_user->data->user_email,
-				'avatar'       => get_avatar( $current_user->ID ),
-			));
+			$data         = wp_json_encode(
+				array(
+					'user_login'   => $current_user->data->user_login,
+					'display_name' => $current_user->data->display_name,
+					'user_email'   => $current_user->data->user_email,
+					'avatar'       => get_avatar( $current_user->ID ),
+				)
+			);
 			?>
 				<script type="text/javascript">
 					apCurrentUser = <?php echo $data; // xss okay. ?>;
@@ -189,31 +155,6 @@ class AnsPress_Theme {
 			<?php
 		}
 		dynamic_sidebar( 'ap-before' );
-	}
-
-	/**
-	 * Remove some unwanted things from wp_head
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function remove_head_items() {
-		if ( is_anspress() ) {
-			global $wp_query;
-
-			// Check if quesied object is set, if not then set base page object.
-			if ( ! isset( $wp_query->queried_object ) ) {
-				$wp_query->queried_object = ap_get_post( ap_opt( 'base_page' ) );
-			}
-
-			$wp_query->queried_object->post_title = ap_page_title();
-			remove_action( 'wp_head', 'rsd_link' );
-			remove_action( 'wp_head', 'wlwmanifest_link' );
-			remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 );
-			remove_action( 'wp_head', 'rel_canonical' );
-			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
-			remove_action( 'wp_head', 'feed_links_extra', 3 );
-			remove_action( 'wp_head', 'feed_links', 2 );
-		}
 	}
 
 	/**
@@ -231,20 +172,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Update concal link when wpseo plugin installed.
-	 *
-	 * @return string
-	 * @deprecated 4.1.0
-	 */
-	public static function wpseo_canonical( $url ) {
-		if ( is_question() ) {
-			return get_permalink( get_question_id() );
-		}
-
-		return $url;
-	}
-
-	/**
 	 * Ajax callback for post actions dropdown.
 	 *
 	 * @since 3.0.0
@@ -256,7 +183,12 @@ class AnsPress_Theme {
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		ap_ajax_json( [ 'success' => true, 'actions' => ap_post_actions( $post_id ) ] );
+		ap_ajax_json(
+			[
+				'success' => true,
+				'actions' => ap_post_actions( $post_id ),
+			]
+		);
 	}
 
 	/**
@@ -300,7 +232,7 @@ class AnsPress_Theme {
 				array_unshift( $templates, 'single-' . $_post->post_name . '.php' );
 				array_unshift( $templates, 'single-' . $_post->post_type . '.php' );
 			} elseif ( is_tax() ) {
-				$_term = get_queried_object();
+				$_term     = get_queried_object();
 				$term_type = str_replace( 'question_', '', $_term->taxonomy );
 				array_unshift( $templates, 'anspress-' . $term_type . '.php' );
 			}
@@ -308,39 +240,11 @@ class AnsPress_Theme {
 			$new_template = locate_template( $templates );
 
 			if ( '' !== $new_template ) {
-				return $new_template ;
+				return $new_template;
 			}
 		}
 
 		return $template;
-	}
-
-	/**
-	 * Filter single question content to render [anspress] shortcode.
-	 *
-	 * @param string $content Content.
-	 * @return string
-	 *
-	 * @since 4.1.0
-	 * @since 4.1.2 Do not replace content once question is loaded.
-	 */
-	public static function the_content_single_question( $content ) {
-		global $ap_shortcode_loaded, $post, $question_rendered;
-
-		if ( ! $post || true === $question_rendered ) {
-			return $content;
-		}
-
-		if ( true !== $ap_shortcode_loaded && is_singular( 'question' ) ) {
-			return do_shortcode( '[anspress]' );
-		}
-
-		// Check if user have permission.
-		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) && ! ap_user_can_read_post( $post->ID, false, $post->post_type ) ) {
-			return '<p>' . esc_attr__( 'Sorry, you do not have permission to read this post.', 'anspress-question-answer' ) . '</p>';
-		}
-
-		return $content;
 	}
 
 	/**
@@ -385,7 +289,7 @@ class AnsPress_Theme {
 			}
 
 			$excerpt_length = apply_filters( 'excerpt_length', 55 );
-			$excerpt_more = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+			$excerpt_more   = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
 			return wp_trim_words( $post->post_content, $excerpt_length, $excerpt_more );
 		}
 
@@ -420,9 +324,8 @@ class AnsPress_Theme {
 	public static function after_question_content() {
 		echo ap_post_status_badge(); // xss safe.
 
-		$_post = ap_get_post();
-		$query_db = 'answer' === $_post->post_type ? false : true;
-		$activity = ap_recent_activity( null, false, $query_db );
+		$_post    = ap_get_post();
+		$activity = ap_recent_activity( null, false );
 
 		if ( ! empty( $activity ) ) {
 			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . $activity . '</div>';

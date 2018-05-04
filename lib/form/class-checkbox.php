@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -37,35 +38,20 @@ class Checkbox extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label'   => __( 'AnsPress Checkbox Field', 'anspress-question-answer' ),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label' => __( 'AnsPress Checkbox Field', 'anspress-question-answer' ),
+			)
+		);
 
 		// Call parent prepare().
 		parent::prepare();
 
 		// Make sure checkbox value are sanitized.
 		if ( $this->get( 'options' ) ) {
-			$this->sanitize_cb = array_merge( [ 'array_remove_empty, array_map_boolean' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( [ 'array_remove_empty', 'text_field' ], $this->sanitize_cb );
 		} else {
 			$this->sanitize_cb = array_merge( [ 'boolean' ], $this->sanitize_cb );
-		}
-	}
-
-	/**
-	 * Get POST (unsafe) value of a field.
-	 *
-	 * @return null|mixed
-	 */
-	public function unsafe_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), 0, $_REQUEST );
-
-		if ( $request_value ) {
-			return true;
-		}
-
-		if ( 0 === $request_value ) {
-			$this->value = false;
 		}
 	}
 
@@ -89,6 +75,7 @@ class Checkbox extends Field {
 	 */
 	public function field_markup() {
 		parent::field_markup();
+
 		if ( $this->get( 'options' ) ) {
 			$value = $this->value();
 
@@ -107,6 +94,25 @@ class Checkbox extends Field {
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+	}
+
+	/**
+	 * Get POST (unsafe) value of a field.
+	 *
+	 * @return null|mixed
+	 * @since 4.1.8 Return `false` for unchecked checkbox.
+	 */
+	public function unsafe_value() {
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+
+		if ( isset( $request_value ) ) {
+			return wp_unslash( $request_value );
+		}
+
+		// Return `false` if form submitted but is not set.
+		if ( $this->form()->is_submitted() ) {
+			return false;
+		}
 	}
 
 }

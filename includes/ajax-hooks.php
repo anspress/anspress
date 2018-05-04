@@ -25,15 +25,18 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'wp_ajax_ap_toggle_best_answer', __CLASS__, 'toggle_best_answer' );
 		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
 		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
 		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
-		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks','edit_comment' );
-		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks','approve_comment' );
-		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress_Comment_Hooks', 'delete_comment' );
-		anspress()->add_action( 'ap_ajax_comment_form', 'AnsPress_Comment_Hooks', 'comment_form' );
+		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks', 'edit_comment' );
+		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks', 'approve_comment' );
 		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
+
+		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress\Ajax\Comment_Delete', 'init' );
+		anspress()->add_action( 'wp_ajax_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
+		anspress()->add_action( 'wp_ajax_nopriv_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
+		anspress()->add_action( 'wp_ajax_ap_toggle_best_answer', 'AnsPress\Ajax\Toggle_Best_Answer', 'init' );
+
 
 		// Post actions.
 		anspress()->add_action( 'ap_ajax_post_actions', 'AnsPress_Theme', 'post_actions' );
@@ -65,6 +68,9 @@ class AnsPress_Ajax {
 		anspress()->add_action( 'wp_ajax_nopriv_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
 		anspress()->add_action( 'wp_ajax_ap_search_tags', __CLASS__, 'search_tags' );
 		anspress()->add_action( 'wp_ajax_nopriv_ap_search_tags', __CLASS__, 'search_tags' );
+		anspress()->add_action( 'wp_ajax_ap_image_upload', 'AnsPress_Uploader', 'image_upload' );
+		anspress()->add_action( 'wp_ajax_ap_upload_modal', 'AnsPress_Uploader', 'upload_modal' );
+		anspress()->add_action( 'wp_ajax_nopriv_ap_upload_modal', 'AnsPress_Uploader', 'upload_modal' );
 	}
 
 	/**
@@ -74,7 +80,7 @@ class AnsPress_Ajax {
 	 */
 	public static function suggest_similar_questions() {
 		// Die if question suggestion is disabled.
-		if ( ap_disable_question_suggestion( ) ) {
+		if ( ap_disable_question_suggestion() ) {
 			wp_die( 'false' );
 		}
 
@@ -117,83 +123,6 @@ class AnsPress_Ajax {
 		}
 
 		ap_ajax_json( $result );
-	}
-
-	/**
-	 * Ajax action for selecting a best answer.
-	 *
-	 * @since 2.0.0
-	 * @since 4.1.2 Log activities to `ap_activity` table and removed @see ap_update_post_activity_meta().
-	 * @since 4.1.6 Check if user have permission to toggle best answer.
-	 *
-	 * @category haveTest
-	 */
-	public static function toggle_best_answer() {
-		$answer_id = (int) ap_sanitize_unslash( 'answer_id', 'r' );
-
-		if ( ! is_user_logged_in() || ! check_ajax_referer( 'select-answer-' . $answer_id, 'nonce', false ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$_post = ap_get_post( $answer_id );
-
-		// Check for permission.
-		if ( ! ap_user_can_select_answer( $_post ) ) {
-			ap_ajax_json( array(
-				'success'    => false,
-				'snackbar' 	 => [ 'message' => __( 'You do not have permission to select or unselect answer', 'anspress-question-answer' ) ],
-			) );
-		}
-
-		// Unselect best answer if already selected.
-		if ( ap_have_answer_selected( $_post->post_parent ) ) {
-			ap_unset_selected_answer( $_post->post_parent );
-
-			/**
-			 * Action triggered after an answer is un-selected as best.
-			 *
-			 * @param WP_Post $_post WordPress post object.
-			 * @since unknown
-			 */
-			do_action( 'ap_unselect_answer', $_post );
-
-			ap_ajax_json( array(
-				'success'    => true,
-				'action'     => 'unselected',
-				'snackbar' 	 => [ 'message' => __( 'Best answer is unselected for your question.', 'anspress-question-answer' ) ],
-				'label'      => __( 'Select', 'anspress-question-answer' ),
-			) );
-		}
-
-		// Do not allow answer to be selected as best if status is moderate.
-		if ( 'moderate' === $_post->post_status || 'trash' === $_post->post_status || 'private' === $_post->post_status ) {
-			ap_ajax_json( [
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'This answer cannot be selected as best, update status to select as best answer.', 'anspress-question-answer' ) ],
-			] );
-		}
-
-		/**
-		 * Trigger right after selecting an answer.
-		 *
-		 * @param object $_post Post.
-		 */
-		do_action( 'ap_select_answer', $_post );
-
-		// Update question qameta.
-		ap_set_selected_answer( $_post->post_parent, $_post->ID );
-
-		// Close question if enabled in option.
-		if ( ap_opt( 'close_selected' ) ) {
-			ap_insert_qameta( $_post->post_parent, [ 'closed' => 1 ] );
-		}
-
-		ap_ajax_json( array(
-			'success'  => true,
-			'action'   => 'selected',
-			'snackbar' => [ 'message' => __( 'Best answer is selected for your question.', 'anspress-question-answer' ) ],
-			'label'    => __( 'Unselect', 'anspress-question-answer' ),
-		) );
 	}
 
 	/**

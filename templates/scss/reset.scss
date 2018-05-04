@@ -55,6 +55,71 @@
 		@include col(1, 12);
 	}
 }
+
+@each $prop, $abbrev in (margin: m, padding: p) {
+	@each $size, $lengths in $space-breaks {
+			$length-x: map-get($lengths, x);
+			$length-y: map-get($lengths, y);
+
+			.#{$abbrev}-#{$size}  { #{$prop}:        $length-y $length-x !important; }
+
+			.#{$abbrev}t-#{$size},
+			.#{$abbrev}y-#{$size} {
+					#{$prop}-top:    $length-y !important;
+			}
+
+			.#{$abbrev}r-#{$size},
+			.#{$abbrev}x-#{$size} {
+					#{$prop}-right:  $length-x !important;
+			}
+
+			.#{$abbrev}b-#{$size},
+			.#{$abbrev}y-#{$size} {
+					#{$prop}-bottom: $length-y !important;
+			}
+
+			.#{$abbrev}l-#{$size},
+			.#{$abbrev}x-#{$size} {
+					#{$prop}-left:   $length-x !important;
+			}
+	}
+}
+
+// Text color and bg.
+@each $key, $value in $anspress-vars {
+	.ap-text-#{$key} {
+		color: #{$value};
+	}
+	.ap-bg-#{$key} {
+		color: #{$value};
+	}
+}
+.ap-text-muted{
+	color: #999;
+}
+.ap-font-size-md{
+	font-size: $medium-font-size;
+}
+
+.d-block{
+	display: block;
+}
+.d-table{
+	display: table;
+}
+.position-relative{
+	position: relative;
+}
+.position-absolute{
+	position: relative;
+}
+.ap-border{
+	border: solid 1px var(--ap_border-color);
+}
+.ap-border-radius{
+	border-radius: var(--ap_border-radius);
+}
+
 .anspress{
 	font-size: 14px;
 	line-height: 1.6;
@@ -163,26 +228,26 @@
     border-radius: 2px;
 	}
 	span{
-		background: $default-border-color;
+		background: $border-color;
 	}
 }
 
 .border-top{
-	border-top: solid 1px $default-border-color;
+	border-top: solid 1px $border-color;
 }
 .margin-top-20{
 	margin-top: 20px;
 }
 
 .ap-no-permission-to-view {
-	background: lighten($blue-color, 52%);
+	background: lighten($color7, 52%);
 	display: block;
 	margin-top: 20px;
 	padding: 15px;
 	text-align: center;
 }
 .ap-pending-notice {
-	background: $yellow-color;
+	background: $color9;
 	border-radius: 2px;
 	margin: 0 15px 10px;
 	padding: 20px;
@@ -365,4 +430,18 @@ ul{
 }
 .text-center {
 	text-align: center;
+}
+.ap-display-flex{
+	display: flex;
+}
+.ap-block{
+	background-color: #fff;
+	border: solid 1px var(--ap_border-color);
+	padding: 10px;
+	box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.07);
+	border-radius: var(--ap_border-radius);
+}
+
+.ap-mb-10{
+	margin-bottom: 10px;
 }

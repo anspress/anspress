@@ -52,8 +52,19 @@ abstract class Singleton {
 	public static function init() {
 		if ( is_null( static::$instance ) ) {
 			static::$instance = new static();
+			static::$instance->run_once();
 		}
 
 		return static::$instance;
+	}
+
+	/**
+	 * Placeholder function which is called only once.
+	 *
+	 * @return void
+	 * @since 4.1.8
+	 */
+	public function run_once() {
+
 	}
 }

@@ -27,16 +27,16 @@ if ( ! current_user_can( 'manage_options' ) ) {
 do_action( 'ap_before_options_page' );
 
 $all_options = array(
-	'general' => array(
-		'label' => __( 'General', 'anspress-question-answer' ),
+	'general'       => array(
+		'label'  => __( 'General', 'anspress-question-answer' ),
 		'groups' => array(
-			'pages' => array(
+			'pages'      => array(
 				'label' => __( 'Pages', 'anspress-question-answer' ),
 			),
 			'permalinks' => array(
 				'label' => __( 'Permalinks', 'anspress-question-answer' ),
 			),
-			'layout' => array(
+			'layout'     => array(
 				'label' => __( 'Layout', 'anspress-question-answer' ),
 			),
 		),
@@ -44,8 +44,16 @@ $all_options = array(
 	'postscomments' => array(
 		'label' => __( 'Posts & Comments', 'anspress-question-answer' ),
 	),
-	'uac' => array(
-		'label' => __( 'User Access Control', 'anspress-question-answer' ),
+	'user' => array(
+		'label' => __( 'User', 'anspress-question-answer' ),
+		'groups' => array(
+			'activity' => array(
+				'label' => __( 'Activity', 'anspress-question-answer' ),
+			),
+		),
+	),
+	'uac'           => array(
+		'label'  => __( 'User Access Control', 'anspress-question-answer' ),
 		'groups' => array(
 			'reading' => array(
 				'label' => __( 'Reading Permissions', 'anspress-question-answer' ),
@@ -53,27 +61,27 @@ $all_options = array(
 			'posting' => array(
 				'label' => __( 'Posting Permissions', 'anspress-question-answer' ),
 			),
-			'other' => array(
+			'other'   => array(
 				'label' => __( 'Other Permissions', 'anspress-question-answer' ),
 			),
-			'roles' => array(
-				'label' => __( 'Role Editor', 'anspress-question-answer' ),
+			'roles'   => array(
+				'label'    => __( 'Role Editor', 'anspress-question-answer' ),
 				'template' => 'roles.php',
 			),
 		),
 	),
-	'tools' => array(
-		'label' => __( 'Tools', 'anspress-question-answer' ),
+	'tools'         => array(
+		'label'  => __( 'Tools', 'anspress-question-answer' ),
 		'groups' => array(
-			're-count' => array(
-				'label' => __( 'Re-count', 'anspress-question-answer' ),
+			're-count'  => array(
+				'label'    => __( 'Re-count', 'anspress-question-answer' ),
 				'template' => 'recount.php',
 			),
 			'uninstall' => array(
-				'label' => __( 'Uninstall', 'anspress-question-answer' ),
+				'label'    => __( 'Uninstall', 'anspress-question-answer' ),
 				'template' => 'uninstall.php',
 			),
-		)
+		),
 	),
 );
 
@@ -88,14 +96,14 @@ $all_options = apply_filters( 'ap_all_options', $all_options );
 do_action( 'ap_register_options' );
 
 $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
-$updated = false;
+$updated   = false;
 
 // Process submit form.
 if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
 	$form = anspress()->get_form( $form_name );
 
 	if ( ! $form->have_errors() ) {
-		$values = $form->get_values();
+		$values  = $form->get_values();
 		$options = get_option( 'anspress_opt', [] );
 
 		foreach ( $values as $key => $opt ) {
@@ -154,9 +162,9 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 							<?php
 								$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
 
-								foreach ( $all_options as $key => $args ) {
-									echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $args['label'] ) . '</a>';
-								}
+							foreach ( $all_options as $key => $args ) {
+								echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $args['label'] ) . '</a>';
+							}
 
 								/**
 								 * Action triggered right after AnsPress options tab links.
@@ -172,7 +180,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 				<div class="metabox-holder">
 					<?php
 						$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
-						$form = ap_sanitize_unslash( 'ap_form_name', 'r' );
+						$form       = ap_sanitize_unslash( 'ap_form_name', 'r' );
 						$action_url = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
 					?>
 					<div class="ap-group-options">
@@ -182,12 +190,12 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 							<?php if ( ! empty( $all_options[ $active_tab ]['groups'] ) ) : ?>
 								<p class="ap-tab-subs">
 									<?php foreach ( $all_options[ $active_tab ]['groups'] as $groupkey => $args ) : ?>
-										<a href="#<?php echo $active_tab . '-' . $groupkey ; ?>"><?php echo esc_attr( $args['label'] ); ?></a>
+										<a href="#<?php echo $active_tab . '-' . $groupkey; ?>"><?php echo esc_attr( $args['label'] ); ?></a>
 									<?php endforeach; ?>
 								</p>
 							<?php endif; ?>
 
-							<?php if ( true === $updated ) :   ?>
+							<?php if ( true === $updated ) : ?>
 								<div class="notice notice-success is-dismissible">
 									<p><?php esc_html_e( 'AnsPress option updated successfully!', 'anspress-question-answer' ); ?></p>
 								</div>
@@ -203,10 +211,12 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 											if ( isset( $args['template'] ) ) {
 												include ANSPRESS_DIR . '/admin/views/' . $args['template'];
 											} else {
-												anspress()->get_form( 'options_' . $active_tab . '_' . $groupkey )->generate( array(
-													'form_action' => $action_url . '#form_options_' . $active_tab . '_' . $groupkey,
-													'ajax_submit' => false,
-												) );
+												anspress()->get_form( 'options_' . $active_tab . '_' . $groupkey )->generate(
+													array(
+														'form_action' => $action_url . '#form_options_' . $active_tab . '_' . $groupkey,
+														'ajax_submit' => false,
+													)
+												);
 											}
 											?>
 										</div>
@@ -221,10 +231,12 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 										if ( isset( $active_option['template'] ) ) {
 											include ANSPRESS_DIR . '/admin/views/' . $active_option['template'];
 										} else {
-											anspress()->get_form( 'options_' . $active_tab )->generate( array(
-												'form_action' => $action_url . '#form_options_' . $active_tab,
-												'ajax_submit' => false,
-											) );
+											anspress()->get_form( 'options_' . $active_tab )->generate(
+												array(
+													'form_action' => $action_url . '#form_options_' . $active_tab,
+													'ajax_submit' => false,
+												)
+											);
 										}
 										?>
 									</div>

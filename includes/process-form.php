@@ -20,7 +20,7 @@ class AnsPress_Process_Form {
 
 	private $request;
 
-	private $redirect ;
+	private $redirect;
 
 	private $is_ajax = false;
 	/**
@@ -33,6 +33,7 @@ class AnsPress_Process_Form {
 
 	/**
 	 * for non ajax form
+	 *
 	 * @return void
 	 */
 	public function non_ajax_form() {
@@ -57,7 +58,7 @@ class AnsPress_Process_Form {
 	 * @since 2.0.1
 	 */
 	public function ap_ajax() {
-		if ( ! isset( $_REQUEST[ 'ap_ajax_action'] ) ) {
+		if ( ! isset( $_REQUEST['ap_ajax_action'] ) ) {
 			wp_die();
 		}
 
@@ -73,6 +74,7 @@ class AnsPress_Process_Form {
 			/**
 				* ACTION: ap_ajax_[$action]
 				* Action for processing Ajax requests
+			 *
 				* @since 2.0.1
 				*/
 			do_action( 'ap_ajax_' . $action );
@@ -96,6 +98,7 @@ class AnsPress_Process_Form {
 		/**
 		 * ACTION: ap_process_form_[action]
 		 * process form
+		 *
 		 * @since 2.0.1
 		 * @deprecated 4.1.0
 		 */

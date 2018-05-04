@@ -24,25 +24,32 @@ class AnsPress_Flag {
 			ap_ajax_json( 'something_wrong' );
 		}
 
-		$userid = get_current_user_id();
+		$userid     = get_current_user_id();
 		$is_flagged = ap_is_user_flagged( $post_id );
 
 		// Die if already flagged.
 		if ( $is_flagged ) {
-			ap_ajax_json( array(
-				'success'  => false,
-				'snackbar' => [ 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ],
-			) );
+			ap_ajax_json(
+				array(
+					'success'  => false,
+					'snackbar' => [ 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ],
+				)
+			);
 		}
 
 		ap_add_flag( $post_id );
 		$count = ap_update_flags_count( $post_id );
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'action'   => [ 'count' => $count, 'active' => true ],
-			'snackbar' => [ 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ],
-		) );
+		ap_ajax_json(
+			array(
+				'success'  => true,
+				'action'   => [
+					'count'  => $count,
+					'active' => true,
+				],
+				'snackbar' => [ 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ],
+			)
+		);
 	}
 
 }
@@ -62,10 +69,6 @@ function ap_add_flag( $post_id, $user_id = false ) {
 
 	$inserted = ap_vote_insert( $post_id, $user_id, 'flag' );
 
-	if ( $inserted ) {
-		ap_update_total_flags_count();
-	}
-
 	return $inserted;
 }
 
@@ -77,7 +80,12 @@ function ap_add_flag( $post_id, $user_id = false ) {
  * @since  4.0.0
  */
 function ap_count_post_flags( $post_id ) {
-	$rows = ap_count_votes( [ 'vote_post_id' => $post_id, 'vote_type' => 'flag' ] );
+	$rows = ap_count_votes(
+		[
+			'vote_post_id' => $post_id,
+			'vote_type'    => 'flag',
+		]
+	);
 
 	if ( false !== $rows ) {
 		return (int) $rows[0]->count;
@@ -105,7 +113,7 @@ function ap_is_user_flagged( $post = null ) {
 /**
  * Flag button html.
  *
- * @param mixed   $post Post.
+ * @param mixed $post Post.
  * @return string
  * @since 0.9
  */
@@ -115,15 +123,18 @@ function ap_flag_btn_args( $post = null ) {
 		return;
 	}
 
-	$_post = ap_get_post( $post );
+	$_post   = ap_get_post( $post );
 	$flagged = ap_is_user_flagged( $_post );
 
-	$title = ( ! $flagged) ? (__( 'Flag this post', 'anspress-question-answer' )) : (__( 'You have flagged this post', 'anspress-question-answer' ));
+	$title = ( ! $flagged ) ? ( __( 'Flag this post', 'anspress-question-answer' ) ) : ( __( 'You have flagged this post', 'anspress-question-answer' ) );
 
 	return $actions['close'] = array(
-		'cb'   => 'flag',
+		'cb'     => 'flag',
 		'icon'   => 'apicon-check',
-		'query'  => [ '__nonce' => wp_create_nonce( 'flag_' . $_post->ID ), 'post_id' => $_post->ID ],
+		'query'  => [
+			'__nonce' => wp_create_nonce( 'flag_' . $_post->ID ),
+			'post_id' => $_post->ID,
+		],
 		'label'  => __( 'Flag', 'anspress-question-answer' ),
 		'title'  => $title,
 		'count'  => $_post->flags,
@@ -147,9 +158,9 @@ function ap_delete_flags( $post_id ) {
  * @since 4.0.0
  */
 function ap_update_total_flags_count() {
-	$opt = get_option( 'anspress_global', [] );
+	$opt                      = get_option( 'anspress_global', [] );
 	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
-	$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
+	$opt['flagged_answers']   = ap_total_posts_count( 'answer', 'flag' );
 
 	update_option( 'anspress_global', $opt );
 }
@@ -161,22 +172,11 @@ function ap_update_total_flags_count() {
  * @since 4.0.0
  */
 function ap_total_flagged_count() {
-	$opt = get_option( 'anspress_global', [] );
-	$updated = false;
+	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
+	$updated                  = true;
 
-	if ( empty( $opt['flagged_questions'] ) ) {
-		$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
-		$updated = true;
-	}
-
-	if ( empty( $opt['flagged_answers'] ) ) {
-		$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
-		$updated = true;
-	}
-
-	if ( $updated ) {
-		update_option( 'anspress_global', $opt );
-	}
+	$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
+	$updated                = true;
 
 	return array(
 		'questions' => $opt['flagged_questions'],

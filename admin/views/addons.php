@@ -52,7 +52,8 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 
 				$i = 0;
 
-				foreach ( (array) ap_get_addons() as $file => $data ) { ?>
+				foreach ( (array) ap_get_addons() as $file => $data ) {
+				?>
 
 					<div class="ap-addon<?php echo $data['active'] ? ' active' : ''; ?> <?php echo $data['class']; ?>">
 						<div class="ap-addon-image">
@@ -71,32 +72,36 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 							<p><?php echo esc_html( $data['description'] ); ?></p>
 
 							<?php
-								$args = wp_json_encode( array(
-									'action'   => 'ap_toggle_addon',
-									'__nonce'  => wp_create_nonce( 'toggle_addon' ),
-									'addon_id' => $data['id'],
-								) );
+								$args = wp_json_encode(
+									array(
+										'action'   => 'ap_toggle_addon',
+										'__nonce'  => wp_create_nonce( 'toggle_addon' ),
+										'addon_id' => $data['id'],
+									)
+								);
 							?>
 
 							<?php if ( $data['active'] ) : ?>
-								<button class="button button-small ap-addon-toggle" ap-ajax-btn ap-query="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Disable Addon', 'anspress-question-answer' ); ?></button>
+								<button class="button button-small ap-addon-toggle" apajaxbtn apquery="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Disable Addon', 'anspress-question-answer' ); ?></button>
 
 								<?php
 									// Show options button if have options.
-									if ( ap_addon_has_options( $data['id'] ) ) {
-										$url = add_query_arg( array(
+								if ( ap_addon_has_options( $data['id'] ) ) {
+									$url = add_query_arg(
+										array(
 											'action'    => 'ap_addon_options',
 											'addon'     => $data['id'],
 											'TB_iframe' => 'true',
 											'width'     => '800',
 											'height'    => '500',
-										), admin_url( 'admin.php' ) );
+										), admin_url( 'admin.php' )
+									);
 
-										echo '<a name="' . sprintf( esc_attr__( '%s Options', 'anspress-question-answer' ), $data['name'] ) . '" href="' . $url . '" class="button button-small thickbox button-primary">' . __( 'Options', 'anspress-question-answer' ) . '</a>';
-									}
+									echo '<a name="' . sprintf( esc_attr__( '%s Options', 'anspress-question-answer' ), $data['name'] ) . '" href="' . $url . '" class="button button-small thickbox button-primary">' . __( 'Options', 'anspress-question-answer' ) . '</a>';
+								}
 								?>
 							<?php else : ?>
-								<button class="button button-small button-primary ap-addon-toggle" ap-ajax-btn ap-query="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Enable Addon', 'anspress-question-answer' ); ?></button>
+								<button class="button button-small button-primary ap-addon-toggle" apajaxbtn apquery="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Enable Addon', 'anspress-question-answer' ); ?></button>
 							<?php endif; ?>
 						</div>
 					</div>

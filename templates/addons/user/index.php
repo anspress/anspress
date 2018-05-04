@@ -16,7 +16,7 @@ $user_id     = ap_current_user_id();
 $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 ?>
 
-<div id="ap-user" class="ap-user <?php echo is_active_sidebar( 'ap-user' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12' ?>">
+<div id="ap-user" class="ap-user <?php echo is_active_sidebar( 'ap-user' ) && is_anspress() ? 'ap-col-9' : 'ap-col-12'; ?>">
 
 	<?php if ( '0' == $user_id && ! is_user_logged_in() ) : ?>
 
@@ -30,24 +30,29 @@ $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 			</div>
 			<div class="no-overflow">
 				<div class="ap-user-name">
-					<?php echo ap_user_display_name( [ 'user_id' => $user_id, 'html' => true ] ); ?>
+					<?php
+					echo ap_user_display_name(
+						[
+							'user_id' => $user_id,
+							'html'    => true,
+						]
+					);
+?>
 				</div>
 				<div class="ap-user-about">
 					<?php echo get_user_meta( $user_id, 'description', true ); ?>
 				</div>
 			</div>
 		</div>
-		<?php SELF::user_menu(); ?>
-		<?php SELF::sub_page_template(); ?>
+		<?php self::user_menu(); ?>
+		<?php self::sub_page_template(); ?>
 
 	<?php endif; ?>
 
 </div>
 
-<?php if ( is_active_sidebar( 'ap-user' ) && is_anspress()) : ?>
+<?php if ( is_active_sidebar( 'ap-user' ) && is_anspress() ) : ?>
 	<div class="ap-question-right ap-col-3">
 		<?php dynamic_sidebar( 'ap-user' ); ?>
 	</div>
 <?php endif; ?>
-
-

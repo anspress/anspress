@@ -1,4 +1,4 @@
-<?php # -*- coding: utf-8 -*-
+<?php // -*- coding: utf-8 -*-
 /**
  * AnsPress tinymce translations.
  *
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( '_WP_Editors' ) ) {
-	require( ABSPATH . WPINC . '/class-wp-editor.php' );
+	require ABSPATH . WPINC . '/class-wp-editor.php';
 }
 
 /**
@@ -38,7 +38,7 @@ function ap_tinymce_translations() {
 		'i18n_insert_your_code'     => __( 'Insert your code.', 'anspress-question-answer' ),
 	);
 
-	$locale = _WP_Editors::$mce_locale;
+	$locale     = _WP_Editors::$mce_locale;
 	$translated = 'tinyMCE.addI18n("' . $locale . '.anspress", ' . wp_json_encode( $strings ) . ");\n";
 
 	return $translated;

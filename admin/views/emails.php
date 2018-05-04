@@ -34,7 +34,7 @@ $i = 1;
 			</th>
 			<td>
 				<?php
-					$active = ap_isset_post_value( 'active_template', 'new_question' );
+					$active    = ap_isset_post_value( 'active_template', 'new_question' );
 					$templates = array(
 						'new_question'  => __( 'New Question', 'anspress-question-answer' ),
 						'new_answer'    => __( 'New Answer', 'anspress-question-answer' ),
@@ -88,9 +88,9 @@ $i = 1;
 </script>
 <style>
 	.ap-email-allowed-tags pre{
-    display: inline;
-    background: #eee;
-    margin-right: 15px;
+	display: inline;
+	background: #eee;
+	margin-right: 15px;
 	}
 </style>
 

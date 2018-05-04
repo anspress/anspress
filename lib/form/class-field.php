@@ -256,9 +256,14 @@ class Field {
 	 * Order of HTML markup.
 	 *
 	 * @return void
+	 * @since 4.1.8 Allow overriding order from arguments.
 	 */
 	protected function html_order() {
-		$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		if ( empty( $this->args['output_order'] ) ) {
+			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		} else {
+			$this->output_order = $this->args['output_order'];
+		}
 	}
 
 	/**
@@ -310,9 +315,17 @@ class Field {
 	/**
 	 * Get value of a field.
 	 *
+	 * @param mixed $custom_val Set custom value for field.
 	 * @return mixed
+	 *
+	 * @since 4.1.8 Pass a value to set it as value of field.
 	 */
-	public function value() {
+	public function value( $custom_val = null ) {
+		if ( null !== $custom_val ) {
+			$this->value = $custom_val;
+			return true;
+		}
+
 		if ( ! is_null( $this->value ) ) {
 			return $this->value;
 		}
@@ -374,7 +387,7 @@ class Field {
 	 */
 	public function add_error( $code, $message = '' ) {
 		$this->errors[ $code ] = $message;
-		$name = explode( '.', ap_to_dot_notation( $this->form_name ) );
+		$name                  = explode( '.', ap_to_dot_notation( $this->form_name ) );
 
 		if ( is_array( $name ) ) {
 			anspress()->get_form( $name[0] )->add_error( 'fields-error', __( 'Error found in fields, please check and re-submit', 'anspress-question-answer' ) );
@@ -533,7 +546,7 @@ class Field {
 		}
 
 		if ( ! empty( $this->sanitize_cb ) ) {
-			$unsafe_value = $this->unsafe_value();
+			$unsafe_value     = $this->unsafe_value();
 			$sanitize_applied = false;
 
 			foreach ( (array) $this->sanitize_cb as $sanitize ) {
@@ -546,7 +559,7 @@ class Field {
 					// If callback is null then do not apply.
 					if ( null !== $sanitized_val ) {
 						$sanitize_applied = true;
-						$unsafe_value = $sanitized_val;
+						$unsafe_value     = $sanitized_val;
 					}
 				}
 			} // End foreach().
@@ -590,6 +603,21 @@ class Field {
 
 	public function after_save( $args = [] ) {
 
+	}
+
+	/**
+	 * Call save callback.
+	 *
+	 * This will call save callback with two parameter `value`
+	 * and current field object.
+	 *
+	 * @return mixed
+	 * @since 4.1.8
+	 */
+	public function save_cb() {
+		if ( ! empty( $this->args['save'] ) && is_callable( $this->args['save'] ) ) {
+			return call_user_func( $this->args['save'], $this->value(), $this );
+		}
 	}
 
 }

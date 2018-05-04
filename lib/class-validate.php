@@ -166,21 +166,54 @@ class Validate {
 	 * Sanitize description field.
 	 *
 	 * Remove more, encode contents of code and pre tag.
-	 * Replace square brackets so that shotcode dont get rendered.
+	 * Replace square brackets so that shortcode don't get rendered.
 	 *
 	 * @param null|string $value String to sanitize.
 	 *
 	 * @return null|string
+	 * @since 4.1.8 Remove multiple new line and remove single space.
 	 */
 	public static function sanitize_description( $value = null ) {
 		if ( ! empty( $value ) ) {
-			$value = str_replace( '<!--more-->', '', $value );
-			$value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $value );
-			$value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $value );
-			$value = str_replace( [ '[', ']' ], [ '&#91;', '&#93;' ], $value );
+			/**
+			 * Filter called before applying sanitization to a description fields.
+			 *
+			 * @param string $value Value.
+			 * @since 4.1.9
+			 */
+			$new_value = apply_filters( 'ap_pre_sanitize_description', $value );
 
-			return $value;
+			$new_value = str_replace( '<!--more-->', '', $new_value );
+			$patt      = get_shortcode_regex();
+			$new_value = preg_replace_callback( "/$patt/", [ __CLASS__, 'whitelist_shortcodes' ], $new_value );
+
+			$new_value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $new_value );
+			$new_value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $new_value );
+
+			// Remove multiple new lines.
+			$new_value           = preg_replace( '/[\r\n]\s*[\r\n]/', "\n", $new_value );
+
+			// Remove single white single space in line.
+			$new_value           = preg_replace( '/&nbsp;/', "\n", $new_value );
+
+			return $new_value;
 		}
+	}
+
+	private static function whitelist_shortcodes( $m ) {
+		/**
+		 * Filter for overriding allowed shortcodes.
+		 *
+		 * @since 4.1.8
+		 */
+		$allowed_shortcodes = apply_filters( 'ap_allowed_shortcodes', [] );
+
+		// if not allowed shortcode then change square brackets.
+		if ( ! in_array( $m[2], $allowed_shortcodes, true ) ) {
+			return ap_replace_square_bracket( $m[0] );
+		}
+
+		return $m[0];
 	}
 
 	/**
@@ -195,7 +228,7 @@ class Validate {
 		preg_match( '/aplang\=\\"([A-Za-z0-9 _]*)\\"/', $matches[1], $lang );
 		$lang = empty( $lang ) ? 'text' : esc_attr( $lang[1] );
 
-		return '<pre class="brush: ' . sanitize_key( $lang ) . '">' . esc_html( $matches[2] ) . '</pre>';
+		return '<pre>' . esc_html( $matches[2] ) . '</pre>';
 	}
 
 	/**
@@ -225,14 +258,16 @@ class Validate {
 	 */
 	public static function sanitize_tags_field( $value = null, $args = [] ) {
 		if ( ! empty( $value ) ) {
-			$i = 0;
-			$sanitized = [];
+			$i             = 0;
+			$sanitized     = [];
 			$existing_tags = [];
+
+			$args['value_field'] = empty( $args['value_field'] ) || 'name' === $args['value_field'] ? 'name' : 'id';
 
 			foreach ( (array) $value as $tag ) {
 				if ( is_numeric( $tag ) ) {
 					$existing_tags[] = $tag;
-				} elseif( false !== $args['js_options']['create']) {
+				} elseif ( false !== $args['js_options']['create'] ) {
 					$sanitized[] = sanitize_text_field( $tag );
 				}
 			}
@@ -240,17 +275,19 @@ class Validate {
 			$taxo = ! empty( $args['terms_args']['taxonomy'] ) ? $args['terms_args']['taxonomy'] : 'question_tag';
 
 			if ( ! empty( $existing_tags ) ) {
-				$terms = get_terms( array(
-					'taxonomy'   => $taxo,
-					'include'    => $existing_tags,
-					'fields'     => 'names',
-					'hide_empty' => false,
-				) );
+				$terms = get_terms(
+					array(
+						'taxonomy'   => $taxo,
+						'include'    => $existing_tags,
+						'fields'     => 'id=>name',
+						'hide_empty' => false,
+					)
+				);
 
 				// If allowed add new tags as well.
 				if ( $terms ) {
-					foreach ( $terms as $tname ) {
-						$sanitized[] = $tname;
+					foreach ( $terms as $id => $tname ) {
+						$sanitized[] = 'name' === $args['value_field'] ? $tname : $id;
 					}
 				}
 			}
@@ -294,11 +331,13 @@ class Validate {
 	 */
 	public static function validate_required( $field ) {
 		if ( '' === $field->value() || is_null( $field->value() ) ) {
-			$field->add_error( 'required', sprintf(
-				// Translators: placeholder contain field label.
-				__( '%s field is required.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'required', sprintf(
+					// Translators: placeholder contain field label.
+					__( '%s field is required.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -310,11 +349,13 @@ class Validate {
 	 */
 	public static function validate_not_zero( $field ) {
 		if ( '0' == $field->value() ) {
-			$field->add_error( 'is-zero', sprintf(
-				// Translators: placeholder contain field label.
-				__( '%s field is required.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'is-zero', sprintf(
+					// Translators: placeholder contain field label.
+					__( '%s field is required.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -326,11 +367,13 @@ class Validate {
 	 */
 	public static function validate_is_email( $field ) {
 		if ( ! empty( $field->value() ) && ! is_email( $field->value() ) ) {
-			$field->add_error( 'is-email', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Value provided in field %s is not a valid email.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'is-email', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Value provided in field %s is not a valid email.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -342,11 +385,13 @@ class Validate {
 	 */
 	public static function validate_is_url( $field ) {
 		if ( ! empty( $field->unsafe_value() ) && false === filter_var( $field->unsafe_value(), FILTER_VALIDATE_URL ) ) {
-			$field->add_error( 'is-url', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Value provided in field %s is not a valid URL.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'is-url', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Value provided in field %s is not a valid URL.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -358,11 +403,13 @@ class Validate {
 	 */
 	public static function validate_is_numeric( $field ) {
 		if ( ! empty( $field->unsafe_value() ) && ! is_numeric( $field->unsafe_value() ) ) {
-			$field->add_error( 'is-numeric', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Value provided in field %s is not numeric.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'is-numeric', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Value provided in field %s is not numeric.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -377,15 +424,17 @@ class Validate {
 
 		if ( ! empty( $value ) && $field->get( 'min_length' ) ) {
 			$min_length = $field->get( 'min_length', 0 );
-			$value = wp_strip_all_tags( $value );
-			$value = html_entity_decode( $value, ENT_XML1, 'UTF-8' );
+			$value      = wp_strip_all_tags( $value );
+			$value      = html_entity_decode( $value, ENT_XML1, 'UTF-8' );
 
 			if ( mb_strlen( $value, 'utf-8' ) < $min_length ) {
-				$field->add_error( 'min-string-length', sprintf(
-					// Translators: placeholder contain field label.
-					__( 'Value provided in field %1$s must be at least %2$d characters long.', 'anspress-question-answer' ),
-					$field->get( 'label' ), $min_length
-				) );
+				$field->add_error(
+					'min-string-length', sprintf(
+						// Translators: placeholder contain field label.
+						__( 'Value provided in field %1$s must be at least %2$d characters long.', 'anspress-question-answer' ),
+						$field->get( 'label' ), $min_length
+					)
+				);
 			}
 		}
 	}
@@ -401,15 +450,17 @@ class Validate {
 
 		if ( ! empty( $value ) && $field->get( 'max_length' ) ) {
 			$max_length = $field->get( 'max_length', 10 );
-			$value = wp_strip_all_tags( $value );
-			$value = html_entity_decode( $value, ENT_XML1, 'UTF-8' );
+			$value      = wp_strip_all_tags( $value );
+			$value      = html_entity_decode( $value, ENT_XML1, 'UTF-8' );
 
 			if ( mb_strlen( $value, 'utf-8' ) > $max_length ) {
-				$field->add_error( 'max-string-length', sprintf(
-					// Translators: placeholder contain field label.
-					__( 'Value provided in field %1$s must not exceeds %2$d characters.', 'anspress-question-answer' ),
-					$field->get( 'label' ), $max_length
-				) );
+				$field->add_error(
+					'max-string-length', sprintf(
+						// Translators: placeholder contain field label.
+						__( 'Value provided in field %1$s must not exceeds %2$d characters.', 'anspress-question-answer' ),
+						$field->get( 'label' ), $max_length
+					)
+				);
 			}
 		} // End if().
 	}
@@ -424,11 +475,13 @@ class Validate {
 		$value = $field->value();
 
 		if ( ! empty( $value ) && ! is_array( $value ) ) {
-			$field->add_error( 'is-array', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Value provided in field %s is not an array.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'is-array', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Value provided in field %s is not an array.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -440,14 +493,16 @@ class Validate {
 	 */
 	public static function validate_array_min( $field ) {
 		$min_arr = $field->get( 'array_min', 0 );
-		$value = $field->value();
+		$value   = $field->value();
 
 		if ( $min_arr > 0 && ( empty( $value ) || ! is_array( $value ) || $min_arr > count( $value ) ) ) {
-			$field->add_error( 'array-min', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Minimum %1$d values are required in field %2$s.', 'anspress-question-answer' ),
-				$min_arr, $field->get( 'label' )
-			) );
+			$field->add_error(
+				'array-min', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Minimum %1$d values are required in field %2$s.', 'anspress-question-answer' ),
+					$min_arr, $field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -462,11 +517,13 @@ class Validate {
 		$value   = $field->value();
 
 		if ( ! empty( $value ) && count( $value ) > $max_arr ) {
-			$field->add_error( 'array-max', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Maximum values allowed in field %2$s is %1$d.', 'anspress-question-answer' ),
-				$max_arr, $field->get( 'label' )
-			) );
+			$field->add_error(
+				'array-max', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Maximum values allowed in field %2$s is %1$d.', 'anspress-question-answer' ),
+					$max_arr, $field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -481,7 +538,7 @@ class Validate {
 
 		// Return if badwords.txt file does not exists.
 		if ( file_exists( $bad_word_file ) ) {
-			return  file( $bad_word_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
+			return file( $bad_word_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
 		}
 
 		$option = ap_opt( 'bad_words' );
@@ -503,8 +560,8 @@ class Validate {
 		$value = $field->unsafe_value();
 		$found = [];
 
-		foreach ( (array) SELF::get_bad_words() as $w ) {
-			$w = trim( $w );
+		foreach ( (array) self::get_bad_words() as $w ) {
+			$w     = trim( $w );
 			$count = preg_match_all( '/\b' . preg_quote( $w ) . '\b/i', $value );
 
 			if ( $count > 0 ) {
@@ -513,11 +570,13 @@ class Validate {
 		}
 
 		if ( ! empty( $found ) ) {
-			$field->add_error( 'bad-words', sprintf(
-				// Translators: placeholder contain field label.
-				__( 'Found bad words in field %s. Remove them and try again.', 'anspress-question-answer' ),
-				$field->get( 'label' )
-			) );
+			$field->add_error(
+				'bad-words', sprintf(
+					// Translators: placeholder contain field label.
+					__( 'Found bad words in field %s. Remove them and try again.', 'anspress-question-answer' ),
+					$field->get( 'label' )
+				)
+			);
 		}
 	}
 
@@ -636,10 +695,12 @@ class Validate {
 
 			if ( ( false === $args['multiple'] && $is_numeric ) ||
 					 ( true === $args['multiple'] && count( $value ) > $args['max_files'] ) ) {
-				$field->add_error( 'max-uploads', sprintf(
-					// Translators: %1$d contain maximum files user can upload, %2$s contain label of field.
-					__( 'You cannot upload more than %1$d file in field %2$s', 'anspress-question-answer' ),  $args['max_files'], $field->get( 'label' )
-				) );
+				$field->add_error(
+					'max-uploads', sprintf(
+						// Translators: %1$d contain maximum files user can upload, %2$s contain label of field.
+						__( 'You cannot upload more than %1$d file in field %2$s', 'anspress-question-answer' ), $args['max_files'], $field->get( 'label' )
+					)
+				);
 			}
 
 			// Check if allowed mimes.
@@ -657,11 +718,13 @@ class Validate {
 			// Check file size.
 			$file_size = self::file_size_error( $field );
 			if ( false !== $file_size ) {
-				$field->add_error( 'max-size-upload', sprintf(
-					// Translators: %s contain maximum file size user can upload.
-					__( 'File(s) size is bigger than %s MB', 'anspress-question-answer' ),
-					round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 )
-				) );
+				$field->add_error(
+					'max-size-upload', sprintf(
+						// Translators: %s contain maximum file size user can upload.
+						__( 'File(s) size is bigger than %s MB', 'anspress-question-answer' ),
+						round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 )
+					)
+				);
 			}
 		} // End if().
 	}

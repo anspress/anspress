@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -37,15 +38,17 @@ class Select extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label'       => __( 'AnsPress Select Field', 'anspress-question-answer' ),
-			'options'     => [],
-			'terms_args'  => array(
-				'taxonomy'   => 'question_category',
-				'hide_empty' => false,
-				'fields'     => 'id=>name',
-			),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label'      => __( 'AnsPress Select Field', 'anspress-question-answer' ),
+				'options'    => [],
+				'terms_args' => array(
+					'taxonomy'   => 'question_category',
+					'hide_empty' => false,
+					'fields'     => 'id=>name',
+				),
+			)
+		);
 
 		// Call parent prepare().
 		parent::prepare();

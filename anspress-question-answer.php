@@ -14,8 +14,8 @@
  * Plugin Name:       AnsPress Question Answer
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
- * Donate link: 	    https://goo.gl/ffainr
- * Version:           4.1.8
+ * Donate link:         https://goo.gl/ffainr
+ * Version:           4.1.9
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
  * License:           GPL-3.0+
@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define databse version.
-define( 'AP_DB_VERSION', 33 );
+define( 'AP_DB_VERSION', 34 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
@@ -42,8 +42,8 @@ if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
 	 * Checks PHP version before initiating AnsPress.
 	 */
 	function ap_admin_php_version__error() {
-		$class = 'notice notice-error';
-		$message = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
+		$class    = 'notice notice-error';
+		$message  = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
 		$message .= sprintf( __( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ), PHP_VERSION );
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 	}
@@ -65,7 +65,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.1.8';
+		private $_plugin_version = '4.1.9';
 
 		/**
 		 * Class instance
@@ -230,8 +230,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				if ( class_exists( 'WP_CLI' ) ) {
 					WP_CLI::add_command( 'anspress', 'AnsPress_Cli' );
 				}
-
-				self::$instance->setup_hooks();
 			} // End if().
 
 			return self::$instance;
@@ -247,16 +245,16 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
 
 			$constants = array(
-				'DS' 										=> DIRECTORY_SEPARATOR,
-				'AP_VERSION' 						=> $this->_plugin_version,
-				'ANSPRESS_DIR' 					=> $plugin_dir,
-				'ANSPRESS_URL' 					=> plugin_dir_url( __FILE__ ),
-				'ANSPRESS_WIDGET_DIR' 	=> $plugin_dir . 'widgets/',
-				'ANSPRESS_THEME_DIR' 		=> $plugin_dir . 'templates',
-				'ANSPRESS_THEME_URL' 		=> plugin_dir_url( __FILE__ ) . 'templates',
-				'ANSPRESS_CACHE_DIR' 		=> WP_CONTENT_DIR . '/cache/anspress',
-				'ANSPRESS_CACHE_TIME' 	=> HOUR_IN_SECONDS,
-				'ANSPRESS_ADDONS_DIR' 	=> $plugin_dir . 'addons',
+				'DS'                  => DIRECTORY_SEPARATOR,
+				'AP_VERSION'          => $this->_plugin_version,
+				'ANSPRESS_DIR'        => $plugin_dir,
+				'ANSPRESS_URL'        => plugin_dir_url( __FILE__ ),
+				'ANSPRESS_WIDGET_DIR' => $plugin_dir . 'widgets/',
+				'ANSPRESS_THEME_DIR'  => $plugin_dir . 'templates',
+				'ANSPRESS_THEME_URL'  => plugin_dir_url( __FILE__ ) . 'templates',
+				'ANSPRESS_CACHE_DIR'  => WP_CONTENT_DIR . '/cache/anspress',
+				'ANSPRESS_CACHE_TIME' => HOUR_IN_SECONDS,
+				'ANSPRESS_ADDONS_DIR' => $plugin_dir . 'addons',
 			);
 
 			foreach ( $constants as $k => $val ) {
@@ -273,8 +271,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 */
 		private function includes() {
-			require_once ANSPRESS_DIR . 'includes/class/roles-cap.php';
-			require_once ANSPRESS_DIR . 'includes/class/class-singleton.php';
+			require_once ANSPRESS_DIR . 'loader.php';
 			require_once ANSPRESS_DIR . 'includes/activity.php';
 			require_once ANSPRESS_DIR . 'includes/common-pages.php';
 			require_once ANSPRESS_DIR . 'includes/class-theme.php';
@@ -375,7 +372,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			foreach ( (array) ap_get_addons() as $data ) {
 				if ( $data['active'] && file_exists( $data['path'] ) ) {
-					require_once( $data['path'] );
+					require_once $data['path'];
 				}
 			}
 		}
@@ -432,10 +429,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 */
 		private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
 			$hooks[] = array(
-				'hook'      => $hook,
-				'component' => $component,
-				'callback'  => $callback,
-				'priority'  => $priority,
+				'hook'          => $hook,
+				'component'     => $component,
+				'callback'      => $callback,
+				'priority'      => $priority,
 				'accepted_args' => $accepted_args,
 			);
 
@@ -445,9 +442,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		/**
 		 * Register the filters and actions with WordPress.
 		 *
-		 * @access private
+		 * @access public
 		 */
-		private function setup_hooks() {
+		public function setup_hooks() {
 			foreach ( $this->filters as $hook ) {
 				add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 			}
@@ -492,12 +489,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			 * Register a form in AnsPress.
 			 *
 			 * @param array $form {
-			 * 		Form options and fields. Check @see `AnsPress\Form` for more detail.
+			 *      Form options and fields. Check @see `AnsPress\Form` for more detail.
 			 *
-			 * 		@type string  $submit_label Custom submit button label.
-			 * 		@type boolean $editing      Pass true if currently in editing mode.
-			 * 		@type integer $editing_id   If editing then pass editing post or comment id.
-			 * 		@type array   $fields       Fields. For more detail on field option check documentations.
+			 *      @type string  $submit_label Custom submit button label.
+			 *      @type boolean $editing      Pass true if currently in editing mode.
+			 *      @type integer $editing_id   If editing then pass editing post or comment id.
+			 *      @type array   $fields       Fields. For more detail on field option check documentations.
 			 * }
 			 * @since 4.1.0
 			 * @todo  Add detailed docs for `$fields`.
@@ -548,7 +545,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			 * @since 2.4.7
 			 */
 			do_action( 'before_loading_anspress' );
-			anspress();
+			anspress()->setup_hooks();
 		}
 
 		/**
@@ -623,10 +620,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 
 			global $wpdb;
 
-			$tables[] 	= $wpdb->prefix . 'ap_views';
-			$tables[] 	= $wpdb->prefix . 'ap_qameta';
-			$tables[] 	= $wpdb->prefix . 'ap_activity';
-			$tables[] 	= $wpdb->prefix . 'ap_votes';
+			$tables[] = $wpdb->prefix . 'ap_views';
+			$tables[] = $wpdb->prefix . 'ap_qameta';
+			$tables[] = $wpdb->prefix . 'ap_activity';
+			$tables[] = $wpdb->prefix . 'ap_votes';
 			return $tables;
 		}
 	}
@@ -636,6 +633,9 @@ add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ], 1 );
 add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ], 0 );
 add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
 add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
+
+require_once dirname( __FILE__ ) . '/includes/class/roles-cap.php';
+require_once dirname( __FILE__ ) . '/includes/class/class-singleton.php';
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

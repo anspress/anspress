@@ -1,21 +1,18 @@
 <?php
 
-class subscribeTest extends \Codeception\TestCase\WPTestCase
-{
+class subscribeTest extends \Codeception\TestCase\WPTestCase {
+
 	use AnsPress\Tests\Testcases\Common;
 
-	public function setUp()
-	{
+	public function setUp() {
 		// before
 		parent::setUp();
 
 		// your set up methods here
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		// your tear down methods here
-
 		// then
 		parent::tearDown();
 	}
@@ -24,7 +21,7 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 	 * @covers ::ap_new_subscriber
 	 * @covers ::ap_get_subscriber
 	 */
-	public function testNewSubscriber(){
+	public function testNewSubscriber() {
 		global $wpdb;
 		$id = ap_new_subscriber( 456, 'question', 222 );
 		$this->assertNotEquals( false, $id );
@@ -41,7 +38,7 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 	 */
 	public function testSubscribersCount() {
 		global $wpdb;
-		$wpdb->query("TRUNCATE {$wpdb->ap_subscribers}");
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
 
 		ap_new_subscriber( 2345, 'question', 1234 );
 		ap_new_subscriber( 23451, 'question', 1234 );
@@ -55,19 +52,19 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		ap_new_subscriber( 23458, 'answer', 1234 );
 
 		$count = ap_subscribers_count( 'question', 1234 );
-		$this->assertEquals(5, $count);
+		$this->assertEquals( 5, $count );
 
 		$count = ap_subscribers_count( 'answer', 1234 );
-		$this->assertEquals(4, $count);
+		$this->assertEquals( 4, $count );
 
 		$count = ap_subscribers_count( '', 1234 );
-		$this->assertEquals(9, $count);
+		$this->assertEquals( 9, $count );
 
 		ap_new_subscriber( 23458, 'question', 1235 );
 
 		// Total count.
 		$count = ap_subscribers_count();
-		$this->assertEquals(10, $count);
+		$this->assertEquals( 10, $count );
 	}
 
 	/**
@@ -75,7 +72,7 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 	 */
 	public function testGetSubscribers() {
 		global $wpdb;
-		$wpdb->query("TRUNCATE {$wpdb->ap_subscribers}");
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
 
 		ap_new_subscriber( 2345, 'question', 1234 );
 		ap_new_subscriber( 23451, 'question', 1234 );
@@ -91,7 +88,16 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		ap_new_subscriber( 23459, 'question', 1236 );
 		ap_new_subscriber( 23466, 'question', 1236 );
 
-		$this->assertEquals( 5, count( ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => 1234 ] ) ) );
+		$this->assertEquals(
+			5, count(
+				ap_get_subscribers(
+					[
+						'subs_event'  => 'question',
+						'subs_ref_id' => 1234,
+					]
+				)
+			)
+		);
 		$this->assertEquals( 7, count( ap_get_subscribers( [ 'subs_event' => 'question' ] ) ) );
 		$this->assertEquals( 4, count( ap_get_subscribers( [ 'subs_event' => 'answer' ] ) ) );
 		$this->assertEquals( 9, count( ap_get_subscribers( [ 'subs_ref_id' => 1234 ] ) ) );
@@ -103,7 +109,7 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 	 */
 	public function testDeleteSubscribers() {
 		global $wpdb;
-		$wpdb->query("TRUNCATE {$wpdb->ap_subscribers}");
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
 
 		ap_new_subscriber( 2345, 'question', 1234 );
 		ap_new_subscriber( 2345, 'answer', 1234 );
@@ -117,24 +123,48 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		ap_new_subscriber( 23468, 'comment', 1236 );
 
 		// Delete subscription by all three parameters.
-		ap_delete_subscribers( array(
-			'subs_event'   => 'question',
-			'subs_ref_id'  => 1234,
-			'subs_user_id' => 2345,
-		));
+		ap_delete_subscribers(
+			array(
+				'subs_event'   => 'question',
+				'subs_ref_id'  => 1234,
+				'subs_user_id' => 2345,
+			)
+		);
 
-		$this->assertEquals( 2, count( ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => 1234 ] ) ) );
+		$this->assertEquals(
+			2, count(
+				ap_get_subscribers(
+					[
+						'subs_event'  => 'question',
+						'subs_ref_id' => 1234,
+					]
+				)
+			)
+		);
 
 		// Delete subscription by two parameters.
-		ap_delete_subscribers( array(
-			'subs_event'   => 'question',
-			'subs_ref_id'  => 1234,
-		));
-		$this->assertEquals( 2, count( ap_get_subscribers( [ 'subs_event' => 'question', 'subs_ref_id' => 1234 ] ) ) );
+		ap_delete_subscribers(
+			array(
+				'subs_event'  => 'question',
+				'subs_ref_id' => 1234,
+			)
+		);
+		$this->assertEquals(
+			2, count(
+				ap_get_subscribers(
+					[
+						'subs_event'  => 'question',
+						'subs_ref_id' => 1234,
+					]
+				)
+			)
+		);
 
-		ap_delete_subscribers( array(
-			'subs_user_id'  => 23466,
-		));
+		ap_delete_subscribers(
+			array(
+				'subs_user_id' => 23466,
+			)
+		);
 
 		$this->assertEquals( 0, count( ap_get_subscribers( [ 'subs_ref_id' => 23466 ] ) ) );
 	}
@@ -144,14 +174,14 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 	 */
 	public function testDeleteSubscriber() {
 		global $wpdb;
-		$wpdb->query("TRUNCATE {$wpdb->ap_subscribers}");
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
 
 		ap_new_subscriber( 23459, 'question', 1236 );
 
-		$this->assertEquals(1, ap_subscribers_count( 'question', 1236 ));
+		$this->assertEquals( 1, ap_subscribers_count( 'question', 1236 ) );
 		ap_delete_subscriber( 1236, 23459, 'question' );
 
-		$this->assertEquals(0, ap_subscribers_count( 'question', 1236 ));
+		$this->assertEquals( 0, ap_subscribers_count( 'question', 1236 ) );
 	}
 
 	/**
@@ -161,10 +191,10 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Hooks', 'question_subscription' ] ) );
 
-		$this->setRole('subscriber');
+		$this->setRole( 'subscriber' );
 
 		// Check if question created without author set current user as subscriber.
-		$id = $this->insert_question( 'Suspendisse aliqua', 'Donec ultricies blandit venenatis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.');
+		$id = $this->insert_question( 'Suspendisse aliqua', 'Donec ultricies blandit venenatis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.' );
 
 		// Run action so that ap_after_new_question hook can trigger.
 		do_action( 'ap_processed_new_question', $id, get_post( $id ) );
@@ -186,13 +216,15 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ 'AnsPress_Hooks', 'answer_subscription' ] ) );
 
-		$this->setRole('subscriber');
+		$this->setRole( 'subscriber' );
 
 		// Check if answer created without author set current user as subscriber.
-		$ids = $this->insert_answers(array(
-			'post_title' => 'Pellentesque odio purus, egestas ac luctus gravida, rutrum ut quam.',
-			'post_content' => 'Pellentesque eget quam dui, sit amet eleifend mauris.',
-		));
+		$ids = $this->insert_answers(
+			array(
+				'post_title'   => 'Pellentesque odio purus, egestas ac luctus gravida, rutrum ut quam.',
+				'post_content' => 'Pellentesque eget quam dui, sit amet eleifend mauris.',
+			)
+		);
 
 		// Run action so that ap_after_new_answer hook can trigger.
 		do_action( 'ap_processed_new_answer', $ids['answers'][0], get_post( $ids['answers'][0] ) );
@@ -200,12 +232,14 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		$this->assertFalse( ap_is_user_subscriber( 'answer_' . $ids['answers'][0], $ids['question'] ) );
 
 		// Check if answer author get subscribed.
-		$ids = $this->insert_answers(array(
-			'post_title' => 'Pellentesque odio purus, egestas ac luctus gravida, rutrum ut quam.',
-			'post_content' => 'Pellentesque eget quam dui, sit amet eleifend mauris.',
-		), array(
-			'post_author' => get_current_user_id(),
-		));
+		$ids = $this->insert_answers(
+			array(
+				'post_title'   => 'Pellentesque odio purus, egestas ac luctus gravida, rutrum ut quam.',
+				'post_content' => 'Pellentesque eget quam dui, sit amet eleifend mauris.',
+			), array(
+				'post_author' => get_current_user_id(),
+			)
+		);
 
 		// Run action so that ap_after_new_answer hook can trigger.
 		do_action( 'ap_processed_new_answer', $ids['answers'][0], get_post( $ids['answers'][0] ) );
@@ -222,7 +256,7 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_new_subscriber', [ 'AnsPress_Hooks', 'new_subscriber' ] ) );
 
-		$this->setRole('subscriber');
+		$this->setRole( 'subscriber' );
 		$id = $this->insert_question();
 		$this->assertEquals( 0, ap_get_post( $id )->subscribers );
 		ap_new_subscriber( false, 'question', $id );
@@ -235,7 +269,6 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		// ap_new_subscriber( 2345, 'answer_' . $ids->a, $ids->q );
 		// ap_new_subscriber( 23451, 'answer_' . $ids->a, $ids->q );
 		// ap_new_subscriber( 23455, 'answer_' . $ids->a, $ids->q );
-
 		// $this->assertEquals( 3, ap_get_post( $ids->a )->subscribers );
 	}
 
@@ -256,10 +289,12 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 
 		$this->assertEquals( 3, ap_get_post( $id )->subscribers );
 
-		ap_delete_subscribers( array(
-			'subs_ref_id' => $id,
-			'subs_event' => 'question',
-		) );
+		ap_delete_subscribers(
+			array(
+				'subs_ref_id' => $id,
+				'subs_event'  => 'question',
+			)
+		);
 
 		$this->assertEquals( 0, ap_get_post( $id )->subscribers );
 
@@ -268,10 +303,9 @@ class subscribeTest extends \Codeception\TestCase\WPTestCase
 		// ap_new_subscriber( 23451, 'answer_' . $ids->a, $ids->q );
 		// ap_new_subscriber( 23455, 'answer_' . $ids->a, $ids->q );
 		// $this->assertEquals( 3, ap_get_post( $ids->a )->subscribers );
-
 		// ap_delete_subscribers( array(
-		// 	'subs_ref_id' => $ids->q,
-		// 	'subs_event' => 'question',
+		// 'subs_ref_id' => $ids->q,
+		// 'subs_event' => 'question',
 		// ) );
 	}
 

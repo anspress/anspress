@@ -16,6 +16,7 @@ if ( ! function_exists( '_deprecated_function' ) ) {
 
 /**
  * Send ajax response if there is error in validation class.
+ *
  * @param  object $validate Validation class.
  * @since  3.0.0
  * @deprecated 4.1.0
@@ -25,14 +26,16 @@ function ap_form_validation_error_response( $validate ) {
 
 	// If error in form then return.
 	if ( $validate->have_error() ) {
-		ap_ajax_json( array(
-			'success' => false,
-			'form' 			=> $_POST['ap_form_action'],
-			'snackbar' => [
-				'message' => __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
-			],
-			'errors'		=> $validate->get_errors(),
-		) );
+		ap_ajax_json(
+			array(
+				'success'  => false,
+				'form'     => $_POST['ap_form_action'],
+				'snackbar' => [
+					'message' => __( 'Check missing fields and then re-submit.', 'anspress-question-answer' ),
+				],
+				'errors'   => $validate->get_errors(),
+			)
+		);
 	}
 }
 
@@ -47,23 +50,24 @@ function ap_form_validation_error_response( $validate ) {
 function ap_post_upload_form( $post_id = false ) {
 	_deprecated_function( __FUNCTION__, '4.1.0', 'AnsPress\Form\Upload' );
 
-	if ( ! ap_user_can_upload( ) ) {
+	if ( ! ap_user_can_upload() ) {
 		return;
 	}
 
 	if ( false === $post_id ) {
-		$media = get_posts( [
-			'post_type'   => 'attachment',
-			'title'       => '_ap_temp_media',
-			'post_author' => get_current_user_id(),
-		]);
+		$media = get_posts(
+			[
+				'post_type'   => 'attachment',
+				'title'       => '_ap_temp_media',
+				'post_author' => get_current_user_id(),
+			]
+		);
 	} else {
 		$media = get_attached_media( '', $post_id );
 	}
 
-
 	$label = sprintf( __( 'Insert images and attach media by %1$sselecting them%2$s', 'anspress-question-answer' ), '<a id="pickfiles" href="javascript:;">', '</a>' );
-	$html = '<div id="ap-upload" class="ap-upload"><div class="ap-upload-anchor">' . $label . '</div>';
+	$html  = '<div id="ap-upload" class="ap-upload"><div class="ap-upload-anchor">' . $label . '</div>';
 
 	$uploads = [];
 	foreach ( (array) $media as $m ) {
@@ -90,11 +94,14 @@ function ap_post_upload_form( $post_id = false ) {
 function ap_upload_js_init() {
 	_deprecated_function( __FUNCTION__, '4.1.0' );
 
-	if ( ap_user_can_upload( ) ) {
+	if ( ap_user_can_upload() ) {
 		$mimes = [];
 
 		foreach ( ap_allowed_mimes() as $ext => $mime ) {
-			$mimes[] = [ 'title' => $mime, 'extensions' => str_replace( '|', ',', $ext ) ];
+			$mimes[] = [
+				'title'      => $mime,
+				'extensions' => str_replace( '|', ',', $ext ),
+			];
 		}
 
 		$plupload_init = array(
@@ -111,7 +118,7 @@ function ap_upload_js_init() {
 				'max_file_size'      => (int) ap_opt( 'max_upload_size' ) . 'b',
 				'prevent_duplicates' => true,
 			),
-			//'maxfiles'            => ap_opt( 'uploads_per_post' ),
+			// 'maxfiles'            => ap_opt( 'uploads_per_post' ),
 			'multipart_params'    => [
 				'_wpnonce' => wp_create_nonce( 'media-upload' ),
 				'action'   => 'ap_image_submission',
@@ -146,12 +153,14 @@ function ap_save_question( $args, $wp_error = false ) {
 		$args['post_status'] = 'private_post';
 	}
 
-	$args = wp_parse_args( $args, array(
-		'post_author' 		 => -1,
-		'post_status' 		 => 'publish',
-		'post_name' 		   => '',
-		'comment_status' 	 => 'open',
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'post_author'    => -1,
+			'post_status'    => 'publish',
+			'post_name'      => '',
+			'comment_status' => 'open',
+		)
+	);
 
 	// Check if question title is empty.
 	if ( empty( $args['post_title'] ) ) {
@@ -164,8 +173,8 @@ function ap_save_question( $args, $wp_error = false ) {
 	/** This filter is documented in includes\class-form-hooks.php */
 	$args['post_content'] = apply_filters( 'ap_form_contents_filter', $args['post_content'] );
 
-	$args['post_name'] 	  = ap_remove_stop_words_post_name( $args['post_name'] );
-	$args['post_type'] 	  = 'question';
+	$args['post_name'] = ap_remove_stop_words_post_name( $args['post_name'] );
+	$args['post_type'] = 'question';
 
 	if ( isset( $args['ID'] ) ) {
 		/** This filter is documented in includes\class-form-hooks.php */
@@ -231,7 +240,7 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	$editing = false;
 
 	if ( $post_id && ap_user_can_edit_question( (int) $post_id ) ) {
-		$editing = true;
+		$editing      = true;
 		$editing_post = ap_get_post( (int) $post_id, 'OBJECT', 'edit' );
 	}
 
@@ -243,28 +252,31 @@ function ap_get_ask_form_fields( $post_id = false ) {
 
 	$fields = array(
 		array(
-			'name' => 'title',
-			'label' => __( 'Title', 'anspress-question-answer' ),
-			'type'  => 'text',
+			'name'         => 'title',
+			'label'        => __( 'Title', 'anspress-question-answer' ),
+			'type'         => 'text',
 			'placeholder'  => __( 'Question in one sentence', 'anspress-question-answer' ),
-			'value' => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
-			'order' => 5,
-			'attr' => 'data-action="suggest_similar_questions" data-loadclass="q-title"',
+			'value'        => ( $editing ? $editing_post->post_title : ap_isset_post_value( 'title', '' ) ),
+			'order'        => 5,
+			'attr'         => 'data-action="suggest_similar_questions" data-loadclass="q-title"',
 			'autocomplete' => false,
-			'sanitize' => array( 'sanitize_text_field' ),
-			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_qtitle_length' ) ),
+			'sanitize'     => array( 'sanitize_text_field' ),
+			'validate'     => array(
+				'required'     => true,
+				'length_check' => ap_opt( 'minimum_qtitle_length' ),
+			),
 		),
 		array(
-			'name' => 'suggestion',
+			'name'  => 'suggestion',
 			'type'  => 'custom',
 			'order' => 5,
-			'html' => '<div id="similar_suggestions"></div>',
+			'html'  => '<div id="similar_suggestions"></div>',
 		),
 		array(
-			'name' => 'description',
-			'label' => __( 'Description', 'anspress-question-answer' ),
-			'type'  => 'editor',
-			'value' => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' )  ),
+			'name'     => 'description',
+			'label'    => __( 'Description', 'anspress-question-answer' ),
+			'type'     => 'editor',
+			'value'    => ( $editing ? $editing_post->post_content : ap_isset_post_value( 'description', '' ) ),
 			'settings' => ap_tinymce_editor_settings( 'question' ),
 			'sanitize' => array( 'sanitize_description' ),
 			'validate' => array( 'length_check' => ap_opt( 'minimum_question_length' ) ),
@@ -272,14 +284,14 @@ function ap_get_ask_form_fields( $post_id = false ) {
 		array(
 			'name'  => 'ap_upload',
 			'type'  => 'custom',
-			'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
+			'html'  => ap_post_upload_form( $editing ? $editing_post->ID : false ),
 			'order' => 10,
 		),
 		array(
-			'name' => 'parent_id',
-			'type'  => 'hidden',
-			'value' => ( $editing ? $editing_post->post_parent : get_query_var( 'parent' )  ),
-			'order' => 20,
+			'name'     => 'parent_id',
+			'type'     => 'hidden',
+			'value'    => ( $editing ? $editing_post->post_parent : get_query_var( 'parent' ) ),
+			'order'    => 20,
 			'sanitize' => array( 'only_int' ),
 		),
 	);
@@ -287,35 +299,35 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	// Add name fields if anonymous is allowed.
 	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
 		$fields[] = array(
-			'name'      => 'anonymous_name',
-			'label'     => __( 'Name', 'anspress-question-answer' ),
-			'type'      => 'text',
-			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
-			'value'     => ap_isset_post_value( 'name', '' ),
-			'order'     => 12,
-			'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
+			'name'        => 'anonymous_name',
+			'label'       => __( 'Name', 'anspress-question-answer' ),
+			'type'        => 'text',
+			'placeholder' => __( 'Enter your name to display', 'anspress-question-answer' ),
+			'value'       => ap_isset_post_value( 'name', '' ),
+			'order'       => 12,
+			'sanitize'    => array( 'strip_tags', 'sanitize_text_field' ),
 		);
 	}
 
 	// Add private field checkbox if enabled.
 	if ( ap_opt( 'allow_private_posts' ) ) {
 		$fields[] = array(
-			'name' => 'is_private',
-			'type'  => 'checkbox',
-			'desc'  => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
-			'value' => $is_private,
-			'order' => 12,
+			'name'          => 'is_private',
+			'type'          => 'checkbox',
+			'desc'          => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
+			'value'         => $is_private,
+			'order'         => 12,
 			'show_desc_tip' => false,
-			'sanitize' => array( 'only_boolean' ),
+			'sanitize'      => array( 'only_boolean' ),
 		);
 	}
 
 	if ( $editing ) {
 		$fields[] = array(
-			'name'  => 'edit_post_id',
-			'type'  => 'hidden',
-			'value' => $editing_post->ID,
-			'order' => 20,
+			'name'     => 'edit_post_id',
+			'type'     => 'hidden',
+			'value'    => $editing_post->ID,
+			'order'    => 20,
 			'sanitize' => array( 'only_int' ),
 		);
 	}
@@ -330,8 +342,8 @@ function ap_get_ask_form_fields( $post_id = false ) {
 	/**
 	 * Filter for modifying ask form `$args`.
 	 *
-	 * @param array $fields 	Ask form fields.
-	 * @param bool 	$editing 	Currently editing form.
+	 * @param array $fields     Ask form fields.
+	 * @param bool  $editing    Currently editing form.
 	 * @since 2.0
 	 * @deprecated 4.1.0
 	 */
@@ -399,7 +411,7 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 	$editing = false;
 
 	if ( $answer_id && ap_user_can_edit_answer( (int) $answer_id ) ) {
-		$editing = true;
+		$editing      = true;
 		$editing_post = ap_get_post( (int) $answer_id, 'OBJECT', 'edit' );
 	}
 
@@ -411,18 +423,21 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 
 	$fields = array(
 		array(
-			'name'          => 'description',
-			'type'          => is_question() ? 'textarea' : 'editor',
-			'value'         => ( $editing ? $editing_post->post_content : wp_kses_post( ap_isset_post_value('description', '' ) ) ),
-			'placeholder'  => __( 'Your answer..', 'anspress-question-answer' ),
-			'settings' => ap_tinymce_editor_settings('answer'),
-			'sanitize' => array( 'sanitize_description' ),
-			'validate' => array( 'required' => true, 'length_check' => ap_opt( 'minimum_ans_length' ) ),
+			'name'        => 'description',
+			'type'        => is_question() ? 'textarea' : 'editor',
+			'value'       => ( $editing ? $editing_post->post_content : wp_kses_post( ap_isset_post_value( 'description', '' ) ) ),
+			'placeholder' => __( 'Your answer..', 'anspress-question-answer' ),
+			'settings'    => ap_tinymce_editor_settings( 'answer' ),
+			'sanitize'    => array( 'sanitize_description' ),
+			'validate'    => array(
+				'required'     => true,
+				'length_check' => ap_opt( 'minimum_ans_length' ),
+			),
 		),
 		array(
-			'name' => 'form_question_id',
+			'name'  => 'form_question_id',
 			'type'  => 'hidden',
-			'value' => ( $editing ? $editing_post->post_parent : $question_id  ),
+			'value' => ( $editing ? $editing_post->post_parent : $question_id ),
 			'order' => 20,
 		),
 	);
@@ -430,33 +445,33 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 	// Add name fields if anonymous is allowed.
 	if ( ! is_user_logged_in() && ap_opt( 'allow_anonymous' ) ) {
 		$fields[] = array(
-			'name'      => 'anonymous_name',
-			'label'     => __( 'Name', 'anspress-question-answer' ),
-			'type'      => 'text',
-			'placeholder'  => __( 'Enter your name to display', 'anspress-question-answer' ),
-			'value'     => ap_isset_post_value( 'name', '' ),
-			'order'     => 12,
-			'sanitize' => array( 'strip_tags', 'sanitize_text_field' ),
+			'name'        => 'anonymous_name',
+			'label'       => __( 'Name', 'anspress-question-answer' ),
+			'type'        => 'text',
+			'placeholder' => __( 'Enter your name to display', 'anspress-question-answer' ),
+			'value'       => ap_isset_post_value( 'name', '' ),
+			'order'       => 12,
+			'sanitize'    => array( 'strip_tags', 'sanitize_text_field' ),
 		);
 	}
 
 	// Add private field checkbox if enabled.
 	if ( ap_opt( 'allow_private_posts' ) ) {
 		$fields[] = array(
-			'name' => 'is_private',
-			'type'  => 'checkbox',
-			'desc'  => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
-			'value' => $is_private,
-			'order' => 12,
+			'name'          => 'is_private',
+			'type'          => 'checkbox',
+			'desc'          => __( 'Only visible to admin and moderator.', 'anspress-question-answer' ),
+			'value'         => $is_private,
+			'order'         => 12,
 			'show_desc_tip' => false,
-			'sanitize' => array( 'only_boolean' ),
+			'sanitize'      => array( 'only_boolean' ),
 		);
 	}
 
 	$fields[] = array(
 		'name'  => 'ap_upload',
 		'type'  => 'custom',
-		'html' => ap_post_upload_form( $editing? $editing_post->ID : false ),
+		'html'  => ap_post_upload_form( $editing ? $editing_post->ID : false ),
 		'order' => 11,
 	);
 
@@ -476,10 +491,10 @@ function ap_get_answer_form_fields( $question_id = false, $answer_id = false ) {
 
 	if ( $editing ) {
 		$fields[] = array(
-			'name'  => 'edit_post_id',
-			'type'  => 'hidden',
-			'value' => $editing_post->ID,
-			'order' => 20,
+			'name'     => 'edit_post_id',
+			'type'     => 'hidden',
+			'value'    => $editing_post->ID,
+			'order'    => 20,
 			'sanitize' => array( 'only_int' ),
 		);
 	}
@@ -536,16 +551,16 @@ function ap_tinymce_editor_settings( $type = 'question' ) {
 
 	$setting = array(
 		'textarea_rows' => 8,
-		'tinymce'       => ap_opt( $type . '_text_editor' ) ? false: true,
-		'quicktags'     => ap_opt( $type . '_text_editor' ) ? true:  false,
+		'tinymce'       => ap_opt( $type . '_text_editor' ) ? false : true,
+		'quicktags'     => ap_opt( $type . '_text_editor' ) ? true : false,
 		'media_buttons' => false,
 	);
 
-	if ( ap_opt( $type . '_text_editor' )  ) {
+	if ( ap_opt( $type . '_text_editor' ) ) {
 		$settings['tinymce'] = array(
 			'content_css'      => ap_get_theme_url( 'css/editor.css' ),
 			'wp_autoresize_on' => true,
-			'statusbar'        => false
+			'statusbar'        => false,
 		);
 	}
 
@@ -561,7 +576,7 @@ function ap_tinymce_editor_settings( $type = 'question' ) {
 function ap_read_env() {
 	_deprecated_function( __FUNCTION__, '4.1.0' );
 
-	$file = ANSPRESS_DIR . '/env';
+	$file  = ANSPRESS_DIR . '/env';
 	$cache = wp_cache_get( 'ap_env', 'ap' );
 	if ( false !== $cache ) {
 		return $cache;
@@ -602,7 +617,7 @@ function ap_env_dev() {
  *
  * @deprecated 4.1.0
  */
-function ap_save_answer( $question_id, $args, $wp_error = false) {
+function ap_save_answer( $question_id, $args, $wp_error = false ) {
 	_deprecated_function( __FUNCTION__, '4.1.0' );
 
 	$question = ap_get_post( $question_id );
@@ -611,21 +626,24 @@ function ap_save_answer( $question_id, $args, $wp_error = false) {
 		$args['post_status'] = 'private_post';
 	}
 
-	$args = wp_parse_args( $args, array(
-		'post_title' 		  => $question->post_title,
-		'post_author' 	  => get_current_user_id(),
-		'post_status' 	  => 'publish',
-		'post_name' 		  => '',
-		'comment_status'  => 'open',
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'post_title'     => $question->post_title,
+			'post_author'    => get_current_user_id(),
+			'post_status'    => 'publish',
+			'post_name'      => '',
+			'comment_status' => 'open',
+		)
+	);
 
 	$args['post_content'] = apply_filters( 'ap_form_contents_filter', $args['post_content'] );
-	$args['post_type'] 	  = 'answer';
+	$args['post_type']    = 'answer';
 	$args['post_parent']  = $question_id;
 
 	if ( isset( $args['ID'] ) ) {
 		/**
 		 * Can be used to modify `$args` before updating answer
+		 *
 		 * @param array $args Answer arguments.
 		 * @since 2.0.1
 		 */
@@ -633,6 +651,7 @@ function ap_save_answer( $question_id, $args, $wp_error = false) {
 	} else {
 		/**
 		 * Can be used to modify args before inserting answer.
+		 *
 		 * @param array $args Answer arguments.
 		 * @since 2.0.1
 		 */
@@ -690,30 +709,30 @@ function ap_option_group_fields() {
 
 		if ( is_array( $fields ) ) {
 			$fields[] = array(
-				'name' => 'action',
-				'type' => 'hidden',
+				'name'  => 'action',
+				'type'  => 'hidden',
 				'value' => 'anspress_options',
 			);
 
 			$fields[] = array(
-				'name' => 'fields_group',
-				'type' => 'hidden',
+				'name'  => 'fields_group',
+				'type'  => 'hidden',
 				'value' => $active,
 			);
 
 			$fields[] = array(
-				'name' => 'ap_active_section',
-				'type' => 'hidden',
+				'name'  => 'ap_active_section',
+				'type'  => 'hidden',
 				'value' => $section_slug,
 			);
 
 			$args = array(
-				'name'              => 'options_form',
-				'is_ajaxified'      => false,
-				'submit_button'     => __( 'Save options', 'anspress-question-answer' ),
-				'nonce_name'        => 'nonce_option_form',
-				'fields'            => $fields,
-				'action'            => admin_url( 'admin-post.php' ),
+				'name'          => 'options_form',
+				'is_ajaxified'  => false,
+				'submit_button' => __( 'Save options', 'anspress-question-answer' ),
+				'nonce_name'    => 'nonce_option_form',
+				'fields'        => $fields,
+				'action'        => admin_url( 'admin-post.php' ),
 
 			);
 
@@ -747,9 +766,9 @@ function ap_options_nav() {
 	_deprecated_function( __FUNCTION__, '4.1.0' );
 
 	$groups = ap_get_option_groups();
-	$active = ap_sanitize_unslash( 'option_page', 'p' ) ? ap_sanitize_unslash( 'option_page', 'p' ) : 'general' ;
-	$menus = array();
-	$icons = array(
+	$active = ap_sanitize_unslash( 'option_page', 'p' ) ? ap_sanitize_unslash( 'option_page', 'p' ) : 'general';
+	$menus  = array();
+	$icons  = array(
 		'general'    => 'apicon-home',
 		'layout'     => 'apicon-eye',
 		'pages'      => 'apicon-pin',
@@ -764,9 +783,13 @@ function ap_options_nav() {
 	);
 
 	foreach ( (array) $groups as $k => $args ) {
-		$link 		= admin_url( "admin.php?page=anspress_options&option_page={$k}" );
-		$icon 		= isset( $icons[ $k ] ) ? esc_attr( $icons[ $k ] ) : 'apicon-gear';
-		$menus[ $k ] 	= array( 'title' => $args['title'], 'link' => $link, 'icon' => $icon );
+		$link        = admin_url( "admin.php?page=anspress_options&option_page={$k}" );
+		$icon        = isset( $icons[ $k ] ) ? esc_attr( $icons[ $k ] ) : 'apicon-gear';
+		$menus[ $k ] = array(
+			'title' => $args['title'],
+			'link'  => $link,
+			'icon'  => $icon,
+		);
 	}
 
 	/**
@@ -781,7 +804,7 @@ function ap_options_nav() {
 
 	foreach ( (array) $menus as $k => $m ) {
 		$class = ! empty( $m['class'] ) ? ' ' . $m['class'] : '';
-		$o .= '<a href="' . esc_url( $m['link'] ) . '" class="nav-tab ap-user-menu-' . esc_attr( $k . $class ) . ( $active === $k ? '  nav-tab-active' : '' ) . '"><i class="' . $m['icon'] . '"></i>' . esc_attr( $m['title'] ) . '</a>';
+		$o    .= '<a href="' . esc_url( $m['link'] ) . '" class="nav-tab ap-user-menu-' . esc_attr( $k . $class ) . ( $active === $k ? '  nav-tab-active' : '' ) . '"><i class="' . $m['icon'] . '"></i>' . esc_attr( $m['title'] ) . '</a>';
 	}
 
 	$o .= '</h2>';
@@ -792,8 +815,8 @@ function ap_options_nav() {
 /**
  * Register anspress option tab and fields.
  *
- * @param  string  $group_slug     slug for links.
- * @param  string  $group_title    Page title.
+ * @param  string $group_slug     slug for links.
+ * @param  string $group_title    Page title.
  * @return void
  * @since 2.0.0
  * @deprecated 4.1.0
@@ -802,14 +825,17 @@ function ap_register_option_section( $group, $slug, $title, $fields ) {
 	_deprecated_function( __FUNCTION__, '4.1.0' );
 
 	global $ap_option_tabs;
-	$ap_option_tabs[ $group ]['sections'][ $slug ] = array( 'title' => $title, 'fields' => $fields );
+	$ap_option_tabs[ $group ]['sections'][ $slug ] = array(
+		'title'  => $title,
+		'fields' => $fields,
+	);
 }
 
 /**
  * Register anspress option tab and fields.
  *
- * @param  string  $group_slug     slug for links.
- * @param  string  $group_title    Page title.
+ * @param  string $group_slug     slug for links.
+ * @param  string $group_title    Page title.
  * @return void
  * @since 2.0.0
  * @deprecated 4.1.0
@@ -818,7 +844,10 @@ function ap_register_option_group( $group_slug, $group_title ) {
 	_deprecated_function( __FUNCTION__, '4.1.0' );
 
 	global $ap_option_tabs;
-	$ap_option_tabs[ $group_slug ] = array( 'title' => $group_title, 'sections' => [] );
+	$ap_option_tabs[ $group_slug ] = array(
+		'title'    => $group_title,
+		'sections' => [],
+	);
 }
 
 /**
@@ -866,22 +895,22 @@ function ap_tags_tab() {
 
 	$active = isset( $_GET['ap_sort'] ) ? $_GET['ap_sort'] : 'popular';
 
-	$link = ap_get_link_to( 'tags' ).'?ap_sort=';
+	$link = ap_get_link_to( 'tags' ) . '?ap_sort=';
 
 	?>
-    <ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
-        <li class="<?php echo $active == 'popular' ? ' active' : ''; ?>"><a href="<?php echo $link.'popular'; ?>"><?php _e( 'Popular', 'anspress-question-answer' ); ?></a></li>
-        <li class="<?php echo $active == 'new' ? ' active' : ''; ?>"><a href="<?php echo $link.'new'; ?>"><?php _e( 'New', 'anspress-question-answer' ); ?></a></li>
-        <li class="<?php echo $active == 'name' ? ' active' : ''; ?>"><a href="<?php echo $link.'name'; ?>"><?php _e( 'Name', 'anspress-question-answer' ); ?></a></li>
-        <?php
+	<ul class="ap-questions-tab ap-ul-inline clearfix" role="tablist">
+		<li class="<?php echo $active == 'popular' ? ' active' : ''; ?>"><a href="<?php echo $link . 'popular'; ?>"><?php _e( 'Popular', 'anspress-question-answer' ); ?></a></li>
+		<li class="<?php echo $active == 'new' ? ' active' : ''; ?>"><a href="<?php echo $link . 'new'; ?>"><?php _e( 'New', 'anspress-question-answer' ); ?></a></li>
+		<li class="<?php echo $active == 'name' ? ' active' : ''; ?>"><a href="<?php echo $link . 'name'; ?>"><?php _e( 'Name', 'anspress-question-answer' ); ?></a></li>
+		<?php
 			/**
 			 * ACTION: ap_tags_tab
 			 * Used to hook into tags page tab
 			 */
 			do_action( 'ap_tags_tab', $active );
 		?>
-    </ul>
-  <?php
+	</ul>
+	<?php
 }
 
 /**
@@ -954,7 +983,7 @@ function ap_comment_ajax_data( $c, $actions = true ) {
 		'content'   => $c->comment_content,
 		'approved'  => $c->comment_approved,
 		'class'     => implode( ' ', get_comment_class( 'ap-comment', $c->comment_ID, null, false ) ),
-		'actions' 	 => $actions ? ap_comment_actions( $c ) : [],
+		'actions'   => $actions ? ap_comment_actions( $c ) : [],
 	);
 }
 
@@ -966,7 +995,7 @@ function ap_comment_ajax_data( $c, $actions = true ) {
  */
 function ap_theme_list() {
 	$themes = array();
-	$dirs = array_filter( glob( ANSPRESS_THEME_DIR . '/*' ), 'is_dir' );
+	$dirs   = array_filter( glob( ANSPRESS_THEME_DIR . '/*' ), 'is_dir' );
 	foreach ( $dirs as $dir ) {
 		$themes[ basename( $dir ) ] = basename( $dir );
 	}

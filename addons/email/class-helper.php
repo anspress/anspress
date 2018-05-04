@@ -90,19 +90,21 @@ class Helper {
 	public function __construct( $event, $args = [] ) {
 		$this->event = $event;
 
-		$this->args = wp_parse_args( $args, array(
-			'users'             => [],
-			'subject'           => '',
-			'tags'              => 	array(
-				'site_name'        => get_bloginfo( 'name' ),
-				'site_url'         => get_bloginfo( 'url' ),
-				'site_description' => get_bloginfo( 'description' ),
-			),
-			'template'          => [],
-			'headers'           => array(
-				'Content-Type: text/html; charset=utf-8',
-			),
-		) );
+		$this->args = wp_parse_args(
+			$args, array(
+				'users'    => [],
+				'subject'  => '',
+				'tags'     => array(
+					'site_name'        => get_bloginfo( 'name' ),
+					'site_url'         => get_bloginfo( 'url' ),
+					'site_description' => get_bloginfo( 'description' ),
+				),
+				'template' => [],
+				'headers'  => array(
+					'Content-Type: text/html; charset=utf-8',
+				),
+			)
+		);
 
 		$this->email_headers = $this->args['headers'];
 		unset( $this->args['headers'] );
@@ -207,21 +209,21 @@ class Helper {
 	 */
 	public function prepare_template() {
 		$page_id = ap_opt( 'email_template_' . $this->event );
-		$_post = get_post( $page_id );
+		$_post   = get_post( $page_id );
 
 		if ( $_post ) {
 			$this->template = apply_filters( 'the_content', $_post->post_content );
-			$this->subject = $_post->post_title;
+			$this->subject  = $_post->post_title;
 		}
 
 		// If template not found use default one.
 		if ( empty( $this->template ) ) {
 			$default_template = \AnsPress\Addons\Email::init()->get_default_template( $this->event );
-			$this->template = $default_template['body'];
-			$this->subject = $default_template['subject'];
+			$this->template   = $default_template['body'];
+			$this->subject    = $default_template['subject'];
 		}
 
-		$this->body = strtr( $this->template, $this->template_tags );
+		$this->body    = strtr( $this->template, $this->template_tags );
 		$this->subject = strtr( $this->subject, $this->template_tags );
 
 		$main_tags = array(

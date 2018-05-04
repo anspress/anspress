@@ -136,12 +136,17 @@ function ap_activity_parse( $activity ) {
 /**
  * Return recent activity of question or answer.
  *
- * @param Wp_Post|integer|false $_post WordPress post object or false for global post.
- * @param boolean               $get_cached  Get rows from cache do not query database. Default is `true`.
+ * @param Wp_Post|integer|false $_post       WordPress post object or false for global post.
+ * @param null                  $deprecated  Deprecated.
  * @return object|false Return parsed activity on success else false.
  * @since 4.1.2
+ * @since 4.1.8 Deprecated argument `$get_cached`.
  */
-function ap_get_recent_activity( $_post = false, $get_cached = true ) {
+function ap_get_recent_activity( $_post = false, $deprecated = null ) {
+	if ( null !== $deprecated ) {
+		_deprecated_argument( __FUNCTION__, '4.1.8' );
+	}
+
 	global $wpdb;
 	$_post = ap_get_post( $_post );
 
@@ -150,11 +155,11 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
 		return;
 	}
 
-	$type = $_post->post_type;
-	$column = 'answer' === $type ? 'a_id' : 'q_id';
+	$type     = $_post->post_type;
+	$column   = 'answer' === $type ? 'a_id' : 'q_id';
 	$activity = wp_cache_get( $_post->ID, 'ap_' . $column . '_activity' );
 
-	if ( false === $activity && false !== $get_cached ) {
+	if ( false === $activity ) {
 		$q_where = '';
 
 		if ( 'q_id' === $column && is_question() ) {
@@ -183,10 +188,10 @@ function ap_get_recent_activity( $_post = false, $get_cached = true ) {
  * @param boolean              $query_db  Get rows from database. Default is `false`.
  * @return void|string
  */
-function ap_recent_activity( $_post = null, $echo = true, $query_db = false ) {
+function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
 	$html     = '';
 	$_post    = ap_get_post( $_post );
-	$activity = ap_get_recent_activity( $_post, $query_db );
+	$activity = ap_get_recent_activity( $_post );
 
 	if ( $activity ) {
 		$html .= '<span class="ap-post-history">';
@@ -195,7 +200,7 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = false ) {
 
 		if ( 'answer' === $activity->action['ref_type'] ) {
 			$link = ap_get_short_link( [ 'ap_a' => $activity->a_id ] );
-		} elseif( 'comment' === $activity->action['ref_type'] ) {
+		} elseif ( 'comment' === $activity->action['ref_type'] ) {
 			$link = ap_get_short_link( [ 'ap_c' => $activity->c_id ] );
 		} else {
 			$link = ap_get_short_link( [ 'ap_q' => $activity->q_id ] );
@@ -237,7 +242,7 @@ function ap_prefetch_recent_activities( $ids, $col = 'q_id' ) {
 	global $wpdb;
 
 	$ids_string = esc_sql( sanitize_comma_delimited( $ids ) );
-	$col = 'q_id' === $col ? 'q_id' : 'a_id';
+	$col        = 'q_id' === $col ? 'q_id' : 'a_id';
 
 	if ( empty( $ids_string ) ) {
 		return;
@@ -250,7 +255,7 @@ function ap_prefetch_recent_activities( $ids, $col = 'q_id' ) {
 	}
 
 	$query = "SELECT t1.* FROM {$wpdb->ap_activity} t1 NATURAL JOIN (SELECT max(activity_date) AS activity_date FROM {$wpdb->ap_activity} WHERE activity_{$col} IN({$ids_string})$q_where GROUP BY activity_{$col}) t2 ORDER BY t2.activity_date";
-	$key = md5( $query );
+	$key   = md5( $query );
 
 	$activity = wp_cache_get( $key, 'ap_prefetch_activities' );
 

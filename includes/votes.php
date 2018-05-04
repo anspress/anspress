@@ -28,20 +28,22 @@ class AnsPress_Vote {
 				ap_ajax_json( 'something_wrong' );
 		}
 
-		$type = 'vote_up' === ap_sanitize_unslash( 'type', 'request' ) ? 'vote_up' : 'vote_down';
-		$value = 'vote_up' === $type ? '1' : '-1';
+		$type   = 'vote_up' === ap_sanitize_unslash( 'type', 'request' ) ? 'vote_up' : 'vote_down';
+		$value  = 'vote_up' === $type ? '1' : '-1';
 		$userid = get_current_user_id();
-		$post = ap_get_post( $post_id );
-		$thing = ap_user_can_vote_on_post( $post_id, $type, $userid, true );
+		$post   = ap_get_post( $post_id );
+		$thing  = ap_user_can_vote_on_post( $post_id, $type, $userid, true );
 
 		// Check if WP_Error object and send error message code.
 		if ( is_wp_error( $thing ) ) {
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [
-					'message' => $thing->get_error_message(),
-				],
-			]);
+			ap_ajax_json(
+				[
+					'success'  => false,
+					'snackbar' => [
+						'message' => $thing->get_error_message(),
+					],
+				]
+			);
 		}
 
 		// Check if down vote disabled.
@@ -58,49 +60,55 @@ class AnsPress_Vote {
 			// If user already voted and click that again then reverse.
 			if ( $is_voted->vote_value == $value ) { // loose comparison okay.
 				$counts = ap_delete_post_vote( $post_id, $userid, 'vote_up' === $type );
-				ap_ajax_json( array(
-					'success' => true,
-					'action'  => 'undo',
-					'vote_type'    => $type,
-					'snackbar' => [
-						'message' => __( 'Your vote has been removed.', 'anspress-question-answer' ),
-					],
-					'voteData' => [
-						'net' => $counts['votes_net'],
-						'active' => '',
-						'nonce' => wp_create_nonce( 'vote_' . $post_id ),
-					],
-				) );
+				ap_ajax_json(
+					array(
+						'success'   => true,
+						'action'    => 'undo',
+						'vote_type' => $type,
+						'snackbar'  => [
+							'message' => __( 'Your vote has been removed.', 'anspress-question-answer' ),
+						],
+						'voteData'  => [
+							'net'    => $counts['votes_net'],
+							'active' => '',
+							'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
+						],
+					)
+				);
 			}
 
 			// Else ask user to undor their vote first.
-			ap_ajax_json( [
-				'success' => false,
-				'snackbar' => [
-					'message' => __( 'Undo your vote first.', 'anspress-question-answer' ),
-				],
-				'voteData' => [
-					'active' => $type,
-					'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
-				],
-			] );
+			ap_ajax_json(
+				[
+					'success'  => false,
+					'snackbar' => [
+						'message' => __( 'Undo your vote first.', 'anspress-question-answer' ),
+					],
+					'voteData' => [
+						'active' => $type,
+						'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
+					],
+				]
+			);
 		}
 
 		$counts = ap_add_post_vote( $post_id, $userid, 'vote_up' === $type );
 
-		ap_ajax_json( array(
-			'success' => true,
-			'action'  => 'voted',
-			'vote_type'    => $type,
-			'snackbar' => [
-				'message' => __( 'Thank you for voting.', 'anspress-question-answer' ),
-			],
-			'voteData' => [
-					'net' => $counts['votes_net'],
-					'active' => $type,
-					'nonce' => wp_create_nonce( 'vote_' . $post_id ),
+		ap_ajax_json(
+			array(
+				'success'   => true,
+				'action'    => 'voted',
+				'vote_type' => $type,
+				'snackbar'  => [
+					'message' => __( 'Thank you for voting.', 'anspress-question-answer' ),
 				],
-		) );
+				'voteData'  => [
+					'net'    => $counts['votes_net'],
+					'active' => $type,
+					'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
+				],
+			)
+		);
 	}
 
 	/**
@@ -126,7 +134,7 @@ class AnsPress_Vote {
 	public static function ap_deleted_votes( $post_id, $type ) {
 		if ( 'vote' === $type ) {
 			ap_update_votes_count( $post_id );
-		} elseif ( 'flag' === $type ){
+		} elseif ( 'flag' === $type ) {
 			ap_update_flags_count( $post_id );
 		}
 
@@ -157,12 +165,12 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
 
 	global $wpdb;
 	$args = array(
-		'vote_post_id' 	  => $post_id,
-		'vote_user_id' 	  => $user_id,
-		'vote_rec_user' 	=> $rec_user_id,
-		'vote_type' 	    => $type,
-		'vote_value' 	    => $value,
-		'vote_date' 	    => $date,
+		'vote_post_id'  => $post_id,
+		'vote_user_id'  => $user_id,
+		'vote_rec_user' => $rec_user_id,
+		'vote_type'     => $type,
+		'vote_value'    => $value,
+		'vote_date'     => $date,
 	);
 
 	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%d', '%s', '%s', '%s' ] );
@@ -236,7 +244,7 @@ function ap_get_votes( $args = array() ) {
 		}
 	}
 
-	$key = md5( $where );
+	$key   = md5( $where );
 	$cache = wp_cache_get( $key, 'ap_votes_queries' );
 
 	if ( false !== $cache ) {
@@ -263,16 +271,16 @@ function ap_get_votes( $args = array() ) {
  *
  * @param  array $args Arguments.
  *                     {
- *                     	'vote_post_id' => 1,
- *                     	'vote_type' => 'vote', String or Array
- *                     	'vote_use_id' => 1,
- *                     	'vote_date' => 'date' // Array or string
+ *                      'vote_post_id' => 1,
+ *                      'vote_type' => 'vote', String or Array
+ *                      'vote_user_id' => 1,
+ *                      'vote_date' => 'date' // Array or string
  *                     }
  * @return array|boolean
  */
 function ap_count_votes( $args ) {
 	global $wpdb;
-	$args = wp_parse_args( $args, [ 'group' => false ] );
+	$args  = wp_parse_args( $args, [ 'group' => false ] );
 	$where = 'SELECT count(*) as count';
 
 	if ( $args['group'] ) {
@@ -360,8 +368,15 @@ function ap_count_post_votes_by( $by, $value ) {
 		return false;
 	}
 
-	$new_counts = [ 'votes_net' => 0, 'votes_down' => 0, 'votes_up' => 0 ];
-	$args = [ 'vote_type' => 'vote', 'group' => 'vote_value' ];
+	$new_counts = [
+		'votes_net'  => 0,
+		'votes_down' => 0,
+		'votes_up'   => 0,
+	];
+	$args       = [
+		'vote_type' => 'vote',
+		'group'     => 'vote_value',
+	];
 
 	if ( 'post_id' === $by ) {
 		$args['vote_post_id'] = $value;
@@ -375,7 +390,7 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
-			$type = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // loose comparison okay.
+			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // loose comparison okay.
 			$new_counts[ $type ] = (int) $row->count;
 		}
 		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
@@ -472,7 +487,11 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
 		$user_id = get_current_user_id();
 	}
 
-	$where = [ 'vote_post_id' => $post_id, 'vote_user_id' => $user_id, 'vote_type' => $type ];
+	$where = [
+		'vote_post_id' => $post_id,
+		'vote_user_id' => $user_id,
+		'vote_type'    => $type,
+	];
 
 	if ( false !== $value ) {
 		$where['vote_value'] = $value;
@@ -508,15 +527,15 @@ function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true ) {
 		$user_id = get_current_user_id();
 	}
 
-	$_post = get_post( $post_id );
+	$_post       = get_post( $post_id );
 	$rec_user_id = $_post->post_author;
 
 	$value = $up_vote ? '1' : '-1';
-	$row = ap_vote_insert( $post_id, $user_id, 'vote', $rec_user_id, $value );
+	$row   = ap_vote_insert( $post_id, $user_id, 'vote', $rec_user_id, $value );
 
 	if ( false !== $row ) {
 		// Update qameta.
-		$counts = ap_update_votes_count( $post_id );
+		$counts    = ap_update_votes_count( $post_id );
 		$vote_type = $up_vote ? 'vote_up' : 'vote_down';
 
 		/**
@@ -526,7 +545,7 @@ function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true ) {
 			* @param integer $post_id Post ID.
 			* @param array   $counts All vote counts.
 			*/
-		do_action( 'ap_' . $vote_type , $post_id, $counts );
+		do_action( 'ap_' . $vote_type, $post_id, $counts );
 
 		return $counts;
 	}
@@ -565,9 +584,9 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
 /**
  * Output or return voting button.
  *
- * @param 	int|object $post Post ID or object.
- * @param 	bool       $echo Echo or return vote button.
- * @return 	null|string
+ * @param   int|object $post Post ID or object.
+ * @param   bool       $echo Echo or return vote button.
+ * @return  null|string
  * @since 0.1
  */
 function ap_vote_btn( $post = null, $echo = true ) {
@@ -580,7 +599,7 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		return;
 	}
 
-	$vote = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
+	$vote  = is_user_logged_in() ? ap_get_vote( $post->ID, get_current_user_id(), 'vote' ) : false;
 	$voted = $vote ? true : false;
 
 	if ( $vote && '1' === $vote->vote_value ) {
@@ -591,16 +610,21 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		$type = '';
 	}
 
-	$data = [ 'post_id' => $post->ID, 'active' => $type, 'net' => ap_get_votes_net(), '__nonce' => wp_create_nonce( 'vote_' . $post->ID ) ];
+	$data = [
+		'post_id' => $post->ID,
+		'active'  => $type,
+		'net'     => ap_get_votes_net(),
+		'__nonce' => wp_create_nonce( 'vote_' . $post->ID ),
+	];
 
-	$html = '';
+	$html  = '';
 	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote=\'' . wp_json_encode( $data ) . '\'>';
-	$html .= '<a class="apicon-thumb-up ap-tip vote-up' . ($voted ? ' voted' : '') . ($vote && 'vote_down' === $type ? ' disable' : '') . '" href="#" title="' . ($vote && 'vote_down' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ($voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) :  __( 'Up vote this post', 'anspress-question-answer' ))) . '" ap="vote_up"></a>';
+	$html .= '<a class="apicon-thumb-up ap-tip vote-up' . ( $voted ? ' voted' : '' ) . ( $vote && 'vote_down' === $type ? ' disable' : '' ) . '" href="#" title="' . ( $vote && 'vote_down' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : __( 'Up vote this post', 'anspress-question-answer' ) ) ) . '" ap="vote_up"></a>';
 	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>';
 
-	if ( ('question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' )) ||
-		('answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' )) ) {
-		$html .= '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down' . ($voted ? ' voted' : '') . ($vote && 'vote_up' === $type ? ' disable' : '') . '" href="#" title="' .($vote && 'vote_up' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ($voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) :  __( 'Down vote this post', 'anspress-question-answer' ))) . '" ap="vote_down"></a>';
+	if ( ( 'question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' ) ) ||
+		( 'answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' ) ) ) {
+		$html .= '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down' . ( $voted ? ' voted' : '' ) . ( $vote && 'vote_up' === $type ? ' disable' : '' ) . '" href="#" title="' . ( $vote && 'vote_up' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : __( 'Down vote this post', 'anspress-question-answer' ) ) ) . '" ap="vote_down"></a>';
 	}
 
 	$html .= '</div>';
@@ -629,7 +653,11 @@ function ap_vote_btn( $post = null, $echo = true ) {
  */
 function ap_user_votes_pre_fetch( $ids ) {
 	if ( $ids && is_user_logged_in() ) {
-		$votes = ap_get_votes( [ 'vote_post_id' => (array) $ids, 'vote_user_id' => get_current_user_id(), 'vote_type' => [ 'flag', 'vote' ] ] );
+		$votes = ap_get_votes( [
+			'vote_post_id' => (array) $ids,
+			'vote_user_id' => get_current_user_id(),
+			'vote_type'    => [ 'flag', 'vote' ],
+		] );
 
 		$cache_keys = [];
 		foreach ( (array) $ids as $post_id ) {
@@ -656,7 +684,10 @@ function ap_user_votes_pre_fetch( $ids ) {
  */
 function ap_delete_votes( $post_id, $type = 'vote' ) {
 	global $wpdb;
-	$where = [ 'vote_post_id' => $post_id, 'vote_type' => $type ];
+	$where = [
+		'vote_post_id' => $post_id,
+		'vote_type'    => $type,
+	];
 
 	$rows = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
 

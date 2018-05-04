@@ -46,11 +46,13 @@ class Group extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label'         => __( 'AnsPress Group Field', 'anspress-question-answer' ),
-			'toggleable'    => false,
-			'delete_button' => false, // Used for repeatable fields.
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label'         => __( 'AnsPress Group Field', 'anspress-question-answer' ),
+				'toggleable'    => false,
+				'delete_button' => false, // Used for repeatable fields.
+			)
+		);
 
 		$this->child = new Form( $this->form_name, $this->args );
 		$this->child->prepare();
@@ -96,7 +98,7 @@ class Group extends Field {
 
 		if ( $this->get( 'toggleable' ) ) {
 			// Show toggle group if child fields have errors.
-			$value = $this->have_errors() ? 1 : ! empty( array_filter( (array) $this->value() ) );
+			$value   = $this->have_errors() ? 1 : ! empty( array_filter( (array) $this->value() ) );
 			$checked = checked( $value, 1, false );
 
 			$this->add_html( '<label for="' . sanitize_html_class( $this->field_name ) . '"><input' . $this->common_attr() . ' ' . $checked . ' type="checkbox" value="1" onchange="AnsPress.Helper.toggleNextClass(this);" />' . esc_html( $this->get( 'toggleable.label', $this->get( 'label' ) ) ) );

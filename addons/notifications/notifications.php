@@ -19,8 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Require functions.
-require_once( ANSPRESS_ADDONS_DIR . '/notifications/functions.php' );
-require_once( ANSPRESS_ADDONS_DIR . '/notifications/query.php' );
+require_once ANSPRESS_ADDONS_DIR . '/notifications/functions.php';
+require_once ANSPRESS_ADDONS_DIR . '/notifications/query.php';
 
 /**
  * AnsPress notifications hooks.
@@ -34,7 +34,7 @@ class Notifications extends \AnsPress\Singleton {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var 	object
+	 * @var     object
 	 * @since 4.1.8
 	 */
 	protected static $instance = null;
@@ -45,10 +45,12 @@ class Notifications extends \AnsPress\Singleton {
 	 * @since 4.1.8
 	 */
 	protected function __construct() {
-		ap_add_default_options([
-			'user_page_title_notifications'  => __( 'Notifications', 'anspress-question-answer' ),
-			'user_page_slug_notifications'   => 'notifications',
-		]);
+		ap_add_default_options(
+			[
+				'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
+				'user_page_slug_notifications'  => 'notifications',
+			]
+		);
 
 		anspress()->add_filter( 'ap_form_addon-notifications', $this, 'load_options' );
 
@@ -96,7 +98,7 @@ class Notifications extends \AnsPress\Singleton {
 					'desc'  => __( 'Custom title for user profile notifications page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_title_notifications'],
 				),
-				'user_page_slug_notifications' => array(
+				'user_page_slug_notifications'  => array(
 					'label' => __( 'Notifications page slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom slug for user profile notifications page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_slug_notifications'],
@@ -152,7 +154,7 @@ class Notifications extends \AnsPress\Singleton {
 	public function ap_menu_object( $items ) {
 		foreach ( $items as $k => $i ) {
 			if ( isset( $i->object ) && 'notifications' === $i->object ) {
-				$items[ $k ]->url = '#apNotifications';
+				$items[ $k ]->url  = '#apNotifications';
 				$items[ $k ]->type = 'custom';
 			}
 		}
@@ -161,41 +163,55 @@ class Notifications extends \AnsPress\Singleton {
 	}
 
 	public function register_verbs() {
-		ap_register_notification_verb( 'new_answer', array(
-			'label' => __( 'posted an answer on your question', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'new_answer', array(
+				'label' => __( 'posted an answer on your question', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_notification_verb( 'new_comment', array(
-			'ref_type' => 'comment',
-			'label'    => __( 'commented on your %cpt%', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'new_comment', array(
+				'ref_type' => 'comment',
+				'label'    => __( 'commented on your %cpt%', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_notification_verb( 'vote_up', array(
-			'ref_type' => 'post',
-			'label'      => __( 'up voted your %cpt%', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'vote_up', array(
+				'ref_type' => 'post',
+				'label'    => __( 'up voted your %cpt%', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_notification_verb( 'vote_down', array(
-			'ref_type'   => 'post',
-			'hide_actor' => true,
-			'icon'       => 'apicon-thumb-down',
-			'label'      => __( 'down voted your %cpt%', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'vote_down', array(
+				'ref_type'   => 'post',
+				'hide_actor' => true,
+				'icon'       => 'apicon-thumb-down',
+				'label'      => __( 'down voted your %cpt%', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_notification_verb( 'best_answer', array(
-			'ref_type' => 'post',
-			'label'      => __( 'selected your answer', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'best_answer', array(
+				'ref_type' => 'post',
+				'label'    => __( 'selected your answer', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_notification_verb( 'new_points', array(
-			'ref_type' => 'reputation',
-			'label'    => __( 'You have earned %points% points', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'new_points', array(
+				'ref_type' => 'reputation',
+				'label'    => __( 'You have earned %points% points', 'anspress-question-answer' ),
+			)
+		);
 
-		ap_register_notification_verb( 'lost_points', array(
-			'ref_type' => 'reputation',
-			'label'    => __( 'You lose %points% points', 'anspress-question-answer' ),
-		) );
+		ap_register_notification_verb(
+			'lost_points', array(
+				'ref_type' => 'reputation',
+				'label'    => __( 'You lose %points% points', 'anspress-question-answer' ),
+			)
+		);
 	}
 
 	/**
@@ -217,11 +233,16 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function notification_page() {
 		$user_id = ap_current_user_id();
-	 	$seen    = ap_sanitize_unslash( 'seen', 'r', 'all' );
+		$seen    = ap_sanitize_unslash( 'seen', 'r', 'all' );
 
 		if ( get_current_user_id() === $user_id ) {
-			$seen = 'all' === $seen ? null : (int) $seen;
-			$notifications = new \AnsPress\Notifications( [ 'user_id' => $user_id, 'seen' => $seen ] );
+			$seen          = 'all' === $seen ? null : (int) $seen;
+			$notifications = new \AnsPress\Notifications(
+				[
+					'user_id' => $user_id,
+					'seen'    => $seen,
+				]
+			);
 
 			do_action( 'ap_before_notification_page', $notifications );
 
@@ -238,10 +259,12 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param object  $_post Post object.
 	 */
 	public function trash_question( $post_id, $_post ) {
-		ap_delete_notifications( array(
-			'parent'   => $post_id,
-			'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
-		) );
+		ap_delete_notifications(
+			array(
+				'parent'   => $post_id,
+				'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
+			)
+		);
 	}
 
 	/**
@@ -252,14 +275,16 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function new_answer( $post_id, $_post ) {
 		$_question = get_post( $_post->post_parent );
-		ap_insert_notification( array(
-			'user_id'  => $_question->post_author,
-			'actor'    => $_post->post_author,
-			'parent'   => $_post->post_parent,
-			'ref_id'   => $_post->ID,
-			'ref_type' => 'answer',
-			'verb'     => 'new_answer',
-		) );
+		ap_insert_notification(
+			array(
+				'user_id'  => $_question->post_author,
+				'actor'    => $_post->post_author,
+				'parent'   => $_post->post_parent,
+				'ref_id'   => $_post->ID,
+				'ref_type' => 'answer',
+				'verb'     => 'new_answer',
+			)
+		);
 	}
 
 	/**
@@ -269,10 +294,12 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param object  $_post Post object.
 	 */
 	public function trash_answer( $post_id, $_post ) {
-		ap_delete_notifications( array(
-			'ref_id'   => $post_id,
-			'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
-		) );
+		ap_delete_notifications(
+			array(
+				'ref_id'   => $post_id,
+				'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
+			)
+		);
 	}
 
 	/**
@@ -283,14 +310,16 @@ class Notifications extends \AnsPress\Singleton {
 	public function select_answer( $_post ) {
 		// Award select answer points to question author only.
 		if ( get_current_user_id() !== $_post->post_author ) {
-			ap_insert_notification( array(
-				'user_id'  => $_post->post_author,
-				'actor'    => get_current_user_id(),
-				'parent'   => $_post->post_parent,
-				'ref_id'   => $_post->ID,
-				'ref_type' => 'answer',
-				'verb'     => 'best_answer',
-			) );
+			ap_insert_notification(
+				array(
+					'user_id'  => $_post->post_author,
+					'actor'    => get_current_user_id(),
+					'parent'   => $_post->post_parent,
+					'ref_id'   => $_post->ID,
+					'ref_type' => 'answer',
+					'verb'     => 'best_answer',
+				)
+			);
 		}
 	}
 
@@ -300,11 +329,13 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param object $_post Post object.
 	 */
 	public function unselect_answer( $_post ) {
-		ap_delete_notifications( array(
-			'parent'   => $_post->post_parent,
-			'ref_type' => 'answer',
-			'verb'     => 'best_answer',
-		) );
+		ap_delete_notifications(
+			array(
+				'parent'   => $_post->post_parent,
+				'ref_type' => 'answer',
+				'verb'     => 'best_answer',
+			)
+		);
 	}
 
 	/**
@@ -316,14 +347,16 @@ class Notifications extends \AnsPress\Singleton {
 		$_post = get_post( $comment->comment_post_ID );
 
 		if ( get_current_user_id() !== $_post->post_author ) {
-			ap_insert_notification( array(
-				'user_id'  => $_post->post_author,
-				'actor'    => $comment->user_id,
-				'parent'   => $comment->comment_post_ID,
-				'ref_id'   => $comment->comment_ID,
-				'ref_type' => 'comment',
-				'verb'     => 'new_comment',
-			) );
+			ap_insert_notification(
+				array(
+					'user_id'  => $_post->post_author,
+					'actor'    => $comment->user_id,
+					'parent'   => $comment->comment_post_ID,
+					'ref_id'   => $comment->comment_ID,
+					'ref_type' => 'comment',
+					'verb'     => 'new_comment',
+				)
+			);
 		}
 	}
 
@@ -333,11 +366,13 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param  object $comment Comment object.
 	 */
 	public function delete_comment( $comment ) {
-		ap_delete_notifications( array(
-			'actor'    => $comment->user_id,
-			'parent'   => $comment->comment_post_ID,
-			'ref_type' => 'comment',
-		) );
+		ap_delete_notifications(
+			array(
+				'actor'    => $comment->user_id,
+				'parent'   => $comment->comment_post_ID,
+				'ref_type' => 'comment',
+			)
+		);
 	}
 
 	/**
@@ -349,14 +384,16 @@ class Notifications extends \AnsPress\Singleton {
 		$_post = get_post( $post_id );
 
 		if ( get_current_user_id() !== $_post->post_author ) {
-			ap_insert_notification( array(
-				'user_id'  => $_post->post_author,
-				'actor'    => get_current_user_id(),
-				'parent'   => $_post->ID,
-				'ref_id'   => $_post->ID,
-				'ref_type' => $_post->post_type,
-				'verb'     => 'vote_up',
-			) );
+			ap_insert_notification(
+				array(
+					'user_id'  => $_post->post_author,
+					'actor'    => get_current_user_id(),
+					'parent'   => $_post->ID,
+					'ref_id'   => $_post->ID,
+					'ref_type' => $_post->post_type,
+					'verb'     => 'vote_up',
+				)
+			);
 		}
 	}
 
@@ -369,14 +406,16 @@ class Notifications extends \AnsPress\Singleton {
 		$_post = get_post( $post_id );
 
 		if ( get_current_user_id() !== $_post->post_author ) {
-			ap_insert_notification( array(
-				'user_id'  => $_post->post_author,
-				'actor'    => get_current_user_id(),
-				'parent'   => $_post->ID,
-				'ref_id'   => $_post->ID,
-				'ref_type' => $_post->post_type,
-				'verb'     => 'vote_down',
-			) );
+			ap_insert_notification(
+				array(
+					'user_id'  => $_post->post_author,
+					'actor'    => get_current_user_id(),
+					'parent'   => $_post->ID,
+					'ref_id'   => $_post->ID,
+					'ref_type' => $_post->post_type,
+					'verb'     => 'vote_down',
+				)
+			);
 		}
 	}
 
@@ -386,11 +425,13 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param integer $post_id Post ID.
 	 */
 	public function undo_vote_up( $post_id ) {
-		ap_delete_notifications( array(
-			'ref_id' => $post_id,
-			'actor'  => get_current_user_id(),
-			'verb'   => 'vote_up',
-		) );
+		ap_delete_notifications(
+			array(
+				'ref_id' => $post_id,
+				'actor'  => get_current_user_id(),
+				'verb'   => 'vote_up',
+			)
+		);
 	}
 
 	/**
@@ -399,11 +440,13 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param integer $post_id Post ID.
 	 */
 	public function undo_vote_down( $post_id ) {
-		ap_delete_notifications( array(
-			'ref_id' => $post_id,
-			'actor'  => get_current_user_id(),
-			'verb'   => 'vote_down',
-		) );
+		ap_delete_notifications(
+			array(
+				'ref_id' => $post_id,
+				'actor'  => get_current_user_id(),
+				'verb'   => 'vote_down',
+			)
+		);
 	}
 
 	/**
@@ -415,12 +458,14 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param integer $ref_id Reputation reference id.
 	 */
 	public function insert_reputation( $reputation_id, $user_id, $event, $ref_id ) {
-		ap_insert_notification( array(
-			'user_id'  => $user_id,
-			'ref_id'   => $reputation_id,
-			'ref_type' => 'reputation',
-			'verb'     => ap_get_reputation_event_points( $event ) > 0 ? 'new_points' : 'lost_points',
-		) );
+		ap_insert_notification(
+			array(
+				'user_id'  => $user_id,
+				'ref_id'   => $reputation_id,
+				'ref_type' => 'reputation',
+				'verb'     => ap_get_reputation_event_points( $event ) > 0 ? 'new_points' : 'lost_points',
+			)
+		);
 	}
 
 	/**
@@ -431,10 +476,12 @@ class Notifications extends \AnsPress\Singleton {
 	 * @param string        $event Reputation event.
 	 */
 	public function delete_reputation( $deleted, $user_id, $event ) {
-		ap_delete_notifications( array(
-			'ref_type' => 'reputation',
-			'user_id'  => $user_id,
-		) );
+		ap_delete_notifications(
+			array(
+				'ref_type' => 'reputation',
+				'user_id'  => $user_id,
+			)
+		);
 	}
 
 	/**
@@ -443,21 +490,25 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function mark_notifications_seen() {
 		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'mark_notifications_seen' ) ) {
-			ap_ajax_json( array(
-				'success' => false,
-				'snackbar' => [ 'message' => __( 'There was a problem processing your request', 'anspress-question-answer' ) ],
-			) );
+			ap_ajax_json(
+				array(
+					'success'  => false,
+					'snackbar' => [ 'message' => __( 'There was a problem processing your request', 'anspress-question-answer' ) ],
+				)
+			);
 		}
 
 		// Mark all notifications as seen.
 		ap_set_notifications_as_seen( get_current_user_id() );
 
-		ap_ajax_json( array(
-			'success'  => true,
-			'btn'      => [ 'hide'    => true ],
-			'snackbar' => [ 'message' => __( 'Successfully updated all notifications', 'anspress-question-answer' ) ],
-			'cb'       => 'notificationAllRead',
-		) );
+		ap_ajax_json(
+			array(
+				'success'  => true,
+				'btn'      => [ 'hide' => true ],
+				'snackbar' => [ 'message' => __( 'Successfully updated all notifications', 'anspress-question-answer' ) ],
+				'cb'       => 'notificationAllRead',
+			)
+		);
 
 		wp_die();
 	}
@@ -469,12 +520,18 @@ class Notifications extends \AnsPress\Singleton {
 		check_admin_referer( 'load_more_notifications', '__nonce' );
 
 		$user_id = ap_sanitize_unslash( 'user_id', 'r' );
-		$paged = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
+		$paged   = ap_sanitize_unslash( 'current', 'r', 1 ) + 1;
 
 		ob_start();
-		$notifications = new \AnsPress\Notifications( [ 'user_id' => $user_id, 'paged' => $paged ] );
+		$notifications = new \AnsPress\Notifications(
+			[
+				'user_id' => $user_id,
+				'paged'   => $paged,
+			]
+		);
 
-		while ( $notifications->have() ) : $notifications->the_notification();
+		while ( $notifications->have() ) :
+			$notifications->the_notification();
 			$notifications->item_template();
 		endwhile;
 
@@ -482,12 +539,19 @@ class Notifications extends \AnsPress\Singleton {
 
 		$paged = $notifications->total_pages > $paged ? $paged : 0;
 
-		ap_ajax_json( array(
-			'success' => true,
-			'args'    => [ 'ap_ajax_action' => 'load_more_notifications', '__nonce' => wp_create_nonce( 'load_more_notifications' ), 'current' => (int) $paged, 'user_id' => $user_id ],
-			'html'    => $html,
-			'element' => '.ap-noti',
-		) );
+		ap_ajax_json(
+			array(
+				'success' => true,
+				'args'    => [
+					'ap_ajax_action' => 'load_more_notifications',
+					'__nonce'        => wp_create_nonce( 'load_more_notifications' ),
+					'current'        => (int) $paged,
+					'user_id'        => $user_id,
+				],
+				'html'    => $html,
+				'element' => '.ap-noti',
+			)
+		);
 	}
 
 	/**
@@ -501,7 +565,8 @@ class Notifications extends \AnsPress\Singleton {
 		$notifications = new \AnsPress\Notifications( [ 'user_id' => get_current_user_id() ] );
 
 		$items = [];
-		while ( $notifications->have() ) : $notifications->the_notification();
+		while ( $notifications->have() ) :
+			$notifications->the_notification();
 			$items[] = array(
 				'ID'         => $notifications->object->noti_id,
 				'verb'       => $notifications->object->noti_verb,
@@ -515,19 +580,21 @@ class Notifications extends \AnsPress\Singleton {
 				'points'     => $notifications->get_reputation_points(),
 				'date'       => ap_human_time( $notifications->get_date(), false ),
 				'permalink'  => $notifications->get_permalink(),
-				'seen'  		 => $notifications->object->noti_seen,
+				'seen'       => $notifications->object->noti_seen,
 			);
 		endwhile;
 
-		ap_ajax_json( array(
-			'success'       => true,
-			'notifications' => $items,
-			'total' 				=> ap_count_unseen_notifications(),
-			'mark_args' 		=> array(
-				'ap_ajax_action' => 'mark_notifications_seen',
-				'__nonce'        => wp_create_nonce( 'mark_notifications_seen' ),
-			),
-		) );
+		ap_ajax_json(
+			array(
+				'success'       => true,
+				'notifications' => $items,
+				'total'         => ap_count_unseen_notifications(),
+				'mark_args'     => array(
+					'ap_ajax_action' => 'mark_notifications_seen',
+					'__nonce'        => wp_create_nonce( 'mark_notifications_seen' ),
+				),
+			)
+		);
 	}
 
 }
@@ -552,7 +619,7 @@ function ap_notification_addon_activation() {
 			PRIMARY KEY (`noti_id`)
 		)' . $charset_collate . ';';
 
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	dbDelta( $table );
 }
 ap_addon_activation_hook( basename( __FILE__ ), __NAMESPACE__ . '\ap_notification_addon_activation' );

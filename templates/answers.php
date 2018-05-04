@@ -33,9 +33,12 @@
 			<apanswers>
 				<?php if ( ap_have_answers() ) : ?>
 
-					<?php while ( ap_have_answers() ) : ap_the_answer(); ?>
-						<?php include( ap_get_theme_location( 'answer.php' ) ); ?>
-					<?php endwhile ; ?>
+					<?php
+					while ( ap_have_answers() ) :
+						ap_the_answer();
+?>
+						<?php include ap_get_theme_location( 'answer.php' ); ?>
+					<?php endwhile; ?>
 
 				<?php endif; ?>
 			</apanswers>

@@ -38,7 +38,7 @@ class AnsPress_PostTypes {
 	 */
 	public static function question_perm_structure() {
 		$question_permalink = ap_opt( 'question_page_permalink' );
-		$question_slug = ap_get_page_slug( 'question' );
+		$question_slug      = ap_get_page_slug( 'question' );
 
 		$rewrites = [];
 		if ( 'question_perma_2' === $question_permalink ) {
@@ -78,18 +78,18 @@ class AnsPress_PostTypes {
 
 		// Question CPT labels.
 		$labels = array(
-			'name'              => _x( 'Questions', 'Post Type General Name', 'anspress-question-answer' ),
-			'singular_name'     => _x( 'Question', 'Post Type Singular Name', 'anspress-question-answer' ),
-			'menu_name'         => __( 'Questions', 'anspress-question-answer' ),
-			'parent_item_colon' => __( 'Parent question:', 'anspress-question-answer' ),
-			'all_items'         => __( 'All questions', 'anspress-question-answer' ),
-			'view_item'         => __( 'View question', 'anspress-question-answer' ),
-			'add_new_item'      => __( 'Add new question', 'anspress-question-answer' ),
-			'add_new'           => __( 'New question', 'anspress-question-answer' ),
-			'edit_item'         => __( 'Edit question', 'anspress-question-answer' ),
-			'update_item'       => __( 'Update question', 'anspress-question-answer' ),
-			'search_items'      => __( 'Search questions', 'anspress-question-answer' ),
-			'not_found'         => __( 'No question found', 'anspress-question-answer' ),
+			'name'               => _x( 'Questions', 'Post Type General Name', 'anspress-question-answer' ),
+			'singular_name'      => _x( 'Question', 'Post Type Singular Name', 'anspress-question-answer' ),
+			'menu_name'          => __( 'Questions', 'anspress-question-answer' ),
+			'parent_item_colon'  => __( 'Parent question:', 'anspress-question-answer' ),
+			'all_items'          => __( 'All questions', 'anspress-question-answer' ),
+			'view_item'          => __( 'View question', 'anspress-question-answer' ),
+			'add_new_item'       => __( 'Add new question', 'anspress-question-answer' ),
+			'add_new'            => __( 'New question', 'anspress-question-answer' ),
+			'edit_item'          => __( 'Edit question', 'anspress-question-answer' ),
+			'update_item'        => __( 'Update question', 'anspress-question-answer' ),
+			'search_items'       => __( 'Search questions', 'anspress-question-answer' ),
+			'not_found'          => __( 'No question found', 'anspress-question-answer' ),
 			'not_found_in_trash' => __( 'No questions found in trash', 'anspress-question-answer' ),
 		);
 
@@ -101,7 +101,7 @@ class AnsPress_PostTypes {
 		$labels = apply_filters( 'ap_question_cpt_labels', $labels );
 
 		// Question CPT arguments.
-		$args   = array(
+		$args = array(
 			'label'               => __( 'question', 'anspress-question-answer' ),
 			'description'         => __( 'Question', 'anspress-question-answer' ),
 			'labels'              => $labels,
@@ -178,7 +178,7 @@ class AnsPress_PostTypes {
 		$labels = apply_filters( 'ap_answer_cpt_label', $labels );
 
 		// Answers CPT arguments.
-		$args   = array(
+		$args = array(
 			'label'               => __( 'answer', 'anspress-question-answer' ),
 			'description'         => __( 'Answer', 'anspress-question-answer' ),
 			'labels'              => $labels,
@@ -203,7 +203,7 @@ class AnsPress_PostTypes {
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
 			'rewrite'             => false,
-			'query_var'						=> 'answer',
+			'query_var'           => 'answer',
 		);
 
 		/**
@@ -242,9 +242,9 @@ class AnsPress_PostTypes {
 
 			if ( get_option( 'permalink_structure' ) ) {
 				$structure = self::question_perm_structure();
-				$rule = str_replace( '%question_id%', $post->ID, $structure->rule );
-				$rule = str_replace( '%question%', $post->post_name, $rule );
-				$link = home_url( $default_lang . '/' . $rule . '/' );
+				$rule      = str_replace( '%question_id%', $post->ID, $structure->rule );
+				$rule      = str_replace( '%question%', $post->post_name, $rule );
+				$link      = home_url( $default_lang . '/' . $rule . '/' );
 			} else {
 				$link = add_query_arg( array( 'question' => $post->ID ), ap_base_page_link() );
 			}

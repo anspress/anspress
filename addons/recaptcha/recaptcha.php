@@ -33,7 +33,7 @@ class Captcha extends \AnsPress\Singleton {
 	/**
 	 * Instance of this class.
 	 *
-	 * @var 	object
+	 * @var     object
 	 * @since 4.1.8
 	 */
 	protected static $instance = null;
@@ -45,10 +45,12 @@ class Captcha extends \AnsPress\Singleton {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	protected function __construct() {
-		ap_add_default_options([
-			'recaptcha_method'  => 'post',
+		ap_add_default_options( [
+			'recaptcha_method'        => 'post',
+			'recaptcha_exclude_roles' => [ 'ap_moderator' => 1 ],
 		]);
 
+		anspress()->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
 		anspress()->add_action( 'ap_form_addon-recaptcha', $this, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_answer_form_fields', $this, 'ap_question_form_fields', 10, 2 );
@@ -56,14 +58,31 @@ class Captcha extends \AnsPress\Singleton {
 	}
 
 	/**
+	 * Enqueue script.
+	 *
+	 * @return void
+	 * @since 4.1.9
+	 */
+	public function enqueue_scripts() {
+		wp_register_script( 'grecaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&render=explicit' );
+		wp_enqueue_script( 'ap-recaptcha', ANSPRESS_URL . 'addons/recaptcha/script.js', [], true );
+	}
+
+	/**
 	 * Register Categories options
 	 */
 	public function options() {
+		global $wp_roles;
 		$opt = ap_opt();
+
+		$roles = [];
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$roles[ $key ] = $role['name'];
+		}
 
 		$form = array(
 			'fields' => array(
-				'recaptcha_site_key' => array(
+				'recaptcha_site_key'   => array(
 					'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
 					'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
 					'value' => $opt['recaptcha_site_key'],
@@ -82,6 +101,13 @@ class Captcha extends \AnsPress\Singleton {
 						'post' => 'POST',
 					),
 					'value'   => $opt['recaptcha_method'],
+				),
+				'recaptcha_exclude_roles' => array(
+					'label'   => __( 'Hide reCaptcha for roles', 'anspress-question-answer' ),
+					'desc'    => __( 'Select roles for which reCaptcha will be hidden.', 'anspress-question-answer' ),
+					'type'    => 'checkbox',
+					'options' => $roles,
+					'value'   => $opt['recaptcha_exclude_roles'],
 				),
 			),
 		);

@@ -23,22 +23,6 @@
 					}
 				}
 			},
-
-			potomo: {
-				dist: {
-					options: {
-						poDel: false
-					},
-					files: [{
-						expand: true,
-						cwd: '<%= dirs.lang %>',
-						src: ['*.po'],
-						dest: '<%= dirs.lang %>',
-						ext: '.mo',
-						nonull: true
-					}]
-				}
-			},
 			csscomb: {
 				files: ['**/*.css', '!**/node_modules/**'],
 				tasks: ['csscomb'],
@@ -96,12 +80,10 @@
 				},
 				my_target: {
 					files: {
-						'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js', 'assets/js/notifications.js', 'assets/js/upload.js'],
+						'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js', 'assets/js/notifications.js'],
 						'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
 						'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
 						'templates/js/min/theme.min.js': ['templates/js/theme.js'],
-						'assets/js/min/tinymce-plugin.min.js': ['assets/js/tinymce-plugin.js'],
-						'assets/js/min/tinymce-syntax.min.js': ['assets/js/tinymce-syntax.js']
 					}
 				}
 			},
@@ -142,7 +124,7 @@
 			}
 		});
 
-		grunt.registerTask('translate', ['makepot', 'potomo']);
+		grunt.registerTask('translate', ['makepot']);
 		grunt.registerTask('build', ['sass', 'uglify', 'translate']);
 
 	}

@@ -13,7 +13,7 @@
 global $avatar_size;
 
 $avatar_size = ! empty( $avatar_size ) ? $avatar_size : 30;
-$comment = get_comment();
+$comment     = get_comment();
 
 $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 ?>
@@ -34,7 +34,7 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 					<?php foreach ( ap_comment_actions( $comment ) as $action ) : ?>
 						<a href="<?php echo esc_url( $action['href'] ); ?>"
 							<?php echo ! empty( $action['title'] ) ? ' title="' . $action['title'] . '"' : ''; ?>
-							<?php echo ! empty ( $action['query'] ) ? ' ap-ajax-btn ap-query="' . esc_js( wp_json_encode( $action['query'] ) ) . '"' : ''; ?>
+							<?php echo ! empty( $action['query'] ) ? ' apajaxbtn apquery="' . esc_js( wp_json_encode( $action['query'] ) ) . '"' : ''; ?>
 							>
 							<?php echo esc_html( $action['label'] ); ?>
 						</a>
@@ -48,7 +48,7 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 			<?php else : ?>
 				<?php
 					$comment_text = strip_tags( get_comment_text() );
-					$comment_c = strlen( $comment_text );
+					$comment_c    = strlen( $comment_text );
 				?>
 				<div class="comment-content" itemprop="text">
 					<?php comment_text(); ?>

@@ -44,7 +44,7 @@ $clearfix_class = array( 'ap-questions-item clearfix' );
 				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title(); ?>"><?php the_title(); ?></a>
 			</span>
 			<div class="ap-display-question-meta">
-				<?php echo ap_question_metas() ?>
+				<?php echo ap_question_metas(); ?>
 			</div>
 		</div>
 	</div>

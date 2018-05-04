@@ -14,7 +14,7 @@ trait Ajax {
 		}
 		if ( false !== $key ) {
 			$this->assertObjectHasAttribute( $key, $res );
-			if ( ! isset($res->$key ) ) {
+			if ( ! isset( $res->$key ) ) {
 				return false;
 			}
 			return $res->$key;
@@ -23,5 +23,13 @@ trait Ajax {
 
 	public function getAjaxResponse() {
 		return $this->ap_ajax_success( false, true );
+	}
+
+	public function handle( $action ) {
+		try {
+			$this->_handleAjax( $action );
+		} catch ( \WPAjaxDieStopException $e ) {
+			$this->_last_response = $e->getMessage();
+		}
 	}
 }

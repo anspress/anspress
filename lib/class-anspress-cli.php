@@ -72,7 +72,7 @@ class AnsPress_Cli extends WP_CLI_Command {
 		}
 
 		$addon_name = $args[0];
-		$ret = ap_activate_addon( $args[0] );
+		$ret        = ap_activate_addon( $args[0] );
 
 		if ( false === $ret ) {
 			return WP_CLI::error( __( 'Unable to activate addon. May be its already active or wrong name passed.', 'anspress-question-answer' ) );

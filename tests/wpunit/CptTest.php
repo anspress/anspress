@@ -1,20 +1,17 @@
 <?php
 
-class CptTest extends \Codeception\TestCase\WPTestCase
-{
+class CptTest extends \Codeception\TestCase\WPTestCase {
 
-	public function setUp()
-	{
+
+	public function setUp() {
 		// before
 		parent::setUp();
 
 		// your set up methods here
 	}
 
-	public function tearDown()
-	{
+	public function tearDown() {
 		// your tear down methods here
-
 		// then
 		parent::tearDown();
 	}

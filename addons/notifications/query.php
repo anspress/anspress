@@ -8,7 +8,7 @@
  * @license    GPL-3.0+
  * @link       https://anspress.io
  * @copyright  2014 Rahul Aryan
- * @since 		 4.0.0
+ * @since        4.0.0
  */
 
 namespace AnsPress;
@@ -42,7 +42,7 @@ class Notifications extends \AnsPress_Query {
 	public function __construct( $args = [] ) {
 		$this->ids['reputation'] = [];
 		$this->pos['reputation'] = [];
-		$this->verbs = ap_notification_verbs();
+		$this->verbs             = ap_notification_verbs();
 		parent::__construct( $args );
 	}
 
@@ -75,15 +75,15 @@ class Notifications extends \AnsPress_Query {
 		$order = 'DESC' === $this->args['order'] ? 'DESC' : 'ASC';
 		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} ORDER BY noti_date {$order} LIMIT {$this->offset},{$this->per_page}", $this->args['user_id'] );
 
-		$key = md5( $query );
-		$this->objects = wp_cache_get( $key, 'ap_notifications' );
+		$key               = md5( $query );
+		$this->objects     = wp_cache_get( $key, 'ap_notifications' );
 		$this->total_count = wp_cache_get( $key . '_count', 'ap_notifications_count' );
 
 		if ( false === $this->objects ) {
-			$this->objects = $wpdb->get_results( $query ); // WPCS: DB call okay.
-			$count_query = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] );
+			$this->objects     = $wpdb->get_results( $query ); // WPCS: DB call okay.
+			$count_query       = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] );
 			$this->total_count = $wpdb->get_var( apply_filters( 'ap_notifications_found_rows', $count_query, $this ) );
-			wp_cache_set( $key.'_count', $this->total_count, 'ap_notifications_count' );
+			wp_cache_set( $key . '_count', $this->total_count, 'ap_notifications_count' );
 			wp_cache_set( $key, $this->objects, 'ap_notifications' );
 		}
 
@@ -135,7 +135,7 @@ class Notifications extends \AnsPress_Query {
 		global $wpdb;
 
 		$ids_str = esc_sql( sanitize_comma_delimited( $this->ids['post'] ) );
-		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
+		$posts   = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
 
 		foreach ( (array) $posts as $_post ) {
 			$this->append_ref_data( 'post', $_post->ID, $_post );
@@ -152,7 +152,7 @@ class Notifications extends \AnsPress_Query {
 			return;
 		}
 
-		$ids = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
+		$ids      = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
 		$comments = $wpdb->get_results( "SELECT c.*, p.post_type, p.post_title FROM {$wpdb->comments} c LEFT JOIN $wpdb->posts p ON c.comment_post_ID = p.ID WHERE comment_ID in ({$ids})" );
 
 		foreach ( (array) $comments as $_comment ) {
@@ -181,7 +181,7 @@ class Notifications extends \AnsPress_Query {
 			return;
 		}
 
-		$ids = esc_sql( sanitize_comma_delimited( $this->ids['reputation'] ) );
+		$ids         = esc_sql( sanitize_comma_delimited( $this->ids['reputation'] ) );
 		$reputations = $wpdb->get_results( "SELECT rep_id, rep_event FROM {$wpdb->ap_reputations} WHERE rep_id in ({$ids})" );
 
 		foreach ( (array) $reputations as $rep ) {
@@ -240,7 +240,12 @@ class Notifications extends \AnsPress_Query {
 		} elseif ( 'comment' === $this->get_ref_type() ) {
 			return ap_get_short_link( [ 'ap_c' => $this->get_ref_id() ] );
 		} elseif ( 'reputation' === $this->get_ref_type() ) {
-			return ap_get_short_link( [ 'ap_u' => $this->object->noti_user_id, 'sub' => 'reputations' ] );
+			return ap_get_short_link(
+				[
+					'ap_u' => $this->object->noti_user_id,
+					'sub'  => 'reputations',
+				]
+			);
 		}
 	}
 
@@ -298,15 +303,15 @@ class Notifications extends \AnsPress_Query {
 	 * Get the verb of a notification.
 	 */
 	public function get_verb() {
-		$key = $this->object->noti_verb;
+		$key       = $this->object->noti_verb;
 		$verb_text = '';
 
 		if ( isset( $this->verbs[ $key ] ) ) {
-			$args = $this->verbs[ $key ];
+			$args      = $this->verbs[ $key ];
 			$verb_text = $args['label'];
 
 			$args = array(
-				'%cpt%' => __( 'post', 'anspress-question-answer' ),
+				'%cpt%'    => __( 'post', 'anspress-question-answer' ),
 				'%points%' => number_format_i18n( 0 ),
 			);
 

@@ -53,14 +53,16 @@ class Repeatable extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label'       => __( 'AnsPress Repeatable Field', 'anspress-question-answer' ),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label' => __( 'AnsPress Repeatable Field', 'anspress-question-answer' ),
+			)
+		);
 
 		$this->main_fields = $this->args['fields'];
 		unset( $this->args['fields'] );
 
-		$value_count = ! empty( $this->value() ) ? count( $this->value() ) : $this->get_groups_count() + 1;
+		$value_count       = ! empty( $this->value() ) ? count( $this->value() ) : $this->get_groups_count() + 1;
 		$this->total_items = $value_count > 0 ? $value_count : 1;
 
 		$new_fields = [];
@@ -135,7 +137,7 @@ class Repeatable extends Field {
 	 */
 	public function get_groups_count() {
 		$current_groups = $this->get( sanitize_title( $this->field_name ) . '-g', null, $_REQUEST );
-		$nonce = $this->get( sanitize_title( $this->field_name ) . '-n', null, $_REQUEST );
+		$nonce          = $this->get( sanitize_title( $this->field_name ) . '-n', null, $_REQUEST );
 
 		if ( wp_verify_nonce( $nonce, $this->field_name . $current_groups ) ) {
 			return $current_groups;
@@ -153,15 +155,17 @@ class Repeatable extends Field {
 		$this->add_html( '<div class="ap-fieldrepeatable-c" data-role="ap-repeatable" data-args="">' );
 		$this->add_html( $this->child->generate_fields() );
 
-		$add_button_args = wp_json_encode( array(
-			'ap_ajax_action' => 'get_repeatable_field',
-			'form_name'      => $this->form_name,
-			'field_name'     => $this->field_name,
-			'id'             => sanitize_title( $this->field_name ),
-			'__nonce'        => wp_create_nonce( 'get_repeatable_field' ),
-		) );
+		$add_button_args = wp_json_encode(
+			array(
+				'ap_ajax_action' => 'get_repeatable_field',
+				'form_name'      => $this->form_name,
+				'field_name'     => $this->field_name,
+				'id'             => sanitize_title( $this->field_name ),
+				'__nonce'        => wp_create_nonce( 'get_repeatable_field' ),
+			)
+		);
 
-		$this->add_html( '<a class="ap-btn ap-repeatable-add" href="#" ap-query="' . esc_js( $add_button_args ) . '">' . sprintf( __( 'Add More %s', 'anspress-question-answer' ), $this->get( 'label' ) ) . '</a>' );
+		$this->add_html( '<a class="ap-btn ap-repeatable-add" href="#" apquery="' . esc_js( $add_button_args ) . '">' . sprintf( __( 'Add More %s', 'anspress-question-answer' ), $this->get( 'label' ) ) . '</a>' );
 
 		$this->add_html( '<input name="' . sanitize_title( $this->field_name ) . '-groups" value="' . $this->total_items . '" type="hidden" />' );
 

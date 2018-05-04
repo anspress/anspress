@@ -79,6 +79,8 @@ class Form {
 
 	public $submitted = false;
 
+	public $after_form = '';
+
 	/**
 	 * Initialize the class.
 	 *
@@ -87,11 +89,15 @@ class Form {
 	 */
 	public function __construct( $form_name, $args ) {
 		$this->form_name = $form_name;
-		$this->args      = wp_parse_args( $args, array(
-			'submit_label' => __( 'Submit', 'anspress-question-answer' ),
-			'editing'      => false,
-			'editing_id'   => 0,
-		));
+		$this->args      = wp_parse_args(
+			$args, array(
+				'form_tag'      => true,
+				'submit_button' => true,
+				'submit_label'  => __( 'Submit', 'anspress-question-answer' ),
+				'editing'       => false,
+				'editing_id'    => 0,
+			)
+		);
 
 		$this->editing    = $this->args['editing'];
 		$this->editing_id = $this->args['editing_id'];
@@ -115,7 +121,7 @@ class Form {
 				$field_args['type'] = 'input';
 			}
 
-			$type_class = ucfirst( trim( $field_args['type'] ) );
+			$type_class  = ucfirst( trim( $field_args['type'] ) );
 			$field_class = 'AnsPress\\Form\\Field\\' . $type_class;
 
 			if ( class_exists( $field_class ) ) {
@@ -126,7 +132,7 @@ class Form {
 				 * @param object $form Form class, passed by reference.
 				 * @since 4.1.0
 				 */
-				$field_args = apply_filters_ref_array( 'ap_before_prepare_field', [ $field_args, $this ] );
+				$field_args                  = apply_filters_ref_array( 'ap_before_prepare_field', [ $field_args, $this ] );
 				$this->fields[ $field_name ] = new $field_class( $this->form_name, $field_name, $field_args, $this );
 			}
 		}
@@ -162,16 +168,19 @@ class Form {
 	 * Generate form.
 	 *
 	 * @param array $form_args {
-	 * 		Form generate arguments.
+	 *      Form generate arguments.
 	 *
-	 * 		@type string $form_action   Custom form action url.
-	 * 		@type array  $hidden_fields Custom hidden input fields.
+	 *      @type string $form_action   Custom form action url.
+	 *      @type array  $hidden_fields Custom hidden input fields.
 	 * }
 	 * @return void
 	 * @since 4.1.0
 	 * @since 4.1.8 Inherit `hidden_fields` from form args.
 	 */
 	public function generate( $form_args = [] ) {
+		// Enqueue upload script.
+		wp_enqueue_script( 'anspress-upload' );
+
 		// Dont do anything if no fields.
 		if ( empty( $this->args['fields'] ) ) {
 			echo '<p class="ap-form-nofields">';
@@ -185,11 +194,15 @@ class Form {
 			return;
 		}
 
-		$form_args = wp_parse_args( $form_args, array(
-			'form_action'   => '',
-			'hidden_fields' => false,
-			'ajax_submit'   => true,
-		) );
+		$form_args = wp_parse_args(
+			$form_args, array(
+				'form_action'   => '',
+				'hidden_fields' => false,
+				'ajax_submit'   => true,
+				'submit_button' => $this->args['submit_button'],
+				'form_tag'      => $this->args['form_tag'],
+			)
+		);
 
 		if ( ! empty( $this->args['hidden_fields'] ) ) {
 			$form_args['hidden_fields'] = wp_parse_args( $form_args['hidden_fields'], $this->args['hidden_fields'] );
@@ -207,7 +220,9 @@ class Form {
 
 		$action = ! empty( $form_args['form_action'] ) ? ' action="' . esc_url( $form_args['form_action'] ) . '"' : '';
 
-		echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
+		if ( true === $form_args['form_tag'] ) {
+			echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
+		}
 
 		// Output form errors.
 		if ( $this->have_errors() ) {
@@ -221,7 +236,11 @@ class Form {
 		echo $this->generate_fields(); // xss okay.
 
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
-		echo '<button type="submit" class="ap-btn ap-btn-submit">' . esc_html( $this->args['submit_label'] ) . '</button>';
+
+		if ( true === $form_args['submit_button'] ) {
+			echo '<button type="submit" class="ap-btn ap-btn-submit">' . esc_html( $this->args['submit_label'] ) . '</button>';
+		}
+
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_nonce" value="' . esc_attr( wp_create_nonce( $this->form_name ) ) . '" />';
 		echo '<input type="hidden" name="' . esc_attr( $this->form_name ) . '_submit" value="true" />';
 
@@ -240,7 +259,13 @@ class Form {
 		 */
 		do_action_ref_array( 'ap_after_form_field', [ $this ] );
 
-		echo '</form>';
+		if ( true === $this->args['form_tag'] ) {
+			echo '</form>';
+		}
+
+		if ( ! empty( $this->after_form ) ) {
+			echo $this->after_form;
+		}
 	}
 
 	/**
@@ -273,7 +298,7 @@ class Form {
 		}
 
 		$fields = false === $fields ? $this->fields : $fields;
-		$found = wp_filter_object_list( $fields, [ $key => $value ] );
+		$found  = wp_filter_object_list( $fields, [ $key => $value ] );
 
 		if ( empty( $found ) ) {
 			foreach ( $fields as $field ) {
@@ -346,7 +371,7 @@ class Form {
 	 * @return void.
 	 */
 	public function add_field( $path, $val ) {
-		$path = is_string( $path ) ? explode( '.', $path ): $path;
+		$path = is_string( $path ) ? explode( '.', $path ) : $path;
 		$loc  = &$this->args['fields'];
 
 		foreach ( (array) $path as $step ) {
@@ -461,9 +486,8 @@ class Form {
 	 */
 	public function get_values() {
 		// if ( $this->have_errors() ) {
-		// 	return false;
+		// return false;
 		// }
-
 		if ( ! is_null( $this->values ) ) {
 			return $this->values;
 		}

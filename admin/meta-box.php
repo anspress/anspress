@@ -34,11 +34,11 @@ class AP_Question_Meta_Box {
 	public function add_meta_box( $post_type ) {
 
 		if ( 'question' === $post_type ) {
-			add_meta_box( 'ap_answers_meta_box' , sprintf( __( ' %d Answers', 'anspress-question-answer' ), ap_get_answers_count() ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
+			add_meta_box( 'ap_answers_meta_box', sprintf( __( ' %d Answers', 'anspress-question-answer' ), ap_get_answers_count() ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
 		}
 
 		if ( 'question' === $post_type || 'answer' === $post_type ) {
-			add_meta_box( 'ap_question_meta_box' ,__( 'Question', 'anspress-question-answer' ), array( $this, 'question_meta_box_content' ), $post_type, 'side', 'high' );
+			add_meta_box( 'ap_question_meta_box', __( 'Question', 'anspress-question-answer' ), array( $this, 'question_meta_box_content' ), $post_type, 'side', 'high' );
 		}
 	}
 
@@ -80,12 +80,12 @@ class AP_Question_Meta_Box {
 	 * @param object|integer|null $_post Post.
 	 */
 	public function question_meta_box_content( $_post ) {
-		$ans_count = ap_get_answers_count( $_post->ID );
+		$ans_count  = ap_get_answers_count( $_post->ID );
 		$vote_count = ap_get_votes_net( $_post );
 		?>
 			<ul class="ap-meta-list">
 
-				<?php if ( 'answer' !== $_post->post_type ) :   ?>
+				<?php if ( 'answer' !== $_post->post_type ) : ?>
 					<li>
 						<i class="apicon-answer"></i>
 						<?php printf( _n( '<strong>%d</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); // xss okay. ?>

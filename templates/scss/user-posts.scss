@@ -32,7 +32,7 @@
 			i{
 				background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
 				border-radius: 2px 0 0 2px;
-				color: $light-color;
+				color: $color5;
 				display: block;
 				float: left;
 				font-size: 12px;
@@ -42,7 +42,7 @@
 			}
 
 			&.positive, &.answer-selected {
-				background: lighten($main-color, 5%);
+				background: lighten($color1, 5%);
 				color: #fff;
 
 				i{
@@ -50,12 +50,12 @@
 				}
 			}
 			&.negative {
-				background: lighten($error-color, 5%);
+				background: lighten($color8, 5%);
 				color: #fff;
 			}
 		}
 		&-active {
-			color: $light-color;
+			color: $color5;
 			float: right;
 			overflow: hidden;
 			text-align: right;
@@ -64,13 +64,13 @@
 		}
 
 		&-ccount{
-			color: $light-color;
+			color: $color5;
 			float: right;
 			margin-right: 10px;
 			text-align: center;
 		}
 		&-footer {
-			color: $light-color;
+			color: $color5;
 			padding: 10px 0;
 			> a {
 				border: 1px solid #eee;

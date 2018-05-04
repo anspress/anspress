@@ -140,7 +140,7 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 					'headers'   => array(
 						'cookie' => implode( '; ', $cookies ),
 					),
-					'compress' => true,
+					'compress'  => true,
 				);
 
 				$url = admin_url( 'admin-post.php' );
@@ -165,7 +165,11 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 				$this->run_action();
 			}
 
-			add_filter( 'wp_die_handler', function() { die(); } );
+			add_filter(
+				'wp_die_handler', function() {
+					die();
+				}
+			);
 			wp_die();
 		}
 

@@ -47,7 +47,7 @@ class NewQuestion extends \WP_Async_Task {
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
-		$post = get_post( $post_id );
+		$post    = get_post( $post_id );
 
 		if ( $post ) {
 			do_action( "wp_async_$this->action", $post->ID, $post );
@@ -90,7 +90,7 @@ class NewAnswer extends \WP_Async_Task {
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
-		$post = get_post( $post_id );
+		$post    = get_post( $post_id );
 
 		if ( $post ) {
 			do_action( "wp_async_$this->action", $post->ID, $post );
@@ -132,7 +132,7 @@ class SelectAnswer extends \WP_Async_Task {
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
-		$post = ap_get_post( $post_id );
+		$post    = ap_get_post( $post_id );
 
 		if ( $post ) {
 			do_action( "wp_async_$this->action", $post );
@@ -174,7 +174,7 @@ class PublishComment extends \WP_Async_Task {
 	 */
 	protected function run_action() {
 		$comment_id = $_POST['comment_id'];
-		$comment = get_comment( $comment_id );
+		$comment    = get_comment( $comment_id );
 
 		if ( $comment ) {
 			do_action( "wp_async_$this->action", $comment );
@@ -217,7 +217,7 @@ class UpdateQuestion extends \WP_Async_Task {
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
-		$post = get_post( $post_id );
+		$post    = get_post( $post_id );
 
 		if ( $post ) {
 			do_action( "wp_async_$this->action", $post->ID, $post );
@@ -260,7 +260,7 @@ class UpdateAnswer extends \WP_Async_Task {
 	 */
 	protected function run_action() {
 		$post_id = $_POST['post_id'];
-		$post = get_post( $post_id );
+		$post    = get_post( $post_id );
 
 		if ( $post ) {
 			do_action( "wp_async_$this->action", $post->ID, $post );

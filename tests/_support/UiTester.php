@@ -3,6 +3,7 @@
 
 /**
  * Inherited Methods
+ *
  * @method void wantToTest($text)
  * @method void wantTo($text)
  * @method void execute($callable)
@@ -15,22 +16,22 @@
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
  *
  * @SuppressWarnings(PHPMD)
-*/
-class UiTester extends \Codeception\Actor
-{
-    use _generated\UiTesterActions;
+ */
+class UiTester extends \Codeception\Actor {
 
-   /**
-    * Define custom actions here
-    */
+	use _generated\UiTesterActions;
 
-    public function fillTinyMceEditorById($id, $content) {
-		$this->fillTinyMceEditor('id', $id, $content );
+	/**
+	 * Define custom actions here
+	 */
+
+	public function fillTinyMceEditorById( $id, $content ) {
+		$this->fillTinyMceEditor( 'id', $id, $content );
 	}
-	public function fillTinyMceEditorByName($name, $content) {
-		$this->fillTinyMceEditor('name', $name, $content );
+	public function fillTinyMceEditorByName( $name, $content ) {
+		$this->fillTinyMceEditor( 'name', $name, $content );
 	}
-	private function fillTinyMceEditor($attribute, $value, $content) {
+	private function fillTinyMceEditor( $attribute, $value, $content ) {
 		$this->fillRteEditor(
 			\Facebook\WebDriver\WebDriverBy::xpath(
 				'//textarea[@' . $attribute . '=\'' . $value . '\']/../div[contains(@class, \'mce-tinymce\')]//iframe'
@@ -38,18 +39,18 @@ class UiTester extends \Codeception\Actor
 			$content
 		);
 	}
-	private function fillRteEditor($selector, $content) {
+	private function fillRteEditor( $selector, $content ) {
 		$this->executeInSelenium(
-			function (\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver)
-			use ($selector, $content) {
+			function ( \Facebook\WebDriver\Remote\RemoteWebDriver $webDriver ) use ( $selector, $content ) {
 				$webDriver->switchTo()->frame(
-					$webDriver->findElement($selector )
+					$webDriver->findElement( $selector )
 				);
 				$webDriver->executeScript(
-					'arguments[0].innerHTML = "' . addslashes($content ) . '"',
-					[ $webDriver->findElement(\Facebook\WebDriver\WebDriverBy::tagName('body' ) ) ]
+					'arguments[0].innerHTML = "' . addslashes( $content ) . '"',
+					[ $webDriver->findElement( \Facebook\WebDriver\WebDriverBy::tagName( 'body' ) ) ]
 				);
 				$webDriver->switchTo()->defaultContent();
-			});
+			}
+		);
 	}
 }

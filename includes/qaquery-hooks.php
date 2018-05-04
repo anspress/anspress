@@ -18,7 +18,8 @@ class AP_QA_Query_Hooks {
 	 * @param  Object $wp_query Instance.
 	 * @return array
 	 * @since unknown
-	 * @since 4.1.7 Fixed: session answers are included in wrong question.
+	 * @since 4.1.7 Fixed: Session answers are included in wrong question.
+	 * @since 4.1.8 Fixed: Sorting issue with best answer.
 	 */
 	public static function sql_filter( $sql, $wp_query ) {
 		global $wpdb;
@@ -29,10 +30,10 @@ class AP_QA_Query_Hooks {
 		}
 
 		if ( isset( $wp_query->query['ap_query'] ) ) {
-			$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
+			$sql['join']   = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
-			$post_status = '';
-			$query_status = $wp_query->query['post_status'];
+			$post_status   = '';
+			$query_status  = $wp_query->query['post_status'];
 
 			if ( isset( $wp_query->query['ap_current_user_ignore'] ) && false === $wp_query->query['ap_current_user_ignore'] ) {
 				// Build the post_status mysql query.
@@ -43,7 +44,7 @@ class AP_QA_Query_Hooks {
 						foreach ( get_post_stati() as $status ) {
 
 							if ( in_array( $status, $wp_query->query['post_status'], true ) ) {
-								$post_status .= $wpdb->posts.".post_status = '" . $status . "'";
+								$post_status .= $wpdb->posts . ".post_status = '" . $status . "'";
 
 								if ( count( $query_status ) != $i ) {
 									$post_status .= ' OR ';
@@ -54,7 +55,7 @@ class AP_QA_Query_Hooks {
 							}
 						}
 					} else {
-						$post_status .= $wpdb->posts.".post_status = '" . $query_status . "' ";
+						$post_status .= $wpdb->posts . ".post_status = '" . $query_status . "' ";
 					}
 				}
 
@@ -68,7 +69,7 @@ class AP_QA_Query_Hooks {
 				if ( ! empty( $ap_type ) && ! get_query_var( 'answer_id', false ) ) {
 					// Include user's session questions.
 					$session_posts = anspress()->session->get( $ap_type . 's' );
-					$ids = sanitize_comma_delimited( $session_posts );
+					$ids           = sanitize_comma_delimited( $session_posts );
 
 					if ( ! empty( $ids ) ) {
 						if ( 'question' === $ap_type ) {
@@ -81,7 +82,7 @@ class AP_QA_Query_Hooks {
 
 				// Replace post_status query.
 				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
-					$pos = $pos + strlen( $post_status );
+					$pos          = $pos + strlen( $post_status );
 					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ", get_current_user_id() );
 					$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
 				}
@@ -92,7 +93,7 @@ class AP_QA_Query_Hooks {
 				$sql['where'] = $sql['where'] . $wpdb->prepare( " AND {$wpdb->posts}.post_author = %d", $wp_query->query['author'] );
 			}
 
-			$ap_order_by = isset( $wp_query->query['ap_order_by'] ) ? $wp_query->query['ap_order_by'] : 'active';
+			$ap_order_by  = isset( $wp_query->query['ap_order_by'] ) ? $wp_query->query['ap_order_by'] : 'active';
 			$answer_query = isset( $wp_query->query['ap_answers_query'] );
 
 			if ( 'answers' === $ap_order_by && ! $answer_query ) {
@@ -120,7 +121,7 @@ class AP_QA_Query_Hooks {
 
 			// Keep best answer to top.
 			if ( $answer_query && ! $wp_query->query['ignore_selected_answer'] ) {
-				$sql['orderby'] = 'qameta.selected <> 1 , ' . $sql['orderby'];
+				$sql['orderby'] = 'case when qameta.selected = 1 then 1 else 2 end, ' . $sql['orderby'];
 			}
 
 			// Allow filtering sql query.
@@ -164,10 +165,10 @@ class AP_QA_Query_Hooks {
 
 				// Serialize fields and activities.
 				$p->activities = maybe_unserialize( $p->activities );
-				$p->fields = maybe_unserialize( $p->fields );
+				$p->fields     = maybe_unserialize( $p->fields );
 
 				$p->ap_qameta_wrapped = true;
-				$p->votes_net = $p->votes_up - $p->votes_down;
+				$p->votes_net         = $p->votes_up - $p->votes_down;
 
 				// Unset if user cannot read.
 				if ( ! ap_user_can_read_post( $p, false, $p->post_type ) ) {
@@ -180,7 +181,6 @@ class AP_QA_Query_Hooks {
 					$posts[ $k ] = $p;
 				}
 			}
-
 		} // End foreach().
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
@@ -217,9 +217,9 @@ class AP_QA_Query_Hooks {
 	 */
 	public static function modify_main_posts( $posts, $query ) {
 		if ( $query->is_main_query() && $query->is_search() && 'question' === get_query_var( 'post_type' ) ) {
-			$query->found_posts = 1;
+			$query->found_posts   = 1;
 			$query->max_num_pages = 1;
-			$posts = [ get_page( ap_opt( 'base_page' ) ) ];
+			$posts                = [ get_page( ap_opt( 'base_page' ) ) ];
 		}
 
 		return $posts;

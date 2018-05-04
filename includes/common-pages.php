@@ -26,15 +26,14 @@ class AnsPress_Common_Pages {
 	}
 
 	/**
-	 * Layout of base page
+	 * Layout of base page.
 	 */
 	public static function base_page() {
 		global $wp;
 
-		$keywords   = get_search_query();
-
-		$tax_relation = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
-		$args = array();
+		$keywords          = get_search_query();
+		$tax_relation      = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
+		$args              = array();
 		$args['tax_query'] = array( 'relation' => $tax_relation );
 
 		if ( false !== $keywords ) {
@@ -115,17 +114,17 @@ class AnsPress_Common_Pages {
 		setup_postdata( get_the_ID() );
 
 		$question_rendered = false;
-		$msg = self::question_permission_msg( $post );
+		$msg               = self::question_permission_msg( $post );
 
 		// Check if user have permission.
 		if ( false !== $msg ) {
 			status_header( 403 );
-			echo '<div class="ap-no-permission">' . $msg . '</div>';
+			echo '<div class="ap-no-permission">' . $msg . '</div>'; // WPCS: xss okay.
 			$question_rendered = true;
 			return;
 		}
 
-		include( ap_get_theme_location( 'single-question.php' ) );
+		include ap_get_theme_location( 'single-question.php' );
 
 		/**
 		 * An action triggered after rendering single question page.
@@ -149,13 +148,20 @@ class AnsPress_Common_Pages {
 		}
 
 		include ap_get_theme_location( 'ask.php' );
+
+		/**
+		 * Action called after ask page (shortcode) is rendered.
+		 *
+		 * @since 4.1.8
+		 */
+		do_action( 'ap_after_ask_page' );
 	}
 
 	/**
 	 * Load search page template
 	 */
 	public static function search_page() {
-		$keywords   = ap_sanitize_unslash( 'ap_s', 'query_var', false );
+		$keywords = ap_sanitize_unslash( 'ap_s', 'query_var', false );
 		wp_safe_redirect( add_query_arg( [ 'ap_s' => $keywords ], ap_get_link_to( '/' ) ) );
 	}
 
@@ -181,9 +187,17 @@ class AnsPress_Common_Pages {
 	 *
 	 * @return void
 	 * @since 4.1.2
+	 * @since 4.1.8 Added Exclude roles arguments.
 	 */
 	public static function activities_page() {
-		$activities = new AnsPress\Activity();
+		$roles = array_keys( ap_opt( 'activity_exclude_roles' ) );
+		$args  = [];
+
+		if ( ! empty( $roles ) ) {
+			$args['exclude_roles'] = $roles;
+		}
+
+		$activities = new AnsPress\Activity( $args );
 		include ap_get_theme_location( 'activities/activities.php' );
 	}
 

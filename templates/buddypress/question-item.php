@@ -17,7 +17,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 
 ?>
 
-<div id="post-<?php the_ID(); ?>" <?php post_class( ); ?>>
+<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
 	<div class="ap-answer-single ap-bpsingle">
 		<div class="ap-bpsingle-title entry-title" itemprop="title">
@@ -46,7 +46,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 
 			<span class="apicon-thumb-up"><?php printf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ); ?></span>
 
-			<?php echo ap_question_metas() ?>
+			<?php echo ap_question_metas(); ?>
 		</div>
 
 	</div>

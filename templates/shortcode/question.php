@@ -11,7 +11,7 @@
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="https://schema.org/Question" itemscope="">
 
-	<h1 class="entry-title"><a href="<?php echo get_the_permalink() ?>"><?php the_title(); ?></a></h1>
+	<h1 class="entry-title"><a href="<?php echo get_the_permalink(); ?>"><?php the_title(); ?></a></h1>
 	<div class="ap-question-lr">
 		<div class="ap-q-left">
 			<div class="ap-question-meta clearfix">
@@ -25,7 +25,7 @@
 				/**
 				 * Action triggered before question title.
 				 *
-				 * @since 	2.0
+				 * @since   2.0
 				 */
 				do_action( 'ap_before_question_title' );
 				?>
@@ -51,7 +51,7 @@
 								?>
 							</a>
 							<?php ap_recent_post_activity(); ?>
-							<?php echo ap_post_status_badge( ); // xss okay.	?>
+							<?php echo ap_post_status_badge(); // xss okay. ?>
 						</div>
 
 						<!-- Start ap-content-inner -->
@@ -60,7 +60,7 @@
 							/**
 							 * Action triggered before question content.
 							 *
-							 * @since 	2.0.0
+							 * @since   2.0.0
 							 */
 							do_action( 'ap_before_question_content' );
 							?>
@@ -73,7 +73,7 @@
 								/**
 								 * Action triggered after question content.
 								 *
-								 * @since 	2.0.0
+								 * @since   2.0.0
 								 */
 								do_action( 'ap_after_question_content' );
 							?>
@@ -83,8 +83,8 @@
 				</div>
 			</div>
 		</div>
-			<a class="ap-eq-view-ans" href="<?php echo get_the_permalink() ?>">
-				<?php _e('View all answers', 'anspress-question-answer'); ?>
+			<a class="ap-eq-view-ans" href="<?php echo get_the_permalink(); ?>">
+				<?php _e( 'View all answers', 'anspress-question-answer' ); ?>
 			</a>
 		</div>
 

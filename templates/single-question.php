@@ -18,7 +18,7 @@
 <div id="ap-single" class="ap-q clearfix">
 
 	<div class="ap-question-lr ap-row" itemtype="https://schema.org/Question" itemscope="">
-		<div class="ap-q-left <?php echo (is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
+		<div class="ap-q-left <?php echo ( is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
 			<?php
 				/**
 				 * Action hook triggered before question meta in single question.
@@ -45,7 +45,7 @@
 					/**
 					 * Action triggered before question title.
 					 *
-					 * @since 	2.0
+					 * @since   2.0
 					 */
 					do_action( 'ap_before_question_title' );
 					?>
@@ -75,7 +75,7 @@
 								</a>
 								<span class="ap-comments-count">
 									<?php $comment_count = get_comments_number(); ?>
-									<?php printf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ) , '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ); ?>
+									<?php printf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ), '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ); ?>
 								</span>
 							</div>
 
@@ -85,7 +85,7 @@
 								/**
 								 * Action triggered before question content.
 								 *
-								 * @since 	2.0.0
+								 * @since   2.0.0
 								 */
 								do_action( 'ap_before_question_content' );
 								?>
@@ -98,16 +98,15 @@
 									/**
 									 * Action triggered after question content.
 									 *
-									 * @since 	2.0.0
+									 * @since   2.0.0
 									 */
 									do_action( 'ap_after_question_content' );
 								?>
 							</div>
 
 							<div class="ap-post-footer clearfix">
-								<?php ap_post_actions_buttons() ?>
+								<?php ap_post_actions_buttons(); ?>
 								<?php do_action( 'ap_post_footer' ); ?>
-								<?php echo ap_comment_btn_html(); ?>
 							</div>
 						</div>
 
@@ -115,6 +114,15 @@
 					</div>
 				</div>
 			</div>
+
+			<?php
+				/**
+				 * Action triggered before answers.
+				 *
+				 * @since   4.1.8
+				 */
+				do_action( 'ap_before_answers' );
+			?>
 
 			<?php
 				// Get answers.

@@ -1,18 +1,25 @@
 <?php
 
-class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase
-{
-    use AnsPress\Tests\Testcases\Common;
-    use AnsPress\Tests\Testcases\Ajax;
+class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase{
 
-    public $current_post;
+	use AnsPress\Tests\Testcases\Common;
+	use AnsPress\Tests\Testcases\Ajax;
+
+	public $current_post;
 
 	public function setUp() {
+		include_once str_replace( 'includes/../data', '', DIR_TESTDATA ) . '/includes/exceptions.php';
+
 		// before
 		parent::setUp();
-		$this->current_post = $this->factory->post->create( array( 'post_title' => 'Comment form loading', 'post_type' => 'question', 'post_status' => 'publish', 'post_content' => 'Donec nec nunc purus' ) );
-
-		error_reporting( 0 & ~E_WARNING );
+		$this->current_post = $this->factory->post->create(
+			array(
+				'post_title'   => 'Comment form loading',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
 	}
 
 	public function tearDown() {
@@ -22,31 +29,27 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase
 	}
 
 	public function _set_post_data( $query ) {
-		$args = wp_parse_args( $query );
-		$_POST[ 'action' ] = 'ap_ajax';
+		$args            = wp_parse_args( $query );
+		$_POST['action'] = 'ap_ajax';
 		foreach ( $args as $key => $value ) {
 			$_POST[ $key ] = $value;
 		}
-    }
+	}
 
-    /**
+	/**
 	 * Test voting by administrator
-     *
-     * @covers AnsPress_Vote::vote
+	 *
+	 * @covers AnsPress_Vote::vote
 	 */
 	public function testVoteupAdministrator() {
 		$this->_setRole( 'administrator' );
 
 		// Up vote.
-		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
-		$this->_set_post_data( 'post_id='.$this->current_post.'&__nonce='.$nonce.'&ap_ajax_action=vote&type=vote_up' );
-        add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
+		$nonce = wp_create_nonce( 'vote_' . $this->current_post );
+		$this->_set_post_data( 'post_id=' . $this->current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 
-        try {
-            $this->_handleAjax( 'ap_ajax' );
-        } catch ( WPAjaxDieStopException $e ) {
-            $this->_last_response = $e->getMessage();
-        }
+		$this->handle( 'ap_ajax' );
 
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'voted' );
@@ -54,84 +57,124 @@ class AjaxHooksTest extends \Codeception\TestCase\WPAjaxTestCase
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Thank you for voting.' );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 1 );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->active === 'vote_up' );
-        $this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
+		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
 
-        $this->_last_response = '';
+		$this->_last_response = '';
 
 		// Down vote. Will show undo vote warning.
-		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
-		$this->_set_post_data( 'post_id='.$this->current_post.'&__nonce='.$nonce.'&ap_ajax_action=vote&type=vote_down' );
-		try {
-            $this->_handleAjax( 'ap_ajax' );
-        } catch ( WPAjaxDieStopException $e ) {
-            $this->_last_response = $e->getMessage();
-        }
+		$nonce = wp_create_nonce( 'vote_' . $this->current_post );
+		$this->_set_post_data( 'post_id=' . $this->current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+
+		$this->handle( 'ap_ajax' );
+
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Undo your vote first.' );
 		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
-        $this->_last_response = '';
+		$this->_last_response = '';
 
 		// // Undo vote.
-		$nonce = wp_create_nonce( 'vote_'.$this->current_post );
-		$this->_set_post_data( 'action=ap_ajax&post_id='.$this->current_post.'&__nonce='.$nonce.'&ap_ajax_action=vote&type=vote_up' );
-		try {
-            $this->_handleAjax( 'ap_ajax' );
-        } catch ( WPAjaxDieStopException $e ) {
-            $this->_last_response = $e->getMessage();
-        }
+		$nonce = wp_create_nonce( 'vote_' . $this->current_post );
+		$this->_set_post_data( 'action=ap_ajax&post_id=' . $this->current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+
+		$this->handle( 'ap_ajax' );
+
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'undo' );
 		$this->assertTrue( $this->ap_ajax_success( 'vote_type' ) === 'vote_up' );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Your vote has been removed.' );
 		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 0 );
 		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . $this->current_post ) === 1 );
-    }
+	}
 
-    /**
-     * @covers AnsPress_Comment_Hooks::load_comments
-     */
-    public function testLoadComments() {
+	/**
+	 * @covers AnsPress_Comment_Hooks::load_comments
+	 */
+	public function testLoadComments() {
 		$this->_setRole( 'administrator' );
 
-		$this->factory->comment->create_many(5, array(
-			'comment_type' => 'anspress',
-			'comment_post_ID' => $this->current_post,
-		));
+		$this->factory->comment->create_many(
+			5, array(
+				'comment_type'    => 'anspress',
+				'comment_post_ID' => $this->current_post,
+			)
+		);
 		// Up vote.
-		$this->_set_post_data( 'post_id='.$this->current_post.'&ap_ajax_action=load_comments' );
+		$this->_set_post_data( 'post_id=' . $this->current_post . '&ap_ajax_action=load_comments' );
 		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
-        try {
-            $this->_handleAjax( 'ap_ajax' );
-        } catch ( WPAjaxDieStopException $e ) {
-            $this->_last_response = $e->getMessage();
-        }
+
+		$this->handle( 'ap_ajax' );
 
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertContains( 'apcomment', $this->ap_ajax_success( 'html' ) );
 	}
 
 	/**
-	 * @covers AnsPress_Ajax::toggle_best_answer
+	 * Test comment modal loading when user don't have permission.
+	 *
+	 * @covers AnsPress\Ajax\Comment_Modal
 	 */
-	// public function testToggleBestAnswer() {
-	// 	$id = $this->insert_answer();
-	// 	$nonce = wp_create_nonce( 'select-answer-' . $id->a );
-	// 	$this->_setRole( 'ap_moderator' );
+	public function testCommentModalNonLogged() {
+		$q = $this->insert_question();
 
-	// 	$this->_set_post_data( 'answer_id='.$id->a.'&nonce=' . $nonce .'&action=ap_toggle_best_answer' );
-	// 	codecept_debug($_POST);
-	// 	add_action( 'wp_ajax_ap_toggle_best_answer', array( 'AnsPress_Ajax', 'toggle_best_answer' ) );
-	// 	do_action('wp_ajax_ap_toggle_best_answer');
-    //     try {
-    //         $this->_handleAjax( 'ap_toggle_best_answer' );
-    //     } catch ( WPAjaxDieStopException $e ) {
-    //     	$this->_last_response = $e->getMessage();
-	// 	}
+		$this->_set_post_data( 'post_id=' . $q . '&action=comment_modal&__nonce=' . wp_create_nonce( 'new_comment_' . $q ) );
+		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 
-	// 	codecept_debug($this->_last_response);
-	// 	codecept_debug('hhhhhhhhhhhhhhhhh');
-	// 	$this->assertTrue( $this->ap_ajax_success( 'success' ) );
-	// 	$this->assertEquals( 'selected', $this->ap_ajax_success( 'action' ) );
-	// }
+		$this->handle( 'comment_modal' );
+
+		/**
+		 * This ajax action will be failed as user is not logged in.
+		 */
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertEquals( $this->ap_ajax_success( 'action' ), 'ap_comment_modal' );
+	}
+
+	/**
+	 * Test comment modal load for logged in users.
+	 *
+	 * @covers AnsPress\Ajax\Comment_Modal
+	 */
+	public function testCommentModalLoggedIn() {
+		$q = $this->insert_question();
+
+		$this->_setRole( 'subscriber' );
+
+		$this->_set_post_data( 'post_id=' . $q . '&action=comment_modal&__nonce=' . wp_create_nonce( 'new_comment_' . $q ) );
+		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
+
+		$this->handle( 'comment_modal' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+
+		$modal = $this->ap_ajax_success( 'modal' );
+		$this->assertEquals( $modal->title, 'Add a comment' );
+		$this->assertEquals( $modal->name, 'comment' );
+		$this->assertNotEmpty( $modal->content, 'HTML body of comment modal should not be empty' );
+	}
+
+	/**
+	 * Test comment modal loading for editing.
+	 *
+	 * @covers AnsPress\Ajax\Comment_Modal
+	 * @since 4.1.8
+	 */
+	public function testCommentModalEdit() {
+		$q = $this->insert_question();
+
+		$this->_setRole( 'subscriber' );
+		$c = $this->factory->comment->create(array(
+			'comment_post_ID' => $q,
+			'user_id' => get_current_user_id(),
+		));
+
+		$this->_set_post_data( 'comment_id=' . $c . '&action=comment_modal&__nonce=' . wp_create_nonce( 'edit_comment_' . $c ) );
+		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
+
+		$this->handle( 'comment_modal' );
+
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$modal = $this->ap_ajax_success( 'modal' );
+		$this->assertEquals( $modal->title, 'Edit comment' );
+		$this->assertEquals( $modal->name, 'comment' );
+		$this->assertNotEmpty( $modal->content, 'HTML body of comment modal should not be empty' );
+	}
 
 }

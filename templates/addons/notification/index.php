@@ -15,12 +15,14 @@ $user_id = get_query_var( 'ap_user_id' );
 
 <?php if ( ap_count_unseen_notifications() > 0 ) : ?>
 	<?php
-		$btn_args = wp_json_encode( array(
-			'ap_ajax_action' => 'mark_notifications_seen',
-			'__nonce'        => wp_create_nonce( 'mark_notifications_seen' ),
-		) );
+		$btn_args = wp_json_encode(
+			array(
+				'ap_ajax_action' => 'mark_notifications_seen',
+				'__nonce'        => wp_create_nonce( 'mark_notifications_seen' ),
+			)
+		);
 	?>
-	<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" ap-ajax-btn ap-query="<?php echo esc_js( $btn_args ); ?>">
+	<a href="#" class="ap-btn ap-btn-markall-read ap-btn-small" apajaxbtn apquery="<?php echo esc_js( $btn_args ); ?>">
 		<?php _e( 'Mark all as seen', 'anspress-question-answer' ); // xss okay. ?>
 	</a>
 <?php endif; ?>
@@ -33,7 +35,10 @@ $user_id = get_query_var( 'ap_user_id' );
 
 <?php if ( $notifications->have() ) : ?>
 	<div class="ap-noti">
-		<?php while ( $notifications->have() ) : $notifications->the_notification(); ?>
+		<?php
+		while ( $notifications->have() ) :
+			$notifications->the_notification();
+?>
 			<?php $notifications->item_template(); ?>
 		<?php endwhile; ?>
 	</div>
@@ -43,5 +48,18 @@ $user_id = get_query_var( 'ap_user_id' );
 
 
 <?php if ( $notifications->total_pages > 1 ) : ?>
-	<a href="#" ap-loadmore="<?php echo esc_js( wp_json_encode( array( 'ap_ajax_action' => 'load_more_notifications', '__nonce' => wp_create_nonce( 'load_more_notifications' ), 'current' => 1, 'user_id' => $notifications->args['user_id'] ) ) ); ?>" class="ap-loadmore ap-btn" ><?php esc_attr_e( 'Load More', 'anspress-question-answer' ); ?></a>
+	<a href="#" ap-loadmore="
+	<?php
+	echo esc_js(
+		wp_json_encode(
+			array(
+				'ap_ajax_action' => 'load_more_notifications',
+				'__nonce'        => wp_create_nonce( 'load_more_notifications' ),
+				'current'        => 1,
+				'user_id'        => $notifications->args['user_id'],
+			)
+		)
+	);
+?>
+" class="ap-loadmore ap-btn" ><?php esc_attr_e( 'Load More', 'anspress-question-answer' ); ?></a>
 <?php endif; ?>

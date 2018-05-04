@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -20,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * The Captcha type field object.
- *
  *
  * @since 4.1.0
  */
@@ -40,9 +40,11 @@ class Captcha extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label'   => __( 'AnsPress reCaptcha Field', 'anspress-question-answer' ),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label' => __( 'AnsPress reCaptcha Field', 'anspress-question-answer' ),
+			)
+		);
 	}
 
 	/**
@@ -55,7 +57,7 @@ class Captcha extends Field {
 			return $this->sanitized_value;
 		}
 
-		require_once( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/autoload.php' );
+		require_once ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/autoload.php';
 
 		if ( ap_opt( 'recaptcha_method' ) === 'curl' ) {
 			$method = new \ReCaptcha\RequestMethod\CurlPost();
@@ -70,7 +72,7 @@ class Captcha extends Field {
 
 		$ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ); //@codingStandardsIgnoreLine.
 		$captcha_response = ap_sanitize_unslash( 'g-recaptcha-response', 'r' );
-		$this->response = $recaptcha->verify( $captcha_response, $ip );
+		$this->response   = $recaptcha->verify( $captcha_response, $ip );
 
 		$this->sanitized = true;
 
@@ -96,32 +98,9 @@ class Captcha extends Field {
 			return;
 		}
 
-		$this->add_html( '<div class="g-recaptcha" id="recaptcha" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>' );
-		$this->add_html( '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&onload=onloadCallback&render=explicit" async defer></script>' );
+		$this->add_html( '<div class="g-recaptcha load-recaptcha" id="' . $this->id() . '" data-sitekey="' . ap_opt( 'recaptcha_site_key' ) . '"></div>' );
 
-		ob_start();
-		?>
-			<script type="text/javascript">
-				var onloadCallback = function() {
-				widgetId1 = grecaptcha.render("recaptcha", {
-					"sitekey" : "<?php echo ap_opt( 'recaptcha_site_key' ); ?>"
-					});
-				};
-
-				jQuery(document).ready(function(){
-					// Rest widget after answer form get submitted
-					if(typeof AnsPress !== 'undefined'){
-						AnsPress.on('answerFormPosted', function(){
-							if(typeof grecaptcha !== 'undefined')
-								grecaptcha.reset(widgetId1);
-						});
-					}
-				});
-
-			</script>
-		<?php
-
-		$this->add_html( ob_get_clean() );
+		$this->add_html( "<script type=\"text/javascript\" src=\"https://www.google.com/recaptcha/api.js?hl=" . get_locale() . "&onload=apCpatchaLoaded&render=explicit\"></script>" );
 
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );

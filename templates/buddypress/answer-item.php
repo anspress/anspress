@@ -15,7 +15,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 }
 
 ?>
-<div id="post-<?php the_ID(); ?>" <?php post_class( ); ?>>
+<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
 	<div class="ap-answer-single ap-bpsingle">
 		<div class="ap-bpsingle-title entry-title" itemprop="title">
@@ -43,7 +43,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 		<div class="ap-bpsingle-meta">
 			<span class="apicon-thumb-up"><?php printf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ); ?></span>
 			<?php if ( ap_is_selected( get_the_ID() ) ) : ?>
-				<span class="ap-bpsingle-selected apicon-check" title="<?php esc_attr_e( 'This answer is selected as best', 'anspress-question-answer' ); ?>"><?php esc_attr_e( 'Selected', 'anspress-question-answer' ) ?></span>
+				<span class="ap-bpsingle-selected apicon-check" title="<?php esc_attr_e( 'This answer is selected as best', 'anspress-question-answer' ); ?>"><?php esc_attr_e( 'Selected', 'anspress-question-answer' ); ?></span>
 			<?php endif; ?>
 			<?php ap_recent_post_activity(); ?>
 		</div>

@@ -141,7 +141,7 @@ function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
 	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_user_id = %d AND view_ref_id = %d AND view_type = '%s' {$ip_clue}", $user_id, $ref_id, $type ); // @codingStandardsIgnoreLine
 
 	$cache_key = md5( $query );
-	$cache = wp_cache_get( $cache_key, 'ap_is_viewed' );
+	$cache     = wp_cache_get( $cache_key, 'ap_is_viewed' );
 
 	if ( false !== $cache ) {
 		return $cache;
@@ -161,7 +161,7 @@ function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
  * @return integer
  */
 function ap_get_views( $ref_id, $type = 'question' ) {
-	$cache = wp_cache_get( $ref_id . '_' . $type , 'ap_get_views' );
+	$cache = wp_cache_get( $ref_id . '_' . $type, 'ap_get_views' );
 
 	if ( false !== $cache ) {
 		return $cache;

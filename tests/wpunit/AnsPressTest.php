@@ -1,6 +1,6 @@
 <?php
-class AnsPressTest extends \Codeception\TestCase\WPTestCase
-{
+class AnsPressTest extends \Codeception\TestCase\WPTestCase {
+
 	use AnsPress\Tests\Testcases\Common;
 
 	public function setUp() {
@@ -26,7 +26,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 	 * @covers AnsPress::setup_constants
 	 */
 	public function testConstant() {
-		$tests_dir = 'tests/wpunit/';
+		$tests_dir  = 'tests/wpunit/';
 		$plugin_dir = wp_normalize_path( ABSPATH . 'wp-content/plugins/anspress-question-answer/' );
 		$plugin_url = home_url( 'wp-content/plugins/anspress-question-answer/' );
 
@@ -91,6 +91,10 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/subscribers.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-query.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-session.php' );
+
+		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-modal.php' );
+
+		$this->assertFileExists( ANSPRESS_DIR . 'classes/ajax.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/search.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/question_stats.php' );
@@ -174,10 +178,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/admin-app.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/ap-admin.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/common.min.js' );
 		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/main.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-plugin.min.js' );
-		$this->assertFileExists( ANSPRESS_DIR . 'assets/js/min/tinymce-syntax.min.js' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/ajax.php' );
@@ -226,12 +227,12 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 		anspress()->get_form( 'test' )->prepare();
 
 		// Find for field `text_field` and check instanceof.
-		$this->assertInstanceOf( 'AnsPress\\Form\\Field',  anspress()->get_form( 'test' )->find( 'text_field' ) );
+		$this->assertInstanceOf( 'AnsPress\\Form\\Field', anspress()->get_form( 'test' )->find( 'text_field' ) );
 
 		$this->assertSame( 'form_test', anspress()->get_form( 'test' )->form_name );
 
 		// As get form is passed reference, verify it.
-		$form = anspress()->get_form( 'test' );
+		$form                                     = anspress()->get_form( 'test' );
 		anspress()->get_form( 'test' )->form_name = 'form_test_changed';
 
 		$this->assertEquals( $form, anspress()->get_form( 'test' ) );
@@ -241,13 +242,15 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase
 	 * @covers AnsPress::form_exists
 	 */
 	public function testFormExists() {
-		anspress()->forms['sample'] = new AnsPress\Form( 'form_sample', array(
-			'fields' => array(
-				'field_one' => array(
-					'label' => 'Simple text field',
+		anspress()->forms['sample'] = new AnsPress\Form(
+			'form_sample', array(
+				'fields' => array(
+					'field_one' => array(
+						'label' => 'Simple text field',
+					),
 				),
-			),
-		) );
+			)
+		);
 
 		$this->assertTrue( anspress()->form_exists( 'form_sample' ) );
 		$this->assertTrue( anspress()->form_exists( 'sample' ) );

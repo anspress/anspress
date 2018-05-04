@@ -264,7 +264,7 @@
 		},
 		postActions: function(e){
 			var self = this;
-			var q = $.parseJSON($(e.target).attr('ap-query'));
+			var q = $.parseJSON($(e.target).attr('apquery'));
 			if(typeof q.ap_ajax_action === 'undefined')
 				q.ap_ajax_action = 'post_actions';
 
@@ -283,7 +283,7 @@
 		selectAnswer: function(e){
 			e.preventDefault();
 			var self = this;
-			var q = $.parseJSON($(e.target).attr('ap-query'));
+			var q = $.parseJSON($(e.target).attr('apquery'));
 			q.action = 'ap_toggle_best_answer';
 
 			AnsPress.showLoading(e.target);
@@ -292,7 +292,7 @@
 				success: function(data){
 					AnsPress.hideLoading(e.target);
 					if(data.success){
-						if(data.action === 'selected'){
+						if(data.selected){
 							self.$el.addClass('best-answer');
 							$(e.target).addClass('active').text(data.label);
 							AnsPress.trigger('answerToggle', [self.model, true]);
@@ -373,6 +373,7 @@
 			if(data.success && data.form === 'answer'){
 				AnsPress.trigger('answerFormPosted', data);
 				$('apanswersw').show();
+				tinymce.remove();
 
 				// Clear editor contents
 				$('#ap-form-main').html('');
@@ -454,8 +455,7 @@
   var AnsPressRouter = Backbone.Router.extend({
 		routes: {
 			'comment/:commentID': 'commentRoute',
-			'comment/:commentID/edit': 'editCommentsRoute',
-			'comments/:postID/new': 'newCommentsRoute',
+			//'comment/:commentID/edit': 'editCommentsRoute',
 			'comments/:postID/all': 'commentsRoute',
 			'comments/:postID': 'commentsRoute',
 		},
@@ -483,24 +483,7 @@
 				}
 			});
 		},
-		newCommentsRoute: function(postId){
-			self = this;
-			AnsPress.hideModal('commentForm', false);
-			$modal = AnsPress.modal('commentForm', {
-				hideCb: function(){
-					AnsPress.removeHash();
-				}
-			});
-			AnsPress.showLoading($modal.$el.find('.ap-modal-content'));
-			AnsPress.ajax({
-				data: {post_id: postId, ap_ajax_action: 'comment_form'},
-				success: function(data){
-					AnsPress.hideLoading($modal.$el.find('.ap-modal-content'));
-					$modal.setTitle(data.modal_title);
-					$modal.setContent(data.html);
-				}
-			});
-		},
+
 		commentsRoute: function(postId, paged){
 			self = this;
 			AnsPress.ajax({
@@ -548,12 +531,3 @@
 
 
 })(jQuery);
-
-
-
-
-
-
-
-
-

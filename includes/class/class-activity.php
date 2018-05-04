@@ -8,10 +8,11 @@
  * @license    GPL-3.0+
  * @link       https://anspress.io
  * @copyright  2014 Rahul Aryan
- * @since 		 4.1.2
+ * @since        4.1.2
  */
 
 namespace AnsPress;
+
 use AnsPress_Query;
 
 // If this file is called directly, abort.
@@ -62,27 +63,30 @@ class Activity extends AnsPress_Query {
 	 * be shown.
 	 *
 	 * @param array $args {
-	 * 		Arguments.
+	 *      Arguments.
 	 *
-	 * 		@type integer $q_id     Question id, to fetch activities only related to a specific question.
-	 * 		@type integer $a_id     Answer id, to fetch activities only related to a specific answer.
-	 * 		@type integer $number   Activities to show per page.
-	 * 		@type integer $orderby  name of column to order activities. Valid values are:
+	 *      @type integer $q_id     Question id, to fetch activities only related to a specific question.
+	 *      @type integer $a_id     Answer id, to fetch activities only related to a specific answer.
+	 *      @type integer $number   Activities to show per page.
+	 *      @type integer $orderby  name of column to order activities. Valid values are:
 	 *    `activity_date`, `activity_q_id`, `activity_a_id`, `activity_user_id`.
-	 * 		@type integer $order    Activity order. `DESC` is default order.
+	 *      @type integer $order    Activity order. `DESC` is default order.
 	 * }
 	 * @since 4.1.2
 	 */
 	public function __construct( $args = [] ) {
-		$this->paged = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
-		$this->offset = $this->per_page * ($this->paged - 1);
+		$this->paged  = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
+		$this->offset = $this->per_page * ( $this->paged - 1 );
 
-		$this->args = wp_parse_args( $args, array(
-			'number' 	=> $this->per_page,
-			'offset' 	=> $this->offset,
-			'orderby' => 'activity_date',
-			'order' 	=> 'DESC',
-		));
+		$this->args = wp_parse_args(
+			$args, array(
+				'number'        => $this->per_page,
+				'offset'        => $this->offset,
+				'orderby'       => 'activity_date',
+				'order'         => 'DESC',
+				'exclude_roles' => [ 'administrator' ],
+			)
+		);
 
 		// Check if valid orderby argument.
 		$valid_orderby = [ 'activity_q_id', 'activity_a_id', 'activity_c_id', 'activity_date' ];
@@ -98,43 +102,68 @@ class Activity extends AnsPress_Query {
 	 * Prepare and fetch notifications from database.
 	 *
 	 * @since 4.1.2
+	 * @since 4.1.8 Added `exclude_roles`.
 	 */
 	public function query() {
 		global $wpdb;
 
 		$sql = array(
-			'fields'  => '*',
+			'fields'  => 'a.*',
 			'where'   => [],
-			'orderby' => $this->args['orderby'],
+			'orderby' => 'a.' . $this->args['orderby'],
 			'order'   => ( 'DESC' === $this->args['order'] ? 'DESC' : 'ASC' ),
 		);
 
 		// Add q_id to where clause.
 		if ( isset( $this->args['q_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_q_id = %d', (int) $this->args['q_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_q_id = %d', (int) $this->args['q_id'] );
 		}
 
 		// Add a_id to where clause.
 		if ( isset( $this->args['a_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_a_id = %d', (int) $this->args['a_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_a_id = %d', (int) $this->args['a_id'] );
 		}
 
 		// Add c_id to where clause.
 		if ( isset( $this->args['c_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_c_id = %d', (int) $this->args['c_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_c_id = %d', (int) $this->args['c_id'] );
 		}
 
 		// Add user_id to where clause.
 		if ( isset( $this->args['user_id'] ) ) {
-			$sql['where'][] = $wpdb->prepare( 'AND activity_user_id = %d', (int) $this->args['user_id'] );
+			$sql['where'][] = $wpdb->prepare( 'AND a.activity_user_id = %d', (int) $this->args['user_id'] );
+		}
+
+		$exclude = '';
+		// Add user_id to where clause.
+		if ( ! empty( $this->args['exclude_roles'] ) ) {
+			$cap_key = $wpdb->prefix . 'capabilities';
+
+			$role_like = '';
+			$total     = count( $this->args['exclude_roles'] );
+			$i         = 1;
+
+			foreach ( $this->args['exclude_roles'] as $r ) {
+				$role_like .= $wpdb->prepare( 'um.meta_value NOT LIKE %s', '%' . sanitize_title( $wpdb->esc_like( $r ) ) . '%' );
+				if ( $total > $i ) {
+					$role_like .= ' AND ';
+				}
+
+				$i++;
+			}
+
+			if ( ! empty( $role_like ) ) {
+				$exclude = "LEFT JOIN {$wpdb->usermeta} um ON um.user_id = a.activity_user_id";
+				$sql['where'][] = "AND ( um.meta_key = '{$cap_key}' AND ( {$role_like} ) )";
+			}
 		}
 
 		$where = implode( ' ', $sql['where'] );
 
-		$query = "SELECT SQL_CALC_FOUND_ROWS {$sql['fields']} FROM {$wpdb->ap_activity} WHERE 1=1 {$where} ORDER BY {$sql['orderby']} {$sql['order']} LIMIT {$this->offset},{$this->per_page}";
+		$query = "SELECT SQL_CALC_FOUND_ROWS {$sql['fields']} FROM {$wpdb->ap_activity} a $exclude WHERE 1=1 {$where} ORDER BY {$sql['orderby']} {$sql['order']} LIMIT {$this->offset},{$this->per_page}";
 
-		$key = md5( $query );
-		$this->objects = wp_cache_get( $key, 'ap_activities' );
+		$key               = md5( $query );
+		$this->objects     = wp_cache_get( $key, 'ap_activities' );
 		$this->total_count = wp_cache_get( 'ap_' . $key, 'counts' );
 
 		// If no cache found then get from DB.
@@ -144,7 +173,7 @@ class Activity extends AnsPress_Query {
 
 			$activities = [];
 			foreach ( $this->objects as $activity ) {
-				$activity = ap_activity_parse( $activity );
+				$activity     = ap_activity_parse( $activity );
 				$activities[] = $activity;
 			}
 
@@ -206,7 +235,7 @@ class Activity extends AnsPress_Query {
 		global $wpdb;
 
 		$ids_str = esc_sql( sanitize_comma_delimited( $this->ids['post'] ) );
-		$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
+		$posts   = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
 
 		// Cache all posts.
 		foreach ( $posts as $_post ) {
@@ -241,7 +270,7 @@ class Activity extends AnsPress_Query {
 			return;
 		}
 
-		$ids = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
+		$ids      = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
 		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" );
 
 		// Cache comments.
@@ -320,10 +349,10 @@ class Activity extends AnsPress_Query {
 	 */
 	public function count_group() {
 		if ( $this->have_group_items() ) {
-			$next = $this->current + 1;
-			$count = 0;
+			$next        = $this->current + 1;
+			$count       = 0;
 			$current_obj = $this->object;
-			$next_obj = $this->objects[ $next ];
+			$next_obj    = $this->objects[ $next ];
 
 			for ( $i = $next; $i < $this->count; $i++ ) {
 				if ( $current_obj->q_id == $next_obj->q_id ) {
@@ -334,7 +363,7 @@ class Activity extends AnsPress_Query {
 
 				if ( $i + 1 < $this->count ) {
 					$current_obj = $this->objects[ $i ];
-					$next_obj = $this->objects[ $i + 1 ];
+					$next_obj    = $this->objects[ $i + 1 ];
 				}
 			}
 		}
@@ -432,6 +461,7 @@ class Activity extends AnsPress_Query {
 	 * Echo icon of current activity.
 	 *
 	 * This is a wrapper method for @see AnsPress\Activity::get_the_icon().
+	 *
 	 * @return void
 	 * @since 4.1.2
 	 */
@@ -463,13 +493,13 @@ class Activity extends AnsPress_Query {
 
 		if ( $date >= strtotime( '-30 minutes' ) ) {
 			$when = __( 'Just now', 'anspress-question-answer' );
-		}	elseif ( $date >= strtotime( '-24 hours' ) ) {
+		} elseif ( $date >= strtotime( '-24 hours' ) ) {
 			$when = __( 'Today', 'anspress-question-answer' );
 		} elseif ( $date >= strtotime( '-48 hours' ) ) {
 			$when = __( 'Yesterday', 'anspress-question-answer' );
-		}	elseif ( $date <= strtotime( '1 year' ) ) {
+		} elseif ( $date <= strtotime( '1 year' ) ) {
 			$when = date_i18n( 'M', $date );
-		}	else {
+		} else {
 			$when = date_i18n( 'M Y', $date );
 		}
 
@@ -517,12 +547,14 @@ class Activity extends AnsPress_Query {
 	public function more_button() {
 		$paged = max( 1, get_query_var( 'paged' ) );
 
-		$args = wp_json_encode( array(
-			'ap_ajax_action' => 'more_activities',
-			'__nonce'        => wp_create_nonce( 'load_activities' ),
-			'paged'          => $this->paged + 1,
-		) );
+		$args = wp_json_encode(
+			array(
+				'ap_ajax_action' => 'more_activities',
+				'__nonce'        => wp_create_nonce( 'load_activities' ),
+				'paged'          => $this->paged + 1,
+			)
+		);
 
-		echo '<a href="#" class="ap-btn" ap-ajax-btn ap-query="' . esc_js( $args ) . '">' . __( 'Load More', 'anspress-question-answer' ) . '</a>';
+		echo '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">' . __( 'Load More', 'anspress-question-answer' ) . '</a>';
 	}
 }

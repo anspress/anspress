@@ -1,0 +1,44 @@
+/**!
+  Alert box for anspress.
+
+  @example
+  <div class="ap-alert">
+    <button class="ap-alert-close ap-remove-parent">&times;</button>
+    <strong>Title</strong>
+    Sample text for the alert box.
+  </div>
+*/
+
+
+.ap-alert{
+  strong{
+    display: block;
+  }
+
+  &.info{
+    background-color: #e4f3ff;
+  }
+
+  &.warning{
+    background-color: #ffeebd;
+  }
+
+  &.error{
+    background-color: #fdcdcd;
+  }
+
+  &.success{
+    background-color: #dff3c8;
+  }
+
+  &-close{
+    float: right;
+    padding: 1px 4px;
+    background: #fff;
+    font-weight: bold;
+    border: solid 1px var(--ap_border-color);
+    border-radius: 2px;
+    display: block;
+    line-height: 100%;
+  }
+}

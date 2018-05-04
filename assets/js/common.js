@@ -363,7 +363,7 @@ _.templateSettings = {
 
 	AnsPress.views.Modal = Backbone.View.extend({
 		className: 'ap-modal',
-		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" ap-query=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
+		template: "<div class=\"ap-modal-body<# if(typeof size !== 'undefined'){ #> ap-modal-{{size}}<# } #>\"><div class=\"ap-modal-header\"><# if(typeof title !== 'undefined' ){ #><strong>{{title}}</strong><# } #><a href=\"#\" ap=\"close-modal\" class=\"ap-modal-close\"><i class=\"apicon-x\"></i></a></div><div class=\"ap-modal-content\"><# if(typeof content !== 'undefined'){ #>{{{content}}}<# } #></div><div class=\"ap-modal-footer\"><# if(typeof buttons !== 'undefined'){ #><# _.each(buttons, function(btn){ #><a class=\"ap-modal-btn <# if(typeof btn.class !== 'undefined') { #>{{btn.class}}<# } #>\" href=\"#\" <# if(typeof btn.cb !== 'undefined') { #>ap=\"{{btn.cb}}\" apquery=\"{{btn.query}}\"<# } #>>{{btn.label}}</a><# }); #><# } #></div></div><div class=\"ap-modal-backdrop\"></div>",
 		events: {
 			'click [ap="close-modal"]': 'clickHide',
 			'click [ap="modal-click"]': 'clickAction',
@@ -404,7 +404,7 @@ _.templateSettings = {
 		clickAction: function(e){
 			e.preventDefault();
 			var targ = $(e.target);
-			q = targ.data('ap-query');
+			q = targ.data('apquery');
 
 			if(q.cb){
 				q.element = targ;
@@ -488,7 +488,69 @@ _.templateSettings = {
 	};
 })(jQuery);
 
+(function($){
+	AnsPress.Common = {
+		init: function(){
+			AnsPress.on('showImgPreview', this.showImgPreview);
+			AnsPress.on('formPosted', this.imageUploaded);
+			AnsPress.on('ajaxBtnDone', this.uploadModal);
+			AnsPress.on('ajaxBtnDone', this.commentModal);
+
+			AnsPress.on('showModal', this.showModal);
+		},
+		readUrl: function(input, el) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					AnsPress.trigger('showImgPreview', e.target.result, el.find('.ap-upload-list'));
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		},
+		uploadModal: function(data){
+			if(data.action != 'ap_upload_modal' || ! data.html)
+				return;
+
+			$modal = AnsPress.modal('imageUpload', {
+				title: data.title,
+				content: data.html,
+				size: 'small',
+			});
+
+			var file = $modal.$el.find('input[type="file"]');
+			file.on('change', function(){
+				$modal.$el.find('.ap-img-preview').remove();
+				AnsPress.Common.readUrl(this, $modal.$el);
+			});
+		},
+		showImgPreview: function(src, el){
+			$('<img class="ap-img-preview" src="'+src+'" />').appendTo(el);
+		},
+		imageUploaded: function(data){
+			if(data.action!=='ap_image_upload' || typeof tinymce === 'undefined')
+				return;
+
+			if(data.files)
+				$.each(data.files, function(old, newFile){
+					tinymce.activeEditor.insertContent('<img src="'+newFile+'" />');
+				});
+
+			AnsPress.hideModal('imageUpload');
+		},
+		showModal: function(modal){
+			modal.size = modal.size||'medium';
+			AnsPress.modal(modal.name, {
+				title: modal.title,
+				content: modal.content,
+				size: modal.size,
+			});
+		}
+	};
+})(jQuery);
+
 jQuery(document).ready(function($){
+	AnsPress.Common.init();
+
 	var apSnackbarView = new AnsPress.views.Snackbar();
 	$('body').append(apSnackbarView.render().$el);
 
@@ -507,10 +569,10 @@ jQuery(document).ready(function($){
 	});
 
 	// Subscribe button.
-	$('[ap-subscribe]').click(function(e){
+	$('[apsubscribe]').click(function(e){
 		e.preventDefault();
 		var self = $(this);
-		var query = JSON.parse(self.attr('ap-query'));
+		var query = JSON.parse(self.attr('apquery'));
 		query.ap_ajax_action = 'subscribe';
 
 		AnsPress.ajax({
@@ -529,27 +591,37 @@ jQuery(document).ready(function($){
 	});
 
 	// Ajax button.
-	$('body').on('click', '[ap-ajax-btn]', function(e){
+	$('body').on('click', '[apajaxbtn]', function(e){
 		var self = this;
 		e.preventDefault();
 
-		if($(this).is('.loaded'))
+		if($(this).attr('aponce') != 'false' && $(this).is('.loaded'))
 			return;
 
 		var self = $(this);
-		var query = JSON.parse(self.attr('ap-query'));
+		var query = JSON.parse(self.attr('apquery'));
 
 		AnsPress.showLoading(self);
 		AnsPress.ajax({
 			data: query,
 			success: function(data){
-				$(self).addClass('loaded');
+				if($(this).attr('aponce')!= 'false')
+					$(self).addClass('loaded');
+
 				AnsPress.hideLoading(e.target);
+
+				AnsPress.trigger('ajaxBtnDone', data);
+
 				if(typeof data.btn !== 'undefined')
 					if(data.btn.hide) self.hide();
 
 				if(typeof data.cb !== 'undefined')
 					AnsPress.trigger(data.cb, data, e.target);
+
+				// Open modal.
+				if(data.modal){
+					AnsPress.trigger('showModal', data.modal);
+				}
 			}
 		})
 	});
@@ -557,7 +629,7 @@ jQuery(document).ready(function($){
 	function apAddRepeatField(el, values){
 		values = values||false;
 		var args = $(el).data('args');
-		args['index'] = $(el).find('[data-repeat-id]').length;
+		args['index'] = $(el).find('[datarepeatid]').length;
 		var template = $('#'+args.key+'-template').text();
 
 		var t = _.template(template);
@@ -568,7 +640,7 @@ jQuery(document).ready(function($){
 			return match.replace(/[[\]]/g, '');
 		});
 
-		var html = $('<div class="ap-repeatable-item" data-repeat-id="'+args.index+'">'+ t +'<a href="#" class="ap-repeatable-delete">'+args.label_delete+'</a></div>');
+		var html = $('<div class="ap-repeatable-item" datarepeatid="'+args.index+'">'+ t +'<a href="#" class="ap-repeatable-delete">'+args.label_delete+'</a></div>');
 		$.each(values, function(childName, v){
 			html.find('[name="'+args.key+'['+args.index+']['+childName+']"]').val(v);
 		});
@@ -601,7 +673,7 @@ jQuery(document).ready(function($){
 			e.preventDefault();
 
 			var self = $(this);
-			var query = JSON.parse(self.attr('ap-query'));
+			var query = JSON.parse(self.attr('apquery'));
 			AnsPress.showLoading(self);
 
 			$count = $('[name="'+query.id+'-groups"]');
@@ -640,7 +712,9 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 		var self = $(this);
 		var submitBtn = $(this).find('button[type="submit"]');
-		AnsPress.showLoading(submitBtn);
+
+		if(submitBtn.length>0)
+			AnsPress.showLoading(submitBtn);
 
     $(this).ajaxSubmit({
 			url: ajaxurl,
@@ -652,7 +726,9 @@ jQuery(document).ready(function($){
 				$('.ap-have-errors').removeClass('ap-have-errors');
 			},
 			success: function(data) {
-				AnsPress.hideLoading(submitBtn);
+				if(submitBtn.length>0)
+					AnsPress.hideLoading(submitBtn);
+
 				data = AnsPress.ajaxResponse(data);
 				if(data.snackbar){
 					AnsPress.trigger('snackbar', data)
@@ -680,6 +756,9 @@ jQuery(document).ready(function($){
 					});
 
 					self.apScrollTo();
+				} else if(typeof data.hide_modal !== undefined){
+					// Hide modal
+					AnsPress.hideModal(data.hide_modal);
 				}
 
 				if(typeof data.redirect !== 'undefined'){
@@ -724,7 +803,7 @@ jQuery(document).ready(function($){
 		}
 	}
 
-	function tagElements($el){
+	AnsPress.tagElements = function ($el){
 		var type = $el.data('type');
 		var jsoptions = $el.data('options');
 		var options = $('#'+jsoptions.id+'-options').length > 0 ? JSON.parse($('#'+jsoptions.id+'-options').html()) : {};
@@ -767,9 +846,14 @@ jQuery(document).ready(function($){
 		$el.selectize(defaults);
 	}
 
-	$('[ap-tag-field]').each(function(){
-		tagElements($(this));
+	$('[aptagfield]').each(function(){
+		AnsPress.tagElements($(this));
 	});
+
+	$('#anspress').on('click', '.ap-remove-parent', function(e){
+		e.preventDefault();
+		$(this).parent().remove();
+	})
 });
 
 window.AnsPress.Helper = {

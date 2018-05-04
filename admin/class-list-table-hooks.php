@@ -27,7 +27,7 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'views_edit-answer', __CLASS__, 'flag_view' );
 		anspress()->add_action( 'posts_clauses', __CLASS__, 'posts_clauses', 10, 2 );
 		anspress()->add_action( 'manage_answer_posts_custom_column', __CLASS__, 'answer_row_actions', 10, 2 );
-		//anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
+		// anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
 		anspress()->add_filter( 'manage_edit-question_columns', __CLASS__, 'cpt_question_columns' );
 		anspress()->add_action( 'manage_posts_custom_column', __CLASS__, 'custom_columns_value' );
 		anspress()->add_filter( 'manage_edit-answer_columns', __CLASS__, 'cpt_answer_columns' );
@@ -35,7 +35,7 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'manage_edit-answer_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
 		anspress()->add_action( 'edit_form_after_title', __CLASS__, 'edit_form_after_title' );
 		anspress()->add_filter( 'manage_edit-comments_columns', __CLASS__, 'comment_flag_column' );
-		//anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
+		// anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
 		anspress()->add_filter( 'comment_status_links', __CLASS__, 'comment_flag_view' );
 		anspress()->add_action( 'current_screen', __CLASS__, 'comments_flag_query', 10, 2 );
 		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_custom_message' );
@@ -51,8 +51,8 @@ class AnsPress_Post_Table_Hooks {
 	 */
 	public static function flag_view( $views ) {
 		global $post_type_object;
-		$flagged_count = ap_total_posts_count( 'answer' === $post_type_object->name ? 'answer' : 'question' , 'flag' );
-		$class = ap_sanitize_unslash( 'flagged', 'p' ) ? 'class="current" ' : '';
+		$flagged_count = ap_total_posts_count( 'answer' === $post_type_object->name ? 'answer' : 'question', 'flag' );
+		$class         = ap_sanitize_unslash( 'flagged', 'p' ) ? 'class="current" ' : '';
 
 		$views['flagged'] = '<a ' . $class . 'href="edit.php?flagged=true&#038;post_type=' . $post_type_object->name . '">' . __( 'Flagged', 'anspress-question-answer' ) . ' <span class="count">(' . $flagged_count->total . ')</span></a>';
 
@@ -74,17 +74,17 @@ class AnsPress_Post_Table_Hooks {
 			return $sql;
 		}
 
-		$sql['join'] = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
+		$sql['join']   = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 		$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 
 		// Show only flagged posts.
 		if ( 'edit.php' === $pagenow && ap_sanitize_unslash( 'flagged', 'p' ) ) {
-			$sql['where'] = $sql['where'] . ' AND qameta.flags > 0';
+			$sql['where']   = $sql['where'] . ' AND qameta.flags > 0';
 			$sql['orderby'] = ' qameta.flags DESC, ' . $sql['orderby'];
 		}
 
 		$orderby = ap_sanitize_unslash( 'orderby', 'p' );
-		$order = ap_sanitize_unslash( 'order', 'p' ) === 'asc' ? 'asc' : 'desc';
+		$order   = ap_sanitize_unslash( 'order', 'p' ) === 'asc' ? 'asc' : 'desc';
 
 		if ( 'flags' === $orderby ) {
 			// Sort by flags.
@@ -140,13 +140,13 @@ class AnsPress_Post_Table_Hooks {
 		}
 
 		if ( $can_edit_post ) {
-			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Edit', 'anspress-question-answer' ) . '</a>';
+			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title ) ) . '" rel="permalink">' . __( 'Edit', 'anspress-question-answer' ) . '</a>';
 		}
 
 		// Actions to view/preview.
 		if ( in_array( $post->post_status, [ 'pending', 'draft', 'future' ], true ) && $can_edit_post ) {
 
-			$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ),$post->title ) ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>';
+			$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title ) ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>';
 
 		} elseif ( 'trash' !== $post->post_status ) {
 			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
@@ -180,7 +180,7 @@ class AnsPress_Post_Table_Hooks {
 	 * @since  2.0.0
 	 */
 	public static function cpt_question_columns( $columns ) {
-		$columns = array();
+		$columns              = array();
 		$columns['cb']        = '<input type="checkbox" />';
 		$columns['ap_author'] = __( 'Author', 'anspress-question-answer' );
 		$columns['title']     = __( 'Title', 'anspress-question-answer' );
@@ -193,12 +193,12 @@ class AnsPress_Post_Table_Hooks {
 			$columns['question_tag'] = __( 'Tag', 'anspress-question-answer' );
 		}
 
-		$columns['status']      = __( 'Status', 'anspress-question-answer' );
-		$columns['answers']     = __( 'Ans', 'anspress-question-answer' );
-		$columns['comments']    = __( 'Comments', 'anspress-question-answer' );
-		$columns['votes']       = __( 'Votes', 'anspress-question-answer' );
-		$columns['flags']       = __( 'Flags', 'anspress-question-answer' );
-		$columns['date']        = __( 'Date', 'anspress-question-answer' );
+		$columns['status']   = __( 'Status', 'anspress-question-answer' );
+		$columns['answers']  = __( 'Ans', 'anspress-question-answer' );
+		$columns['comments'] = __( 'Comments', 'anspress-question-answer' );
+		$columns['votes']    = __( 'Votes', 'anspress-question-answer' );
+		$columns['flags']    = __( 'Flags', 'anspress-question-answer' );
+		$columns['date']     = __( 'Date', 'anspress-question-answer' );
 
 		return $columns;
 	}
@@ -219,7 +219,7 @@ class AnsPress_Post_Table_Hooks {
 
 			echo '<a class="ap-author-col" href="' . esc_url( ap_user_link( $post->post_author ) ) . '">';
 			ap_author_avatar( 28 );
-			echo '<span>' . esc_attr( ap_user_display_name( ) ) . '</span>';
+			echo '<span>' . esc_attr( ap_user_display_name() ) . '</span>';
 			echo '</a>';
 
 		} elseif ( 'status' === $column ) {
@@ -255,7 +255,14 @@ class AnsPress_Post_Table_Hooks {
 				$out = array();
 
 				foreach ( (array) $terms as $term ) {
-					$url = esc_url( add_query_arg( [ 'post_type' => $post->post_type, 'question_tag' => $term->slug ], 'edit.php' ) );
+					$url   = esc_url(
+						add_query_arg(
+							[
+								'post_type'    => $post->post_type,
+								'question_tag' => $term->slug,
+							], 'edit.php'
+						)
+					);
 					$out[] = sprintf( '<a href="%s">%s</a>', $url, esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, 'question_tag', 'display' ) ) );
 				}
 
@@ -265,11 +272,21 @@ class AnsPress_Post_Table_Hooks {
 			}
 		} elseif ( 'answers' === $column ) {
 
-			$url = add_query_arg( array( 'post_type' => 'answer', 'post_parent' => $post->ID ), 'edit.php' );
+			$url = add_query_arg(
+				array(
+					'post_type'   => 'answer',
+					'post_parent' => $post->ID,
+				), 'edit.php'
+			);
 			echo '<a class="ans-count" title="' . esc_html( sprintf( _n( '%d Answer', '%d Answers', $post->answers, 'anspress-question-answer' ), (int) $post->answers ) ) . '" href="' . esc_url( $url ) . '">' . esc_attr( $post->answers ) . '</a>';
 
 		} elseif ( 'parent_question' === $column ) {
-			$url = add_query_arg( [ 'post' => $post->post_parent, 'action' => 'edit' ], 'post.php' );
+			$url = add_query_arg(
+				[
+					'post'   => $post->post_parent,
+					'action' => 'edit',
+				], 'post.php'
+			);
 			echo '<a class="parent_question" href="' . esc_url( $url ) . '"><strong>' . get_the_title( $post->post_parent ) . '</strong></a>';
 		} elseif ( 'votes' === $column ) {
 			echo '<span class="vote-count">' . esc_attr( $post->votes_net ) . '</span>';
@@ -288,14 +305,14 @@ class AnsPress_Post_Table_Hooks {
 	 */
 	public static function cpt_answer_columns( $columns ) {
 		$columns = array(
-			'cb'                => '<input type="checkbox" />',
-			'ap_author'         => __( 'Author', 'anspress-question-answer' ),
-			'answer_content'    => __( 'Content', 'anspress-question-answer' ),
-			'status'            => __( 'Status', 'anspress-question-answer' ),
-			'comments'          => __( 'Comments', 'anspress-question-answer' ),
-			'votes'             => __( 'Votes', 'anspress-question-answer' ),
-			'flags'             => __( 'Flags', 'anspress-question-answer' ),
-			'date'              => __( 'Date', 'anspress-question-answer' ),
+			'cb'             => '<input type="checkbox" />',
+			'ap_author'      => __( 'Author', 'anspress-question-answer' ),
+			'answer_content' => __( 'Content', 'anspress-question-answer' ),
+			'status'         => __( 'Status', 'anspress-question-answer' ),
+			'comments'       => __( 'Comments', 'anspress-question-answer' ),
+			'votes'          => __( 'Votes', 'anspress-question-answer' ),
+			'flags'          => __( 'Flags', 'anspress-question-answer' ),
+			'date'           => __( 'Date', 'anspress-question-answer' ),
 		);
 
 		return $columns;
@@ -331,7 +348,7 @@ class AnsPress_Post_Table_Hooks {
 			if ( ! isset( $post_parent ) ) {
 				echo '<p class="no-q-selected">' . esc_attr__( 'This question is orphan, no question is selected for this answer', 'anspress-question-answer' ) . '</p>';
 			} else {
-				$q = ap_get_post( $post_parent );
+				$q       = ap_get_post( $post_parent );
 				$answers = ap_get_post_field( 'answers', $q );
 				?>
 
@@ -340,7 +357,7 @@ class AnsPress_Post_Table_Hooks {
 				</a>
 				<div class="ap-q-meta">
 					<span class="ap-a-count">
-						<?php echo esc_html( sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ),  $answers ) ); ?>
+						<?php echo esc_html( sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ), $answers ) ); ?>
 					</span>
 					<span class="ap-edit-link">|
 						<a href="<?php echo esc_url( get_edit_post_link( $q->ID ) ); ?>">
@@ -394,7 +411,7 @@ class AnsPress_Post_Table_Hooks {
 	 * @return array
 	 */
 	public static function comment_flag_view( $views ) {
-		$views['flagged'] = '<a href="edit-comments.php?show_flagged=true"' . ( ap_sanitize_unslash( 'show_flagged', 'g' ) ? ' class="current"' : '' ) . '>' . esc_attr__( 'Flagged','anspress-question-answer' ) . '</a>';
+		$views['flagged'] = '<a href="edit-comments.php?show_flagged=true"' . ( ap_sanitize_unslash( 'show_flagged', 'g' ) ? ' class="current"' : '' ) . '>' . esc_attr__( 'Flagged', 'anspress-question-answer' ) . '</a>';
 		return $views;
 	}
 

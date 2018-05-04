@@ -11,6 +11,7 @@
  */
 
 namespace AnsPress\Form\Field;
+
 use AnsPress\Form\Field as Field;
 
 // Exit if accessed directly.
@@ -37,9 +38,11 @@ class Radio extends Field {
 	 * @return void
 	 */
 	protected function prepare() {
-		$this->args = wp_parse_args( $this->args, array(
-			'label'   => __( 'AnsPress Radio Field', 'anspress-question-answer' ),
-		) );
+		$this->args = wp_parse_args(
+			$this->args, array(
+				'label' => __( 'AnsPress Radio Field', 'anspress-question-answer' ),
+			)
+		);
 
 		// Call parent prepare().
 		parent::prepare();

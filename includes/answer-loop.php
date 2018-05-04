@@ -39,39 +39,39 @@ class Answers_Query extends WP_Query {
 	 */
 	public function __construct( $args = array() ) {
 		global $answers;
-		$paged = (int) max( 1, get_query_var( 'ap_paged', 1 ) );
+		$paged    = (int) max( 1, get_query_var( 'ap_paged', 1 ) );
 		$defaults = array(
-			'question_id'              => get_question_id(),
-			'ap_query'      				   => true,
-			'ap_current_user_ignore'   => false,
-			'ap_answers_query'         => true,
-			'showposts'                => ap_opt( 'answers_per_page' ),
-			'paged'                    => $paged,
-			'only_best_answer'         => false,
-			'ignore_selected_answer'   => false,
-			'post_status'   				   => [ 'publish' ],
-			'ap_order_by' 	           => ap_opt( 'answers_sort' ),
+			'question_id'            => get_question_id(),
+			'ap_query'               => true,
+			'ap_current_user_ignore' => false,
+			'ap_answers_query'       => true,
+			'showposts'              => ap_opt( 'answers_per_page' ),
+			'paged'                  => $paged,
+			'only_best_answer'       => false,
+			'ignore_selected_answer' => false,
+			'post_status'            => [ 'publish' ],
+			'ap_order_by'            => ap_opt( 'answers_sort' ),
 		);
 
 		if ( get_query_var( 'answer_id' ) ) {
 			$defaults['p'] = get_query_var( 'answer_id' );
 		}
 
-		$this->args = wp_parse_args( $args, $defaults );
+		$this->args                = wp_parse_args( $args, $defaults );
 		$this->args['ap_order_by'] = sanitize_title( $this->args['ap_order_by'] );
 
 		// Check if user can read private post.
-		if ( ap_user_can_view_private_post( ) ) {
+		if ( ap_user_can_view_private_post() ) {
 			$this->args['post_status'][] = 'private_post';
 		}
 
 		// Check if user can read moderate posts.
-		if ( ap_user_can_view_moderate_post( ) ) {
+		if ( ap_user_can_view_moderate_post() ) {
 			$this->args['post_status'][] = 'moderate';
 		}
 
 		// Show trash posts to super admin.
-		if ( is_super_admin( ) ) {
+		if ( is_super_admin() ) {
 			$this->args['post_status'][] = 'trash';
 		}
 
@@ -157,7 +157,11 @@ class Answers_Query extends WP_Query {
 			return;
 		}
 
-		$this->ap_ids = [ 'post_ids' => [], 'attach_ids' => [], 'user_ids' => [] ];
+		$this->ap_ids = [
+			'post_ids'   => [],
+			'attach_ids' => [],
+			'user_ids'   => [],
+		];
 
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
@@ -244,7 +248,10 @@ function ap_get_best_answer( $question_id = false ) {
 		$question_id = get_question_id();
 	}
 
-	$args = array( 'only_best_answer' => true, 'question_id' => $question_id );
+	$args = array(
+		'only_best_answer' => true,
+		'question_id'      => $question_id,
+	);
 	return new Answers_Query( $args );
 }
 
@@ -307,7 +314,7 @@ function ap_answers_the_pagination() {
 		echo '<a class="ap-all-answers" href="' . get_permalink( get_question_id() ) . '">' . sprintf( __( 'You are viewing 1 out of %d answers, click here to view all answers.', 'anspress-question-answer' ), ap_get_answers_count( get_question_id() ) ) . '</a>';
 	} else {
 		global $answers;
-		$paged = (get_query_var( 'ap_paged' )) ? get_query_var( 'ap_paged' ) : 1;
+		$paged = ( get_query_var( 'ap_paged' ) ) ? get_query_var( 'ap_paged' ) : 1;
 		ap_pagination( $paged, $answers->max_num_pages, '?ap_paged=%#%', get_permalink( get_question_id() ) . 'page/%#%/' );
 	}
 }
@@ -321,7 +328,7 @@ function ap_answers_the_pagination() {
 function ap_count_published_answers( $question_id ) {
 	global $wpdb;
 	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $question_id, 'publish', 'answer' );
-	$key = md5( $query );
+	$key   = md5( $query );
 
 	$cache = wp_cache_get( $key, 'ap_count' );
 	if ( false !== $cache ) {
@@ -346,7 +353,7 @@ function ap_count_other_answer( $question_id = false ) {
 	$count = ap_get_answers_count( $question_id );
 
 	if ( ap_have_answer_selected( $question_id ) ) {
-		return (int) ($count - 1);
+		return (int) ( $count - 1 );
 	}
 
 	return (int) $count;
@@ -381,10 +388,10 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 		$answer_id = get_query_var( 'answer_id' );
 	}
 
-	$user_id = get_current_user_id();
+	$user_id     = get_current_user_id();
 	$ap_order_by = ap_get_current_list_filters( 'order_by', 'active' );
-	$cache_key = $question_id . '-' . $answer_id . '-' . $user_id;
-	$cache = wp_cache_get( $cache_key, 'ap_answer_position' );
+	$cache_key   = $question_id . '-' . $answer_id . '-' . $user_id;
+	$cache       = wp_cache_get( $cache_key, 'ap_answer_position' );
 
 	if ( false !== $cache ) {
 		return $cache;
@@ -403,25 +410,25 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 	$post_status = [ 'publish' ];
 
 	// Check if user can read private post.
-	if ( ap_user_can_view_private_post( ) ) {
+	if ( ap_user_can_view_private_post() ) {
 		$post_status[] = 'private_post';
 	}
 
 	// Check if user can read moderate posts.
-	if ( ap_user_can_view_moderate_post( ) ) {
+	if ( ap_user_can_view_moderate_post() ) {
 		$post_status[] = 'moderate';
 	}
 
 	// Show trash posts to super admin.
-	if ( is_super_admin( ) ) {
+	if ( is_super_admin() ) {
 		$post_status[] = 'trash';
 	}
 
-	$status = "p.post_status IN ('" . implode( "','",  $post_status ) . "')";
+	$status = "p.post_status IN ('" . implode( "','", $post_status ) . "')";
 
 	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // db call okay, unprepared sql okay.
 
-	$pos = (int) array_search( $answer_id , $ids ) + 1; // lose comparison ok.
+	$pos   = (int) array_search( $answer_id, $ids ) + 1; // lose comparison ok.
 	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
 	wp_cache_set( $cache_key, $paged, 'ap_answer_position' );
 

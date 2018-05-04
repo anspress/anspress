@@ -141,8 +141,8 @@ function ap_user_can_ask( $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_ask function.
 	 *
-	 * @param  boolean|string 	$filter 	Apply this filter, empty string by default.
-	 * @param  integer 			$user_id 	User ID.
+	 * @param  boolean|string   $filter     Apply this filter, empty string by default.
+	 * @param  integer          $user_id    User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -194,9 +194,9 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	/**
 	 * Allow overriding of ap_user_can_answer.
 	 *
-	 * @param boolean|string $filter 		Apply this filter, default is empty string.
-	 * @param integer 		   $question_id 	Question ID.
-	 * @param integer 		   $user_id 		User ID.
+	 * @param boolean|string $filter        Apply this filter, default is empty string.
+	 * @param integer          $question_id     Question ID.
+	 * @param integer          $user_id         User ID.
 	 * @since 2.4.6          Added 2 new arguments `$question_id` and `$user_id`.
 	 */
 	$filter = apply_filters( 'ap_user_can_answer', '', $question->ID, $user_id );
@@ -267,7 +267,7 @@ function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 	 * Filter to hijack ap_user_can_select_answer. This filter will be applied if filter
 	 * returns a boolean value. To baypass return an empty string.
 	 *
-	 * @param string|boolean 	$filter 		Apply this filter.
+	 * @param string|boolean    $filter         Apply this filter.
 	 * @param mixed   $_post Question ID.
 	 * @param integer $user_id User ID.
 	 */
@@ -279,14 +279,14 @@ function ap_user_can_select_answer( $_post = null, $user_id = false ) {
 		return false;
 	}
 
-	$answer 	= ap_get_post( $_post );
+	$answer = ap_get_post( $_post );
 
 	// If not answer then return false.
 	if ( 'answer' !== $answer->post_type ) {
 		return false;
 	}
 
-	$question 	= ap_get_post( $answer->post_parent );
+	$question = ap_get_post( $answer->post_parent );
 
 	if ( is_user_logged_in() && (string) $user_id === $question->post_author ) {
 		return true;
@@ -327,9 +327,9 @@ function ap_user_can_edit_post( $post = null, $user_id = false ) {
 	 * Filter to hijack ap_user_can_edit_post. This filter will be applied if filter
 	 * returns a boolean value. To baypass return an empty string.
 	 *
-	 * @param string|boolean 	$filter 		Apply this filter.
-	 * @param integer 			$question_id 	Question ID.
-	 * @param integer 			$user_id 		User ID.
+	 * @param string|boolean    $filter         Apply this filter.
+	 * @param integer           $question_id    Question ID.
+	 * @param integer           $user_id        User ID.
 	 */
 	$filter = apply_filters( 'ap_user_can_edit_post', '', $_post->ID, $user_id );
 
@@ -378,9 +378,9 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 	 * Filter to hijack ap_user_can_edit_answer. This filter will be applied if filter
 	 * returns a boolean value. To baypass return an empty string.
 	 *
-	 * @param string|boolean 	$filter 		Apply this filter.
-	 * @param integer 			$question_id 	Question ID.
-	 * @param integer 			$user_id 		User ID.
+	 * @param string|boolean    $filter         Apply this filter.
+	 * @param integer           $question_id    Question ID.
+	 * @param integer           $user_id        User ID.
 	 */
 	$filter = apply_filters( 'ap_user_can_edit_answer', '', $answer->ID, $user_id );
 
@@ -443,9 +443,9 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 	 * Filter to hijack ap_user_can_edit_question. This filter will be applied if filter
 	 * returns a boolean value. To baypass return an empty string.
 	 *
-	 * @param string|boolean 	$filter 		Apply this filter.
-	 * @param integer 			$question_id 	Question ID.
-	 * @param integer 			$user_id 		User ID.
+	 * @param string|boolean    $filter         Apply this filter.
+	 * @param integer           $question_id    Question ID.
+	 * @param integer           $user_id        User ID.
 	 */
 	$filter = apply_filters( 'ap_user_can_edit_question', '', $question->ID, $user_id );
 
@@ -509,9 +509,9 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_comment.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer|object 	$post_id 		Post ID or object.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer|object   $post_id        Post ID or object.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -570,9 +570,9 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_edit_comment.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer|object 	$post_id 		Post ID or object.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer|object   $post_id        Post ID or object.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -643,7 +643,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	}
 
 	$post_o = ap_get_post( $post_id );
-	$type = $post_o->post_type;
+	$type   = $post_o->post_type;
 
 	// Return if not question or answer post type.
 	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
@@ -653,9 +653,9 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_delete_post.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer|object 	$post_id 		Post ID or object.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer|object   $post_id        Post ID or object.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -721,7 +721,7 @@ function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
 	$_post = ap_get_post( $post );
 
 	// Return false if not question or answer.
-	if( ! in_array( $_post->post_type, [ 'question', 'answer' ], true) ) {
+	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
 		return false;
 	}
 
@@ -778,7 +778,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 
 	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
-	if( ! $post_o || 0 == $user_id ) {
+	if ( ! $post_o || 0 == $user_id ) {
 		return false;
 	}
 
@@ -805,7 +805,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
  * @param  integer $user_id User ID.
  * @return boolean
  * @since  unknown
- * @since  4.1.5 Let user view if post is in their session. This is useful for anonymous users.
+ * @since  4.1.5 Let user view if post is in their session. This is useful for guest users.
  */
 function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 
@@ -865,7 +865,7 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 		return true;
 	}
 
-	$session_type = 'answer' === $_post->post_type ? 'answers' : 'questions';
+	$session_type  = 'answer' === $_post->post_type ? 'answers' : 'questions';
 	$session_posts = anspress()->session->get( $session_type );
 
 	if ( ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {
@@ -952,9 +952,9 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_change_status.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer 			$post_id 		Post ID.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer          $post_id        Post ID.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -1073,6 +1073,8 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
  * Check if user can by pass a captcha.
  *
  * @param integer|false $user_id User ID.
+ *
+ * @since 4.1.8 Exclude defined user roles.
  */
 function ap_show_captcha_to_user( $user_id = false ) {
 	if ( false === $user_id ) {
@@ -1080,11 +1082,19 @@ function ap_show_captcha_to_user( $user_id = false ) {
 	}
 
 	// Return false if super admin or ap_moderator.
-	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_moderator' )) {
+	if ( is_super_admin( $user_id ) || user_can( $user_id, 'ap_moderator' ) ) {
 		return false;
 	}
 
 	if ( apply_filters( 'ap_show_captcha', false, $user_id ) ) {
+		return false;
+	}
+
+	$current_user = wp_get_current_user();
+	$opt          = array_keys( ap_opt( 'recaptcha_exclude_roles' ) );
+	$intersect    = array_intersect( $current_user->roles, $opt );
+
+	if ( ! empty( $intersect ) && count( $intersect ) > 0 ) {
 		return false;
 	}
 
@@ -1107,7 +1117,7 @@ function ap_role_caps( $role ) {
 		'participant' => array(
 			'ap_read_question'   => true,
 			'ap_read_answer'     => true,
-			'ap_read_comment'     => true,
+			'ap_read_comment'    => true,
 			'ap_new_question'    => true,
 			'ap_new_answer'      => true,
 			'ap_new_comment'     => true,
@@ -1124,7 +1134,7 @@ function ap_role_caps( $role ) {
 			'ap_upload_cover'    => true,
 			'ap_change_status'   => true,
 		),
-		'moderator' => array(
+		'moderator'   => array(
 			'ap_edit_others_question'   => true,
 			'ap_edit_others_answer'     => true,
 			'ap_edit_others_comment'    => true,
@@ -1155,7 +1165,7 @@ function ap_role_caps( $role ) {
 /**
  * Check if a user can read post.
  *
- * @param  integer|object  $_post 	Post ID.
+ * @param  integer|object  $_post   Post ID.
  * @param  boolean|integer $user_id   User ID.
  * @param  string|integer  $post_type Post type.
  * @return boolean
@@ -1167,7 +1177,7 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 		$user_id = get_current_user_id();
 	}
 
-	$post_o = ap_get_post( $_post );
+	$post_o    = ap_get_post( $_post );
 	$post_type = $post_o->post_type;
 
 	if ( ! $post_o ) {
@@ -1182,10 +1192,10 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 	/**
 	 * Allow overriding of ap_user_can_read_post.
 	 *
-	 * @param  boolean|string  	$apply_filter Default is empty string.
-	 * @param  integer  		$post_id  	  Question ID.
-	 * @param  integer  		$user_id  	  User ID.
-	 * @param  string   		$post_type    Post type.
+	 * @param  boolean|string   $apply_filter Default is empty string.
+	 * @param  integer          $post_id      Question ID.
+	 * @param  integer          $user_id      User ID.
+	 * @param  string           $post_type    Post type.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -1271,10 +1281,10 @@ function ap_user_can_read_answer( $post = null, $user_id = false ) {
 /**
  * Check if user is allowed to cast a vote on post.
  *
- * @param  integer|object  $post_id 	Post ID or Object.
- * @param  string          $type    	Vote type. vote_up or vote_down.
- * @param  boolean|integer $user_id 	User ID.
- * @param  boolean		   $wp_error 	Return WP_Error object.
+ * @param  integer|object  $post_id     Post ID or Object.
+ * @param  string          $type        Vote type. vote_up or vote_down.
+ * @param  boolean|integer $user_id     User ID.
+ * @param  boolean         $wp_error    Return WP_Error object.
  * @return boolean
  * @since  2.4.6
  */
@@ -1288,16 +1298,16 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 		return true;
 	}
 
-	$type = 'vote_up' === $type ? 'vote_up' : 'vote_down';
+	$type   = 'vote_up' === $type ? 'vote_up' : 'vote_down';
 	$post_o = ap_get_post( $post_id );
 
 	/**
 	 * Filter to hijack ap_user_can_vote_on_post.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer|object 	$post_id 		Post ID or object.
-	 * @param  string 		 	$type 			Vote type, vote_up or vote_down.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer|object   $post_id        Post ID or object.
+	 * @param  string           $type           Vote type, vote_up or vote_down.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  2.4.6
 	 */
@@ -1350,8 +1360,8 @@ function ap_user_can_approve_comment( $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_approve_comment.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  3.0.0
 	 */
@@ -1384,8 +1394,8 @@ function ap_user_can_toggle_featured( $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_toggle_featured.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer 			$user_id 		User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer          $user_id        User ID.
 	 * @return boolean
 	 * @since  3.0.0
 	 */
@@ -1407,7 +1417,7 @@ function ap_user_can_toggle_featured( $user_id = false ) {
 /**
  * Check if a user can read a comment.
  *
- * @param  integer|object  $_comment 	Comment id or object.
+ * @param  integer|object  $_comment    Comment id or object.
  * @param  boolean|integer $user_id   User ID.
  * @return boolean
  * @since  4.1.0
@@ -1426,9 +1436,9 @@ function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_read_comment.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  integer|object 	$_comment 		  Comment object.
-	 * @param  integer 			    $user_id 		    User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer|object   $_comment         Comment object.
+	 * @param  integer              $user_id            User ID.
 	 * @since  4.1.0
 	 */
 	$filter = apply_filters( 'ap_user_can_read_comment', '', $_comment, $user_id );
@@ -1482,9 +1492,9 @@ function ap_user_can_read_comments( $_post = null, $user_id = false ) {
 	/**
 	 * Filter to hijack ap_user_can_read_comments.
 	 *
-	 * @param  boolean|string 	$apply_filter 	Apply current filter, empty string by default.
-	 * @param  object 			    $_post 		      Post ID or object.
-	 * @param  integer 			    $user_id 		    User ID.
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  object               $_post            Post ID or object.
+	 * @param  integer              $user_id            User ID.
 	 * @since  4.1.0
 	 */
 	$filter = apply_filters( 'ap_user_can_read_comments', '', $_post, $user_id );
@@ -1502,8 +1512,11 @@ function ap_user_can_read_comments( $_post = null, $user_id = false ) {
 
 	$option = ap_opt( 'read_comment_per' );
 
-	if ( 'logged_in' === $option && is_user_logged_in() ) {
-		return true;
+	if( 'have_cap' === $option && get_user_by( 'ID', $user_id )->has_cap( 'ap_read_comment' ) ) {
+	    return true;
+	}
+	else if ( 'logged_in' === $option && is_user_logged_in() ) {
+	    return true;
 	} elseif ( 'anyone' === $option ) {
 		return true;
 	}

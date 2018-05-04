@@ -7,8 +7,7 @@
  */
 
 // uncomment this line for testing
-//set_site_transient( 'update_plugins', null );
-
+// set_site_transient( 'update_plugins', null );
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -49,11 +48,11 @@ class AnsPress_Prod_Updater {
 		global $edd_plugin_data;
 
 		$this->is_plugin = $is_plugin;
-		$this->api_url  = trailingslashit( 'https://anspress.io' );
-		$this->api_data = $_api_data;
-		$this->name     = plugin_basename( $_plugin_file );
-		$this->slug     = isset( $this->api_data['slug'] ) ? $this->api_data['slug'] : basename( $_plugin_file, '.php' );
-		$this->version  = $_api_data['version'];
+		$this->api_url   = trailingslashit( 'https://anspress.io' );
+		$this->api_data  = $_api_data;
+		$this->name      = plugin_basename( $_plugin_file );
+		$this->slug      = isset( $this->api_data['slug'] ) ? $this->api_data['slug'] : basename( $_plugin_file, '.php' );
+		$this->version   = $_api_data['version'];
 
 		$this->response_key = $this->slug . '-update-response';
 
@@ -80,29 +79,29 @@ class AnsPress_Prod_Updater {
 			add_action( 'after_plugin_row_' . $this->name, array( $this, 'show_update_notification' ), 10, 2 );
 			add_action( 'admin_init', array( $this, 'show_changelog' ) );
 
-		}	else {
+		} else {
 			$this->strings = array(
-				'theme-license' => __( 'Theme License', 'edd-theme-updater' ),
-				'enter-key' => __( 'Enter your theme license key.', 'edd-theme-updater' ),
-				'license-key' => __( 'License Key', 'edd-theme-updater' ),
-				'license-action' => __( 'License Action', 'edd-theme-updater' ),
-				'deactivate-license' => __( 'Deactivate License', 'edd-theme-updater' ),
-				'activate-license' => __( 'Activate License', 'edd-theme-updater' ),
-				'status-unknown' => __( 'License status is unknown.', 'edd-theme-updater' ),
-				'renew' => __( 'Renew?', 'edd-theme-updater' ),
-				'unlimited' => __( 'unlimited', 'edd-theme-updater' ),
-				'license-key-is-active' => __( 'License key is active.', 'edd-theme-updater' ),
-				'expires%s' => __( 'Expires %s.', 'edd-theme-updater' ),
-				'%1$s/%2$-sites' => __( 'You have %1$s / %2$s sites activated.', 'edd-theme-updater' ),
-				'license-key-expired-%s' => __( 'License key expired %s.', 'edd-theme-updater' ),
-				'license-key-expired' => __( 'License key has expired.', 'edd-theme-updater' ),
+				'theme-license'             => __( 'Theme License', 'edd-theme-updater' ),
+				'enter-key'                 => __( 'Enter your theme license key.', 'edd-theme-updater' ),
+				'license-key'               => __( 'License Key', 'edd-theme-updater' ),
+				'license-action'            => __( 'License Action', 'edd-theme-updater' ),
+				'deactivate-license'        => __( 'Deactivate License', 'edd-theme-updater' ),
+				'activate-license'          => __( 'Activate License', 'edd-theme-updater' ),
+				'status-unknown'            => __( 'License status is unknown.', 'edd-theme-updater' ),
+				'renew'                     => __( 'Renew?', 'edd-theme-updater' ),
+				'unlimited'                 => __( 'unlimited', 'edd-theme-updater' ),
+				'license-key-is-active'     => __( 'License key is active.', 'edd-theme-updater' ),
+				'expires%s'                 => __( 'Expires %s.', 'edd-theme-updater' ),
+				'%1$s/%2$-sites'            => __( 'You have %1$s / %2$s sites activated.', 'edd-theme-updater' ),
+				'license-key-expired-%s'    => __( 'License key expired %s.', 'edd-theme-updater' ),
+				'license-key-expired'       => __( 'License key has expired.', 'edd-theme-updater' ),
 				'license-keys-do-not-match' => __( 'License keys do not match.', 'edd-theme-updater' ),
-				'license-is-inactive' => __( 'License is inactive.', 'edd-theme-updater' ),
-				'license-key-is-disabled' => __( 'License key is disabled.', 'edd-theme-updater' ),
-				'site-is-inactive' => __( 'Site is inactive.', 'edd-theme-updater' ),
-				'license-status-unknown' => __( 'License status is unknown.', 'edd-theme-updater' ),
-				'update-notice' => __( "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", 'edd-theme-updater' ),
-				'update-available' => __('<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'edd-theme-updater' )
+				'license-is-inactive'       => __( 'License is inactive.', 'edd-theme-updater' ),
+				'license-key-is-disabled'   => __( 'License key is disabled.', 'edd-theme-updater' ),
+				'site-is-inactive'          => __( 'Site is inactive.', 'edd-theme-updater' ),
+				'license-status-unknown'    => __( 'License status is unknown.', 'edd-theme-updater' ),
+				'update-notice'             => __( "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", 'edd-theme-updater' ),
+				'update-available'          => __( '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'edd-theme-updater' ),
 			);
 
 			add_filter( 'site_transient_update_themes', [ $this, 'theme_update_transient' ] );
@@ -137,7 +136,7 @@ class AnsPress_Prod_Updater {
 		global $pagenow;
 
 		if ( ! is_object( $_transient_data ) ) {
-			$_transient_data = new stdClass;
+			$_transient_data = new stdClass();
 		}
 
 		if ( 'plugins.php' == $pagenow && is_multisite() ) {
@@ -152,7 +151,7 @@ class AnsPress_Prod_Updater {
 					$_transient_data->response[ $this->name ] = $version_info;
 				}
 
-				$_transient_data->last_checked = time();
+				$_transient_data->last_checked           = time();
 				$_transient_data->checked[ $this->name ] = $this->version;
 			}
 		}
@@ -204,7 +203,7 @@ class AnsPress_Prod_Updater {
 				$update_cache->response[ $this->name ] = $version_info;
 			}
 
-			$update_cache->last_checked = time();
+			$update_cache->last_checked           = time();
 			$update_cache->checked[ $this->name ] = $this->version;
 
 			set_site_transient( 'update_plugins', $update_cache );
@@ -330,16 +329,22 @@ class AnsPress_Prod_Updater {
 
 		$api_params = array(
 			'edd_action'   => 'get_version',
-			'license'      => ! empty( $data['license'] ) ? $data['license']:   '',
-			'item_name'    => isset( $data['item_name'] ) ? $data['item_name']: false,
-			'item_id'      => isset( $data['item_id'] ) ? $data['item_id']:     false,
+			'license'      => ! empty( $data['license'] ) ? $data['license'] : '',
+			'item_name'    => isset( $data['item_name'] ) ? $data['item_name'] : false,
+			'item_id'      => isset( $data['item_id'] ) ? $data['item_id'] : false,
 			'slug'         => $data['slug'],
 			'author'       => $data['author'],
 			'url'          => home_url(),
 			'anspress_ver' => AP_VERSION,
 		);
 
-		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$request = wp_remote_post(
+			$this->api_url, array(
+				'timeout'   => 15,
+				'sslverify' => false,
+				'body'      => $api_params,
+			)
+		);
 
 		if ( ! is_wp_error( $request ) ) {
 			$request = json_decode( wp_remote_retrieve_body( $request ) );
@@ -389,7 +394,13 @@ class AnsPress_Prod_Updater {
 				'url'        => home_url(),
 			);
 
-			$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+			$request = wp_remote_post(
+				$this->api_url, array(
+					'timeout'   => 15,
+					'sslverify' => false,
+					'body'      => $api_params,
+				)
+			);
 
 			if ( ! is_wp_error( $request ) ) {
 				$version_info = json_decode( wp_remote_retrieve_body( $request ) );
@@ -441,8 +452,7 @@ class AnsPress_Prod_Updater {
 			return;
 		}
 
-
-		$update_url = wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $this->slug ), 'upgrade-theme_' . $this->slug );
+		$update_url     = wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $this->slug ), 'upgrade-theme_' . $this->slug );
 		$update_onclick = ' onclick="if ( confirm(\'' . esc_js( $strings['update-notice'] ) . '\') ) {return true;}return false;"';
 
 		if ( version_compare( $this->version, $api_response->new_version, '<' ) ) {
@@ -471,15 +481,20 @@ class AnsPress_Prod_Updater {
 			$failed = false;
 
 			$api_params = array(
-				'edd_action' 	 => 'get_version',
-				'license' 		 => $this->api_data['license'],
-				'name' 			   => $this->api_data['item_name'],
-				'slug' 			   => $this->slug,
-				'author'		   => $this->api_data['author'],
+				'edd_action'   => 'get_version',
+				'license'      => $this->api_data['license'],
+				'name'         => $this->api_data['item_name'],
+				'slug'         => $this->slug,
+				'author'       => $this->api_data['author'],
 				'anspress_ver' => AP_VERSION,
 			);
 
-			$response = wp_remote_post( $this->api_url, [ 'timeout' => 15, 'body' => $api_params ] );
+			$response = wp_remote_post(
+				$this->api_url, [
+					'timeout' => 15,
+					'body'    => $api_params,
+				]
+			);
 
 			// Make sure the response was successful.
 			if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
@@ -494,7 +509,7 @@ class AnsPress_Prod_Updater {
 
 			// If the response failed, try again in 30 minutes
 			if ( $failed ) {
-				$data = new stdClass;
+				$data              = new stdClass();
 				$data->new_version = $this->version;
 				set_transient( $this->response_key, $data, strtotime( '+30 minutes' ) );
 				return false;
