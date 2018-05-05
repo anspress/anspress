@@ -31,6 +31,14 @@ class AnsPress_BasePage_Shortcode {
 	}
 
 	/**
+	 * Current page
+	 *
+	 * @var string
+	 * @since 4.1.9
+	 */
+	public $current_page = '';
+
+	/**
 	 * Control the output of [anspress] shortcode.
 	 *
 	 * @param array  $atts {
@@ -79,7 +87,7 @@ class AnsPress_BasePage_Shortcode {
 			do_action( 'ap_before' );
 
 			// Include theme file.
-			ap_page();
+			ap_page( $this->current_page );
 
 		echo '</div>';
 		// Linkback to author.
@@ -128,6 +136,7 @@ class AnsPress_BasePage_Shortcode {
 
 		// Load specefic AnsPress page.
 		if ( isset( $atts['page'] ) ) {
+			$this->current_page = $atts['page'];
 			set_query_var( 'ap_page', $atts['page'] );
 			$_GET['ap_page'] = $atts['page'];
 		}
