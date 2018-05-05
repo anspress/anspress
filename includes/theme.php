@@ -206,10 +206,10 @@ function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true,
  * @since 2.0.0
  * @since 4.1.9 Fixed: page attribute not working.
  */
-function ap_page( $current_page = null ) {
-	$pages        = anspress()->pages;
+function ap_page( $current_page = '' ) {
+	$pages = anspress()->pages;
 
-	if ( null === $current_page ) {
+	if ( empty( $current_page ) ) {
 		$current_page = ap_current_page();
 		$current_page = '' === $current_page ? 'base' : $current_page;
 	}
