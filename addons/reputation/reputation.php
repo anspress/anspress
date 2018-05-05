@@ -131,7 +131,7 @@ class Reputation extends \AnsPress\Singleton {
 			'answer', array(
 				'points'      => 5,
 				'label'       => __( 'Answering', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user answer a question', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user answers a question', 'anspress-question-answer' ),
 				'icon'        => 'apicon-answer',
 				'activity'    => __( 'Posted an answer', 'anspress-question-answer' ),
 				'parent'      => 'answer',
@@ -142,7 +142,7 @@ class Reputation extends \AnsPress\Singleton {
 			'comment', array(
 				'points'      => 2,
 				'label'       => __( 'Commenting', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user comment on question or answer', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user comments on question or answer', 'anspress-question-answer' ),
 				'icon'        => 'apicon-comments',
 				'activity'    => __( 'Commented on a post', 'anspress-question-answer' ),
 				'parent'      => 'comment',
@@ -153,7 +153,7 @@ class Reputation extends \AnsPress\Singleton {
 			'select_answer', array(
 				'points'      => 2,
 				'label'       => __( 'Selecting an Answer', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user select an answer for thier question', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user selects an answer for their question', 'anspress-question-answer' ),
 				'icon'        => 'apicon-check',
 				'activity'    => __( 'Selected an answer as best', 'anspress-question-answer' ),
 				'parent'      => 'question',
@@ -164,7 +164,7 @@ class Reputation extends \AnsPress\Singleton {
 			'best_answer', array(
 				'points'      => 10,
 				'label'       => __( 'Answer selected as best', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user\'s answer selected as best', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user\'s answer is selected as best', 'anspress-question-answer' ),
 				'icon'        => 'apicon-check',
 				'activity'    => __( 'Answer was selected as best', 'anspress-question-answer' ),
 				'parent'      => 'answer',
@@ -175,7 +175,7 @@ class Reputation extends \AnsPress\Singleton {
 			'received_vote_up', array(
 				'points'      => 10,
 				'label'       => __( 'Received up vote', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user receive an upvote', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user receives an upvote', 'anspress-question-answer' ),
 				'icon'        => 'apicon-thumb-up',
 				'activity'    => __( 'Received an upvote', 'anspress-question-answer' ),
 			)
@@ -185,7 +185,7 @@ class Reputation extends \AnsPress\Singleton {
 			'received_vote_down', array(
 				'points'      => -2,
 				'label'       => __( 'Received down vote', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user receive a down vote', 'anspress-question-answer' ),
+				'description' => __( 'Points awarded when user receives a down vote', 'anspress-question-answer' ),
 				'icon'        => 'apicon-thumb-down',
 				'activity'    => __( 'Received a down vote', 'anspress-question-answer' ),
 			)
@@ -195,7 +195,7 @@ class Reputation extends \AnsPress\Singleton {
 			'given_vote_up', array(
 				'points'      => 0,
 				'label'       => __( 'Gives an up vote', 'anspress-question-answer' ),
-				'description' => __( 'Points taken from user when they give a vote up', 'anspress-question-answer' ),
+				'description' => __( 'Points taken from user when they give an up vote', 'anspress-question-answer' ),
 				'icon'        => 'apicon-thumb-up',
 				'activity'    => __( 'Given an up vote', 'anspress-question-answer' ),
 			)
@@ -205,7 +205,7 @@ class Reputation extends \AnsPress\Singleton {
 			'given_vote_down', array(
 				'points'      => 0,
 				'label'       => __( 'Gives down vote', 'anspress-question-answer' ),
-				'description' => __( 'Points taken from user when user give a down vote', 'anspress-question-answer' ),
+				'description' => __( 'Points taken from user when they give a down vote', 'anspress-question-answer' ),
 				'icon'        => 'apicon-thumb-down',
 				'activity'    => __( 'Given a down vote', 'anspress-question-answer' ),
 			)
