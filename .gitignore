@@ -17,6 +17,18 @@
 /tests/ui.suite.yml
 /tests/ui.suite.dist.yml
 /tests/activator.suite.yml
-/.DS_Store
-/templates/.DS_Store
-/templates/addons/.DS_Store
+
+__MACOSX
+.DS_Store
+
+# OS generated files #
+######################
+*/.DS_Store
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
