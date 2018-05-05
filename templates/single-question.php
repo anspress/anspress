@@ -57,7 +57,7 @@
 					<div class="ap-cell clearfix">
 						<div class="ap-cell-inner">
 							<div class="ap-q-metas">
-								<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+								<span class="ap-author" itemprop="author" itemscope itemtype="http://schema.org/Person">
 									<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
 								</span>
 								<a href="<?php the_permalink(); ?>" class="ap-posted">
