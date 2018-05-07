@@ -318,15 +318,10 @@ class Helper {
 			return new \WP_Error( 'no_emails' );
 		}
 
-		$first_email = $this->emails[0];
-		unset( $this->emails[0] );
-
 		if ( ! empty( $this->emails ) ) {
 			foreach ( $this->emails as $email ) {
-				$this->email_headers[] = "Bcc: $email";
+				wp_mail( $email, $this->subject, $body, $this->email_headers );
 			}
 		}
-
-		return wp_mail( $first_email, $this->subject, $body, $this->email_headers );
 	}
 }

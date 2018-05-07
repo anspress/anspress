@@ -157,11 +157,11 @@ class Repeatable extends Field {
 
 		$add_button_args = wp_json_encode(
 			array(
-				'ap_ajax_action' => 'get_repeatable_field',
-				'form_name'      => $this->form_name,
-				'field_name'     => $this->field_name,
-				'id'             => sanitize_title( $this->field_name ),
-				'__nonce'        => wp_create_nonce( 'get_repeatable_field' ),
+				'action'     => 'ap_repeatable_field',
+				'form_name'  => $this->form_name,
+				'field_name' => $this->field_name,
+				'field_id'   => sanitize_title( $this->field_name ),
+				'__nonce'    => wp_create_nonce( 'repeatable-field' ),
 			)
 		);
 

@@ -232,7 +232,7 @@ class Field {
 		}
 
 		foreach ( $keys as $key ) {
-			if ( ! array_key_exists( $key, $array ) ) {
+			if ( ! is_array( $array ) || ! array_key_exists( $key, $array ) ) {
 				return $default;
 			}
 
