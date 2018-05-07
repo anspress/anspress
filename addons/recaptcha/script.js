@@ -13,6 +13,6 @@ function apCpatchaLoaded() {
   });
 }
 jQuery(document).ready(function(){
-  window.Anspress = Anspress || {};
-  window.Anspress.captcha = {}
+  window.AnsPress = AnsPress || {};
+  window.AnsPress.captcha = {}
 });
