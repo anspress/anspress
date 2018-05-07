@@ -13,5 +13,6 @@ function apCpatchaLoaded() {
   });
 }
 jQuery(document).ready(function(){
-  AnsPress.captcha = {};
+  window.Anspress = Anspress || {};
+  window.Anspress.captcha = {}
 });
