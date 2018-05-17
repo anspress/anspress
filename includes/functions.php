@@ -986,7 +986,7 @@ function ap_create_base_page() {
 }
 
 /**
- * Return question id with solved prefix if answer is accepted.
+ * Return question title with solved prefix if answer is accepted.
  *
  * @param boolean|integer $question_id Question ID.
  * @return string
