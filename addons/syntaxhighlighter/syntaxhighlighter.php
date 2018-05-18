@@ -62,7 +62,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 		$css_url = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/styles/';
 
 		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
-		wp_enqueue_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', ['jquery'], AP_VERSION );
+		wp_enqueue_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', [ 'jquery', 'anspress-main' ], AP_VERSION );
 		wp_enqueue_script( 'syntaxhighlighter-autoloader', $js_url . 'shAutoloader.js', [ 'syntaxhighlighter-core' ], AP_VERSION );
 		wp_enqueue_script( 'syntaxhighlighter', ANSPRESS_URL . 'addons/syntaxhighlighter/script.js', [ 'syntaxhighlighter-core' ], AP_VERSION, true );
 
