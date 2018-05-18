@@ -672,6 +672,16 @@ class AP_Form_Hooks {
 			ap_clear_unattached_media();
 		}
 
+		/**
+		 * Action called after processing answer form. This is triggered
+		 * only for answer submitted from frontend.
+		 *
+		 * @param integer $post_id Answer id just created /updated.
+		 *
+		 * @since 4.1.11
+		 */
+		do_action( 'ap_after_answer_form_processed', $post_id );
+
 		if ( ! $editing ) {
 			anspress()->session->set_answer( $post_id );
 			ap_answer_post_ajax_response( $question_id, $post_id );

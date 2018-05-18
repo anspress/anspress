@@ -88,9 +88,10 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'ap_after_answer_content', 'AnsPress_Theme', 'after_question_content' );
 
 			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
-			anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
+			//anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
 			anspress()->add_filter( 'preprocess_comment', 'AnsPress_Comment_Hooks', 'preprocess_comment' );
+			anspress()->add_filter( 'comments_template', 'AnsPress_Comment_Hooks', 'comments_template' );
 
 			// Common pages hooks.
 			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );

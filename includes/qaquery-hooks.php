@@ -235,7 +235,7 @@ class AP_QA_Query_Hooks {
 	 */
 	public static function pre_get_posts( $query ) {
 		if ( $query->is_single() && $query->is_main_query() && 'question' === get_query_var( 'post_type' ) ) {
-			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post', 'future' ] );
+			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post', 'future', 'ap_spam' ] );
 		}
 	}
 
