@@ -1707,6 +1707,10 @@ function ap_get_addons() {
 			'name'        => __( 'Syntax Highlighter', 'anspress-question-answer' ),
 			'description' => __( 'Add syntax highlighter support.', 'anspress-question-answer' ),
 		),
+		'akismet.php' => array(
+			'name'        => __( 'Akismet Check', 'anspress-question-answer' ),
+			'description' => __( 'Check for spam in post content.', 'anspress-question-answer' ),
+		),
 	);
 
 	/**

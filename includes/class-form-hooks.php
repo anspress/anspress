@@ -468,6 +468,16 @@ class AP_Form_Hooks {
 			ap_clear_unattached_media();
 		}
 
+		/**
+		 * Action called after processing question form. This is triggred
+		 * only for question submitted from frontend.
+		 *
+		 * @param integer $post_id Question id just created /updated.
+		 *
+		 * @since 4.1.11
+		 */
+		do_action( 'ap_after_question_form_processed', $post_id );
+
 		if ( isset( $question_args['ID'] ) ) {
 			$message = __( 'Question updated successfully, you\'ll be redirected in a moment.', 'anspress-question-answer' );
 		} else {
