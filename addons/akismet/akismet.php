@@ -76,7 +76,6 @@ class Akismet extends \AnsPress\Singleton {
 			'fields'       => array(
 				'spam_post_action'        => array(
 					'label'   => __( 'What to do when post is a spam?', 'anspress-question-answer' ),
-					'desc'    => __( 'Select font family for avatar letters.', 'anspress-question-answer' ),
 					'type'    => 'select',
 					'options' => array(
 						'moderate' => __( 'Change status to moderate', 'anspress-question-answer' ),
