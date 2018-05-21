@@ -51,7 +51,11 @@ class Akismet extends \AnsPress\Singleton {
 			return;
 		}
 
-		anspress()->add_action( 'init', $this, 'register_status' );
+		ap_add_default_options( array(
+			'spam_post_action' => 'moderate',
+		));
+
+		anspress()->add_action( 'ap_form_addon-akismet', $this, 'option_form' );
 		anspress()->add_action( 'ap_after_question_form_processed', $this, 'new_question_answer' );
 		anspress()->add_action( 'ap_after_answer_form_processed', $this, 'new_question_answer' );
 		anspress()->add_action( 'admin_action_ap_mark_spam', $this, 'submit_spam' );
@@ -59,19 +63,31 @@ class Akismet extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Register spam post status.
+	 * Register options of Avatar addon.
 	 *
-	 * @return void
+	 * @return array
+	 * @since 4.1.0
 	 */
-	public function register_status() {
-		register_post_status( 'ap_spam', array(
-			'label'                     => _x( 'Spam', 'anspress-question-answer' ),
-			'public'                    => true,
-			'exclude_from_search'       => true,
-			'show_in_admin_all_list'    => true,
-			'show_in_admin_status_list' => true,
-			'label_count'               => _n_noop( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>' ),
-		) );
+	public static function option_form() {
+		$opt = ap_opt();
+
+		$form = array(
+			'submit_label' => __( 'Save add-on options', 'anspress-question-answer' ),
+			'fields'       => array(
+				'spam_post_action'        => array(
+					'label'   => __( 'What to do when post is a spam?', 'anspress-question-answer' ),
+					'desc'    => __( 'Select font family for avatar letters.', 'anspress-question-answer' ),
+					'type'    => 'select',
+					'options' => array(
+						'moderate' => __( 'Change status to moderate', 'anspress-question-answer' ),
+						'trash'    => __( 'Trash the post', 'anspress-question-answer' ),
+					),
+					'value'   => $opt['spam_post_action'],
+				),
+			),
+		);
+
+		return $form;
 	}
 
 	/**
@@ -152,14 +168,25 @@ class Akismet extends \AnsPress\Singleton {
 
 		// Lastly if true mark it as spam.
 		if ( 'true' === $response['body'] || 'Thanks for making the web a better place.' === $response['body'] ) {
-			wp_update_post(
-				array(
-					'ID'          => $post_id,
-					'post_status' => 'ap_spam',
-				)
-			);
+			$this->spam_post_action( $post_id );
+			update_post_meta( $post_id, '__ap_spam', current_time( 'timestamp' ) );
 		}
 
+	}
+
+	/**
+	 * Action to do when post is marked as a spam.
+	 *
+	 * @param integer $post_id Post id.
+	 * @return void
+	 */
+	public function spam_post_action( $post_id ) {
+		$opt = ap_opt( 'spam_post_action' );
+
+		wp_update_post( array(
+			'ID'          => $post_id,
+			'post_status' => $opt,
+		) );
 	}
 
 	/**
@@ -172,7 +199,7 @@ class Akismet extends \AnsPress\Singleton {
 		$_post = ap_get_post( $post_id );
 
 		// Return if already a spam or user is admin.
-		if ( 'ap_spam' === $_post->post_status || user_can( $_post->post_author, 'manage_options' ) ) {
+		if ( 'moderate' === $_post->post_status || user_can( $_post->post_author, 'manage_options' ) ) {
 			return;
 		}
 
@@ -195,7 +222,7 @@ class Akismet extends \AnsPress\Singleton {
 		$this->api_request( $post_id, true );
 
 		// Redirect.
-		wp_redirect( admin_url( 'edit.php?post_status=ap_spam&post_type=question' ) );
+		wp_redirect( admin_url( 'edit.php?post_type=question' ) );
 		die();
 	}
 
@@ -207,7 +234,7 @@ class Akismet extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function row_actions( $actions, $post ) {
-		if ( ! ap_is_cpt( $post ) || 'ap_spam' === $post->post_status ) {
+		if ( ! ap_is_cpt( $post ) || 'moderate' === $post->post_status ) {
 			return $actions;
 		}
 
