@@ -29,6 +29,13 @@ class AnsPress_Stats_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
+
+		/**
+		 * Filters the widget title.
+		 *
+		 * @param string $title Widget title.
+		 * @since 1.0.0
+		 */
 		$title = apply_filters( 'widget_title', $title );
 
 		echo $args['before_widget'];

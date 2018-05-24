@@ -44,10 +44,14 @@ class AP_Questions_Widget extends WP_Widget {
 			'order_by'     => 'active',
 		) );
 
-		$title 			   = apply_filters( 'widget_title', $instance['title'] );
-		$order_by 	   = $instance[ 'order_by' ];
-		$limit			   = $instance[ 'limit' ];
-		$category_ids	 = $instance[ 'category_ids' ];
+		/**
+		 * This filter is documented in widgets/question_stats.php
+		 */
+		$title = apply_filters( 'widget_title', $instance['title'] );
+
+		$order_by     = $instance[ 'order_by' ];
+		$limit        = $instance[ 'limit' ];
+		$category_ids = $instance[ 'category_ids' ];
 
 		if ( ! empty( $category_ids ) ) {
 			$category_ids = explode( ',', str_replace( ' ', '', $category_ids ) );

@@ -38,6 +38,9 @@ class AP_Askform_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
+		/**
+		 * This filter is documented in widgets/question_stats.php
+		 */
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
 		echo $args['before_widget']; // xss okay.
