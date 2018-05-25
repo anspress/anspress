@@ -2,11 +2,12 @@
 build:
     nodes:
         analysis:
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress
             tests:
                 override:
                     - php-scrutinizer-run
-before_commands:
-    - composer require --dev johnpbloch/wordpress
 checks:
     php:
         psr2_switch_declaration: false
@@ -49,6 +50,8 @@ filter:
     excluded_paths:
         - tests/*
         - vendor/*
+    dependency_paths:
+        - wordpress/
 tools:
     php_code_sniffer:
         config: { standard: WordPress }

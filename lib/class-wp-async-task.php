@@ -152,13 +152,14 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 		/**
 		 * Verify the postback is valid, then fire any scheduled events.
 		 *
-		 * @uses $_POST['_nonce']
 		 * @uses is_user_logged_in()
 		 * @uses add_filter()
 		 * @uses wp_die()
 		 */
 		public function handle_postback() {
-			if ( isset( $_POST['_nonce'] ) && $this->verify_async_nonce( $_POST['_nonce'] ) ) {
+			$nonce = ap_sanitize_unslash( '_nonce', 'r' );
+
+			if ( ! empty( $nonce ) && false !== $this->verify_async_nonce( $nonce ) ) {
 				if ( ! is_user_logged_in() ) {
 					$this->action = "nopriv_$this->action";
 				}

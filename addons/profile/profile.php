@@ -468,7 +468,7 @@ class Profile extends \AnsPress\Singleton {
 		$user_id      = get_queried_object_id();
 
 		// Current user id if queried object is not set.
-		if ( ! $query_object instanceof WP_User || empty( $user_id ) ) {
+		if ( ! $query_object instanceof \WP_User || empty( $user_id ) ) {
 			$user_id = get_current_user_id();
 		}
 

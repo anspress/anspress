@@ -25,8 +25,6 @@
  * GitHub Plugin URI: anspress/anspress
  */
 
-use AnsPress\Form as Form;
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -502,7 +500,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			$args = apply_filters( 'ap_form_' . $name, null );
 
 			if ( ! is_null( $args ) && ! empty( $args ) ) {
-				$this->forms[ $name ] = new Form( 'form_' . $name, $args );
+				$this->forms[ $name ] = new AnsPress\Form( 'form_' . $name, $args );
 
 				return true;
 			}
