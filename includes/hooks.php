@@ -37,7 +37,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'after_new_answer', 1, 2 );
 			anspress()->add_action( 'before_delete_post', __CLASS__, 'before_delete' );
 			anspress()->add_action( 'wp_trash_post', __CLASS__, 'trash_post_action' );
-			anspress()->add_action( 'untrash_post', __CLASS__, 'untrash_ans_on_question_untrash' );
+			anspress()->add_action( 'untrash_post', __CLASS__, 'untrash_posts' );
 			anspress()->add_action( 'comment_post', __CLASS__, 'new_comment_approve', 10, 2 );
 			anspress()->add_action( 'comment_unapproved_to_approved', __CLASS__, 'comment_approve' );
 			anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapprove' );
@@ -327,8 +327,9 @@ class AnsPress_Hooks {
 	 * @param   integer $post_id Post ID.
 	 * @since 2.0.0
 	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
+	 * @since 4.1.11 Renamed method from `untrash_ans_on_question_untrash` to `untrash_posts`.
 	 */
-	public static function untrash_ans_on_question_untrash( $post_id ) {
+	public static function untrash_posts( $post_id ) {
 		$_post = ap_get_post( $post_id );
 
 		if ( 'question' === $_post->post_type ) {
