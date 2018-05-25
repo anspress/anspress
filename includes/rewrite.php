@@ -59,12 +59,13 @@ class AnsPress_Rewrite {
 	 *
 	 * @param  array $query_vars Registered query variables.
 	 * @return array
+	 *
+	 * @since 4.1.11 Fixed 'answer_id' is inserted twice.
 	 */
 	public static function query_var( $query_vars ) {
 		$query_vars[] = 'edit_post_id';
 		$query_vars[] = 'ap_nonce';
 		$query_vars[] = 'question_id';
-		$query_vars[] = 'answer_id';
 		$query_vars[] = 'answer_id';
 		$query_vars[] = 'answer';
 		$query_vars[] = 'ask';
