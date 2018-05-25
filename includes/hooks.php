@@ -590,10 +590,10 @@ class AnsPress_Hooks {
 	 * @return array
 	 */
 	public static function safe_style_css( $attr ) {
-		global $ap_kses_checkc; // Check if wp_kses is called by AnsPress.
+		global $ap_kses_check; // Check if wp_kses is called by AnsPress.
 
 		if ( isset( $ap_kses_check ) && $ap_kses_check ) {
-				$attr = array( 'text-decoration', 'text-align' );
+			$attr = array( 'text-decoration', 'text-align' );
 		}
 		return $attr;
 	}
