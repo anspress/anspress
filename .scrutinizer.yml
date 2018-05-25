@@ -1,4 +1,10 @@
 # .scrutinizer.yml
+build:
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 before_commands:
     - composer require --dev johnpbloch/wordpress
 checks:
