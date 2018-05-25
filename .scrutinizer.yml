@@ -46,6 +46,7 @@ checks:
         no_error_suppression: false
         return_doc_comments: false
         property_assignments: false
+        no_exit: false
 filter:
     excluded_paths:
         - tests/*

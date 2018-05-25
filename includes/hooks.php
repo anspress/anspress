@@ -588,6 +588,7 @@ class AnsPress_Hooks {
 	 *
 	 * @param	array $attr Allowed CSS attributes.
 	 * @return array
+	 * @since 4.1.11 Fixed wrong variable name.
 	 */
 	public static function safe_style_css( $attr ) {
 		global $ap_kses_check; // Check if wp_kses is called by AnsPress.

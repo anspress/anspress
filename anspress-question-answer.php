@@ -257,7 +257,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			foreach ( $constants as $k => $val ) {
 				if ( ! defined( $k ) ) {
-						define( $k, $val );
+					define( $k, $val );
 				}
 			}
 		}
@@ -639,6 +639,8 @@ require_once dirname( __FILE__ ) . '/includes/class/class-singleton.php';
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-require_once dirname( __FILE__ ) . '/activate.php';
-
-register_activation_hook( __FILE__, [ 'AP_Activate', 'get_instance' ] );
+function anspress_activation() {
+	require_once dirname( __FILE__ ) . '/activate.php';
+	\AP_Activate::get_instance();
+}
+register_activation_hook( __FILE__, 'anspress_activation' );
