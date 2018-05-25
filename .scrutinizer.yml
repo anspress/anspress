@@ -1,13 +1,6 @@
 # .scrutinizer.yml
-build:
-    nodes:
-        analysis:
-            dependencies:
-                before:
-                    - composer require --dev johnpbloch/wordpress
-            tests:
-                override:
-                    - php-scrutinizer-run
+before_commands:
+    - composer require --dev johnpbloch/wordpress
 checks:
     php:
         psr2_switch_declaration: false
@@ -46,13 +39,10 @@ checks:
         no_error_suppression: false
         return_doc_comments: false
         property_assignments: false
-        no_exit: false
 filter:
     excluded_paths:
         - tests/*
         - vendor/*
-    dependency_paths:
-        - wordpress/
 tools:
     php_code_sniffer:
         config: { standard: WordPress }
