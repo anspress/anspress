@@ -166,7 +166,8 @@ class AnsPress_Hooks {
 	 * @param   integer $post_id answer id.
 	 * @param   object  $post answer post object.
 	 * @since 2.0.1
-	 * @since 4.1.2 Removed @see ap_update_post_activity_meta().
+	 * @since 4.1.2  Removed @see ap_update_post_activity_meta().
+	 * @since 4.1.11 Removed @see ap_update_answers_count().
 	 */
 	public static function after_new_answer( $post_id, $post ) {
 		// Update answer count.
