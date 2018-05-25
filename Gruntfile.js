@@ -11,7 +11,7 @@
 				target: {
 					options: {
 						domainPath: '/languages',
-						exclude: ['.git/.*', '.svn/.*', '.node_modules/.*', '.vendor/.*'],
+						exclude: ['.git/.*', '.svn/.*', 'node_modules/.*', 'vendor/.*'],
 						mainFile: 'anspress-question-answer.php',
 						potHeaders: {
 							poedit: true,

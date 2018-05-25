@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress Question Answer 4.1.9\n"
+"Project-Id-Version: AnsPress Question Answer 4.1.11\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2018-05-04 16:17:00+00:00\n"
+"POT-Creation-Date: 2018-05-25 13:46:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,8 +25,32 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n1.0.0\n"
 
-#: addons/avatar/avatar.php:95
+#: addons/akismet/akismet.php:75 addons/avatar/avatar.php:95
 msgid "Save add-on options"
+msgstr ""
+
+#: addons/akismet/akismet.php:78
+msgid "What to do when post is a spam?"
+msgstr ""
+
+#: addons/akismet/akismet.php:81
+msgid "Change status to moderate"
+msgstr ""
+
+#: addons/akismet/akismet.php:82
+msgid "Trash the post"
+msgstr ""
+
+#: addons/akismet/akismet.php:217
+msgid "Cheating"
+msgstr ""
+
+#: addons/akismet/akismet.php:242
+msgid "Mark this post as a spam"
+msgstr ""
+
+#: addons/akismet/akismet.php:242
+msgid "Mark as spam"
 msgstr ""
 
 #: addons/avatar/avatar.php:98
@@ -62,17 +86,17 @@ msgstr ""
 #: addons/buddypress/buddypress.php:124 addons/buddypress/buddypress.php:211
 #: addons/profile/profile.php:50 addons/profile/profile.php:163
 #: admin/views/dashboard.php:28 admin/views/dashboard.php:188
-#: includes/functions.php:2372 includes/options.php:103
+#: includes/functions.php:2376 includes/options.php:103
 #: includes/post-types.php:83 includes/taxo.php:79 includes/taxo.php:387
-#: widgets/questions.php:43 widgets/questions.php:85
+#: widgets/questions.php:43 widgets/questions.php:89
 msgid "Questions"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:128 addons/buddypress/buddypress.php:270
 #: addons/profile/profile.php:51 addons/profile/profile.php:170
 #: admin/views/dashboard.php:202 includes/post-types.php:160
-#: includes/theme.php:399 widgets/question_stats.php:49
-#: widgets/questions.php:117
+#: includes/theme.php:405 widgets/question_stats.php:56
+#: widgets/questions.php:121
 msgid "Answers"
 msgstr ""
 
@@ -89,7 +113,7 @@ msgid "Load more answers"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:316 addons/buddypress/buddypress.php:317
-#: admin/meta-box.php:41 includes/ajax-hooks.php:145 includes/comments.php:71
+#: admin/meta-box.php:41 includes/ajax-hooks.php:146 includes/comments.php:71
 #: includes/common-pages.php:21 includes/post-status.php:100
 #: includes/post-types.php:106
 msgid "Question"
@@ -105,7 +129,7 @@ msgstr ""
 
 #: addons/buddypress/buddypress.php:328 addons/buddypress/buddypress.php:329
 #: addons/buddypress/buddypress.php:341 admin/views/dashboard.php:32
-#: includes/ajax-hooks.php:145 includes/comments.php:71
+#: includes/ajax-hooks.php:146 includes/comments.php:71
 #: includes/post-status.php:100 includes/post-types.php:183
 #: templates/answers.php:20
 msgid "Answer"
@@ -136,12 +160,12 @@ msgid "New answer on %s"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:470 addons/notifications/query.php:321
-#: includes/class-form-hooks.php:811 includes/post-types.php:105
+#: includes/class-form-hooks.php:831 includes/post-types.php:105
 msgid "question"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:470 addons/notifications/query.php:323
-#: includes/class-form-hooks.php:811 includes/post-types.php:182
+#: includes/class-form-hooks.php:831 includes/post-types.php:182
 msgid "answer"
 msgstr ""
 
@@ -161,8 +185,8 @@ msgid "Category"
 msgstr ""
 
 #: addons/categories/categories.php:41 addons/categories/categories.php:478
-#: addons/categories/categories.php:490 addons/categories/widget.php:89
-#: includes/functions.php:1679 includes/functions.php:2390 includes/taxo.php:29
+#: addons/categories/categories.php:490 addons/categories/widget.php:92
+#: includes/functions.php:1679 includes/functions.php:2394 includes/taxo.php:29
 msgid "Categories"
 msgstr ""
 
@@ -211,24 +235,24 @@ msgid "Set how you want to order categories in form."
 msgstr ""
 
 #: addons/categories/categories.php:242 addons/categories/categories.php:255
-#: addons/categories/widget.php:139
+#: addons/categories/widget.php:142
 msgid "ID"
 msgstr ""
 
 #: addons/categories/categories.php:243 addons/categories/categories.php:256
-#: addons/categories/widget.php:140 addons/tags/tags.php:629
+#: addons/categories/widget.php:143 addons/tags/tags.php:629
 #: addons/tags/tags.php:681 includes/deprecated.php:303
 #: includes/deprecated.php:449 includes/deprecated.php:904
 msgid "Name"
 msgstr ""
 
 #: addons/categories/categories.php:244 addons/categories/categories.php:257
-#: addons/categories/widget.php:141
+#: addons/categories/widget.php:144
 msgid "Slug"
 msgstr ""
 
 #: addons/categories/categories.php:245 addons/categories/categories.php:258
-#: addons/categories/widget.php:138
+#: addons/categories/widget.php:141
 msgid "Count"
 msgstr ""
 
@@ -293,7 +317,7 @@ msgid "No matching category found"
 msgstr ""
 
 #: addons/categories/categories.php:550 addons/categories/categories.php:598
-#: includes/class-form-hooks.php:940
+#: includes/class-form-hooks.php:960
 msgid "Image"
 msgstr ""
 
@@ -346,7 +370,7 @@ msgstr ""
 msgid "Display AnsPress categories"
 msgstr ""
 
-#: addons/categories/widget.php:76 includes/ajax-hooks.php:569
+#: addons/categories/widget.php:79 includes/ajax-hooks.php:537
 #: templates/addons/category/categories.php:33
 #: templates/addons/category/single-category.php:43
 #: templates/addons/tag/tags.php:39
@@ -355,61 +379,61 @@ msgid_plural "%d Questions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: addons/categories/widget.php:78
+#: addons/categories/widget.php:81
 msgid "%d Child"
 msgstr ""
 
-#: addons/categories/widget.php:107 widgets/ask-form.php:74
-#: widgets/question_stats.php:68 widgets/questions.php:108
-#: widgets/search.php:69
+#: addons/categories/widget.php:110 widgets/ask-form.php:77
+#: widgets/question_stats.php:75 widgets/questions.php:112
+#: widgets/search.php:72
 msgid "Title:"
 msgstr ""
 
-#: addons/categories/widget.php:112
+#: addons/categories/widget.php:115
 msgid "Hide empty:"
 msgstr ""
 
-#: addons/categories/widget.php:117
+#: addons/categories/widget.php:120
 msgid "Parent:"
 msgstr ""
 
-#: addons/categories/widget.php:119
+#: addons/categories/widget.php:122
 msgid "Top level"
 msgstr ""
 
-#: addons/categories/widget.php:130
+#: addons/categories/widget.php:133
 msgid "Number:"
 msgstr ""
 
-#: addons/categories/widget.php:135
+#: addons/categories/widget.php:138
 msgid "Order By:"
 msgstr ""
 
-#: addons/categories/widget.php:137
+#: addons/categories/widget.php:140
 msgid "None"
 msgstr ""
 
-#: addons/categories/widget.php:142
+#: addons/categories/widget.php:145
 msgid "Term group"
 msgstr ""
 
-#: addons/categories/widget.php:146
+#: addons/categories/widget.php:149
 msgid "Order:"
 msgstr ""
 
-#: addons/categories/widget.php:148
+#: addons/categories/widget.php:151
 msgid "DESC"
 msgstr ""
 
-#: addons/categories/widget.php:149
+#: addons/categories/widget.php:152
 msgid "ASC"
 msgstr ""
 
-#: addons/categories/widget.php:153
+#: addons/categories/widget.php:156
 msgid "Icon width:"
 msgstr ""
 
-#: addons/categories/widget.php:158
+#: addons/categories/widget.php:161
 msgid "Icon height:"
 msgstr ""
 
@@ -554,12 +578,12 @@ msgid "Email Templates"
 msgstr ""
 
 #: addons/email/email.php:658 classes/ajax.php:131
-#: includes/class-form-hooks.php:313 includes/class-form-hooks.php:524
-#: includes/class-form-hooks.php:719
+#: includes/class-form-hooks.php:313 includes/class-form-hooks.php:534
+#: includes/class-form-hooks.php:739
 msgid "Trying to cheat?!"
 msgstr ""
 
-#: addons/email/email.php:685 includes/class-form-hooks.php:566
+#: addons/email/email.php:685 includes/class-form-hooks.php:576
 msgid "Unable to post answer."
 msgstr ""
 
@@ -851,7 +875,7 @@ msgid "Answering"
 msgstr ""
 
 #: addons/reputation/reputation.php:134
-msgid "Points awarded when user answer a question"
+msgid "Points awarded when user answers a question"
 msgstr ""
 
 #: addons/reputation/reputation.php:136
@@ -863,7 +887,7 @@ msgid "Commenting"
 msgstr ""
 
 #: addons/reputation/reputation.php:145
-msgid "Points awarded when user comment on question or answer"
+msgid "Points awarded when user comments on question or answer"
 msgstr ""
 
 #: addons/reputation/reputation.php:147
@@ -875,7 +899,7 @@ msgid "Selecting an Answer"
 msgstr ""
 
 #: addons/reputation/reputation.php:156
-msgid "Points awarded when user select an answer for thier question"
+msgid "Points awarded when user selects an answer for their question"
 msgstr ""
 
 #: addons/reputation/reputation.php:158
@@ -887,7 +911,7 @@ msgid "Answer selected as best"
 msgstr ""
 
 #: addons/reputation/reputation.php:167
-msgid "Points awarded when user's answer selected as best"
+msgid "Points awarded when user's answer is selected as best"
 msgstr ""
 
 #: addons/reputation/reputation.php:169
@@ -899,7 +923,7 @@ msgid "Received up vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:178
-msgid "Points awarded when user receive an upvote"
+msgid "Points awarded when user receives an upvote"
 msgstr ""
 
 #: addons/reputation/reputation.php:180
@@ -911,7 +935,7 @@ msgid "Received down vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:188
-msgid "Points awarded when user receive a down vote"
+msgid "Points awarded when user receives a down vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:190
@@ -923,7 +947,7 @@ msgid "Gives an up vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:198
-msgid "Points taken from user when they give a vote up"
+msgid "Points taken from user when they give an up vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:200
@@ -935,7 +959,7 @@ msgid "Gives down vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:208
-msgid "Points taken from user when user give a down vote"
+msgid "Points taken from user when they give a down vote"
 msgstr ""
 
 #: addons/reputation/reputation.php:210
@@ -987,7 +1011,7 @@ msgstr ""
 
 #: addons/tags/tags.php:39 addons/tags/tags.php:230 addons/tags/tags.php:301
 #: addons/tags/tags.php:380 addons/tags/tags.php:451 addons/tags/tags.php:465
-#: includes/functions.php:1683 includes/functions.php:2396
+#: includes/functions.php:1683 includes/functions.php:2400
 msgid "Tags"
 msgstr ""
 
@@ -1093,7 +1117,7 @@ msgid "Popular"
 msgstr ""
 
 #: addons/tags/tags.php:624 addons/tags/tags.php:680
-#: includes/deprecated.php:903 includes/theme.php:384
+#: includes/deprecated.php:903 includes/theme.php:390
 msgid "New"
 msgstr ""
 
@@ -1559,23 +1583,23 @@ msgid "Order question list by default using selected"
 msgstr ""
 
 #: admin/anspress-admin.php:1223 admin/anspress-admin.php:1289
-#: includes/theme.php:458 widgets/questions.php:116
+#: includes/theme.php:464 widgets/questions.php:120
 msgid "Voted"
 msgstr ""
 
 #: admin/anspress-admin.php:1224 admin/anspress-admin.php:1290
-#: admin/views/addons.php:68 includes/theme.php:379 includes/theme.php:451
-#: widgets/question_stats.php:47 widgets/questions.php:114
+#: admin/views/addons.php:68 includes/theme.php:385 includes/theme.php:457
+#: widgets/question_stats.php:54 widgets/questions.php:118
 msgid "Active"
 msgstr ""
 
 #: admin/anspress-admin.php:1225 admin/anspress-admin.php:1291
-#: includes/theme.php:464 widgets/questions.php:115
+#: includes/theme.php:470 widgets/questions.php:119
 msgid "Newest"
 msgstr ""
 
 #: admin/anspress-admin.php:1226 admin/anspress-admin.php:1292
-#: includes/theme.php:468
+#: includes/theme.php:474
 msgid "Oldest"
 msgstr ""
 
@@ -1721,7 +1745,7 @@ msgstr ""
 msgid "Delete this item permanently"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:138 includes/theme.php:313
+#: admin/class-list-table-hooks.php:138 includes/theme.php:319
 msgid "Delete Permanently"
 msgstr ""
 
@@ -1730,7 +1754,7 @@ msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:143 admin/meta-box.php:69
-#: includes/comments.php:249 includes/theme.php:264
+#: includes/comments.php:266 includes/theme.php:270
 msgid "Edit"
 msgstr ""
 
@@ -1764,7 +1788,7 @@ msgid "Title"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:196 admin/class-list-table-hooks.php:311
-#: includes/theme.php:276
+#: includes/theme.php:282
 msgid "Status"
 msgstr ""
 
@@ -1777,7 +1801,7 @@ msgid "Comments"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:199 admin/class-list-table-hooks.php:313
-#: includes/theme.php:392 templates/content-answer.php:21
+#: includes/theme.php:398 templates/content-answer.php:21
 #: templates/question-list-item.php:30
 msgid "Votes"
 msgstr ""
@@ -1795,9 +1819,9 @@ msgid "--"
 msgstr ""
 
 #: admin/class-list-table-hooks.php:281 admin/class-list-table-hooks.php:360
-#: admin/views/select_question.php:51 includes/ajax-hooks.php:113
-#: includes/ajax-hooks.php:115 includes/ajax-hooks.php:230
-#: includes/functions.php:2186 templates/buddypress/question-item.php:38
+#: admin/views/select_question.php:51 includes/ajax-hooks.php:114
+#: includes/ajax-hooks.php:116 includes/ajax-hooks.php:231
+#: includes/functions.php:2190 templates/buddypress/question-item.php:38
 msgid "%d Answer"
 msgid_plural "%d Answers"
 msgstr[0] ""
@@ -2230,8 +2254,8 @@ msgstr ""
 msgid "Recount reputation of all users."
 msgstr ""
 
-#: admin/views/recount.php:82 includes/theme.php:404
-#: widgets/question_stats.php:48
+#: admin/views/recount.php:82 includes/theme.php:410
+#: widgets/question_stats.php:55
 msgid "Views"
 msgstr ""
 
@@ -2334,7 +2358,7 @@ msgid "Recently active questions"
 msgstr ""
 
 #: admin/views/select_question.php:50 ajax/toggle-best-answer.php:69
-#: includes/ajax-hooks.php:113 includes/theme.php:791
+#: includes/ajax-hooks.php:114 includes/theme.php:797
 msgid "Select"
 msgstr ""
 
@@ -2447,8 +2471,8 @@ msgstr ""
 msgid "Comment successfully deleted"
 msgstr ""
 
-#: ajax/comment-delete.php:94 includes/class-form-hooks.php:787
-#: includes/class-form-hooks.php:881 includes/comments.php:141
+#: ajax/comment-delete.php:94 includes/class-form-hooks.php:807
+#: includes/class-form-hooks.php:901 includes/comments.php:141
 #. Translators: %d contain comment count.
 #. Translators: %d contains count of comments.
 msgid "%d Comment"
@@ -2474,7 +2498,7 @@ msgid ""
 "answer."
 msgstr ""
 
-#: ajax/toggle-best-answer.php:88 includes/theme.php:799
+#: ajax/toggle-best-answer.php:88 includes/theme.php:805
 msgid "Unselect"
 msgstr ""
 
@@ -2504,155 +2528,155 @@ msgstr ""
 msgid "Not AnsPress posts"
 msgstr ""
 
-#: includes/ajax-hooks.php:102
+#: includes/ajax-hooks.php:103
 msgid "%d similar question found"
 msgid_plural "%d similar questions found"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/ajax-hooks.php:103
+#: includes/ajax-hooks.php:104
 msgid "We have found some similar questions that have been asked earlier."
 msgstr ""
 
-#: includes/ajax-hooks.php:122
+#: includes/ajax-hooks.php:123
 msgid "No related questions found."
 msgstr ""
 
-#: includes/ajax-hooks.php:136
+#: includes/ajax-hooks.php:137
 msgid "Unable to trash this post"
 msgstr ""
 
-#: includes/ajax-hooks.php:157 includes/comments.php:261 includes/theme.php:290
+#: includes/ajax-hooks.php:158 includes/comments.php:278 includes/theme.php:296
 #: lib/form/class-group.php:83
 msgid "Delete"
 msgstr ""
 
-#: includes/ajax-hooks.php:157 includes/theme.php:291
+#: includes/ajax-hooks.php:158 includes/theme.php:297
 msgid "Delete this post (can be restored again)"
 msgstr ""
 
-#: includes/ajax-hooks.php:158
+#: includes/ajax-hooks.php:159
 msgid "%s is restored"
 msgstr ""
 
-#: includes/ajax-hooks.php:173
+#: includes/ajax-hooks.php:174
 msgid "This post was created %s, hence you cannot trash it"
 msgstr ""
 
-#: includes/ajax-hooks.php:181 includes/theme.php:287
+#: includes/ajax-hooks.php:182 includes/theme.php:293
 msgid "Undelete"
 msgstr ""
 
-#: includes/ajax-hooks.php:181 includes/theme.php:288
+#: includes/ajax-hooks.php:182 includes/theme.php:294
 msgid "Restore this post"
 msgstr ""
 
-#: includes/ajax-hooks.php:182
+#: includes/ajax-hooks.php:183
 msgid "%s is trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:197
+#: includes/ajax-hooks.php:198
 msgid "Sorry, unable to delete post"
 msgstr ""
 
-#: includes/ajax-hooks.php:225
+#: includes/ajax-hooks.php:226
 msgid "Question is deleted permanently"
 msgstr ""
 
-#: includes/ajax-hooks.php:234
+#: includes/ajax-hooks.php:235
 msgid "Answer is deleted permanently"
 msgstr ""
 
-#: includes/ajax-hooks.php:252
+#: includes/ajax-hooks.php:253
 msgid "Sorry, you cannot toggle a featured question"
 msgstr ""
 
-#: includes/ajax-hooks.php:262
+#: includes/ajax-hooks.php:263
 msgid "Only question can be set as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:271 includes/theme.php:879
+#: includes/ajax-hooks.php:272 includes/theme.php:885
 msgid "Mark this question as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:271 includes/theme.php:880
+#: includes/ajax-hooks.php:272 includes/theme.php:886
 msgid "Feature"
 msgstr ""
 
-#: includes/ajax-hooks.php:272
+#: includes/ajax-hooks.php:273
 msgid "Question is unmarked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:286 includes/theme.php:876
+#: includes/ajax-hooks.php:287 includes/theme.php:882
 msgid "Unmark this question as featured"
 msgstr ""
 
-#: includes/ajax-hooks.php:286 includes/theme.php:877
+#: includes/ajax-hooks.php:287 includes/theme.php:883
 msgid "Unfeature"
 msgstr ""
 
-#: includes/ajax-hooks.php:287
+#: includes/ajax-hooks.php:288
 msgid "Question is marked as featured."
 msgstr ""
 
-#: includes/ajax-hooks.php:330
+#: includes/ajax-hooks.php:331
 msgid "You cannot close a question"
 msgstr ""
 
-#: includes/ajax-hooks.php:336 includes/mce-languages.php:29
-#: includes/theme.php:245
+#: includes/ajax-hooks.php:337 includes/mce-languages.php:29
+#: includes/theme.php:251
 msgid "Close"
 msgstr ""
 
-#: includes/ajax-hooks.php:336 includes/theme.php:245
+#: includes/ajax-hooks.php:337 includes/theme.php:251
 msgid "Open"
 msgstr ""
 
-#: includes/ajax-hooks.php:337 includes/theme.php:246
+#: includes/ajax-hooks.php:338 includes/theme.php:252
 msgid "Close this question for new answer."
 msgstr ""
 
-#: includes/ajax-hooks.php:337 includes/theme.php:246
+#: includes/ajax-hooks.php:338 includes/theme.php:252
 msgid "Open this question for new answers"
 msgstr ""
 
-#: includes/ajax-hooks.php:339
+#: includes/ajax-hooks.php:340
 msgid "Question closed"
 msgstr ""
 
-#: includes/ajax-hooks.php:339
+#: includes/ajax-hooks.php:340
 msgid "Question is opened"
 msgstr ""
 
-#: includes/ajax-hooks.php:391
+#: includes/ajax-hooks.php:392
 msgid "Sorry, you are not allowed to convert this question to post"
 msgstr ""
 
-#: includes/ajax-hooks.php:410
+#: includes/ajax-hooks.php:411
 msgid " Question \"%s\" is converted to post and its answers are trashed"
 msgstr ""
 
-#: includes/ajax-hooks.php:444
+#: includes/ajax-hooks.php:445
 msgid "You must be logged in to subscribe to a question"
 msgstr ""
 
-#: includes/ajax-hooks.php:453 includes/ajax-hooks.php:476
+#: includes/ajax-hooks.php:454 includes/ajax-hooks.php:477
 msgid "Sorry, unable to subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:464
+#: includes/ajax-hooks.php:465
 msgid "Successfully unsubscribed from question"
 msgstr ""
 
-#: includes/ajax-hooks.php:466 includes/theme.php:914
+#: includes/ajax-hooks.php:467 includes/theme.php:920
 msgid "Subscribe"
 msgstr ""
 
-#: includes/ajax-hooks.php:482
+#: includes/ajax-hooks.php:483
 msgid "Successfully subscribed to question"
 msgstr ""
 
-#: includes/ajax-hooks.php:484 includes/theme.php:914
+#: includes/ajax-hooks.php:485 includes/theme.php:920
 msgid "Unsubscribe"
 msgstr ""
 
@@ -2831,7 +2855,7 @@ msgstr ""
 msgid "Enter your name to display"
 msgstr ""
 
-#: includes/class-form-hooks.php:118 includes/functions.php:2114
+#: includes/class-form-hooks.php:118 includes/functions.php:2118
 msgid "Update Question"
 msgstr ""
 
@@ -2839,7 +2863,7 @@ msgstr ""
 msgid "Post Answer"
 msgstr ""
 
-#: includes/class-form-hooks.php:201 includes/functions.php:2257
+#: includes/class-form-hooks.php:201 includes/functions.php:2261
 msgid "Update Answer"
 msgstr ""
 
@@ -2895,61 +2919,61 @@ msgstr ""
 msgid "Unable to post question. Error: %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:472
+#: includes/class-form-hooks.php:482
 msgid "Question updated successfully, you'll be redirected in a moment."
 msgstr ""
 
-#: includes/class-form-hooks.php:474
+#: includes/class-form-hooks.php:484
 msgid "Your question is posted successfully, you'll be redirected in a moment."
 msgstr ""
 
-#: includes/class-form-hooks.php:572
+#: includes/class-form-hooks.php:582
 msgid "Please check field"
 msgstr ""
 
-#: includes/class-form-hooks.php:628
+#: includes/class-form-hooks.php:638
 #. Translators: placeholder contain error message.
 msgid "Unable to post answer. Error: %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:671
+#: includes/class-form-hooks.php:691
 msgid "Answer updated successfully. Redirecting you to question page."
 msgstr ""
 
-#: includes/class-form-hooks.php:673
+#: includes/class-form-hooks.php:693
 msgid "Your answer is posted successfully."
 msgstr ""
 
-#: includes/class-form-hooks.php:728
+#: includes/class-form-hooks.php:748
 msgid "Unable to post comment."
 msgstr ""
 
-#: includes/class-form-hooks.php:743
+#: includes/class-form-hooks.php:763
 msgid "You cannot edit this comment."
 msgstr ""
 
-#: includes/class-form-hooks.php:753
+#: includes/class-form-hooks.php:773
 msgid "There is no change in your comment."
 msgstr ""
 
-#: includes/class-form-hooks.php:791
+#: includes/class-form-hooks.php:811
 msgid "Comment updated successfully"
 msgstr ""
 
-#: includes/class-form-hooks.php:821
+#: includes/class-form-hooks.php:841
 #. Translators: %s contain post type name.
 msgid "Commenting is not allowed on draft, pending or deleted %s"
 msgstr ""
 
-#: includes/class-form-hooks.php:887
+#: includes/class-form-hooks.php:907
 msgid "Comment successfully posted"
 msgstr ""
 
-#: includes/class-form-hooks.php:937
+#: includes/class-form-hooks.php:957
 msgid "Upload & insert"
 msgstr ""
 
-#: includes/class-form-hooks.php:941
+#: includes/class-form-hooks.php:961
 msgid "Select image(s) to upload. Only .jpg, .png and .gif files allowed."
 msgstr ""
 
@@ -2969,31 +2993,31 @@ msgstr ""
 msgid "Comment approved successfully."
 msgstr ""
 
-#: includes/comments.php:228
+#: includes/comments.php:245
 msgid "Comments awaiting moderation"
 msgstr ""
 
-#: includes/comments.php:273
+#: includes/comments.php:290
 msgid "Approve"
 msgstr ""
 
-#: includes/comments.php:330
+#: includes/comments.php:347
 msgid "Not a valid post ID."
 msgstr ""
 
-#: includes/comments.php:335
+#: includes/comments.php:352
 msgid "Sorry, you do not have permission to read comments."
 msgstr ""
 
-#: includes/comments.php:350 includes/comments.php:384
+#: includes/comments.php:367 includes/comments.php:401
 msgid "No comments found."
 msgstr ""
 
-#: includes/comments.php:395
+#: includes/comments.php:412
 msgid "Show %s more comments"
 msgstr ""
 
-#: includes/comments.php:436
+#: includes/comments.php:453
 msgid "Add a Comment"
 msgstr ""
 
@@ -3006,7 +3030,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:25 includes/functions.php:2402
+#: includes/common-pages.php:25 includes/functions.php:2406
 msgid "Activities"
 msgstr ""
 
@@ -3293,126 +3317,134 @@ msgstr ""
 msgid "Add syntax highlighter support."
 msgstr ""
 
-#: includes/functions.php:2087
+#: includes/functions.php:1711
+msgid "Akismet Check"
+msgstr ""
+
+#: includes/functions.php:1712
+msgid "Check for spam in post content."
+msgstr ""
+
+#: includes/functions.php:2091
 msgid "You cannot edit this question."
 msgstr ""
 
-#: includes/functions.php:2092 templates/ask.php:17
+#: includes/functions.php:2096 templates/ask.php:17
 msgid "You do not have permission to ask a question."
 msgstr ""
 
-#: includes/functions.php:2195
+#: includes/functions.php:2199
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:2226
+#: includes/functions.php:2230
 msgid "You cannot edit this answer."
 msgstr ""
 
-#: includes/functions.php:2231
+#: includes/functions.php:2235
 msgid "You do not have permission to answer this question."
 msgstr ""
 
-#: includes/functions.php:2370
+#: includes/functions.php:2374
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2371
+#: includes/functions.php:2375
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred "
 "as <b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2376
+#: includes/functions.php:2380
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2377
+#: includes/functions.php:2381
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2378
+#: includes/functions.php:2382
 msgid "Ask a question"
 msgstr ""
 
-#: includes/functions.php:2382
+#: includes/functions.php:2386
 msgid "User page"
 msgstr ""
 
-#: includes/functions.php:2383
+#: includes/functions.php:2387
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2384
+#: includes/functions.php:2388
 msgid "Profile"
 msgstr ""
 
-#: includes/functions.php:2388
+#: includes/functions.php:2392
 msgid "Categories page"
 msgstr ""
 
-#: includes/functions.php:2389
+#: includes/functions.php:2393
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2394
+#: includes/functions.php:2398
 msgid "Tags page"
 msgstr ""
 
-#: includes/functions.php:2395
+#: includes/functions.php:2399
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2400
+#: includes/functions.php:2404
 msgid "Activities page"
 msgstr ""
 
-#: includes/functions.php:2401
+#: includes/functions.php:2405
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:864
+#: includes/hooks.php:867
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:865
+#: includes/hooks.php:868
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:866
+#: includes/hooks.php:869
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:867
+#: includes/hooks.php:870
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:868
+#: includes/hooks.php:871
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:869
+#: includes/hooks.php:872
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:870
+#: includes/hooks.php:873
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:871
+#: includes/hooks.php:874
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:872
+#: includes/hooks.php:875
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:873
+#: includes/hooks.php:876
 msgid "years"
 msgstr ""
 
@@ -3530,7 +3562,7 @@ msgstr ""
 msgid "Update question"
 msgstr ""
 
-#: includes/post-types.php:91 widgets/search.php:61
+#: includes/post-types.php:91 widgets/search.php:64
 msgid "Search questions"
 msgstr ""
 
@@ -3594,11 +3626,11 @@ msgstr ""
 msgid "%s views"
 msgstr ""
 
-#: includes/shortcode-basepage.php:61
+#: includes/shortcode-basepage.php:69
 msgid "AnsPress shortcode cannot be nested."
 msgstr ""
 
-#: includes/shortcode-basepage.php:87
+#: includes/shortcode-basepage.php:95
 msgid "Question and answer is powered by"
 msgstr ""
 
@@ -3614,55 +3646,55 @@ msgstr ""
 msgid "Tagged"
 msgstr ""
 
-#: includes/theme.php:314
+#: includes/theme.php:320
 msgid "Delete post permanently (cannot be restored again)"
 msgstr ""
 
-#: includes/theme.php:327
+#: includes/theme.php:333
 msgid "Convert to post"
 msgstr ""
 
-#: includes/theme.php:328
+#: includes/theme.php:334
 msgid "Convert this question to blog post"
 msgstr ""
 
-#: includes/theme.php:409 widgets/questions.php:118
+#: includes/theme.php:415 widgets/questions.php:122
 msgid "Unanswered"
 msgstr ""
 
-#: includes/theme.php:414
+#: includes/theme.php:420
 msgid "Unsolved"
 msgstr ""
 
-#: includes/theme.php:493
+#: includes/theme.php:499
 msgid "Best answer"
 msgstr ""
 
-#: includes/theme.php:540
+#: includes/theme.php:546
 msgid "Ask question"
 msgstr ""
 
-#: includes/theme.php:704
+#: includes/theme.php:710
 msgid "Order By"
 msgstr ""
 
-#: includes/theme.php:754
+#: includes/theme.php:760
 msgid "Reset sorting and filter"
 msgstr ""
 
-#: includes/theme.php:754
+#: includes/theme.php:760
 msgid "Clear Filter"
 msgstr ""
 
-#: includes/theme.php:790
+#: includes/theme.php:796
 msgid "Select this answer as best"
 msgstr ""
 
-#: includes/theme.php:798
+#: includes/theme.php:804
 msgid "Unselect this answer"
 msgstr ""
 
-#: includes/theme.php:962
+#: includes/theme.php:968
 msgid "AnsPress links"
 msgstr ""
 
@@ -3748,7 +3780,6 @@ msgid "Categories data migrated"
 msgstr ""
 
 #: lib/class-form.php:96
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:284
 msgid "Submit"
 msgstr ""
 
@@ -4257,315 +4288,6 @@ msgstr[1] ""
 msgid "No questions found."
 msgstr ""
 
-#: vendor/lucatume/wp-browser/src/data/plugins/internationalized-plugin.php:11
-msgid "This is a dummy plugin"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:42
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:72
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:80
-msgid "There was an error when reading this WXR file"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:43
-msgid ""
-"Details are shown above. The importer will now try again with a different "
-"parser..."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:84
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:89
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:306
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/parsers.php:495
-msgid "This does not appear to be a WXR file, missing/invalid WXR version number"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:132
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:141
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:192
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:196
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:205
-msgid "Sorry, there has been an error."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:133
-msgid "The file does not exist, please try again."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:176
-msgid "All done."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:176
-msgid "Have fun!"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:177
-msgid "Remember to update the passwords and roles of imported users."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:197
-msgid ""
-"The export file could not be found at <code>%s</code>. It is likely that "
-"this was caused by a permissions problem."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:213
-msgid ""
-"This WXR file (version %s) may not be supported by this version of the "
-"importer. Please consider updating."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:238
-msgid ""
-"Failed to import author %s. Their posts will be attributed to the current "
-"user."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:264
-msgid "Assign Authors"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:265
-msgid ""
-"To make it easier for you to edit and save the imported content, you may "
-"want to reassign the author of the imported item to an existing user of "
-"this site. For example, you may want to import all the entries as "
-"<code>admin</code>s entries."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:267
-msgid ""
-"If a new user is created by WordPress, a new password will be randomly "
-"generated and the new user&#8217;s role will be set as %s. Manually "
-"changing the new user&#8217;s details will be necessary."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:277
-msgid "Import Attachments"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:280
-msgid "Download and import file attachments"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:297
-msgid "Import author:"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:308
-msgid "or create new user with login name:"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:311
-msgid "as a new user:"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:319
-msgid "assign posts to an existing user:"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:321
-msgid "or assign posts to an existing user:"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:322
-msgid "- Select -"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:372
-msgid ""
-"Failed to create new user for %s. Their posts will be attributed to the "
-"current user."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:424
-msgid "Failed to import category %s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:467
-msgid "Failed to import post tag %s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:516
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:738
-msgid "Failed to import %s %s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:605
-msgid "Failed to import &#8220;%s&#8221;: Invalid post type %s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:642
-msgid "%s &#8220;%s&#8221; already exists."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:704
-msgid "Failed to import %s &#8220;%s&#8221;"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:869
-msgid "Menu item skipped due to missing menu slug"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:876
-msgid "Menu item skipped due to invalid menu slug: %s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:939
-msgid "Fetching attachments is not enabled"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:952
-msgid "Invalid file type"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:996
-msgid "Remote server did not respond"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1002
-msgid "Remote server returned error response %1$d %2$s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1009
-msgid "Remote file is incorrect size"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1014
-msgid "Zero size file downloaded"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1020
-msgid "Remote file is too large, limit is %s"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1119
-msgid "Import WordPress"
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1126
-msgid ""
-"A new version of this importer is available. Please update to version %s to "
-"ensure compatibility with newer export files."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1141
-msgid ""
-"Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import "
-"the posts, pages, comments, custom fields, categories, and tags into this "
-"site."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1142
-msgid "Choose a WXR (.xml) file to upload, then click Upload file and import."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/plugins/wordpress-importer/wordpress-importer.php:1216
-msgid ""
-"Import <strong>posts, pages, comments, custom fields, categories, and "
-"tags</strong> from a WordPress export file."
-msgstr ""
-
-#: vendor/lucatume/wp-browser/src/data/themedir1/internationalized-theme/functions.php:7
-msgid "This is a dummy theme"
-msgstr ""
-
-#: vendor/wp-cli/core-command/src/Core_Command.php:651
-msgid "Wildcard DNS may not be configured correctly."
-msgstr ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:428
-msgid "%s year"
-msgid_plural "%s years"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:429
-msgid "%s month"
-msgid_plural "%s months"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:430
-msgid "%s week"
-msgid_plural "%s weeks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:431
-msgid "%s day"
-msgid_plural "%s days"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:432
-msgid "%s hour"
-msgid_plural "%s hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:433
-msgid "%s minute"
-msgid_plural "%s minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/cron-command/src/Cron_Event_Command.php:434
-msgid "%s second"
-msgid_plural "%s seconds"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/entity-command/src/Site_Command.php:118
-msgid "Uncategorized"
-msgstr ""
-
-#: vendor/wp-cli/export-command/src/Export_Command.php:339
-msgid "Invalid start ID: %d"
-msgstr ""
-
-#: vendor/wp-cli/export-command/src/WP_Export_File_Writer.php:15
-#: vendor/wp-cli/export-command/src/WP_Export_Split_Files_Writer.php:63
-msgid "WP Export: error opening %s for writing."
-msgstr ""
-
-#: vendor/wp-cli/export-command/src/WP_Export_File_Writer.php:32
-#: vendor/wp-cli/export-command/src/WP_Export_Split_Files_Writer.php:51
-msgid "WP Export: error writing to export file."
-msgstr ""
-
-#: vendor/wp-cli/export-command/src/WP_Export_Query.php:348
-msgid "Term is missing a parent: %s (%d)"
-msgstr ""
-
-#: vendor/wp-cli/export-command/src/WP_Export_XML_Over_HTTP.php:19
-#: vendor/wp-cli/export-command/src/WP_Export_XML_Over_HTTP.php:23
-msgid "Export Error"
-msgstr ""
-
-#: vendor/wp-cli/extension-command/src/WP_CLI/CommandWithUpgrade.php:607
-msgid " Try again"
-msgstr ""
-
-#: vendor/wp-cli/extension-command/src/WP_CLI/CommandWithUpgrade.php:612
-msgid "API error. Try Again."
-msgstr ""
-
-#: vendor/wp-cli/media-command/src/Media_Command.php:142
-msgid "image"
-msgid_plural "images"
-msgstr[0] ""
-msgstr[1] ""
-
-#: vendor/wp-cli/wp-cli/php/utils-wp.php:192
-msgid "Inactive Widgets"
-msgstr ""
-
-#: vendor/wp-cli/wp-cli/php/utils-wp.php:195
-msgid "Drag widgets here to remove them from the sidebar but keep their settings."
-msgstr ""
-
 #: widgets/ask-form.php:28
 msgid "(AnsPress) Ask form"
 msgstr ""
@@ -4574,7 +4296,7 @@ msgstr ""
 msgid "AnsPress ask form widget"
 msgstr ""
 
-#: widgets/ask-form.php:68
+#: widgets/ask-form.php:71
 msgid "Ask questions"
 msgstr ""
 
@@ -4594,23 +4316,23 @@ msgstr ""
 msgid "Shows question stats in single question page."
 msgstr ""
 
-#: widgets/question_stats.php:48
+#: widgets/question_stats.php:55
 msgid "One time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: widgets/question_stats.php:49
+#: widgets/question_stats.php:56
 msgid "%2$s1%3$s answer"
 msgid_plural "%2$s%1$d%3$s answers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: widgets/question_stats.php:52
+#: widgets/question_stats.php:59
 msgid "This widget can only be used in single question page"
 msgstr ""
 
-#: widgets/question_stats.php:64
+#: widgets/question_stats.php:71
 msgid "Question stats"
 msgstr ""
 
@@ -4622,19 +4344,19 @@ msgstr ""
 msgid "Shows list of question shorted by option."
 msgstr ""
 
-#: widgets/questions.php:112
+#: widgets/questions.php:116
 msgid "Order by:"
 msgstr ""
 
-#: widgets/questions.php:123
+#: widgets/questions.php:127
 msgid "Category IDs:"
 msgstr ""
 
-#: widgets/questions.php:125
+#: widgets/questions.php:129
 msgid "Comma separted AnsPress category ids"
 msgstr ""
 
-#: widgets/questions.php:129
+#: widgets/questions.php:133
 msgid "Limit:"
 msgstr ""
 
@@ -4690,16 +4412,4 @@ msgstr ""
 #: includes/post-types.php:159
 msgctxt "Post Type Singular Name"
 msgid "Answer"
-msgstr ""
-
-#: vendor/wp-cli/core-command/src/Core_Command.php:429
-#: vendor/wp-cli/core-command/src/Core_Command.php:502
-msgctxt "Default network name"
-msgid "%s Sites"
-msgstr ""
-
-#: vendor/wp-cli/entity-command/src/Site_Command.php:121
-#. translators: Default category slug
-msgctxt "Default category slug"
-msgid "Uncategorized"
 msgstr ""
