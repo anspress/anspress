@@ -388,7 +388,7 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Add category field in ask form.
 	 *
-	 * @param   array $args       Ask form arguments.
+	 * @param   array $form Ask form arguments.
 	 * @return  array
 	 * @since   4.1.0
 	 */

@@ -506,8 +506,8 @@ class Email extends \AnsPress\Singleton {
 	/**
 	 * Notify users after answer gets updated.
 	 *
-	 * @param object $answer Answer object.
-	 * @param string $event Event type.
+	 * @param object $answer_id Answer id.
+	 * @param string $answer    Event post object.
 	 */
 	public function ap_after_update_answer( $answer_id, $answer ) {
 		if ( in_array( $answer->post_status, [ 'trash', 'draft' ] ) ) {
