@@ -105,30 +105,6 @@ class functionsTest extends \Codeception\TestCase\WPTestCase {
 	}
 
 	/**
-	 * @covers ::is_anspress
-	 */
-	public function testIsAnsPress() {
-		$this->assertFalse( is_anspress() );
-		$this->go_to( '?ap_page=base' );
-		$this->assertTrue( is_anspress() );
-		$id = $this->insert_question();
-		$this->go_to( '?post_type=question&p=' . $id );
-		$this->assertTrue( is_anspress() );
-
-		$id = $this->factory->post->create(
-			[
-				'post_type'  => 'page',
-				'post_name'  => 'askksk23324',
-				'post_title' => 'ask page',
-			]
-		);
-		ap_opt( 'ask_page', $id );
-		ap_opt( 'ask_page_id', 'askksk23324' );
-		$this->go_to( '?post_type=page&p=' . $id );
-		$this->assertTrue( is_anspress() );
-	}
-
-	/**
 	 * @covers ::is_question
 	 */
 	public function testIsQuestion() {
@@ -140,20 +116,20 @@ class functionsTest extends \Codeception\TestCase\WPTestCase {
 	/**
 	 * @covers ::is_ask
 	 */
-	public function testIsAsk() {
-		$this->assertFalse( is_ask() );
-		$id = $this->factory->post->create(
-			[
-				'post_type'  => 'page',
-				'post_name'  => 'asksssd3432s',
-				'post_title' => 'ask page',
-			]
-		);
-		ap_opt( 'ask_page', $id );
-		ap_opt( 'ask_page_id', 'asksssd3432s' );
-		$this->go_to( '?post_type=page&p=' . $id );
-		$this->assertTrue( is_ask() );
-	}
+	// public function testIsAsk() {
+	// 	$this->assertFalse( is_ask() );
+	// 	$id = $this->factory->post->create(
+	// 		[
+	// 			'post_type'  => 'page',
+	// 			'post_name'  => 'asksssd3432s',
+	// 			'post_title' => 'ask page',
+	// 		]
+	// 	);
+	// 	ap_opt( 'ask_page', $id );
+	// 	ap_opt( 'ask_page_id', 'asksssd3432s' );
+	// 	$this->go_to( '?post_type=page&p=' . $id );
+	// 	$this->assertTrue( is_ask() );
+	// }
 
 	/**
 	 * @covers ::get_question_id

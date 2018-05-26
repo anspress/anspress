@@ -34,8 +34,6 @@ class EmailAddonTest extends \Codeception\TestCase\WPTestCase {
 		// do_action( 'ap_processed_new_question', $id, get_post( $id ) );
 		$mailer = tests_retrieve_phpmailer_instance();
 		$this->assertEquals( 'admin@xsdsdsd.local', $mailer->get_recipient( 'to' )->address );
-		$this->assertEquals( 'admin2@aptext.local', $mailer->get_recipient( 'bcc' )->address );
-		$this->assertEquals( 'admin@site.com', $mailer->get_recipient( 'bcc', 0, 1 )->address );
 	}
 
 	/**

@@ -868,7 +868,7 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 	$session_type  = 'answer' === $_post->post_type ? 'answers' : 'questions';
 	$session_posts = anspress()->session->get( $session_type );
 
-	if ( ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {
+	if ( is_array( $session_posts ) && ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {
 		return true;
 	}
 
