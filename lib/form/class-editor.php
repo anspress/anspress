@@ -211,26 +211,33 @@ class Editor extends Field {
 
 		$uploads    = wp_upload_dir();
 		$basename   = basename( $matches[1] );
-		$upload_dir = $uploads['basedir'] . "/anspress-uploads/";
+		$temp_file = $uploads['basedir'] . "/anspress-temp/" . $basename;
 
-		// Make dir if not exists.
-		if ( ! file_exists( $upload_dir ) ) {
-			mkdir( $upload_dir );
+		// Check temp file is in anspress-temp directory.
+		if ( ! file_exists( $temp_file ) ) {
+			$this->add_error( 'fields-error', __( 'Sorry an error occured while processing your image, please remove it and insert again', 'anspress-question-answer' ) );
+		} else {
+			$upload_dir = $uploads['basedir'] . "/anspress-uploads/";
+
+			// Make dir if not exists.
+			if ( ! file_exists( $upload_dir ) ) {
+				mkdir( $upload_dir );
+			}
+
+			// Check file in session and then move.
+			if ( in_array( $basename, $files, true ) ) {
+				$this->images[] = $basename;
+
+				$newfile = $upload_dir . "/$basename";
+
+				$new_file_url = $uploads['baseurl'] . "/anspress-uploads/$basename";
+				rename( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
+
+				return '<img src="' . esc_url( $new_file_url ) . '" />';
+			}
 		}
 
-		// Check file in session and then move.
-		if ( in_array( $basename, $files, true ) ) {
-			$this->images[] = $basename;
-
-			$newfile = $upload_dir . "/$basename";
-
-			$new_file_url = $uploads['baseurl'] . "/anspress-uploads/$basename";
-			rename( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
-
-			return '<img src="' . esc_url( $new_file_url ) . '" />';
-		}
-
-		return $matches;
+		return false;
 	}
 
 	/**
