@@ -237,7 +237,7 @@ class Editor extends Field {
 			}
 		}
 
-		return $matches;
+		return false;
 	}
 
 	/**
