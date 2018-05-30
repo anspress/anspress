@@ -24,8 +24,6 @@ function ap_scripts_front() {
 		}
 		#anspress .ap-a-cells{
 				margin-' . ( is_rtl() ? 'right' : 'left' ) . ': ' . ( ap_opt( 'avatar_size_qanswer' ) + 10 ) . 'px;
-		}#anspress .ap-comment-content{
-				margin-' . ( is_rtl() ? 'right' : 'left' ) . ': ' . ( ap_opt( 'avatar_size_qcomment' ) + 15 ) . 'px;
 		}';
 
 	wp_add_inline_style( 'anspress-main', $custom_css );

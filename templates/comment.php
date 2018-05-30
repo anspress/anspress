@@ -44,13 +44,13 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved';
 			</div>
 
 			<?php if ( ! is_single() ) : ?>
-				<div class="comment-content" itemprop="text"><?php comment_text(); ?></div>
+				<div class="ap-comment-content" itemprop="text"><?php comment_text(); ?></div>
 			<?php else : ?>
 				<?php
 					$comment_text = strip_tags( get_comment_text() );
 					$comment_c    = strlen( $comment_text );
 				?>
-				<div class="comment-content" itemprop="text">
+				<div class="ap-comment-content" itemprop="text">
 					<?php comment_text(); ?>
 				</div>
 			<?php endif; ?>

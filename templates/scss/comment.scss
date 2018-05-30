@@ -4,7 +4,7 @@
 .anspress{
 	.ap-cell apcomment{
 		padding: 10px 10px;
-		.comment-content{
+		.ap-comment-content{
 			font-size: 12px;
 		}
 	}
@@ -57,7 +57,7 @@
 				text-decoration: none;
 			}
 		}
-		.comment-content{
+		.ap-comment-content{
 			p:last-child{
 				margin-bottom: 0;
 			}
@@ -103,7 +103,7 @@
 			margin-bottom: 0;
 		}
 		&.single-comment{
-			.comment-content{
+			.ap-comment-content{
 				font-size: 18px;
 				margin-top: 10px;
 			}
