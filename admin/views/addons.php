@@ -57,6 +57,13 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 
 					<div class="ap-addon<?php echo $data['active'] ? ' active' : ''; ?> <?php echo $data['class']; ?>">
 						<div class="ap-addon-image">
+							<div class="ap-addon-tags">
+								<?php if ( $data['active'] ) : ?>
+									<span class="ap-addon-status"><?php esc_attr_e( 'Active', 'anspress-question-answer' ); ?> </span>
+								<?php endif; ?>
+								<?php echo $data['pro'] ? '<span class="ap-addon-pro">PRO</span>' : ''; ?>
+							</div>
+
 							<?php if ( $image = ap_get_addon_image( $data['id'] ) ) : ?>
 								<img src="<?php echo esc_url( $image ); ?>" />
 							<?php endif; ?>
@@ -64,10 +71,6 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 						<div class="ap-addon-detail">
 							<h4>
 								<?php echo esc_attr( $data['name'] ); ?>
-								<?php if ( $data['active'] ) : ?>
-									<span class="ap-addon-status"><?php esc_attr_e( 'Active', 'anspress-question-answer' ); ?> </span>
-								<?php endif; ?>
-								<?php echo $data['pro'] ? '<span class="ap-addon-pro">PRO</span>' : ''; ?>
 							</h4>
 							<p><?php echo esc_html( $data['description'] ); ?></p>
 
@@ -82,7 +85,7 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 							?>
 
 							<?php if ( $data['active'] ) : ?>
-								<button class="button button-small ap-addon-toggle" apajaxbtn apquery="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Disable Addon', 'anspress-question-answer' ); ?></button>
+								<button class="button button-small button-primary ap-addon-toggle" apajaxbtn apquery="<?php echo esc_js( $args ); ?>"><?php esc_attr_e( 'Disable Addon', 'anspress-question-answer' ); ?></button>
 
 								<?php
 									// Show options button if have options.
@@ -97,7 +100,7 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
 										), admin_url( 'admin.php' )
 									);
 
-									echo '<a name="' . sprintf( esc_attr__( '%s Options', 'anspress-question-answer' ), $data['name'] ) . '" href="' . $url . '" class="button button-small thickbox button-primary">' . __( 'Options', 'anspress-question-answer' ) . '</a>';
+									echo '<a name="' . sprintf( esc_attr__( '%s Options', 'anspress-question-answer' ), $data['name'] ) . '" href="' . $url . '" class="button button-small thickbox">' . __( 'Options', 'anspress-question-answer' ) . '</a>';
 								}
 								?>
 							<?php else : ?>

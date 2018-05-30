@@ -1178,9 +1178,9 @@ ul.ap-meta-list {
   background: #fff;
   margin: 0 15px 30px;
   border-radius: 4px;
-  height: 235px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.07);
   overflow: hidden;
+  position: relative;
   p{
     margin-top: 0;
     margin-bottom: 10px;
@@ -1192,8 +1192,12 @@ ul.ap-meta-list {
     margin-bottom: 5px;
     margin-top: 5px;
   }
+  &-tags{
+    position: absolute;
+    padding: 5px;
+    left: 10px;
+  }
   &-image {
-    height: 95px;
     padding: 10px 10px 0;
     img{
       width: 100%;
@@ -1204,7 +1208,8 @@ ul.ap-meta-list {
     padding: 10px;
   }
   &.active{
-    border-color: #C5E1A5;
+    border-color: #bdd7e3;
+    background: #edf8fd;
   }
   &s-list {
     display: flex;
@@ -1215,7 +1220,7 @@ ul.ap-meta-list {
     font-weight: normal;
     float: right;
     font-size: 11px;
-    background: #8bc34a;
+    background: #03a9f4;
     color: #fff;
     padding: 0px 6px;
     border-radius: 2px;
