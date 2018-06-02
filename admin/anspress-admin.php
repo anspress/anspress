@@ -744,7 +744,9 @@ class AnsPress_Admin {
 	 */
 	public static function update_db() {
 		if ( current_user_can( 'manage_options' ) ) {
-			$activate = AP_Activate::get_instance();
+			require_once ANSPRESS_DIR . '/activate.php';
+
+			$activate = \AP_Activate::get_instance();
 			$activate->insert_tables();
 			update_option( 'anspress_db_version', AP_DB_VERSION );
 		}

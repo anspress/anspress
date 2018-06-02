@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Define databse version.
+// Define database version.
 define( 'AP_DB_VERSION', 34 );
 
 // Check if using required PHP version.
