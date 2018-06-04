@@ -8,6 +8,7 @@ $I->loginAsAdmin();
 $ids = $I->haveManyTermsInDatabase( 25, 'Q_category_{{n}}', 'question_category' );
 $I->cli( 'cache delete addons anspress' );
 $I->cli( 'option delete anspress_addons' );
+$I->cli( "wp rewrite structure '/%postname%/'" );
 $I->wait( 2 );
 $I->amOnPage( '/wp-admin/admin.php?page=anspress_addons' );
 $I->wantTo( 'Enable addon: category' );
