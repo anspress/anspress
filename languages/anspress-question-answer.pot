@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress Question Answer 4.1.11\n"
+"Project-Id-Version: AnsPress Question Answer 4.1.12\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2018-05-25 13:46:38+00:00\n"
+"POT-Creation-Date: 2018-06-04 16:41:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -659,7 +659,7 @@ msgstr ""
 #: addons/notifications/notifications.php:50
 #: addons/notifications/notifications.php:59
 #: addons/notifications/notifications.php:223 includes/functions.php:1675
-#: templates/functions.php:45
+#: templates/functions.php:43
 msgid "Notifications"
 msgstr ""
 
@@ -1155,7 +1155,7 @@ msgstr ""
 msgid "AnsPress Options"
 msgstr ""
 
-#: admin/anspress-admin.php:202 admin/views/addons.php:100
+#: admin/anspress-admin.php:202 admin/views/addons.php:103
 msgid "Options"
 msgstr ""
 
@@ -1171,551 +1171,551 @@ msgstr ""
 msgid "About AnsPress"
 msgstr ""
 
-#: admin/anspress-admin.php:313
+#: admin/anspress-admin.php:316
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:314
+#: admin/anspress-admin.php:317
 msgid "About"
 msgstr ""
 
-#: admin/anspress-admin.php:518
+#: admin/anspress-admin.php:521
 msgid "Select All"
 msgstr ""
 
-#: admin/anspress-admin.php:522
+#: admin/anspress-admin.php:525
 msgid "Add to Menu"
 msgstr ""
 
-#: admin/anspress-admin.php:649 admin/anspress-admin.php:658
-#: admin/anspress-admin.php:1075 admin/anspress-admin.php:1085
-#: admin/anspress-admin.php:1095 admin/anspress-admin.php:1105
-#: admin/anspress-admin.php:1115 includes/post-status.php:24
+#: admin/anspress-admin.php:652 admin/anspress-admin.php:661
+#: admin/anspress-admin.php:1080 admin/anspress-admin.php:1090
+#: admin/anspress-admin.php:1100 admin/anspress-admin.php:1110
+#: admin/anspress-admin.php:1120 includes/post-status.php:24
 msgid "Moderate"
 msgstr ""
 
-#: admin/anspress-admin.php:652 admin/anspress-admin.php:659
+#: admin/anspress-admin.php:655 admin/anspress-admin.php:662
 msgid "Private Post"
 msgstr ""
 
-#: admin/anspress-admin.php:678
+#: admin/anspress-admin.php:681
 msgid "AnsPress database is not updated."
 msgstr ""
 
-#: admin/anspress-admin.php:679
+#: admin/anspress-admin.php:682
 msgid "Update now"
 msgstr ""
 
-#: admin/anspress-admin.php:684
+#: admin/anspress-admin.php:687
 msgid "One or more AnsPress page(s) does not exists."
 msgstr ""
 
-#: admin/anspress-admin.php:685
+#: admin/anspress-admin.php:688
 msgid "Set automatically"
 msgstr ""
 
-#: admin/anspress-admin.php:685
+#: admin/anspress-admin.php:688
 msgid "Or"
 msgstr ""
 
-#: admin/anspress-admin.php:685
+#: admin/anspress-admin.php:688
 msgid "Set set by yourself"
 msgstr ""
 
-#: admin/anspress-admin.php:794
+#: admin/anspress-admin.php:799
 msgid "Save Pages"
 msgstr ""
 
-#: admin/anspress-admin.php:797
+#: admin/anspress-admin.php:802
 msgid "Hide author credits"
 msgstr ""
 
-#: admin/anspress-admin.php:798
+#: admin/anspress-admin.php:803
 msgid "Hide link to AnsPress project site."
 msgstr ""
 
-#: admin/anspress-admin.php:804
+#: admin/anspress-admin.php:809
 msgid ""
 "If you have created main pages manually then make sure to have [anspress] "
 "shortcode in all pages."
 msgstr ""
 
-#: admin/anspress-admin.php:843
+#: admin/anspress-admin.php:848
 msgid "Save Permalinks"
 msgstr ""
 
-#: admin/anspress-admin.php:846
+#: admin/anspress-admin.php:851
 msgid "Question slug"
 msgstr ""
 
-#: admin/anspress-admin.php:847
+#: admin/anspress-admin.php:852
 msgid "Slug for single question page."
 msgstr ""
 
-#: admin/anspress-admin.php:852
+#: admin/anspress-admin.php:857
 msgid "Question permalink"
 msgstr ""
 
-#: admin/anspress-admin.php:853
+#: admin/anspress-admin.php:858
 msgid "Select single question permalink structure."
 msgstr ""
 
-#: admin/anspress-admin.php:868
+#: admin/anspress-admin.php:873
 msgid "Base page title"
 msgstr ""
 
-#: admin/anspress-admin.php:869
+#: admin/anspress-admin.php:874
 msgid "Main questions list page title"
 msgstr ""
 
-#: admin/anspress-admin.php:874
+#: admin/anspress-admin.php:879
 msgid "Search page title"
 msgstr ""
 
-#: admin/anspress-admin.php:875
+#: admin/anspress-admin.php:880
 msgid "Title of the search page"
 msgstr ""
 
-#: admin/anspress-admin.php:880
+#: admin/anspress-admin.php:885
 msgid "Author page title"
 msgstr ""
 
-#: admin/anspress-admin.php:881
+#: admin/anspress-admin.php:886
 msgid "Title of the author page"
 msgstr ""
 
-#: admin/anspress-admin.php:910
+#: admin/anspress-admin.php:915
 msgid "Load assets in AnsPress page only?"
 msgstr ""
 
-#: admin/anspress-admin.php:911
+#: admin/anspress-admin.php:916
 msgid ""
 "Check this to load AnsPress JS and CSS on the AnsPress page only. Be "
 "careful, this might break layout."
 msgstr ""
 
-#: admin/anspress-admin.php:916
+#: admin/anspress-admin.php:921
 msgid "List avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:917
+#: admin/anspress-admin.php:922
 msgid "User avatar size for questions list."
 msgstr ""
 
-#: admin/anspress-admin.php:922
+#: admin/anspress-admin.php:927
 msgid "Question avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:923
+#: admin/anspress-admin.php:928
 msgid "User avatar size for question."
 msgstr ""
 
-#: admin/anspress-admin.php:928
+#: admin/anspress-admin.php:933
 msgid "Answer avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:929
+#: admin/anspress-admin.php:934
 msgid "User avatar size for answer."
 msgstr ""
 
-#: admin/anspress-admin.php:934
+#: admin/anspress-admin.php:939
 msgid "Comment avatar size"
 msgstr ""
 
-#: admin/anspress-admin.php:935
+#: admin/anspress-admin.php:940
 msgid "User avatar size for comments."
 msgstr ""
 
-#: admin/anspress-admin.php:940
+#: admin/anspress-admin.php:945
 msgid "Questions per page"
 msgstr ""
 
-#: admin/anspress-admin.php:941
+#: admin/anspress-admin.php:946
 msgid "Questions to show per page."
 msgstr ""
 
-#: admin/anspress-admin.php:946
+#: admin/anspress-admin.php:951
 msgid "Answers per page"
 msgstr ""
 
-#: admin/anspress-admin.php:947
+#: admin/anspress-admin.php:952
 msgid "Answers to show per page."
 msgstr ""
 
-#: admin/anspress-admin.php:975
+#: admin/anspress-admin.php:980
 msgid "Who can read question?"
 msgstr ""
 
-#: admin/anspress-admin.php:976
+#: admin/anspress-admin.php:981
 msgid "Set who can view or read a question."
 msgstr ""
 
-#: admin/anspress-admin.php:980 admin/anspress-admin.php:991
-#: admin/anspress-admin.php:1002 admin/anspress-admin.php:1030
-#: admin/anspress-admin.php:1041 admin/anspress-admin.php:1064
+#: admin/anspress-admin.php:985 admin/anspress-admin.php:996
+#: admin/anspress-admin.php:1007 admin/anspress-admin.php:1035
+#: admin/anspress-admin.php:1046 admin/anspress-admin.php:1069
 msgid "Anyone, including non-loggedin"
 msgstr ""
 
-#: admin/anspress-admin.php:981 admin/anspress-admin.php:992
-#: admin/anspress-admin.php:1003 admin/anspress-admin.php:1031
-#: admin/anspress-admin.php:1042 admin/anspress-admin.php:1065
+#: admin/anspress-admin.php:986 admin/anspress-admin.php:997
+#: admin/anspress-admin.php:1008 admin/anspress-admin.php:1036
+#: admin/anspress-admin.php:1047 admin/anspress-admin.php:1070
 msgid "Only logged in"
 msgstr ""
 
-#: admin/anspress-admin.php:982
+#: admin/anspress-admin.php:987
 msgid "Only user having ap_read_question capability"
 msgstr ""
 
-#: admin/anspress-admin.php:986
+#: admin/anspress-admin.php:991
 msgid "Who can read answers?"
 msgstr ""
 
-#: admin/anspress-admin.php:987
+#: admin/anspress-admin.php:992
 msgid "Set who can view or read a answer."
 msgstr ""
 
-#: admin/anspress-admin.php:993
+#: admin/anspress-admin.php:998
 msgid "Only user having ap_read_answer capability"
 msgstr ""
 
-#: admin/anspress-admin.php:997
+#: admin/anspress-admin.php:1002
 msgid "Who can read comment?"
 msgstr ""
 
-#: admin/anspress-admin.php:998
+#: admin/anspress-admin.php:1003
 msgid "Set who can view or read a comment."
 msgstr ""
 
-#: admin/anspress-admin.php:1004
+#: admin/anspress-admin.php:1009
 msgid "Only user having ap_read_comment capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1025
+#: admin/anspress-admin.php:1030
 msgid "Who can post question?"
 msgstr ""
 
-#: admin/anspress-admin.php:1026
+#: admin/anspress-admin.php:1031
 msgid "Set who can submit a question from frontend."
 msgstr ""
 
-#: admin/anspress-admin.php:1032
+#: admin/anspress-admin.php:1037
 msgid "Only user having ap_new_question capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1036
+#: admin/anspress-admin.php:1041
 msgid "Who can post answer?"
 msgstr ""
 
-#: admin/anspress-admin.php:1037
+#: admin/anspress-admin.php:1042
 msgid "Set who can submit an answer from frontend."
 msgstr ""
 
-#: admin/anspress-admin.php:1043
+#: admin/anspress-admin.php:1048
 msgid "Only user having ap_new_answer capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1047
+#: admin/anspress-admin.php:1052
 msgid "Multiple answers"
 msgstr ""
 
-#: admin/anspress-admin.php:1048
+#: admin/anspress-admin.php:1053
 msgid "Allow users to submit multiple answer per question."
 msgstr ""
 
-#: admin/anspress-admin.php:1053
+#: admin/anspress-admin.php:1058
 msgid "OP can answer?"
 msgstr ""
 
-#: admin/anspress-admin.php:1054
+#: admin/anspress-admin.php:1059
 msgid ""
 "OP: Original poster/asker. Enabling this option will prevent users to post "
 "an answer on their question."
 msgstr ""
 
-#: admin/anspress-admin.php:1059
+#: admin/anspress-admin.php:1064
 msgid "Who can post comment?"
 msgstr ""
 
-#: admin/anspress-admin.php:1060
+#: admin/anspress-admin.php:1065
 msgid "Set who can submit a comment from frontend."
 msgstr ""
 
-#: admin/anspress-admin.php:1066
+#: admin/anspress-admin.php:1071
 msgid "Only user having ap_new_comment capability"
 msgstr ""
 
-#: admin/anspress-admin.php:1070
+#: admin/anspress-admin.php:1075
 msgid "Status of new question"
 msgstr ""
 
-#: admin/anspress-admin.php:1071
+#: admin/anspress-admin.php:1076
 msgid "Default status of new question."
 msgstr ""
 
-#: admin/anspress-admin.php:1074 admin/anspress-admin.php:1084
-#: admin/anspress-admin.php:1094 admin/anspress-admin.php:1104
-#: admin/anspress-admin.php:1114
+#: admin/anspress-admin.php:1079 admin/anspress-admin.php:1089
+#: admin/anspress-admin.php:1099 admin/anspress-admin.php:1109
+#: admin/anspress-admin.php:1119
 msgid "Publish"
 msgstr ""
 
-#: admin/anspress-admin.php:1080
+#: admin/anspress-admin.php:1085
 msgid "Status of edited question"
 msgstr ""
 
-#: admin/anspress-admin.php:1081
+#: admin/anspress-admin.php:1086
 msgid "Default status of edited question."
 msgstr ""
 
-#: admin/anspress-admin.php:1090
+#: admin/anspress-admin.php:1095
 msgid "Status of new answer"
 msgstr ""
 
-#: admin/anspress-admin.php:1091
+#: admin/anspress-admin.php:1096
 msgid "Default status of new answer."
 msgstr ""
 
-#: admin/anspress-admin.php:1100
+#: admin/anspress-admin.php:1105
 msgid "Status of edited answer"
 msgstr ""
 
-#: admin/anspress-admin.php:1101
+#: admin/anspress-admin.php:1106
 msgid "Default status of edited answer."
 msgstr ""
 
-#: admin/anspress-admin.php:1110
+#: admin/anspress-admin.php:1115
 msgid "Status of non-loggedin post"
 msgstr ""
 
-#: admin/anspress-admin.php:1111
+#: admin/anspress-admin.php:1116
 msgid "Default status of question or answer submitted by non-loggedin user."
 msgstr ""
 
-#: admin/anspress-admin.php:1143
+#: admin/anspress-admin.php:1148
 msgid "Allow image upload"
 msgstr ""
 
-#: admin/anspress-admin.php:1144
+#: admin/anspress-admin.php:1149
 msgid "Allow logged-in users to upload image."
 msgstr ""
 
-#: admin/anspress-admin.php:1149
+#: admin/anspress-admin.php:1154
 msgid "Max uploads per post"
 msgstr ""
 
-#: admin/anspress-admin.php:1150
+#: admin/anspress-admin.php:1155
 msgid "Set numbers of media user can upload for each post."
 msgstr ""
 
-#: admin/anspress-admin.php:1154
+#: admin/anspress-admin.php:1159
 msgid "Max upload size"
 msgstr ""
 
-#: admin/anspress-admin.php:1155
+#: admin/anspress-admin.php:1160
 msgid "Set maximum upload size."
 msgstr ""
 
-#: admin/anspress-admin.php:1159
+#: admin/anspress-admin.php:1164
 msgid "Allow private posts"
 msgstr ""
 
-#: admin/anspress-admin.php:1160
+#: admin/anspress-admin.php:1165
 msgid ""
 "Allows users to create private question and answer. Private Q&A are only "
 "visible to admin and moderators."
 msgstr ""
 
-#: admin/anspress-admin.php:1165
+#: admin/anspress-admin.php:1170
 msgid "Multiple Answers"
 msgstr ""
 
-#: admin/anspress-admin.php:1166
+#: admin/anspress-admin.php:1171
 msgid "Allows users to post multiple answers on a question."
 msgstr ""
 
-#: admin/anspress-admin.php:1188
+#: admin/anspress-admin.php:1193
 msgid "Numbers of comments to show"
 msgstr ""
 
-#: admin/anspress-admin.php:1189
+#: admin/anspress-admin.php:1194
 msgid "Numbers of comments to load in each query?"
 msgstr ""
 
-#: admin/anspress-admin.php:1194
+#: admin/anspress-admin.php:1199
 msgid "Check duplicate"
 msgstr ""
 
-#: admin/anspress-admin.php:1195
+#: admin/anspress-admin.php:1200
 msgid "Check for duplicate posts before posting"
 msgstr ""
 
-#: admin/anspress-admin.php:1200
+#: admin/anspress-admin.php:1205
 msgid "Disable question suggestion"
 msgstr ""
 
-#: admin/anspress-admin.php:1201
+#: admin/anspress-admin.php:1206
 msgid "Checking this will disable question suggestion in ask form"
 msgstr ""
 
-#: admin/anspress-admin.php:1206
+#: admin/anspress-admin.php:1211
 msgid "Show default date format"
 msgstr ""
 
-#: admin/anspress-admin.php:1207
+#: admin/anspress-admin.php:1212
 msgid "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/anspress-admin.php:1212
+#: admin/anspress-admin.php:1217
 msgid "Show solved prefix"
 msgstr ""
 
-#: admin/anspress-admin.php:1213
+#: admin/anspress-admin.php:1218
 msgid ""
 "If an answer is selected for question then [solved] prefix will be added in "
 "title."
 msgstr ""
 
-#: admin/anspress-admin.php:1219
+#: admin/anspress-admin.php:1224
 msgid "Default question order"
 msgstr ""
 
-#: admin/anspress-admin.php:1220
+#: admin/anspress-admin.php:1225
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1223 admin/anspress-admin.php:1289
+#: admin/anspress-admin.php:1228 admin/anspress-admin.php:1294
 #: includes/theme.php:464 widgets/questions.php:120
 msgid "Voted"
 msgstr ""
 
-#: admin/anspress-admin.php:1224 admin/anspress-admin.php:1290
-#: admin/views/addons.php:68 includes/theme.php:385 includes/theme.php:457
+#: admin/anspress-admin.php:1229 admin/anspress-admin.php:1295
+#: admin/views/addons.php:62 includes/theme.php:385 includes/theme.php:457
 #: widgets/question_stats.php:54 widgets/questions.php:118
 msgid "Active"
 msgstr ""
 
-#: admin/anspress-admin.php:1225 admin/anspress-admin.php:1291
+#: admin/anspress-admin.php:1230 admin/anspress-admin.php:1296
 #: includes/theme.php:470 widgets/questions.php:119
 msgid "Newest"
 msgstr ""
 
-#: admin/anspress-admin.php:1226 admin/anspress-admin.php:1292
+#: admin/anspress-admin.php:1231 admin/anspress-admin.php:1297
 #: includes/theme.php:474
 msgid "Oldest"
 msgstr ""
 
-#: admin/anspress-admin.php:1231
+#: admin/anspress-admin.php:1236
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/anspress-admin.php:1232
+#: admin/anspress-admin.php:1237
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/anspress-admin.php:1237
+#: admin/anspress-admin.php:1242
 msgid "Minimum title length"
 msgstr ""
 
-#: admin/anspress-admin.php:1238
+#: admin/anspress-admin.php:1243
 msgid "Set minimum letters for a question title."
 msgstr ""
 
-#: admin/anspress-admin.php:1243 admin/anspress-admin.php:1297
+#: admin/anspress-admin.php:1248 admin/anspress-admin.php:1302
 msgid "Minimum question content"
 msgstr ""
 
-#: admin/anspress-admin.php:1244
+#: admin/anspress-admin.php:1249
 msgid "Set minimum letters for a question contents."
 msgstr ""
 
-#: admin/anspress-admin.php:1249
+#: admin/anspress-admin.php:1254
 msgid "Question editor?"
 msgstr ""
 
-#: admin/anspress-admin.php:1250 admin/anspress-admin.php:1256
+#: admin/anspress-admin.php:1255 admin/anspress-admin.php:1261
 msgid "Quick tags editor"
 msgstr ""
 
-#: admin/anspress-admin.php:1255
+#: admin/anspress-admin.php:1260
 msgid "Answer editor?"
 msgstr ""
 
-#: admin/anspress-admin.php:1261 admin/anspress-admin.php:1303
+#: admin/anspress-admin.php:1266 admin/anspress-admin.php:1308
 msgid "Disable comments"
 msgstr ""
 
-#: admin/anspress-admin.php:1262
+#: admin/anspress-admin.php:1267
 msgid "Disable comments on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1267 admin/anspress-admin.php:1309
+#: admin/anspress-admin.php:1272 admin/anspress-admin.php:1314
 msgid "Disable voting"
 msgstr ""
 
-#: admin/anspress-admin.php:1268
+#: admin/anspress-admin.php:1273
 msgid "Disable voting on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1273 admin/anspress-admin.php:1315
+#: admin/anspress-admin.php:1278 admin/anspress-admin.php:1320
 msgid "Disable down voting"
 msgstr ""
 
-#: admin/anspress-admin.php:1274
+#: admin/anspress-admin.php:1279
 msgid "Disable down voting on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1279
+#: admin/anspress-admin.php:1284
 msgid "Close question after selecting answer"
 msgstr ""
 
-#: admin/anspress-admin.php:1280
+#: admin/anspress-admin.php:1285
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
 
-#: admin/anspress-admin.php:1285
+#: admin/anspress-admin.php:1290
 msgid "Default answers order"
 msgstr ""
 
-#: admin/anspress-admin.php:1286
+#: admin/anspress-admin.php:1291
 msgid "Order answers by by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1298
+#: admin/anspress-admin.php:1303
 msgid "Set minimum letters for a answer contents."
 msgstr ""
 
-#: admin/anspress-admin.php:1304
+#: admin/anspress-admin.php:1309
 msgid "Disable comments on answer."
 msgstr ""
 
-#: admin/anspress-admin.php:1310
+#: admin/anspress-admin.php:1315
 msgid "Disable voting on answers."
 msgstr ""
 
-#: admin/anspress-admin.php:1316
+#: admin/anspress-admin.php:1321
 msgid "Disable down voting on answers."
 msgstr ""
 
-#: admin/anspress-admin.php:1350
+#: admin/anspress-admin.php:1355
 msgid "Select the roles to exclude in activity feed."
 msgstr ""
 
-#: admin/anspress-admin.php:1351
+#: admin/anspress-admin.php:1356
 msgid "Selected role's activities will be excluded in site activity feed."
 msgstr ""
 
-#: admin/anspress-admin.php:1382
+#: admin/anspress-admin.php:1387
 msgid "View page"
 msgstr ""
 
-#: admin/anspress-admin.php:1383
+#: admin/anspress-admin.php:1388
 msgid "Edit page"
 msgstr ""
 
-#: admin/anspress-admin.php:1436
+#: admin/anspress-admin.php:1441
 msgid "Addon options updated successfully!"
 msgstr ""
 
-#: admin/anspress-admin.php:1443
+#: admin/anspress-admin.php:1448
 msgid ""
 "There is no option registered by this addon. Custom options can be "
 "registered by using hook: %s"
@@ -1982,15 +1982,15 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: admin/views/addons.php:85
+#: admin/views/addons.php:88
 msgid "Disable Addon"
 msgstr ""
 
-#: admin/views/addons.php:100
+#: admin/views/addons.php:103
 msgid "%s Options"
 msgstr ""
 
-#: admin/views/addons.php:104
+#: admin/views/addons.php:107
 msgid "Enable Addon"
 msgstr ""
 
@@ -2506,11 +2506,11 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr ""
 
-#: anspress-question-answer.php:46
+#: anspress-question-answer.php:44
 msgid "AnsPress is not running!"
 msgstr ""
 
-#: anspress-question-answer.php:47
+#: anspress-question-answer.php:45
 msgid ""
 "Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP "
 "version is %s. Please ask hosting provider to update your PHP version."
@@ -2872,7 +2872,7 @@ msgid "Submit Comment"
 msgstr ""
 
 #: includes/class-form-hooks.php:226 templates/answer.php:40
-#: templates/functions.php:41
+#: templates/functions.php:39
 msgid "Comment"
 msgstr ""
 
@@ -3026,7 +3026,7 @@ msgid "Ask a Question"
 msgstr ""
 
 #: includes/common-pages.php:23 templates/addons/tag/tags.php:20
-#: templates/functions.php:47 templates/search-form.php:16
+#: templates/functions.php:45 templates/search-form.php:16
 msgid "Search"
 msgstr ""
 
@@ -3193,7 +3193,7 @@ msgid "restored answer"
 msgstr ""
 
 #: includes/functions.php:1359 templates/comment.php:27
-#: templates/functions.php:40
+#: templates/functions.php:38
 msgid "commented"
 msgstr ""
 
@@ -3408,43 +3408,43 @@ msgstr ""
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:867
+#: includes/hooks.php:868
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:868
+#: includes/hooks.php:869
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:869
+#: includes/hooks.php:870
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:870
+#: includes/hooks.php:871
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:871
+#: includes/hooks.php:872
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:872
+#: includes/hooks.php:873
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:873
+#: includes/hooks.php:874
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:874
+#: includes/hooks.php:875
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:875
+#: includes/hooks.php:876
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:876
+#: includes/hooks.php:877
 msgid "years"
 msgstr ""
 
@@ -3903,6 +3903,12 @@ msgstr ""
 msgid "AnsPress Editor Field"
 msgstr ""
 
+#: lib/form/class-editor.php:218
+msgid ""
+"Sorry an error occured while processing your image, please remove it and "
+"insert again"
+msgstr ""
+
 #: lib/form/class-group.php:51
 msgid "AnsPress Group Field"
 msgstr ""
@@ -4036,7 +4042,7 @@ msgstr ""
 msgid "Sub Categories"
 msgstr ""
 
-#: templates/addons/notification/index.php:26 templates/functions.php:46
+#: templates/addons/notification/index.php:26 templates/functions.php:44
 msgid "Mark all as seen"
 msgstr ""
 
@@ -4138,93 +4144,93 @@ msgstr ""
 msgid "go to page 1"
 msgstr ""
 
-#: templates/functions.php:36
+#: templates/functions.php:34
 msgid "Loading.."
 msgstr ""
 
-#: templates/functions.php:37
+#: templates/functions.php:35
 msgid "Sending request"
 msgstr ""
 
-#: templates/functions.php:38
+#: templates/functions.php:36
 msgid "File size is bigger than %s MB"
 msgstr ""
 
-#: templates/functions.php:39
+#: templates/functions.php:37
 msgid "You have already attached maximum numbers of allowed attachments"
 msgstr ""
 
-#: templates/functions.php:42
+#: templates/functions.php:40
 msgid "Cancel"
 msgstr ""
 
-#: templates/functions.php:43
+#: templates/functions.php:41
 msgid "Update"
 msgstr ""
 
-#: templates/functions.php:44
+#: templates/functions.php:42
 msgid "Write your comment..."
 msgstr ""
 
-#: templates/functions.php:48
+#: templates/functions.php:46
 msgid "Sorry, you don't have permission to read comments."
 msgstr ""
 
-#: templates/functions.php:68
+#: templates/functions.php:66
 msgid "(AnsPress) Before"
 msgstr ""
 
-#: templates/functions.php:72
+#: templates/functions.php:70
 msgid "Widgets in this area will be shown before anspress body."
 msgstr ""
 
-#: templates/functions.php:80
+#: templates/functions.php:78
 msgid "(AnsPress) Question List Top"
 msgstr ""
 
-#: templates/functions.php:84
+#: templates/functions.php:82
 msgid "Widgets in this area will be shown before questions list."
 msgstr ""
 
-#: templates/functions.php:92
+#: templates/functions.php:90
 msgid "(AnsPress) Sidebar"
 msgstr ""
 
-#: templates/functions.php:96
+#: templates/functions.php:94
 msgid ""
 "Widgets in this area will be shown in AnsPress sidebar except single "
 "question page."
 msgstr ""
 
-#: templates/functions.php:104
+#: templates/functions.php:102
 msgid "(AnsPress) Question Sidebar"
 msgstr ""
 
-#: templates/functions.php:108
+#: templates/functions.php:106
 msgid "Widgets in this area will be shown in single question page sidebar."
 msgstr ""
 
-#: templates/functions.php:116
+#: templates/functions.php:114
 msgid "(AnsPress) Category Page"
 msgstr ""
 
-#: templates/functions.php:120
+#: templates/functions.php:118
 msgid "Widgets in this area will be shown in category listing page."
 msgstr ""
 
-#: templates/functions.php:128
+#: templates/functions.php:126
 msgid "(AnsPress) Tag page"
 msgstr ""
 
-#: templates/functions.php:132
+#: templates/functions.php:130
 msgid "Widgets in this area will be shown in tag listing page."
 msgstr ""
 
-#: templates/functions.php:140
+#: templates/functions.php:138
 msgid "(AnsPress) Author page"
 msgstr ""
 
-#: templates/functions.php:144
+#: templates/functions.php:142
 msgid "Widgets in this area will be shown in authors page."
 msgstr ""
 
