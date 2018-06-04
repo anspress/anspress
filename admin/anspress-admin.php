@@ -215,6 +215,9 @@ class AnsPress_Admin {
 		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
 		if ( $current_screen->post_type == 'question' ) {
 			$submenu_file = 'edit.php?post_type=question';
+			if ( $current_screen->action == 'add' ) {
+				$submenu_file = 'post-new.php?post_type=question';
+			}
 			$parent_file  = 'anspress';
 		} elseif ( $current_screen->post_type == 'answer' ) {
 			$submenu_file = 'edit.php?post_type=answer';
@@ -255,7 +258,7 @@ class AnsPress_Admin {
 		global $current_screen;
 		$taxonomy = $current_screen->taxonomy;
 
-		if ( 'question_category' === $taxonomy || 'question_tags' === $taxonomy || 'question_label' === $taxonomy || 'rank' === $taxonomy || 'badge' === $taxonomy ) {
+		if ( 'question_category' === $taxonomy || 'question_tag' === $taxonomy || 'question_label' === $taxonomy || 'rank' === $taxonomy || 'badge' === $taxonomy ) {
 			$parent_file = 'anspress';
 		}
 		return $parent_file;
