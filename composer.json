@@ -1,7 +1,7 @@
 {
     "name": "anspress/anspress",
     "description": "Free question and answer plugin",
-    "license": "GPL 3.0",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Rahul Aryan",
