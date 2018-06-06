@@ -59,6 +59,11 @@ class AP_QA_Query_Hooks {
 					}
 				}
 
+				$include_session_posts = true;
+				if ( isset( $wp_query->query['include_session'] ) && false === $wp_query->query['include_session'] ) {
+					$include_session_posts = false;
+				}
+
 				$ap_type = false;
 				if ( isset( $wp_query->query['ap_question_query'] ) ) {
 					$ap_type = 'question';
@@ -66,7 +71,7 @@ class AP_QA_Query_Hooks {
 					$ap_type = 'answer';
 				}
 
-				if ( ! empty( $ap_type ) && ! get_query_var( 'answer_id', false ) ) {
+				if ( $include_session_posts && ! empty( $ap_type ) && ! get_query_var( 'answer_id', false ) ) {
 					// Include user's session questions.
 					$session_posts = anspress()->session->get( $ap_type . 's' );
 					$ids           = sanitize_comma_delimited( $session_posts );
