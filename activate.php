@@ -125,7 +125,7 @@ class AP_Activate {
 	public function enable_addons() {
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'email.php' );
-		ap_activate_addon( 'category.php' );
+		ap_activate_addon( 'categories.php' );
 	}
 
 	/**
