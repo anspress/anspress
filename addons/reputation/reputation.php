@@ -286,9 +286,9 @@ class Reputation extends \AnsPress\Singleton {
 	public function select_answer( $_post ) {
 		ap_insert_reputation( 'best_answer', $_post->ID, $_post->post_author );
 		$question = get_post( $_post->post_parent );
-
+		
 		// Award select answer points to question author only.
-		if ( get_current_user_id() === $_post->post_author ) {
+		if ( get_current_user_id() === $question->post_author ) {
 			ap_insert_reputation( 'select_answer', $_post->ID );
 		}
 	}
