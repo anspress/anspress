@@ -643,8 +643,10 @@ class AnsPress_Hooks {
 			return;
 		}
 
-		// Deleted unused images from meta.
-		ap_delete_images_not_in_content( $post_id );
+		if ( $updated ) {
+			// Deleted unused images from meta.
+			ap_delete_images_not_in_content( $post_id );
+		}
 
 		$form = anspress()->get_form( 'question' );
 		$values = $form->get_values();
@@ -715,8 +717,10 @@ class AnsPress_Hooks {
 			return;
 		}
 
-		// Deleted unused images from meta.
-		ap_delete_images_not_in_content( $post_id );
+		if ( $updated ) {
+			// Deleted unused images from meta.
+			ap_delete_images_not_in_content( $post_id );
+		}
 
 		$form = anspress()->get_form( 'answer' );
 
