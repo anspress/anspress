@@ -213,14 +213,11 @@ class AnsPress_Admin {
 		global $submenu_file, $current_screen, $plugin_page;
 
 		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
-		if ( $current_screen->post_type == 'question' ) {
-			$submenu_file = 'edit.php?post_type=question';
+		if ( in_array( $current_screen->post_type, [ 'question', 'answer' ], true )  ) {
+			$submenu_file = 'edit.php?post_type=' . $current_screen->post_type;
 			if ( $current_screen->action == 'add' ) {
-				$submenu_file = 'post-new.php?post_type=question';
+				$submenu_file = 'post-new.php?post_type=' . $current_screen->post_type;
 			}
-			$parent_file  = 'anspress';
-		} elseif ( $current_screen->post_type == 'answer' ) {
-			$submenu_file = 'edit.php?post_type=answer';
 			$parent_file  = 'anspress';
 		}
 
