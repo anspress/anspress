@@ -595,6 +595,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		public static function create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
 				switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
+				require_once dirname( __FILE__ ) . '/activate.php';
 				AP_Activate::get_instance( true );
 				restore_current_blog();
 			}
