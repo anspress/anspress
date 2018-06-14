@@ -1,84 +1,83 @@
-#anspress{
-	.ap-modal{
+
+.ap-modal{
+	bottom: 0;
+	//display: none;
+	left: 0;
+	overflow-x: auto;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9999;
+
+	&.open{
+		display: block;
+	}
+
+	&-backdrop{
 		bottom: 0;
-		//display: none;
 		left: 0;
-		overflow-x: auto;
 		position: fixed;
 		top: 0;
 		width: 100%;
+		background: rgba(0, 0, 0, 0.4);
+	}
+	&-body{
+		background: none repeat scroll 0 0 #fff;
+		border-radius: 4px;
+		box-shadow: 0 4px 35px rgba(0, 0, 0, 0.3);
+		padding: 20px;
+		position: relative;
+		margin: 50px auto 0 auto;
 		z-index: 9999;
-
-		&.open{
-			display: block;
-		}
-
-		&-backdrop{
-			bottom: 0;
-			left: 0;
-			position: fixed;
-			top: 0;
+		width: 400px;
+		&.ap-modal-medium{
+			max-width: 600px;
 			width: 100%;
-			background: rgba(0, 0, 0, 0.4);
 		}
-		&-body{
-			background: none repeat scroll 0 0 #fff;
-			border-radius: 4px;
-			box-shadow: 0 4px 35px rgba(0, 0, 0, 0.3);
-			padding: 20px;
-			position: relative;
-			margin: 50px auto 0 auto;
-			z-index: 9999;
-			width: 400px;
-			&.ap-modal-medium{
-				max-width: 600px;
-				width: 100%;
-			}
-		}
-		&-inner{
-			margin-left: -50%;
-		}
-		&-content{
-			line-height: 1.4;
-			min-height: 50px;
-		}
-		&-title{
-			font-weight: 600;
-			font-size: 15px;
-			display: inline;
-		}
-		&-footer {
+	}
+	&-inner{
+		margin-left: -50%;
+	}
+	&-content{
+		line-height: 1.4;
+		min-height: 50px;
+	}
+	&-title{
+		font-weight: 600;
+		font-size: 15px;
+		display: inline;
+	}
+	&-footer {
 
-		}
-		&-close{
-			color: #aaa;
-			cursor: pointer;
-			float: right;
-			font-size: 18px;
-			text-align: center;
+	}
+	&-close{
+		color: #aaa;
+		cursor: pointer;
+		float: right;
+		font-size: 18px;
+		text-align: center;
 
-			&:hover{
-				color: #777;
-			}
+		&:hover{
+			color: #777;
 		}
-		&-header {
-			padding: 10px 20px;
-			background: #eee;
-			margin: -20px -20px 15px;
-			border-radius: 5px 5px 0 0;
-			border-bottom: solid 1px #e7e7e7;
-		}
-		.login-submit{
-			margin-bottom: 0;
-		}
-		a.ap-modal-btn {
-			text-transform: uppercase;
-			text-decoration: none;
-		}
-		apcomments{
-			&:before, &:after{
-				display: none !important;
-			}
+	}
+	&-header {
+		padding: 10px 20px;
+		background: #eee;
+		margin: -20px -20px 15px;
+		border-radius: 5px 5px 0 0;
+		border-bottom: solid 1px #e7e7e7;
+	}
+	.login-submit{
+		margin-bottom: 0;
+	}
+	a.ap-modal-btn {
+		text-transform: uppercase;
+		text-decoration: none;
+	}
+	apcomments{
+		&:before, &:after{
+			display: none !important;
 		}
 	}
 }
