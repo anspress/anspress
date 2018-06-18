@@ -212,15 +212,18 @@ class AnsPress_Admin {
 	public static function fix_active_admin_menu( $parent_file ) {
 		global $submenu_file, $current_screen, $plugin_page;
 
-		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
-		if ( in_array( $current_screen->post_type, [ 'question', 'answer' ], true )  ) {
-			$submenu_file = 'edit.php?post_type=' . $current_screen->post_type;
-			if ( $current_screen->action == 'add' ) {
-				$submenu_file = 'post-new.php?post_type=' . $current_screen->post_type;
-			}
-			$parent_file  = 'anspress';
+		$post_type = $current_screen->post_type;
+		if ( ! in_array( $post_type, [ 'question', 'answer' ], true )  ) {
+			return $parent_file; 
 		}
 
+		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
+		$parent_file  = 'anspress';
+		$submenu_file = 'edit.php?post_type=' . $post_type;
+		if ( $current_screen->action == 'add' ) {
+			$submenu_file = ( $post_type == 'question' ) ? 'post-new.php?post_type=question' : 'ap_select_question';
+		}
+		
 		return $parent_file;
 	}
 
