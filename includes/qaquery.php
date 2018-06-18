@@ -35,9 +35,10 @@ class Question_Query extends WP_Query {
 	 * @since 4.1.5 Include future questions if user have privilege.
 	 */
 	public function __construct( $args = [] ) {
+		$paged = get_query_var( 'ap_paged' );
 		if ( is_front_page() ) {
 			$paged = ( isset( $_GET['ap_paged'] ) ) ? (int) $_GET['ap_paged'] : 1; // input var ok.
-		} else {
+		} else if ( ! $paged ) {
 			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 		}
 
