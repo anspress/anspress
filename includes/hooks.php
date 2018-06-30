@@ -78,7 +78,7 @@ class AnsPress_Hooks {
 			//anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
-			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
+			//anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
@@ -862,19 +862,21 @@ class AnsPress_Hooks {
 	 * @param	string $since Time since.
 	 * @return string
 	 * @since	2.4.8
+	 *
+	 * @deprecated 4.1.13
 	 */
 	public static function human_time_diff( $since ) {
 		$replace = array(
-			'min'			  => __( 'minute', 'anspress-question-answer' ),
-			'mins'		  => __( 'minutes', 'anspress-question-answer' ),
-			'hour'		  => __( 'hour', 'anspress-question-answer' ),
-			'hours' 	  => __( 'hours', 'anspress-question-answer' ),
-			'day'	 	    => __( 'day', 'anspress-question-answer' ),
-			'days'		  => __( 'days', 'anspress-question-answer' ),
-			'week'		  => __( 'week', 'anspress-question-answer' ),
-			'weeks'		  => __( 'weeks', 'anspress-question-answer' ),
-			'year'		  => __( 'year', 'anspress-question-answer' ),
-			'years'		  => __( 'years', 'anspress-question-answer' ),
+			'min'   => __( 'minute', 'anspress-question-answer' ),
+			'mins'  => __( 'minutes', 'anspress-question-answer' ),
+			'hour'  => __( 'hour', 'anspress-question-answer' ),
+			'hours' => __( 'hours', 'anspress-question-answer' ),
+			'day'   => __( 'day', 'anspress-question-answer' ),
+			'days'  => __( 'days', 'anspress-question-answer' ),
+			'week'  => __( 'week', 'anspress-question-answer' ),
+			'weeks' => __( 'weeks', 'anspress-question-answer' ),
+			'year'  => __( 'year', 'anspress-question-answer' ),
+			'years' => __( 'years', 'anspress-question-answer' ),
 		);
 
 		return strtr( $since, $replace );

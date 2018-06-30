@@ -122,9 +122,6 @@ class AnsPress_Uploader {
 			ap_send_json( 'something_wrong' );
 		}
 
-		$form_name = ap_sanitize_unslash( 'form_name', 'r' );
-		$nonce     = wp_create_nonce( $form_name );
-
 		// Check if user have permission to upload tem image.
 		if ( ! ap_user_can_upload() ) {
 			ap_send_json( array(
@@ -135,12 +132,18 @@ class AnsPress_Uploader {
 			) );
 		}
 
+		$image_for = ap_sanitize_unslash( 'image_for', 'r' );
+
 		ob_start();
 		anspress()->get_form( 'image_upload' )->generate( array(
 			'hidden_fields' => array(
 				array(
 					'name'  => 'action',
 					'value' => 'ap_image_upload',
+				),
+				array(
+					'name'  => 'image_for',
+					'value' => $image_for,
 				),
 			),
 		));
@@ -159,6 +162,7 @@ class AnsPress_Uploader {
 	 *
 	 * @return void
 	 * @since 4.1.8
+	 * @since 4.1.13 Pass a `image_for` in JSON so that javascript callback can be triggered.
 	 */
 	public static function image_upload() {
 		$form = anspress()->get_form( 'image_upload' );
@@ -178,7 +182,8 @@ class AnsPress_Uploader {
 			ap_send_json( 'something_wrong' );
 		}
 
-		$values = $form->get_values();
+		$image_for = ap_sanitize_unslash( 'image_for', 'r' );
+		$values    = $form->get_values();
 
 		// Check for errors.
 		if ( $form->have_errors() ) {
@@ -200,6 +205,7 @@ class AnsPress_Uploader {
 		$res = array(
 			'success'   => true,
 			'action'    => 'ap_image_upload',
+			'image_for' => $image_for,
 			'snackbar'  => [ 'message' => __( 'Successfully uploaded image', 'anspress-question-answer' ) ],
 			'files'     => $files,
 		);

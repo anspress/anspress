@@ -255,7 +255,7 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
 		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
 			return sprintf(
 				/* translators: %s: human-readable time difference */
-				__( '%s ago', 'anspress-question-answer' ),
+				_x( '%s ago', 'anspress-question-answer' ),
 				human_time_diff( $time, current_time( 'timestamp', true ) )
 			);
 		}
