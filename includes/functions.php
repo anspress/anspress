@@ -902,22 +902,6 @@ function ap_get_sort() {
 }
 
 /**
- * Register AnsPress menu.
- *
- * @param string $slug Menu slug.
- * @param string $title Menu title.
- * @param string $link Menu link.
- * @deprecated 4.1.6
- */
-function ap_register_menu( $slug, $title, $link ) {
-	anspress()->menu[ $slug ] = array(
-		'title' => $title,
-		'link'  => $link,
-	);
-}
-
-
-/**
  * Remove white space from string.
  *
  * @param string $contents String.

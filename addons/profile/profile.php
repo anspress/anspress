@@ -56,7 +56,6 @@ class Profile extends \AnsPress\Singleton {
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ $this, 'user_page' ], true, true );
 
 		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
-		// anspress()->add_filter( 'ap_menu_link', $this, 'menu_link', 10, 2 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', $this, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'wp_title', $this, 'page_title' );
 		anspress()->add_action( 'the_post', $this, 'filter_page_title' );
@@ -131,22 +130,6 @@ class Profile extends \AnsPress\Singleton {
 		);
 
 		return $new_rules + $rules;
-	}
-
-	/**
-	 * Filter user menu links.
-	 *
-	 * @param  string $url Menu url.
-	 * @param  object $item Menu item object.
-	 * @return string
-	 * @deprecated 4.1.2
-	 */
-	public function menu_link( $url, $item ) {
-		if ( 'user' === $item->object ) {
-			$url = ap_user_link( get_current_user_id() );
-		}
-
-		return $url;
 	}
 
 	/**

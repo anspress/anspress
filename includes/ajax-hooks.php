@@ -290,32 +290,6 @@ class AnsPress_Ajax {
 	}
 
 	/**
-	 * Handle Ajax callback for user hover card
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function hover_card() {
-		if ( ap_opt( 'disable_hover_card' ) ) {
-			wp_die();
-		}
-
-		$id = (int) ap_sanitize_unslash( 'id', 'p' );
-		$type = ap_sanitize_unslash( 'type', 'request', 'user' );
-
-		if ( ! ap_verify_default_nonce() ) {
-			wp_die();
-		}
-
-		/**
-		 * AP Hover card actions.
-		 *
-		 * @param integer $id ID.
-		 */
-		do_action( 'ap_hover_card_' . $type, $id );
-		wp_die();
-	}
-
-	/**
 	 * Close question callback.
 	 *
 	 * @since unknown

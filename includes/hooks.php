@@ -54,7 +54,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'transition_post_status', __CLASS__, 'transition_post_status', 10, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
-			// anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
 
@@ -824,18 +823,6 @@ class AnsPress_Hooks {
 		// Update total casted vote of user.
 		update_user_meta( $userid, '__up_vote_casted', $voted->votes_up );
 		update_user_meta( $userid, '__down_vote_casted', $voted->votes_down );
-	}
-
-	/**
-	 * Append variable to post Object.
-	 *
-	 * @param Object $post Post object.
-	 * @deprecated 4.1.1
-	 */
-	public static function filter_page_title( $post ) {
-		if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
-			$post->post_title = ap_page_title();
-		}
 	}
 
 	/**

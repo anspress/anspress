@@ -437,29 +437,6 @@ class Categories extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Add category page title.
-	 *
-	 * @param  string $title AnsPress page title.
-	 * @return string
-	 * @deprecated 4.1.1
-	 */
-	public function page_title( $title ) {
-		if ( is_question_categories() ) {
-			$title = ap_opt( 'categories_page_title' );
-		} elseif ( is_question_category() ) {
-			$category = get_queried_object();
-
-			if ( $category ) {
-				$title = $category->name;
-			} else {
-				$title = __( 'No matching category found', 'anspress-question-answer' );
-			}
-		}
-
-		return $title;
-	}
-
-	/**
 	 * Add category nav in AnsPress breadcrumbs.
 	 *
 	 * @param  array $navs Breadcrumbs nav array.

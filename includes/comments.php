@@ -79,16 +79,6 @@ class AnsPress_Comment_Hooks {
 	}
 
 	/**
-	 * Ajax action for deleting comment.
-	 *
-	 * @since 2.0.0
-	 * @since 3.0.0 Moved from ajax.php to here.
-	 * @deprecated 4.1.8 Replaced by \AnsPress\Ajax\Comment_Delete::init
-	 */
-	public static function delete_comment() {
-	}
-
-	/**
 	 * Modify comment query args for showing pending comments to moderator.
 	 *
 	 * @param  array $args Comment args.

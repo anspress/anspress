@@ -565,21 +565,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		}
 
 		/**
-		 * Before activation redirect
-		 *
-		 * @access public
-		 * @static
-		 *
-		 * @param  string $plugin Plugin base name.
-		 * @deprecated 4.1.3
-		 */
-		public static function activation_redirect( $plugin ) {
-			if ( plugin_basename( __FILE__ ) === $plugin ) {
-				add_option( 'anspress_do_installation_redirect', true );
-			}
-		}
-
-		/**
 		 * Creating table whenever a new blog is created
 		 *
 		 * @access public
