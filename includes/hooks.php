@@ -133,6 +133,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
 			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions', 10, 2 );
+			anspress()->add_action( 'get_comments_number', __CLASS__, 'get_comments_number', 11, 2 );
 	}
 
 	/**
@@ -1050,5 +1051,33 @@ class AnsPress_Hooks {
 				'subs_ref_id' => $_comment->comment_ID,
 			) );
 		}
+	}
+
+	/**
+	 * Include anspress comments count.
+	 * This fixes no comments visible while using DIVI.
+	 *
+	 * @param integer $count   Comments count
+	 * @param integer $post_id Post ID.
+	 * @return integer
+	 *
+	 * @since 4.1.13
+	 */
+	public static function get_comments_number( $count, $post_id ) {
+		global $post_type;
+
+		if ( $post_type == 'question' || ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 'ap_form_comment' === ap_isset_post_value( 'action' ) ) ) {
+			$get_comments     = get_comments( array(
+				'post_id' => $post_id,
+				'status'  => 'approve'
+			) );
+
+			$types = separate_comments( $get_comments );
+			if( ! empty( $types['anspress'] ) ) {
+				$count = count( $types['anspress'] );
+			}
+		}
+
+		return $count;
 	}
 }
