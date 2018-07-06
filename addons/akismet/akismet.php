@@ -109,7 +109,7 @@ class Akismet extends \AnsPress\Singleton {
 			'comment_author'       => get_the_author_meta( 'nicename', $post->post_author ),
 			'comment_author_email' => get_the_author_meta( 'user_email', $post->post_author ),
 			'comment_author_url'   => get_the_author_meta( 'url', $post->post_author ),
-			'comment_content'      => $post->post_content,
+			'comment_content'      => $post->post_title . "\n\n" . $post->post_content,
 		);
 
 		$akismet_ua = sprintf( 'WordPress/%s | AnsPress/%s', $GLOBALS['wp_version'], AP_VERSION );
