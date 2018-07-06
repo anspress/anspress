@@ -85,6 +85,20 @@ class AP_Form_Hooks {
 				'validate'   => 'max_string_length,badwords',
 				'max_length' => 64,
 			);
+
+			if ( empty( $editing_id ) && ap_opt( 'create_account' ) ) {
+				$form['fields']['email'] = array(
+					'label'      => __( 'Your Email', 'anspress-question-answer' ),
+					'attr'       => array(
+						'placeholder' => __( 'Enter your email', 'anspress-question-answer' ),
+					),
+					'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+					'order'      => 20,
+					'validate'   => 'is_email,required',
+					'sanitize'   => 'email,required',
+					'max_length' => 64,
+				);
+			}
 		}
 
 		$form['fields']['post_id'] = array(
@@ -185,6 +199,20 @@ class AP_Form_Hooks {
 				'validate'   => 'max_string_length,badwords',
 				'max_length' => 20,
 			);
+
+			if ( empty( $editing_id ) && ap_opt( 'create_account' ) ) {
+				$form['fields']['email'] = array(
+					'label'      => __( 'Your Email', 'anspress-question-answer' ),
+					'attr'       => array(
+						'placeholder' => __( 'Enter your email', 'anspress-question-answer' ),
+					),
+					'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+					'order'      => 20,
+					'validate'   => 'is_email,required',
+					'sanitize'   => 'email,required',
+					'max_length' => 64,
+				);
+			}
 		}
 
 		$form['fields']['post_id'] = array(
@@ -369,6 +397,11 @@ class AP_Form_Hooks {
 		// If private override status.
 		if ( isset( $values['is_private']['value'] ) && true === $values['is_private']['value'] ) {
 			$question_args['post_status'] = 'private_post';
+		}
+
+		// Create user if enabled.
+		if ( ! $editing && ! is_user_logged_in() && ap_opt( 'create_account' ) ) {
+			self::create_user( $values, $question_args, $manual );
 		}
 
 		// Check if duplicate.
@@ -586,6 +619,11 @@ class AP_Form_Hooks {
 		// If private override status.
 		if ( isset( $values['is_private']['value'] ) && true === $values['is_private']['value'] ) {
 			$answer_args['post_status'] = 'private_post';
+		}
+
+		// Create user if enabled.
+		if ( ! $editing && ! is_user_logged_in() && ap_opt( 'create_account' ) ) {
+			self::create_user( $values, $answer_args, $manual );
 		}
 
 		/**
@@ -974,5 +1012,31 @@ class AP_Form_Hooks {
 				),
 			),
 		);
+	}
+
+	public static function create_user( &$values, &$args, $manual ) {
+		$email = $values['email']['value'];
+		$user_id = wp_insert_user( array(
+			'user_email'   => $email,
+			'user_login'   => $email,
+			'user_pass'    => wp_generate_password(),
+			'display_name' => ! empty(  $values['anonymous_name']['value'] ) ? $values['anonymous_name']['value'] : '',
+		) );
+
+		if ( is_wp_error( $user_id ) ) {
+			if ( false === $manual ) {
+				ap_ajax_json( array(
+					'success'  => false,
+					'snackbar' => [ 'message' => $user_id->get_error_message() ],
+				) );
+			} else {
+				return $user_id;
+			}
+		}
+
+		// Send the notification.
+		wp_new_user_notification( $user_id, null, 'both' );
+
+		$args['post_author'] = $user_id;
 	}
 }

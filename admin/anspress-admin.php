@@ -1045,6 +1045,12 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_new_answer capability', 'anspress-question-answer' ),
 					),
 				),
+				'create_account'      => array(
+					'label' => __( 'Create account for non-registered', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow non-registered users to create account by entering their email in question. After submitting post a confirmation email will be sent to the user.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['create_account'],
+				),
 				'multiple_answers'      => array(
 					'label' => __( 'Multiple answers', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow users to submit multiple answer per question.', 'anspress-question-answer' ),

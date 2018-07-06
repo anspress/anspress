@@ -360,16 +360,6 @@ function ap_count_other_answer( $question_id = false ) {
 }
 
 /**
- * Unselect an answer as best.
- *
- * @param  integer $post_id Post ID.
- * @deprecated 4.1.2
- */
-function ap_unselect_answer( $post_id ) {
-	$post = ap_get_post( $post_id );
-}
-
-/**
  * Return paged position of answer.
  *
  * @param boolean|integer $question_id Question ID.
