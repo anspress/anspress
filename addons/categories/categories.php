@@ -397,7 +397,8 @@ class Categories extends \AnsPress\Singleton {
 			return $form;
 		}
 
-		$editing_id = ap_sanitize_unslash( 'id', 'r' );
+		$editing_id  = ap_sanitize_unslash( 'id', 'r' );
+		$category_id = ap_sanitize_unslash( 'category', 'r' );
 
 		$form['fields']['category'] = array(
 			'label'    => __( 'Category', 'anspress-question-answer' ),
@@ -415,6 +416,8 @@ class Categories extends \AnsPress\Singleton {
 			if ( $categories ) {
 				$form['fields']['category']['value'] = $categories[0]->term_id;
 			}
+		} elseif ( ! empty( $category_id ) ) {
+			$form['fields']['category']['value'] = (int) $category_id;
 		}
 
 		return $form;
