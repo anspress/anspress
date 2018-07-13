@@ -50,7 +50,7 @@ $icon = ap_get_category_icon( $question_category->term_id );
 
 				<?php if ( '' !== $question_category->description ) : ?>
 					<p class="ap-taxo-description">
-						<?php echo esc_html( $question_category->description ); ?>
+						<?php echo wp_kses_post( $question_category->description ); ?>
 					</p>
 				<?php endif; ?>
 
