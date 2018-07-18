@@ -27,7 +27,7 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 
 		<div class="ap-bpsingle-content clearfix">
 			<div class="ap-avatar ap-pull-left">
-				<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+				<a href="<?php ap_profile_link(); ?>">
 					<?php ap_author_avatar( 40 ); ?>
 				</a>
 			</div>

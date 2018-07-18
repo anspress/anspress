@@ -428,7 +428,7 @@ class AnsPress_Post_Table_Hooks {
 
 		// Check if our Query Var is defined.
 		if ( ap_sanitize_unslash( 'show_flagged', 'p' ) ) {
-			add_action( 'comments_clauses', [ __CLASS__, 'filter_comments_query' ] );
+			add_action( 'comments_clauses', [ 'AnsPress_Admin', 'filter_comments_query' ] );
 		}
 	}
 

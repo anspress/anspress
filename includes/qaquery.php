@@ -358,31 +358,6 @@ function ap_author_avatar( $size = 45, $_post = null ) {
 }
 
 /**
- * Return hover card attributes.
- *
- * @param  mixed $_post Post ID, Object or null.
- * @return string
- */
-function ap_get_hover_card_attr( $_post = null ) {
-	$_post = ap_get_post( $_post );
-
-	if ( ! $_post ) {
-		return;
-	}
-
-	return ap_hover_card_attributes( $_post->post_author );
-}
-
-/**
- * Echo hover card attributes.
- *
- * @param  mixed $_post Post ID, Object or null.
- */
-function ap_hover_card_attr( $_post = null ) {
-	echo ap_get_hover_card_attr( $_post ); // xss ok.
-}
-
-/**
  * Return total published answer count.
  *
  * @param  mixed $_post Post ID, Object or null.

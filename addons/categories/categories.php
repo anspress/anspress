@@ -398,7 +398,8 @@ class Categories extends \AnsPress\Singleton {
 			return $form;
 		}
 
-		$editing_id = ap_sanitize_unslash( 'id', 'r' );
+		$editing_id  = ap_sanitize_unslash( 'id', 'r' );
+		$category_id = ap_sanitize_unslash( 'category', 'r' );
 
 		$form['fields']['category'] = array(
 			'label'    => __( 'Category', 'anspress-question-answer' ),
@@ -416,6 +417,8 @@ class Categories extends \AnsPress\Singleton {
 			if ( $categories ) {
 				$form['fields']['category']['value'] = $categories[0]->term_id;
 			}
+		} elseif ( ! empty( $category_id ) ) {
+			$form['fields']['category']['value'] = (int) $category_id;
 		}
 
 		return $form;
@@ -435,29 +438,6 @@ class Categories extends \AnsPress\Singleton {
 		if ( isset( $values['category']['value'] ) ) {
 			wp_set_post_terms( $post_id, $values['category']['value'], 'question_category' );
 		}
-	}
-
-	/**
-	 * Add category page title.
-	 *
-	 * @param  string $title AnsPress page title.
-	 * @return string
-	 * @deprecated 4.1.1
-	 */
-	public function page_title( $title ) {
-		if ( is_question_categories() ) {
-			$title = ap_opt( 'categories_page_title' );
-		} elseif ( is_question_category() ) {
-			$category = get_queried_object();
-
-			if ( $category ) {
-				$title = $category->name;
-			} else {
-				$title = __( 'No matching category found', 'anspress-question-answer' );
-			}
-		}
-
-		return $title;
 	}
 
 	/**

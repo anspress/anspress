@@ -110,42 +110,6 @@ class Notifications extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Filter user menu links.
-	 *
-	 * @param  string $url Menu url.
-	 * @param  object $item Menu item object.
-	 * @return string
-	 * @deprecated 4.1.2
-	 */
-	public function menu_link( $url, $item ) {
-		if ( 'notifications' === $item->post_name ) {
-			$url = '#apNotifications';
-		}
-
-		return $url;
-	}
-
-	/**
-	 * Filter notification menu title.
-	 *
-	 * @param  object $items Menu item object.
-	 * @return array
-	 * @deprecated 4.1.2
-	 */
-	public function ap_menu_items( $items ) {
-		foreach ( $items as $k => $i ) {
-			if ( isset( $i->post_name ) && 'notifications' === $i->post_name ) {
-				$count = ap_count_unseen_notifications();
-				if ( $count > 0 ) {
-					$items[ $k ]->title = $i->title . '<i class="noti-count">' . esc_attr( number_format_i18n( $count ) ) . '</i>';
-				}
-			}
-		}
-
-		return $items;
-	}
-
-	/**
 	 * Filter notification menu title.
 	 *
 	 * @param  object $items Menu item object.

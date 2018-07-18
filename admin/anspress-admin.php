@@ -213,14 +213,11 @@ class AnsPress_Admin {
 		global $submenu_file, $current_screen, $plugin_page;
 
 		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
-		if ( $current_screen->post_type == 'question' ) {
-			$submenu_file = 'edit.php?post_type=question';
+		if ( in_array( $current_screen->post_type, [ 'question', 'answer' ], true )  ) {
+			$submenu_file = 'edit.php?post_type=' . $current_screen->post_type;
 			if ( $current_screen->action == 'add' ) {
-				$submenu_file = 'post-new.php?post_type=question';
+				$submenu_file = 'post-new.php?post_type=' . $current_screen->post_type;
 			}
-			$parent_file  = 'anspress';
-		} elseif ( $current_screen->post_type == 'answer' ) {
-			$submenu_file = 'edit.php?post_type=answer';
 			$parent_file  = 'anspress';
 		}
 
@@ -1047,6 +1044,12 @@ class AnsPress_Admin {
 						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
 						'have_cap'  => __( 'Only user having ap_new_answer capability', 'anspress-question-answer' ),
 					),
+				),
+				'create_account'      => array(
+					'label' => __( 'Create account for non-registered', 'anspress-question-answer' ),
+					'desc'  => __( 'Allow non-registered users to create account by entering their email in question. After submitting post a confirmation email will be sent to the user.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['create_account'],
 				),
 				'multiple_answers'      => array(
 					'label' => __( 'Multiple answers', 'anspress-question-answer' ),

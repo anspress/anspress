@@ -25,7 +25,6 @@ class AnsPress_Admin_Ajax {
 	 * Initialize admin ajax
 	 */
 	public static function init() {
-		// anspress()->add_action( 'wp_ajax_ap_taxo_rename', __CLASS__, 'ap_taxo_rename' );
 		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
 		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
 		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
@@ -38,23 +37,6 @@ class AnsPress_Admin_Ajax {
 		anspress()->add_action( 'wp_ajax_ap_recount_subscribers', __CLASS__, 'recount_subscribers' );
 		anspress()->add_action( 'wp_ajax_ap_recount_reputation', __CLASS__, 'recount_reputation' );
 		anspress()->add_action( 'wp_ajax_ap_recount_views', __CLASS__, 'recount_views' );
-	}
-
-	/**
-	 * Ajax cllback for updating old taxonomy question_tags to question_tag
-	 *
-	 * @deprecated 4.1.0
-	 */
-	public static function ap_taxo_rename() {
-
-		if ( current_user_can( 'manage_options' ) ) {
-			global $wpdb;
-			$wpdb->query( "UPDATE {$wpdb->prefix}term_taxonomy SET taxonomy = 'question_tag' WHERE  taxonomy = 'question_tags'" ); // db call okay, cache ok.
-
-			ap_opt( 'tags_taxo_renamed', 'true' );
-		}
-
-		die();
 	}
 
 	/**

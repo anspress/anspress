@@ -54,7 +54,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'transition_post_status', __CLASS__, 'transition_post_status', 10, 3 );
 			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
-			// anspress()->add_action( 'the_post', __CLASS__, 'filter_page_title' );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
 
@@ -78,7 +77,7 @@ class AnsPress_Hooks {
 			//anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
-			anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
+			//anspress()->add_filter( 'human_time_diff', __CLASS__, 'human_time_diff' );
 
 			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
 			anspress()->add_filter( 'comments_open', 'AnsPress_Theme', 'single_question_comment_disable' );
@@ -133,6 +132,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
 			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions', 10, 2 );
+			anspress()->add_action( 'get_comments_number', __CLASS__, 'get_comments_number', 11, 2 );
 	}
 
 	/**
@@ -826,18 +826,6 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Append variable to post Object.
-	 *
-	 * @param Object $post Post object.
-	 * @deprecated 4.1.1
-	 */
-	public static function filter_page_title( $post ) {
-		if ( ap_opt( 'base_page' ) == $post->ID && ! is_admin() ) {
-			$post->post_title = ap_page_title();
-		}
-	}
-
-	/**
 	 * Update qameta subscribers count on adding new subscriber.
 	 *
 	 * @param integer $rows Number of rows deleted.
@@ -866,19 +854,21 @@ class AnsPress_Hooks {
 	 * @param	string $since Time since.
 	 * @return string
 	 * @since	2.4.8
+	 *
+	 * @deprecated 4.1.13
 	 */
 	public static function human_time_diff( $since ) {
 		$replace = array(
-			'min'			  => __( 'minute', 'anspress-question-answer' ),
-			'mins'		  => __( 'minutes', 'anspress-question-answer' ),
-			'hour'		  => __( 'hour', 'anspress-question-answer' ),
-			'hours' 	  => __( 'hours', 'anspress-question-answer' ),
-			'day'	 	    => __( 'day', 'anspress-question-answer' ),
-			'days'		  => __( 'days', 'anspress-question-answer' ),
-			'week'		  => __( 'week', 'anspress-question-answer' ),
-			'weeks'		  => __( 'weeks', 'anspress-question-answer' ),
-			'year'		  => __( 'year', 'anspress-question-answer' ),
-			'years'		  => __( 'years', 'anspress-question-answer' ),
+			'min'   => __( 'minute', 'anspress-question-answer' ),
+			'mins'  => __( 'minutes', 'anspress-question-answer' ),
+			'hour'  => __( 'hour', 'anspress-question-answer' ),
+			'hours' => __( 'hours', 'anspress-question-answer' ),
+			'day'   => __( 'day', 'anspress-question-answer' ),
+			'days'  => __( 'days', 'anspress-question-answer' ),
+			'week'  => __( 'week', 'anspress-question-answer' ),
+			'weeks' => __( 'weeks', 'anspress-question-answer' ),
+			'year'  => __( 'year', 'anspress-question-answer' ),
+			'years' => __( 'years', 'anspress-question-answer' ),
 		);
 
 		return strtr( $since, $replace );
@@ -1048,5 +1038,33 @@ class AnsPress_Hooks {
 				'subs_ref_id' => $_comment->comment_ID,
 			) );
 		}
+	}
+
+	/**
+	 * Include anspress comments count.
+	 * This fixes no comments visible while using DIVI.
+	 *
+	 * @param integer $count   Comments count
+	 * @param integer $post_id Post ID.
+	 * @return integer
+	 *
+	 * @since 4.1.13
+	 */
+	public static function get_comments_number( $count, $post_id ) {
+		global $post_type;
+
+		if ( $post_type == 'question' || ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 'ap_form_comment' === ap_isset_post_value( 'action' ) ) ) {
+			$get_comments     = get_comments( array(
+				'post_id' => $post_id,
+				'status'  => 'approve'
+			) );
+
+			$types = separate_comments( $get_comments );
+			if( ! empty( $types['anspress'] ) ) {
+				$count = count( $types['anspress'] );
+			}
+		}
+
+		return $count;
 	}
 }

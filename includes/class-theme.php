@@ -116,25 +116,6 @@ class AnsPress_Theme {
 	}
 
 	/**
-	 * Filter the_title().
-	 *
-	 * @param  string $title Current page/post title.
-	 * @param  string $id    Post ID.
-	 * @return string
-	 * @deprecated 4.1.1
-	 */
-	public static function the_title( $title, $id = null ) {
-		_deprecated_function( __FUNCTION__, '4.1.1' );
-
-		if ( ap_opt( 'base_page' ) == $id ) { // WPCS: loose comparison ok.
-			remove_filter( 'the_title', [ __CLASS__, 'the_title' ] );
-			return ap_page_title();
-		}
-
-		return $title;
-	}
-
-	/**
 	 * Add default before body sidebar in AnsPress contents
 	 */
 	public static function ap_before_html_body() {

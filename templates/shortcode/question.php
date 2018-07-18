@@ -30,7 +30,7 @@
 				do_action( 'ap_before_question_title' );
 				?>
 				<div class="ap-avatar">
-					<a href="<?php ap_profile_link(); ?>"<?php ap_hover_card_attr(); ?>>
+					<a href="<?php ap_profile_link(); ?>">
 						<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
 					</a>
 				</div>

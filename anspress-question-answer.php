@@ -565,21 +565,6 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		}
 
 		/**
-		 * Before activation redirect
-		 *
-		 * @access public
-		 * @static
-		 *
-		 * @param  string $plugin Plugin base name.
-		 * @deprecated 4.1.3
-		 */
-		public static function activation_redirect( $plugin ) {
-			if ( plugin_basename( __FILE__ ) === $plugin ) {
-				add_option( 'anspress_do_installation_redirect', true );
-			}
-		}
-
-		/**
 		 * Creating table whenever a new blog is created
 		 *
 		 * @access public
@@ -595,6 +580,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		public static function create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
 			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
 				switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
+				require_once dirname( __FILE__ ) . '/activate.php';
 				AP_Activate::get_instance( true );
 				restore_current_blog();
 			}

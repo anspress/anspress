@@ -73,7 +73,7 @@ class Toggle_Best_Answer extends \AnsPress\Classes\Ajax {
 		}
 
 		// Do not allow answer to be selected as best if status is moderate.
-		if ( in_array( $_post->post_type, [ 'moderate', 'trash', 'private' ], true ) ) {
+		if ( in_array( $_post->post_status, [ 'moderate', 'trash', 'private' ], true ) ) {
 			$this->set_fail();
 			$this->snackbar( __( 'This answer cannot be selected as best, update status to select as best answer.', 'anspress-question-answer' ) );
 

@@ -150,7 +150,7 @@ window.AnsPress = _.extend({
 			size: 'medium'
 		}, args));
 
-		jQuery('#anspress').append(this.modals[name].render().$el);
+		jQuery('body').append(this.modals[name].render().$el);
 		return this.modals[name];
 	},
 	hideModal: function(name, runCb){
