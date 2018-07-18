@@ -49,7 +49,8 @@ class Categories extends \AnsPress\Singleton {
 		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
 		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
-		anspress()->add_action( 'save_post_question', $this, 'after_new_question', 0, 2 );
+		anspress()->add_action( 'ap_processed_new_question', $this, 'after_save_question', 0, 2 );
+		anspress()->add_action( 'ap_processed_update_question', $this, 'after_save_question', 0, 2 );
 		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
 		anspress()->add_action( 'terms_clauses', $this, 'terms_clauses', 10, 3 );
 		anspress()->add_filter( 'ap_list_filters', $this, 'ap_list_filters' );
@@ -431,7 +432,7 @@ class Categories extends \AnsPress\Singleton {
 	 * @return  void
 	 * @since   1.0
 	 */
-	public function after_new_question( $post_id, $post ) {
+	public function after_save_question( $post_id, $post ) {
 		$values = anspress()->get_form( 'question' )->get_values();
 
 		if ( isset( $values['category']['value'] ) ) {
