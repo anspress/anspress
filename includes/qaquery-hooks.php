@@ -59,32 +59,6 @@ class AP_QA_Query_Hooks {
 					}
 				}
 
-				$include_session_posts = true;
-				if ( isset( $wp_query->query['include_session'] ) && false === $wp_query->query['include_session'] ) {
-					$include_session_posts = false;
-				}
-
-				$ap_type = false;
-				if ( isset( $wp_query->query['ap_question_query'] ) ) {
-					$ap_type = 'question';
-				} elseif ( isset( $wp_query->query['ap_answers_query'] ) ) {
-					$ap_type = 'answer';
-				}
-
-				if ( $include_session_posts && ! empty( $ap_type ) && ! get_query_var( 'answer_id', false ) ) {
-					// Include user's session questions.
-					$session_posts = anspress()->session->get( $ap_type . 's' );
-					$ids           = sanitize_comma_delimited( $session_posts );
-
-					if ( ! empty( $ids ) ) {
-						if ( 'question' === $ap_type ) {
-							$sql['where'] = $sql['where'] . $wpdb->prepare( " OR ( {$wpdb->posts}.ID IN ({$ids}) AND {$wpdb->posts}.post_type = %s )", $ap_type );
-						} elseif ( ! empty( $wp_query->args['question_id'] ) ) {
-							$sql['where'] = $sql['where'] . $wpdb->prepare( " OR ( {$wpdb->posts}.ID IN ({$ids}) AND {$wpdb->posts}.post_type = %s AND {$wpdb->posts}.post_parent = %d )", $ap_type, $wp_query->args['question_id'] );
-						}
-					}
-				}
-
 				// Replace post_status query.
 				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
 					$pos          = $pos + strlen( $post_status );
