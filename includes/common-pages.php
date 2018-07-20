@@ -49,6 +49,10 @@ class AnsPress_Common_Pages {
 			$args['post_parent'] = get_query_var( 'post_parent' );
 		}
 
+		if ( ap_sanitize_unslash( 'unpublished', 'r' ) && is_user_logged_in() ) {
+			$args['ap_show_unpublished'] = true;
+		}
+
 		/**
 		 * Filter main question list query arguments.
 		 *

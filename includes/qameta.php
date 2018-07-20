@@ -628,3 +628,33 @@ function ap_get_post_field( $field, $_post = null ) {
 function ap_post_field( $field = null, $_post = null ) {
 	echo ap_get_post_field( $field, $_post ); // xss ok.
 }
+
+/**
+ * Update unpublished posts counts of a user.
+ *
+ * @param integer|null $user_id User ID to update.
+ * @return void
+ * @since 4.1.13
+ */
+function ap_update_user_unpublished_count( $user_id = null ) {
+	global $wpdb;
+
+	if ( null === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$counts = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(*) as count, post_type FROM $wpdb->posts WHERE post_status IN ('draft', 'moderate', 'pending', 'trash') AND post_author = %d AND post_type IN ('question', 'answer') GROUP BY post_type", $user_id ) );
+
+	if ( ! empty( $counts ) ) {
+		$counts = wp_list_pluck( $counts, 'count', 'post_type' );
+	}
+
+	$q_count = ! empty( $counts['question'] ) ? (int) $counts['question'] : 0;
+	$a_count = ! empty( $counts['answer'] ) ? (int) $counts['answer'] : 0;
+
+	// Update questions count.
+	update_user_meta( $user_id, '__ap_unpublished_questions', $q_count );
+
+	// Update answers count.
+	update_user_meta( $user_id, '__ap_unpublished_answers', $a_count );
+}

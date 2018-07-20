@@ -2450,4 +2450,3 @@ function ap_current_user_id() {
 function ap_is_cpt( $_post ) {
 	return ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) );
 }
-

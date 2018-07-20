@@ -86,6 +86,13 @@ class Question_Query extends WP_Query {
 
 		$this->args['post_status'] = array_unique( $this->args['post_status'] );
 
+		// Show only the unpublished post of author.
+		if ( isset( $args['ap_show_unpublished'] ) && true === $this->args['ap_show_unpublished'] ) {
+			$this->args['ap_current_user_ignore'] = true;
+			$this->args['author']                 = get_current_user_id();
+			$this->args['post_status']            = [ 'moderate', 'pending', 'draft', 'trash' ];
+		}
+
 		if ( $post_parent ) {
 			$this->args['post_parent'] = $post_parent;
 		}
