@@ -18,8 +18,9 @@ class AP_QA_Query_Hooks {
 	 * @param  Object $wp_query Instance.
 	 * @return array
 	 * @since unknown
-	 * @since 4.1.7 Fixed: Session answers are included in wrong question.
-	 * @since 4.1.8 Fixed: Sorting issue with best answer.
+	 * @since 4.1.7  Fixed: Session answers are included in wrong question.
+	 * @since 4.1.8  Fixed: Sorting issue with best answer.
+	 * @since 4.1.13 Do not include session posts to question query.
 	 */
 	public static function sql_filter( $sql, $wp_query ) {
 		global $wpdb;
@@ -62,7 +63,7 @@ class AP_QA_Query_Hooks {
 				// Replace post_status query.
 				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
 					$pos          = $pos + strlen( $post_status );
-					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ", get_current_user_id() );
+					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('private_post') ) ", get_current_user_id() );
 					$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
 				}
 			}
