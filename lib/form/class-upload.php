@@ -412,7 +412,7 @@ class Upload extends Field {
 
 		// Check file size.
 		if ( $file_size > ap_opt( 'max_upload_size' ) ) {
-			return new \WP_Error( 'upload_file_size', __( 'File is bigger then the allowed limit.' ) );
+			return new \WP_Error( 'upload_file_size', __( 'File is bigger than the allowed limit.' ) );
 		}
 
 		// Check file uploaded using proper method.
