@@ -563,14 +563,18 @@ function ap_get_template_part( $file, $args = false ) {
 /**
  * Return current AnsPress page
  *
- * @return string
+ * @param false|string $looking_for Looking for page.
+ *
+ * @return string|bool
+ *
  * @since unknown
  * @since 4.1.0 Check if ask question page.
  * @since 4.1.1 Do not return `base` by default.
  * @since 4.1.2 If 404 do not return anything.
  * @since 4.1.9 Changed cache key which was causing conflict with core.
+ * @since 4.1.15 Added parameter `$looking_for`.
  */
-function ap_current_page() {
+function ap_current_page( $looking_for = false ) {
 	static $ret = null;
 
 	if ( null !== $ret ) {
@@ -605,6 +609,10 @@ function ap_current_page() {
 	 * @param    string $query_var Current page slug.
 	 */
 	$ret = apply_filters( 'ap_current_page', esc_attr( $query_var ) );
+
+	if ( false === $looking_for ) {
+		return $looking_for === $ret;
+	}
 
 	return $ret;
 }

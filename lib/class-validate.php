@@ -657,16 +657,16 @@ class Validate {
 
 		if ( true === $args['multiple'] && $is_numeric ) {
 			foreach ( $value as $key => $file ) {
-				$actual_mime = mime_content_type( $file['tmp_name'] );
+				$actual_mime = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
 
-				if ( in_array( $actual_mime, $args['allowed_mimes'], true ) ) {
+				if ( false !== $actual_mime && in_array( $actual_mime['type'], $args['allowed_mimes'], true ) ) {
 					$have_error = false;
 				}
 			}
 		} elseif ( ! $is_numeric ) {
-			$actual_mime = mime_content_type( $value['tmp_name'] );
+			$actual_mime = wp_check_filetype_and_ext( $value['tmp_name'], $value['name'] );
 
-			if ( in_array( $actual_mime, $args['allowed_mimes'], true ) ) {
+			if ( false !== $actual_mime && in_array( $actual_mime['type'], $args['allowed_mimes'], true ) ) {
 				$have_error = false;
 			}
 		}
