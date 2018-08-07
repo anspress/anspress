@@ -52,7 +52,9 @@ class AnsPress_Theme {
 	* @since 4.2.0
 	*/
 	public static function template_include_theme_compat( $template = '' ) {
+		var_dump( ap_current_page( 'question' ) );
 		if ( ap_current_page( 'question' ) ) {
+			var_dump( ap_current_page( 'question' ) );
 			ob_start();
 			echo '<div class="anspress" id="anspress">';
 			AnsPress_Common_Pages::question_page();

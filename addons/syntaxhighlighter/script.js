@@ -65,7 +65,7 @@ SyntaxHighlighter.all();
       });
     });
 
-    $('#anspress').on( 'submit', '[apcodeform]', function(e){
+    $('body').on( 'submit', '[apcodeform]', function(e){
 
       var code = $(this).find('textarea').val();
       code = code.replace(/^\s\s*/, '').replace(/\s\s*$/, '');

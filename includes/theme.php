@@ -575,12 +575,6 @@ function ap_get_template_part( $file, $args = false ) {
  * @since 4.1.15 Added parameter `$looking_for`.
  */
 function ap_current_page( $looking_for = false ) {
-	static $ret = null;
-
-	if ( null !== $ret ) {
-		return $ret;
-	}
-
 	$query_var  = get_query_var( 'ap_page', '' );
 	$main_pages = array_keys( ap_main_pages() );
 	$page_ids   = [];
@@ -610,7 +604,7 @@ function ap_current_page( $looking_for = false ) {
 	 */
 	$ret = apply_filters( 'ap_current_page', esc_attr( $query_var ) );
 
-	if ( false === $looking_for ) {
+	if ( false !== $looking_for ) {
 		return $looking_for === $ret;
 	}
 
