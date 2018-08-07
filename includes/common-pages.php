@@ -110,12 +110,10 @@ class AnsPress_Common_Pages {
 	 * @since 0.0.1
 	 * @since 4.1.0 Changed template file name to single-question.php to question.php.
 	 * @since 4.1.3 Re-setup current post.
+	 * @since 4.1.15 Add while loop.
 	 */
 	public static function question_page() {
 		global $question_rendered, $post;
-
-		// As post_content was modified earlier so need to re-setup post.
-		setup_postdata( get_the_ID() );
 
 		$question_rendered = false;
 		$msg               = self::question_permission_msg( $post );
@@ -128,7 +126,11 @@ class AnsPress_Common_Pages {
 			return;
 		}
 
-		include ap_get_theme_location( 'single-question.php' );
+		if ( have_posts() ) {
+			while ( have_posts() ) : the_post();
+				include ap_get_theme_location( 'single-question.php' );
+			endwhile;
+		}
 
 		/**
 		 * An action triggered after rendering single question page.

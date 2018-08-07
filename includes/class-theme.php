@@ -29,6 +29,55 @@ class AnsPress_Theme {
 		// Register question shortcode.
 		add_shortcode( 'question', array( AnsPress_Question_Shortcode::get_instance(), 'anspress_question_sc' ) );
 	}
+	/*
+	 * The main filter used for theme compatibility and displaying custom AnsPress
+	 * theme files.
+	 *
+	 * @param string $template Current template file.
+	 * @return string Template file to use.
+	 *
+	 * @since 4.2.0
+	 */
+	public static function template_include( $template = '' ) {
+		return apply_filters( 'ap_template_include', $template );
+	}
+
+   /**
+	* Reset main query vars and filter 'the_content' to output a AnsPress
+	* template part as needed.
+	*
+	* @param string $template
+	* @return string
+	*
+	* @since 4.2.0
+	*/
+	public static function template_include_theme_compat( $template = '' ) {
+		if ( ap_current_page( 'question' ) ) {
+			ob_start();
+			echo '<div class="anspress" id="anspress">';
+			AnsPress_Common_Pages::question_page();
+			echo '</div>';
+			$html = ob_get_clean();
+
+			ap_theme_compat_reset_post( array(
+				'ID'             => get_question_id(),
+				'post_title'     => get_the_title( get_question_id() ),
+				'post_author'    => get_post_field( 'post_author', get_question_id() ),
+				'post_date'      => 0,
+				'post_content'   => $html,
+				'post_type'      => 'question',
+				'post_status'    => get_post_status( get_question_id() ),
+				'is_single'      => true,
+				'comment_status' => 'closed',
+			) );
+		}
+
+		if ( true === anspress()->theme_compat->active ) {
+			ap_remove_all_filters( 'the_content' );
+		}
+
+		return $template;
+   	}
 
 	/**
 	 * AnsPress theme function as like WordPress theme function.
@@ -144,7 +193,7 @@ class AnsPress_Theme {
 	 * @since 4.1.0 Removed question sortlink override.
 	 */
 	public static function wp_head() {
-		if ( 'base' === ap_current_page() ) {
+		if ( ap_current_page( 'base' ) ) {
 			$q_feed = get_post_type_archive_feed_link( 'question' );
 			$a_feed = get_post_type_archive_feed_link( 'answer' );
 			echo '<link rel="alternate" type="application/rss+xml" title="' . esc_attr__( 'Question Feed', 'anspress-question-answer' ) . '" href="' . esc_url( $q_feed ) . '" />';
@@ -226,26 +275,6 @@ class AnsPress_Theme {
 		}
 
 		return $template;
-	}
-
-	/**
-	 * Return comment open as false in single question page. So that
-	 * theme won't render comments again.
-	 *
-	 * @global $question_rendered
-	 * @param boolean $ret Return.
-	 * @return boolean
-	 *
-	 * @since 4.1.0
-	 */
-	public static function single_question_comment_disable( $ret ) {
-		global $question_rendered;
-
-		if ( true === $question_rendered && is_singular( 'question' ) ) {
-			return false;
-		}
-
-		return $ret;
 	}
 
 	/**

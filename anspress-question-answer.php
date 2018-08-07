@@ -357,6 +357,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since 4.1.8 Load all addons if constant `ANSPRESS_ENABLE_ADDONS` is set.
 		 */
 		public function site_include() {
+			$this->theme_compat = new stdClass(); // Base theme compatibility class.
+
+			$this->theme_compat->active = false;
+
 			\AnsPress_Hooks::init();
 			$this->activity = AnsPress\Activity_Helper::get_instance();
 			\AnsPress_Views::init();

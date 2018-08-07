@@ -141,6 +141,7 @@
 
 			$("#post-"+this.postID).addClass('status-'+args.data.newStatus);
 			var activeStatus = this.model.where({cb: 'status', active: true });
+
 			activeStatus.forEach(function(status){
 				status.set({active: false});
 			});

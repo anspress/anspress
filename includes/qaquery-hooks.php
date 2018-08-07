@@ -218,17 +218,4 @@ class AP_QA_Query_Hooks {
 			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post', 'future', 'ap_spam' ] );
 		}
 	}
-
-	/**
-	 * Make sure single question loop render AnsPress shortcode.
-	 *
-	 * @param WP_Query $query Query loop.
-	 * @return void
-	 * @since 4.1.3
-	 */
-	public static function loop_start( $query ) {
-		if ( $query->is_main_query() && $query->is_single() && 'question' === get_query_var( 'post_type' ) ) {
-			$query->posts[0]->post_content = '[anspress]';
-		}
-	}
 }
