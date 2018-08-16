@@ -340,7 +340,10 @@ class Categories extends \AnsPress\Singleton {
 	 */
 	public function ap_display_question_metas( $metas, $question_id ) {
 		if ( ap_post_have_terms( $question_id ) ) {
-			$metas['categories'] = ap_question_categories_html( array( 'label' => '<i class="apicon-category"></i>' ) );
+			$metas['categories'] = ap_question_categories_html( array(
+				'label'       => '<i class="apicon-category"></i>',
+				'question_id' => $question_id,
+			) );
 		}
 
 		return $metas;

@@ -256,42 +256,32 @@ function ap_get_best_answer( $question_id = false ) {
 }
 
 /**
- * Check if there are posts in the loop
+ * Check if there are posts in the loop.
  *
  * @return boolean
  */
 function ap_have_answers() {
-	global $answers;
+	$have_posts = anspress()->answer_query->have_posts();
 
-	if ( $answers ) {
-		return $answers->have_posts();
+	// Reset the post data when finished.
+	if ( empty( $have_posts ) ) {
+		wp_reset_postdata();
 	}
-}
 
-function ap_the_answer() {
-	global $answers;
-	if ( $answers ) {
-		return $answers->the_post();
-	}
-}
-
-function ap_total_answers_found() {
-	global $answers;
-	return $answers->found_posts;
+	return $have_posts;
 }
 
 /**
- * Ge the post object of currently irritrated post
+ * Loads up the current answer in the loop.
  *
- * @return object
+ * @return void
  */
-function ap_answer_the_object() {
-	global $answers;
-	if ( ! $answers ) {
-		return;
-	}
+function ap_the_answer() {
+	return anspress()->answer_query->the_post();
+}
 
-	return $answers->post;
+function ap_total_answers_found() {
+	return anspress()->answer_query->found_posts;
 }
 
 /**
@@ -432,4 +422,40 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
  */
 function ap_answer_status( $_post = null ) {
 	ap_question_status( $_post );
+}
+
+/**
+ * Check if currently post in loop is an answer.
+ *
+ * @return boolean
+ * @since 4.2.0
+ */
+function ap_is_answer() {
+	$ap = anspress();
+
+	if ( ! empty( $ap->answer_query->in_the_loop ) && isset( $ap->answer_query->post->ID ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
+ * Get the ID of answer in a loop.
+ *
+ * @param integer $answer_id Answer id.
+ * @return integer
+ * @since 4.2.0
+ */
+function ap_get_answer_id( $answer_id = 0 ) {
+	$ap = anspress();
+
+	if ( ! empty( $answer_id ) && is_numeric( $answer_id ) ) {
+		$id = $answer_id;
+	} elseif ( ! empty( $ap->answer_query->in_the_loop ) && isset( $ap->answer_query->post->ID ) ) {
+		$id = $ap->answer_query->post->ID;
+	}
+
+	return $id;
 }

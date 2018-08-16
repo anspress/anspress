@@ -278,12 +278,12 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function ap_display_question_metas( $metas, $question_id ) {
 		if ( ap_post_have_terms( $question_id, 'question_tag' ) ) {
-			$metas['tags'] = ap_question_tags_html(
-				array(
-					'label' => '<i class="apicon-tag"></i>',
-					'show'  => 1,
-				)
-			); }
+			$metas['tags'] = ap_question_tags_html( array(
+				'label'       => '<i class="apicon-tag"></i>',
+				'show'        => 1,
+				'question_id' => $question_id,
+			) );
+		}
 
 		return $metas;
 	}

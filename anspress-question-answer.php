@@ -186,6 +186,18 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $session;
 
 		/**
+		 * The question query.
+		 *
+		 * @var \WP_Query
+		 * @since 4.2.0
+		 */
+		public $questions_query;
+		public $answers_query;
+
+		public $current_question_id;
+		public $current_answer_id;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -303,6 +315,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/class-activity-helper.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-session.php';
+			require_once ANSPRESS_DIR . 'includes/post.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';

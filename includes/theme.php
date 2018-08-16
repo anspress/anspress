@@ -349,6 +349,7 @@ function ap_post_actions( $_post = null ) {
  * Post actions buttons.
  *
  * @since   2.0
+ * @deprecated 4.2.0
  */
 function ap_post_actions_buttons() {
 	if ( ! is_user_logged_in() ) {
@@ -435,50 +436,6 @@ function ap_get_questions_orderby( $current_url = '' ) {
 	 * @since 2.3
 	 */
 	return apply_filters( 'ap_questions_order_by', $navs );
-}
-
-
-/**
- * Output answers tab.
- *
- * @param string|boolean $base Current page url.
- * @since 2.0.1
- */
-function ap_answers_tab( $base = false ) {
-	$sort = ap_sanitize_unslash( 'order_by', 'r', ap_opt( 'answers_sort' ) );
-
-	if ( ! $base ) {
-		$base = get_permalink();
-	}
-
-	$navs = array(
-		'active' => array(
-			'link'  => add_query_arg( [ 'order_by' => 'active' ], $base ),
-			'title' => __( 'Active', 'anspress-question-answer' ),
-		),
-	);
-
-	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
-		$navs['voted'] = array(
-			'link'  => add_query_arg( [ 'order_by' => 'voted' ], $base ),
-			'title' => __( 'Voted', 'anspress-question-answer' ),
-		);
-	}
-
-	$navs['newest'] = array(
-		'link'  => add_query_arg( [ 'order_by' => 'newest' ], $base ),
-		'title' => __( 'Newest', 'anspress-question-answer' ),
-	);
-	$navs['oldest'] = array(
-		'link'  => add_query_arg( [ 'order_by' => 'oldest' ], $base ),
-		'title' => __( 'Oldest', 'anspress-question-answer' ),
-	);
-
-	echo '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">';
-	foreach ( (array) $navs as $k => $nav ) {
-		echo '<li' . ( $sort === $k ? ' class="active"' : '' ) . '><a href="' . esc_url( $nav['link'] . '#answers-order' ) . '">' . esc_attr( $nav['title'] ) . '</a></li>';
-	}
-	echo '</ul>';
 }
 
 /**
@@ -778,9 +735,9 @@ function ap_list_filters( $current_url = '' ) {
  *
  * @param mixed $_post Post.
  * @return string
+ * @deprecated 4.2.0 Replaced by \AnsPress\Post\select_button.
  */
 function ap_select_answer_btn_html( $_post = null ) {
-
 	if ( ! ap_user_can_select_answer( $_post ) ) {
 		return;
 	}
@@ -1118,4 +1075,82 @@ function ap_theme_compat_reset_post( $args = array() ) {
 
 	// If we are resetting a post, we are in theme compat
 	anspress()->theme_compat->active = true;
+}
+
+/**
+ * Check if current page is AnsPress. Also check if showing question or
+ * answer page in BuddyPress.
+ *
+ * @return boolean
+ * @since 4.1.0 Improved check. Check for main pages.
+ * @since 4.1.1 Check for @see ap_current_page().
+ * @since 4.1.8 Added filter `is_anspress`.
+ */
+function is_anspress() {
+	$ret = false;
+
+	// If BuddyPress installed.
+	if ( function_exists( 'bp_current_component' ) ) {
+		$bp_com = bp_current_component();
+		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
+			$ret = true;
+		}
+	}
+
+	$page_slug      = array_keys( ap_main_pages() );
+	$queried_object = get_queried_object();
+
+	// Check if main pages.
+	if ( $queried_object instanceof WP_Post ) {
+		$page_ids = [];
+		foreach ( $page_slug as $slug ) {
+			$page_ids[] = ap_opt( $slug );
+		}
+
+		if ( in_array( $queried_object->ID, $page_ids ) ) {
+			$ret = true;
+		}
+	}
+
+	// Check if ap_page.
+	if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
+		$ret = true;
+	} elseif ( '' !== ap_current_page() ) {
+		$ret = true;
+	}
+
+	/**
+	 * Filter for overriding is_anspress() return value.
+	 *
+	 * @param boolean $ret True or false.
+	 * @since 4.1.8
+	 */
+	return apply_filters( 'is_anspress', $ret );
+}
+
+/**
+ * Check if current page is question page.
+ *
+ * @return boolean
+ * @since 0.0.1
+ * @since 4.1.0 Also check and return true if singular question.
+ */
+function is_question() {
+	if ( is_singular( 'question' ) || ap_is_query_name( 'single-question' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Is if current AnsPress page is ask page.
+ *
+ * @return boolean
+ */
+function is_ask() {
+	if ( is_anspress() && 'ask' === ap_current_page() ) {
+		return true;
+	}
+	return false;
 }

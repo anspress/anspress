@@ -591,6 +591,7 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
  */
 function ap_vote_btn( $post = null, $echo = true ) {
 	$post = ap_get_post( $post );
+
 	if ( ! $post || 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
 		return;
 	}
@@ -613,14 +614,14 @@ function ap_vote_btn( $post = null, $echo = true ) {
 	$data = [
 		'post_id' => $post->ID,
 		'active'  => $type,
-		'net'     => ap_get_votes_net(),
+		'net'     => ap_get_votes_net( $post ),
 		'__nonce' => wp_create_nonce( 'vote_' . $post->ID ),
 	];
 
 	$html  = '';
 	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote=\'' . wp_json_encode( $data ) . '\'>';
 	$html .= '<a class="apicon-thumb-up ap-tip vote-up' . ( $voted ? ' voted' : '' ) . ( $vote && 'vote_down' === $type ? ' disable' : '' ) . '" href="#" title="' . ( $vote && 'vote_down' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : __( 'Up vote this post', 'anspress-question-answer' ) ) ) . '" ap="vote_up"></a>';
-	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>';
+	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net( $post ) . '</span>';
 
 	if ( ( 'question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' ) ) ||
 		( 'answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' ) ) ) {

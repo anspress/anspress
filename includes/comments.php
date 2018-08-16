@@ -329,11 +329,10 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 	}
 
 	global $comment;
-
 	$_post = ap_get_post( $_post );
 
 	// Check if valid post.
-	if ( ! $_post || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! $_post || ! ap_is_cpt( $_post ) ) {
 		echo '<div class="ap-comment-no-perm">' . __( 'Not a valid post ID.', 'anspress-question-answer' ) . '</div>';
 		return;
 	}

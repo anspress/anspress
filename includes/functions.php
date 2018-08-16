@@ -121,110 +121,40 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
 	return apply_filters( 'ap_theme_url', $template_url . ( true === $ver ? '?v=' . AP_VERSION : '' ) );
 }
 
-
-/**
- * Check if current page is AnsPress. Also check if showing question or
- * answer page in BuddyPress.
- *
- * @return boolean
- * @since 4.1.0 Improved check. Check for main pages.
- * @since 4.1.1 Check for @see ap_current_page().
- * @since 4.1.8 Added filter `is_anspress`.
- */
-function is_anspress() {
-	$ret = false;
-
-	// If BuddyPress installed.
-	if ( function_exists( 'bp_current_component' ) ) {
-		$bp_com = bp_current_component();
-		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
-			$ret = true;
-		}
-	}
-
-	$page_slug      = array_keys( ap_main_pages() );
-	$queried_object = get_queried_object();
-
-	// Check if main pages.
-	if ( $queried_object instanceof WP_Post ) {
-		$page_ids = [];
-		foreach ( $page_slug as $slug ) {
-			$page_ids[] = ap_opt( $slug );
-		}
-
-		if ( in_array( $queried_object->ID, $page_ids ) ) {
-			$ret = true;
-		}
-	}
-
-	// Check if ap_page.
-	if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
-		$ret = true;
-	} elseif ( '' !== ap_current_page() ) {
-		$ret = true;
-	}
-
-	/**
-	 * Filter for overriding is_anspress() return value.
-	 *
-	 * @param boolean $ret True or false.
-	 * @since 4.1.8
-	 */
-	return apply_filters( 'is_anspress', $ret );
-}
-
-/**
- * Check if current page is question page.
- *
- * @return boolean
- * @since 0.0.1
- * @since 4.1.0 Also check and return true if singular question.
- */
-function is_question() {
-	if ( is_singular( 'question' ) ) {
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * Is if current AnsPress page is ask page.
- *
- * @return boolean
- */
-function is_ask() {
-	if ( is_anspress() && 'ask' === ap_current_page() ) {
-		return true;
-	}
-	return false;
-}
-
 /**
  * Get current question ID in single question page.
+ *
+ * @param integer $question_id Question ID.
  *
  * @return integer|false
  * @since unknown
  * @since 4.1.0 Remove `question_name` query var check. Get question ID from queried object.
+ * @since 4.2.0 Added new argument `$question_id` and template compatibility.
  */
-function get_question_id() {
-	if ( is_question() && get_query_var( 'question_id' ) ) {
-		return (int) get_query_var( 'question_id' );
+function get_question_id( $question_id = 0 ) {
+	$ap = anspress();
+
+	if ( ! empty( $question_id ) && is_numeric( $question_id ) ) {
+		$q_id = $question_id;
+	} elseif ( is_question() && ! empty( $ap->current_question_id ) ) {
+		$q_id = $ap->current_question_id;
+	} elseif ( is_question() ) {
+		$q_id = get_queried_object_id();
+	} elseif ( get_query_var( 'edit_q' ) ) {
+		$q_id = get_query_var( 'edit_q' );
+	} elseif ( ap_is_answer() ) {
+		$q_id = $ap->answer_query->post->post_parent;
+	} else {
+		$q_id = 0;
 	}
 
-	if ( is_question() ) {
-		return get_queried_object_id();
-	}
-
-	if ( get_query_var( 'edit_q' ) ) {
-		return get_query_var( 'edit_q' );
-	}
-
-	if ( ap_answer_the_object() ) {
-		return ap_get_post_field( 'post_parent' );
-	}
-
-	return false;
+	/**
+	 * Filter `get_question_id` value.
+	 *
+	 * @param integer $q_id Question ID.
+	 * @since 4.2.0
+	 */
+	return apply_filters( 'get_question_id', (int) $q_id );
 }
 
 /**
@@ -2503,4 +2433,30 @@ function ap_remove_all_filters( $tag, $priority = false ) {
 	}
 
 	return true;
+}
+
+/**
+ * Get current query name.
+ *
+ * @return boolean
+ */
+function ap_is_query_name( $name ) {
+	$query = get_query_var( '_ap_query_name' );
+	return (bool) ( $query === $name );
+}
+
+/**
+ * Check if AnsPress theme compatibility is active.
+ *
+ * @return boolean
+ * @since 4.2.0
+ */
+function ap_is_theme_compat_active() {
+	$ap = anspress();
+
+	if ( empty( $ap->theme_compat->active ) ) {
+		return false;
+	}
+
+	return $ap->theme_compat->active;
 }

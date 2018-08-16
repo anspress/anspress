@@ -23,8 +23,13 @@ function autoloader( $class ) {
 	}
 
 	// Replace AnsPress\Pro\ and change to lowercase to fix WPCS warning.
-	$class    = strtolower( str_replace( 'AnsPress\\', '', $class ) );
-	$filename = ANSPRESS_DIR . str_replace( '_', '-', str_replace( '\\', '/', $class ) ) . '.php';
+	$file    = strtolower( str_replace( 'AnsPress\\', '', $class ) );
+	$filename = ANSPRESS_DIR . str_replace( '_', '-', str_replace( '\\', '/', $file ) ) . '.php';
+	if ( ! file_exists( $filename ) ) {
+		$filename = ANSPRESS_DIR . 'includes/' . str_replace( '_', '-', str_replace( '\\', '/', $file ) ) . '.php';
+	}
+
+	$filename = wp_normalize_path( $filename );
 
 	// Check if file exists before including.
 	if ( file_exists( $filename ) ) {

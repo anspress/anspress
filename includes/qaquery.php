@@ -392,7 +392,7 @@ function ap_answers_count( $_post = null ) {
  */
 function ap_get_votes_net( $_post = null ) {
 	$_post = ap_get_post( $_post );
-	return $_post->votes_net;
+	return (int) $_post->votes_net;
 }
 
 /**
@@ -428,28 +428,26 @@ function ap_question_status( $_post = null ) {
  * @since unknown
  * @since 4.1.2 Use @see ap_recent_activity() for showing activity.
  * @since 4.1.8 Show short views count.
+ * @since 4.2.0 Use `get_question_id`.
  */
-function ap_question_metas( $question_id = false ) {
-	if ( false === $question_id ) {
-		$question_id = get_the_ID();
-	}
-
-	$metas = array();
+function ap_question_metas( $question_id = 0 ) {
+	$question_id = get_question_id( $question_id );
+	$metas       = [];
 
 	// If featured question.
 	if ( ap_is_featured_question( $question_id ) ) {
 		$metas['featured'] = __( 'Featured', 'anspress-question-answer' );
 	}
 
-	if ( ap_have_answer_selected() ) {
+	if ( ap_have_answer_selected( $question_id ) ) {
 		$metas['solved'] = '<i class="apicon-check"></i><i>' . __( 'Solved', 'anspress-question-answer' ) . '</i>';
 	}
 
-	$view_count     = ap_get_post_field( 'views' );
+	$view_count     = ap_get_post_field( 'views', $question_id );
 	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%s views', 'anspress-question-answer' ),  ap_short_num( $view_count ) ) . '</i>';
 
 	if ( is_question() ) {
-		$last_active     = ap_get_last_active( get_question_id() );
+		$last_active     = ap_get_last_active( $question_id );
 		$metas['active'] = '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>';
 	}
 
@@ -458,7 +456,7 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	/**
-   * Used to filter question display meta.
+	 * Used to filter question display meta.
 	 *
 	 * @param array $metas
 	 */
@@ -721,4 +719,77 @@ function ap_answers() {
 
 	ap_get_template_part( 'answers' );
 	ap_reset_question_query();
+}
+
+/**
+ * The main answer loop.
+ *
+ * @param string|array $args Arguments.
+ * @return \WP_Post
+ * @since 4.2.0
+ */
+function ap_has_answers( $args = '' ) {
+	global $wp_rewrite;
+
+	$paged    = (int) max( 1, get_query_var( 'ap_paged', 1 ) );
+	$order_by = ap_isset_post_value( 'order_by', ap_opt( 'answers_sort' ) );
+
+	// Default query args
+	$default = array(
+		'post_type'              => 'answer', // Only replies
+		'post_parent'            => ( is_question() ? get_question_id(): 'any' ), // Of this topic
+		'paged'                  => $paged, // On this page
+		'ignore_sticky_posts'    => true,
+		'ap_query'               => true,
+		'ap_current_user_ignore' => false,
+		'ap_answers_query'       => true,
+		'posts_per_page'         => ap_opt( 'answers_per_page' ),
+		'only_best_answer'       => false,
+		'ignore_selected_answer' => false,
+		'post_status'            => [ 'publish' ],
+		'ap_order_by'            => $order_by,
+	);
+
+	// Parse arguments against default values
+	$r = wp_parse_args( $args, $default );
+
+	// Set posts_per_page value if replies are threaded
+	$replies_per_page = $r['posts_per_page'];
+
+	$ap = anspress();
+	$ap->answer_query = new WP_Query( $r );
+
+	// Add pagination values to query object
+	$ap->answer_query->posts_per_page = $replies_per_page;
+	$ap->answer_query->paged = $r['paged'];
+	$ap->answer_query->is_home = false;
+
+	// Only add pagination if query returned results
+	if ( (int) $ap->answer_query->found_posts && (int) $ap->answer_query->posts_per_page ) {
+
+		// Make our pagination pretty.
+		if ( $wp_rewrite->using_permalinks() ) {
+			$base = get_permalink( $r['post_parent'] );
+			$base = trailingslashit( $base ) . user_trailingslashit( $wp_rewrite->pagination_base . '/%#%/' );
+		} else {
+			$base = add_query_arg( 'ap_paged', '%#%' );
+		}
+
+		// Figure out total pages
+		$total_pages = ceil( (int) $ap->answer_query->found_posts / (int) $replies_per_page );
+
+		// Add pagination to query object
+		$ap->answer_query->pagination_links = paginate_links( apply_filters( 'ap_answers_pagination', array(
+			'base'      => $base,
+			'format'    => '',
+			'total'     => $total_pages,
+			'current'   => (int) $ap->answer_query->paged,
+			'prev_text' => is_rtl() ? '&raquo;' : '&laquo;',
+			'next_text' => is_rtl() ? '&laquo;' : '&raquo;',
+			'mid_size'  => 1,
+		) ) );
+	}
+
+	// Return object
+	return apply_filters( 'ap_has_answers', $ap->answer_query->have_posts(), $ap->answer_query );
 }

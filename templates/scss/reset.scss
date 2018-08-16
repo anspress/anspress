@@ -428,11 +428,23 @@ ul{
 		background: #ffeeba;
 	}
 }
-.text-center {
-	text-align: center;
+
+.ap-text{
+	&-center {
+		text-align: center;
+	}
+	&-muted{
+		color: #999;
+	}
+	&-small{
+		font-size: 90%;
+	}
 }
 .ap-display-flex{
 	display: flex;
+	&.align-item-center{
+		align-items: center;
+	}
 }
 .ap-block{
 	background-color: #fff;
