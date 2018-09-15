@@ -136,8 +136,7 @@ function is_anspress() {
 
 	// If BuddyPress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
-		$bp_com = bp_current_component();
-		if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
+		if ( in_array( bp_current_component(),  array( 'qa', 'questions', 'answers' ) ) ) {
 			$ret = true;
 		}
 	}
