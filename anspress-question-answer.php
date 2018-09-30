@@ -14,7 +14,7 @@
  * Plugin Name:       AnsPress Question Answer
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
- * Donate link:         https://goo.gl/ffainr
+ * Donate link:       https://goo.gl/ffainr
  * Version:           4.1.15
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define database version.
-define( 'AP_DB_VERSION', 34 );
+define( 'AP_DB_VERSION', 35 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
