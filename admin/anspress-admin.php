@@ -1302,7 +1302,7 @@ class AnsPress_Admin {
 					'value'   => $opt['answers_sort'],
 				),
 				'minimum_ans_length'            => array(
-					'label'   => __( 'Minimum question content', 'anspress-question-answer' ),
+					'label'   => __( 'Minimum answer content', 'anspress-question-answer' ),
 					'desc'    => __( 'Set minimum letters for a answer contents.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['minimum_ans_length'],
