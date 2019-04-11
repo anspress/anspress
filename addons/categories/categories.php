@@ -456,7 +456,7 @@ class Categories extends \AnsPress\Singleton {
 			$category     = get_queried_object();
 			$navs['page'] = array(
 				'title' => __( 'Categories', 'anspress-question-answer' ),
-				'link'  => ap_get_link_to( 'categories' ),
+				'link'  => home_url() . '/' . get_option( 'ap_categories_path', 'categories' ),
 				'order' => 8,
 			);
 
@@ -468,7 +468,7 @@ class Categories extends \AnsPress\Singleton {
 		} elseif ( is_question_categories() ) {
 			$navs['page'] = array(
 				'title' => __( 'Categories', 'anspress-question-answer' ),
-				'link'  => ap_get_link_to( 'categories' ),
+				'link'  => home_url() . '/' . get_option( 'ap_categories_path', 'categories' ),
 				'order' => 8,
 			);
 		}
