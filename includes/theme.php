@@ -542,8 +542,19 @@ function ap_get_ask_btn() {
 	 * @param string $link
 	 */
 	$link = apply_filters( 'ap_ask_btn_link', $link );
+		
+	/**
+     * Filter ask button text.
+	 * Description - Added new filter 'ap_ask_btn_text' to customize the Ask Button text on the AnsPress basepage. Default text is 'Ask question'.
+     * Author - Jay Iyer (06/26/2019)
+     * @param string $btn_text
+     */
+	$btn_text = 'Ask question';
+    $btn_text = apply_filters( 'ap_ask_btn_text', $btn_text );
 
-	return '<a class="ap-btn-ask" href="' . $link . '">' . __( 'Ask question', 'anspress-question-answer' ) . '</a>';
+    //Use the value in btn_text variable to build the Ask button HTML
+    return '<a class="ap-btn-ask" href="' . $link . '">' . __( $btn_text, 'anspress-question-answer' ) . '</a>';
+
 }
 
 /**
