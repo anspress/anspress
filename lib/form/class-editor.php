@@ -228,7 +228,7 @@ class Editor extends Field {
 			if ( in_array( $basename, $files, true ) ) {
 				$this->images[] = $basename;
 
-				$newfile = $upload_dir . "/$basename";
+				$newfile = $upload_dir . $basename;
 
 				$new_file_url = $uploads['baseurl'] . "/anspress-uploads/$basename";
 				rename( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
