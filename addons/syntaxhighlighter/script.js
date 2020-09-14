@@ -67,30 +67,42 @@ SyntaxHighlighter.all();
 
     $('body').on( 'submit', '[apcodeform]', function(e){
 
-      var code = $(this).find('textarea').val();
-      code = code.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-      code = tinyMCE.DOM.encode(code).replace(/^[\s]+/gm, function(m) {
-        var leadingSpaces = arguments[0].length;
-        var str = '';
-        while(leadingSpaces > 0) {
-          str += '&nbsp;';
-          leadingSpaces--;
-        }
-        return str;
-      });
-      code = code.replace(/[\r\n]\s*/g, '<br />');
+		var code = $(this).find('textarea').val();
+		code = code.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+		code = tinyMCE.DOM.encode(code).replace(/^[\s]+/gm, function(m) {
+		var leadingSpaces = arguments[0].length;
+		var str = '';
+		while(leadingSpaces > 0) {
+			str += '&nbsp;';
+			leadingSpaces--;
+		}
+		return str;
+		});
+		code = code.replace(/[\r\n]\s*/g, '<br />');
 
-      var lang = $(this).find('select').val();
-      var tag = $(this).find('input').is(":checked") ? 'code' : 'pre';
+		var lang = $(this).find('select').val();
+		var tag = $(this).find('input').is(":checked") ? 'code' : 'pre';
 
-      var attr = 'language="'+lang+'"';
-      var cont = '[apcode '+attr+']<'+tag+' data-mce-contenteditable="false">'+code+'</'+tag+'>[/apcode]';
-      tinymce.activeEditor.insertContent(cont);
-      tinymce.activeEditor.focus();
-      tinymce.activeEditor.selection.collapse(0);
-      AnsPress.hideModal('code');
+		var attr = 'language="'+lang+'"';
+		var cont = '[apcode '+attr+']<'+tag+' data-mce-contenteditable="false">'+code+'</'+tag+'>[/apcode]';
 
-      return false;
+		// var ed = tinyMCE.get('form_question[post_content]'); // modal seems unable to find tinyMCE editor -- why ??
+		// var edjs = $('#form_question-post_content'); // hack with jQuery insert ##
+		//   tinymce.activeEditor.insertContent(cont);
+		// edjs.val( edjs.val() + cont ); 
+		AnsPress.tinymce_insertContent( cont, AnsPress.tinymce_id() );
+		// ed.insertContent( cont );
+		//   tinymce.activeEditor.focus();
+		// ed.focus();
+		AnsPress.tinymce_focus( AnsPress.tinymce_id() );
+		//   tinymce.activeEditor.selection.collapse(0);
+		// ed.selection.collapse(0);
+		AnsPress.hideModal('code');
+		
+		// e.preventDefault(); // stop submit ##
+
+		return false;
+		  
     });
 
 

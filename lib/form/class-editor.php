@@ -142,6 +142,7 @@ class Editor extends Field {
 		 * @since 4.1.8
 		 */
 		$value = apply_filters( 'ap_editor_pre_value', $this->value() );
+		// error_log( 'value: '.$value.' id: '.$this->id() );
 
 		ob_start();
 		wp_editor( $value, $this->id(), $editor_args );

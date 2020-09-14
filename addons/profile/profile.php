@@ -282,9 +282,12 @@ class Profile extends \AnsPress\Singleton {
 	 * Display user questions page.
 	 */
 	public function question_page() {
-		$user_id                        = ap_current_user_id();
+		$user_id = ap_current_user_id();
+		$paged   = ( get_query_var( 'ap_paged' ) ) ? get_query_var( 'ap_paged' ) : 1;
+
 		$args['ap_current_user_ignore'] = true;
 		$args['author']                 = $user_id;
+		$args['paged']                  = $paged;
 
 		/**
 		* Filter authors question list args

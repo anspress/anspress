@@ -92,7 +92,7 @@ class AnsPress_BasePage_Shortcode {
 		echo '</div>';
 		// Linkback to author.
 		if ( ! ap_opt( 'author_credits' ) ) {
-			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ) . ' <a href="https://anspress.io" target="_blank">AnsPress.io</a></div>';
+			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ) . ' <a href="https://anspress.io" traget="_blank">AnsPress.io</a></div>';
 		}
 
 		wp_reset_postdata();

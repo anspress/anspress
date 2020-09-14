@@ -26,8 +26,10 @@ global $wp;
 	</div>
 
 	<?php
-		ap_pagination( false, anspress()->questions->max_num_pages, '?paged=%#%', ap_user_link( ap_current_user_id(), 'questions' ) );
+		$paged = ( get_query_var( 'ap_paged' ) ) ? get_query_var( 'ap_paged' ) : 1;
+		ap_questions_the_pagination( $paged );
 	?>
+
 
 <?php
 	else :

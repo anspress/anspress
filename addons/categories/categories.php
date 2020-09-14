@@ -371,7 +371,7 @@ class Categories extends \AnsPress\Singleton {
 		if ( 'question_category' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
 				$opt = get_option( 'ap_categories_path', 'categories' );
-				return home_url( $opt ) . '/' . $term->slug . '/';
+				return user_trailingslashit( home_url( $opt ) . '/' . $term->slug );
 			} else {
 				return add_query_arg(
 					[

@@ -4381,6 +4381,7 @@ msgstr ""
 
 #: includes/functions.php:257
 #. translators: %s: human-readable time difference
+msgctxt "anspress-question-answer"
 msgid "%s ago"
 msgstr ""
 

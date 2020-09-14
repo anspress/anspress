@@ -116,11 +116,6 @@ class Form {
 		}
 
 		$fields = ap_sort_array_by_order( $this->args['fields'] );
-		
-		if ( ! ap_opt( 'allow_private_posts' ) && isset( $fields['is_private'] ) ) {
-			unset( $fields['is_private'] );
-		}
-
 		foreach ( $fields as $field_name => $field_args ) {
 			if ( empty( $field_args['type'] ) ) {
 				$field_args['type'] = 'input';

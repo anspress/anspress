@@ -354,7 +354,7 @@ class Tags extends \AnsPress\Singleton {
 		if ( 'question_tag' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) != '' ) {
 				$opt = get_option( 'ap_tags_path', 'tags' );
-				return home_url( $opt ) . '/' . $term->slug . '/';
+				return user_trailingslashit( home_url( $opt ) . '/' . $term->slug );
 			} else {
 				return add_query_arg(
 					[

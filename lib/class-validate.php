@@ -729,28 +729,4 @@ class Validate {
 			}
 		} // End if().
 	}
-
-	/**
-     * Author - Jay Iyer (06/26/2019)
-	 * Validate 'is_checked' field.
-	 * Description - Add the 'is_checked' validate method to require the Checkbox field to be checked on form submit.
-     *
-     * @param object $field Instance of @see `AP_Field` object.
-     * @return void
-     */
-    public static function validate_is_checked( $field ) {
-        if ( ! empty( $field ) ) {
-            $value = $field->value();
-            if (! $value) {
-                $field->add_error(
-                    'is-checked', sprintf(
-                        // Translators: placeholder contain field label.
-                        __( 'You are required to check %s field', 'anspress-question-answer' ),
-                        $field->get( 'label' )
-                    )
-                );
-            }
-            
-        }
-    }
 }

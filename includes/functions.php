@@ -254,7 +254,7 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
 		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
 			return sprintf(
 				/* translators: %s: human-readable time difference */
-				__( '%s ago', 'anspress-question-answer' ),
+				_x( '%s ago', 'anspress-question-answer' ),
 				human_time_diff( $time, current_time( 'timestamp', true ) )
 			);
 		}
@@ -744,7 +744,7 @@ function ap_get_link_to( $sub ) {
 				}
 			}
 
-			$args = rtrim( $args, '/' ) . '/';
+			$args = user_trailingslashit( rtrim( $args, '/' ) );
 		} else {
 			if ( ! is_array( $sub ) ) {
 				$args = $sub ? '&ap_page=' . $sub : '';
@@ -1309,7 +1309,18 @@ function ap_disable_question_suggestion() {
  * @since 4.0.0
  */
 function ap_post_author_pre_fetch( $ids ) {
-	cache_users($ids);
+	$users = get_users(
+		[
+			'include' => $ids,
+			'fields'  => array( 'ID', 'user_login', 'user_nicename', 'user_email', 'display_name' ),
+		]
+	);
+
+	foreach ( (array) $users as $user ) {
+		update_user_caches( $user );
+	}
+
+	update_meta_cache( 'user', $ids );
 }
 
 
@@ -1516,6 +1527,8 @@ function ap_user_link( $user_id = false, $sub = false ) {
 			$link = $link . rtrim( $sub, '/' ) . '/';
 		}
 	}
+
+	$link = user_trailingslashit( $link );
 
 	return apply_filters( 'ap_user_link', $link, $user_id, $sub );
 }

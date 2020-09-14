@@ -2,7 +2,7 @@
 /**
  * The WordPress Question and Answer Plugin.
  *
- * The most advance community question and answer system for WordPress
+ * An advanced community question and answer system for WordPress
  *
  * @author    Rahul Aryan <support@rahularyan.com>
  * @copyright 2014 AnsPress.io & Rahul Aryan
@@ -15,14 +15,14 @@
  * Plugin URI:        https://anspress.io
  * Description:       The most advance community question and answer system for WordPress
  * Donate link:       https://goo.gl/ffainr
- * Version:           4.1.15
+ * Version:           4.2.0
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.io
  * License:           GPL-3.0+
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:       anspress-question-answer
  * Domain Path:       /languages
- * GitHub Plugin URI: anspress/anspress
+ * GitHub Plugin URI: qstudio/anspress
  */
 
 // If this file is called directly, abort.
@@ -63,7 +63,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.1.15';
+		private $_plugin_version = '4.2.00';
 
 		/**
 		 * Class instance
