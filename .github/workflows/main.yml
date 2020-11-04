@@ -17,6 +17,6 @@ jobs:
       with:
         host: ${{ secrets.DEV_SFTP_HOST }}
         username: ${{ secrets.DEV_SFTP_USERNAME }}
-        username: ${{ secrets.DEV_SFTP_PASSWORD }}
+        password: ${{ secrets.DEV_SFTP_PASSWORD }}
         source: "*"
         target: ${{ secrets.DEV_PLUGIN_PATH }}
