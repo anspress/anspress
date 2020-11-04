@@ -455,12 +455,14 @@ class AnsPress_Hooks {
 			'last_updated' => current_time( 'mysql' ),
 		) );
 
+
 		// Log to activity table.
 		ap_activity_add( array(
-			'q_id'   => 'answer' === $post->post_type ? $post->post_parent: $post->ID,
-			'action' => 'new_c',
-			'a_id'   => 'answer' === $post->post_type ? $post->ID: 0,
-			'c_id'   => $comment->comment_ID,
+			'q_id'    => 'answer' === $post->post_type ? $post->post_parent: $post->ID,
+			'action'  => 'new_c',
+			'a_id'    => 'answer' === $post->post_type ? $post->ID: 0,
+			'c_id'    => $comment->comment_ID,
+			'user_id' => $comment->user_id,
 		) );
 	}
 

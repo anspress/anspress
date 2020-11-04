@@ -121,6 +121,87 @@ function ap_get_theme_url( $file, $plugin = false, $ver = true ) {
 	return apply_filters( 'ap_theme_url', $template_url . ( true === $ver ? '?v=' . AP_VERSION : '' ) );
 }
 
+<<<<<<< HEAD
+=======
+
+/**
+ * Check if current page is AnsPress. Also check if showing question or
+ * answer page in BuddyPress.
+ *
+ * @return boolean
+ * @since 4.1.0 Improved check. Check for main pages.
+ * @since 4.1.1 Check for @see ap_current_page().
+ * @since 4.1.8 Added filter `is_anspress`.
+ */
+function is_anspress() {
+	$ret = false;
+
+	// If BuddyPress installed.
+	if ( function_exists( 'bp_current_component' ) ) {
+		if ( in_array( bp_current_component(),  array( 'qa', 'questions', 'answers' ) ) ) {
+			$ret = true;
+		}
+	}
+
+	$page_slug      = array_keys( ap_main_pages() );
+	$queried_object = get_queried_object();
+
+	// Check if main pages.
+	if ( $queried_object instanceof WP_Post ) {
+		$page_ids = [];
+		foreach ( $page_slug as $slug ) {
+			$page_ids[] = ap_opt( $slug );
+		}
+
+		if ( in_array( $queried_object->ID, $page_ids ) ) {
+			$ret = true;
+		}
+	}
+
+	// Check if ap_page.
+	if ( is_search() && 'question' === get_query_var( 'post_type' ) ) {
+		$ret = true;
+	} elseif ( '' !== ap_current_page() ) {
+		$ret = true;
+	}
+
+	/**
+	 * Filter for overriding is_anspress() return value.
+	 *
+	 * @param boolean $ret True or false.
+	 * @since 4.1.8
+	 */
+	return apply_filters( 'is_anspress', $ret );
+}
+
+/**
+ * Check if current page is question page.
+ *
+ * @return boolean
+ * @since 0.0.1
+ * @since 4.1.0 Also check and return true if singular question.
+ */
+function is_question() {
+	if ( is_singular( 'question' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Is if current AnsPress page is ask page.
+ *
+ * @return boolean
+ */
+function is_ask() {
+	if ( is_anspress() && 'ask' === ap_current_page() ) {
+		return true;
+	}
+	return false;
+}
+
+>>>>>>> 5bbabc918860e7c2312e5b530adbfef1f0e6b5f7
 /**
  * Get current question ID in single question page.
  *
@@ -185,7 +266,7 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
 		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
 			return sprintf(
 				/* translators: %s: human-readable time difference */
-				_x( '%s ago', 'anspress-question-answer' ),
+				__( '%s ago', 'anspress-question-answer' ),
 				human_time_diff( $time, current_time( 'timestamp', true ) )
 			);
 		}
@@ -1240,18 +1321,7 @@ function ap_disable_question_suggestion() {
  * @since 4.0.0
  */
 function ap_post_author_pre_fetch( $ids ) {
-	$users = get_users(
-		[
-			'include' => $ids,
-			'fields'  => array( 'ID', 'user_login', 'user_nicename', 'user_email', 'display_name' ),
-		]
-	);
-
-	foreach ( (array) $users as $user ) {
-		update_user_caches( $user );
-	}
-
-	update_meta_cache( 'user', $ids );
+	cache_users($ids);
 }
 
 

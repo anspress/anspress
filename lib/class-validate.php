@@ -189,12 +189,13 @@ class Validate {
 
 			$new_value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $new_value );
 			$new_value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $new_value );
-
+			
 			// Remove multiple new lines.
-			$new_value           = preg_replace( '/[\r\n]\s*[\r\n]/', "\n", $new_value );
+			$new_value = str_replace("\r\n", "\n", $new_value);
+			$new_value = preg_replace( '/\n\s*\n/', "\n\n", $new_value );
 
 			// Remove single white single space in line.
-			$new_value           = preg_replace( '/&nbsp;/', "\n", $new_value );
+			$new_value = preg_replace( '/&nbsp;/', "\n", $new_value );
 
 			return $new_value;
 		}
@@ -728,4 +729,28 @@ class Validate {
 			}
 		} // End if().
 	}
+
+	/**
+     * Author - Jay Iyer (06/26/2019)
+	 * Validate 'is_checked' field.
+	 * Description - Add the 'is_checked' validate method to require the Checkbox field to be checked on form submit.
+     *
+     * @param object $field Instance of @see `AP_Field` object.
+     * @return void
+     */
+    public static function validate_is_checked( $field ) {
+        if ( ! empty( $field ) ) {
+            $value = $field->value();
+            if (! $value) {
+                $field->add_error(
+                    'is-checked', sprintf(
+                        // Translators: placeholder contain field label.
+                        __( 'You are required to check %s field', 'anspress-question-answer' ),
+                        $field->get( 'label' )
+                    )
+                );
+            }
+            
+        }
+    }
 }
