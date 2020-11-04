@@ -100,7 +100,7 @@ function ap_get_subscriber( $user_id = false, $event, $ref_id ) {
 	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
 
 	if ( null !== $results ) {
-		wp_cache_set( $key, $results, 'ap_subscriber' );
+		wp_cache_set( $key, $results, 'ap_subscriber', ANSPRESS_RUNTIME_EXPIRE );
 	}
 
 	return $results;
@@ -142,7 +142,7 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 
 	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); // WPCS: db call okay, cache okay.
 
-	wp_cache_set( $key, $results, 'ap_subscribers_count' );
+	wp_cache_set( $key, $results, 'ap_subscribers_count', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $results;
 }
@@ -214,7 +214,7 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
 	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->ap_subscribers} s LEFT JOIN {$wpdb->users} u ON u.ID = s.subs_user_id WHERE 1=1 {$query}" ); // WPCS: db call okay.
 
 	if ( null !== $results ) {
-		wp_cache_set( $key, $results, 'ap_subscribers' );
+		wp_cache_set( $key, $results, 'ap_subscribers', ANSPRESS_RUNTIME_EXPIRE );
 	}
 
 	return $results;

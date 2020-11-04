@@ -256,16 +256,17 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
 
 			$constants = array(
-				'DS'                  => DIRECTORY_SEPARATOR,
-				'AP_VERSION'          => $this->_plugin_version,
-				'ANSPRESS_DIR'        => $plugin_dir,
-				'ANSPRESS_URL'        => plugin_dir_url( __FILE__ ),
-				'ANSPRESS_WIDGET_DIR' => $plugin_dir . 'widgets/',
-				'ANSPRESS_THEME_DIR'  => $plugin_dir . 'templates',
-				'ANSPRESS_THEME_URL'  => plugin_dir_url( __FILE__ ) . 'templates',
-				'ANSPRESS_CACHE_DIR'  => WP_CONTENT_DIR . '/cache/anspress',
-				'ANSPRESS_CACHE_TIME' => HOUR_IN_SECONDS,
-				'ANSPRESS_ADDONS_DIR' => $plugin_dir . 'addons',
+				'DS'                      => DIRECTORY_SEPARATOR,
+				'AP_VERSION'              => $this->_plugin_version,
+				'ANSPRESS_DIR'            => $plugin_dir,
+				'ANSPRESS_URL'            => plugin_dir_url( __FILE__ ),
+				'ANSPRESS_WIDGET_DIR'     => $plugin_dir . 'widgets/',
+				'ANSPRESS_THEME_DIR'      => $plugin_dir . 'templates',
+				'ANSPRESS_THEME_URL'      => plugin_dir_url( __FILE__ ) . 'templates',
+				'ANSPRESS_CACHE_DIR'      => WP_CONTENT_DIR . '/cache/anspress',
+				'ANSPRESS_CACHE_TIME'     => HOUR_IN_SECONDS,
+				'ANSPRESS_ADDONS_DIR'     => $plugin_dir . 'addons',
+				'ANSPRESS_RUNTIME_EXPIRE' => 1,
 			);
 
 			foreach ( $constants as $k => $val ) {

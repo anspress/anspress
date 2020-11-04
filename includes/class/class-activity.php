@@ -178,7 +178,7 @@ class Activity extends AnsPress_Query {
 			}
 
 			$this->objects = $activities;
-			wp_cache_set( $key, $activities, 'ap_activities' );
+			wp_cache_set( $key, $activities, 'ap_activities', ANSPRESS_RUNTIME_EXPIRE );
 		}
 
 		$this->prefetch();
@@ -239,7 +239,7 @@ class Activity extends AnsPress_Query {
 
 		// Cache all posts.
 		foreach ( $posts as $_post ) {
-			wp_cache_set( $_post->ID, $_post, 'posts' );
+			wp_cache_set( $_post->ID, $_post, 'posts', ANSPRESS_RUNTIME_EXPIRE );
 		}
 	}
 
@@ -275,7 +275,7 @@ class Activity extends AnsPress_Query {
 
 		// Cache comments.
 		foreach ( $comments as $_comment ) {
-			wp_cache_set( $_comment->comment_ID, $_comment, 'comment' );
+			wp_cache_set( $_comment->comment_ID, $_comment, 'comment', ANSPRESS_RUNTIME_EXPIRE );
 		}
 	}
 

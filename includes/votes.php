@@ -254,12 +254,12 @@ function ap_get_votes( $args = array() ) {
 	$results = $wpdb->get_results( $where ); // db call okay, unprepared sql okay.
 
 	if ( false !== $results ) {
-		wp_cache_set( $key, $results, 'ap_votes_queries' );
+		wp_cache_set( $key, $results, 'ap_votes_queries', ANSPRESS_RUNTIME_EXPIRE );
 
 		// Also cache each vote individually.
 		foreach ( (array) $results as $vote ) {
 			$vote_key = $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type;
-			wp_cache_set( $vote_key, $vote, 'ap_vote' );
+			wp_cache_set( $vote_key, $vote, 'ap_vote', ANSPRESS_RUNTIME_EXPIRE );
 		}
 	}
 
@@ -335,7 +335,7 @@ function ap_count_votes( $args ) {
 	}
 
 	$cache_key = md5( $where );
-	wp_cache_set( 'votes', $cache_key, 'ap_count_votes_key' );
+	wp_cache_set( 'votes', $cache_key, 'ap_count_votes_key', ANSPRESS_RUNTIME_EXPIRE );
 	$cache = wp_cache_get( $cache_key, 'ap_count_votes' );
 
 	if ( false !== $cache ) {
@@ -343,7 +343,7 @@ function ap_count_votes( $args ) {
 	}
 
 	$rows = $wpdb->get_results( $where ); // db call okay, unprepared SQL okay.
-	wp_cache_set( $cache_key, $rows, 'ap_count_votes' );
+	wp_cache_set( $cache_key, $rows, 'ap_count_votes', ANSPRESS_RUNTIME_EXPIRE );
 
 	if ( false !== $rows ) {
 		return $rows;
@@ -438,7 +438,7 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	}
 
 	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // db call okay, unprepared SQL okay.
-	wp_cache_set( $cache_key, $vote, 'ap_vote' );
+	wp_cache_set( $cache_key, $vote, 'ap_vote', ANSPRESS_RUNTIME_EXPIRE );
 
 	if ( ! empty( $vote ) ) {
 		return $vote;
@@ -671,7 +671,7 @@ function ap_user_votes_pre_fetch( $ids ) {
 		}
 
 		foreach ( (array) $cache_keys as $key => $val ) {
-			wp_cache_set( $key, '', 'ap_vote' );
+			wp_cache_set( $key, '', 'ap_vote', ANSPRESS_RUNTIME_EXPIRE );
 		}
 	}
 }

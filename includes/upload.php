@@ -381,7 +381,7 @@ function ap_count_users_temp_media( $user_id ) {
 	}
 
 	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_title = '_ap_temp_media' AND post_author=%d AND post_type='attachment'", $user_id ) ); // db call okay.
-	wp_cache_set( $user_id, $count, 'ap_user_temp_media' );
+	wp_cache_set( $user_id, $count, 'ap_user_temp_media', ANSPRESS_RUNTIME_EXPIRE );
 
 	return (int) $count;
 }

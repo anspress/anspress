@@ -156,7 +156,7 @@ function ap_get_notifications( $args = [] ) {
 	}
 
 	$results = $wpdb->get_results( $query ); //@codingStandardsIgnoreLine.
-	wp_cache_set( $key, $results, 'ap_notifications' );
+	wp_cache_set( $key, $results, 'ap_notifications', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $results;
 }
@@ -318,7 +318,7 @@ function ap_count_unseen_notifications( $user_id = false ) {
 
 	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d AND noti_seen = 0", $user_id ) ); // WPCS: db call okay.
 
-	wp_cache_set( $user_id, $count, 'ap_unseen_notification' );
+	wp_cache_set( $user_id, $count, 'ap_unseen_notification', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $count;
 }

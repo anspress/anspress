@@ -83,8 +83,8 @@ class Notifications extends \AnsPress_Query {
 			$this->objects     = $wpdb->get_results( $query ); // WPCS: DB call okay.
 			$count_query       = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] );
 			$this->total_count = $wpdb->get_var( apply_filters( 'ap_notifications_found_rows', $count_query, $this ) );
-			wp_cache_set( $key . '_count', $this->total_count, 'ap_notifications_count' );
-			wp_cache_set( $key, $this->objects, 'ap_notifications' );
+			wp_cache_set( $key . '_count', $this->total_count, 'ap_notifications_count', ANSPRESS_RUNTIME_EXPIRE );
+			wp_cache_set( $key, $this->objects, 'ap_notifications', ANSPRESS_RUNTIME_EXPIRE );
 		}
 
 		$this->prefetch();

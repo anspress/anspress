@@ -174,7 +174,7 @@ function ap_get_recent_activity( $_post = false, $deprecated = null ) {
 		}
 
 		// Set cache.
-		wp_cache_set( $_post->ID, $activity, 'ap_' . $column . '_activity' );
+		wp_cache_set( $_post->ID, $activity, 'ap_' . $column . '_activity', ANSPRESS_RUNTIME_EXPIRE );
 	}
 
 	return $activity;
@@ -261,11 +261,11 @@ function ap_prefetch_recent_activities( $ids, $col = 'q_id' ) {
 
 	if ( false === $activity ) {
 		$activity = $wpdb->get_results( $query );
-		wp_cache_set( $key, $activity, 'ap_prefetch_activities' );
+		wp_cache_set( $key, $activity, 'ap_prefetch_activities', ANSPRESS_RUNTIME_EXPIRE );
 
 		foreach ( $activity as $a ) {
 			$a = ap_activity_parse( $a );
-			wp_cache_set( $a->$col, $a, 'ap_' . $col . '_activity' );
+			wp_cache_set( $a->$col, $a, 'ap_' . $col . '_activity', ANSPRESS_RUNTIME_EXPIRE );
 		}
 	}
 

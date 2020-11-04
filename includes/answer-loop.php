@@ -326,7 +326,7 @@ function ap_count_published_answers( $question_id ) {
 	}
 
 	$count = $wpdb->get_var( $query );
-	wp_cache_set( $key, $count, 'ap_count' );
+	wp_cache_set( $key, $count, 'ap_count', ANSPRESS_RUNTIME_EXPIRE );
 	return $count;
 }
 
@@ -410,7 +410,7 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 
 	$pos   = (int) array_search( $answer_id, $ids ) + 1; // lose comparison ok.
 	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
-	wp_cache_set( $cache_key, $paged, 'ap_answer_position' );
+	wp_cache_set( $cache_key, $paged, 'ap_answer_position', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $paged;
 }

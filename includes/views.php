@@ -148,7 +148,7 @@ function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
 	}
 
 	$count = $wpdb->get_var( $query ); // @codingStandardsIgnoreLine
-	wp_cache_set( $cache_key, $count, 'ap_is_viewed' );
+	wp_cache_set( $cache_key, $count, 'ap_is_viewed', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $count > 0 ? true : false;
 }
@@ -171,7 +171,7 @@ function ap_get_views( $ref_id, $type = 'question' ) {
 	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_ref_id = %d AND view_type = '%s'", $ref_id, $type ); // @codingStandardsIgnoreLine
 
 	$count = (int) $wpdb->get_var( $query ); // @codingStandardsIgnoreLine
-	wp_cache_set( $ref_id . '_' . $type, $count, 'ap_get_views' );
+	wp_cache_set( $ref_id . '_' . $type, $count, 'ap_get_views', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $count;
 }

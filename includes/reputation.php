@@ -94,7 +94,7 @@ function ap_get_reputation( $event, $ref_id, $user_id = false ) {
 
 	$reputation = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_reputations WHERE rep_user_id = %d AND rep_ref_id = %d AND rep_event = %s", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
 
-	wp_cache_set( $key, $reputation, 'ap_reputation' );
+	wp_cache_set( $key, $reputation, 'ap_reputation', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $reputation;
 }
@@ -255,7 +255,7 @@ function ap_get_user_reputation( $user_id, $group = false ) {
 		$count[ $slug ] = isset( $event_counts[ $slug ] ) ? ( (int) $event_counts[ $slug ] * (int) $event['points'] ) : 0;
 	}
 
-	wp_cache_set( 'ap_user_reputation_' . $user_id, $count, 'ap' );
+	wp_cache_set( 'ap_user_reputation_' . $user_id, $count, 'ap', ANSPRESS_RUNTIME_EXPIRE );
 
 	if ( false === $group ) {
 		return array_sum( $count );
@@ -344,7 +344,7 @@ function ap_get_users_reputation( $user_ids ) {
 			$counts[ $user_id ][ $slug ] = isset( $events[ $slug ] ) ? ( (int) $events[ $slug ] * (int) $event['points'] ) : 0;
 		}
 
-		wp_cache_set( 'ap_user_reputation_' . $user_id, $counts[ $user_id ], 'ap' );
+		wp_cache_set( 'ap_user_reputation_' . $user_id, $counts[ $user_id ], 'ap', ANSPRESS_RUNTIME_EXPIRE );
 	}
 
 	return $counts;
@@ -490,8 +490,8 @@ class AnsPress_Reputation_Query {
 		if ( false === $result ) {
 			$result            = $wpdb->get_results( $query ); // WPCS: DB call okay.
 			$this->total_count = $wpdb->get_var( apply_filters( 'ap_reputations_found_rows', 'SELECT FOUND_ROWS()', $this ) );
-			wp_cache_set( $key . '_count', $this->total_count, 'ap' );
-			wp_cache_set( $key, $result, 'ap' );
+			wp_cache_set( $key . '_count', $this->total_count, 'ap', ANSPRESS_RUNTIME_EXPIRE );
+			wp_cache_set( $key, $result, 'ap', ANSPRESS_RUNTIME_EXPIRE );
 		}
 
 		$this->reputations = $result;

@@ -126,7 +126,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 				$cache->$key = $val;
 			}
 
-			wp_cache_set( $post_id, $cache, 'posts' );
+			wp_cache_set( $post_id, $cache, 'posts', ANSPRESS_RUNTIME_EXPIRE );
 		}
 
 		wp_cache_delete( $post_id, 'ap_qameta' );
@@ -177,7 +177,7 @@ function ap_get_qameta( $post_id ) {
 
 		$qameta['fields'] = maybe_unserialize( $qameta['fields'] );
 		$qameta           = (object) $qameta;
-		wp_cache_set( $post_id, $qameta, 'ap_qameta' );
+		wp_cache_set( $post_id, $qameta, 'ap_qameta', ANSPRESS_RUNTIME_EXPIRE );
 	}
 
 	return $qameta;

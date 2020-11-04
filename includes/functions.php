@@ -216,7 +216,7 @@ function ap_is_user_answered( $question_id, $user_id ) {
 
 	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND ( post_author = %d AND post_type = 'answer')", $question_id, $user_id ) ); // db call ok.
 
-	wp_cache_set( $key, $count, 'counts' );
+	wp_cache_set( $key, $count, 'counts', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $count > 0 ? true : false;
 }
@@ -770,7 +770,7 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_
 		}
 	}
 
-	wp_cache_set( $cache_key, (object) $counts, 'counts' );
+	wp_cache_set( $cache_key, (object) $counts, 'counts', ANSPRESS_RUNTIME_EXPIRE );
 	return (object) $counts;
 }
 
@@ -812,7 +812,7 @@ function ap_total_solved_questions( $type = 'int' ) {
 		$counts['total']              += (int) $row['count'];
 	}
 
-	wp_cache_set( $cache_key, (object) $counts, 'counts' );
+	wp_cache_set( $cache_key, (object) $counts, 'counts', ANSPRESS_RUNTIME_EXPIRE );
 	$counts = (object) $counts;
 	if ( 'int' === $type ) {
 		return $counts->publish + $counts->private_post;
@@ -1036,7 +1036,7 @@ function ap_questions_answer_ids( $question_id ) {
 	}
 
 	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) ); // db call ok.
-	wp_cache_set( $question_id, $ids, 'ap_questions_answer_ids' );
+	wp_cache_set( $question_id, $ids, 'ap_questions_answer_ids', ANSPRESS_RUNTIME_EXPIRE );
 
 	return $ids;
 }
@@ -1648,7 +1648,7 @@ function ap_get_addons() {
 		}
 	}
 
-	wp_cache_set( 'addons', $valid_addons, 'anspress' );
+	wp_cache_set( 'addons', $valid_addons, 'anspress', ANSPRESS_RUNTIME_EXPIRE );
 	return $valid_addons;
 }
 

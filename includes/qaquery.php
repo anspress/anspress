@@ -256,7 +256,7 @@ function ap_get_post( $post = null ) {
 
 	if ( $_post && ! isset( $_post->ap_qameta_wrapped ) ) {
 		$_post = ap_append_qameta( $_post );
-		wp_cache_set( $_post->ID, $_post, 'posts' );
+		wp_cache_set( $_post->ID, $_post, 'posts', ANSPRESS_RUNTIME_EXPIRE );
 	}
 
 	return $_post;

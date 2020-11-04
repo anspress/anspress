@@ -155,7 +155,7 @@ abstract class AnsPress_Query {
 
 		if ( false === $this->total_count ) {
 			$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // WPCS: db call okay.
-			wp_cache_set( $key . '_count', $this->total_count, 'counts' );
+			wp_cache_set( $key . '_count', $this->total_count, 'counts', ANSPRESS_RUNTIME_EXPIRE );
 		}
 	}
 
