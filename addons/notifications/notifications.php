@@ -2,10 +2,10 @@
 /**
  * Addon for user notifications.
  *
- * @author     Rahul Aryan <support@anspress.io>
- * @copyright  2017 AnsPress.io & Rahul Aryan
+ * @author     Rahul Aryan <rah12@live.com>
+ * @copyright  2017 anspress.net & Rahul Aryan
  * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link       https://anspress.io
+ * @link       https://anspress.net
  * @package    AnsPress
  * @subpackage Notifications Addon
  * @since      4.1.8
@@ -26,7 +26,7 @@ require_once ANSPRESS_ADDONS_DIR . '/notifications/query.php';
  * AnsPress notifications hooks.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  * @since   4.0.0
  */
 class Notifications extends \AnsPress\Singleton {

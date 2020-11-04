@@ -2,8 +2,8 @@
 /**
  * Template used for generating single answer item.
  *
- * @author Rahul Aryan <support@anspress.io>
- * @link https://anspress.io/anspress
+ * @author Rahul Aryan <rah12@live.com>
+ * @link https://anspress.net/anspress
  * @package AnsPress
  * @subpackage Templates
  * @since 0.1

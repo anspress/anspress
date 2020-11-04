@@ -3,7 +3,7 @@
  * View licenses page for AnsPress.
  *
  * @package AnsPress
- * @author Rahul Aryan <support@anspress.io>
+ * @author Rahul Aryan <rah12@live.com>
  * @copyright 2014 - Rahul Aryan
  */
 

@@ -4,20 +4,20 @@
  *
  * An AnsPress add-on to check for spam in posts before publishing.
  *
- * @author     Rahul Aryan <support@anspress.io>
- * @copyright  2014 AnsPress.io & Rahul Aryan
+ * @author     Rahul Aryan <rah12@live.com>
+ * @copyright  2014 anspress.net & Rahul Aryan
  * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link       https://anspress.io
+ * @link       https://anspress.net
  * @package    AnsPress
  * @subpackage Akismet check Addon
  * @since      4.1.11
  *
  * @anspress-addon
  * Addon Name:    Akismet check
- * Addon URI:     https://anspress.io
+ * Addon URI:     https://anspress.net
  * Description:   Checks for spam in posts.
  * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
+ * Author URI:    https://anspress.net
  */
 
 namespace Anspress\Addons;

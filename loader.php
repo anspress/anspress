@@ -2,9 +2,9 @@
 /**
  * AnsPress class auto loader.
  *
- * @link         https://anspress.io/anspress
+ * @link         https://anspress.net/anspress
  * @since        1.0.0
- * @author       Rahul Aryan <support@anspress.io>
+ * @author       Rahul Aryan <rah12@live.com>
  * @package      AnsPressPro
  */
 

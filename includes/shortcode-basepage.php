@@ -3,9 +3,9 @@
  * Class for AnsPress base page shortcode
  *
  * @package   AnsPress
- * @author    Rahul Aryan <support@anspress.io>
+ * @author    Rahul Aryan <rah12@live.com>
  * @license   GPL-2.0+
- * @link      https://anspress.io
+ * @link      https://anspress.net
  * @copyright 2014 Rahul Aryan
  */
 
@@ -92,7 +92,7 @@ class AnsPress_BasePage_Shortcode {
 		echo '</div>';
 		// Linkback to author.
 		if ( ! ap_opt( 'author_credits' ) ) {
-			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ) . ' <a href="https://anspress.io" target="_blank">AnsPress.io</a></div>';
+			echo '<div class="ap-cradit">' . esc_attr__( 'Question and answer is powered by', 'anspress-question-answer' ) . ' <a href="https://anspress.net" target="_blank">anspress.net</a></div>';
 		}
 
 		wp_reset_postdata();

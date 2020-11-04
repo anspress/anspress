@@ -4358,7 +4358,7 @@ msgid "AnsPress Question Answer"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://anspress.io"
+msgid "https://anspress.net"
 msgstr ""
 
 #. Description of the plugin/theme

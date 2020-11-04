@@ -4,8 +4,8 @@
  *
  * Render notification item if ref_type is reputation.
  *
- * @author  Rahul Aryan <support@anspress.io>
- * @link    https://anspress.io/
+ * @author  Rahul Aryan <rah12@live.com>
+ * @link    https://anspress.net/
  * @since   4.0.0
  * @package AnsPress
  */

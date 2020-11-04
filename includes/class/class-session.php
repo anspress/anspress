@@ -2,9 +2,9 @@
 /**
  * AnsPress session handler for managing custom session for users.
  *
- * @link       https://anspress.io/anspress
+ * @link       https://anspress.net/anspress
  * @since      4.1.5
- * @author     Rahul Aryan <support@anspress.io>
+ * @author     Rahul Aryan <rah12@live.com>
  * @package    AnsPress
  * @subpackage Session
  */

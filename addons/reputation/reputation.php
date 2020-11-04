@@ -2,10 +2,10 @@
 /**
  * Award reputation to user based on activities.
  *
- * @author       Rahul Aryan <support@anspress.io>
- * @copyright    2014 AnsPress.io & Rahul Aryan
+ * @author       Rahul Aryan <rah12@live.com>
+ * @copyright    2014 anspress.net & Rahul Aryan
  * @license      GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link         https://anspress.io
+ * @link         https://anspress.net
  * @package      AnsPress
  * @subpackage   Reputation addon
  */

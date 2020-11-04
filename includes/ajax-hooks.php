@@ -2,9 +2,9 @@
 /**
  * Register all ajax hooks.
  *
- * @author       Rahul Aryan <support@anspress.io>
+ * @author       Rahul Aryan <rah12@live.com>
  * @license      GPL-2.0+
- * @link         https://anspress.io
+ * @link         https://anspress.net
  * @copyright    2014 Rahul Aryan
  * @package      AnsPress
  * @subpackage   Ajax Hooks

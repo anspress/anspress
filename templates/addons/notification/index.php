@@ -4,8 +4,8 @@
  *
  * Render notifications in user's page.
  *
- * @author  Rahul Aryan <support@anspress.io>
- * @link    https://anspress.io/
+ * @author  Rahul Aryan <rah12@live.com>
+ * @link    https://anspress.net/
  * @since   1.0.0
  * @package AnsPress-pro
  */

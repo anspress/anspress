@@ -6,7 +6,7 @@ Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: 4.1.15
 License: GPLv2 or later
-Demo: https://anspress.io/demo/?product=anspress
+Demo: https://anspress.net/demo/?product=anspress
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
@@ -26,13 +26,13 @@ AnsPress is built with developers in mind and can easily be extended to fit your
 
 **Contributors:**
 
-This plugin wouldn't be possible without a huge amount of contribution. Check our contributors at https://anspress.io/contributors/
+This plugin wouldn't be possible without a huge amount of contribution. Check our contributors at https://anspress.net/contributors/
 
 **Support and Demo:**
 
-We provide support on our site: https://anspress.io/questions
+We provide support on our site: https://anspress.net/questions
 Our support section uses actual version of AnsPress, so you can check out the support site if you want to see full working version of AnsPress.
-You can also take the demo site for a test drive https://anspress.io/demo/
+You can also take the demo site for a test drive https://anspress.net/demo/
 
 **AnsPress Key Features:**
 
@@ -62,7 +62,7 @@ You can also take the demo site for a test drive https://anspress.io/demo/
 * reCaptcha
 * Dynamic text avatar
 
-AnsPress is frequently updated and more features are added based on feedback from our users. This means you are welcome to give us feedback and suggestions as to what you would like to see or need in the plugin. Visit our Github project https://github.com/anspress/anspress  or visit our community https://anspress.io/questions/  to get the updates.
+AnsPress is frequently updated and more features are added based on feedback from our users. This means you are welcome to give us feedback and suggestions as to what you would like to see or need in the plugin. Visit our Github project https://github.com/anspress/anspress  or visit our community https://anspress.net/questions/  to get the updates.
 
 
 **Page Shortcodes**
@@ -73,12 +73,12 @@ Use this shortcode in base to AnsPress work properly
 
 == Installation ==
 
-Read full documentation here https://anspress.io/resources/
+Read full documentation here https://anspress.net/resources/
 
 
 == Frequently Asked Questions ==
 
-Read full FAQ here https://anspress.io/resources/faq/
+Read full FAQ here https://anspress.net/resources/faq/
 
 == Screenshots ==
 

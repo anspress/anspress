@@ -5,7 +5,7 @@
  * @package    AnsPress
  * @subpackage Form
  * @since      4.1.0
- * @author     Rahul Aryan<support@anspress.io>
+ * @author     Rahul Aryan<support@anspress.net>
  * @copyright  Copyright (c) 2017, Rahul Aryan
  * @license    http://opensource.org/licenses/gpl-3.0.php GNU Public License
  */
@@ -116,7 +116,7 @@ class Form {
 		}
 
 		$fields = ap_sort_array_by_order( $this->args['fields'] );
-		
+
 		if ( ! ap_opt( 'allow_private_posts' ) && isset( $fields['is_private'] ) ) {
 			unset( $fields['is_private'] );
 		}

@@ -3,9 +3,9 @@
  * AnsPress product license
  * Handle licence of AnsPress products.
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since 2.4.5
- * @author Rahul Aryan <support@anspress.io>
+ * @author Rahul Aryan <rah12@live.com>
  * @package AnsPress
  */
 
@@ -92,7 +92,7 @@ class AP_License {
 
 				// Call the custom API.
 				$response = wp_remote_post(
-					'https://anspress.io', array(
+					'https://anspress.net', array(
 						'timeout'   => 15,
 						'sslverify' => true,
 						'body'      => $api_params,
@@ -115,7 +115,7 @@ class AP_License {
 
 				// Call the custom API.
 				$response = wp_remote_post(
-					'https://anspress.io', array(
+					'https://anspress.net', array(
 						'timeout'   => 15,
 						'sslverify' => true,
 						'body'      => $api_params,

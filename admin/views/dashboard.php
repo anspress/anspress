@@ -2,9 +2,9 @@
 /**
  * Control the output of AnsPress dashboard
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since 2.0.0
- * @author Rahul Aryan <support@anspress.io>
+ * @author Rahul Aryan <rah12@live.com>
  * @package AnsPress
  */
 
@@ -293,20 +293,20 @@ if ( $columns ) {
 									__( 'Get %1$s or %2$s', 'anspress-question-answer' ),
 									sprintf(
 										'<a href="%1$s" target="_blank">%2$s</a>',
-										esc_url( 'https://anspress.io/themes/' ),
+										esc_url( 'https://anspress.net/themes/' ),
 										__( 'Themes', 'anspress-question-answer' )
 									),
 									sprintf(
 										'<a href="%1$s" target="_blank">%2$s</a>',
-										esc_url( 'https://anspress.io/extensions/' ),
+										esc_url( 'https://anspress.net/extensions/' ),
 										__( 'Extensions', 'anspress-question-answer' )
 									)
 								);
 								?>
 							</div>
 						</li>
-						<li><a class="welcome-icon welcome-comments" href="https://anspress.io/questions/" target="_blank"><?php _e( 'Help and Support!', 'anspress-question-answer' ); ?></a></li>
-						<li><a class="welcome-icon welcome-learn-more" href="https://anspress.io/docs/"><?php _e( 'Documents and FAQ', 'anspress-question-answer' ); ?></a></li>
+						<li><a class="welcome-icon welcome-comments" href="https://anspress.net/questions/" target="_blank"><?php _e( 'Help and Support!', 'anspress-question-answer' ); ?></a></li>
+						<li><a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/"><?php _e( 'Documents and FAQ', 'anspress-question-answer' ); ?></a></li>
 					</ul>
 				</div>
 			</div>

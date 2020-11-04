@@ -3,18 +3,18 @@
  * Integrate with BuddyPress profile.
  *
  * @author       Rahul Aryan <support@anspress.com>
- * @copyright    2014 AnsPress.io & Rahul Aryan
+ * @copyright    2014 anspress.net & Rahul Aryan
  * @license      GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link         https://anspress.io
+ * @link         https://anspress.net
  * @package      AnsPress
  * @subpackage   BuddyPress Addon
  *
  * @anspress-addon
  * Addon Name:    BuddyPress
- * Addon URI:     https://anspress.io
+ * Addon URI:     https://anspress.net
  * Description:   Integrate AnsPress with BuddyPress.
  * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
+ * Author URI:    https://anspress.net
  */
 
 namespace AnsPress\Addons;

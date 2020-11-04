@@ -2,9 +2,9 @@
 /**
  * Control the output of AnsPress about page
  *
- * @link     https://anspress.io
+ * @link     https://anspress.net
  * @since    2.2
- * @author   Rahul Aryan <support@anspress.io>
+ * @author   Rahul Aryan <rah12@live.com>
  * @package  AnsPress
  */
 
@@ -25,7 +25,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 	<h2 class="nav-tab-wrapper">
 		<a class="nav-tab<?php echo ! $credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about' ); ?>">What’s New</a>
 		<a class="nav-tab <?php echo $credits ? ' nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=anspress_about&credits=true' ); ?>">Credits</a>
-		<a class="nav-tab" href="https://anspress.io/questions/" target="_blank">Support</a>
+		<a class="nav-tab" href="https://anspress.net/questions/" target="_blank">Support</a>
 	</h2>
 
 	<?php if ( ! $credits ) : ?>
@@ -108,7 +108,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 		</div>
 		<div class="ap-changelog-section">
 			<h3 class="changelog-title">And so much more!</h3>
-			<p class="ap-changelog-url"><a href="https://anspress.io/releases/version-4.0.0-beta.1/">Changelog for AnsPress <?php echo AP_VERSION; ?>.</a></p>
+			<p class="ap-changelog-url"><a href="https://anspress.net/releases/version-4.0.0-beta.1/">Changelog for AnsPress <?php echo AP_VERSION; ?>.</a></p>
 		</div>
 		<div class="ap-assets">
 			<span class="flaticon-cp">All colored icons used in this page were taken from flaticon.com</span>
@@ -123,15 +123,15 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<span class="title">Lead Developer</span>
 			</li>
 			<li class="wp-person" id="wp-person-campdoug">
-				<a class="web" href="https://campdoug.com/"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/barry.jpg">Barry Sevig</a>
+				<a class="web" href="https://campdoug.com/"><img alt="" class="gravatar" src="//anspress.net/wp-content/themes/site/images/contributors/barry.jpg">Barry Sevig</a>
 				<span class="title">Supporter &amp; Developer</span>
 			</li>
 			<li class="wp-person" id="wp-person-ravi">
-				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/ravi_kumar.jpg">Ravi Kumar</a>
+				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.net/wp-content/themes/site/images/contributors/ravi_kumar.jpg">Ravi Kumar</a>
 				<span class="title">Core Developer</span>
 			</li>
 			<li class="wp-person" id="wp-person-geetikaaryan">
-				<a class="web" href="https://anspress.io/"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/ef5b41129a9a4c2573ef5daf05f03eb7?s=60">Geetika Aryan</a>
+				<a class="web" href="https://anspress.net/"><img alt="" class="gravatar" src="//www.gravatar.com/avatar/ef5b41129a9a4c2573ef5daf05f03eb7?s=60">Geetika Aryan</a>
 				<span class="title">Core Developer</span>
 			</li>
 		</ul>
@@ -151,7 +151,7 @@ $credits = ap_sanitize_unslash( 'credits', 'r', false );
 				<span class="title">Support &amp; Translations</span>
 			</li>
 			<li class="wp-person">
-				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.io/wp-content/themes/site/images/contributors/chad.jpg">Chad Fullerton</a>
+				<a class="web" href="#"><img alt="" class="gravatar" src="//anspress.net/wp-content/themes/site/images/contributors/chad.jpg">Chad Fullerton</a>
 				<span class="title">Support &amp; UI</span>
 			</li>
 			<li class="wp-person">

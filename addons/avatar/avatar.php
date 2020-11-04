@@ -6,19 +6,19 @@
  * question, answer and comments. Add restricted words
  * after activating addon.
  *
- * @author     Rahul Aryan <support@anspress.io>
- * @copyright  2014 AnsPress.io & Rahul Aryan
+ * @author     Rahul Aryan <rah12@live.com>
+ * @copyright  2014 anspress.net & Rahul Aryan
  * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link       https://anspress.io
+ * @link       https://anspress.net
  * @package    AnsPress
  * @subpackage Dynamic Avatar Addon
  *
  * @anspress-addon
  * Addon Name:    Dynamic Avatar
- * Addon URI:     https://anspress.io
+ * Addon URI:     https://anspress.net
  * Description:   Generate user avatar dynamically.
  * Author:        Rahul Aryan
- * Author URI:    https://anspress.io
+ * Author URI:    https://anspress.net
  */
 
 namespace Anspress\Addons;

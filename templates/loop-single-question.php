@@ -6,7 +6,7 @@
  * @package    AnsPress
  * @subpackage Templates
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
- * @author     Rahul Aryan <support@anspress.io>
+ * @author     Rahul Aryan <rah12@live.com>
  *
  * @since      4.2.0
  */

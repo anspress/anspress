@@ -4,7 +4,7 @@
  *
  * This template is used in base page, category, tag , etc
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since 4.0.0
  *
  * @package AnsPress

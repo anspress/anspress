@@ -4,20 +4,21 @@
  *
  * The most advance community question and answer system for WordPress
  *
- * @author    Rahul Aryan <support@rahularyan.com>
- * @copyright 2014 AnsPress.io & Rahul Aryan
+ * @author    Rahul Aryan <rah12@live.com>
+ * @copyright Copyright (c) 2014-2020, Rahul Aryan
+ * @copyright Copyright (c) 2020, Dan Jordan
  * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link      https://anspress.io
+ * @link      https://anspress.net
  * @package   AnsPress
  *
  * @wordpress-plugin
  * Plugin Name:       AnsPress Question Answer
- * Plugin URI:        https://anspress.io
+ * Plugin URI:        https://anspress.net
  * Description:       The most advance community question and answer system for WordPress
  * Donate link:       https://goo.gl/ffainr
  * Version:           4.1.15
  * Author:            Rahul Aryan
- * Author URI:        https://anspress.io
+ * Author URI:        https://anspress.net
  * License:           GPL-3.0+
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain:       anspress-question-answer

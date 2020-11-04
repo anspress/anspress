@@ -3,7 +3,7 @@
  * When visitor try to browse category page without setting query_var then
  * this is show.
  *
- * @link http://anspress.io
+ * @link http://anspress.net
  * @since 4.0
  * @package AnsPress
  */

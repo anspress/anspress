@@ -2,9 +2,9 @@
 /**
  * Tools page
  *
- * @link    https://anspress.io
+ * @link    https://anspress.net
  * @since   4.0
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  * @package AnsPress
  */
 
