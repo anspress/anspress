@@ -3,8 +3,8 @@ Contributors: nerdaryan
 Donate link: https://www.paypal.me/nerdaryan
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.7
-Tested up to: 4.9
-Stable tag: 4.1.15
+Tested up to: 5.3
+Stable tag: 4.1.18
 License: GPLv2 or later
 Demo: https://anspress.io/demo/?product=anspress
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -97,6 +97,14 @@ Read full FAQ here https://anspress.io/resources/faq/
 
 
 == Changelog ==
+
+= 4.1.18 =
+
+* Use user_trailingslashit() in the links of questions, categories..etc
+
+= 4.1.16 =
+
+* Fixed: user profile questions page pagination
 
 = 4.1.0 =
 

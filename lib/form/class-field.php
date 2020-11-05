@@ -280,6 +280,14 @@ class Field {
 			}
 		}
 
+		/**
+		 * Filter applied before returning a html of a field.
+		 *
+		 * @param string $html Field HTML markup.
+		 * @param object $field Current field object.
+		 */
+		$this->html = apply_filters( 'ap_field_html', $this->html, $this ); // xss okay.
+
 		if ( ! empty( $this->html ) ) {
 			return $this->html; // xss okay.
 		}
@@ -584,7 +592,6 @@ class Field {
 		}
 
 		if ( ! empty( $this->validate_cb ) ) {
-
 			foreach ( (array) $this->validate_cb as $validate ) {
 				// Callback for validating field type.
 				$cb = 'validate_' . trim( $validate );
@@ -592,6 +599,16 @@ class Field {
 				if ( method_exists( 'AnsPress\Form\Validate', $cb ) ) {
 					call_user_func_array( 'AnsPress\Form\Validate::' . $cb, [ $this ] );
 				}
+
+				/**
+				 * Custom validation callback.
+				 *
+				 * @param string $field_name CUrrent field.
+				 * @param object $field CUrrent field.
+				 * @since 4.1.7
+				 */
+				apply_filters_ref_array( "ap_field_{$cb}", [ $this->field_name, $this ] );
+
 			} // End foreach().
 
 			$this->validated = true;
