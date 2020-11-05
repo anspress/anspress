@@ -276,16 +276,8 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
  */
 function ap_is_user_answered( $question_id, $user_id ) {
 	global $wpdb;
-	$key   = 'ap_is_answered_' . $user_id . '_' . $question_id;
-	$cache = wp_cache_get( $key, 'counts' );
-
-	if ( false !== $cache ) {
-		return $cache > 0 ? true : false;
-	}
 
 	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND ( post_author = %d AND post_type = 'answer')", $question_id, $user_id ) ); // db call ok.
-
-	wp_cache_set( $key, $count, 'counts' );
 
 	return $count > 0 ? true : false;
 }
@@ -815,12 +807,6 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_
 
 	$where     = apply_filters( 'ap_total_posts_count', $where );
 	$query     = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p $join $where GROUP BY p.post_status";
-	$cache_key = md5( $query );
-	$count     = wp_cache_get( $cache_key, 'counts' );
-
-	if ( false !== $count ) {
-		return $count;
-	}
 
 	$count = $wpdb->get_results( $query, ARRAY_A ); // @codingStandardsIgnoreLine
 	$counts = array();
@@ -839,7 +825,6 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_
 		}
 	}
 
-	wp_cache_set( $cache_key, (object) $counts, 'counts' );
 	return (object) $counts;
 }
 
@@ -862,12 +847,6 @@ function ap_total_published_questions() {
 function ap_total_solved_questions( $type = 'int' ) {
 	global $wpdb;
 	$query     = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p INNER JOIN $wpdb->ap_qameta qameta ON p.ID = qameta.post_id WHERE p.post_type = 'question' AND qameta.selected_id IS NOT NULL AND qameta.selected_id > 0 GROUP BY p.post_status";
-	$cache_key = md5( $query );
-	$count     = wp_cache_get( $cache_key, 'counts' );
-
-	if ( false !== $count ) {
-		return $count;
-	}
 
 	$count  = $wpdb->get_results( $query, ARRAY_A ); // unprepared SQL ok, db call ok.
 	$counts = array( 'total' => 0 );
@@ -881,7 +860,6 @@ function ap_total_solved_questions( $type = 'int' ) {
 		$counts['total']              += (int) $row['count'];
 	}
 
-	wp_cache_set( $cache_key, (object) $counts, 'counts' );
 	$counts = (object) $counts;
 	if ( 'int' === $type ) {
 		return $counts->publish + $counts->private_post;
@@ -1098,14 +1076,8 @@ function ap_is_profile_menu( $menu ) {
  */
 function ap_questions_answer_ids( $question_id ) {
 	global $wpdb;
-	$cache = wp_cache_get( $question_id, 'ap_questions_answer_ids' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
 
 	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) ); // db call ok.
-	wp_cache_set( $question_id, $ids, 'ap_questions_answer_ids' );
 
 	return $ids;
 }

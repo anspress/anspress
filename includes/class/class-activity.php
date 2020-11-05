@@ -162,24 +162,16 @@ class Activity extends AnsPress_Query {
 
 		$query = "SELECT SQL_CALC_FOUND_ROWS {$sql['fields']} FROM {$wpdb->ap_activity} a $exclude WHERE 1=1 {$where} ORDER BY {$sql['orderby']} {$sql['order']} LIMIT {$this->offset},{$this->per_page}";
 
-		$key               = md5( $query );
-		$this->objects     = wp_cache_get( $key, 'ap_activities' );
-		$this->total_count = wp_cache_get( 'ap_' . $key, 'counts' );
+		$this->objects = $wpdb->get_results( $query ); // WPCS: DB call okay.
+		$this->total_count( '' );
 
-		// If no cache found then get from DB.
-		if ( false === $this->objects ) {
-			$this->objects = $wpdb->get_results( $query ); // WPCS: DB call okay.
-			$this->total_count( $key );
-
-			$activities = [];
-			foreach ( $this->objects as $activity ) {
-				$activity     = ap_activity_parse( $activity );
-				$activities[] = $activity;
-			}
-
-			$this->objects = $activities;
-			wp_cache_set( $key, $activities, 'ap_activities' );
+		$activities = [];
+		foreach ( $this->objects as $activity ) {
+			$activity     = ap_activity_parse( $activity );
+			$activities[] = $activity;
 		}
+
+		$this->objects = $activities;
 
 		$this->prefetch();
 
@@ -227,7 +219,6 @@ class Activity extends AnsPress_Query {
 	 * @since 4.1.2
 	 */
 	private function prefetch_posts() {
-
 		if ( empty( $this->ids['post'] ) ) {
 			return;
 		}

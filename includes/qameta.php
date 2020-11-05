@@ -119,17 +119,6 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	}
 
 	if ( false !== $inserted ) {
-		$cache = wp_cache_get( $post_id, 'posts' );
-
-		if ( false !== $cache ) {
-			foreach ( (array) $sanitized_values as $key => $val ) {
-				$cache->$key = $val;
-			}
-
-			wp_cache_set( $post_id, $cache, 'posts' );
-		}
-
-		wp_cache_delete( $post_id, 'ap_qameta' );
 		return $post_id;
 	}
 
@@ -156,29 +145,25 @@ function ap_delete_qameta( $post_id ) {
  */
 function ap_get_qameta( $post_id ) {
 	global $wpdb;
-	$qameta = wp_cache_get( $post_id, 'ap_qameta' );
 
-	if ( false === $qameta ) {
-		$qameta = $wpdb->get_row( $wpdb->prepare( "SELECT qm.*, p.post_type as ptype FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} qm ON qm.post_id = p.ID WHERE p.ID = %d", $post_id ), ARRAY_A ); // db call ok.
+	$qameta = $wpdb->get_row( $wpdb->prepare( "SELECT qm.*, p.post_type as ptype FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} qm ON qm.post_id = p.ID WHERE p.ID = %d", $post_id ), ARRAY_A ); // db call ok.
 
-		// If null then append is_new.
-		if ( empty( $qameta['post_id'] ) ) {
-			$qameta = [ 'is_new' => true ];
-		}
-
-		$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
-
-		$qameta['votes_net']  = $qameta['votes_up'] + $qameta['votes_down'];
-		$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
-
-		if ( empty( $qameta['activities'] ) ) {
-			$qameta['activities'] = [];
-		}
-
-		$qameta['fields'] = maybe_unserialize( $qameta['fields'] );
-		$qameta           = (object) $qameta;
-		wp_cache_set( $post_id, $qameta, 'ap_qameta' );
+	// If null then append is_new.
+	if ( empty( $qameta['post_id'] ) ) {
+		$qameta = [ 'is_new' => true ];
 	}
+
+	$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
+
+	$qameta['votes_net']  = $qameta['votes_up'] + $qameta['votes_down'];
+	$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
+
+	if ( empty( $qameta['activities'] ) ) {
+		$qameta['activities'] = [];
+	}
+
+	$qameta['fields'] = maybe_unserialize( $qameta['fields'] );
+	$qameta           = (object) $qameta;
 
 	return $qameta;
 }

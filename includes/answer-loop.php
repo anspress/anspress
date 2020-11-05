@@ -330,13 +330,7 @@ function ap_count_published_answers( $question_id ) {
 	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $question_id, 'publish', 'answer' );
 	$key   = md5( $query );
 
-	$cache = wp_cache_get( $key, 'ap_count' );
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$count = $wpdb->get_var( $query );
-	wp_cache_set( $key, $count, 'ap_count' );
 	return $count;
 }
 
@@ -380,12 +374,6 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 
 	$user_id     = get_current_user_id();
 	$ap_order_by = ap_get_current_list_filters( 'order_by', 'active' );
-	$cache_key   = $question_id . '-' . $answer_id . '-' . $user_id;
-	$cache       = wp_cache_get( $cache_key, 'ap_answer_position' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
 
 	if ( 'voted' === $ap_order_by ) {
 		$orderby = 'CASE WHEN IFNULL(qameta.votes_up - qameta.votes_down, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(qameta.votes_up - qameta.votes_down) DESC';
@@ -420,7 +408,6 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 
 	$pos   = (int) array_search( $answer_id, $ids ) + 1; // lose comparison ok.
 	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
-	wp_cache_set( $cache_key, $paged, 'ap_answer_position' );
 
 	return $paged;
 }

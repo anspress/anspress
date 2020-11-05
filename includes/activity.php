@@ -157,24 +157,18 @@ function ap_get_recent_activity( $_post = false, $deprecated = null ) {
 
 	$type     = $_post->post_type;
 	$column   = 'answer' === $type ? 'a_id' : 'q_id';
-	$activity = wp_cache_get( $_post->ID, 'ap_' . $column . '_activity' );
 
-	if ( false === $activity ) {
-		$q_where = '';
+	$q_where = '';
 
-		if ( 'q_id' === $column && is_question() ) {
-			$q_where = " AND (activity_a_id = 0 OR activity_action IN('new_a', 'unselected','selected') )";
-		}
+	if ( 'q_id' === $column && is_question() ) {
+		$q_where = " AND (activity_a_id = 0 OR activity_action IN('new_a', 'unselected','selected') )";
+	}
 
-		$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d$q_where ORDER BY activity_date DESC LIMIT 1", $_post->ID ) );
+	$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d$q_where ORDER BY activity_date DESC LIMIT 1", $_post->ID ) );
 
-		// Parse.
-		if ( $activity ) {
-			$activity = ap_activity_parse( $activity );
-		}
-
-		// Set cache.
-		wp_cache_set( $_post->ID, $activity, 'ap_' . $column . '_activity' );
+	// Parse.
+	if ( $activity ) {
+		$activity = ap_activity_parse( $activity );
 	}
 
 	return $activity;
@@ -255,18 +249,11 @@ function ap_prefetch_recent_activities( $ids, $col = 'q_id' ) {
 	}
 
 	$query = "SELECT t1.* FROM {$wpdb->ap_activity} t1 NATURAL JOIN (SELECT max(activity_date) AS activity_date FROM {$wpdb->ap_activity} WHERE activity_{$col} IN({$ids_string})$q_where GROUP BY activity_{$col}) t2 ORDER BY t2.activity_date";
-	$key   = md5( $query );
 
-	$activity = wp_cache_get( $key, 'ap_prefetch_activities' );
+	$activity = $wpdb->get_results( $query );
 
-	if ( false === $activity ) {
-		$activity = $wpdb->get_results( $query );
-		wp_cache_set( $key, $activity, 'ap_prefetch_activities' );
-
-		foreach ( $activity as $a ) {
-			$a = ap_activity_parse( $a );
-			wp_cache_set( $a->$col, $a, 'ap_' . $col . '_activity' );
-		}
+	foreach ( $activity as $a ) {
+		$a = ap_activity_parse( $a );
 	}
 
 	return $activity;

@@ -75,18 +75,9 @@ class Notifications extends \AnsPress_Query {
 		$order = 'DESC' === $this->args['order'] ? 'DESC' : 'ASC';
 		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} ORDER BY noti_date {$order} LIMIT {$this->offset},{$this->per_page}", $this->args['user_id'] );
 
-		$key               = md5( $query );
-		$this->objects     = wp_cache_get( $key, 'ap_notifications' );
-		$this->total_count = wp_cache_get( $key . '_count', 'ap_notifications_count' );
-
-		if ( false === $this->objects ) {
-			$this->objects     = $wpdb->get_results( $query ); // WPCS: DB call okay.
-			$count_query       = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] );
-			$this->total_count = $wpdb->get_var( apply_filters( 'ap_notifications_found_rows', $count_query, $this ) );
-			wp_cache_set( $key . '_count', $this->total_count, 'ap_notifications_count' );
-			wp_cache_set( $key, $this->objects, 'ap_notifications' );
-		}
-
+		$this->objects     = $wpdb->get_results( $query ); // WPCS: DB call okay.
+		$count_query       = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] );
+		$this->total_count = $wpdb->get_var( apply_filters( 'ap_notifications_found_rows', $count_query, $this ) );
 		$this->prefetch();
 		parent::query();
 	}

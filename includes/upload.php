@@ -374,14 +374,8 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
  */
 function ap_count_users_temp_media( $user_id ) {
 	global $wpdb;
-	$cache = wp_cache_get( $user_id, 'ap_user_temp_media' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
 
 	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_title = '_ap_temp_media' AND post_author=%d AND post_type='attachment'", $user_id ) ); // db call okay.
-	wp_cache_set( $user_id, $count, 'ap_user_temp_media' );
 
 	return (int) $count;
 }

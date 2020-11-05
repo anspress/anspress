@@ -176,11 +176,8 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
 	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%d', '%s', '%s', '%s' ] );
 
 	if ( false !== $inserted ) {
-		$cache_key = $post_id . '_' . $user_id . '_' . $type;
-		wp_cache_delete( $cache_key, 'ap_vote' );
-
 		/**
-		 * Action triggred after inserting a vote.
+		 * Action triggered after inserting a vote.
 		 *
 		 * @param array $args Vote arguments.
 		 * @since  4.0.0
@@ -244,24 +241,7 @@ function ap_get_votes( $args = array() ) {
 		}
 	}
 
-	$key   = md5( $where );
-	$cache = wp_cache_get( $key, 'ap_votes_queries' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$results = $wpdb->get_results( $where ); // db call okay, unprepared sql okay.
-
-	if ( false !== $results ) {
-		wp_cache_set( $key, $results, 'ap_votes_queries' );
-
-		// Also cache each vote individually.
-		foreach ( (array) $results as $vote ) {
-			$vote_key = $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type;
-			wp_cache_set( $vote_key, $vote, 'ap_vote' );
-		}
-	}
 
 	return $results;
 }
@@ -334,16 +314,7 @@ function ap_count_votes( $args ) {
 		$where .= ' GROUP BY ' . esc_sql( sanitize_text_field( $args['group'] ) );
 	}
 
-	$cache_key = md5( $where );
-	wp_cache_set( 'votes', $cache_key, 'ap_count_votes_key' );
-	$cache = wp_cache_get( $cache_key, 'ap_count_votes' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$rows = $wpdb->get_results( $where ); // db call okay, unprepared SQL okay.
-	wp_cache_set( $cache_key, $rows, 'ap_count_votes' );
 
 	if ( false !== $rows ) {
 		return $rows;
@@ -411,13 +382,6 @@ function ap_count_post_votes_by( $by, $value ) {
  * @since  4.0.0
  */
 function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
-	$cache_key = $post_id . '_' . $user_id . '_' . $type;
-
-	$cache = wp_cache_get( $cache_key, 'ap_vote' );
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	global $wpdb;
 	$where = "SELECT * FROM {$wpdb->ap_votes} WHERE 1=1 ";
 
@@ -438,7 +402,6 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 	}
 
 	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // db call okay, unprepared SQL okay.
-	wp_cache_set( $cache_key, $vote, 'ap_vote' );
 
 	if ( ! empty( $vote ) ) {
 		return $vote;
@@ -500,11 +463,6 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
 	$row = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
 
 	if ( false !== $row ) {
-		$cache_key = $post_id . '_' . $user_id . '_' . $type;
-		wp_cache_delete( $cache_key, 'ap_vote' );
-		$count_cache_key = wp_cache_get( 'votes', 'ap_count_votes_key' );
-		wp_cache_delete( $count_cache_key, 'ap_count_votes' );
-
 		do_action( 'ap_delete_vote', $post_id, $user_id, $type, $value );
 	}
 
@@ -667,10 +625,6 @@ function ap_user_votes_pre_fetch( $ids ) {
 
 		foreach ( (array) $votes as $vote ) {
 			unset( $cache_keys[ $vote->vote_post_id . '_' . $vote->vote_user_id . '_' . $vote->vote_type ] );
-		}
-
-		foreach ( (array) $cache_keys as $key => $val ) {
-			wp_cache_set( $key, '', 'ap_vote' );
 		}
 	}
 }

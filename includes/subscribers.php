@@ -90,18 +90,7 @@ function ap_get_subscriber( $user_id = false, $event, $ref_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	$key   = $user_id . '_' . $event . '_' . $ref_id;
-	$cache = wp_cache_get( $key, 'ap_subscriber' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
-
-	if ( null !== $results ) {
-		wp_cache_set( $key, $results, 'ap_subscriber' );
-	}
 
 	return $results;
 }
@@ -121,13 +110,6 @@ function ap_get_subscriber( $user_id = false, $event, $ref_id ) {
 function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 	global $wpdb;
 
-	$key   = $event . '_' . $ref_id;
-	$cache = wp_cache_get( $key, 'ap_subscribers_count' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$ref_query = '';
 
 	if ( $ref_id > 0 ) {
@@ -141,8 +123,6 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 	}
 
 	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); // WPCS: db call okay, cache okay.
-
-	wp_cache_set( $key, $results, 'ap_subscribers_count' );
 
 	return $results;
 }
@@ -190,13 +170,6 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
 		return;
 	}
 
-	$key   = $where['subs_event'] . '_' . $where['subs_ref_id'];
-	$cache = wp_cache_get( $key, 'ap_subscribers' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$query = '';
 
 	if ( isset( $where['subs_ref_id'] ) && $where['subs_ref_id'] > 0 ) {
@@ -212,10 +185,6 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
 	}
 
 	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->ap_subscribers} s LEFT JOIN {$wpdb->users} u ON u.ID = s.subs_user_id WHERE 1=1 {$query}" ); // WPCS: db call okay.
-
-	if ( null !== $results ) {
-		wp_cache_set( $key, $results, 'ap_subscribers' );
-	}
 
 	return $results;
 }
@@ -381,6 +350,7 @@ function ap_is_user_subscriber( $event, $ref_id, $user_id = false ) {
  * @return void
  *
  * @since 4.1.5
+ * @deprecated 4.1.19 Deprecating this function in favour of 3rd party cache.
  */
 function ap_delete_subscribers_cache( $ref_id = 0, $event = '' ) {
 	wp_cache_delete( $event . '_' . $ref_id, 'ap_subscribers_count' );

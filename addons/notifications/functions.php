@@ -148,17 +148,7 @@ function ap_get_notifications( $args = [] ) {
 
 	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_parent_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
 
-	$key   = md5( $query );
-	$cache = wp_cache_get( $key, 'ap_notifications' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
-	$results = $wpdb->get_results( $query ); //@codingStandardsIgnoreLine.
-	wp_cache_set( $key, $results, 'ap_notifications' );
-
-	return $results;
+	return $wpdb->get_results( $query );
 }
 
 /**
@@ -308,17 +298,9 @@ function ap_count_unseen_notifications( $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	$cache = wp_cache_get( $user_id, 'ap_unseen_notification' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	global $wpdb;
 
 	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d AND noti_seen = 0", $user_id ) ); // WPCS: db call okay.
-
-	wp_cache_set( $user_id, $count, 'ap_unseen_notification' );
 
 	return $count;
 }

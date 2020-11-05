@@ -151,12 +151,7 @@ abstract class AnsPress_Query {
 	 */
 	public function total_count( $key ) {
 		global $wpdb;
-		$this->total_count = wp_cache_get( $key . '_count', 'counts' );
-
-		if ( false === $this->total_count ) {
-			$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // WPCS: db call okay.
-			wp_cache_set( $key . '_count', $this->total_count, 'counts' );
-		}
+		$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // WPCS: db call
 	}
 
 	/**
