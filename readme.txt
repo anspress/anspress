@@ -1,6 +1,6 @@
 === AnsPress - Question and answer ===
 Contributors: nerdaryan
-Donate link: https://www.paypal.me/nerdaryan
+Donate link: https://www.paypal.me/anspress
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.7
 Tested up to: 5.3
