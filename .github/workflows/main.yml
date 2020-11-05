@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master, dev ]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      with:
+        fetch-depth: 2
+
+    - name: Upload to development site
+      uses: appleboy/scp-action@v0.1.1
+      with:
+        host: ${{ secrets.DEV_SFTP_HOST }}
+        username: ${{ secrets.DEV_SFTP_USERNAME }}
+        password: ${{ secrets.DEV_SFTP_PASSWORD }}
+        source: "*"
+        target: ${{ secrets.DEV_PLUGIN_PATH }}

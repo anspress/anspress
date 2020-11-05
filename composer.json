@@ -1,11 +1,15 @@
 {
     "name": "anspress/anspress",
-    "description": "Free question and answer plugin",
-    "license": "GPL-2.0-or-later",
+    "description": "Free question and answer plugin for WordPress",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Rahul Aryan",
             "email": "rah12@live.com"
+        },
+        {
+            "name": "AnsPress",
+            "email": "support@anspress.net"
         }
     ],
     "require": {},
