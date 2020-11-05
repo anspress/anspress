@@ -4,7 +4,7 @@
  *
  * @package   AnsPress
  * @license   GPL-3.0+
- * @link      https://anspress.io
+ * @link      https://anspress.net
  * @since     4.1.5
  */
 

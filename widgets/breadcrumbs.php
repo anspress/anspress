@@ -3,9 +3,9 @@
  * AnsPress breadcrumbs widget
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  * @license GPL 2+ GNU GPL licence above 2+
- * @link    https://anspress.io
+ * @link    https://anspress.net
  * @since   2.0.0
  */
 
@@ -30,7 +30,7 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 		);
 	}
 
-	
+
 	/**
 	 * Get breadcrumbs array
 	 * @return array

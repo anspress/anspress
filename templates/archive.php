@@ -4,7 +4,7 @@
  *
  * Template for rendering base of AnsPress.
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since 4.1.0
  *
  * @package AnsPress

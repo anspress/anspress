@@ -4,9 +4,9 @@
  * User profile index template.
  *
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
- * @author     Rahul Aryan <support@anspress.io>
+ * @author     Rahul Aryan <rah12@live.com>
  *
- * @link       https://anspress.io
+ * @link       https://anspress.net
  * @since      4.0.0
  * @package    AnsPress
  * @subpackage Templates

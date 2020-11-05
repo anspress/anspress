@@ -4,7 +4,7 @@
  * Shows sorting, search, tags, category filter form. Also shows a ask button.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  */
 
 ?>

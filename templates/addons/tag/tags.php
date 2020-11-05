@@ -2,7 +2,7 @@
 	/**
 	 * Tags page layout
 	 *
-	 * @link http://anspress.io
+	 * @link http://anspress.net
 	 * @since 1.0
 	 *
 	 * @package AnsPress

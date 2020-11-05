@@ -3,7 +3,7 @@
 /**
  * Edit page
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since 2.0.1
  * @license GPL 2+
  * @package AnsPress

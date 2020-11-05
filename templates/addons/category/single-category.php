@@ -4,7 +4,7 @@
  *
  * Display category page.
  *
- * @link        http://anspress.io
+ * @link        http://anspress.net
  * @since       4.0
  * @package     AnsPress
  * @subpackage  Templates

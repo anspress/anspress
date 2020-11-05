@@ -3,9 +3,9 @@
  * AnsPress ask widget form.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  * @license GPL 3+ GNU GPL licence above 3+
- * @link    https://anspress.io
+ * @link    https://anspress.net
  * @since   2.0.0
  */
 

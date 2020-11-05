@@ -5,7 +5,7 @@
  * Template used to render question item in BuddyPress
  * profile questions page.
  *
- * @link     https://anspress.io
+ * @link     https://anspress.net
  * @since    4.0.0
  * @license  GPL 3+
  * @package  WordPress/AnsPress

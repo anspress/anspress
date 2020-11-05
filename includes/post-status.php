@@ -2,7 +2,7 @@
 /**
  * Post status related codes
  *
- * @link     https://anspress.io
+ * @link     https://anspress.net
  * @since    2.0.1
  * @license  GPL3+
  * @package  AnsPress
@@ -68,7 +68,7 @@ class AnsPress_Post_Status {
 
 		// Unselect as best answer if moderate.
 		if ( 'answer' === $post->post_type && 'moderate' === $status && ap_have_answer_selected( $post->post_parent ) ) {
-			ap_unselect_answer( $post->ID );
+			ap_unset_selected_answer( $post->ID );
 		}
 
 		do_action( 'ap_post_status_updated', $post->ID );

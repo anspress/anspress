@@ -3,7 +3,7 @@
  * User question template
  * Display user profile questions.
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since 4.0.0
  * @package AnsPress
  *

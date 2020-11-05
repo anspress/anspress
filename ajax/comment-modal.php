@@ -3,7 +3,7 @@
  * Class used for ajax callback `comment_modal`.
  * This class is auto loaded by AnsPress loader on demand.
  *
- * @author Rahul Aryan <support@anspress.io>
+ * @author Rahul Aryan <rah12@live.com>
  * @package AnsPress
  * @subpackage Ajax
  * @since 4.1.8

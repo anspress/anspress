@@ -4,7 +4,7 @@
  * Different from WP default searchfrom.php. This only search for question and answer.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  *
  * @since   3.0.0
  * @since   4.1.0 Changed action link to home. Added post_type hidden field.

@@ -3,7 +3,7 @@
  * AnsPress product updater.
  *
  * @package AnsPress
- * @author Rahul Aryan <support@anspress.io>
+ * @author Rahul Aryan <rah12@live.com>
  */
 
 // uncomment this line for testing
@@ -48,7 +48,7 @@ class AnsPress_Prod_Updater {
 		global $edd_plugin_data;
 
 		$this->is_plugin = $is_plugin;
-		$this->api_url   = trailingslashit( 'https://anspress.io' );
+		$this->api_url   = trailingslashit( 'https://anspress.net' );
 		$this->api_data  = $_api_data;
 		$this->name      = plugin_basename( $_plugin_file );
 		$this->slug      = isset( $this->api_data['slug'] ) ? $this->api_data['slug'] : basename( $_plugin_file, '.php' );

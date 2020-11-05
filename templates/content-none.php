@@ -3,7 +3,7 @@
  * Template used when no content found.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  */
 
 $current_url = add_query_arg( [ 'paged' => 1 ], esc_url( $_SERVER['REQUEST_URI'] ) );

@@ -2,7 +2,7 @@
 /**
  * Activities template.
  *
- * @link       https://anspress.io
+ * @link       https://anspress.net
  * @since      4.1.2
  * @license    GPL3+
  * @package    AnsPress

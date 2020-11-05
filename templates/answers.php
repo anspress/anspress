@@ -3,9 +3,9 @@
  * Answers content
  * Control the output of answers.
  *
- * @link https://anspress.io/anspress
+ * @link https://anspress.net/anspress
  * @since 2.0.1
- * @author Rahul Aryan <support@anspress.io>
+ * @author Rahul Aryan <rah12@live.com>
  * @package AnsPress
  */
 

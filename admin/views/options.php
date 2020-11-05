@@ -2,9 +2,9 @@
 /**
  * AnsPress options page.
  *
- * @link       https://anspress.io
+ * @link       https://anspress.net
  * @since      4.1.0
- * @author     Rahul Aryan <support@anspress.io>
+ * @author     Rahul Aryan <rah12@live.com>
  * @package    AnsPress
  * @subpackage Admin Pages
  */
@@ -148,7 +148,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 	<div class="clear"></div>
 
 	<!-- <div class="anspress-imglinks">
-		<a href="https://anspress.io/extensions/" target="_blank">
+		<a href="https://anspress.net/extensions/" target="_blank">
 			<img src="<?php echo ANSPRESS_URL; ?>assets/images/more_functions.svg" />
 		</a>
 	</div> -->

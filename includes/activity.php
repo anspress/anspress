@@ -5,7 +5,7 @@
  * @package      AnsPress
  * @subpackage   Activity
  * @copyright    Copyright (c) 2013, Rahul Aryan
- * @author       Rahul Aryan <support@anspress.io>
+ * @author       Rahul Aryan <rah12@live.com>
  * @license      GPL-3.0+
  * @since        4.1.2
  */

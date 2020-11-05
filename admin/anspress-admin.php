@@ -3,9 +3,9 @@
  * AnsPresss admin class
  *
  * @package   AnsPress
- * @author    Rahul Aryan <support@anspress.io>
+ * @author    Rahul Aryan <rah12@live.com>
  * @license   GPL-3.0+
- * @link      https://anspress.io
+ * @link      https://anspress.net
  * @copyright 2014 Rahul Aryan
  */
 
@@ -21,7 +21,7 @@ require_once 'license.php';
  * administrative side of the WordPress site.
  *
  * @package AnsPress
- * @author  Rahul Aryan <support@anspress.io>
+ * @author  Rahul Aryan <rah12@live.com>
  */
 class AnsPress_Admin {
 
@@ -203,7 +203,7 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Add-ons', 'anspress-question-answer' ), __( 'Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_addons', array( __CLASS__, 'display_plugin_addons_page' ) );
 
-		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.io/themes/' );
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' );
 
 		add_submenu_page( 'anspress-hidden', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
 

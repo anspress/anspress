@@ -2,7 +2,7 @@
 	/**
 	 * Display answer in user page
 	 *
-	 * @link https://anspress.io
+	 * @link https://anspress.net
 	 * @since 2.3
 	 *
 	 * @package AnsPress

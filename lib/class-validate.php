@@ -5,7 +5,7 @@
  * @package    AnsPress
  * @subpackage Form
  * @since      4.1.0
- * @author     Rahul Aryan<support@anspress.io>
+ * @author     Rahul Aryan<support@anspress.net>
  * @copyright  Copyright (c) 2017, Rahul Aryan
  * @license    http://opensource.org/licenses/gpl-3.0.php GNU Public License
  */
@@ -189,7 +189,7 @@ class Validate {
 
 			$new_value = preg_replace_callback( '/<pre(.*?)>(.*?)<\/pre>/imsu', [ __CLASS__, 'pre_content' ], $new_value );
 			$new_value = preg_replace_callback( '/<code.*?>(.*?)<\/code>/imsu', [ __CLASS__, 'code_content' ], $new_value );
-			
+
 			// Remove multiple new lines.
 			$new_value = str_replace("\r\n", "\n", $new_value);
 			$new_value = preg_replace( '/\n\s*\n/', "\n\n", $new_value );
@@ -750,7 +750,7 @@ class Validate {
                     )
                 );
             }
-            
+
         }
     }
 }

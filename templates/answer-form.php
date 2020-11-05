@@ -2,7 +2,7 @@
 /**
  * Answer form template.
  *
- * @link https://anspress.io
+ * @link https://anspress.net
  * @since unknown
  * @license GPL3+
  * @package AnsPress
