@@ -26,7 +26,7 @@ namespace AnsPress\Post;
 			}
 
 			// Get answers.
-			//ap_answers();
+			// ap_answers();
 
 			// Get answer form.
 			ap_get_template_part( 'answer-form' );

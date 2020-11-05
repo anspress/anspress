@@ -716,7 +716,6 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 function ap_answers() {
 	global $answers;
 	$answers = ap_get_answers();
-
 	ap_get_template_part( 'answers' );
 	ap_reset_question_query();
 }
