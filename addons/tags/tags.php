@@ -188,9 +188,9 @@ class Tags extends \AnsPress\Singleton {
 
 		$tag_labels = array(
 			'name'               => __( 'Question Tags', 'anspress-question-answer' ),
-			'singular_name'      => _x( 'Tag', 'anspress-question-answer' ),
+			'singular_name'      => __( 'Tag', 'anspress-question-answer' ),
 			'all_items'          => __( 'All Tags', 'anspress-question-answer' ),
-			'add_new_item'       => _x( 'Add New Tag', 'anspress-question-answer' ),
+			'add_new_item'       => __( 'Add New Tag', 'anspress-question-answer' ),
 			'edit_item'          => __( 'Edit Tag', 'anspress-question-answer' ),
 			'new_item'           => __( 'New Tag', 'anspress-question-answer' ),
 			'view_item'          => __( 'View Tag', 'anspress-question-answer' ),

@@ -60,6 +60,7 @@ class Tags extends Field {
 			'field'    => $this->original_name,
 			'nonce'    => wp_create_nonce( 'tags_' . $this->form_name . $this->original_name ),
 			'create'   => false,
+			'labelAdd' => __( 'Add', 'anspress-question-answer' ),
 		);
 
 		$this->args['js_options'] = wp_parse_args( $this->args['js_options'], $js_options );
