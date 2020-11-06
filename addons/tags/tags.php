@@ -412,6 +412,11 @@ class Tags extends \AnsPress\Singleton {
 	 * @since 1.0
 	 */
 	public function after_new_question( $post_id, $post ) {
+		// We don't need to process when its admin form.
+		if ( is_admin() ) {
+			return;
+		}
+
 		$values = anspress()->get_form( 'question' )->get_values();
 		if ( isset( $values['tags'] ) ) {
 			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
