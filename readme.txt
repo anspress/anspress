@@ -67,7 +67,7 @@ AnsPress is frequently updated and more features are added based on feedback fro
 
 **Page Shortcodes**
 
-Use this shortcode in our base for AnsPress to work properly
+Use this shortcode in the base page of AnsPress to work properly
 `[anspress]`
 
 
