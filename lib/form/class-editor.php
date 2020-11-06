@@ -77,7 +77,7 @@ class Editor extends Field {
 			'form_name' => $this->form_name,
 		) );
 
-		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
+		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
 
 		/**
 		 * Action trigged after image button before editor.

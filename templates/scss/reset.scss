@@ -56,30 +56,33 @@
 	}
 }
 
+
 @each $prop, $abbrev in (margin: m, padding: p) {
 	@each $size, $lengths in $space-breaks {
 			$length-x: map-get($lengths, x);
 			$length-y: map-get($lengths, y);
 
-			.#{$abbrev}-#{$size}  { #{$prop}:        $length-y $length-x !important; }
+			.ap-#{$abbrev}-#{$size}  {
+				#{$prop}:        $length-y $length-x !important;
+			}
 
-			.#{$abbrev}t-#{$size},
-			.#{$abbrev}y-#{$size} {
+			.ap-#{$abbrev}t-#{$size},
+			.ap-#{$abbrev}y-#{$size} {
 					#{$prop}-top:    $length-y !important;
 			}
 
-			.#{$abbrev}r-#{$size},
-			.#{$abbrev}x-#{$size} {
+			.ap-#{$abbrev}r-#{$size},
+			.ap-#{$abbrev}x-#{$size} {
 					#{$prop}-right:  $length-x !important;
 			}
 
-			.#{$abbrev}b-#{$size},
-			.#{$abbrev}y-#{$size} {
+			.ap-#{$abbrev}b-#{$size},
+			.ap-#{$abbrev}y-#{$size} {
 					#{$prop}-bottom: $length-y !important;
 			}
 
-			.#{$abbrev}l-#{$size},
-			.#{$abbrev}x-#{$size} {
+			.ap-#{$abbrev}l-#{$size},
+			.ap-#{$abbrev}x-#{$size} {
 					#{$prop}-left:   $length-x !important;
 			}
 	}

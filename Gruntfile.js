@@ -62,7 +62,7 @@ module.exports = function (grunt) {
 		},
 		sass: {
 			options: {
-				style: 'compressed',
+				outputStyle: 'compressed',
 				sourcemap: 'auto',
 				implementation: sass,
 			},
