@@ -9,30 +9,30 @@ License: GPLv2 or later
 Demo: https://anspress.net/demo/?product=anspress
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Free question and answer plugin for WordPress. Made with developers in mind, highly customizable.
+A free question and answer plugin for WordPress. Made with developers in mind, and highly customizable.
 
 == Description ==
-AnsPress is an open source, developer friendly, question and answer plugin for WordPress. AnsPress adds a full question and answer system to your existing WordPress site. It can be used to create a q&a network similar to StackOverflow and quora, or be a single page in existing site. The plugin supports multi-languages, shortcodes, reCAPTCHA, email and push notification and more.
+AnsPress is an open source, developer friendly, question and answer plugin for WordPress. AnsPress adds a full question and answer system to your existing WordPress site. It can be used to create a Q&A network similar to StackOverflow and Quora, or be a single page on existing site. The plugin supports multiple languages, shortcodes, reCAPTCHA, email and push notifications, and more.
 
-AnsPress is not just limited to question and answer. It can be used in many different ways such as BugTracker, Company Internal QA board, support tickets, FAQ etc. Anspress is trusted and used by many popular companies and sites at scale.
+AnsPress is not just limited to questions and answers. It can be used in many different ways, like a bug tracker, an internal Q&A board, support ticket forum, FAQ, and more. Anspress is trusted and used by many popular companies and sites at scale.
 
 **Performance and Optimizations:**
 
-In our latest release we've made big improvements to performance and have tested in many different server environments. It runs smoothly on every type of server with minimal impact on load times. AnsPress (including all of its functionalities) is very fast comparing to other QA plugins. In the latest release we have made major improvements to reduce MySQL queries and to increase the speed of page load for all page templates within plugin.
+In our latest release, we've made big improvements to performance and have tested the plugin in many different server environments. It has run smoothly on every type of server with minimal impact on load times. AnsPress (including all of its functionalities) is very fast compared to other Q&A plugins. In the latest release we have made major improvements to reduce MySQL queries and to increase the page load speed for all page templates within the plugin.
 
 **Developer Friendly:**
 
-AnsPress is built with developers in mind and can easily be extended to fit your needs. All parts of layout templates can be overridden. Our source code follows WP coding standards and is properly commented. We are working on documentation site which will be available soon.
+AnsPress is built with developers in mind and can easily be extended to fit your needs. All parts of the template layouts can be overridden. Our source code follows WP coding standards and is properly commented. We are working on a documentation site which will be available soon.
 
 **Contributors:**
 
-This plugin wouldn't be possible without a huge amount of contribution. Check our contributors at https://anspress.net/contributors/
+This plugin wouldn't be possible without the huge amount of contributions we have received. Check our contributors at https://anspress.net/contributors/
 
 **Support and Demo:**
 
 We provide support on our site: https://anspress.net/questions
-Our support section uses actual version of AnsPress, so you can check out the support site if you want to see full working version of AnsPress.
-You can also take the demo site for a test drive https://anspress.net/demo/
+Our support section uses the actual version of AnsPress, so you can check out the support site if you want to see full working version.
+You can also take the demo site for a test drive at https://anspress.net/demo/
 
 **AnsPress Key Features:**
 
@@ -62,23 +62,23 @@ You can also take the demo site for a test drive https://anspress.net/demo/
 * reCaptcha
 * Dynamic text avatar
 
-AnsPress is frequently updated and more features are added based on feedback from our users. This means you are welcome to give us feedback and suggestions as to what you would like to see or need in the plugin. Visit our Github project https://github.com/anspress/anspress  or visit our community https://anspress.net/questions/  to get the updates.
+AnsPress is frequently updated and more features are added based on feedback from our users. This means you are welcome to give us feedback and suggestions as to what you would like to see or need in the plugin. Visit our Github project https://github.com/anspress/anspress  or visit our community https://anspress.net/questions/ to get updates and leave feedback.
 
 
 **Page Shortcodes**
 
-Use this shortcode in base to AnsPress work properly
+Use this shortcode in our base for AnsPress to work properly
 `[anspress]`
 
 
 == Installation ==
 
-Read full documentation here https://anspress.net/resources/
+Read the full documentation here https://anspress.net/resources/
 
 
 == Frequently Asked Questions ==
 
-Read full FAQ here https://anspress.net/resources/faq/
+Read the full FAQ here https://anspress.net/resources/faq/
 
 == Screenshots ==
 
