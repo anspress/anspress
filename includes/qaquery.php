@@ -64,27 +64,33 @@ class Question_Query extends WP_Query {
 		$this->args                = wp_parse_args( $args, $defaults );
 		$this->args['ap_order_by'] = sanitize_title( $this->args['ap_order_by'] );
 
-		// Check if user can read private post.
-		if ( ap_user_can_view_private_post() ) {
-			$this->args['post_status'][] = 'private_post';
-		}
+		/**
+		 * This was suggested by https://github.com/nash-ye.
+		 */
+		if ( ! $this->args['ap_current_user_ignore'] ) {
+			// Check if user can read private post.
+			if ( ap_user_can_view_private_post() ) {
+				$this->args['post_status'][] = 'private_post';
+			}
 
-		// Check if user can read moderate posts.
-		if ( ap_user_can_view_moderate_post() ) {
-			$this->args['post_status'][] = 'moderate';
-		}
+			// Check if user can read moderate posts.
+			if ( ap_user_can_view_moderate_post() ) {
+				$this->args['post_status'][] = 'moderate';
+			}
 
-		// Check if user can read moderate posts.
-		if ( ap_user_can_view_future_post() ) {
-			$this->args['post_status'][] = 'future';
-		}
+			// Check if user can read moderate posts.
+			if ( ap_user_can_view_future_post() ) {
+				$this->args['post_status'][] = 'future';
+			}
 
-		// Show trash posts to super admin.
-		if ( is_super_admin() ) {
-			$this->args['post_status'][] = 'trash';
-		}
+			// Show trash posts to super admin.
+			if ( is_super_admin() ) {
+				$this->args['post_status'][] = 'trash';
+			}
 
-		$this->args['post_status'] = array_unique( $this->args['post_status'] );
+			$this->args['post_status'] = array_unique( $this->args['post_status'] );
+
+		}
 
 		// Show only the unpublished post of author.
 		if ( isset( $args['ap_show_unpublished'] ) && true === $this->args['ap_show_unpublished'] ) {
