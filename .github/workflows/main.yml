@@ -32,11 +32,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
     - name: Find and Replace
-      uses: shitiomatic/str-replace@master
+      uses: datamonsters/replace-action
       with:
-        find: "ANSPRESS_RELEASE_VERSION"
-        replace: ${{ github.event.release.tag_name }}
+        files: 'readme.txt,anspress-question-answer.php'
+        replacements: 'ANSPRESS_RELEASE_VERSION=${{ github.event.release.tag_name }}'
     - name: Build
       run: |
         npm install
