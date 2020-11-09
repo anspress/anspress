@@ -3,10 +3,14 @@ name: Deploy
 on:
   push:
     branches: [ master, dev ]
+  release:
+    types: [ published ]
 
 jobs:
   build-deploy:
+    name: Deploy to demo and dev sites
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
     - uses: actions/checkout@master
       with:
@@ -20,3 +24,38 @@ jobs:
         password: ${{ secrets.DEV_SFTP_PASSWORD }}
         source: "*"
         target: ${{ secrets.DEV_PLUGIN_PATH }}
+
+  wp-release:
+    name: New release on WordPress.org
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Find and Replace
+      uses: shitiomatic/str-replace@master
+      with:
+        find: "ANSPRESS_RELEASE_VERSION"
+        replace: ${{ github.event.release.tag_name }}
+    - name: Build
+      run: |
+        npm install
+        npm run build
+    - name: WordPress Plugin Deploy
+      id: deploy
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      with:
+        generate-zip: true
+      env:
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SLUG: anspress-question-answer
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ github.workspace }}/${{ github.event.repository.name }}.zip
+        asset_name: ${{ github.event.repository.name }}.zip
+        asset_content_type: application/zip

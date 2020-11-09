@@ -64,7 +64,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.1.18';
+		private $_plugin_version = 'ANSPRESS_RELEASE_VERSION';
 
 		/**
 		 * Class instance

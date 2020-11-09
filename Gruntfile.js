@@ -127,6 +127,6 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('translate', ['makepot']);
-	grunt.registerTask('build', ['sass', 'uglify', 'translate']);
+	grunt.registerTask('build', ['sass', 'uglify', 'translate', 'wp_readme_to_markdown']);
 
 }
