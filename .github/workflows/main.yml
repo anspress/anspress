@@ -34,7 +34,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Find and Replace
-      uses: datamonsters/replace-action
+      uses: datamonsters/replace-action@v2
       with:
         files: 'readme.txt,anspress-question-answer.php'
         replacements: 'ANSPRESS_RELEASE_VERSION=${{ github.event.release.tag_name }}'
