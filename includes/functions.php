@@ -1032,8 +1032,10 @@ function ap_parse_search_string( $str ) {
 				}
 			}
 
-			// Remove this pair from $bits.
-			unset( $bits[ $id ] );
+            if (isset($bits[$id])) {
+                // Remove this pair from $bits.
+                unset($bits[$id]);
+            }
 		} // Not a pair, presumably reached the query.
 		else {
 
