@@ -16,6 +16,24 @@ jobs:
       with:
         fetch-depth: 2
 
+    - name: Find and Replace version in plugin file
+      uses: datamonsters/replace-action@master
+      with:
+        files: 'anspress-question-answer.php,readme.txt'
+        replacements: 'ANSPRESS_RELEASE_VERSION=9999'
+
+    - name: Another find and replace version in main file
+      uses: datamonsters/replace-action@master
+      with:
+        files: 'ansress-question-answer.php'
+        replacements: 'ANSPRESS_RELEASE_VERSION=9999'
+
+    - name: Archive readme
+      uses: actions/upload-artifact@v2
+      with:
+        name: readme
+        path: anspress-question-answer.php
+
     - name: Upload to development site
       uses: appleboy/scp-action@v0.1.1
       with:
@@ -33,11 +51,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Find and Replace
-      uses: datamonsters/replace-action@v2
+    - name: Find and Replace version in plugin file
+      uses: datamonsters/replace-action@master
       with:
-        files: 'readme.txt,anspress-question-answer.php'
+        files: 'anspress-question-answer.php,readme.txt'
         replacements: 'ANSPRESS_RELEASE_VERSION=${{ github.event.release.tag_name }}'
+
+    - name: Another find and replace version in main file
+      uses: datamonsters/replace-action@master
+      with:
+        files: 'ansress-question-answer.php'
+        replacements: 'ANSPRESS_RELEASE_VERSION=${{ github.event.release.tag_name }}'
+
     - name: Build
       run: |
         npm install
