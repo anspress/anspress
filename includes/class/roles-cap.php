@@ -1512,11 +1512,10 @@ function ap_user_can_read_comments( $_post = null, $user_id = false ) {
 
 	$option = ap_opt( 'read_comment_per' );
 
-	if( 'have_cap' === $option && get_user_by( 'ID', $user_id )->has_cap( 'ap_read_comment' ) ) {
-	    return true;
-	}
-	else if ( 'logged_in' === $option && is_user_logged_in() ) {
-	    return true;
+	if ( 'have_cap' === $option && is_user_logged_in() && get_user_by( 'ID', $user_id )->has_cap( 'ap_read_comment' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
 	} elseif ( 'anyone' === $option ) {
 		return true;
 	}

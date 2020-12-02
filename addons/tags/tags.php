@@ -346,7 +346,7 @@ class Tags extends \AnsPress\Singleton {
 	 * Filter tag term link.
 	 *
 	 * @param  string $url      Default URL of taxonomy.
-	 * @param  array  $term     Term array.
+	 * @param  object $term     Term array.
 	 * @param  string $taxonomy Taxonomy type.
 	 * @return string           New URL for term.
 	 */
@@ -413,12 +413,13 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function after_new_question( $post_id, $post ) {
 		// We don't need to process when its admin form.
-		if ( is_admin() ) {
-			return;
-		}
+		// if ( is_admin() ) {
+		// 	return;
+		// }
 
 		$values = anspress()->get_form( 'question' )->get_values();
-		if ( isset( $values['tags'] ) ) {
+
+		if ( isset( $values['tags'], $values['tags']['value'] ) ) {
 			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
 		}
 	}

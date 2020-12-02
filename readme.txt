@@ -98,6 +98,18 @@ Read the full FAQ here https://anspress.net/resources/faq/
 
 == Changelog ==
 
+= 4.1.19 =
+
+* Don't add automated post status when ap_current_user_ignore is set. Fixes #531
+* Margin and padding class conflict with tailwind. Fixes #542
+* Prevent processing tags field when saving from wp-admin. Fixes #502
+* Query hook preventing preventing filtering questions in wp-admin. Fixes #517
+* Updated donation link in readme.txt
+* Translation not working for ap_human_time. Fixes #519
+* Move json parsing to try catch block. Fixes #539
+* Make "Add" in tags field translatable. Fixes #540
+* Removed aggressive query caching in favour of 3rd party caching. Fixes #441 #536
+
 = 4.1.18 =
 
 * Use user_trailingslashit() in the links of questions, categories..etc

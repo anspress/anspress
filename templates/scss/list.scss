@@ -180,7 +180,7 @@
 		label{
 			display: block;
 			padding: 4px;
-    	font-size: 12px;
+    		font-size: 12px;
 			i{
 				color: #fff;
 				border-radius: 2px;
@@ -197,6 +197,13 @@
 				&[class^="apicon-"]:before, [class*=" apicon-"]:before{
 					visibility: hidden;
 				}
+			}
+			.ap-label-color {
+				display: inline-block;
+				width: 8px;
+				height: 8px;
+				border-radius: 2px;
+				margin-left: 5px;
 			}
 		}
 		li{
