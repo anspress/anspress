@@ -254,15 +254,12 @@ function ap_get_post( $post = null ) {
 
 	if ( $post instanceof WP_Post || is_object( $post ) ) {
 		$_post = $post;
-	} elseif ( false !== $post_o = wp_cache_get( $post, 'posts' ) ) {
-		$_post = $post_o;
 	} else {
 		$_post = WP_Post::get_instance( $post );
 	}
 
 	if ( $_post && ! isset( $_post->ap_qameta_wrapped ) ) {
 		$_post = ap_append_qameta( $_post );
-		wp_cache_set( $_post->ID, $_post, 'posts' );
 	}
 
 	return $_post;
