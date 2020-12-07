@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress Question Answer ANSPRESS_RELEASE_VERSION\n"
+"Project-Id-Version: AnsPress Question Answer 9999-0.1-dev+001\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
 "POT-Creation-Date: 2020-11-11 04:28:58+00:00\n"

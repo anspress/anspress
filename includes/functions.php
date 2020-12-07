@@ -2444,13 +2444,17 @@ function ap_remove_all_filters( $tag, $priority = false ) {
 
 	$ap = anspress();
 
-	// Filters exist
+	if ( ! is_object( $ap->new_filters ) ) {
+		$ap->new_filters = new stdClass();
+	}
+
+	// Filters exist.
 	if ( isset( $wp_filter[ $tag ] ) ) {
 
-		// Filters exist in this priority
+		// Filters exist in this priority.
 		if ( ! empty( $priority ) && isset( $wp_filter[ $tag ][ $priority ] ) ) {
 
-			// Store filters in a backup
+			// Store filters in a backup.
 			$ap->new_filters->wp_filter[ $tag ][ $priority ] = $wp_filter[ $tag ][ $priority ];
 
 			// Unset the filters
