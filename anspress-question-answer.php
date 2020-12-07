@@ -187,6 +187,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $session;
 
 		/**
+		 * Used for storing new filters.
+		 *
+		 * @since 4.1.20
+		 * @var object
+		 */
+		public $new_filters;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
