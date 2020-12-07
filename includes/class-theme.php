@@ -63,7 +63,7 @@ class AnsPress_Theme {
 				'ID'             => get_question_id(),
 				'post_title'     => get_the_title( get_question_id() ),
 				'post_author'    => get_post_field( 'post_author', get_question_id() ),
-				'post_date'      => 0,
+				'post_date'      => get_post_field( 'post_date', get_question_id() ),
 				'post_content'   => $html,
 				'post_type'      => 'question',
 				'post_status'    => get_post_status( get_question_id() ),
