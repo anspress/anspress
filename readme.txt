@@ -3,7 +3,7 @@ Contributors: nerdaryan
 Donate link: https://www.paypal.me/anspress
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.7
-Tested up to: 5.3
+Tested up to: 5.8
 Stable tag: 9999-0.1-dev+001
 License: GPLv2 or later
 Demo: https://anspress.net/demo/?product=anspress
