@@ -2317,7 +2317,7 @@ function ap_ajax_tinymce_assets() {
 	print_footer_scripts();
 	$scripts = ob_get_clean();
 
-	echo str_replace( 'jquery-core,jquery-migrate,', '', $scripts ); // xss okay.
+	echo str_replace( 'jquery-core,', '', $scripts ); // xss okay.
 	\_WP_Editors::editor_js();
 }
 

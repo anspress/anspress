@@ -1,13 +1,13 @@
 # AnsPress - Question and answer #
-**Contributors:** [nerdaryan](https://profiles.wordpress.org/nerdaryan)
-**Donate link:** https://www.paypal.me/anspress
-**Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
-**Requires at least:** 4.7
-**Tested up to:** 5.3
-**Stable tag:** 4.1.21
-**License:** GPLv2 or later
-**Demo:** https://anspress.net/demo/?product=anspress
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
+**Contributors:** [nerdaryan](https://profiles.wordpress.org/nerdaryan)  
+**Donate link:** https://www.paypal.me/anspress  
+**Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
+**Requires at least:** 4.7  
+**Tested up to:** 5.8  
+**Stable tag:** 4.1.21  
+**License:** GPLv2 or later  
+**Demo:** https://anspress.net/demo/?product=anspress  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
 A free question and answer plugin for WordPress. Made with developers in mind, and highly customizable.
 
@@ -97,6 +97,22 @@ Read the full FAQ here https://anspress.net/resources/faq/
 
 
 ## Changelog ##
+
+### 4.1.22 ###
+
+* Fixed: Duplicate fields issue when using SEO plugins.
+
+### 4.1.19 ###
+
+* Don't add automated post status when ap_current_user_ignore is set. Fixes #531
+* Margin and padding class conflict with tailwind. Fixes #542
+* Prevent processing tags field when saving from wp-admin. Fixes #502
+* Query hook preventing preventing filtering questions in wp-admin. Fixes #517
+* Updated donation link in readme.txt
+* Translation not working for ap_human_time. Fixes #519
+* Move json parsing to try catch block. Fixes #539
+* Make "Add" in tags field translatable. Fixes #540
+* Removed aggressive query caching in favour of 3rd party caching. Fixes #441 #536
 
 ### 4.1.18 ###
 

@@ -132,7 +132,7 @@ $recounts = array(
 			});
 		}
 
-		$('.ap-recount-btn').click(function(e){
+		$('.ap-recount-btn').on('click',function(e){
 			e.preventDefault();
 			var query = $(this).data('query');
 			AnsPress.showLoading($(this));

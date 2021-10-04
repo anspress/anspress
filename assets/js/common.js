@@ -554,7 +554,7 @@ jQuery(document).ready(function ($) {
 	var apSnackbarView = new AnsPress.views.Snackbar();
 	$('body').append(apSnackbarView.render().$el);
 
-	$(document).click(function (e) {
+	$(document).on('click', function (e) {
 		e.stopPropagation();
 		if (!$(e.target).is('.ap-dropdown-toggle') && !$(e.target).closest('.open').is('.open') && !$(e.target).closest('form').is('form')) {
 			$('.ap-dropdown').removeClass('open');
@@ -569,7 +569,7 @@ jQuery(document).ready(function ($) {
 	});
 
 	// Subscribe button.
-	$('[apsubscribe]').click(function (e) {
+	$('[apsubscribe]').on('click', function (e) {
 		e.preventDefault();
 		var self = $(this);
 		var query = JSON.parse(self.attr('apquery'));
@@ -767,7 +767,7 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	});
-	$(document).keyup(function (e) {
+	$(document).on('keyup', function (e) {
 		if (e.keyCode == 27) {
 			$lastModal = $('.ap-modal').last();
 			if ($lastModal.length > 0) {

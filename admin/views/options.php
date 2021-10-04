@@ -273,7 +273,7 @@ do_action( 'ap_after_options_page' );
 ?>
 <script type="text/javascript">
 	jQuery(document).ready(function($){
-		$('.postbox > h3').click(function(){
+		$('.postbox > h3').on('click', function(){
 			$(this).closest('.postbox').toggleClass('closed');
 		});
 		$('#form_options_general_pages-question_page_slug').on('keyup', function(){

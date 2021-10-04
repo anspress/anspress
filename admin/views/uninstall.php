@@ -109,7 +109,7 @@ global $wpdb;
 		});
 	}
 	jQuery(document).ready(function($){
-		$('.ap-uninstall-btn').click(function(e){
+		$('.ap-uninstall-btn').on('click',function(e){
 			e.preventDefault();
 			if (confirm('<?php esc_attr_e( 'Do you wish to proceed? This cannot be undone.', 'anspress-question-answer' ); ?>') == true) {
 				ap_ajax_uninstall_data(this);

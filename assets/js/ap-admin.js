@@ -1,4 +1,4 @@
-	/* on start */
+/* on start */
 
 jQuery(function () {
 	jQuery.fn.apAjaxQueryString = function () {
@@ -12,8 +12,8 @@ jQuery(function () {
 		newQuery['args'] = {};
 
 		var newi = 0;
-		jQuery.each(query,function(i){
-			if(i != 0 && i != 1){
+		jQuery.each(query, function (i) {
+			if (i != 0 && i != 1) {
 				newQuery['args'][newi] = query[i];
 				newi++;
 			}
@@ -30,9 +30,9 @@ jQuery(function () {
 
 /* namespace */
 window.APjs = {};
-APjs.admin = function () {};
+APjs.admin = function () { };
 
-(function($){
+(function ($) {
 	APjs.admin.prototype = {
 
 		/* automatically called */
@@ -46,7 +46,7 @@ APjs.admin = function () {};
 
 
 		renameTaxo: function () {
-			jQuery('.ap-rename-taxo').click(function (e) {
+			jQuery('.ap-rename-taxo').on('click', function (e) {
 				e.preventDefault();
 				jQuery.ajax({
 					url: ajaxurl,
@@ -111,7 +111,7 @@ APjs.admin = function () {};
 			});
 		},
 		deleteFlag: function () {
-			jQuery('[data-action="ap-delete-flag"]').click(function (e) {
+			jQuery('[data-action="ap-delete-flag"]').on('click', function (e) {
 				e.preventDefault();
 				jQuery.ajax({
 					type: 'POST',
@@ -152,7 +152,7 @@ APjs.admin = function () {};
 
 	}
 
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$('#select-question-for-answer').on('keyup', function () {
 			if (jQuery.trim(jQuery(this).val()) == '')
 				return;
@@ -178,7 +178,7 @@ APjs.admin = function () {};
 			});
 		});
 
-		$('[data-action="ap_media_uplaod"]').click(function (e) {
+		$('[data-action="ap_media_uplaod"]').on('click', function (e) {
 			e.preventDefault();
 			$btn = jQuery(this);
 			var image = wp.media({
@@ -204,13 +204,13 @@ APjs.admin = function () {};
 			});
 		});
 
-		$('[data-action="ap_media_remove"]').click(function (e) {
+		$('[data-action="ap_media_remove"]').on('click', function (e) {
 			e.preventDefault();
 			$('input[data-action="ap_media_value"]').val('');
 			$('img[data-action="ap_media_value"]').remove();
 		});
 
-		$('.checkall').click(function () {
+		$('.checkall').on('click', function () {
 			var checkbox = $(this).closest('.ap-tools-ck').find('input[type="checkbox"]:not(.checkall)');
 			checkbox.prop('checked', $(this).prop("checked"));
 		})

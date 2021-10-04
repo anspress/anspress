@@ -519,7 +519,7 @@
 		}
 	});
 
-	$('[ap="actiontoggle"]').click(function () {
+	$('[ap="actiontoggle"]').on('click', function () {
 		if (!$(this).is('.loaded'))
 			AnsPress.showLoading(this);
 	});

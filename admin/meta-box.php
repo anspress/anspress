@@ -131,7 +131,7 @@ class AP_Question_Meta_Box {
 
 			<script type="text/javascript">
 				jQuery(document).ready(function($){
-					$('#ap-clear-flag').click(function(e){
+					$('#ap-clear-flag').on( 'click', function(e){
 						e.preventDefault();
 						var self = this;
 						var q = JSON.parse($(self).attr('data-query'));

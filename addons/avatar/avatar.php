@@ -73,7 +73,7 @@ class Avatar extends \AnsPress\Singleton {
 		?>
 			<script type="text/javascript">
 				jQuery(document).ready(function($){
-					$('#ap-clear-avatar').click(function(e){
+					$('#ap-clear-avatar').on('click', function(e){
 						e.preventDefault();
 						$.ajax({
 							url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
