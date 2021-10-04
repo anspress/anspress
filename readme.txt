@@ -98,6 +98,10 @@ Read the full FAQ here https://anspress.net/resources/faq/
 
 == Changelog ==
 
+= 4.1.22 =
+
+* Fixed: Duplicate fields issue when using SEO plugins.
+
 = 4.1.19 =
 
 * Don't add automated post status when ap_current_user_ignore is set. Fixes #531

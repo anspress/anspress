@@ -17,24 +17,6 @@ jobs:
         fetch-depth: 2
         ref: dev
 
-    - name: Find and Replace version in plugin comment
-      uses: datamonsters/replace-action@master
-      with:
-        files: 'anspress-question-answer.php'
-        replacements: '9999-0.1-dev+001=9999'
-
-    - name: Find and Replace version in plugin PHP
-      uses: datamonsters/replace-action@master
-      with:
-        files: 'anspress-question-answer.php'
-        replacements: '9999-0.1-dev+001=9999'
-
-    - name: Find and Replace version in plugin readme.txt
-      uses: datamonsters/replace-action@master
-      with:
-        files: 'readme.txt'
-        replacements: '9999-0.1-dev+001=9999'
-
     - name: Archive readme
       uses: actions/upload-artifact@v2
       with:
@@ -57,24 +39,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Find and Replace version in plugin comment
-      uses: datamonsters/replace-action@master
-      with:
-        files: 'anspress-question-answer.php'
-        replacements: '9999-0.1-dev+001=${{ github.event.release.tag_name }}'
-
-    - name: Find and Replace version in plugin PHP
-      uses: datamonsters/replace-action@master
-      with:
-        files: 'anspress-question-answer.php'
-        replacements: '9999-0.1-dev+001=${{ github.event.release.tag_name }}'
-
-    - name: Find and Replace version in plugin readme.txt
-      uses: datamonsters/replace-action@master
-      with:
-        files: 'readme.txt'
-        replacements: '9999-0.1-dev+001=${{ github.event.release.tag_name }}'
 
     - name: Build
       run: |
