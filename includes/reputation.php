@@ -59,15 +59,17 @@ function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 		return false;
 	}
 
+	$new_id = $wpdb->insert_id;
+
 	// Update user meta.
 	ap_update_user_reputation_meta( $user_id );
 
 	/**
 	 * Trigger action after inserting a reputation.
 	 */
-	do_action( 'ap_insert_reputation', $wpdb->insert_id, $user_id, $event, $ref_id );
+	do_action( 'ap_insert_reputation', $new_id, $user_id, $event, $ref_id );
 
-	return $wpdb->insert_id;
+	return $new_id;
 }
 
 /**

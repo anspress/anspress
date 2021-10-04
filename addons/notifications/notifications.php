@@ -531,6 +531,7 @@ class Notifications extends \AnsPress\Singleton {
 		$items = [];
 		while ( $notifications->have() ) :
 			$notifications->the_notification();
+
 			$items[] = array(
 				'ID'         => $notifications->object->noti_id,
 				'verb'       => $notifications->object->noti_verb,
