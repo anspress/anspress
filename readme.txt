@@ -101,6 +101,8 @@ Read the full FAQ here https://anspress.net/resources/faq/
 = 4.1.22 =
 
 * Fixed: Duplicate fields issue when using SEO plugins.
+* Fixed: deprecated jQuery shorthand functions.
+* Fixed: Question shortcode not working.
 
 = 4.1.19 =
 

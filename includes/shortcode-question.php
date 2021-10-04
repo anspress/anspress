@@ -42,7 +42,9 @@ class AnsPress_Question_Shortcode {
 		 */
 		do_action( 'ap_before_question_shortcode' );
 
-		$questions = ap_get_question( $atts['id'] );
+		$id = ! empty( $atts['ID'] ) ? absint( $atts['ID'] ) : absint( $atts['id'] );
+
+		$questions = ap_get_question( $id );
 
 		if ( $questions->have_posts() ) {
 			/**
@@ -55,6 +57,8 @@ class AnsPress_Question_Shortcode {
 				$questions->the_post();
 				include ap_get_theme_location( 'shortcode/question.php' );
 			endwhile;
+		} else {
+			esc_attr_e( 'Invalid or non existing question id.', 'anspress-question-answer' );
 		}
 
 		echo '</div>';

@@ -50,8 +50,9 @@ if ( ! function_exists( 'ap_get_questions' ) ) {
  */
 function ap_get_question( $question_id ) {
 	$args = array(
-		'p'        => $question_id,
-		'ap_query' => 'single_question',
+		'p'           => $question_id,
+		'ap_query'    => 'single_question',
+		'post_status' => [ 'publish' ],
 	);
 
 	if ( ap_user_can_view_future_post( $question_id ) ) {
