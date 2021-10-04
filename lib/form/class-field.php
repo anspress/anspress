@@ -272,6 +272,7 @@ class Field {
 	 * @return null|string
 	 */
 	public function output() {
+		$this->html = '';
 		$this->html_order();
 
 		foreach ( (array) $this->output_order as $method ) {
