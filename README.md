@@ -1,13 +1,13 @@
 # AnsPress - Question and answer #
-**Contributors:** [nerdaryan](https://profiles.wordpress.org/nerdaryan)  
-**Donate link:** https://www.paypal.me/anspress  
-**Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress  
-**Requires at least:** 4.7  
-**Tested up to:** 5.8  
-**Stable tag:** 4.1.21  
-**License:** GPLv2 or later  
-**Demo:** https://anspress.net/demo/?product=anspress  
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
+**Contributors:** [nerdaryan](https://profiles.wordpress.org/nerdaryan)
+**Donate link:** https://www.paypal.me/anspress
+**Tags:** question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
+**Requires at least:** 4.7
+**Tested up to:** 5.8
+**Stable tag:** 4.1.22
+**License:** GPLv2 or later
+**Demo:** https://anspress.net/demo/?product=anspress
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
 A free question and answer plugin for WordPress. Made with developers in mind, and highly customizable.
 
