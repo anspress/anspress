@@ -44,6 +44,9 @@ jobs:
       run: |
         npm install
         npm run build
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.event.release.tag_name }}/g' /anspress-question-answer.php
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.event.release.tag_name }}/g' /readme.txt
+
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
