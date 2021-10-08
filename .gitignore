@@ -34,3 +34,6 @@ ehthumbs.db
 Thumbs.db
 /anspress.code-workspace
 /TODO
+
+assets/js/min/**
+!assets/js/min/.gitkeep
