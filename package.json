@@ -5,27 +5,27 @@
   "main": "Gruntfile.js",
   "private": true,
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-compress": "^1.4.1",
-    "grunt-contrib-concat": "",
-    "grunt-contrib-copy": "",
-    "grunt-contrib-cssmin": "^3.0.0",
-    "grunt-contrib-jshint": "",
-    "grunt-contrib-uglify": "",
-    "grunt-contrib-watch": "",
-    "grunt-csscomb": "",
+    "grunt": "^1.4.1",
+    "grunt-contrib-compress": "^2.0.0",
+    "grunt-contrib-concat": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^4.0.0",
+    "grunt-contrib-jshint": "^3.1.1",
+    "grunt-contrib-uglify": "^5.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-csscomb": "^4.2.0",
     "grunt-exec": "^3.0.0",
-    "grunt-git": "",
-    "grunt-phplint": "",
+    "grunt-git": "^1.1.1",
+    "grunt-phplint": "^0.1.0",
     "grunt-potomo": "^3.5.0",
-    "grunt-replace": "",
+    "grunt-replace": "^2.0.2",
     "grunt-sass": "^3.1.0",
-    "grunt-version": "",
-    "grunt-wp-i18n": "^1.0.0",
-    "grunt-wp-readme-to-markdown": "",
-    "load-grunt-tasks": "",
-    "node-sass": "^5.0.0",
-    "time-grunt": ""
+    "grunt-version": "^2.0.0",
+    "grunt-wp-i18n": "^1.0.3",
+    "grunt-wp-readme-to-markdown": "^2.0.1",
+    "load-grunt-tasks": "^5.1.0",
+    "node-sass": "^6.0.1",
+    "time-grunt": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -33,5 +33,7 @@
   },
   "author": "Rahul Aryan",
   "license": "GPL 3+",
-  "dependencies": {}
+  "dependencies": {
+    "npm-update-all": "^1.0.1"
+  }
 }
