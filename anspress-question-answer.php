@@ -315,6 +315,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/class-session.php';
 
 			require_once ANSPRESS_DIR . 'addons/categories/categories.php';
+			require_once ANSPRESS_DIR . 'addons/email/email.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';

@@ -66,12 +66,17 @@ class Email extends \AnsPress\Singleton {
 
 	/**
 	 * Initialize the class.
+	 *
+	 * @since unknown
+	 * @since 4.2.0 Added new action for `ap_all_options`.
+	 * @since 4.2.0 Added action `ap_form_options_email_general`.
 	 */
 	protected function __construct() {
 		$this->ap_default_options();
-		anspress()->add_filter( 'ap_form_addon-email', $this, 'register_option' );
+		anspress()->add_action( 'ap_all_options', $this, 'load_options', 2 );
+		anspress()->add_filter( 'ap_form_options_email_general', $this, 'register_option' );
 		anspress()->add_filter( 'ap_form_email_template', $this, 'register_email_template' );
-		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 10, 2 );
+		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 3, 2 );
 		anspress()->add_action( 'wp_ajax_ap_email_template', $this, 'ap_email_template' );
 		anspress()->add_action( 'ap_ajax_form_email_template', $this, 'save_email_template_form', 11 );
 		anspress()->add_action( 'ap_email_default_template_new_question', $this, 'template_new_question' );
@@ -140,6 +145,24 @@ class Email extends \AnsPress\Singleton {
 		$defaults['trash_answer_email_body']    = __( "Hello!\nAnswer on '{question_title}' is trashed by {user}.\n", 'anspress-question-answer' );
 
 		ap_add_default_options( $defaults );
+	}
+
+	/**
+	 * Register Categories options.
+	 *
+	 * @since 4.2.0
+	 */
+	public function load_options( $options ) {
+		$options['email'] = array(
+			'label'  => __( 'Email', 'anspress-question-answer' ),
+			'groups' => array(
+				'general' => array(
+					'label' => __( 'General', 'anspress-question-answer' ),
+				),
+			),
+		);
+
+		return $options;
 	}
 
 	/**

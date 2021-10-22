@@ -163,9 +163,9 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 							<?php
 								$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
 
-							foreach ( $all_options as $key => $args ) {
-								echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $args['label'] ) . '</a>';
-							}
+								foreach ( $all_options as $key => $args ) {
+									echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $args['label'] ) . '</a>';
+								}
 
 								/**
 								 * Action triggered right after AnsPress options tab links.
@@ -188,7 +188,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 						<?php if ( isset( $all_options[ $active_tab ] ) ) : ?>
 
-							<?php if ( ! empty( $all_options[ $active_tab ]['groups'] ) ) : ?>
+							<?php if ( ! empty( $all_options[ $active_tab ]['groups'] ) && count( $all_options[ $active_tab ]['groups'] ) > 1 ) : ?>
 								<p class="ap-tab-subs">
 									<?php foreach ( $all_options[ $active_tab ]['groups'] as $groupkey => $args ) : ?>
 										<a href="#<?php echo $active_tab . '-' . $groupkey; ?>"><?php echo esc_attr( $args['label'] ); ?></a>
