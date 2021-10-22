@@ -182,6 +182,9 @@ class AnsPress_Admin {
 
 	/**
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
+	 *
+	 * @since unknown
+	 * @since 4.2.0 Updated options menu title to `Settings`.
 	 */
 	public static function add_plugin_admin_menu() {
 		if ( ! current_user_can( 'delete_pages' ) ) {
@@ -191,7 +194,7 @@ class AnsPress_Admin {
 		global $submenu;
 
 		$counts = self::menu_counts();
-		$pos    = self::get_free_menu_position( 42.9 );
+		$pos    = self::get_free_menu_position( 10.9 );
 
 		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
 
@@ -210,7 +213,7 @@ class AnsPress_Admin {
 		 */
 		do_action( 'ap_admin_menu' );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Options', 'anspress-question-answer' ), __( 'Options', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
+		add_submenu_page( 'anspress', __( 'AnsPress Settings', 'anspress-question-answer' ), __( 'Settings', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
 		add_submenu_page( 'anspress', __( 'AnsPress Add-ons', 'anspress-question-answer' ), __( 'Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_addons', array( __CLASS__, 'display_plugin_addons_page' ) );
 

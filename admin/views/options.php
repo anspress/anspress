@@ -3,10 +3,11 @@
  * AnsPress options page.
  *
  * @link       https://anspress.net
- * @since      4.1.0
  * @author     Rahul Aryan <rah12@live.com>
  * @package    AnsPress
  * @subpackage Admin Pages
+ * @since      4.1.0
+ * @since      4.2.0 Changed title of page from to `AnsPress Settings`.
  */
 
 // If this file is called directly, abort.
@@ -137,7 +138,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 <div id="anspress" class="wrap">
 	<h2 class="admin-title">
-		<?php esc_html_e( 'AnsPress Options', 'anspress-question-answer' ); ?>
+		<?php esc_html_e( 'AnsPress Settings', 'anspress-question-answer' ); ?>
 		<div class="social-links clearfix">
 			<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
 			<a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
