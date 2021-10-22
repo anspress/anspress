@@ -1969,7 +1969,7 @@ function ap_addon_activation_hook( $addon, $cb ) {
  *
  * @return array
  */
-function ap_array_insert_after( $array = [], $key, $new ) {
+function ap_array_insert_after( $array = [], $key = '', $new = [] ) {
 	$keys  = array_keys( $array );
 	$index = array_search( $key, $keys );
 	$pos   = false === $index ? count( $array ) : $index + 1;

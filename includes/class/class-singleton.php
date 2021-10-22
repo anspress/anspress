@@ -38,8 +38,9 @@ abstract class Singleton {
 	 * Unserializing instances of this class is forbidden.
 	 *
 	 * @since 4.1.8
+	 * @since 4.2.0 Fixed: warning `__wakeup must be public`.
 	 */
-	private function __wakeup() {
+	public function __wakeup() {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' ); // WPCS: xss okay.
 	}
 

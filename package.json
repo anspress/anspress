@@ -29,7 +29,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "grunt build"
+    "build": "grunt build",
+    "server": "cd ../../../ && start php -S localhost:80"
   },
   "author": "Rahul Aryan",
   "license": "GPL 3+",
