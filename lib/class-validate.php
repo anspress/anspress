@@ -304,8 +304,8 @@ class Validate {
 	 * @param  array      $upload_options Upload options.
 	 * @return null|array
 	 */
-	public static function sanitize_upload( $value = null, $upload_options ) {
-		if ( ! empty( $value ) && is_array( $value ) ) {
+	public static function sanitize_upload( $value = null, $upload_options = [] ) {
+		if ( ! empty( $value ) && is_array( $value ) && ! empty( $upload_options ) ) {
 			if ( true === $upload_options['multiple'] && wp_is_numeric_array( $value ) ) {
 				$value = array_slice( $value, 0, $upload_options['max_files'] );
 
