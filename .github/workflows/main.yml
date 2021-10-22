@@ -26,8 +26,8 @@ jobs:
       run: |
         npm install
         npm run build
-        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.head_ref }}/g' ./anspress-question-answer.php
-        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.head_ref }}/g' ./readme.txt
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/dev/g' ./anspress-question-answer.php
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/dev/g' ./readme.txt
 
     - name: Upload to development site
       uses: appleboy/scp-action@v0.1.1
@@ -35,7 +35,7 @@ jobs:
         host: ${{ secrets.DEV_SFTP_HOST }}
         username: ${{ secrets.DEV_SFTP_USERNAME }}
         password: ${{ secrets.DEV_SFTP_PASSWORD }}
-        source: "*, !.git, !.github, !.wordpress.org"
+        source: "*, !.git, !.github, !.wordpress.org, node_modules, tests, docker-compose.yml, Dockerfile, README.md, package.json, package-lock.json, phpcs.xml"
         target: ${{ secrets.DEV_PLUGIN_PATH }}
 
   wp-release:
@@ -50,8 +50,8 @@ jobs:
       run: |
         npm install
         npm run build
-        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.event.release.tag_name }}/g' /anspress-question-answer.php
-        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.event.release.tag_name }}/g' /readme.txt
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.event.release.tag_name }}/g' ./anspress-question-answer.php
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.event.release.tag_name }}/g' ./readme.txt
 
     - name: WordPress Plugin Deploy
       id: deploy
