@@ -274,8 +274,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		/**
 		 * Include required files.
 		 *
-		 * @since  2.0.1
 		 * @access private
+		 * @since  2.0.1
+		 * @since  4.2.0 Added categories/categories.php
 		 */
 		private function includes() {
 			require_once ANSPRESS_DIR . 'loader.php';
@@ -312,6 +313,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/class-activity-helper.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-session.php';
+
+			require_once ANSPRESS_DIR . 'addons/categories/categories.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
@@ -471,6 +474,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string $name Name of form.
 		 * @return false|object
 		 * @since 4.1.0
+		 * @since 4.2.0 Fixed: Only variable references should be returned by reference.
 		 */
 		public function &get_form( $name ) {
 			$name = preg_replace( '/^form_/i', '', $name );
@@ -479,7 +483,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				return $this->forms[ $name ];
 			}
 
-			return false;
+			throw new \Exception( sprintf( __( 'Requested form: %s is not registered .', 'anspress-question-answer' ), $name ) );
 		}
 
 		/**

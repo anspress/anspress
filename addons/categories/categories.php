@@ -9,6 +9,7 @@
  * @package    AnsPress
  * @subpackage Categories Addon
  * @since      4.1.8
+ * @since      4.2.1 Moved addon settings to settings page.
  */
 
 namespace AnsPress\Addons;
@@ -35,13 +36,15 @@ class Categories extends \AnsPress\Singleton {
 	 * Initialize the class.
 	 *
 	 * @since 4.0.0
+	 * @since 4.2.1 Replaced action `ap_form_addon-categories` by `ap_all_options`.
 	 */
 	protected function __construct() {
 		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( $this, 'category_page' ), false );
 		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categories_page' ) );
 
 		anspress()->add_action( 'init', $this, 'register_question_categories', 1 );
-		anspress()->add_action( 'ap_form_addon-categories', $this, 'load_options' );
+		anspress()->add_action( 'ap_all_options', $this, 'load_options' );
+		anspress()->add_filter( 'ap_form_options_category_general', $this, 'register_general_settings_form' );
 		anspress()->add_action( 'admin_enqueue_scripts', $this, 'admin_enqueue_scripts' );
 		anspress()->add_action( 'ap_load_admin_assets', $this, 'ap_load_admin_assets' );
 		anspress()->add_action( 'ap_admin_menu', $this, 'admin_category_menu' );
@@ -228,12 +231,38 @@ class Categories extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Register Categories options
+	 * Register Categories options.
+	 *
+	 * @since unknown
+	 * @since 4.2.0 Moved form registration to another method `register_settings_from`.
 	 */
-	public function load_options() {
+	public function load_options( $options ) {
+		$options['category'] = array(
+			'label'  => __( 'Category', 'anspress-question-answer' ),
+			'groups' => array(
+				'general' => array(
+					'label' => __( 'General', 'anspress-question-answer' ),
+				),
+			),
+		);
+
+		return $options;
+	}
+
+	/**
+	 * Register category general settings.
+	 *
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function register_general_settings_form() {
 		$opt  = ap_opt();
-		$form = array(
+
+		return array(
 			'fields' => array(
+				'categories_page_info' => array(
+					'html'  => '<label class="ap-form-label" for="form_options_category_general-categories_page_info">' . __( 'Categories base page', 'anspress-question-answer' ) . '</label>' . __( 'Base page for categories can be configured in general settings of AnsPress.', 'anspress-question-answer' ),
+				),
 				'form_category_orderby'   => array(
 					'label'       => __( 'Ask form category order', 'anspress-question-answer' ),
 					'description' => __( 'Set how you want to order categories in form.', 'anspress-question-answer' ),
@@ -270,11 +299,6 @@ class Categories extends \AnsPress\Singleton {
 					),
 					'value'       => $opt['categories_page_order'],
 				),
-				'category_page_slug'      => array(
-					'label' => __( 'Category page slug', 'anspress-question-answer' ),
-					'desc'  => __( 'Slug for category page', 'anspress-question-answer' ),
-					'value' => $opt['category_page_slug'],
-				),
 				'categories_per_page'     => array(
 					'label'   => __( 'Category per page', 'anspress-question-answer' ),
 					'desc'    => __( 'Category to show per page', 'anspress-question-answer' ),
@@ -289,8 +313,6 @@ class Categories extends \AnsPress\Singleton {
 				),
 			),
 		);
-
-		return $form;
 	}
 
 	/**
@@ -325,9 +347,10 @@ class Categories extends \AnsPress\Singleton {
 	 * Add category menu in wp-admin.
 	 *
 	 * @since 2.0
+	 * @since 4.2.0 Renamed menu from "Category".
 	 */
 	public function admin_category_menu() {
-		add_submenu_page( 'anspress', __( 'Questions Category', 'anspress-question-answer' ), __( 'Category', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_category' );
+		add_submenu_page( 'anspress', __( 'Question Categories', 'anspress-question-answer' ), __( 'Question Categories', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_category' );
 	}
 
 	/**
