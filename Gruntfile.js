@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 			my_target: {
 				files: {
 					'assets/js/min/main.min.js': ['assets/js/common.js', 'assets/js/question.js', 'assets/js/ask.js', 'assets/js/list.js', 'assets/js/notifications.js'],
-					'assets/js/min/ap-admin.min.js': ['assets/js/ap-admin.js'],
+					'assets/js/ap-admin.js': ['assets/js/ap-admin.js'],
 					'assets/js/min/admin-app.min.js': ['assets/js/admin-app.js'],
 					'templates/js/min/theme.min.js': ['templates/js/theme.js'],
 				}

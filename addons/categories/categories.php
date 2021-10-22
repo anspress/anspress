@@ -46,7 +46,7 @@ class Categories extends \AnsPress\Singleton {
 		anspress()->add_action( 'ap_load_admin_assets', $this, 'ap_load_admin_assets' );
 		anspress()->add_action( 'ap_admin_menu', $this, 'admin_category_menu' );
 		anspress()->add_action( 'ap_display_question_metas', $this, 'ap_display_question_metas', 10, 2 );
-		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
+		anspress()->add_action( 'ap_enqueue', $this, 'ap_assets_js' );
 		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
 		anspress()->add_action( 'save_post_question', $this, 'after_new_question', 0, 2 );
@@ -354,9 +354,8 @@ class Categories extends \AnsPress\Singleton {
 	 */
 	public function ap_assets_js( $js ) {
 		if ( ap_current_page() === 'category' ) {
-			$js['main']['active'] = true;
+			wp_enqueue_script( 'anspress-theme' );
 		}
-		return $js;
 	}
 
 	/**

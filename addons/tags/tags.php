@@ -44,7 +44,7 @@ class Tags extends \AnsPress\Singleton {
 		anspress()->add_action( 'ap_admin_menu', $this, 'admin_tags_menu' );
 		anspress()->add_action( 'ap_display_question_metas', $this, 'ap_display_question_metas', 10, 2 );
 		anspress()->add_action( 'ap_question_info', $this, 'ap_question_info' );
-		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
+		anspress()->add_action( 'ap_enqueue', $this, 'ap_assets_js' );
 		anspress()->add_action( 'ap_enqueue', $this, 'ap_localize_scripts' );
 		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
@@ -314,13 +314,8 @@ class Tags extends \AnsPress\Singleton {
 	 * @param array $js Javacript array.
 	 * @return array
 	 */
-	public function ap_assets_js( $js ) {
-		$js['tags'] = [
-			'dep'    => [ 'anspress-main' ],
-			'footer' => true,
-		];
-
-		return $js;
+	public function ap_assets_js() {
+		wp_enqueue_script( 'anspress-tags', ANSPRESS_URL . 'assets/js/tags.js', [ 'anspress-list' ], AP_VERSION, true );
 	}
 
 	/**

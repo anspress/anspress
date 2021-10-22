@@ -1,37 +1,36 @@
-version: '2'
+version: "3.3"
+
 services:
-  mariadb:
-    image: docker.io/bitnami/mariadb:10.3
+  wpdb:
+    image: mysql:5.7
     volumes:
-      - 'mariadb_data:/bitnami/mariadb'
+      - ./.db:/var/lib/mysql
+    restart: always
     environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_wordpress
-      - MARIADB_DATABASE=bitnami_wordpress
-  wordpress:
-    image: docker.io/bitnami/wordpress-nginx:5
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_TCP_PORT: 3308
     ports:
-      - '80:8080'
-      - '443:8443'
-    volumes:
-      - './:/bitnami/wordpress/wp-content/plugins/anspress-question-answer'
-      - 'wordpress_data:/bitnami/wordpress'
+      - 3308
+  wordpress:
     depends_on:
-      - mariadb
+      - wpdb
+    build: .
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/anspress-question-answer
+    ports:
+      - "80:80"
+    restart: always
     environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      - ALLOW_EMPTY_PASSWORD=yes
-      - WORDPRESS_DATABASE_HOST=mariadb
-      - WORDPRESS_DATABASE_PORT_NUMBER=3306
-      - WORDPRESS_DATABASE_USER=bn_wordpress
-      - WORDPRESS_DATABASE_NAME=bitnami_wordpress
-      - WORDPRESS_USERNAME=admin
-      - WORDPRESS_PASSWORD=admin
-      - WORDPRESS_EMAIL=test@anspress.net
-      # - WORDPRESS_PLUGINS=anspress-question-answer
+      WORDPRESS_DB_HOST: wpdb:3308
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_TABLE_PREFIX: "wp_"
+      WORDPRESS_DEBUG: 1
+
 volumes:
-  mariadb_data:
-    driver: local
-  wordpress_data:
-    driver: local
+  wordpress_data: {}

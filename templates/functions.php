@@ -12,6 +12,8 @@
  * Enqueue scripts.
  */
 function ap_scripts_front() {
+	ap_assets();
+
 	if ( ! is_anspress() && ap_opt( 'load_assets_in_anspress_only' ) ) {
 		return;
 	}
@@ -28,6 +30,7 @@ function ap_scripts_front() {
 
 	wp_add_inline_style( 'anspress-main', $custom_css );
 	do_action( 'ap_enqueue' );
+
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'anspress-main' ), AP_VERSION );
 
 	$aplang = array(

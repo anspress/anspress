@@ -51,7 +51,7 @@ class BuddyPress extends \AnsPress\Singleton {
 		add_post_type_support( 'answer', 'buddypress-activity' );
 
 		anspress()->add_action( 'bp_init', $this, 'bp_init' );
-		anspress()->add_action( 'ap_assets_js', $this, 'ap_assets_js' );
+		anspress()->add_action( 'ap_enqueue', $this, 'ap_assets_js' );
 		// anspress()->add_action( 'ap_enqueue', 'bp_activity_mentions_script' );
 		anspress()->add_action( 'bp_setup_nav', $this, 'content_setup_nav' );
 		anspress()->add_action( 'bp_init', $this, 'question_answer_tracking' );
@@ -96,11 +96,8 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		if ( bp_current_component() === 'qa' ) {
-			$js['main']['active']  = true;
-			$js['theme']['active'] = true;
+			wp_enqueue_script( 'anspress-theme' );
 		}
-
-		return $js;
 	}
 
 	/**

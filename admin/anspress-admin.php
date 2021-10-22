@@ -109,15 +109,26 @@ class AnsPress_Admin {
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
+		wp_register_script( 'anspress-common', ANSPRESS_URL . '/assets/js/common.js', [ 'jquery', 'jquery-form', 'backbone' ], AP_VERSION );
+		wp_register_script( 'anspress-question', ANSPRESS_URL . '/assets/js/question.js', [ 'anspress-common' ], AP_VERSION );
+		wp_register_script( 'anspress-ask', ANSPRESS_URL . '/assets/js/ask.js', [ 'anspress-common' ], AP_VERSION );
+		wp_register_script( 'anspress-list', ANSPRESS_URL . '/assets/js/list.js', [ 'anspress-common' ], AP_VERSION );
+		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . '/assets/js/notifications.js', [ 'anspress-common' ], AP_VERSION );
+		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . '/assets/js/ap-admin.js', [ 'anspress-common' ], AP_VERSION );
+
+		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', [ 'jquery' ], AP_VERSION, true );
+
 		$page = get_current_screen();
 
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
 
-		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
-
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js', [ 'anspress-main' ], AP_VERSION, true );
+		wp_enqueue_script( 'anspress-question' );
+		wp_enqueue_script( 'anspress-ask' );
+		wp_enqueue_script( 'anspress-list' );
+		wp_enqueue_script( 'anspress-notifiactions' );
+		wp_enqueue_script( 'anspress-admin-js' );
 
 		?>
 			<script type="text/javascript">
@@ -129,7 +140,7 @@ class AnsPress_Admin {
 		<?php
 
 		if ( 'post' === $page->base && 'question' === $page->post_type ) {
-			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/min/admin-app.min.js', [], AP_VERSION, true );
+			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/admin-app.js', [], AP_VERSION, true );
 		}
 
 		wp_enqueue_script( 'postbox' );
@@ -1416,9 +1427,12 @@ class AnsPress_Admin {
 				apShowComments  = false;
 			</script>
 		<?php
-		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/min/selectize.min.js', [ 'jquery' ], AP_VERSION );
-		wp_enqueue_script( 'anspress-main', ANSPRESS_URL . 'assets/js/min/main.min.js', [ 'jquery', 'jquery-form', 'backbone', 'underscore' ], AP_VERSION );
-		wp_enqueue_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/min/ap-admin.min.js', [ 'anspress-main' ], AP_VERSION, true );
+
+		wp_enqueue_script( 'anspress-question' );
+		wp_enqueue_script( 'anspress-ask' );
+		wp_enqueue_script( 'anspress-list' );
+		wp_enqueue_script( 'anspress-notifiactions' );
+		wp_enqueue_script( 'anspress-admin-js' );
 
 		$addon     = ap_get_addon( ap_sanitize_unslash( 'addon', 'r' ) );
 		$from_args = array(
