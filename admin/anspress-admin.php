@@ -892,7 +892,7 @@ class AnsPress_Admin {
 				'author_page_title'       => array(
 					'label'    => __( 'Author page title', 'anspress-question-answer' ),
 					'desc'     => __( 'Title of the author page', 'anspress-question-answer' ),
-					'value'    => $opt['author_page_title'],
+					'value'    => empty( $opt['author_page_title'] ) ? 'User' : $opt['author_page_title'],
 					'validate' => 'required',
 				),
 			),
