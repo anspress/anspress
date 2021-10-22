@@ -156,29 +156,27 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 	<div class="ap-optionpage-wrap no-overflow">
 		<div class="ap-wrap">
-			<div class="anspress-options ap-wrap-left clearfix">
-				<div class="option-nav-tab clearfix">
-					<div class="option-nav-tab clearfix">
-						<h2 class="nav-tab-wrapper">
-							<?php
-								$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
+			<div class="anspress-options">
+				<div class="anspress-options-tab clearfix">
+					<?php
+						$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
 
-								foreach ( $all_options as $key => $args ) {
-									echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="nav-tab ap-user-menu-' . esc_attr( $key ) . ( $key === $active_tab ? ' nav-tab-active' : '' ) . '">' . esc_html( $args['label'] ) . '</a>';
-								}
+						foreach ( $all_options as $key => $args ) {
+							echo '<div class="anspress-options-menu' . ( $key === $active_tab ? ' anspress-options-menu-active' : '' ) . '">';
+							echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="anspress-options-menu-' . esc_attr( $key ) . '">' . esc_html( $args['label'] ) . '</a>';
+							echo '</div>';
+						}
 
-								/**
-								 * Action triggered right after AnsPress options tab links.
-								 * Can be used to show custom tab links.
-								 *
-								 * @since 4.1.0
-								 */
-								do_action( 'ap_options_tab_links' );
-							?>
-						</h2>
-					</div>
+						/**
+						 * Action triggered right after AnsPress options tab links.
+						 * Can be used to show custom tab links.
+						 *
+						 * @since 4.1.0
+						 */
+						do_action( 'ap_options_tab_links' );
+					?>
 				</div>
-				<div class="metabox-holder">
+				<div class="anspress-options-body">
 					<?php
 						$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
 						$form       = ap_sanitize_unslash( 'ap_form_name', 'r' );

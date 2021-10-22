@@ -944,19 +944,18 @@ ul.ap-meta-list {
   }
 }
 .ap-tab-subs{
-  margin-top: 10px;
+  margin-top: 0;
   margin-bottom: 20px;
   a{
-    padding-right: 10px;
+    border: solid 1px #aaa;
     background: #fff;
-    padding: 5px 10px;
-    font-weight: bold;
-    font-size: 12px;
+    padding: 8px 20px;
+    font-size: 14px;
     margin-right: 10px;
     border-radius: 4px;
-    &:last-child{
-      border: none;
-    }
+    color: inherit;
+    font-weight: bold;
+    display: inline-block;
   }
 }
 .ap-form-errors{
@@ -1525,4 +1524,56 @@ span.recount-msg {
   color: #2aab02;
   font-weight: bold;
   font-style: italic;
+}
+.anspress{
+  &-options{
+    display: flex;
+    align-content: flex-start;
+    position: relative;
+    align-items: flex-start;
+
+    &-tab {
+      width: 250px;
+      margin-right: 20px;
+      background: #f9f9f9;
+      border-radius: 5px;
+      border: solid 1px #d0d0d0;
+      padding: 10px;
+
+      a{
+        display: block;
+      }
+    }
+
+    &-body{
+      flex: calc( 100% - 250px);
+    }
+
+    &-menu{
+      font-size: 14px;
+      line-height: 1.6;
+      font-weight: bold;
+
+      &-active{
+        background: #fff;
+        border: solid 1px #ccc;
+        border-radius: 4px;
+        margin-right: -1px;
+      }
+
+      &:hover{
+        background: #fff;
+      }
+
+      a {
+        color: inherit;
+        padding: 10px 15px;
+      }
+    }
+    .postbox{
+      > h3{
+        padding: 0px 20px;
+      }
+    }
+  }
 }
