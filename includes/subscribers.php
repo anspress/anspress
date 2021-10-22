@@ -27,7 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since  4.0.0
  * @since  4.1.5 Removed default values for arguments `$event` and `$ref_id`. Delete count cache.
  */
-function ap_new_subscriber( $user_id = false, $event, $ref_id ) {
+function ap_new_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
 	global $wpdb;
 
 	if ( false === $user_id ) {
@@ -82,12 +82,17 @@ function ap_new_subscriber( $user_id = false, $event, $ref_id ) {
  *
  * @since  4.0.0
  * @since  4.1.5 Removed default values for arguments `$event` and `$ref_id`.
+ * @since  4.2.0 Fixed: warning `Required parameter $event follows optional parameter $user_id`.
  */
-function ap_get_subscriber( $user_id = false, $event, $ref_id ) {
+function ap_get_subscriber( $user_id = false, $event = '', $ref_id = '' ) {
 	global $wpdb;
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
+	}
+
+	if ( empty( $event ) || empty( $ref_id ) ) {
+		return false;
 	}
 
 	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
