@@ -6,6 +6,13 @@ on:
   release:
     types: [ published ]
 
+  workflow_dispatch:
+    inputs:
+      refSha:
+        description: 'branch'
+        required: true
+        default: dev
+
 jobs:
   build-deploy:
     name: Deploy to demo and dev sites
@@ -15,13 +22,14 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 2
-        ref: dev
+        ref: ${{ github.event.inputs.refSha }}
 
-    - name: Archive readme
-      uses: actions/upload-artifact@v2
-      with:
-        name: readme
-        path: anspress-question-answer.php
+    - name: Build
+      run: |
+        npm install
+        npm run build
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.head_ref }}/g' /anspress-question-answer.php
+        sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/${{ github.head_ref }}/g' /readme.txt
 
     - name: Upload to development site
       uses: appleboy/scp-action@v0.1.1
@@ -29,7 +37,7 @@ jobs:
         host: ${{ secrets.DEV_SFTP_HOST }}
         username: ${{ secrets.DEV_SFTP_USERNAME }}
         password: ${{ secrets.DEV_SFTP_PASSWORD }}
-        source: "*"
+        source: "*, !.git, !.github, !.wordpress.org"
         target: ${{ secrets.DEV_PLUGIN_PATH }}
 
   wp-release:
