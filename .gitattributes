@@ -11,8 +11,8 @@
 /package.json export-ignore
 /plugin.json export-ignore
 /.wordpress-org export-ignore
-/.github export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /.docker-compose.yml export-ignore
 /.vscode export-ignore
+/.git export-ignore
