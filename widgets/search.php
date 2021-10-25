@@ -37,6 +37,8 @@ class AP_Search_Widget extends WP_Widget {
 	 *
 	 * @param array $args Widget arguments.
 	 * @param array $instance Widget instance.
+	 *
+	 * @return void
 	 */
 	public function widget( $args, $instance ) {
 		/**
@@ -44,15 +46,15 @@ class AP_Search_Widget extends WP_Widget {
 		 */
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		echo $args['before_widget']; // xss okay.
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . $title . $args['after_title']; // xss okay.
+			echo wp_kses_post( $args['before_title'] . $title . $args['after_title'] );
 		}
 
 		ap_get_template_part( 'search-form' );
 
-		echo $args['after_widget']; // xss okay.
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -87,7 +89,8 @@ class AP_Search_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 
 		return $instance;
 	}

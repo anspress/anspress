@@ -4,9 +4,8 @@
  *
  * The most advance community question and answer system for WordPress
  *
- * @author    Rahul Aryan <support@rahularyan.com>
- * @copyright Copyright (c) 2014-2020, Rahul Aryan
- * @copyright Copyright (c) 2020, LattePress
+ * @author    Rahul Aryan <rah12@live.com>
+ * @copyright Copyright (c) 2014-2020, Rahul Aryan. 2020, LattePress
  * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
  * @link      https://anspress.net
  * @package   AnsPress
@@ -35,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'AP_DB_VERSION', 35 );
 
 // Check if using required PHP version.
-if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
+if ( version_compare( PHP_VERSION, '7.0' ) < 0 ) {
 
 	/**
 	 * Checks PHP version before initiating AnsPress.
@@ -43,7 +42,11 @@ if ( version_compare( PHP_VERSION, '5.5' ) < 0 ) {
 	function ap_admin_php_version__error() {
 		$class    = 'notice notice-error';
 		$message  = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
-		$message .= sprintf( __( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ), PHP_VERSION );
+		$message .= sprintf(
+			// translators: %s contain server PHP version.
+			__( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ),
+			PHP_VERSION
+		);
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 	}
 
@@ -64,14 +67,14 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.1.24';
+		private $_plugin_version = '4.1.24'; // phpcs:ignore
 
 		/**
 		 * Class instance
 		 *
 		 * @access public
 		 * @static
-		 * @var object
+		 * @var AnsPress
 		 */
 		public static $instance = null;
 
@@ -160,7 +163,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @var array
 		 * @since 4.1.0
 		 */
-		public $question_rule = [];
+		public $question_rule = array();
 
 		/**
 		 * The forms.
@@ -168,7 +171,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @var array
 		 * @since 4.1.0
 		 */
-		public $forms = [];
+		public $forms = array();
 
 		/**
 		 * The activity object.
@@ -200,7 +203,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access public
 		 * @static
 		 *
-		 * @return instance
+		 * @return AnsPress
 		 */
 		public static function instance() {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
@@ -237,7 +240,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				if ( class_exists( 'WP_CLI' ) ) {
 					WP_CLI::add_command( 'anspress', 'AnsPress_Cli' );
 				}
-			} // End if().
+			}
 
 			return self::$instance;
 		}
@@ -247,28 +250,20 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 *
 		 * @since  2.0.1
 		 * @access private
+		 * @since 4.2.0 Made constants compatible for code editors.
 		 */
 		private function setup_constants() {
 			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
 
-			$constants = array(
-				'DS'                  => DIRECTORY_SEPARATOR,
-				'AP_VERSION'          => $this->_plugin_version,
-				'ANSPRESS_DIR'        => $plugin_dir,
-				'ANSPRESS_URL'        => plugin_dir_url( __FILE__ ),
-				'ANSPRESS_WIDGET_DIR' => $plugin_dir . 'widgets/',
-				'ANSPRESS_THEME_DIR'  => $plugin_dir . 'templates',
-				'ANSPRESS_THEME_URL'  => plugin_dir_url( __FILE__ ) . 'templates',
-				'ANSPRESS_CACHE_DIR'  => WP_CONTENT_DIR . '/cache/anspress',
-				'ANSPRESS_CACHE_TIME' => HOUR_IN_SECONDS,
-				'ANSPRESS_ADDONS_DIR' => $plugin_dir . 'addons',
-			);
-
-			foreach ( $constants as $k => $val ) {
-				if ( ! defined( $k ) ) {
-					define( $k, $val );
-				}
-			}
+			define( 'DS', DIRECTORY_SEPARATOR );
+			define( 'AP_VERSION', $this->_plugin_version );
+			define( 'ANSPRESS_DIR', plugin_dir_url( __FILE__ ) );
+			define( 'ANSPRESS_URL', plugin_dir_url( __FILE__ ) );
+			define( 'ANSPRESS_WIDGET_DIR', $plugin_dir . 'widgets/' );
+			define( 'ANSPRESS_THEME_DIR', $plugin_dir . 'templates' );
+			define( 'ANSPRESS_CACHE_DIR', WP_CONTENT_DIR . '/cache/anspress' );
+			define( 'ANSPRESS_CACHE_TIME', HOUR_IN_SECONDS );
+			define( 'ANSPRESS_ADDONS_DIR', $plugin_dir . 'addons' );
 		}
 
 		/**
@@ -431,14 +426,12 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since  2.4
 		 * @access private
 		 *
-		 * @param array             $hooks         The collection of hooks that is being registered (that is, actions or filters).
-		 * @param string            $hook          The name of the WordPress filter that is being registered.
-		 * @param object            $component     A reference to the instance of the object on which the filter is defined.
-		 * @param string            $callback      The name of the function definition on the $component.
-		 * @param int      Optional $priority      The priority at which the function should be fired.
-		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
-		 * @param integer           $priority      Priority.
-		 * @param integer           $accepted_args Accepted arguments.
+		 * @param array  $hooks         The collection of hooks that is being registered (that is, actions or filters).
+		 * @param string $hook          The name of the WordPress filter that is being registered.
+		 * @param object $component     A reference to the instance of the object on which the filter is defined.
+		 * @param string $callback      The name of the function definition on the $component.
+		 * @param int    $priority      The priority at which the function should be fired.
+		 * @param int    $accepted_args The number of arguments that should be passed to the $callback.
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
 		 */
@@ -474,6 +467,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 *
 		 * @param string $name Name of form.
 		 * @return false|object
+		 * @throws \Exception Throws when requested from does not exits.
 		 * @since 4.1.0
 		 * @since 4.2.0 Fixed: Only variable references should be returned by reference.
 		 */
@@ -484,7 +478,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				return $this->forms[ $name ];
 			}
 
-			throw new \Exception( sprintf( __( 'Requested form: %s is not registered .', 'anspress-question-answer' ), $name ) );
+			throw new \Exception(
+				sprintf(
+					// translators: %s contains name of the form requested.
+					__( 'Requested form: %s is not registered .', 'anspress-question-answer' ),
+					$name
+				)
+			);
 		}
 
 		/**
@@ -526,7 +526,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			return false;
 		}
 	}
-} // End if().
+}
 
 /**
  * Run AnsPress thingy
@@ -547,7 +547,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 	/**
 	 * AnsPress initialization class.
 	 */
-	class AnsPress_Init {
+	class AnsPress_Init { // phpcs:ignore
 
 		/**
 		 * Load anspress.
@@ -629,17 +629,17 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			return $tables;
 		}
 	}
-} // End if().
+}
 
-add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ], 1 );
-add_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ], 0 );
-add_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ], 10, 6 );
-add_filter( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ], 10, 2 );
+add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_anspress' ), 1 );
+add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_textdomain' ), 0 );
+add_action( 'wpmu_new_blog', array( 'AnsPress_Init', 'create_blog' ), 10, 6 );
+add_filter( 'wpmu_drop_tables', array( 'AnsPress_Init', 'drop_blog_tables' ), 10, 2 );
 
 require_once dirname( __FILE__ ) . '/includes/class/roles-cap.php';
 require_once dirname( __FILE__ ) . '/includes/class/class-singleton.php';
 
-/*
+/**
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */

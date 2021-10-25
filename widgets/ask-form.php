@@ -33,7 +33,7 @@ class AP_Askform_Widget extends WP_Widget {
 	/**
 	 * Render widget.
 	 *
-	 * @param array $args Arhuments.
+	 * @param array $args     Arguments.
 	 * @param array $instance Instance.
 	 * @return void
 	 */
@@ -43,19 +43,19 @@ class AP_Askform_Widget extends WP_Widget {
 		 */
 		$title = apply_filters( 'widget_title', $instance['title'] );
 
-		echo $args['before_widget']; // xss okay.
+		echo wp_kses_post( $args['before_widget'] );
 
 		if ( ! empty( $title ) ) {
-			echo $args['before_title'] . esc_html( $title ) . $args['after_title']; // xss okay.
+			echo wp_kses_post( $args['before_title'] . esc_html( $title ) . $args['after_title'] );
 		}
 
-		wp_enqueue_script( 'anspress-main' );
+		wp_enqueue_script( 'anspress-theme' );
 		?>
 		<div id="ap-ask-page" class="ap-widget-inner">
 			<?php ap_ask_form(); ?>
 		</div>
 		<?php
-		echo $args['after_widget']; // xss okay.
+		echo wp_kses_post( $args['after_widget'] );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class AP_Askform_Widget extends WP_Widget {
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
-				<?php _e( 'Title:', 'anspress-question-answer' ); ?>
+				<?php esc_attr_e( 'Title:', 'anspress-question-answer' ); ?>
 			</label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
@@ -93,7 +93,8 @@ class AP_Askform_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+
+		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 
 		return $instance;
 	}

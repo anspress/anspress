@@ -13,11 +13,12 @@ parameters:
     excludes_analyse:
         - vendor/
         - tests/
+        - node_modules/
+        - assets/
     bootstrapFiles:
-        # CMB2 is loaded in this file
         - tests/phpstan/bootstrap.php
     scanFiles:
-        - PointPress.php
+        - anspress-question-answer.php
     ignoreErrors:
         # Void as typehints are available only on PHP 7.1+
         - '#should be referenced via a fully qualified name\.$#'
