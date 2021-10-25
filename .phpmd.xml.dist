@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<ruleset name="PointPress Code Quality Standards"
+		 xmlns="http://pmd.sf.net/ruleset/1.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+		 xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	<description>Analyze PointPress PHP scripts for code quality issues.</description>
+
+	<exclude-pattern>*tests/*.php</exclude-pattern>
+	<exclude-pattern>*tests\*.php</exclude-pattern>
+	<exclude-pattern>*vendor/*.php</exclude-pattern>
+	<exclude-pattern>*vendor\*.php</exclude-pattern>
+
+	<rule ref="rulesets/cleancode.xml">
+		<!-- This is not a reliable indicator of violating SRP in a meaningful way, and our typical usage of it is fine. -->
+		<exclude name="BooleanArgumentFlag" />
+		<exclude name="ElseExpression" />
+
+		<!-- This is too strict for us right now. -->
+		<exclude name="StaticAccess" />
+	</rule>
+
+	<rule ref="rulesets/codesize.xml">
+		<!-- Include later with custom values -->
+		<exclude name="ExcessiveMethodLength" />
+		<exclude name="CyclomaticComplexity"  />
+	</rule>
+
+	<rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+		<properties>
+			<property name="minimum" value="70" />
+		</properties>
+	</rule>
+
+	<rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+		<properties>
+			<!-- This value is particularly difficult to tune for a good signal/noise ratio, but let's try it this
+			     low for awhile and only bump it if we really need to, because keeping CC low makes a big difference
+			     when it comes to maintainability, reliability, and testability. -->
+			<property name="reportLevel" value="8" />
+		</properties>
+	</rule>
+
+	<!-- `rulesets/controversial.xml` is a non-starter, because camelCase is inconsistent with the WP Coding Standards,
+	     and requiring a framework to access superglobals overkill. -->
+
+	<rule ref="rulesets/design.xml">
+		<!-- There are proper cases for this, like exit()'ing after a redirect -->
+		<exclude name="ExitExpression" />
+	</rule>
+
+	<rule ref="rulesets/naming.xml">
+		<!-- Include later with custom values -->
+		<exclude name="ShortVariable" />
+
+		<!-- Variable names should be descriptive and self-documenting -->
+		<exclude name="LongVariable" />
+	</rule>
+
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <!-- $a and $b are conventionally used in usort() callbacks. $to is perfectly descriptive with `wp_mail()`. -->
+            <property name="exceptions" value="a,b,to,wp" />
+        </properties>
+    </rule>
+
+	<rule ref="rulesets/unusedcode.xml">
+		<!-- It's nice to know what variables are passed from WP hooks, even if we're not using them right now.
+		     Also, PHP doesn't support named parameters, so sometimes it's unavoidable  -->
+		<exclude name="UnusedFormalParameter" />
+
+		<!-- Too many false positives when a controller function creates a variable, and then includes a view file
+			 which uses the variable -->
+		<exclude name="UnusedLocalVariable" />
+		<exclude name="UnusedPrivateMethod" />
+	</rule>
+</ruleset>

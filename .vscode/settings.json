@@ -1,5 +1,6 @@
 {
-    "cSpell.ignoreWords": [
-        "anspress"
-    ]
+  "cSpell.ignoreWords": [
+    "anspress"
+  ],
+  "editor.detectIndentation": false
 }

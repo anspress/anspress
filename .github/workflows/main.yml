@@ -28,6 +28,16 @@ jobs:
         npm run build
         sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/dev/g' ./anspress-question-answer.php
         sed -i -e 's/ANSPRESS_CURRENT_DEV_VERSION/dev/g' ./readme.txt
+        rm -rf ./node_modules
+        rm -rf ./tests
+        rm -rf ./.git
+        rm -rf ./.github
+        rm -rf ./.wordpress.org
+        rm package.json
+        rm package-lock.json
+        rm phpcs.xml
+        rm docker-compose.yml
+        rm Dockerfile
 
     - name: Upload to development site
       uses: appleboy/scp-action@v0.1.1
@@ -35,7 +45,7 @@ jobs:
         host: ${{ secrets.DEV_SFTP_HOST }}
         username: ${{ secrets.DEV_SFTP_USERNAME }}
         password: ${{ secrets.DEV_SFTP_PASSWORD }}
-        source: "*, !.git, !.github, !.wordpress.org, node_modules, tests, docker-compose.yml, Dockerfile, README.md, package.json, package-lock.json, phpcs.xml"
+        source: "*"
         target: ${{ secrets.DEV_PLUGIN_PATH }}
 
   wp-release:

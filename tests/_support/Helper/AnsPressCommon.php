@@ -1,10 +1,12 @@
 <?php
+namespace Helper;
 
-namespace AnsPress\Tests\Testcases;
+// here you can define custom actions
+// all public methods declared in helper class will be available in $I
 
-trait Common {
-
-	public function logout() {
+class AnsPressCommon extends \Codeception\Module
+{
+    public function logout() {
 		unset( $GLOBALS['current_user'] );
 		$cookies = array( AUTH_COOKIE, SECURE_AUTH_COOKIE, LOGGED_IN_COOKIE, USER_COOKIE, PASS_COOKIE );
 		foreach ( $cookies as $c ) {

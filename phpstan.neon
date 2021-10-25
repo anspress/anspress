@@ -1,0 +1,42 @@
+# Start command: composer update --classmap-authoritative && vendor/bin/phpstan analyze
+
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    # Void as typehints are available only on PHP 7.1+
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
+    paths:
+        - ./
+    excludes_analyse:
+        - vendor/
+        - tests/
+    bootstrapFiles:
+        # CMB2 is loaded in this file
+        - tests/phpstan/bootstrap.php
+    scanFiles:
+        - PointPress.php
+    ignoreErrors:
+        # Void as typehints are available only on PHP 7.1+
+        - '#should be referenced via a fully qualified name\.$#'
+        # In wp_count_posts(): $counts = (object) $counts;
+        # - '#^Access to an undefined property object::\$pending\.$#'
+        # AMP plugin stubs can be also generated
+        # - '#^Function is_amp_endpoint not found\.$#'
+        # PHPStan is better safe than sorry!
+        # https://github.com/phpstan/phpstan/issues/1060#issuecomment-667675767
+        # - '#^Argument of an invalid type object supplied for foreach, only iterables are supported\.$#'
+        # https://github.com/Freemius/wordpress-sdk/pull/439
+        #- '#^Parameter \#1 \$module of function fs_dynamic_init expects array<string, string>, array<string, array<string, string>\|bool\|string> given\.$#'
+# Not used in the boilerplate.
+#        # Uses func_get_args()
+#        - '#^Function apply_filters invoked with [34567] parameters, 2 required\.$#'
+#        # https://core.trac.wordpress.org/ticket/43304
+#        - '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
+#        # WP-CLI accepts a class as callable
+#        - '/^Parameter #2 \$callable of static method WP_CLI::add_command\(\) expects callable\(\): mixed, \S+ given\.$/'
+#        # WP-CLI stubs can be generated and included in "scanFiles:"
+#        # https://github.com/szepeviktor/phpstan-wordpress/blob/master/stub-generators/wp-cli-generate-stubs.sh
+#        - '#on an unknown class WP_CLI\.$#'

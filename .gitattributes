@@ -16,3 +16,5 @@
 /.docker-compose.yml export-ignore
 /.vscode export-ignore
 /.git export-ignore
+/vendor export-ignore
+/Dockerfile export-ignore

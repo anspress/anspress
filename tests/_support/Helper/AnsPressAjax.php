@@ -1,9 +1,12 @@
 <?php
+namespace Helper;
 
-namespace AnsPress\Tests\Testcases;
+// here you can define custom actions
+// all public methods declared in helper class will be available in $I
 
-trait Ajax {
-	public function ap_ajax_success( $key = false, $return_json = false ) {
+class AnsPressAjax extends \Codeception\Module
+{
+    public function ap_ajax_success( $key = false, $return_json = false ) {
 		preg_match( '#<div[^>]*>(.*?)</div>#', $this->_last_response, $match );
 		if ( ! isset( $match[1] ) ) {
 			return false;
