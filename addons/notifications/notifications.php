@@ -45,41 +45,57 @@ class Notifications extends \AnsPress\Singleton {
 	 * @since 4.1.8
 	 */
 	protected function __construct() {
-		ap_add_default_options(
-			[
-				'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
-				'user_page_slug_notifications'  => 'notifications',
-			]
-		);
+		ap_add_default_options( array(
+			'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
+			'user_page_slug_notifications'  => 'notifications',
+		));
 
-		anspress()->add_filter( 'ap_form_addon-notifications', $this, 'load_options' );
+		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
+		anspress()->add_filter( 'ap_form_options_features_notification', $this, 'load_options' );
 
 		// Activate AnsPress notifications only if buddypress not active.
-		if ( ! ap_is_addon_active( 'buddypress.php' ) ) {
-			ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
-			anspress()->add_filter( 'ap_menu_object', $this, 'ap_menu_object' );
-			anspress()->add_action( 'ap_notification_verbs', $this, 'register_verbs' );
-			anspress()->add_action( 'ap_user_pages', $this, 'ap_user_pages' );
-			anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
-			anspress()->add_action( 'ap_trash_question', $this, 'trash_question', 10, 2 );
-			anspress()->add_action( 'ap_before_delete_question', $this, 'trash_question', 10, 2 );
-			anspress()->add_action( 'ap_trash_answer', $this, 'trash_answer', 10, 2 );
-			anspress()->add_action( 'ap_before_delete_answer', $this, 'trash_answer', 10, 2 );
-			anspress()->add_action( 'ap_untrash_answer', $this, 'new_answer', 10, 2 );
-			anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
-			anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer' );
-			anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
-			anspress()->add_action( 'ap_unpublish_comment', $this, 'delete_comment' );
-			anspress()->add_action( 'ap_vote_up', $this, 'vote_up' );
-			anspress()->add_action( 'ap_vote_down', $this, 'vote_down' );
-			anspress()->add_action( 'ap_undo_vote_up', $this, 'undo_vote_up' );
-			anspress()->add_action( 'ap_undo_vote_down', $this, 'undo_vote_down' );
-			anspress()->add_action( 'ap_insert_reputation', $this, 'insert_reputation', 10, 4 );
-			anspress()->add_action( 'ap_delete_reputation', $this, 'delete_reputation', 10, 3 );
-			anspress()->add_action( 'ap_ajax_mark_notifications_seen', $this, 'mark_notifications_seen' );
-			anspress()->add_action( 'ap_ajax_load_more_notifications', $this, 'load_more_notifications' );
-			anspress()->add_action( 'ap_ajax_get_notifications', $this, 'get_notifications' );
+		if ( ap_is_addon_active( 'buddypress.php' ) ) {
+			return;
 		}
+
+		ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
+		anspress()->add_filter( 'ap_menu_object', $this, 'ap_menu_object' );
+		anspress()->add_action( 'ap_notification_verbs', $this, 'register_verbs' );
+		anspress()->add_action( 'ap_user_pages', $this, 'ap_user_pages' );
+		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_trash_question', $this, 'trash_question', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_question', $this, 'trash_question', 10, 2 );
+		anspress()->add_action( 'ap_trash_answer', $this, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_before_delete_answer', $this, 'trash_answer', 10, 2 );
+		anspress()->add_action( 'ap_untrash_answer', $this, 'new_answer', 10, 2 );
+		anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
+		anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer' );
+		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
+		anspress()->add_action( 'ap_unpublish_comment', $this, 'delete_comment' );
+		anspress()->add_action( 'ap_vote_up', $this, 'vote_up' );
+		anspress()->add_action( 'ap_vote_down', $this, 'vote_down' );
+		anspress()->add_action( 'ap_undo_vote_up', $this, 'undo_vote_up' );
+		anspress()->add_action( 'ap_undo_vote_down', $this, 'undo_vote_down' );
+		anspress()->add_action( 'ap_insert_reputation', $this, 'insert_reputation', 10, 4 );
+		anspress()->add_action( 'ap_delete_reputation', $this, 'delete_reputation', 10, 3 );
+		anspress()->add_action( 'ap_ajax_mark_notifications_seen', $this, 'mark_notifications_seen' );
+		anspress()->add_action( 'ap_ajax_load_more_notifications', $this, 'load_more_notifications' );
+		anspress()->add_action( 'ap_ajax_get_notifications', $this, 'get_notifications' );
+	}
+
+	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function add_to_settings_page( $groups ) {
+		$groups['notification'] = array(
+			'label' => __( 'Notification', 'anspress-question-answer' ),
+		);
+
+		return $groups;
 	}
 
 	/**

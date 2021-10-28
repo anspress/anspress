@@ -55,11 +55,27 @@ class Akismet extends \AnsPress\Singleton {
 			'spam_post_action' => 'moderate',
 		));
 
-		anspress()->add_action( 'ap_form_addon-akismet', $this, 'option_form' );
+		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
+		anspress()->add_filter( 'ap_form_options_features_akismet', $this, 'option_form' );
 		anspress()->add_action( 'ap_after_question_form_processed', $this, 'new_question_answer' );
 		anspress()->add_action( 'ap_after_answer_form_processed', $this, 'new_question_answer' );
 		anspress()->add_action( 'admin_action_ap_mark_spam', $this, 'submit_spam' );
 		anspress()->add_action( 'post_row_actions', $this, 'row_actions', 10, 2 );
+	}
+
+	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function add_to_settings_page( $groups ) {
+		$groups['akismet'] = array(
+			'label' => __( 'Akismet', 'anspress-question-answer' ),
+		);
+
+		return $groups;
 	}
 
 	/**

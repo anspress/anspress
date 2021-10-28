@@ -8,6 +8,7 @@
  * @subpackage Admin Pages
  * @since      4.1.0
  * @since      4.2.0 Changed title of page from to `AnsPress Settings`.
+ * @since      4.2.0 Added new settings "Features".
  */
 
 // If this file is called directly, abort.
@@ -27,9 +28,23 @@ if ( ! current_user_can( 'manage_options' ) ) {
  */
 do_action( 'ap_before_options_page' );
 
+$features_groups = array(
+	'toggle_features' => array(
+		'label'    => __( 'Toggle Features', 'anspress-question-answer' ),
+		'template' => 'toggle-features.php',
+		'info'     => __( 'Some features have additional settings which will be visible in the settings sidebar after they are enabled.', 'anspress-question-answer' ),
+	),
+);
+
+$features_groups = apply_filters( 'ap_settings_menu_features_groups', $features_groups );
+
 $all_options = array(
+	'features'      => array(
+		'label'  => __( '⭐ Features', 'anspress-question-answer' ),
+		'groups' => $features_groups,
+	),
 	'general'       => array(
-		'label'  => __( 'General', 'anspress-question-answer' ),
+		'label'  => __( '⚙ General', 'anspress-question-answer' ),
 		'groups' => array(
 			'pages'      => array(
 				'label' => __( 'Pages', 'anspress-question-answer' ),
@@ -42,11 +57,12 @@ $all_options = array(
 			),
 		),
 	),
+
 	'postscomments' => array(
-		'label' => __( 'Posts & Comments', 'anspress-question-answer' ),
+		'label' => __( '📃 Posts & Comments', 'anspress-question-answer' ),
 	),
 	'user' => array(
-		'label' => __( 'User', 'anspress-question-answer' ),
+		'label' => __( '👨‍💼 User', 'anspress-question-answer' ),
 		'groups' => array(
 			'activity' => array(
 				'label' => __( 'Activity', 'anspress-question-answer' ),
@@ -54,7 +70,7 @@ $all_options = array(
 		),
 	),
 	'uac'           => array(
-		'label'  => __( 'User Access Control', 'anspress-question-answer' ),
+		'label'  => __( '🔑 User Access Control', 'anspress-question-answer' ),
 		'groups' => array(
 			'reading' => array(
 				'label' => __( 'Reading Permissions', 'anspress-question-answer' ),
@@ -72,7 +88,7 @@ $all_options = array(
 		),
 	),
 	'tools'         => array(
-		'label'  => __( 'Tools', 'anspress-question-answer' ),
+		'label'  => __( '🔨 Tools', 'anspress-question-answer' ),
 		'groups' => array(
 			're-count'  => array(
 				'label'    => __( 'Re-count', 'anspress-question-answer' ),
@@ -105,7 +121,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 
 	if ( ! $form->have_errors() ) {
 		$values  = $form->get_values();
-		$options = get_option( 'anspress_opt', [] );
+		$options = get_option( 'anspress_opt', array() );
 
 		foreach ( $values as $key => $opt ) {
 			$options[ $key ] = $opt['value'];
@@ -148,51 +164,53 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 	</h2>
 	<div class="clear"></div>
 
-	<!-- <div class="anspress-imglinks">
-		<a href="https://anspress.net/extensions/" target="_blank">
-			<img src="<?php echo ANSPRESS_URL; ?>assets/images/more_functions.svg" />
-		</a>
-	</div> -->
-
 	<div class="ap-optionpage-wrap no-overflow">
 		<div class="ap-wrap">
+			<?php
+				$active_tab     = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
+				$form           = ap_sanitize_unslash( 'ap_form_name', 'r' );
+				$action_url     = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
+			?>
+
 			<div class="anspress-options">
 				<div class="anspress-options-tab clearfix">
 					<?php
-						$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
+					$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
 
-						foreach ( $all_options as $key => $args ) {
-							echo '<div class="anspress-options-menu' . ( $key === $active_tab ? ' anspress-options-menu-active' : '' ) . '">';
-							echo '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options' ) ) . '&active_tab=' . esc_attr( $key ) . '" class="anspress-options-menu-' . esc_attr( $key ) . '">' . esc_html( $args['label'] ) . '</a>';
+					foreach ( $all_options as $key => $args ) {
+						$tab_url = admin_url( 'admin.php?page=anspress_options' ) . '&active_tab=' . esc_attr( $key );
+
+						echo '<div class="anspress-options-menu' . ( $key === $active_tab ? ' anspress-options-menu-active' : '' ) . '">';
+						echo '<a href="' . esc_url( $tab_url ) . '" class="anspress-options-menu-' . esc_attr( $key ) . '">' . esc_html( $args['label'] ) . '</a>';
+
+						if ( ! empty( $args['groups'] ) && count( $args['groups'] ) > 1 ) {
+							echo '<div class="anspress-options-menu-subs">';
+							foreach ( $args['groups'] as $groupkey => $sub_args ) {
+								echo '<a href="' . esc_url( $tab_url . '#' . esc_attr( $key . '-' . $groupkey ) ) . '">' . esc_attr( $sub_args['label'] ) . '</a>';
+							}
 							echo '</div>';
 						}
 
-						/**
-						 * Action triggered right after AnsPress options tab links.
-						 * Can be used to show custom tab links.
-						 *
-						 * @since 4.1.0
-						 */
-						do_action( 'ap_options_tab_links' );
+						echo '</div>';
+
+						if ( isset( $args['sep'] ) && $args['sep'] ) {
+							echo '<div class="anspress-options-menu-sep"></div>';
+						}
+					}
+
+					/**
+					 * Action triggered right after AnsPress options tab links.
+					 * Can be used to show custom tab links.
+					 *
+					 * @since 4.1.0
+					 */
+					do_action( 'ap_options_tab_links' );
 					?>
 				</div>
 				<div class="anspress-options-body">
-					<?php
-						$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
-						$form       = ap_sanitize_unslash( 'ap_form_name', 'r' );
-						$action_url = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
-					?>
 					<div class="ap-group-options">
 
 						<?php if ( isset( $all_options[ $active_tab ] ) ) : ?>
-
-							<?php if ( ! empty( $all_options[ $active_tab ]['groups'] ) && count( $all_options[ $active_tab ]['groups'] ) > 1 ) : ?>
-								<p class="ap-tab-subs">
-									<?php foreach ( $all_options[ $active_tab ]['groups'] as $groupkey => $args ) : ?>
-										<a href="#<?php echo $active_tab . '-' . $groupkey; ?>"><?php echo esc_attr( $args['label'] ); ?></a>
-									<?php endforeach; ?>
-								</p>
-							<?php endif; ?>
 
 							<?php if ( true === $updated ) : ?>
 								<div class="notice notice-success is-dismissible">
@@ -205,8 +223,12 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 								<?php foreach ( $all_options[ $active_tab ]['groups'] as $groupkey => $args ) : ?>
 									<div class="postbox">
 										<h3 id="<?php echo esc_attr( $active_tab . '-' . $groupkey ); ?>"><?php echo esc_attr( $args['label'] ); ?></h3>
-										<div class="inside">
+										<div class="inside anspress-options-inside-<?php echo esc_attr( $groupkey ); ?>">
 											<?php
+											if ( ! empty( $args['info'] ) ) {
+												echo '<p class="anspress-options-info">💡 ' . wp_kses_post( $args['info'] ) . '</p>';
+											}
+
 											if ( isset( $args['template'] ) ) {
 												include ANSPRESS_DIR . '/admin/views/' . $args['template'];
 											} else {
@@ -255,6 +277,19 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 							do_action( 'ap_option_page_content' );
 						?>
 					</div>
+				</div>
+				<div class="anspress-options-right">
+					<?php if ( 'features' !== $active_tab ) : ?>
+						<div class="ap-features-info">
+							<div>
+								💡
+								<p><?php esc_attr_e( 'Functions such as email notifications, categories, tags and many more are disabled by default. Please carefully check and enable them if needed.', 'anspress-question-answer' ); ?></p>
+							</div>
+							<div>
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=features' ) ); ?>" class="button"><?php esc_attr_e( 'Enable features', 'anspress-question-answer' ); ?></a>
+							</div>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

@@ -1172,13 +1172,12 @@ ul.ap-meta-list {
   }
 }
 .ap-addon{
-  width: 300px;
+  width: 212px;
   border: solid 1px #e7e7e7;
   background: #fff;
   margin: 0 15px 30px;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-  overflow: hidden;
   position: relative;
   p{
     margin-top: 0;
@@ -1187,14 +1186,12 @@ ul.ap-meta-list {
     overflow: hidden;
   }
   h4{
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 5px;
     margin-top: 5px;
   }
   &-tags{
-    position: absolute;
-    padding: 5px;
-    left: 10px;
+    float: right;
   }
   &-image {
     padding: 10px 10px 0;
@@ -1207,8 +1204,9 @@ ul.ap-meta-list {
     padding: 10px;
   }
   &.active{
-    border-color: #bdd7e3;
-    background: #edf8fd;
+    border-color: #4caf50;
+    background: #ffffff;
+    border-width: 3px;
   }
   &s-list {
     display: flex;
@@ -1216,13 +1214,15 @@ ul.ap-meta-list {
   }
 
   &-status{
-    font-weight: normal;
-    float: right;
-    font-size: 11px;
-    background: #03a9f4;
+    font-weight: bold;
+    background: #4caf50;
     color: #fff;
-    padding: 0px 6px;
+    padding: 1px 9px;
     border-radius: 2px;
+    border: solid 1px #fff;
+    font-size: 10px;
+    text-transform: uppercase;
+    display: block;
   }
   &-pro{
     font-weight: normal;
@@ -1234,6 +1234,11 @@ ul.ap-meta-list {
     border-radius: 2px;
     margin-right: 6px;
   }
+	&-sep {
+		flex: 100%;
+		margin-bottom: 20px;
+		border-top: solid 3px #ddd;
+	}
 }
 .ap-events{
   width: 100%;
@@ -1549,31 +1554,86 @@ span.recount-msg {
       flex: calc( 100% - 250px);
     }
 
+		&-inside-toggle_features {
+				background: #f3f3f3;
+				padding: 20px 10px !important;
+		}
+
     &-menu{
-      font-size: 14px;
-      line-height: 1.6;
-      font-weight: bold;
+			font-size: 14px;
+			line-height: 1.6;
+			font-weight: 600;
 
       &-active{
-        background: #fff;
-        border: solid 1px #ccc;
-        border-radius: 4px;
-        margin-right: -1px;
+				> a{
+					color: #f22844 !important;
+				}
       }
+			a:hover{
+				color: #f22844 !important;
+			}
 
-      &:hover{
-        background: #fff;
+      > a {
+				color: inherit;
+				padding: 5px 0px;
+				border-radius: 4px;
       }
-
-      a {
-        color: inherit;
-        padding: 10px 15px;
-      }
+			&-sep{
+				height: 2px;
+				background: #ddd;
+				margin: 12px 0;
+			}
+			&-subs{
+				margin: 0 20px;
+				a {
+					font-size: 13px;
+				}
+			}
     }
     .postbox{
       > h3{
         padding: 0px 20px;
       }
     }
+
+		&-info{
+			padding: 0px 15px 10px;
+			margin-top: 0;
+			font-size: 16px;
+			border-bottom: solid 1px #ddd;
+		}
+
+		&-right {
+			flex: 300px;
+			margin-left: 20px;
+		}
   }
+}
+.ap-features-info {
+	background: #effaff;
+	padding: 10px 10px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	border: solid 2px #03a9f4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+
+	img{
+    height: 2em !important;
+    width: 2em !important;
+    float: left;
+    margin-top: 21px !important;
+    display: block !important;
+    margin-right: 10px !important;
+	}
+	p{
+		overflow: hidden;
+	}
+	.button{
+		background: #4caf50;
+		color: #fff;
+	}
 }

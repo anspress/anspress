@@ -45,13 +45,14 @@ class Captcha extends \AnsPress\Singleton {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	protected function __construct() {
-		ap_add_default_options( [
+		ap_add_default_options( array(
 			'recaptcha_method'        => 'post',
 			'recaptcha_exclude_roles' => [ 'ap_moderator' => 1 ],
-		]);
+		) );
 
+		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
+		anspress()->add_action( 'ap_form_options_features_recaptcha', $this, 'options' );
 		anspress()->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
-		anspress()->add_action( 'ap_form_addon-recaptcha', $this, 'options' );
 		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_answer_form_fields', $this, 'ap_question_form_fields', 10, 2 );
 		anspress()->add_action( 'ap_comment_form_fields', $this, 'ap_question_form_fields', 10, 2 );
@@ -66,6 +67,21 @@ class Captcha extends \AnsPress\Singleton {
 	public function enqueue_scripts() {
 		wp_register_script( 'grecaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&render=explicit' );
 		wp_enqueue_script( 'ap-recaptcha', ANSPRESS_URL . 'addons/recaptcha/script.js', [], true );
+	}
+
+	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function add_to_settings_page( $groups ) {
+		$groups['recaptcha'] = array(
+			'label' => __( 'reCaptcha', 'anspress-question-answer' ),
+		);
+
+		return $groups;
 	}
 
 	/**

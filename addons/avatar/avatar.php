@@ -46,18 +46,36 @@ class Avatar extends \AnsPress\Singleton {
 
 	/**
 	 * Initialize the class.
+	 *
+	 * @since unknown
+	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
+	 * @since 4.2.0 Renamed `ap_form_addon-avatar` to `ap_form_options_features_avatar`.
 	 */
 	protected function __construct() {
-		ap_add_default_options(
-			[
-				'avatar_font'  => 'Pacifico',
-				'avatar_force' => false,
-			]
-		);
+		ap_add_default_options( array(
+			'avatar_font'  => 'Pacifico',
+			'avatar_force' => false,
+		) );
 
-		anspress()->add_action( 'ap_form_addon-avatar', __CLASS__, 'option_form' );
+		anspress()->add_filter( 'ap_settings_menu_features_groups', __CLASS__, 'add_to_settings_page' );
+		anspress()->add_action( 'ap_form_options_features_avatar', __CLASS__, 'option_form' );
 		anspress()->add_filter( 'pre_get_avatar_data', __CLASS__, 'get_avatar', 1000, 3 );
 		anspress()->add_action( 'wp_ajax_ap_clear_avatar_cache', __CLASS__, 'clear_avatar_cache' );
+	}
+
+	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public static function add_to_settings_page( $groups ) {
+		$groups['avatar'] = array(
+			'label' => __( 'Dynamic Avatar', 'anspress-question-answer' ),
+		);
+
+		return $groups;
 	}
 
 	/**

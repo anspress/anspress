@@ -73,8 +73,8 @@ class Email extends \AnsPress\Singleton {
 	 */
 	protected function __construct() {
 		$this->ap_default_options();
-		anspress()->add_action( 'ap_all_options', $this, 'load_options', 2 );
-		anspress()->add_filter( 'ap_form_options_email_general', $this, 'register_option' );
+		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'load_options' );
+		anspress()->add_filter( 'ap_form_options_features_email', $this, 'register_option' );
 		anspress()->add_filter( 'ap_form_email_template', $this, 'register_email_template' );
 		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 3, 2 );
 		anspress()->add_action( 'wp_ajax_ap_email_template', $this, 'ap_email_template' );
@@ -150,19 +150,20 @@ class Email extends \AnsPress\Singleton {
 	/**
 	 * Register Categories options.
 	 *
+	 * @param array $groups Group tabs.
 	 * @since 4.2.0
 	 */
-	public function load_options( $options ) {
-		$options['email'] = array(
-			'label'  => __( 'Email', 'anspress-question-answer' ),
-			'groups' => array(
-				'general' => array(
-					'label' => __( 'General', 'anspress-question-answer' ),
-				),
+	public function load_options( $groups ) {
+		$groups['email'] = array(
+			'label' => __( 'Email', 'anspress-question-answer' ),
+			'info'  => sprintf(
+				// translators: placeholder contains link to email templates.
+				__( 'Email templates can be customized here %s.', 'anspress-question-answer' ),
+				'<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">' . esc_attr__( 'Customize email templates' ) . '</a>'
 			),
 		);
 
-		return $options;
+		return $groups;
 	}
 
 	/**
@@ -652,7 +653,7 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function ap_all_options( $all_options ) {
 		$all_options['emails'] = array(
-			'label'    => __( 'Email Templates', 'anspress-question-answer' ),
+			'label'    => __( '📧 Email Templates', 'anspress-question-answer' ),
 			'template' => 'emails.php',
 		);
 

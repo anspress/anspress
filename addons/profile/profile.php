@@ -43,17 +43,16 @@ class Profile extends \AnsPress\Singleton {
 	 * @since 4.0.0
 	 */
 	protected function __construct() {
-		ap_add_default_options(
-			[
-				'user_page_slug_questions'  => 'questions',
-				'user_page_slug_answers'    => 'answers',
-				'user_page_title_questions' => __( 'Questions', 'anspress-question-answer' ),
-				'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
-			]
-		);
+		ap_add_default_options( array(
+			'user_page_slug_questions'  => 'questions',
+			'user_page_slug_answers'    => 'answers',
+			'user_page_title_questions' => __( 'Questions', 'anspress-question-answer' ),
+			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
+		));
 
-		anspress()->add_action( 'ap_form_addon-profile', $this, 'options' );
-		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), [ $this, 'user_page' ], true, true );
+		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
+		anspress()->add_action( 'ap_form_options_features_profile', $this, 'options' );
+		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), array( $this, 'user_page' ), true, true );
 
 		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
 		anspress()->add_action( 'ap_ajax_user_more_answers', $this, 'load_more_answers', 10, 2 );
@@ -61,6 +60,21 @@ class Profile extends \AnsPress\Singleton {
 		anspress()->add_action( 'the_post', $this, 'filter_page_title' );
 		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
 		anspress()->add_filter( 'posts_pre_query', $this, 'modify_query_archive', 999, 2 );
+	}
+
+	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function add_to_settings_page( $groups ) {
+		$groups['profile'] = array(
+			'label' => __( 'Profile', 'anspress-question-answer' ),
+		);
+
+		return $groups;
 	}
 
 	/**

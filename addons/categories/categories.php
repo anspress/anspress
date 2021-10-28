@@ -43,8 +43,8 @@ class Categories extends \AnsPress\Singleton {
 		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categories_page' ) );
 
 		anspress()->add_action( 'init', $this, 'register_question_categories', 1 );
-		anspress()->add_action( 'ap_all_options', $this, 'load_options' );
-		anspress()->add_filter( 'ap_form_options_category_general', $this, 'register_general_settings_form' );
+		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'load_options' );
+		anspress()->add_filter( 'ap_form_options_features_category', $this, 'register_general_settings_form' );
 		anspress()->add_action( 'admin_enqueue_scripts', $this, 'admin_enqueue_scripts' );
 		anspress()->add_action( 'ap_load_admin_assets', $this, 'ap_load_admin_assets' );
 		anspress()->add_action( 'ap_admin_menu', $this, 'admin_category_menu' );
@@ -238,12 +238,7 @@ class Categories extends \AnsPress\Singleton {
 	 */
 	public function load_options( $options ) {
 		$options['category'] = array(
-			'label'  => __( 'Category', 'anspress-question-answer' ),
-			'groups' => array(
-				'general' => array(
-					'label' => __( 'General', 'anspress-question-answer' ),
-				),
-			),
+			'label' => __( 'Category', 'anspress-question-answer' ),
 		);
 
 		return $options;

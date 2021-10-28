@@ -33,12 +33,14 @@ class Tags extends \AnsPress\Singleton {
 	 * Initialize the class
 	 *
 	 * @since 4.1.8 Added filter `ap_category_questions_args`.
+	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
 	 */
 	protected function __construct() {
-		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), [ $this, 'tag_page' ], false );
-		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), [ $this, 'tags_page' ] );
+		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), array( $this, 'tag_page' ), false );
+		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), array( $this, 'tags_page' ) );
 
-		anspress()->add_action( 'ap_form_addon-tags', $this, 'option_fields' );
+		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
+		anspress()->add_action( 'ap_form_options_features_tag', $this, 'option_fields' );
 		anspress()->add_action( 'widgets_init', $this, 'widget_positions' );
 		anspress()->add_action( 'init', $this, 'register_question_tag', 1 );
 		anspress()->add_action( 'ap_admin_menu', $this, 'admin_tags_menu' );
@@ -228,6 +230,21 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function admin_tags_menu() {
 		add_submenu_page( 'anspress', __( 'Question Tags', 'anspress-question-answer' ), __( 'Tags', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_tag' );
+	}
+
+	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function add_to_settings_page( $groups ) {
+		$groups['tag'] = array(
+			'label' => __( 'Tag', 'anspress-question-answer' ),
+		);
+
+		return $groups;
 	}
 
 	/**

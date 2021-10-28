@@ -48,7 +48,7 @@ class AP_Activate {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @param string|boolean $network_wide Actiavte plugin network wide.
+	 * @param string|boolean $network_wide Activate plugin network wide.
 	 * @return object A single instance of this class.
 	 */
 	public static function get_instance( $network_wide = '' ) {
@@ -89,13 +89,13 @@ class AP_Activate {
 	 */
 	public function disable_ext() {
 		deactivate_plugins(
-			[
+			array(
 				'categories-for-anspress/categories-for-anspress.php',
 				'tags-for-anspress/tags-for-anspress.php',
 				'anspress-email/anspress-email.php',
 				'question-labels/question-labels.php',
 				'anspress-paid-membership/anspress-paid-membership.php',
-			]
+			)
 		);
 	}
 
@@ -105,12 +105,14 @@ class AP_Activate {
 	 * @since 4.1.5
 	 */
 	public function delete_options() {
-		$settings = get_option( 'anspress_opt', [] );
+		$settings = get_option( 'anspress_opt', array() );
 		unset( $settings['user_page_title_questions'] );
 		unset( $settings['user_page_slug_questions'] );
 		unset( $settings['user_page_title_answers'] );
 		unset( $settings['user_page_slug_answers'] );
+
 		update_option( 'anspress_opt', $settings );
+
 		wp_cache_delete( 'anspress_opt', 'ap' );
 		wp_cache_delete( 'ap_default_options', 'ap' );
 	}
@@ -246,13 +248,15 @@ class AP_Activate {
 	public function activity_table() {
 		global $wpdb;
 
-		// Check activity table exists.
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->ap_activity'" ) === $wpdb->ap_activity ) {
-			// Delete old activity table if exists.
-			$existing_table = $wpdb->get_row( "SHOW COLUMNS FROM $wpdb->ap_activity LIKE 'secondary_user'" );
+		$activity_exists = $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->ap_activity'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
-			if ( ! empty( $existing_table ) && 'secondary_user' === $existing_table->Field ) {
-				$wpdb->query( "DROP TABLE IF EXISTS $wpdb->ap_activity" );
+		// Check activity table exists.
+		if ( $activity_exists === $wpdb->ap_activity ) {
+			// Delete old activity table if exists.
+			$existing_table = $wpdb->get_row( "SHOW COLUMNS FROM $wpdb->ap_activity LIKE 'secondary_user'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+
+			if ( ! empty( $existing_table ) && 'secondary_user' === $existing_table->Field ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName
+				$wpdb->query( "DROP TABLE IF EXISTS $wpdb->ap_activity" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			}
 		}
 
@@ -329,7 +333,7 @@ class AP_Activate {
 	public function network_activate() {
 		global $wpdb;
 
-		// Get all blogs in the network and activate plugin on each one
+		// Get all blogs in the network and activate plugin on each one.
 		$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" ); // db call ok, cache ok.
 
 		foreach ( (array) $blog_ids as $blog_id ) {
@@ -347,12 +351,12 @@ class AP_Activate {
 	 * @since 4.1.8
 	 */
 	public function reactivate_addons() {
-		$active_addons = get_option( 'anspress_addons', [] );
+		$active_addons = get_option( 'anspress_addons', array() );
 
 		foreach ( $active_addons as $file => $active ) {
 			if ( false !== strpos( $file, 'free/' ) ) {
 				// Get current addons from database.
-				$addons = get_option( 'anspress_addons', [] );
+				$addons = get_option( 'anspress_addons', array() );
 
 				// Delete old addon name from option and update.
 				unset( $addons[ $file ] );

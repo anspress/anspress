@@ -1608,7 +1608,7 @@ function ap_get_addons() {
 		return $cache;
 	}
 
-	$all_files = [];
+	$all_files = array();
 	foreach ( [ 'pro', 'free' ] as $folder ) {
 		$path = ANSPRESS_ADDONS_DIR . DS . $folder;
 
@@ -1626,6 +1626,14 @@ function ap_get_addons() {
 	}
 
 	$addons = array(
+		'email.php'             => array(
+			'name'        => __( 'Emails', 'anspress-question-answer' ),
+			'description' => __( 'Notifies users and admins by email for various events and activities.', 'anspress-question-answer' ),
+		),
+		'categories.php'        => array(
+			'name'        => __( 'Categories', 'anspress-question-answer' ),
+			'description' => __( 'Add category support in AnsPress questions.', 'anspress-question-answer' ),
+		),
 		'notifications.php'     => array(
 			'name'        => __( 'Notifications', 'anspress-question-answer' ),
 			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),

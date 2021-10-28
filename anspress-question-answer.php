@@ -257,10 +257,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 
 			define( 'DS', DIRECTORY_SEPARATOR );
 			define( 'AP_VERSION', $this->_plugin_version );
-			define( 'ANSPRESS_DIR', plugin_dir_url( __FILE__ ) );
+			define( 'ANSPRESS_DIR', $plugin_dir );
 			define( 'ANSPRESS_URL', plugin_dir_url( __FILE__ ) );
 			define( 'ANSPRESS_WIDGET_DIR', $plugin_dir . 'widgets/' );
 			define( 'ANSPRESS_THEME_DIR', $plugin_dir . 'templates' );
+			define( 'ANSPRESS_THEME_URL', ANSPRESS_URL . 'templates' );
 			define( 'ANSPRESS_CACHE_DIR', WP_CONTENT_DIR . '/cache/anspress' );
 			define( 'ANSPRESS_CACHE_TIME', HOUR_IN_SECONDS );
 			define( 'ANSPRESS_ADDONS_DIR', $plugin_dir . 'addons' );
@@ -308,9 +309,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/class/class-activity-helper.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-activity.php';
 			require_once ANSPRESS_DIR . 'includes/class/class-session.php';
-
-			require_once ANSPRESS_DIR . 'addons/categories/categories.php';
-			require_once ANSPRESS_DIR . 'addons/email/email.php';
 
 			require_once ANSPRESS_DIR . 'widgets/search.php';
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';

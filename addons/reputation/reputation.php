@@ -32,18 +32,21 @@ class Reputation extends \AnsPress\Singleton {
 
 	/**
 	 * Init class.
+	 *
+	 * @since unknown
+	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
+	 * @since 4.2.0 Renamed hook `ap_form_addon-reputation` to `ap_form_options_features_tag`.
 	 */
 	protected function __construct() {
 		$this->register_default_events();
 
-		ap_add_default_options(
-			[
-				'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
-				'user_page_slug_reputations'  => 'reputations',
-			]
-		);
+		ap_add_default_options( array(
+			'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
+			'user_page_slug_reputations'  => 'reputations',
+		));
 
-		anspress()->add_action( 'ap_form_addon-reputation', $this, 'load_options', 20 );
+		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
+		anspress()->add_action( 'ap_form_options_features_reputation', $this, 'load_options', 20 );
 		anspress()->add_action( 'wp_ajax_ap_save_events', $this, 'ap_save_events' );
 		anspress()->add_action( 'ap_after_new_question', $this, 'new_question', 10, 2 );
 		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
@@ -75,11 +78,26 @@ class Reputation extends \AnsPress\Singleton {
 	}
 
 	/**
+	 * Add tags settings to features settings page.
+	 *
+	 * @param array $groups Features settings group.
+	 * @return array
+	 * @since 4.2.0
+	 */
+	public function add_to_settings_page( $groups ) {
+		$groups['reputation'] = array(
+			'label' => __( 'Reputation', 'anspress-question-answer' ),
+			'info'  => __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ) . ' <a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">' . __( 'Reputation Points', 'anspress-question-answer' ) . '</a>'
+		);
+
+		return $groups;
+	}
+
+	/**
 	 * Register reputation options
 	 */
 	public function load_options() {
-		$opt = ap_opt();
-
+		$opt  = ap_opt();
 		$form = array(
 			'fields' => array(
 				'user_page_title_reputations' => array(
@@ -91,9 +109,6 @@ class Reputation extends \AnsPress\Singleton {
 					'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_slug_reputations'],
-				),
-				'sep1'                        => array(
-					'html' => '<p>' . __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) . '" class="button">' . __( 'Reputation Points' ) . '</a></p>',
 				),
 			),
 		);
@@ -538,7 +553,7 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function ap_all_options( $all_options ) {
 		$all_options['reputations'] = array(
-			'label'    => __( 'Reputations', 'anspress-question-answer' ),
+			'label'    => __( '⚙ Reputations', 'anspress-question-answer' ),
 			'template' => 'reputation-events.php',
 		);
 
