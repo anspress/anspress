@@ -52,10 +52,12 @@ class Avatar extends \AnsPress\Singleton {
 	 * @since 4.2.0 Renamed `ap_form_addon-avatar` to `ap_form_options_features_avatar`.
 	 */
 	protected function __construct() {
-		ap_add_default_options( array(
-			'avatar_font'  => 'Pacifico',
-			'avatar_force' => false,
-		) );
+		ap_add_default_options(
+			array(
+				'avatar_font'  => 'Pacifico',
+				'avatar_force' => false,
+			)
+		);
 
 		anspress()->add_filter( 'ap_settings_menu_features_groups', __CLASS__, 'add_to_settings_page' );
 		anspress()->add_action( 'ap_form_options_features_avatar', __CLASS__, 'option_form' );
@@ -94,10 +96,10 @@ class Avatar extends \AnsPress\Singleton {
 					$('#ap-clear-avatar').on('click', function(e){
 						e.preventDefault();
 						$.ajax({
-							url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
+							url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
 							data: {
 								action: 'ap_clear_avatar_cache',
-								__nonce: '<?php echo wp_create_nonce( 'clear_avatar_cache' ); ?>'
+								__nonce: '<?php echo esc_attr( wp_create_nonce( 'clear_avatar_cache' ) ); ?>'
 							},
 							success: function(data){
 								if(data==='success') alert('All avatar deleted');

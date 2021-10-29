@@ -25,14 +25,14 @@ class Helper {
 	 * @var array
 	 * @since 4.1.0
 	 */
-	public $args = [];
+	public $args = array();
 
 	/**
 	 * List of emails where to send notifications.
 	 *
 	 * @var array
 	 */
-	private $emails = [];
+	private $emails = array();
 
 	/**
 	 * The email subject.
@@ -72,14 +72,14 @@ class Helper {
 	 * @var array
 	 * @since 4.1.0
 	 */
-	public $template_tags = [];
+	public $template_tags = array();
 
 	/**
 	 * The email header.
 	 *
 	 * @var array
 	 */
-	public $email_headers = [];
+	public $email_headers = array();
 
 	/**
 	 * Initialize email class.
@@ -87,19 +87,20 @@ class Helper {
 	 * @param string $event Event name.
 	 * @param array  $args Arguments.
 	 */
-	public function __construct( $event, $args = [] ) {
+	public function __construct( $event, $args = array() ) {
 		$this->event = $event;
 
 		$this->args = wp_parse_args(
-			$args, array(
-				'users'    => [],
+			$args,
+			array(
+				'users'    => array(),
 				'subject'  => '',
 				'tags'     => array(
 					'site_name'        => get_bloginfo( 'name' ),
 					'site_url'         => get_bloginfo( 'url' ),
 					'site_description' => get_bloginfo( 'description' ),
 				),
-				'template' => [],
+				'template' => array(),
 				'headers'  => array(
 					'Content-Type: text/html; charset=utf-8',
 				),
@@ -131,7 +132,7 @@ class Helper {
 			 *
 			 * @since 4.1.0
 			 */
-			do_action_ref_array( 'ap_before_email_to_list', [ $this ] );
+			do_action_ref_array( 'ap_before_email_to_list', array( $this ) );
 
 			$this->emails[] = $email;
 		}
@@ -145,7 +146,7 @@ class Helper {
 	 * @since 4.1.0
 	 */
 	public function add_user( $user_id ) {
-		if ( ! in_array( $user_id, $this->args['users'] ) ) {
+		if ( ! in_array( $user_id, $this->args['users'] ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			$this->args['users'][] = $user_id;
 		}
 	}
@@ -169,7 +170,7 @@ class Helper {
 			 *
 			 * @since 4.1.0
 			 */
-			do_action_ref_array( 'ap_adding_email_tag', [ $this ] );
+			do_action_ref_array( 'ap_adding_email_tag', array( $this ) );
 		}
 	}
 
@@ -229,7 +230,7 @@ class Helper {
 		$main_tags = array(
 			'email_title' => $this->subject,
 			'email_body'  => $this->body,
-			'style'       => file_get_contents( ap_get_theme_location( 'addons/email/style.css' ) ),
+			'style'       => file_get_contents( ap_get_theme_location( 'addons/email/style.css' ) ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			'site_name'   => get_bloginfo( 'name' ),
 		);
 
@@ -242,13 +243,13 @@ class Helper {
 		 * @since 4.1.0
 		 * @return string
 		 */
-		$main_tags = apply_filters_ref_array( 'ap_email_main_tags', [ $main_tags, $this ] );
+		$main_tags = apply_filters_ref_array( 'ap_email_main_tags', array( $main_tags, $this ) );
 
 		foreach ( $main_tags as $key => $content ) {
 			$this->add_template_tag( $key, $content );
 		}
 
-		$main_template = file_get_contents( ap_get_theme_location( 'addons/email/template.html' ) );
+		$main_template = file_get_contents( ap_get_theme_location( 'addons/email/template.html' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$main_template = strtr( $main_template, $this->template_tags );
 
 		/**
@@ -259,7 +260,7 @@ class Helper {
 		 * @since 4.1.0
 		 * @return string
 		 */
-		$main_template = apply_filters_ref_array( 'ap_email_template_prepared', [ $main_template, $this ] );
+		$main_template = apply_filters_ref_array( 'ap_email_template_prepared', array( $main_template, $this ) );
 
 		return $main_template;
 	}
@@ -278,7 +279,7 @@ class Helper {
 			return;
 		}
 
-		$user_ids = [];
+		$user_ids = array();
 
 		foreach ( $this->args['users'] as $k => $id ) {
 			if ( is_email( $id ) ) {
@@ -294,7 +295,7 @@ class Helper {
 			return;
 		}
 
-		$emails = $wpdb->get_col( "SELECT user_email FROM {$wpdb->users} WHERE ID IN ({$ids_str})" );
+		$emails = $wpdb->get_col( "SELECT user_email FROM {$wpdb->users} WHERE ID IN ({$ids_str})" ); // phpcs:ignore WordPress.DB
 
 		foreach ( $emails as $email ) {
 			$this->add_email( $email );

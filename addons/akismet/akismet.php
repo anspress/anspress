@@ -51,9 +51,7 @@ class Akismet extends \AnsPress\Singleton {
 			return;
 		}
 
-		ap_add_default_options( array(
-			'spam_post_action' => 'moderate',
-		));
+		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
 
 		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
 		anspress()->add_filter( 'ap_form_options_features_akismet', $this, 'option_form' );
@@ -90,7 +88,7 @@ class Akismet extends \AnsPress\Singleton {
 		$form = array(
 			'submit_label' => __( 'Save add-on options', 'anspress-question-answer' ),
 			'fields'       => array(
-				'spam_post_action'        => array(
+				'spam_post_action' => array(
 					'label'   => __( 'What to do when post is a spam?', 'anspress-question-answer' ),
 					'type'    => 'select',
 					'options' => array(
@@ -108,18 +106,19 @@ class Akismet extends \AnsPress\Singleton {
 	/**
 	 * Check post for spam, if spam then hold it for moderation.
 	 *
-	 * @param  integer $post_id Post id.
+	 * @param integer $post_id Post id.
+	 * @param boolean $submit Submit.
 	 */
 	private function api_request( $post_id, $submit = false ) {
-		$post = ap_get_post( $post_id );
+		$post         = ap_get_post( $post_id );
 		$comment_type = 'question' === $post->post_type ? 'forum-post' : 'replay';
 
 		// Set default arguments to pass.
 		$defaults = array(
 			'blog'                 => home_url( '/' ),
 			'user_ip'              => get_post_meta( $post->ID, 'create_ip', true ),
-			'user_agent'           => $_SERVER['HTTP_USER_AGENT'],
-			'referrer'             => $_SERVER['HTTP_REFERER'],
+			'user_agent'           => ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '',
+			'referrer'             => ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '',
 			'permalink'            => get_permalink( $post->ID ),
 			'comment_type'         => $comment_type,
 			'comment_author'       => get_the_author_meta( 'nicename', $post->post_author ),
@@ -149,7 +148,8 @@ class Akismet extends \AnsPress\Singleton {
 			'timeout'     => 15,
 		);
 
-		$akismet_url = $http_akismet_url = "http://{$http_host}/1.1/";
+		$http_akismet_url = "http://{$http_host}/1.1/";
+		$akismet_url      = $http_akismet_url;
 
 		if ( false === $submit ) {
 			$akismet_url .= 'comment-check';
@@ -184,9 +184,8 @@ class Akismet extends \AnsPress\Singleton {
 		// Lastly if true mark it as spam.
 		if ( 'true' === $response['body'] || 'Thanks for making the web a better place.' === $response['body'] ) {
 			$this->spam_post_action( $post_id );
-			update_post_meta( $post_id, '__ap_spam', current_time( 'timestamp' ) );
+			update_post_meta( $post_id, '__ap_spam', current_time( 'timestamp' ) ); // phpcs:ignore
 		}
-
 	}
 
 	/**
@@ -198,10 +197,12 @@ class Akismet extends \AnsPress\Singleton {
 	public function spam_post_action( $post_id ) {
 		$opt = ap_opt( 'spam_post_action' );
 
-		wp_update_post( array(
-			'ID'          => $post_id,
-			'post_status' => $opt,
-		) );
+		wp_update_post(
+			array(
+				'ID'          => $post_id,
+				'post_status' => $opt,
+			)
+		);
 	}
 
 	/**
@@ -237,7 +238,7 @@ class Akismet extends \AnsPress\Singleton {
 		$this->api_request( $post_id, true );
 
 		// Redirect.
-		wp_redirect( admin_url( 'edit.php?post_type=question' ) );
+		wp_safe_redirect( admin_url( 'edit.php?post_type=question' ) );
 		die();
 	}
 
@@ -246,7 +247,7 @@ class Akismet extends \AnsPress\Singleton {
 	 *
 	 * @param array    $actions List of actions.
 	 * @param \WP_Post $post    Post object.
-	 * @return void
+	 * @return array
 	 */
 	public function row_actions( $actions, $post ) {
 		if ( ! ap_is_cpt( $post ) || 'moderate' === $post->post_status ) {
@@ -256,7 +257,6 @@ class Akismet extends \AnsPress\Singleton {
 		$nonce = wp_create_nonce( 'send_spam' );
 
 		$actions['report_spam'] = '<a href="' . admin_url( 'admin.php?action=ap_mark_spam&post_id=' . $post->ID . '&nonce=' . $nonce ) . '" aria-label="' . __( 'Mark this post as a spam', 'anspress-question-answer' ) . '">' . __( 'Mark as spam', 'anspress-question-answer' ) . '</a>';
-
 
 		return $actions;
 	}

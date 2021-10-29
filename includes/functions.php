@@ -1139,7 +1139,7 @@ function ap_isset_post_value( $var, $default = '' ) {
  * @since  4.0.0
  */
 function ap_get_current_list_filters( $filter = null ) {
-	$get_filters = [];
+	$get_filters = array();
 	$filters     = array_keys( ap_get_list_filters() );
 
 	if ( in_array( 'order_by', $filters, true ) ) {
@@ -1147,7 +1147,7 @@ function ap_get_current_list_filters( $filter = null ) {
 	}
 
 	if ( empty( $filters ) || ! is_array( $filters ) ) {
-		$filters = [];
+		$filters = array();
 	}
 
 	foreach ( (array) $filters as $k ) {

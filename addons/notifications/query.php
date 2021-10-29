@@ -32,16 +32,16 @@ class Notifications extends \AnsPress_Query {
 	 *
 	 * @var array
 	 */
-	public $verbs = [];
+	public $verbs = array();
 
 	/**
 	 * Initialize the class.
 	 *
 	 * @param array $args Arguments.
 	 */
-	public function __construct( $args = [] ) {
-		$this->ids['reputation'] = [];
-		$this->pos['reputation'] = [];
+	public function __construct( $args = array() ) {
+		$this->ids['reputation'] = array();
+		$this->pos['reputation'] = array();
 		$this->verbs             = ap_notification_verbs();
 		parent::__construct( $args );
 	}
@@ -73,11 +73,15 @@ class Notifications extends \AnsPress_Query {
 		}
 
 		$order = 'DESC' === $this->args['order'] ? 'DESC' : 'ASC';
-		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} ORDER BY noti_date {$order} LIMIT {$this->offset},{$this->per_page}", $this->args['user_id'] );
 
-		$this->objects     = $wpdb->get_results( $query ); // WPCS: DB call okay.
-		$count_query       = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] );
-		$this->total_count = $wpdb->get_var( apply_filters( 'ap_notifications_found_rows', $count_query, $this ) );
+		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} ORDER BY noti_date {$order} LIMIT {$this->offset},{$this->per_page}", $this->args['user_id'] ); // phpcs:ignore WordPress.DB
+
+		$this->objects = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
+
+		$count_query = $wpdb->prepare( "SELECT count(noti_id) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q}", $this->args['user_id'] ); // phpcs:ignore WordPress.DB
+
+		$this->total_count = $wpdb->get_var( apply_filters( 'ap_notifications_found_rows', $count_query, $this ) ); // phpcs:ignore WordPress.DB
+
 		$this->prefetch();
 		parent::query();
 	}
@@ -90,7 +94,7 @@ class Notifications extends \AnsPress_Query {
 			if ( ! empty( $noti->noti_ref_id ) ) {
 				$current_verb = $this->verb_args( $noti->noti_verb );
 
-				if ( in_array( $current_verb['ref_type'], [ 'question', 'answer', 'post' ], true ) ) {
+				if ( in_array( $current_verb['ref_type'], array( 'question', 'answer', 'post' ), true ) ) {
 					$this->add_prefetch_id( 'post', $noti->noti_ref_id, $key );
 				}
 
@@ -118,7 +122,6 @@ class Notifications extends \AnsPress_Query {
 	 * Pre fetch post contents and append to object.
 	 */
 	public function prefetch_posts() {
-
 		if ( empty( $this->ids['post'] ) ) {
 			return;
 		}
@@ -126,7 +129,7 @@ class Notifications extends \AnsPress_Query {
 		global $wpdb;
 
 		$ids_str = esc_sql( sanitize_comma_delimited( $this->ids['post'] ) );
-		$posts   = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
+		$posts   = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $posts as $_post ) {
 			$this->append_ref_data( 'post', $_post->ID, $_post );
@@ -144,7 +147,7 @@ class Notifications extends \AnsPress_Query {
 		}
 
 		$ids      = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
-		$comments = $wpdb->get_results( "SELECT c.*, p.post_type, p.post_title FROM {$wpdb->comments} c LEFT JOIN $wpdb->posts p ON c.comment_post_ID = p.ID WHERE comment_ID in ({$ids})" );
+		$comments = $wpdb->get_results( "SELECT c.*, p.post_type, p.post_title FROM {$wpdb->comments} c LEFT JOIN $wpdb->posts p ON c.comment_post_ID = p.ID WHERE comment_ID in ({$ids})" ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $comments as $_comment ) {
 			$this->append_ref_data( 'comment', $_comment->comment_ID, $_comment );
@@ -173,7 +176,7 @@ class Notifications extends \AnsPress_Query {
 		}
 
 		$ids         = esc_sql( sanitize_comma_delimited( $this->ids['reputation'] ) );
-		$reputations = $wpdb->get_results( "SELECT rep_id, rep_event FROM {$wpdb->ap_reputations} WHERE rep_id in ({$ids})" );
+		$reputations = $wpdb->get_results( "SELECT rep_id, rep_event FROM {$wpdb->ap_reputations} WHERE rep_id in ({$ids})" ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $reputations as $rep ) {
 			$rep->points = ap_get_reputation_event_points( $rep->rep_event );
@@ -212,10 +215,20 @@ class Notifications extends \AnsPress_Query {
 		parent::the_object();
 	}
 
+	/**
+	 * Get notification reference id.
+	 *
+	 * @return int
+	 */
 	public function get_ref_id() {
-		return $this->object->noti_ref_id;
+		return (int) $this->object->noti_ref_id;
 	}
 
+	/**
+	 * Get notification reference type.
+	 *
+	 * @return string
+	 */
 	public function get_ref_type() {
 		return $this->object->noti_ref_type;
 	}
@@ -226,16 +239,16 @@ class Notifications extends \AnsPress_Query {
 	 * @return string
 	 */
 	public function get_permalink() {
-		if ( in_array( $this->get_ref_type(), [ 'question', 'answer', 'post' ], true ) ) {
-			return ap_get_short_link( [ 'ap_p' => $this->get_ref_id() ] );
+		if ( in_array( $this->get_ref_type(), array( 'question', 'answer', 'post' ), true ) ) {
+			return ap_get_short_link( array( 'ap_p' => $this->get_ref_id() ) );
 		} elseif ( 'comment' === $this->get_ref_type() ) {
-			return ap_get_short_link( [ 'ap_c' => $this->get_ref_id() ] );
+			return ap_get_short_link( array( 'ap_c' => $this->get_ref_id() ) );
 		} elseif ( 'reputation' === $this->get_ref_type() ) {
 			return ap_get_short_link(
-				[
+				array(
 					'ap_u' => $this->object->noti_user_id,
 					'sub'  => 'reputations',
-				]
+				)
 			);
 		}
 	}
@@ -286,7 +299,7 @@ class Notifications extends \AnsPress_Query {
 	 */
 	public function the_actor_avatar( $size = 40 ) {
 		if ( ! $this->hide_actor() ) {
-			echo $this->actor_avatar( $size ); // WPCS: xss okay.
+			echo wp_kses_post( $this->actor_avatar( $size ) );
 		}
 	}
 
@@ -330,7 +343,7 @@ class Notifications extends \AnsPress_Query {
 	 * Echo verb.
 	 */
 	public function the_verb() {
-		echo $this->get_verb(); // WPCS: xss okay.
+		echo wp_kses_post( $this->get_verb() );
 	}
 
 	/**
@@ -346,7 +359,7 @@ class Notifications extends \AnsPress_Query {
 	 * Echo human readble date.
 	 */
 	public function the_date() {
-		echo ap_human_time( $this->get_date(), false ); // WPCS: xss okay.
+		echo wp_kses_post( ap_human_time( $this->get_date(), false ) );
 	}
 
 	/**
@@ -358,7 +371,7 @@ class Notifications extends \AnsPress_Query {
 		if ( isset( $this->object->ref ) ) {
 			$verb_args = $this->verb_args( $this->object->noti_verb );
 
-			if ( in_array( $verb_args['ref_type'], [ 'post', 'comment' ], true ) && isset( $this->object->ref->post_title ) ) {
+			if ( in_array( $verb_args['ref_type'], array( 'post', 'comment' ), true ) && isset( $this->object->ref->post_title ) ) {
 				return ap_truncate_chars( $this->object->ref->post_title, 80 );
 			}
 		}

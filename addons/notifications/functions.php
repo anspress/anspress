@@ -8,7 +8,7 @@
  * @license   GPL-3.0+
  * @link      https://anspress.net
  * @copyright 2014 Rahul Aryan
- * @since       1.0.0
+ * @since     1.0.0
  */
 
 // If this file is called directly, abort.
@@ -22,7 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @param array $args Arguments.
  * @return false|integer
  */
-function ap_insert_notification( $args = [] ) {
+function ap_insert_notification( $args = array() ) {
 
 	// Dont do insert notification if defined.
 	if ( defined( 'AP_DISABLE_INSERT_NOTI' ) && AP_DISABLE_INSERT_NOTI ) {
@@ -30,7 +30,8 @@ function ap_insert_notification( $args = [] ) {
 	}
 
 	$args = wp_parse_args(
-		$args, array(
+		$args,
+		array(
 			'user_id'  => get_current_user_id(),
 			'actor'    => 0,
 			'parent'   => '',
@@ -87,7 +88,7 @@ function ap_insert_notification( $args = [] ) {
 			'noti_date'     => $args['date'],
 			'noti_seen'     => $args['seen'],
 		),
-		[ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%d' ]
+		array( '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%d' )
 	); // WPCS: db call okay.
 
 	if ( false === $insert ) {
@@ -102,11 +103,12 @@ function ap_insert_notification( $args = [] ) {
  *
  * @param array $args Arguments.
  */
-function ap_get_notifications( $args = [] ) {
+function ap_get_notifications( $args = array() ) {
 	global $wpdb;
 
 	$args = wp_parse_args(
-		$args, array(
+		$args,
+		array(
 			'number'  => 20,
 			'offset'  => 0,
 			'user_id' => get_current_user_id(),
@@ -146,9 +148,9 @@ function ap_get_notifications( $args = [] ) {
 		$seen_q = $wpdb->prepare( 'AND noti_seen = %d', $args['seen'] );
 	}
 
-	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_parent_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] );
+	$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d {$actor_q} {$ref_parent_q} {$ref_id_q} {$ref_type_q} {$verb_q} {$seen_q} LIMIT {$offset},{$number}", $args['user_id'] ); // phpcs:ignore WordPress.DB
 
-	return $wpdb->get_results( $query );
+	return $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
 }
 
 /**
@@ -156,9 +158,9 @@ function ap_get_notifications( $args = [] ) {
  *
  * @param array $args Arguments.
  */
-function ap_delete_notifications( $args = [] ) {
+function ap_delete_notifications( $args = array() ) {
 	global $wpdb;
-	$where = [];
+	$where = array();
 
 	if ( isset( $args['user_id'] ) ) {
 		$where['noti_user_id'] = 'AND noti_user_id = ' . (int) $args['user_id'];
@@ -203,7 +205,7 @@ function ap_delete_notifications( $args = [] ) {
 	}
 
 	$where_claue = implode( ' ', $where );
-	$delete      = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_notifications WHERE 1=1 {$where_claue}" ); // WPCS: db call okay, cache okay.
+	$delete      = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_notifications WHERE 1=1 {$where_claue}" ); // phpcs:ignore WordPress.DB
 
 	if ( false === $delete ) {
 		return $delete;
@@ -223,7 +225,7 @@ function ap_delete_notifications( $args = [] ) {
 function ap_set_notification_as_seen( $noti_id ) {
 	global $wpdb;
 
-	return $wpdb->update(
+	return $wpdb->update( // phpcs:ignore WordPress.DB
 		$wpdb->prefix . 'ap_notifications',
 		array(
 			'noti_seen' => 1,
@@ -231,9 +233,9 @@ function ap_set_notification_as_seen( $noti_id ) {
 		array(
 			'noti_id' => $noti_id,
 		),
-		[ '%d' ],
-		[ '%d' ]
-	); // WPCS: db call okay, db cache okay.
+		array( '%d' ),
+		array( '%d' )
+	);
 }
 
 /**
@@ -251,8 +253,8 @@ function ap_set_notifications_as_seen( $user_id ) {
 		array(
 			'noti_user_id' => $user_id,
 		),
-		[ '%d' ],
-		[ '%d' ]
+		array( '%d' ),
+		array( '%d' )
 	); // WPCS: db call okay, db cache okay.
 }
 
@@ -262,11 +264,12 @@ function ap_set_notifications_as_seen( $user_id ) {
  * @param string $key verb key.
  * @param array  $args Verb arguments.
  */
-function ap_register_notification_verb( $key, $args = [] ) {
+function ap_register_notification_verb( $key, $args = array() ) {
 	global $ap_notification_verbs;
 
 	$args = wp_parse_args(
-		$args, array(
+		$args,
+		array(
 			'ref_type'   => 'post',
 			'label'      => '',
 			'hide_actor' => false,
@@ -277,6 +280,11 @@ function ap_register_notification_verb( $key, $args = [] ) {
 	$ap_notification_verbs[ $key ] = $args;
 }
 
+/**
+ * Get all AnsPress notification verbs.
+ *
+ * @since unknown
+ */
 function ap_notification_verbs() {
 	global $ap_notification_verbs;
 
@@ -300,7 +308,7 @@ function ap_count_unseen_notifications( $user_id = false ) {
 
 	global $wpdb;
 
-	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d AND noti_seen = 0", $user_id ) ); // WPCS: db call okay.
+	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM {$wpdb->prefix}ap_notifications WHERE noti_user_id = %d AND noti_seen = 0", $user_id ) ); // phpcs:ignore WordPress.DB
 
 	return $count;
 }

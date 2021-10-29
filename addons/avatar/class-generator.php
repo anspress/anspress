@@ -93,7 +93,7 @@ class Generator {
 	 *
 	 * @var array
 	 */
-	public $colors = [];
+	public $colors = array();
 
 	/**
 	 * Initialize the class.
@@ -133,10 +133,10 @@ class Generator {
 
 	/**
 	 * Background colors to be used in image.
-	 * Extrated from Google's metallic color.
+	 * Extracted from Google's metallic color.
 	 */
 	public function colors() {
-		$colors = [ '#EA526F', '#FF0038', '#3C91E6', '#D64933', '#00A878', '#0A2472', '#736B92', '#FFAD05', '#DD9787', '#74D3AE', '#B9314F', '#878472', '#983628', '#E2AEDD', '#1B9AAA', '#FFC43D', '#4F3824', '#7A6F9B', '#376996', '#7B904B', '#613DC1' ];
+		$colors = array( '#EA526F', '#FF0038', '#3C91E6', '#D64933', '#00A878', '#0A2472', '#736B92', '#FFAD05', '#DD9787', '#74D3AE', '#B9314F', '#878472', '#983628', '#E2AEDD', '#1B9AAA', '#FFC43D', '#4F3824', '#7A6F9B', '#376996', '#7B904B', '#613DC1' );
 
 		/**
 		 * Filters avatar addon colors.
@@ -197,7 +197,6 @@ class Generator {
 	 * Function to generate letter avatar
 	 */
 	public function generate() {
-
 		if ( ! function_exists( 'imagecreatetruecolor' ) || $this->avatar_exists() ) {
 			return;
 		}
@@ -238,7 +237,6 @@ class Generator {
 	 * @return array
 	 */
 	protected function hex_to_rgb( $color ) {
-
 		if ( '#' === $color[0] ) {
 			$color = substr( $color, 1 );
 		}
@@ -255,17 +253,17 @@ class Generator {
 		$g = hexdec( $g );
 		$b = hexdec( $b );
 
-		return [
+		return array(
 			'r' => $r,
 			'g' => $g,
 			'b' => $b,
-		];
+		);
 	}
 
 	/**
 	 * Get center position on image.
 	 *
-	 * @param resource|false $image Image resource.
+	 * @param \GdImage|false $image Image resource.
 	 * @param string         $text Text.
 	 * @param string         $font Font file path.
 	 * @param string         $size Size of image.
@@ -287,9 +285,9 @@ class Generator {
 	/**
 	 * Fill gradient.
 	 *
-	 * @param resource $img   Image resource.
-	 * @param string   $start Start color.
-	 * @param string   $end   End color.
+	 * @param  \GdImage $img   Image resource.
+	 * @param  string   $start Start color.
+	 * @param  string   $end   End color.
 	 * @return boolean
 	 */
 	private function image_gradientrect( $img, $start, $end ) {
@@ -334,7 +332,7 @@ class Generator {
 	 *
 	 * @param string $hex     Colour as hexadecimal (with or without hash).
 	 * @param float  $percent float $percent Decimal ( 0.2 = lighten by 20%(), -0.4 = darken by 40%() ).
-	 * @return str Lightened/Darkend colour as hexadecimal (with hash);
+	 * @return string Lightened/Darkend colour as hexadecimal (with hash);
 	 */
 	private function color_luminance( $hex, $percent ) {
 		// Validate hex string.

@@ -64,7 +64,6 @@ class Categories extends \AnsPress\Singleton {
 		anspress()->add_filter( 'ap_main_questions_args', $this, 'ap_main_questions_args' );
 		anspress()->add_filter( 'ap_question_subscribers_action_id', $this, 'subscribers_action_id' );
 		anspress()->add_filter( 'ap_ask_btn_link', $this, 'ap_ask_btn_link' );
-		// anspress()->add_filter( 'ap_canonical_url', $this, 'ap_canonical_url' );
 		anspress()->add_filter( 'wp_head', $this, 'category_feed' );
 		anspress()->add_filter( 'manage_edit-question_category_columns', $this, 'column_header' );
 		anspress()->add_filter( 'manage_question_category_custom_column', $this, 'column_content', 10, 3 );
@@ -86,7 +85,7 @@ class Categories extends \AnsPress\Singleton {
 	 */
 	public function category_page() {
 		$question_args = array(
-			'tax_query' => array(
+			'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
 					'taxonomy' => 'question_category',
 					'field'    => 'id',
@@ -130,15 +129,16 @@ class Categories extends \AnsPress\Singleton {
 		$paged            = max( 1, get_query_var( 'paged' ) );
 		$per_page         = ap_opt( 'categories_per_page' );
 		$total_terms      = wp_count_terms(
-			'question_category', [
+			'question_category',
+			array(
 				'hide_empty' => false,
 				'parent'     => 0,
-			]
+			)
 		);
 		$offset           = $per_page * ( $paged - 1 );
 		$ap_max_num_pages = ceil( $total_terms / $per_page );
 
-		$order = ap_opt( 'categories_page_order' ) == 'ASC' ? 'ASC' : 'DESC';
+		$order = ap_opt( 'categories_page_order' ) === 'ASC' ? 'ASC' : 'DESC';
 
 		$cat_args = array(
 			'parent'     => 0,
@@ -169,14 +169,14 @@ class Categories extends \AnsPress\Singleton {
 	 */
 	public function register_question_categories() {
 		ap_add_default_options(
-			[
+			array(
 				'form_category_orderby'   => 'count',
 				'categories_page_order'   => 'DESC',
 				'categories_page_orderby' => 'count',
 				'category_page_slug'      => 'category',
 				'categories_per_page'     => 20,
 				'categories_image_height' => 150,
-			]
+			)
 		);
 
 		/**
@@ -227,12 +227,13 @@ class Categories extends \AnsPress\Singleton {
 		/**
 		 * Now let WordPress know about our taxonomy
 		 */
-		register_taxonomy( 'question_category', [ 'question' ], $category_args );
+		register_taxonomy( 'question_category', array( 'question' ), $category_args );
 	}
 
 	/**
 	 * Register Categories options.
 	 *
+	 * @param array $options Options.
 	 * @since unknown
 	 * @since 4.2.0 Moved form registration to another method `register_settings_from`.
 	 */
@@ -251,12 +252,12 @@ class Categories extends \AnsPress\Singleton {
 	 * @since 4.2.0
 	 */
 	public function register_general_settings_form() {
-		$opt  = ap_opt();
+		$opt = ap_opt();
 
 		return array(
 			'fields' => array(
-				'categories_page_info' => array(
-					'html'  => '<label class="ap-form-label" for="form_options_category_general-categories_page_info">' . __( 'Categories base page', 'anspress-question-answer' ) . '</label>' . __( 'Base page for categories can be configured in general settings of AnsPress.', 'anspress-question-answer' ),
+				'categories_page_info'    => array(
+					'html' => '<label class="ap-form-label" for="form_options_category_general-categories_page_info">' . __( 'Categories base page', 'anspress-question-answer' ) . '</label>' . __( 'Base page for categories can be configured in general settings of AnsPress.', 'anspress-question-answer' ),
 				),
 				'form_category_orderby'   => array(
 					'label'       => __( 'Ask form category order', 'anspress-question-answer' ),
@@ -272,7 +273,7 @@ class Categories extends \AnsPress\Singleton {
 					'value'       => $opt['form_category_orderby'],
 				),
 				'categories_page_orderby' => array(
-					'label'       => __( 'Categries page order by', 'anspress-question-answer' ),
+					'label'       => __( 'Categories page order by', 'anspress-question-answer' ),
 					'description' => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
 					'type'        => 'select',
 					'options'     => array(
@@ -285,7 +286,7 @@ class Categories extends \AnsPress\Singleton {
 					'value'       => $opt['categories_page_orderby'],
 				),
 				'categories_page_order'   => array(
-					'label'       => __( 'Categries page order', 'anspress-question-answer' ),
+					'label'       => __( 'Categories page order', 'anspress-question-answer' ),
 					'description' => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
 					'type'        => 'select',
 					'options'     => array(
@@ -386,15 +387,16 @@ class Categories extends \AnsPress\Singleton {
 	 */
 	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_category' === $taxonomy ) {
-			if ( get_option( 'permalink_structure' ) != '' ) {
+			if ( get_option( 'permalink_structure' ) !== '' ) {
 				$opt = get_option( 'ap_categories_path', 'categories' );
 				return home_url( $opt ) . '/' . $term->slug . '/';
 			} else {
 				return add_query_arg(
-					[
+					array(
 						'ap_page'           => 'category',
 						'question_category' => $term->slug,
-					], home_url()
+					),
+					home_url()
 				);
 			}
 		}
@@ -410,7 +412,7 @@ class Categories extends \AnsPress\Singleton {
 	 * @since   4.1.0
 	 */
 	public function ap_question_form_fields( $form ) {
-		if ( wp_count_terms( 'question_category' ) == 0 ) { // WPCS: loose comparison okay.
+		if ( wp_count_terms( 'question_category' ) == 0 ) { // phpcs:ignore
 			return $form;
 		}
 
@@ -501,7 +503,6 @@ class Categories extends \AnsPress\Singleton {
 	 * @param array $args Args.
 	 */
 	public function terms_clauses( $pieces, $taxonomies, $args ) {
-
 		if ( ! in_array( 'question_category', $taxonomies, true ) || ! isset( $args['ap_query'] ) || 'subscription' !== $args['ap_query'] ) {
 			return $pieces;
 		}
@@ -526,7 +527,7 @@ class Categories extends \AnsPress\Singleton {
 		if ( ! isset( $wp->query_vars['ap_categories'] ) && ! is_question_category() ) {
 			$filters['category'] = array(
 				'title'    => __( 'Category', 'anspress-question-answer' ),
-				'items'    => [],
+				'items'    => array(),
 				'search'   => true,
 				'multiple' => true,
 			);
@@ -579,11 +580,12 @@ class Categories extends \AnsPress\Singleton {
 	public function image_field_edit( $term ) {
 		$term_meta = get_term_meta( $term->term_id, 'ap_category', true );
 		$term_meta = wp_parse_args(
-			$term_meta, array(
-				'image' => [
+			$term_meta,
+			array(
+				'image' => array(
 					'id'  => '',
 					'url' => '',
-				],
+				),
 				'icon'  => '',
 				'color' => '',
 			)
@@ -641,7 +643,6 @@ class Categories extends \AnsPress\Singleton {
 	 * @param  integer $term_id Term id.
 	 */
 	public function save_image_field( $term_id ) {
-
 		$image_url = ap_isset_post_value( 'ap_category_image_url', '' );
 		$image_id  = ap_isset_post_value( 'ap_category_image_id', '' );
 		$icon      = ap_isset_post_value( 'ap_icon', '' );
@@ -652,11 +653,11 @@ class Categories extends \AnsPress\Singleton {
 			$term_meta = get_term_meta( $term_id, 'ap_category', true );
 
 			if ( ! is_array( $term_meta ) ) {
-				$term_meta = [ 'image' => [] ];
+				$term_meta = array( 'image' => array() );
 			}
 
 			if ( ! is_array( $term_meta['image'] ) ) {
-				$term_meta['image'] = [];
+				$term_meta['image'] = array();
 			}
 
 			// Image url.
@@ -697,7 +698,7 @@ class Categories extends \AnsPress\Singleton {
 			} else {
 				update_term_meta( $term_id, 'ap_category', $term_meta );
 			}
-		} // End if().
+		}
 	}
 
 	/**
@@ -808,7 +809,6 @@ class Categories extends \AnsPress\Singleton {
 	 * Category feed link in head.
 	 */
 	public function category_feed() {
-
 		if ( is_question_category() ) {
 			$question_category = get_queried_object();
 			echo '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_url( $question_category->slug ) . '" title="' . esc_attr__( 'Question category feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
@@ -838,6 +838,8 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Output active category in filter
 	 *
+	 * @param object $active Active term.
+	 * @param string $filter Filter.
 	 * @since 4.0.0
 	 */
 	public function filter_active_category( $active, $filter ) {
@@ -854,12 +856,14 @@ class Categories extends \AnsPress\Singleton {
 			$terms = get_terms( 'question_category', $args );
 
 			if ( $terms ) {
-				$active_terms = [];
+				$active_terms = array();
 				foreach ( (array) $terms as $t ) {
 					$active_terms[] = $t->name;
 				}
 
-				$count      = count( $current_filters );
+				$count = is_array( $current_filters ) ? count( $current_filters ) : 0;
+
+				// translators: placeholder contains count.
 				$more_label = sprintf( __( ', %d+', 'anspress-question-answer' ), $count - 2 );
 
 				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : '' ) . '</span>';
@@ -880,6 +884,10 @@ class Categories extends \AnsPress\Singleton {
 
 	/**
 	 * Icon column content.
+	 *
+	 * @param mixed  $value       Value.
+	 * @param string $column_name Column name.
+	 * @param int    $tax_id      Taxonomy id.
 	 */
 	public function column_content( $value, $column_name, $tax_id ) {
 		if ( 'icon' === $column_name ) {
@@ -916,7 +924,7 @@ class Categories extends \AnsPress\Singleton {
 			$query->max_num_pages = 1;
 			$page                 = get_page( ap_opt( 'categories_page' ) );
 			$page->post_title     = get_queried_object()->name;
-			$posts                = [ $page ];
+			$posts                = array( $page );
 		}
 
 		return $posts;

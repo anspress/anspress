@@ -43,12 +43,14 @@ class Profile extends \AnsPress\Singleton {
 	 * @since 4.0.0
 	 */
 	protected function __construct() {
-		ap_add_default_options( array(
-			'user_page_slug_questions'  => 'questions',
-			'user_page_slug_answers'    => 'answers',
-			'user_page_title_questions' => __( 'Questions', 'anspress-question-answer' ),
-			'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
-		));
+		ap_add_default_options(
+			array(
+				'user_page_slug_questions'  => 'questions',
+				'user_page_slug_answers'    => 'answers',
+				'user_page_title_questions' => __( 'Questions', 'anspress-question-answer' ),
+				'user_page_title_answers'   => __( 'Answers', 'anspress-question-answer' ),
+			)
+		);
 
 		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
 		anspress()->add_action( 'ap_form_options_features_profile', $this, 'options' );
@@ -135,7 +137,7 @@ class Profile extends \AnsPress\Singleton {
 		$base_slug = get_page_uri( ap_opt( 'user_page' ) );
 		update_option( 'ap_user_path', $base_slug, true );
 
-		$new_rules = [];
+		$new_rules = array();
 		$new_rules = array(
 			$base_slug . '/([^/]+)/([^/]+)/page/?([0-9]{1,})/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]&ap_paged=$matches[#]',
 			$base_slug . '/([^/]+)/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]',
@@ -159,14 +161,14 @@ class Profile extends \AnsPress\Singleton {
 				'slug'  => 'questions',
 				'label' => __( 'Questions', 'anspress-question-answer' ),
 				'icon'  => 'apicon-question',
-				'cb'    => [ $this, 'question_page' ],
+				'cb'    => array( $this, 'question_page' ),
 				'order' => 2,
 			),
 			array(
 				'slug'  => 'answers',
 				'label' => __( 'Answers', 'anspress-question-answer' ),
 				'icon'  => 'apicon-answer',
-				'cb'    => [ $this, 'answer_page' ],
+				'cb'    => array( $this, 'answer_page' ),
 				'order' => 2,
 			),
 		);
@@ -198,6 +200,9 @@ class Profile extends \AnsPress\Singleton {
 
 	/**
 	 * Output user profile menu.
+	 *
+	 * @param int|false $user_id Id of user, default is current user.
+	 * @param string    $class   CSS class.
 	 */
 	public function user_menu( $user_id = false, $class = '' ) {
 		$user_id     = false !== $user_id ? $user_id : ap_current_user_id();
@@ -207,7 +212,6 @@ class Profile extends \AnsPress\Singleton {
 		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class ) . '">';
 
 		foreach ( (array) $ap_menu as $args ) {
-
 			if ( empty( $args['private'] ) || ( true === $args['private'] && get_current_user_id() === $user_id ) ) {
 				echo '<li class="ap-menu-' . esc_attr( $args['slug'] ) . ( $args['rewrite'] === $current_tab ? ' active' : '' ) . '">';
 
@@ -234,6 +238,11 @@ class Profile extends \AnsPress\Singleton {
 		echo '</ul>';
 	}
 
+	/**
+	 * Profile page title.
+	 *
+	 * @return string
+	 */
 	public function user_page_title() {
 		$this->user_pages();
 		$title       = ap_user_display_name( ap_current_user_id() );
@@ -266,7 +275,7 @@ class Profile extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function filter_page_title( $_post ) {
-		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) {
+		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$_post->post_title = $this->user_page_title();
 		}
 	}
@@ -287,7 +296,7 @@ class Profile extends \AnsPress\Singleton {
 			} elseif ( function_exists( $current_page['cb'] ) ) {
 				call_user_func( $current_page['cb'] );
 			} else {
-				_e( 'Callback function not found for rendering this page', 'anspress-question-answer' ); // xss okay.
+				esc_attr_e( 'Callback function not found for rendering this page', 'anspress-question-answer' );
 			}
 		}
 	}
@@ -325,18 +334,15 @@ class Profile extends \AnsPress\Singleton {
 		$args['showposts']              = 10;
 		$args['author']                 = $user_id;
 
-		/*
-		if ( false !== $paged ) {
-			$args['paged'] = $paged;
-		}*/
-
 		/**
 		 * Filter authors question list args
 		 *
 		 * @var array
 		 */
-		$args               = apply_filters( 'ap_user_answers_args', $args );
-		anspress()->answers = $answers = new \Answers_Query( $args );
+		$args    = apply_filters( 'ap_user_answers_args', $args );
+		$answers = new \Answers_Query( $args );
+
+		anspress()->answers = $answers;
 
 		ap_get_template_part( 'addons/user/answers' );
 	}
@@ -366,8 +372,10 @@ class Profile extends \AnsPress\Singleton {
 		 *
 		 * @param array $args WP_Query arguments.
 		 */
-		$args               = apply_filters( 'ap_user_answers_args', $args );
-		anspress()->answers = $answers = new \Answers_Query( $args );
+		$args    = apply_filters( 'ap_user_answers_args', $args );
+		$answers = new \Answers_Query( $args );
+
+		anspress()->answers = $answers;
 
 		ob_start();
 		if ( ap_have_answers() ) {
@@ -428,7 +436,7 @@ class Profile extends \AnsPress\Singleton {
 				wp_safe_redirect( ap_user_link( get_current_user_id() ) );
 				exit;
 			} elseif ( $query_object && $query_object instanceof \WP_User ) {
-				return [ get_post( ap_opt( 'user_page' ) ) ];
+				return array( get_post( ap_opt( 'user_page' ) ) );
 			} else {
 				$query->set_404();
 				status_header( 404 );
@@ -448,7 +456,7 @@ class Profile extends \AnsPress\Singleton {
 	public function page_template( $template ) {
 		if ( is_author() && 'user' === get_query_var( 'ap_page' ) ) {
 			$user_slug = ap_opt( 'user_page_id' );
-			return locate_template( [ 'page-' . $user_slug . '.php', 'page.php' ] );
+			return locate_template( array( 'page-' . $user_slug . '.php', 'page.php' ) );
 		}
 
 		return $template;

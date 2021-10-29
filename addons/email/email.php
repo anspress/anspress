@@ -16,6 +16,7 @@
  * Author:        Rahul Aryan
  * Author URI:    https://anspress.net
  */
+
 namespace Anspress\Addons;
 
 // If this file is called directly, abort.
@@ -112,7 +113,7 @@ class Email extends \AnsPress\Singleton {
 		$_comment = get_comment( $comment_id );
 
 		if ( 'anspress' === $_comment->comment_type ) {
-			return [];
+			return array();
 		}
 
 		return $recipients;
@@ -159,7 +160,7 @@ class Email extends \AnsPress\Singleton {
 			'info'  => sprintf(
 				// translators: placeholder contains link to email templates.
 				__( 'Email templates can be customized here %s.', 'anspress-question-answer' ),
-				'<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">' . esc_attr__( 'Customize email templates' ) . '</a>'
+				'<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">' . esc_attr__( 'Customize email templates', 'anspress-question-answer' ) . '</a>'
 			),
 		);
 
@@ -282,8 +283,8 @@ class Email extends \AnsPress\Singleton {
 					'label' => __( 'Email subject', 'anspress-question-answer' ),
 				),
 				'body'    => array(
-					'label' => __( 'Email body', 'anspress-question-answer' ),
-					'type'  => 'editor',
+					'label'       => __( 'Email body', 'anspress-question-answer' ),
+					'type'        => 'editor',
 					'editor_args' => array(
 						'quicktags' => true,
 						'tinymce'   => true,
@@ -328,7 +329,7 @@ class Email extends \AnsPress\Singleton {
 	 * @since 4.1.0 Updated to use new EmailHelper class.
 	 */
 	public function ap_after_new_question( $question_id ) {
-		$args = [];
+		$args = array();
 
 		$admin_emails = $this->get_admin_emails( 'email_admin_new_question' );
 
@@ -347,7 +348,7 @@ class Email extends \AnsPress\Singleton {
 			'{question_title}'   => $question->post_title,
 			'{question_link}'    => wp_get_shortlink( $question->ID ),
 			'{question_content}' => apply_filters( 'the_content', $question->post_content ),
-			'{question_excerpt}' => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
+			'{question_excerpt}' => ap_truncate_chars( wp_strip_all_tags( $question->post_content ), 100 ),
 		);
 
 		$email = new EmailHelper( 'new_question', $args );
@@ -363,7 +364,7 @@ class Email extends \AnsPress\Singleton {
 	public function ap_after_new_answer( $answer_id ) {
 		$current_user = wp_get_current_user();
 		$args         = array(
-			'users' => [],
+			'users' => array(),
 		);
 
 		$admin_emails = $this->get_admin_emails( 'email_admin_new_answer' );
@@ -375,10 +376,10 @@ class Email extends \AnsPress\Singleton {
 
 		if ( ap_opt( 'email_user_new_answer' ) && 'private_post' !== $answer->post_status && 'moderate' !== $answer->post_status ) {
 			$subscribers = ap_get_subscribers(
-				[
+				array(
 					'subs_event'  => 'question',
 					'subs_ref_id' => $answer->post_parent,
-				]
+				)
 			);
 
 			foreach ( (array) $subscribers as $s ) {
@@ -393,7 +394,7 @@ class Email extends \AnsPress\Singleton {
 			'{question_title}' => get_the_title( $answer->post_parent ),
 			'{answer_link}'    => wp_get_shortlink( $answer->ID ),
 			'{answer_content}' => $answer->post_content,
-			'{answer_excerpt}' => ap_truncate_chars( strip_tags( $answer->post_content ), 100 ),
+			'{answer_excerpt}' => ap_truncate_chars( wp_strip_all_tags( $answer->post_content ), 100 ),
 		);
 
 		$email = new EmailHelper( 'new_answer', $args );
@@ -412,9 +413,9 @@ class Email extends \AnsPress\Singleton {
 		}
 
 		$args = array(
-			'users' => [
+			'users' => array(
 				get_the_author_meta( 'email', $_post->post_author ),
-			],
+			),
 		);
 
 		$args['tags'] = array(
@@ -422,7 +423,7 @@ class Email extends \AnsPress\Singleton {
 			'{question_title}' => $_post->post_title,
 			'{answer_link}'    => wp_get_shortlink( $_post->ID ),
 			'{answer_content}' => $_post->post_content,
-			'{answer_excerpt}' => ap_truncate_chars( strip_tags( $_post->post_content ), 100 ),
+			'{answer_excerpt}' => ap_truncate_chars( wp_strip_all_tags( $_post->post_content ), 100 ),
 		);
 
 		$email = new EmailHelper( 'select_answer', $args );
@@ -436,9 +437,10 @@ class Email extends \AnsPress\Singleton {
 	 * @since 4.1.0 Updated to use new email class.
 	 */
 	public function new_comment( $comment ) {
-		$args = [];
+		$args = array();
 
 		$admin_emails = $this->get_admin_emails( 'email_admin_new_comment' );
+
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -446,9 +448,9 @@ class Email extends \AnsPress\Singleton {
 		if ( ap_opt( 'email_user_new_comment' ) ) {
 			$current_user = wp_get_current_user();
 			$post         = ap_get_post( $comment->comment_post_ID );
-			$subscribers  = ap_get_subscribers( [ 'subs_event' => 'comment_' . $comment->comment_post_ID ] );
+			$subscribers  = ap_get_subscribers( array( 'subs_event' => 'comment_' . $comment->comment_post_ID ) );
 
-			if ( $post->post_author != get_current_user_id() ) {
+			if ( get_current_user_id() !== $post->post_author ) {
 				$args['users'][] = $post->post_author;
 			}
 
@@ -478,15 +480,17 @@ class Email extends \AnsPress\Singleton {
 	/**
 	 * Notify after question get updated.
 	 *
+	 * @param int    $post_id  Question id.
 	 * @param object $question Question object.
+	 *
 	 * @since 4.1.0 Updated to use new email class.
 	 */
 	public function ap_after_update_question( $post_id, $question ) {
-		if ( in_array( $question->post_status, [ 'trash', 'draft' ] ) ) {
+		if ( in_array( $question->post_status, array( 'trash', 'draft' ), true ) ) {
 			return;
 		}
 
-		$args = [];
+		$args = array();
 
 		$admin_emails = $this->get_admin_emails( 'email_admin_edit_question' );
 		if ( ! empty( $admin_emails ) ) {
@@ -496,13 +500,15 @@ class Email extends \AnsPress\Singleton {
 		$current_user = wp_get_current_user();
 		$email        = new EmailHelper( 'edit_question', $args );
 
-		$subscribers  = ap_get_subscribers( array(
-			'subs_event'  => 'question',
-			'subs_ref_id' => $question->ID,
-		) );
+		$subscribers = ap_get_subscribers(
+			array(
+				'subs_event'  => 'question',
+				'subs_ref_id' => $question->ID,
+			)
+		);
 
 		// Exclude current author.
-		if ( get_current_user_id() != $question->post_author ) {
+		if ( get_current_user_id() !== (int) $question->post_author ) {
 			$email->add_user( $question->post_author );
 		}
 
@@ -520,7 +526,7 @@ class Email extends \AnsPress\Singleton {
 				'question_title'   => $question->post_title,
 				'question_link'    => get_permalink( $question->ID ),
 				'question_content' => $question->post_content,
-				'question_excerpt' => ap_truncate_chars( strip_tags( $question->post_content ), 100 ),
+				'question_excerpt' => ap_truncate_chars( wp_strip_all_tags( $question->post_content ), 100 ),
 			)
 		);
 
@@ -530,17 +536,17 @@ class Email extends \AnsPress\Singleton {
 	/**
 	 * Notify users after answer gets updated.
 	 *
-	 * @param object $answer_id Answer id.
-	 * @param string $answer    Event post object.
+	 * @param int    $answer_id Answer id.
+	 * @param object $answer    Event post object.
 	 */
 	public function ap_after_update_answer( $answer_id, $answer ) {
-		if ( in_array( $answer->post_status, [ 'trash', 'draft' ] ) ) {
+		if ( in_array( $answer->post_status, array( 'trash', 'draft' ), true ) ) {
 			return;
 		}
 
 		$current_user = wp_get_current_user();
 
-		$args = [];
+		$args = array();
 
 		$admin_emails = $this->get_admin_emails( 'email_admin_edit_answer' );
 		if ( ! empty( $admin_emails ) ) {
@@ -549,12 +555,12 @@ class Email extends \AnsPress\Singleton {
 
 		$email = new EmailHelper( 'edit_answer', $args );
 
-		$a_subscribers = (array) ap_get_subscribers( [ 'subs_event' => 'answer_' . $answer->post_parent ] );
+		$a_subscribers = (array) ap_get_subscribers( array( 'subs_event' => 'answer_' . $answer->post_parent ) );
 		$q_subscribers = (array) ap_get_subscribers(
-			[
+			array(
 				'subs_event'  => 'question',
 				'subs_ref_id' => $answer->post_parent,
-			]
+			)
 		);
 		$subscribers   = array_merge( $a_subscribers, $q_subscribers );
 
@@ -599,9 +605,10 @@ class Email extends \AnsPress\Singleton {
 			return;
 		}
 
-		$args         = [];
+		$args         = array();
 		$current_user = wp_get_current_user();
 		$admin_emails = $this->get_admin_emails( 'email_admin_trash_question' );
+
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -627,9 +634,10 @@ class Email extends \AnsPress\Singleton {
 			return;
 		}
 
-		$args         = [];
+		$args         = array();
 		$current_user = wp_get_current_user();
 		$admin_emails = $this->get_admin_emails( 'email_admin_trash_question' );
+
 		if ( ! empty( $admin_emails ) ) {
 			$args['users'] = $admin_emails;
 		}
@@ -677,10 +685,10 @@ class Email extends \AnsPress\Singleton {
 		// Check nonce and is valid form.
 		if ( ! $form->is_submitted() || ! current_user_can( 'manage_options' ) ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
-				]
+					'snackbar' => array( 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ),
+				)
 			);
 		}
 
@@ -704,12 +712,12 @@ class Email extends \AnsPress\Singleton {
 
 		if ( $form->have_errors() ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'       => false,
-					'snackbar'      => [ 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ],
+					'snackbar'      => array( 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ),
 					'form_errors'   => $form->errors,
 					'fields_errors' => $form->get_fields_errors(),
-				]
+				)
 			);
 		}
 
@@ -723,7 +731,7 @@ class Email extends \AnsPress\Singleton {
 		// If error return and send error message.
 		if ( is_wp_error( $post_id ) ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
 					'snackbar' => array(
 						'message' => sprintf(
@@ -732,14 +740,15 @@ class Email extends \AnsPress\Singleton {
 							$post_id->get_error_message()
 						),
 					),
-				]
+				)
 			);
 		}
 
 		ap_opt( 'email_template_' . $template_slug, $post_id );
 
 		$form->after_save(
-			false, array(
+			false,
+			array(
 				'post_id' => $post_id,
 			)
 		);
@@ -752,9 +761,9 @@ class Email extends \AnsPress\Singleton {
 		ap_ajax_json(
 			array(
 				'success'  => true,
-				'snackbar' => [
+				'snackbar' => array(
 					'message' => __( 'Post updated successfully', 'anspress-question-answer' ),
-				],
+				),
 				'post_id'  => $post_id,
 			)
 		);
@@ -811,18 +820,18 @@ class Email extends \AnsPress\Singleton {
 			array(
 				'ajax_submit'   => true,
 				'hidden_fields' => array(
-					[
+					array(
 						'name'  => 'action',
 						'value' => 'ap_ajax',
-					],
-					[
+					),
+					array(
 						'name'  => 'ap_ajax_action',
 						'value' => 'form_email_template',
-					],
-					[
+					),
+					array(
 						'name'  => 'template',
 						'value' => $active,
-					],
+					),
 				),
 			)
 		);
@@ -1035,6 +1044,9 @@ class Email extends \AnsPress\Singleton {
 		return $template;
 	}
 
+	/**
+	 * Filter allowed tags.
+	 */
 	public function form_allowed_tags() {
 		$active = ap_isset_post_value( 'template', 'new_question' );
 
@@ -1044,9 +1056,9 @@ class Email extends \AnsPress\Singleton {
 			'site_description',
 		);
 
-		$type_tags = [];
+		$type_tags = array();
 
-		if ( in_array( $active, [ 'new_question', 'edit_question' ] ) ) {
+		if ( in_array( $active, array( 'new_question', 'edit_question' ), true ) ) {
 			$type_tags = array(
 				'asker',
 				'question_title',
@@ -1054,7 +1066,7 @@ class Email extends \AnsPress\Singleton {
 				'question_content',
 				'question_excerpt',
 			);
-		} elseif ( in_array( $active, [ 'new_answer', 'edit_answer' ] ) ) {
+		} elseif ( in_array( $active, array( 'new_answer', 'edit_answer' ), true ) ) {
 			$type_tags = array(
 				'answerer',
 				'question_title',
@@ -1092,4 +1104,3 @@ class Email extends \AnsPress\Singleton {
 
 // Init addon.
 Email::init();
-

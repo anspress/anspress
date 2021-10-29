@@ -45,10 +45,12 @@ class Notifications extends \AnsPress\Singleton {
 	 * @since 4.1.8
 	 */
 	protected function __construct() {
-		ap_add_default_options( array(
-			'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
-			'user_page_slug_notifications'  => 'notifications',
-		));
+		ap_add_default_options(
+			array(
+				'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
+				'user_page_slug_notifications'  => 'notifications',
+			)
+		);
 
 		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
 		anspress()->add_filter( 'ap_form_options_features_notification', $this, 'load_options' );
@@ -142,52 +144,67 @@ class Notifications extends \AnsPress\Singleton {
 		return $items;
 	}
 
+	/**
+	 * Register notifications verbs.
+	 *
+	 * @since unknown
+	 */
 	public function register_verbs() {
 		ap_register_notification_verb(
-			'new_answer', array(
+			'new_answer',
+			array(
 				'label' => __( 'posted an answer on your question', 'anspress-question-answer' ),
 			)
 		);
 
 		ap_register_notification_verb(
-			'new_comment', array(
+			'new_comment',
+			array(
 				'ref_type' => 'comment',
+				// translators: %cpt% is AnsPress placeholder not gettext.
 				'label'    => __( 'commented on your %cpt%', 'anspress-question-answer' ),
 			)
 		);
 
 		ap_register_notification_verb(
-			'vote_up', array(
+			'vote_up',
+			array(
 				'ref_type' => 'post',
+				// translators: %cpt% is AnsPress placeholder not gettext.
 				'label'    => __( 'up voted your %cpt%', 'anspress-question-answer' ),
 			)
 		);
 
 		ap_register_notification_verb(
-			'vote_down', array(
+			'vote_down',
+			array(
 				'ref_type'   => 'post',
 				'hide_actor' => true,
 				'icon'       => 'apicon-thumb-down',
+				// translators: %cpt% is AnsPress placeholder not gettext.
 				'label'      => __( 'down voted your %cpt%', 'anspress-question-answer' ),
 			)
 		);
 
 		ap_register_notification_verb(
-			'best_answer', array(
+			'best_answer',
+			array(
 				'ref_type' => 'post',
 				'label'    => __( 'selected your answer', 'anspress-question-answer' ),
 			)
 		);
 
 		ap_register_notification_verb(
-			'new_points', array(
+			'new_points',
+			array(
 				'ref_type' => 'reputation',
 				'label'    => __( 'You have earned %points% points', 'anspress-question-answer' ),
 			)
 		);
 
 		ap_register_notification_verb(
-			'lost_points', array(
+			'lost_points',
+			array(
 				'ref_type' => 'reputation',
 				'label'    => __( 'You lose %points% points', 'anspress-question-answer' ),
 			)
@@ -203,7 +220,7 @@ class Notifications extends \AnsPress\Singleton {
 			'label'   => __( 'Notifications', 'anspress-question-answer' ),
 			'count'   => ap_count_unseen_notifications(),
 			'icon'    => 'apicon-globe',
-			'cb'      => [ $this, 'notification_page' ],
+			'cb'      => array( $this, 'notification_page' ),
 			'private' => true,
 		);
 	}
@@ -218,17 +235,17 @@ class Notifications extends \AnsPress\Singleton {
 		if ( get_current_user_id() === $user_id ) {
 			$seen          = 'all' === $seen ? null : (int) $seen;
 			$notifications = new \AnsPress\Notifications(
-				[
+				array(
 					'user_id' => $user_id,
 					'seen'    => $seen,
-				]
+				)
 			);
 
 			do_action( 'ap_before_notification_page', $notifications );
 
 			include ap_get_theme_location( 'addons/notification/index.php' );
 		} else {
-			_e( 'You do not have permission to view this page', 'anspress-question-answer' ); // xss okay.
+			esc_attr_e( 'You do not have permission to view this page', 'anspress-question-answer' );
 		}
 	}
 
@@ -242,7 +259,7 @@ class Notifications extends \AnsPress\Singleton {
 		ap_delete_notifications(
 			array(
 				'parent'   => $post_id,
-				'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
+				'ref_type' => array( 'answer', 'vote_up', 'vote_down', 'post' ),
 			)
 		);
 	}
@@ -277,7 +294,7 @@ class Notifications extends \AnsPress\Singleton {
 		ap_delete_notifications(
 			array(
 				'ref_id'   => $post_id,
-				'ref_type' => [ 'answer', 'vote_up', 'vote_down', 'post' ],
+				'ref_type' => array( 'answer', 'vote_up', 'vote_down', 'post' ),
 			)
 		);
 	}
@@ -473,7 +490,7 @@ class Notifications extends \AnsPress\Singleton {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'There was a problem processing your request', 'anspress-question-answer' ) ],
+					'snackbar' => array( 'message' => __( 'There was a problem processing your request', 'anspress-question-answer' ) ),
 				)
 			);
 		}
@@ -484,8 +501,8 @@ class Notifications extends \AnsPress\Singleton {
 		ap_ajax_json(
 			array(
 				'success'  => true,
-				'btn'      => [ 'hide' => true ],
-				'snackbar' => [ 'message' => __( 'Successfully updated all notifications', 'anspress-question-answer' ) ],
+				'btn'      => array( 'hide' => true ),
+				'snackbar' => array( 'message' => __( 'Successfully updated all notifications', 'anspress-question-answer' ) ),
 				'cb'       => 'notificationAllRead',
 			)
 		);
@@ -504,10 +521,10 @@ class Notifications extends \AnsPress\Singleton {
 
 		ob_start();
 		$notifications = new \AnsPress\Notifications(
-			[
+			array(
 				'user_id' => $user_id,
 				'paged'   => $paged,
-			]
+			)
 		);
 
 		while ( $notifications->have() ) :
@@ -522,12 +539,12 @@ class Notifications extends \AnsPress\Singleton {
 		ap_ajax_json(
 			array(
 				'success' => true,
-				'args'    => [
+				'args'    => array(
 					'ap_ajax_action' => 'load_more_notifications',
 					'__nonce'        => wp_create_nonce( 'load_more_notifications' ),
 					'current'        => (int) $paged,
 					'user_id'        => $user_id,
-				],
+				),
 				'html'    => $html,
 				'element' => '.ap-noti',
 			)
@@ -542,9 +559,9 @@ class Notifications extends \AnsPress\Singleton {
 			wp_die();
 		}
 
-		$notifications = new \AnsPress\Notifications( [ 'user_id' => get_current_user_id() ] );
+		$notifications = new \AnsPress\Notifications( array( 'user_id' => get_current_user_id() ) );
 
-		$items = [];
+		$items = array();
 		while ( $notifications->have() ) :
 			$notifications->the_notification();
 
