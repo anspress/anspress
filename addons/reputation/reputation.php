@@ -40,10 +40,12 @@ class Reputation extends \AnsPress\Singleton {
 	protected function __construct() {
 		$this->register_default_events();
 
-		ap_add_default_options( array(
-			'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
-			'user_page_slug_reputations'  => 'reputations',
-		));
+		ap_add_default_options(
+			array(
+				'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
+				'user_page_slug_reputations'  => 'reputations',
+			)
+		);
 
 		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
 		anspress()->add_action( 'ap_form_options_features_reputation', $this, 'load_options', 20 );
@@ -87,7 +89,7 @@ class Reputation extends \AnsPress\Singleton {
 	public function add_to_settings_page( $groups ) {
 		$groups['reputation'] = array(
 			'label' => __( 'Reputation', 'anspress-question-answer' ),
-			'info'  => __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ) . ' <a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">' . __( 'Reputation Points', 'anspress-question-answer' ) . '</a>'
+			'info'  => __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ) . ' <a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">' . __( 'Reputation Points', 'anspress-question-answer' ) . '</a>',
 		);
 
 		return $groups;
@@ -121,7 +123,8 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function register_default_events() {
 		ap_register_reputation_event(
-			'register', array(
+			'register',
+			array(
 				'points'      => 10,
 				'label'       => __( 'Registration', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
@@ -132,7 +135,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'ask', array(
+			'ask',
+			array(
 				'points'      => 2,
 				'label'       => __( 'Asking', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
@@ -143,7 +147,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'answer', array(
+			'answer',
+			array(
 				'points'      => 5,
 				'label'       => __( 'Answering', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user answers a question', 'anspress-question-answer' ),
@@ -154,7 +159,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'comment', array(
+			'comment',
+			array(
 				'points'      => 2,
 				'label'       => __( 'Commenting', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user comments on question or answer', 'anspress-question-answer' ),
@@ -165,7 +171,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'select_answer', array(
+			'select_answer',
+			array(
 				'points'      => 2,
 				'label'       => __( 'Selecting an Answer', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user selects an answer for their question', 'anspress-question-answer' ),
@@ -176,7 +183,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'best_answer', array(
+			'best_answer',
+			array(
 				'points'      => 10,
 				'label'       => __( 'Answer selected as best', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user\'s answer is selected as best', 'anspress-question-answer' ),
@@ -187,7 +195,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'received_vote_up', array(
+			'received_vote_up',
+			array(
 				'points'      => 10,
 				'label'       => __( 'Received up vote', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user receives an upvote', 'anspress-question-answer' ),
@@ -197,7 +206,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'received_vote_down', array(
+			'received_vote_down',
+			array(
 				'points'      => -2,
 				'label'       => __( 'Received down vote', 'anspress-question-answer' ),
 				'description' => __( 'Points awarded when user receives a down vote', 'anspress-question-answer' ),
@@ -207,7 +217,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'given_vote_up', array(
+			'given_vote_up',
+			array(
 				'points'      => 0,
 				'label'       => __( 'Gives an up vote', 'anspress-question-answer' ),
 				'description' => __( 'Points taken from user when they give an up vote', 'anspress-question-answer' ),
@@ -217,7 +228,8 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		ap_register_reputation_event(
-			'given_vote_down', array(
+			'given_vote_down',
+			array(
 				'points'      => 0,
 				'label'       => __( 'Gives down vote', 'anspress-question-answer' ),
 				'description' => __( 'Points taken from user when they give a down vote', 'anspress-question-answer' ),
@@ -238,7 +250,7 @@ class Reputation extends \AnsPress\Singleton {
 		}
 
 		$events_point = ap_isset_post_value( 'events', 'r' );
-		$points       = [];
+		$points       = array();
 
 		foreach ( ap_get_reputation_events() as $slug => $event ) {
 			if ( isset( $events_point[ $slug ] ) ) {
@@ -258,7 +270,8 @@ class Reputation extends \AnsPress\Singleton {
 	/**
 	 * Add reputation for user for new question.
 	 *
-	 * @param integer $post_id Post ID.
+	 * @param integer  $post_id Post ID.
+	 * @param \WP_Post $_post Post object.
 	 */
 	public function new_question( $post_id, $_post ) {
 		ap_insert_reputation( 'ask', $post_id, $_post->post_author );
@@ -267,7 +280,8 @@ class Reputation extends \AnsPress\Singleton {
 	/**
 	 * Add reputation for new answer.
 	 *
-	 * @param integer $post_id Post ID.
+	 * @param integer  $post_id Post ID.
+	 * @param \WP_Post $_post Post object.
 	 */
 	public function new_answer( $post_id, $_post ) {
 		ap_insert_reputation( 'answer', $post_id, $_post->post_author );
@@ -287,7 +301,7 @@ class Reputation extends \AnsPress\Singleton {
 	 * Update reputation when a answer is deleted.
 	 *
 	 * @param integer $post_id Post ID.
-	 * @param object  $_post Post object.
+	 * @param object  $_post   Post object.
 	 */
 	public function trash_answer( $post_id, $_post ) {
 		ap_delete_reputation( 'answer', $post_id, $_post->post_author );
@@ -320,7 +334,7 @@ class Reputation extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Award reputation when user recive an up vote.
+	 * Award reputation when user receive an up vote.
 	 *
 	 * @param integer $post_id Post ID.
 	 */
@@ -331,7 +345,7 @@ class Reputation extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Award reputation when user recive an down vote.
+	 * Award reputation when user receive an down vote.
 	 *
 	 * @param integer $post_id Post ID.
 	 */
@@ -397,7 +411,7 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function delete_user( $user_id ) {
 		global $wpdb;
-		$delete = $wpdb->delete( $wpdb->ap_reputations, [ 'repu_user_id' => $user_id ], [ '%d' ] ); // WPCS: db call okay, db cache okay.
+		$delete = $wpdb->delete( $wpdb->ap_reputations, array( 'repu_user_id' => $user_id ), array( '%d' ) ); // WPCS: db call okay, db cache okay.
 
 		if ( false !== $delete ) {
 			do_action( 'ap_bulk_delete_reputations_of_user', $user_id );
@@ -413,7 +427,6 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function display_name( $name, $args ) {
 		if ( $args['user_id'] > 0 ) {
-
 			if ( $args['html'] ) {
 				$reputation = ap_get_user_reputation_meta( $args['user_id'] );
 
@@ -443,7 +456,15 @@ class Reputation extends \AnsPress\Singleton {
 	 * Show reputation points of user in BuddyPress profile meta.
 	 */
 	public function bp_profile_header_meta() {
-		echo '<span class="ap-user-meta ap-user-meta-reputation">' . sprintf( __( '%s Reputation', 'anspress-question-answer' ), ap_get_user_reputation_meta( bp_displayed_user_id() ) ) . '</span>';
+		echo wp_kses_post(
+			'<span class="ap-user-meta ap-user-meta-reputation">' .
+			sprintf(
+				// translators: Placeholder contains reputation points.
+				__( '%s Reputation', 'anspress-question-answer' ),
+				ap_get_user_reputation_meta( bp_displayed_user_id() )
+			) .
+			'</span>'
+		);
 	}
 
 	/**
@@ -454,7 +475,7 @@ class Reputation extends \AnsPress\Singleton {
 			'slug'  => 'reputations',
 			'label' => __( 'Reputations', 'anspress-question-answer' ),
 			'icon'  => 'apicon-reputation',
-			'cb'    => [ $this, 'reputation_page' ],
+			'cb'    => array( $this, 'reputation_page' ),
 			'order' => 5,
 		);
 	}
@@ -465,7 +486,7 @@ class Reputation extends \AnsPress\Singleton {
 	public function reputation_page() {
 		$user_id = get_queried_object_id();
 
-		$reputations = new \AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
+		$reputations = new \AnsPress_Reputation_Query( array( 'user_id' => $user_id ) );
 		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 
@@ -480,10 +501,10 @@ class Reputation extends \AnsPress\Singleton {
 
 		ob_start();
 		$reputations = new \AnsPress_Reputation_Query(
-			[
+			array(
 				'user_id' => $user_id,
 				'paged'   => $paged,
-			]
+			)
 		);
 		while ( $reputations->have() ) :
 			$reputations->the_reputation();
@@ -496,12 +517,12 @@ class Reputation extends \AnsPress\Singleton {
 		ap_ajax_json(
 			array(
 				'success' => true,
-				'args'    => [
+				'args'    => array(
 					'ap_ajax_action' => 'load_more_reputation',
 					'__nonce'        => wp_create_nonce( 'load_more_reputation' ),
 					'current'        => (int) $paged,
 					'user_id'        => $user_id,
-				],
+				),
 				'html'    => $html,
 				'element' => '.ap-reputations tbody',
 			)
@@ -515,32 +536,36 @@ class Reputation extends \AnsPress\Singleton {
 	 * @return array
 	 */
 	public function ap_bp_nav( $nav ) {
-		$nav[] = [
+		$nav[] = array(
 			'name' => __( 'Reputations', 'anspress-question-answer' ),
 			'slug' => 'reputations',
-		];
+		);
 		return $nav;
 	}
 
 	/**
 	 * Add BuddyPress reputation page callback.
 	 *
-	 * @param array  $cb Callback function.
+	 * @param array  $cb       Callback function.
 	 * @param string $template Template.
-	 * @param array
+	 * @return array
 	 */
 	public function ap_bp_page( $cb, $template ) {
-
 		if ( 'reputations' === $template ) {
-			return [ $this, 'bp_reputation_page' ];
+			return array( $this, 'bp_reputation_page' );
 		}
 		return $cb;
 	}
 
+	/**
+	 * Display reputation on buddypress page.
+	 *
+	 * @since unknown
+	 */
 	public function bp_reputation_page() {
 		$user_id = bp_displayed_user_id();
 
-		$reputations = new \AnsPress_Reputation_Query( [ 'user_id' => $user_id ] );
+		$reputations = new \AnsPress_Reputation_Query( array( 'user_id' => $user_id ) );
 		include ap_get_theme_location( 'addons/reputation/index.php' );
 	}
 

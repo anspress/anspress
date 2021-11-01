@@ -45,10 +45,12 @@ class Captcha extends \AnsPress\Singleton {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	protected function __construct() {
-		ap_add_default_options( array(
-			'recaptcha_method'        => 'post',
-			'recaptcha_exclude_roles' => [ 'ap_moderator' => 1 ],
-		) );
+		ap_add_default_options(
+			array(
+				'recaptcha_method'        => 'post',
+				'recaptcha_exclude_roles' => array( 'ap_moderator' => 1 ),
+			)
+		);
 
 		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
 		anspress()->add_action( 'ap_form_options_features_recaptcha', $this, 'options' );
@@ -65,8 +67,7 @@ class Captcha extends \AnsPress\Singleton {
 	 * @since 4.1.9
 	 */
 	public function enqueue_scripts() {
-		wp_register_script( 'grecaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . get_locale() . '&render=explicit' );
-		wp_enqueue_script( 'ap-recaptcha', ANSPRESS_URL . 'addons/recaptcha/script.js', [], true );
+		wp_enqueue_script( 'ap-recaptcha', ANSPRESS_URL . 'addons/recaptcha/script.js', array(), AP_VERSION, true );
 	}
 
 	/**
@@ -91,24 +92,24 @@ class Captcha extends \AnsPress\Singleton {
 		global $wp_roles;
 		$opt = ap_opt();
 
-		$roles = [];
+		$roles = array();
 		foreach ( $wp_roles->roles as $key => $role ) {
 			$roles[ $key ] = $role['name'];
 		}
 
 		$form = array(
 			'fields' => array(
-				'recaptcha_site_key'   => array(
+				'recaptcha_site_key'      => array(
 					'label' => __( 'Recaptcha site key', 'anspress-question-answer' ),
 					'desc'  => __( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', 'anspress-question-answer' ),
 					'value' => $opt['recaptcha_site_key'],
 				),
-				'recaptcha_secret_key' => array(
+				'recaptcha_secret_key'    => array(
 					'label' => __( 'Recaptcha secret key', 'anspress-question-answer' ),
 					'desc'  => __( 'Enter your secret key', 'anspress-question-answer' ),
 					'value' => $opt['recaptcha_secret_key'],
 				),
-				'recaptcha_method' => array(
+				'recaptcha_method'        => array(
 					'label'   => __( 'Recaptcha Method', 'anspress-question-answer' ),
 					'desc'    => __( 'Select method to use when verification keeps failing', 'anspress-question-answer' ),
 					'type'    => 'select',

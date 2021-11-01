@@ -81,7 +81,7 @@ class Tags extends \AnsPress\Singleton {
 
 		$question_args = array(
 			'paged'     => max( 1, get_query_var( 'ap_paged' ) ),
-			'tax_query' => array(
+			'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
 					'taxonomy' => 'question_tag',
 					'field'    => 'id',
@@ -96,14 +96,12 @@ class Tags extends \AnsPress\Singleton {
 			anspress()->questions = ap_get_questions( $question_args );
 			include ap_get_theme_location( 'addons/tag/tag.php' );
 		}
-
 	}
 
 	/**
 	 * Tags page layout
 	 */
 	public function tags_page() {
-
 		global $question_tags, $ap_max_num_pages, $ap_per_page, $tags_rows_found;
 		$paged    = max( 1, get_query_var( 'paged' ) );
 		$per_page = (int) ap_opt( 'tags_per_page' );
@@ -149,7 +147,7 @@ class Tags extends \AnsPress\Singleton {
 		$tag_args['fields'] = 'count';
 		$found_query        = new \WP_Term_Query( $tag_args );
 		$tags_rows_found    = $found_query->get_terms();
-		$ap_max_num_pages   = ceil( $tags_rows_found / $per_page );
+		$ap_max_num_pages   = ceil( count( $tags_rows_found ) / $per_page );
 		$question_tags      = $query->get_terms();
 
 		include ap_get_theme_location( 'addons/tag/tags.php' );
@@ -180,12 +178,12 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function register_question_tag() {
 		ap_add_default_options(
-			[
+			array(
 				'max_tags'      => 5,
 				'min_tags'      => 1,
 				'tags_per_page' => 20,
 				'tag_page_slug' => 'tag',
-			]
+			)
 		);
 
 		$tag_labels = array(
@@ -308,31 +306,33 @@ class Tags extends \AnsPress\Singleton {
 	/**
 	 * Hook tags after post.
 	 *
-	 * @param   object $post Post object.
-	 * @return  string
-	 * @since   1.0
+	 * @param object $post Post object.
+	 * @since 1.0
 	 */
 	public function ap_question_info( $post ) {
-
 		if ( ap_question_have_tags() ) {
-			echo '<div class="widget"><span class="ap-widget-title">' . esc_attr__( 'Tags', 'anspress-question-answer' ) . '</span>';
-			echo '<div class="ap-post-tags clearfix">' . ap_question_tags_html(
-				[
-					'list'  => true,
-					'label' => '',
-				]
-			) . '</div></div>'; // WPCS: xss okay.
+			echo wp_kses_post( '<div class="widget"><span class="ap-widget-title">' . esc_attr__( 'Tags', 'anspress-question-answer' ) . '</span>' );
+
+			echo wp_kses_post(
+				'<div class="ap-post-tags clearfix">' .
+				ap_question_tags_html(
+					array(
+						'list'  => true,
+						'label' => '',
+					)
+				) .
+				'</div></div>'
+			);
 		}
 	}
 
 	/**
 	 * Enqueue scripts.
 	 *
-	 * @param array $js Javacript array.
-	 * @return array
+	 * @return void
 	 */
 	public function ap_assets_js() {
-		wp_enqueue_script( 'anspress-tags', ANSPRESS_URL . 'assets/js/tags.js', [ 'anspress-list' ], AP_VERSION, true );
+		wp_enqueue_script( 'anspress-tags', ANSPRESS_URL . 'assets/js/tags.js', array( 'anspress-list' ), AP_VERSION, true );
 	}
 
 	/**
@@ -364,15 +364,16 @@ class Tags extends \AnsPress\Singleton {
 	 */
 	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_tag' === $taxonomy ) {
-			if ( get_option( 'permalink_structure' ) != '' ) {
+			if ( get_option( 'permalink_structure' ) !== '' ) {
 				$opt = get_option( 'ap_tags_path', 'tags' );
 				return user_trailingslashit( home_url( $opt ) . '/' . $term->slug );
 			} else {
 				return add_query_arg(
-					[
+					array(
 						'ap_page'      => 'tag',
 						'question_tag' => $term->slug,
-					], home_url()
+					),
+					home_url()
 				);
 			}
 		}
@@ -424,11 +425,6 @@ class Tags extends \AnsPress\Singleton {
 	 * @since 1.0
 	 */
 	public function after_new_question( $post_id, $post ) {
-		// We don't need to process when its admin form.
-		// if ( is_admin() ) {
-		// 	return;
-		// }
-
 		$values = anspress()->get_form( 'question' )->get_values();
 
 		if ( isset( $values['tags'], $values['tags']['value'] ) ) {
@@ -461,7 +457,6 @@ class Tags extends \AnsPress\Singleton {
 	 * @return array
 	 */
 	public function ap_breadcrumbs( $navs ) {
-
 		if ( is_question_tag() ) {
 			$tag_id       = sanitize_title( get_query_var( 'q_tag' ) );
 			$tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
@@ -496,7 +491,8 @@ class Tags extends \AnsPress\Singleton {
 		$keyword = ap_sanitize_unslash( 'q', 'r' );
 
 		$tags = get_terms(
-			'question_tag', array(
+			'question_tag',
+			array(
 				'orderby'    => 'count',
 				'order'      => 'DESC',
 				'hide_empty' => false,
@@ -524,7 +520,9 @@ class Tags extends \AnsPress\Singleton {
 	/**
 	 * Add category pages rewrite rule.
 	 *
-	 * @param  array $rules AnsPress rules.
+	 * @param array  $rules AnsPress rules.
+	 * @param string $slug Slug.
+	 * @param int    $base_page_id AnsPress base page id.
 	 * @return array
 	 */
 	public function rewrite_rules( $rules, $slug, $base_page_id ) {
@@ -574,6 +572,7 @@ class Tags extends \AnsPress\Singleton {
 	/**
 	 * Add tags sorting in list filters
 	 *
+	 * @param array $filters Filters.
 	 * @return array
 	 */
 	public function ap_list_filters( $filters ) {
@@ -631,21 +630,21 @@ class Tags extends \AnsPress\Singleton {
 			array(
 				'success' => true,
 				'items'   => array(
-					[
+					array(
 						'key'   => 'tags_order',
 						'value' => 'popular',
 						'label' => __( 'Popular', 'anspress-question-answer' ),
-					],
-					[
+					),
+					array(
 						'key'   => 'tags_order',
 						'value' => 'new',
 						'label' => __( 'New', 'anspress-question-answer' ),
-					],
-					[
+					),
+					array(
 						'key'   => 'tags_order',
 						'value' => 'name',
 						'label' => __( 'Name', 'anspress-question-answer' ),
-					],
+					),
 				),
 				'nonce'   => wp_create_nonce( 'filter_' . $filter ),
 			)
@@ -655,6 +654,8 @@ class Tags extends \AnsPress\Singleton {
 	/**
 	 * Output active tag in filter
 	 *
+	 * @param bool  $active Is active.
+	 * @param mixed $filter Current filter.
 	 * @since 4.0.0
 	 */
 	public function filter_active_tag( $active, $filter ) {
@@ -671,12 +672,14 @@ class Tags extends \AnsPress\Singleton {
 			$terms = get_terms( 'question_tag', $args );
 
 			if ( $terms ) {
-				$active_terms = [];
+				$active_terms = array();
 				foreach ( (array) $terms as $t ) {
 					$active_terms[] = $t->name;
 				}
 
-				$count      = count( $current_filters );
+				$count = count( $current_filters );
+
+				// translators: Placeholder contains count.
 				$more_label = sprintf( __( ', %d+', 'anspress-question-answer' ), $count - 2 );
 
 				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : '' ) . '</span>';
@@ -687,6 +690,8 @@ class Tags extends \AnsPress\Singleton {
 	/**
 	 * Output active tags_order in filter
 	 *
+	 * @param string $active Active filter.
+	 * @param array  $filter Filter.
 	 * @since 4.1.0
 	 */
 	public function filter_active_tags_order( $active, $filter ) {
@@ -732,12 +737,11 @@ class Tags extends \AnsPress\Singleton {
 		if ( $query->is_main_query() &&
 			$query->is_tax( 'question_tag' ) &&
 			'tag' === get_query_var( 'ap_page' ) ) {
-
 			$query->found_posts   = 1;
 			$query->max_num_pages = 1;
 			$page                 = get_page( ap_opt( 'tags_page' ) );
 			$page->post_title     = get_queried_object()->name;
-			$posts                = [ $page ];
+			$posts                = array( $page );
 		}
 
 		return $posts;
