@@ -218,9 +218,6 @@ class AnsPress_Admin {
 		add_submenu_page( 'anspress', __( 'AnsPress Add-ons', 'anspress-question-answer' ), __( 'Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_addons', array( __CLASS__, 'display_plugin_addons_page' ) );
 
 		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' );
-
-		add_submenu_page( 'anspress-hidden', __( 'About AnsPress', 'anspress-question-answer' ), __( 'About AnsPress', 'anspress-question-answer' ), 'manage_options', 'anspress_about', array( __CLASS__, 'display_plugin_about_page' ) );
-
 	}
 
 	public static function fix_active_admin_menu( $parent_file ) {
@@ -290,13 +287,6 @@ class AnsPress_Admin {
 	}
 
 	/**
-	 * Load about page layout
-	 */
-	public static function display_plugin_about_page() {
-		include_once 'views/about.php';
-	}
-
-	/**
 	 * Load dashboard page layout.
 	 *
 	 * @since 2.4
@@ -325,7 +315,6 @@ class AnsPress_Admin {
 			$links,
 			array(
 				'settings' => '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Settings', 'anspress-question-answer' ) . '</a>',
-				'about'    => '<a href="' . admin_url( 'admin.php?page=anspress_about' ) . '">' . __( 'About', 'anspress-question-answer' ) . '</a>',
 			)
 		);
 	}

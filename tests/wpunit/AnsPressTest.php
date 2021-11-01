@@ -179,7 +179,6 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase {
 		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/ajax.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/includes/ajax-hooks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/about.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/addons.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/dashboard.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/emails.php' );
