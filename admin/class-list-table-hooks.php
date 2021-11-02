@@ -16,9 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Post table hooks.
+ *
+ * @since unknown
+ * @since 4.2.0 Fixed: CS bugs.
  */
 class AnsPress_Post_Table_Hooks {
-
 	/**
 	 * Initialize the class
 	 */
@@ -27,7 +29,7 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'views_edit-answer', __CLASS__, 'flag_view' );
 		anspress()->add_action( 'posts_clauses', __CLASS__, 'posts_clauses', 10, 2 );
 		anspress()->add_action( 'manage_answer_posts_custom_column', __CLASS__, 'answer_row_actions', 10, 2 );
-		// anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
+
 		anspress()->add_filter( 'manage_edit-question_columns', __CLASS__, 'cpt_question_columns' );
 		anspress()->add_action( 'manage_posts_custom_column', __CLASS__, 'custom_columns_value' );
 		anspress()->add_filter( 'manage_edit-answer_columns', __CLASS__, 'cpt_answer_columns' );
@@ -35,10 +37,12 @@ class AnsPress_Post_Table_Hooks {
 		anspress()->add_filter( 'manage_edit-answer_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
 		anspress()->add_action( 'edit_form_after_title', __CLASS__, 'edit_form_after_title' );
 		anspress()->add_filter( 'manage_edit-comments_columns', __CLASS__, 'comment_flag_column' );
-		// anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
 		anspress()->add_filter( 'comment_status_links', __CLASS__, 'comment_flag_view' );
 		anspress()->add_action( 'current_screen', __CLASS__, 'comments_flag_query', 10, 2 );
 		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_custom_message' );
+
+		// phpcs:ignore anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
+		// phpcs:ignore anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
 	}
 
 	/**
@@ -70,7 +74,7 @@ class AnsPress_Post_Table_Hooks {
 		global $pagenow, $wpdb;
 		$vars = $instance->query_vars;
 
-		if ( ! in_array( $vars['post_type'], [ 'question', 'answer' ], true ) ) {
+		if ( ! in_array( $vars['post_type'], array( 'question', 'answer' ), true ) ) {
 			return $sql;
 		}
 
@@ -113,10 +117,10 @@ class AnsPress_Post_Table_Hooks {
 			return;
 		}
 
-		$content = ap_truncate_chars( esc_html( get_the_excerpt() ), 90 );
+		$content = ap_truncate_chars( wp_strip_all_tags( get_the_excerpt() ), 90 );
 
 		// Pregmatch will return an array and the first 80 chars will be in the first element.
-		echo '<a href="' . esc_url( get_permalink( $post->post_parent ) ) . '" class="row-title">' . $content . '</a>'; // xss okay.
+		echo '<a href="' . esc_url( get_permalink( $post->post_parent ) ) . '" class="row-title">' . esc_html( $content ) . '</a>';
 
 		// First set up some variables.
 		$actions          = array();
@@ -129,7 +133,6 @@ class AnsPress_Post_Table_Hooks {
 				$_wpnonce           = wp_create_nonce( 'untrash-post_' . $post_id );
 				$url                = admin_url( 'post.php?post=' . $post_id . '&action=untrash&_wpnonce=' . $_wpnonce );
 				$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this item from the Trash', 'anspress-question-answer' ) ) . "' href='" . $url . "'>" . __( 'Restore', 'anspress-question-answer' ) . '</a>';
-
 			} elseif ( EMPTY_TRASH_DAYS ) {
 				$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this item to the Trash', 'anspress-question-answer' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash', 'anspress-question-answer' ) . '</a>';
 			}
@@ -140,21 +143,29 @@ class AnsPress_Post_Table_Hooks {
 		}
 
 		if ( $can_edit_post ) {
-			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( sprintf( __( 'Edit &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title ) ) . '" rel="permalink">' . __( 'Edit', 'anspress-question-answer' ) . '</a>';
+			// translators: %s is post title.
+			$anchor_title = sprintf( __( 'Edit &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title );
+
+			$actions['edit'] = '<a href="' . get_edit_post_link( $post->ID, '', true ) . '" title="' . esc_attr( $anchor_title ) . '" rel="permalink">' . __( 'Edit', 'anspress-question-answer' ) . '</a>';
 		}
 
 		// Actions to view/preview.
-		if ( in_array( $post->post_status, [ 'pending', 'draft', 'future' ], true ) && $can_edit_post ) {
+		if ( in_array( $post->post_status, array( 'pending', 'draft', 'future' ), true ) && $can_edit_post ) {
+			// translators: %s is post title.
+			$anchor_title = sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title );
+			$anchor_url   = add_query_arg( 'preview', 'true', get_permalink( $post->ID ) );
 
-			$actions['view'] = '<a href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '" title="' . esc_attr( sprintf( __( 'Preview &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title ) ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>';
-
+			$actions['view'] = '<a href="' . esc_url( $anchor_url ) . '" title="' . esc_attr( $anchor_title ) . '" rel="permalink">' . __( 'Preview', 'anspress-question-answer' ) . '</a>';
 		} elseif ( 'trash' !== $post->post_status ) {
-			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( __( 'View &#8220;%s&#8221; question', 'anspress-question-answer' ) ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
+			// translators: %s is post title.
+			$anchor_title = sprintf( __( 'View &#8220;%s&#8221;', 'anspress-question-answer' ), $post->title );
+
+			$actions['view'] = '<a href="' . get_permalink( $post->ID ) . '" title="' . esc_attr( $anchor_title ) . '" rel="permalink">' . __( 'View', 'anspress-question-answer' ) . '</a>';
 		}
 
-		// Echo the 'actions' HTML, let WP_List_Table do the hard work.
-		$WP_List_Table = new WP_List_Table(); // @codingStandardsIgnoreLine
-		echo $WP_List_Table->row_actions( $actions );
+		$wp_list_table = new WP_List_Table();
+
+		echo $wp_list_table->row_actions( $actions ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -164,7 +175,6 @@ class AnsPress_Post_Table_Hooks {
 	 * @param object $post    Post object.
 	 */
 	public static function add_question_flag_link( $actions, $post ) {
-
 		if ( ap_get_post_field( 'flags', $post ) ) {
 			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $post->ID ) . '::' . $post->ID . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">' . __( 'Clear flag', 'anspress-question-answer' ) . '</a>';
 		}
@@ -211,19 +221,16 @@ class AnsPress_Post_Table_Hooks {
 	public static function custom_columns_value( $column ) {
 		global $post;
 
-		if ( ! in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
+		if ( ! in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 			return $column;
 		}
 
 		if ( 'ap_author' === $column ) {
-
 			echo '<a class="ap-author-col" href="' . esc_url( ap_user_link( $post->post_author ) ) . '">';
 			ap_author_avatar( 28 );
 			echo '<span>' . esc_attr( ap_user_display_name() ) . '</span>';
 			echo '</a>';
-
 		} elseif ( 'status' === $column ) {
-
 			global $wp_post_statuses;
 			echo '<span class="post-status">';
 
@@ -232,9 +239,7 @@ class AnsPress_Post_Table_Hooks {
 			}
 
 			echo '</span>';
-
 		} elseif ( 'question_category' === $column && taxonomy_exists( 'question_category' ) ) {
-
 			$category = get_the_terms( $post->ID, 'question_category' );
 
 			if ( ! empty( $category ) ) {
@@ -243,12 +248,11 @@ class AnsPress_Post_Table_Hooks {
 				foreach ( (array) $category as $cat ) {
 					$out[] = edit_term_link( $cat->name, '', '', $cat, false );
 				}
-				echo join( ', ', $out ); // xss okay.
+				echo join( ', ', $out ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			} else {
 				esc_html_e( '--', 'anspress-question-answer' );
 			}
 		} elseif ( 'question_tag' === $column && taxonomy_exists( 'question_tag' ) ) {
-
 			$terms = get_the_terms( $post->ID, 'question_tag' );
 
 			if ( ! empty( $terms ) ) {
@@ -257,43 +261,49 @@ class AnsPress_Post_Table_Hooks {
 				foreach ( (array) $terms as $term ) {
 					$url   = esc_url(
 						add_query_arg(
-							[
+							array(
 								'post_type'    => $post->post_type,
 								'question_tag' => $term->slug,
-							], 'edit.php'
+							),
+							'edit.php'
 						)
 					);
 					$out[] = sprintf( '<a href="%s">%s</a>', $url, esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, 'question_tag', 'display' ) ) );
 				}
 
-				echo join( ', ', $out ); // xss ok.
+				echo join( ', ', $out ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			} else {
 				esc_attr_e( '--', 'anspress-question-answer' );
 			}
 		} elseif ( 'answers' === $column ) {
-
 			$url = add_query_arg(
 				array(
 					'post_type'   => 'answer',
 					'post_parent' => $post->ID,
-				), 'edit.php'
+				),
+				'edit.php'
 			);
-			echo '<a class="ans-count" title="' . esc_html( sprintf( _n( '%d Answer', '%d Answers', $post->answers, 'anspress-question-answer' ), (int) $post->answers ) ) . '" href="' . esc_url( $url ) . '">' . esc_attr( $post->answers ) . '</a>';
 
+			// translators: %d is total numbers of answer.
+			$anchor_title = sprintf( _n( '%d Answer', '%d Answers', $post->answers, 'anspress-question-answer' ), $post->answers );
+
+			echo '<a class="ans-count" title="' . esc_html( $anchor_title ) . '" href="' . esc_url( $url ) . '">' . esc_attr( $post->answers ) . '</a>';
 		} elseif ( 'parent_question' === $column ) {
 			$url = add_query_arg(
-				[
+				array(
 					'post'   => $post->post_parent,
 					'action' => 'edit',
-				], 'post.php'
+				),
+				'post.php'
 			);
-			echo '<a class="parent_question" href="' . esc_url( $url ) . '"><strong>' . get_the_title( $post->post_parent ) . '</strong></a>';
+			echo '<a class="parent_question" href="' . esc_url( $url ) . '"><strong>';
+			the_title( $post->post_parent );
+			echo '</strong></a>';
 		} elseif ( 'votes' === $column ) {
 			echo '<span class="vote-count">' . esc_attr( $post->votes_net ) . '</span>';
 		} elseif ( 'flags' === $column ) {
 			echo '<span class="flag-count' . ( $post->flags ? ' flagged' : '' ) . '">' . esc_attr( $post->flags ) . '</span>';
 		}
-
 	}
 
 	/**
@@ -341,7 +351,7 @@ class AnsPress_Post_Table_Hooks {
 	public static function edit_form_after_title() {
 		global $typenow, $pagenow, $post;
 
-		if ( in_array( $pagenow, [ 'post-new.php', 'post.php' ], true ) && 'answer' === $post->post_type ) {
+		if ( in_array( $pagenow, array( 'post-new.php', 'post.php' ), true ) && 'answer' === $post->post_type ) {
 			$post_parent = ap_sanitize_unslash( 'action', 'g', false ) ? $post->post_parent : ap_sanitize_unslash( 'post_parent', 'g' );
 			echo '<div class="ap-selected-question">';
 
@@ -357,7 +367,12 @@ class AnsPress_Post_Table_Hooks {
 				</a>
 				<div class="ap-q-meta">
 					<span class="ap-a-count">
-						<?php echo esc_html( sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ), $answers ) ); ?>
+						<?php
+							echo esc_html(
+								// translators: %d is answers count.
+								sprintf( _n( '%d Answer', '%d Answers', $answers, 'anspress-question-answer' ), $answers )
+							);
+						?>
 					</span>
 					<span class="ap-edit-link">|
 						<a href="<?php echo esc_url( get_edit_post_link( $q->ID ) ); ?>">
@@ -365,7 +380,7 @@ class AnsPress_Post_Table_Hooks {
 						</a>
 					</span>
 				</div>
-				<div class="ap-q-content"><?php echo $q->post_content; // xss ok. ?></div>
+				<div class="ap-q-content"><?php echo wp_kses_post( $q->post_content ); ?></div>
 				<input type="hidden" name="post_parent" value="<?php echo esc_attr( $post_parent ); ?>" />
 
 				<?php
@@ -391,6 +406,7 @@ class AnsPress_Post_Table_Hooks {
 	 * @param  string  $column         name of the comment table column.
 	 * @param  integer $comment_id     Current comment ID.
 	 * @return void
+	 * @todo fix undefined constant `ANSPRESS_FLAG_META`.
 	 */
 	public static function comment_flag_column_data( $column, $comment_id ) {
 		if ( 'comment_flag' === $column ) {
@@ -418,17 +434,16 @@ class AnsPress_Post_Table_Hooks {
 	/**
 	 * Delay hooking our clauses filter to ensure it's only applied when needed.
 	 *
-	 * @param string $screen Current screen.
+	 * @param object $screen Current screen.
 	 */
 	public static function comments_flag_query( $screen ) {
-
 		if ( 'edit-comments' !== $screen->id ) {
 				return;
 		}
 
 		// Check if our Query Var is defined.
 		if ( ap_sanitize_unslash( 'show_flagged', 'p' ) ) {
-			add_action( 'comments_clauses', [ 'AnsPress_Admin', 'filter_comments_query' ] );
+			add_action( 'comments_clauses', array( 'AnsPress_Admin', 'filter_comments_query' ) );
 		}
 	}
 
@@ -441,7 +456,7 @@ class AnsPress_Post_Table_Hooks {
 	public static function post_custom_message( $messages ) {
 		global $post;
 		if ( 'answer' === $post->post_type && (int) ap_sanitize_unslash( 'message', 'g' ) === 99 ) {
-			add_action( 'admin_notices', [ __CLASS__, 'ans_notice' ] );
+			add_action( 'admin_notices', array( __CLASS__, 'ans_notice' ) );
 		}
 
 		return $messages;
@@ -452,8 +467,8 @@ class AnsPress_Post_Table_Hooks {
 	 */
 	public static function ans_notice() {
 		echo '<div class="error">
-				<p>' . esc_html__( 'Please fill parent question field, Answer was not saved!', 'anspress-question-answer' ) . '</p>
-			</div>';
+			<p>' . esc_html__( 'Please fill parent question field, Answer was not saved!', 'anspress-question-answer' ) . '</p>
+		</div>';
 	}
 
 }

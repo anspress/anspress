@@ -7,6 +7,7 @@
  * @license   GPL-3.0+
  * @link      https://anspress.net
  * @copyright 2014 Rahul Aryan
+ * @since 4.2.0 Fixed: CS bugs.
  */
 
 // If this file is called directly, abort.
@@ -22,6 +23,7 @@ require_once 'license.php';
  *
  * @package AnsPress
  * @author  Rahul Aryan <rah12@live.com>
+ * @since   4.2.0 Fixed: CS bugs.
  */
 class AnsPress_Admin {
 
@@ -100,23 +102,23 @@ class AnsPress_Admin {
 			return;
 		}
 
-		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', [], AP_VERSION );
+		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', array(), AP_VERSION );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), [], AP_VERSION );
+		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
 	}
 
 	/**
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
-		wp_register_script( 'anspress-common', ANSPRESS_URL . '/assets/js/common.js', [ 'jquery', 'jquery-form', 'backbone' ], AP_VERSION );
-		wp_register_script( 'anspress-question', ANSPRESS_URL . '/assets/js/question.js', [ 'anspress-common' ], AP_VERSION );
-		wp_register_script( 'anspress-ask', ANSPRESS_URL . '/assets/js/ask.js', [ 'anspress-common' ], AP_VERSION );
-		wp_register_script( 'anspress-list', ANSPRESS_URL . '/assets/js/list.js', [ 'anspress-common' ], AP_VERSION );
-		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . '/assets/js/notifications.js', [ 'anspress-common' ], AP_VERSION );
-		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . '/assets/js/ap-admin.js', [ 'anspress-common' ], AP_VERSION );
+		wp_register_script( 'anspress-common', ANSPRESS_URL . '/assets/js/common.js', array( 'jquery', 'jquery-form', 'backbone' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-question', ANSPRESS_URL . '/assets/js/question.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-ask', ANSPRESS_URL . '/assets/js/ask.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-list', ANSPRESS_URL . '/assets/js/list.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . '/assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . '/assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 
-		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', [ 'jquery' ], AP_VERSION, true );
+		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
 
 		$page = get_current_screen();
 
@@ -133,14 +135,14 @@ class AnsPress_Admin {
 		?>
 			<script type="text/javascript">
 				currentQuestionID = '<?php the_ID(); ?>';
-				apTemplateUrl = '<?php echo ap_get_theme_url( 'js-template', false, false ); ?>';
+				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
 				aplang = {};
 				apShowComments  = false;
 			</script>
 		<?php
 
 		if ( 'post' === $page->base && 'question' === $page->post_type ) {
-			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/admin-app.js', [], AP_VERSION, true );
+			wp_enqueue_script( 'ap-admin-app-js', ANSPRESS_URL . 'assets/js/admin-app.js', array(), AP_VERSION, true );
 		}
 
 		wp_enqueue_script( 'postbox' );
@@ -160,7 +162,7 @@ class AnsPress_Admin {
 		$question_count = wp_count_posts( 'question', 'readable' );
 		$answer_count   = wp_count_posts( 'answer', 'readable' );
 
-		$types          = array(
+		$types = array(
 			'question' => ( ! empty( $question_count->moderate ) ? $question_count->moderate : 0 ) + $q_flagged->total,
 			'answer'   => ( ! empty( $answer_count->moderate ) ? $answer_count->moderate : 0 ) + $a_flagged->total,
 			'flagged'  => $q_flagged->total + $a_flagged->total,
@@ -215,19 +217,28 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Settings', 'anspress-question-answer' ), __( 'Settings', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
-		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' );
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
 
+	/**
+	 * Fix active menu css class in wp-admin.
+	 *
+	 * @param string $parent_file Parent file.
+	 * @return string
+	 * @since unknown
+	 */
 	public static function fix_active_admin_menu( $parent_file ) {
-		global $submenu_file, $current_screen, $plugin_page;
+		global $submenu_file, $current_screen;
 
-		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List
-		if ( in_array( $current_screen->post_type, [ 'question', 'answer' ], true )  ) {
-			$submenu_file = 'edit.php?post_type=' . $current_screen->post_type;
-			if ( $current_screen->action == 'add' ) {
-				$submenu_file = 'post-new.php?post_type=' . $current_screen->post_type;
+		// Set correct active/current menu and submenu in the WordPress Admin menu for the "example_cpt" Add-New/Edit/List.
+		if ( in_array( $current_screen->post_type, array( 'question', 'answer' ), true ) ) {
+			$submenu_file = 'edit.php?post_type=' . $current_screen->post_type; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+			if ( 'add' === $current_screen->action ) {
+				$submenu_file = 'post-new.php?post_type=' . $current_screen->post_type; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 			}
-			$parent_file  = 'anspress';
+
+			$parent_file = 'anspress';
 		}
 
 		return $parent_file;
@@ -354,16 +365,15 @@ class AnsPress_Admin {
 	 * @param integer $user_id User ID.
 	 */
 	public static function save_user_roles_fields( $user_id ) {
-		update_usermeta( $user_id, 'ap_role', ap_sanitize_unslash( 'ap_role', 'p' ) );
+		update_user_meta( $user_id, 'ap_role', ap_sanitize_unslash( 'ap_role', 'p' ) );
 	}
 
 	/**
 	 * Change post menu label.
 	 */
 	public static function change_post_menu_label() {
-		global $menu;
 		global $submenu;
-		$submenu['anspress'][0][0] = 'AnsPress';
+		$submenu['anspress'][0][0] = 'AnsPress'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
 
 	/**
@@ -374,9 +384,9 @@ class AnsPress_Admin {
 	 * @since 2.0.0
 	 */
 	public static function ans_parent_post( $post_id, $post ) {
-		global $pagenow;
+		global $pagenow, $wpdb;
 
-		if ( ! in_array( $pagenow, [ 'post.php', 'post-new.php' ], true ) ) {
+		if ( ! in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) ) {
 			return;
 		}
 
@@ -389,8 +399,7 @@ class AnsPress_Admin {
 			if ( empty( $parent_q ) ) {
 				return;
 			} else {
-				global $wpdb;
-				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) ); // db call ok, cache ok.
+				$wpdb->update( $wpdb->posts, array( 'post_parent' => $parent_q ), array( 'ID' => $post->ID ) ); // phpcs:ignore WordPress.DB
 			}
 		}
 	}
@@ -406,8 +415,8 @@ class AnsPress_Admin {
 		$_post = get_post( $post_id );
 
 		if ( 'page' === $_post->post_type ) {
-			$pages_slug = [ 'base_page', 'ask_page' ];
-			$page_ids   = [];
+			$pages_slug = array( 'base_page', 'ask_page' );
+			$page_ids   = array();
 			$opt        = ap_opt();
 
 			foreach ( $pages_slug as $slug ) {
@@ -435,7 +444,7 @@ class AnsPress_Admin {
 			$parent_q = ! empty( 'parent_q' ) ? $parent_q : $data['post_parent'];
 
 			if ( ! empty( $parent_q ) ) {
-				add_filter( 'redirect_post_location', [ __CLASS__, 'custom_post_location' ], 99 );
+				add_filter( 'redirect_post_location', array( __CLASS__, 'custom_post_location' ), 99 );
 				return;
 			}
 		}
@@ -463,19 +472,22 @@ class AnsPress_Admin {
 	 * @since unknown
 	 */
 	public static function ap_menu_metaboxes() {
-		add_meta_box( 'anspress-menu-mb', 'AnsPress', [ __CLASS__, 'render_menu' ], 'nav-menus', 'side', 'high' );
+		add_meta_box( 'anspress-menu-mb', 'AnsPress', array( __CLASS__, 'render_menu' ), 'nav-menus', 'side', 'high' );
 	}
 
 	/**
 	 * Shows AnsPress menu meta box in WP menu editor.
+	 *
+	 * @param object $object Menu object.
+	 * @param array  $args   Menu arguments.
 	 *
 	 * @return void
 	 * @since unknown
 	 */
 	public static function render_menu( $object, $args ) {
 		global $nav_menu_selected_id;
-		$menu_items = ap_menu_obejct();
 
+		$menu_items   = ap_menu_obejct();
 		$walker       = new Walker_Nav_Menu_Checklist( false );
 		$removed_args = array(
 			'action',
@@ -491,7 +503,11 @@ class AnsPress_Admin {
 			<div id="tabs-panel-anspress-all" class="tabs-panel tabs-panel-active">
 			<ul id="anspress-checklist-pop" class="categorychecklist form-no-clear" >
 				<?php
-					echo walk_nav_menu_tree( array_map( 'wp_setup_nav_menu_item', $menu_items ), 0, (object) array( 'walker' => $walker ) );
+					echo walk_nav_menu_tree(
+						array_map( 'wp_setup_nav_menu_item', $menu_items ),
+						0,
+						(object) array( 'walker' => $walker )
+					);
 				?>
 			</ul>
 
@@ -509,16 +525,16 @@ class AnsPress_Admin {
 							)
 						);
 					?>
-					#anspress-menu-mb" class="select-all"><?php _e( 'Select All', 'anspress-question-answer' ); ?></a>
+					#anspress-menu-mb" class="select-all"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
 				</span>
 
 				<span class="add-to-menu">
-					<input type="submit"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu' ); ?>" name="add-anspress-menu-item" id="submit-anspress-div" />
+					<input type="submit"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'anspress-question-answer' ); ?>" name="add-anspress-menu-item" id="submit-anspress-div" />
 					<span class="spinner"></span>
 				</span>
 			</p>
 		</div>
-	<?php
+		<?php
 	}
 
 	/**
@@ -532,12 +548,10 @@ class AnsPress_Admin {
 		if ( isset( $query->query_vars['s'], $screen->id, $screen->post_type ) &&
 			( 'edit-question' === $screen->id && 'question' === $screen->post_type || 'edit-answer' === $screen->id && 'answer' === $screen->post_type ) &&
 			$query->is_main_query() ) {
-
 			$search_q = ap_parse_search_string( get_search_query() );
 
 			// Set author args.
 			if ( ! empty( $search_q['author_id'] ) && is_array( $search_q['author_id'] ) ) {
-
 				$user_ids = '';
 
 				foreach ( (array) $search_q['author_id'] as $id ) {
@@ -545,9 +559,7 @@ class AnsPress_Admin {
 				}
 
 				set_query_var( 'author', rtrim( $user_ids, ',' ) );
-
 			} elseif ( ! empty( $search_q['author_name'] ) && is_array( $search_q['author_name'] ) ) {
-
 				$author_names = array();
 
 				foreach ( (array) $search_q['author_name'] as $id ) {
@@ -583,9 +595,7 @@ class AnsPress_Admin {
 	 * @since 2.4
 	 */
 	public static function join_by_author_name( $pieces, $query ) {
-
 		if ( isset( $query->query_vars['ap_author_name'] ) && is_array( $query->query_vars['ap_author_name'] ) && count( $query->query_vars['ap_author_name'] ) > 0 ) {
-
 			global $wpdb;
 			$authors        = $query->query_vars['ap_author_name'];
 			$authors        = implode( "','", array_map( 'sanitize_title_for_query', array_unique( (array) $authors ) ) );
@@ -606,7 +616,7 @@ class AnsPress_Admin {
 	public static function get_pages( $pages, $r ) {
 		if ( isset( $r['name'] ) && 'page_on_front' === $r['name'] ) {
 			foreach ( (array) $pages as $k => $page ) {
-				if ( ap_opt( 'base_page' ) == $page->ID ) { // loose comparison okay.
+				if ( ap_opt( 'base_page' ) == $page->ID ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 					unset( $pages[ $k ] );
 				}
 			}
@@ -633,17 +643,18 @@ class AnsPress_Admin {
 	 * Add AnsPress post status to post edit select box.
 	 */
 	public static function append_post_status_list() {
-		 global $post;
-		 $complete = '';
-		 $label    = '';
+		global $post;
 
-		if ( in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
+		$complete = '';
+		$label    = '';
+
+		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 			if ( 'moderate' === $post->post_status ) {
-				 $complete = ' selected=\'selected\'';
-				 $label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
+					$complete = ' selected=\'selected\'';
+					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
 			} elseif ( 'private_post' === $post->post_status ) {
-				 $complete = ' selected=\'selected\'';
-				 $label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
+					$complete = ' selected=\'selected\'';
+					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
 			}
 
 			// @codingStandardsIgnoreStart
@@ -663,33 +674,35 @@ class AnsPress_Admin {
 	 */
 	public static function anspress_notice() {
 		$page             = get_current_screen();
-		$anspress_updates = get_option( 'anspress_updates', [] );
+		$anspress_updates = get_option( 'anspress_updates', array() );
 		$have_updates     = empty( $anspress_updates ) || in_array( false, $anspress_updates, true );
 
 		$messages = array(
-			'db'            => [
+			'db'            => array(
 				'type'    => 'error',
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ),
-			],
-			'missing_pages' => [
+				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			),
+			'missing_pages' => array(
 				'type'    => 'error',
 				'message' => __( 'One or more AnsPress page(s) does not exists.', 'anspress-question-answer' ),
 				'button'  => ' <a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">' . __( 'Set automatically', 'anspress-question-answer' ) . '</a> ' . __( 'Or', 'anspress-question-answer' ) . ' <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">' . __( 'Set set by yourself', 'anspress-question-answer' ) . '</a>',
 				'show'    => ( ! self::check_pages_exists() ),
-			],
+			),
 		);
 
 		foreach ( $messages as $msg ) {
 			if ( $msg['show'] ) {
 				$class = 'ap-notice notice notice-' . $msg['type'];
-				printf(
-					'<div class="%1$s %4$s"><p>%2$s%3$s</p></div>',
-					esc_attr( $class ),
-					esc_html( $msg['message'] ),
-					$msg['button'],
-					'apicon-anspress-icon'
+				wp_kses_post(
+					sprintf(
+						'<div class="%1$s %4$s"><p>%2$s%3$s</p></div>',
+						esc_attr( $class ),
+						esc_html( $msg['message'] ),
+						$msg['button'],
+						'apicon-anspress-icon'
+					)
 				);
 			}
 		}
@@ -708,7 +721,7 @@ class AnsPress_Admin {
 			$opt        = ap_opt();
 			$pages_slug = array_keys( ap_main_pages() );
 
-			$pages_in = [];
+			$pages_in = array();
 			foreach ( $pages_slug as $slug ) {
 				$pages_in[] = $opt[ $slug ];
 			}
@@ -745,7 +758,9 @@ class AnsPress_Admin {
 			update_option( 'anspress_db_version', AP_DB_VERSION );
 		}
 
-		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
+		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+
+		exit;
 	}
 
 	/**
@@ -758,7 +773,9 @@ class AnsPress_Admin {
 			delete_transient( 'ap_pages_check' );
 		}
 
-		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );
+		wp_redirect( admin_url( 'admin.php?page=anspress_options' ) );// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+
+		exit;
 	}
 
 	/**
@@ -768,14 +785,14 @@ class AnsPress_Admin {
 	 * @since 4.1.0
 	 */
 	public static function register_options() {
-		add_filter( 'ap_form_options_general_pages', [ __CLASS__, 'options_general_pages' ] );
-		add_filter( 'ap_form_options_general_permalinks', [ __CLASS__, 'options_general_permalinks' ] );
-		add_filter( 'ap_form_options_general_layout', [ __CLASS__, 'options_general_layout' ] );
-		add_filter( 'ap_form_options_postscomments', [ __CLASS__, 'options_postscomments' ] );
-		add_filter( 'ap_form_options_uac_reading', [ __CLASS__, 'options_uac_reading' ] );
-		add_filter( 'ap_form_options_uac_posting', [ __CLASS__, 'options_uac_posting' ] );
-		add_filter( 'ap_form_options_uac_other', [ __CLASS__, 'options_uac_other' ] );
-		add_filter( 'ap_form_options_user_activity', [ __CLASS__, 'options_user_activity' ] );
+		add_filter( 'ap_form_options_general_pages', array( __CLASS__, 'options_general_pages' ) );
+		add_filter( 'ap_form_options_general_permalinks', array( __CLASS__, 'options_general_permalinks' ) );
+		add_filter( 'ap_form_options_general_layout', array( __CLASS__, 'options_general_layout' ) );
+		add_filter( 'ap_form_options_postscomments', array( __CLASS__, 'options_postscomments' ) );
+		add_filter( 'ap_form_options_uac_reading', array( __CLASS__, 'options_uac_reading' ) );
+		add_filter( 'ap_form_options_uac_posting', array( __CLASS__, 'options_uac_posting' ) );
+		add_filter( 'ap_form_options_uac_other', array( __CLASS__, 'options_uac_other' ) );
+		add_filter( 'ap_form_options_user_activity', array( __CLASS__, 'options_user_activity' ) );
 	}
 
 	/**
@@ -848,7 +865,7 @@ class AnsPress_Admin {
 					'label'    => __( 'Question permalink', 'anspress-question-answer' ),
 					'desc'     => __( 'Select single question permalink structure.', 'anspress-question-answer' ),
 					'type'     => 'radio',
-					'options'  => [
+					'options'  => array(
 						'question_perma_1' => home_url( '/' . ap_base_page_slug() ) . '/<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/',
 						'question_perma_2' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/',
 						'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213/',
@@ -856,7 +873,7 @@ class AnsPress_Admin {
 						'question_perma_5' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/213/',
 						'question_perma_6' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213-question-name/',
 						'question_perma_7' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name-213/',
-					],
+					),
 					'value'    => $opt['question_page_permalink'],
 					'validate' => 'required',
 				),
@@ -1039,7 +1056,7 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_new_answer capability', 'anspress-question-answer' ),
 					),
 				),
-				'create_account'      => array(
+				'create_account'        => array(
 					'label' => __( 'Create account for non-registered', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow non-registered users to create account by entering their email in question. After submitting post a confirmation email will be sent to the user.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
@@ -1341,7 +1358,7 @@ class AnsPress_Admin {
 		global $wp_roles;
 		$opt = ap_opt();
 
-		$roles = [];
+		$roles = array();
 		foreach ( $wp_roles->roles as $key => $role ) {
 			$roles[ $key ] = $role['name'];
 		}
@@ -1399,13 +1416,13 @@ class AnsPress_Admin {
 		define( 'IFRAME_REQUEST', true );
 		iframe_header();
 
-		wp_enqueue_style( 'anspress-main', ap_get_theme_url( 'css/main.css' ), [], AP_VERSION );
-		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', [], AP_VERSION );
-		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), [], AP_VERSION );
+		wp_enqueue_style( 'anspress-main', ap_get_theme_url( 'css/main.css' ), array(), AP_VERSION );
+		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', array(), AP_VERSION );
+		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
 		?>
 			<script type="text/javascript">
 				currentQuestionID = '<?php the_ID(); ?>';
-				apTemplateUrl = '<?php echo ap_get_theme_url( 'js-template', false, false ); ?>';
+				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
 				aplang = {};
 				apShowComments  = false;
 			</script>
@@ -1445,7 +1462,10 @@ class AnsPress_Admin {
 		if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
 			anspress()->get_form( 'addon-' . $form_name )->generate( $form_args );
 		} else {
-			echo '<p class="ap-form-nofields">' . sprintf( esc_attr__( 'There is no option registered by this addon. Custom options can be registered by using hook: %s', 'anspress-question-answer' ), 'ap_form_addon-' . $form_name ) . '</p>';
+			echo '<p class="ap-form-nofields">';
+			// translators: %s is name of wp hook.
+			echo esc_attr( sprintf( __( 'There is no option registered by this addon. Custom options can be registered by using hook: %s', 'anspress-question-answer' ), 'ap_form_addon-' . $form_name ) );
+			echo '</p>';
 		}
 		echo '</div>';
 
@@ -1467,9 +1487,8 @@ class AnsPress_Admin {
 
 		$form_name  = ap_sanitize_unslash( 'ap_form_name', 'r' );
 		$addon_name = ap_sanitize_unslash( 'active_addon', 'r' );
-
-		$addon   = ap_get_active_addons( $addon_name );
-		$updated = false;
+		$addon      = ap_get_active_addons( $addon_name );
+		$updated    = false;
 
 		// Process submit form.
 		if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
@@ -1477,7 +1496,7 @@ class AnsPress_Admin {
 			$values = $form->get_values();
 
 			if ( ! $form->have_errors() ) {
-				$options = get_option( 'anspress_opt', [] );
+				$options = get_option( 'anspress_opt', array() );
 
 				foreach ( $values as $key => $opt ) {
 					$options[ $key ] = $opt['value'];
@@ -1494,7 +1513,8 @@ class AnsPress_Admin {
 			}
 		}
 
-		wp_redirect( admin_url( 'admin.php?action=ap_addon_options&addon=' . $addon_name . '&updated=' . $updated ) );
+		wp_redirect( admin_url( 'admin.php?action=ap_addon_options&addon=' . $addon_name . '&updated=' . $updated ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+
 		exit;
 	}
 

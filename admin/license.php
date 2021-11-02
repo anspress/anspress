@@ -9,6 +9,9 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // Load updater.
 require_once dirname( __FILE__ ) . '/updater.php';
@@ -92,7 +95,8 @@ class AP_License {
 
 				// Call the custom API.
 				$response = wp_remote_post(
-					'https://anspress.net', array(
+					'https://anspress.net',
+					array(
 						'timeout'   => 15,
 						'sslverify' => true,
 						'body'      => $api_params,
@@ -115,7 +119,8 @@ class AP_License {
 
 				// Call the custom API.
 				$response = wp_remote_post(
-					'https://anspress.net', array(
+					'https://anspress.net',
+					array(
 						'timeout'   => 15,
 						'sslverify' => true,
 						'body'      => $api_params,
@@ -144,7 +149,8 @@ class AP_License {
 			foreach ( $fields as $slug => $prod ) {
 				if ( isset( $licenses[ $slug ] ) && ! empty( $licenses[ $slug ]['key'] ) ) {
 					new AnsPress_Prod_Updater(
-						$prod['file'], array(
+						$prod['file'],
+						array(
 							'version'   => ! empty( $prod['version'] ) ? $prod['version'] : '',
 							'license'   => $licenses[ $slug ]['key'],
 							'item_name' => ! empty( $prod['name'] ) ? $prod['name'] : '',

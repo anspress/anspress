@@ -7,6 +7,7 @@
  * @license   GPL-2.0+
  * @link      https://anspress.net
  * @copyright 2014 Rahul Aryan
+ * @since 4.2.0 Fixed: CS bugs.
  */
 
 // If this file is called directly, abort.
@@ -100,8 +101,8 @@ class AnsPress_Admin_Ajax {
 		global $answers;
 
 		$question_id = ap_sanitize_unslash( 'question_id', 'p' );
-		$answers_arr = [];
-		$answers     = ap_get_answers( [ 'question_id' => $question_id ] );
+		$answers_arr = array();
+		$answers     = ap_get_answers( array( 'question_id' => $question_id ) );
 
 		while ( ap_have_answers() ) :
 			ap_the_answer();
@@ -135,7 +136,7 @@ class AnsPress_Admin_Ajax {
 		check_ajax_referer( 'ap_uninstall_data', '__nonce' );
 
 		$data_type  = ap_sanitize_unslash( 'data_type', 'r' );
-		$valid_data = [ 'qa', 'answers', 'options', 'userdata', 'terms', 'tables' ];
+		$valid_data = array( 'qa', 'answers', 'options', 'userdata', 'terms', 'tables' );
 
 		global $wpdb;
 
@@ -144,9 +145,9 @@ class AnsPress_Admin_Ajax {
 			$done = 0;
 
 			if ( 'qa' === $data_type ) {
+				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='question' OR post_type='answer'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
-				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='question' OR post_type='answer'" );
-				$ids   = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='question' OR post_type='answer' LIMIT 30" );
+				$ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='question' OR post_type='answer' LIMIT 30" );  // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				foreach ( (array) $ids as $id ) {
 					if ( false !== wp_delete_post( $id, true ) ) {
@@ -155,15 +156,14 @@ class AnsPress_Admin_Ajax {
 				}
 
 				wp_send_json(
-					[
+					array(
 						'done'  => (int) $done,
 						'total' => (int) $count,
-					]
+					)
 				);
 			} elseif ( 'answers' === $data_type ) {
-
-				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" );
-				$ids   = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='answer' LIMIT 30" );
+				$count = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$ids   = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='answer' LIMIT 30" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 				foreach ( (array) $ids as $id ) {
 					if ( false !== wp_delete_post( $id, true ) ) {
@@ -172,13 +172,12 @@ class AnsPress_Admin_Ajax {
 				}
 
 				wp_send_json(
-					[
+					array(
 						'done'  => (int) $done,
 						'total' => (int) $count,
-					]
+					)
 				);
 			} elseif ( 'userdata' === $data_type ) {
-
 				$upload_dir = wp_upload_dir();
 
 				// Delete avatar folder.
@@ -192,25 +191,23 @@ class AnsPress_Admin_Ajax {
 				$wpdb->delete( $wpdb->usermeta, [ 'meta_key' => '__down_vote_casted' ], array( '%s' ) ); // @codingStandardsIgnoreLine
 
 				wp_send_json(
-					[
+					array(
 						'done'  => 1,
 						'total' => 0,
-					]
+					)
 				);
 			} elseif ( 'options' === $data_type ) {
-
 				delete_option( 'anspress_opt' );
 				delete_option( 'anspress_reputation_events' );
 				delete_option( 'anspress_addons' );
 
 				wp_send_json(
-					[
+					array(
 						'done'  => 1,
 						'total' => 0,
-					]
+					)
 				);
 			} elseif ( 'terms' === $data_type ) {
-
 				$question_taxo = (array) get_object_taxonomies( 'question', 'names' );
 				$answer_taxo   = (array) get_object_taxonomies( 'answer', 'names' );
 
@@ -231,30 +228,29 @@ class AnsPress_Admin_Ajax {
 				}
 
 				wp_send_json(
-					[
+					array(
 						'done'  => 1,
 						'total' => 0,
-					]
+					)
 				);
 			} elseif ( 'tables' === $data_type ) {
-
-				$tables = [ $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations, $wpdb->ap_subscribers, $wpdb->prefix . 'ap_notifications' ];
+				$tables = array( $wpdb->ap_qameta, $wpdb->ap_votes, $wpdb->ap_views, $wpdb->ap_reputations, $wpdb->ap_subscribers, $wpdb->prefix . 'ap_notifications' );
 
 				foreach ( $tables as $table ) {
-					$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+					$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB
 				}
 
 				wp_send_json(
-					[
+					array(
 						'done'  => 1,
 						'total' => 0,
-					]
+					)
 				);
 			}
 		}
 
 		// Send empty JSON if nothing done.
-		wp_send_json( [] );
+		wp_send_json( array() );
 	}
 
 	/**
@@ -267,7 +263,7 @@ class AnsPress_Admin_Ajax {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Sorry, you do not have permission!', 'anspress-question-answer' ) ],
+					'snackbar' => array( 'message' => __( 'Sorry, you do not have permission!', 'anspress-question-answer' ) ),
 				)
 			);
 		}
@@ -286,7 +282,7 @@ class AnsPress_Admin_Ajax {
 			array(
 				'success'  => true,
 				'addon_id' => $addon_id,
-				'snackbar' => [ 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ],
+				'snackbar' => array( 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ),
 				'cb'       => 'toggleAddon',
 			)
 		);
@@ -324,7 +320,8 @@ class AnsPress_Admin_Ajax {
 			'total'   => $total_found,
 			'remain'  => $remain,
 			'el'      => '.ap-recount-votes',
-			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+			// translators: %1 is total completed, %2 is total found count.
+			'msg'     => sprintf( __( '%1$d done out of %2$d', 'anspress-question-answer' ), $done, $total_found ),
 		);
 
 		if ( $remain > 0 ) {
@@ -354,8 +351,10 @@ class AnsPress_Admin_Ajax {
 
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
-		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // phpcs:ignore WordPress.DB
+
+		// @todo Do not use FOUND_ROWS().
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_answers_count( $id, false, false );
@@ -369,7 +368,8 @@ class AnsPress_Admin_Ajax {
 			'total'   => $total_found,
 			'remain'  => $remain,
 			'el'      => '.ap-recount-answers',
-			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+			// translators: %1 is total completed, %2 is total found count.
+			'msg'     => sprintf( __( '%1$d done out of %2$d', 'anspress-question-answer' ), $done, $total_found ),
 		);
 
 		if ( $remain > 0 ) {
@@ -415,7 +415,8 @@ class AnsPress_Admin_Ajax {
 			'total'   => $total_found,
 			'remain'  => $remain,
 			'el'      => '.ap-recount-flagged',
-			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+			// translators: %1 is total completed, %2 is total found count.
+			'msg'     => sprintf( __( '%1$d done out of %2$d', 'anspress-question-answer' ), $done, $total_found ),
 		);
 
 		if ( $remain > 0 ) {
@@ -461,7 +462,8 @@ class AnsPress_Admin_Ajax {
 			'total'   => $total_found,
 			'remain'  => $remain,
 			'el'      => '.ap-recount-subscribers',
-			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+			// translators: %1 is total completed, %2 is total found count.
+			'msg'     => sprintf( __( '%1$d done out of %2$d', 'anspress-question-answer' ), $done, $total_found ),
 		);
 
 		if ( $remain > 0 ) {
@@ -507,7 +509,8 @@ class AnsPress_Admin_Ajax {
 			'total'   => $total_found,
 			'remain'  => $remain,
 			'el'      => '.ap-recount-reputation',
-			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+			// translators: %1 is total completed, %2 is total found count.
+			'msg'     => sprintf( __( '%1$d done out of %2$d', 'anspress-question-answer' ), $done, $total_found ),
 		);
 
 		if ( $remain > 0 ) {
@@ -534,11 +537,14 @@ class AnsPress_Admin_Ajax {
 
 		global $wpdb;
 
-		$args = wp_parse_args( ap_sanitize_unslash( 'args', 'r', '' ), array(
-			'fake_views' => false,
-			'min_views'  => 100,
-			'max_views'  => 200,
-		) );
+		$args = wp_parse_args(
+			ap_sanitize_unslash( 'args', 'r', '' ),
+			array(
+				'fake_views' => false,
+				'min_views'  => 100,
+				'max_views'  => 200,
+			)
+		);
 
 		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
 		$offset = absint( $paged * 100 );
@@ -572,7 +578,8 @@ class AnsPress_Admin_Ajax {
 			'total'   => $total_found,
 			'remain'  => $remain,
 			'el'      => '.ap-recount-views',
-			'msg'     => sprintf( __( '%d done out of %d' ), $done, $total_found ),
+			// translators: %1 is total completed, %2 is total found count.
+			'msg'     => sprintf( __( '%1$d done out of %2$d', 'anspress-question-answer' ), $done, $total_found ),
 		);
 
 		if ( $remain > 0 ) {

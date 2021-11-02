@@ -32,9 +32,16 @@ class AP_Question_Meta_Box {
 	 * @param string $post_type Post type.
 	 */
 	public function add_meta_box( $post_type ) {
-
 		if ( 'question' === $post_type ) {
-			add_meta_box( 'ap_answers_meta_box', sprintf( __( ' %d Answers', 'anspress-question-answer' ), ap_get_answers_count() ), array( $this, 'answers_meta_box_content' ), $post_type, 'normal', 'high' );
+			add_meta_box(
+				'ap_answers_meta_box',
+				// translators: %d is answers count of a question.
+				sprintf( __( ' %d Answers', 'anspress-question-answer' ), ap_get_answers_count() ),
+				array( $this, 'answers_meta_box_content' ),
+				$post_type,
+				'normal',
+				'high'
+			);
 		}
 
 		if ( 'question' === $post_type || 'answer' === $post_type ) {
@@ -88,7 +95,15 @@ class AP_Question_Meta_Box {
 				<?php if ( 'answer' !== $_post->post_type ) : ?>
 					<li>
 						<i class="apicon-answer"></i>
-						<?php printf( _n( '<strong>%d</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ), $ans_count ); // xss okay. ?>
+						<?php
+							echo wp_kses_post(
+								sprintf(
+									// translators: %d is answers count of a question.
+									_n( '<strong>%d</strong> Answer', '<strong>%d</strong> Answers', $ans_count, 'anspress-question-answer' ),
+									$ans_count
+								)
+							);
+						?>
 						<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=answer&post_parent=' . get_the_ID() ) ); ?>" class="add-answer"><?php esc_attr_e( 'Add an answer', 'anspress-question-answer' ); ?></a>
 					</li>
 				<?php endif; ?>
@@ -96,7 +111,12 @@ class AP_Question_Meta_Box {
 				<li>
 					<?php $nonce = wp_create_nonce( 'admin_vote' ); ?>
 					<i class="apicon-thumb-up"></i>
-					<?php printf( _n( '<strong>%d</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count ); // xss okay. ?>
+					<?php
+						echo wp_kses_post(
+							// translators: %d is answers count of a question.
+							sprintf( _n( '<strong>%d</strong> Vote', '<strong>%d</strong> Votes', $vote_count, 'anspress-question-answer' ), $vote_count )
+						);
+					?>
 
 					<a id="ap-vote-down" href="#" class="vote button button-small ap-ajax-btn" data-query="ap_admin_vote::<?php echo esc_attr( $nonce ); ?>::<?php echo esc_attr( $_post->ID ); ?>::down" data-cb="replaceText">
 						<?php esc_html_e( '-', 'anspress-question-answer' ); ?>

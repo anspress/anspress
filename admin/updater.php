@@ -2,6 +2,8 @@
 /**
  * AnsPress product updater.
  *
+ * @codingStandardsIgnoreFile
+ *
  * @package AnsPress
  * @author Rahul Aryan <rah12@live.com>
  */
@@ -18,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @author Pippin Williamson
  * @version 1.6.3
- *
- * @ignore
  */
 class AnsPress_Prod_Updater {
 	private $api_url        = '';
