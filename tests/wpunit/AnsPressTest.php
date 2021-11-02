@@ -187,7 +187,6 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase {
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/reputation-events.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/roles.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/select_question.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/sidebar.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/uninstall.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/anspress-admin.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/class-list-table-hooks.php' );

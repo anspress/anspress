@@ -58,7 +58,9 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 
 			<div class="ap-addon<?php echo $data['active'] ? ' active' : ''; ?> <?php echo esc_attr( $data['class'] ); ?>">
 				<div class="ap-addon-image">
-					<?php if ( $image = ap_get_addon_image( $data['id'] ) ) : ?>
+					<?php $image = ap_get_addon_image( $data['id'] ); ?>
+
+					<?php if ( $image ) : ?>
 						<img src="<?php echo esc_url( $image ); ?>" />
 					<?php endif; ?>
 				</div>

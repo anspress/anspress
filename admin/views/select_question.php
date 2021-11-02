@@ -6,6 +6,7 @@
  * @since 2.0.0
  * @author Rahul Aryan <rah12@live.com>
  * @package AnsPress
+ * @since 4.2.0 Fixed: CS bugs.
  */
 
 // If this file is called directly, abort.
@@ -31,30 +32,45 @@ if ( ! defined( 'WPINC' ) ) {
 			<?php
 				$questions = new Question_Query(
 					array(
-						'post_status' => [ 'publish', 'private_post' ],
+						'post_status' => array( 'publish', 'private_post' ),
 					)
 				);
-			?>
+				?>
 			<?php if ( $questions->have_questions() ) : ?>
 				<h3><?php esc_attr_e( 'Recently active questions', 'anspress-question-answer' ); ?></h3>
 				<div class="ap-similar-questions">
 					<?php
-					while ( $questions->have_questions() ) {
+					while ( $questions->have_questions() ) :
 						$questions->the_question();
-						echo '<div class="ap-q-suggestion-item clearfix">';
-						echo '<a class="select-question-button button button-primary button-small" href="' . add_query_arg(
+
+						$url = add_query_arg(
 							array(
 								'post_type'   => 'answer',
 								'post_parent' => get_the_ID(),
-							), admin_url( 'post-new.php' )
-						) . '">' . esc_attr__( 'Select', 'anspress-question-answer' ) . '</a>';
-						echo '<span class="question-title">' . get_the_title() . '</span><span class="acount">' . sprintf( _n( '%d Answer', '%d Answers', ap_get_answers_count(), 'anspress-question-answer' ), ap_get_answers_count() ) . '</span>';
-						echo '</div>';
-					}
-					?>
+							),
+							admin_url( 'post-new.php' )
+						);
+						?>
+						<div class="ap-q-suggestion-item clearfix">
+							<a class="select-question-button button button-primary button-small" href="<?php echo esc_url( $url ); ?>"><?php esc_attr_e( 'Select', 'anspress-question-answer' ); ?></a>
+
+							<span class="question-title"><?php the_title(); ?>></span>
+							<span class="acount">
+								<?php
+									echo esc_attr(
+										sprintf(
+											// translators: %d contain total answer of the question.
+											_n( '%d Answer', '%d Answers', ap_get_answers_count(), 'anspress-question-answer' ),
+											ap_get_answers_count()
+										)
+									);
+								?>
+
+							</span>
+						</div>
+					<?php endwhile; ?>
 				</div>
 			<?php endif; ?>
 		</div>
 	</div>
-
 </div>

@@ -33,7 +33,7 @@ $i = 1;
 	</table>
 	<button class="button button-primary"><?php esc_attr_e( 'Save Events Points', 'anspress-question-answer' ); ?></button>
 	<input name="action" type="hidden" value="ap_save_events" />
-	<input name="__nonce" type="hidden" value="<?php echo wp_create_nonce( 'ap-save-events' ); ?>" />
+	<input name="__nonce" type="hidden" value="<?php echo esc_attr( wp_create_nonce( 'ap-save-events' ) ); ?>" />
 </form>
 
 <script type="text/javascript">
@@ -52,4 +52,3 @@ $i = 1;
 		});
 	});
 </script>
-

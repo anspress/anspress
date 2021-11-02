@@ -7,6 +7,7 @@
  * @author     Rahul Aryan <rah12@live.com>
  * @package    AnsPress
  * @subpackage Admin Views
+ * @since 4.2.0 Fixed: CS bugs.
  */
 
 // If this file is called directly, abort.
@@ -22,15 +23,20 @@ $i = 1;
 	<tbody>
 		<tr>
 			<th scope="row" valign="top">
-				<label><?php _e( 'More options', 'anspress-question-answer' ); ?>:</label>
+				<label><?php esc_attr_e( 'More options', 'anspress-question-answer' ); ?>:</label>
 			</th>
 			<td>
-				<p><?php _e( 'More email options can be found in addon options', 'anspress-question-answer' ); ?> <a class="button" href="<?php echo admin_url( 'admin.php?page=anspress_addons&active_addon=free%2Femail.php' ); ?>"><?php esc_attr_e( 'More email options', 'anspress-question-answer' ); ?></a></p>
+				<p>
+					<?php esc_attr_e( 'More email options can be found in addon options', 'anspress-question-answer' ); ?>
+					<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_addons&active_addon=free%2Femail.php' ) ); ?>">
+						<?php esc_attr_e( 'More email options', 'anspress-question-answer' ); ?>
+					</a>
+				</p>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row" valign="top">
-				<label><?php _e( 'Select Template', 'anspress-question-answer' ); ?>:</label>
+				<label><?php esc_attr_e( 'Select Template', 'anspress-question-answer' ); ?>:</label>
 			</th>
 			<td>
 				<?php
@@ -42,23 +48,25 @@ $i = 1;
 						'edit_question' => __( 'Edit Question', 'anspress-question-answer' ),
 						'edit_answer'   => __( 'Edit Answer', 'anspress-question-answer' ),
 					);
-				?>
+					?>
+
 				<select id="select-templates" name="email_templates">
 					<?php foreach ( $templates as $template => $label ) : ?>
 						<option value="<?php echo esc_attr( $template ); ?>" <?php selected( $template, $active ); ?>><?php echo esc_attr( $label ); ?></option>
 					<?php endforeach; ?>
 				</select>
+
 				<p><?php esc_attr_e( 'The template selected here will appear below.', 'anspress-question-answer' ); ?></p>
 			</td>
 		</tr>
 		<tr>
 			<th scope="row" valign="top">
-				<label><?php _e( 'Edit Template', 'anspress-question-answer' ); ?>:</label>
+				<label><?php esc_attr_e( 'Edit Template', 'anspress-question-answer' ); ?>:</label>
 			</th>
 			<td>
-					<div id="template-holder">
-						<?php AnsPress\Addons\Email::init()->template_form( $active ); ?>
-					</div>
+				<div id="template-holder">
+					<?php AnsPress\Addons\Email::init()->template_form( $active ); ?>
+				</div>
 			</td>
 		</tr>
 	</tbody>
@@ -73,7 +81,7 @@ $i = 1;
 			AnsPress.ajax({
 				data: {
 					action: 'ap_email_template',
-					__nonce: '<?php echo wp_create_nonce( 'ap_email_template' ); ?>',
+					__nonce: '<?php echo esc_attr( wp_create_nonce( 'ap_email_template' ) ); ?>',
 					template: $(self).val()
 				},
 				success: function(data){
@@ -93,4 +101,3 @@ $i = 1;
 	margin-right: 15px;
 	}
 </style>
-

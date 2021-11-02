@@ -8,7 +8,7 @@
  * @subpackage Admin Pages
  * @since      4.1.0
  * @since      4.2.0 Changed title of page from to `AnsPress Settings`.
- * @since      4.2.0 Added new settings "Features".
+ * @since      4.2.0 Fixed: CS bugs. Added: new settings "Features".
  */
 
 // If this file is called directly, abort.
@@ -61,8 +61,8 @@ $all_options = array(
 	'postscomments' => array(
 		'label' => __( '📃 Posts & Comments', 'anspress-question-answer' ),
 	),
-	'user' => array(
-		'label' => __( '👨‍💼 User', 'anspress-question-answer' ),
+	'user'          => array(
+		'label'  => __( '👨‍💼 User', 'anspress-question-answer' ),
 		'groups' => array(
 			'activity' => array(
 				'label' => __( 'Activity', 'anspress-question-answer' ),
@@ -167,9 +167,9 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 	<div class="ap-optionpage-wrap no-overflow">
 		<div class="ap-wrap">
 			<?php
-				$active_tab     = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
-				$form           = ap_sanitize_unslash( 'ap_form_name', 'r' );
-				$action_url     = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
+				$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
+				$form       = ap_sanitize_unslash( 'ap_form_name', 'r' );
+				$action_url = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
 			?>
 
 			<div class="anspress-options">

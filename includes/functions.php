@@ -770,7 +770,7 @@ function ap_get_link_to( $sub ) {
  *
  * @param string         $post_type Post type.
  * @param boolean|string $ap_type ap_meta type.
- * @return array
+ * @return object
  * @since  2.0.0
  * @TODO use new qameta table.
  */

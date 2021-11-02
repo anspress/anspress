@@ -6,6 +6,7 @@
  * @since   4.0
  * @author  Rahul Aryan <rah12@live.com>
  * @package AnsPress
+ * @since   4.2.0 Fixed: CS errors.
  */
 
 // If this file is called directly, abort.
@@ -28,9 +29,14 @@ global $wpdb;
 				</th>
 				<td>
 					<?php
-						$total_qa = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='question' OR post_type='answer'" );
+						$total_qa = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='question' OR post_type='answer'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					?>
-					<a href="#" class="button ap-uninstall-btn" data-id="qa" data-total="<?php echo esc_attr( $total_qa ); ?>"><?php printf( esc_attr__( 'Delete %d Q&A', 'anspress-question-answer' ), $total_qa ); ?></a>
+					<a href="#" class="button ap-uninstall-btn" data-id="qa" data-total="<?php echo esc_attr( $total_qa ); ?>">
+						<?php
+							// translators: %d is total numbers of question and answer.
+							echo esc_attr( sprintf( __( 'Delete %d Q&A', 'anspress-question-answer' ), $total_qa ) );
+						?>
+					</a>
 					<p class="description"><?php esc_attr_e( 'Clicking this button will delete all questions and answers data from database', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
@@ -40,9 +46,14 @@ global $wpdb;
 				</th>
 				<td>
 					<?php
-						$total_answers = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" );
+						$total_answers = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type='answer'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 					?>
-					<a href="#" class="button ap-uninstall-btn" data-id="answers" data-total="<?php echo esc_attr( $total_answers ); ?>"><?php printf( esc_attr__( 'Delete %d answers', 'anspress-question-answer' ), $total_answers ); ?></a>
+					<a href="#" class="button ap-uninstall-btn" data-id="answers" data-total="<?php echo esc_attr( $total_answers ); ?>">
+						<?php
+							// translators: %d is total numbers of answers.
+							echo esc_attr( sprintf( __( 'Delete %d answers', 'anspress-question-answer' ), $total_answers ) );
+						?>
+					</a>
 					<p class="description"><?php esc_attr_e( 'Clicking this button will delete all answers and its related data from database', 'anspress-question-answer' ); ?></p>
 				</td>
 			</tr>
@@ -91,7 +102,7 @@ global $wpdb;
 		done = done||0;
 		var action = jQuery(el).attr('data-id');
 		var total = jQuery(el).attr('data-total');
-		var __nonce = '<?php echo wp_create_nonce( 'ap_uninstall_data' ); ?>';
+		var __nonce = '<?php echo esc_attr( wp_create_nonce( 'ap_uninstall_data' ) ); ?>';
 
 		jQuery.ajax({
 			url: ajaxurl,

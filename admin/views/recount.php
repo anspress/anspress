@@ -6,6 +6,7 @@
  * @since 4.0.5
  * @author Rahul Aryan <rah12@live.com>
  * @package AnsPress
+ * @since 4.2.0 Fixed: CS bugs.
  */
 
 // If this file is called directly, abort.
@@ -14,15 +15,15 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 $recounts = array(
-	'votes' => array(
+	'votes'       => array(
 		'label' => __( 'Recount Votes', 'anspress-question-answer' ),
 		'desc'  => __( 'Recount votes of questions and answers.', 'anspress-question-answer' ),
 	),
-	'answers' => array(
+	'answers'     => array(
 		'label' => __( 'Recount Answers', 'anspress-question-answer' ),
 		'desc'  => __( 'Recount answers of every question.', 'anspress-question-answer' ),
 	),
-	'flagged' => array(
+	'flagged'     => array(
 		'label' => __( 'Recount Flags', 'anspress-question-answer' ),
 		'desc'  => __( 'Recount flags on questions and answers.', 'anspress-question-answer' ),
 	),
@@ -30,7 +31,7 @@ $recounts = array(
 		'label' => __( 'Recount Subscribers', 'anspress-question-answer' ),
 		'desc'  => __( 'Recount subscribers of questions.', 'anspress-question-answer' ),
 	),
-	'reputation' => array(
+	'reputation'  => array(
 		'label' => __( 'Recount Reputation', 'anspress-question-answer' ),
 		'desc'  => __( 'Recount reputation of all users.', 'anspress-question-answer' ),
 	),
@@ -63,10 +64,12 @@ $recounts = array(
 					</th>
 					<td>
 						<?php
-							$btn_args = wp_json_encode( array(
-								'action'  => 'ap_recount_' . $rc,
-								'__nonce' => wp_create_nonce( 'recount_' . $rc ),
-							) );
+							$btn_args = wp_json_encode(
+								array(
+									'action'  => 'ap_recount_' . $rc,
+									'__nonce' => wp_create_nonce( 'recount_' . $rc ),
+								)
+							);
 						?>
 						<div class="btn-container ap-recount-<?php echo esc_attr( $rc ); ?>">
 							<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php echo esc_attr( $args['label'] ); ?></button>
@@ -83,11 +86,13 @@ $recounts = array(
 				</th>
 				<td>
 					<?php
-						$btn_args = wp_json_encode( array(
-							'action'  => 'ap_recount_views',
-							'__nonce' => wp_create_nonce( 'recount_views' ),
-						) );
-					?>
+						$btn_args = wp_json_encode(
+							array(
+								'action'  => 'ap_recount_views',
+								'__nonce' => wp_create_nonce( 'recount_views' ),
+							)
+						);
+						?>
 					<div class="btn-container ap-recount-views">
 						<button class="button ap-recount-btn" data-query="<?php echo esc_js( $btn_args ); ?>"><?php esc_attr_e( 'Recount question views', 'anspress-question-answer' ); ?></button>
 
@@ -98,14 +103,14 @@ $recounts = array(
 					<form class="counter-args">
 						<p><strong><?php esc_attr_e( 'Add fake views if views table is empty', 'anspress-question-answer' ); ?></strong></p>
 						<label>
-							<?php _e( 'Add fake views', 'anspress-question-answer' ); ?>
+							<?php esc_attr_e( 'Add fake views', 'anspress-question-answer' ); ?>
 							<input type="checkbox" name="fake_views" value="1" />
 						</label>
 						<br />
 						<br />
-						<label><?php _e( 'Minimum and maximum views', 'anspress-question-answer' ); ?></label>
-						<input type="text" value="500" name="min_views" placeholder="<?php _e( 'Min. views', 'anspress-question-answer' ); ?>" />
-						<input type="text" value="1000" name="max_views" placeholder="<?php _e( 'Max. views', 'anspress-question-answer' ); ?>" />
+						<label><?php esc_attr_e( 'Minimum and maximum views', 'anspress-question-answer' ); ?></label>
+						<input type="text" value="500" name="min_views" placeholder="<?php esc_attr_e( 'Min. views', 'anspress-question-answer' ); ?>" />
+						<input type="text" value="1000" name="max_views" placeholder="<?php esc_attr_e( 'Max. views', 'anspress-question-answer' ); ?>" />
 					</form>
 				</td>
 			</tr>
