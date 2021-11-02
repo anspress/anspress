@@ -10,7 +10,6 @@
 // Save license key if form is submitted.
 AP_License::ap_product_license();
 
-
 $fields   = ap_product_license_fields();
 $licenses = get_option( 'anspress_license' );
 ?>
@@ -19,11 +18,11 @@ $licenses = get_option( 'anspress_license' );
 	<h2>
 		<?php esc_html_e( 'Licenses', 'anspress-question-answer' ); ?>
 	</h2>
-	<p class="lead"><?php _e( 'License keys for AnsPress products, i.e. extensions and themes.', 'anspress-question-answer' ); ?></p>
+	<p class="lead"><?php esc_attr_e( 'License keys for AnsPress products, i.e. extensions and themes.', 'anspress-question-answer' ); ?></p>
 
 	<?php if ( ! empty( $fields ) ) : ?>
-				<form method="post" action="<?php echo admin_url( 'admin.php?page=anspress_licenses' ); ?>">
-						<table class="form-table">
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=anspress_licenses' ) ); ?>">
+					<table class="form-table">
 								<tbody>
 					<?php foreach ( $fields as $slug => $prod ) : ?>
 												<tr valign="top">

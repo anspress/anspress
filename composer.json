@@ -1,48 +1,52 @@
 {
-  "name": "anspress/anspress",
-  "description": "Free question and answer plugin for WordPress",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Rahul Aryan",
-      "email": "rah12@live.com"
-    },
-    {
-      "name": "AnsPress",
-      "email": "support@anspress.net"
-    }
-  ],
-  "require": {
-    "php": ">=7.2"
-  },
-  "require-dev": {
-    "codeatcode/codeatcs": "^1.0",
-    "codeception/codeception": "4.1.*",
-    "codeception/codeception-progress-reporter": "^4.0",
-    "codeception/module-asserts": "^1.0",
-    "codeception/module-cli": "^1.0",
-    "codeception/module-db": "^1.0",
-    "codeception/module-filesystem": "^1.0",
-    "codeception/module-phpbrowser": "^1.0",
-    "codeception/module-rest": "^1.2",
-    "codeception/module-webdriver": "^1.0",
-    "codeception/util-universalframework": "^1.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-    "ergebnis/composer-normalize": "^2.6",
-    "lucatume/function-mocker": "~1.0",
-    "lucatume/wp-browser": "^2.5",
-    "phpro/grumphp": "^0.18",
-    "phpunit/phpunit": "6.*",
-    "szepeviktor/phpstan-wordpress": "^0.7.7",
-    "vlucas/phpdotenv": "4.0"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "scripts": {
-    "test": "codecept run",
-    "test:coverage": [
-      "@putenv XDEBUG_MODE=coverage",
-      "codecept run --coverage-html"
-    ]
-  }
+	"name": "anspress/anspress",
+	"description": "Free question and answer plugin for WordPress",
+	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Rahul Aryan",
+			"email": "rah12@live.com"
+		},
+		{
+			"name": "AnsPress",
+			"email": "support@anspress.net"
+		}
+	],
+	"require": {
+		"php": ">=7.2"
+	},
+	"require-dev": {
+		"codeception/codeception": "4.1.*",
+		"codeception/codeception-progress-reporter": "^4.0",
+		"codeception/module-asserts": "^1.0",
+		"codeception/module-cli": "^1.0",
+		"codeception/module-db": "^1.0",
+		"codeception/module-filesystem": "^1.0",
+		"codeception/module-phpbrowser": "^1.0",
+		"codeception/module-rest": "^1.2",
+		"codeception/module-webdriver": "^1.0",
+		"codeception/util-universalframework": "^1.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+		"ergebnis/composer-normalize": "^2.6",
+		"lucatume/function-mocker": "~1.0",
+		"lucatume/wp-browser": "^2.5",
+		"phpro/grumphp": "^1",
+		"phpunit/phpunit": "7.*",
+		"szepeviktor/phpstan-wordpress": "^0.7.7",
+		"vlucas/phpdotenv": "5.3",
+		"codeatcode/codeatcs": "^1"
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"scripts": {
+		"test": "codecept run",
+		"phpcs": "phpcs",
+		"grumphp": "grumphp run",
+		"phpstan": "phpstan",
+		"phpcbf": "phpcbf",
+		"test:coverage": [
+			"@putenv XDEBUG_MODE=coverage",
+			"codecept run --coverage-html"
+		]
+	}
 }

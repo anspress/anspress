@@ -1,6 +1,4 @@
-parameters:
-    git_dir: .
-    bin_dir: composer/bin
+grumphp:
     ignore_unstaged_changes: false
     tasks:
         composer:
@@ -8,15 +6,15 @@ parameters:
             strict: false
         phpcs:
             standard: .phpcs.xml.dist
-            ignore_patterns: ['/vendor/', '/tests/']
+            ignore_patterns: ['/vendor/', '/tests/', '/node_modules/']
         grunt: ~
         phpmd:
-            exclude: ['/vendor/', '/tests/']
+            exclude: ['/vendor/', '/tests/', '/node_modules/']
             ruleset: ['.phpmd.xml.dist']
         phpstan:
             configuration: phpstan.neon
             triggered_by: ['php']
-            ignore_patterns: ['/vendor/']
+            ignore_patterns: ['/vendor/', , '/node_modules/', '/tests/']
         codeception:
             config_file: ~
             fail_fast: false

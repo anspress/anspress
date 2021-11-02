@@ -215,8 +215,6 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Settings', 'anspress-question-answer' ), __( 'Settings', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
-		add_submenu_page( 'anspress', __( 'AnsPress Add-ons', 'anspress-question-answer' ), __( 'Add-ons', 'anspress-question-answer' ), 'manage_options', 'anspress_addons', array( __CLASS__, 'display_plugin_addons_page' ) );
-
 		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' );
 	}
 
@@ -277,13 +275,6 @@ class AnsPress_Admin {
 	 */
 	public static function display_plugin_options_page() {
 		include_once 'views/options.php';
-	}
-
-	/**
-	 * Load extensions page layout
-	 */
-	public static function display_plugin_addons_page() {
-		include_once 'views/addons.php';
 	}
 
 	/**
