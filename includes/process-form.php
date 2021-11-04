@@ -13,16 +13,27 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Process AnsPress forms.
+ *
+ * @since unknown
+ * @since 4.2.0 Fixed: CS bugs.
+ */
 class AnsPress_Process_Form {
-	private $fields;
-
+	/**
+	 * Results to send in ajax callback.
+	 *
+	 * @var array
+	 */
 	private $result;
 
-	private $request;
-
+	/**
+	 * Link to redirect.
+	 *
+	 * @var string
+	 */
 	private $redirect;
 
-	private $is_ajax = false;
 	/**
 	 * Initialize the class
 	 */
@@ -32,22 +43,25 @@ class AnsPress_Process_Form {
 	}
 
 	/**
-	 * for non ajax form
+	 * For non ajax form.
 	 *
 	 * @return void
 	 */
 	public function non_ajax_form() {
-		// return if ap_form_action is not set, probably its not our form
-		if ( ! isset( $_REQUEST['ap_form_action'] ) || isset( $_REQUEST['ap_ajax_action'] ) ) {
+		$form_action = ap_isset_post_value( 'ap_form_action' );
+		$ajax_action = ap_isset_post_value( 'ap_ajax_action' );
+
+		// return if ap_form_action is not set, probably its not our form.
+		if ( ! $form_action || $ajax_action ) {
 			return;
 		}
 
-		$this->request = $_REQUEST;
+		$this->request = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$this->process_form();
 
 		if ( ! empty( $this->redirect ) ) {
-			wp_redirect( $this->redirect );
-			wp_die();
+			wp_redirect( $this->redirect ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+			exit;
 		}
 	}
 
@@ -58,13 +72,16 @@ class AnsPress_Process_Form {
 	 * @since 2.0.1
 	 */
 	public function ap_ajax() {
-		if ( ! isset( $_REQUEST['ap_ajax_action'] ) ) {
-			wp_die();
+		$ajax_action = ap_isset_post_value( 'ap_ajax_action' );
+		$form_action = ap_isset_post_value( 'ap_form_action' );
+
+		if ( ! $ajax_action ) {
+			exit;
 		}
 
-		$this->request = $_REQUEST;
+		$this->request = $_REQUEST; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-		if ( isset( $_POST['ap_form_action'] ) ) {
+		if ( $form_action ) {
 			$this->is_ajax = true;
 			$this->process_form();
 			ap_ajax_json( $this->result );
@@ -93,7 +110,8 @@ class AnsPress_Process_Form {
 	 * @deprecated 4.1.5
 	 */
 	public function process_form() {
-		$action = sanitize_text_field( $_POST['ap_form_action'] );
+		$form_action = ap_isset_post_value( 'ap_form_action' );
+		$action      = sanitize_text_field( $form_action );
 
 		/**
 		 * ACTION: ap_process_form_[action]
@@ -103,6 +121,5 @@ class AnsPress_Process_Form {
 		 * @deprecated 4.1.0
 		 */
 		do_action( 'ap_process_form_' . $action );
-
 	}
 }

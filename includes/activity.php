@@ -8,6 +8,7 @@
  * @author       Rahul Aryan <rah12@live.com>
  * @license      GPL-3.0+
  * @since        4.1.2
+ * @since        4.2.0 Fixed: CS bugs.
  */
 
 // If this file is called directly, abort.
@@ -37,7 +38,7 @@ function ap_activity_object() {
  *
  * @since 4.1.2 Introduced
  */
-function ap_activity_add( $args = [] ) {
+function ap_activity_add( $args = array() ) {
 	return ap_activity_object()->insert( $args );
 }
 
@@ -59,7 +60,7 @@ function ap_delete_post_activity( $post_id ) {
 		return new WP_Error( 'not_cpt', __( 'Not AnsPress posts', 'anspress-question-answer' ) );
 	}
 
-	$where = [];
+	$where = array();
 
 	if ( 'question' === $_post->post_type ) {
 		$where['q_id'] = $_post->ID;
@@ -86,7 +87,7 @@ function ap_delete_comment_activity( $comment_id ) {
 	}
 
 	// Delete all activities by post id.
-	return ap_activity_object()->delete( [ 'c_id' => $comment_id ] );
+	return ap_activity_object()->delete( array( 'c_id' => $comment_id ) );
 }
 
 /**
@@ -100,7 +101,7 @@ function ap_delete_comment_activity( $comment_id ) {
  */
 function ap_delete_user_activity( $user_id ) {
 	// Delete all activities by post id.
-	return ap_activity_object()->delete( [ 'user_id' => $user_id ] );
+	return ap_activity_object()->delete( array( 'user_id' => $user_id ) );
 }
 
 /**
@@ -116,7 +117,7 @@ function ap_activity_parse( $activity ) {
 		return false;
 	}
 
-	$new = [];
+	$new = array();
 
 	// Rename keys.
 	foreach ( $activity as $key => $value ) {
@@ -155,8 +156,8 @@ function ap_get_recent_activity( $_post = false, $deprecated = null ) {
 		return;
 	}
 
-	$type     = $_post->post_type;
-	$column   = 'answer' === $type ? 'a_id' : 'q_id';
+	$type   = $_post->post_type;
+	$column = 'answer' === $type ? 'a_id' : 'q_id';
 
 	$q_where = '';
 
@@ -164,7 +165,7 @@ function ap_get_recent_activity( $_post = false, $deprecated = null ) {
 		$q_where = " AND (activity_a_id = 0 OR activity_action IN('new_a', 'unselected','selected') )";
 	}
 
-	$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d$q_where ORDER BY activity_date DESC LIMIT 1", $_post->ID ) );
+	$activity = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->ap_activity} WHERE activity_{$column} = %d$q_where ORDER BY activity_date DESC LIMIT 1", $_post->ID ) ); // phpcs:ignore WordPress.DB
 
 	// Parse.
 	if ( $activity ) {
@@ -193,11 +194,11 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
 		$html .= ' ' . esc_html( $activity->action['verb'] );
 
 		if ( 'answer' === $activity->action['ref_type'] ) {
-			$link = ap_get_short_link( [ 'ap_a' => $activity->a_id ] );
+			$link = ap_get_short_link( array( 'ap_a' => $activity->a_id ) );
 		} elseif ( 'comment' === $activity->action['ref_type'] ) {
-			$link = ap_get_short_link( [ 'ap_c' => $activity->c_id ] );
+			$link = ap_get_short_link( array( 'ap_c' => $activity->c_id ) );
 		} else {
-			$link = ap_get_short_link( [ 'ap_q' => $activity->q_id ] );
+			$link = ap_get_short_link( array( 'ap_q' => $activity->q_id ) );
 		}
 
 		$html .= ' <a href="' . esc_url( $link ) . '">';
@@ -205,8 +206,10 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
 		$html .= '</a>';
 		$html .= '</span>';
 	} else {
+		$post_id = false;
+
 		// Fallback to old activities.
-		$html = ap_latest_post_activity_html( $post_id = false, ! is_question() );
+		$html = ap_latest_post_activity_html( $post_id, ! is_question() );
 	}
 
 	/**
@@ -221,7 +224,7 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
 		return $html;
 	}
 
-	echo $html;
+	echo wp_kses_post( $html );
 }
 
 /**
@@ -250,7 +253,7 @@ function ap_prefetch_recent_activities( $ids, $col = 'q_id' ) {
 
 	$query = "SELECT t1.* FROM {$wpdb->ap_activity} t1 NATURAL JOIN (SELECT max(activity_date) AS activity_date FROM {$wpdb->ap_activity} WHERE activity_{$col} IN({$ids_string})$q_where GROUP BY activity_{$col}) t2 ORDER BY t2.activity_date";
 
-	$activity = $wpdb->get_results( $query );
+	$activity = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
 
 	foreach ( $activity as $a ) {
 		$a = ap_activity_parse( $a );

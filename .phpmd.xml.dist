@@ -10,6 +10,7 @@
 	<exclude-pattern>*tests\*.php</exclude-pattern>
 	<exclude-pattern>*vendor/*.php</exclude-pattern>
 	<exclude-pattern>*vendor\*.php</exclude-pattern>
+	<exclude-pattern>*node_modules\*.php</exclude-pattern>
 
 	<rule ref="rulesets/cleancode.xml">
 		<!-- This is not a reliable indicator of violating SRP in a meaningful way, and our typical usage of it is fine. -->
@@ -24,13 +25,17 @@
 		<!-- Include later with custom values -->
 		<exclude name="ExcessiveMethodLength" />
 		<exclude name="CyclomaticComplexity"  />
+		<exclude name="TooManyPublicMethods" />
+		<exclude name="ExcessiveClassComplexity" />
+		<exclude name="ExcessiveClassLength" />
+		<exclude name="ExcessivePublicCount" />
 	</rule>
 
-	<rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+	<!-- <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
 		<properties>
 			<property name="minimum" value="70" />
 		</properties>
-	</rule>
+	</rule> -->
 
 	<rule ref="rulesets/codesize.xml/CyclomaticComplexity">
 		<properties>

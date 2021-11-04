@@ -20,8 +20,6 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 4.1.0
  */
 class AP_Form_Hooks {
-	private static $form;
-
 	/**
 	 * Register question form.
 	 *
@@ -112,14 +110,14 @@ class AP_Form_Hooks {
 		$post_parent = ap_isset_post_value( 'post_parent', false );
 		if ( $post_parent && wp_verify_nonce( ap_isset_post_value( '__nonce_pp' ), 'post_parent_' . $post_parent ) ) {
 			$form['hidden_fields'] = array(
-				[
+				array(
 					'name'  => 'post_parent',
 					'value' => $post_parent,
-				],
-				[
+				),
+				array(
 					'name'  => '__nonce_pp',
 					'value' => wp_create_nonce( 'post_parent_' . $post_parent ),
-				],
+				),
 			);
 		}
 
@@ -336,10 +334,10 @@ class AP_Form_Hooks {
 		// Check nonce and is valid form. Do not check if `$manual` is true.
 		if ( ! $form->is_submitted() && false === $manual ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
-				]
+					'snackbar' => array( 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ),
+				)
 			);
 		}
 
@@ -362,7 +360,8 @@ class AP_Form_Hooks {
 		// Add default arguments if not editing.
 		if ( ! $editing ) {
 			$question_args = wp_parse_args(
-				$question_args, array(
+				$question_args,
+				array(
 					'post_author'    => get_current_user_id(),
 					'post_name'      => '',
 					'comment_status' => 'open',
@@ -376,12 +375,12 @@ class AP_Form_Hooks {
 		if ( $form->have_errors() ) {
 			if ( false === $manual ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'       => false,
-						'snackbar'      => [ 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ],
+						'snackbar'      => array( 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ),
 						'form_errors'   => $form->errors,
 						'fields_errors' => $form->get_fields_errors(),
-					]
+					)
 				);
 			} else {
 				return new WP_Error( 'failed', __( 'Failed to insert question', 'anspress-question-answer' ) );
@@ -410,12 +409,12 @@ class AP_Form_Hooks {
 
 			if ( false === $manual ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'       => false,
-						'snackbar'      => [ 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ],
+						'snackbar'      => array( 'message' => __( 'Unable to post question.', 'anspress-question-answer' ) ),
 						'form_errors'   => $form->errors,
 						'fields_errors' => $form->get_fields_errors(),
-					]
+					)
 				);
 			} else {
 				return new WP_Error( 'failed', __( 'Failed to insert question', 'anspress-question-answer' ) );
@@ -464,7 +463,7 @@ class AP_Form_Hooks {
 		if ( is_wp_error( $post_id ) ) {
 			if ( false === $manual ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'  => false,
 						'snackbar' => array(
 							'message' => sprintf(
@@ -473,7 +472,7 @@ class AP_Form_Hooks {
 								$post_id->get_error_message()
 							),
 						),
-					]
+					)
 				);
 			} else {
 				return $post_id;
@@ -491,7 +490,8 @@ class AP_Form_Hooks {
 		);
 
 		$form->after_save(
-			false, array(
+			false,
+			array(
 				'post_id' => $post_id,
 			)
 		);
@@ -523,9 +523,9 @@ class AP_Form_Hooks {
 			ap_ajax_json(
 				array(
 					'success'  => true,
-					'snackbar' => [
+					'snackbar' => array(
 						'message' => $message,
-					],
+					),
 					'redirect' => get_permalink( $post_id ),
 					'post_id'  => $post_id,
 				)
@@ -562,10 +562,10 @@ class AP_Form_Hooks {
 		// Check nonce and is valid form.
 		if ( false === $manual && ( ! $form->is_submitted() || ! ap_user_can_answer( $question_id ) ) ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
-				]
+					'snackbar' => array( 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ),
+				)
 			);
 		}
 
@@ -590,7 +590,8 @@ class AP_Form_Hooks {
 		// Add default arguments if not editing.
 		if ( ! $editing ) {
 			$answer_args = wp_parse_args(
-				$answer_args, array(
+				$answer_args,
+				array(
 					'post_author'    => get_current_user_id(),
 					'post_name'      => '',
 					'comment_status' => 'open',
@@ -604,12 +605,12 @@ class AP_Form_Hooks {
 		if ( $form->have_errors() ) {
 			if ( false === $manual ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'       => false,
-						'snackbar'      => [ 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ],
+						'snackbar'      => array( 'message' => __( 'Unable to post answer.', 'anspress-question-answer' ) ),
 						'form_errors'   => $form->errors,
 						'fields_errors' => $form->get_fields_errors(),
-					]
+					)
 				);
 			} else {
 				return new WP_Error( 'failed', __( 'Please check field', 'anspress-question-answer' ) );
@@ -668,7 +669,7 @@ class AP_Form_Hooks {
 		if ( is_wp_error( $post_id ) ) {
 			if ( false === $manual ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'  => false,
 						'snackbar' => array(
 							'message' => sprintf(
@@ -677,7 +678,7 @@ class AP_Form_Hooks {
 								$post_id->get_error_message()
 							),
 						),
-					]
+					)
 				);
 			} else {
 				return $post_id;
@@ -700,7 +701,8 @@ class AP_Form_Hooks {
 		);
 
 		$form->after_save(
-			false, array(
+			false,
+			array(
 				'post_id' => $post_id,
 			)
 		);
@@ -735,9 +737,9 @@ class AP_Form_Hooks {
 			ap_ajax_json(
 				array(
 					'success'  => true,
-					'snackbar' => [
+					'snackbar' => array(
 						'message' => $message,
-					],
+					),
 					'redirect' => get_permalink( $question_id ),
 					'post_id'  => $post_id,
 				)
@@ -772,44 +774,44 @@ class AP_Form_Hooks {
 		// Check nonce and is valid form.
 		if ( ! $form->is_submitted() || ! ap_user_can_comment( $post_id ) ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ],
-				]
+					'snackbar' => array( 'message' => __( 'Trying to cheat?!', 'anspress-question-answer' ) ),
+				)
 			);
 		}
 
 		if ( $form->have_errors() ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'       => false,
-					'snackbar'      => [ 'message' => __( 'Unable to post comment.', 'anspress-question-answer' ) ],
+					'snackbar'      => array( 'message' => __( 'Unable to post comment.', 'anspress-question-answer' ) ),
 					'form_errors'   => $form->errors,
 					'fields_errors' => $form->get_fields_errors(),
-				]
+				)
 			);
 		}
 
 		$comment_id = ap_sanitize_unslash( 'comment_id', 'r' );
 		if ( ! empty( $comment_id ) ) {
-			$comment = get_comment( $comment_id );
+			$comment = get_comment( $comment_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 			if ( 'anspress' !== $comment->comment_type || ! ap_user_can_edit_comment( $comment_id ) ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'  => false,
-						'snackbar' => [ 'message' => __( 'You cannot edit this comment.', 'anspress-question-answer' ) ],
-					]
+						'snackbar' => array( 'message' => __( 'You cannot edit this comment.', 'anspress-question-answer' ) ),
+					)
 				);
 			}
 
 			// Check if content is changed.
 			if ( $values['content']['value'] === $comment->comment_content ) {
 				ap_ajax_json(
-					[
+					array(
 						'success'  => false,
-						'snackbar' => [ 'message' => __( 'There is no change in your comment.', 'anspress-question-answer' ) ],
-					]
+						'snackbar' => array( 'message' => __( 'There is no change in your comment.', 'anspress-question-answer' ) ),
+					)
 				);
 			}
 
@@ -834,19 +836,20 @@ class AP_Form_Hooks {
 				$count = get_comment_count( $c->comment_post_ID );
 
 				ob_start();
-				$comment = $c;
+				$comment = $c; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 				ap_get_template_part( 'comment' );
 				$html = ob_get_clean();
 
 				$result = array(
 					'success'       => true,
 					'action'        => 'edit-comment',
-					'commentsCount' => [
+					'commentsCount' => array(
+						// translators: %d is count of comments.
 						'text'       => sprintf( _n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ), $count['all'] ),
 						'number'     => $count['all'],
 						'unapproved' => $count['awaiting_moderation'],
-					],
-					'snackbar'      => [ 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ],
+					),
+					'snackbar'      => array( 'message' => __( 'Comment updated successfully', 'anspress-question-answer' ) ),
 					'html'          => $html,
 					'post_id'       => $c->comment_post_ID,
 					'comment_id'    => $c->comment_ID,
@@ -859,7 +862,7 @@ class AP_Form_Hooks {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => $updated->get_error_message() ],
+					'snackbar' => array( 'message' => $updated->get_error_message() ),
 				)
 			);
 		}
@@ -869,7 +872,7 @@ class AP_Form_Hooks {
 		$type = 'question' === $_post->post_type ? __( 'question', 'anspress-question-answer' ) : __( 'answer', 'anspress-question-answer' );
 
 		// Check if not restricted post type.
-		if ( in_array( $_post->post_status, [ 'draft', 'pending', 'trash' ], true ) ) {
+		if ( in_array( $_post->post_status, array( 'draft', 'pending', 'trash' ), true ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -942,7 +945,7 @@ class AP_Form_Hooks {
 					'number'     => $count['all'],
 					'unapproved' => $count['awaiting_moderation'],
 				),
-				'snackbar'      => [ 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ],
+				'snackbar'      => array( 'message' => __( 'Comment successfully posted', 'anspress-question-answer' ) ),
 				'html'          => $html,
 				'post_id'       => $c->comment_post_ID,
 				'comment_id'    => $c->comment_ID,
@@ -956,7 +959,7 @@ class AP_Form_Hooks {
 		ap_ajax_json(
 			array(
 				'success'  => false,
-				'snackbar' => [ 'message' => $comment_id->get_error_message() ],
+				'snackbar' => array( 'message' => $comment_id->get_error_message() ),
 			)
 		);
 	}
@@ -964,7 +967,7 @@ class AP_Form_Hooks {
 	/**
 	 * Callback for image field in `image_upload` form.
 	 *
-	 * @param array $values Values.
+	 * @param array                  $values Values.
 	 * @param \AnsPress\Field\Upload $field AnsPress field object.
 	 * @return array
 	 * @since 4.1.8
@@ -987,48 +990,61 @@ class AP_Form_Hooks {
 	 *
 	 * This form is used for uploading images in AnsPress.
 	 *
-	 * @return void
+	 * @return array
 	 * @since 4.1.8
 	 */
 	public static function image_upload_form() {
 		return array(
 			'submit_label' => __( 'Upload & insert', 'anspress-question-answer' ),
-			'fields' => array(
+			'fields'       => array(
 				'image' => array(
-					'label' => __( 'Image', 'anspress-question-answer' ),
-					'desc'  => __( 'Select image(s) to upload. Only .jpg, .png and .gif files allowed.', 'anspress-question-answer' ),
-					'type'  => 'upload',
-					'save'  => [ __CLASS__, 'image_upload_save' ],
+					'label'          => __( 'Image', 'anspress-question-answer' ),
+					'desc'           => __( 'Select image(s) to upload. Only .jpg, .png and .gif files allowed.', 'anspress-question-answer' ),
+					'type'           => 'upload',
+					'save'           => array( __CLASS__, 'image_upload_save' ),
 					'upload_options' => array(
-						'multiple'  => false,
-						'max_files' => 1,
+						'multiple'      => false,
+						'max_files'     => 1,
 						'allowed_mimes' => array(
 							'jpg|jpeg' => 'image/jpeg',
 							'gif'      => 'image/gif',
 							'png'      => 'image/png',
 						),
 					),
-					'validate' => 'required',
+					'validate'       => 'required',
 				),
 			),
 		);
 	}
 
+	/**
+	 * Handle create user request.
+	 *
+	 * @param array $values Form values.
+	 * @param array $args   Form arguments.
+	 * @param bool  $manual Is this manually submitted.
+	 *
+	 * @return int
+	 */
 	public static function create_user( &$values, &$args, $manual ) {
-		$email = $values['email']['value'];
-		$user_id = wp_insert_user( array(
-			'user_email'   => $email,
-			'user_login'   => $email,
-			'user_pass'    => wp_generate_password(),
-			'display_name' => ! empty(  $values['anonymous_name']['value'] ) ? $values['anonymous_name']['value'] : '',
-		) );
+		$email   = $values['email']['value'];
+		$user_id = wp_insert_user(
+			array(
+				'user_email'   => $email,
+				'user_login'   => $email,
+				'user_pass'    => wp_generate_password(),
+				'display_name' => ! empty( $values['anonymous_name']['value'] ) ? $values['anonymous_name']['value'] : '',
+			)
+		);
 
 		if ( is_wp_error( $user_id ) ) {
 			if ( false === $manual ) {
-				ap_ajax_json( array(
-					'success'  => false,
-					'snackbar' => [ 'message' => $user_id->get_error_message() ],
-				) );
+				ap_ajax_json(
+					array(
+						'success'  => false,
+						'snackbar' => array( 'message' => $user_id->get_error_message() ),
+					)
+				);
 			} else {
 				return $user_id;
 			}

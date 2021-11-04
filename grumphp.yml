@@ -8,9 +8,9 @@ grumphp:
             standard: .phpcs.xml.dist
             ignore_patterns: ['/vendor/', '/tests/', '/node_modules/']
         grunt: ~
-        phpmd:
-            exclude: ['/vendor/', '/tests/', '/node_modules/']
-            ruleset: ['.phpmd.xml.dist']
+        # phpmd:
+        #     exclude: ['/vendor/', '/tests/', '/node_modules/']
+        #     ruleset: ['.phpmd.xml.dist']
         phpstan:
             configuration: phpstan.neon
             triggered_by: ['php']

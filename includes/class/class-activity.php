@@ -8,7 +8,7 @@
  * @license    GPL-3.0+
  * @link       https://anspress.net
  * @copyright  2014 Rahul Aryan
- * @since        4.1.2
+ * @since      4.1.2
  */
 
 namespace AnsPress;
@@ -39,7 +39,7 @@ class Activity extends AnsPress_Query {
 	 *
 	 * @var array
 	 */
-	public $verbs = [];
+	public $verbs = array();
 
 	/**
 	 * Items to show per page
@@ -47,14 +47,14 @@ class Activity extends AnsPress_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $per_page = 30;
+	public $per_page = 30;
 
 	/**
 	 * In group.
 	 *
 	 * @var boolean
 	 */
-	var $in_group = false;
+	public $in_group = false;
 
 	/**
 	 * Initialize the activity class.
@@ -74,22 +74,23 @@ class Activity extends AnsPress_Query {
 	 * }
 	 * @since 4.1.2
 	 */
-	public function __construct( $args = [] ) {
+	public function __construct( $args = array() ) {
 		$this->paged  = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
 		$this->offset = $this->per_page * ( $this->paged - 1 );
 
 		$this->args = wp_parse_args(
-			$args, array(
+			$args,
+			array(
 				'number'        => $this->per_page,
 				'offset'        => $this->offset,
 				'orderby'       => 'activity_date',
 				'order'         => 'DESC',
-				'exclude_roles' => [ 'administrator' ],
+				'exclude_roles' => array( 'administrator' ),
 			)
 		);
 
 		// Check if valid orderby argument.
-		$valid_orderby = [ 'activity_q_id', 'activity_a_id', 'activity_c_id', 'activity_date' ];
+		$valid_orderby = array( 'activity_q_id', 'activity_a_id', 'activity_c_id', 'activity_date' );
 		if ( ! in_array( $this->args['orderby'], $valid_orderby, true ) ) {
 			$this->args['orderby'] = 'activity_date';
 		}
@@ -109,7 +110,7 @@ class Activity extends AnsPress_Query {
 
 		$sql = array(
 			'fields'  => 'a.*',
-			'where'   => [],
+			'where'   => array(),
 			'orderby' => 'a.' . $this->args['orderby'],
 			'order'   => ( 'DESC' === $this->args['order'] ? 'DESC' : 'ASC' ),
 		);
@@ -153,7 +154,7 @@ class Activity extends AnsPress_Query {
 			}
 
 			if ( ! empty( $role_like ) ) {
-				$exclude = "LEFT JOIN {$wpdb->usermeta} um ON um.user_id = a.activity_user_id";
+				$exclude        = "LEFT JOIN {$wpdb->usermeta} um ON um.user_id = a.activity_user_id";
 				$sql['where'][] = "AND ( um.meta_key = '{$cap_key}' AND ( {$role_like} ) )";
 			}
 		}
@@ -162,10 +163,10 @@ class Activity extends AnsPress_Query {
 
 		$query = "SELECT SQL_CALC_FOUND_ROWS {$sql['fields']} FROM {$wpdb->ap_activity} a $exclude WHERE 1=1 {$where} ORDER BY {$sql['orderby']} {$sql['order']} LIMIT {$this->offset},{$this->per_page}";
 
-		$this->objects = $wpdb->get_results( $query ); // WPCS: DB call okay.
+		$this->objects = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
 		$this->total_count( '' );
 
-		$activities = [];
+		$activities = array();
 		foreach ( $this->objects as $activity ) {
 			$activity     = ap_activity_parse( $activity );
 			$activities[] = $activity;
@@ -226,7 +227,7 @@ class Activity extends AnsPress_Query {
 		global $wpdb;
 
 		$ids_str = esc_sql( sanitize_comma_delimited( $this->ids['post'] ) );
-		$posts   = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" );
+		$posts   = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids_str})" ); // phpcs:ignore WordPress.DB
 
 		// Cache all posts.
 		foreach ( $posts as $_post ) {
@@ -262,7 +263,7 @@ class Activity extends AnsPress_Query {
 		}
 
 		$ids      = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
-		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" );
+		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" ); // phpcs:ignore WordPress.DB
 
 		// Cache comments.
 		foreach ( $comments as $_comment ) {
@@ -273,7 +274,7 @@ class Activity extends AnsPress_Query {
 	/**
 	 * Check if current activity have group.
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function have_group() {
 		if ( $this->current + 1 < $this->count && $this->have_group_items() ) {
@@ -325,7 +326,7 @@ class Activity extends AnsPress_Query {
 		}
 
 		$next_obj = $this->objects[ $next ];
-		if ( is_object( $next_obj ) && $this->object->q_id == $next_obj->q_id ) {
+		if ( is_object( $next_obj ) && $this->object->q_id == $next_obj->q_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			return true;
 		}
 
@@ -346,7 +347,7 @@ class Activity extends AnsPress_Query {
 			$next_obj    = $this->objects[ $next ];
 
 			for ( $i = $next; $i < $this->count; $i++ ) {
-				if ( $current_obj->q_id == $next_obj->q_id ) {
+				if ( $current_obj->q_id == $next_obj->q_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 					$count++;
 				} else {
 					break;
@@ -400,7 +401,7 @@ class Activity extends AnsPress_Query {
 	 * @since 4.1.2
 	 */
 	public function the_verb() {
-		echo $this->get_the_verb();
+		echo wp_kses_post( $this->get_the_verb() );
 	}
 
 	/**
@@ -546,6 +547,6 @@ class Activity extends AnsPress_Query {
 			)
 		);
 
-		echo '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">' . __( 'Load More', 'anspress-question-answer' ) . '</a>';
+		echo '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">' . esc_attr__( 'Load More', 'anspress-question-answer' ) . '</a>';
 	}
 }

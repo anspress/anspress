@@ -24,7 +24,7 @@ class AnsPress_Hooks {
 	 *
 	 * @var string
 	 */
-	static $menu_class = '';
+	public static $menu_class = '';
 	/**
 	 * Initialize the class
 	 *
@@ -75,7 +75,6 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
 			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-			//anspress()->add_filter( 'mce_external_languages', __CLASS__, 'mce_plugins_languages' );
 			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
 			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
 
@@ -86,7 +85,6 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'ap_after_answer_content', 'AnsPress_Theme', 'after_question_content' );
 
 			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
-			//anspress()->add_filter( 'comments_template_query_args', 'AnsPress_Comment_Hooks', 'comments_template_query_args' );
 			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
 			anspress()->add_filter( 'preprocess_comment', 'AnsPress_Comment_Hooks', 'preprocess_comment' );
 			anspress()->add_filter( 'comments_template', 'AnsPress_Comment_Hooks', 'comments_template' );
@@ -122,7 +120,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_form_comment', 'AP_Form_Hooks', 'comment_form', 11 );
 			anspress()->add_action( 'ap_form_image_upload', 'AP_Form_Hooks', 'image_upload_form', 11 );
 
-			// Subscriptions
+			// Subscriptions.
 			anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
 			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'answer_subscription', 10, 2 );
 			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
@@ -237,7 +235,6 @@ class AnsPress_Hooks {
 
 			// Delete qameta.
 			ap_delete_qameta( $post->ID );
-
 		} elseif ( 'answer' === $post->post_type ) {
 			self::delete_answer( $post_id, $post );
 		}
@@ -532,17 +529,6 @@ class AnsPress_Hooks {
 	}
 
 	/**
-	 * Add translations for AnsPress's tinymce plugins.
-	 *
-	 * @param array $translations Translations for external TinyMCE plugins.
-	 * @since 4.1.5
-	 */
-	public static function mce_plugins_languages( $translations ) {
-		$translations['anspress'] = ANSPRESS_DIR . 'includes/mce-languages.php';
-		return $translations;
-	}
-
-	/**
 	 * Filter post so that anonymous author should not be replaced
 	 * by current user approving post.
 	 *
@@ -809,16 +795,16 @@ class AnsPress_Hooks {
 	/**
 	 * Update user meta of vote
 	 *
-	 * @param	integer $userid					  User ID who is voting.
-	 * @param	string	$type						  Vote type.
-	 * @param	integer $actionid				  Post ID.
+	 * @param	integer $userid			  User ID who is voting.
+	 * @param	string	$type			  Vote type.
+	 * @param	integer $actionid	      Post ID.
 	 * @param	integer $receiving_userid User who is receiving vote.
 	 */
 	public static function update_user_vote_casted_count( $userid, $type, $actionid, $receiving_userid ) {
 		$voted = ap_count_post_votes_by( 'user_id', $userid );
 		// Update total casted vote of user.
-		update_user_meta( $userid, '__up_vote_casted', $voted->votes_up );
-		update_user_meta( $userid, '__down_vote_casted', $voted->votes_down );
+		update_user_meta( $userid, '__up_vote_casted', $voted['votes_up'] );
+		update_user_meta( $userid, '__down_vote_casted', $voted['votes_down'] );
 	}
 
 	/**
@@ -1017,8 +1003,8 @@ class AnsPress_Hooks {
 	/**
 	 * Delete comment subscriptions right before deleting comment.
 	 *
-	 * @param integer $comment_id Comment ID.
-	 * @param integer $_comment   Comment object.
+	 * @param integer        $comment_id Comment ID.
+	 * @param int|WP_Comment $_comment   Comment object.
 	 *
 	 * @since unknown Introduced
 	 * @since 4.1.5 Moved from addons/free/email.php

@@ -46,7 +46,7 @@ class NewQuestion extends \WP_Async_Task {
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$post_id = $_POST['post_id'];
+		$post_id = ap_sanitize_unslash( 'post_id', 'g' );
 		$post    = get_post( $post_id );
 
 		if ( $post ) {
@@ -61,8 +61,7 @@ class NewQuestion extends \WP_Async_Task {
  *
  * @since 4.1.8
  */
-class NewAnswer extends \WP_Async_Task {
-
+class NewAnswer extends \WP_Async_Task { // phpcs:ignore
 	/**
 	 * The hook name.
 	 *
@@ -89,7 +88,7 @@ class NewAnswer extends \WP_Async_Task {
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$post_id = $_POST['post_id'];
+		$post_id = ap_sanitize_unslash( 'post_id', 'g' );
 		$post    = get_post( $post_id );
 
 		if ( $post ) {
@@ -104,7 +103,7 @@ class NewAnswer extends \WP_Async_Task {
  *
  * @since 4.1.8
  */
-class SelectAnswer extends \WP_Async_Task {
+class SelectAnswer extends \WP_Async_Task { // phpcs:ignore
 
 	/**
 	 * The hook name.
@@ -131,7 +130,7 @@ class SelectAnswer extends \WP_Async_Task {
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$post_id = $_POST['post_id'];
+		$post_id = ap_sanitize_unslash( 'post_id' );
 		$post    = ap_get_post( $post_id );
 
 		if ( $post ) {
@@ -146,7 +145,7 @@ class SelectAnswer extends \WP_Async_Task {
  *
  * @since 4.1.8
  */
-class PublishComment extends \WP_Async_Task {
+class PublishComment extends \WP_Async_Task { // phpcs:ignore
 
 	/**
 	 * The hook name.
@@ -173,7 +172,7 @@ class PublishComment extends \WP_Async_Task {
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$comment_id = $_POST['comment_id'];
+		$comment_id = ap_sanitize_unslash( 'comment_id' );
 		$comment    = get_comment( $comment_id );
 
 		if ( $comment ) {
@@ -188,8 +187,7 @@ class PublishComment extends \WP_Async_Task {
  *
  * @since 4.1.8
  */
-class UpdateQuestion extends \WP_Async_Task {
-
+class UpdateQuestion extends \WP_Async_Task { // phpcs:ignore
 	/**
 	 * The hook name.
 	 *
@@ -216,7 +214,7 @@ class UpdateQuestion extends \WP_Async_Task {
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$post_id = $_POST['post_id'];
+		$post_id = ap_sanitize_unslash( 'post_id', 'g' );
 		$post    = get_post( $post_id );
 
 		if ( $post ) {
@@ -231,7 +229,7 @@ class UpdateQuestion extends \WP_Async_Task {
  *
  * @since 4.1.8
  */
-class UpdateAnswer extends \WP_Async_Task {
+class UpdateAnswer extends \WP_Async_Task { // phpcs:ignore
 
 	/**
 	 * The hook name.
@@ -259,7 +257,7 @@ class UpdateAnswer extends \WP_Async_Task {
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$post_id = $_POST['post_id'];
+		$post_id = ap_sanitize_unslash( 'post_id', 'g' );
 		$post    = get_post( $post_id );
 
 		if ( $post ) {

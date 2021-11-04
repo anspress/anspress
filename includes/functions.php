@@ -2483,3 +2483,15 @@ function ap_remove_all_filters( $tag, $priority = false ) {
 
 	return true;
 }
+
+/**
+ * Return current timestamp.
+ *
+ * @return int
+ * @since 4.2.0
+ */
+function ap_get_current_timestamp() {
+	$local_time  = current_datetime();
+
+	return $local_time->getTimestamp() + $local_time->getOffset();
+}

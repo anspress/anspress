@@ -6,6 +6,10 @@
  * @since 4.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Query hooks
  */
@@ -43,11 +47,10 @@ class AP_QA_Query_Hooks {
 						$i = 1;
 
 						foreach ( get_post_stati() as $status ) {
-
 							if ( in_array( $status, $wp_query->query['post_status'], true ) ) {
 								$post_status .= $wpdb->posts . ".post_status = '" . $status . "'";
 
-								if ( count( $query_status ) != $i ) {
+								if ( count( $query_status ) != $i ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 									$post_status .= ' OR ';
 								} else {
 									$post_status .= ')';
@@ -60,8 +63,10 @@ class AP_QA_Query_Hooks {
 					}
 				}
 
+				$pos = strpos( $sql['where'], $post_status );
+
 				// Replace post_status query.
-				if ( is_user_logged_in() && false !== ( $pos = strpos( $sql['where'], $post_status ) ) ) {
+				if ( is_user_logged_in() && false !== $pos ) {
 					$pos          = $pos + strlen( $post_status );
 					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('private_post') ) ", get_current_user_id() );
 					$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
@@ -126,11 +131,11 @@ class AP_QA_Query_Hooks {
 		global $question_rendered;
 
 		foreach ( (array) $posts as $k => $p ) {
-			if ( in_array( $p->post_type, [ 'question', 'answer' ], true ) ) {
+			if ( in_array( $p->post_type, array( 'question', 'answer' ), true ) ) {
 				// Convert object as array to prevent using __isset of WP_Post.
 				$p_arr = (array) $p;
 
-				// Check if ptype exists which is a qameta feild.
+				// Check if ptype exists which is a qameta field.
 				if ( ! empty( $p_arr['ptype'] ) ) {
 					$qameta = ap_qameta_fields();
 				} else {
@@ -161,7 +166,7 @@ class AP_QA_Query_Hooks {
 					$posts[ $k ] = $p;
 				}
 			}
-		} // End foreach().
+		}
 
 		if ( isset( $instance->query['ap_question_query'] ) || isset( $instance->query['ap_answers_query'] ) ) {
 			$instance->pre_fetch();
@@ -173,6 +178,7 @@ class AP_QA_Query_Hooks {
 	/**
 	 * An imaginary post.
 	 *
+	 * @param WP_Post $p Post.
 	 * @return object
 	 */
 	public static function imaginary_post( $p ) {
@@ -199,7 +205,7 @@ class AP_QA_Query_Hooks {
 		if ( ! is_admin() && $query->is_main_query() && $query->is_search() && 'question' === get_query_var( 'post_type' ) ) {
 			$query->found_posts   = 1;
 			$query->max_num_pages = 1;
-			$posts                = [ get_post( ap_opt( 'base_page' ) ) ];
+			$posts                = array( get_post( ap_opt( 'base_page' ) ) );
 		}
 
 		return $posts;
@@ -215,7 +221,7 @@ class AP_QA_Query_Hooks {
 	 */
 	public static function pre_get_posts( $query ) {
 		if ( $query->is_single() && $query->is_main_query() && 'question' === get_query_var( 'post_type' ) ) {
-			$query->set( 'post_status', [ 'publish', 'trash', 'moderate', 'private_post', 'future', 'ap_spam' ] );
+			$query->set( 'post_status', array( 'publish', 'trash', 'moderate', 'private_post', 'future', 'ap_spam' ) );
 		}
 	}
 }

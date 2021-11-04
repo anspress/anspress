@@ -6,6 +6,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Default qameta table fields with values.
  *
@@ -46,7 +50,6 @@ function ap_qameta_fields() {
  * @since   4.0.0
  */
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
-
 	if ( empty( $post_id ) ) {
 		return $wp_error ? new WP_Error( 'Post ID is required' ) : false;
 	}
@@ -54,20 +57,21 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	$_post  = get_post( $post_id );
 	$exists = ap_get_qameta( $post_id );
 
-	if ( ! is_object( $_post ) || ! isset( $_post->post_type ) || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! is_object( $_post ) || ! isset( $_post->post_type ) || ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
 		return false;
 	}
 
 	$args = wp_unslash(
 		wp_parse_args(
-			$args, [
+			$args,
+			array(
 				'ptype' => $_post->post_type,
-			]
+			)
 		)
 	);
 
-	$sanitized_values = [];
-	$formats          = [];
+	$sanitized_values = array();
+	$formats          = array();
 
 	// Include and sanitize valid fields.
 	foreach ( (array) ap_qameta_fields() as $field => $type ) {
@@ -83,10 +87,10 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			} elseif ( 'terms' === $field || 'attach' === $field ) {
 				$value     = is_array( $value ) ? sanitize_comma_delimited( $value ) : (int) $value;
 				$formats[] = '%s';
-			} elseif ( in_array( $field, [ 'selected', 'featured', 'closed' ], true ) ) {
+			} elseif ( in_array( $field, array( 'selected', 'featured', 'closed' ), true ) ) {
 				$value     = (bool) $value;
 				$formats[] = '%d';
-			} elseif ( in_array( $field, [ 'selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags' ], true ) ) {
+			} elseif ( in_array( $field, array( 'selected_id', 'comments', 'answers', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags' ), true ) ) {
 				$value     = (int) $value;
 				$formats[] = '%d';
 			} else {
@@ -100,9 +104,9 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 
 	global $wpdb;
 
-	// Dont insert or update if not AnsPress CPT.
-	// This check will also prevent inserting qameta for deleetd post.
-	if ( ! isset( $exists->ptype ) || ! in_array( $exists->ptype, [ 'question', 'answer' ], true ) ) {
+	// Don't insert or update if not AnsPress CPT.
+	// This check will also prevent inserting qameta for deleted post.
+	if ( ! isset( $exists->ptype ) || ! in_array( $exists->ptype, array( 'question', 'answer' ), true ) ) {
 		return $wp_error ? new WP_Error( 'Not question or answer CPT' ) : false;
 	}
 
@@ -113,16 +117,16 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 			$sanitized_values['roles'] = $_post->post_author;
 		}
 
-		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats ); // db call ok.
+		$inserted = $wpdb->insert( $wpdb->ap_qameta, $sanitized_values, $formats ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 	} else {
-		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, [ 'post_id' => $post_id ], $formats ); // db call ok.
+		$inserted = $wpdb->update( $wpdb->ap_qameta, $sanitized_values, array( 'post_id' => $post_id ), $formats ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
 	if ( false !== $inserted ) {
 		return $post_id;
 	}
 
-	return $wp_error ? new WP_Error( 'Unable to insert AnsPress qameta' ) : false;
+	return $wp_error ? new WP_Error( __( 'Unable to insert AnsPress qameta', 'anspress-question-answer' ) ) : false;
 }
 
 /**
@@ -133,7 +137,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
  */
 function ap_delete_qameta( $post_id ) {
 	global $wpdb;
-	return $wpdb->delete( $wpdb->ap_qameta, [ 'post_id' => $post_id ], [ '%d' ] ); // db call ok, db cache ok.
+	return $wpdb->delete( $wpdb->ap_qameta, array( 'post_id' => $post_id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 }
 
 /**
@@ -146,11 +150,11 @@ function ap_delete_qameta( $post_id ) {
 function ap_get_qameta( $post_id ) {
 	global $wpdb;
 
-	$qameta = $wpdb->get_row( $wpdb->prepare( "SELECT qm.*, p.post_type as ptype FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} qm ON qm.post_id = p.ID WHERE p.ID = %d", $post_id ), ARRAY_A ); // db call ok.
+	$qameta = $wpdb->get_row( $wpdb->prepare( "SELECT qm.*, p.post_type as ptype FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} qm ON qm.post_id = p.ID WHERE p.ID = %d", $post_id ), ARRAY_A ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
 	// If null then append is_new.
 	if ( empty( $qameta['post_id'] ) ) {
-		$qameta = [ 'is_new' => true ];
+		$qameta = array( 'is_new' => true );
 	}
 
 	$qameta = wp_parse_args( $qameta, ap_qameta_fields() );
@@ -159,7 +163,7 @@ function ap_get_qameta( $post_id ) {
 	$qameta['activities'] = maybe_unserialize( $qameta['activities'] );
 
 	if ( empty( $qameta['activities'] ) ) {
-		$qameta['activities'] = [];
+		$qameta['activities'] = array();
 	}
 
 	$qameta['fields'] = maybe_unserialize( $qameta['fields'] );
@@ -177,7 +181,7 @@ function ap_get_qameta( $post_id ) {
 function ap_append_qameta( $post ) {
 	// Convert object as array to prevent using __isset of WP_Post.
 	$post_arr = (array) $post;
-	if ( ! in_array( $post_arr['post_type'], [ 'question', 'answer' ], true ) || isset( $post_arr['ap_qameta_wrapped'] ) ) {
+	if ( ! in_array( $post_arr['post_type'], array( 'question', 'answer' ), true ) || isset( $post_arr['ap_qameta_wrapped'] ) ) {
 		return $post;
 	}
 
@@ -211,8 +215,9 @@ function ap_append_qameta( $post ) {
 /**
  * Update count of answers in post meta.
  *
- * @param  integer $question_id Question ID.
- * @param  integer $counts Custom count value to update.
+ * @param  integer     $question_id Question ID.
+ * @param  integer     $counts Custom count value to update.
+ * @param  true|string $update_time Update time.
  * @return boolean|false
  * @since  3.1.0
  */
@@ -221,7 +226,7 @@ function ap_update_answers_count( $question_id, $counts = false, $update_time = 
 		$counts = ap_count_published_answers( $question_id );
 	}
 
-	$args = [ 'answers' => $counts ];
+	$args = array( 'answers' => $counts );
 
 	if ( $update_time ) {
 		$args['last_updated'] = current_time( 'mysql' );
@@ -264,10 +269,11 @@ function ap_set_selected_answer( $question_id, $answer_id ) {
 	);
 
 	ap_insert_qameta(
-		$answer_id, [
+		$answer_id,
+		array(
 			'selected'     => 1,
 			'last_updated' => current_time( 'mysql' ),
-		]
+		)
 	);
 
 	$q_args = array(
@@ -311,25 +317,31 @@ function ap_unset_selected_answer( $question_id ) {
 	$qameta = ap_get_qameta( $question_id );
 
 	// Log to activity table.
-	ap_activity_add( array(
-		'q_id'   => $question_id,
-		'a_id'   => $qameta->selected_id,
-		'action' => 'unselected',
-	) );
+	ap_activity_add(
+		array(
+			'q_id'   => $question_id,
+			'a_id'   => $qameta->selected_id,
+			'action' => 'unselected',
+		)
+	);
 
 	// Clear selected column from answer qameta.
 	ap_insert_qameta(
-		$qameta->selected_id, [
+		$qameta->selected_id,
+		array(
 			'selected'     => 0,
 			'last_updated' => current_time( 'mysql' ),
-		]
+		)
 	);
 
-	$ret = ap_insert_qameta( $question_id, array(
-		'selected_id'  => '',
-		'last_updated' => current_time( 'mysql' ),
-		'closed'       => 0,
-	));
+	$ret = ap_insert_qameta(
+		$question_id,
+		array(
+			'selected_id'  => '',
+			'last_updated' => current_time( 'mysql' ),
+			'closed'       => 0,
+		)
+	);
 
 	$_post = ap_get_post( $qameta->selected_id );
 
@@ -361,7 +373,7 @@ function ap_update_views_count( $post_id, $views = false ) {
 		$views  = (int) $qameta->views + 1;
 	}
 
-	ap_insert_qameta( $post_id, [ 'views' => $views ] );
+	ap_insert_qameta( $post_id, array( 'views' => $views ) );
 	return $views;
 }
 
@@ -373,7 +385,7 @@ function ap_update_views_count( $post_id, $views = false ) {
  * @since  3.1.0
  */
 function ap_update_last_active( $post_id ) {
-	return ap_insert_qameta( $post_id, [ 'last_updated' => current_time( 'mysql' ) ] );
+	return ap_insert_qameta( $post_id, array( 'last_updated' => current_time( 'mysql' ) ) );
 }
 
 /**
@@ -385,7 +397,7 @@ function ap_update_last_active( $post_id ) {
  * @since  3.1.0
  */
 function ap_set_flag_count( $post_id, $count = 1 ) {
-	return ap_insert_qameta( $post_id, [ 'flags' => $count ] );
+	return ap_insert_qameta( $post_id, array( 'flags' => $count ) );
 }
 
 /**
@@ -397,7 +409,7 @@ function ap_set_flag_count( $post_id, $count = 1 ) {
  */
 function ap_update_flags_count( $post_id ) {
 	$count = ap_count_post_flags( $post_id );
-	ap_insert_qameta( $post_id, [ 'flags' => $count ] );
+	ap_insert_qameta( $post_id, array( 'flags' => $count ) );
 
 	return $count;
 }
@@ -411,7 +423,7 @@ function ap_update_flags_count( $post_id ) {
  * @since  3.1.0
  */
 function ap_update_answer_selected( $answer_id, $selected = true ) {
-	return ap_insert_qameta( $answer_id, [ 'selected' => (bool) $selected ] );
+	return ap_insert_qameta( $answer_id, array( 'selected' => (bool) $selected ) );
 }
 
 /**
@@ -427,7 +439,7 @@ function ap_update_subscribers_count( $post_id, $count = false ) {
 		$count = ap_subscribers_count( 'question', $post_id );
 	}
 
-	ap_insert_qameta( $post_id, [ 'subscribers' => $count ] );
+	ap_insert_qameta( $post_id, array( 'subscribers' => $count ) );
 
 	return $count;
 }
@@ -441,7 +453,7 @@ function ap_update_subscribers_count( $post_id, $count = false ) {
  * @since  3.1.0
  */
 function ap_update_qameta_terms( $question_id ) {
-	$terms = [];
+	$terms = array();
 
 	if ( taxonomy_exists( 'question_category' ) ) {
 		$categories = get_the_terms( $question_id, 'question_category' );
@@ -467,14 +479,14 @@ function ap_update_qameta_terms( $question_id ) {
 		}
 	}
 
-	$term_ids = [];
+	$term_ids = array();
 
 	foreach ( (array) $terms as $term ) {
 		$term_ids[] = $term->term_id;
 	}
 
 	if ( ! empty( $term_ids ) ) {
-		ap_insert_qameta( $question_id, [ 'terms' => $term_ids ] );
+		ap_insert_qameta( $question_id, array( 'terms' => $term_ids ) );
 	}
 
 	return $term_ids;
@@ -487,7 +499,7 @@ function ap_update_qameta_terms( $question_id ) {
  * @return boolean
  */
 function ap_set_featured_question( $post_id ) {
-	return ap_insert_qameta( $post_id, [ 'featured' => 1 ] );
+	return ap_insert_qameta( $post_id, array( 'featured' => 1 ) );
 }
 
 /**
@@ -497,7 +509,7 @@ function ap_set_featured_question( $post_id ) {
  * @return boolean
  */
 function ap_unset_featured_question( $post_id ) {
-	return ap_insert_qameta( $post_id, [ 'featured' => 0 ] );
+	return ap_insert_qameta( $post_id, array( 'featured' => 0 ) );
 }
 
 /**
@@ -509,9 +521,9 @@ function ap_unset_featured_question( $post_id ) {
 function ap_update_post_attach_ids( $post_id ) {
 	global $wpdb;
 
-	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} where post_type = 'attachment' AND post_parent = %d", $post_id ) );
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} where post_type = 'attachment' AND post_parent = %d", $post_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 
-	$insert = ap_insert_qameta( (int) $post_id, [ 'attach' => $ids ] );
+	$insert = ap_insert_qameta( (int) $post_id, array( 'attach' => $ids ) );
 	return $ids;
 }
 
@@ -524,10 +536,11 @@ function ap_update_post_attach_ids( $post_id ) {
  */
 function ap_update_post_activities( $post_id, $activities = array() ) {
 	return ap_insert_qameta(
-		$post_id, [
+		$post_id,
+		array(
 			'activities'   => $activities,
 			'last_updated' => current_time( 'mysql' ),
-		]
+		)
 	);
 }
 
@@ -575,7 +588,7 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
 function ap_toggle_close_question( $post_id ) {
 	$qameta = ap_get_qameta( $post_id );
 	$toggle = $qameta->closed ? 0 : 1;
-	ap_insert_qameta( $post_id, [ 'closed' => $toggle ] );
+	ap_insert_qameta( $post_id, array( 'closed' => $toggle ) );
 
 	return $toggle;
 }
@@ -611,7 +624,7 @@ function ap_get_post_field( $field, $_post = null ) {
  * @param  object|integer|null $_post Post ID, Object or null.
  */
 function ap_post_field( $field = null, $_post = null ) {
-	echo ap_get_post_field( $field, $_post ); // xss ok.
+	echo ap_get_post_field( $field, $_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -628,7 +641,7 @@ function ap_update_user_unpublished_count( $user_id = null ) {
 		$user_id = get_current_user_id();
 	}
 
-	$counts = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(*) as count, post_type FROM $wpdb->posts WHERE post_status IN ('draft', 'moderate', 'pending', 'trash') AND post_author = %d AND post_type IN ('question', 'answer') GROUP BY post_type", $user_id ) );
+	$counts = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(*) as count, post_type FROM $wpdb->posts WHERE post_status IN ('draft', 'moderate', 'pending', 'trash') AND post_author = %d AND post_type IN ('question', 'answer') GROUP BY post_type", $user_id ) ); // phpcs:ignore WordPress.DB
 
 	if ( ! empty( $counts ) ) {
 		$counts = wp_list_pluck( $counts, 'count', 'post_type' );

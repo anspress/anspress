@@ -13,6 +13,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * AnsPress post status helper class.
+ *
+ * @since unknown
+ */
 class AnsPress_Post_Status {
 
 	/**
@@ -20,21 +25,25 @@ class AnsPress_Post_Status {
 	 */
 	public static function register_post_status() {
 		register_post_status(
-			'moderate', array(
+			'moderate',
+			array(
 				'label'                     => __( 'Moderate', 'anspress-question-answer' ),
 				'public'                    => true,
 				'show_in_admin_all_list'    => false,
 				'show_in_admin_status_list' => true,
+				// translators: %s is count of post awaiting moderation.
 				'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>', 'anspress-question-answer' ),
 			)
 		);
 
 		register_post_status(
-			'private_post', array(
+			'private_post',
+			array(
 				'label'                     => __( 'Private', 'anspress-question-answer' ),
 				'public'                    => true,
 				'show_in_admin_all_list'    => false,
 				'show_in_admin_status_list' => true,
+				// translators: %s is count of private post.
 				'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>', 'anspress-question-answer' ),
 			)
 		);
@@ -50,11 +59,11 @@ class AnsPress_Post_Status {
 		$status  = ap_sanitize_unslash( 'status', 'request' );
 
 		// Check if user has permission else die.
-		if ( ! is_user_logged_in() || ! in_array( $status, [ 'publish', 'moderate', 'private_post', 'trash' ], true ) || ! ap_verify_nonce( 'change-status-' . $status . '-' . $post_id ) || ! ap_user_can_change_status( $post_id ) ) {
+		if ( ! is_user_logged_in() || ! in_array( $status, array( 'publish', 'moderate', 'private_post', 'trash' ), true ) || ! ap_verify_nonce( 'change-status-' . $status . '-' . $post_id ) || ! ap_user_can_change_status( $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'You are not allowed to change post status', 'anspress-question-answer' ) ],
+					'snackbar' => array( 'message' => __( 'You are not allowed to change post status', 'anspress-question-answer' ) ),
 				)
 			);
 		}
@@ -79,8 +88,8 @@ class AnsPress_Post_Status {
 		ap_ajax_json(
 			array(
 				'success'     => true,
-				'snackbar'    => [ 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ],
-				'action'      => [ 'active' => true ],
+				'snackbar'    => array( 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ),
+				'action'      => array( 'active' => true ),
 				'postmessage' => ap_get_post_status_message( $post->ID ),
 				'newStatus'   => $status,
 			)
@@ -102,15 +111,22 @@ function ap_get_post_status_message( $post_id = false ) {
 	$ret = '';
 	$msg = '';
 	if ( is_private_post( $post_id ) ) {
-		$ret = '<i class="apicon-lock"></i><span>' . sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ) . '</span>';
+		$ret = '<i class="apicon-lock"></i><span>' .
+		// translators: %s is post type.
+		sprintf( __( 'This %s is marked as a private, only admin and post author can see.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	} elseif ( is_post_waiting_moderation( $post_id ) ) {
-		$ret = '<i class="apicon-alert"></i><span>' . sprintf( __( 'This %s is waiting for the approval by the moderator.', 'anspress-question-answer' ), $post_type ) . '</span>';
+		$ret = '<i class="apicon-alert"></i><span>' .
+		// translators: %s is post type.
+		sprintf( __( 'This %s is waiting for the approval by the moderator.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	} elseif ( is_post_closed( $post_id ) ) {
 		$ret = '<i class="apicon-x"></i><span>' . __( 'Question is closed for new answers.', 'anspress-question-answer' ) . '</span>';
 	} elseif ( 'trash' === $post->post_status ) {
+		// translators: %s is post type.
 		$ret = '<i class="apicon-trashcan"></i><span>' . sprintf( __( 'This %s has been trashed, you can delete it permanently from wp-admin.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	} elseif ( 'future' === $post->post_status ) {
-		$ret = '<i class="apicon-clock"></i><span>' . sprintf( __( 'This %s is not published yet and is not accessible to anyone until it get published.', 'anspress-question-answer' ), $post_type ) . '</span>';
+		$ret = '<i class="apicon-clock"></i><span>' .
+		// translators: %s is post type.
+		sprintf( __( 'This %s is not published yet and is not accessible to anyone until it get published.', 'anspress-question-answer' ), $post_type ) . '</span>';
 	}
 
 	if ( ! empty( $ret ) ) {

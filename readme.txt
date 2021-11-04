@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/anspress
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.7
 Tested up to: 5.8
-Stable tag: ANSPRESS_CURRENT_DEV_VERSION
+Stable tag: 4.2.0
 License: GPLv2 or later
 Demo: https://anspress.net/demo/?product=anspress
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

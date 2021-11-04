@@ -28,7 +28,7 @@ abstract class Ajax extends \AnsPress\Singleton {
 	 *
 	 * @var array
 	 */
-	private $res = [];
+	private $res = array();
 
 	/**
 	 * The ajax action.
@@ -88,7 +88,6 @@ abstract class Ajax extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function logged_in() {
-
 	}
 
 	/**
@@ -97,7 +96,6 @@ abstract class Ajax extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function nopriv() {
-
 	}
 
 	/**

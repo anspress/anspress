@@ -17,6 +17,7 @@ namespace AnsPress;
  *
  * @package AnsPress
  * @since   4.1.5
+ * @since   4.2.0 Fixed: CS bugs.
  */
 class Session {
 	/**
@@ -68,7 +69,10 @@ class Session {
 	 */
 	public static function init() {
 		// Create an object.
-		null === self::$instance && self::$instance = new self();
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance; // Return the object.
 	}
 
@@ -77,7 +81,7 @@ class Session {
 	 */
 	public function __construct() {
 		if ( isset( $_COOKIE[ $this->name ] ) ) {
-			$this->id = stripslashes( ap_sanitize_unslash( $_COOKIE[ $this->name ] ) );
+			$this->id = stripslashes( ap_sanitize_unslash( $_COOKIE[ $this->name ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 		} else {
 			$this->id = $this->generate_id();
 			$this->set_cookie();
@@ -89,7 +93,7 @@ class Session {
 	 */
 	protected function set_cookie() {
 		if ( ! headers_sent() ) {
-			@setcookie( $this->name, $this->id, time() + $this->expires, $this->cookie_path, $this->cookie_domain );
+			setcookie( $this->name, $this->id, time() + $this->expires, $this->cookie_path, $this->cookie_domain );
 		}
 	}
 
@@ -100,7 +104,7 @@ class Session {
 	 */
 	protected function delete_cookie() {
 		if ( ! headers_sent() ) {
-			@setcookie( $this->name, '', time() - 42000, $this->cookie_path, $this->cookie_domain );
+			setcookie( $this->name, '', time() - 42000, $this->cookie_path, $this->cookie_domain );
 		}
 	}
 
@@ -149,7 +153,7 @@ class Session {
 		$cache = get_transient( 'anspress_session_' . $this->id );
 
 		if ( false === $cache ) {
-			$cache = [ $key => $val ];
+			$cache = array( $key => $val );
 		}
 
 		$cache[ $key ] = $val;
@@ -168,7 +172,7 @@ class Session {
 		$questions = $this->get( 'questions' );
 
 		if ( ! $questions ) {
-			$questions = [];
+			$questions = array();
 		}
 
 		$questions[] = $id;
@@ -188,7 +192,7 @@ class Session {
 		$answers = $this->get( 'answers' );
 
 		if ( ! $answers ) {
-			$answers = [];
+			$answers = array();
 		}
 
 		$answers[] = $id;
@@ -224,7 +228,7 @@ class Session {
 		$session_type  = 'answer' === $_post->post_type ? 'answers' : 'questions';
 		$session_posts = anspress()->session->get( $session_type );
 
-		if ( ! empty( $session_posts ) && ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {
+		if ( ! empty( $session_posts ) && ! is_user_logged_in() && '0' === $_post->post_author && in_array( (int) $_post->ID, $session_posts, true ) ) {
 			return true;
 		}
 
@@ -242,7 +246,7 @@ class Session {
 		$files = $this->get( 'files' );
 
 		if ( ! $files ) {
-			$files = [];
+			$files = array();
 		}
 
 		$files[] = $filename;

@@ -19,12 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Question_Query extends WP_Query {
 	/**
-	 * Store post type.
+	 * Count SQL query.
 	 *
 	 * @var string
 	 */
-	private $post_type;
-
 	public $count_request;
 
 	/**
@@ -34,9 +32,9 @@ class Question_Query extends WP_Query {
 	 * @since unknown
 	 * @since 4.1.5 Include future questions if user have privilege.
 	 */
-	public function __construct( $args = [] ) {
+	public function __construct( $args = array() ) {
 		if ( is_front_page() ) {
-			$paged = ( isset( $_GET['ap_paged'] ) ) ? (int) $_GET['ap_paged'] : 1; // input var ok.
+			$paged = ap_sanitize_unslash( 'ap_paged', 'g', 1 );
 		} else {
 			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 		}
@@ -57,7 +55,7 @@ class Question_Query extends WP_Query {
 			'ap_query'               => true,
 			'ap_order_by'            => 'active',
 			'ap_question_query'      => true,
-			'post_status'            => [ 'publish' ],
+			'post_status'            => array( 'publish' ),
 			'ap_current_user_ignore' => false,
 		);
 
@@ -89,14 +87,13 @@ class Question_Query extends WP_Query {
 			}
 
 			$this->args['post_status'] = array_unique( $this->args['post_status'] );
-
 		}
 
 		// Show only the unpublished post of author.
 		if ( isset( $args['ap_show_unpublished'] ) && true === $this->args['ap_show_unpublished'] ) {
 			$this->args['ap_current_user_ignore'] = true;
 			$this->args['author']                 = get_current_user_id();
-			$this->args['post_status']            = [ 'moderate', 'pending', 'draft', 'trash' ];
+			$this->args['post_status']            = array( 'moderate', 'pending', 'draft', 'trash' );
 		}
 
 		if ( $post_parent ) {
@@ -145,7 +142,7 @@ class Question_Query extends WP_Query {
 			do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
 		}
 
-		$post = $this->next_question(); // override ok.
+		$post = $this->next_question(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 		setup_postdata( $post );
 		anspress()->current_question = $post;
@@ -197,11 +194,12 @@ class Question_Query extends WP_Query {
 			return;
 		}
 
-		$this->ap_ids = [
-			'post_ids'   => [],
-			'attach_ids' => [],
-			'user_ids'   => [],
-		];
+		$this->ap_ids = array(
+			'post_ids'   => array(),
+			'attach_ids' => array(),
+			'user_ids'   => array(),
+		);
+
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
 			$this->ap_ids['attach_ids'] = array_merge( explode( ',', $_post->attach ), $this->ap_ids['attach_ids'] );
@@ -249,7 +247,7 @@ class Question_Query extends WP_Query {
  */
 function ap_get_post( $post = null ) {
 	if ( empty( $post ) && isset( $GLOBALS['post'] ) ) {
-		$post = $GLOBALS['post']; // override ok.
+		$post = $GLOBALS['post']; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
 
 	if ( $post instanceof WP_Post || is_object( $post ) ) {
@@ -330,7 +328,7 @@ function ap_get_profile_link() {
  * Echo user profile link
  */
 function ap_profile_link() {
-	echo ap_get_profile_link(); // xss ok.
+	echo ap_get_profile_link(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -364,7 +362,7 @@ function ap_get_author_avatar( $size = 45, $_post = null ) {
  * @param  mixed   $_post Post.
  */
 function ap_author_avatar( $size = 45, $_post = null ) {
-	echo ap_get_author_avatar( $size, $_post ); // xss ok.
+	echo ap_get_author_avatar( $size, $_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -384,7 +382,7 @@ function ap_get_answers_count( $_post = null ) {
  * @param  mixed $_post Post ID, Object or null.
  */
 function ap_answers_count( $_post = null ) {
-	echo ap_get_answers_count( $_post ); // xss ok.
+	echo ap_get_answers_count( $_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -404,9 +402,8 @@ function ap_get_votes_net( $_post = null ) {
  * @param  mixed $_post Post ID, Object or null.
  */
 function ap_votes_net( $_post = null ) {
-	echo ap_get_votes_net( $_post ); // xss ok.
+	echo ap_get_votes_net( $_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
-
 
 /**
  * Echo post status of a question.
@@ -448,8 +445,10 @@ function ap_question_metas( $question_id = false ) {
 		$metas['solved'] = '<i class="apicon-check"></i><i>' . __( 'Solved', 'anspress-question-answer' ) . '</i>';
 	}
 
-	$view_count     = ap_get_post_field( 'views' );
-	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%s views', 'anspress-question-answer' ),  ap_short_num( $view_count ) ) . '</i>';
+	$view_count = ap_get_post_field( 'views' );
+
+	// translators: %s is views count i.e. 2.1k views.
+	$metas['views'] = '<i class="apicon-eye"></i><i>' . sprintf( __( '%s views', 'anspress-question-answer' ), ap_short_num( $view_count ) ) . '</i>';
 
 	if ( is_question() ) {
 		$last_active     = ap_get_last_active( get_question_id() );
@@ -461,7 +460,7 @@ function ap_question_metas( $question_id = false ) {
 	}
 
 	/**
-   * Used to filter question display meta.
+	 * Used to filter question display meta.
 	 *
 	 * @param array $metas
 	 */
@@ -474,7 +473,7 @@ function ap_question_metas( $question_id = false ) {
 		}
 	}
 
-	echo $output; // xss ok.
+	echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -492,7 +491,7 @@ function ap_get_recent_post_activity( $_post = null ) {
  * Echo recent activity of a post.
  */
 function ap_recent_post_activity() {
-	echo ap_get_recent_post_activity(); // xss ok.
+	echo ap_get_recent_post_activity(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -682,7 +681,7 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 		$activity['date'] = get_gmt_from_date( $activity['date'] );
 	}
 
-	if ( false === $answer_activities && ( ! isset( $activity['type'] ) || in_array( $activity['type'], [ 'new_answer', 'new_question' ], true ) ) ) {
+	if ( false === $answer_activities && ( ! isset( $activity['type'] ) || in_array( $activity['type'], array( 'new_answer', 'new_question' ), true ) ) ) {
 		return;
 	}
 

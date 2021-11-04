@@ -3,6 +3,7 @@
  * Handles AnsPress caching
  *
  * @since 4.0.0
+ * @todo Delete this file.
  */
 
 function ap_cache_dir() {

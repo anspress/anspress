@@ -9,6 +9,10 @@
  * @copyright 2014 Rahul Aryan
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! function_exists( '_deprecated_function' ) ) {
 	require_once ABSPATH . WPINC . '/functions.php';
 }
@@ -17,7 +21,7 @@ if ( ! function_exists( '_deprecated_function' ) ) {
  * Return hover card attributes.
  *
  * @param  mixed $_post Post ID, Object or null.
- * @return string
+ * @return void
  *
  * @deprecated 4.1.13
  */

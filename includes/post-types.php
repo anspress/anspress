@@ -40,7 +40,7 @@ class AnsPress_PostTypes {
 		$question_permalink = ap_opt( 'question_page_permalink' );
 		$question_slug      = ap_get_page_slug( 'question' );
 
-		$rewrites = [];
+		$rewrites = array();
 		if ( 'question_perma_2' === $question_permalink ) {
 			$rewrites['rule'] = $question_slug . '/%question%';
 		} elseif ( 'question_perma_3' === $question_permalink ) {
@@ -72,7 +72,6 @@ class AnsPress_PostTypes {
 	 * @since 2.0.1
 	 */
 	public static function register_question_cpt() {
-
 		add_rewrite_tag( '%question_id%', '([0-9]+)', 'post_type=question&p=' );
 		add_rewrite_tag( '%question%', '([^/]+)' );
 
@@ -256,7 +255,6 @@ class AnsPress_PostTypes {
 			 * @param object $post Post object.
 			 */
 			return apply_filters( 'ap_question_post_type_link', $link, $post );
-
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
 			$link = get_permalink( $post->post_parent ) . "answer/{$post->ID}/";
 
@@ -267,7 +265,7 @@ class AnsPress_PostTypes {
 			 * @param object $post Post object.
 			 */
 			return apply_filters( 'ap_answer_post_type_link', $link, $post );
-		} // End if().
+		}
 
 		return $link;
 	}

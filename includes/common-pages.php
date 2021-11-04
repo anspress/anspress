@@ -9,6 +9,10 @@
  * @copyright 2014 Rahul Aryan
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Handle output of all default pages of AnsPress
  */
@@ -17,12 +21,12 @@ class AnsPress_Common_Pages {
 	 * Register all pages of AnsPress
 	 */
 	public static function register_common_pages() {
-		ap_register_page( 'base', ap_opt( 'base_page_title' ), [ __CLASS__, 'base_page' ] );
-		ap_register_page( 'question', __( 'Question', 'anspress-question-answer' ), [ __CLASS__, 'question_page' ], false );
-		ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), [ __CLASS__, 'ask_page' ] );
-		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), [ __CLASS__, 'search_page' ], false );
-		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), [ __CLASS__, 'edit_page' ], false );
-		ap_register_page( 'activities', __( 'Activities', 'anspress-question-answer' ), [ __CLASS__, 'activities_page' ], false );
+		ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
+		ap_register_page( 'question', __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
+		ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
+		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
+		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
+		ap_register_page( 'activities', __( 'Activities', 'anspress-question-answer' ), array( __CLASS__, 'activities_page' ), false );
 	}
 
 	/**
@@ -34,7 +38,7 @@ class AnsPress_Common_Pages {
 		$keywords          = get_search_query();
 		$tax_relation      = ! empty( $wp->query_vars['ap_tax_relation'] ) ? $wp->query_vars['ap_tax_relation'] : 'OR';
 		$args              = array();
-		$args['tax_query'] = array( 'relation' => $tax_relation );
+		$args['tax_query'] = array( 'relation' => $tax_relation ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 
 		if ( false !== $keywords ) {
 			$args['s'] = $keywords;
@@ -82,7 +86,7 @@ class AnsPress_Common_Pages {
 				$msg = __( 'Sorry! you are not allowed to read this question.', 'anspress-question-answer' );
 			}
 		} elseif ( 'future' === $_post->post_status && ! ap_user_can_view_future_post( $_post ) ) {
-			$time_to_publish = human_time_diff( strtotime( $_post->post_date ), current_time( 'timestamp', true ) );
+			$time_to_publish = human_time_diff( strtotime( $_post->post_date ), ap_get_current_timestamp() );
 
 			$msg = '<strong>' . sprintf(
 				// Translators: %s contain time to publish.
@@ -121,13 +125,14 @@ class AnsPress_Common_Pages {
 		// Check if user have permission.
 		if ( false !== $msg ) {
 			status_header( 403 );
-			echo '<div class="ap-no-permission">' . $msg . '</div>'; // WPCS: xss okay.
+			echo '<div class="ap-no-permission">' . wp_kses_post( $msg ) . '</div>';
 			$question_rendered = true;
 			return;
 		}
 
 		if ( have_posts() ) {
-			while ( have_posts() ) : the_post();
+			while ( have_posts() ) :
+				the_post();
 				include ap_get_theme_location( 'single-question.php' );
 			endwhile;
 		}
@@ -165,10 +170,14 @@ class AnsPress_Common_Pages {
 
 	/**
 	 * Load search page template
+	 *
+	 * @since unknown
+	 * @since 4.2.0 Added missing exit statement.
 	 */
 	public static function search_page() {
 		$keywords = ap_sanitize_unslash( 'ap_s', 'query_var', false );
-		wp_safe_redirect( add_query_arg( [ 'ap_s' => $keywords ], ap_get_link_to( '/' ) ) );
+		wp_safe_redirect( add_query_arg( array( 'ap_s' => $keywords ), ap_get_link_to( '/' ) ) );
+		exit;
 	}
 
 	/**
@@ -197,7 +206,7 @@ class AnsPress_Common_Pages {
 	 */
 	public static function activities_page() {
 		$roles = array_keys( ap_opt( 'activity_exclude_roles' ) );
-		$args  = [];
+		$args  = array();
 
 		if ( ! empty( $roles ) ) {
 			$args['exclude_roles'] = $roles;

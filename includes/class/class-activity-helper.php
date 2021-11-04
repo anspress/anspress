@@ -23,6 +23,7 @@ use WP_Error;
  * Class which has helper methods for AnsPress activities.
  *
  * @since 4.1.2
+ * @since 4.2.0 Fixed: CS bugs.
  */
 class Activity_Helper {
 
@@ -46,7 +47,7 @@ class Activity_Helper {
 	 * @var array
 	 * @since 4.1.2
 	 */
-	private $actions = [];
+	private $actions = array();
 
 	/**
 	 * Creates or returns an instance of this class.
@@ -54,7 +55,7 @@ class Activity_Helper {
 	 * @return Activity A single instance of this class.
 	 */
 	public static function get_instance() {
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 			self::hooks();
 		}
@@ -94,7 +95,7 @@ class Activity_Helper {
 	 * @return void
 	 * @since 4.1.2
 	 */
-	public static function _before_delete( $post_id ) {
+	public static function _before_delete( $post_id ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 		$_post = ap_get_post( $post_id );
 
 		// Return if not AnsPress cpt.
@@ -114,11 +115,16 @@ class Activity_Helper {
 	 * @return void
 	 * @since 4.1.2
 	 */
-	public static function _delete_comment( $comment_id ) {
+	public static function _delete_comment( $comment_id ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 		ap_delete_comment_activity( $comment_id );
 	}
 
-	public static function _ajax_more_activities() {
+	/**
+	 * Callback for loading more activities.
+	 *
+	 * @return void
+	 */
+	public static function _ajax_more_activities() { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 		// Check ajax referer.
 		if ( ! check_ajax_referer( 'load_activities', '__nonce', false ) ) {
 			ap_ajax_json( 'something_wrong' );
@@ -152,7 +158,7 @@ class Activity_Helper {
 	 * @return void
 	 * @since 4.1.2
 	 */
-	public static function _delete_user( $user_id ) {
+	public static function _delete_user( $user_id ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 		ap_delete_user_activity( $user_id );
 	}
 
@@ -271,6 +277,7 @@ class Activity_Helper {
 	/**
 	 * Return a single registered action of AnsPress.
 	 *
+	 * @param string $key Action name.
 	 * @return array
 	 * @since 4.1.2
 	 */
@@ -279,7 +286,7 @@ class Activity_Helper {
 			return $this->actions[ $key ];
 		}
 
-		return [];
+		return array();
 	}
 
 	/**
@@ -312,11 +319,12 @@ class Activity_Helper {
 	 * @since 4.1.2
 	 * @since 4.1.8 Add GMT offset in `current_time`.
 	 */
-	public function insert( $args = [] ) {
+	public function insert( $args = array() ) {
 		global $wpdb;
 
 		$args = wp_parse_args(
-			$args, array(
+			$args,
+			array(
 				'action'  => '',
 				'q_id'    => 0,
 				'a_id'    => 0,
@@ -348,7 +356,7 @@ class Activity_Helper {
 		}
 
 		// Insert.
-		$inserted = $wpdb->insert(
+		$inserted = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$this->table,
 			array(
 				'activity_action'  => $args['action'],
@@ -397,7 +405,7 @@ class Activity_Helper {
 			return false;
 		}
 
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_activity WHERE activity_id = %d", $activity_id ) );
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_activity WHERE activity_id = %d", $activity_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
 	/**
@@ -419,12 +427,12 @@ class Activity_Helper {
 	public function delete( $where ) {
 		global $wpdb;
 
-		$where = wp_array_slice_assoc( $where, [ 'action', 'a_id', 'c_id', 'q_id', 'user_id', 'date' ] );
-		$types = [];
-		$cols  = [];
+		$where = wp_array_slice_assoc( $where, array( 'action', 'a_id', 'c_id', 'q_id', 'user_id', 'date' ) );
+		$types = array();
+		$cols  = array();
 
 		foreach ( $where as $key => $value ) {
-			if ( in_array( $key, [ 'action', 'date' ], true ) ) {
+			if ( in_array( $key, array( 'action', 'date' ), true ) ) {
 				$types[] = '%s';
 			} else {
 				$types[] = '%d';
@@ -454,5 +462,4 @@ class Activity_Helper {
 
 		return $deleted;
 	}
-
 }

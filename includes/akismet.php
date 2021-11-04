@@ -1,5 +1,17 @@
 <?php
 /**
+ * Akismet helper functions.
+ *
+ * @since unknown
+ * @package AnsPress
+ * @author Rahul Aryan <rah12@live.com>
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
  * Check post for spam, if spam then hold it for moderation.
  *
  * @param  integer $post_id Post id.
@@ -16,8 +28,8 @@ function ap_check_spam( $post_id ) {
 	$defaults = array(
 		'blog'                 => home_url( '/' ),
 		'user_ip'              => get_post_meta( $post->ID, 'create_ip', true ),
-		'user_agent'           => $_SERVER['HTTP_USER_AGENT'],
-		'referrer'             => $_SERVER['HTTP_REFERER'],
+		'user_agent'           => ! empty( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '',
+		'referrer'             => ! empty( $_SERVER['HTTP_REFERER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '',
 		'permalink'            => get_permalink( $post->ID ),
 		'comment_type'         => 'forum-post',
 		'comment_author'       => get_the_author_meta( 'nicename', $post->post_author ),
@@ -47,12 +59,14 @@ function ap_check_spam( $post_id ) {
 		'timeout'     => 15,
 	);
 
-	$akismet_url = $http_akismet_url = "http://{$http_host}/1.1/comment-check";
+	$http_akismet_url = "http://{$http_host}/1.1/comment-check";
+	$akismet_url      = $http_akismet_url;
 
 	/**
 	 * Try SSL first; if that fails, try without it and don't try it again for a while.
 	 */
-	$ssl = $ssl_failed = false;
+	$ssl_failed = false;
+	$ssl        = $ssl_failed;
 
 	// Check if SSL requests were disabled fewer than X hours ago.
 	$ssl_disabled = get_option( 'akismet_ssl_disabled' );
@@ -63,7 +77,10 @@ function ap_check_spam( $post_id ) {
 	} elseif ( $ssl_disabled ) {
 		do_action( 'akismet_ssl_disabled' );
 	}
-	if ( ! $ssl_disabled && function_exists( 'wp_http_supports' ) && ( $ssl = wp_http_supports( array( 'ssl' ) ) ) ) {
+
+	$ssl = function_exists( 'wp_http_supports' ) && wp_http_supports( array( 'ssl' ) );
+
+	if ( ! $ssl_disabled && $ssl ) {
 		$akismet_url = set_url_scheme( $akismet_url, 'https' );
 	}
 
@@ -105,5 +122,4 @@ function ap_check_spam( $post_id ) {
 			)
 		);
 	}
-
 }

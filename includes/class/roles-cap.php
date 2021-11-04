@@ -37,21 +37,8 @@ class AP_Roles {
 	 * Initialize the class
 	 */
 	public function __construct() {
-
-		/**
-		 * Base user caps.
-		 *
-		 * @var array
-		 */
 		$this->base_caps = ap_role_caps( 'participant' );
-
-		/**
-		 * Admin level caps.
-		 *
-		 * @var array
-		 */
-		$this->mod_caps = ap_role_caps( 'moderator' );
-
+		$this->mod_caps  = ap_role_caps( 'moderator' );
 	}
 
 	/**
@@ -82,11 +69,11 @@ class AP_Roles {
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) && ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles(); // Override okay.
+			$wp_roles = new WP_Roles(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 
 		if ( is_object( $wp_roles ) ) {
-			$roles = [ 'editor', 'administrator', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' ];
+			$roles = array( 'editor', 'administrator', 'contributor', 'author', 'ap_participant', 'ap_moderator', 'subscriber' );
 
 			foreach ( $roles as $role_name ) {
 
@@ -95,7 +82,7 @@ class AP_Roles {
 					$wp_roles->add_cap( $role_name, $k );
 				}
 
-				if ( in_array( $role_name, [ 'editor', 'administrator', 'ap_moderator' ], true ) ) {
+				if ( in_array( $role_name, array( 'editor', 'administrator', 'ap_moderator' ), true ) ) {
 					foreach ( $this->mod_caps as $k => $grant ) {
 						$wp_roles->add_cap( $role_name, $k );
 					}
@@ -111,7 +98,7 @@ class AP_Roles {
 		global $wp_roles;
 
 		if ( class_exists( 'WP_Roles' ) && ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles(); // override okay.
+			$wp_roles = new WP_Roles(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 
 		$wp_roles->remove_role( 'ap_participant' );
@@ -223,7 +210,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( is_user_logged_in() && ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // loose comparison ok.
+	if ( is_user_logged_in() && ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return false;
 	}
 
@@ -254,7 +241,6 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
  * @since 4.1.6 Allow moderators to toggle best answer.
  */
 function ap_user_can_select_answer( $_post = null, $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -315,7 +301,7 @@ function ap_user_can_edit_post( $post = null, $user_id = false ) {
 
 	$_post = ap_get_post( $post );
 
-	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
 		return false;
 	}
 
@@ -348,7 +334,7 @@ function ap_user_can_edit_post( $post = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $_post->post_author && user_can( $user_id, 'ap_edit_' . $_post->post_type ) ) { // loose comparison ok.
+	if ( $user_id == $_post->post_author && user_can( $user_id, 'ap_edit_' . $_post->post_type ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -376,7 +362,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 
 	/**
 	 * Filter to hijack ap_user_can_edit_answer. This filter will be applied if filter
-	 * returns a boolean value. To baypass return an empty string.
+	 * returns a boolean value. To bypass return an empty string.
 	 *
 	 * @param string|boolean    $filter         Apply this filter.
 	 * @param integer           $question_id    Question ID.
@@ -400,7 +386,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) { // loose comparison ok.
+	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -464,7 +450,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) { // loose comparison ok.
+	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -585,7 +571,7 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 	}
 
 	// Do not allow to edit if not approved.
-	if ( '0' == $comment->comment_approved ) { // loose comparison ok.
+	if ( '0' == $comment->comment_approved ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return false;
 	}
 
@@ -594,7 +580,7 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) { // loose comparison ok.
+	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -617,7 +603,7 @@ function ap_user_can_delete_comment( $comment_id, $user_id = false ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_delete_comment' ) && get_comment( $comment_id )->user_id == $user_id ) { // loose comparison ok.
+	if ( user_can( $user_id, 'ap_delete_comment' ) && get_comment( $comment_id )->user_id == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -646,7 +632,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 	$type   = $post_o->post_type;
 
 	// Return if not question or answer post type.
-	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $post_o->post_type, array( 'question', 'answer' ), true ) ) {
 		return false;
 	}
 
@@ -672,7 +658,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_' . $type ) ) { // loose comparison ok.
+	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_' . $type ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	} elseif ( user_can( $user_id, 'ap_delete_others_' . $type ) ) {
 		return true;
@@ -710,10 +696,11 @@ function ap_user_can_delete_answer( $answer, $user_id = false ) {
 /**
  * Check if user can permanently delete a AnsPress posts
  *
+ * @param null|\WP_Post|int $post Post id or object.
+ * @param false|int         $user_id User id.
  * @return boolean
  */
 function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -721,7 +708,7 @@ function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
 	$_post = ap_get_post( $post );
 
 	// Return false if not question or answer.
-	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
 		return false;
 	}
 
@@ -735,7 +722,8 @@ function ap_user_can_permanent_delete( $post = null, $user_id = false ) {
 /**
  * Check if user can restore question or answer.
  *
- * @param  boolean|integer $user_id  User ID.
+ * @param null|\WP_Post|int $_post Post id or object.
+ * @param boolean|integer   $user_id  User ID.
  * @return boolean
  * @since  3.0.0
  */
@@ -767,7 +755,6 @@ function ap_user_can_restore( $_post = null, $user_id = false ) {
  * @since  2.0.1
  */
 function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -778,11 +765,11 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 
 	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
-	if ( ! $post_o || 0 == $user_id ) {
+	if ( ! $post_o || 0 == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return false;
 	}
 
-	if ( $post_o->post_author == $user_id ) { // loose comparison ok.
+	if ( $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -790,7 +777,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 	if ( 'answer' === $post_o->post_type ) {
 		$question = ap_get_post( $post_o->post_parent );
 
-		if ( $question->post_author == $user_id ) { // loose comparison ok.
+		if ( $question->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			return true;
 		}
 	}
@@ -808,7 +795,6 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
  * @since  4.1.5 Let user view if post is in their session. This is useful for guest users.
  */
 function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -824,7 +810,7 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // loose comparison ok.
+	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -861,14 +847,14 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // loose comparison ok.
+	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
 	$session_type  = 'answer' === $_post->post_type ? 'answers' : 'questions';
 	$session_posts = anspress()->session->get( $session_type );
 
-	if ( is_array( $session_posts ) && ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) {
+	if ( is_array( $session_posts ) && ! is_user_logged_in() && '0' === $_post->post_author && in_array( $_post->ID, $session_posts ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		return true;
 	}
 
@@ -945,7 +931,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 
 	$post_o = ap_get_post( $post_id );
 
-	if ( ! in_array( $post_o->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $post_o->post_type, array( 'question', 'answer' ), true ) ) {
 		return false;
 	}
 
@@ -968,7 +954,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 
 	// Do not allow post author to change status if current status is moderate,
 	// regardless of moderator user role.
-	if ( 'moderate' === $post_o->post_status && $post_o->post_author == $user_id ) {
+	if ( 'moderate' === $post_o->post_status && $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return false;
 	}
 
@@ -976,8 +962,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_change_status' ) &&
-	 ( $post_o->post_author > 0 && $post_o->post_author == $user_id ) ) { // loose comparison ok.
+	if ( user_can( $user_id, 'ap_change_status' ) && ( $post_o->post_author > 0 && $post_o->post_author == $user_id ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -991,7 +976,6 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
  * @return boolean
  */
 function ap_user_can_close_question( $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -1062,7 +1046,7 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
 	}
 
 	// Check if attachment post author matches `$user_id`.
-	if ( $user_id == $attachment->post_author ) { // loose comparison ok.
+	if ( $user_id == $attachment->post_author ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return true;
 	}
 
@@ -1185,7 +1169,7 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 	}
 
 	// If not question or answer then return true.
-	if ( ! in_array( $post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $post_type, array( 'question', 'answer' ), true ) ) {
 		return true;
 	}
 
@@ -1268,8 +1252,8 @@ function ap_user_can_read_question( $question_id, $user_id = false ) {
 /**
  * Check if a user can read answer.
  *
- * @param  integer|object  $answer_id   Answer ID.
- * @param  boolean|integer $user_id     User ID.
+ * @param  integer|object  $post    Answer ID.
+ * @param  boolean|integer $user_id User ID.
  * @return boolean
  * @uses   ap_user_can_read_post
  * @since  2.4.6
@@ -1320,7 +1304,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	}
 
 	// Do not allow post author to vote on self posts.
-	if ( $post_o->post_author == $user_id ) { // loose comparison okay.
+	if ( $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		if ( $wp_error ) {
 			return new WP_Error( 'cannot_vote_own_post', __( 'Voting on own post is not allowed', 'anspress-question-answer' ) );
 		}
@@ -1454,7 +1438,7 @@ function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( '1' != $_comment->comment_approved && ! ap_user_can_approve_comment( $user_id ) ) {
+	if ( '1' != $_comment->comment_approved && ! ap_user_can_approve_comment( $user_id ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return false;
 	}
 

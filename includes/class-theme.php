@@ -29,7 +29,8 @@ class AnsPress_Theme {
 		// Register question shortcode.
 		add_shortcode( 'question', array( AnsPress_Question_Shortcode::get_instance(), 'anspress_question_sc' ) );
 	}
-	/*
+
+	/**
 	 * The main filter used for theme compatibility and displaying custom AnsPress
 	 * theme files.
 	 *
@@ -42,15 +43,15 @@ class AnsPress_Theme {
 		return apply_filters( 'ap_template_include', $template );
 	}
 
-   /**
-	* Reset main query vars and filter 'the_content' to output a AnsPress
-	* template part as needed.
-	*
-	* @param string $template
-	* @return string
-	*
-	* @since 4.2.0
-	*/
+	/**
+	 * Reset main query vars and filter 'the_content' to output a AnsPress
+	 * template part as needed.
+	 *
+	 * @param string $template Template name.
+	 * @return string
+	 *
+	 * @since 4.2.0
+	 */
 	public static function template_include_theme_compat( $template = '' ) {
 		if ( ap_current_page( 'question' ) ) {
 			ob_start();
@@ -59,17 +60,19 @@ class AnsPress_Theme {
 			echo '</div>';
 			$html = ob_get_clean();
 
-			ap_theme_compat_reset_post( array(
-				'ID'             => get_question_id(),
-				'post_title'     => get_the_title( get_question_id() ),
-				'post_author'    => get_post_field( 'post_author', get_question_id() ),
-				'post_date'      => get_post_field( 'post_date', get_question_id() ),
-				'post_content'   => $html,
-				'post_type'      => 'question',
-				'post_status'    => get_post_status( get_question_id() ),
-				'is_single'      => true,
-				'comment_status' => 'closed',
-			) );
+			ap_theme_compat_reset_post(
+				array(
+					'ID'             => get_question_id(),
+					'post_title'     => get_the_title( get_question_id() ),
+					'post_author'    => get_post_field( 'post_author', get_question_id() ),
+					'post_date'      => get_post_field( 'post_date', get_question_id() ),
+					'post_content'   => $html,
+					'post_type'      => 'question',
+					'post_status'    => get_post_status( get_question_id() ),
+					'is_single'      => true,
+					'comment_status' => 'closed',
+				)
+			);
 		}
 
 		if ( true === anspress()->theme_compat->active ) {
@@ -77,7 +80,7 @@ class AnsPress_Theme {
 		}
 
 		return $template;
-   	}
+	}
 
 	/**
 	 * AnsPress theme function as like WordPress theme function.
@@ -113,9 +116,7 @@ class AnsPress_Theme {
 			}
 
 			$classes[] = 'answer-count-' . ap_get_answers_count();
-
 		} elseif ( 'answer' === $post->post_type ) {
-
 			if ( ap_is_selected( $post->ID ) ) {
 				$classes[] = 'best-answer';
 			}
@@ -154,7 +155,7 @@ class AnsPress_Theme {
 	 */
 	public static function ap_title( $title ) {
 		if ( is_anspress() ) {
-			remove_filter( 'wp_title', [ __CLASS__, 'ap_title' ] );
+			remove_filter( 'wp_title', array( __CLASS__, 'ap_title' ) );
 
 			if ( is_question() ) {
 				return ap_question_title_with_solved_prefix() . ' | ';
@@ -170,17 +171,15 @@ class AnsPress_Theme {
 	public static function ap_before_html_body() {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			$data         = wp_json_encode(
-				array(
-					'user_login'   => $current_user->data->user_login,
-					'display_name' => $current_user->data->display_name,
-					'user_email'   => $current_user->data->user_email,
-					'avatar'       => get_avatar( $current_user->ID ),
-				)
+			$data         = array(
+				'user_login'   => $current_user->data->user_login,
+				'display_name' => $current_user->data->display_name,
+				'user_email'   => $current_user->data->user_email,
+				'avatar'       => get_avatar( $current_user->ID ),
 			);
 			?>
 				<script type="text/javascript">
-					apCurrentUser = <?php echo $data; // xss okay. ?>;
+					apCurrentUser = <?php echo wp_json_encode( $data ); ?>;
 				</script>
 			<?php
 		}
@@ -214,10 +213,10 @@ class AnsPress_Theme {
 		}
 
 		ap_ajax_json(
-			[
+			array(
 				'success' => true,
 				'actions' => ap_post_actions( $post_id ),
-			]
+			)
 		);
 	}
 
@@ -242,7 +241,7 @@ class AnsPress_Theme {
 	 */
 	public static function anspress_basepage_template( $template ) {
 		if ( is_anspress() ) {
-			$templates = [ 'anspress.php', 'page.php', 'singular.php', 'index.php' ];
+			$templates = array( 'anspress.php', 'page.php', 'singular.php', 'index.php' );
 
 			if ( is_page() ) {
 				$_post = get_queried_object();
@@ -299,7 +298,7 @@ class AnsPress_Theme {
 			}
 
 			$excerpt_length = apply_filters( 'excerpt_length', 55 );
-			$excerpt_more   = apply_filters( 'excerpt_more', ' ' . '[&hellip;]' );
+			$excerpt_more   = apply_filters( 'excerpt_more', ' [&hellip;]' );
 			return wp_trim_words( $post->post_content, $excerpt_length, $excerpt_more );
 		}
 
@@ -318,8 +317,8 @@ class AnsPress_Theme {
 	public static function remove_hentry_class( $post_classes, $class, $post_id ) {
 		$_post = ap_get_post( $post_id );
 
-		if ( $_post && ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) || in_array( $_post->ID, ap_main_pages_id() ) ) ) {
-			return array_diff( $post_classes, [ 'hentry' ] );
+		if ( $_post && ( in_array( $_post->post_type, array( 'answer', 'question' ), true ) || in_array( $_post->ID, ap_main_pages_id() ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			return array_diff( $post_classes, array( 'hentry' ) );
 		}
 
 		return $post_classes;
@@ -332,13 +331,13 @@ class AnsPress_Theme {
 	 * @since 4.1.2
 	 */
 	public static function after_question_content() {
-		echo ap_post_status_badge(); // xss safe.
+		echo wp_kses_post( ap_post_status_badge() );
 
 		$_post    = ap_get_post();
 		$activity = ap_recent_activity( null, false );
 
 		if ( ! empty( $activity ) ) {
-			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . $activity . '</div>';
+			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . wp_kses_post( $activity ) . '</div>';
 		}
 	}
 }

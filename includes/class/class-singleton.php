@@ -31,7 +31,7 @@ abstract class Singleton {
 	 * @since 4.1.8
 	 */
 	private function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' ); // WPCS: xss okay.
+		_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' );
 	}
 
 	/**
@@ -41,7 +41,7 @@ abstract class Singleton {
 	 * @since 4.2.0 Fixed: warning `__wakeup must be public`.
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' ); // WPCS: xss okay.
+		_doing_it_wrong( __FUNCTION__, esc_attr__( 'Cheatin&#8217; huh?', 'anspress-question-answer' ), '1.0.0' );
 	}
 
 	/**
@@ -66,6 +66,5 @@ abstract class Singleton {
 	 * @since 4.1.8
 	 */
 	public function run_once() {
-
 	}
 }

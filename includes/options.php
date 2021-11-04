@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @param  string $key   Name of option to retrieve or keep it blank to get all options of AnsPress.
  * @param  string $value Enter value to update existing option.
- * @return string
+ * @return mixed
  * @since  0.1
  */
 function ap_opt( $key = false, $value = null ) {
@@ -39,7 +39,6 @@ function ap_opt( $key = false, $value = null ) {
 	$settings = $settings + ap_default_options();
 
 	if ( ! is_null( $value ) ) {
-
 		$settings[ $key ] = $value;
 		update_option( 'anspress_opt', $settings );
 
@@ -101,8 +100,9 @@ function ap_default_options() {
 		'question_text_editor'          => false,
 		'answer_text_editor'            => false,
 		'base_page_title'               => __( 'Questions', 'anspress-question-answer' ),
+		// translators: %s is search query.
 		'search_page_title'             => __( 'Search "%s"', 'anspress-question-answer' ),
-		'user_page_title'               => __( '%s', 'anspress-question-answer' ),
+		'user_page_title'               => '%s',
 		'disable_comments_on_question'  => false,
 		'disable_comments_on_answer'    => false,
 		'new_question_status'           => 'publish',
@@ -139,7 +139,7 @@ function ap_default_options() {
 		'post_question_per'             => 'anyone',
 		'post_answer_per'               => 'logged_in',
 		'post_comment_per'              => 'logged_in',
-		'activity_exclude_roles'        => [],
+		'activity_exclude_roles'        => array(),
 		'create_account'                => true,
 		'allow_private_posts'           => true,
 	);

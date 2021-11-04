@@ -49,7 +49,7 @@ class Answers_Query extends WP_Query {
 			'paged'                  => $paged,
 			'only_best_answer'       => false,
 			'ignore_selected_answer' => false,
-			'post_status'            => [ 'publish' ],
+			'post_status'            => array( 'publish' ),
 			'ap_order_by'            => ap_opt( 'answers_sort' ),
 		);
 
@@ -80,7 +80,7 @@ class Answers_Query extends WP_Query {
 		}
 
 		if ( ! isset( $this->args['author'] ) && empty( $question_id ) && empty( $this->args['p'] ) ) {
-			$this->args = [];
+			$this->args = array();
 		} else {
 			$this->args['post_parent'] = $question_id;
 			$this->args['post_type']   = 'answer';
@@ -93,10 +93,20 @@ class Answers_Query extends WP_Query {
 		}
 	}
 
+	/**
+	 * Get answers of current question.
+	 *
+	 * @return WP_Post[]|int[]
+	 */
 	public function get_answers() {
 		return parent::get_posts();
 	}
 
+	/**
+	 * Get next answer in loop.
+	 *
+	 * @return WP_Post
+	 */
 	public function next_answer() {
 		return parent::next_post();
 	}
@@ -105,40 +115,59 @@ class Answers_Query extends WP_Query {
 	 * Undo the pointer to next
 	 */
 	public function reset_next() {
-
 		$this->current_post--;
 		$this->post = $this->posts[ $this->current_post ];
 
 		return $this->post;
 	}
 
+	/**
+	 * Setup current answer in loop.
+	 */
 	public function the_answer() {
 		global $post;
 		$this->in_the_loop = true;
 
-		if ( $this->current_post == -1 ) {
-			   do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
+		if ( -1 === $this->current_post ) {
+			do_action_ref_array( 'ap_query_loop_start', array( &$this ) );
 		}
 
-		$post = $this->next_answer();
+		$post = $this->next_answer(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 		setup_postdata( $post );
 		anspress()->current_answer = $post;
 	}
 
+	/**
+	 * Check if there are answers in loop.
+	 *
+	 * @return WP_Post[]|int[]
+	 */
 	public function have_answers() {
 		return parent::have_posts();
 	}
 
+	/**
+	 * Rewind answers in loop and reset index.
+	 *
+	 * @return mixed
+	 */
 	public function rewind_answers() {
 		parent::rewind_posts();
 	}
 
+	/**
+	 * Check if this is main query.
+	 *
+	 * @return WP_Post[]
+	 */
 	public function is_main_query() {
-		return $this == anspress()->answers;
+		return anspress()->answers === $this;
 	}
 
-
+	/**
+	 * Reset answers data in loop.
+	 */
 	public function reset_answers_data() {
 		parent::reset_postdata();
 
@@ -150,18 +179,18 @@ class Answers_Query extends WP_Query {
 	/**
 	 * Utility method to get all the ids in this request
 	 *
-	 * @return array of mdia ids
+	 * @return array of media ids
 	 */
 	public function get_ids() {
 		if ( $this->ap_ids ) {
 			return;
 		}
 
-		$this->ap_ids = [
-			'post_ids'   => [],
-			'attach_ids' => [],
-			'user_ids'   => [],
-		];
+		$this->ap_ids = array(
+			'post_ids'   => array(),
+			'attach_ids' => array(),
+			'user_ids'   => array(),
+		);
 
 		foreach ( (array) $this->posts as $_post ) {
 			$this->ap_ids['post_ids'][] = $_post->ID;
@@ -214,13 +243,14 @@ class Answers_Query extends WP_Query {
  * @since  2.0
  */
 function ap_get_answers( $args = array() ) {
-
 	if ( empty( $args['question_id'] ) ) {
 		$args['question_id'] = get_question_id();
 	}
 
 	if ( ! isset( $args['ap_order_by'] ) ) {
-		$args['ap_order_by'] = isset( $_GET['order_by'] ) ? ap_sanitize_unslash( 'order_by', 'g' ) : ap_opt( 'answers_sort' );
+		$order_by = ap_sanitize_unslash( 'order_by', 'g' );
+
+		$args['ap_order_by'] = ! empty( $order_by ) ? $order_by : ap_opt( 'answers_sort' );
 	}
 
 	return new Answers_Query( $args );
@@ -268,6 +298,11 @@ function ap_have_answers() {
 	}
 }
 
+/**
+ * Setup answer in loop.
+ *
+ * @return WP_Post
+ */
 function ap_the_answer() {
 	global $answers;
 	if ( $answers ) {
@@ -275,13 +310,18 @@ function ap_the_answer() {
 	}
 }
 
+/**
+ * Check total answers found in loop.
+ *
+ * @return int
+ */
 function ap_total_answers_found() {
 	global $answers;
 	return $answers->found_posts;
 }
 
 /**
- * Ge the post object of currently irritrated post
+ * Ge the post object of currently iterated post
  *
  * @return object
  */
@@ -311,7 +351,9 @@ function ap_answer_user_can_view() {
  */
 function ap_answers_the_pagination() {
 	if ( get_query_var( 'answer_id' ) ) {
-		echo '<a class="ap-all-answers" href="' . get_permalink( get_question_id() ) . '">' . sprintf( __( 'You are viewing 1 out of %d answers, click here to view all answers.', 'anspress-question-answer' ), ap_get_answers_count( get_question_id() ) ) . '</a>';
+		echo '<a class="ap-all-answers" href="' . esc_url( get_permalink( get_question_id() ) ) . '">' .
+		// translators: %d is total answer count of question.
+		esc_attr( sprintf( __( 'You are viewing 1 out of %d answers, click here to view all answers.', 'anspress-question-answer' ), ap_get_answers_count( get_question_id() ) ) ) . '</a>';
 	} else {
 		global $answers;
 		$paged = ( get_query_var( 'ap_paged' ) ) ? get_query_var( 'ap_paged' ) : 1;
@@ -328,15 +370,16 @@ function ap_answers_the_pagination() {
 function ap_count_published_answers( $question_id ) {
 	global $wpdb;
 	$query = $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND post_status = %s AND post_type = %s", $question_id, 'publish', 'answer' );
-	$key   = md5( $query );
 
-	$count = $wpdb->get_var( $query );
+	$count = $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB
+
 	return $count;
 }
 
 /**
  * Count all answers excluding best answer.
  *
+ * @param false|int $question_id Question id.
  * @return int
  */
 function ap_count_other_answer( $question_id = false ) {
@@ -385,7 +428,7 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 		$orderby = 'qameta.last_updated DESC ';
 	}
 
-	$post_status = [ 'publish' ];
+	$post_status = array( 'publish' );
 
 	// Check if user can read private post.
 	if ( ap_user_can_view_private_post() ) {
@@ -404,9 +447,9 @@ function ap_get_answer_position_paged( $question_id = false, $answer_id = false 
 
 	$status = "p.post_status IN ('" . implode( "','", $post_status ) . "')";
 
-	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // db call okay, unprepared sql okay.
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->ap_qameta qameta ON qameta.post_id = p.ID  WHERE p.post_type = 'answer' AND p.post_parent = %d AND ( $status OR ( p.post_author = %d AND p.post_status IN ('publish', 'private_post', 'trash', 'moderate') ) ) ORDER BY $orderby", $question_id, $user_id ) ); // phpcs:ignore WordPress.DB
 
-	$pos   = (int) array_search( $answer_id, $ids ) + 1; // lose comparison ok.
+	$pos   = (int) array_search( $answer_id, $ids ) + 1; // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 	$paged = ceil( $pos / ap_opt( 'answers_per_page' ) );
 
 	return $paged;

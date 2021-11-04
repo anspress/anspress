@@ -8,6 +8,10 @@
  * @package  AnsPress
  **/
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * All flag methods.
  */
@@ -32,7 +36,7 @@ class AnsPress_Flag {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ],
+					'snackbar' => array( 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ),
 				)
 			);
 		}
@@ -43,11 +47,11 @@ class AnsPress_Flag {
 		ap_ajax_json(
 			array(
 				'success'  => true,
-				'action'   => [
+				'action'   => array(
 					'count'  => $count,
 					'active' => true,
-				],
-				'snackbar' => [ 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ],
+				),
+				'snackbar' => array( 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ),
 			)
 		);
 	}
@@ -62,7 +66,6 @@ class AnsPress_Flag {
  * @return integer|boolean
  */
 function ap_add_flag( $post_id, $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -81,10 +84,10 @@ function ap_add_flag( $post_id, $user_id = false ) {
  */
 function ap_count_post_flags( $post_id ) {
 	$rows = ap_count_votes(
-		[
+		array(
 			'vote_post_id' => $post_id,
 			'vote_type'    => 'flag',
-		]
+		)
 	);
 
 	if ( false !== $rows ) {
@@ -118,7 +121,6 @@ function ap_is_user_flagged( $post = null ) {
  * @since 0.9
  */
 function ap_flag_btn_args( $post = null ) {
-
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
@@ -128,18 +130,20 @@ function ap_flag_btn_args( $post = null ) {
 
 	$title = ( ! $flagged ) ? ( __( 'Flag this post', 'anspress-question-answer' ) ) : ( __( 'You have flagged this post', 'anspress-question-answer' ) );
 
-	return $actions['close'] = array(
+	$actions['close'] = array(
 		'cb'     => 'flag',
 		'icon'   => 'apicon-check',
-		'query'  => [
+		'query'  => array(
 			'__nonce' => wp_create_nonce( 'flag_' . $_post->ID ),
 			'post_id' => $_post->ID,
-		],
+		),
 		'label'  => __( 'Flag', 'anspress-question-answer' ),
 		'title'  => $title,
 		'count'  => $_post->flags,
 		'active' => $flagged,
 	);
+
+	return $actions['close'];
 }
 
 /**
@@ -158,7 +162,7 @@ function ap_delete_flags( $post_id ) {
  * @since 4.0.0
  */
 function ap_update_total_flags_count() {
-	$opt                      = get_option( 'anspress_global', [] );
+	$opt                      = get_option( 'anspress_global', array() );
 	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
 	$opt['flagged_answers']   = ap_total_posts_count( 'answer', 'flag' );
 

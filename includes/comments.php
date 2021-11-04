@@ -10,6 +10,10 @@
  * @subpackage   Comments Hooks
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Comments class
  */
@@ -109,7 +113,7 @@ class AnsPress_Comment_Hooks {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => [ 'message' => __( 'Sorry, unable to approve comment', 'anspress-question-answer' ) ],
+					'snackbar' => array( 'message' => __( 'Sorry, unable to approve comment', 'anspress-question-answer' ) ),
 				)
 			);
 		}
@@ -128,6 +132,7 @@ class AnsPress_Comment_Hooks {
 					'post_ID'       => $_comment->comment_post_ID,
 					'commentsCount' => array(
 						'text'       => sprintf(
+							// translators: %d is comments count.
 							_n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ),
 							$count['all']
 						),
@@ -150,7 +155,7 @@ class AnsPress_Comment_Hooks {
 	public static function comment_link( $link, $comment, $args ) {
 		$_post = ap_get_post( $comment->comment_post_ID );
 
-		if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+		if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
 			return $link;
 		}
 
@@ -169,7 +174,7 @@ class AnsPress_Comment_Hooks {
 		if ( ! empty( $commentdata['comment_post_ID'] ) ) {
 			$post_type = get_post_type( $commentdata['comment_post_ID'] );
 
-			if ( in_array( $post_type, [ 'question', 'answer' ], true ) ) {
+			if ( in_array( $post_type, array( 'question', 'answer' ), true ) ) {
 				$commentdata['comment_type'] = 'anspress';
 			}
 		}
@@ -205,7 +210,6 @@ class AnsPress_Comment_Hooks {
  * @since   4.1.2 Hide comments button if comments are already showing.
  */
 function ap_comment_btn_html( $_post = null ) {
-
 	if ( ! ap_user_can_read_comments( $_post ) ) {
 		return;
 	}
@@ -222,10 +226,10 @@ function ap_comment_btn_html( $_post = null ) {
 
 	$comment_count = get_comments_number( $_post->ID );
 	$args          = wp_json_encode(
-		[
+		array(
 			'post_id' => $_post->ID,
 			'__nonce' => wp_create_nonce( 'comment_form_nonce' ),
-		]
+		)
 	);
 
 	$unapproved = '';
@@ -249,7 +253,7 @@ function ap_comment_btn_html( $_post = null ) {
  */
 function ap_comment_actions( $comment ) {
 	$comment = get_comment( $comment );
-	$actions = [];
+	$actions = array();
 
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
 		$actions[] = array(
@@ -299,14 +303,14 @@ function ap_comment_actions( $comment ) {
 /**
  * Check if comment delete is locked.
  *
- * @param  integer $comment_ID     Comment ID.
+ * @param  integer $comment_id     Comment ID.
  * @return bool
  * @since  3.0.0
  */
-function ap_comment_delete_locked( $comment_ID ) {
-	$comment       = get_comment( $comment_ID );
+function ap_comment_delete_locked( $comment_id ) {
+	$comment       = get_comment( $comment_id );
 	$commment_time = mysql2date( 'U', $comment->comment_date_gmt ) + (int) ap_opt( 'disable_delete_after' );
-	return current_time( 'timestamp', true ) > $commment_time;
+	return time() > $commment_time;
 }
 
 /**
@@ -322,7 +326,7 @@ function ap_comment_delete_locked( $comment_ID ) {
  * @since 4.1.1 Check if valid post and post type before loading comments.
  * @since 4.1.2 Introduced new argument `$single`.
  */
-function ap_the_comments( $_post = null, $args = [], $single = false ) {
+function ap_the_comments( $_post = null, $args = array(), $single = false ) {
 	// If comment number is 0 then dont show on single question.
 	if ( $single && ap_opt( 'comment_number' ) < 1 ) {
 		return;
@@ -333,13 +337,13 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 	$_post = ap_get_post( $_post );
 
 	// Check if valid post.
-	if ( ! $_post || ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
-		echo '<div class="ap-comment-no-perm">' . __( 'Not a valid post ID.', 'anspress-question-answer' ) . '</div>';
+	if ( ! $_post || ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
+		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'Not a valid post ID.', 'anspress-question-answer' ) . '</div>';
 		return;
 	}
 
 	if ( ! ap_user_can_read_comments( $_post ) ) {
-		echo '<div class="ap-comment-no-perm">' . __( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
+		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
 
 		return;
 	}
@@ -352,9 +356,9 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 		return;
 	}
 
-	if ( 0 == get_comments_number( $_post->ID ) ) {
+	if ( 0 == get_comments_number( $_post->ID ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		if ( ! $single ) {
-			echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
+			echo '<div class="ap-comment-no-perm">' . esc_attr__( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		}
 		return;
 	}
@@ -367,14 +371,13 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 		'order'         => 'ASC',
 		'status'        => 'approve',
 		'number'        => $single ? ap_opt( 'comment_number' ) : 99,
-		// 'type'      => 'anspress',
 		'show_more'     => true,
 		'no_found_rows' => false,
 	);
 
 	// Always include current user comments.
 	if ( ! empty( $user_id ) && $user_id > 0 ) {
-		$default['include_unapproved'] = [ $user_id ];
+		$default['include_unapproved'] = array( $user_id );
 	}
 
 	if ( ap_user_can_approve_comment() ) {
@@ -387,19 +390,21 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
 	}
 
 	$query = new WP_Comment_Query( $args );
-	if ( 0 == $query->found_comments && ! $single ) {
-		echo '<div class="ap-comment-no-perm">' . __( 'No comments found.', 'anspress-question-answer' ) . '</div>';
+	if ( 0 == $query->found_comments && ! $single ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		return;
 	}
 
 	foreach ( $query->comments as $c ) {
-		$comment = $c;
+		$comment = $c; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		ap_get_template_part( 'comment' );
 	}
 
 	echo '<div class="ap-comments-footer">';
 	if ( $query->max_num_pages > 1 && $single ) {
-		echo '<a class="ap-view-comments" href="#/comments/' . $_post->ID . '/all">' . sprintf( __( 'Show %s more comments', 'anspress-question-answer' ), $query->found_comments - ap_opt( 'comment_number' ) ) . '</a>';
+		echo '<a class="ap-view-comments" href="#/comments/' . (int) $_post->ID . '/all">' .
+		// translators: %s is total comments found.
+		esc_attr( sprintf( __( 'Show %s more comments', 'anspress-question-answer' ), $query->found_comments - ap_opt( 'comment_number' ) ) ) . '</a>';
 	}
 
 	echo '</div>';
@@ -414,11 +419,11 @@ function ap_the_comments( $_post = null, $args = [], $single = false ) {
  */
 function ap_post_comments() {
 	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '" class="have-comments">';
-	ap_the_comments( null, [], true );
+	ap_the_comments( null, array(), true );
 	echo '</apcomments>';
 
 	// New comment button.
-	echo ap_comment_btn_html( get_the_ID() );
+	echo ap_comment_btn_html( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -433,11 +438,13 @@ function ap_new_comment_btn( $post_id, $echo = true ) {
 	if ( ap_user_can_comment( $post_id ) ) {
 		$output = '';
 
-		$btn_args = wp_json_encode( array(
-			'action'  => 'comment_modal',
-			'post_id' => $post_id,
-			'__nonce' => wp_create_nonce( 'new_comment_' . $post_id ),
-		) );
+		$btn_args = wp_json_encode(
+			array(
+				'action'  => 'comment_modal',
+				'post_id' => $post_id,
+				'__nonce' => wp_create_nonce( 'new_comment_' . $post_id ),
+			)
+		);
 
 		$output .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
@@ -445,9 +452,8 @@ function ap_new_comment_btn( $post_id, $echo = true ) {
 
 		if ( false === $echo ) {
 			return $output;
-
 		}
 
-		echo $output;
+		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

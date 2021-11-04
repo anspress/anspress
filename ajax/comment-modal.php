@@ -24,8 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Comment_Modal extends \AnsPress\Classes\Ajax {
 	/**
 	 * Instance of this class.
+	 *
+	 * @var null|Comment_Modal
 	 */
-	static $instance;
+	protected static $instance;
 
 	/**
 	 * The class constructor.
@@ -81,11 +83,14 @@ class Comment_Modal extends \AnsPress\Classes\Ajax {
 
 		$title = $this->req( 'comment_id' ) ? __( 'Edit comment', 'anspress-question-answer' ) : __( 'Add a comment', 'anspress-question-answer' );
 
-		$this->add_res( 'modal', array(
-			'name'    => 'comment',
-			'title'   => $title,
-			'content' => $html,
-		) );
+		$this->add_res(
+			'modal',
+			array(
+				'name'    => 'comment',
+				'title'   => $title,
+				'content' => $html,
+			)
+		);
 	}
 
 	/**

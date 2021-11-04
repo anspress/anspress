@@ -24,7 +24,7 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $current = -1;
+	public $current = -1;
 
 	/**
 	 * The number of rows returned by the paged query.
@@ -32,7 +32,7 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $count;
+	public $count;
 
 	/**
 	 * Array of items located by the query.
@@ -40,7 +40,7 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var array
 	 */
-	var $objects;
+	public $objects;
 
 	/**
 	 * The object currently being iterated on.
@@ -48,7 +48,7 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var object
 	 */
-	var $object;
+	public $object;
 
 	/**
 	 * A flag for whether the loop is currently being iterated.
@@ -56,7 +56,7 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var bool
 	 */
-	var $in_the_loop;
+	public $in_the_loop;
 
 	/**
 	 * The total number of rows matching the query parameters.
@@ -64,7 +64,7 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $total_count;
+	public $total_count;
 
 	/**
 	 * Items to show per page
@@ -72,67 +72,75 @@ abstract class AnsPress_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $per_page = 20;
+	public $per_page = 20;
 
 	/**
 	 * Total numbers of pages based on query.
 	 *
 	 * @var int
 	 */
-	var $total_pages = 1;
+	public $total_pages = 1;
 
 	/**
 	 * Current page.
 	 *
 	 * @var int
 	 */
-	var $paged = 1;
+	public $paged = 1;
 
 	/**
 	 * Database query offset.
 	 *
 	 * @var int
 	 */
-	var $offset;
+	public $offset;
 
 	/**
 	 * Arguments.
 	 *
 	 * @var array
 	 */
-	var $args;
+	public $args;
 
 	/**
 	 * Ids to be prefetched.
 	 *
 	 * @var array
 	 */
-	var $ids = [
-		'post'     => [],
-		'comment'  => [],
-		'question' => [],
-		'answer'   => [],
-		'user'     => [],
-	];
-	var $pos = [
-		'post'     => [],
-		'comment'  => [],
-		'question' => [],
-		'answer'   => [],
-		'user'     => [],
-	];
+	public $ids = array(
+		'post'     => array(),
+		'comment'  => array(),
+		'question' => array(),
+		'answer'   => array(),
+		'user'     => array(),
+	);
+
+	/**
+	 * This needs documentation.
+	 *
+	 * @todo Require doc.
+	 * @var array
+	 */
+	public $pos = array(
+		'post'     => array(),
+		'comment'  => array(),
+		'question' => array(),
+		'answer'   => array(),
+		'user'     => array(),
+	);
 
 	/**
 	 * Initialize the class.
 	 *
 	 * @param array $args Arguments.
 	 */
-	public function __construct( $args = [] ) {
+	public function __construct( $args = array() ) {
 		$this->paged  = isset( $args['paged'] ) ? (int) $args['paged'] : 1;
 		$this->offset = $this->per_page * ( $this->paged - 1 );
 
 		$this->args = wp_parse_args(
-			$args, array(
+			$args,
+			array(
 				'user_id' => get_current_user_id(),
 				'number'  => $this->per_page,
 				'offset'  => $this->offset,
@@ -151,7 +159,7 @@ abstract class AnsPress_Query {
 	 */
 	public function total_count( $key ) {
 		global $wpdb;
-		$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // WPCS: db call
+		$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // phpcs:ignore WordPress.DB
 	}
 
 	/**
@@ -244,7 +252,7 @@ abstract class AnsPress_Query {
 		}
 
 		if ( ! isset( $this->ids[ $type ] ) ) {
-			$this->ids[ $type ] = [];
+			$this->ids[ $type ] = array();
 		}
 
 		if ( ! in_array( $id, $this->ids[ $type ], true ) ) {
@@ -265,7 +273,7 @@ abstract class AnsPress_Query {
 	 */
 	public function add_pos( $type, $ref_id, $key ) {
 		if ( ! isset( $this->pos[ $type ] ) ) {
-			$this->pos[ $type ] = [];
+			$this->pos[ $type ] = array();
 		}
 
 		if ( ! isset( $this->pos[ $type ][ $ref_id ] ) ) {
@@ -276,7 +284,7 @@ abstract class AnsPress_Query {
 		$prev_val = $this->pos[ $type ][ $ref_id ];
 
 		if ( ! is_array( $prev_val ) ) {
-			$this->pos[ $type ][ $ref_id ] = [ $prev_val, $key ];
+			$this->pos[ $type ][ $ref_id ] = array( $prev_val, $key );
 			return;
 		}
 
@@ -293,7 +301,9 @@ abstract class AnsPress_Query {
 	 * @param mixed   $data Reference data.
 	 */
 	public function append_ref_data( $type, $ref_id, $data ) {
-		if ( isset( $this->pos[ $type ] ) && ( 0 == $this->pos[ $type ][ $ref_id ] || ! empty( $this->pos[ $type ][ $ref_id ] ) ) ) {
+		if ( isset( $this->pos[ $type ] ) &&
+			( 0 == $this->pos[ $type ][ $ref_id ] || ! empty( $this->pos[ $type ][ $ref_id ] ) ) // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			) {
 			$pos = $this->pos[ $type ][ $ref_id ];
 			if ( is_array( $pos ) ) {
 				foreach ( (array) $pos as $key ) {

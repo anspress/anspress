@@ -24,6 +24,7 @@ require_once 'license.php';
  * @package AnsPress
  * @author  Rahul Aryan <rah12@live.com>
  * @since   4.2.0 Fixed: CS bugs.
+ * @since   4.2.0 Removed unused property `$option_name`.
  */
 class AnsPress_Admin {
 
@@ -40,14 +41,6 @@ class AnsPress_Admin {
 	 * @var      string
 	 */
 	protected $plugin_screen_hook_suffix = null;
-
-	/**
-	 * AnsPress option key.
-	 *
-	 * @var string
-	 */
-	protected $option_name = 'anspress_opt';
-
 
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a

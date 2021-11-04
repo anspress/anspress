@@ -24,8 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Repeatable_Field extends \AnsPress\Classes\Ajax {
 	/**
 	 * Instance of this class.
+	 *
+	 * @var null|Repeatable_Field
 	 */
-	static $instance;
+	protected static $instance;
 
 	/**
 	 * The class constructor.
@@ -79,6 +81,5 @@ class Repeatable_Field extends \AnsPress\Classes\Ajax {
 				$this->add_res( 'nonce', wp_create_nonce( $field_name . ( $current_groups + 1 ) ) );
 			}
 		}
-
 	}
 }
