@@ -11,6 +11,9 @@
  * @global object $activities Activity query.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <div class="ap-activities">
 	<?php if ( $activities->have() ) : ?>
@@ -33,12 +36,12 @@
 		<?php
 		// Wether to show load more button or not.
 		if ( ! $activities->have_pages() ) :
-		?>
+			?>
 			<div class="ap-activity-end ap-activity-item">
 				<div class="ap-activity-icon">
 					<i class="apicon-check"></i>
 				</div>
-				<p><?php _e( 'That\'s all!', 'anspress-question-answer' ); ?></p>
+				<p><?php esc_attr_e( 'That&sbquo;s all!', 'anspress-question-answer' ); ?></p>
 			</div>
 		<?php else : ?>
 			<div class="ap-activity-more ap-activity-item">
@@ -51,7 +54,7 @@
 			</div>
 		<?php endif; ?>
 
-	<?php
+		<?php
 	else :
 		// When no activities found.
 		?>

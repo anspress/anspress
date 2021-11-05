@@ -9,6 +9,10 @@
  * @copyright 2014 Rahul Aryan
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * AnsPress vote related class.
  */
@@ -37,12 +41,12 @@ class AnsPress_Vote {
 		// Check if WP_Error object and send error message code.
 		if ( is_wp_error( $thing ) ) {
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
-					'snackbar' => [
+					'snackbar' => array(
 						'message' => $thing->get_error_message(),
-					],
-				]
+					),
+				)
 			);
 		}
 
@@ -58,37 +62,37 @@ class AnsPress_Vote {
 		if ( false !== $is_voted ) {
 
 			// If user already voted and click that again then reverse.
-			if ( $is_voted->vote_value == $value ) { // loose comparison okay.
+			if ( $is_voted->vote_value == $value ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 				$counts = ap_delete_post_vote( $post_id, $userid, 'vote_up' === $type );
 				ap_ajax_json(
 					array(
 						'success'   => true,
 						'action'    => 'undo',
 						'vote_type' => $type,
-						'snackbar'  => [
+						'snackbar'  => array(
 							'message' => __( 'Your vote has been removed.', 'anspress-question-answer' ),
-						],
-						'voteData'  => [
+						),
+						'voteData'  => array(
 							'net'    => $counts['votes_net'],
 							'active' => '',
 							'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
-						],
+						),
 					)
 				);
 			}
 
 			// Else ask user to undor their vote first.
 			ap_ajax_json(
-				[
+				array(
 					'success'  => false,
-					'snackbar' => [
+					'snackbar' => array(
 						'message' => __( 'Undo your vote first.', 'anspress-question-answer' ),
-					],
-					'voteData' => [
+					),
+					'voteData' => array(
 						'active' => $type,
 						'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
-					],
-				]
+					),
+				)
 			);
 		}
 
@@ -99,14 +103,14 @@ class AnsPress_Vote {
 				'success'   => true,
 				'action'    => 'voted',
 				'vote_type' => $type,
-				'snackbar'  => [
+				'snackbar'  => array(
 					'message' => __( 'Thank you for voting.', 'anspress-question-answer' ),
-				],
-				'voteData'  => [
+				),
+				'voteData'  => array(
 					'net'    => $counts['votes_net'],
 					'active' => $type,
 					'nonce'  => wp_create_nonce( 'vote_' . $post_id ),
-				],
+				),
 			)
 		);
 	}
@@ -118,7 +122,7 @@ class AnsPress_Vote {
 	 * @since 4.0.0
 	 */
 	public static function delete_votes( $post_id ) {
-		$votes = ap_get_votes( [ 'vote_post_id' => $post_id ] );
+		$votes = ap_get_votes( array( 'vote_post_id' => $post_id ) );
 
 		foreach ( (array) $votes as $vote ) {
 			ap_delete_post_vote( $vote->vote_post_id, $vote->vote_user_id );
@@ -129,6 +133,7 @@ class AnsPress_Vote {
 	 * Update votes count when multiple votes get deleted.
 	 *
 	 * @param integer $post_id Post ID.
+	 * @param string  $type    Vote type.
 	 * @since 4.0.0
 	 */
 	public static function ap_deleted_votes( $post_id, $type ) {
@@ -137,7 +142,6 @@ class AnsPress_Vote {
 		} elseif ( 'flag' === $type ) {
 			ap_update_flags_count( $post_id );
 		}
-
 	}
 }
 
@@ -154,7 +158,6 @@ class AnsPress_Vote {
  * @since  4.0.0
  */
 function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $value = '', $date = false ) {
-
 	if ( false === $date ) {
 		$date = current_time( 'mysql' );
 	}
@@ -173,7 +176,7 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
 		'vote_date'     => $date,
 	);
 
-	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, [ '%d', '%d', '%d', '%s', '%s', '%s' ] );
+	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, array( '%d', '%d', '%d', '%s', '%s', '%s' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
 	if ( false !== $inserted ) {
 		/**
@@ -183,6 +186,7 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
 		 * @since  4.0.0
 		 */
 		do_action( 'ap_insert_vote', $args );
+
 		return true;
 	}
 
@@ -197,9 +201,8 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
  * @since  4.0.0
  */
 function ap_get_votes( $args = array() ) {
-
 	if ( ! is_array( $args ) ) {
-		$args = [ 'vote_post_id' => $args ];
+		$args = array( 'vote_post_id' => $args );
 	}
 
 	global $wpdb;
@@ -241,7 +244,7 @@ function ap_get_votes( $args = array() ) {
 		}
 	}
 
-	$results = $wpdb->get_results( $where ); // db call okay, unprepared sql okay.
+	$results = $wpdb->get_results( $where ); // phpcs:ignore WordPress.DB
 
 	return $results;
 }
@@ -249,18 +252,19 @@ function ap_get_votes( $args = array() ) {
 /**
  * Get votes count.
  *
- * @param  array $args Arguments.
- *                     {
- *                      'vote_post_id' => 1,
- *                      'vote_type' => 'vote', String or Array
- *                      'vote_user_id' => 1,
- *                      'vote_date' => 'date' // Array or string
- *                     }
+ * @param  array $args {
+ *              Arguments.
+ *
+ *              @type int $vote_post_id Post id.
+ *              @type string|array $vote_type Vote type.
+ *              @type int $vote_user_id User id,
+ *              @type string $vote_date Vote date.
+ *        }
  * @return array|boolean
  */
 function ap_count_votes( $args ) {
 	global $wpdb;
-	$args  = wp_parse_args( $args, [ 'group' => false ] );
+	$args  = wp_parse_args( $args, array( 'group' => false ) );
 	$where = 'SELECT count(*) as count';
 
 	if ( $args['group'] ) {
@@ -274,7 +278,6 @@ function ap_count_votes( $args ) {
 	}
 
 	if ( isset( $args['vote_type'] ) ) {
-
 		if ( is_array( $args['vote_type'] ) ) {
 			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
 		} else {
@@ -284,7 +287,6 @@ function ap_count_votes( $args ) {
 
 	// Vote user id.
 	if ( isset( $args['vote_user_id'] ) ) {
-
 		if ( is_array( $args['vote_user_id'] ) ) {
 			$where .= ' AND vote_user_id IN (' . sanitize_comma_delimited( $args['vote_user_id'] ) . ')';
 		} else {
@@ -314,7 +316,7 @@ function ap_count_votes( $args ) {
 		$where .= ' GROUP BY ' . esc_sql( sanitize_text_field( $args['group'] ) );
 	}
 
-	$rows = $wpdb->get_results( $where ); // db call okay, unprepared SQL okay.
+	$rows = $wpdb->get_results( $where ); // phpcs:ignore WordPress.DB
 
 	if ( false !== $rows ) {
 		return $rows;
@@ -333,21 +335,21 @@ function ap_count_votes( $args ) {
  * @uses   ap_count_votes
  */
 function ap_count_post_votes_by( $by, $value ) {
-	$bys = [ 'post_id', 'user_id', 'actor_id' ];
+	$bys = array( 'post_id', 'user_id', 'actor_id' );
 
 	if ( ! in_array( $by, $bys, true ) ) {
 		return false;
 	}
 
-	$new_counts = [
+	$new_counts = array(
 		'votes_net'  => 0,
 		'votes_down' => 0,
 		'votes_up'   => 0,
-	];
-	$args       = [
+	);
+	$args       = array(
 		'vote_type' => 'vote',
 		'group'     => 'vote_value',
-	];
+	);
 
 	if ( 'post_id' === $by ) {
 		$args['vote_post_id'] = $value;
@@ -361,7 +363,7 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
-			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // loose comparison okay.
+			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$new_counts[ $type ] = (int) $row->count;
 		}
 		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
@@ -401,7 +403,7 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 		}
 	}
 
-	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // db call okay, unprepared SQL okay.
+	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // phpcs:ignore WordPress.DB
 
 	if ( ! empty( $vote ) ) {
 		return $vote;
@@ -421,7 +423,6 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
  * @uses   ap_get_vote
  */
 function ap_is_user_voted( $post_id, $type = 'vote', $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -450,11 +451,11 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
 		$user_id = get_current_user_id();
 	}
 
-	$where = [
+	$where = array(
 		'vote_post_id' => $post_id,
 		'vote_user_id' => $user_id,
 		'vote_type'    => $type,
-	];
+	);
 
 	if ( false !== $value ) {
 		$where['vote_value'] = $value;
@@ -475,12 +476,10 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
  * @param  integer         $post_id Post ID.
  * @param  boolean|integer $user_id ID of user casting vote.
  * @param  string          $up_vote Is up vote.
- * @param  integer|false   $actor Id of user receiving vote.
  * @return boolean
  * @since  4.0.0
  */
 function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -542,6 +541,7 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
 /**
  * Output or return voting button.
  *
+ * @todo Add output sanitization.
  * @param   int|object $post Post ID or object.
  * @param   bool       $echo Echo or return vote button.
  * @return  null|string
@@ -568,15 +568,15 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		$type = '';
 	}
 
-	$data = [
+	$data = array(
 		'post_id' => $post->ID,
 		'active'  => $type,
 		'net'     => ap_get_votes_net(),
 		'__nonce' => wp_create_nonce( 'vote_' . $post->ID ),
-	];
+	);
 
 	$html  = '';
-	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote=\'' . wp_json_encode( $data ) . '\'>';
+	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">';
 	$html .= '<a class="apicon-thumb-up ap-tip vote-up' . ( $voted ? ' voted' : '' ) . ( $vote && 'vote_down' === $type ? ' disable' : '' ) . '" href="#" title="' . ( $vote && 'vote_down' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : __( 'Up vote this post', 'anspress-question-answer' ) ) ) . '" ap="vote_up"></a>';
 	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>';
 
@@ -600,7 +600,7 @@ function ap_vote_btn( $post = null, $echo = true ) {
 		return $html;
 	}
 
-	echo $html; // xss okay.
+	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -611,13 +611,15 @@ function ap_vote_btn( $post = null, $echo = true ) {
  */
 function ap_user_votes_pre_fetch( $ids ) {
 	if ( $ids && is_user_logged_in() ) {
-		$votes = ap_get_votes( [
-			'vote_post_id' => (array) $ids,
-			'vote_user_id' => get_current_user_id(),
-			'vote_type'    => [ 'flag', 'vote' ],
-		] );
+		$votes = ap_get_votes(
+			array(
+				'vote_post_id' => (array) $ids,
+				'vote_user_id' => get_current_user_id(),
+				'vote_type'    => array( 'flag', 'vote' ),
+			)
+		);
 
-		$cache_keys = [];
+		$cache_keys = array();
 		foreach ( (array) $ids as $post_id ) {
 			$cache_keys[ $post_id . '_' . get_current_user_id() . '_flag' ] = true;
 			$cache_keys[ $post_id . '_' . get_current_user_id() . '_vote' ] = true;
@@ -638,10 +640,10 @@ function ap_user_votes_pre_fetch( $ids ) {
  */
 function ap_delete_votes( $post_id, $type = 'vote' ) {
 	global $wpdb;
-	$where = [
+	$where = array(
 		'vote_post_id' => $post_id,
 		'vote_type'    => $type,
-	];
+	);
 
 	$rows = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
 

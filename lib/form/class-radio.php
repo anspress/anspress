@@ -39,7 +39,8 @@ class Radio extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label' => __( 'AnsPress Radio Field', 'anspress-question-answer' ),
 			)
 		);
@@ -48,7 +49,7 @@ class Radio extends Field {
 		parent::prepare();
 
 		// Make sure checkbox value are sanitized.
-		$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
+		$this->sanitize_cb = array_merge( array( 'text_field' ), $this->sanitize_cb );
 	}
 
 	/**
@@ -71,7 +72,7 @@ class Radio extends Field {
 		}
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 
 }

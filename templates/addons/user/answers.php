@@ -10,6 +10,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $answers;
 ?>
 
@@ -26,13 +30,13 @@ global $answers;
 		<?php
 		if ( $answers->max_num_pages > 1 ) {
 			$args = wp_json_encode(
-				[
+				array(
 					'ap_ajax_action' => 'user_more_answers',
 					'__nonce'        => wp_create_nonce( 'loadmore-answers' ),
 					'type'           => 'answers',
 					'current'        => 1,
 					'user_id'        => get_queried_object_id(),
-				]
+				)
 			);
 
 			echo '<a href="#" class="ap-bp-loadmore ap-btn" ap-loadmore="' . esc_js( $args ) . '">' . esc_attr__( 'Load more answers', 'anspress-question-answer' ) . '</a>';
@@ -41,6 +45,6 @@ global $answers;
 
 		<?php
 		else :
-			_e( 'No answer posted by this user.', 'anspress-question-answer' );
+			esc_attr_e( 'No answer posted by this user.', 'anspress-question-answer' );
 		endif;
-	?>
+		?>

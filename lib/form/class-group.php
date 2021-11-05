@@ -36,9 +36,9 @@ class Group extends Field {
 	/**
 	 * The child fields.
 	 *
-	 * @var array
+	 * @var AnsPress\Form
 	 */
-	public $child = [];
+	public $child;
 
 	/**
 	 * Prepare field.
@@ -47,7 +47,8 @@ class Group extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label'         => __( 'AnsPress Group Field', 'anspress-question-answer' ),
 				'toggleable'    => false,
 				'delete_button' => false, // Used for repeatable fields.
@@ -67,7 +68,7 @@ class Group extends Field {
 	 * @return void
 	 */
 	protected function html_order() {
-		$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'desc', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$this->output_order = array( 'wrapper_start', 'label', 'field_wrap_start', 'desc', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' );
 	}
 
 	/**
@@ -110,7 +111,7 @@ class Group extends Field {
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 
 }

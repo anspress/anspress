@@ -1,3 +1,18 @@
+<?php
+/**
+ * Template used to display post item in notification.
+ *
+ * @link        http://anspress.net
+ * @since       4.0
+ * @package     AnsPress
+ * @subpackage  Templates
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+?>
 <div class="ap-noti-item clearfix">
 	<?php if ( 'vote_down' === $this->object->noti_verb ) : ?>
 		<div class="ap-noti-icon <?php $this->the_icon(); ?>"></div>

@@ -10,6 +10,10 @@
  * @since 4.1.13 Fixed pagination issue when in main user page.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $wp;
 
 ?>
@@ -29,8 +33,8 @@ global $wp;
 		ap_pagination( false, anspress()->questions->max_num_pages, '?paged=%#%', ap_user_link( ap_current_user_id(), 'questions' ) );
 	?>
 
-<?php
+	<?php
 	else :
 		ap_get_template_part( 'content-none' );
 	endif;
-?>
+	?>

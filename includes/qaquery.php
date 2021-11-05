@@ -647,14 +647,14 @@ function ap_have_attach( $_post = null ) {
  * Get attachment ids of a question or answer.
  *
  * @param  mixed $_post Post.
- * @return string|boolean
+ * @return array|boolean
  */
 function ap_get_attach( $_post = null ) {
 	$_post = ap_get_post( $_post );
 	if ( ! empty( $_post->attach ) ) {
 		return explode( ',', $_post->attach );
 	}
-	return false;
+	return array();
 }
 
 

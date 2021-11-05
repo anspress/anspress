@@ -39,6 +39,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 	 *
 	 * @param array $args     Widget arguments.
 	 * @param array $instance Widget instance.
+	 * @return void
 	 */
 	public function widget( $args, $instance ) {
 		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
@@ -66,7 +67,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		if ( is_question() ) {
 			echo '<ul class="ap-stats-widget">';
 
-			echo '<li><span class="stat-label apicon-pulse">' . esc_attr__( 'Active', 'anspress-question-answer' ) . '</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="' . esc_attr( mysql2date( 'c', $last_active ) ) . '">' . esc_html( $last_active ) . '</time></span></li>';
+			echo '<li><span class="stat-label apicon-pulse">' . esc_attr__( 'Active', 'anspress-question-answer' ) . '</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="' . esc_attr( (string) mysql2date( 'c', $last_active ) ) . '">' . esc_html( $last_active ) . '</time></span></li>';
 
 			$views_count = sprintf(
 				// translators: Placeholder contains view count.
@@ -100,7 +101,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 	 * Widget form.
 	 *
 	 * @param array $instance Instance of widget.
-	 * @return void
+	 * @return string
 	 */
 	public function form( $instance ) {
 		if ( isset( $instance['title'] ) ) {
@@ -114,6 +115,8 @@ class AnsPress_Stats_Widget extends WP_Widget {
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<?php
+
+		return 'noform';
 	}
 
 	/**
@@ -137,6 +140,8 @@ class AnsPress_Stats_Widget extends WP_Widget {
 
 /**
  * Callback function to register stats widget.
+ *
+ * @return void
  */
 function ap_stats_register_widgets() {
 	register_widget( 'AnsPress_Stats_Widget' );

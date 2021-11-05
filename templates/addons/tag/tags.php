@@ -1,15 +1,20 @@
 <?php
-	/**
-	 * Tags page layout
-	 *
-	 * @link http://anspress.net
-	 * @since 1.0
-	 *
-	 * @package AnsPress
-	 */
+/**
+ * Tags page layout
+ *
+ * @link http://anspress.net
+ * @since 1.0
+ *
+ * @package AnsPress
+ */
 
-	global $question_tags;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+global $question_tags;
 ?>
+
 <?php dynamic_sidebar( 'ap-top' ); ?>
 
 <div id="ap-tags" class="row">
@@ -19,7 +24,7 @@
 			<form id="ap-search-form" class="ap-search-form">
 				<button class="ap-btn ap-search-btn" type="submit"><?php esc_attr_e( 'Search', 'anspress-question-answer' ); ?></button>
 				<div class="ap-search-inner no-overflow">
-					<input name="ap_s" type="text" class="ap-search-input ap-form-input" placeholder="<?php esc_attr_e( 'Search tags', 'anspress-question-answer' ); ?>" value="<?php echo sanitize_text_field( get_query_var( 'ap_s' ) ); ?>" />
+					<input name="ap_s" type="text" class="ap-search-input ap-form-input" placeholder="<?php esc_attr_e( 'Search tags', 'anspress-question-answer' ); ?>" value="<?php echo esc_attr( get_query_var( 'ap_s' ) ); ?>" />
 				</div>
 			</form>
 
@@ -27,17 +32,20 @@
 		</div><!-- close .ap-list-head.clearfix -->
 
 		<ul class="ap-term-tag-box clearfix">
-			<?php foreach ( $question_tags as $key => $tag ) : ?>
+			<?php foreach ( $question_tags as $key => $question_tag ) : ?>
 				<li class="clearfix">
 					<div class="ap-tags-item">
-						<a class="ap-term-title" href="<?php echo get_tag_link( $tag ); ?>">
-							<?php echo esc_html( $tag->name ); ?>
+						<a class="ap-term-title" href="<?php echo esc_url( get_tag_link( $question_tag ) ); ?>">
+							<?php echo esc_html( $question_tag->name ); ?>
 						</a>
 						<span class="ap-tagq-count">
 							<?php
-								printf(
-									_n( '%d Question', '%d Questions', $tag->count, 'anspress-question-answer' ),
-									$tag->count
+								echo esc_attr(
+									sprintf(
+										// translators: %d is question count.
+										_n( '%d Question', '%d Questions', $question_tag->count, 'anspress-question-answer' ),
+										$question_tag->count
+									)
 								);
 							?>
 						</span>

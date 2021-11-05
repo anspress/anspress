@@ -14,6 +14,10 @@
  * @since      4.1.5 Fixed date grammar when post is not published.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div id="ap-single" class="ap-q clearfix">
 
@@ -28,7 +32,7 @@
 				do_action( 'ap_before_question_meta' );
 			?>
 			<div class="ap-question-meta clearfix">
-				<?php ap_question_metas(); // xss ok. ?>
+				<?php ap_question_metas(); ?>
 			</div>
 			<?php
 				/**
@@ -58,7 +62,7 @@
 						<div class="ap-cell-inner">
 							<div class="ap-q-metas">
 								<span class="ap-author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-									<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
+									<?php echo wp_kses_post( ap_user_display_name( array( 'html' => true ) ) ); ?>
 								</span>
 								<a href="<?php the_permalink(); ?>" class="ap-posted">
 									<?php
@@ -70,12 +74,15 @@
 										$time = ap_human_time( $time );
 									}
 
-									printf( '<time itemprop="datePublished" datetime="%1$s">%2$s</time>', ap_get_time( get_the_ID(), 'c' ), $time );
+									echo esc_attr( sprintf( '<time itemprop="datePublished" datetime="%1$s">%2$s</time>', ap_get_time( get_the_ID(), 'c' ), $time ) );
 									?>
 								</a>
 								<span class="ap-comments-count">
 									<?php $comment_count = get_comments_number(); ?>
-									<?php printf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ), '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ); ?>
+									<?php
+										// translators: %s comments count.
+										echo wp_kses_post( sprintf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ), '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ) );
+									?>
 								</span>
 							</div>
 

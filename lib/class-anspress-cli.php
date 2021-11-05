@@ -6,6 +6,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Implements custom wp-cli commands.
  */
@@ -40,6 +44,9 @@ class AnsPress_Cli extends WP_CLI_Command {
 	 *     wp anspress upgrade --yes
 	 *
 	 * @when after_wp_load
+	 *
+	 * @param array $args       Arguments.
+	 * @param mixed $assoc_args Options.
 	 */
 	public function upgrade( $args, $assoc_args ) {
 		print( "=== Starting upgrade process ===\n\r" );
@@ -65,6 +72,8 @@ class AnsPress_Cli extends WP_CLI_Command {
 	 *     wp anspress activate_addon free/avatar.php
 	 *
 	 * @when after_wp_load
+	 * @param array $args       Arguments.
+	 * @param mixed $assoc_args Options.
 	 */
 	public function activate_addon( $args, $assoc_args ) {
 		if ( empty( $args[0] ) ) {

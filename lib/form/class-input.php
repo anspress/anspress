@@ -49,7 +49,8 @@ class Input extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'subtype' => 'text',
 				'label'   => __( 'AnsPress Input Field', 'anspress-question-answer' ),
 			)
@@ -73,9 +74,9 @@ class Input extends Field {
 
 		// Make sure all text field are sanitized.
 		if ( in_array( $this->subtype, array_keys( $sanitize_subtype ), true ) ) {
-			$this->sanitize_cb = array_merge( [ $sanitize_subtype[ $this->subtype ] ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( array( $sanitize_subtype[ $this->subtype ] ), $this->sanitize_cb );
 		} else {
-			$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( array( 'text_field' ), $this->sanitize_cb );
 		}
 
 		$validate_subtype = array(
@@ -85,7 +86,7 @@ class Input extends Field {
 		);
 
 		if ( in_array( $this->subtype, array_keys( $validate_subtype ), true ) ) {
-			$this->validate_cb = array_merge( [ $validate_subtype[ $this->subtype ] ], $this->validate_cb );
+			$this->validate_cb = array_merge( array( $validate_subtype[ $this->subtype ] ), $this->validate_cb );
 		}
 	}
 
@@ -124,14 +125,14 @@ class Input extends Field {
 	 */
 	protected function html_order() {
 		if ( 'hidden' === $this->subtype ) {
-			$this->output_order = [ 'wrapper_start', 'errors', 'field_markup', 'wrapper_end' ];
+			$this->output_order = array( 'wrapper_start', 'errors', 'field_markup', 'wrapper_end' );
 		} else {
 			parent::html_order();
 		}
 
 		// Remove label output if custom HTML.
 		if ( $this->get( 'html' ) && empty( $this->args['label'] ) ) {
-			$this->output_order = array_diff( $this->output_order, [ 'label', 'field_wrap_start', 'field_wrap_end' ] );
+			$this->output_order = array_diff( $this->output_order, array( 'label', 'field_wrap_start', 'field_wrap_end' ) );
 		}
 	}
 
@@ -155,7 +156,7 @@ class Input extends Field {
 		 * @param object $field Field object passed by reference.
 		 * @since 4.1.0
 		 */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 
 }

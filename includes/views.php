@@ -14,7 +14,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-
 /**
  * Views hooks
  */
@@ -36,7 +35,6 @@ class AnsPress_Views {
 	 * @param  string $template Template name.
 	 */
 	public static function insert_views( $template ) {
-
 		if ( is_question() ) {
 			// By default do not store views in ap_views table.
 			if ( apply_filters( 'ap_insert_view_to_db', false ) ) {
@@ -58,7 +56,7 @@ class AnsPress_Views {
 		global $wpdb;
 
 		if ( apply_filters( 'ap_insert_view_to_db', false ) ) {
-			$wpdb->delete( $wpdb->ap_views, [ 'view_ref_id' => $post_id ], [ '%d' ] );
+			$wpdb->delete( $wpdb->ap_views, array( 'view_ref_id' => $post_id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		}
 	}
 }
@@ -66,13 +64,13 @@ class AnsPress_Views {
 /**
  * Insert view data in ap_meta table and update qameta.
  *
- * @param  integer|boolean $ref_id Reference ID.
- * @param  string          $type View type, default is question.
+ * @param  integer|boolean $ref_id  Reference ID.
+ * @param  string          $type    View type, default is question.
  * @param  integer|false   $user_id User ID.
+ * @param  string          $ip      IP address.
  * @return boolean|integer
  */
 function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = false ) {
-
 	global $wpdb;
 
 	if ( empty( $ref_id ) ) {
@@ -84,7 +82,7 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = f
 	}
 
 	if ( false === $ip || false === filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-		$ip = $_SERVER['REMOTE_ADDR']; // @codingStandardsIgnoreLine
+		$ip = ! empty( $_SERVER['REMOTE_ADDR'] ) ? filter_var( wp_unslash( $_SERVER['REMOTE_ADDR'] ), FILTER_VALIDATE_IP ) : '';
 	}
 
 	// Insert to DB only if not viewed before and not anonymous.
@@ -97,7 +95,7 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = f
 			'view_date'    => current_time( 'mysql' ),
 		);
 
-		$insert = $wpdb->insert( $wpdb->ap_views, $values, [ '%d', '%s', '%d', '%s', '%s' ] ); // db call okay.
+		$insert = $wpdb->insert( $wpdb->ap_views, $values, array( '%d', '%s', '%d', '%s', '%s' ) ); // db call okay.
 
 		if ( false !== $insert ) {
 
@@ -126,7 +124,6 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = f
  * @return boolean
  */
 function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
-
 	if ( empty( $ref_id ) ) {
 		return false;
 	}
@@ -135,13 +132,12 @@ function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
 	$ip_clue = '';
 
 	if ( false !== $ip ) {
-		$ip_clue = $wpdb->prepare( " AND view_ip = '%s'", $ip );
+		$ip_clue = $wpdb->prepare( ' AND view_ip = %s', $ip );
 	}
 
-	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_user_id = %d AND view_ref_id = %d AND view_type = '%s' {$ip_clue}", $user_id, $ref_id, $type ); // @codingStandardsIgnoreLine
+	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_user_id = %d AND view_ref_id = %d AND view_type = %s {$ip_clue}", $user_id, $ref_id, $type ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-
-	$count = $wpdb->get_var( $query ); // @codingStandardsIgnoreLine
+	$count = $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB
 
 	return $count > 0 ? true : false;
 }

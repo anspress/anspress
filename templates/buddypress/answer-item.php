@@ -10,6 +10,10 @@
  * @package  WordPress/AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 	return;
 }
@@ -31,17 +35,22 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 			</div>
 			<div class="ap-bpsingle-desc no-overflow">
 				<a href="<?php the_permalink(); ?>" class="ap-bpsingle-published">
-					<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>">
-						<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+					<time itemprop="datePublished" datetime="<?php echo esc_attr( ap_get_time( get_the_ID(), 'c' ) ); ?>">
+						<?php echo esc_attr( sprintf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ) ); ?>
 					</time>
 				</a>
-				<p><?php echo ap_truncate_chars( get_the_content(), 200 ); ?></p>
+				<p><?php echo esc_html( ap_truncate_chars( get_the_content(), 200 ) ); ?></p>
 				<a href="<?php the_permalink(); ?>" class="ap-view-question"><?php esc_html_e( 'View Question', 'anspress-question-answer' ); ?></a>
 			</div>
 		</div>
 
 		<div class="ap-bpsingle-meta">
-			<span class="apicon-thumb-up"><?php printf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ); ?></span>
+			<span class="apicon-thumb-up">
+				<?php
+					// translators: %d is net vote count.
+					echo esc_attr( sprintf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ) );
+				?>
+			</span>
 			<?php if ( ap_is_selected( get_the_ID() ) ) : ?>
 				<span class="ap-bpsingle-selected apicon-check" title="<?php esc_attr_e( 'This answer is selected as best', 'anspress-question-answer' ); ?>"><?php esc_attr_e( 'Selected', 'anspress-question-answer' ); ?></span>
 			<?php endif; ?>

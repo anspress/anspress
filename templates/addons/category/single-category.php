@@ -11,6 +11,10 @@
  * @since       4.1.1 Renamed file from category.php to single-category.php.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $icon = ap_get_category_icon( $question_category->term_id );
 ?>
 
@@ -34,16 +38,19 @@ $icon = ap_get_category_icon( $question_category->term_id );
 
 			<div class="no-overflow">
 				<div>
-					<a class="entry-title" href="<?php echo get_category_link( $question_category ); ?>">
+					<a class="entry-title" href="<?php echo esc_url( get_category_link( $question_category ) ); ?>">
 						<?php echo esc_html( $question_category->name ); ?>
 					</a>
 					<span class="ap-tax-count">
 						<?php
-							printf(
-								_n( '%d Question', '%d Questions', (int) $question_category->count, 'anspress-question-answer' ),
-								(int) $question_category->count
+							echo esc_attr(
+								sprintf(
+									// translators: %s is total question count of category.
+									_n( '%d Question', '%d Questions', (int) $question_category->count, 'anspress-question-answer' ),
+									(int) $question_category->count
+								)
 							);
-						?>
+							?>
 					</span>
 				</div>
 
@@ -59,7 +66,7 @@ $icon = ap_get_category_icon( $question_category->term_id );
 
 				if ( $sub_cat_count > 0 ) {
 					echo '<div class="ap-term-sub">';
-					echo '<div class="sub-taxo-label">' . $sub_cat_count . ' ' . __( 'Sub Categories', 'anspress-question-answer' ) . '</div>';
+					echo '<div class="sub-taxo-label">' . (int) $sub_cat_count . ' ' . esc_attr__( 'Sub Categories', 'anspress-question-answer' ) . '</div>';
 					ap_sub_category_list( $question_category->term_id );
 					echo '</div>';
 				}

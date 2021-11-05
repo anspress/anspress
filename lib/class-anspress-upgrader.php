@@ -12,8 +12,18 @@
  * @since 4.0.5
  */
 class AnsPress_Upgrader {
-
+	/**
+	 * Question ids.
+	 *
+	 * @var array
+	 */
 	private $question_ids;
+
+	/**
+	 * Answer ids.
+	 *
+	 * @var array
+	 */
 	private $answer_ids;
 
 	/**
@@ -31,7 +41,7 @@ class AnsPress_Upgrader {
 	public static function get_instance() {
 		static $instance = null;
 
-		if ( $instance === null ) {
+		if ( null === $instance ) {
 			$instance = new AnsPress_Upgrader();
 		}
 
@@ -58,8 +68,8 @@ class AnsPress_Upgrader {
 		$this->get_question_ids();
 
 		foreach ( (array) $this->question_ids as $id ) {
-			// Translators: Question ID in placeholder.
-			print( "\n\r" . sprintf( __( 'Migrating question: %d', 'anspress-question-answer' ), $id ) . "\n\r" );
+			// translators: %s is question ID.
+			echo esc_attr( "\n\r" . sprintf( __( 'Migrating question: %d', 'anspress-question-answer' ), $id ) . "\n\r" );
 			$this->question_tasks( $id );
 		}
 
@@ -84,7 +94,9 @@ class AnsPress_Upgrader {
 	public function check_old_meta_table_exists() {
 		global $wpdb;
 
-		if ( $wpdb->prefix . 'ap_meta' === $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}ap_meta'" ) ) {
+		$table_name = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}ap_meta'" ); // phpcs:ignore WordPress.DB
+
+		if ( $wpdb->prefix . 'ap_meta' === $table_name ) {
 			$this->meta_table_exists = true;
 		}
 	}
@@ -97,7 +109,7 @@ class AnsPress_Upgrader {
 	public function get_question_ids() {
 		global $wpdb;
 
-		$this->question_ids = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} q ON q.post_id = p.ID WHERE q.post_id IS NULL AND post_type = 'question' ORDER BY ID ASC" );
+		$this->question_ids = $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} p LEFT JOIN {$wpdb->ap_qameta} q ON q.post_id = p.ID WHERE q.post_id IS NULL AND post_type = 'question' ORDER BY ID ASC" ); // phpcs:ignore WordPress.DB
 	}
 
 	/**
@@ -115,7 +127,7 @@ class AnsPress_Upgrader {
 		$views       = get_post_meta( $id, '_views', true );
 
 		// Get all answers associated with current question.
-		$this->answer_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} p WHERE post_type = 'answer' AND post_parent = %d ORDER BY post_date ASC", $id ) );
+		$this->answer_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} p WHERE post_type = 'answer' AND post_parent = %d ORDER BY post_date ASC", $id ) ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $this->answer_ids as $answer_id ) {
 			$this->answer_tasks( $answer_id );
@@ -126,14 +138,15 @@ class AnsPress_Upgrader {
 		$featured_questions = (array) get_option( 'featured_questions' );
 
 		ap_insert_qameta(
-			$id, array(
+			$id,
+			array(
 				'answers'      => $answers_counts,
 				'views'        => (int) get_post_meta( $id, '_views', true ),
 				'subscribers'  => (int) get_post_meta( $id, '_ap_subscriber', true ),
 				'closed'       => ( 'closed' === $question->post_status ? 1 : 0 ),
 				'flags'        => (int) get_post_meta( $id, '_ap_flag', true ),
 				'selected_id'  => $answer_id,
-				'featured'     => in_array( $id, $featured_questions ),
+				'featured'     => in_array( $id, $featured_questions ), // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 				'last_updated' => empty( $last_active ) ? $question->post_date : $last_active,
 			)
 		);
@@ -172,7 +185,7 @@ class AnsPress_Upgrader {
 		$post_id   = (int) $post_id;
 		$old_votes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type IN ('vote_up', 'vote_down') AND apmeta_actionid = {$post_id}" ); // @codingStandardsIgnoreLine
 
-		$apmeta_to_delete = [];
+		$apmeta_to_delete = array();
 		foreach ( (array) $old_votes as $vote ) {
 			ap_add_post_vote( $post_id, $vote->apmeta_userid, 'vote_up' === $vote->apmeta_type, $vote->apmeta_value );
 			$apmeta_to_delete[] = $vote->apmeta_id;
@@ -198,8 +211,7 @@ class AnsPress_Upgrader {
 			return;
 		}
 
-		$old_views = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'post_view' AND apmeta_actionid = {$id}" ); // DB call okay, Db cache okay.
-
+		$old_views = $wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'post_view' AND apmeta_actionid = {$id}" ); // phpcs:ignore WordPress.DB
 	}
 
 	/**
@@ -239,7 +251,7 @@ class AnsPress_Upgrader {
 	}
 
 	/**
-	 * restore last activity of a post.
+	 * Restore last activity of a post.
 	 *
 	 * @param integer $post_id Post ID.
 	 * @return void
@@ -249,7 +261,7 @@ class AnsPress_Upgrader {
 
 		// Restore last activity.
 		if ( ! empty( $activity ) ) {
-			ap_insert_qameta( $post_id, [ 'activities' => $activity ] );
+			ap_insert_qameta( $post_id, array( 'activities' => $activity ) );
 		}
 
 		delete_post_meta( $post_id, '__ap_activity' );
@@ -260,19 +272,19 @@ class AnsPress_Upgrader {
 	 */
 	public function migrate_reputations() {
 		if ( ! $this->meta_table_exists ) {
-			print( __( 'Successfully migrated all reputations', 'anspress-question-answer' ) );
+			esc_attr_e( 'Successfully migrated all reputations', 'anspress-question-answer' );
 			return;
 		}
 
 		global $wpdb;
-		$old_reputations = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'reputation'" ); // DB call okay, Db cache okay.
+		$old_reputations = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}ap_meta WHERE apmeta_type = 'reputation'" ); // phpcs:ignore WordPress.DB
 
 		if ( empty( $old_reputations ) ) {
-			print( __( 'Successfully migrated all reputations', 'anspress-question-answer' ) );
+			esc_attr_e( 'Successfully migrated all reputations', 'anspress-question-answer' );
 			return;
 		}
 
-		$apmeta_to_delete = [];
+		$apmeta_to_delete = array();
 
 		foreach ( (array) $old_reputations as $rep ) {
 			$event = $this->replace_old_reputation_event( $rep->apmeta_param );
@@ -285,8 +297,8 @@ class AnsPress_Upgrader {
 
 		// Delete all migrated data.
 		$apmeta_to_delete = sanitize_comma_delimited( $apmeta_to_delete, 'int' );
-		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // DB call okay, Db cache okay.
-		print( esc_attr__( 'Migrated all reputations', 'anspress-question-answer' ) );
+		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_meta WHERE apmeta_id IN ({$apmeta_to_delete})" ); // phpcs:ignore WordPress.DB
+		esc_attr_e( 'Migrated all reputations', 'anspress-question-answer' );
 	}
 
 	/**
@@ -297,12 +309,12 @@ class AnsPress_Upgrader {
 	 */
 	public function replace_old_reputation_event( $old_event ) {
 		$events = array(
-			'ask'                => [ 'new_question', 'question' ],
-			'answer'             => [ 'new_answer', 'answer' ],
-			'received_vote_up'   => [ 'vote_up', 'question_upvote', 'answer_upvote' ],
-			'received_vote_down' => [ 'vote_down', 'question_downvote', 'answer_downvote' ],
-			'given_vote_up'      => [ 'voted_up', 'question_upvoted', 'answer_upvoted' ],
-			'given_vote_down'    => [ 'voted_down', 'question_downvoted', 'answer_downvoted' ],
+			'ask'                => array( 'new_question', 'question' ),
+			'answer'             => array( 'new_answer', 'answer' ),
+			'received_vote_up'   => array( 'vote_up', 'question_upvote', 'answer_upvote' ),
+			'received_vote_down' => array( 'vote_down', 'question_downvote', 'answer_downvote' ),
+			'given_vote_up'      => array( 'voted_up', 'question_upvoted', 'answer_upvoted' ),
+			'given_vote_down'    => array( 'voted_down', 'question_downvoted', 'answer_downvoted' ),
 			'selecting_answer'   => 'select_answer',
 			'select_answer'      => 'best_answer',
 			'comment'            => 'new_comment',

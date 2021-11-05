@@ -10,6 +10,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 
 <tr class="ap-reputation-item">

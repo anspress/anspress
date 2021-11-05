@@ -61,6 +61,7 @@ class AP_Search_Widget extends WP_Widget {
 	 * Widget form
 	 *
 	 * @param array $instance Widget instance.
+	 * @return string
 	 */
 	public function form( $instance ) {
 		$title = __( 'Search questions', 'anspress-question-answer' );
@@ -75,6 +76,7 @@ class AP_Search_Widget extends WP_Widget {
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<?php
+		return 'noform';
 	}
 
 	/**
@@ -98,6 +100,8 @@ class AP_Search_Widget extends WP_Widget {
 
 /**
  * Register (AnsPress) Search widget.
+ *
+ * @return void
  */
 function ap_search_register_widgets() {
 	register_widget( 'AP_Search_Widget' );

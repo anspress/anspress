@@ -12,6 +12,10 @@
  * @subpackage Templates
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $user_id     = ap_current_user_id();
 $current_tab = ap_sanitize_unslash( 'tab', 'r', 'questions' );
 ?>

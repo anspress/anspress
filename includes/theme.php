@@ -159,22 +159,24 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 
 	$base = str_replace( $big, '%#%', $page_num_link );
 
-	if ( '1' == $total ) { // WPCS: loose comparison ok.
+	if ( 1 === $total ) {
 		return;
 	}
 
 	echo '<div class="ap-pagination clearfix">';
-	$links = paginate_links( array( // WPCS: xss okay.
-		'base'     => $base,
-		'format'   => $format,
-		'current'  => $current,
-		'total'    => $total,
-		'end_size' => 2,
-		'mid_size' => 2,
-	) );
-	$links = str_replace('<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links);
-	$links = str_replace('<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links);
-	echo $links;
+	$links = paginate_links(
+		array(
+			'base'     => $base,
+			'format'   => $format,
+			'current'  => $current,
+			'total'    => $total,
+			'end_size' => 2,
+			'mid_size' => 2,
+		)
+	);
+	$links = str_replace( '<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links );
+	$links = str_replace( '<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links );
+	echo wp_kses_post( $links );
 	echo '</div>';
 }
 
@@ -185,7 +187,7 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
  * @param string   $page_title   Page title.
  * @param callable $func         Hook to run when shortcode is found.
  * @param bool     $show_in_menu User can add this pages to their WordPress menu from appearance->menu->AnsPress.
- * @param bool     $private Only show to currently logged in user?
+ * @param bool     $private Only show to currently logged in user.
  *
  * @since 2.0.1
  */
@@ -234,9 +236,9 @@ function ap_page( $current_page = '' ) {
 function ap_post_actions( $_post = null ) {
 	$_post = ap_get_post( $_post );
 
-	$actions = [];
+	$actions = array();
 
-	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
 		return $actions;
 	}
 
@@ -254,10 +256,10 @@ function ap_post_actions( $_post = null ) {
 		$actions[] = array(
 			'cb'    => 'close',
 			'icon'  => 'apicon-check',
-			'query' => [
+			'query' => array(
 				'nonce'   => $nonce,
 				'post_id' => $_post->ID,
-			],
+			),
 			'label' => $close_label,
 			'title' => $close_title,
 		);
@@ -288,7 +290,6 @@ function ap_post_actions( $_post = null ) {
 	}
 
 	if ( ap_user_can_delete_post( $_post->ID ) ) {
-
 		if ( 'trash' === $_post->post_status ) {
 			$label = __( 'Undelete', 'anspress-question-answer' );
 			$title = __( 'Restore this post', 'anspress-question-answer' );
@@ -299,10 +300,10 @@ function ap_post_actions( $_post = null ) {
 
 		$actions[] = array(
 			'cb'    => 'toggle_delete_post',
-			'query' => [
+			'query' => array(
 				'post_id' => $_post->ID,
 				'__nonce' => wp_create_nonce( 'trash_post_' . $_post->ID ),
-			],
+			),
 			'label' => $label,
 			'title' => $title,
 		);
@@ -312,10 +313,10 @@ function ap_post_actions( $_post = null ) {
 	if ( ap_user_can_permanent_delete( $_post->ID ) ) {
 		$actions[] = array(
 			'cb'    => 'delete_permanently',
-			'query' => [
+			'query' => array(
 				'post_id' => $_post->ID,
 				'__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ),
-			],
+			),
 			'label' => __( 'Delete Permanently', 'anspress-question-answer' ),
 			'title' => __( 'Delete post permanently (cannot be restored again)', 'anspress-question-answer' ),
 		);
@@ -323,13 +324,12 @@ function ap_post_actions( $_post = null ) {
 
 	// Convert question to a post.
 	if ( ( is_super_admin() || current_user_can( 'manage_options' ) ) && 'question' === $_post->post_type ) {
-
 		$actions[] = array(
 			'cb'    => 'convert_to_post',
-			'query' => [
+			'query' => array(
 				'post_id' => $_post->ID,
 				'__nonce' => wp_create_nonce( 'convert-post-' . $_post->ID ),
-			],
+			),
 			'label' => __( 'Convert to post', 'anspress-question-answer' ),
 			'title' => __( 'Convert this question to blog post', 'anspress-question-answer' ),
 		);
@@ -338,7 +338,7 @@ function ap_post_actions( $_post = null ) {
 	/**
 	 * For filtering post actions buttons
 	 *
-	 * @var     string
+	 * @var     array
 	 * @since   2.0
 	 */
 	$actions = apply_filters( 'ap_post_actions', array_filter( $actions ) );
@@ -355,10 +355,12 @@ function ap_post_actions_buttons() {
 		return;
 	}
 
-	$args = wp_json_encode( [
-		'post_id' => get_the_ID(),
-		'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
-	] );
+	$args = wp_json_encode(
+		array(
+			'post_id' => get_the_ID(),
+			'nonce'   => wp_create_nonce( 'post-actions-' . get_the_ID() ),
+		)
+	);
 
 	echo '<postActions class="ap-dropdown"><button class="ap-btn apicon-gear ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" apquery="' . esc_js( $args ) . '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>';
 }
@@ -392,33 +394,33 @@ function ap_get_questions_orderby( $current_url = '' ) {
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
-		$navs[] = [
+		$navs[] = array(
 			'key'   => 'order_by',
 			'value' => 'voted',
 			'label' => __( 'Votes', 'anspress-question-answer' ),
-		];
+		);
 	}
 
-	$navs[] = [
+	$navs[] = array(
 		'key'   => 'order_by',
 		'value' => 'answers',
 		'label' => __( 'Answers', 'anspress-question-answer' ),
-	];
-	$navs[] = [
+	);
+	$navs[] = array(
 		'key'   => 'order_by',
 		'value' => 'views',
 		'label' => __( 'Views', 'anspress-question-answer' ),
-	];
-	$navs[] = [
+	);
+	$navs[] = array(
 		'key'   => 'order_by',
 		'value' => 'unanswered',
 		'label' => __( 'Unanswered', 'anspress-question-answer' ),
-	];
-	$navs[] = [
+	);
+	$navs[] = array(
 		'key'   => 'order_by',
 		'value' => 'unsolved',
 		'label' => __( 'Unsolved', 'anspress-question-answer' ),
-	];
+	);
 
 	foreach ( (array) $navs as $k => $args ) {
 		$active = ap_get_current_list_filters( 'order_by' );
@@ -453,24 +455,24 @@ function ap_answers_tab( $base = false ) {
 
 	$navs = array(
 		'active' => array(
-			'link'  => add_query_arg( [ 'order_by' => 'active' ], $base ),
+			'link'  => add_query_arg( array( 'order_by' => 'active' ), $base ),
 			'title' => __( 'Active', 'anspress-question-answer' ),
 		),
 	);
 
 	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
 		$navs['voted'] = array(
-			'link'  => add_query_arg( [ 'order_by' => 'voted' ], $base ),
+			'link'  => add_query_arg( array( 'order_by' => 'voted' ), $base ),
 			'title' => __( 'Voted', 'anspress-question-answer' ),
 		);
 	}
 
 	$navs['newest'] = array(
-		'link'  => add_query_arg( [ 'order_by' => 'newest' ], $base ),
+		'link'  => add_query_arg( array( 'order_by' => 'newest' ), $base ),
 		'title' => __( 'Newest', 'anspress-question-answer' ),
 	);
 	$navs['oldest'] = array(
-		'link'  => add_query_arg( [ 'order_by' => 'oldest' ], $base ),
+		'link'  => add_query_arg( array( 'order_by' => 'oldest' ), $base ),
 		'title' => __( 'Oldest', 'anspress-question-answer' ),
 	);
 
@@ -487,9 +489,13 @@ function ap_answers_tab( $base = false ) {
  * @param false|integer $answer_id Answer id.
  * @return string
  * @since 2.0.1
+ * @deprecated 4.2.0
  */
 function ap_display_answer_metas( $answer_id = false ) {
+	_deprecated_function( __FUNCTION__, '4.2.0' );
+	return;
 
+	// @codingStandardsIgnoreStart
 	if ( false === $answer_id ) {
 		$answer_id = get_the_ID();
 	}
@@ -501,10 +507,11 @@ function ap_display_answer_metas( $answer_id = false ) {
 
 	$metas['history'] = ap_last_active_time( $answer_id );
 
-	/*
+	/**
 	 * Used to filter answer display meta.
 	 *
 	 * @since 2.0.1
+	 * @deprecated 4.2.0
 	 */
 	$metas = apply_filters( 'ap_display_answer_metas', $metas, $answer_id );
 
@@ -516,6 +523,7 @@ function ap_display_answer_metas( $answer_id = false ) {
 	}
 
 	return $output;
+	// @codingStandardsIgnoreEnd
 }
 
 /**
@@ -524,7 +532,7 @@ function ap_display_answer_metas( $answer_id = false ) {
  * @since 2.1
  */
 function ap_ask_btn() {
-	echo ap_get_ask_btn(); // WPCS: xss okay.
+	echo ap_get_ask_btn(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -543,18 +551,19 @@ function ap_get_ask_btn() {
 	 */
 	$link = apply_filters( 'ap_ask_btn_link', $link );
 
-	return '<a class="ap-btn-ask" href="' . $link . '">' . __( 'Ask question', 'anspress-question-answer' ) . '</a>';
+	return '<a class="ap-btn-ask" href="' . esc_url( $link ) . '">' . esc_attr__( 'Ask question', 'anspress-question-answer' ) . '</a>';
 }
 
 /**
  * Include template php files.
  *
- * @param string $file File name without extension.
+ * @param string      $file File name without extension.
+ * @param array|false $args Arguments to be passed.
  * @since 2.1
  */
 function ap_get_template_part( $file, $args = false ) {
 	if ( false !== $args ) {
-		extract( $args );
+		extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 	}
 
 	include ap_get_theme_location( $file . '.php' );
@@ -577,7 +586,7 @@ function ap_get_template_part( $file, $args = false ) {
 function ap_current_page( $looking_for = false ) {
 	$query_var  = get_query_var( 'ap_page', '' );
 	$main_pages = array_keys( ap_main_pages() );
-	$page_ids   = [];
+	$page_ids   = array();
 
 	foreach ( $main_pages as $page_slug ) {
 		$page_ids[ ap_opt( $page_slug ) ] = $page_slug;
@@ -589,7 +598,7 @@ function ap_current_page( $looking_for = false ) {
 		$query_var = 'edit';
 	} elseif ( in_array( $query_var . '_page', $main_pages, true ) ) {
 		$query_var = $query_var;
-	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) {
+	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
 	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
@@ -617,20 +626,20 @@ function ap_current_page( $looking_for = false ) {
  * @return array
  */
 function ap_assets() {
-	wp_register_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', [ 'jquery' ] );
+	wp_register_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
 
-	wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', [ 'jquery', 'jquery-form', 'underscore', 'backbone', 'selectize' ], AP_VERSION );
-	wp_register_script( 'anspress-question', ANSPRESS_URL . 'assets/js/question.js', [ 'anspress-common' ], AP_VERSION );
-	wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', [ 'anspress-common' ], AP_VERSION );
-	wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', [ 'anspress-common' ], AP_VERSION );
-	wp_register_script( 'anspress-notifications', ANSPRESS_URL . 'assets/js/notifications.js', [ 'anspress-common' ], AP_VERSION );
-	wp_register_script( 'anspress-theme', ap_get_theme_url( 'js/theme.js', false, false ), [ 'anspress-common', 'anspress-question', 'anspress-ask', 'anspress-list', 'anspress-notifications' ], AP_VERSION );
+	wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', array( 'jquery', 'jquery-form', 'underscore', 'backbone', 'selectize' ), AP_VERSION, true );
+	wp_register_script( 'anspress-question', ANSPRESS_URL . 'assets/js/question.js', array( 'anspress-common' ), AP_VERSION, true );
+	wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION, true );
+	wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION, true );
+	wp_register_script( 'anspress-notifications', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION, true );
+	wp_register_script( 'anspress-theme', ap_get_theme_url( 'js/theme.js', false, false ), array( 'anspress-common', 'anspress-question', 'anspress-ask', 'anspress-list', 'anspress-notifications' ), AP_VERSION, true );
 
-	wp_register_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css', false, false ), [], AP_VERSION );
-	wp_register_style( 'anspress-main', ap_get_theme_url( 'css/main.css', false, false ), [ 'anspress-fonts' ], AP_VERSION );
-	wp_register_style( 'anspress-rtl', ap_get_theme_url( 'css/rtl.css', false, false ), [ 'anspress-main' ], AP_VERSION );
+	wp_register_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css', false, false ), array(), AP_VERSION );
+	wp_register_style( 'anspress-main', ap_get_theme_url( 'css/main.css', false, false ), array( 'anspress-fonts' ), AP_VERSION );
+	wp_register_style( 'anspress-rtl', ap_get_theme_url( 'css/rtl.css', false, false ), array( 'anspress-main' ), AP_VERSION );
 
-	return [];
+	return array();
 }
 
 /**
@@ -652,8 +661,6 @@ function ap_enqueue_scripts() {
 
 /**
  * Get all list filters.
- *
- * @param string $current_url Current URL.
  */
 function ap_get_list_filters() {
 	$param    = array();
@@ -666,7 +673,7 @@ function ap_get_list_filters() {
 	$filters = array(
 		'order_by' => array(
 			'title'    => __( 'Order By', 'anspress-question-answer' ),
-			'items'    => [],
+			'items'    => array(),
 			'multiple' => false,
 		),
 	);
@@ -705,13 +712,13 @@ function ap_list_filters( $current_url = '' ) {
 		$active = apply_filters( 'ap_list_filter_active_' . $key, $active, $filter );
 
 		$args = wp_json_encode(
-			[
+			array(
 				'__nonce' => wp_create_nonce( 'filter_' . $key ),
 				'filter'  => $key,
-			]
+			)
 		);
 		echo '<div class="ap-dropdown ap-filter filter-' . esc_attr( $key ) . '">';
-		echo '<a class="ap-dropdown-toggle ap-filter-toggle" href="#" ap-filter apquery="' . esc_js( $args ) . '">' . esc_attr( $filter['title'] ) . $active . '</a>'; // xss okay.
+		echo '<a class="ap-dropdown-toggle ap-filter-toggle" href="#" ap-filter apquery="' . esc_js( $args ) . '">' . esc_attr( $filter['title'] ) . wp_kses_post( $active ) . '</a>';
 		echo '</div>';
 	}
 
@@ -736,7 +743,6 @@ function ap_list_filters( $current_url = '' ) {
  * @return string
  */
 function ap_select_answer_btn_html( $_post = null ) {
-
 	if ( ! ap_user_can_select_answer( $_post ) ) {
 		return;
 	}
@@ -744,10 +750,12 @@ function ap_select_answer_btn_html( $_post = null ) {
 	$_post = ap_get_post( $_post );
 	$nonce = wp_create_nonce( 'select-answer-' . $_post->ID );
 
-	$q = esc_js( wp_json_encode( [
-		'answer_id' => $_post->ID,
-		'__nonce'   => $nonce,
-	] ) );
+	$q = wp_json_encode(
+		array(
+			'answer_id' => $_post->ID,
+			'__nonce'   => $nonce,
+		)
+	);
 
 	$active = false;
 
@@ -768,7 +776,7 @@ function ap_select_answer_btn_html( $_post = null ) {
 		$hide = true;
 	}
 
-	return '<a href="#" class="ap-btn-select ap-btn ' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" apquery="' . $q . '" title="' . $title . '">' . $label . '</a>';
+	return '<a href="#" class="ap-btn-select ap-btn ' . ( $active ? ' active' : '' ) . ( $hide ? ' hide' : '' ) . '" ap="select_answer" apquery="' . esc_js( $q ) . '" title="' . esc_attr( $title ) . '">' . esc_html( $label ) . '</a>';
 }
 
 /**
@@ -780,7 +788,7 @@ function ap_select_answer_btn_html( $_post = null ) {
  */
 function ap_post_status_btn_args( $_post = null ) {
 	$_post = ap_get_post( $_post );
-	$args  = [];
+	$args  = array();
 
 	if ( 'trash' === $_post->post_status ) {
 		return $args;
@@ -788,8 +796,8 @@ function ap_post_status_btn_args( $_post = null ) {
 
 	if ( ap_user_can_change_status( $_post->ID ) ) {
 		global $wp_post_statuses;
-		$allowed_status = [ 'publish', 'private_post', 'moderate' ];
-		$status_labels  = [];
+		$allowed_status = array( 'publish', 'private_post', 'moderate' );
+		$status_labels  = array();
 
 		foreach ( (array) $allowed_status as $s ) {
 			if ( isset( $wp_post_statuses[ $s ] ) ) {
@@ -808,11 +816,11 @@ function ap_post_status_btn_args( $_post = null ) {
 				$args[] = array(
 					'cb'     => 'status',
 					'active' => ( $slug === $_post->post_status ),
-					'query'  => [
+					'query'  => array(
 						'status'  => $slug,
 						'__nonce' => wp_create_nonce( 'change-status-' . $slug . '-' . $_post->ID ),
 						'post_id' => $_post->ID,
-					],
+					),
 					'label'  => esc_attr( $label ),
 				);
 			}
@@ -831,7 +839,7 @@ function ap_post_status_btn_args( $_post = null ) {
  */
 function ap_featured_post_args( $post_id = false ) {
 	if ( ! is_user_logged_in() || ! ap_user_can_toggle_featured() ) {
-		return [];
+		return array();
 	}
 
 	if ( false === $post_id ) {
@@ -851,10 +859,10 @@ function ap_featured_post_args( $post_id = false ) {
 	return array(
 		'cb'     => 'toggle_featured',
 		'active' => $is_featured,
-		'query'  => [
+		'query'  => array(
 			'__nonce' => wp_create_nonce( 'set_featured_' . $post_id ),
 			'post_id' => $post_id,
-		],
+		),
 		'title'  => esc_attr( $title ),
 		'label'  => esc_attr( $label ),
 	);
@@ -872,10 +880,10 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 	$_post = ap_get_post( $_post );
 
 	$args        = wp_json_encode(
-		[
+		array(
 			'__nonce' => wp_create_nonce( 'subscribe_' . $_post->ID ),
 			'id'      => $_post->ID,
-		]
+		)
 	);
 	$subscribers = (int) ap_get_post_field( 'subscribers', $_post );
 	$subscribed  = ap_is_user_subscriber( 'question', $_post->ID );
@@ -887,7 +895,7 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 		return $html;
 	}
 
-	echo $html; // WPCS: xss okay.
+	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -898,7 +906,7 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
  * @since 4.1.0 Improved ask page object.
  */
 function ap_menu_obejct() {
-	$menu_items = [];
+	$menu_items = array();
 
 	foreach ( (array) anspress()->pages as $k => $args ) {
 		if ( $args['show_in_menu'] ) {
@@ -933,11 +941,11 @@ function ap_menu_obejct() {
 				'target'           => '',
 				'attr_title'       => '',
 				'description'      => '',
-				'classes'          => [ 'anspress-menu-' . $k ],
+				'classes'          => array( 'anspress-menu-' . $k ),
 				'xfn'              => '',
 			);
-		} // End if().
-	} // End foreach().
+		}
+	}
 
 	/**
 	 * Hook for filtering default AnsPress menu objects.
@@ -971,93 +979,99 @@ function ap_get_page_slug( $slug ) {
  * @since 4.2.0
  * @global WP_Query $wp_query
  * @global object $post
- * @param array $args
+ * @param array $args Arguments.
  */
 function ap_theme_compat_reset_post( $args = array() ) {
 	global $wp_query, $post;
 
-	// Switch defaults if post is set
+	// Switch defaults if post is set.
 	if ( isset( $wp_query->post ) ) {
-		$dummy = wp_parse_args( $args, array(
-			'ID'                    => $wp_query->post->ID,
-			'post_status'           => $wp_query->post->post_status,
-			'post_author'           => $wp_query->post->post_author,
-			'post_parent'           => $wp_query->post->post_parent,
-			'post_type'             => $wp_query->post->post_type,
-			'post_date'             => $wp_query->post->post_date,
-			'post_date_gmt'         => $wp_query->post->post_date_gmt,
-			'post_modified'         => $wp_query->post->post_modified,
-			'post_modified_gmt'     => $wp_query->post->post_modified_gmt,
-			'post_content'          => $wp_query->post->post_content,
-			'post_title'            => $wp_query->post->post_title,
-			'post_excerpt'          => $wp_query->post->post_excerpt,
-			'post_content_filtered' => $wp_query->post->post_content_filtered,
-			'post_mime_type'        => $wp_query->post->post_mime_type,
-			'post_password'         => $wp_query->post->post_password,
-			'post_name'             => $wp_query->post->post_name,
-			'guid'                  => $wp_query->post->guid,
-			'menu_order'            => $wp_query->post->menu_order,
-			'pinged'                => $wp_query->post->pinged,
-			'to_ping'               => $wp_query->post->to_ping,
-			'ping_status'           => $wp_query->post->ping_status,
-			'comment_status'        => $wp_query->post->comment_status,
-			'comment_count'         => $wp_query->post->comment_count,
-			'filter'                => $wp_query->post->filter,
+		$dummy = wp_parse_args(
+			$args,
+			array(
+				'ID'                    => $wp_query->post->ID,
+				'post_status'           => $wp_query->post->post_status,
+				'post_author'           => $wp_query->post->post_author,
+				'post_parent'           => $wp_query->post->post_parent,
+				'post_type'             => $wp_query->post->post_type,
+				'post_date'             => $wp_query->post->post_date,
+				'post_date_gmt'         => $wp_query->post->post_date_gmt,
+				'post_modified'         => $wp_query->post->post_modified,
+				'post_modified_gmt'     => $wp_query->post->post_modified_gmt,
+				'post_content'          => $wp_query->post->post_content,
+				'post_title'            => $wp_query->post->post_title,
+				'post_excerpt'          => $wp_query->post->post_excerpt,
+				'post_content_filtered' => $wp_query->post->post_content_filtered,
+				'post_mime_type'        => $wp_query->post->post_mime_type,
+				'post_password'         => $wp_query->post->post_password,
+				'post_name'             => $wp_query->post->post_name,
+				'guid'                  => $wp_query->post->guid,
+				'menu_order'            => $wp_query->post->menu_order,
+				'pinged'                => $wp_query->post->pinged,
+				'to_ping'               => $wp_query->post->to_ping,
+				'ping_status'           => $wp_query->post->ping_status,
+				'comment_status'        => $wp_query->post->comment_status,
+				'comment_count'         => $wp_query->post->comment_count,
+				'filter'                => $wp_query->post->filter,
 
-			'is_404'                => false,
-			'is_page'               => false,
-			'is_single'             => false,
-			'is_archive'            => false,
-			'is_tax'                => false,
-		) );
+				'is_404'                => false,
+				'is_page'               => false,
+				'is_single'             => false,
+				'is_archive'            => false,
+				'is_tax'                => false,
+			)
+		);
 	} else {
-		$dummy = wp_parse_args( $args, array(
-			'ID'                    => -9999,
-			'post_status'           => 'publish',
-			'post_author'           => 0,
-			'post_parent'           => 0,
-			'post_type'             => 'page',
-			'post_date'             => 0,
-			'post_date_gmt'         => 0,
-			'post_modified'         => 0,
-			'post_modified_gmt'     => 0,
-			'post_content'          => '',
-			'post_title'            => '',
-			'post_excerpt'          => '',
-			'post_content_filtered' => '',
-			'post_mime_type'        => '',
-			'post_password'         => '',
-			'post_name'             => '',
-			'guid'                  => '',
-			'menu_order'            => 0,
-			'pinged'                => '',
-			'to_ping'               => '',
-			'ping_status'           => '',
-			'comment_status'        => 'closed',
-			'comment_count'         => 0,
-			'filter'                => 'raw',
+		$dummy = wp_parse_args(
+			$args,
+			array(
+				'ID'                    => -9999,
+				'post_status'           => 'publish',
+				'post_author'           => 0,
+				'post_parent'           => 0,
+				'post_type'             => 'page',
+				'post_date'             => 0,
+				'post_date_gmt'         => 0,
+				'post_modified'         => 0,
+				'post_modified_gmt'     => 0,
+				'post_content'          => '',
+				'post_title'            => '',
+				'post_excerpt'          => '',
+				'post_content_filtered' => '',
+				'post_mime_type'        => '',
+				'post_password'         => '',
+				'post_name'             => '',
+				'guid'                  => '',
+				'menu_order'            => 0,
+				'pinged'                => '',
+				'to_ping'               => '',
+				'ping_status'           => '',
+				'comment_status'        => 'closed',
+				'comment_count'         => 0,
+				'filter'                => 'raw',
 
-			'is_404'                => false,
-			'is_page'               => false,
-			'is_single'             => false,
-			'is_archive'            => false,
-			'is_tax'                => false,
-		) );
+				'is_404'                => false,
+				'is_page'               => false,
+				'is_single'             => false,
+				'is_archive'            => false,
+				'is_tax'                => false,
+			)
+		);
 	}
 
-	// Bail if dummy post is empty
+	// Bail if dummy post is empty.
 	if ( empty( $dummy ) ) {
 		return;
 	}
 
-	// Set the $post global
-	$post = new WP_Post( (object) $dummy );
+	// Set the $post global.
+	$post = new WP_Post( (object) $dummy ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
-	// Copy the new post global into the main $wp_query
-	$wp_query->post       = $post;
-	$wp_query->posts      = array( $post );
+	// Copy the new post global into the main $wp_query.
+	$wp_query->post  = $post;
+	$wp_query->posts = array( $post );
 
-	// Prevent comments form from appearing
+	// Prevent comments form from appearing.
 	$wp_query->post_count = 1;
 	$wp_query->is_404     = $dummy['is_404'];
 	$wp_query->is_page    = $dummy['is_page'];
@@ -1065,13 +1079,13 @@ function ap_theme_compat_reset_post( $args = array() ) {
 	$wp_query->is_archive = $dummy['is_archive'];
 	$wp_query->is_tax     = $dummy['is_tax'];
 
-	// Clean up the dummy post
+	// Clean up the dummy post.
 	unset( $dummy );
 
 	if ( ! $wp_query->is_404() ) {
 		status_header( 200 );
 	}
 
-	// If we are resetting a post, we are in theme compat
+	// If we are resetting a post, we are in theme compat.
 	anspress()->theme_compat->active = true;
 }

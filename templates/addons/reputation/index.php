@@ -10,6 +10,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <table class="ap-reputations">
 	<tbody>

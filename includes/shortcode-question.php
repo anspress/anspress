@@ -10,34 +10,45 @@
  */
 
 /**
- * Class for AnsPress base page shortcode
+ * Class for AnsPress base page shortcode.
+ *
+ * @since unknown
+ * @since 4.2.0 Fixed: CS bugs.
  */
 class AnsPress_Question_Shortcode {
-
+	/**
+	 * Instance of this class.
+	 *
+	 * @var AnsPress_Question|null
+	 */
 	protected static $instance = null;
 
+	/**
+	 * Return singleton instance of this class.
+	 *
+	 * @return AnsPress_Question
+	 */
 	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
 
-		// create an object
-		null === self::$instance && self::$instance = new self();
-
-		return self::$instance; // return the object
+		return self::$instance;
 	}
 
 	/**
 	 * Control the output of [question] shortcode
 	 *
-	 * @param  string $content
+	 * @param  array  $atts Attributes.
+	 * @param  string $content Content.
 	 * @return string
-	 * @since 2.0.0-beta
+	 * @since 2.0.0
 	 */
 	public function anspress_question_sc( $atts, $content = '' ) {
-
 		ob_start();
 		echo '<div id="anspress" class="ap-eq">';
 
 		/**
-		 * ACTION: ap_before_question_shortcode
 		 * Action is fired before loading AnsPress body.
 		 */
 		do_action( 'ap_before_question_shortcode' );

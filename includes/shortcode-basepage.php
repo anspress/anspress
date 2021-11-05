@@ -9,6 +9,11 @@
  * @copyright 2014 Rahul Aryan
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class for AnsPress base page shortcode
  */
@@ -24,9 +29,11 @@ class AnsPress_BasePage_Shortcode {
 	 * Get current instance.
 	 */
 	public static function get_instance() {
-
 		// Create an object.
-		null === self::$instance && self::$instance = new self();
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance; // Return the object.
 	}
 
@@ -103,6 +110,9 @@ class AnsPress_BasePage_Shortcode {
 	/**
 	 * Get attributes from shortcode and set it as query var.
 	 *
+	 * @param array  $atts Attributes.
+	 * @param string $content Content.
+	 *
 	 * @since 3.0.0
 	 * @since 4.1.8 Added `post_parent` attribute.
 	 */
@@ -148,7 +158,7 @@ class AnsPress_BasePage_Shortcode {
 
 		// Sort by.
 		if ( isset( $atts['order_by'] ) ) {
-			$_GET['filters'] = [ 'order_by' => $atts['order_by'] ];
+			$_GET['filters'] = array( 'order_by' => $atts['order_by'] );
 		}
 
 		// parent post.

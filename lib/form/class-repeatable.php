@@ -45,7 +45,7 @@ class Repeatable extends Field {
 	 *
 	 * @var array
 	 */
-	public $main_fields = [];
+	public $main_fields = array();
 
 	/**
 	 * Prepare field.
@@ -54,7 +54,8 @@ class Repeatable extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label' => __( 'AnsPress Repeatable Field', 'anspress-question-answer' ),
 			)
 		);
@@ -65,7 +66,7 @@ class Repeatable extends Field {
 		$value_count       = ! empty( $this->value() ) ? count( $this->value() ) : $this->get_groups_count() + 1;
 		$this->total_items = $value_count > 0 ? $value_count : 1;
 
-		$new_fields = [];
+		$new_fields = array();
 
 		$i = 0;
 		while ( $this->total_items > $i ) {
@@ -86,7 +87,7 @@ class Repeatable extends Field {
 		parent::prepare();
 
 		// Make sure all text field are sanitized.
-		$this->sanitize_cb = array_merge( [ 'array_remove_empty' ], $this->sanitize_cb );
+		$this->sanitize_cb = array_merge( array( 'array_remove_empty' ), $this->sanitize_cb );
 	}
 
 	/**
@@ -95,7 +96,7 @@ class Repeatable extends Field {
 	 * @return null|mixed
 	 */
 	public function unsafe_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( $request_value ) {
 			$value = array_filter( wp_unslash( $request_value ) );
@@ -127,7 +128,7 @@ class Repeatable extends Field {
 	 * @return void
 	 */
 	protected function html_order() {
-		$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'desc', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$this->output_order = array( 'wrapper_start', 'label', 'field_wrap_start', 'desc', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' );
 	}
 
 	/**
@@ -136,8 +137,8 @@ class Repeatable extends Field {
 	 * @return null|object Returns @see `AP_Field` object.
 	 */
 	public function get_groups_count() {
-		$current_groups = $this->get( sanitize_title( $this->field_name ) . '-g', null, $_REQUEST );
-		$nonce          = $this->get( sanitize_title( $this->field_name ) . '-n', null, $_REQUEST );
+		$current_groups = $this->get( sanitize_title( $this->field_name ) . '-g', null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$nonce          = $this->get( sanitize_title( $this->field_name ) . '-n', null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( wp_verify_nonce( $nonce, $this->field_name . $current_groups ) ) {
 			return $current_groups;
@@ -165,6 +166,7 @@ class Repeatable extends Field {
 			)
 		);
 
+		// translators: %s is field label.
 		$this->add_html( '<a class="ap-btn ap-repeatable-add" href="#" apquery="' . esc_js( $add_button_args ) . '">' . sprintf( __( 'Add More %s', 'anspress-question-answer' ), $this->get( 'label' ) ) . '</a>' );
 
 		$this->add_html( '<input name="' . sanitize_title( $this->field_name ) . '-groups" value="' . $this->total_items . '" type="hidden" />' );
@@ -174,7 +176,7 @@ class Repeatable extends Field {
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 
 }

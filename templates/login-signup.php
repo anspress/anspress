@@ -6,6 +6,10 @@
  * @author  Rahul Aryan <rah12@live.com>
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 
 <?php if ( ! is_user_logged_in() ) : ?>

@@ -10,6 +10,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div class="ap-noti-item clearfix">
 	<div class="ap-noti-rep"><?php $this->the_reputation_points(); ?></div>

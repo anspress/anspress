@@ -5,7 +5,7 @@
  * @package    AnsPress
  * @subpackage Fields
  * @since      4.1.0
- * @author     Rahul Aryan<support@anspress.net>
+ * @author     Rahul Aryan <support@anspress.net>
  * @copyright  Copyright (c) 2017, Rahul Aryan
  * @license    http://opensource.org/licenses/gpl-3.0.php GNU Public License
  */
@@ -39,7 +39,8 @@ class Checkbox extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label' => __( 'AnsPress Checkbox Field', 'anspress-question-answer' ),
 			)
 		);
@@ -49,9 +50,9 @@ class Checkbox extends Field {
 
 		// Make sure checkbox value are sanitized.
 		if ( $this->get( 'options' ) ) {
-			$this->sanitize_cb = array_merge( [ 'array_remove_empty', 'text_field' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( array( 'array_remove_empty', 'text_field' ), $this->sanitize_cb );
 		} else {
-			$this->sanitize_cb = array_merge( [ 'boolean' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( array( 'boolean' ), $this->sanitize_cb );
 		}
 	}
 
@@ -64,7 +65,7 @@ class Checkbox extends Field {
 		parent::html_order();
 
 		if ( ! $this->get( 'options' ) ) {
-			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+			$this->output_order = array( 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' );
 		}
 	}
 
@@ -93,7 +94,7 @@ class Checkbox extends Field {
 		}
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 
 	/**
@@ -103,7 +104,7 @@ class Checkbox extends Field {
 	 * @since 4.1.8 Return `false` for unchecked checkbox.
 	 */
 	public function unsafe_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( isset( $request_value ) ) {
 			return wp_unslash( $request_value );

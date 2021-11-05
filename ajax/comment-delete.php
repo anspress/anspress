@@ -96,7 +96,7 @@ class Comment_Delete extends \AnsPress\Classes\Ajax {
 			$this->add_res(
 				'commentsCount',
 				array(
-					'text' => sprintf(
+					'text'       => sprintf(
 						// Translators: %d contain comment count.
 						_n( '%d Comment', '%d Comments', $count['all'], 'anspress-question-answer' ),
 						$count['all']

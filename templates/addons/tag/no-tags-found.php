@@ -9,9 +9,13 @@
  * @subpackage Tags for AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div class="ap-no-category-found ap-404">
-	<p class="ap-notice ap-yellow"><?php _e( 'No tags is set!' ); ?></p>
+	<p class="ap-notice ap-yellow"><?php esc_attr_e( 'No tags is set!', 'anspress-question-answer' ); ?></p>
 </div>
 
 

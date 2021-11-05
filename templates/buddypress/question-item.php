@@ -11,6 +11,10 @@
  * @package  WordPress/AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 	return;
 }
@@ -32,21 +36,34 @@ if ( ! ap_user_can_view_post( get_the_ID() ) ) {
 				</a>
 			</div>
 			<div class="ap-bpsingle-desc no-overflow">
-				<time itemprop="datePublished" datetime="<?php echo ap_get_time( get_the_ID(), 'c' ); ?>" class="ap-bpsingle-published">
-					<?php printf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ); ?>
+				<time itemprop="datePublished" datetime="<?php echo esc_attr( ap_get_time( get_the_ID(), 'c' ) ); ?>" class="ap-bpsingle-published">
+					<?php
+						// translators: %s is human time difference.
+						echo esc_attr( sprintf( 'Posted %s', ap_human_time( ap_get_time( get_the_ID(), 'U' ) ) ) );
+					?>
 				</time>
-				<a href="<?php the_permalink(); ?>" class="apicon-answer ap-bpsingle-acount"><?php printf( _n( '%d Answer', '%d Answers', ap_get_answers_count(), 'anspress-question-answer' ), ap_get_answers_count() ); ?></a>
+				<a href="<?php the_permalink(); ?>" class="apicon-answer ap-bpsingle-acount">
+					<?php
+						// translators: %d is total answer count.
+						echo esc_attr( printf( _n( '%d Answer', '%d Answers', ap_get_answers_count(), 'anspress-question-answer' ), ap_get_answers_count() ) );
+					?>
+				</a>
 
-				<p><?php echo wp_trim_words( get_the_content(), 30, '...' ); ?></p>
+				<p><?php echo esc_html( wp_trim_words( get_the_content(), 30, '...' ) ); ?></p>
 				<a href="<?php the_permalink(); ?>" class="ap-view-question"><?php esc_html_e( 'View Question', 'anspress-question-answer' ); ?></a>
 			</div>
 		</div>
 
 		<div class="ap-bpsingle-meta">
 
-			<span class="apicon-thumb-up"><?php printf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ); ?></span>
+			<span class="apicon-thumb-up">
+				<?php
+					// translators: %d is net votes count.
+					echo esc_attr( sprintf( _n( '%d Vote', '%d Votes', ap_get_votes_net(), 'anspress-question-answer' ), ap_get_votes_net() ) );
+				?>
+			</span>
 
-			<?php echo ap_question_metas(); ?>
+			<?php ap_question_metas(); ?>
 		</div>
 
 	</div>

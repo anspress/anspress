@@ -1,13 +1,13 @@
 <?php
-	/**
-	 * Plugin rewrite rules and query variables
-	 *
-	 * @package   AnsPress
-	 * @author    Rahul Aryan <rah12@live.com>
-	 * @license   GPL-2.0+
-	 * @link      https://anspress.net
-	 * @copyright 2014 Rahul Aryan
-	 */
+/**
+ * Plugin rewrite rules and query variables
+ *
+ * @package   AnsPress
+ * @author    Rahul Aryan <rah12@live.com>
+ * @license   GPL-2.0+
+ * @link      https://anspress.net
+ * @copyright 2014 Rahul Aryan
+ */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -15,11 +15,16 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * This class handle all rewrite rules and define query varibale of anspress
+ * This class handle all rewrite rules and define query variable of anspress
  *
  * @since 2.0.0
  */
 class AnsPress_Rewrite {
+	/**
+	 * Internal increment.
+	 *
+	 * @var int
+	 */
 	private static $counter = 1;
 
 	/**
@@ -30,16 +35,6 @@ class AnsPress_Rewrite {
 	 * @since  4.1.0
 	 */
 	public static function alter_the_query( $request ) {
-		// if ( isset( $request['answer_id'] ) ) {
-		// $request['p'] = $request['answer_id'];
-		// $request['post_type'] = 'answer';
-		// if ( isset( $request['question'] ) ) {
-		// unset( $request['question'] );
-		// }
-		// if ( isset( $request['name'] ) ) {
-		// unset( $request['name'] );
-		// }
-		// }
 		if ( isset( $request['post_type'] ) && 'answer' === $request['post_type'] ) {
 			if ( ! empty( $request['feed'] ) ) {
 				unset( $request['question_id'] );
@@ -112,7 +107,7 @@ class AnsPress_Rewrite {
 
 		$rule         = anspress()->question_rule['rule'];
 		$rewrite      = anspress()->question_rule['rewrite'];
-		$all_rules    = [];
+		$all_rules    = array();
 		$base_page_id = ap_opt( 'base_page' );
 		$slug_main    = ap_base_page_slug();
 		$lang_rule    = '';
@@ -154,11 +149,11 @@ class AnsPress_Rewrite {
 		 * @since 4.1.0
 		 */
 		$all_rules = apply_filters( 'ap_rewrites', $all_rules, $slug, $base_page_id );
-		$ap_rules = [];
+		$ap_rules  = array();
 
 		foreach ( $all_rules as $r => $re ) {
 			$re             = preg_replace( '/\\$([1-9]+)/', '$matches[#]', $re );
-			$re             = preg_replace_callback( '/\#/', [ __CLASS__, 'incr_hash' ], $re );
+			$re             = preg_replace_callback( '/\#/', array( __CLASS__, 'incr_hash' ), $re );
 			$ap_rules[ $r ] = $re;
 			self::$counter  = 1;
 		}
@@ -167,15 +162,26 @@ class AnsPress_Rewrite {
 		return $wp_rewrite->rules;
 	}
 
+	/**
+	 * Increment hash.
+	 *
+	 * @param array $matches Matches.
+	 */
 	public static function incr_hash( $matches ) {
 		return self::$counter++;
 	}
 
+	/**
+	 * BuddyPress pagination fix.
+	 *
+	 * @param array $args Arguments.
+	 * @return array
+	 */
 	public static function bp_com_paged( $args ) {
 		if ( function_exists( 'bp_current_component' ) ) {
 			$bp_com = bp_current_component();
 
-			if ( 'questions' == $bp_com || 'answers' == $bp_com ) {
+			if ( 'questions' === $bp_com || 'answers' === $bp_com ) {
 				return preg_replace( '/page.([0-9]+)./', '?paged=$1', $args );
 			}
 		}
@@ -219,23 +225,27 @@ class AnsPress_Rewrite {
 		}
 
 		$post_id = ap_isset_post_value( 'ap_q', ap_isset_post_value( 'ap_a', false ) );
+		$post_id = ap_isset_post_value( 'ap_p', $post_id );
 
 		// Post redirect.
-		if ( $post_id = ap_isset_post_value( 'ap_p', $post_id ) ) {
+		if ( $post_id ) {
 			$permalink = get_permalink( $post_id );
-			exit( wp_redirect( $permalink, 302 ) ); // xss okay.
+			wp_redirect( $permalink, 302 ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+			exit;
 		}
 
 		// Comment redirect.
 		if ( ap_isset_post_value( 'ap_c', false ) ) {
 			$permalink = get_comment_link( ap_isset_post_value( 'ap_c' ) );
-			exit( wp_redirect( $permalink, 302 ) ); // xss okay.
+			wp_redirect( $permalink, 302 ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+			exit;
 		}
 
 		// User redirect.
 		if ( ap_isset_post_value( 'ap_u', false ) ) {
 			$permalink = ap_user_link( ap_isset_post_value( 'ap_u' ), ap_isset_post_value( 'sub' ) );
-			exit( wp_redirect( $permalink, 302 ) ); // xss okay.
+			wp_redirect( $permalink, 302 ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+			exit;
 		}
 	}
 }

@@ -9,15 +9,19 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$count = ( '' !== get_query_var( 'answer_id' ) ? ap_get_answers_count() : ap_total_answers_found() );
 ?>
 <apanswersw style="<?php echo ! ap_have_answers() ? 'display:none' : ''; ?>">
 
 	<div id="ap-answers-c">
 		<div class="ap-sorting-tab clearfix">
 			<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">
-				<?php $count = ( '' !== get_query_var( 'answer_id' ) ? ap_get_answers_count() : ap_total_answers_found() ); ?>
 				<span itemprop="answerCount"><?php echo (int) $count; ?></span>
-				<?php echo _n( 'Answer', 'Answers', $count, 'anspress-question-answer' ); ?>
+				<?php echo esc_attr( _n( 'Answer', 'Answers', $count, 'anspress-question-answer' ) ); ?>
 			</h3>
 
 			<?php ap_answers_tab( get_the_permalink() ); ?>
@@ -36,7 +40,7 @@
 					<?php
 					while ( ap_have_answers() ) :
 						ap_the_answer();
-?>
+						?>
 						<?php include ap_get_theme_location( 'answer.php' ); ?>
 					<?php endwhile; ?>
 

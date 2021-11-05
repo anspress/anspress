@@ -5,7 +5,13 @@
  * Description: Creates an abstract class to execute asynchronous tasks
  * Author: 10up, Eric Mann, Luke Gedeon, John P. Bloch
  * License: MIT
+ *
+ * @codingStandardsIgnoreFile
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'WP_Async_Task' ) ) {
 	abstract class WP_Async_Task {
@@ -167,7 +173,8 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 			}
 
 			add_filter(
-				'wp_die_handler', function() {
+				'wp_die_handler',
+				function() {
 					die();
 				}
 			);
@@ -267,5 +274,4 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 		abstract protected function run_action();
 
 	}
-
 }

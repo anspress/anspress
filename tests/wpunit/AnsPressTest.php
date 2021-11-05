@@ -156,9 +156,7 @@ class AnsPressTest extends \Codeception\TestCase\WPTestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/ask.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/attachments.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/comment.php' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/content-answer.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/content-none.php' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/edit.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/functions.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/list-head.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/login-signup.php' );

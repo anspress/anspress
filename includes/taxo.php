@@ -18,15 +18,15 @@ if ( ! defined( 'WPINC' ) ) {
  * Output question categories
  *
  * @param  array $args Arguments.
- * @return string
+ * @return string|void
  */
-function ap_question_categories_html( $args = [] ) {
+function ap_question_categories_html( $args = array() ) {
 	$defaults = array(
 		'question_id' => get_the_ID(),
 		'list'        => false,
 		'tag'         => 'span',
 		'class'       => 'question-categories',
-		'label'       => __( 'Categories', 'categories-for-anspress' ),
+		'label'       => __( 'Categories', 'anspress-question-answer' ),
 		'echo'        => false,
 	);
 
@@ -47,7 +47,6 @@ function ap_question_categories_html( $args = [] ) {
 				$o .= '<li><a href="' . esc_url( get_term_link( $c ) ) . '" data-catid="' . $c->term_id . '" title="' . $c->description . '">' . $c->name . '</a></li>';
 			}
 			$o .= '</ul>';
-
 		} else {
 			$o .= $args['label'];
 			$o .= '<' . $args['tag'] . ' class="' . $args['class'] . '">';
@@ -58,12 +57,11 @@ function ap_question_categories_html( $args = [] ) {
 		}
 
 		if ( $args['echo'] ) {
-			echo $o; // WPCS: xss okay.
+			echo $o; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		return $o;
 	}
-
 }
 
 /**
@@ -74,17 +72,18 @@ function ap_category_details() {
 	$category = get_term_by( 'slug', $var, 'question_category' );
 
 	echo '<div class="clearfix">';
-	echo '<h3><a href="' . get_category_link( $category ) . '">' . $category->name . '</a></h3>';
+	echo '<h3><a href="' . esc_url( get_category_link( $category ) ) . '">' . esc_html( $category->name ) . '</a></h3>';
 	echo '<div class="ap-taxo-meta">';
-	echo '<span class="count">' . $category->count . ' ' . __( 'Questions', 'categories-for-anspress' ) . '</span>';
-	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $category->term_id, 'question_category' ) . '" title="Subscribe to ' . $category->name . '" rel="nofollow"></a>';
+	echo '<span class="count">' . (int) $category->count . ' ' . esc_attr__( 'Questions', 'anspress-question-answer' ) . '</span>';
+	echo '<a class="aicon-rss feed-link" href="' . esc_url( get_term_feed_link( $category->term_id, 'question_category' ) ) . '" title="Subscribe to ' . esc_attr( $category->name ) . '" rel="nofollow"></a>';
 	echo '</div>';
 	echo '</div>';
 
-	echo '<p class="desc clearfix">' . $category->description . '</p>';
+	echo '<p class="desc clearfix">' . wp_kses_post( $category->description ) . '</p>';
 
 	$child = get_terms(
-		array( 'taxonomy' => 'question_category' ), array(
+		array( 'taxonomy' => 'question_category' ),
+		array(
 			'parent'       => $category->term_id,
 			'hierarchical' => false,
 			'hide_empty'   => false,
@@ -94,16 +93,22 @@ function ap_category_details() {
 	if ( $child ) :
 		echo '<ul class="ap-child-list clearfix">';
 		foreach ( $child as $key => $c ) :
-			echo '<li><a class="taxo-title" href="' . get_category_link( $c ) . '">' . $c->name . '<span>' . $c->count . '</span></a>';
+			echo '<li><a class="taxo-title" href="' . esc_url( get_category_link( $c ) ) . '">' . esc_html( $c->name ) . '<span>' . (int) $c->count . '</span></a>';
 			echo '</li>';
-			endforeach;
+		endforeach;
 		echo '</ul>';
 	endif;
 }
 
+/**
+ * Display sub categories list.
+ *
+ * @param int $parent Parent id.
+ */
 function ap_sub_category_list( $parent ) {
 	$categories = get_terms(
-		array( 'taxonomy' => 'question_category' ), array(
+		array( 'taxonomy' => 'question_category' ),
+		array(
 			'parent'     => $parent,
 			'hide_empty' => false,
 		)
@@ -112,12 +117,18 @@ function ap_sub_category_list( $parent ) {
 	if ( $categories ) {
 		echo '<ul class="ap-category-subitems ap-ul-inline clearfix">';
 		foreach ( $categories as $cat ) {
-			echo '<li><a href="' . get_category_link( $cat ) . '">' . $cat->name . '<span>(' . $cat->count . ')</span></a></li>';
+			echo '<li><a href="' . esc_url( get_category_link( $cat ) ) . '">' . esc_html( $cat->name ) . '<span>(' . (int) $cat->count . ')</span></a></li>';
 		}
 		echo '</ul>';
 	}
 }
 
+/**
+ * Check if question have category.
+ *
+ * @param false|int $post_id Question id.
+ * @return bool
+ */
 function ap_question_have_category( $post_id = false ) {
 	if ( ! $post_id ) {
 		$post_id = get_the_ID();
@@ -132,13 +143,13 @@ function ap_question_have_category( $post_id = false ) {
 }
 
 
-/**
- * Check if anspress categories page.
- *
- * @return boolean
- * @since  1.0
- */
 if ( ! function_exists( 'is_question_categories' ) ) {
+	/**
+	 * Check if anspress categories page.
+	 *
+	 * @return boolean
+	 * @since  1.0
+	 */
 	function is_question_categories() {
 		if ( 'categories' === ap_current_page() ) {
 			return true;
@@ -190,11 +201,11 @@ function ap_get_category_filter( $search = false ) {
 	$items = array();
 
 	foreach ( (array) $terms as $t ) {
-		$item = [
+		$item = array(
 			'key'   => 'category',
 			'value' => (string) $t->term_id,
 			'label' => $t->name,
-		];
+		);
 		// Check if active.
 		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;
@@ -211,17 +222,17 @@ function ap_get_category_filter( $search = false ) {
  */
 function ap_category_sorting() {
 	$filters  = ap_get_category_filter();
-	$selected = isset( $_GET['ap_cat_sort'] ) ? (int) $_GET['ap_cat_sort'] : '';
+	$selected = (int) ap_sanitize_unslash( 'ap_cat_sort', 'g', 0 );
 	if ( $filters ) {
 		echo '<div class="ap-dropdown">';
-			echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle' . ( $selected != '' ? ' active' : '' ) . '" href="#">' . __( 'Category', 'categories-for-anspress' ) . '</a>';
-			echo '<div class="ap-dropdown-menu">';
+		echo '<a id="ap-sort-anchor" class="ap-dropdown-toggle' . ( '' !== $selected ? ' active' : '' ) . '" href="#">' . esc_attr__( 'Category', 'anspress-question-answer' ) . '</a>';
+		echo '<div class="ap-dropdown-menu">';
 
 		foreach ( $filters as $category_id => $category_name ) {
-			echo '<li ' . ( $selected == $category_id ? 'class="active" ' : '' ) . '><a href="#" data-value="' . $category_id . '">' . $category_name . '</a></li>';
+			echo '<li ' . ( $selected === (int) $category_id ? 'class="active" ' : '' ) . '><a href="#" data-value="' . (int) $category_id . '">' . esc_html( $category_name ) . '</a></li>';
 		}
-			echo '<input name="ap_cat_sort" type="hidden" value="' . $selected . '" />';
-			echo '</div>';
+		echo '<input name="ap_cat_sort" type="hidden" value="' . esc_attr( $selected ) . '" />';
+		echo '</div>';
 		echo '</div>';
 	}
 }
@@ -253,7 +264,7 @@ function ap_get_category_image( $term_id, $height = 32 ) {
  * @param  integer $height  image height, without PX.
  */
 function ap_category_image( $term_id, $height = 32 ) {
-	echo ap_get_category_image( $term_id, $height ); // WPCS: xss okay.
+	echo ap_get_category_image( $term_id, $height ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -280,7 +291,7 @@ function ap_get_category_icon( $term_id, $attributes = '' ) {
  * @param  string  $attributes  Custom attributes.
  */
 function ap_category_icon( $term_id, $attributes = '' ) {
-	echo ap_get_category_icon( $term_id, $attributes ); // xss okay.
+	echo ap_get_category_icon( $term_id, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -323,12 +334,11 @@ function ap_category_have_image( $term_id ) {
  * Output tags html.
  *
  * @param  array $args Arguments.
- * @return string
+ * @return string|void
  *
  * @since  1.0
  */
-function ap_question_tags_html( $args = [] ) {
-
+function ap_question_tags_html( $args = array() ) {
 	$defaults = array(
 		'question_id' => get_the_ID(),
 		'list'        => false,
@@ -368,30 +378,40 @@ function ap_question_tags_html( $args = [] ) {
 		}
 
 		if ( $args['echo'] ) {
-			echo $o; // xss okay.
+			echo $o; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		return $o;
 	}
 }
 
-
+/**
+ * Display tag details.
+ *
+ * @return void
+ */
 function ap_tag_details() {
-
 	$var = get_query_var( 'question_tag' );
 
 	$tag = get_term_by( 'slug', $var, 'question_tag' );
+
 	echo '<div class="clearfix">';
-	echo '<h3><a href="' . get_tag_link( $tag ) . '">' . $tag->name . '</a></h3>';
+	echo '<h3><a href="' . esc_url( get_tag_link( $tag ) ) . '">' . esc_html( $tag->name ) . '</a></h3>';
 	echo '<div class="ap-taxo-meta">';
-	echo '<span class="count">' . $tag->count . ' ' . __( 'Questions', 'anspress-question-answer' ) . '</span>';
-	echo '<a class="aicon-rss feed-link" href="' . get_term_feed_link( $tag->term_id, 'question_tag' ) . '" title="Subscribe to ' . $tag->name . '" rel="nofollow"></a>';
+	echo '<span class="count">' . (int) $tag->count . ' ' . esc_attr__( 'Questions', 'anspress-question-answer' ) . '</span>';
+	echo '<a class="aicon-rss feed-link" href="' . esc_url( get_term_feed_link( $tag->term_id, 'question_tag' ) ) . '" title="Subscribe to ' . esc_attr( $tag->name ) . '" rel="nofollow"></a>';
 	echo '</div>';
 	echo '</div>';
 
-	echo '<p class="desc clearfix">' . $tag->description . '</p>';
+	echo '<p class="desc clearfix">' . wp_kses_post( $tag->description ) . '</p>';
 }
 
+/**
+ * Check if question have tags.
+ *
+ * @param false|int $question_id Question id.
+ * @return bool
+ */
 function ap_question_have_tags( $question_id = false ) {
 	if ( ! $question_id ) {
 		$question_id = get_the_ID(); }
@@ -404,19 +424,26 @@ function ap_question_have_tags( $question_id = false ) {
 	return false;
 }
 
+/**
+ * Check if question tag page.
+ *
+ * @return bool
+ */
 function is_question_tag() {
-
-	if ( ap_get_tag_slug() == get_query_var( 'ap_page' ) ) {
+	if ( ap_get_tag_slug() === get_query_var( 'ap_page' ) ) {
 		return true;
 	}
 
 	return false;
 }
 
-
+/**
+ * Check if question tags page.
+ *
+ * @return bool
+ */
 function is_question_tags() {
-
-	if ( ap_get_tags_slug() == get_query_var( 'ap_page' ) ) {
+	if ( ap_get_tags_slug() === get_query_var( 'ap_page' ) ) {
 		return true;
 	}
 
@@ -426,6 +453,7 @@ function is_question_tags() {
 /**
  * Return category for sorting dropdown.
  *
+ * @param string|false $search Search query.
  * @return array|boolean
  */
 function ap_get_tag_filter( $search = false ) {
@@ -449,11 +477,12 @@ function ap_get_tag_filter( $search = false ) {
 	$items = array();
 
 	foreach ( (array) $terms as $t ) {
-		$item = [
+		$item = array(
 			'key'   => 'qtag',
 			'value' => (string) $t->term_id,
 			'label' => $t->name,
-		];
+		);
+
 		// Check if active.
 		if ( $selected && in_array( $t->term_id, $selected, true ) ) {
 			$item['active'] = true;

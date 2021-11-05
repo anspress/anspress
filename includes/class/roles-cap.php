@@ -1269,7 +1269,7 @@ function ap_user_can_read_answer( $post = null, $user_id = false ) {
  * @param  string          $type        Vote type. vote_up or vote_down.
  * @param  boolean|integer $user_id     User ID.
  * @param  boolean         $wp_error    Return WP_Error object.
- * @return boolean
+ * @return boolean|WP_Error
  * @since  2.4.6
  */
 function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error = false ) {

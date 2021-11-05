@@ -9,6 +9,10 @@
  *
  * @package AnsPress
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 <?php if ( ! get_query_var( 'ap_hide_list_head' ) ) : ?>
 	<?php ap_get_template_part( 'list-head' ); ?>

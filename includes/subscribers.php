@@ -37,20 +37,17 @@ function ap_new_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
 	$exists = ap_get_subscriber( $user_id, $event, $ref_id );
 
 	if ( ! $exists ) {
-		$insert = $wpdb->insert(
+		$insert = $wpdb->insert( // phpcs:ignore WordPress.DB
 			$wpdb->ap_subscribers,
 			array(
 				'subs_user_id' => $user_id,
 				'subs_event'   => sanitize_title( $event ),
 				'subs_ref_id'  => $ref_id,
 			),
-			[ '%d', '%s', '%d' ]
-		); // WPCS: db call okay.
+			array( '%d', '%s', '%d' )
+		);
 
 		if ( false !== $insert ) {
-			// Delete count cache.
-			ap_delete_subscribers_cache( $ref_id, $event );
-
 			/**
 			 * Hook triggered right after inserting a subscriber.
 			 *
@@ -95,7 +92,7 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = '' ) {
 		return false;
 	}
 
-	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
+	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // phpcs:ignore WordPress.DB
 
 	return $results;
 }
@@ -127,7 +124,7 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 		$event_query = $wpdb->prepare( ' AND subs_event = %s', $event );
 	}
 
-	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); // WPCS: db call okay, cache okay.
+	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); //phpcs:ignore WordPress.DB
 
 	return $results;
 }
@@ -153,22 +150,23 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
  * @since  4.0.0
  * @since  4.1.5 Deprecated arguments `$event` and `$ref_id`. Added new argument `$where`.
  */
-function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
+function ap_get_subscribers( $where = array(), $event = null, $ref_id = null ) {
 	if ( null !== $event || null !== $ref_id ) {
-		_deprecated_argument( __FUNCTION__, '4.1.5', __( 'All 2 arguments $event and $ref_id are deprecated.', 'anspress-question-answer' ) );
+		_deprecated_argument( __FUNCTION__, '4.1.5', esc_attr__( 'All 2 arguments $event and $ref_id are deprecated.', 'anspress-question-answer' ) );
 	}
 
 	global $wpdb;
 
 	$where = wp_parse_args(
-		$where, array(
+		$where,
+		array(
 			'subs_event'   => '',
 			'subs_ref_id'  => '',
 			'subs_user_id' => '',
 		)
 	);
 
-	$where = wp_array_slice_assoc( $where, [ 'subs_event', 'subs_ref_id', 'subs_user_id' ] );
+	$where = wp_array_slice_assoc( $where, array( 'subs_event', 'subs_ref_id', 'subs_user_id' ) );
 
 	// Return if where clauses are empty.
 	if ( empty( $where ) ) {
@@ -189,7 +187,7 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
 		$query .= $wpdb->prepare( ' AND s.subs_user_id = %s', $where['subs_user_id'] );
 	}
 
-	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->ap_subscribers} s LEFT JOIN {$wpdb->users} u ON u.ID = s.subs_user_id WHERE 1=1 {$query}" ); // WPCS: db call okay.
+	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->ap_subscribers} s LEFT JOIN {$wpdb->users} u ON u.ID = s.subs_user_id WHERE 1=1 {$query}" ); // phpcs:ignore WordPress.DB
 
 	return $results;
 }
@@ -220,12 +218,12 @@ function ap_get_subscribers( $where = [], $event = null, $ref_id = null ) {
  */
 function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id = null ) {
 	if ( null !== $event || null !== $ref_id || null !== $user_id ) {
-		_deprecated_argument( __FUNCTION__, '4.1.5', __( 'All 3 arguments $event, $ref_id and $user_id are deprecated.', 'anspress-question-answer' ) );
+		_deprecated_argument( __FUNCTION__, '4.1.5', esc_attr__( 'All 3 arguments $event, $ref_id and $user_id are deprecated.', 'anspress-question-answer' ) );
 	}
 
 	global $wpdb;
 
-	$where = wp_array_slice_assoc( $where, [ 'subs_event', 'subs_ref_id', 'subs_user_id' ] );
+	$where = wp_array_slice_assoc( $where, array( 'subs_event', 'subs_ref_id', 'subs_user_id' ) );
 
 	// Return if where clauses are empty.
 	if ( empty( $where ) ) {
@@ -254,7 +252,6 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 	if ( false !== $rows ) {
 		$ref_id = isset( $where['subs_ref_id'] ) ? $where['subs_ref_id'] : 0;
 		$event  = isset( $where['subs_event'] ) ? $where['subs_event'] : '';
-		ap_delete_subscribers_cache( $ref_id, $event );
 
 		/**
 		 * Action triggered right after deleting subscribers.
@@ -295,18 +292,17 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 function ap_delete_subscriber( $ref_id, $user_id, $event ) {
 	global $wpdb;
 
-	$rows = $wpdb->delete(
-		$wpdb->ap_subscribers, array(
+	$rows = $wpdb->delete( // phpcs:ignore WordPress.DB
+		$wpdb->ap_subscribers,
+		array(
 			'subs_ref_id'  => $ref_id,
 			'subs_user_id' => $user_id,
 			'subs_event'   => $event,
-		), array( '%d', '%d', '%s' )
-	); // WPCS: db call okay, cache okay.
+		),
+		array( '%d', '%d', '%s' )
+	);
 
 	if ( false !== $rows ) {
-		// Delete cache.
-		ap_delete_subscribers_cache( $ref_id, $event );
-
 		/**
 		 * Action triggered right after deleting a single subscriber.
 		 *
@@ -333,7 +329,6 @@ function ap_delete_subscriber( $ref_id, $user_id, $event ) {
  * @since 4.0.0
  */
 function ap_is_user_subscriber( $event, $ref_id, $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -368,6 +363,7 @@ function ap_delete_subscribers_cache( $ref_id = 0, $event = '' ) {
  * Return escaped subscriber event name. It basically removes
  * id suffixed in event name and only name.
  *
+ * @param string $event Event name.
  * @return string
  * @since 4.1.5
  */

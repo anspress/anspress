@@ -8,6 +8,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $ajax_query = wp_json_encode(
 	array(
 		'ap_ajax_action' => 'load_tinymce',
@@ -19,7 +23,7 @@ $ajax_query = wp_json_encode(
 <?php if ( ap_user_can_answer( get_question_id() ) ) : ?>
 	<div id="answer-form-c" class="ap-minimal-editor">
 		<div class="ap-avatar ap-pull-left">
-			<a href="<?php echo ap_user_link( get_current_user_id() ); ?>">
+			<a href="<?php echo esc_url( ap_user_link( get_current_user_id() ) ); ?>">
 				<?php echo get_avatar( get_current_user_id(), ap_opt( 'avatar_size_qquestion' ) ); ?>
 			</a>
 		</div>
@@ -27,7 +31,7 @@ $ajax_query = wp_json_encode(
 			<div class="ap-cell-inner">
 				<div class="ap-minimal-placeholder">
 					<div class="ap-dummy-editor"></div>
-					<div class="ap-dummy-placeholder"><?php _e( 'Write your answer.', 'anspress-question-answer' ); ?></div>
+					<div class="ap-dummy-placeholder"><?php esc_attr_e( 'Write your answer.', 'anspress-question-answer' ); ?></div>
 					<div class="ap-editor-fade" ap="loadEditor" data-apquery="<?php echo esc_js( $ajax_query ); ?>"></div>
 				</div>
 				<div id="ap-form-main">

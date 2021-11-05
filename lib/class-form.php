@@ -12,8 +12,9 @@
 
 namespace AnsPress;
 
-use AnsPress\Session;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * The form class.
@@ -33,14 +34,14 @@ class Form {
 	 *
 	 * @var array
 	 */
-	public $args = [];
+	public $args = array();
 
 	/**
 	 * The fields.
 	 *
 	 * @var array
 	 */
-	public $fields = [];
+	public $fields = array();
 
 	/**
 	 * Is form prepared.
@@ -54,7 +55,7 @@ class Form {
 	 *
 	 * @var array
 	 */
-	public $errors = [];
+	public $errors = array();
 
 	/**
 	 * The values.
@@ -77,8 +78,18 @@ class Form {
 	 */
 	public $editing_id = false;
 
+	/**
+	 * Is form submitted.
+	 *
+	 * @var bool
+	 */
 	public $submitted = false;
 
+	/**
+	 * After form HTML.
+	 *
+	 * @var string
+	 */
 	public $after_form = '';
 
 	/**
@@ -90,7 +101,8 @@ class Form {
 	public function __construct( $form_name, $args ) {
 		$this->form_name = $form_name;
 		$this->args      = wp_parse_args(
-			$args, array(
+			$args,
+			array(
 				'form_tag'      => true,
 				'submit_button' => true,
 				'submit_label'  => __( 'Submit', 'anspress-question-answer' ),
@@ -137,7 +149,7 @@ class Form {
 				 * @param object $form Form class, passed by reference.
 				 * @since 4.1.0
 				 */
-				$field_args                  = apply_filters_ref_array( 'ap_before_prepare_field', [ $field_args, $this ] );
+				$field_args                  = apply_filters_ref_array( 'ap_before_prepare_field', array( $field_args, $this ) );
 				$this->fields[ $field_name ] = new $field_class( $this->form_name, $field_name, $field_args, $this );
 			}
 		}
@@ -182,17 +194,19 @@ class Form {
 	 * @since 4.1.0
 	 * @since 4.1.8 Inherit `hidden_fields` from form args.
 	 */
-	public function generate( $form_args = [] ) {
+	public function generate( $form_args = array() ) {
 		// Enqueue upload script.
 		wp_enqueue_script( 'anspress-upload' );
 
-		// Dont do anything if no fields.
+		// Don't do anything if no fields.
 		if ( empty( $this->args['fields'] ) ) {
 			echo '<p class="ap-form-nofields">';
-			printf(
-				// Translators: Placeholder contain form name.
-				esc_attr__( 'No fields found for form: %s', 'anspress-question-answer' ),
-				$this->form_name
+			echo esc_attr(
+				sprintf(
+					// Translators: Placeholder contain form name.
+					esc_attr__( 'No fields found for form: %s', 'anspress-question-answer' ),
+					$this->form_name
+				)
 			);
 			echo '</p>';
 
@@ -200,7 +214,8 @@ class Form {
 		}
 
 		$form_args = wp_parse_args(
-			$form_args, array(
+			$form_args,
+			array(
 				'form_action'   => '',
 				'hidden_fields' => false,
 				'ajax_submit'   => true,
@@ -221,12 +236,12 @@ class Form {
 		 * @param object $form      Current form object.
 		 * @since 4.1.0
 		 */
-		$form_args = apply_filters_ref_array( 'ap_generate_form_args', [ $form_args, $this ] );
+		$form_args = apply_filters_ref_array( 'ap_generate_form_args', array( $form_args, $this ) );
 
-		$action = ! empty( $form_args['form_action'] ) ? ' action="' . esc_url( $form_args['form_action'] ) . '"' : '';
+		$action = ! empty( $form_args['form_action'] ) ? esc_url( $form_args['form_action'] ) : '';
 
 		if ( true === $form_args['form_tag'] ) {
-			echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" ' . $action . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>'; // xss okay.
+			echo '<form id="' . esc_attr( $this->form_name ) . '" name="' . esc_attr( $this->form_name ) . '" method="POST" enctype="multipart/form-data" action="' . esc_attr( $action ) . '" ' . ( true === $form_args['ajax_submit'] ? ' apform' : '' ) . '>';
 		}
 
 		// Output form errors.
@@ -238,7 +253,7 @@ class Form {
 			echo '</div>';
 		}
 
-		echo $this->generate_fields(); // xss okay.
+		echo $this->generate_fields(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		echo '<input type="hidden" name="ap_form_name" value="' . esc_attr( $this->form_name ) . '" />';
 
@@ -262,14 +277,14 @@ class Form {
 		 *
 		 * @param object $form Current form class.
 		 */
-		do_action_ref_array( 'ap_after_form_field', [ $this ] );
+		do_action_ref_array( 'ap_after_form_field', array( $this ) );
 
 		if ( true === $this->args['form_tag'] ) {
 			echo '</form>';
 		}
 
 		if ( ! empty( $this->after_form ) ) {
-			echo $this->after_form;
+			echo $this->after_form; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 
@@ -281,7 +296,8 @@ class Form {
 	public function is_submitted() {
 		$nonce = ap_isset_post_value( esc_attr( $this->form_name ) . '_nonce' );
 
-		if ( ap_isset_post_value( esc_attr( $this->form_name ) . '_submit' ) && wp_verify_nonce( $nonce, $this->form_name ) ) {
+		if ( ap_isset_post_value( esc_attr( $this->form_name ) . '_submit' ) &&
+			wp_verify_nonce( $nonce, $this->form_name ) ) {
 			$this->submitted = true;
 			return true;
 		}
@@ -303,7 +319,7 @@ class Form {
 		}
 
 		$fields = false === $fields ? $this->fields : $fields;
-		$found  = wp_filter_object_list( $fields, [ $key => $value ] );
+		$found  = wp_filter_object_list( $fields, array( $key => $value ) );
 
 		if ( empty( $found ) ) {
 			foreach ( $fields as $field ) {
@@ -426,7 +442,7 @@ class Form {
 	 * @return array
 	 */
 	public function get_fields_errors( $fields = false ) {
-		$errors = [];
+		$errors = array();
 
 		if ( false === $this->prepared ) {
 			$this->prepare();
@@ -438,7 +454,7 @@ class Form {
 
 		foreach ( (array) $fields as $field ) {
 			if ( $field->have_errors() ) {
-				$errors[ $field->id() ] = [ 'error' => $field->errors ];
+				$errors[ $field->id() ] = array( 'error' => $field->errors );
 			}
 
 			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
@@ -461,7 +477,7 @@ class Form {
 	 * @since 4.1.0
 	 */
 	private function field_values( $fields = false ) {
-		$values = [];
+		$values = array();
 
 		if ( false === $this->prepared ) {
 			$this->prepare();
@@ -473,7 +489,7 @@ class Form {
 
 		foreach ( (array) $fields as $field ) {
 			$field->pre_get();
-			$values[ $field->original_name ] = [ 'value' => $field->value() ];
+			$values[ $field->original_name ] = array( 'value' => $field->value() );
 			if ( ! empty( $field->child ) && ! empty( $field->child->fields ) ) {
 				$values[ $field->original_name ]['child'] = $this->field_values( $field->child->fields );
 			}
@@ -490,9 +506,6 @@ class Form {
 	 * @since 4.1.5 Return values even if there are errors.
 	 */
 	public function get_values() {
-		// if ( $this->have_errors() ) {
-		// return false;
-		// }
 		if ( ! is_null( $this->values ) ) {
 			return $this->values;
 		}
@@ -510,7 +523,7 @@ class Form {
 	 * @since 4.1.0
 	 * @since 4.1.5 Delete AnsPress session data.
 	 */
-	public function after_save( $fields = false, $args = [] ) {
+	public function after_save( $fields = false, $args = array() ) {
 		// Delete session data.
 		$this->delete_values_session();
 
@@ -552,7 +565,10 @@ class Form {
 		}
 
 		foreach ( $values as $key => $val ) {
-			is_array( $val ) && isset( $val['value'] ) && $val = $val['value'];
+			if ( is_array( $val ) && isset( $val['value'] ) ) {
+				$val = $val['value'];
+			}
+
 			$field = $this->find( $key );
 
 			if ( $field ) {

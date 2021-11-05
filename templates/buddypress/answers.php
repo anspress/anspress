@@ -10,6 +10,10 @@
  * @package AnsPress
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div id="ap-bp-question">
 	<?php if ( ap_have_answers() ) : ?>
@@ -20,10 +24,10 @@
 			ap_get_template_part( 'buddypress/answer-item' );
 			endwhile;
 		?>
-	<?php ap_answers_the_pagination(); ?>
-	<?php
+		<?php ap_answers_the_pagination(); ?>
+		<?php
 		else :
 			ap_get_template_part( 'content-none' );
 		endif;
-	?>
+		?>
 </div>

@@ -10,6 +10,10 @@
  * @since     4.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * AnsPress upload hooks.
  */
@@ -35,14 +39,14 @@ class AnsPress_Uploader {
 
 		if ( false !== $row ) {
 			ap_update_post_attach_ids( $attach->post_parent );
-			ap_ajax_json( [ 'success' => true ] );
+			ap_ajax_json( array( 'success' => true ) );
 		}
 
 		ap_ajax_json(
-			[
+			array(
 				'success'  => false,
-				'snackbar' => [ 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ],
-			]
+				'snackbar' => array( 'message' => __( 'Unable to delete attachment', 'anspress-question-answer' ) ),
+			)
 		);
 	}
 
@@ -81,7 +85,7 @@ class AnsPress_Uploader {
 
 		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // db call okay, db cache okay.
 
-		$authors = [];
+		$authors = array();
 
 		if ( $posts ) {
 			foreach ( (array) $posts as $_post ) {
@@ -98,7 +102,7 @@ class AnsPress_Uploader {
 
 		// Delete all temporary files.
 		$uploads  = wp_upload_dir();
-		$files    = glob( $uploads['basedir'] . "/anspress-temp/*" );
+		$files    = glob( $uploads['basedir'] . '/anspress-temp/*' );
 		$interval = strtotime( '-2 hours' );
 
 		if ( $files ) {
@@ -124,37 +128,43 @@ class AnsPress_Uploader {
 
 		// Check if user have permission to upload tem image.
 		if ( ! ap_user_can_upload() ) {
-			ap_send_json( array(
-				'success'  => false,
-				'snackbar' => array(
-					'message' => __( 'Sorry! you do not have permission to upload image.', 'anspress-question-answer' ),
-				),
-			) );
+			ap_send_json(
+				array(
+					'success'  => false,
+					'snackbar' => array(
+						'message' => __( 'Sorry! you do not have permission to upload image.', 'anspress-question-answer' ),
+					),
+				)
+			);
 		}
 
 		$image_for = ap_sanitize_unslash( 'image_for', 'r' );
 
 		ob_start();
-		anspress()->get_form( 'image_upload' )->generate( array(
-			'hidden_fields' => array(
-				array(
-					'name'  => 'action',
-					'value' => 'ap_image_upload',
+		anspress()->get_form( 'image_upload' )->generate(
+			array(
+				'hidden_fields' => array(
+					array(
+						'name'  => 'action',
+						'value' => 'ap_image_upload',
+					),
+					array(
+						'name'  => 'image_for',
+						'value' => $image_for,
+					),
 				),
-				array(
-					'name'  => 'image_for',
-					'value' => $image_for,
-				),
-			),
-		));
+			)
+		);
 		$html = ob_get_clean();
 
-		ap_send_json( array(
-			'success' => true,
-			'action'  => 'ap_upload_modal',
-			'html'    => $html,
-			'title'   => __( 'Select image file to upload', 'anspress-question-answer' ),
-		) );
+		ap_send_json(
+			array(
+				'success' => true,
+				'action'  => 'ap_upload_modal',
+				'html'    => $html,
+				'title'   => __( 'Select image file to upload', 'anspress-question-answer' ),
+			)
+		);
 	}
 
 	/**
@@ -169,12 +179,14 @@ class AnsPress_Uploader {
 
 		// Check if user have permission to upload tem image.
 		if ( ! ap_user_can_upload() ) {
-			ap_send_json( array(
-				'success'  => false,
-				'snackbar' => array(
-					'message' => __( 'Sorry! you do not have permission to upload image.', 'anspress-question-answer' ),
-				),
-			) );
+			ap_send_json(
+				array(
+					'success'  => false,
+					'snackbar' => array(
+						'message' => __( 'Sorry! you do not have permission to upload image.', 'anspress-question-answer' ),
+					),
+				)
+			);
 		}
 
 		// Nonce check.
@@ -187,14 +199,16 @@ class AnsPress_Uploader {
 
 		// Check for errors.
 		if ( $form->have_errors() ) {
-			ap_send_json( array(
-				'success'       => false,
-				'snackbar'      => array(
-					'message'      => __( 'Unable to upload image(s). Please check errors.', 'anspress-question-answer' ),
-				),
-				'form_errors'   => $form->errors,
-				'fields_errors' => $form->get_fields_errors(),
-			) );
+			ap_send_json(
+				array(
+					'success'       => false,
+					'snackbar'      => array(
+						'message' => __( 'Unable to upload image(s). Please check errors.', 'anspress-question-answer' ),
+					),
+					'form_errors'   => $form->errors,
+					'fields_errors' => $form->get_fields_errors(),
+				)
+			);
 		}
 
 		$field = $form->find( 'image' );
@@ -206,7 +220,7 @@ class AnsPress_Uploader {
 			'success'   => true,
 			'action'    => 'ap_image_upload',
 			'image_for' => $image_for,
-			'snackbar'  => [ 'message' => __( 'Successfully uploaded image', 'anspress-question-answer' ) ],
+			'snackbar'  => array( 'message' => __( 'Successfully uploaded image', 'anspress-question-answer' ) ),
 			'files'     => $files,
 		);
 
@@ -218,6 +232,12 @@ class AnsPress_Uploader {
 		ap_send_json( 'something_wrong' );
 	}
 
+	/**
+	 * Callback for hook `intermediate_image_sizes_advanced`.
+	 *
+	 * @param array $sizes Image sizes.
+	 * @return array
+	 */
 	public static function image_sizes_advanced( $sizes ) {
 		global $ap_thumbnail_only;
 
@@ -242,9 +262,10 @@ class AnsPress_Uploader {
  * This function will prevent users to upload if they have more then defined
  * numbers of un-attached medias.
  *
- * @param array   $file           $_FILE variable.
- * @param boolean $temp           Is temporary image? If so it will be deleted if no post parent.
- * @param boolean $parent_post    Attachment parent post ID.
+ * @param array       $file           $_FILE variable.
+ * @param boolean     $temp           Is temporary image? If so it will be deleted if no post parent.
+ * @param boolean     $parent_post    Attachment parent post ID.
+ * @param false|array $mimes      Mime types.
  * @return integer|boolean|object
  * @since  3.0.0 Added new argument `$post_parent`.
  * @since  4.1.5 Added new argument `$mimes` so that default mimes can be overridden.
@@ -254,11 +275,13 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '', 
 
 	// Check if file is greater then allowed size.
 	if ( $file['size'] > ap_opt( 'max_upload_size' ) ) {
+		// translators: %s is file size.
 		return new WP_Error( 'file_size_error', sprintf( __( 'File cannot be uploaded, size is bigger than %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) );
 	}
 
 	$file_return = wp_handle_upload(
-		$file, array(
+		$file,
+		array(
 			'test_form' => false,
 			'mimes'     => false === $mimes ? ap_allowed_mimes() : $mimes,
 		)
@@ -320,7 +343,6 @@ function ap_allowed_mimes() {
  * @param integer $user_id User ID.
  */
 function ap_clear_unattached_media( $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -336,12 +358,13 @@ function ap_clear_unattached_media( $user_id = false ) {
 /**
  * Set parent post for an attachment.
  *
- * @param integer|array $media_id Attachment ID.
- * @param integer       $post_parent   Attachment ID.
+ * @param integer|array $media_id      Attachment ID.
+ * @param integer       $post_parent   Post parent id.
+ * @param false|int     $user_id       User id.
  */
 function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 	if ( ! is_array( $media_id ) ) {
-		$media_id = [ $media_id ];
+		$media_id = array( $media_id );
 	}
 
 	if ( false === $user_id ) {
@@ -351,7 +374,7 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 	foreach ( (array) $media_id as $id ) {
 		$attach = get_post( $id );
 
-		if ( $attach && 'attachment' === $attach->post_type && $user_id == $attach->post_author ) { // loose comparison okay.
+		if ( $attach && 'attachment' === $attach->post_type && $user_id == $attach->post_author ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$postarr = array(
 				'ID'          => $attach->ID,
 				'post_parent' => $post_parent,
@@ -367,7 +390,7 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 }
 
 /**
- * Count temproary attachments of a user.
+ * Count temporary attachments of a user.
  *
  * @param  integer $user_id User ID.
  * @return integer
@@ -375,7 +398,7 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 function ap_count_users_temp_media( $user_id ) {
 	global $wpdb;
 
-	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_title = '_ap_temp_media' AND post_author=%d AND post_type='attachment'", $user_id ) ); // db call okay.
+	$count = $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_title = '_ap_temp_media' AND post_author=%d AND post_type='attachment'", $user_id ) ); // phpcs:ignore WordPress.DB
 
 	return (int) $count;
 }
@@ -386,7 +409,6 @@ function ap_count_users_temp_media( $user_id ) {
  * @param integer $user_id User ID.
  */
 function ap_update_user_temp_media_count( $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -402,7 +424,6 @@ function ap_update_user_temp_media_count( $user_id = false ) {
  * @return boolean
  */
 function ap_user_can_upload_temp_media( $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -424,7 +445,6 @@ function ap_user_can_upload_temp_media( $user_id = false ) {
  * @since  4.0.0
  */
 function ap_post_attach_pre_fetch( $ids ) {
-
 	if ( $ids && is_user_logged_in() ) {
 		$args = array(
 			'post_type' => 'attachment',
@@ -449,11 +469,11 @@ function ap_post_attach_pre_fetch( $ids ) {
  * @since 4.1.8
  */
 function ap_delete_images_not_in_content( $post_id ) {
-	$_post  = ap_get_post( $post_id );
+	$_post = ap_get_post( $post_id );
 
 	preg_match_all( '/<img.*?src\s*="([^"]+)".*?>/', $_post->post_content, $matches, PREG_SET_ORDER );
 
-	$new_matches = [];
+	$new_matches = array();
 
 	if ( ! empty( $matches ) ) {
 		foreach ( $matches as $m ) {
@@ -461,7 +481,7 @@ function ap_delete_images_not_in_content( $post_id ) {
 		}
 	}
 
-	$images  = get_post_meta( $post_id, 'anspress-image' );
+	$images = get_post_meta( $post_id, 'anspress-image' );
 
 	if ( ! empty( $images ) ) {
 		// Delete image if not in $matches.

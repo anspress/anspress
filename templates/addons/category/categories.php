@@ -10,6 +10,10 @@
  * @subpackage  Templates
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $question_categories;
 ?>
 
@@ -29,15 +33,18 @@ global $question_categories;
 
 								<span class="ap-term-count">
 									<?php
-										printf(
-											_n( '%d Question', '%d Questions', $category->count, 'anspress-question-answer' ),
-											(int) $category->count
+										echo esc_attr(
+											sprintf(
+												// translators: %d is category question count.
+												_n( '%d Question', '%d Questions', $category->count, 'anspress-question-answer' ),
+												(int) $category->count
+											)
 										);
 									?>
 								</span>
 
-								<a class="ap-categories-feat" style="height:<?php echo ap_opt( 'categories_image_height' ); ?>px" href="<?php echo get_category_link( $category ); ?>">
-									<?php echo ap_get_category_image( $category->term_id, ap_opt( 'categories_image_height' ) ); ?>
+								<a class="ap-categories-feat" style="height:<?php echo (int) ap_opt( 'categories_image_height' ); ?>px" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
+									<?php echo wp_kses_post( ap_get_category_image( $category->term_id, ap_opt( 'categories_image_height' ) ) ); ?>
 								</a>
 							</div>
 
@@ -51,26 +58,28 @@ global $question_categories;
 								<?php if ( $sub_cat_count > 0 ) : ?>
 									<span class="ap-sub-category">
 										<?php
-											printf(
-												// Translators: %d contains count of sub category.
-												_n( '%d Sub category', '%d Sub categories', (int) $sub_cat_count, 'anspress-question-answer' ),
-												(int) $sub_cat_count
+											echo esc_attr(
+												sprintf(
+													// Translators: %d contains count of sub category.
+													_n( '%d Sub category', '%d Sub categories', (int) $sub_cat_count, 'anspress-question-answer' ),
+													(int) $sub_cat_count
+												)
 											);
 										?>
 									</span>
-								<?php endif; // End if(). ?>
+								<?php endif; ?>
 
 							</div>
 
-							<?php if ( $category->description != '' ) : ?>
+							<?php if ( ! empty( $category->description ) ) : ?>
 								<div class="ap-taxo-description">
-									<?php echo ap_truncate_chars( $category->description, 120 ); ?>
+									<?php echo esc_html( ap_truncate_chars( $category->description, 120 ) ); ?>
 								</div>
 							<?php endif; ?>
 
 						</div>
 					</li>
-				<?php endforeach; // End foreach(). ?>
+				<?php endforeach; ?>
 
 			</ul>
 		</div>

@@ -4012,11 +4012,6 @@ msgid_plural "with other %d activities"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/addons/category/categories-question-list.php:23
-#: templates/addons/tag/tags-question-list.php:24
-msgid "View all questions"
-msgstr ""
-
 #: templates/addons/category/categories.php:56
 #. Translators: %d contains count of sub category.
 msgid "%d Sub category"

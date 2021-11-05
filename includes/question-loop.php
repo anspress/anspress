@@ -14,12 +14,17 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-
 if ( ! function_exists( 'ap_get_questions' ) ) {
-	function ap_get_questions( $args = [] ) {
 
+	/**
+	 * Get questions query.
+	 *
+	 * @param array $args WP_Query arguments.
+	 * @return Question_Query
+	 */
+	function ap_get_questions( $args = array() ) {
 		if ( is_front_page() ) {
-			$paged = ( isset( $_GET['ap_paged'] ) ) ? (int) $_GET['ap_paged'] : 1;
+			$paged = (int) ap_sanitize_unslash( 'ap_paged', 'g', 1 );
 		} else {
 			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 		}
@@ -29,7 +34,8 @@ if ( ! function_exists( 'ap_get_questions' ) ) {
 		}
 
 		$args = wp_parse_args(
-			$args, array(
+			$args,
+			array(
 				'showposts' => ap_opt( 'question_per_page' ),
 				'paged'     => $paged,
 				'ap_query'  => 'featured_post',
@@ -52,7 +58,7 @@ function ap_get_question( $question_id ) {
 	$args = array(
 		'p'           => $question_id,
 		'ap_query'    => 'single_question',
-		'post_status' => [ 'publish' ],
+		'post_status' => array( 'publish' ),
 	);
 
 	if ( ap_user_can_view_future_post( $question_id ) ) {

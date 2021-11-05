@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 
-	// Dont do insert notification if defined.
+	// Don't do insert notification if defined.
 	if ( defined( 'AP_DISABLE_INSERT_REP' ) && AP_DISABLE_INSERT_REP ) {
 		return;
 	}
@@ -41,19 +41,16 @@ function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 		return false;
 	}
 
-	// $exists = ap_get_reputation( $event, $ref_id, $user_id );
-	// // Check if same record already exists.
-	// if ( ! empty( $exists ) ) {
-	// return false;
-	// }
-	$insert = $wpdb->insert(
-		$wpdb->ap_reputations, [
+	$insert = $wpdb->insert( // phpcs:ignore WordPress.DB
+		$wpdb->ap_reputations,
+		array(
 			'rep_user_id' => $user_id,
 			'rep_event'   => sanitize_text_field( $event ),
 			'rep_ref_id'  => $ref_id,
 			'rep_date'    => current_time( 'mysql', true ),
-		], [ '%d', '%s', '%d', '%s' ]
-	); // WPCS: db call okay.
+		),
+		array( '%d', '%s', '%d', '%s' )
+	);
 
 	if ( false === $insert ) {
 		return false;
@@ -87,7 +84,7 @@ function ap_get_reputation( $event, $ref_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	$reputation = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_reputations WHERE rep_user_id = %d AND rep_ref_id = %d AND rep_event = %s", $user_id, $ref_id, $event ) ); // WPCS: db call okay.
+	$reputation = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_reputations WHERE rep_user_id = %d AND rep_ref_id = %d AND rep_event = %s", $user_id, $ref_id, $event ) );  // phpcs:ignore WordPress.DB
 
 	return $reputation;
 }
@@ -108,13 +105,15 @@ function ap_delete_reputation( $event, $ref_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	$deleted = $wpdb->delete(
-		$wpdb->ap_reputations, [
+	$deleted = $wpdb->delete( // phpcs:ignore WordPress.DB
+		$wpdb->ap_reputations,
+		array(
 			'rep_user_id' => $user_id,
 			'rep_event'   => sanitize_text_field( $event ),
 			'rep_ref_id'  => $ref_id,
-		], [ '%d', '%s', '%d' ]
-	); // WPCS: db call okay, db cache okay.
+		),
+		array( '%d', '%s', '%d' )
+	);
 
 	if ( false === $deleted ) {
 		return false;
@@ -140,10 +139,11 @@ function ap_delete_reputation( $event, $ref_id, $user_id = false ) {
  */
 function ap_register_reputation_event( $event_slug, $args ) {
 	$args = wp_parse_args(
-		$args, [
+		$args,
+		array(
 			'icon'   => 'apicon-reputation',
 			'parent' => 'post',
-		]
+		)
 	);
 
 	$event_slug          = sanitize_title( $event_slug );
@@ -230,14 +230,14 @@ function ap_get_reputation_event_activity( $event ) {
 function ap_get_user_reputation( $user_id, $group = false ) {
 	global $wpdb;
 
-	$events = $wpdb->get_results( $wpdb->prepare( "SELECT count(*) as count, rep_event  FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d GROUP BY rep_event", $user_id ) ); // WPCS: db call okay.
+	$events = $wpdb->get_results( $wpdb->prepare( "SELECT count(*) as count, rep_event  FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d GROUP BY rep_event", $user_id ) ); // phpcs:ignore WordPress.DB
 
-	$event_counts = [];
+	$event_counts = array();
 	foreach ( (array) $events as $count ) {
 		$event_counts[ $count->rep_event ] = $count->count;
 	}
 
-	$count = [];
+	$count = array();
 	foreach ( ap_get_reputation_events() as $slug => $event ) {
 		$count[ $slug ] = isset( $event_counts[ $slug ] ) ? ( (int) $event_counts[ $slug ] * (int) $event['points'] ) : 0;
 	}
@@ -258,7 +258,6 @@ function ap_get_user_reputation( $user_id, $group = false ) {
  * @since 4.0.0
  */
 function ap_get_user_reputation_meta( $user_id = false, $short = true ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -278,7 +277,6 @@ function ap_get_user_reputation_meta( $user_id = false, $short = true ) {
  * @param integer|bool $user_id User id.
  */
 function ap_update_user_reputation_meta( $user_id = false ) {
-
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}
@@ -295,30 +293,30 @@ function ap_update_user_reputation_meta( $user_id = false ) {
  */
 function ap_get_users_reputation( $user_ids ) {
 	global $wpdb;
-	$user_counts = [];
+	$user_counts = array();
 
 	foreach ( (array) $user_ids as $id ) {
-		$user_counts[ (int) $id ] = [];
+		$user_counts[ (int) $id ] = array();
 	}
 
 	$sanitized = implode( ',', array_keys( $user_counts ) );
 	$query     = "SELECT count(*) as count, rep_event, rep_user_id FROM {$wpdb->ap_reputations} WHERE rep_user_id IN ({$sanitized}) GROUP BY rep_event, rep_user_id";
 
-	$events = $wpdb->get_results( $query ); // @codingStandardsIgnoreLine.
+	$events = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
 
 	foreach ( (array) $events as $count ) {
 		if ( empty( $event_counts[ $count->rep_user_id ] ) ) {
-			$event_counts[ $count->rep_user_id ] = [];
+			$event_counts[ $count->rep_user_id ] = array();
 		}
 
 		$user_counts[ $count->rep_user_id ][ $count->rep_event ] = $count->count;
 	}
 
-	$counts     = [];
+	$counts     = array();
 	$all_events = ap_get_reputation_events();
 
 	foreach ( $user_counts as $user_id => $events ) {
-		$counts[ $user_id ] = [];
+		$counts[ $user_id ] = array();
 		foreach ( $all_events as $slug => $event ) {
 			$counts[ $user_id ][ $slug ] = isset( $events[ $slug ] ) ? ( (int) $events[ $slug ] * (int) $event['points'] ) : 0;
 		}
@@ -344,7 +342,7 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $current = -1;
+	public $current = -1;
 
 	/**
 	 * The number of rows returned by the paged query.
@@ -352,7 +350,7 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $count;
+	public $count;
 
 	/**
 	 * Array of users located by the query.
@@ -360,7 +358,7 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var array
 	 */
-	var $reputations;
+	public $reputations;
 
 	/**
 	 * The reputation object currently being iterated on.
@@ -368,7 +366,7 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var object
 	 */
-	var $reputation;
+	public $reputation;
 
 	/**
 	 * A flag for whether the loop is currently being iterated.
@@ -376,7 +374,7 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var bool
 	 */
-	var $in_the_loop;
+	public $in_the_loop;
 
 	/**
 	 * The total number of rows matching the query parameters.
@@ -384,7 +382,7 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $total_count;
+	public $total_count;
 
 	/**
 	 * Items to show per page
@@ -392,28 +390,82 @@ class AnsPress_Reputation_Query {
 	 * @access public
 	 * @var int
 	 */
-	var $per_page      = 20;
-	var $total_pages   = 1;
-	var $max_num_pages = 0;
-	var $paged;
-	var $offset;
-	var $with_zero_points = [];
-	var $events;
-	var $ids  = [
-		'post'     => [],
-		'comment'  => [],
-		'question' => [],
-		'answer'   => [],
-	];
-	var $pos  = [];
-	var $args = [];
+	public $per_page = 20;
+
+	/**
+	 * Total pages count.
+	 *
+	 * @var int
+	 */
+	public $total_pages = 1;
+
+	/**
+	 * Maximum numbers of pages.
+	 *
+	 * @var int
+	 */
+	public $max_num_pages = 0;
+
+	/**
+	 * Currently paginated page.
+	 *
+	 * @var int
+	 */
+	public $paged;
+
+	/**
+	 * Current offset.
+	 *
+	 * @var int
+	 */
+	public $offset;
+
+	/**
+	 * Array of items without any points.
+	 *
+	 * @var array
+	 */
+	public $with_zero_points = array();
+
+	/**
+	 * Reputation events.
+	 *
+	 * @var array
+	 */
+	public $events;
+
+	/**
+	 * Ids for prefetching.
+	 *
+	 * @var array
+	 */
+	public $ids = array(
+		'post'     => array(),
+		'comment'  => array(),
+		'question' => array(),
+		'answer'   => array(),
+	);
+
+	/**
+	 * Position.
+	 *
+	 * @var array
+	 */
+	public $pos = array();
+
+	/**
+	 * Arguments.
+	 *
+	 * @var array
+	 */
+	public $args = array();
 
 	/**
 	 * Initialize the class.
 	 *
 	 * @param array $args Arguments.
 	 */
-	public function __construct( $args = [] ) {
+	public function __construct( $args = array() ) {
 		$this->events = ap_get_reputation_events();
 		$this->get_events_with_zero_points();
 
@@ -421,7 +473,8 @@ class AnsPress_Reputation_Query {
 		$this->offset = $this->per_page * ( $this->paged - 1 );
 
 		$this->args = wp_parse_args(
-			$args, array(
+			$args,
+			array(
 				'user_id' => 0,
 				'number'  => $this->per_page,
 				'offset'  => $this->offset,
@@ -458,22 +511,25 @@ class AnsPress_Reputation_Query {
 			$not_in = " AND rep_event NOT IN({$excluded})";
 		}
 
-		$query = $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d{$not_in} ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page );
+		$query = $wpdb->prepare( "SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->ap_reputations} WHERE rep_user_id = %d{$not_in} ORDER BY rep_date {$order} LIMIT %d,%d", $this->args['user_id'], $this->offset, $this->per_page ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		$result            = $wpdb->get_results( $query ); // WPCS: DB call okay.
-		$this->total_count = $wpdb->get_var( apply_filters( 'ap_reputations_found_rows', 'SELECT FOUND_ROWS()', $this ) );
+		$result            = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
+		$this->total_count = $wpdb->get_var( apply_filters( 'ap_reputations_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // phpcs:ignore WordPress.DB
 		$this->reputations = $result;
 		$this->total_pages = ceil( $this->total_count / $this->per_page );
 		$this->count       = count( $result );
 		$this->prefetch();
 	}
 
+	/**
+	 * Prefetch related items.
+	 */
 	public function prefetch() {
 		foreach ( (array) $this->reputations as $key => $rep ) {
 			$event = $this->events[ $rep->rep_event ];
 
 			if ( ! isset( $this->ids[ $event['parent'] ] ) ) {
-				$this->ids[ $event['parent'] ] = [];
+				$this->ids[ $event['parent'] ] = array();
 			}
 
 			$this->ids[ $event['parent'] ][]   = $rep->rep_ref_id;
@@ -496,7 +552,7 @@ class AnsPress_Reputation_Query {
 		$ids = esc_sql( sanitize_comma_delimited( $ids ) );
 
 		if ( ! empty( $ids ) ) {
-			$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids})" ); // WPCS: db call okay.
+			$posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE ID in ({$ids})" ); // phpcs:ignore WordPress.DB
 
 			foreach ( (array) $posts as $_post ) {
 				$this->reputations[ $this->pos[ $_post->ID ] ]->ref = $_post;
@@ -515,7 +571,7 @@ class AnsPress_Reputation_Query {
 		}
 
 		$ids      = esc_sql( sanitize_comma_delimited( $this->ids['comment'] ) );
-		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" );
+		$comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_ID in ({$ids})" ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $comments as $_comment ) {
 			$this->reputations[ $this->pos[ $_comment->comment_ID ] ]->ref = $_comment;
@@ -530,7 +586,7 @@ class AnsPress_Reputation_Query {
 	public function have() {
 		if ( $this->current + 1 < $this->count ) {
 			return true;
-		} elseif ( $this->current + 1 == $this->count ) {
+		} elseif ( ( $this->current + 1 ) === $this->count ) {
 			do_action( 'ap_reputations_loop_end' );
 			// Do some cleaning up after the loop.
 			$this->rewind_reputation();
@@ -581,7 +637,7 @@ class AnsPress_Reputation_Query {
 		$this->reputation  = $this->next_reputation();
 
 		// Loop has just started.
-		if ( 0 == $this->current ) {
+		if ( 0 === $this->current ) {
 			/**
 			 * Fires if the current reputation is the first in the loop.
 			 */
@@ -602,7 +658,7 @@ class AnsPress_Reputation_Query {
 	 * Echo current reputation event.
 	 */
 	public function the_event() {
-		echo $this->get_event();
+		echo wp_kses_post( $this->get_event() );
 	}
 
 	/**
@@ -667,29 +723,29 @@ class AnsPress_Reputation_Query {
 	 * Echo current reputation activity.
 	 */
 	public function the_activity() {
-		echo $this->get_activity();
+		echo wp_kses_post( $this->get_activity() );
 	}
 
 	/**
 	 * Out put reference content.
 	 */
 	public function the_ref_content() {
-		if ( in_array( $this->reputation->parent, [ 'post', 'question', 'answer' ], true ) ) {
-			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_p' => $this->reputation->rep_ref_id ] ) ) . '">';
+		if ( in_array( $this->reputation->parent, array( 'post', 'question', 'answer' ), true ) ) {
+			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( array( 'ap_p' => $this->reputation->rep_ref_id ) ) ) . '">';
 
 			if ( ! empty( $this->reputation->ref->post_title ) ) {
 				echo '<strong>' . esc_html( $this->reputation->ref->post_title ) . '</strong>';
 			}
 
 			if ( ! empty( $this->reputation->ref->post_content ) ) {
-				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->post_content ), 200 ) ) . '</p>';
+				echo '<p>' . esc_html( ap_truncate_chars( wp_strip_all_tags( $this->reputation->ref->post_content ), 200 ) ) . '</p>';
 			}
 
 			echo '</a>';
 		} elseif ( 'comment' === $this->reputation->parent ) {
-			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( [ 'ap_c' => $this->reputation->rep_ref_id ] ) ) . '">';
+			echo '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( array( 'ap_c' => $this->reputation->rep_ref_id ) ) ) . '">';
 			if ( ! empty( $this->reputation->ref->comment_content ) ) {
-				echo '<p>' . esc_html( ap_truncate_chars( strip_tags( $this->reputation->ref->comment_content ), 200 ) ) . '</p>';
+				echo '<p>' . esc_html( ap_truncate_chars( wp_strip_all_tags( $this->reputation->ref->comment_content ), 200 ) ) . '</p>';
 			}
 			echo '</a>';
 		}

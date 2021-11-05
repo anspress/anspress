@@ -10,6 +10,10 @@
  * @package AnsPress-pro
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $user_id = get_query_var( 'ap_user_id' );
 ?>
 

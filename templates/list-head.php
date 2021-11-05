@@ -7,6 +7,10 @@
  * @author  Rahul Aryan <rah12@live.com>
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 
 <div class="ap-list-head clearfix">
@@ -29,6 +33,7 @@
 $questions_count = (int) get_user_meta( get_current_user_id(), '__ap_unpublished_questions', true );
 
 if ( $questions_count > 0 ) {
+	// translators: %d is question count.
 	$text = sprintf( _n( '%d question is', '%d questions are', $questions_count, 'anspress-question-answer' ), $questions_count );
 
 	echo '<div class="ap-unpublished-alert ap-alert warning"><i class="apicon-pin"></i>';

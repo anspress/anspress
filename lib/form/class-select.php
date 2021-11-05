@@ -39,9 +39,10 @@ class Select extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label'      => __( 'AnsPress Select Field', 'anspress-question-answer' ),
-				'options'    => [],
+				'options'    => array(),
 				'terms_args' => array(
 					'taxonomy'   => 'question_category',
 					'hide_empty' => false,
@@ -53,10 +54,10 @@ class Select extends Field {
 		// Call parent prepare().
 		parent::prepare();
 
-		if ( in_array( $this->get( 'options' ), [ 'posts', 'terms' ], true ) ) {
-			$this->sanitize_cb = array_merge( [ 'absint' ], $this->sanitize_cb );
+		if ( in_array( $this->get( 'options' ), array( 'posts', 'terms' ), true ) ) {
+			$this->sanitize_cb = array_merge( array( 'absint' ), $this->sanitize_cb );
 		} else {
-			$this->sanitize_cb = array_merge( [ 'text_field' ], $this->sanitize_cb );
+			$this->sanitize_cb = array_merge( array( 'text_field' ), $this->sanitize_cb );
 		}
 	}
 
@@ -69,11 +70,11 @@ class Select extends Field {
 		$options = $this->get( 'options' );
 
 		if ( is_string( $options ) && 'terms' === $options ) {
-			return get_terms( $this->get( 'terms_args', [] ) );
+			return get_terms( $this->get( 'terms_args', array() ) );
 		}
 
 		if ( is_string( $options ) && 'posts' === $options ) {
-			return wp_list_pluck( get_posts( $this->get( 'posts_args', [] ) ), 'post_title', 'ID' );
+			return wp_list_pluck( get_posts( $this->get( 'posts_args', array() ) ), 'post_title', 'ID' );
 		}
 
 		return (array) $options;
@@ -98,6 +99,6 @@ class Select extends Field {
 		$this->add_html( '</select>' );
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 }

@@ -61,7 +61,6 @@ function ap_base_page_link() {
  * @since   2.4.7 Added filter `ap_get_theme_location`
  */
 function ap_get_theme_location( $file, $plugin = false ) {
-
 	$child_path  = get_stylesheet_directory() . '/anspress/' . $file;
 	$parent_path = get_template_directory() . '/anspress/' . $file;
 
@@ -136,7 +135,7 @@ function is_anspress() {
 
 	// If BuddyPress installed.
 	if ( function_exists( 'bp_current_component' ) ) {
-		if ( in_array( bp_current_component(),  array( 'qa', 'questions', 'answers' ) ) ) {
+		if ( in_array( bp_current_component(), array( 'qa', 'questions', 'answers' ), true ) ) {
 			$ret = true;
 		}
 	}
@@ -146,12 +145,12 @@ function is_anspress() {
 
 	// Check if main pages.
 	if ( $queried_object instanceof WP_Post ) {
-		$page_ids = [];
+		$page_ids = array();
 		foreach ( $page_slug as $slug ) {
 			$page_ids[] = ap_opt( $slug );
 		}
 
-		if ( in_array( $queried_object->ID, $page_ids ) ) {
+		if ( in_array( $queried_object->ID, $page_ids ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			$ret = true;
 		}
 	}
@@ -251,11 +250,11 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
 	}
 
 	if ( $time ) {
-		if ( $show_full_date + $time > current_time( 'timestamp', true ) ) {
+		if ( $show_full_date + $time > time() ) {
 			return sprintf(
 				/* translators: %s: human-readable time difference */
 				__( '%s ago', 'anspress-question-answer' ),
-				human_time_diff( $time, current_time( 'timestamp', true ) )
+				human_time_diff( $time, time() )
 			);
 		}
 
@@ -272,12 +271,11 @@ function ap_human_time( $time, $unix = true, $show_full_date = 604800, $format =
  *
  * @since unknown
  * @since 4.1.6 Changed cache group to `counts`.
- * @todo clear cache after answer.
  */
 function ap_is_user_answered( $question_id, $user_id ) {
 	global $wpdb;
 
-	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND ( post_author = %d AND post_type = 'answer')", $question_id, $user_id ) ); // db call ok.
+	$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->posts where post_parent = %d AND ( post_author = %d AND post_type = 'answer')", $question_id, $user_id ) ); // phpcs:ignore WordPress.DB
 
 	return $count > 0 ? true : false;
 }
@@ -311,7 +309,8 @@ function ap_post_edit_link( $_post ) {
 		array(
 			'id'      => $_post->ID,
 			'__nonce' => $nonce,
-		), $base_page
+		),
+		$base_page
 	);
 
 	/**
@@ -334,7 +333,7 @@ function ap_post_edit_link( $_post ) {
  * @since 4.1.8 Strip tags.
  */
 function ap_truncate_chars( $text, $limit = 40, $ellipsis = '...' ) {
-	$text = strip_tags( $text );
+	$text = wp_strip_all_tags( $text );
 	$text = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $text );
 	if ( strlen( $text ) > $limit ) {
 		$endpos = strpos( $text, ' ', (string) $limit );
@@ -380,10 +379,10 @@ function sanitize_comma_delimited( $str, $pieces_type = 'int' ) {
 	if ( ! empty( $str ) ) {
 		$str       = wp_unslash( $str );
 		$glue      = 'int' !== $pieces_type ? '","' : ',';
-		$sanitized = [];
+		$sanitized = array();
 		foreach ( $str as $s ) {
-			if ( '0' == $s || ! empty( $s ) ) {
-				$sanitized[] = 'int' === $pieces_type ? intval( $s ) : str_replace( [ "'", '"', ',' ], '', sanitize_text_field( $s ) );
+			if ( '0' == $s || ! empty( $s ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+				$sanitized[] = 'int' === $pieces_type ? intval( $s ) : str_replace( array( "'", '"', ',' ), '', sanitize_text_field( $s ) );
 			}
 		}
 
@@ -405,7 +404,7 @@ function sanitize_comma_delimited( $str, $pieces_type = 'int' ) {
  * @since  3.0.0 Check if `ap_ajax_action` is set.
  */
 function ap_is_ajax() {
-	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_REQUEST['ap_ajax_action'] ) ) { // input var ok.
+	if ( defined( 'DOING_AJAX' ) && DOING_AJAX && ap_sanitize_unslash( 'ap_ajax_action', 'request', false ) ) {
 		return true;
 	}
 
@@ -474,7 +473,7 @@ function ap_send_json( $result = array() ) {
 	$result['is_ap_ajax'] = true;
 	$json                 = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
 
-	wp_die( $json ); // xss ok.
+	die( $json ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -489,7 +488,8 @@ function ap_highlight_words( $text, $words ) {
 	$words = explode( ' ', $words );
 	foreach ( $words as $word ) {
 		// Quote the text for regex.
-		$word = preg_quote( $word );
+		$word = preg_quote( $word, '/' );
+
 		// Highlight the words.
 		$text = preg_replace( "/\b($word)\b/i", '<span class="highlight_word">\1</span>', $text );
 	}
@@ -660,7 +660,7 @@ function ap_current_page_url( $args ) {
  * @since 4.1.0 Use `WP_List_Util` class for sorting.
  */
 function ap_sort_array_by_order( $array ) {
-	$new_array = [];
+	$new_array = array();
 
 	if ( ! empty( $array ) && is_array( $array ) ) {
 		$i = 1;
@@ -684,7 +684,7 @@ function ap_sort_array_by_order( $array ) {
  * @since 2.1
  */
 function ap_link_to( $sub ) {
-	echo ap_get_link_to( $sub ); // xss ok.
+	echo esc_url( ap_get_link_to( $sub ) );
 }
 
 	/**
@@ -752,7 +752,7 @@ function ap_get_link_to( $sub ) {
 		}
 
 		$url = $base . $args;
-	} // End if().
+	}
 
 	/**
 	 * Allows filtering anspress links.
@@ -769,10 +769,10 @@ function ap_get_link_to( $sub ) {
  * Return the total numbers of post.
  *
  * @param string         $post_type Post type.
- * @param boolean|string $ap_type ap_meta type.
+ * @param boolean|string $ap_type   ap_meta type.
+ * @param false|int      $user_id   User id, default is current user id.
  * @return object
  * @since  2.0.0
- * @TODO use new qameta table.
  */
 function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_id = false ) {
 	global $wpdb;
@@ -805,8 +805,8 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_
 		$where .= ' AND p.post_author = ' . (int) $user_id;
 	}
 
-	$where     = apply_filters( 'ap_total_posts_count', $where );
-	$query     = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p $join $where GROUP BY p.post_status";
+	$where = apply_filters( 'ap_total_posts_count', $where );
+	$query = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p $join $where GROUP BY p.post_status";
 
 	$count = $wpdb->get_results( $query, ARRAY_A ); // @codingStandardsIgnoreLine
 	$counts = array();
@@ -816,7 +816,6 @@ function ap_total_posts_count( $post_type = 'question', $ap_type = false, $user_
 	}
 
 	$counts['total'] = 0;
-
 
 	if ( ! empty( $count ) ) {
 		foreach ( $count as $row ) {
@@ -846,9 +845,9 @@ function ap_total_published_questions() {
  */
 function ap_total_solved_questions( $type = 'int' ) {
 	global $wpdb;
-	$query     = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p INNER JOIN $wpdb->ap_qameta qameta ON p.ID = qameta.post_id WHERE p.post_type = 'question' AND qameta.selected_id IS NOT NULL AND qameta.selected_id > 0 GROUP BY p.post_status";
+	$query = "SELECT count(*) as count, p.post_status FROM $wpdb->posts p INNER JOIN $wpdb->ap_qameta qameta ON p.ID = qameta.post_id WHERE p.post_type = 'question' AND qameta.selected_id IS NOT NULL AND qameta.selected_id > 0 GROUP BY p.post_status";
 
-	$count  = $wpdb->get_results( $query, ARRAY_A ); // unprepared SQL ok, db call ok.
+	$count  = $wpdb->get_results( $query, ARRAY_A ); // phpcs:ignore WordPress.DB
 	$counts = array( 'total' => 0 );
 
 	foreach ( get_post_stati() as $state ) {
@@ -921,7 +920,8 @@ function ap_create_base_page() {
 
 		if ( ! $_post || 'trash' === $_post->post_status ) {
 			$args = wp_parse_args(
-				$page, array(
+				$page,
+				array(
 					'post_type'      => 'page',
 					'post_content'   => '[anspress]',
 					'post_status'    => 'publish',
@@ -943,7 +943,7 @@ function ap_create_base_page() {
 				ap_opt( $slug . '_id', $page->post_name );
 			}
 		}
-	} // End foreach().
+	}
 }
 
 /**
@@ -1013,7 +1013,6 @@ function ap_parse_search_string( $str ) {
 
 		// This was actually a pair.
 		if ( count( $pair_bits ) === 2 ) {
-
 			$values    = explode( ',', $pair_bits[1] );
 			$sanitized = array();
 
@@ -1036,9 +1035,7 @@ function ap_parse_search_string( $str ) {
 				// Remove this pair from $bits.
 				unset( $bits[ $id ] );
 			}
-		} // Not a pair, presumably reached the query.
-		else {
-
+		} else {
 			// Exit the loop.
 			break;
 		}
@@ -1079,7 +1076,7 @@ function ap_is_profile_menu( $menu ) {
 function ap_questions_answer_ids( $question_id ) {
 	global $wpdb;
 
-	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) ); // db call ok.
+	$ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'answer' AND post_parent=%d", $question_id ) ); // phpcs:ignore WordPress.DB
 
 	return $ids;
 }
@@ -1110,7 +1107,6 @@ function ap_append_table_names() {
 	$wpdb->ap_reputations = $wpdb->prefix . 'ap_reputations';
 	$wpdb->ap_subscribers = $wpdb->prefix . 'ap_subscribers';
 	$wpdb->ap_activity    = $wpdb->prefix . 'ap_activity';
-
 }
 ap_append_table_names();
 
@@ -1124,8 +1120,8 @@ ap_append_table_names();
  * @since  3.0.0
  */
 function ap_isset_post_value( $var, $default = '' ) {
-	if ( isset( $_REQUEST[ $var ] ) ) { // input var okay.
-		return wp_unslash( $_REQUEST[ $var ] ); // input var okay, xss ok, sanitization ok.
+	if ( isset( $_REQUEST[ $var ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return wp_unslash( $_REQUEST[ $var ] ); // phpcs:ignore WordPress.Security
 	}
 
 	return $default;
@@ -1177,14 +1173,13 @@ function ap_get_current_list_filters( $filter = null ) {
 function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 	// If not false then get from $_REQUEST or query_var.
 	if ( false !== $from ) {
-		if ( in_array( strtolower( $from ), [ 'request', 'post', 'get', 'p', 'g', 'r' ], true ) ) {
+		if ( in_array( strtolower( $from ), array( 'request', 'post', 'get', 'p', 'g', 'r' ), true ) ) {
 			$str = ap_isset_post_value( $str, $default );
 		} elseif ( 'query_var' === $from ) {
 			$str = get_query_var( $str );
 		}
 	}
 
-	// Return default if empty.
 	if ( empty( $str ) ) {
 		return $default;
 	}
@@ -1284,10 +1279,10 @@ function ap_disable_question_suggestion() {
  */
 function ap_post_author_pre_fetch( $ids ) {
 	$users = get_users(
-		[
+		array(
 			'include' => $ids,
 			'fields'  => array( 'ID', 'user_login', 'user_nicename', 'user_email', 'display_name' ),
-		]
+		)
 	);
 
 	foreach ( (array) $users as $user ) {
@@ -1382,7 +1377,7 @@ function ap_canonical_url() {
  * @since 0.1
  * @since 4.1.2 Improved args and PHPDoc.
  */
-function ap_user_display_name( $args = [] ) {
+function ap_user_display_name( $args = array() ) {
 	global $post;
 
 	$defaults = array(
@@ -1410,7 +1405,7 @@ function ap_user_display_name( $args = [] ) {
 
 	if ( $user ) {
 		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '" itemprop="url"><span itemprop="name">' . $user->display_name . '</span></a>';
-	} elseif ( $post && in_array( $post->post_type, [ 'question', 'answer' ], true ) ) {
+	} elseif ( $post && in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 		$post_fields = ap_get_post_field( 'fields' );
 
 		if ( ! $html ) {
@@ -1452,7 +1447,7 @@ function ap_user_display_name( $args = [] ) {
 		return $return;
 	}
 
-	echo $return; // xss okay.
+	echo $return; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
@@ -1533,23 +1528,22 @@ function ap_active_user_page() {
  * @param boolean $echo Echo or return.
  */
 function ap_user_link_anchor( $user_id, $echo = true ) {
-
 	$name = ap_user_display_name( $user_id );
 
 	if ( $user_id < 1 ) {
 		if ( $echo ) {
-			echo $name; // xss okay.
+			echo $name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} else {
 			return $name;
 		}
 	}
 
-	$html  = '<a href="' . ap_user_link( $user_id ) . '">';
+	$html  = '<a href="' . esc_url( ap_user_link( $user_id ) ) . '">';
 	$html .= $name;
 	$html .= '</a>';
 
 	if ( $echo ) {
-		echo $html; // xss okay.
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	return $html;
@@ -1581,7 +1575,7 @@ function ap_search_array( $array, $key, $value ) {
 	$results = array();
 
 	if ( is_array( $array ) ) {
-		if ( isset( $array[ $key ] ) && $array[ $key ] == $value ) {
+		if ( isset( $array[ $key ] ) && $array[ $key ] == $value ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			$results[] = $array;
 		}
 
@@ -1602,14 +1596,14 @@ function ap_search_array( $array, $key, $value ) {
  */
 function ap_get_addons() {
 	$cache  = wp_cache_get( 'addons', 'anspress' );
-	$option = get_option( 'anspress_addons', [] );
+	$option = get_option( 'anspress_addons', array() );
 
 	if ( false !== $cache ) {
 		return $cache;
 	}
 
 	$all_files = array();
-	foreach ( [ 'pro', 'free' ] as $folder ) {
+	foreach ( array( 'pro', 'free' ) as $folder ) {
 		$path = ANSPRESS_ADDONS_DIR . DS . $folder;
 
 		if ( file_exists( $path ) ) {
@@ -1666,7 +1660,7 @@ function ap_get_addons() {
 			'name'        => __( 'Syntax Highlighter', 'anspress-question-answer' ),
 			'description' => __( 'Add syntax highlighter support.', 'anspress-question-answer' ),
 		),
-		'akismet.php' => array(
+		'akismet.php'           => array(
 			'name'        => __( 'Akismet Check', 'anspress-question-answer' ),
 			'description' => __( 'Check for spam in post content.', 'anspress-question-answer' ),
 		),
@@ -1679,7 +1673,7 @@ function ap_get_addons() {
 	 */
 	$addons = apply_filters( 'ap_addons', $addons );
 
-	$valid_addons = [];
+	$valid_addons = array();
 	foreach ( (array) $addons as $k => $addon ) {
 		$path  = ANSPRESS_ADDONS_DIR . DS . basename( $k, '.php' ) . DS . $k;
 		$path2 = ANSPRESS_ADDONS_DIR . DS . $k;
@@ -1697,7 +1691,7 @@ function ap_get_addons() {
 		$addons[ $k ]['pro']    = isset( $addon['pro'] ) ? $addon['pro'] : false;
 		$addons[ $k ]['active'] = isset( $option[ $k ] ) ? true : false;
 		$addons[ $k ]['id']     = $k;
-		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( [ '/', '.php' ], [ '-', '' ], 'addon-' . $k ) ) );
+		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( array( '/', '.php' ), array( '-', '' ), 'addon-' . $k ) ) );
 
 		if ( ! empty( $addons[ $k ]['path'] ) && file_exists( $addons[ $k ]['path'] ) ) {
 			$valid_addons[ $k ] = $addons[ $k ];
@@ -1715,7 +1709,7 @@ function ap_get_addons() {
  * @since 4.0.0
  */
 function ap_get_active_addons() {
-	$active_addons = [];
+	$active_addons = array();
 
 	foreach ( ap_get_addons() as $addon ) {
 		if ( $addon['active'] ) {
@@ -1761,7 +1755,7 @@ function ap_activate_addon( $addon_name ) {
 
 	global $ap_addons_activation;
 
-	$opt        = get_option( 'anspress_addons', [] );
+	$opt        = get_option( 'anspress_addons', array() );
 	$all_addons = ap_get_addons();
 	$addon_name = wp_normalize_path( $addon_name );
 
@@ -1814,7 +1808,7 @@ function ap_deactivate_addon( $addon_name ) {
 		return false;
 	}
 
-	$opt        = get_option( 'anspress_addons', [] );
+	$opt        = get_option( 'anspress_addons', array() );
 	$all_addons = ap_get_addons();
 	$addon_name = wp_normalize_path( $addon_name );
 
@@ -1898,7 +1892,7 @@ function ap_trigger_qa_update_hook( $_post, $event ) {
 	$_post = ap_get_post( $_post );
 
 	// Check if post type is question or answer.
-	if ( ! in_array( $_post->post_type, [ 'question', 'answer' ], true ) ) {
+	if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
 		return;
 	}
 
@@ -1921,7 +1915,7 @@ function ap_trigger_qa_update_hook( $_post, $event ) {
  */
 function ap_in_array_r( $needle, $haystack, $strict = false ) {
 	foreach ( $haystack as $item ) {
-		if ( ( $strict ? $item === $needle : $item == $needle ) || ( is_array( $item ) && in_array_r( $needle, $item, $strict ) ) ) {
+		if ( ( $strict ? $item === $needle : $item == $needle ) || ( is_array( $item ) && ap_in_array_r( $needle, $item, $strict ) ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 			return true;
 		}
 	}
@@ -1940,7 +1934,7 @@ function ap_in_array_r( $needle, $haystack, $strict = false ) {
  * @since 4.1.6 Fixed: trailing slash.
  */
 function ap_get_short_link( $args ) {
-	array_unshift( $args, [ 'ap_page' => 'shortlink' ] );
+	array_unshift( $args, array( 'ap_page' => 'shortlink' ) );
 	return add_query_arg( $args, home_url( '/' ) );
 }
 
@@ -1963,15 +1957,15 @@ function ap_addon_activation_hook( $addon, $cb ) {
  * Insert a value or key/value pair after a specific key in an array.  If key doesn't exist, value is appended
  * to the end of the array.
  *
- * @param array  $array
- * @param string $key
- * @param array  $new
+ * @param array  $array Array.
+ * @param string $key   Key.
+ * @param array  $new   Array.
  *
  * @return array
  */
-function ap_array_insert_after( $array = [], $key = '', $new = [] ) {
+function ap_array_insert_after( $array = array(), $key = '', $new = array() ) {
 	$keys  = array_keys( $array );
-	$index = array_search( $key, $keys );
+	$index = array_search( $key, $keys ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 	$pos   = false === $index ? count( $array ) : $index + 1;
 
 	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
@@ -1997,7 +1991,7 @@ function ap_rand( $min, $max, $weight ) {
  * @return string Path separated by dot notation.
  */
 function ap_to_dot_notation( $path = false ) {
-	$parsed = rtrim( str_replace( '..', '.', str_replace( [ ']', '[' ], '.', $path ) ), '.' );
+	$parsed = rtrim( str_replace( '..', '.', str_replace( array( ']', '[' ), '.', $path ) ), '.' );
 	return $parsed;
 }
 
@@ -2018,7 +2012,9 @@ function ap_set_in_array( &$arr, $path, $val ) {
 		$loc = &$loc[ $step ];
 	}
 
-	return $loc = $val;
+	$loc = $val;
+
+	return $loc;
 }
 
 /**
@@ -2065,7 +2061,7 @@ function ap_ask_form( $deprecated = null ) {
 		),
 	);
 
-	$values         = [];
+	$values         = array();
 	$session_values = anspress()->session->get( 'form_question' );
 
 	// Add value when editing post.
@@ -2136,16 +2132,18 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 	$current_ans = ap_count_published_answers( $question_id );
 
 	global $post;
-	$post = ap_get_post( $answer_id );
+	$post = ap_get_post( $answer_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	setup_postdata( $post );
 
 	ob_start();
 	global $withcomments;
-	$withcomments = true;
+	$withcomments = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 	ap_get_template_part( 'answer' );
 
-	$html        = ob_get_clean();
+	$html = ob_get_clean();
+
+	// translators: %d is answer count.
 	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
 
 	$result = array(
@@ -2155,11 +2153,11 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 		'div_id'       => '#post-' . get_the_ID(),
 		'can_answer'   => ap_user_can_answer( $post->ID ),
 		'html'         => $html,
-		'snackbar'     => [ 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ],
-		'answersCount' => [
+		'snackbar'     => array( 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
+		'answersCount' => array(
 			'text'   => $count_label,
 			'number' => $current_ans,
-		],
+		),
 	);
 
 	ap_ajax_json( $result );
@@ -2208,7 +2206,7 @@ function ap_answer_form( $question_id, $editing = false ) {
 		),
 	);
 
-	$values         = [];
+	$values         = array();
 	$session_values = anspress()->session->get( 'form_answer_' . $question_id );
 
 	// Add value when editing post.
@@ -2233,7 +2231,6 @@ function ap_answer_form( $question_id, $editing = false ) {
 			'name'  => 'post_id',
 			'value' => (int) $editing_id,
 		);
-
 	} elseif ( ! empty( $session_values ) ) {
 		// Set last session values if not editing.
 		$values = $session_values;
@@ -2279,7 +2276,7 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 	// Add value when editing post.
 	if ( false !== $_comment && ! empty( $_comment ) ) {
 		$_comment = get_comment( $_comment );
-		$values   = [];
+		$values   = array();
 
 		$args['hidden_fields'][] = array(
 			'name'  => 'comment_id',
@@ -2288,7 +2285,7 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 
 		$values['content'] = $_comment->comment_content;
 
-		if ( '0' == $_comment->user_id ) {
+		if ( empty( $_comment->user_id ) ) {
 			$values['author'] = $_comment->comment_author;
 			$values['email']  = $_comment->comment_author_email;
 			$values['url']    = $_comment->comment_author_url;
@@ -2317,7 +2314,7 @@ function ap_ajax_tinymce_assets() {
 	print_footer_scripts();
 	$scripts = ob_get_clean();
 
-	echo str_replace( 'jquery-core,', '', $scripts ); // xss okay.
+	echo str_replace( 'jquery-core,', '', $scripts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	\_WP_Editors::editor_js();
 }
 
@@ -2385,7 +2382,7 @@ function ap_main_pages() {
  */
 function ap_main_pages_id() {
 	$main_pages = array_keys( ap_main_pages() );
-	$pages_id   = [];
+	$pages_id   = array();
 
 	foreach ( $main_pages as $slug ) {
 		$pages_id[ $slug ] = ap_opt( $slug );
@@ -2423,7 +2420,7 @@ function ap_current_user_id() {
  * @since 4.1.2
  */
 function ap_is_cpt( $_post ) {
-	return ( in_array( $_post->post_type, [ 'answer', 'question' ], true ) );
+	return ( in_array( $_post->post_type, array( 'answer', 'question' ), true ) );
 }
 
 /**
@@ -2433,8 +2430,9 @@ function ap_is_cpt( $_post ) {
  *
  * @global WP_filter $wp_filter
  * @global array $merged_filters
- * @param string $tag
- * @param int $priority
+ *
+ * @param string $tag Hook name.
+ * @param int    $priority Hook priority.
  * @return bool
  *
  * @since 4.2.0
@@ -2457,27 +2455,24 @@ function ap_remove_all_filters( $tag, $priority = false ) {
 			// Store filters in a backup.
 			$ap->new_filters->wp_filter[ $tag ][ $priority ] = $wp_filter[ $tag ][ $priority ];
 
-			// Unset the filters
+			// Unset the filters.
 			unset( $wp_filter[ $tag ][ $priority ] );
-
-		// Priority is empty.
 		} else {
-
-			// Store filters in a backup
+			// Store filters in a backup.
 			$ap->new_filters->wp_filter[ $tag ] = $wp_filter[ $tag ];
 
-			// Unset the filters
+			// Unset the filters.
 			unset( $wp_filter[ $tag ] );
 		}
 	}
 
-	// Check merged filters
+	// Check merged filters.
 	if ( isset( $merged_filters[ $tag ] ) ) {
 
-		// Store filters in a backup
+		// Store filters in a backup.
 		$ap->new_filters->merged_filters[ $tag ] = $merged_filters[ $tag ];
 
-		// Unset the filters
+		// Unset the filters.
 		unset( $merged_filters[ $tag ] );
 	}
 
@@ -2491,7 +2486,7 @@ function ap_remove_all_filters( $tag, $priority = false ) {
  * @since 4.2.0
  */
 function ap_get_current_timestamp() {
-	$local_time  = current_datetime();
+	$local_time = current_datetime();
 
 	return $local_time->getTimestamp() + $local_time->getOffset();
 }

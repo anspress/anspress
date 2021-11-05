@@ -5,17 +5,21 @@
  *
  * @package    AnsPress
  * @license    https://www.gnu.org/licenses/gpl-2.0.txt GNU Public License
- * @author    Rahul Aryan <rah12@live.com>
+ * @author     Rahul Aryan <rah12@live.com>
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="https://schema.org/Question" itemscope="">
 
-	<h1 class="entry-title"><a href="<?php echo get_the_permalink(); ?>"><?php the_title(); ?></a></h1>
+	<h1 class="entry-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
 	<div class="ap-question-lr">
 		<div class="ap-q-left">
 			<div class="ap-question-meta clearfix">
-			<?php echo ap_question_metas(); // xss ok. ?>
+			<?php ap_question_metas(); ?>
 		</div>
 
 		<div ap="question" apId="<?php the_ID(); ?>">
@@ -37,21 +41,31 @@
 				<div class="ap-cell clearfix">
 					<div class="ap-cell-inner">
 						<div class="ap-q-metas">
-							<?php echo ap_user_display_name( [ 'html' => true ] ); ?>
+							<?php
+								ap_user_display_name(
+									array(
+										'html' => true,
+										'echo' => true,
+									)
+								);
+								?>
 							<a href="<?php the_permalink(); ?>" class="ap-posted">
 								<?php
-									printf(
-										'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
-										ap_get_time( get_the_ID(), 'c' ),
+									echo esc_attr(
 										sprintf(
-											__( 'Posted %s', 'anspress-question-answer' ),
-											ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
+											'<time itemprop="datePublished" datetime="%1$s">%2$s</time>',
+											ap_get_time( get_the_ID(), 'c' ),
+											sprintf(
+												// translators: %s is human readable time difference.
+												__( 'Posted %s', 'anspress-question-answer' ),
+												ap_human_time( ap_get_time( get_the_ID(), 'U' ) )
+											)
 										)
 									);
-								?>
+									?>
 							</a>
 							<?php ap_recent_post_activity(); ?>
-							<?php echo ap_post_status_badge(); // xss okay. ?>
+							<?php echo ap_post_status_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 
 						<!-- Start ap-content-inner -->
@@ -83,8 +97,8 @@
 				</div>
 			</div>
 		</div>
-			<a class="ap-eq-view-ans" href="<?php echo get_the_permalink(); ?>">
-				<?php _e( 'View all answers', 'anspress-question-answer' ); ?>
+			<a class="ap-eq-view-ans" href="<?php the_permalink(); ?>">
+				<?php esc_attr_e( 'View all answers', 'anspress-question-answer' ); ?>
 			</a>
 		</div>
 

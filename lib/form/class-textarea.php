@@ -39,7 +39,8 @@ class Textarea extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label' => __( 'AnsPress Textarea Field', 'anspress-question-answer' ),
 				'attr'  => array(
 					'rows' => 8,
@@ -49,7 +50,7 @@ class Textarea extends Field {
 
 		// Call parent prepare().
 		parent::prepare();
-		$this->sanitize_cb = array_merge( [ 'textarea_field' ], $this->sanitize_cb );
+		$this->sanitize_cb = array_merge( array( 'textarea_field' ), $this->sanitize_cb );
 	}
 
 	/**
@@ -65,6 +66,6 @@ class Textarea extends Field {
 		$this->add_html( '</textarea>' );
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
 }

@@ -10,6 +10,11 @@
 
 namespace AnsPress;
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Callback function for auto loading class on demand.
  *

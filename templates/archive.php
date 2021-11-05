@@ -8,8 +8,11 @@
  * @since 4.1.0
  *
  * @package AnsPress
- * @package Templates
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 ?>
 
 <?php dynamic_sidebar( 'ap-top' ); ?>

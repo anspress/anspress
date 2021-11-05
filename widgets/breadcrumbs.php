@@ -67,7 +67,9 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 	}
 
 	/**
-	 * Output AnsPress breadcrumbs
+	 * Output AnsPress breadcrumbs.
+	 *
+	 * @return void
 	 */
 	public static function breadcrumbs() {
 		$navs = self::get_breadcrumbs();
@@ -100,6 +102,7 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 	 *
 	 * @param array $args     Widget arguments.
 	 * @param array $instance Widget instance.
+	 * @return void
 	 */
 	public function widget( $args, $instance ) {
 		echo wp_kses_post( $args['before_widget'] );
@@ -109,7 +112,9 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 }
 
 /**
- * Register breadcrumbs widget
+ * Register breadcrumbs widget.
+ *
+ * @return void
  */
 function register_anspress_breadcrumbs() {
 	register_widget( 'AnsPress_Breadcrumbs_Widget' );

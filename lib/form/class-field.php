@@ -56,7 +56,7 @@ class Field {
 	 *
 	 * @var array
 	 */
-	public $args = [];
+	public $args = array();
 
 	/**
 	 * The field HTML markup.
@@ -70,14 +70,14 @@ class Field {
 	 *
 	 * @var array
 	 */
-	protected $output_order = [];
+	protected $output_order = array();
 
 	/**
 	 * The errors.
 	 *
 	 * @var array
 	 */
-	public $errors = [];
+	public $errors = array();
 
 	/**
 	 * Field type.
@@ -119,14 +119,14 @@ class Field {
 	 *
 	 * @var array
 	 */
-	protected $validate_cb = [];
+	protected $validate_cb = array();
 
 	/**
 	 * The sanitization callback.
 	 *
 	 * @var array
 	 */
-	protected $sanitize_cb = [];
+	protected $sanitize_cb = array();
 
 	/**
 	 * Is sanitized?
@@ -260,7 +260,7 @@ class Field {
 	 */
 	protected function html_order() {
 		if ( empty( $this->args['output_order'] ) ) {
-			$this->output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+			$this->output_order = array( 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' );
 		} else {
 			$this->output_order = $this->args['output_order'];
 		}
@@ -300,7 +300,7 @@ class Field {
 	 * @return null|mixed
 	 */
 	public function unsafe_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $request_value ) ) {
 			return wp_unslash( $request_value );
 		}
@@ -312,7 +312,7 @@ class Field {
 	 * @return boolean
 	 */
 	public function isset_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		if ( is_null( $request_value ) ) {
 			return false;
@@ -409,7 +409,7 @@ class Field {
 	 * @return void
 	 */
 	public function errors() {
-		$wrapper = $this->get( 'wrapper', [] );
+		$wrapper = $this->get( 'wrapper', array() );
 
 		if ( false !== $wrapper ) {
 			$this->add_html( '<div class="ap-field-errorsc">' );
@@ -431,6 +431,7 @@ class Field {
 	/**
 	 * Return safe css ID.
 	 *
+	 * @param string $str String.
 	 * @return string
 	 */
 	public function id( $str = false ) {
@@ -443,7 +444,7 @@ class Field {
 		}
 
 		return sanitize_html_class(
-			rtrim( preg_replace( '/-+/', '-', str_replace( [ '[', ']' ], '-', $str ) ), '-' )
+			rtrim( preg_replace( '/-+/', '-', str_replace( array( '[', ']' ), '-', $str ) ), '-' )
 		);
 	}
 
@@ -459,7 +460,7 @@ class Field {
 		 * @param object $field Field object passed by reference.
 		 * @since 4.1.0
 		 */
-		do_action_ref_array( 'ap_before_field_markup', [ $this ] );
+		do_action_ref_array( 'ap_before_field_markup', array( $this ) );
 	}
 
 	/**
@@ -479,7 +480,7 @@ class Field {
 	 * @return void
 	 */
 	protected function wrapper_start() {
-		$wrapper = $this->get( 'wrapper', [] );
+		$wrapper = $this->get( 'wrapper', array() );
 
 		if ( false !== $wrapper ) {
 			$errors = $this->have_errors() ? ' ap-have-errors' : '';
@@ -494,7 +495,7 @@ class Field {
 	 * @return void
 	 */
 	protected function wrapper_end() {
-		if ( false !== $this->get( 'wrapper', [] ) ) {
+		if ( false !== $this->get( 'wrapper', array() ) ) {
 			$this->add_html( '</div>' );
 		}
 	}
@@ -531,7 +532,7 @@ class Field {
 	 * @return string
 	 */
 	protected function custom_attr() {
-		return $this->get_attr( $this->get( 'attr', [] ) );
+		return $this->get_attr( $this->get( 'attr', array() ) );
 	}
 
 	/**
@@ -541,7 +542,7 @@ class Field {
 	 * @return array
 	 */
 	protected function sanitize_cb_args( $val ) {
-		return [ $val ];
+		return array( $val );
 	}
 
 	/**
@@ -571,13 +572,13 @@ class Field {
 						$unsafe_value     = $sanitized_val;
 					}
 				}
-			} // End foreach().
+			}
 
 			$this->sanitized = true;
 			if ( null !== $unsafe_value && true === $sanitize_applied ) {
 				$this->sanitized_value = $unsafe_value;
 			}
-		} // End if().
+		}
 
 		return $this->sanitized_value;
 	}
@@ -598,7 +599,7 @@ class Field {
 				$cb = 'validate_' . trim( $validate );
 
 				if ( method_exists( 'AnsPress\Form\Validate', $cb ) ) {
-					call_user_func_array( 'AnsPress\Form\Validate::' . $cb, [ $this ] );
+					call_user_func_array( 'AnsPress\Form\Validate::' . $cb, array( $this ) );
 				}
 
 				/**
@@ -608,19 +609,25 @@ class Field {
 				 * @param object $field CUrrent field.
 				 * @since 4.1.7
 				 */
-				apply_filters_ref_array( "ap_field_{$cb}", [ $this->field_name, $this ] );
-
-			} // End foreach().
+				apply_filters_ref_array( "ap_field_{$cb}", array( $this->field_name, $this ) );
+			}
 
 			$this->validated = true;
-		} // End if().
+		}
 	}
 
+	/**
+	 * Before getting data.
+	 */
 	public function pre_get() {
 	}
 
-	public function after_save( $args = [] ) {
-
+	/**
+	 * After save.
+	 *
+	 * @param array $args Arguments.
+	 */
+	public function after_save( $args = array() ) {
 	}
 
 	/**

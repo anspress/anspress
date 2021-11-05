@@ -2,6 +2,8 @@
 /**
  * AnsPress Captcha type field object.
  *
+ * @codingStandardsIgnoreFile
+ *
  * @package    AnsPress
  * @subpackage Fields
  * @since      4.1.0

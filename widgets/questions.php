@@ -92,7 +92,7 @@ class AP_Questions_Widget extends WP_Widget {
 	 * Widget form.
 	 *
 	 * @param array $instance Form instance.
-	 * @return void
+	 * @return string
 	 */
 	public function form( $instance ) {
 		$title        = __( 'Questions', 'anspress-question-answer' );
@@ -144,6 +144,8 @@ class AP_Questions_Widget extends WP_Widget {
 		</p>
 
 		<?php
+
+		return 'noform';
 	}
 
 	/**
@@ -168,6 +170,8 @@ class AP_Questions_Widget extends WP_Widget {
 
 /**
  * Callback for registering question widget.
+ *
+ * @return void
  */
 function ap_questions_register_widgets() {
 	register_widget( 'AP_Questions_Widget' );

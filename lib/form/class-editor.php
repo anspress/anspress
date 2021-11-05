@@ -39,7 +39,7 @@ class Editor extends Field {
 	 * @var array
 	 * @since 4.1.8
 	 */
-	public $images = [];
+	public $images = array();
 
 	/**
 	 * Prepare field.
@@ -49,7 +49,8 @@ class Editor extends Field {
 	 */
 	protected function prepare() {
 		$this->args = wp_parse_args(
-			$this->args, array(
+			$this->args,
+			array(
 				'label'       => __( 'AnsPress Editor Field', 'anspress-question-answer' ),
 				'editor_args' => array(
 					'quicktags' => false,
@@ -61,7 +62,7 @@ class Editor extends Field {
 		parent::prepare();
 
 		// Make sure all text field are sanitized.
-		$this->sanitize_cb = array_merge( [ 'description', 'wp_kses' ], $this->sanitize_cb );
+		$this->sanitize_cb = array_merge( array( 'description', 'wp_kses' ), $this->sanitize_cb );
 	}
 
 	/**
@@ -71,11 +72,13 @@ class Editor extends Field {
 	 * @since 4.1.8
 	 */
 	public function image_button() {
-		$btn_args = wp_json_encode( array(
-			'__nonce'   => wp_create_nonce( 'ap_upload_image' ),
-			'action'    => 'ap_upload_modal',
-			'form_name' => $this->form_name,
-		) );
+		$btn_args = wp_json_encode(
+			array(
+				'__nonce'   => wp_create_nonce( 'ap_upload_image' ),
+				'action'    => 'ap_upload_modal',
+				'form_name' => $this->form_name,
+			)
+		);
 
 		$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
 
@@ -97,7 +100,7 @@ class Editor extends Field {
 	 */
 	public function field_markup() {
 		parent::field_markup();
-		$args = $this->get( 'editor_args', [] );
+		$args = $this->get( 'editor_args', array() );
 
 		$settings = array(
 			'textarea_rows' => 10,
@@ -150,18 +153,8 @@ class Editor extends Field {
 		$this->add_html( '</div>' );
 
 		/** This action is documented in lib/form/class-input.php */
-		do_action_ref_array( 'ap_after_field_markup', [ &$this ] );
+		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
-
-	// public function unsafe_value() {
-	// 	$value = parent::unsafe_value();
-
-	// 	if ( ! empty( $value ) ) {
-	// 		$value = preg_replace_callback( '/\[(\[?)(apcode)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)/', [ $this, 'apcode_cb' ], $value );
-	// 	}
-
-	// 	return $value;
-	// }
 
 	/**
 	 * Callback for replacing `apcode` shortcode.
@@ -181,7 +174,7 @@ class Editor extends Field {
 	private function get_attached_images() {
 		preg_match_all( '/(?:{{apimage "([^"]*)"[^}]*}})/', $this->value(), $matches, PREG_SET_ORDER, 0 );
 
-		$new_matches = [];
+		$new_matches = array();
 
 		if ( ! empty( $matches ) ) {
 			foreach ( $matches as $index => $m ) {
@@ -209,15 +202,15 @@ class Editor extends Field {
 
 		$files = anspress()->session->get( 'files' );
 
-		$uploads    = wp_upload_dir();
-		$basename   = basename( $matches[1] );
-		$temp_file = $uploads['basedir'] . "/anspress-temp/" . $basename;
+		$uploads   = wp_upload_dir();
+		$basename  = basename( $matches[1] );
+		$temp_file = $uploads['basedir'] . '/anspress-temp/' . $basename;
 
 		// Check temp file is in anspress-temp directory.
 		if ( ! file_exists( $temp_file ) ) {
 			$this->add_error( 'fields-error', __( 'Sorry an error occured while processing your image, please remove it and insert again', 'anspress-question-answer' ) );
 		} else {
-			$upload_dir = $uploads['basedir'] . "/anspress-uploads/";
+			$upload_dir = $uploads['basedir'] . '/anspress-uploads/';
 
 			// Make dir if not exists.
 			if ( ! file_exists( $upload_dir ) ) {
@@ -254,7 +247,7 @@ class Editor extends Field {
 			return;
 		}
 
-		$this->value = preg_replace_callback( '/<img\s+src="([^"]+)"[^>]+>/i', [ $this, 'image_process' ], $value );
+		$this->value = preg_replace_callback( '/<img\s+src="([^"]+)"[^>]+>/i', array( $this, 'image_process' ), $value );
 	}
 
 	/**
@@ -267,7 +260,7 @@ class Editor extends Field {
 	 *
 	 * @since 4.1.8 Removed adding and deleting of attachment.
 	 */
-	public function after_save( $args = [] ) {
+	public function after_save( $args = array() ) {
 		parent::after_save();
 
 		if ( empty( $args ) || empty( $args['post_id'] ) || empty( $this->images ) ) {
@@ -289,7 +282,7 @@ class Editor extends Field {
 	 * @return null|mixed
 	 */
 	public function unsafe_value() {
-		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST );
+		$request_value = $this->get( ap_to_dot_notation( $this->field_name ), null, $_REQUEST ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( isset( $request_value ) ) {
 			return $request_value;
 		}
