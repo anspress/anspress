@@ -201,9 +201,10 @@ function is_ask() {
 /**
  * Get current question ID in single question page.
  *
- * @return integer|false
+ * @return integer
  * @since unknown
  * @since 4.1.0 Remove `question_name` query var check. Get question ID from queried object.
+ * @since 4.2.0 Return only integer.
  */
 function get_question_id() {
 	if ( is_question() && get_query_var( 'question_id' ) ) {
@@ -222,7 +223,7 @@ function get_question_id() {
 		return ap_get_post_field( 'post_parent' );
 	}
 
-	return false;
+	return 0;
 }
 
 /**

@@ -42,6 +42,7 @@ class AP_Askform_Widget extends WP_Widget {
 		 * This filter is documented in widgets/question_stats.php
 		 */
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = is_string( $title ) ? $title : '';
 
 		echo wp_kses_post( $args['before_widget'] );
 
@@ -62,7 +63,7 @@ class AP_Askform_Widget extends WP_Widget {
 	 * Form.
 	 *
 	 * @param array $instance Instacne.
-	 * @return void
+	 * @return string
 	 */
 	public function form( $instance ) {
 		if ( isset( $instance['title'] ) ) {
@@ -80,6 +81,8 @@ class AP_Askform_Widget extends WP_Widget {
 		</p>
 
 		<?php
+
+		return 'noform';
 	}
 
 	/**
@@ -102,8 +105,10 @@ class AP_Askform_Widget extends WP_Widget {
 
 /**
  * Register ask form widget.
+ *
+ * @return void
  */
-function ap_quickask_register_widgets() {
+function ap_quickask_register_widgets() : void {
 	register_widget( 'AP_Askform_Widget' );
 }
 add_action( 'widgets_init', 'ap_quickask_register_widgets' );

@@ -40,5 +40,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php esc_attr_e( 'No questions found.', 'anspress-question-answer' ); ?>
 	<?php endif; ?>
 </div>
-
-

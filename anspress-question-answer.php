@@ -98,28 +98,28 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * AnsPress question loop
 		 *
 		 * @access public
-		 * @var object AnsPress question query loop
+		 * @var null|WP_Query AnsPress question query loop
 		 */
 		public $questions;
 
 		/**
 		 * Current question.
 		 *
-		 * @var object
+		 * @var WP_Post|null
 		 */
 		public $current_question;
 
 		/**
 		 * AnsPress answers loop.
 		 *
-		 * @var object Answer query loop
+		 * @var WP_Query|null Answer query loop
 		 */
 		public $answers;
 
 		/**
 		 * Current answer.
 		 *
-		 * @var object
+		 * @var WP_Post|null
 		 */
 		public $current_answer;
 

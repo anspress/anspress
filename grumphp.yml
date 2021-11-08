@@ -25,4 +25,5 @@ grumphp:
                 # - 'die('
                 - 'print_r('
                 - 'var_dump('
+                # - 'phpcs:ignore'
             triggered_by: ['php']

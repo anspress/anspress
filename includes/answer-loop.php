@@ -296,6 +296,8 @@ function ap_have_answers() {
 	if ( $answers ) {
 		return $answers->have_posts();
 	}
+
+	return false;
 }
 
 /**

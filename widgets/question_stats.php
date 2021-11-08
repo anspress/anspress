@@ -61,6 +61,7 @@ class AnsPress_Stats_Widget extends WP_Widget {
 		$ans_count   = ap_get_answers_count( get_question_id() );
 		$last_active = ap_get_last_active( get_question_id() );
 		$view_count  = ap_get_post_field( 'views', get_question_id() );
+		$view_count  = is_numeric( $view_count ) ? (int) $view_count : 0;
 
 		echo '<div class="ap-widget-inner">';
 

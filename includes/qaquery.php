@@ -272,6 +272,8 @@ function ap_have_questions() {
 	if ( anspress()->questions ) {
 		return anspress()->questions->have_posts();
 	}
+
+	return false;
 }
 
 /**
