@@ -31,13 +31,15 @@ $licenses = get_option( 'anspress_license' );
 							__( 'Enter license key for %s', 'anspress-question-answer' ),
 							$prod['name']
 						);
+
+						$key = ! empty( $licenses[ $slug ] ) && ! empty( $licenses[ $slug ]['key'] ) ? $licenses[ $slug ]['key'] : '';
 					?>
 					<tr valign="top">
 						<th scope="row" valign="top"><?php echo esc_html( $prod['name'] ); ?></th>
 						<td>
-							<input id="ap_license_<?php echo esc_attr( $slug ); ?>" name="ap_license_<?php echo esc_attr( $slug ); ?>" type="text" class="regular-text" value="<?php echo esc_attr( $licenses[ $slug ]['key'] ); ?>" placeholder="<?php echo esc_attr( $label ); ?>" />
+							<input id="ap_license_<?php echo esc_attr( $slug ); ?>" name="ap_license_<?php echo esc_attr( $slug ); ?>" type="text" class="regular-text" value="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $label ); ?>" />
 
-							<?php if ( ! empty( $licenses[ $slug ]['key'] ) ) { ?>
+							<?php if ( ! empty( $key ) ) { ?>
 								<?php if ( false !== $licenses[ $slug ]['status'] && 'valid' === $licenses[ $slug ]['status'] ) { ?>
 									<span class="ap-license-check"><i class="apicon-check"></i><?php esc_attr_e( 'active', 'anspress-question-answer' ); ?></span><br />
 									<input type="submit" class="button-secondary" name="ap_license_deactivate_<?php echo esc_attr( $slug ); ?>" value="<?php esc_attr_e( 'Deactivate License', 'anspress-question-answer' ); ?>"/>

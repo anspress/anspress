@@ -23,6 +23,7 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved'; // ph
 ?>
 <apcomment id="comment-<?php echo (int) $comment->comment_ID; ?>" <?php comment_class( $approved ); ?>>
 	<div itemprop="comment" itemscope itemtype="http://schema.org/Comment">
+		<meta itemprop="@id" content="<?php the_ID(); ?>" /> <!-- This is for structured data, do not delete. -->
 		<div class="ap-avatar"><?php echo get_avatar( $comment->user_id, $avatar_size ); ?></div>
 		<div class="comment-inner">
 			<div class="comment-header">

@@ -1405,7 +1405,7 @@ function ap_user_display_name( $args = array() ) {
 	$user = get_userdata( $user_id );
 
 	if ( $user ) {
-		$return = ! $html ? $user->display_name : '<a href="' . ap_user_link( $user_id ) . '" itemprop="url"><span itemprop="name">' . $user->display_name . '</span></a>';
+		$return = ! $html ? $user->display_name : '<a href="' . esc_url( ap_user_link( $user_id ) ) . '" itemprop="url"><span itemprop="name">' . esc_html( $user->display_name ) . '</span></a>';
 	} elseif ( $post && in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 		$post_fields = ap_get_post_field( 'fields' );
 
@@ -1417,7 +1417,7 @@ function ap_user_display_name( $args = array() ) {
 			}
 		} else {
 			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
-				$return = $post_fields['anonymous_name'] . __( ' (anonymous)', 'anspress-question-answer' );
+				$return = $post_fields['anonymous_name'] . esc_attr__( ' (anonymous)', 'anspress-question-answer' );
 			} else {
 				$return = $anonymous_label;
 			}
@@ -2002,10 +2002,13 @@ function ap_to_dot_notation( $path = false ) {
  * @param array  $arr  Array in which key value need to set.
  * @param string $path Path of new array item.
  * @param mixed  $val  Value to set.
+ * @param bool   $merge_arr Should merge array.
  *
  * @return array Updated array.
+ * @since 1.0.0
+ * @since Added new parameter `$merge_arr`.
  */
-function ap_set_in_array( &$arr, $path, $val ) {
+function ap_set_in_array( &$arr, $path, $val, $merge_arr = false ) {
 	$path = is_string( $path ) ? explode( '.', $path ) : $path;
 	$loc  = &$arr;
 
@@ -2013,7 +2016,11 @@ function ap_set_in_array( &$arr, $path, $val ) {
 		$loc = &$loc[ $step ];
 	}
 
-	$loc = $val;
+	if ( $merge_arr && is_array( $loc ) ) {
+		$loc = array_merge( $loc, $val );
+	} else {
+		$loc = $val;
+	}
 
 	return $loc;
 }

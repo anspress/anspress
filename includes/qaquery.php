@@ -375,16 +375,16 @@ function ap_author_avatar( $size = 45, $_post = null ) {
  */
 function ap_get_answers_count( $_post = null ) {
 	$_post = ap_get_post( $_post );
-	return $_post->answers;
+	return (int) $_post->answers;
 }
 
 /**
  * Echo total votes count of a post.
  *
- * @param  mixed $_post Post ID, Object or null.
+ * @param WP_Post|int|null $_post Question ID, Object or null.
  */
 function ap_answers_count( $_post = null ) {
-	echo ap_get_answers_count( $_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo (int) ap_get_answers_count( $_post );
 }
 
 /**
@@ -395,16 +395,16 @@ function ap_answers_count( $_post = null ) {
  */
 function ap_get_votes_net( $_post = null ) {
 	$_post = ap_get_post( $_post );
-	return $_post->votes_net;
+	return (int) $_post->votes_net;
 }
 
 /**
  * Echo count of net vote of a question.
  *
- * @param  mixed $_post Post ID, Object or null.
+ * @param WP_Post|int|null $_post Question ID, Object or null.
  */
 function ap_votes_net( $_post = null ) {
-	echo ap_get_votes_net( $_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo (int) ap_get_votes_net( $_post );
 }
 
 /**

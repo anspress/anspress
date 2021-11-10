@@ -19,9 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 ?>
-<div id="ap-single" class="ap-q clearfix">
-
-	<div class="ap-question-lr ap-row" itemtype="https://schema.org/Question" itemscope="">
+<div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">
+	<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">
+		<meta itemprop="@id" content="<?php the_ID(); ?>" /> <!-- This is for structured data, do not delete. -->
+		<meta itemprop="name" content="<?php the_title(); ?>" /> <!-- This is for structured data, do not delete. -->
 		<div class="ap-q-left <?php echo ( is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
 			<?php
 				/**
@@ -62,7 +63,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="ap-cell-inner">
 							<div class="ap-q-metas">
 								<span class="ap-author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-									<?php echo wp_kses_post( ap_user_display_name( array( 'html' => true ) ) ); ?>
+									<?php
+										ap_user_display_name(
+											array(
+												'html' => true,
+												'echo' => true,
+											)
+										);
+										?>
 								</span>
 								<a href="<?php the_permalink(); ?>" class="ap-posted">
 									<?php
@@ -73,9 +81,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 									if ( 'future' !== get_post_status() ) {
 										$time = ap_human_time( $time );
 									}
-
-									echo esc_attr( sprintf( '<time itemprop="datePublished" datetime="%1$s">%2$s</time>', ap_get_time( get_the_ID(), 'c' ), $time ) );
 									?>
+									<time itemprop="datePublished" datetime="<?php echo esc_attr( ap_get_time( get_the_ID(), 'c' ) ); ?>"><?php echo esc_attr( $time ); ?></time>
 								</a>
 								<span class="ap-comments-count">
 									<?php $comment_count = get_comments_number(); ?>

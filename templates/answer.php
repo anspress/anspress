@@ -27,6 +27,8 @@ if ( ap_user_can_read_answer() ) :
 			</a>
 		</div>
 		<div class="ap-cell clearfix">
+			<meta itemprop="@id" content="<?php the_ID(); ?>" /> <!-- This is for structured data, do not delete. -->
+			<meta itemprop="url" content="<?php the_permalink(); ?>" /> <!-- This is for structured data, do not delete. -->
 			<div class="ap-cell-inner">
 				<div class="ap-q-metas">
 					<?php echo wp_kses_post( ap_user_display_name( array( 'html' => true ) ) ); ?>
@@ -63,7 +65,7 @@ if ( ap_user_can_read_answer() ) :
 					?>
 
 					<div class="ap-answer-content ap-q-content" itemprop="text" ap-content>
-							<?php the_content(); ?>
+						<?php the_content(); ?>
 					</div>
 
 					<?php
