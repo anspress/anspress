@@ -470,11 +470,9 @@ function ap_form_allowed_tags() {
  * @param array $result Results.
  */
 function ap_send_json( $result = array() ) {
-	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 	$result['is_ap_ajax'] = true;
-	$json                 = '<div id="ap-response">' . wp_json_encode( $result, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP ) . '</div>';
 
-	die( $json ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	wp_send_json( $result ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**

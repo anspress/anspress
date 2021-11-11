@@ -37,28 +37,17 @@ window.AnsPress = _.extend({
 	},
 	isJSONString: function (str) {
 		try {
-			return jQuery.parseJSON(str);
+			return JSON.parse(str);
 		} catch (e) {
 			return false;
 		}
-	},
-	ajaxResponse: function (data) {
-		data = jQuery(data);
-		if (typeof data.filter('#ap-response') === 'undefined') {
-			console.log('Not a valid AnsPress ajax response.');
-			return {};
-		}
-		var parsedJSON = this.isJSONString(data.filter('#ap-response').html());
-		if (!parsedJSON || parsedJSON === 'undefined' || !_.isObject(parsedJSON))
-			return {};
-
-		return parsedJSON;
 	},
 	ajax: function (options) {
 		var self = this;
 		options = _.defaults(options, {
 			url: ajaxurl,
 			method: 'POST',
+			// dataType: 'json',
 		});
 
 		// Convert data to query string if object.
@@ -72,7 +61,7 @@ window.AnsPress = _.extend({
 		delete options.success;
 		options.success = function (data) {
 			var context = options.context || null;
-			var parsedData = self.ajaxResponse(data);
+			var parsedData = data;
 			if (parsedData.snackbar) {
 				AnsPress.trigger('snackbar', parsedData)
 			}
@@ -729,7 +718,7 @@ jQuery(document).ready(function ($) {
 				if (submitBtn.length > 0)
 					AnsPress.hideLoading(submitBtn);
 
-				data = AnsPress.ajaxResponse(data);
+				data = data;
 				if (data.snackbar) {
 					AnsPress.trigger('snackbar', data)
 				}

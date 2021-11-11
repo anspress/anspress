@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: AnsPress Question Answer 4.1.24\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2021-11-08 07:53:37+00:00\n"
+"POT-Creation-Date: 2021-11-10 04:31:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -94,7 +94,7 @@ msgstr ""
 #: addons/buddypress/buddypress.php:116 addons/buddypress/buddypress.php:210
 #: addons/profile/profile.php:50 addons/profile/profile.php:162
 #: admin/views/dashboard.php:31 admin/views/dashboard.php:202
-#: includes/functions.php:2333 includes/options.php:102
+#: includes/functions.php:2340 includes/options.php:102
 #: includes/post-types.php:82 includes/taxo.php:77 includes/taxo.php:401
 #: widgets/questions.php:45 widgets/questions.php:98
 msgid "Questions"
@@ -203,7 +203,7 @@ msgstr ""
 
 #: addons/categories/categories.php:43 addons/categories/categories.php:477
 #: addons/categories/categories.php:489 addons/categories/widget.php:114
-#: includes/functions.php:1629 includes/functions.php:2351 includes/taxo.php:29
+#: includes/functions.php:1629 includes/functions.php:2358 includes/taxo.php:29
 msgid "Categories"
 msgstr ""
 
@@ -768,7 +768,7 @@ msgstr ""
 msgid "User profile"
 msgstr ""
 
-#: addons/profile/profile.php:76 includes/functions.php:2345
+#: addons/profile/profile.php:76 includes/functions.php:2352
 msgid "Profile"
 msgstr ""
 
@@ -1061,7 +1061,7 @@ msgstr ""
 
 #: addons/tags/tags.php:40 addons/tags/tags.php:230 addons/tags/tags.php:314
 #: addons/tags/tags.php:393 addons/tags/tags.php:464 addons/tags/tags.php:478
-#: includes/functions.php:1637 includes/functions.php:2357
+#: includes/functions.php:1637 includes/functions.php:2364
 msgid "Tags"
 msgstr ""
 
@@ -1871,7 +1871,7 @@ msgstr ""
 #: admin/class-list-table-hooks.php:288 admin/class-list-table-hooks.php:373
 #: admin/views/select_question.php:63 includes/ajax-hooks.php:124
 #: includes/ajax-hooks.php:127 includes/ajax-hooks.php:270
-#: includes/functions.php:2148 templates/buddypress/question-item.php:48
+#: includes/functions.php:2155 templates/buddypress/question-item.php:48
 #: templates/widgets/widget-questions.php:27
 #. translators: %d is total numbers of answer.
 #. translators: %d is answers count.
@@ -1954,11 +1954,11 @@ msgstr ""
 msgid "License Action"
 msgstr ""
 
-#: admin/updater.php:88 admin/views/licenses.php:43
+#: admin/updater.php:88 admin/views/licenses.php:45
 msgid "Deactivate License"
 msgstr ""
 
-#: admin/updater.php:89 admin/views/licenses.php:45
+#: admin/updater.php:89 admin/views/licenses.php:47
 msgid "Activate License"
 msgstr ""
 
@@ -2196,15 +2196,15 @@ msgstr ""
 msgid "Enter license key for %s"
 msgstr ""
 
-#: admin/views/licenses.php:42
+#: admin/views/licenses.php:44
 msgid "active"
 msgstr ""
 
-#: admin/views/licenses.php:54
+#: admin/views/licenses.php:56
 msgid "Save"
 msgstr ""
 
-#: admin/views/licenses.php:58
+#: admin/views/licenses.php:60
 msgid "No license yet."
 msgstr ""
 
@@ -2961,7 +2961,7 @@ msgstr ""
 msgid "Enter your email"
 msgstr ""
 
-#: includes/class-form-hooks.php:130 includes/functions.php:2074
+#: includes/class-form-hooks.php:130 includes/functions.php:2081
 msgid "Update Question"
 msgstr ""
 
@@ -2969,7 +2969,7 @@ msgstr ""
 msgid "Post Answer"
 msgstr ""
 
-#: includes/class-form-hooks.php:227 includes/functions.php:2219
+#: includes/class-form-hooks.php:227 includes/functions.php:2226
 msgid "Update Answer"
 msgstr ""
 
@@ -2977,7 +2977,7 @@ msgstr ""
 msgid "Submit Comment"
 msgstr ""
 
-#: includes/class-form-hooks.php:252 templates/answer.php:50
+#: includes/class-form-hooks.php:252 templates/answer.php:52
 #: templates/functions.php:47
 msgid "Comment"
 msgstr ""
@@ -3133,7 +3133,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:29 includes/functions.php:2363
+#: includes/common-pages.php:29 includes/functions.php:2370
 msgid "Activities"
 msgstr ""
 
@@ -3263,7 +3263,7 @@ msgstr ""
 msgid "restored answer"
 msgstr ""
 
-#: includes/functions.php:1312 templates/comment.php:31
+#: includes/functions.php:1312 templates/comment.php:32
 #: templates/functions.php:46
 msgid "commented"
 msgstr ""
@@ -3388,82 +3388,82 @@ msgstr ""
 msgid "Check for spam in post content."
 msgstr ""
 
-#: includes/functions.php:2047
+#: includes/functions.php:2054
 msgid "You cannot edit this question."
 msgstr ""
 
-#: includes/functions.php:2052 templates/ask.php:21
+#: includes/functions.php:2059 templates/ask.php:21
 msgid "You do not have permission to ask a question."
 msgstr ""
 
-#: includes/functions.php:2157
+#: includes/functions.php:2164
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:2188
+#: includes/functions.php:2195
 msgid "You cannot edit this answer."
 msgstr ""
 
-#: includes/functions.php:2193
+#: includes/functions.php:2200
 msgid "You do not have permission to answer this question."
 msgstr ""
 
-#: includes/functions.php:2331
+#: includes/functions.php:2338
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2332
+#: includes/functions.php:2339
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred "
 "as <b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2337
+#: includes/functions.php:2344
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2338
+#: includes/functions.php:2345
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2339
+#: includes/functions.php:2346
 msgid "Ask a question"
 msgstr ""
 
-#: includes/functions.php:2343
+#: includes/functions.php:2350
 msgid "User page"
 msgstr ""
 
-#: includes/functions.php:2344
+#: includes/functions.php:2351
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2349
+#: includes/functions.php:2356
 msgid "Categories page"
 msgstr ""
 
-#: includes/functions.php:2350
+#: includes/functions.php:2357
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2355
+#: includes/functions.php:2362
 msgid "Tags page"
 msgstr ""
 
-#: includes/functions.php:2356
+#: includes/functions.php:2363
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2361
+#: includes/functions.php:2368
 msgid "Activities page"
 msgstr ""
 
-#: includes/functions.php:2362
+#: includes/functions.php:2369
 msgid "Page used to display all anspress activities."
 msgstr ""
 
@@ -4148,7 +4148,7 @@ msgstr ""
 msgid "Search tags"
 msgstr ""
 
-#: templates/addons/user/answer-item.php:43 templates/answer.php:39
+#: templates/addons/user/answer-item.php:43 templates/answer.php:41
 #: templates/shortcode/question.php:60
 #. Translators: %s contain human readable time.
 #. translators: %s is time.
@@ -4353,15 +4353,15 @@ msgstr ""
 msgid "View all answers"
 msgstr ""
 
-#: templates/single-question.php:69
+#: templates/single-question.php:77
 msgid "Scheduled for"
 msgstr ""
 
-#: templates/single-question.php:69
+#: templates/single-question.php:77
 msgid "Published"
 msgstr ""
 
-#: templates/single-question.php:84
+#: templates/single-question.php:91
 #. translators: %s comments count.
 msgid "%s Comment"
 msgid_plural "%s Comments"

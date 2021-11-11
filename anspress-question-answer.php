@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'AP_DB_VERSION', 35 );
 
 // Check if using required PHP version.
-if ( version_compare( PHP_VERSION, '7.0' ) < 0 ) {
+if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
 
 	/**
 	 * Checks PHP version before initiating AnsPress.
@@ -44,7 +44,7 @@ if ( version_compare( PHP_VERSION, '7.0' ) < 0 ) {
 		$message  = '<strong>' . __( 'AnsPress is not running!', 'anspress-question-answer' ) . '</strong><br />';
 		$message .= sprintf(
 			// translators: %s contain server PHP version.
-			__( 'Irks! At least PHP version 5.5 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ),
+			__( 'Irks! At least PHP version 7.2 is required to run AnsPress. Current PHP version is %s. Please ask hosting provider to update your PHP version.', 'anspress-question-answer' ),
 			PHP_VERSION
 		);
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );

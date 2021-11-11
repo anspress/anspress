@@ -222,7 +222,7 @@
 				vote.net = (vote.active === 'vote_down' ? vote.net + 1 : vote.net - 1);
 
 			self.model.set('vote', vote);
-			var q = $.parseJSON($(e.target).parent().attr('ap-vote'));
+			var q = JSON.parse($(e.target).parent().attr('ap-vote'));
 			q.ap_ajax_action = 'vote';
 			q.type = type;
 
@@ -261,7 +261,7 @@
 		render: function () {
 			var attr = this.$el.find('[ap-vote]').attr('ap-vote');
 			try {
-				this.model.set('vote', $.parseJSON(attr), { silent: true });
+				this.model.set('vote', JSON.parse(attr), { silent: true });
 			} catch (err) {
 				console.warn('Vote data empty', err)
 			}
@@ -269,7 +269,7 @@
 		},
 		postActions: function (e) {
 			var self = this;
-			var q = $.parseJSON($(e.target).attr('apquery'));
+			var q = JSON.parse($(e.target).attr('apquery'));
 			if (typeof q.ap_ajax_action === 'undefined')
 				q.ap_ajax_action = 'post_actions';
 
@@ -288,7 +288,7 @@
 		selectAnswer: function (e) {
 			e.preventDefault();
 			var self = this;
-			var q = $.parseJSON($(e.target).attr('apquery'));
+			var q = JSON.parse($(e.target).attr('apquery'));
 			q.action = 'ap_toggle_best_answer';
 
 			AnsPress.showLoading(e.target);
@@ -365,6 +365,7 @@
 			AnsPress.ajax({
 				data: $(e.target).data('apquery'),
 				success: function (data) {
+					console.log(data)
 					AnsPress.hideLoading(e.target);
 					$('#ap-form-main').html(data);
 					$(e.target).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
