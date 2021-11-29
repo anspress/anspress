@@ -1,0 +1,96 @@
+actor: Tester
+actor_suffix: Tester
+paths:
+    tests: tests
+    log: tests/_output
+    data: tests/_data
+    helpers: tests/_support
+    envs: tests/_envs
+bootstrap: _bootstrap.php
+settings:
+    colors: true
+    memory_limit: 1024M
+params:
+    - .env.testing
+coverage:
+    enabled: true
+    exclude:
+        - vendor/*
+    include:
+        - classes/*
+        - includes/*
+        - lib/*
+        - ajax/*
+        - admin/*
+        - addons/*
+        - widgets/*
+        - anspress-question-answer.php
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+    commands:
+        # Generate Tests cases
+        # codecept generate:wp[...] [suite] [className]
+        - 'Codeception\Command\GenerateWPUnit'
+        - 'Codeception\Command\GenerateWPRestApi'
+        - 'Codeception\Command\GenerateWPRestController'
+        - 'Codeception\Command\GenerateWPRestPostTypeController'
+        - 'Codeception\Command\GenerateWPAjax'
+modules:
+    config:
+        # Check https://github.com/lucatume/wp-browser
+        WPBrowser:
+            url: "localhost"
+            adminUsername: admin
+            adminPassword: password
+            adminUrl: /wp-admin
+        WPDb:
+            dsn: "mysql:host=%TEST_DB_HOST%;dbname=%TEST_DB_NAME%"
+            user: "root"
+            password: ""
+            dump: tests/_data/dump.sql
+            populate: true
+            cleanup: true
+            reconnect: true
+            url: "localhost"
+            urlReplacement: true
+            tablePrefix: wp_
+        WPLoader:
+            # Download, install and get a working WP site
+            multisite: false
+            wpRootFolder: "%WP_ROOT%"
+            dbName: "%TEST_DB_NAME%"
+            dbHost: "%TEST_DB_HOST%"
+            dbUser: "root"
+            dbPassword: ""
+            wpDebug: true
+            dbCharset: utf8
+            dbCollate: ''
+            tablePrefix: wp_
+            domain: "localhost"
+            adminEmail: "admin@localhost"
+            title: 'WP Tests'
+            phpBinary: php
+            language: ''
+            configFile: 'tests/wp-config-test.php'
+            plugins: ["anspress-question-answer/anspress-question-answer.php"]
+            activatePlugins: ["anspress-question-answer/anspress-question-answer.php"]
+        WPWebDriver:
+            url: "localhost"
+            browser: chrome
+            port: 4444
+            restart: true
+            wait: 2
+            adminUsername: admin
+            adminPassword: password
+            adminUrl: /wp-admin
+            capabilities:
+                chromeOptions:
+                    args: ["--headless", "--disable-gpu"]
+        WPFilesystem:
+            # Navigate and manipulate files inside WP
+            wpRootFolder: "%WP_ROOT%"
+        WPCLI:
+            # Download and install WPCLI for synchronous and isolated tests
+            path: "%WP_ROOT%"
+            throw: true
