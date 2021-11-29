@@ -18,3 +18,9 @@
 /.git export-ignore
 /vendor export-ignore
 /Dockerfile export-ignore
+/.phpcs.xml.dist export-ignore
+/.phpmd.xml.dist export-ignore
+/anspress.json export-ignore
+/grumpphp.yml export-ignore
+/phpstan.neon export-ignore
+/phpunit.xml.dist export-ignore
