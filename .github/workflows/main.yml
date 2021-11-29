@@ -35,7 +35,6 @@ jobs:
         rm -rf ./.wordpress.org
         rm package.json
         rm package-lock.json
-        rm phpcs.xml
         rm docker-compose.yml
         rm Dockerfile
 
