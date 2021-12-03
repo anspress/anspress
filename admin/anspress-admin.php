@@ -189,7 +189,7 @@ class AnsPress_Admin {
 		global $submenu;
 
 		$counts = self::menu_counts();
-		$pos    = self::get_free_menu_position( 10.9 );
+		$pos    = self::get_free_menu_position( 12.11 );
 
 		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
 

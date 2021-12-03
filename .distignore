@@ -20,3 +20,7 @@ package.json
 package-lock.json
 phpunit.xml.dist
 README.md
+.phpmd.xml.dist
+.env.testing
+Dockerfile
+anspress.json
