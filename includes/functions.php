@@ -2470,6 +2470,10 @@ function ap_remove_all_filters( $tag, $priority = false ) {
 
 	$ap = anspress();
 
+	// create, if empty ##
+	if ( ! isset( $ap->new_filters ) ) $ap->new_filters = new \stdClass();
+	// w__log( $ap->new_filters );
+
 	// Filters exist
 	if ( isset( $wp_filter[ $tag ] ) ) {
 
