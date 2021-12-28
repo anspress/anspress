@@ -82,9 +82,12 @@ class Answers_Query extends WP_Query {
 		if ( ! isset( $this->args['author'] ) && empty( $question_id ) && empty( $this->args['p'] ) ) {
 			$this->args = array();
 		} else {
-			$this->args['post_parent'] = $question_id;
-			$this->args['post_type']   = 'answer';
-			$args                      = $this->args;
+			if ( ! empty( $question_id ) ) {
+				$this->args['post_parent'] = $question_id;
+			}
+
+			$this->args['post_type'] = 'answer';
+			$args                    = $this->args;
 
 			/**
 			 * Initialize parent class
