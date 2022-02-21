@@ -1,15 +1,15 @@
-# Copyright (C) 2021 Rahul Aryan
+# Copyright (C) 2022 Rahul Aryan
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress Question Answer 4.1.24\n"
+"Project-Id-Version: AnsPress Question Answer 4.2.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2021-11-11 07:28:17+00:00\n"
+"POT-Creation-Date: 2022-02-21 10:12:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Mark as spam"
 msgstr ""
 
-#: addons/avatar/avatar.php:77 includes/functions.php:1643
+#: addons/avatar/avatar.php:77 includes/functions.php:1645
 msgid "Dynamic Avatar"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 #: addons/buddypress/buddypress.php:116 addons/buddypress/buddypress.php:210
 #: addons/profile/profile.php:50 addons/profile/profile.php:162
 #: admin/views/dashboard.php:31 admin/views/dashboard.php:202
-#: includes/functions.php:2338 includes/options.php:102
+#: includes/functions.php:2340 includes/options.php:102
 #: includes/post-types.php:82 includes/taxo.php:77 includes/taxo.php:401
 #: widgets/questions.php:45 widgets/questions.php:98
 msgid "Questions"
@@ -203,7 +203,7 @@ msgstr ""
 
 #: addons/categories/categories.php:43 addons/categories/categories.php:477
 #: addons/categories/categories.php:489 addons/categories/widget.php:114
-#: includes/functions.php:1627 includes/functions.php:2356 includes/taxo.php:29
+#: includes/functions.php:1629 includes/functions.php:2358 includes/taxo.php:29
 msgid "Categories"
 msgstr ""
 
@@ -401,8 +401,8 @@ msgid "%d Child"
 msgstr ""
 
 #: addons/categories/widget.php:132 widgets/ask-form.php:78
-#: widgets/question_stats.php:115 widgets/questions.php:121
-#: widgets/search.php:75
+#: widgets/leaderboard.php:142 widgets/question_stats.php:115
+#: widgets/questions.php:121 widgets/search.php:75
 msgid "Title:"
 msgstr ""
 
@@ -688,7 +688,7 @@ msgstr ""
 
 #: addons/notifications/notifications.php:50
 #: addons/notifications/notifications.php:63
-#: addons/notifications/notifications.php:220 includes/functions.php:1631
+#: addons/notifications/notifications.php:220 includes/functions.php:1633
 #: templates/functions.php:51
 msgid "Notifications"
 msgstr ""
@@ -768,7 +768,7 @@ msgstr ""
 msgid "User profile"
 msgstr ""
 
-#: addons/profile/profile.php:76 includes/functions.php:2350
+#: addons/profile/profile.php:76 includes/functions.php:2352
 msgid "Profile"
 msgstr ""
 
@@ -820,7 +820,7 @@ msgstr ""
 msgid "Unable to render captcha. Please add reCpatcha keys in AnsPress options."
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:82 includes/functions.php:1655
+#: addons/recaptcha/recaptcha.php:82 includes/functions.php:1657
 msgid "reCaptcha"
 msgstr ""
 
@@ -862,13 +862,13 @@ msgstr ""
 msgid "Prove that you are a human"
 msgstr ""
 
-#: addons/reputation/reputation.php:45 addons/reputation/reputation.php:476
-#: addons/reputation/reputation.php:540
+#: addons/reputation/reputation.php:45 addons/reputation/reputation.php:490
+#: addons/reputation/reputation.php:554
 msgid "Reputations"
 msgstr ""
 
-#: addons/reputation/reputation.php:91 addons/reputation/reputation.php:434
-#: addons/reputation/reputation.php:436 includes/functions.php:1639
+#: addons/reputation/reputation.php:91 addons/reputation/reputation.php:448
+#: addons/reputation/reputation.php:450 includes/functions.php:1641
 msgid "Reputation"
 msgstr ""
 
@@ -896,136 +896,136 @@ msgstr ""
 msgid "Custom slug for user profile reputations page"
 msgstr ""
 
-#: addons/reputation/reputation.php:129
+#: addons/reputation/reputation.php:136
 msgid "Registration"
 msgstr ""
 
-#: addons/reputation/reputation.php:130
+#: addons/reputation/reputation.php:137
 msgid "Points awarded when user account is created"
 msgstr ""
 
-#: addons/reputation/reputation.php:132
+#: addons/reputation/reputation.php:139
 msgid "Registered"
 msgstr ""
 
-#: addons/reputation/reputation.php:141
+#: addons/reputation/reputation.php:146
 msgid "Asking"
 msgstr ""
 
-#: addons/reputation/reputation.php:142
+#: addons/reputation/reputation.php:147
 msgid "Points awarded when user asks a question"
 msgstr ""
 
-#: addons/reputation/reputation.php:144
+#: addons/reputation/reputation.php:149
 msgid "Asked a question"
 msgstr ""
 
-#: addons/reputation/reputation.php:153
+#: addons/reputation/reputation.php:155
 msgid "Answering"
 msgstr ""
 
-#: addons/reputation/reputation.php:154
+#: addons/reputation/reputation.php:156
 msgid "Points awarded when user answers a question"
 msgstr ""
 
-#: addons/reputation/reputation.php:156
+#: addons/reputation/reputation.php:158
 msgid "Posted an answer"
 msgstr ""
 
-#: addons/reputation/reputation.php:165
+#: addons/reputation/reputation.php:164
 msgid "Commenting"
 msgstr ""
 
-#: addons/reputation/reputation.php:166
+#: addons/reputation/reputation.php:165
 msgid "Points awarded when user comments on question or answer"
 msgstr ""
 
-#: addons/reputation/reputation.php:168
+#: addons/reputation/reputation.php:167
 msgid "Commented on a post"
 msgstr ""
 
-#: addons/reputation/reputation.php:177
+#: addons/reputation/reputation.php:173
 msgid "Selecting an Answer"
 msgstr ""
 
-#: addons/reputation/reputation.php:178
+#: addons/reputation/reputation.php:174
 msgid "Points awarded when user selects an answer for their question"
 msgstr ""
 
-#: addons/reputation/reputation.php:180
+#: addons/reputation/reputation.php:176
 msgid "Selected an answer as best"
 msgstr ""
 
-#: addons/reputation/reputation.php:189
+#: addons/reputation/reputation.php:182
 msgid "Answer selected as best"
 msgstr ""
 
-#: addons/reputation/reputation.php:190
+#: addons/reputation/reputation.php:183
 msgid "Points awarded when user's answer is selected as best"
 msgstr ""
 
-#: addons/reputation/reputation.php:192
+#: addons/reputation/reputation.php:185
 msgid "Answer was selected as best"
 msgstr ""
 
-#: addons/reputation/reputation.php:201
+#: addons/reputation/reputation.php:191
 msgid "Received up vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:202
+#: addons/reputation/reputation.php:192
 msgid "Points awarded when user receives an upvote"
 msgstr ""
 
-#: addons/reputation/reputation.php:204
+#: addons/reputation/reputation.php:194
 msgid "Received an upvote"
 msgstr ""
 
-#: addons/reputation/reputation.php:212
+#: addons/reputation/reputation.php:199
 msgid "Received down vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:213
+#: addons/reputation/reputation.php:200
 msgid "Points awarded when user receives a down vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:215
+#: addons/reputation/reputation.php:202
 msgid "Received a down vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:223
+#: addons/reputation/reputation.php:207
 msgid "Gives an up vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:224
+#: addons/reputation/reputation.php:208
 msgid "Points taken from user when they give an up vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:226
+#: addons/reputation/reputation.php:210
 msgid "Given an up vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:234
+#: addons/reputation/reputation.php:215
 msgid "Gives down vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:235
+#: addons/reputation/reputation.php:216
 msgid "Points taken from user when they give a down vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:237
+#: addons/reputation/reputation.php:218
 msgid "Given a down vote"
 msgstr ""
 
-#: addons/reputation/reputation.php:265
+#: addons/reputation/reputation.php:279
 msgid "Successfully updated reputation points!"
 msgstr ""
 
-#: addons/reputation/reputation.php:463
+#: addons/reputation/reputation.php:477
 #. translators: Placeholder contains reputation points.
 msgid "%s Reputation"
 msgstr ""
 
-#: addons/reputation/reputation.php:581
+#: addons/reputation/reputation.php:595
 msgid "⚙ Reputations"
 msgstr ""
 
@@ -1061,7 +1061,7 @@ msgstr ""
 
 #: addons/tags/tags.php:40 addons/tags/tags.php:230 addons/tags/tags.php:314
 #: addons/tags/tags.php:393 addons/tags/tags.php:464 addons/tags/tags.php:478
-#: includes/functions.php:1635 includes/functions.php:2362
+#: includes/functions.php:1637 includes/functions.php:2364
 msgid "Tags"
 msgstr ""
 
@@ -1871,7 +1871,7 @@ msgstr ""
 #: admin/class-list-table-hooks.php:288 admin/class-list-table-hooks.php:373
 #: admin/views/select_question.php:63 includes/ajax-hooks.php:124
 #: includes/ajax-hooks.php:127 includes/ajax-hooks.php:270
-#: includes/functions.php:2153 templates/buddypress/question-item.php:48
+#: includes/functions.php:2155 templates/buddypress/question-item.php:48
 #: templates/widgets/widget-questions.php:27
 #. translators: %d is total numbers of answer.
 #. translators: %d is answers count.
@@ -2605,7 +2605,7 @@ msgid ""
 "version is %s. Please ask hosting provider to update your PHP version."
 msgstr ""
 
-#: anspress-question-answer.php:482
+#: anspress-question-answer.php:483
 #. translators: %s contains name of the form requested.
 msgid "Requested form: %s is not registered ."
 msgstr ""
@@ -2779,7 +2779,7 @@ msgstr ""
 msgid "Unsubscribe"
 msgstr ""
 
-#: includes/answer-loop.php:358
+#: includes/answer-loop.php:361
 #. translators: %d is total answer count of question.
 msgid "You are viewing 1 out of %d answers, click here to view all answers."
 msgstr ""
@@ -2961,7 +2961,7 @@ msgstr ""
 msgid "Enter your email"
 msgstr ""
 
-#: includes/class-form-hooks.php:130 includes/functions.php:2079
+#: includes/class-form-hooks.php:130 includes/functions.php:2081
 msgid "Update Question"
 msgstr ""
 
@@ -2969,7 +2969,7 @@ msgstr ""
 msgid "Post Answer"
 msgstr ""
 
-#: includes/class-form-hooks.php:227 includes/functions.php:2224
+#: includes/class-form-hooks.php:227 includes/functions.php:2226
 msgid "Update Answer"
 msgstr ""
 
@@ -3133,7 +3133,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:29 includes/functions.php:2368
+#: includes/common-pages.php:29 includes/functions.php:2370
 msgid "Activities"
 msgstr ""
 
@@ -3239,231 +3239,231 @@ msgstr ""
 msgid "[Solved] "
 msgstr ""
 
-#: includes/functions.php:1303
+#: includes/functions.php:1305
 msgid "asked"
 msgstr ""
 
-#: includes/functions.php:1304 includes/functions.php:1305
+#: includes/functions.php:1306 includes/functions.php:1307
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1306
+#: includes/functions.php:1308
 msgid "answered"
 msgstr ""
 
-#: includes/functions.php:1307
+#: includes/functions.php:1309
 msgid "deleted answer"
 msgstr ""
 
-#: includes/functions.php:1308
+#: includes/functions.php:1310
 msgid "restored question"
 msgstr ""
 
-#: includes/functions.php:1309
+#: includes/functions.php:1311
 msgid "restored answer"
 msgstr ""
 
-#: includes/functions.php:1310 templates/comment.php:32
+#: includes/functions.php:1312 templates/comment.php:32
 #: templates/functions.php:46
 msgid "commented"
 msgstr ""
 
-#: includes/functions.php:1311
+#: includes/functions.php:1313
 msgid "deleted comment"
 msgstr ""
 
-#: includes/functions.php:1312
+#: includes/functions.php:1314
 msgid "commented on answer"
 msgstr ""
 
-#: includes/functions.php:1313
+#: includes/functions.php:1315
 msgid "edited question"
 msgstr ""
 
-#: includes/functions.php:1314
+#: includes/functions.php:1316
 msgid "edited answer"
 msgstr ""
 
-#: includes/functions.php:1315
+#: includes/functions.php:1317
 msgid "edited comment"
 msgstr ""
 
-#: includes/functions.php:1316
+#: includes/functions.php:1318
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/functions.php:1317
+#: includes/functions.php:1319
 msgid "selected answer"
 msgstr ""
 
-#: includes/functions.php:1318
+#: includes/functions.php:1320
 msgid "unselected answer"
 msgstr ""
 
-#: includes/functions.php:1319
+#: includes/functions.php:1321
 msgid "updated status"
 msgstr ""
 
-#: includes/functions.php:1320
+#: includes/functions.php:1322
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1321
+#: includes/functions.php:1323
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1322
+#: includes/functions.php:1324
 msgid "changed status"
 msgstr ""
 
-#: includes/functions.php:1386
+#: includes/functions.php:1388
 msgid "Anonymous"
 msgstr ""
 
-#: includes/functions.php:1418
+#: includes/functions.php:1420
 msgid " (anonymous)"
 msgstr ""
 
-#: includes/functions.php:1623
+#: includes/functions.php:1625
 msgid "Emails"
 msgstr ""
 
-#: includes/functions.php:1624
+#: includes/functions.php:1626
 msgid "Notifies users and admins by email for various events and activities."
 msgstr ""
 
-#: includes/functions.php:1628
+#: includes/functions.php:1630
 msgid "Add category support in AnsPress questions."
 msgstr ""
 
-#: includes/functions.php:1632
+#: includes/functions.php:1634
 msgid "Adds a fancy user notification dropdown like Facebook and Stackoverflow."
 msgstr ""
 
-#: includes/functions.php:1636
+#: includes/functions.php:1638
 msgid "Add tag support in AnsPress questions."
 msgstr ""
 
-#: includes/functions.php:1640
+#: includes/functions.php:1642
 msgid "Award points to user based on activities."
 msgstr ""
 
-#: includes/functions.php:1644
+#: includes/functions.php:1646
 msgid "Generate user avatar based on display name initials."
 msgstr ""
 
-#: includes/functions.php:1647
+#: includes/functions.php:1649
 msgid "BuddyPress"
 msgstr ""
 
-#: includes/functions.php:1648
+#: includes/functions.php:1650
 msgid "Integrate AnsPress with BuddyPress."
 msgstr ""
 
-#: includes/functions.php:1651
+#: includes/functions.php:1653
 msgid "User Profile"
 msgstr ""
 
-#: includes/functions.php:1652
+#: includes/functions.php:1654
 msgid "User profile for users."
 msgstr ""
 
-#: includes/functions.php:1656
+#: includes/functions.php:1658
 msgid "Add reCaptcha verification in question, answer and comment forms."
 msgstr ""
 
-#: includes/functions.php:1659
+#: includes/functions.php:1661
 msgid "Syntax Highlighter"
 msgstr ""
 
-#: includes/functions.php:1660
+#: includes/functions.php:1662
 msgid "Add syntax highlighter support."
 msgstr ""
 
-#: includes/functions.php:1663
+#: includes/functions.php:1665
 msgid "Akismet Check"
 msgstr ""
 
-#: includes/functions.php:1664
+#: includes/functions.php:1666
 msgid "Check for spam in post content."
 msgstr ""
 
-#: includes/functions.php:2052
+#: includes/functions.php:2054
 msgid "You cannot edit this question."
 msgstr ""
 
-#: includes/functions.php:2057 templates/ask.php:21
+#: includes/functions.php:2059 templates/ask.php:21
 msgid "You do not have permission to ask a question."
 msgstr ""
 
-#: includes/functions.php:2162
+#: includes/functions.php:2164
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:2193
+#: includes/functions.php:2195
 msgid "You cannot edit this answer."
 msgstr ""
 
-#: includes/functions.php:2198
+#: includes/functions.php:2200
 msgid "You do not have permission to answer this question."
 msgstr ""
 
-#: includes/functions.php:2336
+#: includes/functions.php:2338
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2337
+#: includes/functions.php:2339
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred "
 "as <b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2342
+#: includes/functions.php:2344
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2343
+#: includes/functions.php:2345
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2344
+#: includes/functions.php:2346
 msgid "Ask a question"
 msgstr ""
 
-#: includes/functions.php:2348
+#: includes/functions.php:2350
 msgid "User page"
 msgstr ""
 
-#: includes/functions.php:2349
+#: includes/functions.php:2351
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2354
+#: includes/functions.php:2356
 msgid "Categories page"
 msgstr ""
 
-#: includes/functions.php:2355
+#: includes/functions.php:2357
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2360
+#: includes/functions.php:2362
 msgid "Tags page"
 msgstr ""
 
-#: includes/functions.php:2361
+#: includes/functions.php:2363
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2366
+#: includes/functions.php:2368
 msgid "Activities page"
 msgstr ""
 
-#: includes/functions.php:2367
+#: includes/functions.php:2369
 msgid "Page used to display all anspress activities."
 msgstr ""
 
@@ -4390,6 +4390,46 @@ msgstr ""
 
 #: widgets/breadcrumbs.php:29
 msgid "Show current anspress page navigation"
+msgstr ""
+
+#: widgets/leaderboard.php:30
+msgid "(AnsPress) User Leaderboard"
+msgstr ""
+
+#: widgets/leaderboard.php:31
+msgid "Shows users leaderboard."
+msgstr ""
+
+#: widgets/leaderboard.php:98
+msgid "No users found with reputation."
+msgstr ""
+
+#: widgets/leaderboard.php:107
+msgid "Points"
+msgstr ""
+
+#: widgets/leaderboard.php:115
+msgid "Reputation add-on is not active."
+msgstr ""
+
+#: widgets/leaderboard.php:133
+msgid "AnsPress Leader board"
+msgstr ""
+
+#: widgets/leaderboard.php:146
+msgid "Interval (in days):"
+msgstr ""
+
+#: widgets/leaderboard.php:150
+msgid "Avatar size:"
+msgstr ""
+
+#: widgets/leaderboard.php:154
+msgid "Show users:"
+msgstr ""
+
+#: widgets/leaderboard.php:158
+msgid "Users per row:"
 msgstr ""
 
 #: widgets/question_stats.php:32
