@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define database version.
-define( 'AP_DB_VERSION', 35 );
+define( 'AP_DB_VERSION', 37 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
@@ -315,6 +315,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
+			require_once ANSPRESS_DIR . 'widgets/leaderboard.php';
 
 			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
 			require_once ANSPRESS_DIR . 'lib/class-form.php';

@@ -1096,16 +1096,18 @@ function ap_whitelist_array( $master_keys, $array ) {
  *
  * @since unknown
  * @since 4.1.2 Added `ap_activity` table.
+ * @since 4.3.0 Added `ap_reputation_events`.
  */
 function ap_append_table_names() {
 	global $wpdb;
 
-	$wpdb->ap_qameta      = $wpdb->prefix . 'ap_qameta';
-	$wpdb->ap_votes       = $wpdb->prefix . 'ap_votes';
-	$wpdb->ap_views       = $wpdb->prefix . 'ap_views';
-	$wpdb->ap_reputations = $wpdb->prefix . 'ap_reputations';
-	$wpdb->ap_subscribers = $wpdb->prefix . 'ap_subscribers';
-	$wpdb->ap_activity    = $wpdb->prefix . 'ap_activity';
+	$wpdb->ap_qameta            = $wpdb->prefix . 'ap_qameta';
+	$wpdb->ap_votes             = $wpdb->prefix . 'ap_votes';
+	$wpdb->ap_views             = $wpdb->prefix . 'ap_views';
+	$wpdb->ap_reputations       = $wpdb->prefix . 'ap_reputations';
+	$wpdb->ap_subscribers       = $wpdb->prefix . 'ap_subscribers';
+	$wpdb->ap_activity          = $wpdb->prefix . 'ap_activity';
+	$wpdb->ap_reputation_events = $wpdb->prefix . 'ap_reputation_events';
 }
 ap_append_table_names();
 
