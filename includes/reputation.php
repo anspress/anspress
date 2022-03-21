@@ -326,6 +326,164 @@ function ap_get_users_reputation( $user_ids ) {
 }
 
 /**
+ * Insert a reputation event to database.
+ *
+ * @param string $slug        Reputation event unique slug.
+ * @param string $label       Reputation event label, must be less than 100 letters.
+ * @param string $description Reputation event description.
+ * @param int    $points      Signed point value.
+ * @param int    $activity    Activity label.
+ * @param string $parent      Parent type.
+ *
+ * @return int|WP_Error Return insert event id on success and WP_Error on failure.
+ * @since 4.3.0
+ */
+function ap_insert_reputation_event( $slug, $label, $description, $points, $activity, $parent = '' ) {
+	global $wpdb;
+
+	$slug     = sanitize_key( $slug );
+	$existing = ap_get_reputation_event_by_slug( $slug );
+
+	if ( $existing ) {
+		return new WP_Error( 'already_exits' );
+	}
+
+	$inserted = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->ap_reputation_events,
+		array(
+			'slug'        => $slug,
+			'label'       => $label,
+			'description' => $description,
+			'points'      => $points,
+			'activity'    => $activity,
+			'parent'      => $parent,
+		),
+		array(
+			'%s',
+			'%s',
+			'%s',
+			'%d',
+			'%s',
+			'%s',
+		)
+	);
+
+	if ( $inserted ) {
+		$inserted_id = $wpdb->insert_id;
+
+		// Delete cache.
+		wp_cache_delete( 'all', 'ap_get_all_reputation_events' );
+
+		/**
+		 * Hook called right after inserting a reputation event.
+		 *
+		 * @param object $event Reputation event id.
+		 * @since 4.3.0
+		 */
+		do_action( 'ap_inserted_reputation_event', $inserted_id );
+
+		return $inserted_id;
+	}
+
+	return new WP_Error( 'failed_to_insert_rep_event' );
+}
+
+/**
+ * Get a reputation event by slug.
+ *
+ * @param string $slug Event slug.
+ * @return object
+ * @since 4.3.0
+ */
+function ap_get_reputation_event_by_slug( $slug ) {
+	global $wpdb;
+
+	return $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$wpdb->prepare( "SELECT * FROM $wpdb->ap_reputation_events WHERE slug = %s LIMIT 1", $slug )
+	);
+}
+
+/**
+ * Delete a reputation event by slug.
+ *
+ * @param string $slug Event slug.
+ * @return true|WP_Error
+ * @since 4.3.0
+ */
+function ap_delete_reputation_event_by_slug( $slug ) {
+	global $wpdb;
+
+	$event = ap_get_reputation_event_by_slug( $slug );
+
+	if ( ! $event ) {
+		return new WP_Error( 'rep_event_not_exits' );
+	}
+
+	$rows = $wpdb->delete( // phpcs:ignore WordPress.DB
+		$wpdb->ap_reputation_events,
+		array( 'slug' => $slug ),
+		array( '%s' )
+	);
+
+	if ( $rows ) {
+		/**
+		 * Hook called right after deleting a reputation event.
+		 *
+		 * @param object $event Reputation event object.
+		 * @since 4.3.0
+		 */
+		do_action( 'ap_deleted_reputation_event', $event );
+
+		// Delete cache.
+		wp_cache_delete( 'all', 'ap_get_all_reputation_events' );
+
+		return true;
+	}
+
+	return new WP_Error( 'failed_to_delete_rep_event' );
+}
+
+/**
+ * Delete a reputation event by slug.
+ *
+ * @param array $args Arguments.
+ * @return true|WP_Error
+ * @since 4.3.0
+ */
+function ap_get_all_reputation_events( $args = array() ) {
+	global $wpdb;
+
+	$args = wp_parse_args(
+		$args,
+		array(
+			'order_by' => 'rep_events_id',
+			'order'    => 'ASC',
+			'per_page' => 20,
+			'offset'   => 0,
+		)
+	);
+
+	extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+
+	$columns = array( 'rep_events_id', 'slug', 'label', 'points', 'parent' );
+
+	$order    = 'ASC' === $args['order'] ? 'ASC' : 'DESC';
+	$order_by = sanitize_key( $order_by );
+	$order_by = in_array( $order_by, $columns, true ) ? $order_by : 'rep_events_id';
+	$per_page = (int) $per_page;
+	$offset   = $offset < 0 ? 0 : absint( $offset );
+
+	$order_st = $wpdb->prepare( "ORDER BY %s {$order}", $order_by ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$limit_st = $per_page < 0 ? '' : "LIMIT $offset,$per_page";
+
+	$query = "SELECT * FROM $wpdb->ap_reputation_events WHERE 1=1 $order_st $limit_st";
+
+	$results = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB
+
+	return $results;
+}
+
+/**
  * User reputations loop
  * Query wrapper for fetching reputations of a specific user by ID
  *

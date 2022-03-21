@@ -122,121 +122,135 @@ class Reputation extends \AnsPress\Singleton {
 	 * Register default reputation events.
 	 */
 	public function register_default_events() {
-		ap_register_reputation_event(
-			'register',
-			array(
-				'points'      => 10,
-				'label'       => __( 'Registration', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
-				'icon'        => 'apicon-question',
-				'activity'    => __( 'Registered', 'anspress-question-answer' ),
-				'parent'      => 'question',
-			)
-		);
+		$events_db = wp_cache_get( 'all', 'ap_get_all_reputation_events' );
 
-		ap_register_reputation_event(
-			'ask',
-			array(
-				'points'      => 2,
-				'label'       => __( 'Asking', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
-				'icon'        => 'apicon-question',
-				'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
-				'parent'      => 'question',
-			)
-		);
+		if ( false === $events_db ) {
+			$events_db = ap_get_all_reputation_events();
+		}
 
-		ap_register_reputation_event(
-			'answer',
-			array(
-				'points'      => 5,
-				'label'       => __( 'Answering', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user answers a question', 'anspress-question-answer' ),
-				'icon'        => 'apicon-answer',
-				'activity'    => __( 'Posted an answer', 'anspress-question-answer' ),
-				'parent'      => 'answer',
-			)
-		);
+		// If already in DB return from here.
+		if ( ! $events_db ) {
+			$events = array(
+				array(
+					'slug'        => 'register',
+					'label'       => __( 'Registration', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
+					'icon'        => 'apicon-question',
+					'activity'    => __( 'Registered', 'anspress-question-answer' ),
+					'parent'      => 'question',
+					'points'      => 10,
+				),
+				array(
+					'slug'        => 'ask',
+					'points'      => 2,
+					'label'       => __( 'Asking', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+					'icon'        => 'apicon-question',
+					'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+					'parent'      => 'question',
+				),
+				array(
+					'slug'        => 'answer',
+					'points'      => 5,
+					'label'       => __( 'Answering', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user answers a question', 'anspress-question-answer' ),
+					'icon'        => 'apicon-answer',
+					'activity'    => __( 'Posted an answer', 'anspress-question-answer' ),
+					'parent'      => 'answer',
+				),
+				array(
+					'slug'        => 'comment',
+					'points'      => 2,
+					'label'       => __( 'Commenting', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user comments on question or answer', 'anspress-question-answer' ),
+					'icon'        => 'apicon-comments',
+					'activity'    => __( 'Commented on a post', 'anspress-question-answer' ),
+					'parent'      => 'comment',
+				),
+				array(
+					'slug'        => 'select_answer',
+					'points'      => 2,
+					'label'       => __( 'Selecting an Answer', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user selects an answer for their question', 'anspress-question-answer' ),
+					'icon'        => 'apicon-check',
+					'activity'    => __( 'Selected an answer as best', 'anspress-question-answer' ),
+					'parent'      => 'question',
+				),
+				array(
+					'slug'        => 'best_answer',
+					'points'      => 10,
+					'label'       => __( 'Answer selected as best', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user\'s answer is selected as best', 'anspress-question-answer' ),
+					'icon'        => 'apicon-check',
+					'activity'    => __( 'Answer was selected as best', 'anspress-question-answer' ),
+					'parent'      => 'answer',
+				),
+				array(
+					'slug'        => 'received_vote_up',
+					'points'      => 10,
+					'label'       => __( 'Received up vote', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user receives an upvote', 'anspress-question-answer' ),
+					'icon'        => 'apicon-thumb-up',
+					'activity'    => __( 'Received an upvote', 'anspress-question-answer' ),
+				),
+				array(
+					'slug'        => 'received_vote_down',
+					'points'      => -2,
+					'label'       => __( 'Received down vote', 'anspress-question-answer' ),
+					'description' => __( 'Points awarded when user receives a down vote', 'anspress-question-answer' ),
+					'icon'        => 'apicon-thumb-down',
+					'activity'    => __( 'Received a down vote', 'anspress-question-answer' ),
+				),
+				array(
+					'slug'        => 'given_vote_up',
+					'points'      => 0,
+					'label'       => __( 'Gives an up vote', 'anspress-question-answer' ),
+					'description' => __( 'Points taken from user when they give an up vote', 'anspress-question-answer' ),
+					'icon'        => 'apicon-thumb-up',
+					'activity'    => __( 'Given an up vote', 'anspress-question-answer' ),
+				),
+				array(
+					'slug'        => 'given_vote_down',
+					'points'      => 0,
+					'label'       => __( 'Gives down vote', 'anspress-question-answer' ),
+					'description' => __( 'Points taken from user when they give a down vote', 'anspress-question-answer' ),
+					'icon'        => 'apicon-thumb-down',
+					'activity'    => __( 'Given a down vote', 'anspress-question-answer' ),
+				),
+			);
 
-		ap_register_reputation_event(
-			'comment',
-			array(
-				'points'      => 2,
-				'label'       => __( 'Commenting', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user comments on question or answer', 'anspress-question-answer' ),
-				'icon'        => 'apicon-comments',
-				'activity'    => __( 'Commented on a post', 'anspress-question-answer' ),
-				'parent'      => 'comment',
-			)
-		);
+			$custom_points = get_option( 'anspress_reputation_events', array() );
 
-		ap_register_reputation_event(
-			'select_answer',
-			array(
-				'points'      => 2,
-				'label'       => __( 'Selecting an Answer', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user selects an answer for their question', 'anspress-question-answer' ),
-				'icon'        => 'apicon-check',
-				'activity'    => __( 'Selected an answer as best', 'anspress-question-answer' ),
-				'parent'      => 'question',
-			)
-		);
+			foreach ( $events as $event ) {
+				$points = isset( $custom_points[ $event['slug'] ] ) ? (int) $custom_points[ $event['slug'] ] : (int) $event['points'];
 
-		ap_register_reputation_event(
-			'best_answer',
-			array(
-				'points'      => 10,
-				'label'       => __( 'Answer selected as best', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user\'s answer is selected as best', 'anspress-question-answer' ),
-				'icon'        => 'apicon-check',
-				'activity'    => __( 'Answer was selected as best', 'anspress-question-answer' ),
-				'parent'      => 'answer',
-			)
-		);
+				ap_insert_reputation_event(
+					$event['slug'],
+					$event['label'],
+					$event['description'],
+					$points,
+					! empty( $event['activity'] ) ? $event['activity'] : '',
+					! empty( $event['parent'] ) ? $event['parent'] : ''
+				);
+			}
 
-		ap_register_reputation_event(
-			'received_vote_up',
-			array(
-				'points'      => 10,
-				'label'       => __( 'Received up vote', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user receives an upvote', 'anspress-question-answer' ),
-				'icon'        => 'apicon-thumb-up',
-				'activity'    => __( 'Received an upvote', 'anspress-question-answer' ),
-			)
-		);
+			$events_db = ap_get_all_reputation_events();
 
-		ap_register_reputation_event(
-			'received_vote_down',
-			array(
-				'points'      => -2,
-				'label'       => __( 'Received down vote', 'anspress-question-answer' ),
-				'description' => __( 'Points awarded when user receives a down vote', 'anspress-question-answer' ),
-				'icon'        => 'apicon-thumb-down',
-				'activity'    => __( 'Received a down vote', 'anspress-question-answer' ),
-			)
-		);
+			wp_cache_set( 'all', $events_db, 'ap_get_all_reputation_events' );
+		}
 
-		ap_register_reputation_event(
-			'given_vote_up',
-			array(
-				'points'      => 0,
-				'label'       => __( 'Gives an up vote', 'anspress-question-answer' ),
-				'description' => __( 'Points taken from user when they give an up vote', 'anspress-question-answer' ),
-				'icon'        => 'apicon-thumb-up',
-				'activity'    => __( 'Given an up vote', 'anspress-question-answer' ),
-			)
-		);
+		if ( empty( $events_db ) ) {
+			return;
+		}
 
-		ap_register_reputation_event(
-			'given_vote_down',
-			array(
-				'points'      => 0,
-				'label'       => __( 'Gives down vote', 'anspress-question-answer' ),
-				'description' => __( 'Points taken from user when they give a down vote', 'anspress-question-answer' ),
-				'icon'        => 'apicon-thumb-down',
-				'activity'    => __( 'Given a down vote', 'anspress-question-answer' ),
-			)
-		);
+		// Fallback for register events.
+		foreach ( $events_db as $event ) {
+			$args = (array) $event;
+
+			unset( $args['slug'] );
+
+			ap_register_reputation_event( $event->slug, $args );
+		}
 	}
 
 	/**

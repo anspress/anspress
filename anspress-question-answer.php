@@ -15,7 +15,7 @@
  * Plugin URI:        https://anspress.net
  * Description:       The most advance community question and answer system for WordPress
  * Donate link:       https://paypal.me/anspress
- * Version:           4.2.3
+ * Version:           4.3.0
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.net
  * License:           GPL-3.0+
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Define database version.
-define( 'AP_DB_VERSION', 35 );
+define( 'AP_DB_VERSION', 37 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
@@ -67,7 +67,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.2.3'; // phpcs:ignore
+		private $_plugin_version = '4.3.0'; // phpcs:ignore
 
 		/**
 		 * Class instance
@@ -315,6 +315,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
 			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
+			require_once ANSPRESS_DIR . 'widgets/leaderboard.php';
 
 			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
 			require_once ANSPRESS_DIR . 'lib/class-form.php';

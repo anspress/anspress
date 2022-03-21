@@ -688,7 +688,7 @@ class AnsPress_Admin {
 		foreach ( $messages as $msg ) {
 			if ( $msg['show'] ) {
 				$class = 'ap-notice notice notice-' . $msg['type'];
-				wp_kses_post(
+				echo wp_kses_post(
 					sprintf(
 						'<div class="%1$s %4$s"><p>%2$s%3$s</p></div>',
 						esc_attr( $class ),

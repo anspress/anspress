@@ -197,3 +197,18 @@
 		}
 	}
 }
+.ap-leaderbaord-widget{
+	display: flex;
+	flex-wrap: wrap;
+	.ap-leaderbaord-user{
+		display: flex;
+    	width: 25%;
+		margin-bottom: 15px;
+	}
+	.ap-leaderbaord-point{
+		display: block;
+	}
+	.ap-leaderbaord-user-name {
+		margin-left: 10px;
+	}
+}
