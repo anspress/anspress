@@ -44,17 +44,21 @@ class AnsPress_Leaderboard_Widget extends WP_Widget {
 
 		$interval = absint( $interval );
 		$limit    = absint( $limit );
+		$cap_key  = $wpdb->prefix . 'capabilities';
 
 		// @codingStandardsIgnoreStart
 		return $wpdb->get_results(
-			"SELECT users.ID, users.display_name, sum(rep_ev.points) AS aggregated  FROM $wpdb->ap_reputations rep
-			INNER JOIN $wpdb->ap_reputation_events rep_ev ON rep.rep_event = rep_ev.slug
-			INNER JOIN $wpdb->users users ON users.ID = rep.rep_user_id
-			INNER JOIN $wpdb->usermeta meta ON meta.user_id = users.ID AND meta.meta_key = 'wp_capabilities' AND meta_value NOT LIKE '%administrator%'
-			WHERE rep.rep_date > current_date - interval $interval day
-			GROUP BY rep.rep_user_id
-			ORDER BY aggregated DESC, users.ID ASC
-			LIMIT $limit"
+			$wpdb->prepare(
+				"SELECT users.ID, users.display_name, sum(rep_ev.points) AS aggregated  FROM $wpdb->ap_reputations rep
+				INNER JOIN $wpdb->ap_reputation_events rep_ev ON rep.rep_event = rep_ev.slug
+				INNER JOIN $wpdb->users users ON users.ID = rep.rep_user_id
+				INNER JOIN $wpdb->usermeta meta ON meta.user_id = users.ID AND meta.meta_key = %s AND meta_value NOT LIKE '%administrator%'
+				WHERE rep.rep_date > current_date - interval $interval day
+				GROUP BY rep.rep_user_id
+				ORDER BY aggregated DESC, users.ID ASC
+				LIMIT $limit",
+				$cap_key
+			)
 		);
 		// @codingStandardsIgnoreEnd
 	}
