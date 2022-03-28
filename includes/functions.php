@@ -1605,7 +1605,7 @@ function ap_get_addons() {
 
 	$all_files = array();
 	foreach ( array( 'pro', 'free' ) as $folder ) {
-		$path = ANSPRESS_ADDONS_DIR . DS . $folder;
+		$path = ANSPRESS_ADDONS_DIR . ANSPRESS_DIR_SEP . $folder;
 
 		if ( file_exists( $path ) ) {
 			$files = scandir( $path );
@@ -1614,7 +1614,7 @@ function ap_get_addons() {
 				$ext = pathinfo( $file, PATHINFO_EXTENSION );
 
 				if ( 'php' === $ext ) {
-					$all_files[] = $folder . DS . $file;
+					$all_files[] = $folder . ANSPRESS_DIR_SEP . $file;
 				}
 			}
 		}

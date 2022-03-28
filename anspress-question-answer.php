@@ -255,7 +255,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		private function setup_constants() {
 			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
 
-			define( 'DS', DIRECTORY_SEPARATOR );
+			define( 'ANSPRESS_DIR_SEP', DIRECTORY_SEPARATOR );
 			define( 'AP_VERSION', $this->_plugin_version );
 			define( 'ANSPRESS_DIR', $plugin_dir );
 			define( 'ANSPRESS_URL', plugin_dir_url( __FILE__ ) );
