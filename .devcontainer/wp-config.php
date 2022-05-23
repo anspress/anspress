@@ -81,8 +81,13 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', true );
 
-define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST']);
-define('WP_HOME', 'http://' . $_SERVER['HTTP_HOST']);
+if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false){
+    $_SERVER['HTTPS']='on';
+}
+
+$host = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? 'localhost:8080';
+define('WP_SITEURL', 'http://' . $host);
+define('WP_HOME', 'http://' . $host);
 
 /* Add any custom values between this line and the "stop editing" line. */
 
