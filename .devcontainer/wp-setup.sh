@@ -6,11 +6,10 @@ ADMIN_USER=admin
 ADMIN_PASS=password
 ADMIN_EMAIL="admin@localhost.com"
 #Space-separated list of plugin ID's to install and activate
-PLUGINS="query-monitor,rewrite-rules-inspector,fakerpress,buddypress,wp-mail-logging"
+PLUGINS="query-monitor rewrite-rules-inspector fakerpress buddypress wp-mail-logging"
 
 #Set to true to wipe out and reset your wordpress install (on next container rebuild)
 WP_RESET=true
-
 
 echo "Setting up WordPress"
 DEVDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -27,8 +26,6 @@ if [ ! -f wp-config.php ]; then
 	cp /var/www/html/wp-content/plugins/anspress-question-answer/.devcontainer/wp-config.php /var/www/html/wp-config.php;
     # wp config create --dbhost="db" --dbname="wordpress" --dbuser="wp_user" --dbpass="wp_pass" --skip-check;
     wp core install --url="http://localhost:8080" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_email="$ADMIN_EMAIL" --admin_password="$ADMIN_PASS" --skip-email;
-    wp plugin install $PLUGINS --activate;
-    wp plugin activate anspress-question-answer;
 
     #Data import
     cd $DEVDIR/data/
@@ -36,13 +33,16 @@ if [ ! -f wp-config.php ]; then
         wp db import $f
     done
 
+    cd /var/www/html;
+    wp plugin install $PLUGINS --activate;
+    wp plugin activate anspress-question-answer;
+
     # cp -r plugins/* /var/www/html/wp-content/plugins
     # for p in plugins/*; do
     #     wp plugin activate $(basename $p)
     # done
 
     wp theme install twentytwelve --activate;
-
 else
     echo "Already configured"
 fi

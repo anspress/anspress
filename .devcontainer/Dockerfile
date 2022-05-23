@@ -42,7 +42,7 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*
 
 #XDebug settings
-RUN echo "[XDebug]\nxdebug.remote_enable = 1\nxdebug.remote_autostart = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
+RUN echo "[XDebug]\nxdebug.mode = debug\nxdebug.start_with_request = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
 
 #WP recommended PHP settings
 RUN { \
