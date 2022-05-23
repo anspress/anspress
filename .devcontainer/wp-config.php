@@ -81,8 +81,9 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', true );
 
-if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false){
-    $_SERVER['HTTPS']='on';
+$protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? 'http';
+if ( $protocol === 'https' ){
+    $_SERVER['HTTPS'] = 'on';
 }
 
 $host = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? 'localhost:8080';
