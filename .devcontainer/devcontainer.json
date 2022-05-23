@@ -15,6 +15,6 @@
   "extensions": [],
 
   // Sets up WordPress on container start.
-  "postCreateCommand": ".devcontainer/wp-setup.sh",
+  "postCreateCommand": "bash .devcontainer/wp-setup.sh",
   "remoteUser": "vscode"
 }

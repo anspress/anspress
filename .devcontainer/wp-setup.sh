@@ -24,10 +24,11 @@ fi
 
 if [ ! -f wp-config.php ]; then
     echo "Configuring";
-    wp config create --dbhost="db" --dbname="wordpress" --dbuser="wp_user" --dbpass="wp_pass" --skip-check;
+	cp /var/www/html/wp-content/plugins/anspress-question-answer/.devcontainer/wp-config.php /var/www/html/wp-config.php;
+    # wp config create --dbhost="db" --dbname="wordpress" --dbuser="wp_user" --dbpass="wp_pass" --skip-check;
     wp core install --url="http://localhost:8080" --title="$SITE_TITLE" --admin_user="$ADMIN_USER" --admin_email="$ADMIN_EMAIL" --admin_password="$ADMIN_PASS" --skip-email;
-    wp plugin install $PLUGINS --activate
-    wp plugin activate anspress-question-answer
+    wp plugin install $PLUGINS --activate;
+    wp plugin activate anspress-question-answer;
 
     #Data import
     cd $DEVDIR/data/
@@ -35,10 +36,12 @@ if [ ! -f wp-config.php ]; then
         wp db import $f
     done
 
-    cp -r plugins/* /var/www/html/wp-content/plugins
-    for p in plugins/*; do
-        wp plugin activate $(basename $p)
-    done
+    # cp -r plugins/* /var/www/html/wp-content/plugins
+    # for p in plugins/*; do
+    #     wp plugin activate $(basename $p)
+    # done
+
+    wp theme install twentytwelve --activate;
 
 else
     echo "Already configured"
