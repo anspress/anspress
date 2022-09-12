@@ -684,6 +684,13 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
+		
+		/**
+		 * Filter the AnsPress admin notices before they're output.
+		 *
+		 * @param array $messages List of notices.
+		 */
+		$messages = apply_filters( 'ap_admin_notices', $messages );
 
 		foreach ( $messages as $msg ) {
 			if ( $msg['show'] ) {
