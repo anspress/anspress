@@ -25,11 +25,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			// Shows date and time for timeline.
 			$activities->the_when();
 
-			/**
-			 * Load activity item. Here we are not using `get_template_part()` because
-			 * we wants to let template easily access PHP variables.
-			 */
-			include ap_get_theme_location( 'activities/activity.php' );
+			if( ap_user_can_read_post( get_post( $activities->object->q_id ), get_current_user_id() ) ) {
+				
+				/**
+				 * Load activity item. Here we are not using `get_template_part()` because
+				 * we wants to let template easily access PHP variables.
+				 */
+				include ap_get_theme_location( 'activities/activity.php' );
+			}
 		endwhile;
 		?>
 
