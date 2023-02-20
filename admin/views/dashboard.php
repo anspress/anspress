@@ -330,8 +330,8 @@ if ( $columns ) {
 	<div class="welcome-panel" id="welcome-panel">
 		<div class="welcome-panel-content">
 			<div class="welcome-panel-header">
-				<h2><?php esc_attr_e( 'Welcome to AnsPress!', 'anspress-question-answer' ); ?></h2>
-				<p><?php esc_attr_e( 'We’ve assembled some links to get you started:', 'anspress-question-answer' ); ?></p>
+				<h2><?php esc_html_e( 'Welcome to AnsPress!', 'anspress-question-answer' ); ?></h2>
+				<p><?php esc_html_e( 'We’ve assembled some links to get you started:', 'anspress-question-answer' ); ?></p>
 			</div>
 
 			<div class="welcome-panel-column-container">
