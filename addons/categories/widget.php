@@ -40,6 +40,12 @@ class Categories extends \WP_Widget {
 		$instance = wp_parse_args(
 			$instance,
 			array(
+				'title'       => __( 'Categories', 'anspress-question-answer' ),
+				'hide_empty'  => false,
+				'parent'      => 0,
+				'number'      => 10,
+				'orderby'     => 'count',
+				'order'       => 'DESC',
 				'icon_width'  => 32,
 				'icon_height' => 32,
 			)
