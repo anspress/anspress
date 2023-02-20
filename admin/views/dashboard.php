@@ -337,57 +337,75 @@ if ( $columns ) {
 
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
-					<h3><?php esc_attr_e( 'Get Started', 'anspress-question-answer' ); ?></h3>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_options' ) ); ?>" class="button button-primary button-hero">
-						<?php esc_attr_e( 'AnsPress Options', 'anspress-question-answer' ); ?>
-					</a>
+					<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+						<rect width="48" height="48" rx="4" fill="#1E1E1E"></rect>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M32.0668 17.0854L28.8221 13.9454L18.2008 24.671L16.8983 29.0827L21.4257 27.8309L32.0668 17.0854ZM16 32.75H24V31.25H16V32.75Z" fill="white"></path>
+					</svg>
+					<div class="welcome-panel-column-content">
+						<h3><?php esc_html_e( 'Get Started', 'anspress-question-answer' ); ?></h3>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_options' ) ); ?>" class="button button-primary button-hero">
+							<?php esc_html_e( 'AnsPress Options', 'anspress-question-answer' ); ?>
+						</a>
+					</div>
 				</div>
 				<div class="welcome-panel-column">
-					<h3><?php esc_attr_e( 'Next Steps', 'anspress-question-answer' ); ?></h3>
-					<ul>
-						<li>
-							<a class="welcome-icon welcome-write-blog" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=question' ) ); ?>">
-								<?php esc_attr_e( 'Write your first question', 'anspress-question-answer' ); ?>
-							</a>
-						</li>
-						<li>
-							<a class="welcome-icon welcome-add-page" href="<?php echo esc_url( admin_url( 'admin.php?page=ap_select_question' ) ); ?>">
-								<?php esc_attr_e( 'Post an answer', 'anspress-question-answer' ); ?>
-							</a>
-						</li>
-						<li>
-							<a class="welcome-icon welcome-view-site" href="<?php echo esc_url( ap_get_link_to( '/' ) ); ?>">
-								<?php esc_attr_e( 'View questions', 'anspress-question-answer' ); ?>
-							</a>
-						</li>
-					</ul>
+					<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+						<rect width="48" height="48" rx="4" fill="#1E1E1E"></rect>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M18 16h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V18a2 2 0 0 1 2-2zm12 1.5H18a.5.5 0 0 0-.5.5v3h13v-3a.5.5 0 0 0-.5-.5zm.5 5H22v8h8a.5.5 0 0 0 .5-.5v-7.5zm-10 0h-3V30a.5.5 0 0 0 .5.5h2.5v-8z" fill="#fff"></path>
+					</svg>
+					<div class="welcome-panel-column-content">
+						<h3><?php esc_html_e( 'Next Steps', 'anspress-question-answer' ); ?></h3>
+						<ul>
+							<li>
+								<a class="welcome-icon welcome-write-blog" href="<?php echo esc_url( admin_url( 'post-new.php?post_type=question' ) ); ?>">
+									<?php esc_html_e( 'Write your first question', 'anspress-question-answer' ); ?>
+								</a>
+							</li>
+							<li>
+								<a class="welcome-icon welcome-add-page" href="<?php echo esc_url( admin_url( 'admin.php?page=ap_select_question' ) ); ?>">
+									<?php esc_html_e( 'Post an answer', 'anspress-question-answer' ); ?>
+								</a>
+							</li>
+							<li>
+								<a class="welcome-icon welcome-view-site" href="<?php echo esc_url( ap_get_link_to( '/' ) ); ?>">
+									<?php esc_html_e( 'View questions', 'anspress-question-answer' ); ?>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="welcome-panel-column welcome-panel-last">
-					<h3><?php esc_attr_e( 'More actions', 'anspress-question-answer' ); ?></h3>
-					<ul>
-						<li>
-							<div class="welcome-icon welcome-widgets-menus">
-								<?php
-								printf(
-									// translators: %1 is link to themes %2 is link to addons.
-									wp_kses_post( 'Get %1$s or %2$s', 'anspress-question-answer' ),
-									'<a href="' . esc_url( 'https://anspress.net/themes/' ) . '" target="_blank">' . esc_attr__( 'Themes', 'anspress-question-answer' ) . '</a>',
-									'<a href="' . esc_url( 'https://anspress.net/extensions/' ) . '" target="_blank">' . esc_attr__( 'Extensions', 'anspress-question-answer' ) . '</a>'
-								);
-								?>
-							</div>
-						</li>
-						<li>
-							<a class="welcome-icon welcome-comments" href="https://anspress.net/questions/" target="_blank">
-								<?php esc_attr_e( 'Help and Support!', 'anspress-question-answer' ); ?>
-							</a>
-						</li>
-						<li>
-							<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/">
-								<?php esc_attr_e( 'Documents and FAQ', 'anspress-question-answer' ); ?>
-							</a>
-						</li>
-					</ul>
+				<div class="welcome-panel-column">
+					<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+						<rect width="48" height="48" rx="4" fill="#1E1E1E"></rect>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M18 16h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V18a2 2 0 0 1 2-2zm12 1.5H18a.5.5 0 0 0-.5.5v3h13v-3a.5.5 0 0 0-.5-.5zm.5 5H22v8h8a.5.5 0 0 0 .5-.5v-7.5zm-10 0h-3V30a.5.5 0 0 0 .5.5h2.5v-8z" fill="#fff"></path>
+					</svg>
+					<div class="welcome-panel-column-content">
+						<h3><?php esc_html_e( 'More actions', 'anspress-question-answer' ); ?></h3>
+						<ul>
+							<li>
+								<div class="welcome-icon welcome-widgets-menus">
+									<?php
+									printf(
+										// translators: %1 is link to themes %2 is link to addons.
+										wp_kses_post( 'Get %1$s or %2$s', 'anspress-question-answer' ),
+										'<a href="' . esc_url( 'https://anspress.net/themes/' ) . '" target="_blank">' . esc_html__( 'Themes', 'anspress-question-answer' ) . '</a>',
+										'<a href="' . esc_url( 'https://anspress.net/extensions/' ) . '" target="_blank">' . esc_html__( 'Extensions', 'anspress-question-answer' ) . '</a>'
+									);
+									?>
+								</div>
+							</li>
+							<li>
+								<a class="welcome-icon welcome-comments" href="https://anspress.net/questions/" target="_blank">
+									<?php esc_html_e( 'Help and Support!', 'anspress-question-answer' ); ?>
+								</a>
+							</li>
+							<li>
+								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/">
+									<?php esc_html_e( 'Documents and FAQ', 'anspress-question-answer' ); ?>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
