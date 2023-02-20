@@ -147,6 +147,7 @@ class Tags extends \AnsPress\Singleton {
 		$tag_args['fields'] = 'count';
 		$found_query        = new \WP_Term_Query( $tag_args );
 		$tags_rows_found    = $found_query->get_terms();
+		$tags_rows_found    = ! is_array( $tags_rows_found ) ? (array) $tags_rows_found : $tags_rows_found;
 		$ap_max_num_pages   = ceil( count( $tags_rows_found ) / $per_page );
 		$question_tags      = $query->get_terms();
 
