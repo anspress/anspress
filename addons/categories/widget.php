@@ -37,6 +37,14 @@ class Categories extends \WP_Widget {
 	 * @param array $instance Widget instance.
 	 */
 	public function widget( $args, $instance ) {
+		$instance = wp_parse_args(
+			$instance,
+			array(
+				'icon_width'  => 32,
+				'icon_height' => 32,
+			)
+		);
+
 		/**
 		 * This filter is documented in widgets/question_stats.php
 		 */
@@ -56,9 +64,6 @@ class Categories extends \WP_Widget {
 			'order'      => $instance['order'],
 		);
 
-		$icon_width  = ! empty( $instance['icon_width'] ) ? $instance['icon_width'] : 32;
-		$icon_height = ! empty( $instance['icon_height'] ) ? $instance['icon_height'] : 32;
-
 		$categories = get_terms( 'question_category', $cat_args );
 		?>
 		<ul id="ap-categories-widget" class="ap-cat-wid clearfix">
@@ -75,7 +80,7 @@ class Categories extends \WP_Widget {
 			$sub_cat_count = count( get_term_children( $category->term_id, 'question_category' ) );
 			?>
 			<li class="clearfix">
-			<a class="ap-cat-image" style="height:<?php echo esc_attr( $icon_height ); ?>px;width:<?php echo esc_attr( $icon_width ); ?>px;background: <?php echo esc_attr( $ap_category['color'] ); ?>" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
+			<a class="ap-cat-image" style="height:<?php echo esc_attr( $instance['icon_height'] ); ?>px;width:<?php echo esc_attr( $instance['icon_width'] ); ?>px;background: <?php echo esc_attr( $ap_category['color'] ); ?>" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
 				<span class="ap-category-icon <?php echo esc_attr( $ap_category['icon'] ); ?>"></span>
 			</a>
 			<a class="ap-cat-wid-title" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
