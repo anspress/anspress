@@ -42,8 +42,10 @@ class AP_Questions_Widget extends WP_Widget {
 		$instance = wp_parse_args(
 			$instance,
 			array(
-				'widget_title' => __( 'Questions', 'anspress-question-answer' ),
+				'title'        => __( 'Questions', 'anspress-question-answer' ),
 				'order_by'     => 'active',
+				'limit'        => 5,
+				'category_ids' => '',
 			)
 		);
 
