@@ -382,7 +382,7 @@ if ( $columns ) {
 							</a>
 						</li>
 						<li>
-							<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/">
+							<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/" target="_blank">
 								<?php esc_attr_e( 'Documents and FAQ', 'anspress-question-answer' ); ?>
 							</a>
 						</li>
