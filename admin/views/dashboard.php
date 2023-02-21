@@ -165,6 +165,7 @@ class AnsPress_Dashboard {
 				array(
 					'ap_order_by' => 'newest',
 					'showposts'   => 5,
+					'question_id' => 'all',
 				)
 			);
 			?>
