@@ -210,7 +210,12 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Settings', 'anspress-question-answer' ), __( 'Settings', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
-		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		// Theme & Extensions submenu item link.
+		$submenu['anspress'][500] = array( // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			'<div id="anspress-submenu-external-link">' . esc_html__( 'Theme & Extensions', 'anspress-question-answer' ) . '</div>',
+			'manage_options',
+			'https://anspress.net/themes/',
+		);
 	}
 
 	/**
