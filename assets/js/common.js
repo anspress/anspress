@@ -849,6 +849,9 @@ jQuery(document).ready(function ($) {
 		e.preventDefault();
 		$(this).parent().remove();
 	})
+
+	// Open the Theme & Extensions submenu link in a new tab/window.
+	$( '#anspress-submenu-external-link' ).parent().attr( 'target', '_blank' );
 });
 
 window.AnsPress.Helper = {
