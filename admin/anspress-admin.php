@@ -817,6 +817,8 @@ class AnsPress_Admin {
 		);
 
 		foreach ( ap_main_pages() as $slug => $args ) {
+			$value = isset( $opt[ $slug ] ) ? $opt[ $slug ] : '';
+
 			$form['fields'][ $slug ] = array(
 				'label'      => $args['label'],
 				'desc'       => $args['desc'],
@@ -826,7 +828,7 @@ class AnsPress_Admin {
 					'post_type' => 'page',
 					'showposts' => -1,
 				),
-				'value'      => $opt[ $slug ],
+				'value'      => $value,
 				'sanitize'   => 'absint',
 			);
 		}
