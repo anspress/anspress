@@ -270,10 +270,10 @@ class AnsPress_Admin_Ajax {
 
 		$addon_id = ap_sanitize_unslash( 'addon_id', 'r' );
 		if ( ap_is_addon_active( $addon_id ) ) {
-			$message = __( 'Successfully disabled addon. Redirecting!', 'anspress-question-answer' );
+			$message = __( 'Successfully disabled addon.', 'anspress-question-answer' );
 			ap_deactivate_addon( $addon_id );
 		} else {
-			$message = __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' );
+			$message = __( 'Successfully enabled addon.', 'anspress-question-answer' );
 			ap_activate_addon( $addon_id );
 		}
 
