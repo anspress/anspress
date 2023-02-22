@@ -113,8 +113,8 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 <script type="text/javascript">
 	( function( $ ) {
 		AnsPress.on( 'toggleAddon', function( data ) {
-			$( '#ap-addons' ).load( location.href + ' #ap-addons>*', '' );
-			$( '#ap-group-options' ).load( location.href + ' #ap-group-options>*', '' );
+			$( '#ap-addons' ).load( location.href + ' #ap-addons', '' );
+			$( '#ap-group-options' ).load( location.href + ' #ap-group-options', '' );
 		} );
 	} )( jQuery );
 </script>
