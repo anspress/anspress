@@ -29,7 +29,7 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 ?>
 
 
-<div class="ap-addons">
+<div class="ap-addons" id="ap-addons">
 	<div class="ap-addons-list">
 		<?php
 		/**
@@ -111,10 +111,10 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 </div>
 
 <script type="text/javascript">
-	(function($){
-		AnsPress.on('toggleAddon', function(data){
-			window.location.reload();
-		})
-	})(jQuery)
+	( function( $ ) {
+		AnsPress.on( 'toggleAddon', function( data ) {
+			$( '#ap-addons' ).load( location.href + ' #ap-addons>*', '' );
+			$( '#ap-group-options' ).load( location.href + ' #ap-group-options>*', '' );
+		} );
+	} )( jQuery );
 </script>
-

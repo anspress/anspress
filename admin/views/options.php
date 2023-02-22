@@ -208,7 +208,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 					?>
 				</div>
 				<div class="anspress-options-body">
-					<div class="ap-group-options">
+					<div class="ap-group-options" id="ap-group-options">
 
 						<?php if ( isset( $all_options[ $active_tab ] ) ) : ?>
 
