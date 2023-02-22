@@ -172,7 +172,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 				$action_url = admin_url( 'admin.php?page=anspress_options&active_tab=' . $active_tab );
 			?>
 
-			<div class="anspress-options">
+			<div class="anspress-options" id="anspress-options">
 				<div class="anspress-options-tab clearfix">
 					<?php
 					$active_tab = ap_sanitize_unslash( 'active_tab', 'r', 'general' );
@@ -208,7 +208,7 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 					?>
 				</div>
 				<div class="anspress-options-body">
-					<div class="ap-group-options" id="ap-group-options">
+					<div class="ap-group-options">
 
 						<?php if ( isset( $all_options[ $active_tab ] ) ) : ?>
 
