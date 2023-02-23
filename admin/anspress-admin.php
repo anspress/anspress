@@ -506,19 +506,17 @@ class AnsPress_Admin {
 
 			<p class="button-controls">
 				<span class="list-controls">
-					<a href="
 					<?php
-						echo esc_url(
-							add_query_arg(
-								array(
-									'anspress-all' => 'all',
-									'selectall'    => 1,
-								),
-								remove_query_arg( $removed_args )
-							)
-						);
+					$url = add_query_arg(
+						array(
+							'anspress-all' => 'all',
+							'selectall'    => 1,
+						),
+						remove_query_arg( $removed_args )
+					);
+					$url = $url . '#anspress-menu-mb';
 					?>
-					#anspress-menu-mb" class="select-all"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
+					<a href="<?php echo esc_url( $url ); ?>" class="select-all"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
 				</span>
 
 				<span class="add-to-menu">
@@ -684,7 +682,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
