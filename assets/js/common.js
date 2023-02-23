@@ -567,8 +567,8 @@ jQuery(document).ready(function ($) {
 		AnsPress.ajax({
 			data: query,
 			success: function (data) {
-				if (data.count) self.next().text(data.count);
-				if (data.label) self.text(data.label);
+				if ( data.count ) self.find( '.apsubscribers-count' ).text( data.count );
+				if ( data.label ) self.find( '.apsubscribers-title' ).text( data.label );
 			}
 		})
 	});
