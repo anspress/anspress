@@ -517,7 +517,13 @@ class AnsPress_Ajax {
 			ap_ajax_json(
 				array(
 					'success'  => true,
-					'snackbar' => array( 'message' => __( 'Successfully unsubscribed from question', 'anspress-question-answer' ) ),
+					'snackbar' => array(
+						'message' => sprintf(
+							/* Translators: %s Unsubscribed to the question title */
+							__( 'Successfully unsubscribed from question: %s', 'anspress-question-answer' ),
+							$_post->post_title
+						),
+					),
 					'count'    => ap_get_post_field( 'subscribers', $post_id ),
 					'label'    => __( 'Subscribe', 'anspress-question-answer' ),
 				)
@@ -539,7 +545,13 @@ class AnsPress_Ajax {
 		ap_ajax_json(
 			array(
 				'success'  => true,
-				'snackbar' => array( 'message' => __( 'Successfully subscribed to question', 'anspress-question-answer' ) ),
+				'snackbar' => array(
+					'message' => sprintf(
+						/* Translators: %s Subscribed to the question title */
+						__( 'Successfully subscribed to question: %s', 'anspress-question-answer' ),
+						$_post->post_title
+					),
+				),
 				'count'    => ap_get_post_field( 'subscribers', $post_id ),
 				'label'    => __( 'Unsubscribe', 'anspress-question-answer' ),
 			)
