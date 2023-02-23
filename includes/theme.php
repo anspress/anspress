@@ -919,12 +919,16 @@ function ap_menu_obejct() {
 			$main_pages = array_keys( ap_main_pages() );
 
 			if ( in_array( $k . '_page', $main_pages, true ) ) {
-				$post      = get_post( ap_opt( $k . '_page' ) );
-				$object_id = ap_opt( $k . '_page' );
-				$object    = 'page';
-				$url       = get_permalink( $post );
-				$title     = $post->post_title;
-				$type      = 'post_type';
+				$post = get_post( ap_opt( $k . '_page' ) );
+
+				// Proceed only if post is available.
+				if ( $post ) {
+					$object_id = ap_opt( $k . '_page' );
+					$object    = 'page';
+					$url       = get_permalink( $post );
+					$title     = $post->post_title;
+					$type      = 'post_type';
+				}
 			}
 
 			$menu_items[] = (object) array(
