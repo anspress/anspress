@@ -850,7 +850,8 @@ jQuery(document).ready(function ($) {
 		$(this).parent().remove();
 	})
 
-	$( '.anspress-menu-mb' ).on( 'click', function() {
+	$( '#tabs-panel-anspress-all' ).on( 'click', '.anspress-menu-mb', function( event ) {
+		event.preventDefault();
 		let checkBoxes = $( this ).closest( '#tabs-panel-anspress-all' );
 		let checked = checkBoxes.find( '.menu-item-checkbox' );
 
