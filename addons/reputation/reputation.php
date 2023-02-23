@@ -445,10 +445,14 @@ class Reputation extends \AnsPress\Singleton {
 				$reputation             = ap_get_user_reputation_meta( $args['user_id'] );
 				$reputation_link_prefix = ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) ? 'qa/' : '';
 
-				if ( ap_is_addon_active( 'profile.php' ) ) {
+				if ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
 					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . $reputation_link_prefix . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 				} else {
-					return $name . '<span class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</span>';
+					if ( ap_is_addon_active( 'profile.php' ) ) {
+						return $name . '<a href="' . ap_user_link( $args['user_id'] ) . $reputation_link_prefix . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
+					} else {
+						return $name . '<span class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</span>';
+					}
 				}
 			}
 		}
