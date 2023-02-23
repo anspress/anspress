@@ -442,14 +442,20 @@ class Reputation extends \AnsPress\Singleton {
 	public function display_name( $name, $args ) {
 		if ( $args['user_id'] > 0 ) {
 			if ( $args['html'] ) {
-				$reputation             = ap_get_user_reputation_meta( $args['user_id'] );
-				$reputation_link_prefix = ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) ? 'qa/' : '';
+				$reputation = ap_get_user_reputation_meta( $args['user_id'] );
 
 				if ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
-					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . $reputation_link_prefix . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
+					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'qa/reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 				} else {
 					if ( ap_is_addon_active( 'profile.php' ) ) {
-						return $name . '<a href="' . ap_user_link( $args['user_id'] ) . $reputation_link_prefix . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
+						if ( function_exists( 'bp_core_get_userlink' ) ) {
+							$user = get_user_by( 'id', $args['user_id'] );
+							$slug = get_option( 'ap_user_path' );
+							$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
+							return $name . '<a href="' . $link . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
+						} else {
+							return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
+						}
 					} else {
 						return $name . '<span class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</span>';
 					}
