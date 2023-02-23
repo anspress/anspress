@@ -516,7 +516,7 @@ class AnsPress_Admin {
 					);
 					$url = $url . '#anspress-menu-mb';
 					?>
-					<a href="<?php echo esc_url( $url ); ?>" class="select-all"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
+					<a href="<?php echo esc_url( $url ); ?>" class="select-all anspress-menu-mb"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
 				</span>
 
 				<span class="add-to-menu">
