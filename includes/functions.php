@@ -2498,3 +2498,27 @@ function ap_get_current_timestamp() {
 
 	return $local_time->getTimestamp() + $local_time->getOffset();
 }
+
+/**
+ * Merges user defined array arguments into the defaults array,
+ * which works with arrays only.
+ *
+ * @param array $args     Value to be merged with the defaults array.
+ * @param array $defaults Array that serves as the defaults.
+ *
+ * @return array Merged user defined values with the default array.
+ * @since 4.4.0
+ */
+function ap_parse_args( $args, $defaults ) {
+	$new_args = (array) $defaults;
+
+	foreach ( $args as $key => $value ) {
+		if ( is_array( $value ) && isset( $new_args[ $key ] ) ) {
+			$new_args[ $key ] = ap_parse_args( $value, $new_args[ $key ] );
+		} else {
+			$new_args[ $key ] = $value;
+		}
+	}
+
+	return $new_args;
+}
