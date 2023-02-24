@@ -39,6 +39,7 @@ $i = 1;
 <script type="text/javascript">
 	jQuery(document).ready(function($){
 		$('#reputation_events').on('submit', function(){
+			const dismissBtn = '<button type="button" class="notice-dismiss ap-notice-dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'anspress-question-answer' ); ?></span></button>';
 			$.ajax({
 				url: ajaxurl,
 				data: $(this).serialize(),
@@ -47,6 +48,7 @@ $i = 1;
 						const elem = $( '#reputation_events' );
 						elem.closest( '.ap-group-options' ).find( '.notice' ).remove();
 						elem.closest( '.postbox' ).before( data );
+						elem.closest( '.ap-group-options' ).find( '.notice p' ).after( dismissBtn );
 					}
 				}
 			})
