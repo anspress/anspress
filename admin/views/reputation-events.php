@@ -54,5 +54,9 @@ $i = 1;
 			})
 			return false;
 		});
+
+		$( document ).on( 'click', '.ap-notice-dismiss', function() {
+			$( this ).closest( '.notice' ).remove();
+		} );
 	});
 </script>
