@@ -588,6 +588,7 @@ class Email extends \AnsPress\Singleton {
 				'question_title' => $answer->post_title,
 				'answer_link'    => get_permalink( $answer->ID ),
 				'answer_content' => $answer->post_content,
+				'{answer_excerpt}' => ap_truncate_chars( wp_strip_all_tags( $answer->post_content ), 100 ),
 			)
 		);
 
