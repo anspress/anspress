@@ -684,7 +684,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
@@ -1179,12 +1179,6 @@ class AnsPress_Admin {
 					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['allow_private_posts'],
-				),
-				'multiple_answers'    => array(
-					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
-					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['multiple_answers'],
 				),
 			),
 		);
