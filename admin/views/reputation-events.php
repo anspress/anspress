@@ -44,7 +44,9 @@ $i = 1;
 				data: $(this).serialize(),
 				success: function(data){
 					if('' !== data){
-						$( '#reputation_events' ).closest( '.postbox' ).before( data );
+						const elem = $( '#reputation_events' );
+						elem.closest( '.ap-group-options' ).find( '.notice' ).remove();
+						elem.closest( '.postbox' ).before( data );
 					}
 				}
 			})
