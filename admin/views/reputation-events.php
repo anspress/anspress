@@ -44,7 +44,7 @@ $i = 1;
 				data: $(this).serialize(),
 				success: function(data){
 					if('' !== data){
-						$('.postbox.events').before(data);
+						$( '#reputation_events' ).closest( '.postbox' ).before( data );
 					}
 				}
 			})
