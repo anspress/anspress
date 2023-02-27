@@ -371,11 +371,14 @@ function ap_author_avatar( $size = 45, $_post = null ) {
  * Return total published answer count.
  *
  * @param  mixed $_post Post ID, Object or null.
- * @return integer
+ * @return integer|null
  */
 function ap_get_answers_count( $_post = null ) {
 	$_post = ap_get_post( $_post );
-	return (int) $_post->answers;
+	if ( $_post ) {
+		return (int) $_post->answers;
+	}
+	return null;
 }
 
 /**
