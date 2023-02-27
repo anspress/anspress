@@ -1479,7 +1479,7 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 		if ( ! $user ) {
 			$link = '#/user/anonymous';
-		} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
+		} elseif ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
 			$link = bp_core_get_userlink( $user_id, false, true );
 		} elseif ( ap_is_addon_active( 'profile.php' ) ) {
 			$slug = get_option( 'ap_user_path' );
