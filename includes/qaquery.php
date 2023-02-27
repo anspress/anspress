@@ -503,13 +503,16 @@ function ap_recent_post_activity() {
  * Get last active time in human readable format.
  *
  * @param  mixed $post_id Post ID/Object.
- * @return string
+ * @return string|null
  * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_get_last_active( $post_id = null ) {
-	$p    = ap_get_post( $post_id );
-	$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
-	return ap_human_time( get_gmt_from_date( $date ), false );
+	$p = ap_get_post( $post_id );
+	if ( $p ) {
+		$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
+		return ap_human_time( get_gmt_from_date( $date ), false );
+	}
+	return null;
 }
 
 /**
