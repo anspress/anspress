@@ -161,7 +161,7 @@ class AnsPress_Admin {
 			'flagged'  => $q_flagged->total + $a_flagged->total,
 		);
 
-		$types['total'] = array_sum( $types );
+		$types['total'] = $types['flagged'];
 		$types_html     = array();
 
 		foreach ( (array) $types as $k => $count ) {
@@ -684,7 +684,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
