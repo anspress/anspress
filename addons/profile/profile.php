@@ -206,6 +206,7 @@ class Profile extends \AnsPress\Singleton {
 	 */
 	public function user_menu( $user_id = false, $class = '' ) {
 		$user_id     = false !== $user_id ? $user_id : ap_current_user_id();
+		$user        = get_user_by( 'id', $user_id );
 		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu     = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 
@@ -216,6 +217,14 @@ class Profile extends \AnsPress\Singleton {
 				echo '<li class="ap-menu-' . esc_attr( $args['slug'] ) . ( $args['rewrite'] === $current_tab ? ' active' : '' ) . '">';
 
 				$url = isset( $args['url'] ) ? $args['url'] : ap_user_link( $user_id, $args['rewrite'] );
+				if (
+					( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) )
+					&& ( in_array( 'about', $args, true ) || in_array( 'edit-profile', $args, true ) )
+				) {
+					$slug = get_option( 'ap_user_path' );
+					$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
+					$url = isset( $args['url'] ) ? $args['url'] : $link . $args['rewrite'];
+				}
 				echo '<a href="' . esc_url( $url ) . '">';
 
 				// Show icon.
