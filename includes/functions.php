@@ -967,15 +967,17 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
 	return get_the_title( $question_id );
 }
 
-/**
- * Verify the __nonce field.
- *
- * @param string $action Action.
- * @return bool
- * @since  2.4
- */
-function ap_verify_nonce( $action ) {
-	return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
+if ( ! function_exists( 'ap_verify_nonce' ) ) {
+	/**
+	 * Verify the __nonce field.
+	 *
+	 * @param string $action Action.
+	 * @return bool
+	 * @since  2.4
+	 */
+	function ap_verify_nonce( $action ) {
+		return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
+	}
 }
 
 /**
