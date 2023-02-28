@@ -94,10 +94,6 @@ $all_options = array(
 				'label'    => __( 'Re-count', 'anspress-question-answer' ),
 				'template' => 'recount.php',
 			),
-			'uninstall' => array(
-				'label'    => __( 'Uninstall', 'anspress-question-answer' ),
-				'template' => 'uninstall.php',
-			),
 		),
 	),
 );
