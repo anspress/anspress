@@ -47,6 +47,7 @@ class Select extends Field {
 					'taxonomy'   => 'question_category',
 					'hide_empty' => false,
 					'fields'     => 'id=>name',
+					'orderby'    => ap_opt( 'form_category_orderby' ),
 				),
 			)
 		);
