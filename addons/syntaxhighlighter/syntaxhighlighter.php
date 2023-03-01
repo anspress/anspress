@@ -59,7 +59,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 */
 	public function scripts() {
 		$js_url  = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/';
-		$css_url = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/styles/';
+		$css_url = ANSPRESS_URL . 'addons/syntaxhighlighter/syntaxhighlighter/styles/';
 
 		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
 		wp_enqueue_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', array( 'jquery', 'anspress-common' ), AP_VERSION, true );
