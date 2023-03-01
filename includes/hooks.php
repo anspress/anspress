@@ -70,6 +70,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
 			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
 			anspress()->add_filter( 'wp_title', 'AnsPress_Theme', 'ap_title', 0 );
+			anspress()->add_filter( 'document_title_parts', 'AnsPress_Theme', 'ap_title_parts', 0 );
 			anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
