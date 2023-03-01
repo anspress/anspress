@@ -210,7 +210,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( is_user_logged_in() && ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( is_user_logged_in() && ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 		return false;
 	}
 
