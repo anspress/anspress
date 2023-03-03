@@ -28,6 +28,7 @@ class AnsPress_Flag {
 			ap_ajax_json( 'something_wrong' );
 		}
 
+		$post       = ap_get_post( $post_id );
 		$userid     = get_current_user_id();
 		$is_flagged = ap_is_user_flagged( $post_id );
 
@@ -36,7 +37,13 @@ class AnsPress_Flag {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => array( 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ),
+					'snackbar' => array(
+						'message' => sprintf(
+							/* Translators: %s Question or Answer post type label for already reported question or answer. */
+							__( 'You have already reported this %s.', 'anspress-question-answer' ),
+							( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+						),
+					),
 				)
 			);
 		}
@@ -51,7 +58,13 @@ class AnsPress_Flag {
 					'count'  => $count,
 					'active' => true,
 				),
-				'snackbar' => array( 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ),
+				'snackbar' => array(
+					'message' => sprintf(
+						/* Translators: %s Question or Answer post type label for reported question or answer. */
+						__( 'Thank you for reporting this %s.', 'anspress-question-answer' ),
+						( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+					),
+				),
 			)
 		);
 	}
