@@ -125,9 +125,18 @@ class AP_Activate {
 	 * @since 4.1.8 Fixed #425
 	 */
 	public function enable_addons() {
+		// Return if `anspress_installed` plugin option is available.
+		if ( ap_opt( 'anspress_installed' ) ) {
+			return;
+		}
+
+		// Activate required addons.
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'categories.php' );
+
+		// Update plugin option with `anspress_installed` for setting a flag.
+		ap_opt( 'anspress_installed', 'true' );
 	}
 
 	/**
