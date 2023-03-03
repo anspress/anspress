@@ -285,7 +285,7 @@ class AP_Activate {
 
 		$this->tables[] = 'CREATE TABLE ' . $wpdb->ap_reputation_events . ' (
 				rep_events_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-				slug varchar(100) NOT NULL,
+				slug varchar(100) NOT NULL UNIQUE,
 				icon varchar(100) NOT NULL,
 				label varchar(100) NOT NULL,
 				description varchar(200) NOT NULL,
@@ -293,7 +293,6 @@ class AP_Activate {
 				parent varchar(100) NOT NULL DEFAULT "",
 				points int(5) NOT NULL DEFAULT 0,
 				PRIMARY KEY  (rep_events_id),
-				UNIQUE (slug),
 				KEY slug_key (slug),
 				KEY points_key (points),
 				KEY parent_key (parent)
