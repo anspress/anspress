@@ -71,8 +71,6 @@ class AP_Activate {
 		$this->network_wide = $network_wide;
 		$this->disable_ext();
 		$this->delete_options();
-		$this->enable_addons();
-		$this->reactivate_addons();
 
 		// Append table names in $wpdb.
 		ap_append_table_names();
@@ -82,6 +80,10 @@ class AP_Activate {
 		} else {
 			$this->activate();
 		}
+
+		// Enable/Disable addon.
+		$this->enable_addons();
+		$this->reactivate_addons();
 	}
 
 	/**
