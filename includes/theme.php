@@ -326,7 +326,11 @@ function ap_post_actions( $_post = null ) {
 				'__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ),
 			),
 			'label' => __( 'Delete Permanently', 'anspress-question-answer' ),
-			'title' => __( 'Delete post permanently (cannot be restored again)', 'anspress-question-answer' ),
+			'title' => sprintf(
+				/* Translators: %s Question or Answer post type label for permanently deleting a question or answer. */
+				__( 'Delete %s permanently (cannot be restored again)', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			),
 		);
 	}
 
