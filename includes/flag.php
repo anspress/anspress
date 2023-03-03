@@ -128,7 +128,19 @@ function ap_flag_btn_args( $post = null ) {
 	$_post   = ap_get_post( $post );
 	$flagged = ap_is_user_flagged( $_post );
 
-	$title = ( ! $flagged ) ? ( __( 'Flag this post', 'anspress-question-answer' ) ) : ( __( 'You have flagged this post', 'anspress-question-answer' ) );
+	if ( ! $flagged ) {
+		$title = sprintf(
+			/* Translators: %s Question or Answer post type label for flagging question or answer. */
+			__( 'Flag this %s', 'anspress-question-answer' ),
+			( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+		);
+	} else {
+		$title = sprintf(
+			/* Translators: %s Question or Answer post type label for already flagged question or answer. */
+			__( 'You have flagged this %s', 'anspress-question-answer' ),
+			( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+		);
+	}
 
 	$actions['close'] = array(
 		'cb'     => 'flag',
