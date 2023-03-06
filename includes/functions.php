@@ -1181,6 +1181,10 @@ function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
 		}
 	}
 
+	if ( '0' == $str ) {
+		return sanitize_text_field( wp_unslash( $str ) );
+	}
+
 	if ( empty( $str ) ) {
 		return $default;
 	}
