@@ -195,9 +195,6 @@ class Form {
 	 * @since 4.1.8 Inherit `hidden_fields` from form args.
 	 */
 	public function generate( $form_args = array() ) {
-		// Enqueue upload script.
-		wp_enqueue_script( 'anspress-upload' );
-
 		// Don't do anything if no fields.
 		if ( empty( $this->args['fields'] ) ) {
 			echo '<p class="ap-form-nofields">';
