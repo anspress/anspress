@@ -637,26 +637,22 @@ class AnsPress_Admin {
 	 */
 	public static function append_post_status_list() {
 		global $post;
-
-		$complete = '';
-		$label    = '';
+		$label = '';
 
 		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 			if ( 'moderate' === $post->post_status ) {
-					$complete = ' selected=\'selected\'';
-					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
+				$label = esc_attr__( 'Moderate', 'anspress-question-answer' );
 			} elseif ( 'private_post' === $post->post_status ) {
-					$complete = ' selected=\'selected\'';
-					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
+				$label = esc_attr__( 'Private Post', 'anspress-question-answer' );
 			}
 
 			// @codingStandardsIgnoreStart
 			echo '<script>
-				jQuery(document).ready(function(){
-					jQuery("select#post_status").append("<option value=\'moderate\' ' . $complete . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>");
-					jQuery("select#post_status").append("<option value=\'private_post\' ' . $complete . '>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>");
-					jQuery(".misc-pub-section label").append("' . $label . '");
-				});
+				jQuery( document ).ready( function() {
+					jQuery( "select#post_status" ).append( "<option value=\'moderate\'' . ( 'moderate' === $post->post_status ? ' selected=\'selected\'' : '' ) . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>" );
+					jQuery( "select#post_status" ).append( "<option value=\'private_post\'' . ( 'private_post' === $post->post_status ? ' selected=\'selected\'' : '' ) . '>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>" );'
+					. ( ( 'moderate' === $post->post_status || 'private_post' === $post->post_status ) ? 'jQuery( "select#post_status" ).closest( ".misc-pub-section" ).find( "#post-status-display" ).html( "' . $label . '" );' : '' ) . '
+				} );
 			</script>';
 			// @codingStandardsIgnoreEnd
 		}
@@ -684,7 +680,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
