@@ -28,6 +28,7 @@ class AnsPress_PostTypes {
 		anspress()->add_action( 'init', __CLASS__, 'register_answer_cpt', 0 );
 		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 2 );
 		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
+		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_updated_messages', 10 );
 	}
 
 	/**
@@ -283,6 +284,52 @@ class AnsPress_PostTypes {
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Filter the post updated messages to add Question and Answer
+	 * custom post type post updated messages.
+	 *
+	 * @param array[] $messages Post updated messages.
+	 */
+	public static function post_updated_messages( $messages ) {
+		global $post;
+		$permalink      = get_permalink( $post->ID );
+		$scheduled_date = sprintf(
+			/* translators: Publish box date string. 1: Date, 2: Time. */
+			__( '%1$s at %2$s', 'anspress-question-answer' ),
+			/* translators: Publish box date format, see https://www.php.net/manual/datetime.format.php */
+			date_i18n( _x( 'M j, Y', 'publish box date format', 'anspress-question-answer' ), strtotime( $post->post_date ) ),
+			/* translators: Publish box time format, see https://www.php.net/manual/datetime.format.php */
+			date_i18n( _x( 'H:i', 'publish box time format', 'anspress-question-answer' ), strtotime( $post->post_date ) )
+		);
+
+		// Post updated message for Question post type.
+		$messages['question'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			/* translators: %s Question view URL. */
+			1  => sprintf( __( 'Question updated. <a href="%s">View Question</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			2  => __( 'Custom field updated.', 'anspress-question-answer' ),
+			3  => __( 'Custom field deleted.', 'anspress-question-answer' ),
+			4  => __( 'Question updated.', 'anspress-question-answer' ),
+			/* translators: %s: Date and time of the revision. */
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Question restored to revision from %s.', 'anspress-question-answer' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			/* translators: %s: Question url */
+			6  => sprintf( __( 'Question published. <a href="%s">View Question</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			7  => __( 'Question saved.', 'anspress-question-answer' ),
+			/* translators: %s: Question url */
+			8  => sprintf( __( 'Question submitted. <a target="_blank" href="%s">Preview question</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+			9  => sprintf(
+				/* translators: 1: Scheduled date for the question 2: Question url */
+				__( 'Question scheduled for: %1$s. <a target="_blank" href="%2$s">Preview question</a>', 'anspress-question-answer' ),
+				'<strong>' . $scheduled_date . '</strong>',
+				esc_url( $permalink )
+			),
+			/* translators: %s: Question url */
+			10 => sprintf( __( 'Question draft updated. <a target="_blank" href="%s">Preview question</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+		);
+
+		return $messages;
 	}
 
 }
