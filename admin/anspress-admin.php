@@ -67,6 +67,7 @@ class AnsPress_Admin {
 		anspress()->add_filter( 'posts_clauses', __CLASS__, 'join_by_author_name', 10, 2 );
 		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
 		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
+		anspress()->add_action( 'admin_footer-edit.php', __CLASS__, 'append_post_status_list_edit' );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_footer-post-new.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
@@ -631,6 +632,24 @@ class AnsPress_Admin {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Add AnsPress post status to bulk edit select box.
+	 */
+	public static function append_post_status_list_edit() {
+		global $post;
+
+		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
+			// @codingStandardsIgnoreStart
+			echo '<script>
+				jQuery( document ).ready( function() {
+					jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>" );
+					jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>" );
+				} );
+			</script>';
+			// @codingStandardsIgnoreEnd
+		}
 	}
 
 	/**
