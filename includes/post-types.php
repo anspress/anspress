@@ -29,6 +29,7 @@ class AnsPress_PostTypes {
 		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 2 );
 		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
 		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_updated_messages', 10 );
+		anspress()->add_filter( 'bulk_post_updated_messages', __CLASS__, 'bulk_post_updated_messages', 10, 2 );
 	}
 
 	/**
@@ -355,6 +356,32 @@ class AnsPress_PostTypes {
 		);
 
 		return $messages;
+	}
+
+	/**
+	 * Filter the bulk action updated messages to add Question and Answer
+	 * custom post type bulk post updated messages.
+	 *
+	 * @param array[] $bulk_messages Arrays of messages, each keyed by the corresponding post type. Messages are
+	 *                               keyed with 'updated', 'locked', 'deleted', 'trashed', and 'untrashed'.
+	 * @param int[]   $bulk_counts   Array of item counts for each message, used to build internationalized strings.
+	 */
+	public static function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
+		$bulk_messages['question'] = array(
+			/* translators: %s: Number of questions. */
+			'updated'   => _n( '%s question updated.', '%s questions updated.', $bulk_counts['updated'], 'anspress-question-answer' ),
+			'locked'    => ( 1 === $bulk_counts['locked'] ) ? __( '1 question not updated, somebody is editing it.', 'anspress-question-answer' ) :
+							/* translators: %s: Number of questions. */
+							_n( '%s question not updated, somebody is editing it.', '%s questions not updated, somebody is editing them.', $bulk_counts['locked'], 'anspress-question-answer' ),
+			/* translators: %s: Number of questions. */
+			'deleted'   => _n( '%s question permanently deleted.', '%s questions permanently deleted.', $bulk_counts['deleted'], 'anspress-question-answer' ),
+			/* translators: %s: Number of questions. */
+			'trashed'   => _n( '%s question moved to the Trash.', '%s questions moved to the Trash.', $bulk_counts['trashed'], 'anspress-question-answer' ),
+			/* translators: %s: Number of questions. */
+			'untrashed' => _n( '%s question restored from the Trash.', '%s questions restored from the Trash.', $bulk_counts['untrashed'], 'anspress-question-answer' ),
+		);
+
+		return $bulk_messages;
 	}
 
 }
