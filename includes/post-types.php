@@ -381,6 +381,20 @@ class AnsPress_PostTypes {
 			'untrashed' => _n( '%s question restored from the Trash.', '%s questions restored from the Trash.', $bulk_counts['untrashed'], 'anspress-question-answer' ),
 		);
 
+		$bulk_messages['answer'] = array(
+			/* translators: %s: Number of answers. */
+			'updated'   => _n( '%s answer updated.', '%s answers updated.', $bulk_counts['updated'], 'anspress-question-answer' ),
+			'locked'    => ( 1 === $bulk_counts['locked'] ) ? __( '1 answer not updated, somebody is editing it.', 'anspress-question-answer' ) :
+							/* translators: %s: Number of answers. */
+							_n( '%s answer not updated, somebody is editing it.', '%s answers not updated, somebody is editing them.', $bulk_counts['locked'], 'anspress-question-answer' ),
+			/* translators: %s: Number of answers. */
+			'deleted'   => _n( '%s answer permanently deleted.', '%s answers permanently deleted.', $bulk_counts['deleted'], 'anspress-question-answer' ),
+			/* translators: %s: Number of answers. */
+			'trashed'   => _n( '%s answer moved to the Trash.', '%s answers moved to the Trash.', $bulk_counts['trashed'], 'anspress-question-answer' ),
+			/* translators: %s: Number of answers. */
+			'untrashed' => _n( '%s answer restored from the Trash.', '%s answers restored from the Trash.', $bulk_counts['untrashed'], 'anspress-question-answer' ),
+		);
+
 		return $bulk_messages;
 	}
 
