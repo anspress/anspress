@@ -68,6 +68,7 @@ class AnsPress_Admin {
 		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
 		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
+		anspress()->add_action( 'admin_footer-post-new.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
 		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
