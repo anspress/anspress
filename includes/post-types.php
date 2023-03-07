@@ -329,6 +329,31 @@ class AnsPress_PostTypes {
 			10 => sprintf( __( 'Question draft updated. <a target="_blank" href="%s">Preview question</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
 		);
 
+		// Post updated message for Answer post type.
+		$messages['answer'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			/* translators: %s Answer view URL. */
+			1  => sprintf( __( 'Answer updated. <a href="%s">View Answer</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			2  => __( 'Custom field updated.', 'anspress-question-answer' ),
+			3  => __( 'Custom field deleted.', 'anspress-question-answer' ),
+			4  => __( 'Answer updated.', 'anspress-question-answer' ),
+			/* translators: %s: Date and time of the revision. */
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Answer restored to revision from %s.', 'anspress-question-answer' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			/* translators: %s: Answer url */
+			6  => sprintf( __( 'Answer published. <a href="%s">View Answer</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			7  => __( 'Answer saved.', 'anspress-question-answer' ),
+			/* translators: %s: Answer url */
+			8  => sprintf( __( 'Answer submitted. <a target="_blank" href="%s">Preview answer</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+			9  => sprintf(
+				/* translators: 1: Scheduled date for the answer 2: Answer url */
+				__( 'Answer scheduled for: %1$s. <a target="_blank" href="%2$s">Preview answer</a>', 'anspress-question-answer' ),
+				'<strong>' . $scheduled_date . '</strong>',
+				esc_url( $permalink )
+			),
+			/* translators: %s: Answer url */
+			10 => sprintf( __( 'Answer draft updated. <a target="_blank" href="%s">Preview answer</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+		);
+
 		return $messages;
 	}
 
