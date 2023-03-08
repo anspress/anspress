@@ -92,21 +92,23 @@ class Avatar extends \AnsPress\Singleton {
 		ob_start();
 		?>
 			<script type="text/javascript">
-				jQuery(document).ready(function($){
-					$('#ap-clear-avatar').on('click', function(e){
+				jQuery( document ).ready( function( $ ) {
+					$( '#ap-clear-avatar' ).on( 'click', function( e ) {
 						e.preventDefault();
-						$.ajax({
-							url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
-							data: {
-								action: 'ap_clear_avatar_cache',
-								__nonce: '<?php echo esc_attr( wp_create_nonce( 'clear_avatar_cache' ) ); ?>'
-							},
-							success: function(data){
-								if(data==='success') alert('All avatar deleted');
-							}
-						});
-					});
-				});
+						if ( confirm( '<?php esc_attr_e( 'Do you wish to proceed? All previously generated Avatar cache will get deleted.', 'anspress-question-answer' ); ?>' ) == true ) {
+							$.ajax( {
+								url: '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
+								data: {
+									action: 'ap_clear_avatar_cache',
+									__nonce: '<?php echo esc_attr( wp_create_nonce( 'clear_avatar_cache' ) ); ?>',
+								},
+								success: function( data ) {
+									if ( data === 'success' ) alert( '<?php esc_attr_e( 'All avatar deleted', 'anspress-question-answer' ); ?>' );
+								}
+							} );
+						}
+					} );
+				} );
 			</script>
 		<?php
 		$js = ob_get_clean();
