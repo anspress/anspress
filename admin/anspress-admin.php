@@ -131,6 +131,7 @@ class AnsPress_Admin {
 				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
 				aplang = {};
 				apShowComments  = false;
+				removeImage = '<?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?>';
 			</script>
 		<?php
 
@@ -1422,6 +1423,7 @@ class AnsPress_Admin {
 				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
 				aplang = {};
 				apShowComments  = false;
+				removeImage = '<?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?>';
 			</script>
 		<?php
 
