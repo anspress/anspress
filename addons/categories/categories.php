@@ -556,7 +556,23 @@ class Categories extends \AnsPress\Singleton {
 		<div class='form-field term-image-wrap'>
 			<label for='ap_icon'><?php esc_attr_e( 'Category icon class', 'anspress-question-answer' ); ?></label>
 			<input id="ap_icon" type="text" name="ap_icon" value="">
-			<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+			<p class="description">
+				<?php
+				echo wp_kses(
+					sprintf(
+						/* translators: %s Link to font icon class. */
+						__( 'Font icon class, if image not set. Find them <a href="%s" target="_blank">here</a>.', 'anspress-question-answer' ),
+						esc_url( 'https://htmlpreview.github.io/?https://github.com/anspress/anspress/blob/3.0.7/theme/default/fonts/demo.html' )
+					),
+					array(
+						'a' => array(
+							'href'   => array(),
+							'target' => array(),
+						),
+					)
+				);
+				?>
+			</p>
 		</div>
 
 		<div class='form-field term-image-wrap'>
@@ -617,7 +633,23 @@ class Categories extends \AnsPress\Singleton {
 				</th>
 				<td>
 					<input id="ap_icon" type="text" name="ap_icon" value="<?php echo esc_attr( $term_meta['icon'] ); ?>">
-					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+					<p class="description">
+						<?php
+						echo wp_kses(
+							sprintf(
+								/* translators: %s Link to font icon class. */
+								__( 'Font icon class, if image not set. Find them <a href="%s" target="_blank">here</a>.', 'anspress-question-answer' ),
+								esc_url( 'https://htmlpreview.github.io/?https://github.com/anspress/anspress/blob/3.0.7/theme/default/fonts/demo.html' )
+							),
+							array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							)
+						);
+						?>
+					</p>
 				</td>
 			</tr>
 			<tr class='form-field term-name-wrap'>
