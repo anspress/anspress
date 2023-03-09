@@ -443,7 +443,7 @@ class Tags extends \AnsPress\Singleton {
 			$title = ap_opt( 'tags_page_title' );
 		} elseif ( is_question_tag() ) {
 			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
-			$tag = get_term_by( 'slug', $tag_id, 'question_tag' ); // @codingStandardsIgnoreLine.
+			$tag    = $tag_id ? get_term_by( 'slug', $tag_id, 'question_tag' ) : get_queried_object(); // @codingStandardsIgnoreLine.
 			$title  = $tag->name;
 		}
 
