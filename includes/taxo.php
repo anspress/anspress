@@ -430,7 +430,7 @@ function ap_question_have_tags( $question_id = false ) {
  * @return bool
  */
 function is_question_tag() {
-	if ( ap_get_tag_slug() === get_query_var( 'ap_page' ) ) {
+	if ( 'tag' === ap_current_page() ) {
 		return true;
 	}
 
@@ -443,7 +443,7 @@ function is_question_tag() {
  * @return bool
  */
 function is_question_tags() {
-	if ( ap_get_tags_slug() === get_query_var( 'ap_page' ) ) {
+	if ( 'tags' === ap_current_page() ) {
 		return true;
 	}
 
