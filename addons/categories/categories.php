@@ -658,7 +658,7 @@ class Categories extends \AnsPress\Singleton {
 				</th>
 				<td>
 					<input id="ap-category-color" type="text" name="ap_color" value="<?php echo esc_attr( $term_meta['color'] ); ?>">
-					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+					<p class="description"><?php esc_attr_e( 'Set background color to be used with icon', 'anspress-question-answer' ); ?></p>
 					<script type="text/javascript">
 						jQuery(document).ready(function(){
 							jQuery('#ap-category-color').wpColorPicker();
