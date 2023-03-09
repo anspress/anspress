@@ -547,8 +547,8 @@ class Categories extends \AnsPress\Singleton {
 		<div class='form-field term-image-wrap'>
 			<label for='ap_image'><?php esc_attr_e( 'Image', 'anspress-question-answer' ); ?></label>
 			<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php esc_attr_e( 'Upload image', 'anspress-question-answer' ); ?>" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id"><?php esc_attr_e( 'Upload image', 'anspress-question-answer' ); ?></a>
-			<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
-			<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
+			<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="">
+			<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="">
 
 			<p class="description"><?php esc_attr_e( 'Category image', 'anspress-question-answer' ); ?></p>
 		</div>
@@ -606,7 +606,10 @@ class Categories extends \AnsPress\Singleton {
 					<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="<?php echo esc_url( $term_meta['image']['url'] ); ?>">
 
 					<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="<?php echo esc_attr( $term_meta['image']['id'] ); ?>">
-					<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
+
+					<?php if ( ! empty( $term_meta['image'] ) && ! empty( $term_meta['image']['url'] ) ) { ?>
+						<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
+					<?php } ?>
 
 					<p class='description'><?php esc_attr_e( 'Featured image for category', 'anspress-question-answer' ); ?></p>
 				</td>
