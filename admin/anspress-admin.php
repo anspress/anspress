@@ -1172,7 +1172,7 @@ class AnsPress_Admin {
 				),
 				'max_upload_size'     => array(
 					'label' => __( 'Max upload size', 'anspress-question-answer' ),
-					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
+					'desc'  => __( 'Set maximum upload size in bytes.', 'anspress-question-answer' ),
 					'value' => $opt['max_upload_size'],
 				),
 				'allow_private_posts' => array(
