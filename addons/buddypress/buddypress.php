@@ -428,7 +428,7 @@ class BuddyPress extends \AnsPress\Singleton {
 	 *
 	 * @since 4.1.8
 	 */
-	public function notifications_for_user( $action, $item_id, $secondary_item_id, $total_items, $format = 'string', $component_action_name, $component_name, $id ) {
+	public function notifications_for_user( $action, $item_id, $secondary_item_id, $total_items, $format = 'string', $component_action_name = '', $component_name = '', $id = '' ) {
 		if ( method_exists( $this, 'notification_' . $component_action_name ) ) {
 			$method = 'notification_' . $action;
 			return $this->$method( $item_id, $secondary_item_id, $total_items, $format, $id );
