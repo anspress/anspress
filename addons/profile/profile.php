@@ -294,6 +294,16 @@ class Profile extends \AnsPress\Singleton {
 				'link'  => ap_user_link( ap_current_user_id() ),
 				'order' => 8,
 			);
+
+			$current      = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
+			$current_page = ap_search_array( anspress()->user_pages, 'rewrite', $current );
+			if ( ! empty( $current_page ) ) {
+				$navs['user'] = array(
+					'title' => $current_page[0]['label'],
+					'link'  => ap_user_link( ap_current_user_id() ) . $current . '/',
+					'order' => 8,
+				);
+			}
 		}
 
 		return $navs;
