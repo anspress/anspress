@@ -179,6 +179,12 @@ class Profile extends \AnsPress\Singleton {
 			$rewrite = ap_opt( 'user_page_slug_' . $args['slug'] );
 			$title   = ap_opt( 'user_page_title_' . $args['slug'] );
 
+			// If BuddyPress addon is active then, do not modify the slug since
+			// template file loaded has the exact name with slug.
+			if ( ap_is_addon_active( 'buddypress.php' ) ) {
+				$rewrite = $args['slug'];
+			}
+
 			// Override user page slug.
 			if ( empty( $args['rewrite'] ) ) {
 				anspress()->user_pages[ $key ]['rewrite'] = ! empty( $rewrite ) ? sanitize_title( $rewrite ) : $args['slug'];
