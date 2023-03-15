@@ -74,6 +74,9 @@ window.AnsPress = _.extend({
 
 		return jQuery.ajax(options);
 	},
+	ajaxResponse: function(data) {
+		return data;
+	},
 	uniqueId: function () {
 		return jQuery('.ap-uid').length;
 	},
