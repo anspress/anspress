@@ -413,6 +413,11 @@ function ap_get_questions_orderby( $current_url = '' ) {
 	);
 	$navs[] = array(
 		'key'   => 'order_by',
+		'value' => 'solved',
+		'label' => __( 'Solved', 'anspress-question-answer' ),
+	);
+	$navs[] = array(
+		'key'   => 'order_by',
 		'value' => 'unanswered',
 		'label' => __( 'Unanswered', 'anspress-question-answer' ),
 	);
