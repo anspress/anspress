@@ -521,7 +521,21 @@ _.templateSettings = {
 
 			if (data.files)
 				$.each(data.files, function (old, newFile) {
-					tinymce.activeEditor.insertContent('<img src="' + newFile + '" />');
+					var cont = '<img src="' + newFile + '" />';
+					if ( tinyMCE.activeEditor !== null ) {
+						tinymce.activeEditor.insertContent(cont);
+					} else {
+						var elem = $( '.ap-editor .wp-editor-area' );
+						var value = elem.val();
+						var start = elem[0].selectionStart;
+						var end = elem[0].selectionEnd;
+						var before = value.substring( 0, start );
+						var after = value.substring( end, value.length );
+						var cursorPos = elem.prop( 'selectionStart' );
+						elem.val( before + cont + after );
+						elem.focus();
+						elem.prop( 'selectionEnd', cursorPos + cont.length );
+					}
 				});
 
 			AnsPress.hideModal('imageUpload');
