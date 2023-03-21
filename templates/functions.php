@@ -38,7 +38,7 @@ function ap_scripts_front() {
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'anspress-main' ), AP_VERSION );
 
 	// Enqueue the TinyMCE JavaScript library file.
-	if ( ap_is_addon_active( 'syntaxhighlighter.php' ) && ( ap_opt( 'question_text_editor' ) || ap_opt( 'answer_text_editor' ) ) ) {
+	if ( ap_opt( 'question_text_editor' ) || ap_opt( 'answer_text_editor' ) ) {
 		wp_enqueue_script( 'wp-tinymce' );
 	}
 
