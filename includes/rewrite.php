@@ -172,12 +172,27 @@ class AnsPress_Rewrite {
 	}
 
 	/**
-	 * BuddyPress pagination fix.
+	 * Pagination fix.
 	 *
 	 * @param array $args Arguments.
 	 * @return array
 	 */
-	public static function bp_com_paged( $args ) {
+	public static function pagination_fix( $args ) {
+		/**
+		 * Home page pagination fix,
+		 * when the questions are directly used within the loop,
+		 * i.e., without setting the static front page.
+		 *
+		 * @param array $args Arguments.
+		 * @return array
+		 */
+		if ( is_front_page() && is_home() ) {
+			return preg_replace( '/page.([0-9]+).*/', '?page=$1', $args );
+		}
+
+		/**
+		 * BuddyPress pagination fix.
+		 */
 		if ( function_exists( 'bp_current_component' ) ) {
 			$bp_com = bp_current_component();
 
