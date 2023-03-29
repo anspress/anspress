@@ -684,7 +684,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
@@ -1158,6 +1158,12 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
+				'show_admin_bar'      => array(
+					'label' => __( 'Show admin bar', 'anspress-question-answer' ),
+					'desc'  => __( 'Show admin bar for non administrator users.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['show_admin_bar'],
+				),
 				'allow_upload'        => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
