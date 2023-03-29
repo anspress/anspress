@@ -65,6 +65,7 @@
 			const apAjaxEventClass = [
 				'delete',
 				'delete-permanently',
+				'convert-to-post',
 			];
 			let eventTrigger = true;
 			$.each( apAjaxEventClass, function( i, eventClassName ) {
