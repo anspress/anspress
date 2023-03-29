@@ -33,7 +33,7 @@
 			return this.postID;
 		},
 		className: function () {
-			var klass = '';
+			var klass = this.model.get( 'label' ).replaceAll( ' ', '-' ).toLowerCase();
 			if (this.model.get('header')) klass += ' ap-dropdown-header';
 			if (this.model.get('active')) klass += ' active';
 			return klass;
@@ -61,6 +61,23 @@
 				return;
 
 			e.preventDefault();
+			const string = aplang.ajax_events.replace( '%s', $( e.target ).attr( 'title' ) );
+			const apAjaxEventClass = [
+				'delete',
+				'delete-permanently',
+			];
+			let eventTrigger = true;
+			$.each( apAjaxEventClass, function( i, eventClassName ) {
+				if ( $( e.target ).closest( 'li' ).hasClass( eventClassName ) ) {
+					if ( ! confirm( string ) ) {
+						eventTrigger = false;
+					}
+				}
+			} );
+			if ( ! eventTrigger ) {
+				return;
+			}
+
 			var self = this;
 			AnsPress.showLoading(e.target);
 			var cb = this.model.get('cb');
