@@ -52,6 +52,8 @@ function ap_scripts_front() {
 		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
 		'search'                 => __( 'Search', 'anspress-question-answer' ),
 		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
+		/* translators: %s: Ajax event. */
+		'ajax_events'            => __( 'Are you sure you want to %s?', 'anspress-question-answer' ),
 	);
 
 	echo '<script type="text/javascript">';

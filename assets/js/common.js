@@ -588,8 +588,23 @@ jQuery(document).ready(function ($) {
 			return;
 
 		var self = $(this);
-		var query = JSON.parse(self.attr('apquery'));
+		const string = aplang.ajax_events.replace( '%s', self.attr( 'title' ) );
+		const apAjaxEventClass = [
+			'comment-delete',
+		];
+		let eventTrigger = true;
+		$.each( apAjaxEventClass, function( i, eventClassName ) {
+			if ( self.hasClass( eventClassName ) ) {
+				if ( ! confirm( string ) ) {
+					eventTrigger = false;
+				}
+			}
+		} );
+		if ( ! eventTrigger ) {
+			return;
+		}
 
+		var query = JSON.parse(self.attr('apquery'));
 		AnsPress.showLoading(self);
 		AnsPress.ajax({
 			data: query,

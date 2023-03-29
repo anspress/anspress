@@ -257,6 +257,7 @@ function ap_comment_actions( $comment ) {
 
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
 		$actions[] = array(
+			'title' => __( 'Edit this Comment', 'anspress-question-answer' ),
 			'label' => __( 'Edit', 'anspress-question-answer' ),
 			'href'  => '#',
 			'query' => array(
@@ -269,6 +270,7 @@ function ap_comment_actions( $comment ) {
 
 	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {
 		$actions[] = array(
+			'title' => __( 'Delete this Comment', 'anspress-question-answer' ),
 			'label' => __( 'Delete', 'anspress-question-answer' ),
 			'href'  => '#',
 			'query' => array(
@@ -281,6 +283,7 @@ function ap_comment_actions( $comment ) {
 
 	if ( '0' === $comment->comment_approved && ap_user_can_approve_comment() ) {
 		$actions[] = array(
+			'title' => __( 'Approve this Comment', 'anspress-question-answer' ),
 			'label' => __( 'Approve', 'anspress-question-answer' ),
 			'href'  => '#',
 			'query' => array(
