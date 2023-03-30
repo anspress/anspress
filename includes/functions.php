@@ -706,9 +706,12 @@ function ap_get_link_to( $sub ) {
 		 * @var array
 		 */
 		$default_pages = array(
-			'question' => ap_opt( 'question_page_slug' ),
-			'users'    => ap_opt( 'users_page_slug' ),
-			'user'     => ap_opt( 'user_page_slug' ),
+			'question'   => ap_opt( 'question_page_slug' ),
+			'users'      => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'users_page' ) ) ),
+			'user'       => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'user_page' ) ) ),
+			'activities' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'activities' ) ) ),
+			'categories' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'categories_page' ) ) ),
+			'tags'       => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'tags_page' ) ) ),
 		);
 
 		$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
