@@ -51,7 +51,7 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 
 		if ( is_question() ) {
 			$a['page'] = array(
-				'title' => $title,
+				'title' => get_the_title(),
 				'link'  => get_permalink( get_question_id() ),
 				'order' => 10,
 			);
