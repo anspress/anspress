@@ -56,6 +56,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
+			anspress()->add_action( 'ap_breadcrumbs', __CLASS__, 'ap_breadcrumbs' );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
@@ -1048,5 +1049,31 @@ class AnsPress_Hooks {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Add Ask a Question and Activities nav in AnsPress breadcrumbs.
+	 *
+	 * @param  array $navs Breadcrumbs nav array.
+	 * @return array
+	 */
+	public static function ap_breadcrumbs( $navs ) {
+		if ( 'ask' === ap_current_page() ) {
+			$navs['page'] = array(
+				'title' => get_the_title(),
+				'link'  => ap_get_link_to( 'ask' ),
+				'order' => 10,
+			);
+		}
+
+		if ( 'activities' === ap_current_page() ) {
+			$navs['page'] = array(
+				'title' => get_the_title(),
+				'link'  => ap_get_link_to( 'activities' ),
+				'order' => 10,
+			);
+		}
+
+		return $navs;
 	}
 }
