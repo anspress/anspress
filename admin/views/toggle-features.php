@@ -113,7 +113,7 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 <script type="text/javascript">
 	( function( $ ) {
 		AnsPress.on( 'toggleAddon', function( data ) {
-			$( '#anspress-options' ).load( location.href + ' #anspress-options', '' );
+			$( '#anspress-options' ).load( location.href + ' #anspress-options > *', '' );
 		} );
 	} )( jQuery );
 </script>
