@@ -226,6 +226,11 @@ class Activity_Helper {
 				'verb'     => __( 'Marked as closed', 'anspress-question-answer' ),
 				'icon'     => 'apicon-alert',
 			),
+			'open_q'            => array(
+				'ref_type' => 'question',
+				'verb'     => __( 'Re-opened the question', 'anspress-question-answer' ),
+				'icon'     => 'apicon-question',
+			),
 			'new_c'               => array(
 				'ref_type' => 'comment',
 				'verb'     => __( 'Posted new comment', 'anspress-question-answer' ),
