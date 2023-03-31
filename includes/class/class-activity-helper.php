@@ -221,6 +221,11 @@ class Activity_Helper {
 				'verb'     => __( 'Marked as featured question', 'anspress-question-answer' ),
 				'icon'     => 'apicon-star',
 			),
+			'unfeatured'            => array(
+				'ref_type' => 'question',
+				'verb'     => __( 'Unfeatured the question', 'anspress-question-answer' ),
+				'icon'     => 'apicon-question',
+			),
 			'closed_q'            => array(
 				'ref_type' => 'question',
 				'verb'     => __( 'Marked as closed', 'anspress-question-answer' ),
