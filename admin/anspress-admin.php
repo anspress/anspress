@@ -607,7 +607,7 @@ class AnsPress_Admin {
 	 * @return array
 	 */
 	public static function get_pages( $pages, $r ) {
-		if ( isset( $r['name'] ) && 'page_on_front' === $r['name'] ) {
+		if ( ! ap_opt( 'base_page_static_front_page' ) && isset( $r['name'] ) && 'page_on_front' === $r['name'] ) {
 			foreach ( (array) $pages as $k => $page ) {
 				if ( ap_opt( 'base_page' ) == $page->ID ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 					unset( $pages[ $k ] );
@@ -684,7 +684,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
@@ -924,6 +924,13 @@ class AnsPress_Admin {
 					'desc'  => __( 'Check this to load AnsPress JS and CSS on the AnsPress page only. Be careful, this might break layout.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['load_assets_in_anspress_only'],
+				),
+				'base_page_static_front_page'  => array(
+					'name'  => '',
+					'label' => __( 'Static Front Page', 'anspress-question-answer' ),
+					'desc'  => __( 'Check this option to enable the base page, .i.e. Question\'s page to be set as a Static front page for your site.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['base_page_static_front_page'],
 				),
 				'avatar_size_list'             => array(
 					'label'   => __( 'List avatar size', 'anspress-question-answer' ),
