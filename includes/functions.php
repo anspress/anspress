@@ -503,7 +503,7 @@ function ap_highlight_words( $text, $words ) {
  * @return string
  * @since 2.0.0
  */
-function ap_responce_message( $id, $only_message = false ) {
+function ap_response_message( $id, $only_message = false ) {
 	$msg = array(
 		'success'                       => array(
 			'type'    => 'success',
@@ -594,7 +594,7 @@ function ap_ajax_responce( $results ) {
 	$results['ap_responce'] = true;
 
 	if ( isset( $results['message'] ) ) {
-		$error_message = ap_responce_message( $results['message'] );
+		$error_message = ap_response_message( $results['message'] );
 
 		if ( false !== $error_message ) {
 			$results['snackbar'] = array(
