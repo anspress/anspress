@@ -38,3 +38,17 @@ function ap_get_hover_card_attr( $_post = null ) {
 function ap_hover_card_attr( $_post = null ) {
 	_deprecated_function( __FUNCTION__, '4.1.13' );
 }
+
+/**
+ * Return response with type and message.
+ *
+ * @param string $id           messge id.
+ * @param bool   $only_message return message string instead of array.
+ * @return string
+ *
+ * @deprecated 4.4.0
+ */
+function ap_responce_message( $id, $only_message = false ) {
+	_deprecated_function( __FUNCTION__, '4.4.0', 'ap_response_message()' );
+	return ap_response_message( $id, $only_message );
+}
