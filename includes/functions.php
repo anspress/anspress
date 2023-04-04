@@ -563,7 +563,8 @@ function ap_response_message( $id, $only_message = false ) {
 	 * @param array $msg Messages.
 	 * @since 2.0.1
 	 */
-	$msg = apply_filters( 'ap_responce_message', $msg );
+	$msg = apply_filters_deprecated( 'ap_responce_message', array( $msg ), '4.4.0', 'ap_response_message' );
+	$msg = apply_filters( 'ap_response_message', $msg );
 
 	if ( isset( $msg[ $id ] ) && $only_message ) {
 		return $msg[ $id ]['message'];
