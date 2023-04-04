@@ -607,7 +607,7 @@ class AnsPress_Admin {
 	 * @return array
 	 */
 	public static function get_pages( $pages, $r ) {
-		if ( ! ap_opt( 'base_page_static_front_page' ) && isset( $r['name'] ) && 'page_on_front' === $r['name'] ) {
+		if ( ! ap_opt( 'base_page_static_front_page' ) && isset( $r['name'] ) && ( 'page_on_front' === $r['name'] || '_customize-dropdown-pages-page_on_front' === $r['name'] ) ) {
 			foreach ( (array) $pages as $k => $page ) {
 				if ( ap_opt( 'base_page' ) == $page->ID ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
 					unset( $pages[ $k ] );
