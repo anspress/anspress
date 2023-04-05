@@ -129,16 +129,16 @@ class AnsPress_Rewrite {
 		$answer_rewrite = str_replace( '&p=', '&question_id=', $answer_rewrite );
 
 		$all_rules = array(
-			$slug . 'search/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?s=$matches[#]&paged=$matches[#]&post_type=question',
-			$slug . 'search/([^/]+)/?$'                   => 'index.php?s=$matches[#]&post_type=question',
-			$slug . 'edit/?$'                             => 'index.php?pagename=' . $slug_main . '&ap_page=edit',
-			$rule . '/answer/([0-9]+)/(feed|rdf|rss|rss2|atom)/?$' => $answer_rewrite . '&answer_id=$matches[#]&feed=$matches[#]',
-			$rule . '/answer/([0-9]+)/embed/?$'           => $answer_rewrite . '&answer_id=$matches[#]&embed=true',
-			$rule . '/answer/([0-9]+)/?$'                 => $rewrite . '&answer_id=$matches[#]',
-			$rule . '/page/?([0-9]{1,})/?$'               => $rewrite . '&ap_paged=$matches[#]',
-			$rule . '/(feed|rdf|rss|rss2|atom)/?$'        => $rewrite . '&feed=$matches[#]',
-			$rule . '/embed/?$'                           => $rewrite . '&embed=true',
-			$rule . '/?$'                                 => $rewrite,
+			$slug . 'search/([^/]+)/page/?([0-9]{1,})/?$'                       => 'index.php?s=$matches[#]&paged=$matches[#]&post_type=question',
+			$slug . 'search/([^/]+)/?$'                                         => 'index.php?s=$matches[#]&post_type=question',
+			$slug . 'edit/?$'                                                   => 'index.php?pagename=' . $slug_main . '&ap_page=edit',
+			$lang_rule . $rule . '/answer/([0-9]+)/(feed|rdf|rss|rss2|atom)/?$' => $lang_rewrite . $answer_rewrite . '&answer_id=$matches[#]&feed=$matches[#]',
+			$lang_rule . $rule . '/answer/([0-9]+)/embed/?$'                    => $lang_rewrite . $answer_rewrite . '&answer_id=$matches[#]&embed=true',
+			$lang_rule . $rule . '/answer/([0-9]+)/?$'                          => $lang_rewrite . $rewrite . '&answer_id=$matches[#]',
+			$lang_rule . $rule . '/page/?([0-9]{1,})/?$'                        => $lang_rewrite . $rewrite . '&ap_paged=$matches[#]',
+			$lang_rule . $rule . '/(feed|rdf|rss|rss2|atom)/?$'                 => $lang_rewrite . $rewrite . '&feed=$matches[#]',
+			$lang_rule . $rule . '/embed/?$'                                    => $lang_rewrite . $rewrite . '&embed=true',
+			$lang_rule . $rule . '/?$'                                          => $lang_rewrite . $rewrite,
 
 		);
 
