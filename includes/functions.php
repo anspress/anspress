@@ -2082,6 +2082,7 @@ function ap_ask_form( $deprecated = null ) {
 
 		$values['post_title']   = $question->post_title;
 		$values['post_content'] = $question->post_content;
+		$values['post_name']    = $question->post_name;
 		$values['is_private']   = 'private_post' === $question->post_status ? true : false;
 
 		if ( isset( $values['anonymous_name'] ) ) {

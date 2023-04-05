@@ -60,6 +60,12 @@ class AP_Form_Hooks {
 						'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
 					),
 				),
+				'post_name'    => array(
+					'type'     => 'input',
+					'subtype'  => 'hidden',
+					'value'    => '',
+					'sanitize' => 'sanitize_title',
+				),
 			),
 		);
 
@@ -130,6 +136,7 @@ class AP_Form_Hooks {
 			$form['submit_label']                    = __( 'Update Question', 'anspress-question-answer' );
 			$form['fields']['post_title']['value']   = $question->post_title;
 			$form['fields']['post_content']['value'] = $question->post_content;
+			$form['fields']['post_name']['value']    = $question->post_name;
 			$form['fields']['is_private']['value']   = 'private_post' === $question->post_status ? true : false;
 
 			if ( isset( $form['fields']['anonymous_name'] ) ) {
@@ -344,6 +351,7 @@ class AP_Form_Hooks {
 		$question_args = array(
 			'post_title'   => $values['post_title']['value'],
 			'post_content' => $values['post_content']['value'],
+			'post_name'    => $values['post_name']['value'],
 		);
 
 		if ( ! empty( $values['post_id']['value'] ) ) {
@@ -430,7 +438,11 @@ class AP_Form_Hooks {
 		 */
 		$question_args['post_content'] = apply_filters( 'ap_form_contents_filter', $question_args['post_content'] );
 
-		$question_args['post_name'] = ap_remove_stop_words_post_name( $question_args['post_title'] );
+		if ( $editing ) {
+			$question_args['post_name'] = $question_args['post_name'];
+		} else {
+			$question_args['post_name'] = ap_remove_stop_words_post_name( $question_args['post_title'] );
+		}
 
 		if ( $editing ) {
 			/**
