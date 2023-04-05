@@ -26,7 +26,7 @@ class AnsPress_PostTypes {
 		// Register Custom Post types and taxonomy.
 		anspress()->add_action( 'init', __CLASS__, 'register_question_cpt', 0 );
 		anspress()->add_action( 'init', __CLASS__, 'register_answer_cpt', 0 );
-		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 2 );
+		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 4 );
 		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
 	}
 
@@ -219,12 +219,14 @@ class AnsPress_PostTypes {
 	/**
 	 * Alter question and answer CPT permalink.
 	 *
-	 * @param  string $link Link.
-	 * @param  object $post Post object.
+	 * @param  string $link      Link.
+	 * @param  object $post      Post object.
+	 * @param  bool   $leavename Whether to keep the post name.
+	 * @param  bool   $sample    Is it a sample permalink.
 	 * @return string
 	 * @since 2.0.0
 	 */
-	public static function post_type_link( $link, $post ) {
+	public static function post_type_link( $link, $post, $leavename, $sample ) {
 		if ( 'question' === $post->post_type ) {
 			$question_slug = ap_opt( 'question_page_permalink' );
 
@@ -242,7 +244,7 @@ class AnsPress_PostTypes {
 			if ( get_option( 'permalink_structure' ) ) {
 				$structure = self::question_perm_structure();
 				$rule      = str_replace( '%question_id%', $post->ID, $structure->rule );
-				$rule      = str_replace( '%question%', $post->post_name, $rule );
+				$rule      = str_replace( '%question%', ( $leavename ? '%question%' : $post->post_name ), $rule );
 				$link      = home_url( $default_lang . '/' . $rule . '/' );
 			} else {
 				$link = add_query_arg( array( 'question' => $post->ID ), ap_base_page_link() );
@@ -254,17 +256,41 @@ class AnsPress_PostTypes {
 			 * @param string $link Question link.
 			 * @param object $post Post object.
 			 */
-			return apply_filters( 'ap_question_post_type_link', $link, $post );
+			$link = apply_filters_deprecated( 'ap_question_post_type_link', array( $link, $post ), '4.4.0', 'ap_question_post_type_link_structure' );
+
+			/**
+			 * Allow overriding of question post type permalink
+			 *
+			 * @param string $link      Question link.
+			 * @param object $post      Post object.
+			 * @param bool   $leavename Whether to keep the post name.
+			 * @param bool   $sample    Is it a sample permalink.
+			 */
+			$link = apply_filters( 'ap_question_post_type_link_structure', $link, $post, $leavename, $sample );
+
+			return $link;
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
 			$link = get_permalink( $post->post_parent ) . "answer/{$post->ID}/";
 
 			/**
 			 * Allow overriding of answer post type permalink.
 			 *
-			 * @param string $link Question link.
+			 * @param string $link Answer link.
 			 * @param object $post Post object.
 			 */
-			return apply_filters( 'ap_answer_post_type_link', $link, $post );
+			$link = apply_filters_deprecated( 'ap_answer_post_type_link', array( $link, $post ), '4.4.0', 'ap_answer_post_type_link_structure' );
+
+			/**
+			 * Allow overriding of answer post type permalink
+			 *
+			 * @param string $link      Answer link.
+			 * @param object $post      Post object.
+			 * @param bool   $leavename Whether to keep the post name.
+			 * @param bool   $sample    Is it a sample permalink.
+			 */
+			$link = apply_filters( 'ap_answer_post_type_link_structure', $link, $post, $leavename, $sample );
+
+			return $link;
 		}
 
 		return $link;
