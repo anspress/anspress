@@ -334,11 +334,12 @@ function ap_get_users_reputation( $user_ids ) {
  * @param int    $points      Signed point value.
  * @param int    $activity    Activity label.
  * @param string $parent      Parent type.
+ * @param string $icon        Reputation event icon.
  *
  * @return int|WP_Error Return insert event id on success and WP_Error on failure.
  * @since 4.3.0
  */
-function ap_insert_reputation_event( $slug, $label, $description, $points, $activity, $parent = '' ) {
+function ap_insert_reputation_event( $slug, $label, $description, $points, $activity, $parent = '', $icon = '' ) {
 	global $wpdb;
 
 	$slug     = sanitize_key( $slug );
@@ -357,12 +358,14 @@ function ap_insert_reputation_event( $slug, $label, $description, $points, $acti
 			'points'      => $points,
 			'activity'    => $activity,
 			'parent'      => $parent,
+			'icon'        => $icon,
 		),
 		array(
 			'%s',
 			'%s',
 			'%s',
 			'%d',
+			'%s',
 			'%s',
 			'%s',
 		)
@@ -910,5 +913,3 @@ class AnsPress_Reputation_Query {
 	}
 
 }
-
-
