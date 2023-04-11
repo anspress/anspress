@@ -143,6 +143,7 @@ function ap_default_options() {
 		'create_account'                => true,
 		'allow_private_posts'           => true,
 		'trashing_question_with_answer' => false,
+		'deleting_question_with_answer' => false,
 	);
 
 	/**
