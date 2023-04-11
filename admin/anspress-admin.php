@@ -684,7 +684,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
@@ -1185,6 +1185,12 @@ class AnsPress_Admin {
 					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['multiple_answers'],
+				),
+				'trashing_question_with_answer'    => array(
+					'label' => __( 'Trashing Question', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable trashing the question if there are answers already available to the question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['trashing_question_with_answer'],
 				),
 			),
 		);

@@ -285,6 +285,17 @@ class AnsPress_Hooks {
 			));
 			//@codingStandardsIgnoreEnd
 
+			if ( ap_opt( 'trashing_question_with_answer' ) && $ans ) {
+				ap_send_json(
+					array(
+						'success'  => false,
+						'snackbar' => array(
+							'message' => esc_html__( 'Sorry, you are not allowed to trash the question if there are answers available.', 'anspress-question-answer' ),
+						),
+					)
+				);
+			}
+
 			foreach ( (array) $ans as $p ) {
 				$selcted_answer = ap_selected_answer();
 				if ( $selcted_answer === $p->ID ) {
