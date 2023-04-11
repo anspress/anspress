@@ -228,6 +228,17 @@ class AnsPress_Hooks {
 
 			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] ); // @codingStandardsIgnoreLine
 
+			if ( ap_opt( 'deleting_question_with_answer' ) && $answers ) {
+				ap_send_json(
+					array(
+						'success'  => false,
+						'snackbar' => array(
+							'message' => esc_html__( 'Sorry, you are not allowed to delete the question permanently if there are answers available.', 'anspress-question-answer' ),
+						),
+					)
+				);
+			}
+
 			foreach ( (array) $answers as $a ) {
 				self::delete_answer( $a->ID, $a );
 				wp_delete_post( $a->ID, true );
