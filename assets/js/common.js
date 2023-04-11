@@ -370,6 +370,7 @@ _.templateSettings = {
 		clickHide: function (e) {
 			e.preventDefault();
 			this.hide();
+			apToggleLoadedClass();
 		},
 		hide: function (runCb) {
 			if (typeof runCb === 'undefined')
@@ -777,6 +778,7 @@ jQuery(document).ready(function ($) {
 			if ($lastModal.length > 0) {
 				$name = $lastModal.attr('id').replace('ap-modal-', '');
 				AnsPress.hideModal($name);
+				apToggleLoadedClass();
 			}
 		}
 	});
@@ -865,6 +867,22 @@ jQuery(document).ready(function ($) {
 		$(this).parent().remove();
 	})
 });
+
+/**
+ * Remove loaded class whenever needed.
+ */
+function apToggleLoadedClass() {
+	// For the event to be triggered once again.
+	const loadedClass = [
+		'.comment-edit',
+	];
+	jQuery.each( loadedClass, function( i, loadedClassName ) {
+		const elem = jQuery( loadedClassName );
+		if ( elem.hasClass( 'loaded' ) ) {
+			elem.removeClass( 'loaded' );
+		}
+	} );
+}
 
 window.AnsPress.Helper = {
 	toggleNextClass: function (el) {
