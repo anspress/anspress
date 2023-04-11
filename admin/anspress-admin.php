@@ -1183,6 +1183,12 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['multiple_answers'],
 				),
+				'trashing_question_with_answer'    => array(
+					'label' => __( 'Trashing Question', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable trashing the question if there are answers already available to the question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['trashing_question_with_answer'],
+				),
 			),
 		);
 
