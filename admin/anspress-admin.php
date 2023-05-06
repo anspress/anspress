@@ -61,7 +61,6 @@ class AnsPress_Admin {
 		anspress()->add_action( 'parent_file', __CLASS__, 'tax_menu_correction' );
 		anspress()->add_action( 'load-post.php', __CLASS__, 'question_meta_box_class' );
 		anspress()->add_action( 'load-post-new.php', __CLASS__, 'question_meta_box_class' );
-		anspress()->add_action( 'admin_menu', __CLASS__, 'change_post_menu_label' );
 		anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'post_data_check', 99 );
 		anspress()->add_action( 'admin_head-nav-menus.php', __CLASS__, 'ap_menu_metaboxes' );
 		anspress()->add_filter( 'posts_clauses', __CLASS__, 'join_by_author_name', 10, 2 );
@@ -359,14 +358,6 @@ class AnsPress_Admin {
 	 */
 	public static function save_user_roles_fields( $user_id ) {
 		update_user_meta( $user_id, 'ap_role', ap_sanitize_unslash( 'ap_role', 'p' ) );
-	}
-
-	/**
-	 * Change post menu label.
-	 */
-	public static function change_post_menu_label() {
-		global $submenu;
-		$submenu['anspress'][0][0] = 'AnsPress'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
 
 	/**
