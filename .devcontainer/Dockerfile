@@ -1,5 +1,5 @@
 # Base image
-FROM wordpress:latest
+FROM wordpress:php8.1
 
 # Update packages and install dependencies
 RUN apt-get update && apt-get install -y \
