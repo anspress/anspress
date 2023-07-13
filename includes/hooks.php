@@ -130,6 +130,9 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
 			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions', 10, 2 );
 			anspress()->add_action( 'get_comments_number', __CLASS__, 'get_comments_number', 11, 2 );
+
+			// Sanitize the question title for question post type on question creation and update.
+			anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'sanitize_question_post_type_title' );
 	}
 
 	/**
@@ -1048,5 +1051,19 @@ class AnsPress_Hooks {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Sanitize the question title for question post type on question creation and update.
+	 *
+	 * @param array $data An array of slashed, sanitized, and processed post data.
+	 */
+	public static function sanitize_question_post_type_title( $data ) {
+
+		if ( 'question' === $data['post_type'] ) {
+			$data['post_title'] = apply_filters( 'ap_sanitize_question_title', sanitize_text_field( $data['post_title'] ), $data['post_title'] );
+		}
+
+		return $data;
 	}
 }
