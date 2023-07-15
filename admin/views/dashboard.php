@@ -129,7 +129,7 @@ class AnsPress_Dashboard {
 						ap_the_question();
 						?>
 						<li>
-							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title(); ?></a> -
+							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html(get_the_title()); ?></a> -
 							<span class="posted"><?php the_date(); ?></span>
 						</li>
 					<?php endwhile; ?>
@@ -176,7 +176,7 @@ class AnsPress_Dashboard {
 						ap_the_answer();
 						?>
 						<li>
-							<a target="_blank" href="<?php the_permalink(); ?>"><?php the_title(); ?></a> -
+							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a> -
 							<span class="posted"><?php the_date(); ?></span>
 						</li>
 					<?php endwhile; ?>

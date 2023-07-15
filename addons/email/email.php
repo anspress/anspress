@@ -391,7 +391,7 @@ class Email extends \AnsPress\Singleton {
 
 		$args['tags'] = array(
 			'{answerer}'       => ap_user_display_name( $answer->post_author ),
-			'{question_title}' => get_the_title( $answer->post_parent ),
+			'{question_title}' => esc_html( get_the_title( $answer->post_parent )),
 			'{answer_link}'    => wp_get_shortlink( $answer->ID ),
 			'{answer_content}' => $answer->post_content,
 			'{answer_excerpt}' => ap_truncate_chars( wp_strip_all_tags( $answer->post_content ), 100 ),

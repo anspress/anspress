@@ -54,7 +54,7 @@ if ( ! defined( 'WPINC' ) ) {
 						<div class="ap-q-suggestion-item clearfix">
 							<a class="select-question-button button button-primary button-small" href="<?php echo esc_url( $url ); ?>"><?php esc_attr_e( 'Select', 'anspress-question-answer' ); ?></a>
 
-							<span class="question-title"><?php the_title(); ?>></span>
+							<span class="question-title"><?php echo esc_html( get_the_title() ); ?>></span>
 							<span class="acount">
 								<?php
 									echo esc_attr(

@@ -626,7 +626,7 @@ class AnsPress_Admin {
 	 */
 	public static function modify_answer_title( $data ) {
 		if ( 'answer' === $data['post_type'] ) {
-			$data['post_title'] = get_the_title( $data['post_parent'] );
+			$data['post_title'] = esc_html( get_the_title( $data['post_parent'] ) );
 		}
 
 		return $data;
@@ -684,7 +684,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *

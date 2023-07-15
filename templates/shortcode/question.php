@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="ap-single" class="ap-q clearfix" itemtype="https://schema.org/Question" itemscope="">
 
-	<h1 class="entry-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
+	<h1 class="entry-title"><a href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a></h1>
 	<div class="ap-question-lr">
 		<div class="ap-q-left">
 			<div class="ap-question-meta clearfix">

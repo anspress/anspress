@@ -296,9 +296,7 @@ class AnsPress_Post_Table_Hooks {
 				),
 				'post.php'
 			);
-			echo '<a class="parent_question" href="' . esc_url( $url ) . '"><strong>';
-			the_title( $post->post_parent );
-			echo '</strong></a>';
+			echo '<a class="parent_question" href="' . esc_url( $url ) . '"><strong>' . esc_html( get_the_title( $post->post_parent ) ) . '</strong></a>';
 		} elseif ( 'votes' === $column ) {
 			echo '<span class="vote-count">' . esc_attr( $post->votes_net ) . '</span>';
 		} elseif ( 'flags' === $column ) {
