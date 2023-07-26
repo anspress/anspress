@@ -49,5 +49,12 @@
 			"@putenv XDEBUG_MODE=coverage",
 			"codecept run --coverage-html"
 		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"ergebnis/composer-normalize": true,
+			"phpro/grumphp": true
+		}
 	}
 }
