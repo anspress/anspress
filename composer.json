@@ -44,7 +44,7 @@
 		"test": "codecept run",
 		"phpcs": "phpcs",
 		"grumphp": "grumphp run",
-		"phpstan": "phpstan",
+		"phpstan": "phpstan --memory-limit=1G",
 		"phpcbf": "phpcbf",
 		"test:coverage": [
 			"@putenv XDEBUG_MODE=coverage",
