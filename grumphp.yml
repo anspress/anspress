@@ -1,12 +1,9 @@
 grumphp:
     ignore_unstaged_changes: false
     tasks:
-        composer:
-            with_dependencies: false
-            strict: false
+        composer: ~
         phpcs:
             standard: .phpcs.xml.dist
-            ignore_patterns: ['/vendor/', '/tests/', '/node_modules/']
         grunt: ~
         # phpmd:
         #     exclude: ['/vendor/', '/tests/', '/node_modules/']
@@ -15,15 +12,10 @@ grumphp:
         #     configuration: phpstan.neon
         #     triggered_by: ['php']
         #     ignore_patterns: ['/vendor/', , '/node_modules/', '/tests/']
-        codeception:
-            config_file: ~
-            fail_fast: false
-            suite: ~
-            test: ~
+        codeception: ~
         git_blacklist:
             keywords:
-                # - 'die('
+                - 'die('
                 - 'print_r('
                 - 'var_dump('
-                # - 'phpcs:ignore'
-            triggered_by: ['php']
+                - 'error_log('
