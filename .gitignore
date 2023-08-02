@@ -37,3 +37,4 @@ Thumbs.db
 /.db
 /tests/old
 /.vscode
+.phpunit.result.cache
