@@ -1,20 +1,93 @@
 {
-  "name": "WordPress",
-
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "wordpress",
-  "workspaceFolder": "/var/www/html/wp-content/plugins/anspress-question-answer",
-
-  // Set *default* container specific settings.json values on container create.
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "php.suggest.basic": false // avoids duplicate autocomplete
-  },
-
-  // Add the IDs of any extensions you want installed.
-  "extensions": [],
-
-  // Sets up WordPress on container start.
-  "postCreateCommand": "bash .devcontainer/wp-setup.sh",
-  "remoteUser": "vscode"
+    "name": "AnsPress dev",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "wordpress",
+    "workspaceFolder": "/var/www/html/wp-content/plugins/anspress-question-answer",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "php.suggest.basic": false,
+                "phpsab.executablePathCBF": "./vendor/bin/phpcbf",
+                "phpsab.executablePathCS": "./vendor/bin/phpcs",
+                "phpsab.standard": "WordPress",
+                "intelephense.environment.documentRoot": "/var/www/html",
+                "intelephense.stubs": [
+                    "apache",
+                    "bcmath",
+                    "bz2",
+                    "calendar",
+                    "Core",
+                    "ctype",
+                    "curl",
+                    "date",
+                    "dba",
+                    "enchant",
+                    "exif",
+                    "FFI",
+                    "fileinfo",
+                    "filter",
+                    "fpm",
+                    "ftp",
+                    "gd",
+                    "gettext",
+                    "gmp",
+                    "hash",
+                    "iconv",
+                    "imap",
+                    "intl",
+                    "json",
+                    "ldap",
+                    "libxml",
+                    "mbstring",
+                    "meta",
+                    "mysqli",
+                    "oci8",
+                    "odbc",
+                    "openssl",
+                    "pcntl",
+                    "pcre",
+                    "PDO",
+                    "pdo_mysql",
+                    "pdo_sqlite",
+                    "pgsql",
+                    "Phar",
+                    "posix",
+                    "pspell",
+                    "random",
+                    "readline",
+                    "Reflection",
+                    "session",
+                    "shmop",
+                    "SimpleXML",
+                    "snmp",
+                    "soap",
+                    "sockets",
+                    "sodium",
+                    "SPL",
+                    "standard",
+                    "superglobals",
+                    "sysvmsg",
+                    "sysvsem",
+                    "sysvshm",
+                    "tidy",
+                    "tokenizer",
+                    "xml",
+                    "xmlreader",
+                    "xmlrpc",
+                    "xmlwriter",
+                    "xsl",
+                    "Zend OPcache",
+                    "zip",
+                    "zlib",
+                    "wordpress"
+                ]
+            },
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "EditorConfig.EditorConfig"
+            ]
+        }
+    },
+    // Sets up WordPress on container start.
+    "remoteUser": "vscode"
 }

@@ -17,6 +17,8 @@
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>**/index.php</exclude-pattern>
+	<exclude-pattern>/.devconainer/*</exclude-pattern>
+	<exclude-pattern>/.github/*</exclude-pattern>
 
 	<!-- Rules: WordPress Coding Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->

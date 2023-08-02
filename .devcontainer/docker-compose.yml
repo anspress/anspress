@@ -19,17 +19,17 @@ services:
       - ../:/var/www/html/wp-content/plugins/anspress-question-answer
 
   db:
-    image: mariadb:10
+    image: mysql:latest
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wp_user
       MYSQL_PASSWORD: wp_pass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - 3306:3306
     volumes:
-      - data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
 volumes:
   wordpress:
-  data:
+  mysql_data:
