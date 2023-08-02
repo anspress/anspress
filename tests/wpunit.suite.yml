@@ -1,5 +1,0 @@
-actor: WpunitTester
-modules:
-    enabled:
-        - WPLoader
-        - \Helper\Wpunit

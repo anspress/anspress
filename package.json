@@ -1,26 +1,28 @@
 {
-	"name": "anspress",
-	"version": "4.3.2",
-	"description": "Question And answer plugin for WordPress",
-	"main": "Gruntfile.js",
-	"private": true,
-	"devDependencies": {
-		"grunt": "^1.6.1",
-		"grunt-contrib-compress": "^2.0.0",
-		"grunt-contrib-watch": "^1.1.0",
-		"grunt-csscomb": "^4.2.0",
-		"grunt-sass": "^3.1.0",
-		"grunt-version": "^3.0.0",
-		"grunt-wp-i18n": "^1.0.3",
-		"grunt-wp-readme-to-markdown": "^2.1.0",
-		"load-grunt-tasks": "^5.1.0",
-		"sass": "^1.64.1"
-	},
-	"scripts": {
-		"test": "php -d zend_extension=xdebug ./vendor/bin/codecept run",
-		"build": "grunt build",
-		"server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80"
-	},
-	"author": "Rahul Aryan",
-	"license": "GPL 3+"
+    "name": "anspress",
+    "version": "4.3.2",
+    "description": "Question And answer plugin for WordPress",
+    "main": "Gruntfile.js",
+    "private": true,
+    "devDependencies": {
+        "grunt": "^1.6.1",
+        "grunt-contrib-compress": "^2.0.0",
+        "grunt-contrib-watch": "^1.1.0",
+        "grunt-csscomb": "^4.2.0",
+        "grunt-sass": "^3.1.0",
+        "grunt-version": "^3.0.0",
+        "grunt-wp-i18n": "^1.0.3",
+        "grunt-wp-readme-to-markdown": "^2.1.0",
+        "load-grunt-tasks": "^5.1.0",
+        "sass": "^1.64.1"
+    },
+    "scripts": {
+        "test": "php -d zend_extension=xdebug ./vendor/bin/phpunit",
+        "phpcs": "php -d zend_extension=xdebug ./vendor/bin/phpcs",
+        "build": "grunt build",
+        "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80",
+        "setup:phpunit": "./bin/install-wp-tests.sh test_wordpress root root db"
+    },
+    "author": "Rahul Aryan",
+    "license": "GPL 3+"
 }

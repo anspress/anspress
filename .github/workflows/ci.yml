@@ -1,0 +1,80 @@
+name: PHP Tests
+
+on: [push, pull_request, release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php_version:
+          - '8.1'
+          - '8.0'
+          - '7.4'
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+
+    env:
+      WP_VERSION: latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+          extensions: |
+            xdebug
+            pdo
+          coverage: pcov
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          mv composer.phar /usr/local/bin/composer
+
+      - name: Clear Xdebug configuration (if present)
+        run: |
+          if [ -f /etc/php/*/cli/conf.d/20-xdebug.ini ]; then
+            echo "Removing Xdebug configuration"
+            sudo rm /etc/php/*/cli/conf.d/20-xdebug.ini
+          else
+            echo "Xdebug configuration not found"
+          fi
+
+      - name: Cache Composer dependencies
+        run: composer install
+
+      - name: Run PHPUnit tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: wordpress_test
+          DB_USER: root
+          DB_PASS: root
+        run: |
+          if [[ ! -z "$WP_VERSION" ]]; then
+            bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 $WP_VERSION
+            php ./vendor/bin/phpunit
+            WP_MULTISITE=1 php ./vendor/bin/phpunit
+          fi
+
+      - name: Install and run PHP CodeSniffer
+        run: |
+          composer global require wp-coding-standards/wpcs
+          composer global require phpcompatibility/php-compatibility
+          composer global require phpcompatibility/phpcompatibility-paragonie
+          composer global require phpcompatibility/phpcompatibility-wp
+          phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/phpcompatibility/php-compatibility,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-paragonie,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-wp
+          phpcs
