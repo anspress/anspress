@@ -70,11 +70,6 @@ jobs:
             WP_MULTISITE=1 php ./vendor/bin/phpunit
           fi
 
-      - name: Install and run PHP CodeSniffer
+      - name: Run PHP CodeSniffer
         run: |
-          composer global require wp-coding-standards/wpcs
-          composer global require phpcompatibility/php-compatibility
-          composer global require phpcompatibility/phpcompatibility-paragonie
-          composer global require phpcompatibility/phpcompatibility-wp
-          phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/phpcompatibility/php-compatibility,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-paragonie,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-wp
-          phpcs
+          composer run phpcs
