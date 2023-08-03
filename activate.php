@@ -358,7 +358,7 @@ class AP_Activate {
 		global $wpdb;
 
 		// Get all blogs in the network and activate plugin on each one.
-		$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" ); // db call ok, cache ok.
+		$blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" ); // phpcs:disable WordPress.DB.DirectDatabaseQuery
 
 		foreach ( (array) $blog_ids as $blog_id ) {
 			switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine

@@ -1,38 +1,66 @@
 <?php
-/**
- * PHPUnit bootstrap file.
- *
- * @package Anspress_Question_Answer
- */
+namespace EDD\Tests;
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+use Yoast\WPTestUtils\WPIntegration;
 
-if ( ! $_tests_dir ) {
-	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+define('COOKIEPATH', '/');
+
+$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
+$_SERVER['SERVER_NAME'] = '';
+$PHP_SELF = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
+
+
+$plugin_dir = dirname( dirname( __FILE__ ) );
+
+require_once $plugin_dir . '/vendor/autoload.php';
+require_once $plugin_dir . '/vendor/yoast/wp-test-utils/src/WPIntegration/bootstrap-functions.php';
+
+// Find WordPress.
+$_tests_dir = WPIntegration\get_path_to_wp_test_dir();
+
+// Find WordPress core.
+$_core_dir = getenv( 'WP_CORE_DIR' );
+
+if ( ! $_core_dir ) {
+	$_core_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress';
 }
 
-// Forward custom PHPUnit Polyfills configuration to PHPUnit bootstrap file.
-$_phpunit_polyfills_path = getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' );
-if ( false !== $_phpunit_polyfills_path ) {
-	define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $_phpunit_polyfills_path );
-}
-
-if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
-	echo "Could not find {$_tests_dir}/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
+	echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // WPCS: XSS ok.
 	exit( 1 );
 }
 
 // Give access to tests_add_filter() function.
-require_once "{$_tests_dir}/includes/functions.php";
+require_once $_tests_dir . '/includes/functions.php';
 
 /**
- * Manually load the plugin being tested.
+ * Manually load the plugins.
+ *
+ * @since 1.0.0
  */
-function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/anspress-question-answer.php';
+tests_add_filter(
+	'muplugins_loaded',
+	function() use ( $plugin_dir ) {
+		require $plugin_dir . '/anspress-question-answer.php';
+	}
+);
+
+WPIntegration\bootstrap_it();
+
+activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
+
+echo "Setting up AnsPress...\n";
+
+anspress();
+ap_append_table_names();
+anspress_activation();
+
+function _disable_reqs( $status = false, $args = array(), $url = '') {
 }
+add_filter( 'pre_http_request', function( $status = false, $args = array(), $url = '' ) {
+	return new \WP_Error( 'no_reqs_in_unit_tests', __( 'HTTP Requests disabled for unit tests', 'easy-digital-downloads' ) );
+} );
 
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+require_once 'helpers/shims.php';
 
-// Start up the WP testing environment.
-require "{$_tests_dir}/includes/bootstrap.php";
+remove_all_actions( 'send_headers' );

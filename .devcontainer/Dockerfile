@@ -26,6 +26,7 @@ RUN set -ex; \
 	libmagickwand-dev \
 	libpng-dev \
 	libzip-dev \
+    subversion \
 	; \
 	docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-install -j "$(nproc)" \
@@ -35,6 +36,7 @@ RUN set -ex; \
 	mysqli \
 	opcache \
 	zip \
+	pdo_mysql \
 	; \
 	pecl install imagick; \
 	pecl install xdebug-3.1.4; \
