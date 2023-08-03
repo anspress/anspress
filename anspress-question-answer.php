@@ -30,6 +30,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 // Define database version.
 define( 'AP_DB_VERSION', 37 );
 
@@ -480,8 +482,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			throw new \Exception(
 				sprintf(
 					// translators: %s contains name of the form requested.
-					__( 'Requested form: %s is not registered .', 'anspress-question-answer' ),
-					$name
+					esc_html__( 'Requested form: %s is not registered .', 'anspress-question-answer' ),
+					esc_html( $name )
 				)
 			);
 		}
@@ -577,7 +579,7 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			if ( $loaded ) {
 				return $loaded;
 			} else {
-				load_plugin_textdomain( 'anspress-question-answer', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+				load_plugin_textdomain( 'anspress-question-answer', false, basename( __DIR__ ) . '/languages/' );
 			}
 		}
 
@@ -588,16 +590,11 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 		 * @static
 		 *
 		 * @param  integer $blog_id Blog id.
-		 * @param  integer $user_id User id.
-		 * @param  string  $domain  Domain.
-		 * @param  string  $path    Path.
-		 * @param  integer $site_id Site id.
-		 * @param  array   $meta    Site meta.
 		 */
-		public static function create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+		public static function create_blog( $blog_id ) {
 			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
 				switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
-				require_once dirname( __FILE__ ) . '/activate.php';
+				require_once __DIR__ . '/activate.php';
 				AP_Activate::get_instance( true );
 				restore_current_blog();
 			}
@@ -635,15 +632,15 @@ add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_textdomain' ), 0 );
 add_action( 'wpmu_new_blog', array( 'AnsPress_Init', 'create_blog' ), 10, 6 );
 add_filter( 'wpmu_drop_tables', array( 'AnsPress_Init', 'drop_blog_tables' ), 10, 2 );
 
-require_once dirname( __FILE__ ) . '/includes/class/roles-cap.php';
-require_once dirname( __FILE__ ) . '/includes/class/class-singleton.php';
+require_once __DIR__ . '/includes/class/roles-cap.php';
+require_once __DIR__ . '/includes/class/class-singleton.php';
 
 /**
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
 function anspress_activation() {
-	require_once dirname( __FILE__ ) . '/activate.php';
+	require_once __DIR__ . '/activate.php';
 	\AP_Activate::get_instance();
 }
 register_activation_hook( __FILE__, 'anspress_activation' );

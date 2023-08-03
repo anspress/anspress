@@ -243,7 +243,7 @@ class Editor extends Field {
 	public function pre_get() {
 		$value = $this->value();
 
-		if ( $this->have_errors() ) {
+		if ( $this->have_errors() || ! $value) {
 			return;
 		}
 

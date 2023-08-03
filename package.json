@@ -17,8 +17,8 @@
         "sass": "^1.64.1"
     },
     "scripts": {
-        "test": "php -d zend_extension=xdebug ./vendor/bin/phpunit",
-        "phpcs": "php -d zend_extension=xdebug ./vendor/bin/phpcs",
+        "test": "php ./vendor/bin/phpunit",
+        "phpcs": "php ./vendor/bin/phpcs",
         "build": "grunt build",
         "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80",
         "setup:phpunit": "./bin/install-wp-tests.sh test_wordpress root root db"
