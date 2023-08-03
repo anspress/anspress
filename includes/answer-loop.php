@@ -9,6 +9,8 @@
  * @copyright    2014 Rahul Aryan
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -118,7 +120,7 @@ class Answers_Query extends WP_Query {
 	 * Undo the pointer to next
 	 */
 	public function reset_next() {
-		$this->current_post--;
+		--$this->current_post;
 		$this->post = $this->posts[ $this->current_post ];
 
 		return $this->post;

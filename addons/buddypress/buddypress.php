@@ -676,7 +676,6 @@ class BuddyPress extends \AnsPress\Singleton {
 			);
 		}
 	}
-
 }
 
 // Include BuddyPress hooks and files.

@@ -197,6 +197,18 @@ class AnsPress_Hooks {
 			return;
 		}
 
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem.
+		if ( ! WP_Filesystem() ) {
+			// Unable to initialize WP_Filesystem, handle error accordingly.
+			return;
+		}
+
+		global $wp_filesystem;
+
 		// Get anspress uploads.
 		$images = get_post_meta( $post_id, 'anspress-image' );
 		if ( ! empty( $images ) ) {
@@ -207,7 +219,7 @@ class AnsPress_Hooks {
 				$file    = $uploads['basedir'] . "/anspress-uploads/$img";
 
 				if ( file_exists( $file ) ) {
-					unlink( $file );
+					$wp_filesystem->delete( $file );
 				}
 			}
 		}

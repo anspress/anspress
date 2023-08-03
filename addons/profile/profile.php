@@ -202,14 +202,14 @@ class Profile extends \AnsPress\Singleton {
 	 * Output user profile menu.
 	 *
 	 * @param int|false $user_id Id of user, default is current user.
-	 * @param string    $class   CSS class.
+	 * @param string    $class_name   CSS class.
 	 */
-	public function user_menu( $user_id = false, $class = '' ) {
+	public function user_menu( $user_id = false, $class_name = '' ) {
 		$user_id     = false !== $user_id ? $user_id : ap_current_user_id();
 		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu     = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 
-		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class ) . '">';
+		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class_name ) . '">';
 
 		foreach ( (array) $ap_menu as $args ) {
 			if ( empty( $args['private'] ) || ( true === $args['private'] && get_current_user_id() === $user_id ) ) {
@@ -275,7 +275,7 @@ class Profile extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function filter_page_title( $_post ) {
-		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			$_post->post_title = $this->user_page_title();
 		}
 	}
@@ -479,7 +479,6 @@ class Profile extends \AnsPress\Singleton {
 
 		return (int) $user_id;
 	}
-
 }
 
 // Init addon.

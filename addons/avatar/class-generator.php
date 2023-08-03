@@ -352,5 +352,4 @@ class Generator {
 
 		return $new_hex;
 	}
-
 }

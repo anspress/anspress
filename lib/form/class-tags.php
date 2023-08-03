@@ -12,7 +12,7 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form\Field as Field;
+use AnsPress\Form\Field;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -161,5 +161,4 @@ class Tags extends Field {
 			return explode( ',', wp_unslash( $request_value ) );
 		}
 	}
-
 }

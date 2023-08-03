@@ -12,7 +12,7 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form\Field as Field;
+use AnsPress\Form\Field as AnsPressFormField;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 4.1.0
  */
-class Input extends Field {
+class Input extends AnsPressFormField {
 	/**
 	 * The field type.
 	 *
@@ -158,5 +158,4 @@ class Input extends Field {
 		 */
 		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
-
 }

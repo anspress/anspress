@@ -284,5 +284,4 @@ class AnsPress_PostTypes {
 
 		return $link;
 	}
-
 }

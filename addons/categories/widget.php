@@ -49,6 +49,7 @@ class Categories extends \WP_Widget {
 		}
 
 		$cat_args = array(
+			'taxonomy'   => 'question_category',
 			'parent'     => $instance['parent'],
 			'number'     => $instance['number'],
 			'hide_empty' => $instance['hide_empty'],
@@ -59,7 +60,7 @@ class Categories extends \WP_Widget {
 		$icon_width  = ! empty( $instance['icon_width'] ) ? $instance['icon_width'] : 32;
 		$icon_height = ! empty( $instance['icon_height'] ) ? $instance['icon_height'] : 32;
 
-		$categories = get_terms( 'question_category', $cat_args );
+		$categories = get_terms( $cat_args );
 		?>
 		<ul id="ap-categories-widget" class="ap-cat-wid clearfix">
 		<?php
@@ -121,12 +122,13 @@ class Categories extends \WP_Widget {
 		$icon_width  = ! empty( $instance['icon_width'] ) ? $instance['icon_width'] : '32';
 
 		$cat_args = array(
+			'taxonomy'   => 'question_category',
 			'hide_empty' => false,
 			'orderby'    => 'count',
 			'order'      => 'DESC',
 		);
 
-		$categories = get_terms( 'question_category', $cat_args );
+		$categories = get_terms( $cat_args );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'anspress-question-answer' ); ?></label>

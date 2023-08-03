@@ -9,6 +9,8 @@
  * @copyright 2014 Rahul Aryan
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -34,7 +36,7 @@ class AnsPress_Views {
 	 *
 	 * @param  string $template Template name.
 	 */
-	public static function insert_views( $template ) {
+	public static function insert_views( $template ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		if ( is_question() ) {
 			// By default do not store views in ap_views table.
 			if ( apply_filters( 'ap_insert_view_to_db', false ) ) {
@@ -95,7 +97,7 @@ function ap_insert_views( $ref_id, $type = 'question', $user_id = false, $ip = f
 			'view_date'    => current_time( 'mysql' ),
 		);
 
-		$insert = $wpdb->insert( $wpdb->ap_views, $values, array( '%d', '%s', '%d', '%s', '%s' ) ); // db call okay.
+		$insert = $wpdb->insert( $wpdb->ap_views, $values, array( '%d', '%s', '%d', '%s', '%s' ) ); // phpcs:ignore WordPress.DB
 
 		if ( false !== $insert ) {
 
@@ -151,9 +153,9 @@ function ap_is_viewed( $ref_id, $user_id, $type = 'question', $ip = false ) {
  */
 function ap_get_views( $ref_id, $type = 'question' ) {
 	global $wpdb;
-	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_ref_id = %d AND view_type = '%s'", $ref_id, $type ); // @codingStandardsIgnoreLine
+	$query = $wpdb->prepare( "SELECT count(*) FROM {$wpdb->ap_views} WHERE view_ref_id = %d AND view_type = %s", $ref_id, $type );
 
-	$count = (int) $wpdb->get_var( $query ); // @codingStandardsIgnoreLine
+	$count = (int) $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
 
 	return $count;
 }

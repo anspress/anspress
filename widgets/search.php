@@ -11,6 +11,8 @@
  * @subpackage Widget
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;

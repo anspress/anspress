@@ -382,7 +382,7 @@ function sanitize_comma_delimited( $str, $pieces_type = 'int' ) {
 		$glue      = 'int' !== $pieces_type ? '","' : ',';
 		$sanitized = array();
 		foreach ( $str as $s ) {
-			if ( '0' == $s || ! empty( $s ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			if ( '0' == $s || ! empty( $s ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 				$sanitized[] = 'int' === $pieces_type ? intval( $s ) : str_replace( array( "'", '"', ',' ), '', sanitize_text_field( $s ) );
 			}
 		}
@@ -653,25 +653,25 @@ function ap_current_page_url( $args ) {
 /**
  * Sort array by order value. Group array which have same order number and then sort them.
  *
- * @param array $array Array to order.
+ * @param array $arr Array to order.
  * @return array
  * @since 2.0.0
  * @since 4.1.0 Use `WP_List_Util` class for sorting.
  */
-function ap_sort_array_by_order( $array ) {
+function ap_sort_array_by_order( $arr ) {
 	$new_array = array();
 
-	if ( ! empty( $array ) && is_array( $array ) ) {
+	if ( ! empty( $arr ) && is_array( $arr ) ) {
 		$i = 1;
-		foreach ( $array as $k => $a ) {
+		foreach ( $arr as $k => $a ) {
 			if ( is_array( $a ) ) {
-				$array[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : $i;
+				$arr[ $k ]['order'] = isset( $a['order'] ) ? $a['order'] : $i;
 			}
 
 			$i += 2;
 		}
 
-		$util = new WP_List_Util( $array );
+		$util = new WP_List_Util( $arr );
 		return $util->sort( 'order', 'ASC', true );
 	}
 }
@@ -736,16 +736,14 @@ function ap_get_link_to( $sub ) {
 			}
 
 			$args = user_trailingslashit( rtrim( $args, '/' ) );
-		} else {
-			if ( ! is_array( $sub ) ) {
+		} elseif ( ! is_array( $sub ) ) {
 				$args = $sub ? '&ap_page=' . $sub : '';
-			} elseif ( is_array( $sub ) ) {
-				$args = '';
+		} elseif ( is_array( $sub ) ) {
+			$args = '';
 
-				if ( ! empty( $sub ) ) {
-					foreach ( $sub as $k => $s ) {
-						$args .= '&' . $k . '=' . $s;
-					}
+			if ( ! empty( $sub ) ) {
+				foreach ( $sub as $k => $s ) {
+					$args .= '&' . $k . '=' . $s;
 				}
 			}
 		}
@@ -1084,11 +1082,11 @@ function ap_questions_answer_ids( $question_id ) {
  * Whitelist array items.
  *
  * @param  array $master_keys Master keys.
- * @param  array $array       Array to filter.
+ * @param  array $arr       Array to filter.
  * @return array
  */
-function ap_whitelist_array( $master_keys, $array ) {
-	return array_intersect_key( $array, array_flip( $master_keys ) );
+function ap_whitelist_array( $master_keys, $arr ) {
+	return array_intersect_key( $arr, array_flip( $master_keys ) );
 }
 
 /**
@@ -1115,17 +1113,17 @@ ap_append_table_names();
 /**
  * Check if $_REQUEST var exists and get value. If not return default.
  *
- * @param  string $var     Variable name.
- * @param  mixed  $default Default value.
+ * @param  string $val     Variable name.
+ * @param  mixed  $default_val Default value.
  * @return mixed
  * @since  3.0.0
  */
-function ap_isset_post_value( $var, $default = '' ) {
-	if ( isset( $_REQUEST[ $var ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return wp_unslash( $_REQUEST[ $var ] ); // phpcs:ignore WordPress.Security
+function ap_isset_post_value( $val, $default_val = '' ) {
+	if ( isset( $_REQUEST[ $val ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return wp_unslash( $_REQUEST[ $val ] ); // phpcs:ignore WordPress.Security
 	}
 
-	return $default;
+	return $default_val;
 }
 
 /**
@@ -1167,22 +1165,22 @@ function ap_get_current_list_filters( $filter = null ) {
  *
  * @param  string|array   $str    String or array to sanitize. Or post/get key name.
  * @param  boolean|string $from   Get value from `$_REQUEST` or `query_var`. Valid values: request, query_var.
- * @param  mixed          $default   Default value if variable not found.
+ * @param  mixed          $default_val   Default value if variable not found.
  * @return array|string
  * @since  3.0.0
  */
-function ap_sanitize_unslash( $str, $from = false, $default = '' ) {
+function ap_sanitize_unslash( $str, $from = false, $default_val = '' ) {
 	// If not false then get from $_REQUEST or query_var.
 	if ( false !== $from ) {
 		if ( in_array( strtolower( $from ), array( 'request', 'post', 'get', 'p', 'g', 'r' ), true ) ) {
-			$str = ap_isset_post_value( $str, $default );
+			$str = ap_isset_post_value( $str, $default_val );
 		} elseif ( 'query_var' === $from ) {
 			$str = get_query_var( $str );
 		}
 	}
 
 	if ( empty( $str ) ) {
-		return $default;
+		return $default_val;
 	}
 
 	if ( is_array( $str ) ) {
@@ -1415,19 +1413,15 @@ function ap_user_display_name( $args = array() ) {
 			} else {
 				$return = $anonymous_label;
 			}
-		} else {
-			if ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
+		} elseif ( is_array( $post_fields ) && ! empty( $post_fields['anonymous_name'] ) ) {
 				$return = $post_fields['anonymous_name'] . esc_attr__( ' (anonymous)', 'anspress-question-answer' );
-			} else {
-				$return = $anonymous_label;
-			}
-		}
-	} else {
-		if ( ! $html ) {
-			$return = $anonymous_label;
 		} else {
 			$return = $anonymous_label;
 		}
+	} elseif ( ! $html ) {
+			$return = $anonymous_label;
+	} else {
+		$return = $anonymous_label;
 	}
 
 	/**
@@ -1526,13 +1520,13 @@ function ap_active_user_page() {
  * User name and link with anchor tag.
  *
  * @param string  $user_id User ID.
- * @param boolean $echo Echo or return.
+ * @param boolean $output Echo or return.
  */
-function ap_user_link_anchor( $user_id, $echo = true ) {
+function ap_user_link_anchor( $user_id, $output = true ) {
 	$name = ap_user_display_name( $user_id );
 
 	if ( $user_id < 1 ) {
-		if ( $echo ) {
+		if ( $output ) {
 			echo $name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} else {
 			return $name;
@@ -1543,7 +1537,7 @@ function ap_user_link_anchor( $user_id, $echo = true ) {
 	$html .= $name;
 	$html .= '</a>';
 
-	if ( $echo ) {
+	if ( $output ) {
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
@@ -1566,21 +1560,21 @@ function ap_remove_stop_words( $str ) {
 /**
  * Search array by key and value.
  *
- * @param  array  $array Array to search.
+ * @param  array  $arr Array to search.
  * @param  string $key   Array key to search.
  * @param  mixed  $value Value of key supplied.
  * @return array
  * @since  4.0.0
  */
-function ap_search_array( $array, $key, $value ) {
+function ap_search_array( $arr, $key, $value ) {
 	$results = array();
 
-	if ( is_array( $array ) ) {
-		if ( isset( $array[ $key ] ) && $array[ $key ] == $value ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-			$results[] = $array;
+	if ( is_array( $arr ) ) {
+		if ( isset( $arr[ $key ] ) && $arr[ $key ] == $value ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+			$results[] = $arr;
 		}
 
-		foreach ( $array as $subarray ) {
+		foreach ( $arr as $subarray ) {
 			$results = array_merge( $results, ap_search_array( $subarray, $key, $value ) );
 		}
 	}
@@ -1916,7 +1910,7 @@ function ap_trigger_qa_update_hook( $_post, $event ) {
  */
 function ap_in_array_r( $needle, $haystack, $strict = false ) {
 	foreach ( $haystack as $item ) {
-		if ( ( $strict ? $item === $needle : $item == $needle ) || ( is_array( $item ) && ap_in_array_r( $needle, $item, $strict ) ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( ( $strict ? $item === $needle : $item == $needle ) || ( is_array( $item ) && ap_in_array_r( $needle, $item, $strict ) ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			return true;
 		}
 	}
@@ -1958,18 +1952,18 @@ function ap_addon_activation_hook( $addon, $cb ) {
  * Insert a value or key/value pair after a specific key in an array.  If key doesn't exist, value is appended
  * to the end of the array.
  *
- * @param array  $array Array.
+ * @param array  $arr Array.
  * @param string $key   Key.
- * @param array  $new   Array.
+ * @param array  $is_new   Array.
  *
  * @return array
  */
-function ap_array_insert_after( $array = array(), $key = '', $new = array() ) {
-	$keys  = array_keys( $array );
+function ap_array_insert_after( $arr = array(), $key = '', $is_new = array() ) {
+	$keys  = array_keys( $arr );
 	$index = array_search( $key, $keys ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-	$pos   = false === $index ? count( $array ) : $index + 1;
+	$pos   = false === $index ? count( $arr ) : $index + 1;
 
-	return array_merge( array_slice( $array, 0, $pos ), $new, array_slice( $array, $pos ) );
+	return array_merge( array_slice( $arr, 0, $pos ), $is_new, array_slice( $arr, $pos ) );
 }
 
 /**

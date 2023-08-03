@@ -187,16 +187,16 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
  * @param string   $page_title   Page title.
  * @param callable $func         Hook to run when shortcode is found.
  * @param bool     $show_in_menu User can add this pages to their WordPress menu from appearance->menu->AnsPress.
- * @param bool     $private Only show to currently logged in user.
+ * @param bool     $is_private Only show to currently logged in user.
  *
  * @since 2.0.1
  */
-function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true, $private = false ) {
+function ap_register_page( $page_slug, $page_title, $func, $show_in_menu = true, $is_private = false ) {
 	anspress()->pages[ $page_slug ] = array(
 		'title'        => $page_title,
 		'func'         => $func,
 		'show_in_menu' => $show_in_menu,
-		'private'      => $private,
+		'private'      => $is_private,
 	);
 }
 
@@ -372,7 +372,7 @@ function ap_post_actions_buttons() {
  * @return array
  * @since  3.0.0 Moved from `ap_question_sorting()`.
  */
-function ap_get_questions_orderby( $current_url = '' ) {
+function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	$param    = array();
 	$search_q = get_query_var( 'ap_s' );
 
@@ -691,7 +691,7 @@ function ap_get_list_filters() {
  *
  * @param string $current_url Current Url.
  */
-function ap_list_filters( $current_url = '' ) {
+function ap_list_filters( $current_url = '' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 	$filters = ap_get_list_filters();
 
 	echo '<form id="ap-filters" class="ap-filters clearfix" method="GET">';
@@ -872,11 +872,11 @@ function ap_featured_post_args( $post_id = false ) {
  * Output question subscribe button.
  *
  * @param object|integer|false $_post Post object or ID.
- * @param boolean              $echo Echo or return.
+ * @param boolean              $output Echo or return.
  * @return string|null
  * @since 4.0.0
  */
-function ap_subscribe_btn( $_post = false, $echo = true ) {
+function ap_subscribe_btn( $_post = false, $output = true ) {
 	$_post = ap_get_post( $_post );
 
 	$args        = wp_json_encode(
@@ -891,7 +891,7 @@ function ap_subscribe_btn( $_post = false, $echo = true ) {
 
 	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '">' . esc_attr( $label ) . '<span class="apsubscribers-count">' . esc_attr( $subscribers ) . '</span></a>';
 
-	if ( ! $echo ) {
+	if ( ! $output ) {
 		return $html;
 	}
 

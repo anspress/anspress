@@ -425,7 +425,7 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function delete_user( $user_id ) {
 		global $wpdb;
-		$delete = $wpdb->delete( $wpdb->ap_reputations, array( 'repu_user_id' => $user_id ), array( '%d' ) ); // WPCS: db call okay, db cache okay.
+		$delete = $wpdb->delete( $wpdb->ap_reputations, array( 'repu_user_id' => $user_id ), array( '%d' ) ); // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		if ( false !== $delete ) {
 			do_action( 'ap_bulk_delete_reputations_of_user', $user_id );

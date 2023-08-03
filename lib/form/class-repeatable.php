@@ -12,8 +12,8 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form as Form;
-use AnsPress\Form\Field as Field;
+use AnsPress\Form;
+use AnsPress\Form\Field;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -70,7 +70,7 @@ class Repeatable extends Field {
 
 		$i = 0;
 		while ( $this->total_items > $i ) {
-			$i++;
+			++$i;
 
 			$this->args['fields'][ $i ] = array(
 				'label'         => $this->get( 'label' ) . ' #' . number_format_i18n( $i ),
@@ -102,6 +102,8 @@ class Repeatable extends Field {
 			$value = array_filter( wp_unslash( $request_value ) );
 
 			foreach ( $value as $k => $val ) {
+				$val = is_array( $val ) ? $val : array();
+
 				if ( empty( array_filter( $val ) ) ) {
 					unset( $value[ $k ] );
 				}
@@ -178,5 +180,4 @@ class Repeatable extends Field {
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
-
 }

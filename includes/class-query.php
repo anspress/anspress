@@ -157,7 +157,7 @@ abstract class AnsPress_Query {
 	 *
 	 * @param string $key MD5 hashed key.
 	 */
-	public function total_count( $key ) {
+	public function total_count( $key ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		global $wpdb;
 		$this->total_count = $wpdb->get_var( apply_filters( 'ap_found_rows', 'SELECT FOUND_ROWS()', $this ) ); // phpcs:ignore WordPress.DB
 	}
@@ -218,7 +218,7 @@ abstract class AnsPress_Query {
 	 * @return object The next object to iterate over.
 	 */
 	public function next() {
-		$this->current++;
+		++$this->current;
 		$this->object = $this->objects[ $this->current ];
 		return $this->object;
 	}
@@ -302,7 +302,7 @@ abstract class AnsPress_Query {
 	 */
 	public function append_ref_data( $type, $ref_id, $data ) {
 		if ( isset( $this->pos[ $type ] ) &&
-			( 0 == $this->pos[ $type ][ $ref_id ] || ! empty( $this->pos[ $type ][ $ref_id ] ) ) // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			( 0 == $this->pos[ $type ][ $ref_id ] || ! empty( $this->pos[ $type ][ $ref_id ] ) ) // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			) {
 			$pos = $this->pos[ $type ][ $ref_id ];
 			if ( is_array( $pos ) ) {

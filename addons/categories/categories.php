@@ -328,16 +328,16 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Load admin assets in categories page.
 	 *
-	 * @param boolean $return Return.
+	 * @param boolean $ret Return.
 	 * @return boolean
 	 */
-	public function ap_load_admin_assets( $return ) {
+	public function ap_load_admin_assets( $ret ) {
 		$page = get_current_screen();
 		if ( 'question_category' === $page->taxonomy ) {
 			return true;
 		}
 
-		return $return;
+		return $ret;
 	}
 
 	/**
@@ -848,13 +848,14 @@ class Categories extends \AnsPress\Singleton {
 
 		if ( ! empty( $current_filters ) ) {
 			$args = array(
+				'taxonomy'      => 'question_category',
 				'hierarchical'  => true,
 				'hide_if_empty' => true,
 				'number'        => 2,
 				'include'       => $current_filters,
 			);
 
-			$terms = get_terms( 'question_category', $args );
+			$terms = get_terms( $args );
 
 			if ( $terms ) {
 				$active_terms = array();

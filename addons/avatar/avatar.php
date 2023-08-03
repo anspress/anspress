@@ -21,6 +21,8 @@
  * Author URI:    https://anspress.net
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 namespace Anspress\Addons;
 
 // If this file is called directly, abort.

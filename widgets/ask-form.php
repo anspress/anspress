@@ -9,6 +9,8 @@
  * @since   2.0.0
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -108,7 +110,7 @@ class AP_Askform_Widget extends WP_Widget {
  *
  * @return void
  */
-function ap_quickask_register_widgets() : void {
+function ap_quickask_register_widgets(): void {
 	register_widget( 'AP_Askform_Widget' );
 }
 add_action( 'widgets_init', 'ap_quickask_register_widgets' );

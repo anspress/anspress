@@ -53,7 +53,6 @@ class NewQuestion extends \WP_Async_Task {
 			do_action( "wp_async_$this->action", $post->ID, $post );
 		}
 	}
-
 }
 
 /**
@@ -95,7 +94,6 @@ class NewAnswer extends \WP_Async_Task { // phpcs:ignore
 			do_action( "wp_async_$this->action", $post->ID, $post );
 		}
 	}
-
 }
 
 /**
@@ -137,7 +135,6 @@ class SelectAnswer extends \WP_Async_Task { // phpcs:ignore
 			do_action( "wp_async_$this->action", $post );
 		}
 	}
-
 }
 
 /**
@@ -179,7 +176,6 @@ class PublishComment extends \WP_Async_Task { // phpcs:ignore
 			do_action( "wp_async_$this->action", $comment );
 		}
 	}
-
 }
 
 /**
@@ -221,7 +217,6 @@ class UpdateQuestion extends \WP_Async_Task { // phpcs:ignore
 			do_action( "wp_async_$this->action", $post->ID, $post );
 		}
 	}
-
 }
 
 /**
@@ -264,7 +259,6 @@ class UpdateAnswer extends \WP_Async_Task { // phpcs:ignore
 			do_action( "wp_async_$this->action", $post->ID, $post );
 		}
 	}
-
 }
 
 new NewQuestion();

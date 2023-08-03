@@ -167,7 +167,7 @@ class AnsPress_Rewrite {
 	 *
 	 * @param array $matches Matches.
 	 */
-	public static function incr_hash( $matches ) {
+	public static function incr_hash( $matches ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return self::$counter++;
 	}
 

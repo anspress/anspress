@@ -9,6 +9,8 @@
  * @copyright 2014 Rahul Aryan
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -62,7 +64,7 @@ class AnsPress_Vote {
 		if ( false !== $is_voted ) {
 
 			// If user already voted and click that again then reverse.
-			if ( $is_voted->vote_value == $value ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			if ( $is_voted->vote_value == $value ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 				$counts = ap_delete_post_vote( $post_id, $userid, 'vote_up' === $type );
 				ap_ajax_json(
 					array(
@@ -363,7 +365,7 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
-			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			$new_counts[ $type ] = (int) $row->count;
 		}
 		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
@@ -461,7 +463,7 @@ function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = fa
 		$where['vote_value'] = $value;
 	}
 
-	$row = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
+	$row = $wpdb->delete( $wpdb->ap_votes, $where ); // phpcs:ignore WordPress.DB
 
 	if ( false !== $row ) {
 		do_action( 'ap_delete_vote', $post_id, $user_id, $type, $value );
@@ -542,12 +544,12 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
  * Output or return voting button.
  *
  * @todo Add output sanitization.
- * @param   int|object $post Post ID or object.
- * @param   bool       $echo Echo or return vote button.
+ * @param   int|object $post   Post ID or object.
+ * @param   bool       $output Echo or return vote button.
  * @return  null|string
  * @since 0.1
  */
-function ap_vote_btn( $post = null, $echo = true ) {
+function ap_vote_btn( $post = null, $output = true ) {
 	$post = ap_get_post( $post );
 	if ( ! $post || 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
 		return;
@@ -596,7 +598,7 @@ function ap_vote_btn( $post = null, $echo = true ) {
 	 */
 	$html = apply_filters( 'ap_vote_btn_html', $html, $post );
 
-	if ( ! $echo ) {
+	if ( ! $output ) {
 		return $html;
 	}
 
@@ -645,7 +647,7 @@ function ap_delete_votes( $post_id, $type = 'vote' ) {
 		'vote_type'    => $type,
 	);
 
-	$rows = $wpdb->delete( $wpdb->ap_votes, $where ); // db call okay, db cache okay.
+	$rows = $wpdb->delete( $wpdb->ap_votes, $where ); // phpcs:ignore WordPress.DB
 
 	if ( false !== $rows ) {
 		do_action( 'ap_deleted_votes', $post_id, $type );
@@ -654,4 +656,3 @@ function ap_delete_votes( $post_id, $type = 'vote' ) {
 
 	return false;
 }
-

@@ -470,5 +470,4 @@ class AnsPress_Post_Table_Hooks {
 			<p>' . esc_html__( 'Please fill parent question field, Answer was not saved!', 'anspress-question-answer' ) . '</p>
 		</div>';
 	}
-
 }

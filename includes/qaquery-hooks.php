@@ -50,12 +50,12 @@ class AP_QA_Query_Hooks {
 							if ( in_array( $status, $wp_query->query['post_status'], true ) ) {
 								$post_status .= $wpdb->posts . ".post_status = '" . $status . "'";
 
-								if ( count( $query_status ) != $i ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+								if ( count( $query_status ) != $i ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 									$post_status .= ' OR ';
 								} else {
 									$post_status .= ')';
 								}
-								$i++;
+								++$i;
 							}
 						}
 					} else {

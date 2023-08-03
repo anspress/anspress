@@ -150,7 +150,6 @@ class Captcha extends \AnsPress\Singleton {
 
 		return $form;
 	}
-
 }
 
 // Initialize the class.

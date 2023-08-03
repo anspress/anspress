@@ -446,7 +446,7 @@ class Activity_Helper {
 			return new WP_Error( 'no_cols', __( 'No columns found in where clue', 'anspress-question-answer' ) );
 		}
 
-		$deleted = $wpdb->delete( $this->table, $cols, $types ); // DB call okay, DB cache okay.
+		$deleted = $wpdb->delete( $this->table, $cols, $types ); // phpcs:ignore WordPress.DB
 
 		if ( false === $deleted ) {
 			return new WP_Error( 'failed_to_delete', __( 'Failed to delete activity rows.', 'anspress-question-answer' ) );

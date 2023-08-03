@@ -82,8 +82,8 @@ function ap_category_details() {
 	echo '<p class="desc clearfix">' . wp_kses_post( $category->description ) . '</p>';
 
 	$child = get_terms(
-		array( 'taxonomy' => 'question_category' ),
 		array(
+			'taxonomy'     => 'question_category',
 			'parent'       => $category->term_id,
 			'hierarchical' => false,
 			'hide_empty'   => false,
@@ -103,13 +103,13 @@ function ap_category_details() {
 /**
  * Display sub categories list.
  *
- * @param int $parent Parent id.
+ * @param int $parent_id Parent id.
  */
-function ap_sub_category_list( $parent ) {
+function ap_sub_category_list( $parent_id ) {
 	$categories = get_terms(
-		array( 'taxonomy' => 'question_category' ),
 		array(
-			'parent'     => $parent,
+			'taxonomy'   => 'question_category',
+			'parent'     => $parent_id,
 			'hide_empty' => false,
 		)
 	);
@@ -182,6 +182,7 @@ function is_question_category() {
  */
 function ap_get_category_filter( $search = false ) {
 	$args = array(
+		'taxonomy'      => 'question_category',
 		'hierarchical'  => true,
 		'hide_if_empty' => true,
 		'number'        => 10,
@@ -191,7 +192,7 @@ function ap_get_category_filter( $search = false ) {
 		$args['search'] = $search;
 	}
 
-	$terms    = get_terms( 'question_category', $args );
+	$terms    = get_terms( $args );
 	$selected = ap_get_current_list_filters( 'category' );
 
 	if ( ! $terms ) {
@@ -372,7 +373,7 @@ function ap_question_tags_html( $args = array() ) {
 			$i  = 1;
 			foreach ( $tags as $t ) {
 				$o .= '<a href="' . esc_url( get_term_link( $t ) ) . '" title="' . $t->description . '">' . $t->name . '</a> ';
-				$i++;
+				++$i;
 			}
 			$o .= '</' . $args['tag'] . '>';
 		}
@@ -458,6 +459,7 @@ function is_question_tags() {
  */
 function ap_get_tag_filter( $search = false ) {
 	$args = array(
+		'taxonomy'      => 'question_tag',
 		'hierarchical'  => true,
 		'hide_if_empty' => true,
 		'number'        => 10,
@@ -467,7 +469,7 @@ function ap_get_tag_filter( $search = false ) {
 		$args['search'] = $search;
 	}
 
-	$terms    = get_terms( 'question_tag', $args );
+	$terms    = get_terms( $args );
 	$selected = ap_get_current_list_filters( 'qtag' );
 
 	if ( ! $terms ) {
