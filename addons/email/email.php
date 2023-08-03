@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-use \Anspress\Addons\Email\Helper as EmailHelper;
+use Anspress\Addons\Email\Helper as EmailHelper;
 
 // Include captcha field.
 require_once ANSPRESS_ADDONS_DIR . '/email/class-helper.php';

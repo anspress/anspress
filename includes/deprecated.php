@@ -25,7 +25,7 @@ if ( ! function_exists( '_deprecated_function' ) ) {
  *
  * @deprecated 4.1.13
  */
-function ap_get_hover_card_attr( $_post = null ) {
+function ap_get_hover_card_attr( $_post = null ) { // phpcs:ignore
 	_deprecated_function( __FUNCTION__, '4.1.13' );
 }
 
@@ -35,6 +35,6 @@ function ap_get_hover_card_attr( $_post = null ) {
  * @param  mixed $_post Post ID, Object or null.
  * @deprecated 4.1.13
  */
-function ap_hover_card_attr( $_post = null ) {
+function ap_hover_card_attr( $_post = null ) { // phpcs:ignore
 	_deprecated_function( __FUNCTION__, '4.1.13' );
 }

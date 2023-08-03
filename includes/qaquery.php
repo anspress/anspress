@@ -5,6 +5,8 @@
  * @package AnsPress
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 /**
  * Exit if the file is accessed directly over web.
  */
@@ -126,7 +128,7 @@ class Question_Query extends WP_Query {
 	 * Undo the pointer to next.
 	 */
 	public function reset_next() {
-		$this->current_post--;
+		--$this->current_post;
 		$this->post = $this->posts[ $this->current_post ];
 		return $this->post;
 	}
@@ -347,9 +349,8 @@ function ap_get_author_avatar( $size = 45, $_post = null ) {
 		return;
 	}
 
-	$author = 0 == $_post->post_author ? 'anonymous_' . $_post->ID : $_post->post_author; // @codingStandardsIgnoreLine
+	$author = 0 == $_post->post_author ? 'anonymous_' . $_post->ID : $_post->post_author; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 
-	// @codingStandardsIgnoreLine
 	if ( false !== strpos( $author, 'anonymous' ) && is_array( $_post->fields ) && ! empty( $_post->fields['anonymous_name'] ) ) {
 		$author = $_post->fields['anonymous_name'];
 	}

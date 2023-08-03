@@ -219,27 +219,27 @@ class Field {
 	/**
 	 * Get a value from a path or default value if the path doesn't exist
 	 *
-	 * @param  string $key     Path.
-	 * @param  mixed  $default Default value.
-	 * @param  array  $array   Array to search.
+	 * @param  string $key         Path.
+	 * @param  mixed  $default_val Default value.
+	 * @param  array  $arr         Array to search.
 	 * @return mixed
 	 */
-	public function get( $key, $default = null, $array = null ) {
+	public function get( $key, $default_val = null, $arr = null ) {
 		$keys = explode( '.', (string) $key );
 
-		if ( null === $array ) {
-			$array = &$this->args;
+		if ( null === $arr ) {
+			$arr = &$this->args;
 		}
 
 		foreach ( $keys as $key ) {
-			if ( ! is_array( $array ) || ! array_key_exists( $key, $array ) ) {
-				return $default;
+			if ( ! is_array( $arr ) || ! array_key_exists( $key, $arr ) ) {
+				return $default_val;
 			}
 
-			$array = &$array[ $key ];
+			$arr = &$arr[ $key ];
 		}
 
-		return $array;
+		return $arr;
 	}
 
 	/**
@@ -644,5 +644,4 @@ class Field {
 			return call_user_func( $this->args['save'], $this->value(), $this );
 		}
 	}
-
 }

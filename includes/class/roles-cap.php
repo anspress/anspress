@@ -48,9 +48,13 @@ class AP_Roles {
 	 */
 	public function add_roles() {
 		// @codingStandardsIgnoreStart
-		add_role( 'ap_moderator', __( 'AnsPress Moderator', 'anspress-question-answer' ), array(
-			'read' => true,
-		) );
+		add_role(
+			'ap_moderator',
+			__( 'AnsPress Moderator', 'anspress-question-answer' ),
+			array(
+				'read' => true,
+			)
+		);
 
 		add_role( 'ap_participant', __( 'AnsPress Participants', 'anspress-question-answer' ), array( 'read' => true ) );
 		add_role( 'ap_banned', __( 'AnsPress Banned', 'anspress-question-answer' ), array( 'read' => true ) );
@@ -115,6 +119,8 @@ class AP_Roles {
  * @return boolean
  * @since  2.4.6 Added new argument `$user_id`.
  * @since  4.1.0 Updated to use new option post_question_per.
+ *
+ * phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
  */
 function ap_user_can_ask( $user_id = false ) {
 	if ( false === $user_id ) {
@@ -210,7 +216,7 @@ function ap_user_can_answer( $question_id, $user_id = false ) {
 	}
 
 	// Check if user is original poster and dont allow them to answer their own question.
-	if ( is_user_logged_in() && ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( is_user_logged_in() && ! ap_opt( 'disallow_op_to_answer' ) && ! empty( $question->post_author ) && $question->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return false;
 	}
 
@@ -334,7 +340,7 @@ function ap_user_can_edit_post( $post = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $_post->post_author && user_can( $user_id, 'ap_edit_' . $_post->post_type ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $user_id == $_post->post_author && user_can( $user_id, 'ap_edit_' . $_post->post_type ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -386,7 +392,7 @@ function ap_user_can_edit_answer( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $user_id == $answer->post_author && user_can( $user_id, 'ap_edit_answer' ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -450,7 +456,7 @@ function ap_user_can_edit_question( $post_id = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $user_id == $question->post_author && user_can( $user_id, 'ap_edit_question' ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -571,7 +577,7 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 	}
 
 	// Do not allow to edit if not approved.
-	if ( '0' == $comment->comment_approved ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( '0' == $comment->comment_approved ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return false;
 	}
 
@@ -580,7 +586,7 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( user_can( $user_id, 'ap_edit_comment' ) && $user_id == $comment->user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -603,7 +609,7 @@ function ap_user_can_delete_comment( $comment_id, $user_id = false ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_delete_comment' ) && get_comment( $comment_id )->user_id == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( user_can( $user_id, 'ap_delete_comment' ) && get_comment( $comment_id )->user_id == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -658,7 +664,7 @@ function ap_user_can_delete_post( $post_id, $user_id = false ) {
 		return false;
 	}
 
-	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_' . $type ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $user_id == $post_o->post_author && user_can( $user_id, 'ap_delete_' . $type ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	} elseif ( user_can( $user_id, 'ap_delete_others_' . $type ) ) {
 		return true;
@@ -765,11 +771,11 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 
 	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
-	if ( ! $post_o || 0 == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( ! $post_o || 0 == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return false;
 	}
 
-	if ( $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -777,7 +783,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 	if ( 'answer' === $post_o->post_type ) {
 		$question = ap_get_post( $post_o->post_parent );
 
-		if ( $question->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( $question->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			return true;
 		}
 	}
@@ -810,7 +816,7 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -847,7 +853,7 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
-	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -954,7 +960,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 
 	// Do not allow post author to change status if current status is moderate,
 	// regardless of moderator user role.
-	if ( 'moderate' === $post_o->post_status && $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( 'moderate' === $post_o->post_status && $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return false;
 	}
 
@@ -962,7 +968,7 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
 		return true;
 	}
 
-	if ( user_can( $user_id, 'ap_change_status' ) && ( $post_o->post_author > 0 && $post_o->post_author == $user_id ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( user_can( $user_id, 'ap_change_status' ) && ( $post_o->post_author > 0 && $post_o->post_author == $user_id ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -1046,7 +1052,7 @@ function ap_user_can_delete_attachment( $attacment_id, $user_id = false ) {
 	}
 
 	// Check if attachment post author matches `$user_id`.
-	if ( $user_id == $attachment->post_author ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $user_id == $attachment->post_author ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
 
@@ -1304,7 +1310,7 @@ function ap_user_can_vote_on_post( $post_id, $type, $user_id = false, $wp_error 
 	}
 
 	// Do not allow post author to vote on self posts.
-	if ( $post_o->post_author == $user_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		if ( $wp_error ) {
 			return new WP_Error( 'cannot_vote_own_post', __( 'Voting on own post is not allowed', 'anspress-question-answer' ) );
 		}
@@ -1438,7 +1444,7 @@ function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
 		return false;
 	}
 
-	if ( '1' != $_comment->comment_approved && ! ap_user_can_approve_comment( $user_id ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( '1' != $_comment->comment_approved && ! ap_user_can_approve_comment( $user_id ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 		return false;
 	}
 

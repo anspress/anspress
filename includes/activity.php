@@ -179,11 +179,11 @@ function ap_get_recent_activity( $_post = false, $deprecated = null ) {
  * Output recent activities of a post.
  *
  * @param Wp_Post|integer|null $_post WordPress post object or null for global post.
- * @param boolean              $echo  Echo or return. Default is `echo`.
+ * @param boolean              $output  Echo or return. Default is `echo`.
  * @param boolean              $query_db  Get rows from database. Default is `false`.
  * @return void|string
  */
-function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
+function ap_recent_activity( $_post = null, $output = true, $query_db = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	$html     = '';
 	$_post    = ap_get_post( $_post );
 	$activity = ap_get_recent_activity( $_post );
@@ -220,7 +220,7 @@ function ap_recent_activity( $_post = null, $echo = true, $query_db = null ) {
 	 */
 	$html = apply_filters( 'ap_recent_activity', $html );
 
-	if ( false === $echo ) {
+	if ( false === $output ) {
 		return $html;
 	}
 

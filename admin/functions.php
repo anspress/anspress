@@ -70,4 +70,3 @@ function ap_load_admin_assets() {
 	 */
 	return apply_filters( 'ap_load_admin_assets', $load );
 }
-

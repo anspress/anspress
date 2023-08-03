@@ -360,7 +360,7 @@ class Validate {
 	 * @return void
 	 */
 	public static function validate_not_zero( $field ) {
-		if ( '0' == $field->value() ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( '0' == $field->value() ) { // phpcs:disable Universal.Operators.StrictComparisons.LooseEqual
 			$field->add_error(
 				'is-zero',
 				sprintf(
@@ -635,10 +635,8 @@ class Validate {
 					$have_error = $errors[ $file['error'] ];
 				}
 			}
-		} else {
-			if ( 0 !== $value['error'] ) {
+		} elseif ( 0 !== $value['error'] ) {
 				$have_error = $errors[ $value['error'] ];
-			}
 		}
 
 		return $have_error;

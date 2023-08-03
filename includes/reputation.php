@@ -10,6 +10,8 @@
  * @since 4.0.0
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -333,12 +335,12 @@ function ap_get_users_reputation( $user_ids ) {
  * @param string $description Reputation event description.
  * @param int    $points      Signed point value.
  * @param int    $activity    Activity label.
- * @param string $parent      Parent type.
+ * @param string $parent_type      Parent type.
  *
  * @return int|WP_Error Return insert event id on success and WP_Error on failure.
  * @since 4.3.0
  */
-function ap_insert_reputation_event( $slug, $label, $description, $points, $activity, $parent = '' ) {
+function ap_insert_reputation_event( $slug, $label, $description, $points, $activity, $parent_type = '' ) {
 	global $wpdb;
 
 	$slug     = sanitize_key( $slug );
@@ -356,7 +358,7 @@ function ap_insert_reputation_event( $slug, $label, $description, $points, $acti
 			'description' => $description,
 			'points'      => $points,
 			'activity'    => $activity,
-			'parent'      => $parent,
+			'parent'      => $parent_type,
 		),
 		array(
 			'%s',
@@ -782,7 +784,7 @@ class AnsPress_Reputation_Query {
 	 * @return object The next reputation to iterate over.
 	 */
 	public function next_reputation() {
-		$this->current++;
+		++$this->current;
 		$this->reputation = $this->reputations[ $this->current ];
 		return $this->reputation;
 	}
@@ -908,7 +910,4 @@ class AnsPress_Reputation_Query {
 			echo '</a>';
 		}
 	}
-
 }
-
-

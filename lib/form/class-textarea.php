@@ -12,7 +12,7 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form\Field as Field;
+use AnsPress\Form\Field;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

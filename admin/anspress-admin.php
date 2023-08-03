@@ -471,13 +471,10 @@ class AnsPress_Admin {
 	/**
 	 * Shows AnsPress menu meta box in WP menu editor.
 	 *
-	 * @param object $object Menu object.
-	 * @param array  $args   Menu arguments.
-	 *
 	 * @return void
 	 * @since unknown
 	 */
-	public static function render_menu( $object, $args ) {
+	public static function render_menu() {
 		global $nav_menu_selected_id;
 
 		$menu_items   = ap_menu_obejct();
@@ -609,7 +606,7 @@ class AnsPress_Admin {
 	public static function get_pages( $pages, $r ) {
 		if ( isset( $r['name'] ) && 'page_on_front' === $r['name'] ) {
 			foreach ( (array) $pages as $k => $page ) {
-				if ( ap_opt( 'base_page' ) == $page->ID ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+				if ( ap_opt( 'base_page' ) == $page->ID ) { // phpcs:disable Universal.Operators.StrictComparisons.LooseEqual
 					unset( $pages[ $k ] );
 				}
 			}
@@ -650,7 +647,7 @@ class AnsPress_Admin {
 					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
 			}
 
-			// @codingStandardsIgnoreStart
+			// phpcs:disable
 			echo '<script>
 				jQuery(document).ready(function(){
 					jQuery("select#post_status").append("<option value=\'moderate\' ' . $complete . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>");
@@ -658,7 +655,7 @@ class AnsPress_Admin {
 					jQuery(".misc-pub-section label").append("' . $label . '");
 				});
 			</script>';
-			// @codingStandardsIgnoreEnd
+			// phpcs:enable
 		}
 	}
 
@@ -675,7 +672,7 @@ class AnsPress_Admin {
 				'type'    => 'error',
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:disable Universal.Operators.StrictComparisons.LooseNotEqual
 			),
 			'missing_pages' => array(
 				'type'    => 'error',
@@ -684,7 +681,7 @@ class AnsPress_Admin {
 				'show'    => ( ! self::check_pages_exists() ),
 			),
 		);
-		
+
 		/**
 		 * Filter the AnsPress admin notices before they're output.
 		 *
@@ -1533,5 +1530,4 @@ class AnsPress_Admin {
 			</style>
 		<?php
 	}
-
 }

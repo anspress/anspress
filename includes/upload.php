@@ -10,6 +10,8 @@
  * @since     4.0.0
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -83,7 +85,7 @@ class AnsPress_Uploader {
 	public static function cron_delete_temp_attachments() {
 		global $wpdb;
 
-		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // db call okay, db cache okay.
+		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // phpcs:ignore WordPress.DB
 
 		$authors = array();
 
@@ -105,10 +107,23 @@ class AnsPress_Uploader {
 		$files    = glob( $uploads['basedir'] . '/anspress-temp/*' );
 		$interval = strtotime( '-2 hours' );
 
+		// Make sure WP_Filesystem is loaded.
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem.
+		if ( ! \WP_Filesystem() ) {
+			// Unable to initialize WP_Filesystem, handle error accordingly.
+			return;
+		}
+
+		global $wp_filesystem;
+
 		if ( $files ) {
 			foreach ( $files as $file ) {
 				if ( filemtime( $file ) <= $interval ) {
-					unlink( $file );
+					$wp_filesystem->delete( $file );
 				}
 			}
 		}
@@ -348,7 +363,7 @@ function ap_clear_unattached_media( $user_id = false ) {
 	}
 
 	global $wpdb;
-	$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_author = %d", $user_id ) ); // db call okay, db cache okay.
+	$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_author = %d", $user_id ) ); // phpcs:ignore WordPress.DB
 
 	foreach ( (array) $post_ids as $id ) {
 		wp_delete_attachment( $id, true );
@@ -374,7 +389,7 @@ function ap_set_media_post_parent( $media_id, $post_parent, $user_id = false ) {
 	foreach ( (array) $media_id as $id ) {
 		$attach = get_post( $id );
 
-		if ( $attach && 'attachment' === $attach->post_type && $user_id == $attach->post_author ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( $attach && 'attachment' === $attach->post_type && $user_id == $attach->post_author ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			$postarr = array(
 				'ID'          => $attach->ID,
 				'post_parent' => $post_parent,
@@ -483,6 +498,19 @@ function ap_delete_images_not_in_content( $post_id ) {
 
 	$images = get_post_meta( $post_id, 'anspress-image' );
 
+	// Make sure WP_Filesystem is loaded.
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
+	// Initialize WP_Filesystem.
+	if ( ! \WP_Filesystem() ) {
+		// Unable to initialize WP_Filesystem, handle error accordingly.
+		return;
+	}
+
+	global $wp_filesystem;
+
 	if ( ! empty( $images ) ) {
 		// Delete image if not in $matches.
 		foreach ( $images as $img ) {
@@ -491,7 +519,7 @@ function ap_delete_images_not_in_content( $post_id ) {
 
 				$uploads = wp_upload_dir();
 				$file    = $uploads['basedir'] . "/anspress-uploads/$img";
-				unlink( $file );
+				$wp_filesystem->delete( $file );
 			}
 		}
 	}
