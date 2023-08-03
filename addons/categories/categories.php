@@ -129,8 +129,8 @@ class Categories extends \AnsPress\Singleton {
 		$paged            = max( 1, get_query_var( 'paged' ) );
 		$per_page         = ap_opt( 'categories_per_page' );
 		$total_terms      = wp_count_terms(
-			'question_category',
 			array(
+				'taxonomy'   => 'question_category',
 				'hide_empty' => false,
 				'parent'     => 0,
 			)
@@ -155,9 +155,10 @@ class Categories extends \AnsPress\Singleton {
 		 * @param array $cat_args `get_terms` arguments.
 		 * @since 1.0
 		 */
-		$cat_args = apply_filters( 'ap_categories_shortcode_args', $cat_args );
+		$cat_args             = apply_filters( 'ap_categories_shortcode_args', $cat_args );
+		$cat_args['taxonomy'] = 'question_category';
 
-		$question_categories = get_terms( 'question_category', $cat_args );
+		$question_categories = get_terms( $cat_args );
 		include ap_get_theme_location( 'addons/category/categories.php' );
 	}
 
