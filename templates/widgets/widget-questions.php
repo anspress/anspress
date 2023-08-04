@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			ap_the_question();
 			?>
 			<div class="ap-question-item">
-				<a class="ap-question-title" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+				<a class="ap-question-title" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a>
 				<span class="ap-ans-count">
 					<?php
 						// translators: %d is total answer count of a question.

@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">
 	<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">
 		<meta itemprop="@id" content="<?php the_ID(); ?>" /> <!-- This is for structured data, do not delete. -->
-		<meta itemprop="name" content="<?php the_title(); ?>" /> <!-- This is for structured data, do not delete. -->
+		<meta itemprop="name" content="<?php echo esc_html( get_the_title() ); ?>" /> <!-- This is for structured data, do not delete. -->
 		<div class="ap-q-left <?php echo ( is_active_sidebar( 'ap-qsidebar' ) ) ? 'ap-col-8' : 'ap-col-12'; ?>">
 			<?php
 				/**
