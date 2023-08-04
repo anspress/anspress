@@ -45,7 +45,7 @@ $clearfix_class = array( 'ap-questions-item clearfix' );
 		<div class="ap-questions-summery">
 			<span class="ap-questions-title" itemprop="name">
 				<?php ap_question_status(); ?>
-				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php echo esc_html(get_the_title()); ?>"><?php echo esc_html( get_the_title() ); ?></a>
+				<a class="ap-questions-hyperlink" itemprop="url" href="<?php the_permalink(); ?>" rel="bookmark" title="<?php echo esc_html( get_the_title() ); ?>"><?php echo esc_html( get_the_title() ); ?></a>
 			</span>
 			<div class="ap-display-question-meta">
 				<?php ap_question_metas(); ?>
