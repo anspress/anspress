@@ -11,6 +11,8 @@
  * @since      4.1.8
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 namespace AnsPress\Addons;
 
 // If this file is called directly, abort.
@@ -594,7 +596,6 @@ class Notifications extends \AnsPress\Singleton {
 			)
 		);
 	}
-
 }
 
 /**

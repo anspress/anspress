@@ -428,5 +428,4 @@ class Notifications extends \AnsPress_Query {
 	public function the_icon() {
 		echo esc_attr( $this->get_icon() );
 	}
-
 }

@@ -8,9 +8,12 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite>
+		<testsuite name="AnsPress-Core">
 			<directory prefix="test-" suffix=".php">./tests/</directory>
-			<exclude>./tests/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>
+
+	<php>
+		<server name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="./vendor/yoast/phpunit-polyfills"/>
+	</php>
 </phpunit>

@@ -129,7 +129,7 @@ class AnsPress_Dashboard {
 						ap_the_question();
 						?>
 						<li>
-							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html(get_the_title()); ?></a> -
+							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a> -
 							<span class="posted"><?php the_date(); ?></span>
 						</li>
 					<?php endwhile; ?>
@@ -147,7 +147,7 @@ class AnsPress_Dashboard {
 	public static function anspress_latesta() {
 		global $answers, $wpdb;
 
-		$results = $wpdb->get_results( "SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'answer' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" ); // db call okay, cache ok.
+		$results = $wpdb->get_results( "SELECT date_format(post_date, '%d %a') as post_day, post_date, count(ID) as post_count from {$wpdb->posts} WHERE post_status IN('publish', 'private_post', 'moderate') AND post_type = 'answer' AND post_date > (NOW() - INTERVAL 1 MONTH) GROUP BY post_day ORDER BY post_date ASC" ); // phpcs:ignore WordPress.DB
 
 		$days   = array();
 		$counts = array();
@@ -309,7 +309,6 @@ class AnsPress_Dashboard {
 		</div>
 		<?php
 	}
-
 }
 
 AnsPress_Dashboard::init();

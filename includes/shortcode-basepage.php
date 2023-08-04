@@ -116,7 +116,7 @@ class AnsPress_BasePage_Shortcode {
 	 * @since 3.0.0
 	 * @since 4.1.8 Added `post_parent` attribute.
 	 */
-	public function attributes( $atts, $content ) {
+	public function attributes( $atts, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		global $wp;
 
 		if ( isset( $atts['categories'] ) ) {

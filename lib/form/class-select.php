@@ -12,8 +12,6 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form\Field as Field;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 4.1.0
  */
-class Select extends Field {
+class Select extends \AnsPress\Form\Field {
 	/**
 	 * The field type.
 	 *

@@ -247,7 +247,7 @@ function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id 
 	 */
 	do_action( 'ap_before_delete_subscribers', $where );
 
-	$rows = $wpdb->delete( $wpdb->ap_subscribers, $where ); // WPCS: db call okay, cache okay.
+	$rows = $wpdb->delete( $wpdb->ap_subscribers, $where ); // phpcs:ignore WordPress.DB
 
 	if ( false !== $rows ) {
 		$ref_id = isset( $where['subs_ref_id'] ) ? $where['subs_ref_id'] : 0;

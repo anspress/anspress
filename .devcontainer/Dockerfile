@@ -1,4 +1,4 @@
-FROM php:8.1-apache-bullseye
+FROM php:7.4-apache-bullseye
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 # Enable .htaccess files & mod_rewrite
@@ -26,6 +26,7 @@ RUN set -ex; \
 	libmagickwand-dev \
 	libpng-dev \
 	libzip-dev \
+    subversion \
 	; \
 	docker-php-ext-configure gd --with-freetype --with-jpeg; \
 	docker-php-ext-install -j "$(nproc)" \
@@ -35,6 +36,7 @@ RUN set -ex; \
 	mysqli \
 	opcache \
 	zip \
+	pdo_mysql \
 	; \
 	pecl install imagick; \
 	pecl install xdebug-3.1.4; \
@@ -42,7 +44,7 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*
 
 #XDebug settings
-RUN echo "[XDebug]\nxdebug.mode = debug\nxdebug.start_with_request = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
+# RUN echo "[XDebug]\nxdebug.mode = debug\nxdebug.start_with_request = 1" > $PHP_INI_DIR/conf.d/xdebug.ini
 
 #WP recommended PHP settings
 RUN { \

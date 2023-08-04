@@ -8,6 +8,8 @@
  * @package  AnsPress
  **/
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -55,7 +57,6 @@ class AnsPress_Flag {
 			)
 		);
 	}
-
 }
 
 /**

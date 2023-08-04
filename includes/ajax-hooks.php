@@ -455,7 +455,7 @@ class AnsPress_Ajax {
 				array(
 					'success'  => true,
 					// translators: %s is post title.
-					'snackbar' => array( 'message' => sprintf( __( ' Question &ldquo;%s&rdquo; is converted to post and its answers are trashed', 'anspress-question-answer' ), esc_html(get_the_title( $post_id ) ) ) ),
+					'snackbar' => array( 'message' => sprintf( __( ' Question &ldquo;%s&rdquo; is converted to post and its answers are trashed', 'anspress-question-answer' ), esc_html( get_the_title( $post_id ) ) ) ),
 					'redirect' => get_the_permalink( $post_id ),
 				)
 			);

@@ -44,7 +44,7 @@ class AnsPress_Question_Shortcode {
 	 * @return string
 	 * @since 2.0.0
 	 */
-	public function anspress_question_sc( $atts, $content = '' ) {
+	public function anspress_question_sc( $atts, $content = '' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		ob_start();
 		echo '<div id="anspress" class="ap-eq">';
 
@@ -77,6 +77,4 @@ class AnsPress_Question_Shortcode {
 
 		return ob_get_clean();
 	}
-
 }
-

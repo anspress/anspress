@@ -61,7 +61,7 @@ function ap_insert_notification( $args = array() ) {
 
 	// If already exists then just update date and mark as unread.
 	if ( ! empty( $exists ) ) {
-		return $wpdb->update(
+		return $wpdb->update( // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prefix . 'ap_notifications',
 			array(
 				'noti_ref_id' => $args['ref_id'],
@@ -73,10 +73,10 @@ function ap_insert_notification( $args = array() ) {
 			array(
 				'noti_id' => $exists[0]->noti_id,
 			)
-		); // WPCS: db call okay, db cache okay.
+		);
 	}
 
-	$insert = $wpdb->insert(
+	$insert = $wpdb->insert( // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->prefix . 'ap_notifications',
 		array(
 			'noti_user_id'  => $args['user_id'],
@@ -89,7 +89,7 @@ function ap_insert_notification( $args = array() ) {
 			'noti_seen'     => $args['seen'],
 		),
 		array( '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%d' )
-	); // WPCS: db call okay.
+	);
 
 	if ( false === $insert ) {
 		return false;
@@ -245,7 +245,7 @@ function ap_set_notification_as_seen( $noti_id ) {
  */
 function ap_set_notifications_as_seen( $user_id ) {
 	global $wpdb;
-	return $wpdb->update(
+	return $wpdb->update( // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->prefix . 'ap_notifications',
 		array(
 			'noti_seen' => 1,
@@ -255,7 +255,7 @@ function ap_set_notifications_as_seen( $user_id ) {
 		),
 		array( '%d' ),
 		array( '%d' )
-	); // WPCS: db call okay, db cache okay.
+	);
 }
 
 /**

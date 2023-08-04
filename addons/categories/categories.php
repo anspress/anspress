@@ -129,8 +129,8 @@ class Categories extends \AnsPress\Singleton {
 		$paged            = max( 1, get_query_var( 'paged' ) );
 		$per_page         = ap_opt( 'categories_per_page' );
 		$total_terms      = wp_count_terms(
-			'question_category',
 			array(
+				'taxonomy'   => 'question_category',
 				'hide_empty' => false,
 				'parent'     => 0,
 			)
@@ -155,9 +155,10 @@ class Categories extends \AnsPress\Singleton {
 		 * @param array $cat_args `get_terms` arguments.
 		 * @since 1.0
 		 */
-		$cat_args = apply_filters( 'ap_categories_shortcode_args', $cat_args );
+		$cat_args             = apply_filters( 'ap_categories_shortcode_args', $cat_args );
+		$cat_args['taxonomy'] = 'question_category';
 
-		$question_categories = get_terms( 'question_category', $cat_args );
+		$question_categories = get_terms( $cat_args );
 		include ap_get_theme_location( 'addons/category/categories.php' );
 	}
 
@@ -327,16 +328,16 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Load admin assets in categories page.
 	 *
-	 * @param boolean $return Return.
+	 * @param boolean $ret Return.
 	 * @return boolean
 	 */
-	public function ap_load_admin_assets( $return ) {
+	public function ap_load_admin_assets( $ret ) {
 		$page = get_current_screen();
 		if ( 'question_category' === $page->taxonomy ) {
 			return true;
 		}
 
-		return $return;
+		return $ret;
 	}
 
 	/**
@@ -847,13 +848,14 @@ class Categories extends \AnsPress\Singleton {
 
 		if ( ! empty( $current_filters ) ) {
 			$args = array(
+				'taxonomy'      => 'question_category',
 				'hierarchical'  => true,
 				'hide_if_empty' => true,
 				'number'        => 2,
 				'include'       => $current_filters,
 			);
 
-			$terms = get_terms( 'question_category', $args );
+			$terms = get_terms( $args );
 
 			if ( $terms ) {
 				$active_terms = array();

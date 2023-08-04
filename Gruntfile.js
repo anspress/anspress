@@ -1,4 +1,4 @@
-const sass = require('node-sass');
+const sass = require('sass');
 module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 			}
 		},
 		csscomb: {
-			files: ['**/*.css', '!**/node_modules/**'],
+			files: ['**/*.css', '!**/node_modules/**', '!**/vendor/**'],
 			tasks: ['csscomb'],
 		},
 		version: {
@@ -95,6 +95,8 @@ module.exports = function (grunt) {
 						'!.',
 						'!build/**',
 						'!node_modules/**',
+						'!vendor/**',
+						'!tests/**',
 					],
 					dot: false,
 				},],

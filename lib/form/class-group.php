@@ -12,8 +12,8 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form as Form;
-use AnsPress\Form\Field as Field;
+use AnsPress\Form;
+use AnsPress\Form\Field;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -113,5 +113,4 @@ class Group extends Field {
 		/** This action is documented in lib/form/class-input.php */
 		do_action_ref_array( 'ap_after_field_markup', array( &$this ) );
 	}
-
 }

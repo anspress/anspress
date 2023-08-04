@@ -309,12 +309,12 @@ class AnsPress_Theme {
 	 * Remove hentry class from question, answers and main pages .
 	 *
 	 * @param array   $post_classes Post classes.
-	 * @param array   $class        An array of additional classes added to the post.
+	 * @param array   $class_name        An array of additional classes added to the post.
 	 * @param integer $post_id      Post ID.
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function remove_hentry_class( $post_classes, $class, $post_id ) {
+	public static function remove_hentry_class( $post_classes, $class_name, $post_id ) {
 		$_post = ap_get_post( $post_id );
 
 		if ( $_post && ( in_array( $_post->post_type, array( 'answer', 'question' ), true ) || in_array( $_post->ID, ap_main_pages_id() ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict

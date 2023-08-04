@@ -2,27 +2,23 @@
 <ruleset name="WordPress Coding Standards based custom ruleset for your plugin">
 	<description>Generally-applicable sniffs for WordPress plugins.</description>
 
-	<!-- What to scan -->
-	<file>.</file>
-	<exclude-pattern>/tests/</exclude-pattern>
-	<exclude-pattern>/vendor/</exclude-pattern>
-	<exclude-pattern>/node_modules/</exclude-pattern>
-	<exclude-pattern>**/index.php</exclude-pattern>
-
 	<!-- How to scan -->
 	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
 	<!-- Annotated ruleset: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
-	<arg value="sp"/> <!-- Show sniff and progress -->
-	<!-- <arg name="basepath" value="./"/>Strip the file paths down to the relevant bit -->
+	<arg value="sp"/><!-- Show sniff and progress -->
+	<arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
 	<arg name="colors"/>
-	<arg name="extensions" value="php"/>
 	<arg name="parallel" value="8"/><!-- Enables parallel processing when available for faster results. -->
+	<arg name="extensions" value="php"/>
 
-	<!-- Rules: Check PHP version compatibility -->
-	<!-- https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
-	<config name="testVersion" value="7.2-"/>
-	<!-- https://github.com/PHPCompatibility/PHPCompatibilityWP -->
-	<rule ref="PHPCompatibilityWP"/>
+	<!-- What to scan -->
+	<file>.</file>
+	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>**/index.php</exclude-pattern>
+	<exclude-pattern>/.devconainer/*</exclude-pattern>
+	<exclude-pattern>/.github/*</exclude-pattern>
 
 	<!-- Rules: WordPress Coding Standards -->
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
@@ -45,6 +41,45 @@
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
 		<properties>
 			<property name="blank_line_check" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Rules: Check PHP version compatibility -->
+	<!-- https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
+	<config name="testVersion" value="7.4-"/>
+	<!-- https://github.com/PHPCompatibility/PHPCompatibilityWP -->
+	<rule ref="PHPCompatibilityWP"/>
+
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="ap_no_moderation" />
+				<element value="ap_moderator" />
+				<element value="ap_new_question" />
+				<element value="ap_new_answer" />
+				<element value="ap_toggle_best_answer" />
+				<element value="ap_edit_others_answer" />
+				<element value="ap_edit_answer" />
+				<element value="ap_edit_others_question" />
+				<element value="ap_edit_question" />
+				<element value="ap_change_label" />
+				<element value="ap_new_comment" />
+				<element value="ap_mod_comment" />
+				<element value="ap_edit_comment" />
+				<element value="ap_delete_others_comment" />
+				<element value="ap_approve_comment" />
+				<element value="ap_delete_comment" />
+				<element value="ap_delete_post_permanent" />
+				<element value="ap_view_private" />
+				<element value="ap_view_moderate" />
+				<element value="ap_change_status" />
+				<element value="ap_close_question" />
+				<element value="ap_toggle_featured" />
+				<element value="ap_read_comment" />
+				<element value="ap_restore_posts" />
+				<element value="ap_view_future" />
+				<element value="ap_change_status_other" />
+			</property>
 		</properties>
 	</rule>
 </ruleset>

@@ -12,9 +12,6 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form as Form;
-use AnsPress\Form\Field as Field;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 4.1.0
  */
-class Editor extends Field {
+class Editor extends \AnsPress\Form\Field {
 	/**
 	 * The field type.
 	 *
@@ -206,6 +203,19 @@ class Editor extends Field {
 		$basename  = basename( $matches[1] );
 		$temp_file = $uploads['basedir'] . '/anspress-temp/' . $basename;
 
+		// Make sure WP_Filesystem is loaded.
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem.
+		if ( ! WP_Filesystem() ) {
+			// Unable to initialize WP_Filesystem, handle error accordingly.
+			return;
+		}
+
+		global $wp_filesystem;
+
 		// Check temp file is in anspress-temp directory.
 		if ( ! file_exists( $temp_file ) ) {
 			$this->add_error( 'fields-error', __( 'Sorry an error occured while processing your image, please remove it and insert again', 'anspress-question-answer' ) );
@@ -214,7 +224,7 @@ class Editor extends Field {
 
 			// Make dir if not exists.
 			if ( ! file_exists( $upload_dir ) ) {
-				mkdir( $upload_dir );
+				$wp_filesystem->mkdir( $upload_dir );
 			}
 
 			// Check file in session and then move.
@@ -224,7 +234,7 @@ class Editor extends Field {
 				$newfile = $upload_dir . "/$basename";
 
 				$new_file_url = $uploads['baseurl'] . "/anspress-uploads/$basename";
-				rename( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
+				$wp_filesystem->move( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
 
 				return '<img src="' . esc_url( $new_file_url ) . '" />';
 			}
@@ -243,7 +253,7 @@ class Editor extends Field {
 	public function pre_get() {
 		$value = $this->value();
 
-		if ( $this->have_errors() ) {
+		if ( $this->have_errors() || ! $value ) {
 			return;
 		}
 
@@ -287,5 +297,4 @@ class Editor extends Field {
 			return $request_value;
 		}
 	}
-
 }

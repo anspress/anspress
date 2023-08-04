@@ -12,8 +12,6 @@
 
 namespace AnsPress\Form\Field;
 
-use AnsPress\Form\Field as Field;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -24,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 4.1.0
  */
-class Upload extends Field {
+class Upload extends \AnsPress\Form\Field {
 	/**
 	 * The field type.
 	 *
@@ -183,7 +181,7 @@ class Upload extends Field {
 	 * @return mixed
 	 */
 	public function unsafe_value() {
-		$request_value = $this->get( $this->id( $this->field_name ), null, $_FILES );
+		$request_value = $this->get( $this->id( $this->field_name ), null, $_FILES ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( $request_value ) {
 			return $this->format_multiple_files( $request_value );
@@ -262,11 +260,11 @@ class Upload extends Field {
 	/**
 	 * Replace all dummy images found in editor type field.
 	 *
-	 * @param string      $string        Content where to replace images.
+	 * @param string      $str        Content where to replace images.
 	 * @param array|false $allowed_files Pass array of allowed file names .
 	 * @return string     Replaced string.
 	 */
-	public function replace_temp_image( $string, $allowed_files = false ) {
+	public function replace_temp_image( $str, $allowed_files = false ) {
 		$allowed_files = array_map( 'sanitize_file_name', $allowed_files );
 
 		// Check for allowed files.
@@ -284,7 +282,7 @@ class Upload extends Field {
 			$this->save_uploads();
 		}
 
-		return preg_replace_callback( '/({{apimage (.*?)}})/', array( $this, 'file_name_search_replace' ), $string );
+		return preg_replace_callback( '/({{apimage (.*?)}})/', array( $this, 'file_name_search_replace' ), $str );
 	}
 
 	/**
@@ -386,7 +384,7 @@ class Upload extends Field {
 	private function upload( $file ) {
 		// If there is error in file then return.
 		if ( isset( $file['error'] ) && ! is_numeric( $file['error'] ) && $file['error'] ) {
-			return new \WP_Error( 'upload_file_error', $file['error'] );
+			return new \WP_Error( 'upload_file_error', $file['error'] ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		// Courtesy of php.net, the strings that describe the error indicated in $_FILES[{form field}]['error'].
@@ -404,24 +402,24 @@ class Upload extends Field {
 
 		// Check error.
 		if ( isset( $file['error'] ) && $file['error'] > 0 ) {
-			return new \WP_Error( 'upload_file_size', $upload_error_strings[ $file['error'] ] );
+			return new \WP_Error( 'upload_file_size', $upload_error_strings[ $file['error'] ] ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$file_size = $file['size'];
 
 		// A non-empty file will pass this test.
 		if ( ! ( $file_size > 0 ) ) {
-			return new \WP_Error( 'upload_file_size', __( 'File is empty. Please upload something more substantial.', 'anspress-question-answer' ) );
+			return new \WP_Error( 'upload_file_size', __( 'File is empty. Please upload something more substantial.', 'anspress-question-answer' ) ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		// Check file size.
 		if ( $file_size > ap_opt( 'max_upload_size' ) ) {
-			return new \WP_Error( 'upload_file_size', __( 'File is bigger than the allowed limit.', 'anspress-question-answer' ) );
+			return new \WP_Error( 'upload_file_size', __( 'File is bigger than the allowed limit.', 'anspress-question-answer' ) ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		// Check file uploaded using proper method.
 		if ( true !== is_uploaded_file( $file['tmp_name'] ) ) {
-			return new \WP_Error( 'upload_file_failed', __( 'Specified file failed upload test.', 'anspress-question-answer' ) );
+			return new \WP_Error( 'upload_file_failed', __( 'Specified file failed upload test.', 'anspress-question-answer' ) ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$mimes = $this->get( 'upload_options.allowed_mimes' );
@@ -439,7 +437,7 @@ class Upload extends Field {
 		}
 
 		if ( ! $type || ! $ext ) {
-			return new \WP_Error( 'upload_file_ext', __( 'Sorry, this file type is not permitted for security reasons.', 'anspress-question-answer' ) );
+			return new \WP_Error( 'upload_file_ext', __( 'Sorry, this file type is not permitted for security reasons.', 'anspress-question-answer' ) ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		if ( ! $type ) {
@@ -452,14 +450,27 @@ class Upload extends Field {
 		 * A writable uploads dir will pass this test.
 		 */
 		if ( false !== $uploads['error'] ) {
-			return new \WP_Error( 'upload_file_dir', $uploads['error'] );
+			return new \WP_Error( 'upload_file_dir', $uploads['error'] ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$temp_dir = $uploads['basedir'] . '/anspress-temp/';
 
+		// Make sure WP_Filesystem is loaded.
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem.
+		if ( ! WP_Filesystem() ) {
+			// Unable to initialize WP_Filesystem, handle error accordingly.
+			return;
+		}
+
+		global $wp_filesystem;
+
 		// Make dir if not exists.
 		if ( ! file_exists( $temp_dir ) ) {
-			mkdir( $temp_dir );
+			$wp_filesystem->mkdir( $temp_dir );
 		}
 
 		$sha           = sha1_file( $file['tmp_name'] );
@@ -471,15 +482,17 @@ class Upload extends Field {
 
 		// Return if unable to move file.
 		if ( false === $move_new_file ) {
-			return new \WP_Error( 'upload_file_move', 'The uploaded file could not be moved' );
+			return new \WP_Error( 'upload_file_move', 'The uploaded file could not be moved' ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		// Set correct file permissions.
 		$stat  = stat( dirname( $new_file ) );
 		$perms = $stat['mode'] & 0000666;
-		chmod( $new_file, $perms );
 
-		return $new_file_name;
+		// Use WP_Filesystem's chmod method.
+		$wp_filesystem->chmod( $new_file, $perms );
+
+		return $new_file_name; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**

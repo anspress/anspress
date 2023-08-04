@@ -151,7 +151,7 @@ class AnsPress_Admin_Ajax {
 
 				foreach ( (array) $ids as $id ) {
 					if ( false !== wp_delete_post( $id, true ) ) {
-						$done++;
+						++$done;
 					}
 				}
 
@@ -167,7 +167,7 @@ class AnsPress_Admin_Ajax {
 
 				foreach ( (array) $ids as $id ) {
 					if ( false !== wp_delete_post( $id, true ) ) {
-						$done++;
+						++$done;
 					}
 				}
 
@@ -304,9 +304,9 @@ class AnsPress_Admin_Ajax {
 
 		global $wpdb;
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},100" ); // phpcs:ignore WordPress.DB
 
-		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_votes_count( $id );
@@ -399,9 +399,9 @@ class AnsPress_Admin_Ajax {
 		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
 		$offset = absint( $paged * 100 );
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type IN ('question', 'answer') LIMIT {$offset},100" ); // phpcs:ignore WordPress.DB
 
-		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_flags_count( $id );
@@ -446,9 +446,9 @@ class AnsPress_Admin_Ajax {
 		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
 		$offset = absint( $paged * 100 );
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // phpcs:ignore WordPress.DB
 
-		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_subscribers_count( $id );
@@ -493,9 +493,9 @@ class AnsPress_Admin_Ajax {
 		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
 		$offset = absint( $paged * 100 );
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->users} LIMIT {$offset},100" ); // phpcs:ignore WordPress.DB
 
-		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
 			ap_update_user_reputation_meta( $id );
@@ -549,9 +549,9 @@ class AnsPress_Admin_Ajax {
 		$paged  = (int) ap_sanitize_unslash( 'paged', 'r', 0 );
 		$offset = absint( $paged * 100 );
 
-		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // @codingStandardsIgnoreLine.
+		$ids = $wpdb->get_col( "SELECT SQL_CALC_FOUND_ROWS ID FROM {$wpdb->posts} WHERE post_type = 'question' LIMIT {$offset},100" ); // phpcs:ignore WordPress.DB
 
-		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // DB call okay, Db cache okay.
+		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
 			$table_views  = (int) ap_get_views( $id );

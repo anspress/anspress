@@ -491,8 +491,8 @@ class Tags extends \AnsPress\Singleton {
 		$keyword = ap_sanitize_unslash( 'q', 'r' );
 
 		$tags = get_terms(
-			'question_tag',
 			array(
+				'taxonomy'   => 'question_tag',
 				'orderby'    => 'count',
 				'order'      => 'DESC',
 				'hide_empty' => false,
@@ -663,13 +663,14 @@ class Tags extends \AnsPress\Singleton {
 
 		if ( ! empty( $current_filters ) ) {
 			$args = array(
+				'taxonomy'      => 'question_tag',
 				'hierarchical'  => true,
 				'hide_if_empty' => true,
 				'number'        => 2,
 				'include'       => $current_filters,
 			);
 
-			$terms = get_terms( 'question_tag', $args );
+			$terms = get_terms( $args );
 
 			if ( $terms ) {
 				$active_terms = array();

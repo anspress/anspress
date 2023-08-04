@@ -9,12 +9,14 @@
  * @package AnsPress
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 // Load updater.
-require_once dirname( __FILE__ ) . '/updater.php';
+require_once __DIR__ . '/updater.php';
 
 
 /**
@@ -163,7 +165,6 @@ class AP_License {
 			}
 		}
 	}
-
 }
 
 /**
@@ -175,4 +176,3 @@ class AP_License {
 function ap_product_license_fields() {
 	return apply_filters( 'anspress_license_fields', array() );
 }
-

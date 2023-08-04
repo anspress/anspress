@@ -19,7 +19,7 @@ global $avatar_size;
 $avatar_size = ! empty( $avatar_size ) ? $avatar_size : 30;
 $comment     = get_comment(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
-$approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved'; // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+$approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved'; // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 ?>
 <apcomment id="comment-<?php echo (int) $comment->comment_ID; ?>" <?php comment_class( $approved ); ?>>
 	<div itemprop="comment" itemscope itemtype="http://schema.org/Comment">

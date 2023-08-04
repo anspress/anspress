@@ -10,6 +10,8 @@
  * @subpackage   Comments Hooks
  */
 
+// phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -152,7 +154,7 @@ class AnsPress_Comment_Hooks {
 	 * @param WP_Comment $comment The current comment object.
 	 * @param array      $args    An array of arguments to override the defaults.
 	 */
-	public static function comment_link( $link, $comment, $args ) {
+	public static function comment_link( $link, $comment, $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$_post = ap_get_post( $comment->comment_post_ID );
 
 		if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
@@ -356,7 +358,7 @@ function ap_the_comments( $_post = null, $args = array(), $single = false ) {
 		return;
 	}
 
-	if ( 0 == get_comments_number( $_post->ID ) ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( 0 == get_comments_number( $_post->ID ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		if ( ! $single ) {
 			echo '<div class="ap-comment-no-perm">' . esc_attr__( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		}
@@ -390,7 +392,7 @@ function ap_the_comments( $_post = null, $args = array(), $single = false ) {
 	}
 
 	$query = new WP_Comment_Query( $args );
-	if ( 0 == $query->found_comments && ! $single ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+	if ( 0 == $query->found_comments && ! $single ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'No comments found.', 'anspress-question-answer' ) . '</div>';
 		return;
 	}
@@ -430,11 +432,11 @@ function ap_post_comments() {
  * Return or print new comment button.
  *
  * @param integer $post_id Post id.
- * @param boolean $echo    Return or echo. Default is echo.
+ * @param boolean $output    Return or echo. Default is echo.
  * @return string|void
  * @since 4.1.8
  */
-function ap_new_comment_btn( $post_id, $echo = true ) {
+function ap_new_comment_btn( $post_id, $output = true ) {
 	if ( ap_user_can_comment( $post_id ) ) {
 		$output = '';
 
@@ -450,7 +452,7 @@ function ap_new_comment_btn( $post_id, $echo = true ) {
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
 		$output .= '</a>';
 
-		if ( false === $echo ) {
+		if ( false === $output ) {
 			return $output;
 		}
 

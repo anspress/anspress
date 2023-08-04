@@ -226,4 +226,3 @@ class AnsPress_Common_Pages {
 		include ap_get_theme_location( 'not-found.php' );
 	}
 }
-

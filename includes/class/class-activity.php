@@ -150,7 +150,7 @@ class Activity extends AnsPress_Query {
 					$role_like .= ' AND ';
 				}
 
-				$i++;
+				++$i;
 			}
 
 			if ( ! empty( $role_like ) ) {
@@ -295,7 +295,7 @@ class Activity extends AnsPress_Query {
 	public function group_start() {
 		if ( $this->have_group_items() ) {
 			$this->in_group = true;
-			$this->current--;
+			--$this->current;
 		}
 	}
 
@@ -326,7 +326,7 @@ class Activity extends AnsPress_Query {
 		}
 
 		$next_obj = $this->objects[ $next ];
-		if ( is_object( $next_obj ) && $this->object->q_id == $next_obj->q_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+		if ( is_object( $next_obj ) && $this->object->q_id == $next_obj->q_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			return true;
 		}
 
@@ -347,8 +347,8 @@ class Activity extends AnsPress_Query {
 			$next_obj    = $this->objects[ $next ];
 
 			for ( $i = $next; $i < $this->count; $i++ ) {
-				if ( $current_obj->q_id == $next_obj->q_id ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-					$count++;
+				if ( $current_obj->q_id == $next_obj->q_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+					++$count;
 				} else {
 					break;
 				}
@@ -476,12 +476,12 @@ class Activity extends AnsPress_Query {
 	 * Return the human readable date of an activity which can be
 	 * compared to other activity.
 	 *
-	 * @param object $object Activity object.
+	 * @param object $obj Activity object.
 	 * @return string Default value is date formatted in `D Y` i.e. `Apr 2017`.
 	 * @since 4.1.2
 	 */
-	public function when( $object ) {
-		$date = strtotime( $object->date );
+	public function when( $obj ) {
+		$date = strtotime( $obj->date );
 
 		if ( $date >= strtotime( '-30 minutes' ) ) {
 			$when = __( 'Just now', 'anspress-question-answer' );

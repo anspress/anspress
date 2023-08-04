@@ -12,11 +12,11 @@
 /vendor
 /languages/*.po~
 /codeception.yml
-/tests/wpunit.suite.yml
 /tests/functional.suite.yml
 /tests/ui.suite.yml
 /tests/ui.suite.dist.yml
 /tests/activator.suite.yml
+/build
 
 __MACOSX
 .DS_Store
@@ -37,3 +37,4 @@ Thumbs.db
 /.db
 /tests/old
 /.vscode
+.phpunit.result.cache

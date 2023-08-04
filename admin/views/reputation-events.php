@@ -27,7 +27,7 @@ $i = 1;
 					<td class="col-description"><?php echo esc_attr( $event['description'] ); ?></td>
 					<td class="col-points"><input type="number" value="<?php echo esc_attr( $event['points'] ); ?>" name="events[<?php echo esc_attr( $slug ); ?>]"/></td>
 				</tr>
-				<?php $i++; ?>
+				<?php ++$i; ?>
 			<?php } ?>
 		</tbody>
 	</table>
