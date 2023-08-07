@@ -1155,41 +1155,41 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'allow_upload'        => array(
+				'allow_upload'                  => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['allow_upload'],
 				),
-				'uploads_per_post'    => array(
+				'uploads_per_post'              => array(
 					'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
 					'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
 					'value' => $opt['uploads_per_post'],
 				),
-				'max_upload_size'     => array(
+				'max_upload_size'               => array(
 					'label' => __( 'Max upload size', 'anspress-question-answer' ),
 					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
 					'value' => $opt['max_upload_size'],
 				),
-				'allow_private_posts' => array(
+				'allow_private_posts'           => array(
 					'label' => __( 'Allow private posts', 'anspress-question-answer' ),
 					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['allow_private_posts'],
 				),
-				'multiple_answers'    => array(
+				'multiple_answers'              => array(
 					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
 					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['multiple_answers'],
 				),
-				'trashing_question_with_answer'    => array(
+				'trashing_question_with_answer' => array(
 					'label' => __( 'Trashing Question', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable trashing the question if there are answers already available to the question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['trashing_question_with_answer'],
 				),
-				'deleting_question_with_answer'    => array(
+				'deleting_question_with_answer' => array(
 					'label' => __( 'Deleting Question', 'anspress-question-answer' ),
 					'desc'  => __( 'Disable deleting the question permanently if there are answers already available to the question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
