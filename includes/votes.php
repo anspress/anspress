@@ -577,7 +577,7 @@ function ap_vote_btn( $post = null, $output = true ) {
 		'__nonce' => wp_create_nonce( 'vote_' . $post->ID ),
 	);
 
-	$upvote_message   = sprintf(
+	$upvote_message = sprintf(
 		/* Translators: %s Question or Answer post type label for up voting the question or answer. */
 		__( 'Up vote this %s', 'anspress-question-answer' ),
 		( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
