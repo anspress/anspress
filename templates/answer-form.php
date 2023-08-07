@@ -30,7 +30,7 @@ $ajax_query = wp_json_encode(
 		<div id="ap-drop-area" class="ap-cell ap-form-c clearfix">
 			<div class="ap-cell-inner">
 				<div class="ap-minimal-placeholder">
-					<div class="ap-dummy-editor"></div>
+					<div class="ap-dummy-editor<?php echo esc_attr( ap_opt( 'answer_text_editor' ) ? ' ap-dummy-quick-editor' : '' ); ?>"></div>
 					<div class="ap-dummy-placeholder"><?php esc_attr_e( 'Write your answer.', 'anspress-question-answer' ); ?></div>
 					<div class="ap-editor-fade" ap="loadEditor" data-apquery="<?php echo esc_js( $ajax_query ); ?>"></div>
 				</div>

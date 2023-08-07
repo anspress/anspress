@@ -130,7 +130,7 @@ class AnsPress_Dashboard {
 						?>
 						<li>
 							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a> -
-							<span class="posted"><?php the_date(); ?></span>
+							<span class="posted"><?php echo esc_html( get_the_date() ); ?></span>
 						</li>
 					<?php endwhile; ?>
 				</ul>
@@ -381,6 +381,7 @@ if ( $columns ) {
 						</ul>
 					</div>
 				</div>
+
 				<div class="welcome-panel-column">
 					<i class="apicon-home"></i>
 					<div class="welcome-panel-column-content">
