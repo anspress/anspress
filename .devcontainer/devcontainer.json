@@ -1,20 +1,14 @@
 {
-  "name": "WordPress",
-
+  "name": "anspress",
   "dockerComposeFile": "docker-compose.yml",
   "service": "wordpress",
   "workspaceFolder": "/var/www/html/wp-content/plugins/anspress-question-answer",
-
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash",
     "php.suggest.basic": false // avoids duplicate autocomplete
   },
-
   // Add the IDs of any extensions you want installed.
   "extensions": [],
-
-  // Sets up WordPress on container start.
-  "postCreateCommand": "bash .devcontainer/wp-setup.sh",
   "remoteUser": "vscode"
 }

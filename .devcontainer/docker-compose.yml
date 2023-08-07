@@ -12,6 +12,7 @@ services:
       WORDPRESS_DB_PASSWORD: wp_pass
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DEBUG: 1
+      WORDPRESS_PHP_MEMORY_LIMIT: 512M
     links:
       - db
     volumes:
