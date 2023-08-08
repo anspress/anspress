@@ -1594,6 +1594,10 @@ span.recount-msg {
       > h3{
         padding: 0px 20px;
       }
+
+		&.closed {
+			border-bottom: 1px solid #c3c4c7;
+		}
     }
 
 		&-info{
