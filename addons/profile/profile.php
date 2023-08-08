@@ -208,13 +208,19 @@ class Profile extends \AnsPress\Singleton {
 	 * Output user profile menu.
 	 *
 	 * @param int|false $user_id Id of user, default is current user.
-	 * @param string    $class_name   CSS class.
+	 * @param string    $class_name CSS class.
 	 */
 	public function user_menu( $user_id = false, $class_name = '' ) {
 		$user_id     = false !== $user_id ? $user_id : ap_current_user_id();
 		$user        = get_user_by( 'id', $user_id );
-		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
+		$current_tab = get_query_var( 'user_page' );
 		$ap_menu     = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
+
+		// If BuddyPress addon is active, set the profile menu active links as required
+		// with the help of the 'pagename' query var.
+		if ( ap_is_addon_active( 'buddypress.php' ) ) {
+			$current_tab = 'qa' === get_query_var( 'pagename' ) ? 'questions' : get_query_var( 'pagename' );
+		}
 
 		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class_name ) . '">';
 
