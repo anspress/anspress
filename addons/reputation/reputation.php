@@ -446,7 +446,7 @@ class Reputation extends \AnsPress\Singleton {
 
 				if ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
 					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
-				} else {
+				} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
 					if ( ap_is_addon_active( 'profile.php' ) ) {
 						return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 					} else {

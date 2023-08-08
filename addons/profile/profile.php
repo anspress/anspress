@@ -235,7 +235,7 @@ class Profile extends \AnsPress\Singleton {
 				) {
 					$slug = get_option( 'ap_user_path' );
 					$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
-					$url = isset( $args['url'] ) ? $args['url'] : $link . $args['rewrite'];
+					$url  = isset( $args['url'] ) ? $args['url'] : $link . $args['rewrite'];
 				}
 				echo '<a href="' . esc_url( $url ) . '">';
 
