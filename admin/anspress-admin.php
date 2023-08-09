@@ -1177,12 +1177,6 @@ class AnsPress_Admin {
 					'type'  => 'checkbox',
 					'value' => $opt['allow_private_posts'],
 				),
-				'multiple_answers'    => array(
-					'label' => __( 'Multiple Answers', 'anspress-question-answer' ),
-					'desc'  => __( 'Allows users to post multiple answers on a question.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['multiple_answers'],
-				),
 			),
 		);
 
