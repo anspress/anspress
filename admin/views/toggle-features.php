@@ -24,7 +24,7 @@ $form_name = ap_sanitize_unslash( 'ap_form_name', 'r' );
  * @since 4.2.0
  */
 function _ap_short_addons_list( $a ) { // phpcs:ignore
-	return $a['active'] ? 0 : 1;
+	return $a['active'] ? -1 : 1;
 }
 ?>
 
@@ -117,4 +117,3 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 		})
 	})(jQuery)
 </script>
-
