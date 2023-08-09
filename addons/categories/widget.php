@@ -87,10 +87,11 @@ class Categories extends \WP_Widget {
 					'icon'  => 'apicon-category',
 				)
 			);
+			$cat_color     = ! empty( $ap_category['color'] ) ? $ap_category['color'] : '#333';
 			$sub_cat_count = count( get_term_children( $category->term_id, 'question_category' ) );
 			?>
 			<li class="clearfix">
-			<a class="ap-cat-image" style="height:<?php echo esc_attr( $icon_height ); ?>px;width:<?php echo esc_attr( $icon_width ); ?>px;background: <?php echo esc_attr( $ap_category['color'] ); ?>" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
+			<a class="ap-cat-image" style="height:<?php echo esc_attr( $icon_height ); ?>px;width:<?php echo esc_attr( $icon_width ); ?>px;background: <?php echo esc_attr( $cat_color ); ?>" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
 				<span class="ap-category-icon <?php echo esc_attr( $ap_category['icon'] ); ?>"></span>
 			</a>
 			<a class="ap-cat-wid-title" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
