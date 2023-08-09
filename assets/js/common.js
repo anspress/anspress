@@ -849,6 +849,20 @@ jQuery(document).ready(function ($) {
 		e.preventDefault();
 		$(this).parent().remove();
 	})
+
+	$( '#tabs-panel-anspress-all' ).on( 'click', '.anspress-menu-mb', function( event ) {
+		event.preventDefault();
+		let checkBoxes = $( this ).closest( '#tabs-panel-anspress-all' );
+		let checked = checkBoxes.find( '.menu-item-checkbox' );
+
+		if ( $( this ).data( 'checked' ) ) {
+			checked.prop( 'checked', false );
+			$( this ).data( 'checked', false );
+		} else {
+			checked.prop( 'checked', true );
+			$( this ).data( 'checked', true );
+		}
+	} );
 });
 
 window.AnsPress.Helper = {
