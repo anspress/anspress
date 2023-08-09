@@ -720,7 +720,8 @@ class AnsPress_Admin {
 
 			$pages_in = array();
 			foreach ( $pages_slug as $slug ) {
-				$pages_in[] = $opt[ $slug ];
+				$pages      = isset( $opt[ $slug ] ) ? $opt[ $slug ] : '';
+				$pages_in[] = $pages;
 			}
 
 			$args = array(
@@ -817,6 +818,8 @@ class AnsPress_Admin {
 		);
 
 		foreach ( ap_main_pages() as $slug => $args ) {
+			$value = isset( $opt[ $slug ] ) ? $opt[ $slug ] : '';
+
 			$form['fields'][ $slug ] = array(
 				'label'      => $args['label'],
 				'desc'       => $args['desc'],
@@ -826,7 +829,7 @@ class AnsPress_Admin {
 					'post_type' => 'page',
 					'showposts' => -1,
 				),
-				'value'      => $opt[ $slug ],
+				'value'      => $value,
 				'sanitize'   => 'absint',
 			);
 		}
