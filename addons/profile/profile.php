@@ -213,7 +213,7 @@ class Profile extends \AnsPress\Singleton {
 	public function user_menu( $user_id = false, $class_name = '' ) {
 		$user_id     = false !== $user_id ? $user_id : ap_current_user_id();
 		$user        = get_user_by( 'id', $user_id );
-		$current_tab = get_query_var( 'user_page' );
+		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu     = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
 
 		// If BuddyPress addon is active, set the profile menu active links as required
