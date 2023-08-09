@@ -171,7 +171,7 @@ class AP_Form_Hooks {
 					'min_length'  => ap_opt( 'minimum_ans_length' ),
 					'validate'    => 'required,min_string_length,badwords',
 					'editor_args' => array(
-						'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
+						'quicktags' => ap_opt( 'answer_text_editor' ) ? true : false,
 					),
 				),
 			),
