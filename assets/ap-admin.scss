@@ -990,6 +990,26 @@ ul.ap-meta-list {
 .ap-have-errors{
 
 }
+.welcome-panel {
+
+	i {
+		font-size: 18px;
+		color: #fff;
+		width: 48px;
+		height: 48px;
+		border-radius: 5px;
+		background: rgb(30, 30, 30);
+
+		&::before {
+			padding: 15px;
+			position: absolute;
+		}
+
+		@media screen and (max-width: 1180px) and (min-width: 783px) {
+			display: none;
+		}
+	}
+}
 .metabox-holder {
   .divider {
     display: table;
