@@ -175,7 +175,11 @@ class AnsPress_Ajax {
 					'action'      => array(
 						'active' => false,
 						'label'  => __( 'Delete', 'anspress-question-answer' ),
-						'title'  => __( 'Delete this post (can be restored again)', 'anspress-question-answer' ),
+						'title'  => sprintf(
+							/* Translators: %s Question or Answer post type label for deleting a question or answer. */
+							__( 'Delete this %s (can be restored again)', 'anspress-question-answer' ),
+							( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+						),
 					),
 					// translators: %s post type.
 					'snackbar'    => array( 'message' => sprintf( __( '%s is restored', 'anspress-question-answer' ), $post_type ) ),
@@ -209,7 +213,11 @@ class AnsPress_Ajax {
 				'action'      => array(
 					'active' => true,
 					'label'  => __( 'Undelete', 'anspress-question-answer' ),
-					'title'  => __( 'Restore this post', 'anspress-question-answer' ),
+					'title'  => sprintf(
+						/* Translators: %s Question or Answer post type label for restoring a question or answer. */
+						__( 'Restore this %s', 'anspress-question-answer' ),
+						( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+					),
 				),
 				// translators: %s is post type.
 				'snackbar'    => array( 'message' => sprintf( __( '%s is trashed', 'anspress-question-answer' ), $post_type ) ),
