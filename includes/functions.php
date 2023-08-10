@@ -960,7 +960,7 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
 	$solved = ap_have_answer_selected( $question_id );
 
 	if ( ap_opt( 'show_solved_prefix' ) ) {
-		return get_the_title( $question_id ) . ' ' . ( $solved ? __( '[Solved] ', 'anspress-question-answer' ) : '' );
+		return ( $solved ? __( '[Solved] ', 'anspress-question-answer' ) : '' ) . get_the_title( $question_id ) . ' ';
 	}
 
 	return get_the_title( $question_id );
