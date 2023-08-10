@@ -90,13 +90,9 @@ $all_options = array(
 	'tools'         => array(
 		'label'  => __( '🔨 Tools', 'anspress-question-answer' ),
 		'groups' => array(
-			're-count'  => array(
+			're-count' => array(
 				'label'    => __( 'Re-count', 'anspress-question-answer' ),
 				'template' => 'recount.php',
-			),
-			'uninstall' => array(
-				'label'    => __( 'Uninstall', 'anspress-question-answer' ),
-				'template' => 'uninstall.php',
 			),
 		),
 	),
