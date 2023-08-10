@@ -608,7 +608,7 @@ class Categories extends \AnsPress\Singleton {
 
 					<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="<?php echo esc_attr( $term_meta['image']['id'] ); ?>">
 
-					<?php if ( ! empty( $term_meta['image'] ) && ! empty( $term_meta['image']['url'] ) ) { ?>
+					<?php if ( is_array( $term_meta ) && ! empty( $term_meta['image'] ) && ! empty( $term_meta['image']['url'] ) ) { ?>
 						<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
 					<?php } ?>
 
