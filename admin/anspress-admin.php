@@ -104,12 +104,12 @@ class AnsPress_Admin {
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
-		wp_register_script( 'anspress-common', ANSPRESS_URL . '/assets/js/common.js', array( 'jquery', 'jquery-form', 'backbone' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-question', ANSPRESS_URL . '/assets/js/question.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-ask', ANSPRESS_URL . '/assets/js/ask.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-list', ANSPRESS_URL . '/assets/js/list.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . '/assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . '/assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', array( 'jquery', 'jquery-form', 'backbone' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-question', ANSPRESS_URL . 'assets/js/question.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 
 		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
 
@@ -191,7 +191,7 @@ class AnsPress_Admin {
 		$counts = self::menu_counts();
 		$pos    = self::get_free_menu_position( 12.11 );
 
-		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
+		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . 'assets/answer.png', $pos );
 
 		add_submenu_page( 'anspress', __( 'All Questions', 'anspress-question-answer' ), __( 'All Questions', 'anspress-question-answer' ) . $counts['question'], 'delete_pages', 'edit.php?post_type=question', '' );
 
