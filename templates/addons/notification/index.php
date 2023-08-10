@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $user_id = get_query_var( 'ap_user_id' );
 ?>
 
-<?php if ( ap_count_unseen_notifications() > 0 ) : ?>
+<?php if ( ap_count_unseen_notifications() > 0 && ( ! isset( $_GET['seen'] ) || ( '1' !== $_GET['seen'] ) ) ) : ?>
 	<?php
 		$btn_args = wp_json_encode(
 			array(
