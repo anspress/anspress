@@ -274,16 +274,18 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function new_answer( $post_id, $_post ) {
 		$_question = get_post( $_post->post_parent );
-		ap_insert_notification(
-			array(
-				'user_id'  => $_question->post_author,
-				'actor'    => $_post->post_author,
-				'parent'   => $_post->post_parent,
-				'ref_id'   => $_post->ID,
-				'ref_type' => 'answer',
-				'verb'     => 'new_answer',
-			)
-		);
+		if ( $_question ) {
+			ap_insert_notification(
+				array(
+					'user_id'  => $_question->post_author,
+					'actor'    => $_post->post_author,
+					'parent'   => $_post->post_parent,
+					'ref_id'   => $_post->ID,
+					'ref_type' => 'answer',
+					'verb'     => 'new_answer',
+				)
+			);
+		}
 	}
 
 	/**
