@@ -60,6 +60,7 @@ class Profile extends \AnsPress\Singleton {
 		anspress()->add_action( 'ap_ajax_user_more_answers', $this, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'wp_title', $this, 'page_title' );
 		anspress()->add_action( 'the_post', $this, 'filter_page_title' );
+		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
 		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
 		anspress()->add_filter( 'posts_pre_query', $this, 'modify_query_archive', 999, 2 );
 	}
@@ -278,6 +279,34 @@ class Profile extends \AnsPress\Singleton {
 		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			$_post->post_title = $this->user_page_title();
 		}
+	}
+
+	/**
+	 * Hook into AnsPress breadcrums to show user profile page.
+	 *
+	 * @param  array $navs Breadcrumbs navs.
+	 * @return array
+	 */
+	public function ap_breadcrumbs( $navs ) {
+		if ( 'user' === ap_current_page() ) {
+			$navs['page'] = array(
+				'title' => ap_user_display_name( ap_current_user_id() ),
+				'link'  => ap_user_link( ap_current_user_id() ),
+				'order' => 8,
+			);
+
+			$current      = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
+			$current_page = ap_search_array( anspress()->user_pages, 'rewrite', $current );
+			if ( ! empty( $current_page ) ) {
+				$navs['user'] = array(
+					'title' => $current_page[0]['label'],
+					'link'  => ap_user_link( ap_current_user_id() ) . $current . '/',
+					'order' => 8,
+				);
+			}
+		}
+
+		return $navs;
 	}
 
 	/**
