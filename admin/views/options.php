@@ -124,7 +124,17 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		$options = get_option( 'anspress_opt', array() );
 
 		foreach ( $values as $key => $opt ) {
-			$options[ $key ] = $opt['value'];
+			/**
+			 * Modify the AnsPress options data before the
+			 * actual AnsPress options data is modified
+			 * for the save event.
+			 *
+			 * @param string $key Option key.
+			 * @param array  $opt Option value.
+			 */
+			$filtered = apply_filters( 'anspress_opt_modify_before_update', $key, $opt );
+
+			$options[ $filtered['key'] ] = $filtered['opt']['value'];
 		}
 
 		update_option( 'anspress_opt', $options );
