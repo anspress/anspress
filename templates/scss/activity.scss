@@ -13,6 +13,13 @@
 			left: 20px;
 			top: 0;
 		}
+
+		&.ap-no-activities {
+
+			&::before {
+				display: none;
+			}
+		}
 	}
 	.ap-activity{
 		&-item:last-child{
