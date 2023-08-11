@@ -2313,6 +2313,13 @@ function ap_ajax_tinymce_assets() {
 
 	\_WP_Editors::enqueue_scripts();
 
+	// Enqueue wp-tinymce when Jetpack photon-cdn module is enabled,
+	// since while user are trying to add an answer to the question,
+	// creates JS console error and hence, the editor does not work.
+	if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon-cdn' ) ) {
+		wp_enqueue_script( 'wp-tinymce' );
+	}
+
 	ob_start();
 	print_footer_scripts();
 	$scripts = ob_get_clean();
