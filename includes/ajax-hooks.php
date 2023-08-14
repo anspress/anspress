@@ -315,6 +315,15 @@ class AnsPress_Ajax {
 		// Check if current question ID is in featured question array.
 		if ( ap_is_featured_question( $post ) ) {
 			ap_unset_featured_question( $post->ID );
+
+			// Update activity.
+			ap_activity_add(
+				array(
+					'q_id'   => $post->ID,
+					'action' => 'unfeatured',
+				)
+			);
+
 			ap_ajax_json(
 				array(
 					'success'  => true,
