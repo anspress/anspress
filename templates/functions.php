@@ -52,6 +52,15 @@ function ap_scripts_front() {
 		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
 		'search'                 => __( 'Search', 'anspress-question-answer' ),
 		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
+		'ajax_error'             => array(
+			'snackbar' => array(
+				'success' => false,
+				'message' => esc_html__( 'Something went wrong. Please try again.', 'anspress-question-answer' ),
+			),
+			'modal'    => array(
+				'imageUpload',
+			),
+		),
 	);
 
 	echo '<script type="text/javascript">';
