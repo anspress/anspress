@@ -365,8 +365,15 @@ class Tags extends \AnsPress\Singleton {
 	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_tag' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) !== '' ) {
-				$opt = get_option( 'ap_tags_path', 'tags' );
-				return user_trailingslashit( home_url( $opt ) . '/' . $term->slug );
+				$opt          = get_option( 'ap_tags_path', 'tags' );
+				$default_lang = '';
+
+				// Support polylang permalink.
+				if ( function_exists( 'pll_default_language' ) ) {
+					$default_lang = pll_get_term_language( $term->term_id ) ? pll_get_term_language( $term->term_id ) : pll_default_language();
+				}
+
+				return user_trailingslashit( home_url( $default_lang . '/' . $opt ) . '/' . $term->slug );
 			} else {
 				return add_query_arg(
 					array(
@@ -528,10 +535,12 @@ class Tags extends \AnsPress\Singleton {
 	public function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base_slug = get_page_uri( ap_opt( 'tags_page' ) );
 		update_option( 'ap_tags_path', $base_slug, true );
+		$lang_rule    = str_replace( ap_base_page_slug() . '/', '', $slug );
+		$lang_rewrite = str_replace( ap_opt( 'base_page' ), '', $base_page_id );
 
 		$cat_rules = array(
-			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_tag=$matches[#]&ap_paged=$matches[#]&ap_page=tag',
-			$base_slug . '/([^/]+)/?$'                   => 'index.php?question_tag=$matches[#]&ap_page=tag',
+			$lang_rule . $base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => $lang_rewrite . 'index.php?question_tag=$matches[#]&ap_paged=$matches[#]&ap_page=tag',
+			$lang_rule . $base_slug . '/([^/]+)/?$' => $lang_rewrite . 'index.php?question_tag=$matches[#]&ap_page=tag',
 		);
 
 		return $cat_rules + $rules;

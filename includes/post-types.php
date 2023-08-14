@@ -236,7 +236,7 @@ class AnsPress_PostTypes {
 
 			// Support polylang permalink.
 			if ( function_exists( 'pll_default_language' ) ) {
-				$default_lang = pll_default_language();
+				$default_lang = pll_get_post_language( $post->ID ) ? pll_get_post_language( $post->ID ) : pll_default_language();
 			}
 
 			if ( get_option( 'permalink_structure' ) ) {
