@@ -77,6 +77,7 @@ class Reputation extends \AnsPress\Singleton {
 		anspress()->add_filter( 'ap_bp_nav', $this, 'ap_bp_nav' );
 		anspress()->add_filter( 'ap_bp_page', $this, 'ap_bp_page', 10, 2 );
 		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 10, 2 );
+		anspress()->add_action( 'init', $this, 'ap_truncate_reputation_events_table' );
 	}
 
 	/**
@@ -137,7 +138,6 @@ class Reputation extends \AnsPress\Singleton {
 					'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
 					'icon'        => 'apicon-question',
 					'activity'    => __( 'Registered', 'anspress-question-answer' ),
-					'parent'      => 'question',
 					'points'      => 10,
 				),
 				array(
@@ -230,7 +230,8 @@ class Reputation extends \AnsPress\Singleton {
 					$event['description'],
 					$points,
 					! empty( $event['activity'] ) ? $event['activity'] : '',
-					! empty( $event['parent'] ) ? $event['parent'] : ''
+					! empty( $event['parent'] ) ? $event['parent'] : '',
+					$event['icon']
 				);
 			}
 
@@ -597,6 +598,31 @@ class Reputation extends \AnsPress\Singleton {
 		);
 
 		return $all_options;
+	}
+
+	/**
+	 * Delete ap_reputation_events table datas,
+	 * since there is no icon set in the database for the reputation event,
+	 * and editing the table directly is not possible.
+	 */
+	public function ap_truncate_reputation_events_table() {
+		// Return if ap_reputation_events_contents_deleted exists.
+		if ( get_option( 'ap_reputation_events_contents_deleted' ) ) {
+			return;
+		}
+
+		global $wpdb;
+		// Delete the table contents of $wpdb->ap_reputation_events table.
+		$reputation_events_table = $wpdb->ap_reputation_events;
+		if ( $reputation_events_table ) {
+			$wpdb->query( "TRUNCATE TABLE {$reputation_events_table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+
+		// Update/Set the reputation default events in the database table.
+		$this->register_default_events();
+
+		// Update option.
+		update_option( 'ap_reputation_events_contents_deleted', true );
 	}
 }
 
