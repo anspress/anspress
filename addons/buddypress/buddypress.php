@@ -587,7 +587,7 @@ class BuddyPress extends \AnsPress\Singleton {
 			return;
 		}
 
-		if ( $comment->comment_ID ) {
+		if ( isset( $comment->comment_ID ) && $comment->comment_ID ) {
 			bp_notifications_delete_all_notifications_by_type( $comment->comment_ID, 'anspress', 'new_comment' );
 		} else {
 			$comments = get_comments( array( 'post_id' => $comment ) );
