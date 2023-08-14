@@ -1,9 +1,5 @@
 (function ($) {
     $(document).ready(function () {
-        $('textarea.autogrow, textarea#post_content').autogrow({
-            onInitialize: true
-        });
-
         $('.ap-categories-list li .ap-icon-arrow-down').on('click', function (e) {
             e.preventDefault();
             $(this).parent().next().slideToggle(200);
@@ -54,5 +50,3 @@
     });
 
 })(jQuery);
-
-
