@@ -82,7 +82,7 @@ SyntaxHighlighter.all();
 			var tag = $(this).find('input').is(":checked") ? 'code' : 'pre';
 
 			var attr = 'language="' + lang + '"';
-			var cont = '[apcode ' + attr + ']<' + tag + ' data-mce-contenteditable="false">' + code + '</' + tag + '>[/apcode]';
+			var cont = '[apcode ' + attr + ']<' + tag + '>' + code + '</' + tag + '>[/apcode]';
 			tinymce.activeEditor.insertContent(cont);
 			tinymce.activeEditor.focus();
 			tinymce.activeEditor.selection.collapse(0);
