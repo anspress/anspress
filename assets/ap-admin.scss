@@ -1557,6 +1557,11 @@ span.recount-msg {
     position: relative;
     align-items: flex-start;
 
+    @media (max-width: 782px) {
+      flex-wrap: wrap;
+      grid-gap: 20px;
+    }
+
     &-tab {
       width: 250px;
       margin-right: 20px;
@@ -1568,10 +1573,19 @@ span.recount-msg {
       a{
         display: block;
       }
+
+      @media (max-width: 782px) {
+        width: 100%;
+        margin-right: 0;
+      }
     }
 
     &-body{
       flex: calc( 100% - 250px);
+
+      @media (max-width: 782px) {
+        flex: 100%;
+      }
     }
 
 		&-inside-toggle_features {
@@ -1626,6 +1640,11 @@ span.recount-msg {
 		&-right {
 			flex: 300px;
 			margin-left: 20px;
+
+      @media (max-width: 782px) {
+        flex: 100%;
+        margin-left: 0;
+      }
 		}
   }
 }
