@@ -37,4 +37,34 @@ class Test_Session extends TestCase {
 		$this->assertContains( 2, $session->get( 'answers' ) );
 		$this->assertNotContains( 5, $session->get( 'answers' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 *
+	 * @return void
+	 */
+	public function testPostInSession() {
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+
+		$session = \AnsPress\Session::init();
+		$session->set_answer( $id );
+		$session->set_question( $id );
+
+		// Test for answer.
+		if ( $session->get( 'answers' ) ) {
+			$this->assertContains( $id, $session->get( 'answers' ) );
+		}
+
+		// Test for question.
+		if ( $session->get( 'answers' ) ) {
+			$this->assertContains( $id, $session->get( 'questions' ) );
+		}
+	}
 }
