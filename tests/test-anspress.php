@@ -316,19 +316,61 @@ class TestAnsPress extends TestCase {
 		$this->assertNotEquals( false, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
 		$this->assertInstanceOf( 'AnsPress\Activity_Helper', anspress()->activity );
 
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Avatar' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Avatar\Generator' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\BuddyPress' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Categories' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Widgets\Categories' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Email' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Notifications' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Notifications' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Profile' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Captcha' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Reputation' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Syntax_Highlighter' ) );
-		// $this->assertTrue( class_exists( 'AnsPress\Addons\Tags' ) );
+		// Check for addons disabled.
+		// By default, categories, email and reputation addons are enabled.
+		// Include the categories widget since it could not find the file on test.
+		require_once ANSPRESS_ADDONS_DIR . '/categories/widget.php';
+
+		// Testing begins.
+		// For activated addons by default.
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Categories' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Widgets\Categories' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Email' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Email\Helper' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Reputation' ) );
+
+		// For deactivated addons by default.
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Akismet' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Avatar' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Avatar\Generator' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\BuddyPress' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Notifications' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Notifications' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Profile' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Captcha' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Syntax_Highlighter' ) );
+		$this->assertFalse( class_exists( 'AnsPress\Addons\Tags' ) );
+
+		// Check for addons enabled and if enabled, activate those addons and add tests for them.
+		define( 'ANSPRESS_ENABLE_ADDONS', true );
+		if ( defined( 'ANSPRESS_ENABLE_ADDONS' ) && \ANSPRESS_ENABLE_ADDONS ) {
+			// Activate the available addons.
+			ap_activate_addon( 'akismet.php' );
+			ap_activate_addon( 'avatar.php' );
+			ap_activate_addon( 'buddypress.php' );
+			ap_activate_addon( 'notifications.php' );
+			ap_activate_addon( 'profile.php' );
+			ap_activate_addon( 'recaptcha.php' );
+			ap_activate_addon( 'syntaxhighlighter.php' );
+			ap_activate_addon( 'tags.php' );
+
+			// Testing begins.
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Akismet' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar\Generator' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\BuddyPress' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Categories' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Widgets\Categories' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Email' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Email\Helper' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Notifications' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Notifications' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Profile' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Captcha' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Reputation' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Syntax_Highlighter' ) );
+			$this->assertTrue( class_exists( 'AnsPress\Addons\Tags' ) );
+		}
 	}
 
 	/**
