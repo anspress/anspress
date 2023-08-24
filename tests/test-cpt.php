@@ -90,4 +90,12 @@ class Test_PostTypes extends TestCase {
 		$this->assertEquals( 0, $wp_post_types['answer']->rewrite );
 		$this->assertEquals( 'answer', $wp_post_types['answer']->query_var );
 	}
+
+	public function testRegisterPostStatuses() {
+		\AnsPress_Post_Status::register_post_status();
+		global $wp_post_statuses;
+
+		$this->assertArrayHasKey( 'moderate', $wp_post_statuses );
+		$this->assertArrayHasKey( 'private_post', $wp_post_statuses );
+	}
 }
