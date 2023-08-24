@@ -21,19 +21,21 @@ class TestAnsPress extends TestCase {
 		$plugin_dir = wp_normalize_path( ANSPRESS_DIR );
 		$plugin_url = home_url( 'wp-content/plugins/anspress-question-answer/' );
 
+		$this->assertSame( DS, DIRECTORY_SEPARATOR );
+
 		// $this->assertSame( ANSPRESS_URL, $plugin_url );
-		// $this->assertSame( ANSPRESS_DIR, $plugin_dir );
+		$this->assertSame( ANSPRESS_DIR, $plugin_dir );
 
-		// $path = $plugin_dir . 'widgets/';
-		// $this->assertSame( ANSPRESS_WIDGET_DIR, $path );
+		$path = $plugin_dir . 'widgets/';
+		$this->assertSame( ANSPRESS_WIDGET_DIR, $path );
 
-		// $path = $plugin_dir . 'templates';
-		// $this->assertSame( ANSPRESS_THEME_DIR, $path );
+		$path = $plugin_dir . 'templates';
+		$this->assertSame( ANSPRESS_THEME_DIR, $path );
 
-		// $path = $plugin_url . 'templates';
+		$path = $plugin_url . 'templates';
 		// $this->assertSame( ANSPRESS_THEME_URL, $path );
 
-		// $this->assertSame( ANSPRESS_CACHE_DIR, WP_CONTENT_DIR . '/cache/anspress' );
+		$this->assertSame( ANSPRESS_CACHE_DIR, WP_CONTENT_DIR . '/cache/anspress' );
 		$this->assertSame( ANSPRESS_CACHE_TIME, HOUR_IN_SECONDS );
 
 		$path = $plugin_dir . 'addons';
