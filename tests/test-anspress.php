@@ -49,80 +49,35 @@ class TestAnsPress extends TestCase {
 		// Check main PHP file exists.
 		$this->assertFileExists( ANSPRESS_DIR . 'anspress-question-answer.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'activate.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-singleton.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/roles-cap.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity-helper.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/activity.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/common-pages.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-theme.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-form-hooks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/options.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/functions.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/hooks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/question-loop.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/answer-loop.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/qameta.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/qaquery.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/qaquery-hooks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/post-types.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/post-status.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/votes.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/views.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/theme.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-basepage.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/process-form.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/rewrite.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/deprecated.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/flag.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-question.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/akismet.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/comments.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/upload.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/taxo.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/reputation.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/subscribers.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-query.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-session.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'loader.php' );
 
-		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-modal.php' );
+		// Check main file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'readme.txt' );
+		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
 
-		$this->assertFileExists( ANSPRESS_DIR . 'classes/ajax.php' );
-
-		$this->assertFileExists( ANSPRESS_DIR . 'widgets/search.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'widgets/question_stats.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'widgets/questions.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'widgets/breadcrumbs.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'widgets/ask-form.php' );
-
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-upgrader.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-form.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-field.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-input.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-group.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-repeatable.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-checkbox.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-select.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-editor.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-upload.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-tags.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-radio.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-textarea.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-validate.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-cli.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-wp-async-task.php' );
-
+		// Check addon files exists.
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/akismet/akismet.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/akismet/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/avatar.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/class-generator.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/buddypress.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/categories/categories.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/categories/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/categories/widget.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/email.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/class-helper.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/notifications.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/email.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/email/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/functions.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/image.png' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/notifications.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/notifications/query.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/profile/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/profile/profile.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/image.png' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/script.js' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/autoload.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/class-captcha.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/ReCaptcha.php' );
@@ -135,12 +90,130 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/Socket.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/reputation/reputation.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tags/tags.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/reputation/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/syntaxhighlighter.php' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/image.png' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/script.js' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tags/image.png' );
+		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tags/tags.php' );
 
-		$this->assertFileExists( ANSPRESS_DIR . 'readme.txt' );
+		// Check admin file exists.
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/ajax.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/dashboard.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/emails.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/licenses.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/options.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/recount.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/reputation-events.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/roles.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/select_question.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/toggle-features.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/uninstall.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/anspress-admin.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/class-list-table-hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/functions.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/license.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/meta-box.php' );
+		$this->assertFileExists( ANSPRESS_DIR . '/admin/updater.php' );
+
+		// Check ajax file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-delete.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-modal.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'ajax/repeatable-field.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'ajax/toggle-best-answer.php' );
+
+		// Check classes file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'classes/ajax.php' );
+
+		// Check includes file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity-helper.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-session.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-singleton.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/roles-cap.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/activity.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/ajax-hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/akismet.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/answer-loop.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/api.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-async-tasks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-form-hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-query.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-theme.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/comments.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/common-pages.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/deprecated.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/flag.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/functions.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/mce-languages.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/options.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/post-status.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/post-types.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/process-form.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/qameta.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/qaquery-hooks.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/qaquery.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/question-loop.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/reputation.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/rewrite.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-basepage.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-question.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/subscribers.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/taxo.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/theme.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/upload.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/views.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/votes.php' );
+
+		// Check lib file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-checkbox.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-editor.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-field.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-group.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-input.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-radio.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-repeatable.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-select.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-tags.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-textarea.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-upload.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-cli.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-anspress-upgrader.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-form.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-validate.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'lib/class-wp-async-task.php' );
 
 		// Check template file exists.
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activities.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activity-ref-content.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activity.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/category/categories.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/category/no-category-found.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/category/single-category.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/email/style.css' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/email/style.scss' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/email/template.html' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/notification/comment.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/notification/post.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/notification/reputation.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/reputation/item.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/tag/no-tags-found.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/tag/tag.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/tag/tags.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/user/answer-item.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/user/answers.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/user/questions.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/avatar-fonts/calibri.ttf' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/avatar-fonts/DeliusSwashCaps.ttf' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/avatar-fonts/Glegoo-Bold.ttf' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/avatar-fonts/OpenSans.ttf' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/avatar-fonts/Pacifico.ttf' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/buddypress/answer-item.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/buddypress/answers.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/buddypress/question-item.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/shortcode/question.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/widgets/widget-questions.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/answer-form.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/answer.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/answers.php' );
@@ -153,37 +226,24 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/list-head.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/login-signup.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/not-found.php' );
+		$this->assertFileExists( ANSPRESS_THEME_DIR . '/post-comments.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/question-list-item.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/question-list.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/search-form.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/single-question.php' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activities.php' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activity-ref-content.php' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/activities/activity.php' );
+
+		// Check widget file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'widgets/ask-form.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'widgets/breadcrumbs.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'widgets/leaderboard.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'widgets/question_stats.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'widgets/questions.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'widgets/search.php' );
 
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/question.png' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/answer.png' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/ap-admin.scss' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/ap-admin.scss' );
-
-		$this->assertFileExists( ANSPRESS_DIR . '/languages/anspress-question-answer.pot' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/ajax.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/includes/ajax-hooks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/dashboard.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/emails.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/licenses.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/options.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/recount.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/reputation-events.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/roles.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/select_question.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/views/uninstall.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/anspress-admin.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/class-list-table-hooks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/functions.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/license.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/meta-box.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/updater.php' );
 	}
 
 	/**
