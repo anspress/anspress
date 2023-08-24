@@ -152,4 +152,48 @@ class Test_Roles extends TestCase {
 			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['subscriber']['capabilities'] );
 		}
 	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testApUserCanAsk() {
+		// Check if user roles can ask.
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+		$user_id = $this->factory->user->create( array( 'role' => 'ap_participant' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+		$user_id = $this->factory->user->create( array( 'role' => 'ap_moderator' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+		$user_id = $this->factory->user->create( array( 'role' => 'editor' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+
+		// Check user having ap_new_question can ask.
+		$option = ap_opt( 'post_question_per' );
+		ap_opt( 'post_question_per', 'have_cap' );
+		add_role( 'ap_test_ask', 'Test user can ask', [ 'ap_new_question' => true ] );
+		$user_id = $this->factory->user->create( array( 'role' => 'ap_test_ask' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+		wp_logout();
+		$this->assertFalse( ap_user_can_ask() );
+
+		// Verify anyone can ask option.
+		ap_opt( 'post_question_per', 'anyone' );
+		$this->assertTrue( ap_user_can_ask() );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+
+		// Check logged-in can ask permission.
+		ap_opt( 'post_question_per', 'logged_in' );
+		wp_logout();
+		$this->assertFalse( ap_user_can_ask() );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_ask() );
+	}
 }
