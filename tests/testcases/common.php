@@ -30,4 +30,39 @@ class Common extends TestCase {
 			unset( $_COOKIE[ $c ] );
 		}
 	}
+
+	public static function insert_question( $title = '', $content = '', $author = 0 ) {
+		$title   = empty( $title ) ? 'Question title' : $title;
+		$content = empty( $content ) ? 'Question content' : $content;
+
+		return self::factory()->post->create(
+			array(
+				'post_title'   => $title,
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => $content,
+				'post_author'  => $author,
+			)
+		);
+	}
+
+	public static function insert_answer( $title = '', $content = '', $author = 0 ) {
+		$title   = empty( $title ) ? 'Question title' : $title;
+		$content = empty( $content ) ? 'Question content' : $content;
+
+		$ids      = [];
+		$ids['q'] = self::insert_question();
+		$ids['a'] = self::factory()->post->create(
+			array(
+				'post_title'   => $title,
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => $content,
+				'post_author'  => $author,
+				'post_parent'  => $ids['q'],
+			)
+		);
+
+		return (object) $ids;
+	}
 }
