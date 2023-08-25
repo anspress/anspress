@@ -3,7 +3,7 @@
 namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use \AnsPress\Tests\Common;
+use AnsPress\Tests\Testcases\Common;
 
 class Test_Roles extends TestCase {
 
