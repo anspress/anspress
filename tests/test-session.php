@@ -1,7 +1,5 @@
 <?php
 
-namespace Anspress\Tests;
-
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Session extends TestCase {

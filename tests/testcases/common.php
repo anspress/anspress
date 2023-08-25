@@ -2,9 +2,7 @@
 
 namespace AnsPress\Tests\Testcases;
 
-use Yoast\WPTestUtils\WPIntegration\TestCase;
-
-class Common extends TestCase {
+trait Common {
 
 	/**
 	 * Switches between user roles.
@@ -13,9 +11,9 @@ class Common extends TestCase {
 	 *
 	 * @param string $role The role to set.
 	 */
-	public static function setRole( $role ) {
+	public function setRole( $role ) {
 		$post    = $_POST;
-		$user_id = self::factory()->user->create( array( 'role' => $role ) );
+		$user_id = $this->factory()->user->create( array( 'role' => $role ) );
 		wp_set_current_user( $user_id );
 		$_POST = array_merge( $_POST, $post );
 	}
@@ -23,7 +21,7 @@ class Common extends TestCase {
 	/**
 	 * Clears login cookies, unsets the current user.
 	 */
-	public static function logout() {
+	public function logout() {
 		unset( $GLOBALS['current_user'] );
 		$cookies = array( AUTH_COOKIE, SECURE_AUTH_COOKIE, LOGGED_IN_COOKIE, USER_COOKIE, PASS_COOKIE );
 		foreach ( $cookies as $c ) {
@@ -31,11 +29,11 @@ class Common extends TestCase {
 		}
 	}
 
-	public static function insert_question( $title = '', $content = '', $author = 0 ) {
+	public function insert_question( $title = '', $content = '', $author = 0 ) {
 		$title   = empty( $title ) ? 'Question title' : $title;
 		$content = empty( $content ) ? 'Question content' : $content;
 
-		return self::factory()->post->create(
+		return $this->factory()->post->create(
 			array(
 				'post_title'   => $title,
 				'post_type'    => 'question',
@@ -46,13 +44,13 @@ class Common extends TestCase {
 		);
 	}
 
-	public static function insert_answer( $title = '', $content = '', $author = 0 ) {
+	public function insert_answer( $title = '', $content = '', $author = 0 ) {
 		$title   = empty( $title ) ? 'Question title' : $title;
 		$content = empty( $content ) ? 'Question content' : $content;
 
 		$ids      = [];
-		$ids['q'] = self::insert_question();
-		$ids['a'] = self::factory()->post->create(
+		$ids['q'] = $this->insert_question();
+		$ids['a'] = $this->factory()->post->create(
 			array(
 				'post_title'   => $title,
 				'post_type'    => 'answer',
@@ -73,7 +71,7 @@ class Common extends TestCase {
 	 * @param array $a_args
 	 * @return array
 	 */
-	public static function insert_answers( $q_args = [], $a_args = [], $answer_num = 1 ) {
+	public function insert_answers( $q_args = [], $a_args = [], $answer_num = 1 ) {
 		$ids = [
 			'question' => 0,
 			'answers'  => [],
@@ -87,7 +85,7 @@ class Common extends TestCase {
 			)
 		);
 
-		$ids['question'] = self::factory()->post->create( $q_args );
+		$ids['question'] = $this->factory()->post->create( $q_args );
 
 		$a_args = wp_parse_args(
 			$a_args, array(
@@ -98,7 +96,7 @@ class Common extends TestCase {
 			)
 		);
 
-		$ids['answers'] = self::factory()->post->create_many( $answer_num, $a_args );
+		$ids['answers'] = $this->factory()->post->create_many( $answer_num, $a_args );
 
 		return $ids;
 	}

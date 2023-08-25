@@ -1,11 +1,10 @@
 <?php
 
-namespace Anspress\Tests;
-
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use AnsPress\Tests\Testcases\Common;
 
 class TestHooks extends TestCase {
+
+	use AnsPress\Tests\Testcases\Common;
 
 	/**
 	 * @covers AnsPress_Hooks::comment_subscription
@@ -17,9 +16,9 @@ class TestHooks extends TestCase {
 
 		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ 'AnsPress_Hooks', 'comment_subscription' ] ) );
 		$this->assertEquals( 10, has_action( 'deleted_comment', [ 'AnsPress_Hooks', 'delete_comment_subscriptions' ] ) );
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 
-		$question_id = Common::insert_question();
+		$question_id = $this->insert_question();
 		$comment_id  = $this->factory->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
@@ -43,8 +42,8 @@ class TestHooks extends TestCase {
 			)
 		);
 
-		Common::setRole( 'subscriber' );
-		$ids        = Common::insert_answer();
+		$this->setRole( 'subscriber' );
+		$ids        = $this->insert_answer();
 		$comment_id = $this->factory->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',

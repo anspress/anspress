@@ -1,17 +1,16 @@
 <?php
 
-namespace Anspress\Tests;
-
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use AnsPress\Tests\Testcases\Common;
 
 class TestFunctions extends TestCase {
+
+	use AnsPress\Tests\Testcases\Common;
 
 	/**
 	 * @covers ::ap_get_short_link
 	 */
 	public function testApGetShortLink() {
-		$id    = Common::insert_question();
+		$id    = $this->insert_question();
 		$url   = ap_get_short_link( [ 'ap_q' => $id ] );
 		$query = wp_parse_args( wp_parse_url( $url )['query'] );
 		$this->assertEquals( 'shortlink', $query['ap_page'] );
@@ -99,7 +98,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::is_question
 	 */
 	public function testIsQuestion() {
-		$id = Common::insert_question();
+		$id = $this->insert_question();
 		$this->go_to( '?post_type=question&p=' . $id );
 		$this->assertTrue( is_question() );
 	}
@@ -127,7 +126,7 @@ class TestFunctions extends TestCase {
 	 */
 	public function testGetQuestionID() {
 		$this->assertEquals( 0, get_question_id() );
-		$id = Common::insert_question();
+		$id = $this->insert_question();
 		$this->go_to( '?post_type=question&p=' . $id );
 		$this->assertEquals( $id, get_question_id() );
 	}
@@ -146,14 +145,14 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_is_user_answered
 	 */
 	public function testApIsUserAnswered() {
-		Common::setRole( 'subscriber' );
-		$id = Common::insert_answer();
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
 		$this->assertFalse( ap_is_user_answered( $id->q, get_current_user_id() ) );
-		$id = Common::insert_answer( '', '', get_current_user_id() );
+		$id = $this->insert_answer( '', '', get_current_user_id() );
 		$this->assertTrue( ap_is_user_answered( $id->q, get_current_user_id() ) );
 		wp_delete_post( $id->a, true );
 		$this->assertFalse( ap_is_user_answered( $id->q, get_current_user_id() ) );
-		$id = Common::insert_answer( '', '', get_current_user_id() );
+		$id = $this->insert_answer( '', '', get_current_user_id() );
 		wp_delete_post( $id->a );
 		$this->assertFalse( ap_is_user_answered( $id->q, get_current_user_id() ) );
 	}
@@ -162,7 +161,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_answers_link
 	 */
 	public function testApAnswersLink() {
-		$id = Common::insert_answer();
+		$id = $this->insert_answer();
 		$this->assertEquals( get_permalink( $id->q ) . '#answers', ap_answers_link( $id->q ) );
 	}
 
@@ -170,7 +169,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_post_edit_link
 	 */
 	public function testApPostEditLink() {
-		$id    = Common::insert_answer();
+		$id    = $this->insert_answer();
 		$nonce = wp_create_nonce( 'edit-post-' . $id->q );
 		$this->assertEquals( ap_get_link_to( 'ask' ) . '?id=' . $id->q . '&__nonce=' . $nonce, ap_post_edit_link( $id->q ) );
 		$nonce = wp_create_nonce( 'edit-post-' . $id->a );

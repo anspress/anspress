@@ -1,11 +1,10 @@
 <?php
 
-namespace Anspress\Tests;
-
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use AnsPress\Tests\Testcases\Common;
 
 class Test_Roles extends TestCase {
+
+	use AnsPress\Tests\Testcases\Common;
 
 	/**
 	 * @covers ::ap_role_caps
@@ -159,35 +158,35 @@ class Test_Roles extends TestCase {
 	 */
 	public function testApUserCanAsk() {
 		// Check if user roles can ask.
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
-		Common::setRole( 'ap_participant' );
+		$this->setRole( 'ap_participant' );
 		$this->assertTrue( ap_user_can_ask() );
-		Common::setRole( 'ap_moderator' );
+		$this->setRole( 'ap_moderator' );
 		$this->assertTrue( ap_user_can_ask() );
-		Common::setRole( 'editor' );
+		$this->setRole( 'editor' );
 		$this->assertTrue( ap_user_can_ask() );
 
 		// Check user having ap_new_question can ask.
 		$option = ap_opt( 'post_question_per' );
 		ap_opt( 'post_question_per', 'have_cap' );
 		add_role( 'ap_test_ask', 'Test user can ask', [ 'ap_new_question' => true ] );
-		Common::setRole( 'ap_test_ask' );
+		$this->setRole( 'ap_test_ask' );
 		$this->assertTrue( ap_user_can_ask() );
-		Common::logout();
+		$this->logout();
 		$this->assertFalse( ap_user_can_ask() );
 
 		// Verify anyone can ask option.
 		ap_opt( 'post_question_per', 'anyone' );
 		$this->assertTrue( ap_user_can_ask() );
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
 
 		// Check logged-in can ask permission.
 		ap_opt( 'post_question_per', 'logged_in' );
-		Common::logout();
+		$this->logout();
 		$this->assertFalse( ap_user_can_ask() );
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
 	}
 }

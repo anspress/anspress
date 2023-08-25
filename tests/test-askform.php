@@ -1,17 +1,16 @@
 <?php
 
-namespace Anspress\Tests;
-
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use AnsPress\Tests\Testcases\Common;
 
 class TestAskForm extends TestCase {
+
+	use AnsPress\Tests\Testcases\Common;
 
 	/**
 	 * @covers AP_Form_Hooks::question_form
 	 */
 	public function testQuestionForm() {
-		Common::logout();
+		$this->logout();
 
 		ap_opt( 'allow_private_posts', true );
 		unset( anspress()->forms['question'] );
@@ -64,7 +63,7 @@ class TestAskForm extends TestCase {
 		$this->assertEquals( 'absint', $form->args['fields']['post_id']['sanitize'] );
 
 		// Try for logged in users.
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 
 		unset( anspress()->forms['question'] );
 		anspress()->form_exists( 'question' );
@@ -79,7 +78,7 @@ class TestAskForm extends TestCase {
 	 * @covers AP_Form_Hooks::question_form
 	 */
 	public function testQuestionFormEditing() {
-		Common::logout();
+		$this->logout();
 
 		ap_opt( 'allow_private_posts', true );
 
@@ -122,7 +121,7 @@ class TestAskForm extends TestCase {
 		$_POST    = [];
 
 		ap_opt( 'post_question_per', 'have_cap' );
-		Common::setRole( 'ap_banned' );
+		$this->setRole( 'ap_banned' );
 		$id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Suspendisse aliqua',
@@ -145,7 +144,7 @@ class TestAskForm extends TestCase {
 		$form_html = ob_get_clean();
 		$this->assertEquals( '<p>You cannot edit this question.</p>', $form_html );
 
-		Common::setRole( 'administrator' );
+		$this->setRole( 'administrator' );
 		ob_start();
 		ap_ask_form();
 		$form_html = ob_get_clean();

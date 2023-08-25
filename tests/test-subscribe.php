@@ -1,11 +1,10 @@
 <?php
 
-namespace Anspress\Tests;
-
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use AnsPress\Tests\Testcases\Common;
 
 class TestSubscribe extends TestCase {
+
+	use AnsPress\Tests\Testcases\Common;
 
 	/**
 	 * @covers ::ap_new_subscriber
@@ -180,10 +179,10 @@ class TestSubscribe extends TestCase {
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Hooks', 'question_subscription' ] ) );
 
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 
 		// Check if question created without author set current user as subscriber.
-		$id = Common::insert_question( 'Suspendisse aliqua', 'Donec ultricies blandit venenatis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.' );
+		$id = $this->insert_question( 'Suspendisse aliqua', 'Donec ultricies blandit venenatis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.' );
 
 		// Run action so that ap_after_new_question hook can trigger.
 		do_action( 'ap_processed_new_question', $id, get_post( $id ) );
@@ -191,7 +190,7 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( ap_is_user_subscriber( 'question', $id ) );
 
 		// Check if question author get subscribed.
-		$id = Common::insert_question( 'Suspendisse aliqua', 'Donec ultricies blandit venenatis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', get_current_user_id() );
+		$id = $this->insert_question( 'Suspendisse aliqua', 'Donec ultricies blandit venenatis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', get_current_user_id() );
 
 		// Run action so that ap_after_new_question hook can trigger.
 		do_action( 'ap_processed_new_question', $id, get_post( $id ) );
@@ -205,10 +204,10 @@ class TestSubscribe extends TestCase {
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ 'AnsPress_Hooks', 'answer_subscription' ] ) );
 
-		Common::setRole( 'subscriber' );
+		$this->setRole( 'subscriber' );
 
 		// Check if answer created without author set current user as subscriber.
-		$ids = Common::insert_answers(
+		$ids = $this->insert_answers(
 			array(
 				'post_title'   => 'Pellentesque odio purus, egestas ac luctus gravida, rutrum ut quam.',
 				'post_content' => 'Pellentesque eget quam dui, sit amet eleifend mauris.',
@@ -221,7 +220,7 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( ap_is_user_subscriber( 'answer_' . $ids['answers'][0], $ids['question'] ) );
 
 		// Check if answer author get subscribed.
-		$ids = Common::insert_answers(
+		$ids = $this->insert_answers(
 			array(
 				'post_title'   => 'Pellentesque odio purus, egestas ac luctus gravida, rutrum ut quam.',
 				'post_content' => 'Pellentesque eget quam dui, sit amet eleifend mauris.',
@@ -245,8 +244,8 @@ class TestSubscribe extends TestCase {
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_new_subscriber', [ 'AnsPress_Hooks', 'new_subscriber' ] ) );
 
-		Common::setRole( 'subscriber' );
-		$id = Common::insert_question();
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
 		$this->assertEquals( 0, ap_get_post( $id )->subscribers );
 		ap_new_subscriber( false, 'question', $id );
 		ap_new_subscriber( 2324324, 'question', $id );
@@ -263,7 +262,7 @@ class TestSubscribe extends TestCase {
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_delete_subscribers', [ 'AnsPress_Hooks', 'delete_subscribers' ] ) );
 
-		$id = Common::insert_question();
+		$id = $this->insert_question();
 		ap_new_subscriber( 2345, 'question', $id );
 		ap_new_subscriber( 23451, 'question', $id );
 		ap_new_subscriber( 23455, 'question', $id );
