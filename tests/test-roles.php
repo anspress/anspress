@@ -3,33 +3,9 @@
 namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
+use \AnsPress\Tests\Common;
 
 class Test_Roles extends TestCase {
-
-	/**
-	 * Switches between user roles.
-	 *
-	 * E.g. administrator, editor, author, contributor, subscriber.
-	 *
-	 * @param string $role The role to set.
-	 */
-	public function setRole( $role ) {
-		$post    = $_POST;
-		$user_id = self::factory()->user->create( array( 'role' => $role ) );
-		wp_set_current_user( $user_id );
-		$_POST = array_merge( $_POST, $post );
-	}
-
-	/**
-	 * Clears login cookies, unsets the current user.
-	 */
-	public function logout() {
-		unset( $GLOBALS['current_user'] );
-		$cookies = array( AUTH_COOKIE, SECURE_AUTH_COOKIE, LOGGED_IN_COOKIE, USER_COOKIE, PASS_COOKIE );
-		foreach ( $cookies as $c ) {
-			unset( $_COOKIE[ $c ] );
-		}
-	}
 
 	/**
 	 * @covers ::ap_role_caps
@@ -183,35 +159,35 @@ class Test_Roles extends TestCase {
 	 */
 	public function testApUserCanAsk() {
 		// Check if user roles can ask.
-		$this->setRole( 'subscriber' );
+		Common::setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->setRole( 'ap_participant' );
+		Common::setRole( 'ap_participant' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->setRole( 'ap_moderator' );
+		Common::setRole( 'ap_moderator' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->setRole( 'editor' );
+		Common::setRole( 'editor' );
 		$this->assertTrue( ap_user_can_ask() );
 
 		// Check user having ap_new_question can ask.
 		$option = ap_opt( 'post_question_per' );
 		ap_opt( 'post_question_per', 'have_cap' );
 		add_role( 'ap_test_ask', 'Test user can ask', [ 'ap_new_question' => true ] );
-		$this->setRole( 'ap_test_ask' );
+		Common::setRole( 'ap_test_ask' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->logout();
+		Common::logout();
 		$this->assertFalse( ap_user_can_ask() );
 
 		// Verify anyone can ask option.
 		ap_opt( 'post_question_per', 'anyone' );
 		$this->assertTrue( ap_user_can_ask() );
-		$this->setRole( 'subscriber' );
+		Common::setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
 
 		// Check logged-in can ask permission.
 		ap_opt( 'post_question_per', 'logged_in' );
-		$this->logout();
+		Common::logout();
 		$this->assertFalse( ap_user_can_ask() );
-		$this->setRole( 'subscriber' );
+		Common::setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
 	}
 }
