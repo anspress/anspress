@@ -67,4 +67,28 @@ class TestHooks extends TestCase {
 			)
 		);
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::question_subscription
+	 * @covers AnsPress_Hooks::answer_subscription
+	 */
+	public function testQuestionAnswerAuthorSubscribe() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Hooks', 'question_subscription' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ 'AnsPress_Hooks', 'answer_subscription' ] ) );
+
+		// Question subscription.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$post_obj    = get_post( $question_id );
+		$this->assertTrue( null !== ap_new_subscriber( $post_obj->post_author, 'question', $post_obj->ID ) );
+
+		// Answer subscription.
+		$this->setRole( 'subscriber' );
+		$answer_id = $this->insert_answer( '', '', get_current_user_id() );
+		$post_obj    = get_post( $answer_id );
+		$this->assertTrue( null !== ap_new_subscriber( $post_obj->post_author, 'answer_' . $answer_id->a, $post_obj->post_parent ) );
+	}
 }
