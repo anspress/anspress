@@ -378,4 +378,11 @@ class TestAnsPress extends TestCase {
 		$this->assertInstanceOf( 'AnsPress', anspress() );
 	}
 
+	public function testAnsPressInit() {
+		$this->assertEquals( 1, has_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_anspress' ] ) );
+		$this->assertEquals( 0, has_action( 'plugins_loaded', [ 'AnsPress_Init', 'load_textdomain' ] ) );
+		$this->assertEquals( 10, has_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ] ) );
+		$this->assertEquals( 10, has_action( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ] ) );
+	}
+
 }
