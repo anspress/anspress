@@ -391,4 +391,50 @@ class TestFunctions extends TestCase {
 		);
 	}
 
+
+	/**
+	 * @covers ::ap_get_active_addons
+	 */
+	public function testAPGetActiveAddons() {
+		// For default addon active check.
+		$this->assertArrayHasKey( 'categories.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'akismet.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'avatar.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'buddypress.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'notifications.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'profile.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'recaptcha.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'tags.php', ap_get_active_addons() );
+
+		// Addon activate and check.
+		ap_activate_addon( 'akismet.php' );
+		ap_activate_addon( 'avatar.php' );
+		ap_activate_addon( 'buddypress.php' );
+		ap_activate_addon( 'notifications.php' );
+		ap_activate_addon( 'profile.php' );
+		ap_activate_addon( 'recaptcha.php' );
+		ap_activate_addon( 'syntaxhighlighter.php' );
+		ap_activate_addon( 'tags.php' );
+
+		// Default addon deactivate and check.
+		ap_deactivate_addon( 'categories.php' );
+		ap_deactivate_addon( 'email.php' );
+		ap_deactivate_addon( 'reputation.php' );
+
+		// Checks.
+		$this->assertArrayNotHasKey( 'categories.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'akismet.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'avatar.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'buddypress.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'notifications.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'profile.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'recaptcha.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'syntaxhighlighter.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'tags.php', ap_get_active_addons() );
+	}
 }
