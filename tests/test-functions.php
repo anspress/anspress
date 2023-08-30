@@ -336,4 +336,15 @@ class TestFunctions extends TestCase {
 		$post = get_post( $answer_id->a );
 		$this->assertEquals( $post->post_type, ap_is_cpt( $post ) );
 	}
+
+	/**
+	 * @covers ::ap_to_dot_notation
+	 */
+	public function testAPToDotNotation() {
+		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question..answer..' ) );
+		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question..answer' ) );
+		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question..answer..........' ) );
+		$this->assertEquals( 'question.answer.comment', ap_to_dot_notation( 'question..answer.comment' ) );
+		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question[answer]' ) );
+	}
 }
