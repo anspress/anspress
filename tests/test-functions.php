@@ -457,9 +457,9 @@ class TestFunctions extends TestCase {
 			)
 		);
 		$post    = get_post( $post_id );
-		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'the-quick-brown-fox-jumps-over-the-lazy-dog' ) );
+		$this->assertEquals( 'the-quick-brown-fox-jumps-over-the-lazy-dog', ap_remove_stop_words_post_name( $post->post_name ) );
 		ap_opt( 'keep_stop_words', false );
-		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'the-quick-brown-fox-jumps-over-the-lazy-dog' ) );
+		$this->assertEquals( '-quick-brown-fox-jumps---lazy-dog', ap_remove_stop_words_post_name( $post->post_name ) );
 
 		ap_opt( 'keep_stop_words', true );
 		$post_id = $this->factory()->post->create(
@@ -472,9 +472,9 @@ class TestFunctions extends TestCase {
 			)
 		);
 		$post    = get_post( $post_id );
-		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'top-of-the-world' ) );
+		$this->assertEquals( 'top-of-the-world', ap_remove_stop_words_post_name( $post->post_name ) );
 		ap_opt( 'keep_stop_words', false );
-		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'top-of-the-world' ) );
+		$this->assertEquals( 'top---world', ap_remove_stop_words_post_name( $post->post_name ) );
 
 		ap_opt( 'keep_stop_words', true );
 		$post_id = $this->factory()->post->create(
@@ -487,9 +487,9 @@ class TestFunctions extends TestCase {
 			)
 		);
 		$post    = get_post( $post_id );
-		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'a-quick-brown-fox-jumps-over-the-very-lazy-dog' ) );
+		$this->assertEquals( 'a-quick-brown-fox-jumps-over-the-very-lazy-dog', ap_remove_stop_words_post_name( $post->post_name ) );
 		ap_opt( 'keep_stop_words', false );
-		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'a-quick-brown-fox-jumps-over-the-very-lazy-dog' ) );
+		$this->assertEquals( '-quick-brown-fox-jumps----lazy-dog', ap_remove_stop_words_post_name( $post->post_name ) );
 	}
 
 	/**
