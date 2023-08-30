@@ -297,4 +297,43 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'syntaxhighlighter.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'tags.php' ) );
 	}
+
+	/**
+	 * @covers ::ap_is_cpt
+	 */
+	public function testAPIsCPT() {
+		// Test for post post type.
+		$post_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_type'    => 'post',
+				'post_status'  => 'publish',
+				'post_content' => 'Post Content',
+			)
+		);
+		$post = get_post( $post_id );
+		$this->assertNotEquals( $post->post_type, ap_is_cpt( $post ) );
+
+		// Test for page post type.
+		$page_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_content' => 'Page Content',
+			)
+		);
+		$post = get_post( $page_id );
+		$this->assertNotEquals( $post->post_type, ap_is_cpt( $post ) );
+
+		// Test for question post type.
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$post = get_post( $question_id );
+		$this->assertEquals( $post->post_type, ap_is_cpt( $post ) );
+
+		// Test for answer post type.
+		$answer_id = $this->insert_answer( '', '', get_current_user_id() );
+		$post = get_post( $answer_id->a );
+		$this->assertEquals( $post->post_type, ap_is_cpt( $post ) );
+	}
 }
