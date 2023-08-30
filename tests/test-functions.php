@@ -506,4 +506,12 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( '5.05B', ap_short_num( '5050000000' ) );
 		$this->assertEquals( '5.005B', ap_short_num( '5005000000', 3 ) );
 	}
+
+	/**
+	 * @covers ::ap_highlight_words
+	 */
+	public function testAPHighlightWords() {
+		$this->assertEquals( 'This is <span class="highlight_word">question</span> title', ap_highlight_words( 'This is question title', 'question' ) );
+		$this->assertEquals( 'This is <span class="highlight_word">answer</span> title', ap_highlight_words( 'This is answer title', 'answer' ) );
+	}
 }
