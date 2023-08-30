@@ -437,4 +437,58 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'syntaxhighlighter.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'tags.php', ap_get_active_addons() );
 	}
+
+	/**
+	 * @covers ::ap_remove_stop_words
+	 * @covers ::ap_remove_stop_words_post_name
+	 */
+	public function testAPRemoveStopWords() {
+		$this->assertEquals( 'The quick brown fox jumps   lazy dog', ap_remove_stop_words( 'The quick brown fox jumps over the lazy dog' ) );
+		$this->assertEquals( 'Top   world', ap_remove_stop_words( 'Top of the world' ) );
+		$this->assertEquals( ' quick brown fox jumps    lazy dog', ap_remove_stop_words( 'a quick brown fox jumps over the very lazy dog' ) );
+
+		$post_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'The quick brown fox jumps over the lazy dog',
+				'post_type'    => 'post',
+				'post_status'  => 'publish',
+				'post_content' => 'Post Content',
+				'post_name'    => 'the-quick-brown-fox-jumps-over-the-lazy-dog'
+			)
+		);
+		$post    = get_post( $post_id );
+		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'the-quick-brown-fox-jumps-over-the-lazy-dog' ) );
+		ap_opt( 'keep_stop_words', false );
+		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'the-quick-brown-fox-jumps-over-the-lazy-dog' ) );
+
+		ap_opt( 'keep_stop_words', true );
+		$post_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Top of the world',
+				'post_type'    => 'post',
+				'post_status'  => 'publish',
+				'post_content' => 'Post Content',
+				'post_name'    => 'top-of-the-world'
+			)
+		);
+		$post    = get_post( $post_id );
+		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'top-of-the-world' ) );
+		ap_opt( 'keep_stop_words', false );
+		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'top-of-the-world' ) );
+
+		ap_opt( 'keep_stop_words', true );
+		$post_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'a quick brown fox jumps over the very lazy dog',
+				'post_type'    => 'post',
+				'post_status'  => 'publish',
+				'post_content' => 'Post Content',
+				'post_name'    => 'a-quick-brown-fox-jumps-over-the-very-lazy-dog'
+			)
+		);
+		$post    = get_post( $post_id );
+		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'a-quick-brown-fox-jumps-over-the-very-lazy-dog' ) );
+		ap_opt( 'keep_stop_words', false );
+		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'a-quick-brown-fox-jumps-over-the-very-lazy-dog' ) );
+	}
 }
