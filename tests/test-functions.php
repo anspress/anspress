@@ -514,4 +514,15 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'This is <span class="highlight_word">question</span> title', ap_highlight_words( 'This is question title', 'question' ) );
 		$this->assertEquals( 'This is <span class="highlight_word">answer</span> title', ap_highlight_words( 'This is answer title', 'answer' ) );
 	}
+
+	/**
+	 * @covers ::ap_trim_traling_space
+	 * @covers ::ap_replace_square_bracket
+	 */
+	public function testAPTrimTralingSpace() {
+		$this->assertEquals( 'Question title', ap_trim_traling_space( '   Question title    ' ) );
+		$this->assertEquals( 'Answer title', ap_trim_traling_space( 'Answer title           ' ) );
+		$this->assertEquals( '[Question title]', ap_trim_traling_space( '[Question title]' ) );
+		$this->assertEquals( '[Answer title]', ap_trim_traling_space( '[Answer title]' ) );
+	}
 }
