@@ -257,4 +257,44 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( [], $tags['li'] );
 		$this->assertEquals( [], $tags['del'] );
 	}
+
+	/**
+	 * @covers ::ap_is_addon_active
+	 */
+	public function testIsAddonActive() {
+		// Default addons enabled check on plugin activation.
+		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
+
+		// Check for other addons is not enabled.
+		$this->assertFalse( ap_is_addon_active( 'akismet.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'avatar.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'buddypress.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'notifications.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'profile.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'recaptcha.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'syntaxhighlighter.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'tags.php' ) );
+
+		// Check for addons enabled.
+		ap_activate_addon( 'akismet.php' );
+		ap_activate_addon( 'avatar.php' );
+		ap_activate_addon( 'buddypress.php' );
+		ap_activate_addon( 'notifications.php' );
+		ap_activate_addon( 'profile.php' );
+		ap_activate_addon( 'recaptcha.php' );
+		ap_activate_addon( 'syntaxhighlighter.php' );
+		ap_activate_addon( 'tags.php' );
+
+		// Checks.
+		$this->assertTrue( ap_is_addon_active( 'akismet.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'avatar.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'buddypress.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'profile.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'recaptcha.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'syntaxhighlighter.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'tags.php' ) );
+	}
 }
