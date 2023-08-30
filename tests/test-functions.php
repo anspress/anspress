@@ -347,4 +347,48 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'question.answer.comment', ap_to_dot_notation( 'question..answer.comment' ) );
 		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question[answer]' ) );
 	}
+
+	/**
+	 * @covers ::ap_array_insert_after
+	 */
+	public function testAPArrayInsertAfter() {
+		// Test for appending at last.
+		$this->assertEquals(
+			array(
+				'question' => 'Question title',
+				'answer'   => 'Answer title',
+				'comment'  => 'Comment content',
+			),
+			ap_array_insert_after(
+				array(
+					'question' => 'Question title',
+					'answer'   => 'Answer title',
+				),
+				'comment',
+				array(
+					'comment'  => 'Comment content',
+				)
+			)
+		);
+
+		// Test for appending at middle.
+		$this->assertEquals(
+			array(
+				'question' => 'Question title',
+				'answer'   => 'Answer title',
+				'comment'  => 'Comment content',
+			),
+			ap_array_insert_after(
+				array(
+					'question' => 'Question title',
+					'comment'  => 'Comment content',
+				),
+				'answer',
+				array(
+					'answer'   => 'Answer title',
+				)
+			)
+		);
+	}
+
 }
