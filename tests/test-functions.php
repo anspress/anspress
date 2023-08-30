@@ -491,4 +491,19 @@ class TestFunctions extends TestCase {
 		ap_opt( 'keep_stop_words', false );
 		$this->assertEquals( ap_remove_stop_words_post_name( $post->post_name ), ap_remove_stop_words_post_name( 'a-quick-brown-fox-jumps-over-the-very-lazy-dog' ) );
 	}
+
+	/**
+	 * @covers ::ap_short_num
+	 */
+	public function testAPIsShortNum() {
+		$this->assertEquals( '5.00K', ap_short_num( '5000' ) );
+		$this->assertEquals( '5.05K', ap_short_num( '5050' ) );
+		$this->assertEquals( '5.005K', ap_short_num( '5005', 3 ) );
+		$this->assertEquals( '5.00M', ap_short_num( '5000000' ) );
+		$this->assertEquals( '5.05M', ap_short_num( '5050000' ) );
+		$this->assertEquals( '5.005M', ap_short_num( '5005000', 3 ) );
+		$this->assertEquals( '5.00B', ap_short_num( '5000000000' ) );
+		$this->assertEquals( '5.05B', ap_short_num( '5050000000' ) );
+		$this->assertEquals( '5.005B', ap_short_num( '5005000000', 3 ) );
+	}
 }
