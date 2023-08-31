@@ -536,4 +536,17 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'question', ap_sanitize_unslash( '', true, 'question' ) );
 		$this->assertEquals( 'answer', ap_sanitize_unslash( '', false, 'answer' ) );
 	}
+
+	/**
+	 * @covers ::ap_disable_question_suggestion
+	 */
+	public function testAPDisableQuestionSuggestion() {
+		$this->assertFalse( ap_disable_question_suggestion() );
+
+		add_filter( 'ap_disable_question_suggestion', '__return_true' );
+		$this->assertTrue( ap_disable_question_suggestion() );
+
+		add_filter( 'ap_disable_question_suggestion', '__return_false' );
+		$this->assertFalse( ap_disable_question_suggestion() );
+	}
 }
