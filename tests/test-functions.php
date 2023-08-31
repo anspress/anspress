@@ -666,4 +666,88 @@ class TestFunctions extends TestCase {
 		}
 		$this->assertEquals( $pages_id, ap_main_pages_id() );
 	}
+
+	/**
+	 * @covers ::ap_total_published_questions
+	 */
+	public function testAPTotalPublishedQuestions() {
+		$this->assertEquals( 0, ap_total_published_questions() );
+		$this->insert_question( 'First Question', 'First Content' );
+		$this->assertEquals( 1, ap_total_published_questions() );
+
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->assertEquals( 5, ap_total_published_questions() );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalQuestionCount() {
+		// For question count test.
+		$total_posts = ap_total_posts_count();
+		$this->assertEquals( 0, $total_posts->publish );
+		$this->assertEquals( 0, $total_posts->total );
+
+		$this->insert_question( 'First Question', 'First Content' );
+		$total_posts = ap_total_posts_count();
+		$this->assertEquals( 1, $total_posts->publish );
+		$this->assertEquals( 1, $total_posts->total );
+
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$this->insert_question( 'Later Questions', 'Later Contents' );
+		$total_posts = ap_total_posts_count();
+		$this->assertEquals( 5, $total_posts->publish );
+		$this->assertEquals( 5, $total_posts->total );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalAnswerCount() {
+		// For answer count test.
+		$total_posts = ap_total_posts_count( 'answer' );
+		$this->assertEquals( 0, $total_posts->publish );
+		$this->assertEquals( 0, $total_posts->total );
+
+		$this->insert_answer( 'First answer', 'First Content' );
+		$total_posts = ap_total_posts_count( 'answer' );
+		$this->assertEquals( 1, $total_posts->publish );
+		$this->assertEquals( 1, $total_posts->total );
+
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$total_posts = ap_total_posts_count( 'answer' );
+		$this->assertEquals( 5, $total_posts->publish );
+		$this->assertEquals( 5, $total_posts->total );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalQuestionAnswerCount() {
+		// For question count test.
+		$total_posts = ap_total_posts_count( '' );
+		$this->assertEquals( 0, $total_posts->publish );
+		$this->assertEquals( 0, $total_posts->total );
+
+		$this->insert_answer( 'First answer', 'First Content' );
+		$total_posts = ap_total_posts_count( '' );
+		$this->assertEquals( 2, $total_posts->publish );
+		$this->assertEquals( 2, $total_posts->total );
+
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$this->insert_answer( 'Later answers', 'Later Contents' );
+		$total_posts = ap_total_posts_count( '' );
+		$this->assertEquals( 10, $total_posts->publish );
+		$this->assertEquals( 10, $total_posts->total );
+	}
 }
