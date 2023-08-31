@@ -117,4 +117,3 @@ function _ap_short_addons_list( $a ) { // phpcs:ignore
 		})
 	})(jQuery)
 </script>
-

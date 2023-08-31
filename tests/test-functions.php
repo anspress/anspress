@@ -643,4 +643,16 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
 	}
+
+	/**
+	 * @covers ::ap_main_pages
+	 */
+	public function testAPMainPages() {
+		$this->assertArrayHasKey( 'base_page', ap_main_pages() );
+		$this->assertArrayHasKey( 'ask_page', ap_main_pages() );
+		$this->assertArrayHasKey( 'user_page', ap_main_pages() );
+		$this->assertArrayHasKey( 'categories_page', ap_main_pages() );
+		$this->assertArrayHasKey( 'tags_page', ap_main_pages() );
+		$this->assertArrayHasKey( 'activities_page', ap_main_pages() );
+	}
 }
