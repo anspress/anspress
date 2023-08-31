@@ -549,4 +549,30 @@ class TestFunctions extends TestCase {
 		add_filter( 'ap_disable_question_suggestion', '__return_false' );
 		$this->assertFalse( ap_disable_question_suggestion() );
 	}
+
+	/**
+	 * @covers ::ap_activity_short_title
+	 */
+	public function testAPActivityShortTitle() {
+		$this->assertEquals( 'asked', ap_activity_short_title( 'new_question' ) );
+		$this->assertEquals( 'approved', ap_activity_short_title( 'approved_question' ) );
+		$this->assertEquals( 'approved', ap_activity_short_title( 'approved_answer' ) );
+		$this->assertEquals( 'answered', ap_activity_short_title( 'new_answer' ) );
+		$this->assertEquals( 'deleted answer', ap_activity_short_title( 'delete_answer' ) );
+		$this->assertEquals( 'restored question', ap_activity_short_title( 'restore_question' ) );
+		$this->assertEquals( 'restored answer', ap_activity_short_title( 'restore_answer' ) );
+		$this->assertEquals( 'commented', ap_activity_short_title( 'new_comment' ) );
+		$this->assertEquals( 'deleted comment', ap_activity_short_title( 'delete_comment' ) );
+		$this->assertEquals( 'commented on answer', ap_activity_short_title( 'new_comment_answer' ) );
+		$this->assertEquals( 'edited question', ap_activity_short_title( 'edit_question' ) );
+		$this->assertEquals( 'edited answer', ap_activity_short_title( 'edit_answer' ) );
+		$this->assertEquals( 'edited comment', ap_activity_short_title( 'edit_comment' ) );
+		$this->assertEquals( 'edited comment on answer', ap_activity_short_title( 'edit_comment_answer' ) );
+		$this->assertEquals( 'selected answer', ap_activity_short_title( 'answer_selected' ) );
+		$this->assertEquals( 'unselected answer', ap_activity_short_title( 'answer_unselected' ) );
+		$this->assertEquals( 'updated status', ap_activity_short_title( 'status_updated' ) );
+		$this->assertEquals( 'selected as best answer', ap_activity_short_title( 'best_answer' ) );
+		$this->assertEquals( 'unselected as best answer', ap_activity_short_title( 'unselected_best_answer' ) );
+		$this->assertEquals( 'changed status', ap_activity_short_title( 'changed_status' ) );
+	}
 }
