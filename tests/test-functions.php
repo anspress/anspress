@@ -575,4 +575,72 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'unselected as best answer', ap_activity_short_title( 'unselected_best_answer' ) );
 		$this->assertEquals( 'changed status', ap_activity_short_title( 'changed_status' ) );
 	}
+
+	/**
+	 * @covers ::ap_activate_addon
+	 * @covers ::ap_deactivate_addon
+	 */
+	public function testAPActivateAddon() {
+		// For default addons activate behaviour.
+		$this->assertArrayHasKey( 'categories.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'email.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
+
+		// For addons activate behaviour test.
+		ap_activate_addon( 'akismet.php' );
+		ap_activate_addon( 'avatar.php' );
+		ap_activate_addon( 'buddypress.php' );
+		ap_activate_addon( 'notifications.php' );
+		ap_activate_addon( 'profile.php' );
+		ap_activate_addon( 'recaptcha.php' );
+		ap_activate_addon( 'syntaxhighlighter.php' );
+		ap_activate_addon( 'tags.php' );
+
+		// Test begins.
+		$this->assertArrayHasKey( 'categories.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'email.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'profile.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayHasKey( 'tags.php', get_option( 'anspress_addons' ) );
+
+		// For addons deactivate behaviour test.
+		ap_deactivate_addon( 'categories.php' );
+		ap_deactivate_addon( 'email.php' );
+		ap_deactivate_addon( 'reputation.php' );
+		ap_deactivate_addon( 'akismet.php' );
+		ap_deactivate_addon( 'avatar.php' );
+		ap_deactivate_addon( 'buddypress.php' );
+		ap_deactivate_addon( 'notifications.php' );
+		ap_deactivate_addon( 'profile.php' );
+		ap_deactivate_addon( 'recaptcha.php' );
+		ap_deactivate_addon( 'syntaxhighlighter.php' );
+		ap_deactivate_addon( 'tags.php' );
+
+		// Test begins.
+		$this->assertArrayNotHasKey( 'categories.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
+	}
 }
