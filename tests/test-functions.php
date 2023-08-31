@@ -801,4 +801,14 @@ class TestFunctions extends TestCase {
 			$this->assertArrayHasKey( 'class', $get_addon );
 		}
 	}
+
+	/**
+	 * @covers ::ap_in_array_r
+	 */
+	public function testAPInArrayR() {
+		$this->assertTrue( ap_in_array_r( 'question', array( 'question', 'answer', 'comment' ) ) );
+		$this->assertTrue( ap_in_array_r( 'answer', array( 'question', 'answer', 'comment' ) ) );
+		$this->assertFalse( ap_in_array_r( 'comment', array( 'question', 'answer' ) ) );
+	}
+
 }
