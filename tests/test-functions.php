@@ -525,4 +525,12 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( '[Question title]', ap_trim_traling_space( '[Question title]' ) );
 		$this->assertEquals( '[Answer title]', ap_trim_traling_space( '[Answer title]' ) );
 	}
+
+	/**
+	 * @covers ::ap_sanitize_unslash
+	 */
+	public function testAPSanitizeUnslash() {
+		$this->assertEquals( 'Questions', ap_sanitize_unslash( 'Question\s' ) );
+		$this->assertEquals( 'Answers', ap_sanitize_unslash( 'Answer\s' ) );
+	}
 }
