@@ -532,5 +532,8 @@ class TestFunctions extends TestCase {
 	public function testAPSanitizeUnslash() {
 		$this->assertEquals( 'Questions', ap_sanitize_unslash( 'Question\s' ) );
 		$this->assertEquals( 'Answers', ap_sanitize_unslash( 'Answer\s' ) );
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'Question \title < <span>I will get removed</span>     I reside at last' ) );
+		$this->assertEquals( 'question', ap_sanitize_unslash( '', true, 'question' ) );
+		$this->assertEquals( 'answer', ap_sanitize_unslash( '', false, 'answer' ) );
 	}
 }
