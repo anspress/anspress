@@ -99,4 +99,34 @@ class TestThemeFunctions extends TestCase {
 		$this->assertTrue( is_post_waiting_moderation( $id ) );
 	}
 
+	/**
+	 * @covers ::is_post_closed
+	 */
+	public function testIsPostClosed() {
+		$id = $this->insert_question();
+		$this->assertFalse( is_post_closed( $id ) );
+
+		// Check for question open.
+		ap_insert_qameta(
+			$id,
+			array(
+				'selected_id'  => '',
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 0,
+			)
+		);
+		$this->assertFalse( is_post_closed( $id ) );
+
+		// Check for question close.
+		ap_insert_qameta(
+			$id,
+			array(
+				'selected_id'  => '',
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$this->assertTrue( is_post_closed( $id ) );
+	}
+
 }
