@@ -655,4 +655,15 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'tags_page', ap_main_pages() );
 		$this->assertArrayHasKey( 'activities_page', ap_main_pages() );
 	}
+
+	/**
+	 * @covers ::ap_main_pages_id
+	 */
+	public function testAPMainPagesID() {
+		$main_pages = array_keys( ap_main_pages() );
+		foreach ( $main_pages as $slug ) {
+			$pages_id[ $slug ] = ap_opt( $slug );
+		}
+		$this->assertEquals( $pages_id, ap_main_pages_id() );
+	}
 }
