@@ -750,4 +750,55 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 10, $total_posts->publish );
 		$this->assertEquals( 10, $total_posts->total );
 	}
+
+	/**
+	 * @covers ::ap_get_addons
+	 */
+	public function testAPGetAddons() {
+		$this->assertArrayHasKey( 'categories.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'email.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'reputation.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'akismet.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'avatar.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'buddypress.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'notifications.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'profile.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'recaptcha.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'syntaxhighlighter.php', ap_get_addons() );
+		$this->assertArrayHasKey( 'tags.php', ap_get_addons() );
+	}
+
+	/**
+	 * @covers ::ap_get_addon
+	 */
+	public function testAPGetAddon() {
+		$addon_arrays = array(
+			'categories.php',
+			'email.php',
+			'reputation.php',
+			'akismet.php',
+			'avatar.php',
+			'buddypress.php',
+			'notifications.php',
+			'profile.php',
+			'recaptcha.php',
+			'syntaxhighlighter.php',
+			'tags.php',
+		);
+
+		foreach ( $addon_arrays as $addon ) {
+			$get_addon = ap_get_addon( $addon );
+			$this->assertEquals( $addon, $get_addon['id'] );
+			$this->assertEquals( 'addon-' . str_replace( '.php', '', $addon ), $get_addon['class'] );
+
+			// Test for key is available or not.
+			$this->assertArrayHasKey( 'name', $get_addon );
+			$this->assertArrayHasKey( 'description', $get_addon );
+			$this->assertArrayHasKey( 'path', $get_addon );
+			$this->assertArrayHasKey( 'pro', $get_addon );
+			$this->assertArrayHasKey( 'active', $get_addon );
+			$this->assertArrayHasKey( 'id', $get_addon );
+			$this->assertArrayHasKey( 'class', $get_addon );
+		}
+	}
 }
