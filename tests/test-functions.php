@@ -985,4 +985,28 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 1, ap_total_solved_questions() );
 	}
 
+	/**
+	 * @covers ::ap_questions_answer_ids
+	 */
+	public function testAPQuestionsAnswerIDs() {
+		$question = $this->insert_question();
+		$this->assertEquals( [], ap_questions_answer_ids( $question ) );
+		$answer_arr = array(
+			'post_title'   => 'Question title',
+			'post_type'    => 'answer',
+			'post_status'  => 'publish',
+			'post_content' => 'Question content',
+			'post_parent'  => $question,
+		);
+		$answer = $this->factory()->post->create( $answer_arr );
+		$this->assertEquals( [ $answer ], ap_questions_answer_ids( $question ) );
+		$answer1 = $this->factory()->post->create( $answer_arr );
+		$this->assertEquals( [ $answer, $answer1 ], ap_questions_answer_ids( $question ) );
+		$answer2 = $this->factory()->post->create( $answer_arr );
+		$this->assertEquals( [ $answer, $answer1, $answer2 ], ap_questions_answer_ids( $question ) );
+		wp_delete_post( $answer2 );
+		$this->assertNotEquals( [ $answer, $answer1, $answer2 ], ap_questions_answer_ids( $question ) );
+		$this->assertEquals( [ $answer, $answer1 ], ap_questions_answer_ids( $question ) );
+	}
+
 }
