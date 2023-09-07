@@ -936,4 +936,53 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'You cannot vote on restricted posts', ap_response_message( 'you_cannot_vote_on_restricted', true ) );
 	}
 
+	/**
+	 * @covers ::ap_total_solved_questions
+	 */
+	public function testAPTotalSolvedQuestions() {
+		$this->assertEquals( 0, ap_total_solved_questions() );
+		$id = $this->insert_answer();
+		ap_insert_qameta(
+			$id->q,
+			array(
+				'selected_id'  => $id->a,
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$this->assertNotEquals( 0, ap_total_solved_questions() );
+		$this->assertEquals( 1, ap_total_solved_questions() );
+
+		$question = $this->insert_question();
+		$this->assertEquals( 1, ap_total_solved_questions() );
+		$answer = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Question content',
+				'post_parent'  => $question,
+			)
+		);
+		$this->assertEquals( 1, ap_total_solved_questions() );
+		ap_insert_qameta(
+			$question,
+			array(
+				'selected_id'  => $answer,
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$this->assertEquals( 2, ap_total_solved_questions() );
+		ap_insert_qameta(
+			$question,
+			array(
+				'selected_id'  => '',
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$this->assertEquals( 1, ap_total_solved_questions() );
+	}
+
 }
