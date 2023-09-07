@@ -1009,4 +1009,70 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( [ $answer, $answer1 ], ap_questions_answer_ids( $question ) );
 	}
 
+	/**
+	 * @covers ::ap_search_array
+	 */
+	public function testAPSearchArray() {
+		$this->assertEquals(
+			[
+				[
+					'post_title'   => 'Question title',
+					'post_content' => 'Question content',
+				]
+			],
+			ap_search_array(
+				array(
+					'post_title'   => 'Question title',
+					'post_content' => 'Question content',
+				),
+				'post_title',
+				'Question title'
+			)
+		);
+		$this->assertEquals(
+			[
+				[
+					'post_title'   => 'Question title',
+					'post_content' => 'Question content',
+				]
+			],
+			ap_search_array(
+				array(
+					'question' => array(
+						'post_title'   => 'Question title',
+						'post_content' => 'Question content',
+					),
+					'answer' => array(
+						'post_title'   => 'Answer title',
+						'post_content' => 'Answer content',
+					),
+				),
+				'post_title',
+				'Question title'
+			)
+		);
+		$this->assertEquals(
+			[
+				[
+					'post_title'   => 'Answer title',
+					'post_content' => 'Answer content',
+				]
+			],
+			ap_search_array(
+				array(
+					'question' => array(
+						'post_title'   => 'Question title',
+						'post_content' => 'Question content',
+					),
+					'answer' => array(
+						'post_title'   => 'Answer title',
+						'post_content' => 'Answer content',
+					),
+				),
+				'post_title',
+				'Answer title'
+			)
+		);
+	}
+
 }
