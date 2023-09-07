@@ -823,4 +823,117 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'Question title;;;', ap_truncate_chars( '<h1>Question title I\m</h1>', 14, ';;;' ) );
 	}
 
+	/**
+	 * @covers ::ap_response_message
+	 */
+	public function testAPResponseMessage() {
+		$this->assertEquals(
+			[
+				'type'    => 'success',
+				'message' => 'Success',
+			],
+			ap_response_message( 'success' )
+		);
+		$this->assertEquals( 'Success', ap_response_message( 'success', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'error',
+				'message' => 'Something went wrong, last action failed.',
+			],
+			ap_response_message( 'something_wrong' )
+		);
+		$this->assertEquals( 'Something went wrong, last action failed.', ap_response_message( 'something_wrong', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'success',
+				'message' => 'Comment updated successfully.',
+			],
+			ap_response_message( 'comment_edit_success' )
+		);
+		$this->assertEquals( 'Comment updated successfully.', ap_response_message( 'comment_edit_success', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'warning',
+				'message' => 'You cannot vote on your own question or answer.',
+			],
+			ap_response_message( 'cannot_vote_own_post' )
+		);
+		$this->assertEquals( 'You cannot vote on your own question or answer.', ap_response_message( 'cannot_vote_own_post', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'warning',
+				'message' => 'You do not have permission to view private posts.',
+			],
+			ap_response_message( 'no_permission_to_view_private' )
+		);
+		$this->assertEquals( 'You do not have permission to view private posts.', ap_response_message( 'no_permission_to_view_private', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'error',
+				'message' => 'Please check captcha field and resubmit it again.',
+			],
+			ap_response_message( 'captcha_error' )
+		);
+		$this->assertEquals( 'Please check captcha field and resubmit it again.', ap_response_message( 'captcha_error', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'success',
+				'message' => 'Image uploaded successfully',
+			],
+			ap_response_message( 'post_image_uploaded' )
+		);
+		$this->assertEquals( 'Image uploaded successfully', ap_response_message( 'post_image_uploaded', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'success',
+				'message' => 'Answer has been deleted permanently',
+			],
+			ap_response_message( 'answer_deleted_permanently' )
+		);
+		$this->assertEquals( 'Answer has been deleted permanently', ap_response_message( 'answer_deleted_permanently', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'warning',
+				'message' => 'You have already attached maximum numbers of allowed uploads.',
+			],
+			ap_response_message( 'upload_limit_crossed' )
+		);
+		$this->assertEquals( 'You have already attached maximum numbers of allowed uploads.', ap_response_message( 'upload_limit_crossed', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'success',
+				'message' => 'Your profile has been updated successfully.',
+			],
+			ap_response_message( 'profile_updated_successfully' )
+		);
+		$this->assertEquals( 'Your profile has been updated successfully.', ap_response_message( 'profile_updated_successfully', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'warning',
+				'message' => 'Voting down is disabled.',
+			],
+			ap_response_message( 'voting_down_disabled' )
+		);
+		$this->assertEquals( 'Voting down is disabled.', ap_response_message( 'voting_down_disabled', true ) );
+
+		$this->assertEquals(
+			[
+				'type'    => 'warning',
+				'message' => 'You cannot vote on restricted posts',
+			],
+			ap_response_message( 'you_cannot_vote_on_restricted' )
+		);
+		$this->assertEquals( 'You cannot vote on restricted posts', ap_response_message( 'you_cannot_vote_on_restricted', true ) );
+	}
+
 }
