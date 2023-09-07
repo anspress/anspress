@@ -811,4 +811,16 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_in_array_r( 'comment', array( 'question', 'answer' ) ) );
 	}
 
+	/**
+	 * @covers ::ap_truncate_chars
+	 */
+	public function testAPTruncateChars() {
+		$this->assertEquals( 'Question title', ap_truncate_chars( '<h1>Question title</h1>' ) );
+		$this->assertEquals( '', ap_truncate_chars( '<style>body{background-color:white;}</style>' ) );
+		$this->assertEquals( 'Question title Answer', ap_truncate_chars( 'Question title	Answer' ) );
+		$this->assertEquals( 'The quick brown fox jumps over the lazy dog', ap_truncate_chars( '<h1>The quick <span style="color: brown;">brown</span> fox jumps over the lazy dog</h1>' ) );
+		$this->assertEquals( 'Question title...', ap_truncate_chars( 'Question title I\m', 14 ) );
+		$this->assertEquals( 'Question title;;;', ap_truncate_chars( '<h1>Question title I\m</h1>', 14, ';;;' ) );
+	}
+
 }
