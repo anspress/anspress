@@ -1042,7 +1042,7 @@ class TestFunctions extends TestCase {
 						'post_title'   => 'Question title',
 						'post_content' => 'Question content',
 					),
-					'answer' => array(
+					'answer'    => array(
 						'post_title'   => 'Answer title',
 						'post_content' => 'Answer content',
 					),
@@ -1064,12 +1064,76 @@ class TestFunctions extends TestCase {
 						'post_title'   => 'Question title',
 						'post_content' => 'Question content',
 					),
-					'answer' => array(
+					'answer'   => array(
 						'post_title'   => 'Answer title',
 						'post_content' => 'Answer content',
 					),
 				),
 				'post_title',
+				'Answer title'
+			)
+		);
+		$this->assertEquals(
+			[
+				[
+					'title'   => 'Question title',
+					'content' => 'Question content',
+				]
+			],
+			ap_search_array(
+				array(
+					'question' => array(
+						'post_title'   => 'Question title',
+						'post_content' => 'Question content',
+					),
+					'answer'   => array(
+						'post_title'   => 'Answer title',
+						'post_content' => 'Answer content',
+					),
+					'qa'       => array(
+						array(
+							'title'   => 'Question title',
+							'content' => 'Question content',
+						),
+						array(
+							'title'   => 'Answer title',
+							'content' => 'Answer content',
+						),
+					)
+				),
+				'title',
+				'Question title'
+			)
+		);
+		$this->assertEquals(
+			[
+				[
+					'title'   => 'Answer title',
+					'content' => 'Answer content',
+				]
+			],
+			ap_search_array(
+				array(
+					'question' => array(
+						'post_title'   => 'Question title',
+						'post_content' => 'Question content',
+					),
+					'answer'   => array(
+						'post_title'   => 'Answer title',
+						'post_content' => 'Answer content',
+					),
+					'qa'       => array(
+						array(
+							'title'   => 'Question title',
+							'content' => 'Question content',
+						),
+						array(
+							'title'   => 'Answer title',
+							'content' => 'Answer content',
+						),
+					)
+				),
+				'title',
 				'Answer title'
 			)
 		);
