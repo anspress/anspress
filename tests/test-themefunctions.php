@@ -10,6 +10,10 @@ class TestThemeFunctions extends TestCase {
 		return 'Question title';
 	}
 
+	public function askBtnLink() {
+		return home_url( '/ask' );
+	}
+
 	/**
 	 * @covers ::ap_page_title
 	 */
@@ -152,6 +156,35 @@ class TestThemeFunctions extends TestCase {
 		$this->assertFalse( ap_have_parent_post( $child_post_id ) );
 		$id = $this->insert_answer();
 		$this->assertFalse( ap_have_parent_post( $id->a ) );
+	}
+
+	/**
+	 * @covers ::ap_get_ask_btn
+	 * @covers ::ap_ask_btn
+	 */
+	public function testAPAskBtn() {
+		$link = ap_get_link_to( 'ask' );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', ap_get_ask_btn() );
+		ob_start();
+		ap_ask_btn();
+		$output = ob_get_clean();
+		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', $output );
+
+		// Test for filter addition.
+		add_filter( 'ap_ask_btn_link', array( $this, 'askBtnLink' ) );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . home_url( '/ask' ) . '">Ask question</a>', ap_get_ask_btn() );
+		ob_start();
+		ap_ask_btn();
+		$output = ob_get_clean();
+		$this->assertSame( '<a class="ap-btn-ask" href="' . home_url( '/ask' ) . '">Ask question</a>', $output );
+
+		// Test after filter remove.
+		remove_filter( 'ap_ask_btn_link', array( $this, 'askBtnLink' ) );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', ap_get_ask_btn() );
+		ob_start();
+		ap_ask_btn();
+		$output = ob_get_clean();
+		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', $output );
 	}
 
 }

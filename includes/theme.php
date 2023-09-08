@@ -439,7 +439,6 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
 	return apply_filters( 'ap_questions_order_by', $navs );
 }
 
-
 /**
  * Output answers tab.
  *
