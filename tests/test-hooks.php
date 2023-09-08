@@ -7,6 +7,13 @@ class TestHooks extends TestCase {
 	use AnsPress\Tests\Testcases\Common;
 
 	/**
+	 * @covers AnsPress_Hooks::init
+	 */
+	public function testInit() {
+		$this->assertEquals( 10, has_action( 'wp_loaded', [ 'AnsPress_Hooks', 'flush_rules' ] ) );
+	}
+
+	/**
 	 * @covers AnsPress_Hooks::comment_subscription
 	 * @covers AnsPress_Hooks::delete_comment_subscriptions
 	 */
