@@ -1184,4 +1184,171 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_find_duplicate_post( 'Answer title', 'answer', $id->q ) );
 	}
 
+	/**
+	 * @covers ::ap_sort_array_by_order
+	 */
+	public function testAPSortArrayByOrder() {
+		$this->assertEquals(
+			[
+				'post' => [
+					'title' => 'Post title',
+					'order' => 1,
+				],
+				'page' => [
+					'title' => 'Page title',
+					'order' => 3,
+				],
+				'comment' => [
+					'title' => 'Comment title',
+					'order' => 5,
+				],
+			],
+			ap_sort_array_by_order(
+				[
+					'post' => [
+						'title' => 'Post title',
+					],
+					'page' => [
+						'title' => 'Page title',
+					],
+					'comment' => [
+						'title' => 'Comment title',
+					],
+				],
+			)
+		);
+		$this->assertEquals(
+			[
+				'post' => [
+					'title' => 'Post title',
+					'order' => 2,
+				],
+				'page' => [
+					'title' => 'Page title',
+					'order' => 3,
+				],
+				'comment' => [
+					'title' => 'Comment title',
+					'order' => 5,
+				],
+			],
+			ap_sort_array_by_order(
+				[
+					'post' => [
+						'title' => 'Post title',
+						'order' => 2,
+					],
+					'page' => [
+						'title' => 'Page title',
+					],
+					'comment' => [
+						'title' => 'Comment title',
+					],
+				],
+			)
+		);
+		$this->assertEquals(
+			[
+				'comment' => [
+					'title' => 'Comment title',
+					'order' => 1,
+				],
+				'post' => [
+					'title' => 'Post title',
+					'order' => 2,
+				],
+				'page' => [
+					'title' => 'Page title',
+					'order' => 3,
+				],
+			],
+			ap_sort_array_by_order(
+				[
+					'post' => [
+						'title' => 'Post title',
+						'order' => 2,
+					],
+					'page' => [
+						'title' => 'Page title',
+					],
+					'comment' => [
+						'title' => 'Comment title',
+						'order' => 1,
+					],
+				],
+			)
+		);
+		$this->assertEquals(
+			[
+				'comment' => [
+					'title' => 'Comment title',
+					'order' => 1,
+				],
+				'post' => [
+					'title' => 'Post title',
+					'order' => 1,
+				],
+				'page' => [
+					'title' => 'Page title',
+					'order' => 3,
+				],
+			],
+			ap_sort_array_by_order(
+				[
+					'post' => [
+						'title' => 'Post title',
+					],
+					'page' => [
+						'title' => 'Page title',
+					],
+					'comment' => [
+						'title' => 'Comment title',
+						'order' => 1,
+					],
+				],
+			)
+		);
+		$this->assertEquals(
+			[
+				'page' => [
+					'title' => 'Page title',
+					'order' => 1,
+				],
+				'post' => [
+					'title' => 'Post title',
+					'order' => 1,
+				],
+				'comment' => [
+					'title' => 'Comment title',
+					'order' => 5,
+				],
+			],
+			ap_sort_array_by_order(
+				[
+					'post' => [
+						'title' => 'Post title',
+					],
+					'page' => [
+						'title' => 'Page title',
+						'order' => 1,
+					],
+					'comment' => [
+						'title' => 'Comment title',
+					],
+				],
+			)
+		);
+	}
+
+	/**
+	 * @covers ::ap_meta_array_map
+	 */
+	public function testAPMetaArrayMap() {
+		$this->assertEquals( 'q', ap_meta_array_map( 'question' ) );
+		$this->assertEquals( 'a', ap_meta_array_map( 'answer' ) );
+		$this->assertEquals( 'question', ap_meta_array_map( array( 'question' ) ) );
+		$this->assertEquals( 'question', ap_meta_array_map( array( 'question', 'answer' ) ) );
+		$this->assertEquals( 'answer', ap_meta_array_map( array( 'answer', 'question', 'comment' ) ) );
+	}
+
 }
