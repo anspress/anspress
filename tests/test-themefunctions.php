@@ -187,4 +187,32 @@ class TestThemeFunctions extends TestCase {
 		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', $output );
 	}
 
+	/**
+	 * @covers ::ap_assets
+	 * @covers ::ap_enqueue_scripts
+	 */
+	public function testApAssets() {
+		// Required hook for testing style and script register/enqueue.
+		do_action( 'wp_enqueue_scripts' );
+
+		// Test on the ap_assets function.
+		// Test for register scripts.
+		$this->assertTrue( wp_script_is( 'selectize', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-common', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-question', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-ask', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-list', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-notifications', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-theme', 'registered' ) );
+
+		// Test for register style.
+		$this->assertTrue( wp_style_is( 'anspress-fonts', 'registered' ) );
+		$this->assertTrue( wp_style_is( 'anspress-main', 'registered' ) );
+		$this->assertTrue( wp_style_is( 'anspress-rtl', 'registered' ) );
+
+		// Test on the ap_enqueue_scripts function.
+		$this->assertTrue( wp_script_is( 'anspress-theme' ) );
+		$this->assertTrue( wp_style_is( 'anspress-main' ) );
+	}
+
 }
