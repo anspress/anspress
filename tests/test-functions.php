@@ -654,6 +654,14 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'categories_page', ap_main_pages() );
 		$this->assertArrayHasKey( 'tags_page', ap_main_pages() );
 		$this->assertArrayHasKey( 'activities_page', ap_main_pages() );
+
+		// Test for inner array contents availability provided by ap_main_pages function.
+		foreach ( ap_main_pages() as $main_page ) {
+			$this->assertArrayHasKey( 'label', $main_page );
+			$this->assertArrayHasKey( 'desc', $main_page );
+			$this->assertArrayHasKey( 'post_title', $main_page );
+			$this->assertArrayHasKey( 'post_name', $main_page );
+		}
 	}
 
 	/**
