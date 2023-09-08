@@ -129,4 +129,29 @@ class TestThemeFunctions extends TestCase {
 		$this->assertTrue( is_post_closed( $id ) );
 	}
 
+	/**
+	 * @covers ::ap_have_parent_post
+	 */
+	public function testAPHaveParentPost() {
+		$id = $this->insert_question();
+		$this->assertFalse( ap_have_parent_post( $id ) );
+		$child_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_parent'  => $id,
+			)
+		);
+		$this->assertTrue( ap_have_parent_post( $child_id ) );
+		$child_post_id = $this->factory->post->create(
+			array(
+				'post_parent'  => $id,
+			)
+		);
+		$this->assertFalse( ap_have_parent_post( $child_post_id ) );
+		$id = $this->insert_answer();
+		$this->assertFalse( ap_have_parent_post( $id->a ) );
+	}
+
 }
