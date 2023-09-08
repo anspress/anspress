@@ -1139,4 +1139,49 @@ class TestFunctions extends TestCase {
 		);
 	}
 
+	/**
+	 * @covers ::ap_find_duplicate_post
+	 */
+	public function testAPFindSuplicatePost() {
+		// Test for question post type.
+		$question = $this->factory->post->create(
+			array(
+				'post_type'    => 'question',
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+			)
+		);
+		$post     = get_post( $question );
+		$this->assertNotEmpty( ap_find_duplicate_post( $post->post_content ) );
+		$this->assertEmpty( ap_find_duplicate_post( 'Question title' ) );
+		$this->assertNotEmpty( ap_find_duplicate_post( 'Question content' ) );
+		$this->assertIsInt( ap_find_duplicate_post( $post->post_content ) );
+		$this->assertFalse( ap_find_duplicate_post( 'Question title' ) );
+
+		// Test for answer post type.
+		$answer = $this->factory->post->create(
+			array(
+				'post_type'    => 'answer',
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_parent'  => $question,
+			)
+		);
+		$post     = get_post( $answer );
+		$this->assertNotEmpty( ap_find_duplicate_post( $post->post_content, 'answer' ) );
+		$this->assertEmpty( ap_find_duplicate_post( 'Answer title', 'answer' ) );
+		$this->assertNotEmpty( ap_find_duplicate_post( 'Answer content', 'answer' ) );
+		$this->assertIsInt( ap_find_duplicate_post( $post->post_content, 'answer' ) );
+		$this->assertFalse( ap_find_duplicate_post( 'Answer title', 'answer' ) );
+
+		// Test for question id pass.
+		$id   = $this->insert_answer( 'Answer title', 'Answer content' );
+		$post = get_post( $id->a );
+		$this->assertNotEmpty( ap_find_duplicate_post( $post->post_content, 'answer', $id->q ) );
+		$this->assertEmpty( ap_find_duplicate_post( 'Answer title', 'answer', $id->q ) );
+		$this->assertNotEmpty( ap_find_duplicate_post( 'Answer content', 'answer', $id->q ) );
+		$this->assertIsInt( ap_find_duplicate_post( $post->post_content, 'answer', $id->q ) );
+		$this->assertFalse( ap_find_duplicate_post( 'Answer title', 'answer', $id->q ) );
+	}
+
 }
