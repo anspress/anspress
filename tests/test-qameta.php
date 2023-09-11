@@ -228,4 +228,51 @@ class TestQAMeta extends TestCase {
 		$this->assertNotEquals( 5, $qget_qameta->flags );
 		$this->assertNotEquals( 10, $aget_qameta->flags );
 	}
+
+	/**
+	 * @covers ::ap_update_answer_selected
+	 */
+	public function testAPUpdateAnswerSelected() {
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$answer2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertEquals( 0, $get_qameta->selected );
+
+		// Real function test goes here.
+		ap_update_answer_selected( $answer1_id );
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertEquals( 1, $get_qameta->selected );
+		ap_update_answer_selected( $answer1_id, false );
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertEquals( 0, $get_qameta->selected );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+		ap_update_answer_selected( $answer2_id );
+		$get_qameta = ap_get_qameta( $answer2_id );
+		$this->assertEquals( 1, $get_qameta->selected );
+		ap_update_answer_selected( $answer2_id, false );
+		$get_qameta = ap_get_qameta( $answer2_id );
+		$this->assertEquals( 0, $get_qameta->selected );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+	}
 }
