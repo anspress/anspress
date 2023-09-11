@@ -14,6 +14,18 @@ class TestThemeFunctions extends TestCase {
 		return home_url( '/ask' );
 	}
 
+	public function tagPageSlug() {
+		return 'imtag';
+	}
+
+	public function categoryPageSlug() {
+		return 'imcategory';
+	}
+
+	public function questionPageSlug() {
+		return 'imquestion';
+	}
+
 	/**
 	 * @covers ::ap_page_title
 	 */
@@ -224,6 +236,26 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'category', ap_get_page_slug( 'category' ) );
 		$this->assertEquals( 'question', ap_get_page_slug( 'question' ) );
 
+		// Filter test for slug.
+		add_filter( 'ap_page_slug_tag', [ $this, 'tagPageSlug' ], 11 );
+		add_filter( 'ap_page_slug_category', [ $this, 'categoryPageSlug' ], 11 );
+		add_filter( 'ap_page_slug_question', [ $this, 'questionPageSlug' ], 11 );
+		$this->assertNotEquals( 'tag', ap_get_page_slug( 'tag' ) );
+		$this->assertNotEquals( 'category', ap_get_page_slug( 'category' ) );
+		$this->assertNotEquals( 'question', ap_get_page_slug( 'question' ) );
+		$this->assertEquals( 'imtag', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'imcategory', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'imquestion', ap_get_page_slug( 'question' ) );
+		remove_filter( 'ap_page_slug_tag', [ $this, 'tagPageSlug' ], 11 );
+		remove_filter( 'ap_page_slug_category', [ $this, 'categoryPageSlug' ], 11 );
+		remove_filter( 'ap_page_slug_question', [ $this, 'questionPageSlug' ], 11 );
+		$this->assertEquals( 'tag', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'category', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'question', ap_get_page_slug( 'question' ) );
+		$this->assertNotEquals( 'imtag', ap_get_page_slug( 'tag' ) );
+		$this->assertNotEquals( 'imcategory', ap_get_page_slug( 'category' ) );
+		$this->assertNotEquals( 'imquestion', ap_get_page_slug( 'question' ) );
+
 		// Modified slug test.
 		$slugs = [
 			'tag'      => 't',
@@ -236,6 +268,42 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 't', ap_get_page_slug( 'tag' ) );
 		$this->assertEquals( 'cat', ap_get_page_slug( 'category' ) );
 		$this->assertEquals( 'q', ap_get_page_slug( 'question' ) );
+
+		// Filter test for slug for modified option.
+		add_filter( 'ap_page_slug_t', [ $this, 'tagPageSlug' ], 11 );
+		add_filter( 'ap_page_slug_cat', [ $this, 'categoryPageSlug' ], 11 );
+		add_filter( 'ap_page_slug_q', [ $this, 'questionPageSlug' ], 11 );
+		$this->assertNotEquals( 't', ap_get_page_slug( 'tag' ) );
+		$this->assertNotEquals( 'cat', ap_get_page_slug( 'category' ) );
+		$this->assertNotEquals( 'q', ap_get_page_slug( 'question' ) );
+		$this->assertEquals( 'imtag', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'imcategory', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'imquestion', ap_get_page_slug( 'question' ) );
+		remove_filter( 'ap_page_slug_t', [ $this, 'tagPageSlug' ], 11 );
+		remove_filter( 'ap_page_slug_cat', [ $this, 'categoryPageSlug' ], 11 );
+		remove_filter( 'ap_page_slug_q', [ $this, 'questionPageSlug' ], 11 );
+		$this->assertEquals( 't', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'cat', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'q', ap_get_page_slug( 'question' ) );
+		$this->assertNotEquals( 'imtag', ap_get_page_slug( 'tag' ) );
+		$this->assertNotEquals( 'imcategory', ap_get_page_slug( 'category' ) );
+		$this->assertNotEquals( 'imquestion', ap_get_page_slug( 'question' ) );
+
+		// Resetting to default test.
+		$this->assertNotEquals( 'tag', ap_get_page_slug( 'tag' ) );
+		$this->assertNotEquals( 'category', ap_get_page_slug( 'category' ) );
+		$this->assertNotEquals( 'question', ap_get_page_slug( 'question' ) );
+		$slugs = [
+			'tag'      => 'tag',
+			'category' => 'category',
+			'question' => 'question',
+		];
+		foreach ( $slugs as $slug => $new_slug ) {
+			ap_opt( $slug . '_page_slug', $new_slug );
+		}
+		$this->assertEquals( 'tag', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'category', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'question', ap_get_page_slug( 'question' ) );
 	}
 
 }
