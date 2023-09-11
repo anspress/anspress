@@ -169,4 +169,24 @@ class TestQAMeta extends TestCase {
 		$get_qameta = ap_get_qameta( $question_id );
 		$this->assertEquals( 100, $get_qameta->answers );
 	}
+
+	/**
+	 * @covers ::ap_update_last_active
+	 */
+	public function testAPUpdateLastActive() {
+		$id = $this->insert_question();
+		ap_insert_qameta(
+			$id,
+			array(
+				'last_updated' => '0000-00-00 00:00:00',
+			)
+		);
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( '0000-00-00 00:00:00', $get_qameta->last_updated );
+
+		// Real function test goes here.
+		ap_update_last_active( $id );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( current_time( 'mysql' ), $get_qameta->last_updated );
+	}
 }
