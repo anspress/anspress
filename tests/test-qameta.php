@@ -194,39 +194,39 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_set_flag_count
 	 */
 	public function testAPSetFlagCount() {
-		$id = $this->insert_answer();
-		$qget_qameta = ap_get_qameta( $id->q );
-		$aget_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 0, $qget_qameta->flags );
-		$this->assertEquals( 0, $aget_qameta->flags );
+		$id       = $this->insert_answer();
+		$question = ap_get_post( $id->q );
+		$answer   = ap_get_post( $id->a );
+		$this->assertEquals( 0, $question->flags );
+		$this->assertEquals( 0, $answer->flags );
 
 		// Real function test goes here.
 		ap_set_flag_count( $id->q );
 		ap_set_flag_count( $id->a );
-		$qget_qameta = ap_get_qameta( $id->q );
-		$aget_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 1, $qget_qameta->flags );
-		$this->assertEquals( 1, $aget_qameta->flags );
+		$question = ap_get_post( $id->q );
+		$answer   = ap_get_post( $id->a );
+		$this->assertEquals( 1, $question->flags );
+		$this->assertEquals( 1, $answer->flags );
 
 		// Modifying the flags.
 		ap_set_flag_count( $id->q, 5 );
 		ap_set_flag_count( $id->a, 10 );
-		$qget_qameta = ap_get_qameta( $id->q );
-		$aget_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 5, $qget_qameta->flags );
-		$this->assertEquals( 10, $aget_qameta->flags );
+		$question = ap_get_post( $id->q );
+		$answer   = ap_get_post( $id->a );
+		$this->assertEquals( 5, $question->flags );
+		$this->assertEquals( 10, $answer->flags );
 
 		// Resetting the flags to 0.
 		ap_set_flag_count( $id->q, 0 );
 		ap_set_flag_count( $id->a, 0 );
-		$qget_qameta = ap_get_qameta( $id->q );
-		$aget_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 0, $qget_qameta->flags );
-		$this->assertEquals( 0, $aget_qameta->flags );
-		$this->assertNotEquals( 1, $qget_qameta->flags );
-		$this->assertNotEquals( 1, $aget_qameta->flags );
-		$this->assertNotEquals( 5, $qget_qameta->flags );
-		$this->assertNotEquals( 10, $aget_qameta->flags );
+		$question = ap_get_post( $id->q );
+		$answer   = ap_get_post( $id->a );
+		$this->assertEquals( 0, $question->flags );
+		$this->assertEquals( 0, $answer->flags );
+		$this->assertNotEquals( 1, $question->flags );
+		$this->assertNotEquals( 1, $answer->flags );
+		$this->assertNotEquals( 5, $question->flags );
+		$this->assertNotEquals( 10, $answer->flags );
 	}
 
 	/**
