@@ -126,4 +126,47 @@ class TestQAMeta extends TestCase {
 		ap_insert_qameta( $id, array( 'views' => 100 ) );
 		$this->assertEquals( 101, ap_update_views_count( $id ) );
 	}
+
+	/**
+	 * @covers ::ap_update_answers_count
+	 */
+	public function testAPUpdateAnswersCount() {
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 0, $get_qameta->answers );
+		$answer1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 1, $get_qameta->answers );
+		$answer2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 2, $get_qameta->answers );
+
+		// Start the main test.
+		ap_update_answers_count( $question_id );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 2, $get_qameta->answers );
+		ap_update_answers_count( $question_id, 100 );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 100, $get_qameta->answers );
+	}
 }
