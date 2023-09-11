@@ -275,4 +275,15 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 0, $get_qameta->selected );
 		$this->assertNotEquals( 1, $get_qameta->selected );
 	}
+
+	/**
+	 * @covers ::ap_update_subscribers_count
+	 */
+	public function testAPUpdateSubscribersCount() {
+		$id = $this->insert_question();
+		$this->assertEquals( 0, ap_subscribers_count( 'question', $id ) );
+		$this->assertEquals( 0, ap_update_subscribers_count( $id ) );
+		$this->assertEquals( 100, ap_update_subscribers_count( $id, 100 ) );
+		$this->assertEquals( 1000, ap_update_subscribers_count( $id, 1000 ) );
+	}
 }
