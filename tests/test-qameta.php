@@ -248,6 +248,7 @@ class TestQAMeta extends TestCase {
 				'post_parent'  => $question_id,
 			)
 		);
+		$this->assertEquals( 0, ap_is_selected( $answer1_id ) );
 		$answer2_id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Answer title',
@@ -256,24 +257,19 @@ class TestQAMeta extends TestCase {
 				'post_parent'  => $question_id,
 			)
 		);
-		$get_qameta = ap_get_qameta( $answer1_id );
-		$this->assertEquals( 0, $get_qameta->selected );
+		$this->assertEquals( 0, ap_is_selected( $answer2_id ) );
 
 		// Real function test goes here.
 		ap_update_answer_selected( $answer1_id );
-		$get_qameta = ap_get_qameta( $answer1_id );
-		$this->assertEquals( 1, $get_qameta->selected );
+		$this->assertEquals( 1, ap_is_selected( $answer1_id ) );
 		ap_update_answer_selected( $answer1_id, false );
-		$get_qameta = ap_get_qameta( $answer1_id );
-		$this->assertEquals( 0, $get_qameta->selected );
-		$this->assertNotEquals( 1, $get_qameta->selected );
+		$this->assertEquals( 0, ap_is_selected( $answer1_id ) );
+		$this->assertNotEquals( 1, ap_is_selected( $answer1_id ) );
 		ap_update_answer_selected( $answer2_id );
-		$get_qameta = ap_get_qameta( $answer2_id );
-		$this->assertEquals( 1, $get_qameta->selected );
+		$this->assertEquals( 1, ap_is_selected( $answer2_id ) );
 		ap_update_answer_selected( $answer2_id, false );
-		$get_qameta = ap_get_qameta( $answer2_id );
-		$this->assertEquals( 0, $get_qameta->selected );
-		$this->assertNotEquals( 1, $get_qameta->selected );
+		$this->assertEquals( 0, ap_is_selected( $answer2_id ) );
+		$this->assertNotEquals( 1, ap_is_selected( $answer2_id ) );
 	}
 
 	/**
