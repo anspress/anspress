@@ -4,6 +4,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestQAMeta extends TestCase {
 
+	use AnsPress\Tests\Testcases\Common;
+
 	/**
 	 * @covers ::ap_qameta_fields
 	 */
@@ -112,5 +114,16 @@ class TestQAMeta extends TestCase {
 		$this->assertNotEquals( 1, $get_qameta->selected );
 		$get_qameta = ap_get_qameta( $answer2_id );
 		$this->assertNotEquals( 1, $get_qameta->selected );
+	}
+
+	/**
+	 * @covers ::ap_update_views_count
+	 */
+	public function testAPUpdateViewsCount() {
+		$id = $this->insert_question();
+		$this->assertEquals( 1, ap_update_views_count( $id ) );
+		$this->assertEquals( 50, ap_update_views_count( $id, 50 ) );
+		ap_insert_qameta( $id, array( 'views' => 100 ) );
+		$this->assertEquals( 101, ap_update_views_count( $id ) );
 	}
 }
