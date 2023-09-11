@@ -399,7 +399,6 @@ function ap_update_last_active( $post_id ) {
 function ap_set_flag_count( $post_id, $count = 1 ) {
 	return ap_insert_qameta( $post_id, array( 'flags' => $count ) );
 }
-
 /**
  * Increment flags count.
  *

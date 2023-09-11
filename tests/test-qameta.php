@@ -189,4 +189,43 @@ class TestQAMeta extends TestCase {
 		$get_qameta = ap_get_qameta( $id );
 		$this->assertEquals( current_time( 'mysql' ), $get_qameta->last_updated );
 	}
+
+	/**
+	 * @covers ::ap_set_flag_count
+	 */
+	public function testAPSetFlagCount() {
+		$id = $this->insert_answer();
+		$qget_qameta = ap_get_qameta( $id->q );
+		$aget_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 0, $qget_qameta->flags );
+		$this->assertEquals( 0, $aget_qameta->flags );
+
+		// Real function test goes here.
+		ap_set_flag_count( $id->q );
+		ap_set_flag_count( $id->a );
+		$qget_qameta = ap_get_qameta( $id->q );
+		$aget_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 1, $qget_qameta->flags );
+		$this->assertEquals( 1, $aget_qameta->flags );
+
+		// Modifying the flags.
+		ap_set_flag_count( $id->q, 5 );
+		ap_set_flag_count( $id->a, 10 );
+		$qget_qameta = ap_get_qameta( $id->q );
+		$aget_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 5, $qget_qameta->flags );
+		$this->assertEquals( 10, $aget_qameta->flags );
+
+		// Resetting the flags to 0.
+		ap_set_flag_count( $id->q, 0 );
+		ap_set_flag_count( $id->a, 0 );
+		$qget_qameta = ap_get_qameta( $id->q );
+		$aget_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 0, $qget_qameta->flags );
+		$this->assertEquals( 0, $aget_qameta->flags );
+		$this->assertNotEquals( 1, $qget_qameta->flags );
+		$this->assertNotEquals( 1, $aget_qameta->flags );
+		$this->assertNotEquals( 5, $qget_qameta->flags );
+		$this->assertNotEquals( 10, $aget_qameta->flags );
+	}
 }
