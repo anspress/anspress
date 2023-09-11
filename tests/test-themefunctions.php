@@ -215,4 +215,27 @@ class TestThemeFunctions extends TestCase {
 		$this->assertTrue( wp_style_is( 'anspress-main' ) );
 	}
 
+	/**
+	 * @covers ::ap_get_page_slug
+	 */
+	public function testAPGetPageSlug() {
+		// Default slug test.
+		$this->assertEquals( 'tag', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'category', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'question', ap_get_page_slug( 'question' ) );
+
+		// Modified slug test.
+		$slugs = [
+			'tag'      => 't',
+			'category' => 'cat',
+			'question' => 'q',
+		];
+		foreach ( $slugs as $slug => $new_slug ) {
+			ap_opt( $slug . '_page_slug', $new_slug );
+		}
+		$this->assertEquals( 't', ap_get_page_slug( 'tag' ) );
+		$this->assertEquals( 'cat', ap_get_page_slug( 'category' ) );
+		$this->assertEquals( 'q', ap_get_page_slug( 'question' ) );
+	}
+
 }
