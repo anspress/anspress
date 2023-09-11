@@ -58,4 +58,59 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( '', $qameta_fields['last_updated'] );
 		$this->assertFalse( $qameta_fields['is_new'] );
 	}
+
+	/**
+	 * @covers ::ap_set_selected_answer
+	 * @covers ::ap_unset_selected_answer
+	 */
+	public function testSelectedAnswer() {
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$answer2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		ap_set_selected_answer( $question_id, $answer1_id );
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertEquals( 1, $get_qameta->selected );
+		$get_qameta = ap_get_qameta( $answer2_id );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+
+		// Updating the selected answer test.
+		ap_unset_selected_answer( $question_id, $answer1_id );
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+		$get_qameta = ap_get_qameta( $answer2_id );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+
+		ap_set_selected_answer( $question_id, $answer2_id );
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+		$get_qameta = ap_get_qameta( $answer2_id );
+		$this->assertEquals( 1, $get_qameta->selected );
+
+		// Updating the selected answer test.
+		ap_unset_selected_answer( $question_id, $answer2_id );
+		$get_qameta = ap_get_qameta( $answer1_id );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+		$get_qameta = ap_get_qameta( $answer2_id );
+		$this->assertNotEquals( 1, $get_qameta->selected );
+	}
 }
