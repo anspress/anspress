@@ -286,4 +286,17 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 100, ap_update_subscribers_count( $id, 100 ) );
 		$this->assertEquals( 1000, ap_update_subscribers_count( $id, 1000 ) );
 	}
+
+	/**
+	 * @covers ::ap_set_featured_question
+	 * @covers ::ap_unset_featured_question
+	 */
+	public function testFeaturedQuestion() {
+		$id = $this->insert_question();
+		$this->assertFalse( ap_is_featured_question( $id ) );
+		ap_set_featured_question( $id );
+		$this->assertTrue( ap_is_featured_question( $id ) );
+		ap_unset_featured_question( $id );
+		$this->assertFalse( ap_is_featured_question( $id ) );
+	}
 }
