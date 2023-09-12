@@ -237,5 +237,29 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
 		ap_set_selected_answer( $qid, $aid );
 		$this->assertFalse( ap_user_can_answer( $qid, $user_id ) );
+
+		// Check for the original poster can answer.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
+		ap_opt( 'disallow_op_to_answer', true );
+		$this->assertFalse( ap_user_can_answer( $qid, $user_id ) );
+		// If trying via a new user.
+		$new_user = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user );
+		$this->assertTrue( ap_user_can_answer( $qid, $new_user ) );
+		ap_opt( 'disallow_op_to_answer', false );
+		$this->assertTrue( ap_user_can_answer( $qid, $new_user ) );
+		ap_opt( 'disallow_op_to_answer', true );
+		$this->assertTrue( ap_user_can_answer( $qid, $new_user ) );
+		ap_opt( 'disallow_op_to_answer', false );
 	}
 }
