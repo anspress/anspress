@@ -932,4 +932,19 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_restore( $post_id ) );
 		$this->assertFalse( ap_user_can_restore( $page_id ) );
 	}
+
+	/**
+	 * @covers ::ap_allow_anonymous
+	 */
+	public function testAPAllowAnonymous() {
+		$this->assertTrue( ap_allow_anonymous() );
+		ap_opt( 'post_question_per', 'logged_in' );
+		$this->assertFalse( ap_allow_anonymous() );
+		ap_opt( 'post_question_per', 'have_cap' );
+		$this->assertFalse( ap_allow_anonymous() );
+		ap_opt( 'post_question_per', 'anyone' );
+		$this->assertTrue( ap_allow_anonymous() );
+		ap_opt( 'post_question_per', '' );
+		$this->assertFalse( ap_allow_anonymous() );
+	}
 }
