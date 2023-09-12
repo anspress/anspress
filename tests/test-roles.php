@@ -189,4 +189,31 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_ask() );
 	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswer() {
+		$question_id = $this->insert_question();
+		$post_id     = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id     = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'page',
+			)
+		);
+
+		// Check if user roles can answer.
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+		$this->assertFalse( ap_user_can_answer( $post_id ) );
+		$this->assertFalse( ap_user_can_answer( $page_id ) );
+	}
 }
