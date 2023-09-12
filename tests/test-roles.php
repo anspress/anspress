@@ -748,4 +748,83 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_delete_question( $qid ) );
 		$this->assertFalse( ap_user_can_delete_answer( $aid ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_permanent_delete
+	 */
+	public function testAPUserCanPermanentDelete() {
+		$id = $this->insert_answer();
+		// Check if user roles can delete question and answer permanently.
+		$this->assertFalse( ap_user_can_permanent_delete( $id->q ) );
+		$this->assertFalse( ap_user_can_permanent_delete( $id->a ) );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_permanent_delete( $id->q ) );
+		$this->assertFalse( ap_user_can_permanent_delete( $id->a ) );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_user_can_permanent_delete( $id->q ) );
+		$this->assertFalse( ap_user_can_permanent_delete( $id->a ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_permanent_delete( $id->q ) );
+		$this->assertTrue( ap_user_can_permanent_delete( $id->a ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_permanent_delete( $id->q ) );
+		$this->assertTrue( ap_user_can_permanent_delete( $id->a ) );
+
+		// Test for new role.
+		add_role(
+			'ap_test_can_permanent_delete',
+			'Test user can permanently delete question and answer',
+			[
+				'ap_delete_post_permanent' => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_permanent_delete' );
+		$this->assertTrue( ap_user_can_permanent_delete( $id->q ) );
+		$this->assertTrue( ap_user_can_permanent_delete( $id->a ) );
+		$this->logout();
+
+		// Test for same user permanently delete permission.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_permanent_delete( $qid, $user_id ) );
+		$this->assertFalse( ap_user_can_permanent_delete( $aid, $user_id ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_permanent_delete( $qid, $new_user_id ) );
+		$this->assertFalse( ap_user_can_permanent_delete( $aid, $new_user_id ) );
+	}
 }
