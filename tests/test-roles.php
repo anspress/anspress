@@ -215,5 +215,27 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_answer( $question_id ) );
 		$this->assertFalse( ap_user_can_answer( $post_id ) );
 		$this->assertFalse( ap_user_can_answer( $page_id ) );
+
+		// Check for the answer selected option.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+			)
+		);
+		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
+		ap_set_selected_answer( $qid, $aid );
+		$this->assertFalse( ap_user_can_answer( $qid, $user_id ) );
 	}
 }
