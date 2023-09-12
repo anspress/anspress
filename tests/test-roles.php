@@ -653,4 +653,99 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_delete_comment( $cqid, $new_user_id ) );
 		$this->assertFalse( ap_user_can_delete_comment( $caid, $new_user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 * @covers ::ap_user_can_delete_question
+	 * @covers ::ap_user_can_delete_answer
+	 */
+	public function testAPUserCanDeletePostQuestionAnswer() {
+		$id = $this->insert_answer();
+		// Check if user roles can delete question and answer.
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_delete_post( $id->q ) );
+		$this->assertFalse( ap_user_can_delete_post( $id->a ) );
+		$this->assertFalse( ap_user_can_delete_question( $id->q ) );
+		$this->assertFalse( ap_user_can_delete_answer( $id->a ) );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_user_can_delete_post( $id->q ) );
+		$this->assertFalse( ap_user_can_delete_post( $id->a ) );
+		$this->assertFalse( ap_user_can_delete_question( $id->q ) );
+		$this->assertFalse( ap_user_can_delete_answer( $id->a ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_delete_post( $id->q ) );
+		$this->assertTrue( ap_user_can_delete_post( $id->a ) );
+		$this->assertTrue( ap_user_can_delete_question( $id->q ) );
+		$this->assertTrue( ap_user_can_delete_answer( $id->a ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_delete_post( $id->q ) );
+		$this->assertTrue( ap_user_can_delete_post( $id->a ) );
+		$this->assertTrue( ap_user_can_delete_question( $id->q ) );
+		$this->assertTrue( ap_user_can_delete_answer( $id->a ) );
+
+		// Test for new role.
+		add_role(
+			'ap_test_can_delete_post_question_answer',
+			'Test user can delete post, question, and answer',
+			[
+				'ap_delete_others_post'     => true,
+				'ap_delete_others_question' => true,
+				'ap_delete_others_answer'   => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_delete_post_question_answer' );
+		$this->assertTrue( ap_user_can_delete_post( $id->q ) );
+		$this->assertTrue( ap_user_can_delete_post( $id->a ) );
+		$this->assertTrue( ap_user_can_delete_question( $id->q ) );
+		$this->assertTrue( ap_user_can_delete_answer( $id->a ) );
+		$this->logout();
+
+		// Test for same user delete permission.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_delete_post( $qid ) );
+		$this->assertTrue( ap_user_can_delete_post( $aid ) );
+		$this->assertTrue( ap_user_can_delete_question( $qid ) );
+		$this->assertTrue( ap_user_can_delete_answer( $aid ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_post( $qid ) );
+		$this->assertFalse( ap_user_can_delete_post( $aid ) );
+		$this->assertFalse( ap_user_can_delete_question( $qid ) );
+		$this->assertFalse( ap_user_can_delete_answer( $aid ) );
+	}
 }
