@@ -261,5 +261,31 @@ class Test_Roles extends TestCase {
 		ap_opt( 'disallow_op_to_answer', true );
 		$this->assertTrue( ap_user_can_answer( $qid, $new_user ) );
 		ap_opt( 'disallow_op_to_answer', false );
+
+		// Check for multiple answer posted by the author can answer again.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
+		ap_opt( 'multiple_answers', false );
+		$this->assertFalse( ap_user_can_answer( $qid, $user_id ) );
+		ap_opt( 'multiple_answers', true );
+		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
 	}
 }
