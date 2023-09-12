@@ -65,6 +65,7 @@
 				<element value="ap_change_label" />
 				<element value="ap_new_comment" />
 				<element value="ap_mod_comment" />
+				<element value="ap_edit_others_comment" />
 				<element value="ap_edit_comment" />
 				<element value="ap_delete_others_comment" />
 				<element value="ap_approve_comment" />

@@ -553,7 +553,7 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( is_super_admin() || current_user_can( 'ap_mod_comment' ) ) {
+	if ( is_super_admin() || current_user_can( 'ap_edit_others_comment' ) ) {
 		return true;
 	}
 
