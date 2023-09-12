@@ -571,4 +571,86 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_edit_comment( $cqid, $new_user_id ) );
 		$this->assertFalse( ap_user_can_edit_comment( $caid, $new_user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_delete_comment
+	 */
+	public function testAPUserCanDeleteComment() {
+		$id   = $this->insert_answer();
+		$cqid = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$caid = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_comment( $cqid ) );
+		$this->assertFalse( ap_user_can_delete_comment( $caid ) );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_delete_comment( $cqid ) );
+		$this->assertFalse( ap_user_can_delete_comment( $caid ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_delete_comment( $cqid ) );
+		$this->assertTrue( ap_user_can_delete_comment( $caid ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_delete_comment( $cqid ) );
+		$this->assertTrue( ap_user_can_delete_comment( $caid ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_delete_comment', 'Test user can delete comment', [ 'ap_delete_others_comment' => true ] );
+		$this->setRole( 'ap_test_can_delete_comment' );
+		$this->assertTrue( ap_user_can_delete_comment( $cqid ) );
+		$this->assertTrue( ap_user_can_delete_comment( $caid ) );
+		$this->logout();
+
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$cqid = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => $user_id,
+			)
+		);
+		$caid = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_delete_comment( $cqid, $user_id ) );
+		$this->assertTrue( ap_user_can_delete_comment( $caid, $user_id ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$cqid = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => $user_id,
+			)
+		);
+		$caid = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => $user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_comment( $cqid, $new_user_id ) );
+		$this->assertFalse( ap_user_can_delete_comment( $caid, $new_user_id ) );
+	}
 }
