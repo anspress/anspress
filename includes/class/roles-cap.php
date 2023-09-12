@@ -745,6 +745,11 @@ function ap_user_can_restore( $_post = null, $user_id = false ) {
 
 	$_post = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
+	// Return false if not question or answer.
+	if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
+		return false;
+	}
+
 	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
 	}
