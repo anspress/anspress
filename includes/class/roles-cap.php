@@ -890,6 +890,11 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 
 	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
 
+	// Return false if not question or answer.
+	if ( ! in_array( $post_o->post_type, array( 'question', 'answer' ), true ) ) {
+		return false;
+	}
+
 	if ( 'private_post' === $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return true;
 	}
