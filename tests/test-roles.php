@@ -333,4 +333,71 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'ap_test_can_select_answer' );
 		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_edit_post
+	 */
+	public function testAPUserCanEditPost() {
+		$id = $this->insert_answer();
+		// Check if user roles can ecit question and answer.
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_edit_post( $id->q ) );
+		$this->assertFalse( ap_user_can_edit_post( $id->a ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_edit_post( $id->q ) );
+		$this->assertTrue( ap_user_can_edit_post( $id->a ) );
+
+		// Test for the question and answer edit capability for the same user.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_edit_post( $qid ) );
+		$this->assertTrue( ap_user_can_edit_post( $aid ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_post( $qid ) );
+		$this->assertFalse( ap_user_can_edit_post( $aid ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_edit_post', 'Test user can edit post', [ 'ap_edit_others_question' => true, 'ap_edit_others_answer' => true ] );
+		$this->setRole( 'ap_test_can_edit_post' );
+		$this->assertTrue( ap_user_can_edit_post( $id->q ) );
+		$this->assertTrue( ap_user_can_edit_post( $id->a ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_edit_post( $id->q ) );
+		$this->assertFalse( ap_user_can_edit_post( $id->a ) );
+	}
 }
