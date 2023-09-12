@@ -923,8 +923,8 @@ class Test_Roles extends TestCase {
 		);
 		$page_id = $this->factory->post->create(
 			array(
-				'post_title'   => 'Post title',
-				'post_content' => 'Post content',
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
 				'post_status'  => 'trash',
 				'post_type'    => 'page',
 			)
@@ -946,5 +946,162 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_allow_anonymous() );
 		ap_opt( 'post_question_per', '' );
 		$this->assertFalse( ap_allow_anonymous() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_view_post
+	 */
+	public function testAPUserCanViewPost() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'trash',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'trash',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'future',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'future',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
+
+		// For other post types checks.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+			)
+		);
+		$this->assertFalse( ap_user_can_view_post( $post_id ) );
+		$this->assertFalse( ap_user_can_view_post( $page_id ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'future',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'future',
+				'post_type'    => 'page',
+			)
+		);
+		$this->assertFalse( ap_user_can_view_post( $post_id ) );
+		$this->assertFalse( ap_user_can_view_post( $page_id ) );
 	}
 }
