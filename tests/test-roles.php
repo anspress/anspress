@@ -309,4 +309,28 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_user_can_answer( $question_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswer() {
+		$id = $this->insert_answer();
+
+		// Check if user roles can select answer.
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_select_answer( $id->a ) );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_select_answer( $id->a ) );
+		$this->setRole( 'ap_participants' );
+		$this->assertFalse( ap_user_can_select_answer( $id->a ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_select_answer( $id->a ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_select_answer', 'Test user can select answer', [ 'ap_toggle_best_answer' => true ] );
+		$this->setRole( 'ap_test_can_select_answer' );
+		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
+	}
 }
