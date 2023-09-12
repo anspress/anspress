@@ -827,4 +827,109 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_permanent_delete( $qid, $new_user_id ) );
 		$this->assertFalse( ap_user_can_permanent_delete( $aid, $new_user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_restore
+	 */
+	public function testAPUserCanRestore() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'trash',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_status'  => 'trash',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_restore( $question_id ) );
+		$this->assertTrue( ap_user_can_restore( $answer_id ) );
+
+		// For the same user test.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_status'  => 'trash',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_status'  => 'trash',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_restore( $qid, $user_id ) );
+		$this->assertTrue( ap_user_can_restore( $aid, $user_id ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+				'post_status'  => 'trash',
+				'post_author'  => $user_id,
+			)
+		);
+		$aid = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_status'  => 'trash',
+				'post_parent'  => $qid,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_restore( $qid, $new_user_id ) );
+		$this->assertFalse( ap_user_can_restore( $aid, $new_user_id ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_restore', 'Test user can restore', [ 'ap_restore_posts' => true ] );
+		$this->setRole( 'ap_test_can_restore' );
+		$this->assertTrue( ap_user_can_restore( $question_id ) );
+		$this->assertTrue( ap_user_can_restore( $answer_id ) );
+		add_role( 'ap_test_cant_restore', 'Test user can\'t restore', [ 'ap_restore_posts' => false ] );
+		$this->setRole( 'ap_test_cant_restore' );
+		$this->assertFalse( ap_user_can_restore( $question_id ) );
+		$this->assertFalse( ap_user_can_restore( $answer_id ) );
+
+		// For other post types checks.
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'trash',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'trash',
+				'post_type'    => 'page',
+			)
+		);
+		$this->assertFalse( ap_user_can_restore( $post_id ) );
+		$this->assertFalse( ap_user_can_restore( $page_id ) );
+	}
 }
