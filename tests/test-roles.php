@@ -341,7 +341,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditPostQuestionAnswer() {
 		$id = $this->insert_answer();
-		// Check if user roles can ecit question and answer.
+		// Check if user roles can edit question and answer.
 		$this->setRole( 'subscriber' );
 		$this->assertFalse( ap_user_can_edit_post( $id->q ) );
 		$this->assertFalse( ap_user_can_edit_post( $id->a ) );
@@ -448,5 +448,45 @@ class Test_Roles extends TestCase {
 		add_role( 'ap_test_can_change_label', 'Test user can change label', [ 'ap_change_label' => true ] );
 		$this->setRole( 'ap_test_can_change_label' );
 		$this->assertTrue( ap_user_can_change_label() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanComment() {
+		$id = $this->insert_answer();
+		// Check if user roles can comment on question and answer.
+		$this->assertFalse( ap_user_can_comment( $id->q ) );
+		$this->assertFalse( ap_user_can_comment( $id->a ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_comment( $id->q ) );
+		$this->assertTrue( ap_user_can_comment( $id->a ) );
+
+		// Check user having ap_new_comment can answer the question.
+		ap_opt( 'post_comment_per', 'have_cap' );
+		add_role( 'ap_test_can_comment', 'Test user can answer', [ 'ap_new_comment' => true ] );
+		$this->setRole( 'ap_test_can_comment' );
+		$this->assertTrue( ap_user_can_comment( $id->q ) );
+		$this->assertTrue( ap_user_can_comment( $id->a ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_comment( $id->q ) );
+		$this->assertFalse( ap_user_can_comment( $id->a ) );
+
+		// Check anyone can answer.
+		ap_opt( 'post_comment_per', 'anyone' );
+		$this->assertTrue( ap_user_can_comment( $id->q ) );
+		$this->assertTrue( ap_user_can_comment( $id->a ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_comment( $id->q ) );
+		$this->assertTrue( ap_user_can_comment( $id->a ) );
+
+		// Check logged-in can answer.
+		ap_opt( 'post_comment_per', 'logged_in' );
+		$this->logout();
+		$this->assertFalse( ap_user_can_comment( $id->q ) );
+		$this->assertFalse( ap_user_can_comment( $id->a ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_comment( $id->q ) );
+		$this->assertTrue( ap_user_can_comment( $id->a ) );
 	}
 }
