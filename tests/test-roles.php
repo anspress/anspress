@@ -421,4 +421,32 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_edit_question( $id->q ) );
 		$this->assertFalse( ap_user_can_edit_answer( $id->a ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_change_label
+	 */
+	public function testAPUserCanChangeLabel() {
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'ap_moderator' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'author' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'editor' );
+		$this->assertFalse( ap_user_can_change_label() );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_change_label() );
+
+		// Test for new role.
+		add_role( 'ap_test_can_change_label', 'Test user can change label', [ 'ap_change_label' => true ] );
+		$this->setRole( 'ap_test_can_change_label' );
+		$this->assertTrue( ap_user_can_change_label() );
+	}
 }
