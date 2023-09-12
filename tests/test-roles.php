@@ -287,5 +287,26 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_answer( $qid, $user_id ) );
 		ap_opt( 'multiple_answers', true );
 		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
+
+		// Check user having ap_new_answer can answer the question.
+		ap_opt( 'post_answer_per', 'have_cap' );
+		add_role( 'ap_test_can_answer', 'Test user can answer', [ 'ap_new_answer' => true ] );
+		$this->setRole( 'ap_test_can_answer' );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_answer( $question_id ) );
+
+		// Check anyone can answer.
+		ap_opt( 'post_answer_per', 'anyone' );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+
+		// Check logged-in can answer.
+		ap_opt( 'post_answer_per', 'logged_in' );
+		$this->logout();
+		$this->assertFalse( ap_user_can_answer( $question_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
 	}
 }
