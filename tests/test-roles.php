@@ -1170,5 +1170,146 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_view_future_post( $post_id ) );
 		$this->assertFalse( ap_user_can_view_future_post( $page_id ) );
 		$this->logout();
+
+		// Test for the ap_user_can_view_private_post function.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_private_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_private_post( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_view_private_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_private_post( $answer_id ) );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_view_private_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_private_post( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_view_private_post', 'Test user can view private post', [ 'ap_view_private' => true ] );
+		$this->setRole( 'ap_test_can_view_private_post' );
+		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
+
+		// Test for the question/answer creator.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_private_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_private_post( $answer_id ) );
+
+		// Test for private_post answer viewable or not by the question author.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
+		$other_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $other_user_id );
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+				'post_author'  => $other_user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_private_post( $answer_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id, $other_user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
+
+		// Test whether other user can view the private_post question and answer.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+				'post_author'  => $new_user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_private_post( $question_id, $user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
+		$this->logout();
 	}
 }
