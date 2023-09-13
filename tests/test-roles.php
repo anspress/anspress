@@ -1311,5 +1311,110 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_view_private_post( $question_id, $new_user_id ) );
 		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
 		$this->logout();
+
+		// Test for the ap_user_can_view_moderate_post function.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_moderate_post( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_moderate_post( $answer_id ) );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_moderate_post( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_view_moderate_post', 'Test user can view moderate post', [ 'ap_view_moderate' => true ] );
+		$this->setRole( 'ap_test_can_view_moderate_post' );
+		$this->assertTrue( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
+
+		// Test for the question/answer creator.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'future',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'future',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertFalse( ap_user_can_view_moderate_post( $answer_id ) );
+		$this->logout();
+
+		// Test for session starage.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_parent'  => $question_id,
+			)
+		);
+		$session = \AnsPress\Session::init();
+		$session->set_answer( $answer_id );
+		$session->set_question( $question_id );
+		$this->assertTrue( ap_user_can_view_moderate_post( $question_id ) );
+		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
 	}
 }
