@@ -1166,6 +1166,7 @@ function ap_role_caps( $role ) {
 			'ap_restore_posts'          => true,
 			'ap_toggle_featured'        => true,
 			'ap_toggle_best_answer'     => true,
+			'ap_close_question'         => true,
 		),
 	);
 
