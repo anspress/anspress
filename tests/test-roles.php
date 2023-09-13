@@ -1720,4 +1720,95 @@ class Test_Roles extends TestCase {
 		ap_opt( 'allow_upload', true );
 		$this->assertTrue( ap_user_can_upload() );
 	}
+
+	/**
+	 * @covers ::ap_user_can_delete_attachment
+	 */
+	public function testAPUserCanDeleteAttachment() {
+		// Test for no attachment available.
+		$this->assertFalse( ap_user_can_delete_attachment( 0 ) );
+
+		// Test for user roles.
+		$this->setRole( 'subscriber' );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.txt', $post->ID );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		// Test for ap_moderator user.
+		$this->setRole( 'ap_moderator' );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+		// Test for super user.
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+
+		$this->setRole( 'subscriber' );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		// Test for ap_moderator user.
+		$this->setRole( 'ap_moderator' );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+		// Test for super user.
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+
+		$this->setRole( 'subscriber' );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		// Test for ap_moderator user.
+		$this->setRole( 'ap_moderator' );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+		// Test for super user.
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+
+		// Test other user can't delete the attachment of other user.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.txt', $post->ID );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
+		wp_set_current_user( $new_user_id );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+		$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $administrator_user_id );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
+		wp_set_current_user( $new_user_id );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+		$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $administrator_user_id );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
+		wp_set_current_user( $new_user_id );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+		$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $administrator_user_id );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+	}
 }
