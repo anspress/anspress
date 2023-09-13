@@ -1659,4 +1659,26 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_change_status( $question_id ) );
 		$this->assertFalse( ap_user_can_change_status( $answer_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_close_question
+	 */
+	public function testAPUserCanCloseQuestion() {
+		$this->assertFalse( ap_user_can_close_question() );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_close_question() );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_close_question() );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_close_question() );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_close_question() );
+
+		// Test for new role.
+		add_role( 'ap_test_can_close_question', 'Test user can close question', [ 'ap_close_question' => true ] );
+		$this->setRole( 'ap_test_can_close_question' );
+		$this->assertTrue( ap_user_can_close_question() );
+		$this->logout();
+		$this->assertFalse( ap_user_can_close_question() );
+	}
 }
