@@ -826,6 +826,11 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
+	// Return false if the post status is not set to moderate.
+	if ( 'moderate' !== $post_o->post_status ) {
+		return false;
+	}
+
 	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
