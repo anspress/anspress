@@ -1104,4 +1104,71 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_view_post( $post_id ) );
 		$this->assertFalse( ap_user_can_view_post( $page_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_view_private_post
+	 * @covers ::ap_user_can_view_moderate_post
+	 * @covers ::ap_user_can_view_future_post
+	 */
+	public function testAPUserCanViewPrivateModerateFuturePost() {
+		$this->setRole( 'subscriber' );
+		// Test other post types for private_post post status.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+				'post_status'  => 'private_post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertFalse( ap_user_can_view_private_post( $post_id ) );
+		$this->assertFalse( ap_user_can_view_private_post( $page_id ) );
+		// Test other post types for moderate post status.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+				'post_status'  => 'moderate',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_view_moderate_post( $post_id ) );
+		$this->assertFalse( ap_user_can_view_moderate_post( $page_id ) );
+		// Test other post types for future post status.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+				'post_status'  => 'future',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+				'post_status'  => 'future',
+			)
+		);
+		$this->assertFalse( ap_user_can_view_future_post( $post_id ) );
+		$this->assertFalse( ap_user_can_view_future_post( $page_id ) );
+		$this->logout();
+	}
 }
