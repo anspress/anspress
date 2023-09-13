@@ -780,6 +780,11 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 		return false;
 	}
 
+	// Return false if the post status is not set to private_post.
+	if ( 'private_post' !== $post_o->post_status ) {
+		return false;
+	}
+
 	if ( $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
