@@ -1529,4 +1529,133 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_view_future_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_future_post( $answer_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatus() {
+		$this->setRole( 'subscriber' );
+		// Test other post types for private_post post status.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+			)
+		);
+		$this->assertFalse( ap_user_can_change_status( $post_id ) );
+		$this->assertFalse( ap_user_can_change_status( $page_id ) );
+
+		// Test for the question and answer post type.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_change_status( $question_id ) );
+		$this->assertTrue( ap_user_can_change_status( $answer_id ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+				'post_author'  => $user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_change_status( $question_id, $user_id ) );
+		$this->assertTrue( ap_user_can_change_status( $answer_id, $user_id ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+				'post_author'  => $new_user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'private_post',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_change_status( $question_id, $user_id ) );
+		$this->assertFalse( ap_user_can_change_status( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_change_status( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_change_status( $answer_id, $new_user_id ) );
+
+		// Test for moderate post status.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_change_status( $question_id ) );
+		$this->assertFalse( ap_user_can_change_status( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_change_status( $question_id ) );
+		$this->assertTrue( ap_user_can_change_status( $answer_id ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_change_other_status', 'Test user can change other status', [ 'ap_change_status_other' => true ] );
+		$this->setRole( 'ap_test_can_change_other_status' );
+		$this->assertTrue( ap_user_can_change_status( $question_id ) );
+		$this->assertTrue( ap_user_can_change_status( $answer_id ) );
+		$this->logout();
+
+		// Test for logged out user.
+		$this->assertFalse( ap_user_can_change_status( $question_id ) );
+		$this->assertFalse( ap_user_can_change_status( $answer_id ) );
+	}
 }
