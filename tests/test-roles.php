@@ -1705,4 +1705,19 @@ class Test_Roles extends TestCase {
 		$this->logout();
 		$this->assertFalse( ap_user_can_change_status_to_moderate() );
 	}
+
+	/**
+	 * @covers ::ap_user_can_upload
+	 */
+	public function testAPUserCanUpload() {
+		$this->assertFalse( ap_user_can_upload() );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_upload() );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_upload() );
+		ap_opt( 'allow_upload', false );
+		$this->assertFalse( ap_user_can_upload() );
+		ap_opt( 'allow_upload', true );
+		$this->assertTrue( ap_user_can_upload() );
+	}
 }
