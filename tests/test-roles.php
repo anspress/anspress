@@ -1811,4 +1811,47 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
 	}
+
+	/**
+	 * @covers ::ap_show_captcha_to_user
+	 */
+	public function testAPShowCaptchaToUser() {
+		// Required dummy reCaptcha Site Key.
+		ap_opt( 'recaptcha_site_key', 'anspressSamplereCaptchaSiteKey' );
+
+		// Test for administrator and ap_moderator user role.
+		$this->setRole( 'administrator' );
+		$this->assertFalse( ap_show_captcha_to_user() );
+		$this->setRole( 'ap_moderator' );
+		$this->assertFalse( ap_show_captcha_to_user() );
+
+		// Test for other user roles.
+		ap_opt( 'recaptcha_exclude_roles', [ 'ap_moderator' => 1 ] );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_show_captcha_to_user() );
+		$this->setRole( 'contributor' );
+		$this->assertTrue( ap_show_captcha_to_user() );
+		$this->setRole( 'ap_banned' );
+		$this->assertTrue( ap_show_captcha_to_user() );
+		ap_opt(
+			'recaptcha_exclude_roles',
+			[
+				'subscriber' => 1,
+				'contributor' => 1,
+				'ap_participant' => 1,
+			]
+		);
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_show_captcha_to_user() );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_show_captcha_to_user() );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_show_captcha_to_user() );
+
+		// Required dummy reCaptcha Site Key.
+		ap_opt( 'recaptcha_exclude_roles', [ 'ap_moderator' => 1 ] );
+		ap_opt( 'recaptcha_site_key', '' );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_show_captcha_to_user() );
+	}
 }
