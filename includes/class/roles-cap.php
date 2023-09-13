@@ -776,7 +776,7 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 
 	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
-	if ( ! $post_o || 0 == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+	if ( ! $post_o || 0 == $user_id || ! ap_is_cpt( $post_o ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return false;
 	}
 
