@@ -868,6 +868,11 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
+	// Return false if the post status is not set to future.
+	if ( 'future' !== $_post->post_status ) {
+		return false;
+	}
+
 	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
