@@ -1154,6 +1154,7 @@ function ap_role_caps( $role ) {
 			'ap_delete_post_permanent'  => true,
 			'ap_view_private'           => true,
 			'ap_view_moderate'          => true,
+			'ap_view_future'            => true,
 			'ap_change_status_other'    => true,
 			'ap_approve_comment'        => true,
 			'ap_no_moderation'          => true,
