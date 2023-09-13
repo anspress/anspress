@@ -42,6 +42,7 @@ class Test_Roles extends TestCase {
 		$this->assertArrayHasKey( 'ap_delete_post_permanent', $caps );
 		$this->assertArrayHasKey( 'ap_view_private', $caps );
 		$this->assertArrayHasKey( 'ap_view_moderate', $caps );
+		$this->assertArrayHasKey( 'ap_view_future', $caps );
 		$this->assertArrayHasKey( 'ap_change_status_other', $caps );
 		$this->assertArrayHasKey( 'ap_approve_comment', $caps );
 		$this->assertArrayHasKey( 'ap_no_moderation', $caps );
