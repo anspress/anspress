@@ -1681,4 +1681,28 @@ class Test_Roles extends TestCase {
 		$this->logout();
 		$this->assertFalse( ap_user_can_close_question() );
 	}
+
+	/**
+	 * @covers ::ap_user_can_change_status_to_moderate
+	 */
+	public function testAPUserCanChangeStatusToModerate() {
+		$this->assertFalse( ap_user_can_change_status_to_moderate() );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_change_status_to_moderate() );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_change_status_to_moderate() );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_change_status_to_moderate() );
+		$this->setRole( 'editor' );
+		$this->assertTrue( ap_user_can_change_status_to_moderate() );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_change_status_to_moderate() );
+
+		// Test for new role.
+		add_role( 'ap_test_can_change_status_to_moderate', 'Test user can change status to moderate', [ 'ap_change_status_other' => true ] );
+		$this->setRole( 'ap_test_can_change_status_to_moderate' );
+		$this->assertTrue( ap_user_can_change_status_to_moderate() );
+		$this->logout();
+		$this->assertFalse( ap_user_can_change_status_to_moderate() );
+	}
 }
