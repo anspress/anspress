@@ -2840,4 +2840,127 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_comment( $cqid ) );
 		$this->assertTrue( ap_user_can_read_comment( $caid ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_read_comments
+	 */
+	public function testAPUserCanReadComments() {
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+
+		// Test for private_post and moderate post status.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
+		$this->assertFalse( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
+		$this->assertFalse( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
+		$this->assertFalse( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		$this->assertTrue( ap_user_can_read_comments( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
+		$this->assertFalse( ap_user_can_read_comments( $answer_id ) );
+		$this->logout();
+
+		// Check user having ap_read_comment can read the comment.
+		$id = $this->insert_answer();
+		ap_opt( 'read_comment_per', 'have_cap' );
+		add_role( 'ap_test_can_read_comment', 'Test user can read comments', [ 'ap_read_comment' => true ] );
+		$this->setRole( 'ap_test_can_read_comment' );
+		$this->assertTrue( ap_user_can_read_comments( $id->q ) );
+		$this->assertTrue( ap_user_can_read_comments( $id->a ) );
+		add_role( 'ap_test_can_not_read_comment', 'Test user can not read comments', [ 'ap_read_comment' => false ] );
+		$this->setRole( 'ap_test_can_not_read_comment' );
+		$this->assertFalse( ap_user_can_read_comments( $id->q ) );
+		$this->assertFalse( ap_user_can_read_comments( $id->a ) );
+		add_role( 'ap_test_can_not_read_comment', 'Test user can not read comments', [] );
+		$this->setRole( 'ap_test_can_not_read_comment' );
+		$this->assertFalse( ap_user_can_read_comments( $id->q ) );
+		$this->assertFalse( ap_user_can_read_comments( $id->a ) );
+
+		// Check anyone can read comment.
+		ap_opt( 'read_comment_per', 'anyone' );
+		$this->assertTrue( ap_user_can_read_comments( $id->q ) );
+		$this->assertTrue( ap_user_can_read_comments( $id->a ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_read_comments( $id->q ) );
+		$this->assertTrue( ap_user_can_read_comments( $id->a ) );
+		$this->logout();
+
+		// Check only logged-in can read comment.
+		ap_opt( 'read_comment_per', 'logged_in' );
+		$this->assertFalse( ap_user_can_read_comments( $id->q ) );
+		$this->assertFalse( ap_user_can_read_comments( $id->a ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_read_comments( $id->q ) );
+		$this->assertTrue( ap_user_can_read_comments( $id->a ) );
+	}
 }
