@@ -39,7 +39,7 @@ class TestFlag extends TestCase {
 	/**
 	 * @covers ::ap_delete_flags
 	 */
-	public function testap_delete_flags() {
+	public function testAPDeleteFlags() {
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_add_flag( $id ) );
