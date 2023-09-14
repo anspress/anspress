@@ -1854,4 +1854,182 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'subscriber' );
 		$this->assertFalse( ap_show_captcha_to_user() );
 	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPost() {
+		$this->setRole( 'subscriber' );
+		// Test other post types.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+			)
+		);
+		$testimonial_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Testimonial title',
+				'post_content' => 'Testimonial content',
+				'post_type'    => 'testimonial',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $post_id ) );
+		$this->assertTrue( ap_user_can_read_post( $page_id ) );
+		$this->assertTrue( ap_user_can_read_post( $testimonial_id ) );
+		$this->logout();
+
+		// Test for session storage.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$session = \AnsPress\Session::init();
+		$session->set_answer( $answer_id );
+		$session->set_question( $question_id );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+
+		// Test for viewing others question.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $new_user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
+		$this->logout();
+
+		// Test for new role.
+		add_role(
+			'ap_test_can_read_post',
+			'Test user can read post',
+			[
+				'edit_others_question' => true,
+				'edit_others_answer' => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_read_post' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->logout();
+
+		// Test for trash post status.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'trash',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'trash',
+			)
+		);
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'author' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'editor' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->logout();
+	}
 }
