@@ -1536,7 +1536,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanChangeStatus() {
 		$this->setRole( 'subscriber' );
-		// Test other post types for private_post post status.
+		// Test other post types.
 		$post_id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Post title',
