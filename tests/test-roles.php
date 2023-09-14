@@ -2602,4 +2602,65 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
 		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_approve_comment
+	 */
+	public function testAPUserCanApproveComment() {
+		// Test for subscriber.
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_approve_comment( $user_id ) );
+
+		// Test for ap_banned.
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_banned' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_approve_comment( $user_id ) );
+
+		// Test for ap_participant.
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_participant' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_approve_comment( $user_id ) );
+
+		// Test for ap_moderator.
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_approve_comment( $user_id ) );
+
+		// Test for editor.
+		$this->setRole( 'editor' );
+		$this->assertTrue( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'editor' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_approve_comment( $user_id ) );
+
+		// Test for administrator.
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_approve_comment( $user_id ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_approve_comment', 'Test user can approve comment', [ 'ap_approve_comment' => true ] );
+		$this->setRole( 'ap_test_can_approve_comment' );
+		$this->assertTrue( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_test_can_approve_comment' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_approve_comment( $user_id ) );
+		add_role( 'ap_test_can_not_approve_comment', 'Test user can not approve comment', [ 'ap_approve_comment' => false ] );
+		$this->setRole( 'ap_test_can_not_approve_comment' );
+		$this->assertFalse( ap_user_can_approve_comment() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_test_can_not_approve_comment' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_approve_comment( $user_id ) );
+	}
 }
