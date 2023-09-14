@@ -1989,7 +1989,6 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for trash post status.
-		$this->setRole( 'subscriber' );
 		$question_id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Question title',
@@ -2007,6 +2006,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'trash',
 			)
 		);
+		$this->setRole( 'subscriber' );
 		$this->assertFalse( ap_user_can_read_post( $question_id ) );
 		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
 		$this->setRole( 'contributor' );
@@ -2031,5 +2031,226 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_post( $question_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
 		$this->logout();
+
+		// Check for answer post type with private_post and moderate post status.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $new_user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $new_user_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertFalse( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $new_user_id,
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $new_user_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $new_user_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_read_post( $question_id, $user_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
+		$this->logout();
+
+		// Check for private and moderate post status.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'author' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'editor' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'contributor' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'author' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'editor' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
 	}
 }
