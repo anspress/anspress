@@ -29,9 +29,11 @@ class TestFlag extends TestCase {
 
 		$this->setRole( 'subscriber' );
 		ap_add_flag( $id->q );
+		ap_update_flags_count( $id->q );
 		$this->assertTrue( ap_is_user_flagged( $id->q ) );
 		$this->assertFalse( ap_is_user_flagged( $id->a ) );
 		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->a );
 		$this->assertTrue( ap_is_user_flagged( $id->q ) );
 		$this->assertTrue( ap_is_user_flagged( $id->a ) );
 		ap_delete_flags( $id->q );
@@ -46,7 +48,8 @@ class TestFlag extends TestCase {
 	public function testAPDeleteFlags() {
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
-		$this->assertTrue( ap_add_flag( $id ) );
+		ap_add_flag( $id );
+		ap_update_flags_count( $id );
 		$this->assertTrue( ap_delete_flags( $id ) );
 	}
 
