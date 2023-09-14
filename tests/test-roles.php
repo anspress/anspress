@@ -2340,4 +2340,49 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_post( $question_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_read_question
+	 * @covers ::ap_user_can_read_answer
+	 */
+	public function testAPUserCanReadQuestionAnswer() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_read_question( $question_id ) );
+		$this->assertTrue( ap_user_can_read_answer( $answer_id ) );
+
+		// Test other post types.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+			)
+		);
+		$this->assertTrue( ap_user_can_read_question( $post_id ) );
+		$this->assertTrue( ap_user_can_read_question( $page_id ) );
+		$this->assertTrue( ap_user_can_read_answer( $post_id ) );
+		$this->assertTrue( ap_user_can_read_answer( $page_id ) );
+	}
 }
