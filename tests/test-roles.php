@@ -2385,4 +2385,221 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_answer( $post_id ) );
 		$this->assertTrue( ap_user_can_read_answer( $page_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPost() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$this->setRole( 'ap_participant' );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+
+		// Test for super admin.
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$this->logout();
+
+		// Test for new role.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		add_role(
+			'ap_test_can_vote_up_down',
+			'Test user can vote up and down on question and answer',
+			[
+				'ap_vote_up' => true,
+				'ap_vote_down' => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_vote_up_down' );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		add_role(
+			'ap_test_can_vote_up_not_down',
+			'Test user can vote up and not down on question and answer',
+			[
+				'ap_vote_up' => true,
+				'ap_vote_down' => false,
+			]
+		);
+		$this->setRole( 'ap_test_can_vote_up_not_down' );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		add_role(
+			'ap_test_can_vote_down_not_up',
+			'Test user can vote down and not vote up on question and answer',
+			[
+				'ap_vote_up' => false,
+				'ap_vote_down' => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_vote_down_not_up' );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		add_role(
+			'ap_test_can_not_vote_up_down',
+			'Test user can vote up and down on question and answer',
+			[
+				'ap_vote_up' => false,
+				'ap_vote_down' => false,
+			]
+		);
+		$this->setRole( 'ap_test_can_not_vote_up_down' );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$this->logout();
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $new_user_id );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_author'  => $user_id,
+				'post_status'  => 'public',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id,
+				'post_status'  => 'public',
+			)
+		);
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+	}
 }
