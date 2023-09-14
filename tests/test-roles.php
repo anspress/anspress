@@ -2663,4 +2663,65 @@ class Test_Roles extends TestCase {
 		wp_set_current_user( $user_id );
 		$this->assertFalse( ap_user_can_approve_comment( $user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_toggle_featured
+	 */
+	public function testAPUserCanToggleFeatured() {
+		// Test for subscriber.
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_toggle_featured( $user_id ) );
+
+		// Test for ap_banned.
+		$this->setRole( 'ap_banned' );
+		$this->assertFalse( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_banned' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_toggle_featured( $user_id ) );
+
+		// Test for ap_participant.
+		$this->setRole( 'ap_participant' );
+		$this->assertFalse( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_participant' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_toggle_featured( $user_id ) );
+
+		// Test for ap_moderator.
+		$this->setRole( 'ap_moderator' );
+		$this->assertTrue( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_toggle_featured( $user_id ) );
+
+		// Test for editor.
+		$this->setRole( 'editor' );
+		$this->assertTrue( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'editor' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_toggle_featured( $user_id ) );
+
+		// Test for administrator.
+		$this->setRole( 'administrator' );
+		$this->assertTrue( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_toggle_featured( $user_id ) );
+
+		// Test for new role.
+		add_role( 'ap_test_can_toggle_featured', 'Test user can toggle featured', [ 'ap_toggle_featured' => true ] );
+		$this->setRole( 'ap_test_can_toggle_featured' );
+		$this->assertTrue( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_test_can_toggle_featured' ) );
+		wp_set_current_user( $user_id );
+		$this->assertTrue( ap_user_can_toggle_featured( $user_id ) );
+		add_role( 'ap_test_can_not_toggle_featured', 'Test user can not toggle featured', [ 'ap_toggle_featured' => false ] );
+		$this->setRole( 'ap_test_can_not_toggle_featured' );
+		$this->assertFalse( ap_user_can_toggle_featured() );
+		$user_id = $this->factory()->user->create( array( 'role' => 'ap_test_can_not_toggle_featured' ) );
+		wp_set_current_user( $user_id );
+		$this->assertFalse( ap_user_can_toggle_featured( $user_id ) );
+	}
 }
