@@ -2252,5 +2252,92 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'administrator' );
 		$this->assertTrue( ap_user_can_read_post( $question_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+
+		// Check user having ap_read_question and ap_read_answer can read the question.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		ap_opt( 'read_question_per', 'have_cap' );
+		ap_opt( 'read_answer_per', 'have_cap' );
+		add_role(
+			'ap_test_can_read_question_answer',
+			'Test user can read question and answer',
+			[
+				'ap_read_question' => true,
+				'ap_read_answer' => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_read_question_answer' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		add_role( 'ap_test_can_not_read_question_answer', 'Test user can not read question and answer', [] );
+		$this->setRole( 'ap_test_can_not_read_question_answer' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		add_role(
+			'ap_test_can_not_read_question_answer',
+			'Test user can not read question and answer',
+			[
+				'ap_read_question' => false,
+				'ap_read_answer' => false,
+			]
+		);
+		$this->setRole( 'ap_test_can_not_read_question_answer' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		add_role(
+			'ap_test_can_read_question_not_answer',
+			'Test user can not read question and answer',
+			[
+				'ap_read_question' => true,
+				'ap_read_answer' => false,
+			]
+		);
+		$this->setRole( 'ap_test_can_read_question_not_answer' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		add_role(
+			'ap_test_can_read_answer_not_question',
+			'Test user can not read answer and question',
+			[
+				'ap_read_question' => false,
+				'ap_read_answer' => true,
+			]
+		);
+		$this->setRole( 'ap_test_can_read_answer_not_question' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->logout();
+
+		// Check anyone can read question and answer.
+		ap_opt( 'read_question_per', 'anyone' );
+		ap_opt( 'read_answer_per', 'anyone' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
+		$this->logout();
+
+		// Check only logged-in can read question and answer.
+		ap_opt( 'read_question_per', 'logged_in' );
+		ap_opt( 'read_answer_per', 'logged_in' );
+		$this->assertFalse( ap_user_can_read_post( $question_id ) );
+		$this->assertFalse( ap_user_can_read_post( $answer_id ) );
+		$this->setRole( 'subscriber' );
+		$this->assertTrue( ap_user_can_read_post( $question_id ) );
+		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
 	}
 }
