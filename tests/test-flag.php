@@ -34,6 +34,10 @@ class TestFlag extends TestCase {
 		ap_add_flag( $id->a );
 		$this->assertTrue( ap_is_user_flagged( $id->q ) );
 		$this->assertTrue( ap_is_user_flagged( $id->a ) );
+		ap_delete_flags( $id->q );
+		ap_delete_flags( $id->a );
+		$this->assertFalse( ap_is_user_flagged( $id->q ) );
+		$this->assertFalse( ap_is_user_flagged( $id->a ) );
 	}
 
 	/**
