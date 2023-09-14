@@ -88,6 +88,137 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 0, $total_flagged_answers->{'request-failed'} );
 		$this->assertEquals( 0, $total_flagged_answers->{'request-completed'} );
 		$this->assertEquals( 0, $total_flagged_answers->total );
+
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_add_flag( $id->q );
+		ap_update_flags_count( $id->q );
+		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->a );
+		$total_flagged_count     = ap_total_flagged_count();
+		$total_flagged_questions = $total_flagged_count['questions'];
+		$total_flagged_answers   = $total_flagged_count['answers'];
+		// Test for questions.
+		$this->assertEquals( 1, $total_flagged_questions->publish );
+		$this->assertEquals( 1, $total_flagged_questions->total );
+		// Test for answers.
+		$this->assertEquals( 1, $total_flagged_answers->publish );
+		$this->assertEquals( 1, $total_flagged_answers->total );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		ap_add_flag( $question_id );
+		ap_update_flags_count( $question_id );
+		ap_add_flag( $answer_id );
+		ap_update_flags_count( $answer_id );
+		$total_flagged_count     = ap_total_flagged_count();
+		$total_flagged_questions = $total_flagged_count['questions'];
+		$total_flagged_answers   = $total_flagged_count['answers'];
+		// Test for questions.
+		$this->assertEquals( 1, $total_flagged_questions->publish );
+		$this->assertEquals( 1, $total_flagged_questions->moderate );
+		$this->assertEquals( 2, $total_flagged_questions->total );
+		// Test for answers.
+		$this->assertEquals( 1, $total_flagged_answers->publish );
+		$this->assertEquals( 1, $total_flagged_answers->moderate );
+		$this->assertEquals( 2, $total_flagged_answers->total );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+				'post_status'  => 'private',
+			)
+		);
+		ap_add_flag( $question_id );
+		ap_update_flags_count( $question_id );
+		ap_add_flag( $answer_id );
+		ap_update_flags_count( $answer_id );
+		$total_flagged_count     = ap_total_flagged_count();
+		$total_flagged_questions = $total_flagged_count['questions'];
+		$total_flagged_answers   = $total_flagged_count['answers'];
+		// Test for questions.
+		$this->assertEquals( 1, $total_flagged_questions->publish );
+		$this->assertEquals( 1, $total_flagged_questions->moderate );
+		$this->assertEquals( 1, $total_flagged_questions->private );
+		$this->assertEquals( 3, $total_flagged_questions->total );
+		// Test for answers.
+		$this->assertEquals( 1, $total_flagged_answers->publish );
+		$this->assertEquals( 1, $total_flagged_answers->moderate );
+		$this->assertEquals( 1, $total_flagged_answers->private );
+		$this->assertEquals( 3, $total_flagged_answers->total );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		ap_add_flag( $question_id );
+		ap_update_flags_count( $question_id );
+		ap_add_flag( $answer_id );
+		ap_update_flags_count( $answer_id );
+		$total_flagged_count     = ap_total_flagged_count();
+		$total_flagged_questions = $total_flagged_count['questions'];
+		$total_flagged_answers   = $total_flagged_count['answers'];
+		// Test for questions.
+		$this->assertEquals( 2, $total_flagged_questions->publish );
+		$this->assertEquals( 1, $total_flagged_questions->moderate );
+		$this->assertEquals( 1, $total_flagged_questions->private );
+		$this->assertEquals( 4, $total_flagged_questions->total );
+		// Test for answers.
+		$this->assertEquals( 2, $total_flagged_answers->publish );
+		$this->assertEquals( 1, $total_flagged_answers->moderate );
+		$this->assertEquals( 1, $total_flagged_answers->private );
+		$this->assertEquals( 4, $total_flagged_answers->total );
+
+		// Test after deleting the flags.
+		ap_delete_flags( $question_id );
+		ap_delete_flags( $answer_id );
+		$total_flagged_count     = ap_total_flagged_count();
+		$total_flagged_questions = $total_flagged_count['questions'];
+		$total_flagged_answers   = $total_flagged_count['answers'];
+		// Test for questions.
+		$this->assertEquals( 1, $total_flagged_questions->publish );
+		$this->assertEquals( 1, $total_flagged_questions->moderate );
+		$this->assertEquals( 1, $total_flagged_questions->private );
+		$this->assertEquals( 3, $total_flagged_questions->total );
+		// Test for answers.
+		$this->assertEquals( 1, $total_flagged_answers->publish );
+		$this->assertEquals( 1, $total_flagged_answers->moderate );
+		$this->assertEquals( 1, $total_flagged_answers->private );
+		$this->assertEquals( 3, $total_flagged_answers->total );
 	}
 
 }
