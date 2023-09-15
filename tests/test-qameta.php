@@ -310,4 +310,26 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 0, ap_toggle_close_question( $id ) );
 		$this->assertEquals( 1, ap_toggle_close_question( $id ) );
 	}
+
+	/**
+	 * @covers ::ap_update_post_attach_ids
+	 */
+	public function testAPUpdatePostAttachIds() {
+		// Test for user roles.
+		$this->setRole( 'subscriber' );
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.txt', $post->ID );
+		wp_delete_attachment( $attachment_id, true );
+		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
+
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		wp_delete_attachment( $attachment_id, true );
+		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
+
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		wp_delete_attachment( $attachment_id, true );
+		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
+	}
 }
