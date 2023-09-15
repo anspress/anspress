@@ -520,4 +520,87 @@ class TestQAMeta extends TestCase {
 		$question_get_qameta = ap_get_qameta( $id->q );
 		$this->assertEquals( 0, $question_get_qameta->featured );
 	}
+
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
+	public function testAPInsertQameta() {
+		$id = $this->insert_answer();
+
+		// Test for inserting the selected answer.
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( '', $question_get_qameta->selected_id );
+		$this->assertEquals( 0, $answer_get_qameta->selected );
+		ap_insert_qameta(
+			$id->q,
+			array(
+				'selected_id'  => $id->a,
+				'last_updated' => current_time( 'mysql' ),
+			)
+		);
+		ap_insert_qameta(
+			$id->a,
+			array(
+				'selected'     => 1,
+				'last_updated' => current_time( 'mysql' ),
+			)
+		);
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( $id->a, $question_get_qameta->selected_id );
+		$this->assertEquals( 1, $answer_get_qameta->selected );
+
+		// Test for closed question.
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->closed );
+		ap_insert_qameta( $id->q, array( 'closed' => 1 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 1, $question_get_qameta->closed );
+		ap_insert_qameta( $id->q, array( 'closed' => 0 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->closed );
+
+		// Test for featured question.
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->featured );
+		ap_insert_qameta( $id->q, array( 'featured' => 1 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 1, $question_get_qameta->featured );
+		ap_insert_qameta( $id->q, array( 'featured' => 0 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->featured );
+
+		// Test for flags count.
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->flags );
+		$this->assertEquals( 0, $answer_get_qameta->flags );
+		ap_insert_qameta( $id->q, array( 'flags' => 100 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 100, $question_get_qameta->flags );
+		$this->assertEquals( 100, $answer_get_qameta->flags );
+		ap_insert_qameta( $id->q, array( 'flags' => 500 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 500, $question_get_qameta->flags );
+		$this->assertEquals( 500, $answer_get_qameta->flags );
+
+		// Test for views count.
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->views );
+		$this->assertEquals( 0, $answer_get_qameta->views );
+		ap_insert_qameta( $id->q, array( 'views' => 100 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 100, $question_get_qameta->views );
+		$this->assertEquals( 100, $answer_get_qameta->views );
+		ap_insert_qameta( $id->q, array( 'views' => 500 ) );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 500, $question_get_qameta->views );
+		$this->assertEquals( 500, $answer_get_qameta->views );
+	}
 }
