@@ -657,4 +657,30 @@ class TestQAMeta extends TestCase {
 		$this->assertArrayHasKey( 'last_updated', $append_qameta );
 		$this->assertArrayHasKey( 'is_new', $append_qameta );
 	}
+
+	/**
+	 * @covers ::ap_update_flags_count
+	 */
+	public function testap_update_flags_count() {
+		$id = $this->insert_answer();
+
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 0, $question_get_qameta->flags );
+		$this->assertEquals( 0, $answer_get_qameta->flags );
+		ap_update_flags_count( $id->q );
+		ap_update_flags_count( $id->a );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 0, $question_get_qameta->flags );
+		$this->assertEquals( 0, $answer_get_qameta->flags );
+		ap_add_flag( $id->q );
+		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->q );
+		ap_update_flags_count( $id->a );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( 1, $question_get_qameta->flags );
+		$this->assertEquals( 1, $answer_get_qameta->flags );
+	}
 }
