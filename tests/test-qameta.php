@@ -429,4 +429,95 @@ class TestQAMeta extends TestCase {
 			ap_update_votes_count( $id->q )
 		);
 	}
+
+	/**
+	 * @covers ::ap_get_qameta
+	 */
+	public function testAPGetQameta() {
+		$id = $this->insert_answer();
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$question_get_qameta = (array) $question_get_qameta;
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$answer_get_qameta = (array) $answer_get_qameta;
+
+		// Test for question.
+		$this->assertArrayHasKey( 'post_id', $question_get_qameta );
+		$this->assertArrayHasKey( 'selected', $question_get_qameta );
+		$this->assertArrayHasKey( 'selected_id', $question_get_qameta );
+		$this->assertArrayHasKey( 'comments', $question_get_qameta );
+		$this->assertArrayHasKey( 'answers', $question_get_qameta );
+		$this->assertArrayHasKey( 'ptype', $question_get_qameta );
+		$this->assertArrayHasKey( 'featured', $question_get_qameta );
+		$this->assertArrayHasKey( 'closed', $question_get_qameta );
+		$this->assertArrayHasKey( 'views', $question_get_qameta );
+		$this->assertArrayHasKey( 'votes_up', $question_get_qameta );
+		$this->assertArrayHasKey( 'votes_down', $question_get_qameta );
+		$this->assertArrayHasKey( 'subscribers', $question_get_qameta );
+		$this->assertArrayHasKey( 'flags', $question_get_qameta );
+		$this->assertArrayHasKey( 'terms', $question_get_qameta );
+		$this->assertArrayHasKey( 'attach', $question_get_qameta );
+		$this->assertArrayHasKey( 'activities', $question_get_qameta );
+		$this->assertArrayHasKey( 'fields', $question_get_qameta );
+		$this->assertArrayHasKey( 'roles', $question_get_qameta );
+		$this->assertArrayHasKey( 'last_updated', $question_get_qameta );
+		$this->assertArrayHasKey( 'is_new', $question_get_qameta );
+
+		// Test for answer.
+		$this->assertArrayHasKey( 'post_id', $answer_get_qameta );
+		$this->assertArrayHasKey( 'selected', $answer_get_qameta );
+		$this->assertArrayHasKey( 'selected_id', $answer_get_qameta );
+		$this->assertArrayHasKey( 'comments', $answer_get_qameta );
+		$this->assertArrayHasKey( 'answers', $answer_get_qameta );
+		$this->assertArrayHasKey( 'ptype', $answer_get_qameta );
+		$this->assertArrayHasKey( 'featured', $answer_get_qameta );
+		$this->assertArrayHasKey( 'closed', $answer_get_qameta );
+		$this->assertArrayHasKey( 'views', $answer_get_qameta );
+		$this->assertArrayHasKey( 'votes_up', $answer_get_qameta );
+		$this->assertArrayHasKey( 'votes_down', $answer_get_qameta );
+		$this->assertArrayHasKey( 'subscribers', $answer_get_qameta );
+		$this->assertArrayHasKey( 'flags', $answer_get_qameta );
+		$this->assertArrayHasKey( 'terms', $answer_get_qameta );
+		$this->assertArrayHasKey( 'attach', $answer_get_qameta );
+		$this->assertArrayHasKey( 'activities', $answer_get_qameta );
+		$this->assertArrayHasKey( 'fields', $answer_get_qameta );
+		$this->assertArrayHasKey( 'roles', $answer_get_qameta );
+		$this->assertArrayHasKey( 'last_updated', $answer_get_qameta );
+		$this->assertArrayHasKey( 'is_new', $answer_get_qameta );
+
+		// Test if getting the correct values.
+		// Test for selected answer.
+		$id = $this->insert_answer();
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( '', $question_get_qameta->selected_id );
+		$this->assertEquals( 0, $answer_get_qameta->selected );
+		ap_set_selected_answer( $id->q, $id->a );
+		ap_update_answer_selected( $id->a );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$answer_get_qameta = ap_get_qameta( $id->a );
+		$this->assertEquals( $id->a, $question_get_qameta->selected_id );
+		$this->assertEquals( 1, $answer_get_qameta->selected );
+
+		// Test for closed question.
+		$id = $this->insert_answer();
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->closed );
+		ap_toggle_close_question( $id->q );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 1, $question_get_qameta->closed );
+		ap_toggle_close_question( $id->q );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->closed );
+
+		// Test for featured question.
+		$id = $this->insert_answer();
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->featured );
+		ap_set_featured_question( $id->q );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 1, $question_get_qameta->featured );
+		ap_unset_featured_question( $id->q );
+		$question_get_qameta = ap_get_qameta( $id->q );
+		$this->assertEquals( 0, $question_get_qameta->featured );
+	}
 }
