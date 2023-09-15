@@ -603,4 +603,58 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 500, $question_get_qameta->views );
 		$this->assertEquals( 500, $answer_get_qameta->views );
 	}
+
+	/**
+	 * @covers ::ap_append_qameta
+	 */
+	public function testAPAppendQameta() {
+		$id = $this->insert_question();
+
+		// Post meta check before appending.
+		$post = get_post( $id );
+		$post = (array) $post;
+		$this->assertArrayNotHasKey( 'selected', $post );
+		$this->assertArrayNotHasKey( 'selected_id', $post );
+		$this->assertArrayNotHasKey( 'comments', $post );
+		$this->assertArrayNotHasKey( 'answers', $post );
+		$this->assertArrayNotHasKey( 'ptype', $post );
+		$this->assertArrayNotHasKey( 'featured', $post );
+		$this->assertArrayNotHasKey( 'closed', $post );
+		$this->assertArrayNotHasKey( 'views', $post );
+		$this->assertArrayNotHasKey( 'votes_up', $post );
+		$this->assertArrayNotHasKey( 'votes_down', $post );
+		$this->assertArrayNotHasKey( 'subscribers', $post );
+		$this->assertArrayNotHasKey( 'flags', $post );
+		$this->assertArrayNotHasKey( 'terms', $post );
+		$this->assertArrayNotHasKey( 'attach', $post );
+		$this->assertArrayNotHasKey( 'activities', $post );
+		$this->assertArrayNotHasKey( 'fields', $post );
+		$this->assertArrayNotHasKey( 'roles', $post );
+		$this->assertArrayNotHasKey( 'last_updated', $post );
+		$this->assertArrayNotHasKey( 'is_new', $post );
+
+		// Post meta check after appending.
+		$new_post = get_post( $id );
+		$append_qameta = ap_append_qameta( $new_post );
+		$append_qameta = (array) $append_qameta;
+		$this->assertArrayHasKey( 'selected', $append_qameta );
+		$this->assertArrayHasKey( 'selected_id', $append_qameta );
+		$this->assertArrayHasKey( 'comments', $append_qameta );
+		$this->assertArrayHasKey( 'answers', $append_qameta );
+		$this->assertArrayHasKey( 'ptype', $append_qameta );
+		$this->assertArrayHasKey( 'featured', $append_qameta );
+		$this->assertArrayHasKey( 'closed', $append_qameta );
+		$this->assertArrayHasKey( 'views', $append_qameta );
+		$this->assertArrayHasKey( 'votes_up', $append_qameta );
+		$this->assertArrayHasKey( 'votes_down', $append_qameta );
+		$this->assertArrayHasKey( 'subscribers', $append_qameta );
+		$this->assertArrayHasKey( 'flags', $append_qameta );
+		$this->assertArrayHasKey( 'terms', $append_qameta );
+		$this->assertArrayHasKey( 'attach', $append_qameta );
+		$this->assertArrayHasKey( 'activities', $append_qameta );
+		$this->assertArrayHasKey( 'fields', $append_qameta );
+		$this->assertArrayHasKey( 'roles', $append_qameta );
+		$this->assertArrayHasKey( 'last_updated', $append_qameta );
+		$this->assertArrayHasKey( 'is_new', $append_qameta );
+	}
 }
