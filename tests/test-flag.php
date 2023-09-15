@@ -224,4 +224,41 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 3, $total_flagged_answers->total );
 	}
 
+	/**
+	 * @covers ::ap_count_post_flags
+	 */
+	public function testAPFlagBtnArgs() {
+		$id = $this->insert_answer();
+		$question_count_flag = ap_count_post_flags( $id->q );
+		$this->assertEquals( 0, $question_count_flag );
+		$answer_count_flag = ap_count_post_flags( $id->a );
+		$this->assertEquals( 0, $answer_count_flag );
+
+		// Test after adding a flag.
+		ap_add_flag( $id->q );
+		ap_update_flags_count( $id->q );
+		$question_count_flag = ap_count_post_flags( $id->q );
+		$this->assertEquals( 1, $question_count_flag );
+		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->a );
+		$answer_count_flag = ap_count_post_flags( $id->a );
+		$this->assertEquals( 1, $answer_count_flag );
+		ap_add_flag( $id->q );
+		ap_update_flags_count( $id->q );
+		$question_count_flag = ap_count_post_flags( $id->q );
+		$this->assertEquals( 2, $question_count_flag );
+		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->a );
+		$answer_count_flag = ap_count_post_flags( $id->a );
+		$this->assertEquals( 2, $answer_count_flag );
+
+		// Test after deleting flags.
+		ap_delete_flags( $id->q );
+		$question_count_flag = ap_count_post_flags( $id->q );
+		$this->assertEquals( 0, $question_count_flag );
+		ap_delete_flags( $id->a );
+		$answer_count_flag = ap_count_post_flags( $id->q );
+		$this->assertEquals( 0, $answer_count_flag );
+	}
+
 }
