@@ -332,4 +332,101 @@ class TestQAMeta extends TestCase {
 		wp_delete_attachment( $attachment_id, true );
 		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
 	}
+
+	/**
+	 * @covers ::ap_update_votes_count
+	 */
+	public function testAPUpdateVotesCount() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$id = $this->insert_answer();
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0,
+			],
+			ap_update_votes_count( $id->a )
+		);
+		ap_add_post_vote( $id->q );
+		$this->assertEquals(
+			[
+				'votes_net'  => 1,
+				'votes_down' => 0,
+				'votes_up'   => 1,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->a );
+		$this->assertEquals(
+			[
+				'votes_net'  => 1,
+				'votes_down' => 0,
+				'votes_up'   => 1,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->q, $user_id, false );
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->a, $user_id, false );
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->q, $user_id, false );
+		$this->assertEquals(
+			[
+				'votes_net'  => -1,
+				'votes_down' => 2,
+				'votes_up'   => 1,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->a, $user_id, false );
+		$this->assertEquals(
+			[
+				'votes_net'  => -1,
+				'votes_down' => 2,
+				'votes_up'   => 1,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->q, $user_id, true );
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 2,
+				'votes_up'   => 2,
+			],
+			ap_update_votes_count( $id->q )
+		);
+		ap_add_post_vote( $id->a, $user_id, true );
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 2,
+				'votes_up'   => 2,
+			],
+			ap_update_votes_count( $id->q )
+		);
+	}
 }
