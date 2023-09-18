@@ -121,4 +121,68 @@ class TestVotes extends TestCase {
 		$this->assertTrue( ap_is_user_voted( $id, 'vote', $new_user_id ) );
 		$this->assertTrue( ap_is_user_voted( $id, 'flag', $new_user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_delete_vote
+	 */
+	public function testAPDeleteVote() {
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		$this->assertEquals( 0, ap_delete_vote( $id ) );
+
+		// Test after adding the vote.
+		ap_vote_insert( $id, get_current_user_id() );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
+		$get_vote = (array) $get_vote;
+		$this->assertArrayHasKey( 'vote_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
+		$this->assertArrayHasKey( 'vote_type', $get_vote );
+		$this->assertArrayHasKey( 'vote_value', $get_vote );
+		$this->assertArrayHasKey( 'vote_date', $get_vote );
+		ap_delete_vote( $id );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
+		$get_vote = (array) $get_vote;
+		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_user_id', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_rec_user', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_type', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
+
+		// Test after adding the flag.
+		$id = $this->insert_question();
+		ap_vote_insert( $id, get_current_user_id(), 'flag' );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
+		$get_vote = (array) $get_vote;
+		$this->assertArrayHasKey( 'vote_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
+		$this->assertArrayHasKey( 'vote_type', $get_vote );
+		$this->assertArrayHasKey( 'vote_value', $get_vote );
+		$this->assertArrayHasKey( 'vote_date', $get_vote );
+		ap_delete_vote( $id );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
+		$get_vote = (array) $get_vote;
+		$this->assertArrayHasKey( 'vote_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
+		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
+		$this->assertArrayHasKey( 'vote_type', $get_vote );
+		$this->assertArrayHasKey( 'vote_value', $get_vote );
+		$this->assertArrayHasKey( 'vote_date', $get_vote );
+		ap_delete_vote( $id, get_current_user_id(), 'flag' );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
+		$get_vote = (array) $get_vote;
+		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_user_id', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_rec_user', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_type', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
+		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
+	}
 }
