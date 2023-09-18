@@ -73,4 +73,21 @@ class TestTaxo extends TestCase {
 		);
 		$this->assertFalse( ap_question_have_tags( $qid ) );
 	}
+
+	/**
+	 * @covers ::is_question_categories
+	 */
+	public function testISQuestionCategories() {
+		$this->assertFalse( is_question_categories() );
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Categories page',
+				'post_content' => 'Categories page',
+				'post_type'    => 'page',
+			)
+		);
+		ap_opt( 'categories_page', $id );
+		$this->go_to( '/?post_type=page&p=' . $id );
+		$this->assertTrue( is_question_categories() );
+	}
 }
