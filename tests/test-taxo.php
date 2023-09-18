@@ -90,4 +90,21 @@ class TestTaxo extends TestCase {
 		$this->go_to( '/?post_type=page&p=' . $id );
 		$this->assertTrue( is_question_categories() );
 	}
+
+	/**
+	 * @covers ::is_question_tags
+	 */
+	public function testISQuestionTags() {
+		$this->assertFalse( is_question_tags() );
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Tags page',
+				'post_content' => 'Tags page',
+				'post_type'    => 'page',
+			)
+		);
+		ap_opt( 'tags_page', $id );
+		$this->go_to( '/?post_type=page&p=' . $id );
+		$this->assertTrue( is_question_tags() );
+	}
 }
