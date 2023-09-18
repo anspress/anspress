@@ -22,7 +22,7 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_have_category
 	 */
 	public function testAPQuestionHaveCategory() {
-		$cid = $this->factory->category->create(
+		$cid = $this->factory->term->create(
 			array(
 				'taxonomy' => 'question_category',
 			)
@@ -50,7 +50,7 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_have_tags
 	 */
 	public function testAPQuestionHaveTags() {
-		$tid = $this->factory->category->create(
+		$tid = $this->factory->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 			)
