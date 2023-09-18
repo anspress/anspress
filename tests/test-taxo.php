@@ -124,4 +124,31 @@ class TestTaxo extends TestCase {
 		ap_opt( 'categories_page_id', 'categories111' );
 		$this->assertEquals( 'categories111', ap_get_categories_slug() );
 	}
+
+	public function categorySlug() {
+		return 'imcategory';
+	}
+
+	/**
+	 * @covers ::ap_get_category_slug
+	 */
+	public function testAPGetCategorySlug() {
+		$this->assertEquals( 'category', ap_get_category_slug() );
+		ap_opt( 'category_page_slug', 'cat' );
+		$this->assertEquals( 'cat', ap_get_category_slug() );
+		ap_opt( 'category_page_slug', '' );
+		$this->assertEquals( 'category', ap_get_category_slug() );
+
+		// Test for filter within same function.
+		add_filter( 'ap_category_slug', [ $this, 'categorySlug' ] );
+		$this->assertEquals( 'imcategory', ap_get_category_slug() );
+		remove_filter( 'ap_category_slug', [ $this, 'categorySlug' ] );
+		$this->assertEquals( 'category', ap_get_category_slug() );
+
+		// Test for filter within the main function.
+		add_filter( 'ap_page_slug_category', [ $this, 'categorySlug' ] );
+		$this->assertEquals( 'imcategory', ap_get_category_slug() );
+		remove_filter( 'ap_page_slug_category', [ $this, 'categorySlug' ] );
+		$this->assertEquals( 'category', ap_get_category_slug() );
+	}
 }
