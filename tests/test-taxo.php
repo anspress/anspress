@@ -9,10 +9,12 @@ class TestTaxo extends TestCase {
 	public function set_up() {
 		parent::set_up();
 		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
 	}
 
 	public function tear_down() {
 		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
 		parent::tear_down();
 	}
 
@@ -44,4 +46,31 @@ class TestTaxo extends TestCase {
 		$this->assertFalse( ap_question_have_category( $qid ) );
 	}
 
+	/**
+	 * @covers ::ap_question_have_tags
+	 */
+	public function testAPQuestionHaveTags() {
+		$tid = $this->factory->category->create(
+			array(
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+			)
+		);
+		wp_set_object_terms( $qid, array( $tid ), 'question_tag' );
+		$this->assertTrue( ap_question_have_tags( $qid ) );
+		$qid = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+			)
+		);
+		$this->assertFalse( ap_question_have_tags( $qid ) );
+	}
 }
