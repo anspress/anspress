@@ -107,4 +107,21 @@ class TestTaxo extends TestCase {
 		$this->go_to( '/?post_type=page&p=' . $id );
 		$this->assertTrue( is_question_tags() );
 	}
+
+	/**
+	 * @covers ::ap_get_categories_slug
+	 */
+	public function testAPGetCategoriesSlug() {
+		$this->assertEquals( 'categories', ap_get_categories_slug() );
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Categories page',
+				'post_content' => 'Categories content',
+				'post_name'    => 'categories111',
+			)
+		);
+		ap_opt( 'categories_page', $id );
+		ap_opt( 'categories_page_id', 'categories111' );
+		$this->assertEquals( 'categories111', ap_get_categories_slug() );
+	}
 }
