@@ -78,4 +78,47 @@ class TestVotes extends TestCase {
 		$this->assertNotEquals( 101, $get_vote['vote_value'] );
 		$this->assertEquals( current_time( 'mysql' ), $get_vote['vote_date'] );
 	}
+
+	/**
+	 * @covers ::ap_is_user_voted
+	 */
+	public function testAPIsUserVoted() {
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_is_user_voted( $id ) );
+
+		// Test after inserting a vote.
+		ap_vote_insert( $id, get_current_user_id() );
+		$this->assertTrue( ap_is_user_voted( $id ) );
+		$this->logout();
+
+		// Test for inserting a flag.
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_is_user_voted( $id ) );
+		ap_vote_insert( $id, get_current_user_id(), 'flag' );
+		$this->assertFalse( ap_is_user_voted( $id ) );
+		$this->assertTrue( ap_is_user_voted( $id, 'flag' ) );
+
+		// New test.
+		$id = $this->insert_question();
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$this->assertFalse( ap_is_user_voted( $id, 'vote', $user_id ) );
+		$this->assertFalse( ap_is_user_voted( $id, 'vote', $new_user_id ) );
+		$this->assertFalse( ap_is_user_voted( $id, 'flag', $user_id ) );
+		$this->assertFalse( ap_is_user_voted( $id, 'flag', $new_user_id ) );
+		ap_vote_insert( $id, $user_id, 'vote', $new_user_id, 10 );
+		$this->assertTrue( ap_is_user_voted( $id, 'vote', $user_id ) );
+		$this->assertFalse( ap_is_user_voted( $id, 'flag', $user_id ) );
+		ap_vote_insert( $id, $new_user_id, 'vote', $user_id, 10 );
+		$this->assertTrue( ap_is_user_voted( $id, 'vote', $new_user_id ) );
+		$this->assertFalse( ap_is_user_voted( $id, 'flag', $new_user_id ) );
+		ap_vote_insert( $id, $user_id, 'flag', $new_user_id, 10 );
+		$this->assertTrue( ap_is_user_voted( $id, 'vote', $user_id ) );
+		$this->assertTrue( ap_is_user_voted( $id, 'flag', $user_id ) );
+		ap_vote_insert( $id, $new_user_id, 'flag', $user_id, 10 );
+		$this->assertTrue( ap_is_user_voted( $id, 'vote', $new_user_id ) );
+		$this->assertTrue( ap_is_user_voted( $id, 'flag', $new_user_id ) );
+	}
 }

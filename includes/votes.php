@@ -374,7 +374,6 @@ function ap_count_post_votes_by( $by, $value ) {
 	return $new_counts;
 }
 
-
 /**
  * Get a single vote from database.
  *
