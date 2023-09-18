@@ -151,4 +151,67 @@ class TestTaxo extends TestCase {
 		remove_filter( 'ap_page_slug_category', [ $this, 'categorySlug' ] );
 		$this->assertEquals( 'category', ap_get_category_slug() );
 	}
+
+	/**
+	 * @covers ::ap_category_have_image
+	 */
+	public function testAPCategoryHaveImage() {
+		// Test for image.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		$this->assertFalse( ap_category_have_image( $cid ) );
+		update_term_meta(
+			$cid,
+			'ap_category',
+			[
+				'image' => [
+					'id' => $attachment_id,
+				]
+			]
+		);
+		$this->assertTrue( ap_category_have_image( $cid ) );
+		update_term_meta(
+			$cid,
+			'ap_category',
+			[
+				'image' => []
+			]
+		);
+		$this->assertFalse( ap_category_have_image( $cid ) );
+
+		// Test for image.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'New Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		$this->assertFalse( ap_category_have_image( $cid ) );
+		update_term_meta(
+			$cid,
+			'ap_category',
+			[
+				'image' => [
+					'id' => $attachment_id,
+				]
+			]
+		);
+		$this->assertTrue( ap_category_have_image( $cid ) );
+		update_term_meta(
+			$cid,
+			'ap_category',
+			[
+				'image' => []
+			]
+		);
+		$this->assertFalse( ap_category_have_image( $cid ) );
+	}
 }
