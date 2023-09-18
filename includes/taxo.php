@@ -444,7 +444,7 @@ function is_question_tag() {
  * @return bool
  */
 function is_question_tags() {
-	if ( ap_get_tags_slug() === get_query_var( 'ap_page' ) ) {
+	if ( 'tags' === ap_current_page() ) {
 		return true;
 	}
 
