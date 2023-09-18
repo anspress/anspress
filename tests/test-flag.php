@@ -227,7 +227,7 @@ class TestFlag extends TestCase {
 	/**
 	 * @covers ::ap_count_post_flags
 	 */
-	public function testAPFlagBtnArgs() {
+	public function testAOCountPostFlags() {
 		$id = $this->insert_answer();
 		$question_count_flag = ap_count_post_flags( $id->q );
 		$this->assertEquals( 0, $question_count_flag );
