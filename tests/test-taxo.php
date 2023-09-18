@@ -214,4 +214,58 @@ class TestTaxo extends TestCase {
 		);
 		$this->assertFalse( ap_category_have_image( $cid ) );
 	}
+
+	public function tagSlug() {
+		return 'imtag';
+	}
+
+	/**
+	 * @covers ::ap_get_tag_slug
+	 */
+	public function testAPGetTagSlug() {
+		$this->assertEquals( 'tag', ap_get_tag_slug() );
+		ap_opt( 'tag_page_slug', '#' );
+		$this->assertEquals( '#', ap_get_tag_slug() );
+		ap_opt( 'tag_page_slug', '' );
+		$this->assertEquals( 'tag', ap_get_tag_slug() );
+
+		// Test for filter within same function.
+		add_filter( 'ap_tag_slug', [ $this, 'tagSlug' ] );
+		$this->assertEquals( 'imtag', ap_get_tag_slug() );
+		remove_filter( 'ap_tag_slug', [ $this, 'tagSlug' ] );
+		$this->assertEquals( 'tag', ap_get_tag_slug() );
+
+		// Test for filter within the main function.
+		add_filter( 'ap_page_slug_tag', [ $this, 'tagSlug' ] );
+		$this->assertEquals( 'imtag', ap_get_tag_slug() );
+		remove_filter( 'ap_page_slug_tag', [ $this, 'tagSlug' ] );
+		$this->assertEquals( 'tag', ap_get_tag_slug() );
+	}
+
+	public function tagsSlug() {
+		return 'imtags';
+	}
+
+	/**
+	 * @covers ::ap_get_tags_slug
+	 */
+	public function testAPGetTagsSlug() {
+		$this->assertEquals( 'tags', ap_get_tags_slug() );
+		ap_opt( 'tags_page_slug', '#' );
+		$this->assertEquals( '#', ap_get_tags_slug() );
+		ap_opt( 'tags_page_slug', '' );
+		$this->assertEquals( 'tags', ap_get_tags_slug() );
+
+		// Test for filter within same function.
+		add_filter( 'ap_tags_slug', [ $this, 'tagsSlug' ] );
+		$this->assertEquals( 'imtags', ap_get_tags_slug() );
+		remove_filter( 'ap_tags_slug', [ $this, 'tagsSlug' ] );
+		$this->assertEquals( 'tags', ap_get_tags_slug() );
+
+		// Test for filter within the main function.
+		add_filter( 'ap_page_slug_tags', [ $this, 'tagsSlug' ] );
+		$this->assertEquals( 'imtags', ap_get_tags_slug() );
+		remove_filter( 'ap_page_slug_tags', [ $this, 'tagsSlug' ] );
+		$this->assertEquals( 'tags', ap_get_tags_slug() );
+	}
 }
