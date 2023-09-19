@@ -270,4 +270,73 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_qameta->votes_net );
 		$this->assertEquals( 0, $get_qameta->flags );
 	}
+
+	/**
+	 * @covers ::ap_get_votes
+	 */
+	public function testAPGetVotes() {
+		$id = $this->insert_question();
+		$new_id = $this->insert_question();
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		// Test before adding a vote and flag.
+		$this->assertEmpty( ap_get_votes() );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => $id ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => $new_id ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => array( $id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => array( $new_id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => array( $id, $new_id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => get_current_user_id() ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => $user_id ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => array( get_current_user_id() ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => array( $user_id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => array( get_current_user_id(), $user_id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => 'vote' ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => 'flag' ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => array( 'vote' ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => array( 'flag' ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => array( 'vote', 'flag' ) ) ) );
+
+		// Test after adding a vote and flag.
+		$this->setRole( 'subscriber' );
+		// Adding vote.
+		ap_add_post_vote( $id, get_current_user_id() );
+		ap_update_votes_count( $id );
+		$this->assertNotEmpty( ap_get_votes() );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_post_id' => $id ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => $new_id ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_post_id' => array( $id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => array( $new_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_post_id' => array( $id, $new_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_user_id' => get_current_user_id() ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => $user_id ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_user_id' => array( get_current_user_id() ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => array( $user_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_user_id' => array( get_current_user_id(), $user_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => 'vote' ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => 'flag' ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'vote' ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_type' => array( 'flag' ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'vote', 'flag' ) ) ) );
+
+		// Adding flag.
+		ap_add_flag( $id, get_current_user_id() );
+		ap_update_flags_count( $id );
+		$this->assertNotEmpty( ap_get_votes() );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_post_id' => $id ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => $new_id ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_post_id' => array( $id ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_post_id' => array( $new_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_post_id' => array( $id, $new_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_user_id' => get_current_user_id() ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => $user_id ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_user_id' => array( get_current_user_id() ) ) ) );
+		$this->assertEmpty( ap_get_votes( array( 'vote_user_id' => array( $user_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_user_id' => array( get_current_user_id(), $user_id ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => 'vote' ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => 'flag' ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'vote' ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'flag' ) ) ) );
+		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'vote', 'flag' ) ) ) );
+	}
 }
