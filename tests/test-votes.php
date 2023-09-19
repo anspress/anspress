@@ -6,11 +6,16 @@ class TestVotes extends TestCase {
 
 	use AnsPress\Tests\Testcases\Common;
 
-
 	public function testVoteHooks() {
 		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ 'AnsPress_Vote', 'delete_votes' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_before_delete_answer', [ 'AnsPress_Vote', 'delete_votes' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_deleted_votes', [ 'AnsPress_Vote', 'ap_deleted_votes' ], 10, 2 ) );
+	}
+
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress_Vote', 'vote' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Vote', 'delete_votes' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Vote', 'ap_deleted_votes' ) );
 	}
 
 	/**
