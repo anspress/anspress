@@ -190,4 +190,37 @@ class TestVotes extends TestCase {
 		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
 		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
 	}
+
+	/**
+	 * @covers AnsPress_Vote::delete_votes
+	 */
+	public function testAnsPressVoteDeleteVotes() {
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_vote_insert( $id, get_current_user_id() );
+		$this->setRole( 'subscriber' );
+		ap_vote_insert( $id, get_current_user_id() );
+		$this->setRole( 'ap_participant' );
+		ap_vote_insert( $id, get_current_user_id() );
+		$this->logout();
+
+		// Test on get_votes before the actual test is applied.
+		$get_votes = ap_get_votes();
+		foreach ( $get_votes as $get_vote ) {
+			$get_vote = (array) $get_vote;
+			$this->assertArrayHasKey( 'vote_id', $get_vote );
+			$this->assertArrayHasKey( 'vote_post_id', $get_vote );
+			$this->assertArrayHasKey( 'vote_user_id', $get_vote );
+			$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
+			$this->assertArrayHasKey( 'vote_type', $get_vote );
+			$this->assertArrayHasKey( 'vote_value', $get_vote );
+			$this->assertArrayHasKey( 'vote_date', $get_vote );
+		}
+
+		// Actual test for this method.
+		AnsPress_Vote::delete_votes( $id );
+		$this->assertNotEmpty( $get_votes );
+		$get_votes = ap_get_votes();
+		$this->assertEmpty( $get_votes );
+	}
 }
