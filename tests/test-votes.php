@@ -481,4 +481,166 @@ class TestVotes extends TestCase {
 		$count_votes = ap_count_votes( array( 'group' => 'vote_value' ) );
 		$this->assertNotEmpty( $count_votes );
 	}
+
+	/**
+	 * @covers ::ap_count_post_votes_by
+	 */
+	public function testAPCountPostVotesBy() {
+		$id = $this->insert_question();
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$this->setRole( 'subscriber' );
+
+		// Test without adding a vote.
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0.
+			],
+			ap_count_post_votes_by( 'post_id', $id )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0.
+			],
+			ap_count_post_votes_by( 'user_id', get_current_user_id() )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0.
+			],
+			ap_count_post_votes_by( 'user_id', $user_id )
+		);
+
+		// Test adding the vote.
+		ap_add_post_vote( $id, get_current_user_id() );
+		$this->assertEquals(
+			[
+				'votes_net'  => 1,
+				'votes_down' => 0,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'post_id', $id )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 1,
+				'votes_down' => 0,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', get_current_user_id() )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0.
+			],
+			ap_count_post_votes_by( 'user_id', $user_id )
+		);
+		ap_add_post_vote( $id, get_current_user_id(), false );
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'post_id', $id )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', get_current_user_id() )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 0,
+				'votes_up'   => 0.
+			],
+			ap_count_post_votes_by( 'user_id', $user_id )
+		);
+		ap_add_post_vote( $id, $user_id );
+		$this->assertEquals(
+			[
+				'votes_net'  => 1,
+				'votes_down' => 1,
+				'votes_up'   => 2.
+			],
+			ap_count_post_votes_by( 'post_id', $id )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', get_current_user_id() )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 1,
+				'votes_down' => 0,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', $user_id )
+		);
+		ap_add_post_vote( $id, $user_id, false );
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 2,
+				'votes_up'   => 2.
+			],
+			ap_count_post_votes_by( 'post_id', $id )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', get_current_user_id() )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', $user_id )
+		);
+		ap_add_post_vote( $id, $user_id, false );
+		$this->assertEquals(
+			[
+				'votes_net'  => -1,
+				'votes_down' => 3,
+				'votes_up'   => 2.
+			],
+			ap_count_post_votes_by( 'post_id', $id )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => 0,
+				'votes_down' => 1,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', get_current_user_id() )
+		);
+		$this->assertEquals(
+			[
+				'votes_net'  => -1,
+				'votes_down' => 2,
+				'votes_up'   => 1.
+			],
+			ap_count_post_votes_by( 'user_id', $user_id )
+		);
+	}
 }
