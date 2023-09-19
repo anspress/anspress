@@ -643,4 +643,47 @@ class TestVotes extends TestCase {
 			ap_count_post_votes_by( 'user_id', $user_id )
 		);
 	}
+
+	/**
+	 * @covers ::ap_get_vote
+	 */
+	public function testAPGetVote() {
+		$id = $this->insert_question();
+
+		// Test without adding a vote or flag.
+		$this->setRole( 'subscriber' );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
+		$this->assertFalse( $get_vote );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
+		$this->assertFalse( $get_vote );
+
+		// Test adding a vote or flag.
+		// Adding vote.
+		ap_vote_insert( $id, get_current_user_id() );
+		ap_update_votes_count( $id );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
+		$this->assertNotEmpty( $get_vote );
+		$this->assertEquals( $id, $get_vote->vote_post_id );
+		$this->assertEquals( get_current_user_id(), $get_vote->vote_user_id );
+		$this->assertEquals( 0, $get_vote->vote_rec_user );
+		$this->assertEquals( 'vote', $get_vote->vote_type );
+		$this->assertEquals( '', $get_vote->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+
+		// Adding flag.
+		ap_vote_insert( $id, get_current_user_id(), 'flag' );
+		ap_update_flags_count( $id );
+		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
+		$this->assertNotEmpty( $get_vote );
+		$this->assertEquals( $id, $get_vote->vote_post_id );
+		$this->assertEquals( get_current_user_id(), $get_vote->vote_user_id );
+		$this->assertEquals( 0, $get_vote->vote_rec_user );
+		$this->assertEquals( 'flag', $get_vote->vote_type );
+		$this->assertEquals( '', $get_vote->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+
+		// Testing for both type.
+		$get_vote = ap_get_vote( $id, get_current_user_id(), array( 'vote', 'flag' ) );
+		$this->assertNotEmpty( $get_vote );
+	}
 }
