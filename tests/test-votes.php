@@ -223,4 +223,51 @@ class TestVotes extends TestCase {
 		$get_votes = ap_get_votes();
 		$this->assertEmpty( $get_votes );
 	}
+
+	/**
+	 * @covers AnsPress_Vote::ap_deleted_votes
+	 */
+	public function testAnsPressVoteAPDeletedVotes() {
+		$id = $this->insert_question();
+
+		// Test for adding first vote and flag.
+		$this->setRole( 'subscriber' );
+		ap_add_post_vote( $id, get_current_user_id() );
+		ap_update_votes_count( $id );
+		ap_add_flag( $id, get_current_user_id() );
+		ap_update_flags_count( $id );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 1, $get_qameta->votes_up );
+		$this->assertEquals( 0, $get_qameta->votes_down );
+		$this->assertEquals( 1, $get_qameta->votes_net );
+		$this->assertEquals( 1, $get_qameta->flags );
+
+		// Test for adding second vote and flag.
+		$this->setRole( 'subscriber' );
+		ap_add_post_vote( $id, get_current_user_id(), false );
+		ap_update_votes_count( $id );
+		ap_add_flag( $id, get_current_user_id() );
+		ap_update_flags_count( $id );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 1, $get_qameta->votes_up );
+		$this->assertEquals( 1, $get_qameta->votes_down );
+		$this->assertEquals( 2, $get_qameta->votes_net );
+		$this->assertEquals( 2, $get_qameta->flags );
+
+		// Actual test for this method.
+		ap_delete_votes( $id );
+		AnsPress_Vote::ap_deleted_votes( $id, 'vote' );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 0, $get_qameta->votes_up );
+		$this->assertEquals( 0, $get_qameta->votes_down );
+		$this->assertEquals( 0, $get_qameta->votes_net );
+		$this->assertEquals( 2, $get_qameta->flags );
+		ap_delete_votes( $id, 'flag' );
+		AnsPress_Vote::ap_deleted_votes( $id, 'flag' );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 0, $get_qameta->votes_up );
+		$this->assertEquals( 0, $get_qameta->votes_down );
+		$this->assertEquals( 0, $get_qameta->votes_net );
+		$this->assertEquals( 0, $get_qameta->flags );
+	}
 }
