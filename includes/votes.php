@@ -242,7 +242,7 @@ function ap_get_votes( $args = array() ) {
 		if ( is_array( $args['vote_type'] ) ) {
 			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
 		} else {
-			$where .= ' AND vote_type = ' . sanitize_text_field( $args['vote_type'] );
+			$where .= ' AND vote_type = "' . sanitize_text_field( $args['vote_type'] ) . '"';
 		}
 	}
 
