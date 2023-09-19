@@ -339,4 +339,146 @@ class TestVotes extends TestCase {
 		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'flag' ) ) ) );
 		$this->assertNotEmpty( ap_get_votes( array( 'vote_type' => array( 'vote', 'flag' ) ) ) );
 	}
+
+	/**
+	 * @covers ::ap_count_votes
+	 */
+	public function testAPCountVotes() {
+		$id = $this->insert_question();
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		// Test goes here.
+		$count_votes = ap_count_votes( 'vote_post_id=' . $id );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_post_id' => $id ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_type=vote' );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_type' => 'vote' ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_type=flag' );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_type' => 'flag' ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_user_id=' . get_current_user_id() );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => get_current_user_id() ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_user_id=' . $user_id );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => $user_id ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_value=1' );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_value' => 1 ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+
+		// Test for group.
+		$count_votes = ap_count_votes( 'group=vote_post_id' );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_post_id' ) );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_type' );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_type' ) );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_type' );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_type' ) );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_user_id' );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_user_id' ) );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_user_id' );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_user_id' ) );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_value' );
+		$this->assertEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_value' ) );
+		$this->assertEmpty( $count_votes );
+
+		// Test after adding a vote and flag.
+		$this->setRole( 'subscriber' );
+		// Adding vote.
+		ap_add_post_vote( $id, get_current_user_id() );
+		$count_votes = ap_count_votes( 'vote_post_id=' . $id );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_post_id' => $id ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_type=vote' );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_type' => 'vote' ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_type=flag' );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_type' => 'flag' ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_user_id=' . get_current_user_id() );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => get_current_user_id() ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_user_id=' . $user_id );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => $user_id ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_value=1' );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_value' => 1 ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+
+		// Adding flag.
+		ap_add_flag( $id, get_current_user_id() );
+		$count_votes = ap_count_votes( 'vote_post_id=' . $id );
+		$this->assertEquals( 2, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_post_id' => $id ) );
+		$this->assertEquals( 2, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_type=vote' );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_type' => 'vote' ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_type=flag' );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_type' => 'flag' ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_user_id=' . get_current_user_id() );
+		$this->assertEquals( 2, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => get_current_user_id() ) );
+		$this->assertEquals( 2, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_user_id=' . $user_id );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => $user_id ) );
+		$this->assertEquals( 0, $count_votes[0]->count );
+		$count_votes = ap_count_votes( 'vote_value=1' );
+		$this->assertEquals( 1, $count_votes[0]->count );
+		$count_votes = ap_count_votes( array( 'vote_value' => 1 ) );
+		$this->assertEquals( 1, $count_votes[0]->count );
+
+		// Testing for group.
+		$count_votes = ap_count_votes( 'group=vote_post_id' );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_post_id' ) );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_type' );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_type' ) );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_type' );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_type' ) );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_user_id' );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_user_id' ) );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_user_id' );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_user_id' ) );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( 'group=vote_value' );
+		$this->assertNotEmpty( $count_votes );
+		$count_votes = ap_count_votes( array( 'group' => 'vote_value' ) );
+		$this->assertNotEmpty( $count_votes );
+	}
 }
