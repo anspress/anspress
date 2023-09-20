@@ -4,6 +4,16 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestUpload extends TestCase {
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'delete_attachment' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'deleted_attachment' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'create_single_schedule' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'cron_delete_temp_attachments' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'upload_modal' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'image_upload' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'image_sizes_advanced' ) );
+	}
+
 	public function allowedMimes( $mimes ) {
 		$mimes['ico'] = 'image/x-icon';
 		$mimes['pdf'] = 'application/pdf';
