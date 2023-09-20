@@ -127,4 +127,56 @@ class TestReputation extends TestCase {
 		$this->assertArrayHasKey( 'rep_ref_id', $get_reputation );
 		$this->assertArrayHasKey( 'rep_date', $get_reputation );
 	}
+
+	/**
+	 * @covers ::ap_delete_reputation
+	 */
+	public function testAPDeleteReputation() {
+		$id = $this->insert_answer();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$this->assertEquals( 0, ap_delete_reputation( 'question', $id->q ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'answer', $id->a ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'best_answer', $id->a ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'select_answer', $id->a ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'received_vote_up', $id->q ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'received_vote_down', $id->q ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'given_vote_up', $id->q ) );
+		$this->assertEquals( 0, ap_delete_reputation( 'given_vote_down', $id->q ) );
+
+		// After inserting reputation and deleting them.
+		ap_insert_reputation( 'question', $id->q );
+		$this->assertNotEmpty( ap_get_reputation( 'question', $id->q ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'question', $id->q ) );
+		$this->assertNull( ap_get_reputation( 'question', $id->q ) );
+		ap_insert_reputation( 'answer', $id->a );
+		$this->assertNotEmpty( ap_get_reputation( 'answer', $id->a ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'answer', $id->a ) );
+		$this->assertNull( ap_get_reputation( 'answer', $id->a ) );
+		ap_insert_reputation( 'best_answer', $id->a );
+		$this->assertNotEmpty( ap_get_reputation( 'best_answer', $id->a ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'best_answer', $id->a ) );
+		$this->assertNull( ap_get_reputation( 'best_answer', $id->a ) );
+		ap_insert_reputation( 'select_answer', $id->a );
+		$this->assertNotEmpty( ap_get_reputation( 'select_answer', $id->a ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'select_answer', $id->a ) );
+		$this->assertNull( ap_get_reputation( 'select_answer', $id->a ) );
+		ap_insert_reputation( 'received_vote_up', $id->q );
+		$this->assertNotEmpty( ap_get_reputation( 'received_vote_up', $id->q ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'received_vote_up', $id->q ) );
+		$this->assertNull( ap_get_reputation( 'received_vote_up', $id->q ) );
+		ap_insert_reputation( 'received_vote_down', $id->q );
+		$this->assertNotEmpty( ap_get_reputation( 'received_vote_down', $id->q ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'received_vote_down', $id->q ) );
+		$this->assertNull( ap_get_reputation( 'received_vote_down', $id->q ) );
+		ap_insert_reputation( 'given_vote_up', $id->q );
+		$this->assertNotEmpty( ap_get_reputation( 'given_vote_up', $id->q ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'given_vote_up', $id->q ) );
+		$this->assertNull( ap_get_reputation( 'given_vote_up', $id->q ) );
+		ap_insert_reputation( 'given_vote_down', $id->q );
+		$this->assertNotEmpty( ap_get_reputation( 'given_vote_down', $id->q ) );
+		$this->assertEquals( 1, ap_delete_reputation( 'given_vote_down', $id->q ) );
+		$this->assertNull( ap_get_reputation( 'given_vote_down', $id->q ) );
+	}
 }
