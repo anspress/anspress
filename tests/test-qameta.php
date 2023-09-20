@@ -661,7 +661,7 @@ class TestQAMeta extends TestCase {
 	/**
 	 * @covers ::ap_update_flags_count
 	 */
-	public function testap_update_flags_count() {
+	public function testAPUpdateFlagsCount() {
 		$id = $this->insert_answer();
 
 		$question_get_qameta = ap_get_qameta( $id->q );
