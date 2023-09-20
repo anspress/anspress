@@ -146,7 +146,8 @@ class TestVotes extends TestCase {
 		$this->assertArrayHasKey( 'vote_type', $get_vote );
 		$this->assertArrayHasKey( 'vote_value', $get_vote );
 		$this->assertArrayHasKey( 'vote_date', $get_vote );
-		ap_delete_vote( $id );
+		$delete = ap_delete_vote( $id );
+		$this->assertEquals( 1, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
 		$get_vote = (array) $get_vote;
 		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
@@ -169,7 +170,8 @@ class TestVotes extends TestCase {
 		$this->assertArrayHasKey( 'vote_type', $get_vote );
 		$this->assertArrayHasKey( 'vote_value', $get_vote );
 		$this->assertArrayHasKey( 'vote_date', $get_vote );
-		ap_delete_vote( $id );
+		$delete = ap_delete_vote( $id );
+		$this->assertEquals( 0, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
 		$get_vote = (array) $get_vote;
 		$this->assertArrayHasKey( 'vote_id', $get_vote );
@@ -179,7 +181,8 @@ class TestVotes extends TestCase {
 		$this->assertArrayHasKey( 'vote_type', $get_vote );
 		$this->assertArrayHasKey( 'vote_value', $get_vote );
 		$this->assertArrayHasKey( 'vote_date', $get_vote );
-		ap_delete_vote( $id, get_current_user_id(), 'flag' );
+		$delete = ap_delete_vote( $id, get_current_user_id(), 'flag' );
+		$this->assertEquals( 1, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
 		$get_vote = (array) $get_vote;
 		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
@@ -189,6 +192,19 @@ class TestVotes extends TestCase {
 		$this->assertArrayNotHasKey( 'vote_type', $get_vote );
 		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
 		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
+
+		$id = $this->insert_question();
+		// Inserting votes.
+		ap_vote_insert( $id, get_current_user_id() );
+		ap_vote_insert( $id, get_current_user_id() );
+		ap_vote_insert( $id, get_current_user_id() );
+		ap_vote_insert( $id, get_current_user_id(), 'flag' );
+		ap_vote_insert( $id, get_current_user_id(), 'flag' );
+		// Delete vote and test.
+		$delete = ap_delete_vote( $id );
+		$this->assertEquals( 3, $delete );
+		$delete = ap_delete_vote( $id, get_current_user_id(), 'flag' );
+		$this->assertEquals( 2, $delete );
 	}
 
 	/**
