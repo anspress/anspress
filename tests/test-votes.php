@@ -702,4 +702,69 @@ class TestVotes extends TestCase {
 		$get_vote = ap_get_vote( $id, get_current_user_id(), array( 'vote', 'flag' ) );
 		$this->assertNotEmpty( $get_vote );
 	}
+
+	/**
+	 * @covers ::ap_add_post_vote
+	 */
+	public function testAPAddPostVote() {
+		$id = $this->insert_question();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 0, $get_qameta->votes_up );
+		$this->assertEquals( 0, $get_qameta->votes_down );
+		$this->assertEquals( 0, $get_qameta->votes_net );
+
+		// Test after using the ap_add_post_vote function.
+		$add_post_vote = ap_add_post_vote( $id );
+		$this->assertEquals(
+			[
+				'votes_up'   => 1,
+				'votes_down' => 0,
+				'votes_net'  => 1,
+			],
+			$add_post_vote
+		);
+		$add_post_vote = ap_add_post_vote( $id );
+		$this->assertEquals(
+			[
+				'votes_up'   => 2,
+				'votes_down' => 0,
+				'votes_net'  => 2,
+			],
+			$add_post_vote
+		);
+		$add_post_vote = ap_add_post_vote( $id, get_current_user_id(), true );
+		$this->assertEquals(
+			[
+				'votes_up'   => 3,
+				'votes_down' => 0,
+				'votes_net'  => 3,
+			],
+			$add_post_vote
+		);
+		$add_post_vote = ap_add_post_vote( $id, get_current_user_id(), false );
+		$this->assertEquals(
+			[
+				'votes_up'   => 3,
+				'votes_down' => 1,
+				'votes_net'  => 2,
+			],
+			$add_post_vote
+		);
+		$add_post_vote = ap_add_post_vote( $id, get_current_user_id(), false );
+		$this->assertEquals(
+			[
+				'votes_up'   => 3,
+				'votes_down' => 2,
+				'votes_net'  => 1,
+			],
+			$add_post_vote
+		);
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 3, $get_qameta->votes_up );
+		$this->assertEquals( 2, $get_qameta->votes_down );
+		$this->assertEquals( 5, $get_qameta->votes_net );
+	}
 }
