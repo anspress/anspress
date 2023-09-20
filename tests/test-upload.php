@@ -4,6 +4,10 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestUpload extends TestCase {
 
+	public function testHooks() {
+		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Uploader', 'create_single_schedule' ] ) );
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'delete_attachment' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Uploader', 'deleted_attachment' ) );
