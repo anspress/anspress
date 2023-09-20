@@ -179,4 +179,32 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 1, ap_delete_reputation( 'given_vote_down', $id->q ) );
 		$this->assertNull( ap_get_reputation( 'given_vote_down', $id->q ) );
 	}
+
+	/**
+	 * @covers ::ap_get_reputation_events()
+	 */
+	public function testAPGetReputationEvents() {
+		$reputation_events = ap_get_reputation_events();
+		$this->assertArrayHasKey( 'register', $reputation_events );
+		$this->assertArrayHasKey( 'ask', $reputation_events );
+		$this->assertArrayHasKey( 'answer', $reputation_events );
+		$this->assertArrayHasKey( 'comment', $reputation_events );
+		$this->assertArrayHasKey( 'select_answer', $reputation_events );
+		$this->assertArrayHasKey( 'best_answer', $reputation_events );
+		$this->assertArrayHasKey( 'received_vote_up', $reputation_events );
+		$this->assertArrayHasKey( 'received_vote_down', $reputation_events );
+		$this->assertArrayHasKey( 'given_vote_up', $reputation_events );
+		$this->assertArrayHasKey( 'given_vote_down', $reputation_events );
+
+		// Test for the inner array.
+		foreach ( $reputation_events as $reputation_event ) {
+			$this->assertArrayHasKey( 'icon', $reputation_event );
+			$this->assertArrayHasKey( 'parent', $reputation_event );
+			$this->assertArrayHasKey( 'rep_events_id', $reputation_event );
+			$this->assertArrayHasKey( 'label', $reputation_event );
+			$this->assertArrayHasKey( 'description', $reputation_event );
+			$this->assertArrayHasKey( 'activity', $reputation_event );
+			$this->assertArrayHasKey( 'points', $reputation_event );
+		}
+	}
 }
