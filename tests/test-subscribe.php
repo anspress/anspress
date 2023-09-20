@@ -295,4 +295,28 @@ class TestSubscribe extends TestCase {
 		$this->assertEquals( 0, ap_esc_subscriber_event_id( 'question' ) );
 		$this->assertNotEquals( -1, ap_esc_subscriber_event_id( 'question' ) );
 	}
+
+	/**
+	 * @covers ::ap_is_user_subscriber
+	 */
+	public function testAPIsUserSubscriber() {
+		$id = $this->insert_question();
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( get_current_user_id(), 'question', $id );
+		$this->assertTrue( ap_is_user_subscriber( 'question', $id ) );
+		$this->assertFalse( ap_is_user_subscriber( 'question', $id, $user_id ) );
+		ap_new_subscriber( $user_id, 'question', $id );
+		$this->assertTrue( ap_is_user_subscriber( 'question', $id, $user_id ) );
+
+		// Test after deleting the subscriber.
+		ap_delete_subscriber( $id, get_current_user_id(), 'question' );
+		$this->assertFalse( ap_is_user_subscriber( 'question', $id ) );
+		$this->assertTrue( ap_is_user_subscriber( 'question', $id, $user_id ) );
+		ap_delete_subscriber( $id, $user_id, 'question' );
+		$this->assertFalse( ap_is_user_subscriber( 'question', $id ) );
+		$this->assertFalse( ap_is_user_subscriber( 'question', $id, $user_id ) );
+	}
 }
