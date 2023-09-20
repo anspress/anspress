@@ -767,4 +767,41 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 2, $get_qameta->votes_down );
 		$this->assertEquals( 5, $get_qameta->votes_net );
 	}
+
+	/**
+	 * @covers ::ap_delete_votes
+	 */
+	public function testAPDeleteVotes() {
+		$id = $this->insert_question();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		ap_add_post_vote( $id );
+		ap_add_post_vote( $id );
+		ap_add_post_vote( $id, get_current_user_id(), false );
+		ap_add_flag( $id, get_current_user_id() );
+		ap_add_flag( $id, get_current_user_id() );
+		ap_update_flags_count( $id );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 2, $get_qameta->votes_up );
+		$this->assertEquals( 1, $get_qameta->votes_down );
+		$this->assertEquals( 3, $get_qameta->votes_net );
+		$this->assertEquals( 2, $get_qameta->flags );
+
+		// Delete vote and test begins.
+		$delete_votes = ap_delete_votes( $id );
+		$this->assertTrue( $delete_votes );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 0, $get_qameta->votes_up );
+		$this->assertEquals( 0, $get_qameta->votes_down );
+		$this->assertEquals( 0, $get_qameta->votes_net );
+		$this->assertEquals( 2, $get_qameta->flags );
+		$delete_votes = ap_delete_votes( $id, 'flag' );
+		$this->assertTrue( $delete_votes );
+		$get_qameta = ap_get_qameta( $id );
+		$this->assertEquals( 0, $get_qameta->votes_up );
+		$this->assertEquals( 0, $get_qameta->votes_down );
+		$this->assertEquals( 0, $get_qameta->votes_net );
+		$this->assertEquals( 0, $get_qameta->flags );
+	}
 }
