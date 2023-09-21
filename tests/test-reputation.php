@@ -651,4 +651,54 @@ class TestReputation extends TestCase {
 		$this->assertIsInt( ap_insert_reputation_event( 'test_reputation_event', 'Test the reputation event', 'Test the reputation event description', 10, 'Test reputation event passed' ) );
 		$this->assertIsInt( ap_insert_reputation_event( 'test_new_reputation_event', 'Test the new reputation event', 'Test the new reputation event description', 10, 'Test new reputation event passed' ) );
 	}
+
+	/**
+	 * @covers ::ap_get_reputation_event_by_slug
+	 */
+	public function testAPGetReputationEventBySlug() {
+		// Test for non-existance reputation event.
+		$this->assertNull( ap_get_reputation_event_by_slug( 'test' ) );
+		$this->assertNull( ap_get_reputation_event_by_slug( 'test_rep_event' ) );
+		$this->assertNull( ap_get_reputation_event_by_slug( 'test_event_rep' ) );
+
+		// Test for existing reputation event.
+		// Test 1.
+		$reputation_event_by_slug = ap_get_reputation_event_by_slug( 'ask' );
+		$this->assertNotNull( $reputation_event_by_slug );
+		$this->assertisObject( $reputation_event_by_slug );
+		$this->assertEquals( 2, $reputation_event_by_slug->rep_events_id );
+		$this->assertEquals( 'ask', $reputation_event_by_slug->slug );
+		$this->assertEquals( '', $reputation_event_by_slug->icon );
+		$this->assertEquals( 'Asking', $reputation_event_by_slug->label );
+		$this->assertEquals( 'Points awarded when user asks a question', $reputation_event_by_slug->description );
+		$this->assertEquals( 'Asked a question', $reputation_event_by_slug->activity );
+		$this->assertEquals( 'question', $reputation_event_by_slug->parent );
+		$this->assertEquals( 2, $reputation_event_by_slug->points );
+
+		// Test 2.
+		$reputation_event_by_slug = ap_get_reputation_event_by_slug( 'answer' );
+		$this->assertNotNull( $reputation_event_by_slug );
+		$this->assertisObject( $reputation_event_by_slug );
+		$this->assertEquals( 3, $reputation_event_by_slug->rep_events_id );
+		$this->assertEquals( 'answer', $reputation_event_by_slug->slug );
+		$this->assertEquals( '', $reputation_event_by_slug->icon );
+		$this->assertEquals( 'Answering', $reputation_event_by_slug->label );
+		$this->assertEquals( 'Points awarded when user answers a question', $reputation_event_by_slug->description );
+		$this->assertEquals( 'Posted an answer', $reputation_event_by_slug->activity );
+		$this->assertEquals( 'answer', $reputation_event_by_slug->parent );
+		$this->assertEquals( 5, $reputation_event_by_slug->points );
+
+		// Test 3.
+		$reputation_event_by_slug = ap_get_reputation_event_by_slug( 'best_answer' );
+		$this->assertNotNull( $reputation_event_by_slug );
+		$this->assertisObject( $reputation_event_by_slug );
+		$this->assertEquals( 6, $reputation_event_by_slug->rep_events_id );
+		$this->assertEquals( 'best_answer', $reputation_event_by_slug->slug );
+		$this->assertEquals( '', $reputation_event_by_slug->icon );
+		$this->assertEquals( 'Answer selected as best', $reputation_event_by_slug->label );
+		$this->assertEquals( 'Points awarded when user\'s answer is selected as best', $reputation_event_by_slug->description );
+		$this->assertEquals( 'Answer was selected as best', $reputation_event_by_slug->activity );
+		$this->assertEquals( 'answer', $reputation_event_by_slug->parent );
+		$this->assertEquals( 10, $reputation_event_by_slug->points );
+	}
 }
