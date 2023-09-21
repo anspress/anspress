@@ -640,4 +640,15 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 0, $current_user_user_reputation['given_vote_up'] );
 		$this->assertEquals( 0, $current_user_user_reputation['given_vote_down'] );
 	}
+
+	/**
+	 * @covers ::ap_insert_reputation_event
+	 */
+	public function testAPInsertReputationEvent() {
+		$this->assertTrue( is_wp_error( ap_insert_reputation_event( 'register', 'Registration', 'Points awarded when user account is created', 10, 'Registered' ) ) );
+		$this->assertFalse( is_wp_error( ap_insert_reputation_event( 'test_event', 'Test the event', 'Test the event description', 10, 'Test event passed' ) ) );
+		$this->assertIsInt( ap_insert_reputation_event( 'test_new_event', 'Test the new event', 'Test the new event description', 10, 'Test new event passed' ) );
+		$this->assertIsInt( ap_insert_reputation_event( 'test_reputation_event', 'Test the reputation event', 'Test the reputation event description', 10, 'Test reputation event passed' ) );
+		$this->assertIsInt( ap_insert_reputation_event( 'test_new_reputation_event', 'Test the new reputation event', 'Test the new reputation event description', 10, 'Test new reputation event passed' ) );
+	}
 }
