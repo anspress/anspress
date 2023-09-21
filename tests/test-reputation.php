@@ -207,4 +207,25 @@ class TestReputation extends TestCase {
 			$this->assertArrayHasKey( 'points', $reputation_event );
 		}
 	}
+
+	/**
+	 * @covers ::ap_get_reputation_event_points
+	 */
+	public function testAPGetReputationEventPoints() {
+		// Test for non existance events.
+		$this->assertEquals( 0, ap_get_reputation_event_points( 'test' ) );
+		$this->assertEquals( 0, ap_get_reputation_event_points( 'new_event' ) );
+
+		// Test for pre-existing events.
+		$this->assertEquals( 10, ap_get_reputation_event_points( 'register' ) );
+		$this->assertEquals( 2, ap_get_reputation_event_points( 'ask' ) );
+		$this->assertEquals( 5, ap_get_reputation_event_points( 'answer' ) );
+		$this->assertEquals( 2, ap_get_reputation_event_points( 'comment' ) );
+		$this->assertEquals( 2, ap_get_reputation_event_points( 'select_answer' ) );
+		$this->assertEquals( 10, ap_get_reputation_event_points( 'best_answer' ) );
+		$this->assertEquals( 10, ap_get_reputation_event_points( 'received_vote_up' ) );
+		$this->assertEquals( -2, ap_get_reputation_event_points( 'received_vote_down' ) );
+		$this->assertEquals( 0, ap_get_reputation_event_points( 'given_vote_up' ) );
+		$this->assertEquals( 0, ap_get_reputation_event_points( 'given_vote_down' ) );
+	}
 }
