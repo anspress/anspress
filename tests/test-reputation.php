@@ -483,4 +483,79 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 0, $get_user_reputation['given_vote_up'] );
 		$this->assertEquals( 0, $get_user_reputation['given_vote_down'] );
 	}
+
+	/**
+	 * @covers ::ap_get_user_reputation_meta
+	 */
+	public function testAPGetUserReputationMeta() {
+		$this->setRole( 'subscriber' );
+
+		// Test before inserting reputations.
+		$this->assertEquals( '', ap_get_user_reputation_meta() );
+
+		// Test after inserting reputations.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$post = get_post( $question_id );
+		ap_insert_reputation( 'ask', $question_id, $post->post_author );
+		$this->assertEquals( 2, ap_get_user_reputation_meta() );
+		$new_question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$post = get_post( $new_question_id );
+		ap_insert_reputation( 'ask', $new_question_id, $post->post_author );
+		$this->assertEquals( 4, ap_get_user_reputation_meta() );
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$post = get_post( $answer_id );
+		ap_insert_reputation( 'answer', $new_question_id, $post->post_author );
+		$this->assertEquals( 9, ap_get_user_reputation_meta() );
+		$new_answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'answer',
+				'post_parent'  => $new_question_id,
+			)
+		);
+		$post = get_post( $new_answer_id );
+		ap_insert_reputation( 'answer', $new_question_id, $post->post_author );
+		$this->assertEquals( 14, ap_get_user_reputation_meta() );
+
+		// Test for new reputation event.
+		$args = [
+			'label'         => 'Test reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-test-reputation',
+			'activity'      => 'Reputation registered',
+			'parent'        => '',
+			'points'        => 500,
+			'rep_events_id' => 11,
+		];
+		ap_register_reputation_event( 'test_register_reputation_event', $args );
+		ap_insert_reputation( 'test_register_reputation_event', $new_question_id, $post->post_author );
+		$this->assertEquals( 514, ap_get_user_reputation_meta() );
+		ap_insert_reputation( 'test_register_reputation_event', $new_question_id, $post->post_author );
+		$this->assertEquals( '1.01K', ap_get_user_reputation_meta() );
+		$this->assertEquals( 1014, ap_get_user_reputation_meta( get_current_user_id(), false ) );
+
+		// Test for a specific user id.
+		$user_id = $this->factory->user->create();
+		$this->assertEquals( '', ap_get_user_reputation_meta( $user_id ) );
+	}
 }
