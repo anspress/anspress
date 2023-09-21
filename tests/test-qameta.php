@@ -6,6 +6,18 @@ class TestQAMeta extends TestCase {
 
 	use AnsPress\Tests\Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
+	}
+
+	public function tear_down() {
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
+		parent::tear_down();
+	}
+
 	/**
 	 * @covers ::ap_qameta_fields
 	 */
@@ -682,5 +694,44 @@ class TestQAMeta extends TestCase {
 		$answer_get_qameta = ap_get_qameta( $id->a );
 		$this->assertEquals( 1, $question_get_qameta->flags );
 		$this->assertEquals( 1, $answer_get_qameta->flags );
+	}
+
+	/**
+	 * @covers ::ap_update_qameta_terms
+	 */
+	public function testAPUpdateQametaTerms() {
+		$id = $this->insert_question();
+
+		// Test begins.
+		$question_get_qameta = ap_get_qameta( $id );
+		$this->assertEmpty( $question_get_qameta->terms );
+		$cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+			)
+		);
+		$ncid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+			)
+		);
+		wp_set_object_terms( $id, array( $cid, $ncid ), 'question_category' );
+		do_action( 'save_post_question', $id, get_post( $id ), true );
+		$question_get_qameta = ap_get_qameta( $id );
+		$this->assertNotEmpty( $question_get_qameta->terms );
+		$tid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$ntid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+			)
+		);
+		wp_set_object_terms( $id, array( $tid, $ntid ), 'question_tag' );
+		do_action( 'save_post_question', $id, get_post( $id ), true );
+		$question_get_qameta = ap_get_qameta( $id );
+		$this->assertNotEmpty( $question_get_qameta->terms );
 	}
 }
