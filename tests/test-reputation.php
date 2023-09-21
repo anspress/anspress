@@ -278,5 +278,29 @@ class TestReputation extends TestCase {
 		$this->assertEquals( -2, ap_get_reputation_event_points( 'received_vote_down' ) );
 		$this->assertEquals( 0, ap_get_reputation_event_points( 'given_vote_up' ) );
 		$this->assertEquals( 0, ap_get_reputation_event_points( 'given_vote_down' ) );
+
+		// Test for new reputation event.
+		$args = [
+			'label'         => 'Test reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-test-reputation',
+			'activity'      => 'Reputation registered',
+			'parent'        => '',
+			'points'        => 8,
+			'rep_events_id' => 11,
+		];
+		ap_register_reputation_event( 'test_register_reputation_event', $args );
+		$this->assertEquals( 8, ap_get_reputation_event_points( 'test_register_reputation_event' ) );
+		$args = [
+			'label'         => 'Reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-reputation',
+			'activity'      => 'Reputation',
+			'parent'        => '',
+			'points'        => 12,
+			'rep_events_id' => 12,
+		];
+		ap_register_reputation_event( 'register_reputation_event', $args );
+		$this->assertEquals( 12, ap_get_reputation_event_points( 'register_reputation_event' ) );
 	}
 }
