@@ -303,4 +303,69 @@ class TestReputation extends TestCase {
 		ap_register_reputation_event( 'register_reputation_event', $args );
 		$this->assertEquals( 12, ap_get_reputation_event_points( 'register_reputation_event' ) );
 	}
+
+	/**
+	 * @covers ::ap_get_reputation_event_icon
+	 */
+	public function testAPGetReputationEventIcon() {
+		// Test for non existance events.
+		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'test' ) );
+		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'new_event' ) );
+
+		// Test for pre-existing events.
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'register' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'ask' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'answer' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'comment' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'select_answer' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'best_answer' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'received_vote_up' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'received_vote_down' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'given_vote_up' ) );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'given_vote_down' ) );
+
+		// Test for new reputation event.
+		$args = [
+			'label'         => 'Test reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-test-reputation',
+			'activity'      => 'Reputation registered',
+			'parent'        => '',
+			'points'        => 8,
+			'rep_events_id' => 11,
+		];
+		ap_register_reputation_event( 'test_register_reputation_event', $args );
+		$this->assertEquals( 'apicon-test-reputation', ap_get_reputation_event_icon( 'test_register_reputation_event' ) );
+		$args = [
+			'label'         => 'Reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-reputation',
+			'activity'      => 'Reputation',
+			'parent'        => '',
+			'points'        => 12,
+			'rep_events_id' => 12,
+		];
+		ap_register_reputation_event( 'register_reputation_event', $args );
+		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'register_reputation_event' ) );
+		$args = [
+			'label'         => 'Reputation event',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => '',
+			'activity'      => 'Reputation',
+			'parent'        => '',
+			'points'        => 15,
+			'rep_events_id' => 13,
+		];
+		ap_register_reputation_event( 'new_reputation_event', $args );
+		$this->assertEquals( '', ap_get_reputation_event_icon( 'new_reputation_event' ) );
+		$args = [
+			'label'         => 'Reputation event',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'activity'      => 'Reputation',
+			'points'        => 15,
+			'rep_events_id' => 14,
+		];
+		ap_register_reputation_event( 'latest_reputation_event', $args );
+		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'latest_reputation_event' ) );
+	}
 }
