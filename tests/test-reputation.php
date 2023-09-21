@@ -558,4 +558,86 @@ class TestReputation extends TestCase {
 		$user_id = $this->factory->user->create();
 		$this->assertEquals( '', ap_get_user_reputation_meta( $user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_get_users_reputation
+	 */
+	public function testAPGetUsersReputation() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+
+		// Test before adding any reputation.
+		$get_users_reputations = ap_get_users_reputation( [ get_current_user_id(), $user_id ] );
+		foreach ( $get_users_reputations as $user_reputation ) {
+			$this->assertEquals( 0, $user_reputation['register'] );
+			$this->assertEquals( 0, $user_reputation['ask'] );
+			$this->assertEquals( 0, $user_reputation['answer'] );
+			$this->assertEquals( 0, $user_reputation['comment'] );
+			$this->assertEquals( 0, $user_reputation['select_answer'] );
+			$this->assertEquals( 0, $user_reputation['best_answer'] );
+			$this->assertEquals( 0, $user_reputation['received_vote_up'] );
+			$this->assertEquals( 0, $user_reputation['received_vote_down'] );
+			$this->assertEquals( 0, $user_reputation['given_vote_up'] );
+			$this->assertEquals( 0, $user_reputation['given_vote_down'] );
+		}
+
+		// Test after adding reputation.
+		ap_insert_reputation( 'register', get_current_user_id(), get_current_user_id() );
+		ap_insert_reputation( 'ask', 501, get_current_user_id() );
+		ap_insert_reputation( 'ask', 502, get_current_user_id() );
+		ap_insert_reputation( 'ask', 505, get_current_user_id() );
+		ap_insert_reputation( 'answer', 50, get_current_user_id() );
+		ap_insert_reputation( 'answer', 51, get_current_user_id() );
+		ap_insert_reputation( 'answer', 52, get_current_user_id() );
+		ap_insert_reputation( 'best_answer', 50, get_current_user_id() );
+		ap_insert_reputation( 'best_answer', 51, get_current_user_id() );
+		ap_insert_reputation( 'best_answer', 52, get_current_user_id() );
+		ap_insert_reputation( 'select_answer', 50, get_current_user_id() );
+		ap_insert_reputation( 'select_answer', 51, get_current_user_id() );
+		ap_insert_reputation( 'select_answer', 52, get_current_user_id() );
+		ap_insert_reputation( 'received_vote_up', 100, get_current_user_id() );
+		ap_insert_reputation( 'received_vote_down', 101, get_current_user_id() );
+		ap_insert_reputation( 'given_vote_up', 100, get_current_user_id() );
+		ap_insert_reputation( 'given_vote_down', 101, get_current_user_id() );
+		$get_users_reputations = ap_get_users_reputation( [ get_current_user_id(), $user_id ] );
+		$current_user_user_reputation = $get_users_reputations[ get_current_user_id() ];
+		$this->assertEquals( 10, $current_user_user_reputation['register'] );
+		$this->assertEquals( 6, $current_user_user_reputation['ask'] );
+		$this->assertEquals( 15, $current_user_user_reputation['answer'] );
+		$this->assertEquals( 0, $current_user_user_reputation['comment'] );
+		$this->assertEquals( 6, $current_user_user_reputation['select_answer'] );
+		$this->assertEquals( 30, $current_user_user_reputation['best_answer'] );
+		$this->assertEquals( 10, $current_user_user_reputation['received_vote_up'] );
+		$this->assertEquals( -2, $current_user_user_reputation['received_vote_down'] );
+		$this->assertEquals( 0, $current_user_user_reputation['given_vote_up'] );
+		$this->assertEquals( 0, $current_user_user_reputation['given_vote_down'] );
+
+		// For specific user id.
+		ap_insert_reputation( 'register', $user_id, $user_id );
+		ap_insert_reputation( 'ask', 501, $user_id );
+		ap_insert_reputation( 'ask', 502, $user_id );
+		ap_insert_reputation( 'answer', 50, $user_id );
+		ap_insert_reputation( 'answer', 51, $user_id );
+		ap_insert_reputation( 'best_answer', 50, $user_id );
+		ap_insert_reputation( 'select_answer', 51, $user_id );
+		ap_insert_reputation( 'select_answer', 52, $user_id );
+		ap_insert_reputation( 'received_vote_up', 100, $user_id );
+		ap_insert_reputation( 'received_vote_up', 102, $user_id );
+		ap_insert_reputation( 'received_vote_down', 101, $user_id );
+		ap_insert_reputation( 'received_vote_down', 103, $user_id );
+		ap_insert_reputation( 'given_vote_up', 100, $user_id );
+		ap_insert_reputation( 'given_vote_down', 101, $user_id );
+		$get_users_reputations = ap_get_users_reputation( [ get_current_user_id(), $user_id ] );
+		$current_user_user_reputation = $get_users_reputations[ $user_id ];
+		$this->assertEquals( 10, $current_user_user_reputation['register'] );
+		$this->assertEquals( 4, $current_user_user_reputation['ask'] );
+		$this->assertEquals( 10, $current_user_user_reputation['answer'] );
+		$this->assertEquals( 0, $current_user_user_reputation['comment'] );
+		$this->assertEquals( 4, $current_user_user_reputation['select_answer'] );
+		$this->assertEquals( 10, $current_user_user_reputation['best_answer'] );
+		$this->assertEquals( 20, $current_user_user_reputation['received_vote_up'] );
+		$this->assertEquals( -4, $current_user_user_reputation['received_vote_down'] );
+		$this->assertEquals( 0, $current_user_user_reputation['given_vote_up'] );
+		$this->assertEquals( 0, $current_user_user_reputation['given_vote_down'] );
+	}
 }
