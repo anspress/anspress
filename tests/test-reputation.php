@@ -181,6 +181,57 @@ class TestReputation extends TestCase {
 	}
 
 	/**
+	 * @covers ::ap_register_reputation_event
+	 */
+	public function testAPRegisterReputationEvent() {
+		// First test.
+		$args = [
+			'label'         => 'Test reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-test-reputation',
+			'activity'      => 'Reputation registered',
+			'parent'        => '',
+			'points'        => 8,
+			'rep_events_id' => 11,
+		];
+		ap_register_reputation_event( 'test_register_reputation_event', $args );
+		$reputation_events = anspress()->reputation_events;
+		$this->assertArrayNotHasKey( 'test', $reputation_events );
+		$this->assertArrayHasKey( 'test_register_reputation_event', $reputation_events );
+		$test_register_reputation_event = $reputation_events[ 'test_register_reputation_event' ];
+		$this->assertEquals( 'Test reputation event register', $test_register_reputation_event['label'] );
+		$this->assertEquals( 'Lorem ipsum dolor sit amet', $test_register_reputation_event['description'] );
+		$this->assertEquals( 'apicon-test-reputation', $test_register_reputation_event['icon'] );
+		$this->assertEquals( 'Reputation registered', $test_register_reputation_event['activity'] );
+		$this->assertEquals( '', $test_register_reputation_event['parent'] );
+		$this->assertEquals( 8, $test_register_reputation_event['points'] );
+		$this->assertEquals( 11, $test_register_reputation_event['rep_events_id'] );
+
+		// Second test.
+		$args = [
+			'label'         => 'Reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-reputation',
+			'activity'      => 'Reputation',
+			'parent'        => '',
+			'points'        => 12,
+			'rep_events_id' => 12,
+		];
+		ap_register_reputation_event( 'register_reputation_event', $args );
+		$reputation_events = anspress()->reputation_events;
+		$this->assertArrayNotHasKey( 'test', $reputation_events );
+		$this->assertArrayHasKey( 'register_reputation_event', $reputation_events );
+		$register_reputation_event = $reputation_events[ 'register_reputation_event' ];
+		$this->assertEquals( 'Reputation event register', $register_reputation_event['label'] );
+		$this->assertEquals( 'Lorem ipsum dolor sit amet', $register_reputation_event['description'] );
+		$this->assertEquals( 'apicon-reputation', $register_reputation_event['icon'] );
+		$this->assertEquals( 'Reputation', $register_reputation_event['activity'] );
+		$this->assertEquals( '', $register_reputation_event['parent'] );
+		$this->assertEquals( 12, $register_reputation_event['points'] );
+		$this->assertEquals( 12, $register_reputation_event['rep_events_id'] );
+	}
+
+	/**
 	 * @covers ::ap_get_reputation_events()
 	 */
 	public function testAPGetReputationEvents() {
