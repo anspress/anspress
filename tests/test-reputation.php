@@ -368,4 +368,60 @@ class TestReputation extends TestCase {
 		ap_register_reputation_event( 'latest_reputation_event', $args );
 		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'latest_reputation_event' ) );
 	}
+
+	/**
+	 * @covers ::ap_get_reputation_event_activity
+	 */
+	public function testAPGetReputationEventActivity() {
+		// Test for non existance events.
+		$this->assertEquals( 'test', ap_get_reputation_event_activity( 'test' ) );
+		$this->assertEquals( 'new_event', ap_get_reputation_event_activity( 'new_event' ) );
+
+		// Test for pre-existing events.
+		$this->assertEquals( 'Registered', ap_get_reputation_event_activity( 'register' ) );
+		$this->assertEquals( 'Asked a question', ap_get_reputation_event_activity( 'ask' ) );
+		$this->assertEquals( 'Posted an answer', ap_get_reputation_event_activity( 'answer' ) );
+		$this->assertEquals( 'Commented on a post', ap_get_reputation_event_activity( 'comment' ) );
+		$this->assertEquals( 'Selected an answer as best', ap_get_reputation_event_activity( 'select_answer' ) );
+		$this->assertEquals( 'Answer was selected as best', ap_get_reputation_event_activity( 'best_answer' ) );
+		$this->assertEquals( 'Received an upvote', ap_get_reputation_event_activity( 'received_vote_up' ) );
+		$this->assertEquals( 'Received a down vote', ap_get_reputation_event_activity( 'received_vote_down' ) );
+		$this->assertEquals( 'Given an up vote', ap_get_reputation_event_activity( 'given_vote_up' ) );
+		$this->assertEquals( 'Given a down vote', ap_get_reputation_event_activity( 'given_vote_down' ) );
+
+		// Test for new reputation event.
+		$args = [
+			'label'         => 'Test reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-test-reputation',
+			'activity'      => 'Reputation registered',
+			'parent'        => '',
+			'points'        => 8,
+			'rep_events_id' => 11,
+		];
+		ap_register_reputation_event( 'test_register_reputation_event', $args );
+		$this->assertEquals( 'Reputation registered', ap_get_reputation_event_activity( 'test_register_reputation_event' ) );
+		$args = [
+			'label'         => 'Reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-reputation',
+			'activity'      => 'Reputation created',
+			'parent'        => '',
+			'points'        => 12,
+			'rep_events_id' => 12,
+		];
+		ap_register_reputation_event( 'register_reputation_event', $args );
+		$this->assertEquals( 'Reputation created', ap_get_reputation_event_activity( 'register_reputation_event' ) );
+		$args = [
+			'label'         => 'Reputation event',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => '',
+			'activity'      => 'Reputation updated',
+			'parent'        => '',
+			'points'        => 15,
+			'rep_events_id' => 13,
+		];
+		ap_register_reputation_event( 'new_reputation_event', $args );
+		$this->assertEquals( 'Reputation updated', ap_get_reputation_event_activity( 'new_reputation_event' ) );
+	}
 }
