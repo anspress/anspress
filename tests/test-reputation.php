@@ -424,4 +424,63 @@ class TestReputation extends TestCase {
 		ap_register_reputation_event( 'new_reputation_event', $args );
 		$this->assertEquals( 'Reputation updated', ap_get_reputation_event_activity( 'new_reputation_event' ) );
 	}
+
+	/**
+	 * @covers ::ap_get_user_reputation
+	 */
+	public function testAPGetUserReputation() {
+		// Test for manually adding the user reputation.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$post = get_post( $question_id );
+		ap_insert_reputation( 'ask', $question_id, $post->post_author );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$post = get_post( $answer_id );
+		ap_insert_reputation( 'answer', $answer_id, $post->post_author );
+		$this->assertEquals( 7, ap_get_user_reputation( $user_id ) );
+		$new_question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$post = get_post( $new_question_id );
+		ap_insert_reputation( 'ask', $new_question_id, $post->post_author );
+		$this->assertEquals( 9, ap_get_user_reputation( $user_id ) );
+		ap_insert_reputation( 'best_answer', $answer_id, $post->post_author );
+		$this->assertEquals( 19, ap_get_user_reputation( $user_id ) );
+		ap_insert_reputation( 'received_vote_up', $question_id, get_post( $question_id )->post_author );
+		$this->assertEquals( 29, ap_get_user_reputation( $user_id ) );
+		ap_insert_reputation( 'given_vote_up', $question_id );
+		$this->assertEquals( 29, ap_get_user_reputation( $user_id ) );
+
+		// Test on the group.
+		$get_user_reputation = ap_get_user_reputation( $user_id, true );
+		$this->assertEquals( 0, $get_user_reputation['register'] );
+		$this->assertEquals( 4, $get_user_reputation['ask'] );
+		$this->assertEquals( 5, $get_user_reputation['answer'] );
+		$this->assertEquals( 0, $get_user_reputation['comment'] );
+		$this->assertEquals( 0, $get_user_reputation['select_answer'] );
+		$this->assertEquals( 10, $get_user_reputation['best_answer'] );
+		$this->assertEquals( 10, $get_user_reputation['received_vote_up'] );
+		$this->assertEquals( 0, $get_user_reputation['received_vote_down'] );
+		$this->assertEquals( 0, $get_user_reputation['given_vote_up'] );
+		$this->assertEquals( 0, $get_user_reputation['given_vote_down'] );
+	}
 }
