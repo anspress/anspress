@@ -701,4 +701,34 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 'answer', $reputation_event_by_slug->parent );
 		$this->assertEquals( 10, $reputation_event_by_slug->points );
 	}
+
+	/**
+	 * @covers ::ap_delete_reputation_event_by_slug
+	 */
+	public function testAPDeleteReputationEventBySlug() {
+		// Test for non-existance reputation event.
+		$this->assertTrue( is_wp_error( ap_delete_reputation_event_by_slug( 'test_rep_event' ) ) );
+		$this->assertTrue( is_wp_error( ap_delete_reputation_event_by_slug( 'test_event_rep' ) ) );
+
+		// Test for existing reputation event.
+		// Test 1.
+		$this->assertNotNull( ap_get_reputation_event_by_slug( 'register' ) );
+		$this->assertFalse( is_wp_error( ap_delete_reputation_event_by_slug( 'register' ) ) );
+		$this->assertNull( ap_get_reputation_event_by_slug( 'register' ) );
+
+		// Test 2.
+		$this->assertNotNull( ap_get_reputation_event_by_slug( 'ask' ) );
+		$this->assertFalse( is_wp_error( ap_delete_reputation_event_by_slug( 'ask' ) ) );
+		$this->assertNull( ap_get_reputation_event_by_slug( 'ask' ) );
+
+		// Test 3.
+		$this->assertNotNull( ap_get_reputation_event_by_slug( 'answer' ) );
+		$this->assertTrue( ap_delete_reputation_event_by_slug( 'answer' ) );
+		$this->assertNull( ap_get_reputation_event_by_slug( 'answer' ) );
+
+		// Test 4.
+		$this->assertNotNull( ap_get_reputation_event_by_slug( 'comment' ) );
+		$this->assertTrue( ap_delete_reputation_event_by_slug( 'comment' ) );
+		$this->assertNull( ap_get_reputation_event_by_slug( 'comment' ) );
+	}
 }
