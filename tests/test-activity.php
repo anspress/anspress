@@ -20,6 +20,23 @@ class TestActivity extends TestCase {
 		$this->assertTrue( $class->hasProperty( 'actions' ) && $class->getProperty( 'actions' )->isPrivate() );
 	}
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'get_instance' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', '__construct' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'hooks' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', '_before_delete' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', '_delete_comment' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', '_ajax_more_activities' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', '_delete_user' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'prepare_actions' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'get_actions' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'get_action' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'action_exists' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'insert' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'get_activity' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Activity_Helper', 'delete' ) );
+	}
+
 	/**
 	 * @covers AnsPress\Activity_Helper::hooks
 	 */
