@@ -174,9 +174,11 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 			'mid_size' => 2,
 		)
 	);
-	$links = str_replace( '<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links );
-	$links = str_replace( '<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links );
-	echo wp_kses_post( $links );
+	if ( $links ) {
+		$links = str_replace( '<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links );
+		$links = str_replace( '<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links );
+		echo wp_kses_post( $links );
+	}
 	echo '</div>';
 }
 
