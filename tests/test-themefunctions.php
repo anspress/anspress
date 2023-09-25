@@ -205,7 +205,9 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testApAssets() {
 		// Required hook for testing style and script register/enqueue.
+		ob_start();
 		do_action( 'wp_enqueue_scripts' );
+		ob_end_clean();
 
 		// Test on the ap_assets function.
 		// Test for register scripts.
