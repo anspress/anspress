@@ -109,6 +109,66 @@ class TestTaxo extends TestCase {
 	}
 
 	/**
+	 * @covers ::is_question_category
+	 */
+	public function testISQuestionCategory() {
+		$this->assertFalse( is_question_category() );
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$this->assertTrue( is_question_category() );
+
+		// Test without passing the name.
+		$cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$this->assertTrue( is_question_category() );
+
+		// Non-existance category.
+		$this->go_to( '/?ap_page=category&question_category=' . 'question' );
+		$this->assertFalse( is_question_category() );
+	}
+
+	/**
+	 * @covers ::is_question_tag
+	 */
+	public function testISQuestionTag() {
+		$this->assertFalse( is_question_tag() );
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question tag',
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_tag' );
+		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
+		$this->assertTrue( is_question_tag() );
+
+		// Test without passing the name.
+		$cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_tag' );
+		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
+		$this->assertTrue( is_question_tag() );
+
+		// Non-existance tag.
+		$this->go_to( '/?ap_page=tag&question_tag=' . 'question' );
+		$this->assertFalse( is_question_tag() );
+	}
+
+	/**
 	 * @covers ::ap_get_categories_slug
 	 */
 	public function testAPGetCategoriesSlug() {
