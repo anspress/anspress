@@ -200,6 +200,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $new_filters;
 
 		/**
+		 * Used for property assignment.
+		 *
+		 * @var object
+		 */
+		public $theme_compat;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
