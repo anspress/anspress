@@ -35,6 +35,13 @@ class AnsPress_Process_Form {
 	private $redirect;
 
 	/**
+	 * Used for property assignment.
+	 *
+	 * @var object
+	 */
+	public $request;
+
+	/**
 	 * Initialize the class
 	 */
 	public function __construct() {
