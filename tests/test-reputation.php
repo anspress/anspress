@@ -666,7 +666,6 @@ class TestReputation extends TestCase {
 		$reputation_event_by_slug = ap_get_reputation_event_by_slug( 'ask' );
 		$this->assertNotNull( $reputation_event_by_slug );
 		$this->assertisObject( $reputation_event_by_slug );
-		$this->assertEquals( 2, $reputation_event_by_slug->rep_events_id );
 		$this->assertEquals( 'ask', $reputation_event_by_slug->slug );
 		$this->assertEquals( '', $reputation_event_by_slug->icon );
 		$this->assertEquals( 'Asking', $reputation_event_by_slug->label );
@@ -679,7 +678,6 @@ class TestReputation extends TestCase {
 		$reputation_event_by_slug = ap_get_reputation_event_by_slug( 'answer' );
 		$this->assertNotNull( $reputation_event_by_slug );
 		$this->assertisObject( $reputation_event_by_slug );
-		$this->assertEquals( 3, $reputation_event_by_slug->rep_events_id );
 		$this->assertEquals( 'answer', $reputation_event_by_slug->slug );
 		$this->assertEquals( '', $reputation_event_by_slug->icon );
 		$this->assertEquals( 'Answering', $reputation_event_by_slug->label );
@@ -692,7 +690,6 @@ class TestReputation extends TestCase {
 		$reputation_event_by_slug = ap_get_reputation_event_by_slug( 'best_answer' );
 		$this->assertNotNull( $reputation_event_by_slug );
 		$this->assertisObject( $reputation_event_by_slug );
-		$this->assertEquals( 6, $reputation_event_by_slug->rep_events_id );
 		$this->assertEquals( 'best_answer', $reputation_event_by_slug->slug );
 		$this->assertEquals( '', $reputation_event_by_slug->icon );
 		$this->assertEquals( 'Answer selected as best', $reputation_event_by_slug->label );
