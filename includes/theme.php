@@ -600,7 +600,9 @@ function ap_current_page( $looking_for = false ) {
 	} elseif ( in_array( $query_var . '_page', $main_pages, true ) ) {
 		$query_var = $query_var;
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
+		if ( ! empty( $page_ids[ get_the_ID() ] ) ) {
+			$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
+		}
 	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
 	} elseif ( is_404() ) {
