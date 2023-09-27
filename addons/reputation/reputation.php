@@ -37,7 +37,7 @@ class Reputation extends \AnsPress\Singleton {
 	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
 	 * @since 4.2.0 Renamed hook `ap_form_addon-reputation` to `ap_form_options_features_tag`.
 	 */
-	protected function __construct() {
+	public function __construct() {
 		$this->register_default_events();
 
 		ap_add_default_options(

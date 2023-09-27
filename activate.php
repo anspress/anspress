@@ -326,12 +326,6 @@ class AP_Activate {
 	 * Create base pages, add roles, add caps and create tables
 	 */
 	public function activate() {
-
-		// add roles.
-		$ap_roles = new AP_Roles();
-		$ap_roles->add_roles();
-		$ap_roles->add_capabilities();
-
 		if ( ap_opt( 'ap_version' ) !== AP_VERSION ) {
 			ap_opt( 'ap_installed', 'false' );
 			ap_opt( 'ap_version', AP_VERSION );
@@ -347,6 +341,10 @@ class AP_Activate {
 
 		// Create main pages.
 		ap_create_base_page();
+
+		// Insert reputation events.
+		$ap_reputation_events = new \Anspress\Addons\Reputation();
+		$ap_reputation_events->register_default_events();
 
 		ap_opt( 'ap_flush', 'true' );
 	}
