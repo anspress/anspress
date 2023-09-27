@@ -1510,6 +1510,26 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( is_anspress() );
 		$this->go_to( '/' );
 		$this->assertFalse( is_anspress() );
+
+		// Test for the search page.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Base Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'base_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id . 'ap_s=question' );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( '?post_type=page&p=' . $id . 'ap_s=answer' );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( '?ap_s=question' );
+		$this->assertFalse( is_anspress() );
+		$this->go_to( '?ap_s=answer' );
+		$this->assertFalse( is_anspress() );
+		$this->go_to( '/' );
+		$this->assertFalse( is_anspress() );
 	}
 
 }
