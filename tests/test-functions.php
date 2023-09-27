@@ -6,6 +6,18 @@ class TestFunctions extends TestCase {
 
 	use AnsPress\Tests\Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
+	}
+
+	public function tear_down() {
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
+		parent::tear_down();
+	}
+
 	/**
 	 * @covers ::ap_get_short_link
 	 */
@@ -1469,6 +1481,34 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( is_anspress() );
 		ap_opt( 'activities_page', '' );
 		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
+
+		// Test for the single category archive page.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_category' );
+		$this->assertFalse( is_anspress() );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( '/' );
+		$this->assertFalse( is_anspress() );
+
+		// Test for the single tag archive page.
+		$tid = $this->factory->term->create(
+			array(
+				'name'     => 'Question tag',
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$term = get_term_by( 'id', $tid, 'question_tag' );
+		$this->assertFalse( is_anspress() );
+		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( '/' );
 		$this->assertFalse( is_anspress() );
 	}
 
