@@ -1359,4 +1359,27 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'answer', ap_meta_array_map( array( 'answer', 'question', 'comment' ) ) );
 	}
 
+	/**
+	 * @covers ::is_anspress
+	 */
+	public function testIsAnsPress() {
+		// Normal test.
+		$this->assertFalse( is_anspress() );
+
+		// Test for the single question page.
+		$id = $this->insert_answer();
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( ap_get_short_link( [ 'ap_q' => $id->q ] ) );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( '/' );
+		$this->assertFalse( is_anspress() );
+
+		// For the single answer page.
+		$this->go_to( ap_get_short_link( [ 'ap_a' => $id->a ] ) );
+		$this->assertTrue( is_anspress() );
+		$this->go_to( '/' );
+		$this->assertFalse( is_anspress() );
+	}
+
 }
