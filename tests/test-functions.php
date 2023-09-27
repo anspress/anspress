@@ -1530,6 +1530,21 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 		$this->go_to( '/' );
 		$this->assertFalse( is_anspress() );
+
+		// Test for the static front page question page.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Base Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'base_page', $id );
+		update_option( 'page_on_front', $id );
+		update_option( 'show_on_front', 'page' );
+		$this->assertFalse( is_anspress() );
+		$this->go_to( '/' );
+		$this->assertTrue( is_anspress() );
 	}
 
 }
