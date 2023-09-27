@@ -1380,6 +1380,96 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( is_anspress() );
 		$this->go_to( '/' );
 		$this->assertFalse( is_anspress() );
+
+		// For the base page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Base Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'base_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertTrue( is_anspress() );
+		ap_opt( 'base_page', '' );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
+
+		// For the ask page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Ask Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'ask_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertTrue( is_anspress() );
+		ap_opt( 'ask_page', '' );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
+
+		// For the user page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'User Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'user_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertTrue( is_anspress() );
+		ap_opt( 'user_page', '' );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
+
+		// For the categories page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Categories Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'categories_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertTrue( is_anspress() );
+		ap_opt( 'categories_page', '' );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
+
+		// For the tags page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Tags Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'tags_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertTrue( is_anspress() );
+		ap_opt( 'tags_page', '' );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
+
+		// For the activities page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Activities Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->assertFalse( is_anspress() );
+		ap_opt( 'activities_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertTrue( is_anspress() );
+		ap_opt( 'activities_page', '' );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertFalse( is_anspress() );
 	}
 
 }
