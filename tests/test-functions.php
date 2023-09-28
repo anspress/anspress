@@ -1569,4 +1569,28 @@ class TestFunctions extends TestCase {
 		$this->assertIsInt( ap_verify_nonce( 'anspress-tests1' ) );
 		unset( $_REQUEST['__nonce'] );
 	}
+
+	/**
+	 * @covers ::ap_canonical_url
+	 */
+	public function testap_canonical_url() {
+		// For the single question page test.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertEquals( esc_url( get_permalink( $id ) ), ap_canonical_url() );
+		$id = $this->insert_answer();
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$this->assertEquals( esc_url( get_permalink( $id->q ) ), ap_canonical_url() );
+
+		// For the base page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Base Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'base_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( esc_url( get_permalink( $id ) ), ap_canonical_url() );
+	}
 }
