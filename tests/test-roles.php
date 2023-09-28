@@ -1733,7 +1733,7 @@ class Test_Roles extends TestCase {
 		// Test for user roles.
 		$this->setRole( 'subscriber' );
 		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.txt', $post->ID );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for ap_moderator user.
 		$this->setRole( 'ap_moderator' );
@@ -1768,7 +1768,7 @@ class Test_Roles extends TestCase {
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
 		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.txt', $post->ID );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
 		wp_set_current_user( $new_user_id );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );

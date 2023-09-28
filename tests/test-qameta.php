@@ -332,7 +332,7 @@ class TestQAMeta extends TestCase {
 		// Test for user roles.
 		$this->setRole( 'subscriber' );
 		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.txt', $post->ID );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
 		wp_delete_attachment( $attachment_id, true );
 		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
 
