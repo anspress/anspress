@@ -1,10 +1,12 @@
 <?php
 
+namespace Anspress\Tests;
+
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestHooks extends TestCase {
 
-	use AnsPress\Tests\Testcases\Common;
+	use Testcases\Common;
 
 	/**
 	 * @covers AnsPress_Hooks::init

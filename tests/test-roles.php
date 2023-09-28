@@ -1,10 +1,12 @@
 <?php
 
+namespace Anspress\Tests;
+
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Roles extends TestCase {
 
-	use AnsPress\Tests\Testcases\Common;
+	use Testcases\Common;
 
 	/**
 	 * @covers ::ap_role_caps

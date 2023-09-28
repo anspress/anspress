@@ -1,10 +1,12 @@
 <?php
 
+namespace Anspress\Tests;
+
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestVotes extends TestCase {
 
-	use AnsPress\Tests\Testcases\Common;
+	use Testcases\Common;
 
 	public function testVoteHooks() {
 		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ 'AnsPress_Vote', 'delete_votes' ] ) );
@@ -234,7 +236,7 @@ class TestVotes extends TestCase {
 		}
 
 		// Actual test for this method.
-		AnsPress_Vote::delete_votes( $id );
+		\AnsPress_Vote::delete_votes( $id );
 		$this->assertNotEmpty( $get_votes );
 		$get_votes = ap_get_votes();
 		$this->assertEmpty( $get_votes );
@@ -272,14 +274,14 @@ class TestVotes extends TestCase {
 
 		// Actual test for this method.
 		ap_delete_votes( $id );
-		AnsPress_Vote::ap_deleted_votes( $id, 'vote' );
+		\AnsPress_Vote::ap_deleted_votes( $id, 'vote' );
 		$get_qameta = ap_get_qameta( $id );
 		$this->assertEquals( 0, $get_qameta->votes_up );
 		$this->assertEquals( 0, $get_qameta->votes_down );
 		$this->assertEquals( 0, $get_qameta->votes_net );
 		$this->assertEquals( 2, $get_qameta->flags );
 		ap_delete_votes( $id, 'flag' );
-		AnsPress_Vote::ap_deleted_votes( $id, 'flag' );
+		\AnsPress_Vote::ap_deleted_votes( $id, 'flag' );
 		$get_qameta = ap_get_qameta( $id );
 		$this->assertEquals( 0, $get_qameta->votes_up );
 		$this->assertEquals( 0, $get_qameta->votes_down );

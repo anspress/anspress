@@ -1,10 +1,12 @@
 <?php
 
+namespace Anspress\Tests;
+
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestFunctions extends TestCase {
 
-	use AnsPress\Tests\Testcases\Common;
+	use Testcases\Common;
 
 	public function set_up() {
 		parent::set_up();

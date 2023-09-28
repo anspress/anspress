@@ -1,10 +1,12 @@
 <?php
 
+namespace Anspress\Tests;
+
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestSubscribe extends TestCase {
 
-	use AnsPress\Tests\Testcases\Common;
+	use Testcases\Common;
 
 	/**
 	 * @covers ::ap_new_subscriber

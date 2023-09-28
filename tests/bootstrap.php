@@ -63,4 +63,7 @@ add_filter( 'pre_http_request', function( $status = false, $args = array(), $url
 
 require_once 'helpers/shims.php';
 
+// Require the includes.php file.
+require_once 'testcases/includes.php';
+
 remove_all_actions( 'send_headers' );

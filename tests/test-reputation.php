@@ -1,10 +1,12 @@
 <?php
 
+namespace Anspress\Tests;
+
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestReputation extends TestCase {
 
-	use \Anspress\Tests\Testcases\Common;
+	use Testcases\Common;
 
 	/**
 	 * @covers ::ap_insert_reputation
