@@ -445,8 +445,20 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_change_label() );
 		$this->setRole( 'editor' );
 		$this->assertFalse( ap_user_can_change_label() );
-		$this->setRole( 'administrator' );
-		$this->assertTrue( ap_user_can_change_label() );
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$this->assertFalse( ap_user_can_change_label() );
+
+			// Test for super admin user.
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$this->assertFalse( ap_user_can_change_label() );
+			grant_super_admin( $user_id );
+			$this->assertTrue( ap_user_can_change_label() );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->assertTrue( ap_user_can_change_label() );
+		}
 
 		// Test for new role.
 		add_role( 'ap_test_can_change_label', 'Test user can change label', [ 'ap_change_label' => true ] );
@@ -1739,8 +1751,20 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'ap_moderator' );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for super user.
-		$this->setRole( 'administrator' );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+
+			// Test for super admin user.
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+			grant_super_admin( $user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		}
 
 		$this->setRole( 'subscriber' );
 		$post = $this->factory->post->create_and_get();
@@ -1750,8 +1774,20 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'ap_moderator' );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for super user.
-		$this->setRole( 'administrator' );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+
+			// Test for super admin user.
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+			grant_super_admin( $user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		}
 
 		$this->setRole( 'subscriber' );
 		$post = $this->factory->post->create_and_get();
@@ -1761,8 +1797,20 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'ap_moderator' );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for super user.
-		$this->setRole( 'administrator' );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+
+			// Test for super admin user.
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+			grant_super_admin( $user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		}
 
 		// Test other user can't delete the attachment of other user.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
@@ -1774,12 +1822,28 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
-		$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $administrator_user_id );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
-		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		if ( \is_multisite() ) {
+			$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+
+			// Test for super admin user.
+			grant_super_admin( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		} else {
+			$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		}
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
@@ -1790,12 +1854,28 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
-		$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $administrator_user_id );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
-		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		if ( \is_multisite() ) {
+			$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+
+			// Test for super admin user.
+			grant_super_admin( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		} else {
+			$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		}
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
@@ -1806,12 +1886,28 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
 		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
-		$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $administrator_user_id );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
-		$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
-		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		if ( \is_multisite() ) {
+			$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id ) );
+
+			// Test for super admin user.
+			grant_super_admin( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		} else {
+			$administrator_user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $administrator_user_id );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
+			$this->assertFalse( ap_user_can_delete_attachment( $attachment_id, $new_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $administrator_user_id ) );
+			$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
+		}
 	}
 
 	/**
@@ -1822,8 +1918,20 @@ class Test_Roles extends TestCase {
 		ap_opt( 'recaptcha_site_key', 'anspressSamplereCaptchaSiteKey' );
 
 		// Test for administrator and ap_moderator user role.
-		$this->setRole( 'administrator' );
-		$this->assertFalse( ap_show_captcha_to_user() );
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$this->assertTrue( ap_show_captcha_to_user() );
+
+			// Test for super admin user.
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$this->assertTrue( ap_show_captcha_to_user() );
+			grant_super_admin( $user_id );
+			$this->assertFalse( ap_show_captcha_to_user() );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->assertFalse( ap_show_captcha_to_user() );
+		}
 		$this->setRole( 'ap_moderator' );
 		$this->assertFalse( ap_show_captcha_to_user() );
 
@@ -2419,27 +2527,80 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
 
 		// Test for super admin.
-		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'question',
-			)
-		);
-		$answer_id = $this->factory->post->create(
-			array(
-				'post_title'   => 'Answer title',
-				'post_content' => 'Answer content',
-				'post_type'    => 'answer',
-				'post_parent'  => $question_id,
-			)
-		);
-		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
-		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
-		$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
-		$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
-		$this->logout();
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$question_id = $this->factory->post->create(
+				array(
+					'post_title'   => 'Question title',
+					'post_content' => 'Question content',
+					'post_type'    => 'question',
+				)
+			);
+			$answer_id = $this->factory->post->create(
+				array(
+					'post_title'   => 'Answer title',
+					'post_content' => 'Answer content',
+					'post_type'    => 'answer',
+					'post_parent'  => $question_id,
+				)
+			);
+			$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+			$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+			$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+			$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+			$this->logout();
+
+			// Test for super admin user.
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$question_id = $this->factory->post->create(
+				array(
+					'post_title'   => 'Question title',
+					'post_content' => 'Question content',
+					'post_type'    => 'question',
+				)
+			);
+			$answer_id = $this->factory->post->create(
+				array(
+					'post_title'   => 'Answer title',
+					'post_content' => 'Answer content',
+					'post_type'    => 'answer',
+					'post_parent'  => $question_id,
+				)
+			);
+			$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+			$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+			$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+			$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+			grant_super_admin( $user_id );
+			$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+			$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+			$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+			$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+			$this->logout();
+		} else {
+			$this->setRole( 'administrator' );
+			$question_id = $this->factory->post->create(
+				array(
+					'post_title'   => 'Question title',
+					'post_content' => 'Question content',
+					'post_type'    => 'question',
+				)
+			);
+			$answer_id = $this->factory->post->create(
+				array(
+					'post_title'   => 'Answer title',
+					'post_content' => 'Answer content',
+					'post_type'    => 'answer',
+					'post_parent'  => $question_id,
+				)
+			);
+			$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_up' ) );
+			$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
+			$this->assertTrue( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
+			$this->assertTrue( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
+			$this->logout();
+		}
 
 		// Test for new role.
 		$question_id = $this->factory->post->create(
