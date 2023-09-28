@@ -1106,7 +1106,8 @@ function ap_show_captcha_to_user( $user_id = false ) {
 	}
 
 	$current_user = wp_get_current_user();
-	$opt          = array_keys( ap_opt( 'recaptcha_exclude_roles' ) );
+	$opt          = ! empty( ap_opt( 'recaptcha_exclude_roles' ) ) ? ap_opt( 'recaptcha_exclude_roles' ) : array();
+	$opt          = array_keys( $opt );
 	$intersect    = array_intersect( $current_user->roles, $opt );
 
 	if ( ! empty( $intersect ) && count( $intersect ) > 0 ) {
