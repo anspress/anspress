@@ -178,11 +178,11 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPAskBtn() {
 		$link = ap_get_link_to( 'ask' );
-		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', ap_get_ask_btn() );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . esc_url( $link ) . '">Ask question</a>', ap_get_ask_btn() );
 		ob_start();
 		ap_ask_btn();
 		$output = ob_get_clean();
-		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', $output );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . esc_url( $link ) . '">Ask question</a>', $output );
 
 		// Test for filter addition.
 		add_filter( 'ap_ask_btn_link', array( $this, 'askBtnLink' ) );
@@ -194,11 +194,11 @@ class TestThemeFunctions extends TestCase {
 
 		// Test after filter remove.
 		remove_filter( 'ap_ask_btn_link', array( $this, 'askBtnLink' ) );
-		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', ap_get_ask_btn() );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . esc_url( $link ) . '">Ask question</a>', ap_get_ask_btn() );
 		ob_start();
 		ap_ask_btn();
 		$output = ob_get_clean();
-		$this->assertSame( '<a class="ap-btn-ask" href="' . $link . '">Ask question</a>', $output );
+		$this->assertSame( '<a class="ap-btn-ask" href="' . esc_url( $link ) . '">Ask question</a>', $output );
 	}
 
 	/**
