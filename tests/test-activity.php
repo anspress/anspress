@@ -48,4 +48,16 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 10, has_action( 'delete_user', [ 'AnsPress\Activity_Helper', '_delete_user' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_more_activities', [ 'AnsPress\Activity_Helper', '_ajax_more_activities' ] ) );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::get_actions
+	 */
+	public function testGetActions() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$get_actions = $activity->get_actions();
+
+		// Test begins.
+		$this->assertNotEmpty( $get_actions );
+		$this->assertIsArray( $get_actions );
+	}
 }
