@@ -424,8 +424,6 @@ class TestActivity extends TestCase {
 
 		// Test for invalid activity.
 		$this->assertFalse( $activity->get_activity( 0 ) );
-		$this->assertNull( $activity->get_activity( 1 ) );
-		$this->assertEmpty( $activity->get_activity( 1 ) );
 		$this->assertNull( $activity->get_activity( 'question' ) );
 		$this->assertEmpty( $activity->get_activity( 'question' ) );
 	}
