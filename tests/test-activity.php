@@ -397,5 +397,36 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $selected_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $selected_activity->activity_user_id );
 		$this->assertEquals( current_time( 'mysql' ), $selected_activity->activity_date );
+
+		// Test for invalids.
+		$id = $this->insert_answer();
+		// Test for no question id being passed.
+		$invalid_activity_insert = $activity->insert( [ 'action' => 'featured' ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+		$invalid_activity_insert = $activity->insert( [ 'action' => 'selected', 'a_id' => $id->a ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+
+		// Test for no action being passed.
+		$invalid_activity_insert = $activity->insert( [ 'q_id' => $id->q ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+		$invalid_activity_insert = $activity->insert( [ 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+
+		// Test for invalid date being passed.
+		$invalid_activity_insert = $activity->insert( [ 'action' => 'featured', 'q_id' => $id->q, 'date' => '0000 00 00' ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+		$invalid_activity_insert = $activity->insert( [ 'action' => 'featured', 'q_id' => $id->q, 'date' => '5555 55 55' ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+		$invalid_activity_insert = $activity->insert( [ 'action' => 'selected', 'q_id' => $id->q, 'a_id' => $id->a, 'date' => '0000 00 00' ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+		$invalid_activity_insert = $activity->insert( [ 'action' => 'selected', 'q_id' => $id->q, 'a_id' => $id->a, 'date' => '5555 55 55' ] );
+		$this->assertTrue( is_wp_error( $invalid_activity_insert ) );
+
+		// Test for invalid activity.
+		$this->assertFalse( $activity->get_activity( 0 ) );
+		$this->assertNull( $activity->get_activity( 1 ) );
+		$this->assertEmpty( $activity->get_activity( 1 ) );
+		$this->assertNull( $activity->get_activity( 'question' ) );
+		$this->assertEmpty( $activity->get_activity( 'question' ) );
 	}
 }
