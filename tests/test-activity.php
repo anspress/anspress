@@ -279,4 +279,123 @@ class TestActivity extends TestCase {
 		$this->assertNotEmpty( $activity->action_exists( 'selected' ) );
 		$this->assertNotEmpty( $activity->action_exists( 'unselected' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::insert
+	 * @covers AnsPress\Activity_Helper::get_activity
+	 */
+	public function testAnsPressActivityHelperInsert() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$id = $this->insert_answer();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		// Inserting new question.
+		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $new_q_id );
+		$this->assertIsInt( $new_q_id );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNotEmpty( $new_q_activity );
+		$this->assertIsObject( $new_q_activity );
+		$this->assertEquals( $new_q_id, $new_q_activity->activity_id );
+		$this->assertEquals( 'new_q', $new_q_activity->activity_action );
+		$this->assertEquals( $id->q, $new_q_activity->activity_q_id );
+		$this->assertEquals( 0, $new_q_activity->activity_a_id );
+		$this->assertEquals( 0, $new_q_activity->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $new_q_activity->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $new_q_activity->activity_date );
+
+		// Inserting new answer.
+		$new_a_id = $activity->insert( [ 'action' => 'new_a', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$this->assertNotEmpty( $new_a_id );
+		$this->assertIsInt( $new_a_id );
+		$new_a_activity = $activity->get_activity( $new_a_id );
+		$this->assertNotEmpty( $new_a_activity );
+		$this->assertIsObject( $new_a_activity );
+		$this->assertEquals( $new_a_id, $new_a_activity->activity_id );
+		$this->assertEquals( 'new_a', $new_a_activity->activity_action );
+		$this->assertEquals( $id->q, $new_a_activity->activity_q_id );
+		$this->assertEquals( $id->a, $new_a_activity->activity_a_id );
+		$this->assertEquals( 0, $new_a_activity->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $new_a_activity->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $new_a_activity->activity_date );
+
+		// Inserting new comment on question.
+		$q_c_id  = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'c_id' => $q_c_id ] );
+		$this->assertNotEmpty( $new_c_id );
+		$this->assertIsInt( $new_c_id );
+		$new_c_activity = $activity->get_activity( $new_c_id );
+		$this->assertNotEmpty( $new_c_activity );
+		$this->assertIsObject( $new_c_activity );
+		$this->assertEquals( $new_c_id, $new_c_activity->activity_id );
+		$this->assertEquals( 'new_c', $new_c_activity->activity_action );
+		$this->assertEquals( $id->q, $new_c_activity->activity_q_id );
+		$this->assertEquals( 0, $new_c_activity->activity_a_id );
+		$this->assertEquals( $q_c_id, $new_c_activity->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $new_c_activity->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $new_c_activity->activity_date );
+
+		// Inserting new comment on answer.
+		$a_c_id  = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'a_id' => $id->a, 'c_id' => $a_c_id ] );
+		$this->assertNotEmpty( $new_c_id );
+		$this->assertIsInt( $new_c_id );
+		$new_c_activity = $activity->get_activity( $new_c_id );
+		$this->assertNotEmpty( $new_c_activity );
+		$this->assertIsObject( $new_c_activity );
+		$this->assertEquals( $new_c_id, $new_c_activity->activity_id );
+		$this->assertEquals( 'new_c', $new_c_activity->activity_action );
+		$this->assertEquals( $id->q, $new_c_activity->activity_q_id );
+		$this->assertEquals( $id->a, $new_c_activity->activity_a_id );
+		$this->assertEquals( $a_c_id, $new_c_activity->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $new_c_activity->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $new_c_activity->activity_date );
+
+		// Setting question as featured.
+		$id = $this->insert_answer();
+		$featured_q_id = $activity->insert( [ 'action' => 'featured', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $featured_q_id );
+		$this->assertIsInt( $featured_q_id );
+		$featured_activity = $activity->get_activity( $featured_q_id );
+		$this->assertNotEmpty( $featured_activity );
+		$this->assertIsObject( $featured_activity );
+		$this->assertEquals( $featured_q_id, $featured_activity->activity_id );
+		$this->assertEquals( 'featured', $featured_activity->activity_action );
+		$this->assertEquals( $id->q, $featured_activity->activity_q_id );
+		$this->assertEquals( 0, $featured_activity->activity_a_id );
+		$this->assertEquals( 0, $featured_activity->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $featured_activity->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $featured_activity->activity_date );
+
+		// Setting answer as selected.
+		$id = $this->insert_answer();
+		$selected_a_id = $activity->insert( [ 'action' => 'selected', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$this->assertNotEmpty( $selected_a_id );
+		$this->assertIsInt( $selected_a_id );
+		$selected_activity = $activity->get_activity( $selected_a_id );
+		$this->assertNotEmpty( $selected_activity );
+		$this->assertIsObject( $selected_activity );
+		$this->assertEquals( $selected_a_id, $selected_activity->activity_id );
+		$this->assertEquals( 'selected', $selected_activity->activity_action );
+		$this->assertEquals( $id->q, $selected_activity->activity_q_id );
+		$this->assertEquals( $id->a, $selected_activity->activity_a_id );
+		$this->assertEquals( 0, $selected_activity->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $selected_activity->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $selected_activity->activity_date );
+	}
 }
