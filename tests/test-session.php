@@ -6,6 +6,16 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Session extends TestCase {
 
+	public function testClassPropertiesAvailable() {
+		$class = new \ReflectionClass( '\AnsPress\Session' );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isProtected() );
+		$this->assertTrue( $class->hasProperty( 'name' ) && $class->getProperty( 'name' )->isPrivate() );
+		$this->assertTrue( $class->hasProperty( 'cookie_path' ) && $class->getProperty( 'cookie_path' )->isPrivate() );
+		$this->assertTrue( $class->hasProperty( 'cookie_domain' ) && $class->getProperty( 'cookie_domain' )->isPrivate() );
+		$this->assertTrue( $class->hasProperty( 'expires' ) && $class->getProperty( 'expires' )->isPrivate() );
+		$this->assertTrue( $class->hasProperty( 'id' ) && $class->getProperty( 'id' )->isPrivate() );
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( '\AnsPress\Session', 'init' ) );
 		$this->assertTrue( method_exists( '\AnsPress\Session', '__construct' ) );
