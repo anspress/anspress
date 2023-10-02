@@ -52,12 +52,36 @@ class TestActivity extends TestCase {
 	/**
 	 * @covers AnsPress\Activity_Helper::get_actions
 	 */
-	public function testGetActions() {
+	public function testAnsPressActivityHelperGetActions() {
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$get_actions = $activity->get_actions();
 
 		// Test begins.
 		$this->assertNotEmpty( $get_actions );
 		$this->assertIsArray( $get_actions );
+
+		// Test if exists the array key.
+		$this->assertArrayHasKey( 'new_q', $get_actions );
+		$this->assertArrayHasKey( 'edit_q', $get_actions );
+		$this->assertArrayHasKey( 'new_a', $get_actions );
+		$this->assertArrayHasKey( 'edit_a', $get_actions );
+		$this->assertArrayHasKey( 'status_publish', $get_actions );
+		$this->assertArrayHasKey( 'status_future', $get_actions );
+		$this->assertArrayHasKey( 'status_moderate', $get_actions );
+		$this->assertArrayHasKey( 'status_private_post', $get_actions );
+		$this->assertArrayHasKey( 'status_trash', $get_actions );
+		$this->assertArrayHasKey( 'featured', $get_actions );
+		$this->assertArrayHasKey( 'closed_q', $get_actions );
+		$this->assertArrayHasKey( 'new_c', $get_actions );
+		$this->assertArrayHasKey( 'edit_c', $get_actions );
+		$this->assertArrayHasKey( 'selected', $get_actions );
+		$this->assertArrayHasKey( 'unselected', $get_actions );
+
+		// Test if the needed activity details is present inside the array or not.
+		foreach ( $get_actions as $action ) {
+			$this->assertArrayHasKey( 'ref_type', $action );
+			$this->assertArrayHasKey( 'verb', $action );
+			$this->assertArrayHasKey( 'icon', $action );
+		}
 	}
 }
