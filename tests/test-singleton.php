@@ -10,5 +10,6 @@ class Test_Singleton extends TestCase {
 		$this->assertTrue( method_exists( '\AnsPress\Singleton', 'init' ) );
 		$this->assertTrue( method_exists( '\AnsPress\Singleton', '__clone' ) );
 		$this->assertTrue( method_exists( '\AnsPress\Singleton', '__wakeup' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Singleton', 'run_once' ) );
 	}
 }
