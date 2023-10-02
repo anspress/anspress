@@ -905,4 +905,109 @@ class TestActivity extends TestCase {
 	public function testapActivityObject() {
 		$this->assertContainsOnlyInstancesOf( '\AnsPress\Activity_Helper', [ ap_activity_object() ] );
 	}
+
+	/**
+	 * @covers ::ap_activity_add
+	 */
+	public function testAPActivityAdd() {
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// For invalid activity add.
+		$id = $this->insert_answer();
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'test',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertTrue( is_wp_error( $activity_add ) );
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'test_activity',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertTrue( is_wp_error( $activity_add ) );
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => 0,
+			)
+		);
+		$this->assertTrue( is_wp_error( $activity_add ) );
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+				'date'   => '0000 00 00',
+			)
+		);
+		$this->assertTrue( is_wp_error( $activity_add ) );
+
+		// For new and edit question activity add.
+		$id = $this->insert_answer();
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertIsInt( $activity_add );
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'edit_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertIsInt( $activity_add );
+
+		// For new and edit answer activity add.
+		$id = $this->insert_answer();
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$this->assertIsInt( $activity_add );
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'edit_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$this->assertIsInt( $activity_add );
+
+		// For new and edit comment activity add.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $c_id,
+			)
+		);
+		$this->assertIsInt( $activity_add );
+		$activity_add = ap_activity_add(
+			array(
+				'action' => 'edit_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $c_id,
+			)
+		);
+		$this->assertIsInt( $activity_add );
+	}
 }
