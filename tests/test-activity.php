@@ -539,4 +539,104 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $activity->delete( [ 'action' => 'test' ] ) );
 		$this->assertEquals( 0, $activity->delete( [ 'action' => 'test_activity' ] ) );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::before_delete
+	 */
+	public function testAnsPressActivityHelperBeforeDelete() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// For invalid post type delete directly from function..
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$delete = $activity::_before_delete( $id );
+		$this->assertNull( $delete );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+
+		// For invalid post type delete from deleting WordPress posts function
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		wp_delete_post( $id, true );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+
+		// New question add and delete directly from function.
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$activity::_before_delete( $id->q );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New question add and delete from deleting WordPress posts function.
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		wp_delete_post( $id->q, true );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New answer add and delete directly from function.
+		$id = $this->insert_answer();
+		$a_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$this->assertNotEmpty( $a_id );
+		$this->assertIsInt( $a_id );
+		$q_activity = $activity->get_activity( $a_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$activity::_before_delete( $id->a );
+		$q_activity = $activity->get_activity( $a_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New answer add and delete from deleting WordPress posts function.
+		$id = $this->insert_answer();
+		$a_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$this->assertNotEmpty( $a_id );
+		$this->assertIsInt( $a_id );
+		$q_activity = $activity->get_activity( $a_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		wp_delete_post( $id->a, true );
+		$q_activity = $activity->get_activity( $a_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+	}
 }
