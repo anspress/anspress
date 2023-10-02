@@ -249,4 +249,34 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 'Unselected an answer', $unselected['verb'] );
 		$this->assertEquals( 'apicon-check', $unselected['icon'] );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::action_exists
+	 */
+	public function testAnsPressActivityHelperActionExists() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// Test begins.
+		// For no activity action exists.
+		$this->assertEmpty( $activity->action_exists( 'test_question' ) );
+		$this->assertEmpty( $activity->action_exists( 'test_answer' ) );
+		$this->assertEmpty( $activity->action_exists( 'test_comment' ) );
+
+		// For activity action exists.
+		$this->assertNotEmpty( $activity->action_exists( 'new_q' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'edit_q' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'new_a' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'edit_a' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'status_publish' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'status_future' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'status_moderate' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'status_private_post' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'status_trash' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'featured' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'closed_q' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'new_c' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'edit_c' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'selected' ) );
+		$this->assertNotEmpty( $activity->action_exists( 'unselected' ) );
+	}
 }
