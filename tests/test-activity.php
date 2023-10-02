@@ -548,7 +548,7 @@ class TestActivity extends TestCase {
 		$this->setRole( 'subscriber' );
 
 		// Test begins.
-		// For invalid post type delete directly from function..
+		// For invalid post type delete directly from function.
 		$id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Post title',
@@ -568,7 +568,7 @@ class TestActivity extends TestCase {
 		$this->assertNotEmpty( $q_activity );
 		$this->assertIsObject( $q_activity );
 
-		// For invalid post type delete from deleting WordPress posts function
+		// For invalid post type delete from deleting WordPress posts function.
 		$id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Post title',
@@ -638,5 +638,150 @@ class TestActivity extends TestCase {
 		$q_activity = $activity->get_activity( $a_id );
 		$this->assertNull( $q_activity );
 		$this->assertEmpty( $q_activity );
+	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::_delete_comment
+	 */
+	public function testAnsPressActivityHelperDeleteComment() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// For invalid comment type delete directly from function.
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$comment_activity_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id, 'c_id' => $c_id ] );
+		$this->assertNotEmpty( $comment_activity_id );
+		$this->assertIsInt( $comment_activity_id );
+		$c_activity = $activity->get_activity( $comment_activity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+		$activity::_delete_comment( $c_id );
+		$c_activity = $activity->get_activity( $comment_activity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+
+		// // For invalid comment type delete from deleting WordPress posts function.
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$comment_activity_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id, 'c_id' => $c_id ] );
+		$this->assertNotEmpty( $comment_activity_id );
+		$this->assertIsInt( $comment_activity_id );
+		$c_activity = $activity->get_activity( $comment_activity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+		wp_delete_comment( $c_id, true );
+		$c_activity = $activity->get_activity( $comment_activity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+
+		// New comment for question and delete directly from function.
+		$id = $this->insert_answer();
+		$q_c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'c_id' => $q_c_id ] );
+		$this->assertNotEmpty( $new_c_id );
+		$this->assertIsInt( $new_c_id );
+		$new_c_activity = $activity->get_activity( $new_c_id );
+		$this->assertNotEmpty( $new_c_activity );
+		$this->assertIsObject( $new_c_activity );
+		$activity::_delete_comment( $q_c_id );
+		$new_c_activity = $activity->get_activity( $new_c_id );
+		$this->assertNull( $new_c_activity );
+		$this->assertEmpty( $new_c_activity );
+
+		// New comment for answer and delete directly from function.
+		$id = $this->insert_answer();
+		$a_c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$new_a_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'a_id' => $id->a, 'c_id' => $a_c_id ] );
+		$this->assertNotEmpty( $new_a_id );
+		$this->assertIsInt( $new_a_id );
+		$new_c_activity = $activity->get_activity( $new_a_id );
+		$this->assertNotEmpty( $new_c_activity );
+		$this->assertIsObject( $new_c_activity );
+		$activity::_delete_comment( $a_c_id );
+		$new_c_activity = $activity->get_activity( $new_a_id );
+		$this->assertNull( $new_c_activity );
+		$this->assertEmpty( $new_c_activity );
+
+		// New comment for question and delete from WordPress function.
+		$id = $this->insert_answer();
+		$q_c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'c_id' => $q_c_id ] );
+		$this->assertNotEmpty( $new_c_id );
+		$this->assertIsInt( $new_c_id );
+		$new_c_activity = $activity->get_activity( $new_c_id );
+		$this->assertNotEmpty( $new_c_activity );
+		$this->assertIsObject( $new_c_activity );
+		wp_delete_comment( $q_c_id, true );
+		$new_c_activity = $activity->get_activity( $new_c_id );
+		$this->assertNull( $new_c_activity );
+		$this->assertEmpty( $new_c_activity );
+
+		// New comment for answer and delete from WordPress function.
+		$id = $this->insert_answer();
+		$a_c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$new_a_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'a_id' => $id->a, 'c_id' => $a_c_id ] );
+		$this->assertNotEmpty( $new_a_id );
+		$this->assertIsInt( $new_a_id );
+		$new_c_activity = $activity->get_activity( $new_a_id );
+		$this->assertNotEmpty( $new_c_activity );
+		$this->assertIsObject( $new_c_activity );
+		wp_delete_comment( $a_c_id, true );
+		$new_c_activity = $activity->get_activity( $new_a_id );
+		$this->assertNull( $new_c_activity );
+		$this->assertEmpty( $new_c_activity );
 	}
 }
