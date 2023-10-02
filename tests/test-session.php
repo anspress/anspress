@@ -6,6 +6,21 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Session extends TestCase {
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'init' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', '__construct' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'set_cookie' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'delete_cookie' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'generate_id' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'get' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'set' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'set_question' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'set_answer' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'delete' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'post_in_session' ) );
+		$this->assertTrue( method_exists( '\AnsPress\Session', 'set_file' ) );
+	}
+
 	/**
 	 * @covers AnsPress\Session::init
 	 */
