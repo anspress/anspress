@@ -898,4 +898,11 @@ class TestActivity extends TestCase {
 		$this->assertNull( $new_q_activity );
 		$this->assertEmpty( $new_q_activity );
 	}
+
+	/**
+	 * @covers ::ap_activity_object
+	 */
+	public function testapActivityObject() {
+		$this->assertContainsOnlyInstancesOf( '\AnsPress\Activity_Helper', [ ap_activity_object() ] );
+	}
 }
