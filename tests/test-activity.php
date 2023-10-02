@@ -429,4 +429,114 @@ class TestActivity extends TestCase {
 		$this->assertNull( $activity->get_activity( 'question' ) );
 		$this->assertEmpty( $activity->get_activity( 'question' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::delete
+	 */
+	public function testAnsPressActivityHelperDelete() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$id = $this->insert_answer();
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// New question add and delete.
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		// Delete activity.
+		$delete = $activity->delete( [ 'q_id' => $id->q ] );
+		$this->assertIsInt( $delete );
+		$this->assertEquals( 1, $delete );
+		$new_q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+
+		// New question actions add and delete.
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		// Inserting new question.
+		$id = $this->insert_answer();
+		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $new_q_id );
+		$this->assertIsInt( $new_q_id );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNotEmpty( $new_q_activity );
+		$this->assertIsObject( $new_q_activity );
+		// Delete activity.
+		$delete = $activity->delete( [ 'action' => 'new_q' ] );
+		$this->assertIsInt( $delete );
+		$this->assertEquals( 2, $delete );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+
+		// User add and delete.
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		// Delete activity.
+		$delete = $activity->delete( [ 'user_id' => get_current_user_id() ] );
+		$this->assertIsInt( $delete );
+		$this->assertEquals( 1, $delete );
+		$new_q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+
+		// Users add and delete.
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		// Inserting new user.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_answer();
+		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => $user_id ] );
+		$this->assertNotEmpty( $new_q_id );
+		$this->assertIsInt( $new_q_id );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNotEmpty( $new_q_activity );
+		$this->assertIsObject( $new_q_activity );
+		// Delete activity.
+		$delete = $activity->delete( [ 'user_id' => get_current_user_id() ] );
+		$this->assertIsInt( $delete );
+		$this->assertEquals( 1, $delete );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+		$delete = $activity->delete( [ 'user_id' => $user_id ] );
+		$this->assertIsInt( $delete );
+		$this->assertEquals( 1, $delete );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+
+		// Test for invalids.
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$this->assertTrue( is_wp_error( $activity->delete( [ 'test' => $id->q ] ) ) );
+		$this->assertTrue( is_wp_error( $activity->delete( [ 'test_activity' => $id->q ] ) ) );
+		$this->assertFalse( is_wp_error( $activity->delete( [ 'action' => 'test' ] ) ) );
+		$this->assertFalse( is_wp_error( $activity->delete( [ 'action' => 'test_activity' ] ) ) );
+		$this->assertEquals( 0, $activity->delete( [ 'action' => 'test' ] ) );
+		$this->assertEquals( 0, $activity->delete( [ 'action' => 'test_activity' ] ) );
+	}
 }
