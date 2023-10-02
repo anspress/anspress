@@ -784,4 +784,118 @@ class TestActivity extends TestCase {
 		$this->assertNull( $new_c_activity );
 		$this->assertEmpty( $new_c_activity );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::_delete_user
+	 */
+	public function testAnsPressActivityHelperDeleteUser() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// Test begins.
+		// New user activity for question and delete directly from function.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$activity::_delete_user( get_current_user_id() );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New user activity for question and delete from WordPress function.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		wp_delete_user( get_current_user_id() );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New user activity with specific user_id for question and delete directly from function.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => $user_id ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$activity::_delete_user( $user_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New user activity with specific user_id for question and delete from WordPress function.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => $user_id ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		wp_delete_user( $user_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// New user activity for question and delete directly from function for many activities at once.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$new_id = $this->insert_answer();
+		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $new_id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $new_q_id );
+		$this->assertIsInt( $new_q_id );
+		$q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		// Delete user activities.
+		$activity::_delete_user( get_current_user_id() );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+
+		// New user activity for question and delete from WordPress function for many activities at once.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$new_id = $this->insert_answer();
+		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $new_id->q, 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $new_q_id );
+		$this->assertIsInt( $new_q_id );
+		$q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		// Delete user activities.
+		wp_delete_user( get_current_user_id() );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+		$new_q_activity = $activity->get_activity( $new_q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+	}
 }
