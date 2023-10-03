@@ -1568,4 +1568,189 @@ class TestActivity extends TestCase {
 		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
 		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
 	}
+
+	/**
+	 * @covers ::ap_prefetch_recent_activities
+	 */
+	public function testAPPrefetchRecentActivities() {
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// Test for invalid.
+		$invalid_inputs = 'question';
+		$this->assertNull( ap_prefetch_recent_activities( $invalid_inputs ) );
+
+		// Test on empty array return.
+		$inputs = 1;
+		$this->assertIsArray( ap_prefetch_recent_activities( $inputs ) );
+		$this->assertEmpty( ap_prefetch_recent_activities( $inputs ) );
+		$inputs = 'question, answer';
+		$this->assertIsArray( ap_prefetch_recent_activities( $inputs ) );
+		$this->assertEmpty( ap_prefetch_recent_activities( $inputs ) );
+		$input_ids = '0, 1, 22, 333';
+		$this->assertIsArray( ap_prefetch_recent_activities( $input_ids ) );
+		$this->assertEmpty( ap_prefetch_recent_activities( $input_ids ) );
+
+		// Test on valid inputs.
+		$id = $this->insert_answer();
+		// Inserting the question activity.
+		$qa_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$input_id = $id->q;
+		$prefetch_recent_activities = ap_prefetch_recent_activities( $input_id );
+		$this->assertIsArray( $prefetch_recent_activities );
+		$this->assertNotEmpty( $prefetch_recent_activities );
+		$this->assertEquals( 1, count( $prefetch_recent_activities ) );
+		// Test for getting the right datas.
+		// First set.
+		$this->assertEquals( $qa_id, $prefetch_recent_activities[0]->activity_id );
+		$this->assertEquals( 'new_q', $prefetch_recent_activities[0]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[0]->activity_q_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+
+		// Inserting the answer activity.
+		$aa_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$input_ids = array( $id->q, $id->a );
+		$input_ids = implode( ', ', $input_ids );
+		$prefetch_recent_activities = ap_prefetch_recent_activities( $input_ids );
+		$this->assertIsArray( $prefetch_recent_activities );
+		$this->assertNotEmpty( $prefetch_recent_activities );
+		$this->assertEquals( 2, count( $prefetch_recent_activities ) );
+		// Test for getting the right datas.
+		// First set.
+		$this->assertEquals( $qa_id, $prefetch_recent_activities[0]->activity_id );
+		$this->assertEquals( 'new_q', $prefetch_recent_activities[0]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[0]->activity_q_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		// Second set.
+		$this->assertEquals( $aa_id, $prefetch_recent_activities[1]->activity_id );
+		$this->assertEquals( 'new_a', $prefetch_recent_activities[1]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[1]->activity_q_id );
+		$this->assertEquals( $id->a, $prefetch_recent_activities[1]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[1]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[1]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
+
+		// Inserting the comment activity on question.
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$qca_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $c_id,
+			)
+		);
+		$input_ids = array( $id->q, $id->a );
+		$input_ids = implode( ', ', $input_ids );
+		$prefetch_recent_activities = ap_prefetch_recent_activities( $input_ids );
+		$this->assertIsArray( $prefetch_recent_activities );
+		$this->assertNotEmpty( $prefetch_recent_activities );
+		$this->assertEquals( 3, count( $prefetch_recent_activities ) );
+		// Test for getting the right datas.
+		// First set.
+		$this->assertEquals( $qa_id, $prefetch_recent_activities[0]->activity_id );
+		$this->assertEquals( 'new_q', $prefetch_recent_activities[0]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[0]->activity_q_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		// Second set.
+		$this->assertEquals( $aa_id, $prefetch_recent_activities[1]->activity_id );
+		$this->assertEquals( 'new_a', $prefetch_recent_activities[1]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[1]->activity_q_id );
+		$this->assertEquals( $id->a, $prefetch_recent_activities[1]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[1]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[1]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
+		// Third set.
+		$this->assertEquals( $qca_id, $prefetch_recent_activities[2]->activity_id );
+		$this->assertEquals( 'new_c', $prefetch_recent_activities[2]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[2]->activity_q_id );
+		$this->assertEquals( $id->a, $prefetch_recent_activities[2]->activity_a_id );
+		$this->assertEquals( $c_id, $prefetch_recent_activities[2]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[2]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[2]->activity_date );
+
+		// Inserting the comment activity on answer.
+		$nc_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$aca_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $nc_id,
+			)
+		);
+		$input_ids = array( $id->q, $id->a );
+		$input_ids = implode( ', ', $input_ids );
+		$prefetch_recent_activities = ap_prefetch_recent_activities( $input_ids );
+		$this->assertIsArray( $prefetch_recent_activities );
+		$this->assertNotEmpty( $prefetch_recent_activities );
+		$this->assertEquals( 4, count( $prefetch_recent_activities ) );
+		// Test for getting the right datas.
+		// First set.
+		$this->assertEquals( $qa_id, $prefetch_recent_activities[0]->activity_id );
+		$this->assertEquals( 'new_q', $prefetch_recent_activities[0]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[0]->activity_q_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		// Second set.
+		$this->assertEquals( $aa_id, $prefetch_recent_activities[1]->activity_id );
+		$this->assertEquals( 'new_a', $prefetch_recent_activities[1]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[1]->activity_q_id );
+		$this->assertEquals( $id->a, $prefetch_recent_activities[1]->activity_a_id );
+		$this->assertEquals( 0, $prefetch_recent_activities[1]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[1]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
+		// Third set.
+		$this->assertEquals( $qca_id, $prefetch_recent_activities[2]->activity_id );
+		$this->assertEquals( 'new_c', $prefetch_recent_activities[2]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[2]->activity_q_id );
+		$this->assertEquals( $id->a, $prefetch_recent_activities[2]->activity_a_id );
+		$this->assertEquals( $c_id, $prefetch_recent_activities[2]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[2]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[2]->activity_date );
+		// Fourth set.
+		$this->assertEquals( $aca_id, $prefetch_recent_activities[3]->activity_id );
+		$this->assertEquals( 'new_c', $prefetch_recent_activities[3]->activity_action );
+		$this->assertEquals( $id->q, $prefetch_recent_activities[3]->activity_q_id );
+		$this->assertEquals( $id->a, $prefetch_recent_activities[3]->activity_a_id );
+		$this->assertEquals( $nc_id, $prefetch_recent_activities[3]->activity_c_id );
+		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[3]->activity_user_id );
+		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[3]->activity_date );
+	}
 }
