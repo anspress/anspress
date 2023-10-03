@@ -8,6 +8,26 @@ class TestReputation extends TestCase {
 
 	use Testcases\Common;
 
+	public function testClassPropertiesAvailable() {
+		$class = new \ReflectionClass( 'AnsPress_Reputation_Query' );
+		$this->assertTrue( $class->hasProperty( 'current' ) && $class->getProperty( 'current' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'count' ) && $class->getProperty( 'count' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'reputations' ) && $class->getProperty( 'reputations' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'reputation' ) && $class->getProperty( 'reputation' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'in_the_loop' ) && $class->getProperty( 'in_the_loop' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'total_count' ) && $class->getProperty( 'total_count' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'per_page' ) && $class->getProperty( 'per_page' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'total_pages' ) && $class->getProperty( 'total_pages' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'max_num_pages' ) && $class->getProperty( 'max_num_pages' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'paged' ) && $class->getProperty( 'paged' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'offset' ) && $class->getProperty( 'offset' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'with_zero_points' ) && $class->getProperty( 'with_zero_points' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'events' ) && $class->getProperty( 'events' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'ids' ) && $class->getProperty( 'ids' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'pos' ) && $class->getProperty( 'pos' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'args' ) && $class->getProperty( 'args' )->isPublic() );
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', '__construct' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_events_with_zero_points' ) );
