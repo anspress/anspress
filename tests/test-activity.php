@@ -1316,4 +1316,115 @@ class TestActivity extends TestCase {
 		$this->assertNull( $new_comment_activity );
 		$this->assertEmpty( $new_comment_activity );
 	}
+
+	/**
+	 * @covers ::ap_activity_parse
+	 */
+	public function testAPActivityParse() {
+		// Test for invalids.
+		$this->assertFalse( ap_activity_parse( 1 ) );
+		$this->assertFalse( ap_activity_parse( 'question' ) );
+		$this->assertFalse( ap_activity_parse( 'answer' ) );
+		$id = $this->insert_answer();
+		$arr = array(
+			'action' => 'new_q',
+			'q_id'   => $id->q,
+		);
+		$this->assertFalse( ap_activity_parse( $arr ) );
+
+		// Test for valids.
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// For new question.
+		$id = $this->insert_answer();
+		$object = (object) array(
+			'action' => 'new_q',
+			'q_id'   => $id->q,
+		);
+		$activity_parse = ap_activity_parse( $object );
+		$this->assertIsObject( $activity_parse );
+		$this->assertEquals( $id->q, $activity_parse->q_id );
+		$this->assertEquals( $activity->get_action( 'new_q' ), $activity_parse->action );
+
+		// For question edit.
+		$id = $this->insert_answer();
+		$object = (object) array(
+			'action' => 'edit_q',
+			'q_id'   => $id->q,
+		);
+		$activity_parse = ap_activity_parse( $object );
+		$this->assertIsObject( $activity_parse );
+		$this->assertEquals( $id->q, $activity_parse->q_id );
+		$this->assertEquals( $activity->get_action( 'edit_q' ), $activity_parse->action );
+
+		// For new answer.
+		$id = $this->insert_answer();
+		$object = (object) array(
+			'action' => 'new_a',
+			'q_id'   => $id->q,
+			'a_id'   => $id->a,
+		);
+		$activity_parse = ap_activity_parse( $object );
+		$this->assertIsObject( $activity_parse );
+		$this->assertEquals( $id->q, $activity_parse->q_id );
+		$this->assertEquals( $id->a, $activity_parse->a_id );
+		$this->assertEquals( $activity->get_action( 'new_a' ), $activity_parse->action );
+
+		// For edit answer.
+		$id = $this->insert_answer();
+		$object = (object) array(
+			'action' => 'edit_a',
+			'q_id'   => $id->q,
+			'a_id'   => $id->a,
+		);
+		$activity_parse = ap_activity_parse( $object );
+		$this->assertIsObject( $activity_parse );
+		$this->assertEquals( $id->q, $activity_parse->q_id );
+		$this->assertEquals( $id->a, $activity_parse->a_id );
+		$this->assertEquals( $activity->get_action( 'edit_a' ), $activity_parse->action );
+
+		// For new comment.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$object = (object) array(
+			'action' => 'new_c',
+			'q_id'   => $id->q,
+			'a_id'   => $id->a,
+			'c_id'   => $c_id,
+		);
+		$activity_parse = ap_activity_parse( $object );
+		$this->assertIsObject( $activity_parse );
+		$this->assertEquals( $id->q, $activity_parse->q_id );
+		$this->assertEquals( $id->a, $activity_parse->a_id );
+		$this->assertEquals( $c_id, $activity_parse->c_id );
+		$this->assertEquals( $activity->get_action( 'new_c' ), $activity_parse->action );
+
+		// For edit comment.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$object = (object) array(
+			'action' => 'edit_c',
+			'q_id'   => $id->q,
+			'a_id'   => $id->a,
+			'c_id'   => $c_id,
+		);
+		$activity_parse = ap_activity_parse( $object );
+		$this->assertIsObject( $activity_parse );
+		$this->assertEquals( $id->q, $activity_parse->q_id );
+		$this->assertEquals( $id->a, $activity_parse->a_id );
+		$this->assertEquals( $c_id, $activity_parse->c_id );
+		$this->assertEquals( $activity->get_action( 'edit_c' ), $activity_parse->action );
+	}
 }
