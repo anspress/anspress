@@ -14,6 +14,20 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue($class->hasProperty('instance') && $class->getProperty('instance')->isStatic());
 	}
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress', 'instance' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'setup_constants' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'includes' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'ajax_hooks' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'site_include' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'add_action' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'add_filter' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'add' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'setup_hooks' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'get_form' ) );
+		$this->assertTrue( method_exists( 'AnsPress', 'form_exists' ) );
+	}
+
 	/**
 	 * @covers AnsPress::setup_constants
 	 */
