@@ -8,6 +8,31 @@ class TestReputation extends TestCase {
 
 	use Testcases\Common;
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', '__construct' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_events_with_zero_points' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'query' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'prefetch' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'prefetch_posts' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'prefetch_comments' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'have' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'rewind_reputation' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'has' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'next_reputation' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_reputation' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_event' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_event' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_points' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_points' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_date' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_date' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_icon' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_icon' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'get_activity' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_activity' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_ref_content' ) );
+	}
+
 	/**
 	 * @covers ::ap_insert_reputation
 	 */
