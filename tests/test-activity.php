@@ -1178,7 +1178,7 @@ class TestActivity extends TestCase {
 		$c_id = $this->factory->comment->create_object(
 			array(
 				'post_status'     => 'publish',
-				'comment_post_ID' => $id->q,
+				'comment_post_ID' => $id->a,
 				'user_id'         => get_current_user_id(),
 			)
 		);
@@ -1198,5 +1198,122 @@ class TestActivity extends TestCase {
 		$a_activity = ap_get_recent_activity( $id->a );
 		$this->assertNull( $a_activity );
 		$this->assertEmpty( $a_activity );
+	}
+
+	/**
+	 * @covers ::ap_delete_user_activity
+	 */
+	public function testAPDeleteUserActivity() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// Test begins.
+		// For single user activity.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		// For question.
+		$q_id = ap_activity_add(
+			array(
+				'action'  => 'new_q',
+				'q_id'    => $id->q,
+				'user_id' => get_current_user_id()
+			)
+		);
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$delete = ap_delete_user_activity( get_current_user_id() );
+		$this->assertIsInt( $delete );
+		$new_q_activity = $activity->get_activity( $q_id );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+
+		// For answer.
+		$a_id = ap_activity_add(
+			array(
+				'action'  => 'new_q',
+				'q_id'    => $id->q,
+				'a_id'    => $id->a,
+				'user_id' => get_current_user_id()
+			)
+		);
+		$this->assertNotEmpty( $a_id );
+		$this->assertIsInt( $a_id );
+		$a_activity = $activity->get_activity( $a_id );
+		$this->assertNotEmpty( $a_activity );
+		$this->assertIsObject( $a_activity );
+		$delete = ap_delete_user_activity( get_current_user_id() );
+		$this->assertIsInt( $delete );
+		$new_a_activity = $activity->get_activity( $a_id );
+		$this->assertNull( $new_a_activity );
+		$this->assertEmpty( $new_a_activity );
+
+		// For multiple user activities.
+		$id = $this->insert_answer();
+		// Adding activity on question create.
+		$q_id = ap_activity_add(
+			array(
+				'action'  => 'new_q',
+				'q_id'    => $id->q,
+				'user_id' => get_current_user_id()
+			)
+		);
+		$this->assertNotEmpty( $q_id );
+		$this->assertIsInt( $q_id );
+		$q_activity = $activity->get_activity( $q_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+
+		// Adding activity on answer create.
+		$a_id = ap_activity_add(
+			array(
+				'action'  => 'new_a',
+				'q_id'    => $id->q,
+				'a_id'    => $id->a,
+				'user_id' => get_current_user_id()
+			)
+		);
+		$this->assertNotEmpty( $a_id );
+		$this->assertIsInt( $a_id );
+		$a_activity = $activity->get_activity( $a_id );
+		$this->assertNotEmpty( $a_activity );
+		$this->assertIsObject( $a_activity );
+
+		// Adding activity on comment create.
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$comment_id = ap_activity_add(
+			array(
+				'action'  => 'new_c',
+				'q_id'    => $id->q,
+				'a_id'    => $id->a,
+				'c_id'    => $c_id,
+				'user_id' => get_current_user_id()
+			)
+		);
+		$this->assertNotEmpty( $comment_id );
+		$this->assertIsInt( $comment_id );
+		$comment_activity = $activity->get_activity( $comment_id );
+		$this->assertNotEmpty( $comment_activity );
+		$this->assertIsObject( $comment_activity );
+
+		// After delete check on user activities.
+		$delete = ap_delete_user_activity( get_current_user_id() );
+		$this->assertIsInt( $delete );
+		$new_q_activity = ap_get_recent_activity( $id->q );
+		$this->assertNull( $new_q_activity );
+		$this->assertEmpty( $new_q_activity );
+		$new_a_activity = ap_get_recent_activity( $id->a );
+		$this->assertNull( $new_a_activity );
+		$this->assertEmpty( $new_a_activity );
+		$new_comment_activity = $activity->get_activity( $comment_id );
+		$this->assertNull( $new_comment_activity );
+		$this->assertEmpty( $new_comment_activity );
 	}
 }
