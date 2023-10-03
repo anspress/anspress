@@ -115,6 +115,45 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 11, has_action( 'get_comments_number', [ 'AnsPress_Hooks', 'get_comments_number' ] ) );
 	}
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'add_ap_tables' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'after_new_question' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'after_new_answer' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'before_delete' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_answer' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'trash_post_action' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'untrash_posts' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'new_comment_approve' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'comment_approve' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'comment_unapprove' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'comment_trash' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'publish_comment' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'unpublish_comment' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'edit_comment' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'fix_nav_current_class' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'flush_rules' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'wp_insert_post_data' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'sanitize_description' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'safe_style_css' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'base_page_update' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'save_question_hooks' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'save_answer_hooks' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'transition_post_status' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'update_user_vote_casted_count' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_subscriber' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'display_question_metas' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'human_time_diff' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'widget_comments_args' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'question_subscription' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'answer_subscription' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'new_subscriber' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_subscribers' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_subscriptions' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'comment_subscription' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_comment_subscriptions' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'get_comments_number' ) );
+	}
+
 	/**
 	 * @covers AnsPress_Hooks::comment_subscription
 	 * @covers AnsPress_Hooks::delete_comment_subscriptions
