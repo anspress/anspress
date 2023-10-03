@@ -14,6 +14,28 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue($class->hasProperty('instance') && $class->getProperty('instance')->isStatic());
 	}
 
+	public function testClassPropertiesAvailable() {
+		$class = new \ReflectionClass( 'AnsPress' );
+		$this->assertTrue( $class->hasProperty( '_plugin_version' ) && $class->getProperty( '_plugin_version' )->isPrivate() );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
+		$this->assertTrue( $class->hasProperty( 'pages' ) && $class->getProperty( 'pages' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'menu' ) && $class->getProperty( 'menu' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'questions' ) && $class->getProperty( 'questions' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'current_question' ) && $class->getProperty( 'current_question' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'answers' ) && $class->getProperty( 'answers' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'current_answer' ) && $class->getProperty( 'current_answer' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'actions' ) && $class->getProperty( 'actions' )->isProtected() );
+		$this->assertTrue( $class->hasProperty( 'filters' ) && $class->getProperty( 'filters' )->isProtected() );
+		$this->assertTrue( $class->hasProperty( 'reputation_events' ) && $class->getProperty( 'reputation_events' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'user_pages' ) && $class->getProperty( 'user_pages' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'question_rule' ) && $class->getProperty( 'question_rule' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'forms' ) && $class->getProperty( 'forms' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'activity' ) && $class->getProperty( 'activity' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'session' ) && $class->getProperty( 'session' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'new_filters' ) && $class->getProperty( 'new_filters' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'theme_compat' ) && $class->getProperty( 'theme_compat' )->isPublic() );
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress', 'instance' ) );
 		$this->assertTrue( method_exists( 'AnsPress', 'setup_constants' ) );
