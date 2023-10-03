@@ -1008,4 +1008,91 @@ class TestActivity extends TestCase {
 		);
 		$this->assertIsInt( $activity_add );
 	}
+
+	/**
+	 * @covers ::ap_delete_post_activity
+	 */
+	public function testAPDeletePostActivity() {
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// Test for un-supported post types.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $post_id,
+			)
+		);
+		$this->assertTrue( is_wp_error( ap_delete_post_activity( $post_id ) ) );
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $page_id,
+			)
+		);
+		$this->assertTrue( is_wp_error( ap_delete_post_activity( $page_id ) ) );
+		$testimonial_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Testimonial title',
+				'post_content' => 'Testimonial content',
+				'post_type'    => 'testimonial',
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $testimonial_id,
+			)
+		);
+		$this->assertTrue( is_wp_error( ap_delete_post_activity( $testimonial_id ) ) );
+
+		// Test for supported post types.
+		$id = $this->insert_answer();
+		// For question.
+		ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$q_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$delete = ap_delete_post_activity( $id->q );
+		$this->assertIsInt( $delete );
+		$q_activity = ap_get_recent_activity( $id->q );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// For answer.
+		ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$a_activity = ap_get_recent_activity( $id->a );
+		$this->assertNotEmpty( $a_activity );
+		$this->assertIsObject( $a_activity );
+		$delete = ap_delete_post_activity( $id->a );
+		$this->assertIsInt( $delete );
+		$a_activity = ap_get_recent_activity( $id->a );
+		$this->assertNull( $a_activity );
+		$this->assertEmpty( $a_activity );
+	}
 }
