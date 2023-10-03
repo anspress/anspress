@@ -1387,6 +1387,7 @@ class TestActivity extends TestCase {
 		$id = $this->insert_answer();
 		$c_id = $this->factory->comment->create_object(
 			array(
+				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id->q,
 				'user_id'         => get_current_user_id(),
@@ -1409,6 +1410,7 @@ class TestActivity extends TestCase {
 		$id = $this->insert_answer();
 		$c_id = $this->factory->comment->create_object(
 			array(
+				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id->q,
 				'user_id'         => get_current_user_id(),
@@ -1426,5 +1428,144 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $activity_parse->a_id );
 		$this->assertEquals( $c_id, $activity_parse->c_id );
 		$this->assertEquals( $activity->get_action( 'edit_c' ), $activity_parse->action );
+	}
+
+	/**
+	 * @covers ::ap_get_recent_activity
+	 */
+	public function testAPGetRecentActivity() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// For invalid post types.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $post_id,
+			)
+		);
+		$this->assertNull( ap_get_recent_activity( $post_id ) );
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $page_id,
+			)
+		);
+		$this->assertNull( ap_get_recent_activity( $page_id ) );
+
+		// Test for valid post types.
+		// For new question.
+		$id = $this->insert_answer();
+		$qa_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$get_recent_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $qa_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'new_q' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( 0, $get_recent_activity->a_id );
+		$this->assertEquals( 0, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+
+		// For new answer.
+		$id = $this->insert_answer();
+		$aa_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$get_recent_activity = ap_get_recent_activity( $id->a );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $aa_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'new_a' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( $id->a, $get_recent_activity->a_id );
+		$this->assertEquals( 0, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+
+		// For new comment on question.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$aa_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'c_id'   => $c_id,
+			)
+		);
+		$get_recent_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $aa_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'new_c' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( 0, $get_recent_activity->a_id );
+		$this->assertEquals( $c_id, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+
+		// For new comment on answer.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$aa_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $c_id,
+			)
+		);
+		$get_recent_activity = ap_get_recent_activity( $id->a );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $aa_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'new_c' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( $id->a, $get_recent_activity->a_id );
+		$this->assertEquals( $c_id, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
 	}
 }
