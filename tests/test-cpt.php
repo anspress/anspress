@@ -21,6 +21,13 @@ class Test_PostTypes extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Post_Status', 'change_post_status' ) );
 	}
 
+	public function testInit() {
+		$this->assertEquals( 0, has_action( 'init', [ 'AnsPress_PostTypes', 'register_question_cpt' ] ) );
+		$this->assertEquals( 0, has_action( 'init', [ 'AnsPress_PostTypes', 'register_answer_cpt' ] ) );
+		$this->assertEquals( 10, has_action( 'post_type_link', [ 'AnsPress_PostTypes', 'post_type_link' ] ) );
+		$this->assertEquals( 10, has_filter( 'post_type_archive_link', [ 'AnsPress_PostTypes', 'post_type_archive_link' ] ) );
+	}
+
 	/**
 	 * @covers AnsPress_PostTypes::register_question_cpt
 	 */
