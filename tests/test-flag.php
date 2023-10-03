@@ -8,6 +8,10 @@ class TestFlag extends TestCase {
 
 	use Testcases\Common;
 
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AnsPress_Flag', 'action_flag' ) );
+	}
+
 	/**
 	 * @covers ::ap_add_flag
 	 */
