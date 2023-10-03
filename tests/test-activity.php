@@ -1095,4 +1095,108 @@ class TestActivity extends TestCase {
 		$this->assertNull( $a_activity );
 		$this->assertEmpty( $a_activity );
 	}
+
+	/**
+	 * @covers ::ap_delete_comment_activity
+	 */
+	public function testAPDeleteCommentActivity() {
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// Test for un-supported comment type.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		$comment_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $post_id,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $post_id,
+				'c_id'   => $comment_id,
+			)
+		);
+		$this->assertNull( ap_delete_comment_activity( $comment_id ) );
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'page',
+			)
+		);
+		$comment_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $page_id,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $page_id,
+				'c_id'   => $comment_id,
+			)
+		);
+		$this->assertNull( ap_delete_comment_activity( $comment_id ) );
+
+		// Test for supported comment type.
+		$id = $this->insert_answer();
+		// For question.
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'c_id'   => $c_id,
+			)
+		);
+		$q_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$delete = ap_delete_post_activity( $id->q );
+		$this->assertIsInt( $delete );
+		$q_activity = ap_get_recent_activity( $id->q );
+		$this->assertNull( $q_activity );
+		$this->assertEmpty( $q_activity );
+
+		// For answer.
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $c_id,
+			)
+		);
+		$a_activity = ap_get_recent_activity( $id->a );
+		$this->assertNotEmpty( $a_activity );
+		$this->assertIsObject( $a_activity );
+		$delete = ap_delete_post_activity( $id->a );
+		$this->assertIsInt( $delete );
+		$a_activity = ap_get_recent_activity( $id->a );
+		$this->assertNull( $a_activity );
+		$this->assertEmpty( $a_activity );
+	}
 }
