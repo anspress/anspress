@@ -5,3 +5,6 @@ require_once \dirname( __FILE__ ) . '/testcase-ajax.php';
 
 // Common class file include.
 require_once \dirname( __FILE__ ) . '/common.php';
+
+// Ajax class file include.
+require_once \dirname( __FILE__ ) . '/ajax.php';
