@@ -5,6 +5,10 @@ namespace Anspress\Tests;
 use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
 
 class TestAjax extends TestCaseAjax {
+
+	use Testcases\Common;
+	use Testcases\Ajax;
+
 	public static $current_post;
 
 	public static function wpSetUpBeforeClass(\WP_UnitTest_Factory $factory)
