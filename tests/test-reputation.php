@@ -57,6 +57,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_insert_reputation
 	 */
 	public function testAPInsertReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		$id = $this->insert_answer();
 
 		// Test begins.
@@ -73,6 +77,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_reputation
 	 */
 	public function testAPGetReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		$id = $this->insert_answer();
 
 		// Test begins.
@@ -179,6 +187,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_delete_reputation
 	 */
 	public function testAPDeleteReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		$id = $this->insert_answer();
 
 		// Test begins.
@@ -231,6 +243,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_register_reputation_event
 	 */
 	public function testAPRegisterReputationEvent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		// First test.
 		$args = [
 			'label'         => 'Test reputation event register',
@@ -282,6 +298,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_reputation_events()
 	 */
 	public function testAPGetReputationEvents() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		$reputation_events = ap_get_reputation_events();
 		$this->assertArrayHasKey( 'register', $reputation_events );
 		$this->assertArrayHasKey( 'ask', $reputation_events );
@@ -310,6 +330,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_reputation_event_points
 	 */
 	public function testAPGetReputationEventPoints() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		// Test for non existance events.
 		$this->assertEquals( 0, ap_get_reputation_event_points( 'test' ) );
 		$this->assertEquals( 0, ap_get_reputation_event_points( 'new_event' ) );
@@ -355,6 +379,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_reputation_event_icon
 	 */
 	public function testAPGetReputationEventIcon() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		// Test for non existance events.
 		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'test' ) );
 		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'new_event' ) );
@@ -420,6 +448,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_reputation_event_activity
 	 */
 	public function testAPGetReputationEventActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		// Test for non existance events.
 		$this->assertEquals( 'test', ap_get_reputation_event_activity( 'test' ) );
 		$this->assertEquals( 'new_event', ap_get_reputation_event_activity( 'new_event' ) );
@@ -476,6 +508,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_user_reputation
 	 */
 	public function testAPGetUserReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		// Test for manually adding the user reputation.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
@@ -535,6 +571,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_user_reputation_meta
 	 */
 	public function testAPGetUserReputationMeta() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		$this->setRole( 'subscriber' );
 
 		// Test before inserting reputations.
@@ -610,6 +650,10 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_users_reputation
 	 */
 	public function testAPGetUsersReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory->user->create();
 
@@ -692,6 +736,15 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_insert_reputation_event
 	 */
 	public function testAPInsertReputationEvent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert reputation events.
+		$ap_reputation_events = \AnsPress\Addons\Reputation::init();
+		$ap_reputation_events->register_default_events();
+
+		// Test begins.
 		$this->assertTrue( is_wp_error( ap_insert_reputation_event( 'register', 'Registration', 'Points awarded when user account is created', 10, 'Registered' ) ) );
 		$this->assertFalse( is_wp_error( ap_insert_reputation_event( 'test_event', 'Test the event', 'Test the event description', 10, 'Test event passed' ) ) );
 		$this->assertIsInt( ap_insert_reputation_event( 'test_new_event', 'Test the new event', 'Test the new event description', 10, 'Test new event passed' ) );
@@ -703,6 +756,14 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_get_reputation_event_by_slug
 	 */
 	public function testAPGetReputationEventBySlug() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert reputation events.
+		$ap_reputation_events = \AnsPress\Addons\Reputation::init();
+		$ap_reputation_events->register_default_events();
+
 		// Test for non-existance reputation event.
 		$this->assertNull( ap_get_reputation_event_by_slug( 'test' ) );
 		$this->assertNull( ap_get_reputation_event_by_slug( 'test_rep_event' ) );
@@ -750,6 +811,14 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_delete_reputation_event_by_slug
 	 */
 	public function testAPDeleteReputationEventBySlug() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert reputation events.
+		$ap_reputation_events = \AnsPress\Addons\Reputation::init();
+		$ap_reputation_events->register_default_events();
+
 		// Test for non-existance reputation event.
 		$this->assertTrue( is_wp_error( ap_delete_reputation_event_by_slug( 'test_rep_event' ) ) );
 		$this->assertTrue( is_wp_error( ap_delete_reputation_event_by_slug( 'test_event_rep' ) ) );
