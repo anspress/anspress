@@ -16,6 +16,9 @@ class TestFlag extends TestCase {
 	 * @covers ::ap_add_flag
 	 */
 	public function testAPAddFlag() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		$this->assertTrue( ap_add_flag( $id ) );
@@ -29,6 +32,9 @@ class TestFlag extends TestCase {
 	 * @covers ::ap_is_user_flagged
 	 */
 	public function testAPIsUserFlagged() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_answer();
 		$this->assertFalse( ap_is_user_flagged( $id->q ) );
 		$this->assertFalse( ap_is_user_flagged( $id->a ) );
@@ -52,6 +58,9 @@ class TestFlag extends TestCase {
 	 * @covers ::ap_delete_flags
 	 */
 	public function testAPDeleteFlags() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_add_flag( $id );
@@ -63,6 +72,9 @@ class TestFlag extends TestCase {
 	 * @covers ::ap_total_flagged_count
 	 */
 	public function testAPTotalFlaggedCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$total_flagged_count     = ap_total_flagged_count();
 		$total_flagged_questions = $total_flagged_count['questions'];
 		$total_flagged_answers   = $total_flagged_count['answers'];
@@ -234,6 +246,9 @@ class TestFlag extends TestCase {
 	 * @covers ::ap_count_post_flags
 	 */
 	public function testAOCountPostFlags() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_answer();
 		$question_count_flag = ap_count_post_flags( $id->q );
 		$this->assertEquals( 0, $question_count_flag );
