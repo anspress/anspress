@@ -8,6 +8,19 @@ class Test_Roles extends TestCase {
 
 	use Testcases\Common;
 
+	public function testClassPropertiesAvailable() {
+		$class = new \ReflectionClass( 'AP_Roles' );
+		$this->assertTrue( $class->hasProperty( 'base_caps' ) && $class->getProperty( 'base_caps' )->isPublic() );
+		$this->assertTrue( $class->hasProperty( 'mod_caps' ) && $class->getProperty( 'mod_caps' )->isPublic() );
+	}
+
+	public function testMethodExists() {
+		$this->assertTrue( method_exists( 'AP_Roles', '__construct' ) );
+		$this->assertTrue( method_exists( 'AP_Roles', 'add_roles' ) );
+		$this->assertTrue( method_exists( 'AP_Roles', 'add_capabilities' ) );
+		$this->assertTrue( method_exists( 'AP_Roles', 'remove_roles' ) );
+	}
+
 	/**
 	 * @covers ::ap_role_caps
 	 */
