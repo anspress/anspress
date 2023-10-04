@@ -20,7 +20,9 @@ class TestAjax extends TestCase {
 	}
 
 	public function testMethodExists() {
+		// Require ajax-hooks.php file.
 		require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
+
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'init' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'suggest_similar_questions' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'toggle_delete_post' ) );
