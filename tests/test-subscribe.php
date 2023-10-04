@@ -13,6 +13,9 @@ class TestSubscribe extends TestCase {
 	 * @covers ::ap_get_subscriber
 	 */
 	public function testNewSubscriber() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		$id = ap_new_subscriber( 456, 'question', 222 );
 		$this->assertNotEquals( false, $id );
 		$this->assertGreaterThan( 0, $id );
@@ -178,6 +181,9 @@ class TestSubscribe extends TestCase {
 	 * @covers AnsPress_Hooks::ap_after_new_question
 	 */
 	public function testQuestionSubscriptionHook() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Hooks', 'question_subscription' ] ) );
 
@@ -203,6 +209,9 @@ class TestSubscribe extends TestCase {
 	 * @covers AnsPress_Hooks::answer_subscription
 	 */
 	public function testAnswerSubscriptionHook() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ 'AnsPress_Hooks', 'answer_subscription' ] ) );
 
@@ -243,6 +252,9 @@ class TestSubscribe extends TestCase {
 	 * @covers AnsPress_Hooks::new_subscriber
 	 */
 	public function testNewSubscriberHook() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_new_subscriber', [ 'AnsPress_Hooks', 'new_subscriber' ] ) );
 
@@ -261,6 +273,9 @@ class TestSubscribe extends TestCase {
 	 * @covers AnsPress_Hooks::delete_subscribers
 	 */
 	public function testDeleteSubscribersHook() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_delete_subscribers', [ 'AnsPress_Hooks', 'delete_subscribers' ] ) );
 
@@ -282,6 +297,9 @@ class TestSubscribe extends TestCase {
 	 * @covers ::ap_esc_subscriber_event
 	 */
 	public function testEscSubscriberEvent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		$this->assertEquals( 'answer', ap_esc_subscriber_event( 'answer_99899' ) );
 		$this->assertEquals( 'answer', ap_esc_subscriber_event( 'answer' ) );
 		$this->assertEquals( 'question', ap_esc_subscriber_event( 'question' ) );
@@ -292,6 +310,9 @@ class TestSubscribe extends TestCase {
 	 * @covers ::ap_esc_subscriber_event_id
 	 */
 	public function testEscSubscriberEventId() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		$this->assertEquals( 99899, ap_esc_subscriber_event_id( 'answer_99899' ) );
 		$this->assertNotEquals( -100, ap_esc_subscriber_event_id( 'answer_99899' ) );
 		$this->assertEquals( 0, ap_esc_subscriber_event_id( 'question' ) );
@@ -302,6 +323,9 @@ class TestSubscribe extends TestCase {
 	 * @covers ::ap_is_user_subscriber
 	 */
 	public function testAPIsUserSubscriber() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
