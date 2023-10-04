@@ -310,4 +310,32 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'question', ap_get_page_slug( 'question' ) );
 	}
 
+	/**
+	 * @covers ::is_ap_search
+	 */
+	public function testIsApSearch() {
+		// Non ap search page test.
+		$this->assertFalse( is_ap_search() );
+		$this->go_to( '/?s=question' );
+		$this->assertFalse( is_ap_search() );
+		$this->go_to( '/ap_?s=question' );
+		$this->assertFalse( is_ap_search() );
+
+		// Real ap search page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Base Page',
+				'post_type'  => 'page',
+			]
+		);
+		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=question' );
+		$this->assertFalse( is_ap_search() );
+		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=answer' );
+		$this->assertFalse( is_ap_search() );
+		ap_opt( 'base_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=question' );
+		$this->assertTrue( is_ap_search() );
+		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=answer' );
+		$this->assertTrue( is_ap_search() );
+	}
 }
