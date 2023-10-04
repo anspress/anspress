@@ -53,6 +53,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::get_actions
 	 */
 	public function testAnsPressActivityHelperGetActions() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$get_actions = $activity->get_actions();
 
@@ -89,6 +92,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::get_action
 	 */
 	public function testAnsPressActivityHelperGetAction() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 
 		// Test begins.
@@ -254,6 +260,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::action_exists
 	 */
 	public function testAnsPressActivityHelperActionExists() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 
 		// Test begins.
@@ -285,6 +294,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::get_activity
 	 */
 	public function testAnsPressActivityHelperInsert() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$id = $this->insert_answer();
 
@@ -432,6 +444,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::delete
 	 */
 	public function testAnsPressActivityHelperDelete() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$id = $this->insert_answer();
 		$this->setRole( 'subscriber' );
@@ -542,6 +557,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::before_delete
 	 */
 	public function testAnsPressActivityHelperBeforeDelete() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$this->setRole( 'subscriber' );
 
@@ -642,6 +660,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::_delete_comment
 	 */
 	public function testAnsPressActivityHelperDeleteComment() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$this->setRole( 'subscriber' );
 
@@ -787,6 +808,9 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::_delete_user
 	 */
 	public function testAnsPressActivityHelperDeleteUser() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 
 		// Test begins.
@@ -908,6 +932,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_activity_add
 	 */
 	public function testAPActivityAdd() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$this->setRole( 'subscriber' );
 
 		// Test begins.
@@ -1013,6 +1040,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_delete_post_activity
 	 */
 	public function testAPDeletePostActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$this->setRole( 'subscriber' );
 
 		// Test begins.
@@ -1100,6 +1130,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_delete_comment_activity
 	 */
 	public function testAPDeleteCommentActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$this->setRole( 'subscriber' );
 
 		// Test begins.
@@ -1204,6 +1237,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_delete_user_activity
 	 */
 	public function testAPDeleteUserActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 
 		// Test begins.
@@ -1321,6 +1357,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_activity_parse
 	 */
 	public function testAPActivityParse() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		// Test for invalids.
 		$this->assertFalse( ap_activity_parse( 1 ) );
 		$this->assertFalse( ap_activity_parse( 'question' ) );
@@ -1434,6 +1473,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_get_recent_activity
 	 */
 	public function testAPGetRecentActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$activity = \AnsPress\Activity_Helper::get_instance();
 		$this->setRole( 'subscriber' );
 
@@ -1573,6 +1615,9 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_prefetch_recent_activities
 	 */
 	public function testAPPrefetchRecentActivities() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
 		$this->setRole( 'subscriber' );
 
 		// Test begins.
