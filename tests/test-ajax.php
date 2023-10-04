@@ -2,9 +2,9 @@
 
 namespace Anspress\Tests;
 
-use Yoast\WPTestUtils\WPIntegration\TestCase;
+use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
 
-class TestAjax extends TestCase {
+class TestAjax extends TestCaseAjax {
 	public static $current_post;
 
 	public static function wpSetUpBeforeClass(\WP_UnitTest_Factory $factory)
