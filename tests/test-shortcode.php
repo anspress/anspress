@@ -6,6 +6,28 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Shortcode extends TestCase {
 
+	public function testClassPropertiesAvailable() {
+		// For AnsPress_BasePage_Shortcode class.
+		$class = new \ReflectionClass( 'AnsPress_BasePage_Shortcode' );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isProtected() );
+		$this->assertTrue( $class->hasProperty( 'current_page' ) && $class->getProperty( 'current_page' )->isPublic() );
+
+		// For AnsPress_Question_Shortcode class.
+		$class = new \ReflectionClass( 'AnsPress_Question_Shortcode' );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isProtected() );
+	}
+
+	public function testMethodExists() {
+		// For AnsPress_BasePage_Shortcode class.
+		$this->assertTrue( method_exists( 'AnsPress_BasePage_Shortcode', 'get_instance' ) );
+		$this->assertTrue( method_exists( 'AnsPress_BasePage_Shortcode', 'anspress_sc' ) );
+		$this->assertTrue( method_exists( 'AnsPress_BasePage_Shortcode', 'attributes' ) );
+
+		// For AnsPress_Question_Shortcode class.
+		$this->assertTrue( method_exists( 'AnsPress_Question_Shortcode', 'get_instance' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Question_Shortcode', 'anspress_question_sc' ) );
+	}
+
 	/**
 	 * @covers AnsPress_BasePage_Shortcode::get_instance
 	 */
