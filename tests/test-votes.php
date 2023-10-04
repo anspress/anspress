@@ -24,6 +24,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_insert
 	 */
 	public function testAPVoteInsert() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
@@ -90,6 +93,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_is_user_voted
 	 */
 	public function testAPIsUserVoted() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		$this->assertFalse( ap_is_user_voted( $id ) );
@@ -133,6 +139,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_delete_vote
 	 */
 	public function testAPDeleteVote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		$this->assertEquals( 0, ap_delete_vote( $id ) );
@@ -213,6 +222,9 @@ class TestVotes extends TestCase {
 	 * @covers AnsPress_Vote::delete_votes
 	 */
 	public function testAnsPressVoteDeleteVotes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_vote_insert( $id, get_current_user_id() );
@@ -246,6 +258,9 @@ class TestVotes extends TestCase {
 	 * @covers AnsPress_Vote::ap_deleted_votes
 	 */
 	public function testAnsPressVoteAPDeletedVotes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 
 		// Test for adding first vote and flag.
@@ -293,6 +308,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_votes
 	 */
 	public function testAPGetVotes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$new_id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
@@ -362,6 +380,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_count_votes
 	 */
 	public function testAPCountVotes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
@@ -504,6 +525,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_count_post_votes_by
 	 */
 	public function testAPCountPostVotesBy() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		$this->setRole( 'subscriber' );
@@ -666,6 +690,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_vote
 	 */
 	public function testAPGetVote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 
 		// Test without adding a vote or flag.
@@ -709,6 +736,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_add_post_vote
 	 */
 	public function testAPAddPostVote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 
 		// Test begins.
@@ -774,6 +804,9 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_delete_votes
 	 */
 	public function testAPDeleteVotes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
 		$id = $this->insert_question();
 
 		// Test begins.
