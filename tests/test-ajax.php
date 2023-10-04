@@ -11,8 +11,7 @@ class TestAjax extends TestCaseAjax {
 
 	public static $current_post;
 
-	public static function wpSetUpBeforeClass(\WP_UnitTest_Factory $factory)
-	{
+	public static function wpSetUpBeforeClass( \WP_UnitTest_Factory $factory ) {
 		self::$current_post = $factory->post->create(
 			array(
 				'post_title'   => 'Comment form loading',
