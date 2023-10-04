@@ -1527,9 +1527,9 @@ class TestFunctions extends TestCase {
 		);
 		$this->assertFalse( is_anspress() );
 		ap_opt( 'base_page', $id );
-		$this->go_to( '?post_type=page&p=' . $id . 'ap_s=question' );
+		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=question' );
 		$this->assertTrue( is_anspress() );
-		$this->go_to( '?post_type=page&p=' . $id . 'ap_s=answer' );
+		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=answer' );
 		$this->assertTrue( is_anspress() );
 		$this->go_to( '?ap_s=question' );
 		$this->assertFalse( is_anspress() );
