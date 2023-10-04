@@ -24,6 +24,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_qameta_fields
 	 */
 	public function testAPQametaFields() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		// Test for if the array key exists or not.
 		$qameta_fields_array = array(
 			'post_id',
@@ -80,6 +83,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_unset_selected_answer
 	 */
 	public function testSelectedAnswer() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$question_id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Question title',
@@ -134,6 +140,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_views_count
 	 */
 	public function testAPUpdateViewsCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 		$this->assertEquals( 1, ap_update_views_count( $id ) );
 		$this->assertEquals( 50, ap_update_views_count( $id, 50 ) );
@@ -145,6 +154,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_answers_count
 	 */
 	public function testAPUpdateAnswersCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$question_id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Question title',
@@ -188,6 +200,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_last_active
 	 */
 	public function testAPUpdateLastActive() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 		ap_insert_qameta(
 			$id,
@@ -208,6 +223,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_set_flag_count
 	 */
 	public function testAPSetFlagCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id       = $this->insert_answer();
 		$question = ap_get_post( $id->q );
 		$answer   = ap_get_post( $id->a );
@@ -247,6 +265,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_answer_selected
 	 */
 	public function testAPUpdateAnswerSelected() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$question_id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Question title',
@@ -290,6 +311,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_subscribers_count
 	 */
 	public function testAPUpdateSubscribersCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 		$this->assertEquals( 0, ap_subscribers_count( 'question', $id ) );
 		$this->assertEquals( 0, ap_update_subscribers_count( $id ) );
@@ -302,6 +326,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_unset_featured_question
 	 */
 	public function testFeaturedQuestion() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 		$this->assertFalse( ap_is_featured_question( $id ) );
 		ap_set_featured_question( $id );
@@ -314,6 +341,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_toggle_close_question
 	 */
 	public function testAPToggleCloseQuestion() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 		$this->assertEquals( 1, ap_toggle_close_question( $id ) );
 		$this->assertEquals( 0, ap_toggle_close_question( $id ) );
@@ -329,6 +359,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_post_attach_ids
 	 */
 	public function testAPUpdatePostAttachIds() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		// Test for user roles.
 		$this->setRole( 'subscriber' );
 		$post = $this->factory->post->create_and_get();
@@ -351,6 +384,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_votes_count
 	 */
 	public function testAPUpdateVotesCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
 		$id = $this->insert_answer();
@@ -448,6 +484,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_get_qameta
 	 */
 	public function testAPGetQameta() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_answer();
 		$question_get_qameta = ap_get_qameta( $id->q );
 		$question_get_qameta = (array) $question_get_qameta;
@@ -539,6 +578,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_insert_qameta
 	 */
 	public function testAPInsertQameta() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_answer();
 
 		// Test for inserting the selected answer.
@@ -622,6 +664,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_append_qameta
 	 */
 	public function testAPAppendQameta() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 
 		// Post meta check before appending.
@@ -676,6 +721,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_flags_count
 	 */
 	public function testAPUpdateFlagsCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_answer();
 
 		$question_get_qameta = ap_get_qameta( $id->q );
@@ -702,6 +750,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_qameta_terms
 	 */
 	public function testAPUpdateQametaTerms() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$id = $this->insert_question();
 
 		// Test begins.
