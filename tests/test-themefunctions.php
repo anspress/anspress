@@ -8,6 +8,18 @@ class TestThemeFunctions extends TestCase {
 
 	use Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
+	}
+
+	public function tear_down() {
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
+		parent::tear_down();
+	}
+
 	public function pageTitle() {
 		return 'Question title';
 	}
@@ -350,5 +362,103 @@ class TestThemeFunctions extends TestCase {
 		$id = $this->insert_answer();
 		$this->go_to( '?post_type=question&p=' . $id->q );
 		$this->assertEquals( 'question', ap_current_page() );
+		$this->go_to( ap_get_short_link( [ 'ap_q' => $id->q ] ) );
+		$this->assertEquals( 'shortlink', ap_current_page() );
+
+		// Test for the single answer page.
+		$this->go_to( ap_get_short_link( [ 'ap_a' => $id->a ] ) );
+		$this->assertEquals( 'shortlink', ap_current_page() );
+
+		// For the base page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Base Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'base_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'base', ap_current_page() );
+
+		// For the ask page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Ask Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'ask_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'ask', ap_current_page() );
+
+		// For the user page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'User Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'user_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'user', ap_current_page() );
+
+		// For the categories page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Categories Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'categories_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'categories', ap_current_page() );
+
+		// For the tags page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Tags Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'tags_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'tags', ap_current_page() );
+
+		// For the activities page test.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'Activities Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'activities_page', $id );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'activities', ap_current_page() );
+
+		// Test for the single category archive page.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$this->assertEquals( 'category', ap_current_page() );
+
+		// Test for the single tag archive page.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question tag',
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$term = get_term_by( 'id', $cid, 'question_tag' );
+		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
+		$this->assertEquals( 'tag', ap_current_page() );
+
+		// Test for 404 error page.
+		$this->go_to( '/error-404' );
+		$this->assertEquals( '', ap_current_page() );
 	}
 }
