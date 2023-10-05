@@ -1593,4 +1593,26 @@ class TestFunctions extends TestCase {
 		$this->go_to( '?post_type=page&p=' . $id );
 		$this->assertEquals( esc_url( get_permalink( $id ) ), ap_canonical_url() );
 	}
+
+	/**
+	 * @covers ::ap_verify_default_nonce
+	 */
+	public function testAPVerifyDefaultNonce() {
+		// Test for invalid nonce.
+		$this->assertFalse( ap_verify_default_nonce() );
+		$_REQUEST['ap_ajax_nonce'] = 'anspress-tests';
+		$this->assertFalse( ap_verify_default_nonce() );
+		$_REQUEST['ap_ajax_nonce'] = wp_create_nonce( 'anspress-tests' );
+		$this->assertFalse( ap_verify_default_nonce() );
+		$_REQUEST['ap_ajax_nonce'] = wp_create_nonce( '__nonce' );
+		$this->assertFalse( ap_verify_default_nonce() );
+		$_POST['ap_ajax_nonce'] = wp_create_nonce( 'ap_ajax_nonce' );
+		$this->assertFalse( ap_verify_default_nonce() );
+
+		// Test for valid nonce.
+		$_REQUEST['ap_ajax_nonce'] = wp_create_nonce( 'ap_ajax_nonce' );
+		$this->assertIsInt( ap_verify_default_nonce() );
+		unset( $_POST['ap_ajax_nonce'] );
+		unset( $_REQUEST['ap_ajax_nonce'] );
+	}
 }
