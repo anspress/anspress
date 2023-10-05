@@ -1615,4 +1615,37 @@ class TestFunctions extends TestCase {
 		unset( $_POST['ap_ajax_nonce'] );
 		unset( $_REQUEST['ap_ajax_nonce'] );
 	}
+
+	/**
+	 * @covers ::ap_isset_post_value
+	 */
+	public function testAPIssetPostValue() {
+		// If passing non existing value.
+		$this->assertEquals( 'question', ap_isset_post_value( 'invalidVal', 'question' ) );
+		$this->assertEquals( 'answer', ap_isset_post_value( 'defaultVal', 'answer' ) );
+		$_POST['question'] = 'I\'m question';
+		$this->assertEquals( '', ap_isset_post_value( 'question' ) );
+		$_POST['answer'] = 'I\'m answer';
+		$this->assertEquals( '', ap_isset_post_value( 'answer' ) );
+
+		// Passing the correct valie.
+		$_REQUEST['question'] = 'I\'m question';
+		$this->assertEquals( 'I\'m question', ap_isset_post_value( 'question' ) );
+		$_REQUEST['answer'] = 'I\'m answer';
+		$this->assertEquals( 'I\'m answer', ap_isset_post_value( 'answer' ) );
+		$_REQUEST['question'] = '\\\\\\I\'m question';
+		$this->assertEquals( '\I\'m question', ap_isset_post_value( 'question' ) );
+		$_REQUEST['answer'] = '\\\\\\I\'m answer';
+		$this->assertEquals( '\I\'m answer', ap_isset_post_value( 'answer' ) );
+		$_REQUEST['question'] = '\\\\\I\'m question///';
+		$this->assertEquals( '\\I\'m question///', ap_isset_post_value( 'question' ) );
+		$_REQUEST['answer'] = '\\\\\I\'m answer///';
+		$this->assertEquals( '\\I\'m answer///', ap_isset_post_value( 'answer' ) );
+
+		// Rest super global variables.
+		unset( $_POST['question'] );
+		unset( $_POST['answer'] );
+		unset( $_REQUEST['question'] );
+		unset( $_REQUEST['answer'] );
+	}
 }
