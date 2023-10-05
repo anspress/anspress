@@ -554,6 +554,53 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'Question \title < <span>I will get removed</span>     I reside at last' ) );
 		$this->assertEquals( 'question', ap_sanitize_unslash( '', true, 'question' ) );
 		$this->assertEquals( 'answer', ap_sanitize_unslash( '', false, 'answer' ) );
+
+		// Additional tests.
+		$this->assertEquals( '', ap_sanitize_unslash( '' ) );
+		$this->assertEquals( 'Question\s', ap_sanitize_unslash( '', false, 'Question\s' ) );
+		$this->assertEquals( 'Question \title < <span>I will get removed</span>     I reside at last', ap_sanitize_unslash( '', false, 'Question \title < <span>I will get removed</span>     I reside at last' ) );
+		$this->assertEquals( 'question', ap_sanitize_unslash( '', false, 'question' ) );
+
+		// Test for superglobals.
+		$_REQUEST['question'] = 'Question \title < <span>I will get removed</span>     I reside at last';
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'question', 'r' ) );
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'question', 'request' ) );
+		$_POST['question'] = 'Question \title < <span>I will get removed</span>     I reside at last';
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'question', 'p' ) );
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'question', 'post' ) );
+		$_GET['question'] = 'Question \title < <span>I will get removed</span>     I reside at last';
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'question', 'g' ) );
+		$this->assertEquals( 'Question title &lt; I will get removed I reside at last', ap_sanitize_unslash( 'question', 'get' ) );
+		unset( $_REQUEST['question'] );
+		unset( $_POST['question'] );
+		unset( $_GET['question'] );
+
+		// Test for arrays.
+		$arr = [];
+		$this->assertEquals( '', ap_sanitize_unslash( $arr ) );
+		$arr = [];
+		$this->assertEquals( 'question', ap_sanitize_unslash( $arr, false, 'question' ) );
+		$arr = [];
+		$this->assertEquals( 'Question\s', ap_sanitize_unslash( $arr, false, 'Question\s' ) );
+		$arr = [
+			'Question\s',
+			'Answer\s',
+			'Question \title < <span>I will get removed</span>     I reside at last',
+			'question',
+			'answer',
+		];
+		$this->assertEquals(
+			[
+				'Questions',
+				'Answers',
+				'Question title &lt; I will get removed I reside at last',
+				'question',
+				'answer',
+			],
+			ap_sanitize_unslash( $arr )
+		);
+		$arr = [ 'Question \title < <span>I will get removed</span>     I reside at last' ];
+		$this->assertEquals( [ 'Question title &lt; I will get removed I reside at last' ], ap_sanitize_unslash( $arr ) );
 	}
 
 	/**
