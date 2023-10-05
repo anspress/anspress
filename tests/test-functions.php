@@ -1648,4 +1648,34 @@ class TestFunctions extends TestCase {
 		unset( $_REQUEST['question'] );
 		unset( $_REQUEST['answer'] );
 	}
+
+	/**
+	 * @covers ::ap_whitelist_array
+	 */
+	public function testAPWhitelistArray() {
+		// Test 1.
+		$arr1 = [ 'c' ];
+		$arr2 = [ 'q' => 'question', 'a' => 'answer' ];
+		$this->assertEmpty( ap_whitelist_array( $arr1, $arr2 ) );
+
+		// Test 2.
+		$arr1 = [ 'q' ];
+		$arr2 = [ 'q' => 'question', 'a' => 'answer' ];
+		$this->assertEquals( [ 'q' => 'question' ], ap_whitelist_array( $arr1, $arr2 ) );
+
+		// Test 3.
+		$arr1 = [ 'a', 'c' ];
+		$arr2 = [ 'q' => 'question', 'a' => 'answer', 'c' => 'comment' ];
+		$this->assertEquals( [ 'a' => 'answer', 'c' => 'comment' ], ap_whitelist_array( $arr1, $arr2 ) );
+
+		// Test 4.
+		$arr1 = [ 'question', 'comment' ];
+		$arr2 = [ 'question' => 11, 'comment' => 101, 'answer' => 15 ];
+		$this->assertEquals( [ 'question' => 11, 'comment' => 101 ], ap_whitelist_array( $arr1, $arr2 ) );
+
+		// Test 5.
+		$arr1 = [ 'comment' ];
+		$arr2 = [ 'question' => 11, 'comment' => 101, 'answer' => 15 ];
+		$this->assertEquals( [ 'comment' => 101 ], ap_whitelist_array( $arr1, $arr2 ) );
+	}
 }
