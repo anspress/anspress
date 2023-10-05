@@ -338,4 +338,17 @@ class TestThemeFunctions extends TestCase {
 		$this->go_to( '?post_type=page&p=' . $id . '&ap_s=answer' );
 		$this->assertTrue( is_ap_search() );
 	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPage() {
+		// Normal test.
+		$this->assertEmpty( ap_current_page() );
+
+		// Test for the single question page.
+		$id = $this->insert_answer();
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$this->assertEquals( 'question', ap_current_page() );
+	}
 }
