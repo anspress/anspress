@@ -144,9 +144,12 @@ abstract class TestCaseAjax extends TestCase {
 		add_filter( 'wp_doing_ajax', '__return_true' );
 		add_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 
-		// Define DOING_AJAX.
+		// Define DOING_AJAX and require the Ajax related files.
 		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
+
+			// Require the Ajax related files.
+			require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
 		}
 
 		set_current_screen( 'ajax' );
