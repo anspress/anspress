@@ -144,6 +144,11 @@ abstract class TestCaseAjax extends TestCase {
 		add_filter( 'wp_doing_ajax', '__return_true' );
 		add_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 
+		// Define DOING_AJAX.
+		if ( ! defined( 'DOING_AJAX' ) ) {
+			define( 'DOING_AJAX', true );
+		}
+
 		set_current_screen( 'ajax' );
 
 		// Clear logout cookies.
