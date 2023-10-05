@@ -23,4 +23,12 @@ class TestThemeClass extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Theme', 'remove_hentry_class' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Theme', 'after_question_content' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::init_actions
+	 */
+	public function testAnsPressThemeInitActions() {
+		$this->assertTrue( shortcode_exists( 'anspress' ) );
+		$this->assertTrue( shortcode_exists( 'question' ) );
+	}
 }
