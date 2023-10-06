@@ -16,7 +16,7 @@ class TestActivity extends TestCase {
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
 	}
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Activity_Helper' );
 		$this->assertTrue( $class->hasProperty( 'table' ) && $class->getProperty( 'table' )->isPrivate() );
 		$this->assertTrue( $class->hasProperty( 'actions' ) && $class->getProperty( 'actions' )->isPrivate() );

@@ -8,7 +8,7 @@ class Test_Roles extends TestCase {
 
 	use Testcases\Common;
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AP_Roles' );
 		$this->assertTrue( $class->hasProperty( 'base_caps' ) && $class->getProperty( 'base_caps' )->isPublic() );
 		$this->assertTrue( $class->hasProperty( 'mod_caps' ) && $class->getProperty( 'mod_caps' )->isPublic() );

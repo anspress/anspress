@@ -6,7 +6,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Session extends TestCase {
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( '\AnsPress\Session' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isProtected() );
 		$this->assertTrue( $class->hasProperty( 'name' ) && $class->getProperty( 'name' )->isPrivate() );

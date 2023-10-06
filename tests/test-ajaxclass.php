@@ -6,7 +6,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAjaxCLass extends TestCase {
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Classes\Ajax' );
 		$this->assertTrue( $class->hasProperty( 'res' ) && $class->getProperty( 'res' )->isPrivate() );
 		$this->assertTrue( $class->hasProperty( 'action' ) && $class->getProperty( 'action' )->isPublic() );

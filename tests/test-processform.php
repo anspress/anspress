@@ -6,7 +6,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestProcessForm extends TestCase {
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress_Process_Form' );
 		$this->assertTrue( $class->hasProperty( 'result' ) && $class->getProperty( 'result' )->isPrivate() );
 		$this->assertTrue( $class->hasProperty( 'redirect' ) && $class->getProperty( 'redirect' )->isPrivate() );

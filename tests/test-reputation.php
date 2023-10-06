@@ -8,7 +8,7 @@ class TestReputation extends TestCase {
 
 	use Testcases\Common;
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress_Reputation_Query' );
 		$this->assertTrue( $class->hasProperty( 'current' ) && $class->getProperty( 'current' )->isPublic() );
 		$this->assertTrue( $class->hasProperty( 'count' ) && $class->getProperty( 'count' )->isPublic() );

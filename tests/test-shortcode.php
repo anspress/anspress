@@ -6,7 +6,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class Test_Shortcode extends TestCase {
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		// For AnsPress_BasePage_Shortcode class.
 		$class = new \ReflectionClass( 'AnsPress_BasePage_Shortcode' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isProtected() );

@@ -14,7 +14,7 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue($class->hasProperty('instance') && $class->getProperty('instance')->isStatic());
 	}
 
-	public function testClassPropertiesAvailable() {
+	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress' );
 		$this->assertTrue( $class->hasProperty( '_plugin_version' ) && $class->getProperty( '_plugin_version' )->isPrivate() );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
