@@ -263,4 +263,111 @@ class TestQAQuery extends TestCase {
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 3, $answers_count );
 	}
+
+	/**
+	 * @covers ::ap_get_votes_net
+	 * @covers ::ap_votes_net
+	 */
+	public function testAPGetVotesNet() {
+		$this->setRole( 'subscriber' );
+
+		// Test for no votes.
+		$id = $this->insert_answer();
+
+		// On question.
+		$this->assertEquals( 0, ap_get_votes_net( $id->q ) );
+		ob_start();
+		ap_votes_net( $id->q );
+		$question_votes_count = ob_get_clean();
+		$this->assertEquals( 0, $question_votes_count );
+
+		// On answer.
+		$this->assertEquals( 0, ap_get_votes_net( $id->a ) );
+		ob_start();
+		ap_votes_net( $id->q );
+		$answer_votes_count = ob_get_clean();
+		$this->assertEquals( 0, $answer_votes_count );
+
+		// Adding vote on question.
+		ap_add_post_vote( $id->q );
+		$this->assertEquals( 1, ap_get_votes_net( $id->q ) );
+		ob_start();
+		ap_votes_net( $id->q );
+		$question_votes_count = ob_get_clean();
+		$this->assertEquals( 1, $question_votes_count );
+
+		// Adding vote on answer.
+		ap_add_post_vote( $id->a );
+		$this->assertEquals( 1, ap_get_votes_net( $id->a ) );
+		ob_start();
+		ap_votes_net( $id->a );
+		$answer_votes_count = ob_get_clean();
+		$this->assertEquals( 1, $answer_votes_count );
+
+		// Adding vote down on question.
+		ap_add_post_vote( $id->q, false, false );
+		$this->assertEquals( 0, ap_get_votes_net( $id->q ) );
+		ob_start();
+		ap_votes_net( $id->q );
+		$question_votes_count = ob_get_clean();
+		$this->assertEquals( 0, $question_votes_count );
+
+		// Adding vote down on answer.
+		ap_add_post_vote( $id->a, false, false );
+		$this->assertEquals( 0, ap_get_votes_net( $id->a ) );
+		ob_start();
+		ap_votes_net( $id->a );
+		$answer_votes_count = ob_get_clean();
+		$this->assertEquals( 0, $answer_votes_count );
+
+		// Adding additional votes.
+		$id = $this->insert_answer();
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+
+		// On question.
+		ap_add_post_vote( $id->q );
+		ap_add_post_vote( $id->q, $user_id );
+		$this->assertEquals( 2, ap_get_votes_net( $id->q ) );
+		ob_start();
+		ap_votes_net( $id->q );
+		$question_votes_count = ob_get_clean();
+		$this->assertEquals( 2, $question_votes_count );
+
+		// On answer.
+		ap_add_post_vote( $id->a );
+		ap_add_post_vote( $id->a, $user_id );
+		$this->assertEquals( 2, ap_get_votes_net( $id->a ) );
+		ob_start();
+		ap_votes_net( $id->a );
+		$answer_votes_count = ob_get_clean();
+		$this->assertEquals( 2, $answer_votes_count );
+
+		// Adding more additional votes for testing.
+		$id = $this->insert_answer();
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$new_user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$latest_user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+
+		// On question.
+		ap_add_post_vote( $id->q, get_current_user_id() );
+		ap_add_post_vote( $id->q, $user_id );
+		ap_add_post_vote( $id->q, $new_user_id, false );
+		ap_add_post_vote( $id->q, $latest_user_id, true );
+		$this->assertEquals( 2, ap_get_votes_net( $id->q ) );
+		ob_start();
+		ap_votes_net( $id->q );
+		$question_votes_count = ob_get_clean();
+		$this->assertEquals( 2, $question_votes_count );
+
+		// On answer.
+		ap_add_post_vote( $id->a, get_current_user_id() );
+		ap_add_post_vote( $id->a, $user_id );
+		ap_add_post_vote( $id->a, $new_user_id, false );
+		ap_add_post_vote( $id->a, $latest_user_id, true );
+		$this->assertEquals( 2, ap_get_votes_net( $id->a ) );
+		ob_start();
+		ap_votes_net( $id->a );
+		$answer_votes_count = ob_get_clean();
+		$this->assertEquals( 2, $answer_votes_count );
+	}
 }
