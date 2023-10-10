@@ -107,4 +107,160 @@ class TestQAQuery extends TestCase {
 		$pending_status = ob_get_clean();
 		$this->assertEquals( '<span class="ap-post-status pending">Pending</span>', $pending_status );
 	}
+
+	/**
+	 * @covers ::ap_get_answers_count
+	 * @covers ::ap_answers_count
+	 */
+	public function testAPGetAnswersCount() {
+		// Test on no answers to a question.
+		$id = $this->insert_question();
+		$this->assertEquals( 0, ap_get_answers_count( $id ) );
+		ob_start();
+		ap_answers_count( $id );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 0, $answers_count );
+
+		// Test on single answer to a question.
+		$id = $this->insert_answer();
+		$this->assertEquals( 1, ap_get_answers_count( $id->q ) );
+		ob_start();
+		ap_answers_count( $id->q );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 1, $answers_count );
+
+		// Test on many answers to a question.
+		$id = $this->insert_answers( [], [], 10 );
+		$this->assertEquals( 10, ap_get_answers_count( $id['question'] ) );
+		ob_start();
+		ap_answers_count( $id['question'] );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 10, $answers_count );
+
+		// Test on additional answers to a question.
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id['question'],
+			)
+		);
+		$this->assertEquals( 11, ap_get_answers_count( $id['question'] ) );
+		ob_start();
+		ap_answers_count( $id['question'] );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 11, $answers_count );
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id['question'],
+			)
+		);
+		$this->assertEquals( 12, ap_get_answers_count( $id['question'] ) );
+		ob_start();
+		ap_answers_count( $id['question'] );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 12, $answers_count );
+
+		// Test on all post status.
+		$q_id = $this->insert_question();
+		$this->assertEquals( 0, ap_get_answers_count( $q_id ) );
+		ob_start();
+		ap_answers_count( $q_id );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 0, $answers_count );
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+			)
+		);
+		$this->assertEquals( 1, ap_get_answers_count( $q_id ) );
+		ob_start();
+		ap_answers_count( $q_id );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 1, $answers_count );
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertEquals( 1, ap_get_answers_count( $q_id ) );
+		ob_start();
+		ap_answers_count( $q_id );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 1, $answers_count );
+		$a3_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertEquals( 1, ap_get_answers_count( $q_id ) );
+		ob_start();
+		ap_answers_count( $q_id );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 1, $answers_count );
+		$a4_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'publish',
+			)
+		);
+		$this->assertEquals( 2, ap_get_answers_count( $q_id ) );
+		ob_start();
+		ap_answers_count( $q_id );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 2, $answers_count );
+
+		// Test after the question having a selected answer.
+		$id = $this->insert_answer();
+		$this->assertEquals( 1, ap_get_answers_count( $id->q ) );
+		ob_start();
+		ap_answers_count( $id->q );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 1, $answers_count );
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id->q,
+			)
+		);
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id->q,
+			)
+		);
+		$this->assertEquals( 3, ap_get_answers_count( $id->q ) );
+		ob_start();
+		ap_answers_count( $id->q );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 3, $answers_count );
+		ap_set_selected_answer( $id->q, $a1_id );
+		$this->assertEquals( 3, ap_get_answers_count( $id->q ) );
+		ob_start();
+		ap_answers_count( $id->q );
+		$answers_count = ob_get_clean();
+		$this->assertEquals( 3, $answers_count );
+	}
 }
