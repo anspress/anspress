@@ -616,4 +616,77 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( 0, ap_selected_answer( $q_id ) );
 		$this->assertNotEquals( $a_id, ap_selected_answer( $q_id ) );
 	}
+
+	/**
+	 * @covers ::ap_is_selected
+	 */
+	public function testAPIsSelected() {
+		// Test for not passing any posts.
+		$this->assertFalse( ap_is_selected() );
+
+		// Test for not having the answer as selected.
+		$id = $this->insert_answer();
+		$this->assertFalse( ap_is_selected( $id->a ) );
+
+		// Test for having the selected answer.
+		$id = $this->insert_answer();
+		$this->assertFalse( ap_is_selected( $id->a ) );
+		ap_set_selected_answer( $id->q, $id->a );
+		$this->assertTrue( ap_is_selected( $id->a ) );
+		ap_unset_selected_answer( $id->q );
+		$this->assertFalse( ap_is_selected( $id->a ) );
+
+		// Additional tests.
+		$q_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+			)
+		);
+		$a_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+			)
+		);
+		$this->assertFalse( ap_is_selected( $a_id ) );
+		ap_set_selected_answer( $q_id, $a_id );
+		$this->assertTrue( ap_is_selected( $a_id ) );
+		ap_unset_selected_answer( $q_id );
+		$this->assertFalse( ap_is_selected( $a_id ) );
+
+		// Test on new answer select.
+		$na_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+			)
+		);
+		$this->assertFalse( ap_is_selected( $na_id ) );
+		ap_set_selected_answer( $q_id, $na_id );
+		$this->assertTrue( ap_is_selected( $na_id ) );
+
+		// Test on additional new answer select.
+		$lna_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+			)
+		);
+		$this->assertTrue( ap_is_selected( $na_id ) );
+		$this->assertFalse( ap_is_selected( $lna_id ) );
+		ap_set_selected_answer( $q_id, $lna_id );
+		$this->assertTrue( ap_is_selected( $lna_id ) );
+
+		// Test after removing the selected answer.
+		ap_unset_selected_answer( $q_id );
+		$this->assertFalse( ap_is_selected( $lna_id ) );
+	}
 }
