@@ -254,4 +254,108 @@ class TestAnswerLoop extends TestCase {
 		);
 		$this->assertEquals( 4, ap_count_published_answers( $q_id ) );
 	}
+
+	/**
+	 * @covers ::ap_count_other_answer
+	 */
+	public function testAPCountOtherAnswer() {
+		// Test for empty answers.
+		$id = $this->insert_question();
+		$this->assertEquals( 0, ap_count_other_answer( $id ) );
+
+		// Test for only 1 answer on the question.
+		$id = $this->insert_answer();
+		$this->assertEquals( 1, ap_count_other_answer( $id->q ) );
+
+		// Test for many answers.
+		$id = $this->insert_answers( [], [], 8 );
+		$this->assertEquals( 8, ap_count_other_answer( $id['question'] ) );
+
+		// Test for additional answers.
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id['question'],
+			)
+		);
+		$this->assertEquals( 9, ap_count_other_answer( $id['question'] ) );
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id['question'],
+			)
+		);
+		$this->assertEquals( 10, ap_count_other_answer( $id['question'] ) );
+
+		// Test on all post status.
+		$q_id = $this->insert_question();
+		$this->assertEquals( 0, ap_count_other_answer( $q_id ) );
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+			)
+		);
+		$this->assertEquals( 1, ap_count_other_answer( $q_id ) );
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertEquals( 1, ap_count_other_answer( $q_id ) );
+		$a3_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertEquals( 1, ap_count_other_answer( $q_id ) );
+		$a4_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'publish',
+			)
+		);
+		$this->assertEquals( 2, ap_count_other_answer( $q_id ) );
+
+		// Test after the question have a selected answer.
+		$id = $this->insert_answer();
+		$this->assertEquals( 1, ap_count_other_answer( $id->q ) );
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id->q,
+			)
+		);
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id->q,
+			)
+		);
+		$this->assertEquals( 3, ap_count_other_answer( $id->q ) );
+		ap_set_selected_answer( $id->q, $a1_id );
+		$this->assertNotEquals( 3, ap_count_other_answer( $id->q ) );
+		$this->assertEquals( 2, ap_count_other_answer( $q_id ) );
+	}
 }
