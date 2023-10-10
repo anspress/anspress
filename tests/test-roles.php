@@ -1045,6 +1045,7 @@ class Test_Roles extends TestCase {
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 				'post_status'  => 'future',
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$answer_id = $this->factory->post->create(
@@ -1054,6 +1055,7 @@ class Test_Roles extends TestCase {
 				'post_type'    => 'answer',
 				'post_status'  => 'future',
 				'post_parent'  => $question_id,
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$this->assertTrue( ap_user_can_view_post( $question_id ) );
@@ -1120,6 +1122,7 @@ class Test_Roles extends TestCase {
 				'post_content' => 'Post content',
 				'post_status'  => 'future',
 				'post_type'    => 'post',
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$page_id = $this->factory->post->create(
@@ -1128,6 +1131,7 @@ class Test_Roles extends TestCase {
 				'post_content' => 'Post content',
 				'post_status'  => 'future',
 				'post_type'    => 'page',
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$this->assertFalse( ap_user_can_view_post( $post_id ) );
@@ -1186,6 +1190,7 @@ class Test_Roles extends TestCase {
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 				'post_status'  => 'future',
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$page_id = $this->factory->post->create(
@@ -1194,6 +1199,7 @@ class Test_Roles extends TestCase {
 				'post_content' => 'Page content',
 				'post_type'    => 'page',
 				'post_status'  => 'future',
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$this->assertFalse( ap_user_can_view_future_post( $post_id ) );
@@ -1407,6 +1413,7 @@ class Test_Roles extends TestCase {
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 				'post_status'  => 'future',
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$answer_id = $this->factory->post->create(
@@ -1416,6 +1423,7 @@ class Test_Roles extends TestCase {
 				'post_type'    => 'answer',
 				'post_status'  => 'future',
 				'post_parent'  => $question_id,
+				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
 		$this->assertFalse( ap_user_can_view_moderate_post( $question_id ) );
