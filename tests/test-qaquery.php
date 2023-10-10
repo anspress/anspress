@@ -537,4 +537,39 @@ class TestQAQuery extends TestCase {
 		$last_active = ob_get_clean();
 		$this->assertEquals( '1 second ago', $last_active );
 	}
+
+	/**
+	 * @covers ::ap_have_answer_selected
+	 */
+	public function testAPHaveAnswerSelected() {
+		// Test for not having selected answer.
+		$id = $this->insert_answer();
+		$this->assertFalse( ap_have_answer_selected( $id->q ) );
+
+		// Test for having selected answer.
+		$id = $this->insert_answer();
+		$this->assertFalse( ap_have_answer_selected( $id->q ) );
+		ap_set_selected_answer( $id->q, $id->a );
+		$this->assertTrue( ap_have_answer_selected( $id->q ) );
+
+		// Additional tests.
+		$q_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+			)
+		);
+		$a_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+			)
+		);
+		$this->assertFalse( ap_have_answer_selected( $q_id ) );
+		ap_set_selected_answer( $q_id, $a_id );
+		$this->assertTrue( ap_have_answer_selected( $q_id ) );
+	}
 }
