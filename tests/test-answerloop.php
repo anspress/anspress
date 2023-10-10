@@ -114,4 +114,144 @@ class TestAnswerLoop extends TestCase {
 		$pending_status = ob_get_clean();
 		$this->assertEquals( '<span class="ap-post-status pending">Pending</span>', $pending_status );
 	}
+
+	/**
+	 * @covers ::ap_count_published_answers
+	 */
+	public function testAPCountPublishedAnswers() {
+		// Test for empty answers.
+		$id = $this->insert_question();
+		$this->assertEquals( 0, ap_count_published_answers( $id ) );
+
+		// Test for only 1 answer published.
+		$id = $this->insert_answer();
+		$this->assertEquals( 1, ap_count_published_answers( $id->q ) );
+
+		// Test for many answers published.
+		$id = $this->insert_answers( [], [], 5 );
+		$this->assertEquals( 5, ap_count_published_answers( $id['question'] ) );
+
+		// Test for additional answers published.
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id['question'],
+			)
+		);
+		$this->assertEquals( 6, ap_count_published_answers( $id['question'] ) );
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $id['question'],
+			)
+		);
+		$this->assertEquals( 7, ap_count_published_answers( $id['question'] ) );
+
+		// Test on all post status.
+		$q_id = $this->insert_question();
+		$this->assertEquals( 0, ap_count_published_answers( $q_id ) );
+		$a1_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+			)
+		);
+		$this->assertEquals( 1, ap_count_published_answers( $q_id ) );
+		$a2_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertEquals( 1, ap_count_published_answers( $q_id ) );
+		$a3_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'trash',
+			)
+		);
+		$this->assertEquals( 1, ap_count_published_answers( $q_id ) );
+		$a4_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'draft',
+			)
+		);
+		$this->assertEquals( 1, ap_count_published_answers( $q_id ) );
+		$a5_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'publish',
+			)
+		);
+		$this->assertEquals( 2, ap_count_published_answers( $q_id ) );
+		$a6_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertEquals( 2, ap_count_published_answers( $q_id ) );
+		$a7_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'pending',
+			)
+		);
+		$this->assertEquals( 2, ap_count_published_answers( $q_id ) );
+		$a8_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'future',
+				'post_date'    => '9999-12-31 23:59:59',
+			)
+		);
+		$this->assertEquals( 2, ap_count_published_answers( $q_id ) );
+		$a9_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+				'post_status'  => 'publish',
+			)
+		);
+		$this->assertEquals( 3, ap_count_published_answers( $q_id ) );
+		$a10_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id,
+			)
+		);
+		$this->assertEquals( 4, ap_count_published_answers( $q_id ) );
+	}
 }
