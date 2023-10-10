@@ -370,4 +370,171 @@ class TestQAQuery extends TestCase {
 		$answer_votes_count = ob_get_clean();
 		$this->assertEquals( 2, $answer_votes_count );
 	}
+
+	/**
+	 * @covers ::ap_get_last_active
+	 * @covers ::ap_last_active
+	 */
+	public function testAPGetLastActive() {
+		// Test on current mysql post date.
+		$id = $this->insert_answer();
+
+		// Test for question.
+		$this->assertEquals( '1 second ago', ap_get_last_active( $id->q ) );
+		ob_start();
+		ap_last_active( $id->q );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '1 second ago', $last_active );
+
+		// Test for answer.
+		$this->assertEquals( '1 second ago', ap_get_last_active( $id->a ) );
+		ob_start();
+		ap_last_active( $id->q );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '1 second ago', $last_active );
+
+		// Test on 5 minutes ago post date.
+		// Test for question.
+		$now = date( 'Y-m-d H:i:s' );
+		$timestamp = strtotime( $now );
+		$time = $timestamp - (5 * 60);
+		$datetime = date( 'Y-m-d H:i:s', $time );
+		$q_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+				'post_date'     => $datetime,
+			)
+		);
+		ap_insert_qameta(
+			$q_id,
+			[
+				'last_updated' => $datetime,
+			]
+		);
+		$this->assertEquals( '5 mins ago', ap_get_last_active( $q_id ) );
+		ob_start();
+		ap_last_active( $q_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '5 mins ago', $last_active );
+
+		// After updating the question.
+		wp_update_post(
+			array(
+				'ID' => $q_id
+			)
+		);
+		$this->assertEquals( '1 second ago', ap_get_last_active( $q_id ) );
+		ob_start();
+		ap_last_active( $q_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '1 second ago', $last_active );
+
+		// Test for answer.
+		$a_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+				'post_date'     => $datetime,
+			)
+		);
+		ap_insert_qameta(
+			$a_id,
+			[
+				'last_updated' => $datetime,
+			]
+		);
+		$this->assertEquals( '5 mins ago', ap_get_last_active( $a_id ) );
+		ob_start();
+		ap_last_active( $a_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '5 mins ago', $last_active );
+
+		// After updating the answer.
+		wp_update_post(
+			array(
+				'ID' => $a_id
+			)
+		);
+		$this->assertEquals( '1 second ago', ap_get_last_active( $a_id ) );
+		ob_start();
+		ap_last_active( $a_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '1 second ago', $last_active );
+
+		// Test on 3 hours ago post date.
+		// Test for question.
+		$now = date( 'Y-m-d H:i:s' );
+		$timestamp = strtotime( $now );
+		$time = $timestamp - (3 * 60 * 60);
+		$datetime = date( 'Y-m-d H:i:s', $time );
+		$q_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+				'post_date'     => $datetime,
+			)
+		);
+		ap_insert_qameta(
+			$q_id,
+			[
+				'last_updated' => $datetime,
+			]
+		);
+		$this->assertEquals( '3 hours ago', ap_get_last_active( $q_id ) );
+		ob_start();
+		ap_last_active( $q_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '3 hours ago', $last_active );
+
+		// After updating the question.
+		wp_update_post(
+			array(
+				'ID' => $q_id
+			)
+		);
+		$this->assertEquals( '1 second ago', ap_get_last_active( $q_id ) );
+		ob_start();
+		ap_last_active( $q_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '1 second ago', $last_active );
+
+		// Test for answer.
+		$a_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+				'post_date'     => $datetime,
+			)
+		);
+		ap_insert_qameta(
+			$a_id,
+			[
+				'last_updated' => $datetime,
+			]
+		);
+		$this->assertEquals( '3 hours ago', ap_get_last_active( $a_id ) );
+		ob_start();
+		ap_last_active( $a_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '3 hours ago', $last_active );
+
+		// After updating the answer.
+		wp_update_post(
+			array(
+				'ID' => $a_id
+			)
+		);
+		$this->assertEquals( '1 second ago', ap_get_last_active( $a_id ) );
+		ob_start();
+		ap_last_active( $a_id );
+		$last_active = ob_get_clean();
+		$this->assertEquals( '1 second ago', $last_active );
+	}
 }
