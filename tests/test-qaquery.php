@@ -572,4 +572,48 @@ class TestQAQuery extends TestCase {
 		ap_set_selected_answer( $q_id, $a_id );
 		$this->assertTrue( ap_have_answer_selected( $q_id ) );
 	}
+
+	/**
+	 * @covers ::ap_selected_answer
+	 */
+	public function testAPSelectedAnswer() {
+		// Test for not passing any posts.
+		$this->assertFalse( ap_selected_answer() );
+
+		// Test for not having any answer selected.
+		$id = $this->insert_answer();
+		$this->assertNull( ap_selected_answer( $id->q ) );
+
+		// Test for having selected answer.
+		$id = $this->insert_answer();
+		$this->assertNull( ap_selected_answer( $id->q ) );
+		ap_set_selected_answer( $id->q, $id->a );
+		$this->assertEquals( $id->a, ap_selected_answer( $id->q ) );
+		ap_unset_selected_answer( $id->q );
+		$this->assertEquals( 0, ap_selected_answer( $id->q ) );
+		$this->assertNotEquals( $id->a, ap_selected_answer( $id->q ) );
+
+		// Additional tests.
+		$q_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Question title',
+				'post_content'  => 'Question content',
+				'post_type'     => 'question',
+			)
+		);
+		$a_id = $this->factory->post->create(
+			array(
+				'post_title'    => 'Answer title',
+				'post_content'  => 'Answer content',
+				'post_type'     => 'answer',
+				'post_parent'   => $q_id,
+			)
+		);
+		$this->assertNull( ap_selected_answer( $q_id ) );
+		ap_set_selected_answer( $q_id, $a_id );
+		$this->assertEquals( $a_id, ap_selected_answer( $q_id ) );
+		ap_unset_selected_answer( $q_id );
+		$this->assertEquals( 0, ap_selected_answer( $q_id ) );
+		$this->assertNotEquals( $a_id, ap_selected_answer( $q_id ) );
+	}
 }
