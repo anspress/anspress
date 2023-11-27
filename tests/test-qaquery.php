@@ -689,4 +689,30 @@ class TestQAQuery extends TestCase {
 		ap_unset_selected_answer( $q_id );
 		$this->assertFalse( ap_is_selected( $lna_id ) );
 	}
+
+	/**
+	 * @covers ::ap_is_featured_question
+	 */
+	public function testAPIsFeaturedQuestion() {
+		// Test for not passing any question.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertFalse( ap_is_featured_question() );
+		$this->go_to( '/' );
+
+		// Test for not a featured question.
+		$id = $this->insert_question();
+		$this->assertFalse( ap_is_featured_question( $id ) );
+
+		// Test for a featured question.
+		$id = $this->insert_question();
+		$this->assertFalse( ap_is_featured_question( $id ) );
+		ap_set_featured_question( $id );
+		$this->assertTrue( ap_is_featured_question( $id ) );
+
+		// Test after removing the featured question.
+		$this->assertTrue( ap_is_featured_question( $id ) );
+		ap_unset_featured_question( $id );
+		$this->assertFalse( ap_is_featured_question( $id ) );
+	}
 }
