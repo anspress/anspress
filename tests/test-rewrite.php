@@ -48,4 +48,21 @@ class TestRewrite extends TestCase {
 		$this->assertTrue( in_array( 'user_page', $query_var, true ) );
 		$this->assertTrue( in_array( 'ap_paged', $query_var, true ) );
 	}
+
+	/**
+	 * Covers AnsPress_Rewrite::incr_hash
+	 */
+	public function testAnsPressRewriteIncrHash() {
+		// Test begins.
+		$anspress_rewrite = \AnsPress_Rewrite::incr_hash( '' );
+		$this->assertEquals( 1, $anspress_rewrite );
+		$anspress_rewrite = \AnsPress_Rewrite::incr_hash( '' );
+		$this->assertEquals( 2, $anspress_rewrite );
+		$anspress_rewrite = \AnsPress_Rewrite::incr_hash( '' );
+		$this->assertEquals( 3, $anspress_rewrite );
+		$anspress_rewrite = \AnsPress_Rewrite::incr_hash( '' );
+		$this->assertEquals( 4, $anspress_rewrite );
+		$anspress_rewrite = \AnsPress_Rewrite::incr_hash( '' );
+		$this->assertEquals( 5, $anspress_rewrite );
+	}
 }
