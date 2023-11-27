@@ -30,22 +30,22 @@ class TestRewrite extends TestCase {
 		$this->assertEquals( 10, has_filter( 'query_vars', [ 'AnsPress_Rewrite', 'query_var' ] ) );
 
 		// Test begins.
-		$anspress_rewrite = \AnsPress_Rewrite::query_var( [] );
-		$this->assertTrue( in_array( 'edit_post_id', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'ap_nonce', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'question_id', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'answer_id', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'answer', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'ask', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'ap_page', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'qcat_id', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'qcat', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'qtag_id', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'q_tag', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'ap_s', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'parent', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'ap_user', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'user_page', $anspress_rewrite, true ) );
-		$this->assertTrue( in_array( 'ap_paged', $anspress_rewrite, true ) );
+		$query_var = \AnsPress_Rewrite::query_var( [] );
+		$this->assertTrue( in_array( 'edit_post_id', $query_var, true ) );
+		$this->assertTrue( in_array( 'ap_nonce', $query_var, true ) );
+		$this->assertTrue( in_array( 'question_id', $query_var, true ) );
+		$this->assertTrue( in_array( 'answer_id', $query_var, true ) );
+		$this->assertTrue( in_array( 'answer', $query_var, true ) );
+		$this->assertTrue( in_array( 'ask', $query_var, true ) );
+		$this->assertTrue( in_array( 'ap_page', $query_var, true ) );
+		$this->assertTrue( in_array( 'qcat_id', $query_var, true ) );
+		$this->assertTrue( in_array( 'qcat', $query_var, true ) );
+		$this->assertTrue( in_array( 'qtag_id', $query_var, true ) );
+		$this->assertTrue( in_array( 'q_tag', $query_var, true ) );
+		$this->assertTrue( in_array( 'ap_s', $query_var, true ) );
+		$this->assertTrue( in_array( 'parent', $query_var, true ) );
+		$this->assertTrue( in_array( 'ap_user', $query_var, true ) );
+		$this->assertTrue( in_array( 'user_page', $query_var, true ) );
+		$this->assertTrue( in_array( 'ap_paged', $query_var, true ) );
 	}
 }
