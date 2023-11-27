@@ -8,6 +8,18 @@ class TestQAQuery extends TestCase {
 
 	use Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
+	}
+
+	public function tear_down() {
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
+		parent::tear_down();
+	}
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Question_Query' );
 		$this->assertTrue( $class->hasProperty( 'count_request' ) && $class->getProperty( 'count_request' )->isPublic() );
@@ -714,5 +726,56 @@ class TestQAQuery extends TestCase {
 		$this->assertTrue( ap_is_featured_question( $id ) );
 		ap_unset_featured_question( $id );
 		$this->assertFalse( ap_is_featured_question( $id ) );
+	}
+
+	/**
+	 * @covers ::ap_post_have_terms
+	 */
+	public function testAPGetTerms() {
+		// Test for no terms availability without passing anything.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertFalse( ap_post_have_terms() );
+		$this->assertFalse( ap_post_have_terms( false ) );
+		$this->assertFalse( ap_post_have_terms( false, 'question_category' ) );
+		$this->assertFalse( ap_post_have_terms( false, 'question_tag' ) );
+		$this->go_to( '/' );
+
+		// Test for no terms availability.
+		$id = $this->insert_question();
+		$this->assertFalse( ap_post_have_terms( $id ) );
+		$this->assertFalse( ap_post_have_terms( $id, 'question_category' ) );
+		$this->assertFalse( ap_post_have_terms( $id, 'question_tag' ) );
+
+		// Test for terms availability.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$tid = $this->factory->term->create(
+			array(
+				'name'     => 'Question tag',
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$id = $this->insert_question();
+		$this->assertFalse( ap_post_have_terms( $id ) );
+		$this->assertFalse( ap_post_have_terms( $id, 'question_category' ) );
+		$this->assertFalse( ap_post_have_terms( $id, 'question_tag' ) );
+
+		// Test after setting the terms.
+		// For category.
+		wp_set_object_terms( $id, array( $cid ), 'question_category' );
+		$this->assertTrue( ap_post_have_terms( $id ) );
+		$this->assertTrue( ap_post_have_terms( $id, 'question_category' ) );
+		$this->assertFalse( ap_post_have_terms( $id, 'question_tag' ) );
+
+		// For tag.
+		wp_set_object_terms( $id, array( $tid ), 'question_tag' );
+		$this->assertTrue( ap_post_have_terms( $id ) );
+		$this->assertTrue( ap_post_have_terms( $id, 'question_category' ) );
+		$this->assertTrue( ap_post_have_terms( $id, 'question_tag' ) );
 	}
 }
