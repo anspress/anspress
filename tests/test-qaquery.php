@@ -778,4 +778,54 @@ class TestQAQuery extends TestCase {
 		$this->assertTrue( ap_post_have_terms( $id, 'question_category' ) );
 		$this->assertTrue( ap_post_have_terms( $id, 'question_tag' ) );
 	}
+
+	/**
+	 * @covers ::ap_get_terms
+	 */
+	public function testAPGetTerms() {
+		// Test for no terms availability without passing anything.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertFalse( ap_get_terms() );
+		$this->assertFalse( ap_get_terms( false ) );
+		$this->go_to( '/' );
+
+		// Test for no terms availability.
+		$id = $this->insert_question();
+		$this->assertFalse( ap_get_terms( false, $id ) );
+		$this->assertEmpty( ap_get_terms( false, $id ) );
+
+		// Test for terms availability.
+		// For category.
+		$cid = $this->factory->term->create(
+			array(
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			)
+		);
+		$id = $this->insert_question();
+		$this->assertFalse( ap_get_terms( false, $id ) );
+
+		// Test after setting the terms.
+		wp_set_object_terms( $id, array( $cid ), 'question_category' );
+		wp_update_post( [ 'ID' => $id ] );
+		$this->assertNotEmpty( ap_get_terms( false, $id ) );
+		$this->assertIsString( ap_get_terms( false, $id ) );
+
+		// For tag.
+		$tid = $this->factory->term->create(
+			array(
+				'name'     => 'Question tag',
+				'taxonomy' => 'question_tag',
+			)
+		);
+		$id = $this->insert_question();
+		$this->assertFalse( ap_get_terms( false, $id ) );
+
+		// Test after setting the terms.
+		wp_set_object_terms( $id, array( $tid ), 'question_tag' );
+		wp_update_post( [ 'ID' => $id ] );
+		$this->assertNotEmpty( ap_get_terms( false, $id ) );
+		$this->assertIsString( ap_get_terms( false, $id ) );
+	}
 }
