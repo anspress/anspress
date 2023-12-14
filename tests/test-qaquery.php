@@ -856,4 +856,46 @@ class TestQAQuery extends TestCase {
 		$this->assertTrue( ap_have_attach( $id ) );
 		$this->assertNotEmpty( ap_have_attach( $id ) );
 	}
+
+	/**
+	 * @covers ::ap_get_attach
+	 */
+	public function testAPGetAttach() {
+		// Test for no attachment availability without passing anything.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertIsArray( ap_get_attach() );
+		$this->assertEmpty( ap_get_attach() );
+		$this->go_to( '/' );
+
+		// Test for no attachment availability.
+		$id = $this->insert_question();
+		$this->assertIsArray( ap_get_attach( $id ) );
+		$this->assertEmpty( ap_get_attach( $id ) );
+
+		// Test for attachment availability.
+		// First test.
+		$qid_1 = $this->insert_question();
+		$this->assertIsArray( ap_get_attach( $qid_1 ) );
+		$this->assertEmpty( ap_get_attach( $qid_1 ) );
+
+		// Test after adding the attachments.
+		$attachment_id_1 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $qid_1 );
+		ap_update_post_attach_ids( $qid_1 );
+		$this->assertIsArray( ap_get_attach( $qid_1 ) );
+		$this->assertNotEmpty( ap_get_attach( $qid_1 ) );
+		$this->assertEquals( [ $attachment_id_1 ], ap_get_attach( $qid_1 ) );
+
+		// Second test.
+		$qid_2 = $this->insert_question();
+		$this->assertIsArray( ap_get_attach( $qid_2 ) );
+		$this->assertEmpty( ap_get_attach( $qid_2 ) );
+
+		// Test after adding the attachments.
+		$attachment_id_2 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $qid_2 );
+		ap_update_post_attach_ids( $qid_2 );
+		$this->assertIsArray( ap_get_attach( $qid_2 ) );
+		$this->assertNotEmpty( ap_get_attach( $qid_2 ) );
+		$this->assertEquals( [ $attachment_id_2 ], ap_get_attach( $qid_2 ) );
+	}
 }
