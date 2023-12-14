@@ -828,4 +828,32 @@ class TestQAQuery extends TestCase {
 		$this->assertNotEmpty( ap_get_terms( false, $id ) );
 		$this->assertIsString( ap_get_terms( false, $id ) );
 	}
+
+	/**
+	 * @covers ::ap_have_attach
+	 */
+	public function testAPHaveAttach() {
+		// Test for no attachment availability without passing anything.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertFalse( ap_have_attach() );
+		$this->assertEmpty( ap_have_attach() );
+		$this->go_to( '/' );
+
+		// Test for no attachment availability.
+		$id = $this->insert_question();
+		$this->assertFalse( ap_have_attach( $id ) );
+		$this->assertEmpty( ap_have_attach( $id ) );
+
+		// Test for attachment availability.
+		$id = $this->insert_question();
+		$this->assertFalse( ap_have_attach( $id ) );
+		$this->assertEmpty( ap_have_attach( $id ) );
+
+		// Test after adding the attachments.
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
+		ap_update_post_attach_ids( $id );
+		$this->assertTrue( ap_have_attach( $id ) );
+		$this->assertNotEmpty( ap_have_attach( $id ) );
+	}
 }
