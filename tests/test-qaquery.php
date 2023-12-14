@@ -731,7 +731,7 @@ class TestQAQuery extends TestCase {
 	/**
 	 * @covers ::ap_post_have_terms
 	 */
-	public function testAPGetTerms() {
+	public function testAPPostHaveTerms() {
 		// Test for no terms availability without passing anything.
 		$id = $this->insert_question();
 		$this->go_to( '?post_type=question&p=' . $id );
