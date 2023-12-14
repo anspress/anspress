@@ -811,6 +811,7 @@ class TestQAQuery extends TestCase {
 		wp_update_post( [ 'ID' => $id ] );
 		$this->assertNotEmpty( ap_get_terms( false, $id ) );
 		$this->assertIsString( ap_get_terms( false, $id ) );
+		$this->assertStringContainsString( $cid, ap_get_terms( false, $id ) );
 
 		// For tag.
 		$tid = $this->factory->term->create(
@@ -827,6 +828,7 @@ class TestQAQuery extends TestCase {
 		wp_update_post( [ 'ID' => $id ] );
 		$this->assertNotEmpty( ap_get_terms( false, $id ) );
 		$this->assertIsString( ap_get_terms( false, $id ) );
+		$this->assertStringContainsString( $tid, ap_get_terms( false, $id ) );
 	}
 
 	/**
@@ -892,10 +894,18 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_get_attach( $qid_2 ) );
 
 		// Test after adding the attachments.
-		$attachment_id_2 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $qid_2 );
+		$attachment_id_2 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $qid_2 );
 		ap_update_post_attach_ids( $qid_2 );
 		$this->assertIsArray( ap_get_attach( $qid_2 ) );
 		$this->assertNotEmpty( ap_get_attach( $qid_2 ) );
 		$this->assertEquals( [ $attachment_id_2 ], ap_get_attach( $qid_2 ) );
+
+		// Test for array values on adding the attachments.
+		$q_id    = $this->insert_question();
+		$pdf_id  = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $q_id );
+		$png1_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $q_id );
+		$png2_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $q_id );
+		ap_update_post_attach_ids( $q_id );
+		$this->assertEquals( [ $pdf_id, $png1_id, $png2_id ], ap_get_attach( $q_id ) );
 	}
 }
