@@ -104,69 +104,69 @@ class Test_Roles extends TestCase {
 
 		// Check moderator caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['ap_moderator']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['ap_moderator']['capabilities'] );
 		}
 
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['ap_moderator']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['ap_moderator']['capabilities'] );
 		}
 
 		// Check participants caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayNotHasKey( $c, (array) $wp_roles->roles['ap_participant']['capabilities'] );
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['ap_participant']['capabilities'] );
 		}
 
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['ap_participant']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['ap_participant']['capabilities'] );
 		}
 
 		// Check banned caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayNotHasKey( $c, (array) $wp_roles->roles['ap_banned']['capabilities'] );
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['ap_banned']['capabilities'] );
 		}
 
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayNotHasKey( $c, (array) $wp_roles->roles['ap_banned']['capabilities'] );
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['ap_banned']['capabilities'] );
 		}
 
 		// Test administrator caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['administrator']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['administrator']['capabilities'] );
 		}
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['administrator']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['administrator']['capabilities'] );
 		}
 
 		// Test editor caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['editor']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['editor']['capabilities'] );
 		}
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['editor']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['editor']['capabilities'] );
 		}
 
 		// Test contributor caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayNotHasKey( $c, (array) $wp_roles->roles['contributor']['capabilities'] );
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['contributor']['capabilities'] );
 		}
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['contributor']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['contributor']['capabilities'] );
 		}
 
 		// Test author caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayNotHasKey( $c, (array) $wp_roles->roles['author']['capabilities'] );
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['author']['capabilities'] );
 		}
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['author']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['author']['capabilities'] );
 		}
 
 		// Test subscriber caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
-			$this->assertArrayNotHasKey( $c, (array) $wp_roles->roles['subscriber']['capabilities'] );
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['subscriber']['capabilities'] );
 		}
 		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
-			$this->assertArrayHasKey( $c, (array) $wp_roles->roles['subscriber']['capabilities'] );
+			$this->assertArrayHasKey( $c, $wp_roles->roles['subscriber']['capabilities'] );
 		}
 	}
 
