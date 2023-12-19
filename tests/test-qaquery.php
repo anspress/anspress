@@ -980,4 +980,94 @@ class TestQAQuery extends TestCase {
 		anspress()->questions = new \Question_Query();
 		$this->assertEquals( 5, ap_total_questions_found() );
 	}
+
+	/**
+	 * @covers ::ap_get_post
+	 */
+	public function testAPGetPost() {
+		// Test for passing nothing.
+		$this->assertFalse( ap_get_post() );
+
+		// Test for passing nothing but visiting the question page.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$_post = ap_get_post();
+		$this->assertIsObject( $_post );
+		$this->assertObjectHasProperty( 'post_id', $_post );
+		$this->assertObjectHasProperty( 'selected', $_post );
+		$this->assertObjectHasProperty( 'selected_id', $_post );
+		$this->assertObjectHasProperty( 'comments', $_post );
+		$this->assertObjectHasProperty( 'answers', $_post );
+		$this->assertObjectHasProperty( 'ptype', $_post );
+		$this->assertObjectHasProperty( 'featured', $_post );
+		$this->assertObjectHasProperty( 'closed', $_post );
+		$this->assertObjectHasProperty( 'views', $_post );
+		$this->assertObjectHasProperty( 'votes_up', $_post );
+		$this->assertObjectHasProperty( 'votes_down', $_post );
+		$this->assertObjectHasProperty( 'subscribers', $_post );
+		$this->assertObjectHasProperty( 'flags', $_post );
+		$this->assertObjectHasProperty( 'terms', $_post );
+		$this->assertObjectHasProperty( 'attach', $_post );
+		$this->assertObjectHasProperty( 'activities', $_post );
+		$this->assertObjectHasProperty( 'fields', $_post );
+		$this->assertObjectHasProperty( 'roles', $_post );
+		$this->assertObjectHasProperty( 'last_updated', $_post );
+		$this->assertObjectHasProperty( 'is_new', $_post );
+		$this->go_to( '/' );
+
+		// Test for passing the question id.
+		$id = $this->insert_question();
+		$_post = ap_get_post( $id );
+		$this->assertIsObject( $_post );
+
+		// Test for appended qameta datas for question.
+		$q_id = $this->insert_question();
+		$question_obj = ap_get_post( $q_id );
+		$this->assertIsObject( $question_obj );
+		$this->assertObjectHasProperty( 'post_id', $question_obj );
+		$this->assertObjectHasProperty( 'selected', $question_obj );
+		$this->assertObjectHasProperty( 'selected_id', $question_obj );
+		$this->assertObjectHasProperty( 'comments', $question_obj );
+		$this->assertObjectHasProperty( 'answers', $question_obj );
+		$this->assertObjectHasProperty( 'ptype', $question_obj );
+		$this->assertObjectHasProperty( 'featured', $question_obj );
+		$this->assertObjectHasProperty( 'closed', $question_obj );
+		$this->assertObjectHasProperty( 'views', $question_obj );
+		$this->assertObjectHasProperty( 'votes_up', $question_obj );
+		$this->assertObjectHasProperty( 'votes_down', $question_obj );
+		$this->assertObjectHasProperty( 'subscribers', $question_obj );
+		$this->assertObjectHasProperty( 'flags', $question_obj );
+		$this->assertObjectHasProperty( 'terms', $question_obj );
+		$this->assertObjectHasProperty( 'attach', $question_obj );
+		$this->assertObjectHasProperty( 'activities', $question_obj );
+		$this->assertObjectHasProperty( 'fields', $question_obj );
+		$this->assertObjectHasProperty( 'roles', $question_obj );
+		$this->assertObjectHasProperty( 'last_updated', $question_obj );
+		$this->assertObjectHasProperty( 'is_new', $question_obj );
+
+		// Test for appended qameta datas for answer.
+		$qa_id = $this->insert_answer();
+		$answer_obj = ap_get_post( $qa_id->a );
+		$this->assertIsObject( $answer_obj );
+		$this->assertObjectHasProperty( 'post_id', $answer_obj );
+		$this->assertObjectHasProperty( 'selected', $answer_obj );
+		$this->assertObjectHasProperty( 'selected_id', $answer_obj );
+		$this->assertObjectHasProperty( 'comments', $answer_obj );
+		$this->assertObjectHasProperty( 'answers', $answer_obj );
+		$this->assertObjectHasProperty( 'ptype', $answer_obj );
+		$this->assertObjectHasProperty( 'featured', $answer_obj );
+		$this->assertObjectHasProperty( 'closed', $answer_obj );
+		$this->assertObjectHasProperty( 'views', $answer_obj );
+		$this->assertObjectHasProperty( 'votes_up', $answer_obj );
+		$this->assertObjectHasProperty( 'votes_down', $answer_obj );
+		$this->assertObjectHasProperty( 'subscribers', $answer_obj );
+		$this->assertObjectHasProperty( 'flags', $answer_obj );
+		$this->assertObjectHasProperty( 'terms', $answer_obj );
+		$this->assertObjectHasProperty( 'attach', $answer_obj );
+		$this->assertObjectHasProperty( 'activities', $answer_obj );
+		$this->assertObjectHasProperty( 'fields', $answer_obj );
+		$this->assertObjectHasProperty( 'roles', $answer_obj );
+		$this->assertObjectHasProperty( 'last_updated', $answer_obj );
+		$this->assertObjectHasProperty( 'is_new', $answer_obj );
+	}
 }
