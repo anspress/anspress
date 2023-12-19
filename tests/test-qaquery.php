@@ -944,4 +944,40 @@ class TestQAQuery extends TestCase {
 		anspress()->questions = new \Question_Query( [ 'post__not_in' => [ $q_id1, $q_id2, $q_id3 ] ] );
 		$this->assertFalse( ap_have_questions() );
 	}
+
+	/**
+	 * @covers ::ap_total_questions_found
+	 */
+	public function testAPTotalQuestionsFound() {
+		// Test for not having any question.
+		anspress()->questions = new \Question_Query();
+		$this->assertEquals( 0, ap_total_questions_found() );
+
+		// Test for having a single question.
+		$id = $this->insert_question();
+		anspress()->questions = new \Question_Query( [ 'p' => $id ] );
+		$this->assertEquals( 1, ap_total_questions_found() );
+
+		// Test for having multiple questions.
+		$q_id1 = $this->insert_question();
+		$q_id2 = $this->insert_question();
+		$q_id3 = $this->insert_question();
+		anspress()->questions = new \Question_Query( [ 'post__in' => [ $q_id1, $q_id2, $q_id3 ] ] );
+		$this->assertEquals( 3, ap_total_questions_found() );
+
+		// Test for having all questions.
+		anspress()->questions = new \Question_Query();
+		$this->assertEquals( 4, ap_total_questions_found() );
+
+		// Test for removing certain questions from query.
+		anspress()->questions = new \Question_Query( [ 'post__in' => [ $q_id1, $q_id2 ] ] );
+		$this->assertEquals( 2, ap_total_questions_found() );
+		$id = $this->insert_question();
+		anspress()->questions = new \Question_Query( [ 'post__not_in' => [ $q_id1, $q_id2 ] ] );
+		$this->assertEquals( 3, ap_total_questions_found() );
+
+		// Re-test for having all questions.
+		anspress()->questions = new \Question_Query();
+		$this->assertEquals( 5, ap_total_questions_found() );
+	}
 }
