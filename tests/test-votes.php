@@ -33,6 +33,7 @@ class TestVotes extends TestCase {
 
 		// Test beofre inserting the vote.
 		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
+		$this->assertFalse( $get_vote );
 		$get_vote = (array) $get_vote;
 		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
 		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
@@ -45,17 +46,16 @@ class TestVotes extends TestCase {
 		// Test after inserting the vote.
 		ap_vote_insert( $id, $user_id );
 		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayHasKey( 'vote_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayHasKey( 'vote_type', $get_vote );
-		$this->assertArrayHasKey( 'vote_value', $get_vote );
-		$this->assertArrayHasKey( 'vote_date', $get_vote );
-		$this->assertEquals( 'vote', $get_vote['vote_type'] );
-		$this->assertEquals( $id, $get_vote['vote_post_id'] );
-		$this->assertEquals( $user_id, $get_vote['vote_user_id'] );
+		$this->assertObjectHasProperty( 'vote_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_post_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_user_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_rec_user', $get_vote );
+		$this->assertObjectHasProperty( 'vote_type', $get_vote );
+		$this->assertObjectHasProperty( 'vote_value', $get_vote );
+		$this->assertObjectHasProperty( 'vote_date', $get_vote );
+		$this->assertEquals( 'vote', $get_vote->vote_type );
+		$this->assertEquals( $id, $get_vote->vote_post_id );
+		$this->assertEquals( $user_id, $get_vote->vote_user_id );
 		$this->logout();
 
 		// Test on new question.
@@ -64,13 +64,12 @@ class TestVotes extends TestCase {
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_vote_insert( $id, $user_id, 'vote', $new_user_id, 101, current_time( 'mysql' ) );
 		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
-		$get_vote = (array) $get_vote;
-		$this->assertEquals( 'vote', $get_vote['vote_type'] );
-		$this->assertEquals( $id, $get_vote['vote_post_id'] );
-		$this->assertEquals( $user_id, $get_vote['vote_user_id'] );
-		$this->assertEquals( $new_user_id, $get_vote['vote_rec_user'] );
-		$this->assertEquals( 101, $get_vote['vote_value'] );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote['vote_date'] );
+		$this->assertEquals( 'vote', $get_vote->vote_type );
+		$this->assertEquals( $id, $get_vote->vote_post_id );
+		$this->assertEquals( $user_id, $get_vote->vote_user_id );
+		$this->assertEquals( $new_user_id, $get_vote->vote_rec_user );
+		$this->assertEquals( 101, $get_vote->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
 
 		// Test on new question.
 		$id = $this->insert_question();
@@ -78,15 +77,14 @@ class TestVotes extends TestCase {
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_vote_insert( $id, $user_id, 'flag', $new_user_id, 10 );
 		$get_vote = ap_get_vote( $id, $user_id, 'flag' );
-		$get_vote = (array) $get_vote;
-		$this->assertEquals( 'flag', $get_vote['vote_type'] );
-		$this->assertNotEquals( 'vote', $get_vote['vote_type'] );
-		$this->assertEquals( $id, $get_vote['vote_post_id'] );
-		$this->assertEquals( $user_id, $get_vote['vote_user_id'] );
-		$this->assertEquals( $new_user_id, $get_vote['vote_rec_user'] );
-		$this->assertEquals( 10, $get_vote['vote_value'] );
-		$this->assertNotEquals( 101, $get_vote['vote_value'] );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote['vote_date'] );
+		$this->assertEquals( 'flag', $get_vote->vote_type );
+		$this->assertNotEquals( 'vote', $get_vote->vote_type );
+		$this->assertEquals( $id, $get_vote->vote_post_id );
+		$this->assertEquals( $user_id, $get_vote->vote_user_id );
+		$this->assertEquals( $new_user_id, $get_vote->vote_rec_user );
+		$this->assertEquals( 10, $get_vote->vote_value );
+		$this->assertNotEquals( 101, $get_vote->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
 	}
 
 	/**
@@ -149,17 +147,17 @@ class TestVotes extends TestCase {
 		// Test after adding the vote.
 		ap_vote_insert( $id, get_current_user_id() );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayHasKey( 'vote_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayHasKey( 'vote_type', $get_vote );
-		$this->assertArrayHasKey( 'vote_value', $get_vote );
-		$this->assertArrayHasKey( 'vote_date', $get_vote );
+		$this->assertObjectHasProperty( 'vote_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_post_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_user_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_rec_user', $get_vote );
+		$this->assertObjectHasProperty( 'vote_type', $get_vote );
+		$this->assertObjectHasProperty( 'vote_value', $get_vote );
+		$this->assertObjectHasProperty( 'vote_date', $get_vote );
 		$delete = ap_delete_vote( $id );
 		$this->assertEquals( 1, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
+		$this->assertFalse( $get_vote );
 		$get_vote = (array) $get_vote;
 		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
 		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
@@ -173,28 +171,27 @@ class TestVotes extends TestCase {
 		$id = $this->insert_question();
 		ap_vote_insert( $id, get_current_user_id(), 'flag' );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayHasKey( 'vote_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayHasKey( 'vote_type', $get_vote );
-		$this->assertArrayHasKey( 'vote_value', $get_vote );
-		$this->assertArrayHasKey( 'vote_date', $get_vote );
+		$this->assertObjectHasProperty( 'vote_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_post_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_user_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_rec_user', $get_vote );
+		$this->assertObjectHasProperty( 'vote_type', $get_vote );
+		$this->assertObjectHasProperty( 'vote_value', $get_vote );
+		$this->assertObjectHasProperty( 'vote_date', $get_vote );
 		$delete = ap_delete_vote( $id );
 		$this->assertEquals( 0, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayHasKey( 'vote_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayHasKey( 'vote_type', $get_vote );
-		$this->assertArrayHasKey( 'vote_value', $get_vote );
-		$this->assertArrayHasKey( 'vote_date', $get_vote );
+		$this->assertObjectHasProperty( 'vote_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_post_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_user_id', $get_vote );
+		$this->assertObjectHasProperty( 'vote_rec_user', $get_vote );
+		$this->assertObjectHasProperty( 'vote_type', $get_vote );
+		$this->assertObjectHasProperty( 'vote_value', $get_vote );
+		$this->assertObjectHasProperty( 'vote_date', $get_vote );
 		$delete = ap_delete_vote( $id, get_current_user_id(), 'flag' );
 		$this->assertEquals( 1, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
+		$this->assertFalse( $get_vote );
 		$get_vote = (array) $get_vote;
 		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
 		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
@@ -237,14 +234,13 @@ class TestVotes extends TestCase {
 		// Test on get_votes before the actual test is applied.
 		$get_votes = ap_get_votes();
 		foreach ( $get_votes as $get_vote ) {
-			$get_vote = (array) $get_vote;
-			$this->assertArrayHasKey( 'vote_id', $get_vote );
-			$this->assertArrayHasKey( 'vote_post_id', $get_vote );
-			$this->assertArrayHasKey( 'vote_user_id', $get_vote );
-			$this->assertArrayHasKey( 'vote_rec_user', $get_vote );
-			$this->assertArrayHasKey( 'vote_type', $get_vote );
-			$this->assertArrayHasKey( 'vote_value', $get_vote );
-			$this->assertArrayHasKey( 'vote_date', $get_vote );
+			$this->assertObjectHasProperty( 'vote_id', $get_vote );
+			$this->assertObjectHasProperty( 'vote_post_id', $get_vote );
+			$this->assertObjectHasProperty( 'vote_user_id', $get_vote );
+			$this->assertObjectHasProperty( 'vote_rec_user', $get_vote );
+			$this->assertObjectHasProperty( 'vote_type', $get_vote );
+			$this->assertObjectHasProperty( 'vote_value', $get_vote );
+			$this->assertObjectHasProperty( 'vote_date', $get_vote );
 		}
 
 		// Actual test for this method.
