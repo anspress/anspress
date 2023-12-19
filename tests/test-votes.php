@@ -34,14 +34,6 @@ class TestVotes extends TestCase {
 		// Test beofre inserting the vote.
 		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
 		$this->assertFalse( $get_vote );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_type', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
 
 		// Test after inserting the vote.
 		ap_vote_insert( $id, $user_id );
@@ -158,14 +150,6 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 1, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
 		$this->assertFalse( $get_vote );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_type', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
 
 		// Test after adding the flag.
 		$id = $this->insert_question();
@@ -192,14 +176,6 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 1, $delete );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
 		$this->assertFalse( $get_vote );
-		$get_vote = (array) $get_vote;
-		$this->assertArrayNotHasKey( 'vote_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_post_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_user_id', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_rec_user', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_type', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_value', $get_vote );
-		$this->assertArrayNotHasKey( 'vote_date', $get_vote );
 
 		$id = $this->insert_question();
 		// Inserting votes.
