@@ -908,4 +908,40 @@ class TestQAQuery extends TestCase {
 		ap_update_post_attach_ids( $q_id );
 		$this->assertEquals( [ $pdf_id, $png1_id, $png2_id ], ap_get_attach( $q_id ) );
 	}
+
+	/**
+	 * @covers ::ap_have_questions
+	 */
+	public function testAPHaveQuestions() {
+		// Test for not having any question.
+		anspress()->questions = new \Question_Query( [] );
+		$this->assertFalse( ap_have_questions() );
+
+		// Test for having a single question.
+		$id = $this->insert_question();
+		anspress()->questions = new \Question_Query( [ 'p' => $id ] );
+		$this->assertTrue( ap_have_questions() );
+
+		// Test for having multiple questions.
+		wp_delete_post( $id, true );
+		$q_id1 = $this->insert_question();
+		$q_id2 = $this->insert_question();
+		$q_id3 = $this->insert_question();
+		anspress()->questions = new \Question_Query( [ 'post__in' => [ $q_id1, $q_id2, $q_id3 ] ] );
+		$this->assertTrue( ap_have_questions() );
+
+		// Re-testing for not having any question.
+		wp_delete_post( $q_id1, true );
+		wp_delete_post( $q_id2, true );
+		wp_delete_post( $q_id3, true );
+		anspress()->questions = new \Question_Query();
+		$this->assertFalse( ap_have_questions() );
+
+		// Re-testing for not having any question with available question.
+		$q_id1 = $this->insert_question();
+		$q_id2 = $this->insert_question();
+		$q_id3 = $this->insert_question();
+		anspress()->questions = new \Question_Query( [ 'post__not_in' => [ $q_id1, $q_id2, $q_id3 ] ] );
+		$this->assertFalse( ap_have_questions() );
+	}
 }
