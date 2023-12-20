@@ -229,12 +229,12 @@ abstract class TestCaseAjax extends TestCase {
 
 		if ( '' === $this->_last_response ) {
 			if ( is_scalar( $message ) ) {
-				throw new WPAjaxDieStopException( (string) $message );
+				throw new \WPAjaxDieStopException( (string) $message );
 			} else {
-				throw new WPAjaxDieStopException( '0' );
+				throw new \WPAjaxDieStopException( '0' );
 			}
 		} else {
-			throw new WPAjaxDieContinueException( $message );
+			throw new \WPAjaxDieContinueException( $message );
 		}
 	}
 
