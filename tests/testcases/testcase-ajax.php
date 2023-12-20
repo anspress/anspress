@@ -118,12 +118,13 @@ abstract class TestCaseAjax extends TestCase {
 		ob_start();
 
 		$_POST['action'] = $action;
+		$_REQUEST = $_POST;
 
-		if ( function_exists( 'wp_ajax_' . $_POST['action'] ) ) {
-			do_action( 'wp_ajax_' . $_POST['action'], null );
+		if ( function_exists( 'wp_ajax_' . $_REQUEST['action'] ) ) {
+			do_action( 'wp_ajax_' . $_REQUEST['action'], null );
 		}
-		if ( function_exists( 'ap_ajax_' . $_POST['action'] ) ) {
-			do_action( 'ap_ajax_' . $_POST['action'], null );
+		if ( function_exists( 'ap_ajax_' . $_REQUEST['action'] ) ) {
+			do_action( 'ap_ajax_' . $_REQUEST['action'], null );
 		}
 
 		$buffer = ob_get_clean();
