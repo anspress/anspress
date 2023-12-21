@@ -10,6 +10,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 abstract class TestCaseAjax extends TestCase {
 
 	protected $_last_response = '';
+	protected $_error_level = 0;
 
 	public function set_up() {
 		parent::set_up();
@@ -17,20 +18,24 @@ abstract class TestCaseAjax extends TestCase {
 		// Require the Ajax related files.
 		require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
 
+		add_filter( 'wp_doing_ajax', '__return_true' );
 		add_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
 		}
 		set_current_screen( 'ajax' );
 		add_action( 'clear_auth_cookie', array( $this, 'logout' ) );
+		$this->_error_level = error_reporting();
+		error_reporting( $this->_error_level & ~E_WARNING );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
 		$_POST = array();
 		remove_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
 		remove_action( 'clear_auth_cookie', array( $this, 'logout' ) );
+		error_reporting( $this->_error_level );
 		set_current_screen( 'front' );
+		parent::tear_down();
 	}
 
 	public function logout() {
@@ -49,12 +54,12 @@ abstract class TestCaseAjax extends TestCase {
 		$this->_last_response .= ob_get_clean();
 		if ( '' === $this->_last_response ) {
 			if ( is_scalar( $message ) ) {
-				throw new \Exception( (string) $message );
+				throw new \WPAjaxDieStopException( (string) $message );
 			} else {
-				throw new \Exception( '0' );
+				throw new \WPAjaxDieStopException( '0' );
 			}
 		} else {
-			throw new \Exception( $message );
+			throw new \WPAjaxDieContinueException( $message );
 		}
 	}
 
