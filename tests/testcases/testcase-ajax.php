@@ -47,7 +47,6 @@ abstract class TestCaseAjax extends TestCase {
 
 	public function dieHandler( $message ) {
 		$this->_last_response .= ob_get_clean();
-		ob_end_clean();
 		if ( '' === $this->_last_response ) {
 			if ( is_scalar( $message ) ) {
 				throw new \Exception( (string) $message );
@@ -72,6 +71,8 @@ abstract class TestCaseAjax extends TestCase {
 
 		$_POST['action'] = $action;
 		$_REQUEST = $_POST;
+
+		do_action( 'wp_ajax_' . $_REQUEST['action'] );
 
 		$buffer = ob_get_clean();
 		if ( ! empty( $buffer ) ) {
