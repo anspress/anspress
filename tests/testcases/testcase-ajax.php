@@ -11,65 +11,18 @@ abstract class TestCaseAjax extends TestCase {
 
 	protected $_last_response = '';
 
-	protected static $actions = array(
-		'suggest_similar_questions',
-		'load_tinymce',
-		'load_comments',
-		'edit_comment_form',
-		'edit_comment',
-		'approve_comment',
-		'vote',
-		'delete_comment',
-		'post_actions',
-		'action_toggle_featured',
-		'action_close',
-		'action_toggle_delete_post',
-		'action_delete_permanently',
-		'action_status',
-		'action_convert_to_post',
-		'action_flag',
-		'delete_attachment',
-		'load_filter_order_by',
-		'subscribe',
-		'comment_modal',
-		'nopriv_comment_modal',
-		'ap_toggle_best_answer',
-		'ap_repeatable_field',
-		'nopriv_ap_repeatable_field',
-		'ap_form_question',
-		'nopriv_ap_form_question',
-		'ap_form_answer',
-		'nopriv_ap_form_answer',
-		'ap_form_comment',
-		'nopriv_ap_form_comment',
-		'ap_search_tags',
-		'nopriv_ap_search_tags',
-		'ap_image_upload',
-		'ap_upload_modal',
-		'nopriv_ap_upload_modal',
-	);
-
 	public function set_up() {
 		parent::set_up();
 
 		// Require the Ajax related files.
 		require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
 
-		foreach ( self::$actions as $action ) {
-			if ( function_exists( 'wp_ajax_' . $action ) ) {
-				add_action( 'wp_ajax_' . $action, $action, 1 );
-			}
-			if ( function_exists( 'ap_ajax_' . $action ) ) {
-				add_action( 'ap_ajax_' . $action, $action, 1 );
-			}
-
-			add_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
-			if ( ! defined( 'DOING_AJAX' ) ) {
-				define( 'DOING_AJAX', true );
-			}
-			set_current_screen( 'ajax' );
-			add_action( 'clear_auth_cookie', array( $this, 'logout' ) );
+		add_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
+		if ( ! defined( 'DOING_AJAX' ) ) {
+			define( 'DOING_AJAX', true );
 		}
+		set_current_screen( 'ajax' );
+		add_action( 'clear_auth_cookie', array( $this, 'logout' ) );
 	}
 
 	public function tear_down() {
@@ -119,13 +72,6 @@ abstract class TestCaseAjax extends TestCase {
 
 		$_POST['action'] = $action;
 		$_REQUEST = $_POST;
-
-		if ( function_exists( 'wp_ajax_' . $_REQUEST['action'] ) ) {
-			do_action( 'wp_ajax_' . $_REQUEST['action'], null );
-		}
-		if ( function_exists( 'ap_ajax_' . $_REQUEST['action'] ) ) {
-			do_action( 'ap_ajax_' . $_REQUEST['action'], null );
-		}
 
 		$buffer = ob_get_clean();
 		if ( ! empty( $buffer ) ) {
