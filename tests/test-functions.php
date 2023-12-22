@@ -1725,4 +1725,67 @@ class TestFunctions extends TestCase {
 		$arr2 = [ 'question' => 11, 'comment' => 101, 'answer' => 15 ];
 		$this->assertEquals( [ 'comment' => 101 ], ap_whitelist_array( $arr1, $arr2 ) );
 	}
+
+	/**
+	 * @covers ::ap_addon_activation_hook
+	 */
+	public function testAPAddonActivationHook() {
+		global $ap_addons_activation;
+		$ap_addons_activation = array();
+
+		// Test for akismet activation check.
+		ap_addon_activation_hook( 'akismet.php', 'akismet_activated' );
+		$this->assertArrayHasKey( 'akismet.php', $ap_addons_activation );
+		$this->assertEquals( 'akismet_activated', $ap_addons_activation['akismet.php'] );
+
+		// Test for avatar activation check.
+		ap_addon_activation_hook( 'avatar.php', 'avatar_activated' );
+		$this->assertArrayHasKey( 'avatar.php', $ap_addons_activation );
+		$this->assertEquals( 'avatar_activated', $ap_addons_activation['avatar.php'] );
+
+		// Test for buddypress activation check.
+		ap_addon_activation_hook( 'buddypress.php', 'buddypress_activated' );
+		$this->assertArrayHasKey( 'buddypress.php', $ap_addons_activation );
+		$this->assertEquals( 'buddypress_activated', $ap_addons_activation['buddypress.php'] );
+
+		// Test for categories activation check.
+		ap_addon_activation_hook( 'categories.php', 'categories_activated' );
+		$this->assertArrayHasKey( 'categories.php', $ap_addons_activation );
+		$this->assertEquals( 'categories_activated', $ap_addons_activation['categories.php'] );
+
+		// Test for email activation check.
+		ap_addon_activation_hook( 'email.php', 'email_activated' );
+		$this->assertArrayHasKey( 'email.php', $ap_addons_activation );
+		$this->assertEquals( 'email_activated', $ap_addons_activation['email.php'] );
+
+		// Test for notifications activation check.
+		ap_addon_activation_hook( 'notifications.php', 'notifications_activated' );
+		$this->assertArrayHasKey( 'notifications.php', $ap_addons_activation );
+		$this->assertEquals( 'notifications_activated', $ap_addons_activation['notifications.php'] );
+
+		// Test for profile activation check.
+		ap_addon_activation_hook( 'profile.php', 'profile_activated' );
+		$this->assertArrayHasKey( 'profile.php', $ap_addons_activation );
+		$this->assertEquals( 'profile_activated', $ap_addons_activation['profile.php'] );
+
+		// Test for recaptcha activation check.
+		ap_addon_activation_hook( 'recaptcha.php', 'recaptcha_activated' );
+		$this->assertArrayHasKey( 'recaptcha.php', $ap_addons_activation );
+		$this->assertEquals( 'recaptcha_activated', $ap_addons_activation['recaptcha.php'] );
+
+		// Test for reputation activation check.
+		ap_addon_activation_hook( 'reputation.php', 'reputation_activated' );
+		$this->assertArrayHasKey( 'reputation.php', $ap_addons_activation );
+		$this->assertEquals( 'reputation_activated', $ap_addons_activation['reputation.php'] );
+
+		// Test for syntaxhighlighter activation check.
+		ap_addon_activation_hook( 'syntaxhighlighter.php', 'syntaxhighlighter_activated' );
+		$this->assertArrayHasKey( 'syntaxhighlighter.php', $ap_addons_activation );
+		$this->assertEquals( 'syntaxhighlighter_activated', $ap_addons_activation['syntaxhighlighter.php'] );
+
+		// Test for tags activation check.
+		ap_addon_activation_hook( 'tags.php', 'tags_activated' );
+		$this->assertArrayHasKey( 'tags.php', $ap_addons_activation );
+		$this->assertEquals( 'tags_activated', $ap_addons_activation['tags.php'] );
+	}
 }
