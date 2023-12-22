@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestAjaxCLass extends TestCase {
+class TestAjaxClass extends TestCase {
 
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Classes\Ajax' );
