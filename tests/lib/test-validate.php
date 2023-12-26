@@ -318,4 +318,29 @@ class TestAnsPressFormValidate extends TestCase {
 			\AnsPress\Form\Validate::sanitize_wp_kses( '<nav id="main-navigation" class="site-navigation" style="text-align: right;">AnsPress Question Answer Navigation Menu</nav>' )
 		);
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_absint
+	 */
+	public function testValidateSanitizeAbsint() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_absint() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_absint( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_absint() );
+
+		// Test on passing values.
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( '' ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( null ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( 0 ) );
+		$this->assertEquals( 5, \AnsPress\Form\Validate::sanitize_absint( 5 ) );
+		$this->assertEquals( 99, \AnsPress\Form\Validate::sanitize_absint( 99.99 ) );
+		$this->assertEquals( 5, \AnsPress\Form\Validate::sanitize_absint( -5 ) );
+		$this->assertEquals( 11, \AnsPress\Form\Validate::sanitize_absint( -11.22 ) );
+		$this->assertEquals( 99, \AnsPress\Form\Validate::sanitize_absint( -99.99 ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( 'number' ) );
+		$this->assertEquals( 1, \AnsPress\Form\Validate::sanitize_absint( true ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( false ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( 0.99 * 1 ) );
+		$this->assertEquals( 1, \AnsPress\Form\Validate::sanitize_absint( 1.99 * 1 ) );
+	}
 }
