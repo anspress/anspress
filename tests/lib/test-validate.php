@@ -386,9 +386,9 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_boolean( '' ) );
 		$this->assertNull( \AnsPress\Form\Validate::sanitize_boolean() );
 		$this->assertFalse( \AnsPress\Form\Validate::sanitize_boolean( '' ) );
+		$this->assertFalse( \AnsPress\Form\Validate::sanitize_boolean( false ) );
 
 		// Test on passing values.
-		$this->assertFalse( \AnsPress\Form\Validate::sanitize_boolean( false ) );
 		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'question' ) );
 		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'answer' ) );
 		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'comment' ) );
@@ -400,5 +400,179 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( -144.144 ) );
 		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( -144.144 * 10 ) );
 		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'AnsPress Question Answer Plugin' ) );
+	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_array_map_boolean
+	 */
+	public function testValidateSanitizeArrayMapBoolean() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_array_map_boolean() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_array_map_boolean( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean( false ) );
+
+		// Test on array passed.
+		$arr = [ 'questions', 'answers', 'comments' ];
+		$this->assertEquals(
+			[ true, true, true ],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [ 'questions', 'answers', '', 'comments' ];
+		$this->assertEquals(
+			[ true, true, false, true ],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [ 'anspress', '', '', 'plugins' ];
+		$this->assertEquals(
+			[ true, false, false, true ],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [ '', '', '', '' ];
+		$this->assertEquals(
+			[ false, false, false, false ],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [ '', '', '', 'anspress' ];
+		$this->assertEquals(
+			[ false, false, false, true ],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+
+		// Test on array passed with key and value pairs.
+		$arr = [
+			'q_id' => 10,
+			'a_id' => 11,
+			'c_id' => 15,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => true,
+				'a_id' => true,
+				'c_id' => true,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'q_id' => 10,
+			'a_id' => 11,
+			'p_id' => '',
+			'c_id' => 15,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => true,
+				'a_id' => true,
+				'p_id' => false,
+				'c_id' => true,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'q_id' => 10,
+			'a_id' => null,
+			'p_id' => '',
+			'c_id' => null,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => true,
+				'a_id' => false,
+				'p_id' => false,
+				'c_id' => false,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'q_id' => 10,
+			'a_id' => null,
+			'p_id' => 'anspress',
+			'c_id' => null,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => true,
+				'a_id' => false,
+				'p_id' => true,
+				'c_id' => false,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'q_id' => null,
+			'a_id' => null,
+			'p_id' => null,
+			'c_id' => null,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => false,
+				'a_id' => false,
+				'p_id' => false,
+				'c_id' => false,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'q_id' => '',
+			'a_id' => '',
+			'p_id' => '',
+			'c_id' => '',
+		];
+		$this->assertEquals(
+			[
+				'q_id' => false,
+				'a_id' => false,
+				'p_id' => false,
+				'c_id' => false,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'question'         => 'Question title',
+			'question_content' => 'Question content',
+		];
+		$this->assertEquals(
+			[
+				'question'         => true,
+				'question_content' => true,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'question'         => '',
+			'question_content' => null,
+		];
+		$this->assertEquals(
+			[
+				'question'         => false,
+				'question_content' => false,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'id' => '111',
+		];
+		$this->assertEquals(
+			[
+				'id' => true,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [
+			'id' => null,
+		];
+		$this->assertEquals(
+			[
+				'id' => false,
+			],
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
+		$arr = [];
+		$this->assertEquals(
+			null,
+			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
+		);
 	}
 }
