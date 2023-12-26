@@ -163,4 +163,111 @@ class TestAnsPressFormValidate extends TestCase {
 			\AnsPress\Form\Validate::sanitize_title( $arr )
 		);
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_array_remove_empty
+	 */
+	public function testValidateSanitizeArrayRemoveEmpty() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_array_remove_empty() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_array_remove_empty( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_remove_empty() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_remove_empty( '' ) );
+
+		// Test on array passed.
+		$arr = [ 'questions', 'answers', 'comments' ];
+		$this->assertEquals(
+			$arr,
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [ 'questions', 'answers', '', 'comments' ];
+		$this->assertEquals(
+			[
+				0 => 'questions',
+				1 => 'answers',
+				3 => 'comments',
+			],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [ 'anspress', '', '', 'comments' ];
+		$this->assertEquals(
+			[
+				0 => 'anspress',
+				3 => 'comments',
+			],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [ '', '', '', '' ];
+		$this->assertEquals( [], \AnsPress\Form\Validate::sanitize_array_remove_empty( $arr ) );
+
+		// Test on array passed with key and value pairs.
+		$arr = [
+			'q_id' => 10,
+			'a_id' => 11,
+			'c_id' => 15,
+		];
+		$this->assertEquals(
+			$arr,
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [
+			'q_id' => 10,
+			'a_id' => 11,
+			'p_id' => '',
+			'c_id' => 15,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => 10,
+				'a_id' => 11,
+				'c_id' => 15,
+			],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [
+			'q_id' => 10,
+			'a_id' => null,
+			'p_id' => '',
+			'c_id' => null,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => 10,
+			],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [
+			'q_id' => 10,
+			'a_id' => null,
+			'p_id' => 'anspress',
+			'c_id' => null,
+		];
+		$this->assertEquals(
+			[
+				'q_id' => 10,
+				'p_id' => 'anspress',
+			],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [
+			'q_id' => null,
+			'a_id' => null,
+			'p_id' => null,
+			'c_id' => null,
+		];
+		$this->assertEquals(
+			[],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+		$arr = [
+			'q_id' => '',
+			'a_id' => '',
+			'p_id' => '',
+			'c_id' => '',
+		];
+		$this->assertEquals(
+			[],
+			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
+		);
+	}
 }
