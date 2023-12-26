@@ -270,4 +270,52 @@ class TestAnsPressFormValidate extends TestCase {
 			\AnsPress\Form\Validate::sanitize_array_remove_empty( $arr )
 		);
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_wp_kses
+	 */
+	public function testValidateSanitizeWPKses() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_wp_kses() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_wp_kses( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_wp_kses() );
+
+		// Test on passing values.
+		$this->assertEquals(
+			'AnsPress Question Answer',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<div class="site-title">AnsPress Question Answer</div>' )
+		);
+		$this->assertEquals(
+			'<p>AnsPress Question Answer</p>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<p class="site-title">AnsPress Question Answer</p>' )
+		);
+		$this->assertEquals(
+			'<p>AnsPress Question Answer</p>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<p style="color:black;">AnsPress Question Answer</p>' )
+		);
+		$this->assertEquals(
+			'<p style="text-align: left">AnsPress Question Answer</p>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<p style="text-align: left;">AnsPress Question Answer</p>' )
+		);
+		$this->assertEquals(
+			'<p>AnsPress Question Answer</p>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<p>AnsPress Question Answer</p>' )
+		);
+		$this->assertEquals(
+			'<a href="#" title="AnsPress Question Answer">AnsPress Question Answer</a>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<a href="#" title="AnsPress Question Answer" class="link" target="_blank">AnsPress Question Answer</a>' )
+		);
+		$this->assertEquals(
+			'<strong style="text-align: center">AnsPress Question Answer</strong>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<strong style="text-align: center;">AnsPress Question Answer</strong>' )
+		);
+		$this->assertEquals(
+			'<del>AnsPress Question Answer</del>',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<del class="delete" style="align: center">AnsPress Question Answer</del>' )
+		);
+		$this->assertEquals(
+			'AnsPress Question Answer Navigation Menu',
+			\AnsPress\Form\Validate::sanitize_wp_kses( '<nav id="main-navigation" class="site-navigation" style="text-align: right;">AnsPress Question Answer Navigation Menu</nav>' )
+		);
+	}
 }
