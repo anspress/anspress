@@ -376,4 +376,29 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( 100, \AnsPress\Form\Validate::sanitize_intval( '0100' ) );
 		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( '0xC8' ) );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_boolean
+	 */
+	public function testValidateSanitizeBoolean() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_boolean() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_boolean( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_boolean() );
+		$this->assertFalse( \AnsPress\Form\Validate::sanitize_boolean( '' ) );
+
+		// Test on passing values.
+		$this->assertFalse( \AnsPress\Form\Validate::sanitize_boolean( false ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'question' ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'answer' ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'comment' ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 5 ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 11 ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 0xC8 ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( true ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 11.11 ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( -144.144 ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( -144.144 * 10 ) );
+		$this->assertTrue( \AnsPress\Form\Validate::sanitize_boolean( 'AnsPress Question Answer Plugin' ) );
+	}
 }
