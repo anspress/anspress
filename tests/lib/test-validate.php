@@ -343,4 +343,37 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_absint( 0.99 * 1 ) );
 		$this->assertEquals( 1, \AnsPress\Form\Validate::sanitize_absint( 1.99 * 1 ) );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_intval
+	 */
+	public function testValidateSanitizeIntval() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_intval() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_intval( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_intval() );
+
+		// Test on passing values.
+		$this->assertEquals( 1, \AnsPress\Form\Validate::sanitize_intval( true ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( false ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( '' ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( null ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( 0 ) );
+		$this->assertEquals( 5, \AnsPress\Form\Validate::sanitize_intval( 5 ) );
+		$this->assertEquals( 99, \AnsPress\Form\Validate::sanitize_intval( 99.99 ) );
+		$this->assertEquals( -5, \AnsPress\Form\Validate::sanitize_intval( -5 ) );
+		$this->assertEquals( -11, \AnsPress\Form\Validate::sanitize_intval( -11.22 ) );
+		$this->assertEquals( -99, \AnsPress\Form\Validate::sanitize_intval( -99.99 ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( 0.99 * 1 ) );
+		$this->assertEquals( 1, \AnsPress\Form\Validate::sanitize_intval( 1.99 * 1 ) );
+		$this->assertEquals( 10, \AnsPress\Form\Validate::sanitize_intval( '10' ) );
+		$this->assertEquals( 10, \AnsPress\Form\Validate::sanitize_intval( '+10' ) );
+		$this->assertEquals( -10, \AnsPress\Form\Validate::sanitize_intval( '-10' ) );
+		$this->assertEquals( 100, \AnsPress\Form\Validate::sanitize_intval( '1e2' ) );
+		$this->assertEquals( 10000000000, \AnsPress\Form\Validate::sanitize_intval( '1e10' ) );
+		$this->assertEquals( 64, \AnsPress\Form\Validate::sanitize_intval( 0100 ) );
+		$this->assertEquals( 200, \AnsPress\Form\Validate::sanitize_intval( 0xC8 ) );
+		$this->assertEquals( 100, \AnsPress\Form\Validate::sanitize_intval( '0100' ) );
+		$this->assertEquals( 0, \AnsPress\Form\Validate::sanitize_intval( '0xC8' ) );
+	}
 }
