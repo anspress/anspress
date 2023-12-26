@@ -123,4 +123,44 @@ class TestAnsPressFormValidate extends TestCase {
 			\AnsPress\Form\Validate::sanitize_textarea_field( $arr )
 		);
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_title
+	 */
+	public function testValidateSanitizeTitle() {
+		// Normal test on strings.
+		$this->assertEquals( 'anspress-question-answer', \AnsPress\Form\Validate::sanitize_title( 'AnsPress   Question   Answer' ) );
+		$this->assertEquals( 'anspress', \AnsPress\Form\Validate::sanitize_title( '\\AnsPress     ' ) );
+		$this->assertEquals( 'anspress', \AnsPress\Form\Validate::sanitize_title( '     \\AnsPress     ' ) );
+		$this->assertEquals( 'question-title', \AnsPress\Form\Validate::sanitize_title( '<h1 class="entry-title">Question title</h1>' ) );
+		$this->assertEquals( 'answer-content', \AnsPress\Form\Validate::sanitize_title( '<p class="entry-content">Answer content</p>' ) );
+		$this->assertEquals( 'anspress-question-answer-plugin', \AnsPress\Form\Validate::sanitize_title( '   <          AnsPress Question Answer < Plugin          ' ) );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_title() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_title( '' ) );
+
+		// Test on arrays.
+		$arr = [
+			'AnsPress   Question   Answer',
+			'\\AnsPress     ',
+			'     \\AnsPress     ',
+			'<h1 class="entry-title">Question title</h1>',
+			'<p class="entry-content">Answer content</p>',
+			'   <          AnsPress Question Answer < Plugin          ',
+			'',
+			'',
+		];
+		$this->assertEquals(
+			[
+				'anspress-question-answer',
+				'anspress',
+				'anspress',
+				'question-title',
+				'answer-content',
+				'anspress-question-answer-plugin',
+				null,
+				null,
+			],
+			\AnsPress\Form\Validate::sanitize_title( $arr )
+		);
+	}
 }
