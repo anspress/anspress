@@ -38,14 +38,6 @@ abstract class TestCaseAjax extends TestCase {
 		parent::tear_down();
 	}
 
-	public function logout() {
-		unset( $GLOBALS['current_user'] );
-		$cookies = array( AUTH_COOKIE, SECURE_AUTH_COOKIE, LOGGED_IN_COOKIE, USER_COOKIE, PASS_COOKIE );
-		foreach ( $cookies as $c ) {
-			unset( $_COOKIE[ $c ] );
-		}
-	}
-
 	public function getDieHandler() {
 		return array( $this, 'dieHandler' );
 	}
@@ -61,13 +53,6 @@ abstract class TestCaseAjax extends TestCase {
 		} else {
 			throw new \WPAjaxDieContinueException( $message );
 		}
-	}
-
-	protected function _setRole( $role ) {
-		$post    = $_POST;
-		$user_id = self::factory()->user->create( array( 'role' => $role ) );
-		wp_set_current_user( $user_id );
-		$_POST = array_merge( $_POST, $post );
 	}
 
 	protected function _handleAjax( $action ) {
