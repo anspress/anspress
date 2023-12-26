@@ -36,4 +36,12 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'subscribe_to_question' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'search_tags' ) );
 	}
+
+	public function _set_post_data( $query ) {
+		$args            = wp_parse_args( $query );
+		$_POST['action'] = 'ap_ajax';
+		foreach ( $args as $key => $value ) {
+			$_POST[ $key ] = $value;
+		}
+	}
 }
