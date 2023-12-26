@@ -575,4 +575,26 @@ class TestAnsPressFormValidate extends TestCase {
 			\AnsPress\Form\Validate::sanitize_array_map_boolean( $arr )
 		);
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_esc_html
+	 */
+	public function testValidateSanitizeEscHTML() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_esc_html() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_esc_html( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_esc_html() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_esc_html( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_esc_html( false ) );
+
+		// Test on passing values.
+		$this->assertEquals( 'AnsPress Question Answer Plugins', \AnsPress\Form\Validate::sanitize_esc_html( 'AnsPress Question Answer Plugins' ) );
+		$this->assertEquals( '&lt;h1 class=&quot;entry-title&quot;&gt;AnsPress Question Answer Plugins&lt;/h1&gt;', \AnsPress\Form\Validate::sanitize_esc_html( '<h1 class="entry-title">AnsPress Question Answer Plugins</h1>' ) );
+		$this->assertEquals( 'Go to     &lt;a href=&quot;https://anspress.net/&quot;&gt;AnsPress Question Answer Plugins&lt;/a&gt;', \AnsPress\Form\Validate::sanitize_esc_html( 'Go to     <a href="https://anspress.net/">AnsPress Question Answer Plugins</a>' ) );
+		$this->assertEquals( '&lt;title&gt;AnsPress Question Answer Plugins&lt;/title&gt;', \AnsPress\Form\Validate::sanitize_esc_html( '<title>AnsPress Question Answer Plugins</title>' ) );
+		$this->assertEquals( '     &lt;span&gt;Question&#039;s Navigation&lt;/span&gt;', \AnsPress\Form\Validate::sanitize_esc_html( '     <span>Question\'s Navigation</span>' ) );
+		$this->assertEquals( '     Question&#039;s Answer&#039;s Comment&#039;s     ', \AnsPress\Form\Validate::sanitize_esc_html( '     Question\'s Answer\'s Comment\'s     ' ) );
+		$this->assertEquals( '     AnsPress(Question Answer) Plugin     ', \AnsPress\Form\Validate::sanitize_esc_html( '     AnsPress(Question Answer) Plugin     ' ) );
+		$this->assertEquals( '--&gt;  &lt;--', \AnsPress\Form\Validate::sanitize_esc_html( '-->  <--' ) );
+	}
 }
