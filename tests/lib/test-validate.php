@@ -6,6 +6,18 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAnsPressFormValidate extends TestCase {
 
+	public function set_up() {
+		parent::set_up();
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
+	}
+
+	public function tear_down() {
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
+		parent::tear_down();
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress\Form\Validate', 'sanitize_text_field' ) );
 		$this->assertTrue( method_exists( 'AnsPress\Form\Validate', 'sanitize_textarea_field' ) );
@@ -783,6 +795,192 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals(
 			'<code>&lt;h1&gt;AnsPress Question Answer&lt;/h1&gt;</code>',
 			\AnsPress\Form\Validate::sanitize_description( '<code><h1>AnsPress Question Answer</h1></code>' )
+		);
+	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_tags_field
+	 */
+	public function testValidateSanitizeTagsField() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_tags_field() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_tags_field( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_tags_field() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_tags_field( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_tags_field( [] ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_tags_field( false ) );
+
+		// Test on passing values.
+		// Test for single category.
+		$cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'Question category',
+			)
+		);
+		$this->assertEquals(
+			[ $cid ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $cid ], [ 'value_field' => 'id', 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+		$this->assertEquals(
+			[ 'Question category' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $cid ], [ 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for single tag.
+		$tid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+				'name'     => 'Question tag',
+			)
+		);
+		$this->assertEquals(
+			[ $tid ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $tid ], [ 'value_field' => 'id' ] )
+		);
+		$this->assertEquals(
+			[ 'Question tag' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $tid ] )
+		);
+
+		// Test for multiple categories values passed.
+		$cid1 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'Question category 1',
+			)
+		);
+		$cid2 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'Question category 2',
+			)
+		);
+		$cid3 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'Question category 3',
+			)
+		);
+		$this->assertEquals(
+			[ $cid1, $cid2, $cid3 ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $cid1, $cid2, $cid3 ], [ 'value_field' => 'id', 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+		$this->assertEquals(
+			[ 'Question category 1', 'Question category 2', 'Question category 3' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $cid1, $cid2, $cid3 ], [ 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for multiple tags values passed.
+		$tid1 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+				'name'     => 'Question tag 1',
+			)
+		);
+		$tid2 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+				'name'     => 'Question tag 2',
+			)
+		);
+		$tid3 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+				'name'     => 'Question tag 3',
+			)
+		);
+		$this->assertEquals(
+			[ $tid1, $tid2, $tid3 ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $tid1, $tid2, $tid3 ], [ 'value_field' => 'id' ] )
+		);
+		$this->assertEquals(
+			[ 'Question tag 1', 'Question tag 2', 'Question tag 3' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $tid1, $tid2, $tid3 ] )
+		);
+
+		// Test for new question category creation with id passed.
+		$this->assertEquals(
+			[],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ 101, 111 ], [ 'value_field' => 'id', 'js_options' => [ 'create' => true ], 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for new question tag creation with id passed.
+		$this->assertEquals(
+			[],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ 101, 111 ], [ 'value_field' => 'id', 'js_options' => [ 'create' => true ] ] )
+		);
+
+		// Test for new question category creation with name passed.
+		$this->assertEquals(
+			[ 'New Question Category 1', 'New Question Category 2' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ 'New Question Category 1', 'New Question Category 2' ], [ 'js_options' => [ 'create' => true ], 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for new question tag creation with name passed.
+		$this->assertEquals(
+			[ 'New Question Tag 1', 'New Question Tag 2' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ 'New Question Tag 1', 'New Question Tag 2' ], [ 'js_options' => [ 'create' => true ] ] )
+		);
+
+		// Test for existing and new question category creation.
+		$new_cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'New question category',
+			)
+		);
+		$this->assertEquals(
+			[ 'Question Category 2', 'New question category' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $new_cid, 'Question Category 2' ], [ 'js_options' => [ 'create' => true ], 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for existing and new question tag creation.
+		$new_cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+				'name'     => 'New question tag',
+			)
+		);
+		$this->assertEquals(
+			[ 'Question Tag 2', 'New question tag' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $new_cid, 'Question Tag 2' ], [ 'js_options' => [ 'create' => true ] ] )
+		);
+
+		// Test for no new question category creation with name passed.
+		$this->assertEquals(
+			[],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ 'New Question Category 1', 'New Question Category 2' ], [ 'js_options' => [ 'create' => false ], 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for no new question tag creation with name passed.
+		$this->assertEquals(
+			[],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ 'New Question Tag 1', 'New Question Tag 2' ], [ 'js_options' => [ 'create' => false ] ] )
+		);
+
+		// Test for existing and no new question category creation.
+		$new_cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'New new question category',
+			)
+		);
+		$this->assertEquals(
+			[ 'New new question category' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $new_cid, 'Question Category 2' ], [ 'js_options' => [ 'create' => false ], 'terms_args' => [ 'taxonomy' => 'question_category' ] ] )
+		);
+
+		// Test for existing and no new question tag creation.
+		$new_cid = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_tag',
+				'name'     => 'New new question tag',
+			)
+		);
+		$this->assertEquals(
+			[ 'New new question tag' ],
+			\AnsPress\Form\Validate::sanitize_tags_field( [ $new_cid, 'Question Tag 2' ], [ 'js_options' => [ 'create' => false ] ] )
 		);
 	}
 }
