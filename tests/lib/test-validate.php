@@ -69,6 +69,7 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( '&lt; AnsPress Question Answer &lt; Plugin', \AnsPress\Form\Validate::sanitize_text_field( '   <          AnsPress Question Answer < Plugin          ' ) );
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_text_field() );
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_text_field( '' ) );
+		$this->assertEquals( [], \AnsPress\Form\Validate::sanitize_text_field( [] ) );
 
 		// Test on arrays.
 		$arr = [
@@ -109,6 +110,7 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( '&lt;          AnsPress Question Answer &lt; Plugin', \AnsPress\Form\Validate::sanitize_textarea_field( '   <          AnsPress Question Answer < Plugin          ' ) );
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_textarea_field() );
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_textarea_field( '' ) );
+		$this->assertEquals( [], \AnsPress\Form\Validate::sanitize_textarea_field( [] ) );
 
 		// Test on arrays.
 		$arr = [
@@ -149,6 +151,7 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( 'anspress-question-answer-plugin', \AnsPress\Form\Validate::sanitize_title( '   <          AnsPress Question Answer < Plugin          ' ) );
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_title() );
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_title( '' ) );
+		$this->assertEquals( [], \AnsPress\Form\Validate::sanitize_title( [] ) );
 
 		// Test on arrays.
 		$arr = [
@@ -185,6 +188,7 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_array_remove_empty( '' ) );
 		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_remove_empty() );
 		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_remove_empty( '' ) );
+		$this->assertEquals( [], \AnsPress\Form\Validate::sanitize_array_remove_empty( [] ) );
 
 		// Test on array passed.
 		$arr = [ 'questions', 'answers', 'comments' ];
@@ -423,6 +427,7 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_array_map_boolean( '' ) );
 		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean() );
 		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean( [] ) );
 		$this->assertNull( \AnsPress\Form\Validate::sanitize_array_map_boolean( false ) );
 
 		// Test on array passed.
