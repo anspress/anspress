@@ -988,4 +988,151 @@ class TestAnsPressFormValidate extends TestCase {
 			\AnsPress\Form\Validate::sanitize_tags_field( [ $new_cid, 'Question Tag 2' ], [ 'js_options' => [ 'create' => false ] ] )
 		);
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_upload
+	 */
+	public function testValidateSanitizeUpload() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_upload() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_upload( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_upload() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_upload( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_upload( [] ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_upload( false ) );
+
+		// Test on passing values.
+		// Test for single file upload.
+		$value = [
+			'error' => 0,
+			'name'  => 'anspress.txt',
+		];
+		$upload_options = [
+			'multiple' => false,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $value, $upload_options );
+		$this->assertEquals( 0, $result['error'] );
+		$this->assertEquals( 'anspress.txt', $result['name'] );
+
+		// Test for multiple file uploads.
+		// For all uploads possible.
+		$values = [
+			[ 'error' => 0, 'name' => 'anspress.txt' ],
+			[ 'error' => 0, 'name' => 'anspress.pdf' ],
+			[ 'error' => 0, 'name' => 'anspress.docx' ],
+			[ 'error' => 0, 'name' => 'anspress.png' ],
+			[ 'error' => 0, 'name' => 'anspress.gif' ],
+		];
+		$upload_options = [
+			'multiple' => true,
+			'max_files' => 5,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $values, $upload_options );
+		$this->assertCount( 5, $result );
+		$this->assertEquals( 0, $result[ 0 ]['error'] );
+		$this->assertEquals( 'anspress.txt', $result[ 0 ]['name'] );
+		$this->assertEquals( 0, $result[ 1 ]['error'] );
+		$this->assertEquals( 'anspress.pdf', $result[ 1 ]['name'] );
+		$this->assertEquals( 0, $result[ 2 ]['error'] );
+		$this->assertEquals( 'anspress.docx', $result[ 2 ]['name'] );
+		$this->assertEquals( 0, $result[ 3 ]['error'] );
+		$this->assertEquals( 'anspress.png', $result[ 3 ]['name'] );
+		$this->assertEquals( 0, $result[ 4 ]['error'] );
+		$this->assertEquals( 'anspress.gif', $result[ 4 ]['name'] );
+
+		// For less uploads possible.
+		$values = [
+			[ 'error' => 0, 'name' => 'anspress.txt' ],
+			[ 'error' => 0, 'name' => 'anspress.pdf' ],
+			[ 'error' => 0, 'name' => 'anspress.docx' ],
+			[ 'error' => 0, 'name' => 'anspress.png' ],
+			[ 'error' => 0, 'name' => 'anspress.gif' ],
+		];
+		$upload_options = [
+			'multiple' => true,
+			'max_files' => 3,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $values, $upload_options );
+		$this->assertCount( 3, $result );
+		$this->assertEquals( 0, $result[ 0 ]['error'] );
+		$this->assertEquals( 'anspress.txt', $result[ 0 ]['name'] );
+		$this->assertEquals( 0, $result[ 1 ]['error'] );
+		$this->assertEquals( 'anspress.pdf', $result[ 1 ]['name'] );
+		$this->assertEquals( 0, $result[ 2 ]['error'] );
+		$this->assertEquals( 'anspress.docx', $result[ 2 ]['name'] );
+
+		// For more than provided uploads possible.
+		$values = [
+			[ 'error' => 0, 'name' => 'anspress.txt' ],
+			[ 'error' => 0, 'name' => 'anspress.pdf' ],
+			[ 'error' => 0, 'name' => 'anspress.docx' ],
+			[ 'error' => 0, 'name' => 'anspress.png' ],
+			[ 'error' => 0, 'name' => 'anspress.gif' ],
+			[ 'error' => 0, 'name' => 'anspress.svg' ],
+			[ 'error' => 0, 'name' => 'anspress.pptx' ],
+		];
+		$upload_options = [
+			'multiple' => true,
+			'max_files' => 10,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $values, $upload_options );
+		$this->assertCount( 7, $result );
+		$this->assertEquals( 0, $result[ 0 ]['error'] );
+		$this->assertEquals( 'anspress.txt', $result[ 0 ]['name'] );
+		$this->assertEquals( 0, $result[ 1 ]['error'] );
+		$this->assertEquals( 'anspress.pdf', $result[ 1 ]['name'] );
+		$this->assertEquals( 0, $result[ 2 ]['error'] );
+		$this->assertEquals( 'anspress.docx', $result[ 2 ]['name'] );
+		$this->assertEquals( 0, $result[ 3 ]['error'] );
+		$this->assertEquals( 'anspress.png', $result[ 3 ]['name'] );
+		$this->assertEquals( 0, $result[ 4 ]['error'] );
+		$this->assertEquals( 'anspress.gif', $result[ 4 ]['name'] );
+		$this->assertEquals( 0, $result[ 5 ]['error'] );
+		$this->assertEquals( 'anspress.svg', $result[ 5 ]['name'] );
+		$this->assertEquals( 0, $result[ 6 ]['error'] );
+		$this->assertEquals( 'anspress.pptx', $result[ 6 ]['name'] );
+
+		// Test for no upload.
+		$value = [];
+		$upload_options = [];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $value, $upload_options );
+		$this->assertEquals( '', $result );
+		$value = [];
+		$upload_options = [
+			'multiple' => true,
+			'max_files' => 10,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $value, $upload_options );
+		$this->assertEquals( '', $result );
+		$value = [
+			'error' => 0,
+			'name'  => 'anspress.txt'
+		];
+		$upload_options = [];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $value, $upload_options );
+		$this->assertEquals( '', $result );
+		$values = [
+			[ 'error' => 0, 'name' => 'anspress.txt' ],
+			[ 'error' => 0, 'name' => 'anspress.pdf' ],
+			[ 'error' => 0, 'name' => 'anspress.docx' ],
+			[ 'error' => 0, 'name' => 'anspress.png' ],
+			[ 'error' => 0, 'name' => 'anspress.gif' ],
+		];
+		$upload_options = [
+			'multiple' => false,
+			'max_files' => 5,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $values, $upload_options );
+		$this->assertEquals( '', $result );
+		$value = [
+			'error' => 0,
+			'name'  => 'anspress.txt'
+		];
+		$upload_options = [
+			'multiple' => true,
+			'max_files' => 5,
+		];
+		$result = \AnsPress\Form\Validate::sanitize_upload( $value, $upload_options );
+		$this->assertEquals( '', $result );
+	}
 }
