@@ -665,4 +665,124 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( 'tel:+1234567890', \AnsPress\Form\Validate::sanitize_esc_url( 'tel:+1234567890' ) );
 		$this->assertEquals( 'tel:+1234567890%20%20%20%20%20', \AnsPress\Form\Validate::sanitize_esc_url( 'tel:+1234567890     ' ) );
 	}
+
+	// Allowed shortcode filter.
+	public function shortcodes_allowed( $allowed ) {
+		$allowed[] = 'anspress';
+
+		return $allowed;
+	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_description
+	 */
+	public function testValidateSanitizeDescription() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_description() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_description( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_description() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_description( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_description( false ) );
+
+		// Test on passing values.
+		$this->assertEquals( 1, \AnsPress\Form\Validate::sanitize_description( true ) );
+		$this->assertEquals( 'AnsPress Question Answer', \AnsPress\Form\Validate::sanitize_description( 'AnsPress Question Answer<!--more-->' ) );
+		$this->assertEquals( 'AnsPress Question Answer', \AnsPress\Form\Validate::sanitize_description( '<!--more-->AnsPress Question Answer<!--more-->' ) );
+		$this->assertEquals( '<--more-->AnsPress Question Answer<--more-->', \AnsPress\Form\Validate::sanitize_description( '<--more-->AnsPress Question Answer<--more-->' ) );
+		$this->assertEquals( '<h1 class="entry-title">AnsPress Question Answer</h1>', \AnsPress\Form\Validate::sanitize_description( '<h1 class="entry-title">AnsPress Question Answer</h1>' ) );
+		$this->assertEquals( '<p class="entry-content">Question Answer Plugin</p>', \AnsPress\Form\Validate::sanitize_description( '<p class="entry-content">Question Answer Plugin</p>' ) );
+		$this->assertEquals( '&#91;anspress&#93;', \AnsPress\Form\Validate::sanitize_description( '[anspress]' ) );
+		$this->assertEquals( '[apcode]', \AnsPress\Form\Validate::sanitize_description( '[apcode]' ) );
+
+		// Test on unregistered shortcodes.
+		$this->assertEquals( '[anspress_question]', \AnsPress\Form\Validate::sanitize_description( '[anspress_question]' ) );
+		$this->assertEquals( '[anspress_answer]', \AnsPress\Form\Validate::sanitize_description( '[anspress_answer]' ) );
+		$this->assertEquals( '[anspress_comment]', \AnsPress\Form\Validate::sanitize_description( '[anspress_comment]' ) );
+
+		// Test on filtering the shortcode whitelist.
+		$this->assertEquals( '&#91;anspress&#93;', \AnsPress\Form\Validate::sanitize_description( '[anspress]' ) );
+		add_filter( 'ap_allowed_shortcodes', [ $this, 'shortcodes_allowed' ] );
+		$this->assertEquals( '[anspress]', \AnsPress\Form\Validate::sanitize_description( '[anspress]' ) );
+
+		// Test after removing the shortcode whitelist filter.
+		remove_filter( 'ap_allowed_shortcodes', [ $this, 'shortcodes_allowed' ] );
+		$this->assertEquals( '&#91;anspress&#93;', \AnsPress\Form\Validate::sanitize_description( '[anspress]' ) );
+
+		// Test on removing multiple lines.
+		$str = 'AnsPress Question Answer
+
+
+		The above lines should be replaced with single line.
+		';
+		$ex_str = 'AnsPress Question Answer
+
+		The above lines should be replaced with single line.
+		';
+		$this->assertEquals( $ex_str, \AnsPress\Form\Validate::sanitize_description( $str ) );
+		$str = 'AnsPress Question Answer
+
+
+		The above lines should be replaced with single line.
+		<!--more-->
+		';
+		$ex_str = 'AnsPress Question Answer
+
+		The above lines should be replaced with single line.
+
+		';
+		$this->assertEquals( $ex_str, \AnsPress\Form\Validate::sanitize_description( $str ) );
+		$str = 'AnsPress Question Answer
+
+
+
+
+
+		The above lines should be replaced with single line.
+		';
+		$ex_str = 'AnsPress Question Answer
+
+		The above lines should be replaced with single line.
+		';
+		$this->assertEquals( $ex_str, \AnsPress\Form\Validate::sanitize_description( $str ) );
+
+		// Test on removing space declaration.
+		$str = 'AnsPress Question Answer&nbsp;';
+		$ex_str = 'AnsPress Question Answer
+';
+		$this->assertEquals( $ex_str, \AnsPress\Form\Validate::sanitize_description( $str ) );
+		$str = 'AnsPress Question Answer&nbsp;&nbsp;&nbsp;';
+		$ex_str = 'AnsPress Question Answer
+
+
+';
+		$this->assertEquals( $ex_str, \AnsPress\Form\Validate::sanitize_description( $str ) );
+
+		// Test on pre code.
+		$this->assertEquals(
+			'AnsPress Question Answer<pre>This is a question answer plugin</pre>',
+			\AnsPress\Form\Validate::sanitize_description( 'AnsPress Question Answer<pre>This is a question answer plugin</pre>' )
+		);
+		$this->assertEquals(
+			'AnsPress Question Answer<pre>&lt;?php echo &quot;This is a question answer plugin&quot;; ?&gt;</pre>',
+			\AnsPress\Form\Validate::sanitize_description( 'AnsPress Question Answer<pre aplang="php"><?php echo "This is a question answer plugin"; ?></pre>' )
+		);
+		$this->assertEquals(
+			'<pre>&lt;h1&gt;AnsPress Question Answer&lt;/h1&gt;</pre>',
+			\AnsPress\Form\Validate::sanitize_description( '<pre aplang="xhtml"><h1>AnsPress Question Answer</h1></pre>' )
+		);
+
+		// Test on code.
+		$this->assertEquals(
+			'AnsPress Question Answer<code>This is a question answer plugin</code>',
+			\AnsPress\Form\Validate::sanitize_description( 'AnsPress Question Answer<code>This is a question answer plugin</code>' )
+		);
+		$this->assertEquals(
+			'AnsPress Question Answer<code>&lt;?php echo &quot;This is a question answer plugin&quot;; ?&gt;</code>',
+			\AnsPress\Form\Validate::sanitize_description( 'AnsPress Question Answer<code><?php echo "This is a question answer plugin"; ?></code>' )
+		);
+		$this->assertEquals(
+			'<code>&lt;h1&gt;AnsPress Question Answer&lt;/h1&gt;</code>',
+			\AnsPress\Form\Validate::sanitize_description( '<code><h1>AnsPress Question Answer</h1></code>' )
+		);
+	}
 }
