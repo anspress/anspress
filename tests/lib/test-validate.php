@@ -597,4 +597,33 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( '     AnsPress(Question Answer) Plugin     ', \AnsPress\Form\Validate::sanitize_esc_html( '     AnsPress(Question Answer) Plugin     ' ) );
 		$this->assertEquals( '--&gt;  &lt;--', \AnsPress\Form\Validate::sanitize_esc_html( '-->  <--' ) );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_email
+	 */
+	public function testValidateSanitizeEmail() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_email() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_email( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_email() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_email( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_email( false ) );
+
+		// Test on passing values.
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( true ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( '' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( '@' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( 'webmaster@' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( 'webmaster@localhost' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( '@anspress.net' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( '@   local   .   io' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( '123' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_email( 'AnsPress Question Answer Plugin' ) );
+		$this->assertEquals( 'test@local.io', \AnsPress\Form\Validate::sanitize_email( '     test@local.io    ' ) );
+		$this->assertEquals( 'webmaster@local.io', \AnsPress\Form\Validate::sanitize_email( '     web       master     @local.io    ' ) );
+		$this->assertEquals( 'webmaster@local.io', \AnsPress\Form\Validate::sanitize_email( '     webmaster     @local   .   io    ' ) );
+		$this->assertEquals( 'admin@anspress.net', \AnsPress\Form\Validate::sanitize_email( '     admin@anspress.net' ) );
+		$this->assertEquals( '123@anspress.net', \AnsPress\Form\Validate::sanitize_email( '     123@anspress.net     ' ) );
+		$this->assertEquals( '123admin@anspress.net', \AnsPress\Form\Validate::sanitize_email( '     123admin@anspress.net' ) );
+	}
 }
