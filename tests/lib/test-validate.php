@@ -626,4 +626,43 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( '123@anspress.net', \AnsPress\Form\Validate::sanitize_email( '     123@anspress.net     ' ) );
 		$this->assertEquals( '123admin@anspress.net', \AnsPress\Form\Validate::sanitize_email( '     123admin@anspress.net' ) );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::sanitize_esc_url
+	 */
+	public function testValidateSanitizeEscURL() {
+		// Test on empty values.
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_esc_url() );
+		$this->assertEquals( null, \AnsPress\Form\Validate::sanitize_esc_url( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_esc_url() );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_esc_url( '' ) );
+		$this->assertNull( \AnsPress\Form\Validate::sanitize_esc_url( false ) );
+
+		// Test on passing values.
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_esc_url( '' ) );
+		$this->assertEquals( '#', \AnsPress\Form\Validate::sanitize_esc_url( '#' ) );
+		$this->assertEquals( 'http://1', \AnsPress\Form\Validate::sanitize_esc_url( true ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_esc_url( 'sftp://root@1.1.1.1' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_esc_url( '     sftp://root@1.1.1.1     ' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_esc_url( 'ssh://root@1.1.1.1' ) );
+		$this->assertEquals( '', \AnsPress\Form\Validate::sanitize_esc_url( '     ssh://root@1.1.1.1     ' ) );
+		$this->assertEquals( 'http://anspress.net', \AnsPress\Form\Validate::sanitize_esc_url( 'anspress.net' ) );
+		$this->assertEquals( 'http://anspress.net%20%20%20%20%20', \AnsPress\Form\Validate::sanitize_esc_url( '     anspress.net     ' ) );
+		$this->assertEquals( 'http://anspress%20%20%20%20%20.%20%20%20%20%20net%20%20%20%20%20', \AnsPress\Form\Validate::sanitize_esc_url( '     anspress     .     net     ' ) );
+		$this->assertEquals( 'https://anspress.net/themes/', \AnsPress\Form\Validate::sanitize_esc_url( 'https://anspress.net/themes/' ) );
+		$this->assertEquals( 'https://anspress.net/themes/', \AnsPress\Form\Validate::sanitize_esc_url( '     https://anspress.net/themes/' ) );
+		$this->assertEquals( 'https://anspress.net/themes/', \AnsPress\Form\Validate::sanitize_esc_url( '     https://anspress.net/themes/' ) );
+		$this->assertEquals( 'https://anspress.net/themes/', \AnsPress\Form\Validate::sanitize_esc_url( 'https;//anspress.net/themes/' ) );
+		$this->assertEquals( 'http://webmaster@anspress.net', \AnsPress\Form\Validate::sanitize_esc_url( 'webmaster@anspress.net' ) );
+		$this->assertEquals( 'mailto:webmaster@anspress.net', \AnsPress\Form\Validate::sanitize_esc_url( 'mailto:webmaster@anspress.net' ) );
+		$this->assertEquals( 'mailto:webmaster@anspress.net', \AnsPress\Form\Validate::sanitize_esc_url( '     mailto:webmaster@anspress.net' ) );
+		$this->assertEquals( 'mailto:%20%20%20webmaster%20%20%20@%20%20%20localhost%20%20%20.%20%20%20local', \AnsPress\Form\Validate::sanitize_esc_url( 'mailto:   webmaster   @   localhost   .   local' ) );
+		$this->assertEquals( 'mailto:%20%20%20webmaster%20%20%20@%20%20%20localhost%20%20%20.%20%20%20local', \AnsPress\Form\Validate::sanitize_esc_url( '   mailto:   webmaster   @   localhost   .   local' ) );
+		$this->assertEquals( 'ftp://anspress.net:22', \AnsPress\Form\Validate::sanitize_esc_url( 'ftp://anspress.net:22' ) );
+		$this->assertEquals( 'ftp://anspress.net:22%20%20%20%20%20', \AnsPress\Form\Validate::sanitize_esc_url( '     ftp://anspress.net:22     ' ) );
+		$this->assertEquals( 'ftps://anspress.net:21', \AnsPress\Form\Validate::sanitize_esc_url( 'ftps://anspress.net:21' ) );
+		$this->assertEquals( 'ftps://anspress.net:21%20%20%20%20%20', \AnsPress\Form\Validate::sanitize_esc_url( '     ftps://anspress.net:21     ' ) );
+		$this->assertEquals( 'tel:+1234567890', \AnsPress\Form\Validate::sanitize_esc_url( 'tel:+1234567890' ) );
+		$this->assertEquals( 'tel:+1234567890%20%20%20%20%20', \AnsPress\Form\Validate::sanitize_esc_url( 'tel:+1234567890     ' ) );
+	}
 }
