@@ -2084,4 +2084,41 @@ class TestFunctions extends TestCase {
 		];
 		$this->assertEquals( $exp_result, $result );
 	}
+
+	/**
+	 * @covers ::ap_question_title_with_solved_prefix
+	 */
+	public function testAPQuestionTitleWithSolvedPrefix() {
+		// Test for question with no answer.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$question_title = get_the_title( $id ) . ' ';
+		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
+
+		// Test for question with answer.
+		$id = $this->insert_answer();
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$question_title = get_the_title( $id->q ) . ' ';
+		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
+
+		// Test for question with answer marked as selected.
+		$id = $this->insert_answer();
+		// Set as selected answer.
+		ap_set_selected_answer( $id->q, $id->a );
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$question_title = get_the_title( $id->q ) . ' [Solved] ';
+		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
+
+		// Test when the prefix option is disabled.
+		ap_opt( 'show_solved_prefix', false );
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$question_title = get_the_title( $id->q );
+		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
+
+		// Re-test when the prefix option is enabled.
+		ap_opt( 'show_solved_prefix', true );
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$question_title = get_the_title( $id->q ) . ' [Solved] ';
+		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
+	}
 }
