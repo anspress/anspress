@@ -241,6 +241,7 @@ class TestThemeFunctions extends TestCase {
 		// Test on the ap_enqueue_scripts function.
 		$this->assertTrue( wp_script_is( 'anspress-theme' ) );
 		$this->assertTrue( wp_style_is( 'anspress-main' ) );
+		$this->assertEquals( is_rtl(), wp_style_is( 'anspress-rtl', 'enqueued' ) );
 	}
 
 	/**
