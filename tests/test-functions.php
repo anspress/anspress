@@ -1866,4 +1866,80 @@ class TestFunctions extends TestCase {
 		set_query_var( 'user_page', '' );
 		$this->assertEquals( 'about', ap_active_user_page() );
 	}
+
+	/**
+	 * @covers ::ap_current_user_id
+	 */
+	public function testAPCurrentUserID() {
+		// Test for not visting the user page.
+		$this->assertEquals( 0, ap_current_user_id() );
+
+		// Create a page and set it to user page.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'User Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'user_page', $id );
+
+		// Test for visiting the user page.
+		// By not setting any query vars.
+		$user = $this->factory->user->create_and_get();
+		wp_set_current_user( $user->ID );
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 0, ap_current_user_id() );
+		$this->assertNotEquals( $user->ID, ap_current_user_id() );
+
+		// By setting the query vars.
+		// Test 1.
+		$user = $this->factory->user->create_and_get();
+		wp_set_current_user( $user->ID );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'profile' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$this->assertNotEquals( 0, ap_current_user_id() );
+		$this->assertEquals( $user->ID, ap_current_user_id() );
+
+		// Test 2.
+		$user = $this->factory->user->create_and_get();
+		wp_set_current_user( $user->ID );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'notifications' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$this->assertNotEquals( 0, ap_current_user_id() );
+		$this->assertEquals( $user->ID, ap_current_user_id() );
+
+		// Test 3.
+		$user = $this->factory->user->create_and_get();
+		wp_set_current_user( $user->ID );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'edit' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$this->assertNotEquals( 0, ap_current_user_id() );
+		$this->assertEquals( $user->ID, ap_current_user_id() );
+
+		// Test 4.
+		$user = $this->factory->user->create_and_get();
+		wp_set_current_user( $user->ID );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', '' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$this->assertNotEquals( 0, ap_current_user_id() );
+		$this->assertEquals( $user->ID, ap_current_user_id() );
+
+		// Test 5.
+		$user = $this->factory->user->create_and_get();
+		wp_set_current_user( $user->ID );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'about' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$this->assertNotEquals( 0, ap_current_user_id() );
+		$this->assertEquals( $user->ID, ap_current_user_id() );
+	}
 }
