@@ -1788,4 +1788,47 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'tags.php', $ap_addons_activation );
 		$this->assertEquals( 'tags_activated', $ap_addons_activation['tags.php'] );
 	}
+
+	/**
+	 * @covers ::ap_append_table_names
+	 */
+	public function testAPAppendTableNames() {
+		global $wpdb;
+
+		// Call the function.
+		ap_append_table_names();
+
+		// Test case for directly checking if the table exists.
+		$this->assertTrue( isset( $wpdb->ap_qameta ) );
+		$this->assertTrue( isset( $wpdb->ap_votes ) );
+		$this->assertTrue( isset( $wpdb->ap_views ) );
+		$this->assertTrue( isset( $wpdb->ap_reputations ) );
+		$this->assertTrue( isset( $wpdb->ap_subscribers ) );
+		$this->assertTrue( isset( $wpdb->ap_activity ) );
+		$this->assertTrue( isset( $wpdb->ap_reputation_events ) );
+
+		// Test case for checking if the table exists after appending the table names.
+		$original_prefix = $wpdb->prefix;
+
+		// Expected table names.
+		$exp_qameta = $original_prefix . 'ap_qameta';
+		$exp_votes = $original_prefix . 'ap_votes';
+		$exp_views = $original_prefix . 'ap_views';
+		$exp_reputations = $original_prefix . 'ap_reputations';
+		$exp_subscribers = $original_prefix . 'ap_subscribers';
+		$exp_activity = $original_prefix . 'ap_activity';
+		$exp_reputation_events = $original_prefix . 'ap_reputation_events';
+
+		// Assert the table names.
+		$this->assertEquals( $exp_qameta, $wpdb->ap_qameta );
+		$this->assertEquals( $exp_votes, $wpdb->ap_votes );
+		$this->assertEquals( $exp_views, $wpdb->ap_views );
+		$this->assertEquals( $exp_reputations, $wpdb->ap_reputations );
+		$this->assertEquals( $exp_subscribers, $wpdb->ap_subscribers );
+		$this->assertEquals( $exp_activity, $wpdb->ap_activity );
+		$this->assertEquals( $exp_reputation_events, $wpdb->ap_reputation_events );
+
+		// Restore the original prefix.
+		$wpdb->prefix = $original_prefix;
+	}
 }
