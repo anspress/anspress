@@ -2010,4 +2010,78 @@ class TestFunctions extends TestCase {
 			$this->assertLessThanOrEqual( $max, $result );
 		}
 	}
+
+	/**
+	 * @covers ::ap_parse_search_string
+	 */
+	public function testAPParseSearchString() {
+		// For no search string.
+		$result = ap_parse_search_string( 'tag:tag1,tag2 category:category1 author:user1' );
+		$exp_result = [
+			'tag'      => [ 'tag1', 'tag2' ],
+			'category' => [ 'category1' ],
+			'author'   => [ 'user1' ],
+			'q'        => '',
+		];
+		$this->assertEquals( $exp_result, $result );
+
+		// For empty search.
+		$result = ap_parse_search_string( '' );
+		$exp_result = [ 'q' => '' ];
+		$this->assertEquals( $exp_result, $result );
+
+		// For invalid search,
+		$result = ap_parse_search_string( 'invalid_search_string' );
+		$exp_result = [ 'q' => 'invalid_search_string' ];
+		$this->assertEquals( $exp_result, $result );
+
+		// For search string with empty values.
+		$result = ap_parse_search_string( 'tag: category: author: ' );
+		$exp_result = [ 'q' => '' ];
+		$this->assertEquals( $exp_result, $result );
+
+		// For search string with only tag value.
+		$result = ap_parse_search_string( 'tag:tag1,tag2,tag3' );
+		$exp_result = [
+			'tag' => [ 'tag1', 'tag2', 'tag3' ],
+			'q'   => '',
+		];
+		$this->assertEquals( $exp_result, $result );
+
+		// For search string with only category value.
+		$result = ap_parse_search_string( 'category:category1,category2,category3' );
+		$exp_result = [
+			'category' => [ 'category1', 'category2', 'category3' ],
+			'q'        => '',
+		];
+		$this->assertEquals( $exp_result, $result );
+
+		// For search string with only author value.
+		$result = ap_parse_search_string( 'author:author1,author2,author3' );
+		$exp_result = [
+			'author' => [ 'author1', 'author2', 'author3' ],
+			'q'      => '',
+		];
+		$this->assertEquals( $exp_result, $result );
+
+		// For random searches.
+		$result = ap_parse_search_string( 'tag:tag1,tag2 author:' );
+		$exp_result = [
+			'tag' => [ 'tag1', 'tag2' ],
+			'q'   => '',
+		];
+		$this->assertEquals( $exp_result, $result );
+		$result = ap_parse_search_string( 'author:author1, tag: category:' );
+		$exp_result = [
+			'author' => [ 'author1' ],
+			'q'      => '',
+		];
+		$this->assertEquals( $exp_result, $result );
+		$result = ap_parse_search_string( 'author: tag: category: date:2022 id=10,11 p=10,11' );
+		$exp_result = [
+			'date' => [ '2022' ],
+			'q'    => 'id=10,11 p=10,11',
+		];
+		$this->assertEquals( $exp_result, $result );
+	}
 }
