@@ -1964,4 +1964,36 @@ class TestFunctions extends TestCase {
 		// Reset to original timezone.
 		update_option( 'timezone_string', 'UTC' );
 	}
+
+	/**
+	 * @covers ::ap_set_in_array
+	 */
+	public function testAPSetInArray() {
+		// Setting value with a simple array.
+		$arr = [];
+		ap_set_in_array( $arr, 'key', 'value' );
+		$this->assertEquals( 'value', $arr['key'] );
+
+		// Setting value in a nested array using path.
+		$arr = [ 'nested' => [ 'key' => 'value' ] ];
+		ap_set_in_array( $arr, 'nested.key', 'new_value' );
+		$this->assertEquals( 'new_value', $arr['nested']['key'] );
+
+		// Setting value in a nested array using array path.
+		$arr = [ 'nested' => [ 'key' => 'value' ] ];
+		$path = [ 'nested', 'key' ];
+		ap_set_in_array( $arr, $path, 'new_value' );
+		$this->assertEquals( 'new_value', $arr['nested']['key'] );
+
+		// Merging an array.
+		$arr = [ 'merge' => [ 'key' => 'value' ] ];
+		$merge_arr = [ 'new_key' => 'new_value' ];
+		ap_set_in_array( $arr, 'merge', $merge_arr, true );
+		$this->assertEquals( [ 'key' => 'value', 'new_key' => 'new_value' ], $arr['merge'] );
+
+		// Setting value in an empty array.
+		$arr = [];
+		ap_set_in_array( $arr, '', 'new_value' );
+		$this->assertEquals( [ '' => 'new_value' ], $arr );
+	}
 }
