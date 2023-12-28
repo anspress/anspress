@@ -1942,4 +1942,26 @@ class TestFunctions extends TestCase {
 		$this->assertNotEquals( 0, ap_current_user_id() );
 		$this->assertEquals( $user->ID, ap_current_user_id() );
 	}
+
+	/**
+	 * @covers ::ap_get_current_timestamp
+	 */
+	public function testAPGetCurrentTimestamp() {
+		// Test for exact timestamp with no timezone change.
+		$this->assertEquals( current_time( 'timestamp' ), ap_get_current_timestamp() );
+
+		// Test for timestamp with timezone change.
+		update_option( 'timezone_string', 'America/New_York' );
+		$this->assertNotEquals( time(), ap_get_current_timestamp() ); // Returns current timestamp without GMT offset.
+		$this->assertEquals( current_time( 'timestamp' ), ap_get_current_timestamp() ); // Returns current timestamp with GMT offset.
+		update_option( 'timezone_string', 'Europe/Prague' );
+		$this->assertNotEquals( time(), ap_get_current_timestamp() ); // Returns current timestamp without GMT offset.
+		$this->assertEquals( current_time( 'timestamp' ), ap_get_current_timestamp() ); // Returns current timestamp with GMT offset.
+		update_option( 'timezone_string', 'Asia/Kolkata' );
+		$this->assertNotEquals( time(), ap_get_current_timestamp() ); // Returns current timestamp without GMT offset.
+		$this->assertEquals( current_time( 'timestamp' ), ap_get_current_timestamp() ); // Returns current timestamp with GMT offset.
+
+		// Reset to original timezone.
+		update_option( 'timezone_string', 'UTC' );
+	}
 }
