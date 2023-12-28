@@ -2121,4 +2121,37 @@ class TestFunctions extends TestCase {
 		$question_title = get_the_title( $id->q ) . ' [Solved] ';
 		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
 	}
+
+	/**
+	 * @covers ::ap_create_base_page
+	 */
+	public function testAPCreateBasePage() {
+		// Call the AnsPress base page create function.
+		ap_create_base_page();
+
+		// Check if the pages were created as expected.
+		$this->assertTrue( $this->basePagesCreated() );
+	}
+
+	public function basePagesCreated() {
+		// Check if pages were created as expected
+		$pages = ap_main_pages();
+
+		foreach ( $pages as $slug => $page ) {
+			$created_page = get_post( ap_opt( $slug ) );
+
+			// Test on pages.
+			$this->assertInstanceOf( 'WP_Post', $created_page );
+			$this->assertEquals( 'publish', $created_page->post_status );
+			$this->assertEquals( '[anspress]', $created_page->post_content );
+			$this->assertEquals( 'closed', $created_page->comment_status );
+
+			// Additional test for child pages.
+			if ( 'base_page' !== $slug ) {
+				$this->assertEquals( ap_opt( 'base_page' ), $created_page->post_parent );
+			}
+		}
+
+		return true;
+	}
 }
