@@ -224,6 +224,24 @@ class TestFunctions extends TestCase {
 	}
 
 	/**
+	 * Filter allowed tags.
+	 *
+	 * @param string[] $allowed_tags
+	 */
+	public function allowedTags( $allowed_tags ) {
+		$allowed_tags['div'] = [];
+		$allowed_tags['section'] = [
+			'class' => true,
+		];
+		$allowed_tags['aside'] = [
+			'id'    => true,
+			'class' => true,
+		];
+
+		return $allowed_tags;
+	}
+
+	/**
 	 * @covers ::ap_form_allowed_tags
 	 */
 	public function testApFormAllowedTags() {
@@ -275,6 +293,30 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( [], $tags['ol'] );
 		$this->assertEquals( [], $tags['li'] );
 		$this->assertEquals( [], $tags['del'] );
+
+		// Test on adding custom tags via filter.
+		// Before filter being applied.
+		$tags = ap_form_allowed_tags();
+		$this->assertFalse( isset( $tags['div'] ) );
+		$this->assertFalse( isset( $tags['section'] ) );
+		$this->assertFalse( isset( $tags['aside'] ) );
+
+		// After filter applied.
+		add_filter( 'ap_allowed_tags', [ $this, 'allowedTags' ] );
+		$tags = ap_form_allowed_tags();
+		$this->assertTrue( isset( $tags['div'] ) );
+		$this->assertTrue( isset( $tags['section'] ) );
+		$this->assertTrue( isset( $tags['aside'] ) );
+		$this->assertEquals( [], $tags['div'] );
+		$this->assertEquals( [ 'class' => true ], $tags['section'] );
+		$this->assertEquals( [ 'id' => true, 'class' => true ], $tags['aside'] );
+
+		// After filter removed.
+		remove_filter( 'ap_allowed_tags', [ $this, 'allowedTags' ] );
+		$tags = ap_form_allowed_tags();
+		$this->assertFalse( isset( $tags['div'] ) );
+		$this->assertFalse( isset( $tags['section'] ) );
+		$this->assertFalse( isset( $tags['aside'] ) );
 	}
 
 	/**
