@@ -2154,4 +2154,27 @@ class TestFunctions extends TestCase {
 
 		return true;
 	}
+
+	/**
+	 * @covers ::ap_current_page_url
+	 */
+	public function testAPCurrentPageURL() {
+		$id = $this->insert_question();
+
+		// Test for no custom permalink structure.
+		update_option( 'permalink_structure', '' );
+		$this->go_to( '/?post_type=question&p=' . $id );
+		$args = array( 'param1' => 'value1', 'param2' => 'value2' );
+		$this->assertStringContainsString( 'param1=value1', ap_current_page_url( $args ) );
+		$this->assertStringContainsString( 'param2=value2', ap_current_page_url( $args ) );
+		$this->assertStringContainsString( '&param1=value1&param2=value2', ap_current_page_url( $args ) );
+
+		// Test for custom permalink structure being set.
+		update_option( 'permalink_structure', '/%postname%/' );
+		$this->go_to( '/?post_type=question&p=' . $id );
+		$args = array( 'param1' => 'value1', 'param2' => 'value2' );
+		$this->assertStringContainsString( 'param1/value1', ap_current_page_url( $args ) );
+		$this->assertStringContainsString( 'param2/value2', ap_current_page_url( $args ) );
+		$this->assertStringContainsString( 'questions/question/question-title/param1/value1/param2/value2/', ap_current_page_url( $args ) );
+	}
 }
