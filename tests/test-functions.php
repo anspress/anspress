@@ -1996,4 +1996,18 @@ class TestFunctions extends TestCase {
 		ap_set_in_array( $arr, '', 'new_value' );
 		$this->assertEquals( [ '' => 'new_value' ], $arr );
 	}
+
+	/**
+	 * @covers ::ap_rand
+	 */
+	public function testAPRand() {
+		$min = 1;
+		$max = 10;
+		$weight = 2;
+		for ( $i = 0; $i <= 100; $i++ ) {
+			$result = ap_rand( $min, $max, $weight );
+			$this->assertGreaterThanOrEqual( $min, $result );
+			$this->assertLessThanOrEqual( $max, $result );
+		}
+	}
 }
