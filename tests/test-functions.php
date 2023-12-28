@@ -1831,4 +1831,39 @@ class TestFunctions extends TestCase {
 		// Restore the original prefix.
 		$wpdb->prefix = $original_prefix;
 	}
+
+	/**
+	 * @covers ::ap_active_user_page
+	 */
+	public function testAPActiveUserPage() {
+		// Test if user page is not set.
+		$this->assertEquals( 'about', ap_active_user_page() );
+
+		// Create a page and set it to user page.
+		$id = $this->factory->post->create(
+			[
+				'post_title' => 'User Page',
+				'post_type'  => 'page',
+			]
+		);
+		ap_opt( 'user_page', $id );
+
+		// Go to the users page and run the required tests.
+		// By not setting any query vars.
+		$this->go_to( '?post_type=page&p=' . $id );
+		$this->assertEquals( 'about', ap_active_user_page() );
+		// By setting the query vars.
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'profile' );
+		$this->assertEquals( 'profile', ap_active_user_page() );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'notifications' );
+		$this->assertEquals( 'notifications', ap_active_user_page() );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', 'edit' );
+		$this->assertEquals( 'edit', ap_active_user_page() );
+		$this->go_to( '?post_type=page&p=' . $id );
+		set_query_var( 'user_page', '' );
+		$this->assertEquals( 'about', ap_active_user_page() );
+	}
 }
