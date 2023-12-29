@@ -2599,4 +2599,25 @@ class TestFunctions extends TestCase {
 		);
 		$this->assertTrue( ap_addon_has_options( 'categories.php' ) );
 	}
+
+	/**
+	 * @covers ::ap_trigger_qa_update_hook
+	 */
+	public function testAPTriggerQAUpdateHook() {
+		// Test on other than the question and answer post type.
+		$post_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		ap_trigger_qa_update_hook( get_post( $post_id ), 'update' );
+		$this->assertFalse( did_action( 'ap_after_update_question' ) > 0 );
+
+		// Create question/answer.
+		$id = $this->insert_answer();
+
+		// Test on question post type.
+		ap_trigger_qa_update_hook( get_post( $id->q ), 'update' );
+		$this->assertTrue( did_action( 'ap_after_update_question' ) > 0 );
+
+		// Test on answer post type.
+		ap_trigger_qa_update_hook( get_post( $id->a ), 'update' );
+		$this->assertTrue( did_action( 'ap_after_update_answer' ) > 0 );
+	}
 }
