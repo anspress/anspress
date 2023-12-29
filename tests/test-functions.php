@@ -2426,4 +2426,74 @@ class TestFunctions extends TestCase {
 		$menu_item_4 = $menu[ 4 ];
 		$this->assertFalse( ap_is_profile_menu( $menu_item_4 ) );
 	}
+
+	/**
+	 * Filter ap_list_filters
+	 */
+	public function apListFilters() {
+		return [];
+	}
+
+	/**
+	 * @covers ::ap_get_current_list_filters
+	 */
+	public function testAPGetCurrentListFilters() {
+		// Test 1.
+		$result = ap_get_current_list_filters( 'order_by' );
+		$this->assertEquals( 'active', $result );
+
+		// After changing the order_by data.
+		ap_opt( 'question_order_by', 'newest' );
+		$result = ap_get_current_list_filters( 'order_by' );
+		$this->assertEquals( 'newest', $result );
+		ap_opt( 'question_order_by', 'voted' );
+		$result = ap_get_current_list_filters( 'order_by' );
+		$this->assertEquals( 'voted', $result );
+
+		// Test 2.
+		ap_opt( 'question_order_by', 'active' );
+		$result = ap_get_current_list_filters();
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'order_by', $result );
+		$this->assertEquals( [ 'order_by' => 'active' ], $result );
+
+		// Test 3.
+		// Before applying the filter.
+		// Case 1.
+		$result = ap_get_current_list_filters();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'order_by' => 'active' ], $result );
+		$this->assertArrayHasKey( 'order_by', $result );
+
+		// Case 2.
+		$result = ap_get_current_list_filters( 'order_by' );
+		$this->assertIsString( $result );
+		$this->assertEquals( 'active', $result );
+
+		// After applying the filter with empty array.
+		add_filter( 'ap_list_filters', [ $this, 'apListFilters' ] );
+		// Case 1.
+		$result = ap_get_current_list_filters();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [], $result );
+		$this->assertArrayNotHasKey( 'order_by', $result );
+
+		// Case 2.
+		$result = ap_get_current_list_filters( 'order_by' );
+		$this->assertEmpty( $result );
+		$this->assertEquals( false, $result );
+
+		// After removing the filter with empty array.
+		remove_filter( 'ap_list_filters', [ $this, 'apListFilters' ] );
+		// Case 1.
+		$result = ap_get_current_list_filters();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'order_by' => 'active' ], $result );
+		$this->assertArrayHasKey( 'order_by', $result );
+
+		// Case 2.
+		$result = ap_get_current_list_filters( 'order_by' );
+		$this->assertIsString( $result );
+		$this->assertEquals( 'active', $result );
+	}
 }
