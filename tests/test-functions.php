@@ -2219,4 +2219,24 @@ class TestFunctions extends TestCase {
 		$this->assertStringContainsString( 'param2/value2', ap_current_page_url( $args ) );
 		$this->assertStringContainsString( 'questions/question/question-title/param1/value1/param2/value2/', ap_current_page_url( $args ) );
 	}
+
+	/**
+	 * @covers ::ap_is_ajax
+	 */
+	public function testAPIsAjax() {
+		// DOING_AJAX is already defined so can't test with false value on it
+		// since changing constant value on PHP is not possible.
+		// Should return false since we're not passing any values.
+		$this->assertFalse( ap_is_ajax() );
+
+		// Should return false since we're passing wrong value.
+		$_REQUEST['ap_action'] = 'new_question';
+		$this->assertFalse( ap_is_ajax() );
+		unset( $_REQUEST['ap_action'] );
+
+		// Should return true since we're passing value as intended.
+		$_REQUEST['ap_ajax_action'] = 'new_question';
+		$this->assertTrue( ap_is_ajax() );
+		unset( $_REQUEST['ap_ajax_action'] );
+	}
 }
