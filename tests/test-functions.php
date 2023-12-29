@@ -2350,4 +2350,80 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( null, ap_get_sort() );
 		unset( $_REQUEST['ap_sort_data'] );
 	}
+
+	/**
+	 * @covers ::ap_is_profile_menu
+	 */
+	public function testAPIsProfileMenu() {
+		// Setup WordPress menu items.
+		$menu_name = 'AnsPress Menu';
+		$menu_id = wp_create_nav_menu( $menu_name );
+		// Add home menu item.
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title'   => 'Home',
+				'menu-item-url'     => home_url( '/' ),
+				'menu-item-status'  => 'publish',
+			)
+		);
+		// Add contact menu item.
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title'   => 'Contact',
+				'menu-item-url'     => home_url( '/contact' ),
+				'menu-item-status'  => 'publish',
+			)
+		);
+		// Add user profile page item.
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title'   => 'User Profile',
+				'menu-item-url'     => home_url( '/user-profile' ),
+				'menu-item-status'  => 'publish',
+				'menu-item-classes' => 'anspress-page-profile',
+			)
+		);
+		// Add user profile page about item.
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title'   => 'User Profile',
+				'menu-item-url'     => home_url( '/user-profile#about' ),
+				'menu-item-status'  => 'publish',
+				'menu-item-classes' => 'anspress-page-profile',
+			)
+		);
+		// Add about item.
+		wp_update_nav_menu_item(
+			$menu_id,
+			0,
+			array(
+				'menu-item-title'   => 'About',
+				'menu-item-url'     => home_url( '/about' ),
+				'menu-item-status'  => 'publish',
+				'menu-item-classes' => '',
+			)
+		);
+		$menu = wp_get_nav_menu_items( $menu_name );
+
+		// Test case begins.
+		// Get the individual menu items data.
+		$menu_item_0 = $menu[ 0 ];
+		$this->assertFalse( ap_is_profile_menu( $menu_item_0 ) );
+		$menu_item_1 = $menu[ 1 ];
+		$this->assertFalse( ap_is_profile_menu( $menu_item_1 ) );
+		$menu_item_2 = $menu[ 2 ];
+		$this->assertTrue( ap_is_profile_menu( $menu_item_2 ) );
+		$menu_item_3 = $menu[ 3 ];
+		$this->assertTrue( ap_is_profile_menu( $menu_item_3 ) );
+		$menu_item_4 = $menu[ 4 ];
+		$this->assertFalse( ap_is_profile_menu( $menu_item_4 ) );
+	}
 }
