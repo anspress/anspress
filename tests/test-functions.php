@@ -2043,14 +2043,29 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_rand
 	 */
 	public function testAPRand() {
-		$min = 1;
-		$max = 10;
-		$weight = 2;
-		for ( $i = 0; $i <= 100; $i++ ) {
-			$result = ap_rand( $min, $max, $weight );
-			$this->assertGreaterThanOrEqual( $min, $result );
-			$this->assertLessThanOrEqual( $max, $result );
-		}
+		// Test with a range of 1 to 5 and a weight of 2.
+		srand( 1234 );
+		$result = ap_rand( 1, 5, 2 );
+		$this->assertGreaterThanOrEqual( 1, $result );
+		$this->assertLessThanOrEqual( 5, $result );
+
+		// Test with a range of 10 to 20 and a weight of 3.
+		srand( 5678 );
+		$result = ap_rand( 10, 20, 3 );
+		$this->assertGreaterThanOrEqual( 10, $result );
+		$this->assertLessThanOrEqual( 20, $result );
+
+		// Test with a range of 5 to 10 and a weight of 1.
+		srand( 4321 );
+		$result = ap_rand( 5, 10, 1 );
+		$this->assertGreaterThanOrEqual( 5, $result );
+		$this->assertLessThanOrEqual( 10, $result );
+
+		// Test with a range of 111 to 999 and a weight of 11.
+		srand( 8765 );
+		$result = ap_rand( 111, 999, 11 );
+		$this->assertGreaterThanOrEqual( 111, $result );
+		$this->assertLessThanOrEqual( 999, $result );
 	}
 
 	/**
