@@ -402,6 +402,9 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_to_dot_notation
 	 */
 	public function testAPToDotNotation() {
+		$this->assertEquals( '', ap_to_dot_notation( '' ) );
+		$this->assertEquals( '', ap_to_dot_notation( false ) );
+		$this->assertEquals( '', ap_to_dot_notation( '...' ) );
 		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question..answer..' ) );
 		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question..answer' ) );
 		$this->assertEquals( 'question.answer', ap_to_dot_notation( 'question..answer..........' ) );
