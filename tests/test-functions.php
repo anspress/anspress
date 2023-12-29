@@ -2567,4 +2567,36 @@ class TestFunctions extends TestCase {
 		$this->assertEmpty( $image_url );
 		$this->assertNull( $image_url );
 	}
+
+	/**
+	 * @covers ::ap_addon_has_options
+	 */
+	public function testAPAddonHasOptions() {
+		// Should return false since categories addon form does not exists.
+		$this->assertFalse( ap_addon_has_options( 'categories.php' ) );
+
+		// Should return false since the required categories addon form still does not exists.
+		anspress()->forms['categories'] = new \AnsPress\Form(
+			'categories_form', array(
+				'fields' => array(
+					'field_one' => array(
+						'label' => 'Simple text field',
+					),
+				),
+			)
+		);
+		$this->assertFalse( ap_addon_has_options( 'categories.php' ) );
+
+		// Should return true since the required categories addon form exists since it's created.
+		anspress()->forms['addon-categories'] = new \AnsPress\Form(
+			'categories_form', array(
+				'fields' => array(
+					'field_one' => array(
+						'label' => 'Simple text field',
+					),
+				),
+			)
+		);
+		$this->assertTrue( ap_addon_has_options( 'categories.php' ) );
+	}
 }
