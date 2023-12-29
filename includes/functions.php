@@ -1852,7 +1852,7 @@ function ap_get_addon_image( $file ) {
 	if ( isset( $addon['path'] ) ) {
 		$path_parts = pathinfo( $addon['path'] );
 		if ( isset( $path_parts['dirname'] ) && file_exists( $path_parts['dirname'] . '/image.png' ) ) {
-			return plugin_dir_url( $addon['path'] ) . '/image.png';
+			return plugin_dir_url( $addon['path'] ) . 'image.png';
 		}
 	}
 }
