@@ -2325,4 +2325,29 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'additional_data', $result );
 		$this->assertArrayNotHasKey( 'other_additional_data', $result );
 	}
+
+	/**
+	 * @covers ::ap_get_sort
+	 */
+	public function testAPGetSort() {
+		// Test via request.
+		$_REQUEST['ap_sort'] = 'date';
+		$this->assertEquals( 'date', ap_get_sort() );
+		unset( $_REQUEST['ap_sort'] );
+
+		// Test via post.
+		$_POST['ap_sort'] = 'date';
+		$this->assertEquals( null, ap_get_sort() );
+		unset( $_POST['ap_sort'] );
+
+		// Test via get.
+		$_GET['ap_sort'] = 'date';
+		$this->assertEquals( null, ap_get_sort() );
+		unset( $_GET['ap_sort'] );
+
+		// Test via request but having invalid value.
+		$_REQUEST['ap_sort_data'] = 'date';
+		$this->assertEquals( null, ap_get_sort() );
+		unset( $_REQUEST['ap_sort_data'] );
+	}
 }
