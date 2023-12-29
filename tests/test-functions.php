@@ -2239,4 +2239,90 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( ap_is_ajax() );
 		unset( $_REQUEST['ap_ajax_action'] );
 	}
+
+	/**
+	 * Filter ap_ajax_responce.
+	 */
+	public function apAjaxResponse( $results ) {
+		$results['additional_data'] = 'AP Ajax Response Additional Data';
+		$results['other_additional_data'] = 'Other AP Ajax Response Additional Data';
+
+		return $results;
+	}
+
+	/**
+	 * @covers ::ap_ajax_responce
+	 */
+	public function testap_ajax_responce() {
+		// Test for passing string, which should contain message key.
+		$result = ap_ajax_responce( 'question_answer' );
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'message', $result );
+		$this->assertArrayHasKey( 'ap_responce', $result );
+
+		// Test for passing empty array, which should not contain message key.
+		$result = ap_ajax_responce( [] );
+		$this->assertIsArray( $result );
+		$this->assertArrayNotHasKey( 'message', $result );
+		$this->assertArrayHasKey( 'ap_responce', $result );
+
+		// Test for passing array with message datas, should contain snackbar and success keys as well.
+		$result = ap_ajax_responce( [ 'message' => 'success' ] );
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'message', $result );
+		$this->assertArrayHasKey( 'ap_responce', $result );
+		$this->assertArrayHasKey( 'snackbar', $result );
+		$this->assertArrayHasKey( 'success', $result );
+
+		// Test should contain the response message datas.
+		// Test 1.
+		$result = ap_ajax_responce( [ 'message' => 'success' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( 'success', $result['message'] );
+		$this->assertEquals( true, $result['ap_responce'] );
+		$this->assertEquals( 'Success', $result['snackbar']['message'] );
+		$this->assertEquals( 'success', $result['snackbar']['message_type'] );
+		$this->assertEquals( true, $result['success'] );
+
+		// Test 2.
+		$result = ap_ajax_responce( [ 'message' => 'something_wrong' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( 'something_wrong', $result['message'] );
+		$this->assertEquals( true, $result['ap_responce'] );
+		$this->assertEquals( 'Something went wrong, last action failed.', $result['snackbar']['message'] );
+		$this->assertEquals( 'error', $result['snackbar']['message_type'] );
+		$this->assertEquals( false, $result['success'] );
+
+		// Test 3.
+		$result = ap_ajax_responce( [ 'message' => 'cannot_vote_own_post' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( 'cannot_vote_own_post', $result['message'] );
+		$this->assertEquals( true, $result['ap_responce'] );
+		$this->assertEquals( 'You cannot vote on your own question or answer.', $result['snackbar']['message'] );
+		$this->assertEquals( 'warning', $result['snackbar']['message_type'] );
+		$this->assertEquals( true, $result['success'] );
+
+		// Test for additional data pass by filtering the ap_ajax_responce filter.
+		// Test before filter being applied.
+		$result = ap_ajax_responce( [] );
+		$this->assertIsArray( $result );
+		$this->assertArrayNotHasKey( 'additional_data', $result );
+		$this->assertArrayNotHasKey( 'other_additional_data', $result );
+
+		// Test after filter being applied.
+		add_filter( 'ap_ajax_responce', [ $this, 'apAjaxResponse' ] );
+		$result = ap_ajax_responce( [] );
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'additional_data', $result );
+		$this->assertArrayHasKey( 'other_additional_data', $result );
+		$this->assertEquals( 'AP Ajax Response Additional Data', $result['additional_data'] );
+		$this->assertEquals( 'Other AP Ajax Response Additional Data', $result['other_additional_data'] );
+
+		// Test after filter being removed.
+		remove_filter( 'ap_ajax_responce', [ $this, 'apAjaxResponse' ] );
+		$result = ap_ajax_responce( [] );
+		$this->assertIsArray( $result );
+		$this->assertArrayNotHasKey( 'additional_data', $result );
+		$this->assertArrayNotHasKey( 'other_additional_data', $result );
+	}
 }
