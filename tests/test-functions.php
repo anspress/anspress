@@ -2541,4 +2541,30 @@ class TestFunctions extends TestCase {
 		$this->assertNotEmpty( $user3_meta_cache );
 		$this->assertEquals( 'webmaster', $user3_meta_cache['nickname'][0] );
 	}
+
+	/**
+	 * @covers ::ap_get_addon_image
+	 */
+	public function testAPGetAddonImage() {
+		// Test 1.
+		ob_start();
+		$image_url = ap_get_addon_image( 'categories.php' );
+		ob_end_clean();
+		$this->assertNotEmpty( $image_url );
+		$this->assertStringContainsString( 'addons/categories/image.png', $image_url );
+
+		// Test 2.
+		ob_start();
+		$image_url = ap_get_addon_image( 'tags.php' );
+		ob_end_clean();
+		$this->assertNotEmpty( $image_url );
+		$this->assertStringContainsString( 'addons/tags/image.png', $image_url );
+
+		// Test 3.
+		ob_start();
+		$image_url = ap_get_addon_image( 'invalid-addon.php' );
+		ob_end_clean();
+		$this->assertEmpty( $image_url );
+		$this->assertNull( $image_url );
+	}
 }
