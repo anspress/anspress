@@ -2496,4 +2496,49 @@ class TestFunctions extends TestCase {
 		$this->assertIsString( $result );
 		$this->assertEquals( 'active', $result );
 	}
+
+	/**
+	 * @covers ::ap_post_author_pre_fetch
+	 */
+	public function testAPPostAuthorPreFetch() {
+		// Create some users.
+		$user_1 = $this->factory->user->create( [ 'user_login' => 'anspress' ] );
+		$user_2 = $this->factory->user->create( [ 'user_login' => 'question' ] );
+		$user_3 = $this->factory->user->create( [ 'user_login' => 'webmaster' ] );
+
+		// Call the required function.
+		ap_post_author_pre_fetch( [ $user_1, $user_2, $user_3 ] );
+
+		// Test begins for checking the user cache is updated or not.
+		// Test 1.
+		$user1_cache = wp_cache_get( $user_1, 'users', 'users' );
+		$this->assertNotEmpty( $user1_cache );
+		$this->assertEquals( $user_1, $user1_cache->ID );
+
+		// Test 2.
+		$user2_cache = wp_cache_get( $user_2, 'users', 'users' );
+		$this->assertNotEmpty( $user2_cache );
+		$this->assertEquals( $user_2, $user2_cache->ID );
+
+		// Test 3.
+		$user3_cache = wp_cache_get( $user_3, 'users', 'users' );
+		$this->assertNotEmpty( $user3_cache );
+		$this->assertEquals( $user_3, $user3_cache->ID );
+
+		// Test begins for checking the meta cache is updated or not.
+		// Test 1.
+		$user1_meta_cache = wp_cache_get( $user_1, 'user_meta' );
+		$this->assertNotEmpty( $user1_meta_cache );
+		$this->assertEquals( 'anspress', $user1_meta_cache['nickname'][0] );
+
+		// Test 2.
+		$user2_meta_cache = wp_cache_get( $user_2, 'user_meta' );
+		$this->assertNotEmpty( $user2_meta_cache );
+		$this->assertEquals( 'question', $user2_meta_cache['nickname'][0] );
+
+		// Test 3.
+		$user3_meta_cache = wp_cache_get( $user_3, 'user_meta' );
+		$this->assertNotEmpty( $user3_meta_cache );
+		$this->assertEquals( 'webmaster', $user3_meta_cache['nickname'][0] );
+	}
 }
