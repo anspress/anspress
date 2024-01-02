@@ -589,4 +589,45 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( 'Question title', $output );
 		$this->assertStringNotContainsString( 'There are no questions matching your query or you do not have permission to read them.', $output );
 	}
+
+	/**
+	 * @covers ::ap_post_actions_buttons
+	 */
+	public function testAPPostActionsButtons() {
+		// Test for user not logged in.
+		ob_start();
+		ap_post_actions_buttons();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+		$this->assertEquals( '', $output );
+
+		// Test for user logged in.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$nonce = wp_create_nonce( 'post-actions-' . $id );
+		ob_start();
+		ap_post_actions_buttons();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<postActions class="ap-dropdown">', $output );
+		$this->assertStringContainsString( '<button class="ap-btn apicon-gear ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" apquery="', $output );
+		$this->assertStringContainsString( '{&quot;post_id&quot;:' . $id . ',', $output );
+		$this->assertStringContainsString( '&quot;nonce&quot;:&quot;' . $nonce . '&quot;}', $output );
+		$this->assertStringContainsString( '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>', $output );
+
+		// Test 2.
+		$this->setRole( 'administrator' );
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$nonce = wp_create_nonce( 'post-actions-' . $id );
+		ob_start();
+		ap_post_actions_buttons();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<postActions class="ap-dropdown">', $output );
+		$this->assertStringContainsString( '<button class="ap-btn apicon-gear ap-actions-handle ap-dropdown-toggle" ap="actiontoggle" apquery="', $output );
+		$this->assertStringContainsString( '{&quot;post_id&quot;:' . $id . ',', $output );
+		$this->assertStringContainsString( '&quot;nonce&quot;:&quot;' . $nonce . '&quot;}', $output );
+		$this->assertStringContainsString( '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>', $output );
+	}
 }
