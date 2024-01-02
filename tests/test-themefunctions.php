@@ -462,4 +462,86 @@ class TestThemeFunctions extends TestCase {
 		$this->go_to( '/error-404' );
 		$this->assertEquals( '', ap_current_page() );
 	}
+
+	/**
+	 * @covers ::ap_register_page
+	 */
+	public function testAPRegisterPage() {
+		// Test 1.
+		$page_slug = 'test-page';
+		$page_title = 'Test Page';
+		$func = 'test_page';
+		$show_in_menu = true;
+		$is_private = true;
+
+		// Call the function.
+		ap_register_page( $page_slug, $page_title, $func, $show_in_menu, $is_private );
+
+		// Access the pages property.
+		$registered_page = anspress()->pages[ $page_slug ];
+
+		// Test begins.
+		$this->assertNotEmpty( $registered_page );
+		$this->assertEquals( $page_title, $registered_page['title'] );
+		$this->assertEquals( $func, $registered_page['func'] );
+		$this->assertEquals( $show_in_menu, $registered_page['show_in_menu'] );
+		$this->assertEquals( $is_private, $registered_page['private'] );
+
+		// Test 2.
+		$page_slug = 'test-page-1';
+		$page_title = 'Test Page 1';
+		$func = 'test_page_1';
+
+		// Call the function.
+		ap_register_page( $page_slug, $page_title, $func );
+
+		// Access the pages property.
+		$registered_page = anspress()->pages[ $page_slug ];
+
+		// Test begins.
+		$this->assertNotEmpty( $registered_page );
+		$this->assertEquals( $page_title, $registered_page['title'] );
+		$this->assertEquals( $func, $registered_page['func'] );
+		$this->assertEquals( true, $registered_page['show_in_menu'] );
+		$this->assertEquals( false, $registered_page['private'] );
+
+		// Test 3.
+		$page_slug = 'test-page-2';
+		$page_title = 'Test Page 2';
+		$func = 'test_page_2';
+		$show_in_menu = false;
+		$is_private = true;
+
+		// Call the function.
+		ap_register_page( $page_slug, $page_title, $func, $show_in_menu, $is_private );
+
+		// Access the pages property.
+		$registered_page = anspress()->pages[ $page_slug ];
+
+		// Test begins.
+		$this->assertNotEmpty( $registered_page );
+		$this->assertEquals( $page_title, $registered_page['title'] );
+		$this->assertEquals( $func, $registered_page['func'] );
+		$this->assertEquals( $show_in_menu, $registered_page['show_in_menu'] );
+		$this->assertEquals( $is_private, $registered_page['private'] );
+
+		// Test 4.
+		$page_slug = 'test-page-3';
+		$page_title = 'Test Page 3';
+		$func = function() {};
+		$is_private = true;
+
+		// Call the function.
+		ap_register_page( $page_slug, $page_title, $func, '', $is_private );
+
+		// Access the pages property.
+		$registered_page = anspress()->pages[ $page_slug ];
+
+		// Test begins.
+		$this->assertNotEmpty( $registered_page );
+		$this->assertEquals( $page_title, $registered_page['title'] );
+		$this->assertEquals( $func, $registered_page['func'] );
+		$this->assertEquals( false, $registered_page['show_in_menu'] );
+		$this->assertEquals( $is_private, $registered_page['private'] );
+	}
 }
