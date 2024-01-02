@@ -544,4 +544,49 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( false, $registered_page['show_in_menu'] );
 		$this->assertEquals( $is_private, $registered_page['private'] );
 	}
+
+	/**
+	 * @covers ::ap_page
+	 */
+	public function testAPPage() {
+		// Test for valid page.
+		anspress()->pages[ 'test-page' ] = [
+			'title'        => 'Test Page',
+			'func'         => function() {
+				echo 'Test Page Content';
+			},
+		];
+
+		// Fetch for the contents.
+		ob_start();
+		ap_page( 'test-page' );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Test Page Content', $output );
+
+		// Test for invalid page.
+		ob_start();
+		ap_page( 'invalid-page' );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Error 404', $output );
+
+		// Test for not adding any page value.
+		ob_start();
+		ap_page();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Ask question', $output );
+		$this->assertStringContainsString( 'There are no questions matching your query or you do not have permission to read them.', $output );
+
+		// Test for not adding any page value but question exists.
+		$this->factory->post->create( [
+			'post_title'   => 'Question title',
+			'post_content' => 'Question content',
+			'post_type'    => 'question',
+		] );
+		ob_start();
+		ap_page();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Ask question', $output );
+		$this->assertStringContainsString( 'Question title', $output );
+		$this->assertStringNotContainsString( 'There are no questions matching your query or you do not have permission to read them.', $output );
+	}
 }
