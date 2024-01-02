@@ -689,4 +689,62 @@ class TestThemeFunctions extends TestCase {
 		$this->assertArrayHasKey( 'multiple', $filters['order_by'] );
 		$this->assertArrayNotHasKey( 'test', $filters['order_by'] );
 	}
+
+	/**
+	 * @covers ::ap_menu_obejct
+	 */
+	public function testAPMenuObejct() {
+		// Test 1.
+		anspress()->pages = [];
+		$result = ap_menu_obejct();
+		$this->assertEmpty( $result );
+
+		// Test 2.
+		anspress()->pages = [
+			'ask'     => [
+				'title'        => 'Ask Page',
+				'func'         => 'ask_page_func',
+				'show_in_menu' => true,
+			],
+			'questions' => [
+				'title'        => 'Questions Page',
+				'func'         => 'questions_page_func',
+				'show_in_menu' => true,
+			],
+			'base' => [
+				'title'        => 'Base Page',
+				'func'         => 'base_page_func',
+				'show_in_menu' => true,
+			],
+		];
+		$result = ap_menu_obejct();
+		$this->assertNotEmpty( $result );
+		$this->assertCount( 3, $result );
+		$this->assertEquals( 'Ask Page', $result[0]->title );
+		$this->assertEquals( 'Questions Page', $result[1]->title );
+		$this->assertEquals( 'Base Page', $result[2]->title );
+
+		// Test 3.
+		anspress()->pages = [
+			'ask'     => [
+				'title'        => 'Ask Page',
+				'func'         => 'ask_page_func',
+				'show_in_menu' => true,
+			],
+			'questions' => [
+				'title'        => 'Questions Page',
+				'func'         => 'questions_page_func',
+				'show_in_menu' => false,
+			],
+			'base' => [
+				'title'        => 'Base Page',
+				'func'         => 'base_page_func',
+				'show_in_menu' => false,
+			],
+		];
+		$result = ap_menu_obejct();
+		$this->assertNotEmpty( $result );
+		$this->assertCount( 1, $result );
+		$this->assertEquals( 'Ask Page', $result[0]->title );
+	}
 }
