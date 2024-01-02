@@ -630,4 +630,63 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( '&quot;nonce&quot;:&quot;' . $nonce . '&quot;}', $output );
 		$this->assertStringContainsString( '"></button><ul class="ap-actions ap-dropdown-menu"></ul></postActions>', $output );
 	}
+
+	/**
+	 * Filter ap_get_list_filters function.
+	 */
+	public function APListFilters( $filters ) {
+		unset( $filters['order_by']['multiple'] );
+		$filters['order_by']['test'] = 'AnsPress Question Answer Plugin';
+
+		return $filters;
+	}
+
+	/**
+	 * @covers ::ap_get_list_filters
+	 */
+	public function testAPGetListFilters() {
+		// Test 1.
+		set_query_var( 'ap_s', [] );
+		$filters = ap_get_list_filters();
+
+		// Test begins.
+		$this->assertIsArray( $filters );
+		$this->assertArrayHasKey( 'order_by', $filters );
+		$this->assertArrayHasKey( 'title', $filters['order_by'] );
+		$this->assertArrayHasKey( 'items', $filters['order_by'] );
+		$this->assertArrayHasKey( 'multiple', $filters['order_by'] );
+		$this->assertEquals( 'Order By', $filters['order_by']['title'] );
+		$this->assertEmpty( $filters['order_by']['items'] );
+		$this->assertFalse( $filters['order_by']['multiple'] );
+
+		// Test 2.
+		set_query_var( 'ap_s', 'search_query' );
+		$filters = ap_get_list_filters();
+
+		// Test begins.
+		$this->assertIsArray( $filters );
+		$this->assertArrayHasKey( 'order_by', $filters );
+		$this->assertArrayHasKey( 'title', $filters['order_by'] );
+		$this->assertArrayHasKey( 'items', $filters['order_by'] );
+		$this->assertArrayHasKey( 'multiple', $filters['order_by'] );
+		$this->assertEquals( 'Order By', $filters['order_by']['title'] );
+		$this->assertEmpty( $filters['order_by']['items'] );
+		$this->assertFalse( $filters['order_by']['multiple'] );
+
+		// Test 3.
+		// With filter applied.
+		add_filter( 'ap_list_filters', [ $this, 'APListFilters' ] );
+		set_query_var( 'ap_s', [] );
+		$filters = ap_get_list_filters();
+		$this->assertArrayNotHasKey( 'multiple', $filters['order_by'] );
+		$this->assertArrayHasKey( 'test', $filters['order_by'] );
+		$this->assertEquals( 'AnsPress Question Answer Plugin', $filters['order_by']['test'] );
+
+		// With filter removed.
+		remove_filter( 'ap_list_filters', [ $this, 'APListFilters' ] );
+		set_query_var( 'ap_s', [] );
+		$filters = ap_get_list_filters();
+		$this->assertArrayHasKey( 'multiple', $filters['order_by'] );
+		$this->assertArrayNotHasKey( 'test', $filters['order_by'] );
+	}
 }
