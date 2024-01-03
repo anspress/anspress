@@ -904,4 +904,72 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 'new_q', $qameta->activities['action'] );
 		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
 	}
+
+	/**
+	 * @covers ::ap_update_post_activity_meta
+	 */
+	function testAPUpdatePostActivityMeta() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+
+		// Test with empty question id.
+		$output = ap_update_post_activity_meta( '', 'new_q', $user_id );
+		$this->assertFalse( $output );
+
+		// Test by passing the question id.
+		$id = $this->insert_question();
+		$output = ap_update_post_activity_meta( $id, 'new_q', $user_id );
+		$this->assertNotEmpty( $output );
+		$this->assertIsInt( $output );
+
+		// Get the qameta from the question to test assertions.
+		$qameta = ap_get_qameta( $id );
+		$this->assertNotEmpty( $qameta->activities );
+		$this->assertIsArray( $qameta->activities );
+		$this->assertArrayHasKey( 'type', $qameta->activities );
+		$this->assertArrayHasKey( 'user_id', $qameta->activities );
+		$this->assertArrayHasKey( 'date', $qameta->activities );
+		$this->assertEquals( 'new_q', $qameta->activities['type'] );
+		$this->assertEquals( $user_id, $qameta->activities['user_id'] );
+		$this->assertEquals( current_time( 'mysql' ), $qameta->activities['date'] );
+		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
+
+		// Test by passing the question id with different date.
+		$id = $this->insert_question();
+		$output = ap_update_post_activity_meta( $id, 'new_q', $user_id, false, '2024-01-01 12:00:00' );
+		$this->assertNotEmpty( $output );
+		$this->assertIsInt( $output );
+
+		// Get the qameta from the question to test assertions.
+		$qameta = ap_get_qameta( $id );
+		$this->assertNotEmpty( $qameta->activities );
+		$this->assertIsArray( $qameta->activities );
+		$this->assertArrayHasKey( 'type', $qameta->activities );
+		$this->assertArrayHasKey( 'user_id', $qameta->activities );
+		$this->assertArrayHasKey( 'date', $qameta->activities );
+		$this->assertEquals( 'new_q', $qameta->activities['type'] );
+		$this->assertEquals( $user_id, $qameta->activities['user_id'] );
+		$this->assertEquals( '2024-01-01 12:00:00', $qameta->activities['date'] );
+		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
+
+		// Test by passing the question id and appending to question enabled.
+		$id = $this->insert_answer();
+		$output = ap_update_post_activity_meta( $id->a, 'new_a', $user_id, true, '2024-01-01 12:00:00' );
+		$this->assertNotEmpty( $output );
+		$this->assertIsInt( $output );
+
+		// Get the qameta from the question to test assertions.
+		$qameta = ap_get_qameta( $id->q );
+		$this->assertNotEmpty( $qameta->activities );
+		$this->assertIsArray( $qameta->activities );
+		$this->assertIsArray( $qameta->activities['child'] );
+		$this->assertArrayHasKey( 'child', $qameta->activities );
+		$this->assertArrayHasKey( 'type', $qameta->activities['child'] );
+		$this->assertArrayHasKey( 'user_id', $qameta->activities['child'] );
+		$this->assertArrayHasKey( 'date', $qameta->activities['child'] );
+		$this->assertEquals( 'new_a', $qameta->activities['child']['type'] );
+		$this->assertEquals( $user_id, $qameta->activities['child']['user_id'] );
+		$this->assertEquals( '2024-01-01 12:00:00', $qameta->activities['child']['date'] );
+		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
+	}
 }
