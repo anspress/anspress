@@ -364,20 +364,26 @@ class TestQAMeta extends TestCase {
 
 		// Test for user roles.
 		$this->setRole( 'subscriber' );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
-		wp_delete_attachment( $attachment_id, true );
-		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
+		$id = $this->insert_question();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
+		$result = ap_update_post_attach_ids( $id );
+		$this->assertEquals( [ $attachment_id ], $result );
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( $attachment_id, $qameta->attach );
 
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
-		wp_delete_attachment( $attachment_id, true );
-		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
+		$id = $this->insert_question();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $id );
+		$result = ap_update_post_attach_ids( $id );
+		$this->assertEquals( [ $attachment_id ], $result );
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( $attachment_id, $qameta->attach );
 
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
-		wp_delete_attachment( $attachment_id, true );
-		$this->assertEquals( [], ap_update_post_attach_ids( $attachment_id ) );
+		$id = $this->insert_question();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $id );
+		$result = ap_update_post_attach_ids( $id );
+		$this->assertEquals( [ $attachment_id ], $result );
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( $attachment_id, $qameta->attach );
 	}
 
 	/**
