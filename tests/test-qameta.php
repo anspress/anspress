@@ -866,6 +866,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_post_activities
 	 */
 	public function testAPUpdatePostActivities() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		// Test for empty activities.
 		$id = $this->insert_question();
 
@@ -899,5 +902,6 @@ class TestQAMeta extends TestCase {
 		$this->assertIsArray( $qameta->activities );
 		$this->assertArrayHasKey( 'action', $qameta->activities );
 		$this->assertEquals( 'new_q', $qameta->activities['action'] );
+		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
 	}
 }
