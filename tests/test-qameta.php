@@ -975,4 +975,49 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( '2024-01-01 12:00:00', $qameta->activities['child']['date'] );
 		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
 	}
+
+	/**
+	 * @covers ::ap_update_user_unpublished_count
+	 */
+	public function testAPUpdateUserUnpublishedCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
+		// Test for not adding any user id.
+		$this->setRole( 'subscriber' );
+		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'draft' ] );
+		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'draft' ] );
+		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate' ] );
+		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish' ] );
+
+		// Call the function.
+		ap_update_user_unpublished_count();
+
+		// Test assertions.
+		$this->assertEquals( 2, get_user_meta( get_current_user_id(), '__ap_unpublished_questions', true ) );
+		$this->assertEquals( 2, get_user_meta( get_current_user_id(), '__ap_unpublished_answers', true ) );
+		$this->assertNotEquals( 3, get_user_meta( get_current_user_id(), '__ap_unpublished_questions', true ) );
+		$this->assertNotEquals( 3, get_user_meta( get_current_user_id(), '__ap_unpublished_answers', true ) );
+
+		// Test for adding user id.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'draft', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'trash', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'draft', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'trash', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'post', 'post_status' => 'trash', 'post_author' => $user_id ] );
+		$this->factory->post->create( [ 'post_type' => 'page', 'post_status' => 'draft', 'post_author' => $user_id ] );
+
+		// Call the function.
+		ap_update_user_unpublished_count( $user_id );
+
+		// Test assertions.
+		$this->assertEquals( 3, get_user_meta( $user_id, '__ap_unpublished_questions', true ) );
+		$this->assertEquals( 3, get_user_meta( $user_id, '__ap_unpublished_answers', true ) );
+	}
 }
