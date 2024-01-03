@@ -1070,4 +1070,50 @@ class TestQAQuery extends TestCase {
 		$this->assertObjectHasProperty( 'last_updated', $answer_obj );
 		$this->assertObjectHasProperty( 'is_new', $answer_obj );
 	}
+
+	/**
+	 * @covers ::ap_append_qameta
+	 */
+	public function testAPPppendQameta() {
+		// Get all qafields data in an array.
+		$qafields = [ 'post_id', 'selected', 'selected_id', 'comments', 'answers', 'ptype', 'featured', 'closed', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags', 'terms', 'attach', 'activities', 'fields', 'roles', 'last_updated', 'is_new' ];
+
+		// Test for normal post type.
+		$post = $this->factory->post->create_and_get(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		ap_append_qameta( $post );
+		foreach ( $qafields as $field ) {
+			$this->assertObjectNotHasProperty( $field, $post );
+		}
+
+		// Test for question post type.
+		$question = $this->factory->post->create_and_get(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		ap_append_qameta( $question );
+		foreach ( $qafields as $field ) {
+			$this->assertObjectHasProperty( $field, $question );
+		}
+
+		// Test for answer post type.
+		$answer = $this->factory->post->create_and_get(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+			)
+		);
+		ap_append_qameta( $answer );
+		foreach ( $qafields as $field ) {
+			$this->assertObjectHasProperty( $field, $answer );
+		}
+	}
 }
