@@ -282,4 +282,106 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 0, $answer_count_flag );
 	}
 
+	/**
+	 * @covers ::ap_update_total_flags_count
+	 */
+	public function testAPUpdateTotalFlagsCount() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		$id = $this->insert_answer();
+		// Add and update the flag count.
+		ap_add_flag( $id->q );
+		ap_update_flags_count( $id->q );
+		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->a );
+
+		// Call the function.
+		ap_update_total_flags_count();
+
+		// Test begins.
+		$anspress_global_option = get_option( 'anspress_global', [] );
+		$this->assertEquals( 1, $anspress_global_option['flagged_questions']->publish );
+		$this->assertEquals( 1, $anspress_global_option['flagged_questions']->total );
+		$this->assertEquals( 1, $anspress_global_option['flagged_answers']->publish );
+		$this->assertEquals( 1, $anspress_global_option['flagged_answers']->total );
+
+		// Text with different post status.
+		$q_id1 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$q_id2 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+				'post_status'  => 'private',
+			)
+		);
+		$q_id3 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$a_id1 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id1,
+				'post_status'  => 'moderate',
+			)
+		);
+		$a_id2 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id2,
+				'post_status'  => 'private',
+			)
+		);
+		$a_id3 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $q_id3,
+			)
+		);
+		// Add and update the flag count.
+		ap_add_flag( $q_id1 );
+		ap_add_flag( $q_id2 );
+		ap_add_flag( $q_id3 );
+		ap_update_flags_count( $q_id1 );
+		ap_update_flags_count( $q_id2 );
+		ap_update_flags_count( $q_id3 );
+		ap_add_flag( $a_id1 );
+		ap_add_flag( $a_id2 );
+		ap_add_flag( $a_id3 );
+		ap_update_flags_count( $a_id1 );
+		ap_update_flags_count( $a_id2 );
+		ap_update_flags_count( $a_id3 );
+
+		// Call the function.
+		ap_update_total_flags_count();
+
+		// Test begins.
+		$anspress_global_option = get_option( 'anspress_global', [] );
+		$this->assertEquals( 1, $anspress_global_option['flagged_questions']->moderate );
+		$this->assertEquals( 1, $anspress_global_option['flagged_questions']->private );
+		$this->assertEquals( 2, $anspress_global_option['flagged_questions']->publish );
+		$this->assertEquals( 4, $anspress_global_option['flagged_questions']->total );
+		$this->assertEquals( 1, $anspress_global_option['flagged_answers']->moderate );
+		$this->assertEquals( 1, $anspress_global_option['flagged_answers']->private );
+		$this->assertEquals( 2, $anspress_global_option['flagged_answers']->publish );
+		$this->assertEquals( 4, $anspress_global_option['flagged_answers']->total );
+	}
 }
