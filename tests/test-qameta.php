@@ -783,4 +783,82 @@ class TestQAMeta extends TestCase {
 		$question_get_qameta = ap_get_qameta( $id );
 		$this->assertNotEmpty( $question_get_qameta->terms );
 	}
+
+	/**
+	 * @covers ::ap_get_post_field
+	 * @covers ::ap_post_field
+	 */
+	public function testAPGetPostField() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
+		// Add question.
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+
+		// Test starts.
+		$this->assertEquals( 'Question title', ap_get_post_field( 'post_title', $id ) );
+		$this->assertEquals( 'Question Content', ap_get_post_field( 'post_content', $id ) );
+		$this->assertEquals( '', ap_get_post_field( 'fields', $id ) );
+		ob_start();
+		ap_post_field( 'post_title', $id );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Question title', $output );
+		ob_start();
+		ap_post_field( 'post_content', $id );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Question Content', $output );
+		ob_start();
+		ap_post_field( 'fields', $id );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output );
+
+		// After adding the qameta field.
+		ap_insert_qameta( $id, [ 'fields' => [ 'anonymous_name' => 'Rahul' ] ] );
+		$post_fields = ap_get_post_field( 'fields', $id );
+		$this->assertEquals( 'Rahul', $post_fields['anonymous_name'] );
+		$this->assertEquals( [ 'anonymous_name' => 'Rahul' ], $post_fields );
+
+		// Test for invalid value.
+		$this->assertEquals( '', ap_get_post_field( '', $id ) );
+		$this->assertEquals( '', ap_get_post_field( 'invalid_field', $id ) );
+		ob_start();
+		ap_post_field( '', $id );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output );
+		ob_start();
+		ap_post_field( 'invalid_field', $id );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output );
+
+		// Test for null post id without visting the question page.
+		$this->assertEquals( '', ap_get_post_field( 'post_title' ) );
+		$this->assertEquals( '', ap_get_post_field( 'post_content' ) );
+		ob_start();
+		ap_post_field( 'post_title' );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output );
+		ob_start();
+		ap_post_field( 'post_content' );
+		$output = ob_get_clean();
+		$this->assertEquals( '', $output );
+
+		// Test for null post id by visting the question page.
+		$this->go_to( '/?post_type=question&p=' . $id );
+		$this->assertEquals( 'Question title', ap_get_post_field( 'post_title' ) );
+		$this->assertEquals( 'Question Content', ap_get_post_field( 'post_content' ) );
+		ob_start();
+		ap_post_field( 'post_title' );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Question title', $output );
+		ob_start();
+		ap_post_field( 'post_content' );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Question Content', $output );
+	}
 }
