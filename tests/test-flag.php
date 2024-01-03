@@ -384,4 +384,72 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 2, $anspress_global_option['flagged_answers']->publish );
 		$this->assertEquals( 4, $anspress_global_option['flagged_answers']->total );
 	}
+
+	/**
+	 * @covers ::ap_flag_btn_args
+	 */
+	public function testAPFlagBtnArgs() {
+		// Test for not logged in user.
+		$id = $this->insert_question();
+		$this->assertNull( ap_flag_btn_args() );
+		$this->assertNull( ap_flag_btn_args( $id ) );
+
+		// Test for logged in user.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$flag_button_args = ap_flag_btn_args( $id );
+
+		// Test begins.
+		$this->assertIsArray( $flag_button_args );
+		$this->assertArrayHasKey( 'cb', $flag_button_args );
+		$this->assertArrayHasKey( 'icon', $flag_button_args );
+		$this->assertArrayHasKey( 'query', $flag_button_args );
+		$this->assertArrayHasKey( '__nonce', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'post_id', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'label', $flag_button_args );
+		$this->assertArrayHasKey( 'title', $flag_button_args );
+		$this->assertArrayHasKey( 'count', $flag_button_args );
+		$this->assertArrayHasKey( 'active', $flag_button_args );
+
+		// Test for values.
+		$nonce = wp_create_nonce( 'flag_' . $id );
+		$this->assertEquals( 'flag', $flag_button_args['cb'] );
+		$this->assertEquals( 'apicon-check', $flag_button_args['icon'] );
+		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
+		$this->assertEquals( $id, $flag_button_args['query']['post_id'] );
+		$this->assertEquals( 'Flag', $flag_button_args['label'] );
+		$this->assertEquals( 'Flag this post', $flag_button_args['title'] );
+		$this->assertEquals( 0, $flag_button_args['count'] );
+		$this->assertFalse( $flag_button_args['active'] );
+
+		// Test for already logged in user but the user is already flagged.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		ap_add_flag( $id );
+		ap_update_flags_count( $id );
+		$flag_button_args = ap_flag_btn_args( $id );
+
+		// Test begins.
+		$this->assertIsArray( $flag_button_args );
+		$this->assertArrayHasKey( 'cb', $flag_button_args );
+		$this->assertArrayHasKey( 'icon', $flag_button_args );
+		$this->assertArrayHasKey( 'query', $flag_button_args );
+		$this->assertArrayHasKey( '__nonce', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'post_id', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'label', $flag_button_args );
+		$this->assertArrayHasKey( 'title', $flag_button_args );
+		$this->assertArrayHasKey( 'count', $flag_button_args );
+		$this->assertArrayHasKey( 'active', $flag_button_args );
+
+		// Test for values.
+		$nonce = wp_create_nonce( 'flag_' . $id );
+		$this->assertEquals( 'flag', $flag_button_args['cb'] );
+		$this->assertEquals( 'apicon-check', $flag_button_args['icon'] );
+		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
+		$this->assertEquals( $id, $flag_button_args['query']['post_id'] );
+		$this->assertEquals( 'Flag', $flag_button_args['label'] );
+		$this->assertEquals( 'You have flagged this post', $flag_button_args['title'] );
+		$this->assertEquals( 1, $flag_button_args['count'] );
+		$this->assertTrue( $flag_button_args['active'] );
+	}
 }
