@@ -861,4 +861,43 @@ class TestQAMeta extends TestCase {
 		$output = ob_get_clean();
 		$this->assertEquals( 'Question Content', $output );
 	}
+
+	/**
+	 * @covers ::ap_update_post_activities
+	 */
+	public function testAPUpdatePostActivities() {
+		// Test for empty activities.
+		$id = $this->insert_question();
+
+		// Call the function.
+		$result = ap_update_post_activities( $id );
+
+		// Test begins.
+		$this->assertNotEmpty( $result );
+		$this->assertIsInt( $result );
+
+		// Get the qameta from the question to test assertions.
+		$qameta = ap_get_qameta( $id );
+		$this->assertEmpty( $qameta->activities );
+
+		// Test for passing activities.
+		$id = $this->insert_question();
+		$activities = [
+			'action' => 'new_q',
+		];
+
+		// Call the function.
+		$result = ap_update_post_activities( $id, $activities );
+
+		// Test begins.
+		$this->assertNotEmpty( $result );
+		$this->assertIsInt( $result );
+
+		// Get the qameta from the question to test assertions.
+		$qameta = ap_get_qameta( $id );
+		$this->assertNotEmpty( $qameta->activities );
+		$this->assertIsArray( $qameta->activities );
+		$this->assertArrayHasKey( 'action', $qameta->activities );
+		$this->assertEquals( 'new_q', $qameta->activities['action'] );
+	}
 }
