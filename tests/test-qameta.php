@@ -909,6 +909,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_post_activity_meta
 	 */
 	function testAPUpdatePostActivityMeta() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
 
