@@ -239,4 +239,20 @@ class TestHooks extends TestCase {
 		$post_obj    = get_post( $answer_id );
 		$this->assertTrue( null !== ap_new_subscriber( $post_obj->post_author, 'answer_' . $answer_id->a, $post_obj->post_parent ) );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::add_ap_tables
+	 */
+	public function testAddAPTables() {
+		// Call the method.
+		$this->assertEquals( 10, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
+		\AnsPress_Hooks::add_ap_tables();
+
+		// Test begins.
+		global $wpdb;
+		$expected_tables = [ 'ap_qameta', 'ap_votes', 'ap_views', 'ap_reputations', 'ap_subscribers', 'ap_activity', 'ap_reputation_events' ];
+		foreach ( $expected_tables as $table ) {
+			$this->assertTrue( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}{$table}'" ) === $wpdb->prefix . $table );
+		}
+	}
 }
