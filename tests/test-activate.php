@@ -108,4 +108,37 @@ class TestActivate extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
 	}
+
+	/**
+	 * @covers AP_Activate::qameta_table
+	 */
+	public function testQametaTable() {
+		global $wpdb;
+
+		// Call the qameta_table method.
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->qameta_table();
+
+		// Test begins.
+		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->ap_qameta}'" ) == $wpdb->ap_qameta;
+		$this->assertTrue( $table_exists );
+
+		// Test if the table has the expected columns.
+		$columns = $wpdb->get_col( "DESCRIBE {$wpdb->ap_qameta}" );
+		$expected_columns = [ 'post_id', 'selected_id', 'comments', 'answers', 'ptype', 'featured', 'selected', 'votes_up', 'votes_down', 'subscribers', 'views', 'closed', 'flags', 'terms', 'attach', 'activities', 'fields', 'roles', 'last_updated' ];
+		foreach ( $expected_columns as $column ) {
+			$this->assertContains( $column, $columns );
+		}
+
+		// Test if the table has the expected primary key.
+		$primary_key = null;
+		$columns_info = $wpdb->get_results( "DESCRIBE {$wpdb->ap_qameta}" );
+		foreach ( $columns_info as $column ) {
+			if ( 'PRI' === $column->Key ) {
+				$primary_key = $column->Field;
+				break;
+			}
+		}
+		$this->assertEquals( 'post_id', $primary_key );
+	}
 }
