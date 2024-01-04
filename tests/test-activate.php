@@ -39,4 +39,14 @@ class TestActivate extends TestCase {
 		$this->assertTrue( method_exists( 'AP_Activate', 'network_activate' ) );
 		$this->assertTrue( method_exists( 'AP_Activate', 'reactivate_addons' ) );
 	}
+
+	/**
+	 * @covers AP_Activate::get_instance
+	 */
+	public function testGetInstance() {
+		$instacne1 = \AP_Activate::get_instance();
+		$this->assertInstanceOf( 'AP_Activate', $instacne1 );
+		$instacne2 = \AP_Activate::get_instance();
+		$this->assertSame( $instacne1, $instacne2 );
+	}
 }
