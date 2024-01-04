@@ -333,4 +333,64 @@ class TestActivate extends TestCase {
 		}
 		$this->assertTrue( $index_exists );
 	}
+
+	/**
+	 * @covers AP_Activate::activity_table
+	 */
+	public function testActivityTable() {
+		global $wpdb;
+
+		// Call the activity_table method.
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->activity_table();
+
+		// Test begins.
+		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->ap_activity}'" ) == $wpdb->ap_activity;
+		$this->assertTrue( $table_exists );
+
+		// Test if the table has the expected columns.
+		$columns = $wpdb->get_col( "DESCRIBE {$wpdb->ap_activity}" );
+		$expected_columns = [ 'activity_id', 'activity_action', 'activity_q_id', 'activity_a_id', 'activity_c_id', 'activity_user_id', 'activity_date' ];
+		foreach ( $expected_columns as $column ) {
+			$this->assertContains( $column, $columns );
+		}
+
+		// Test if the table has the expected primary key.
+		$primary_key = null;
+		$columns_info = $wpdb->get_results( "DESCRIBE {$wpdb->ap_activity}" );
+		foreach ( $columns_info as $column ) {
+			if ( 'PRI' === $column->Key ) {
+				$primary_key = $column->Field;
+				break;
+			}
+		}
+		$this->assertEquals( 'activity_id', $primary_key );
+
+		// Test if the table has the expected index.
+		$index_exists = false;
+		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_activity}" );
+		foreach ( $indexes_info as $index ) {
+			if ( 'activity_q_id' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+		$index_exists = false;
+		foreach ( $indexes_info as $index ) {
+			if ( 'activity_a_id' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+		$index_exists = false;
+		foreach ( $indexes_info as $index ) {
+			if ( 'activity_user_id' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+	}
 }
