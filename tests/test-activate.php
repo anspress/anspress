@@ -185,4 +185,48 @@ class TestActivate extends TestCase {
 		}
 		$this->assertTrue( $index_exists );
 	}
+
+	/**
+	 * @covers AP_Activate::views_table
+	 */
+	public function testViewsTable() {
+		global $wpdb;
+
+		// Call the views_table method.
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->views_table();
+
+		// Test begins.
+		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->ap_views}'" ) == $wpdb->ap_views;
+		$this->assertTrue( $table_exists );
+
+		// Test if the table has the expected columns.
+		$columns = $wpdb->get_col( "DESCRIBE {$wpdb->ap_views}" );
+		$expected_columns = [ 'view_id', 'view_user_id', 'view_type', 'view_ref_id', 'view_ip', 'view_date' ];
+		foreach ( $expected_columns as $column ) {
+			$this->assertContains( $column, $columns );
+		}
+
+		// Test if the table has the expected primary key.
+		$primary_key = null;
+		$columns_info = $wpdb->get_results( "DESCRIBE {$wpdb->ap_views}" );
+		foreach ( $columns_info as $column ) {
+			if ( 'PRI' === $column->Key ) {
+				$primary_key = $column->Field;
+				break;
+			}
+		}
+		$this->assertEquals( 'view_id', $primary_key );
+
+		// Test if the table has the expected index.
+		$index_exists = false;
+		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_views}" );
+		foreach ( $indexes_info as $index ) {
+			if ( 'view_user_id' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+	}
 }
