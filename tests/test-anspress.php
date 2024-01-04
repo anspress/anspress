@@ -422,5 +422,4 @@ class TestAnsPress extends TestCase {
 		$this->assertEquals( 10, has_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ] ) );
 		$this->assertEquals( 10, has_action( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ] ) );
 	}
-
 }
