@@ -393,4 +393,56 @@ class TestActivate extends TestCase {
 		}
 		$this->assertTrue( $index_exists );
 	}
+
+	/**
+	 * @covers AP_Activate::reputation_events_table
+	 */
+	public function testReputationEventsTable() {
+		global $wpdb;
+
+		// Call the reputation_events_table method.
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->reputation_events_table();
+
+		// Test begins.
+		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->ap_reputation_events}'" ) == $wpdb->ap_reputation_events;
+		$this->assertTrue( $table_exists );
+
+		// Test if the table has the expected columns.
+		$columns = $wpdb->get_col( "DESCRIBE {$wpdb->ap_reputation_events}" );
+		$expected_columns = [ 'rep_events_id', 'slug', 'icon', 'label', 'description', 'activity', 'parent', 'points' ];
+		foreach ( $expected_columns as $column ) {
+			$this->assertContains( $column, $columns );
+		}
+
+		// Test if the table has the expected primary key.
+		$primary_key = null;
+		$columns_info = $wpdb->get_results( "DESCRIBE {$wpdb->ap_reputation_events}" );
+		foreach ( $columns_info as $column ) {
+			if ( 'PRI' === $column->Key ) {
+				$primary_key = $column->Field;
+				break;
+			}
+		}
+		$this->assertEquals( 'rep_events_id', $primary_key );
+
+		// Test if the table has the expected index.
+		$index_exists = false;
+		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputation_events}" );
+		foreach ( $indexes_info as $index ) {
+			if ( 'points_key' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+		$index_exists = false;
+		foreach ( $indexes_info as $index ) {
+			if ( 'parent_key' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+	}
 }
