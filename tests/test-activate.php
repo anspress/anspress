@@ -445,4 +445,35 @@ class TestActivate extends TestCase {
 		}
 		$this->assertTrue( $index_exists );
 	}
+
+	/**
+	 * @covers AP_Activate::insert_tables
+	 */
+	public function testInsertTables() {
+		global $wpdb;
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->insert_tables();
+
+		// Test begins.
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_qameta' ) );
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_votes' ) );
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_views' ) );
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_reputations' ) );
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_subscribers' ) );
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_activity' ) );
+		$this->assertTrue( $this->tableExists( $wpdb->prefix . 'ap_reputation_events' ) );
+	}
+
+	/**
+	 * Test for table exists.
+	 *
+	 * @param string $table_name Table name.
+	 *
+	 * @return bool
+	 */
+	private function tableExists( $table_name ) {
+		global $wpdb;
+		$sql = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table_name ) );
+		return (bool) $wpdb->get_var( $sql );
+	}
 }
