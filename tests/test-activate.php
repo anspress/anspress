@@ -2,7 +2,6 @@
 
 namespace Anspress\Tests;
 
-use AP_Activate;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestActivate extends TestCase {
@@ -83,5 +82,30 @@ class TestActivate extends TestCase {
 		$this->assertArrayNotHasKey( 'user_page_slug_answers', $updated_options );
 		$this->assertFalse( wp_cache_get( 'anspress_opt', 'ap' ) );
 		$this->assertFalse( wp_cache_get( 'ap_default_options', 'ap' ) );
+	}
+
+	/**
+	 * @covers AP_Activate::enable_addons
+	 */
+	public function testEnableAddons() {
+		// By default these addons are activated on plugin activation,
+		// so we need to deactivate them first.
+		ap_deactivate_addon( 'reputation.php' );
+		ap_deactivate_addon( 'email.php' );
+		ap_deactivate_addon( 'categories.php' );
+
+		// Test if the addons are not active.
+		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'email.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'categories.php' ) );
+
+		// Call the enable_addons method.
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->enable_addons();
+
+		// Test begins.
+		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
 	}
 }
