@@ -141,4 +141,48 @@ class TestActivate extends TestCase {
 		}
 		$this->assertEquals( 'post_id', $primary_key );
 	}
+
+	/**
+	 * @covers AP_Activate::votes_table
+	 */
+	public function testVotesTable() {
+		global $wpdb;
+
+		// Call the votes_table method.
+		$ap_activate = \AP_Activate::get_instance();
+		$ap_activate->votes_table();
+
+		// Test begins.
+		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->ap_votes}'" ) == $wpdb->ap_votes;
+		$this->assertTrue( $table_exists );
+
+		// Test if the table has the expected columns.
+		$columns = $wpdb->get_col( "DESCRIBE {$wpdb->ap_votes}" );
+		$expected_columns = [ 'vote_id', 'vote_post_id', 'vote_user_id', 'vote_rec_user', 'vote_type', 'vote_value', 'vote_date' ];
+		foreach ( $expected_columns as $column ) {
+			$this->assertContains( $column, $columns );
+		}
+
+		// Test if the table has the expected primary key.
+		$primary_key = null;
+		$columns_info = $wpdb->get_results( "DESCRIBE {$wpdb->ap_votes}" );
+		foreach ( $columns_info as $column ) {
+			if ( 'PRI' === $column->Key ) {
+				$primary_key = $column->Field;
+				break;
+			}
+		}
+		$this->assertEquals( 'vote_id', $primary_key );
+
+		// Test if the table has the expected index.
+		$index_exists = false;
+		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_votes}" );
+		foreach ( $indexes_info as $index ) {
+			if ( 'vote_post_id' === $index->Key_name ) {
+				$index_exists = true;
+				break;
+			}
+		}
+		$this->assertTrue( $index_exists );
+	}
 }
