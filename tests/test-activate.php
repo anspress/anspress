@@ -2,6 +2,7 @@
 
 namespace Anspress\Tests;
 
+use AP_Activate;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestActivate extends TestCase {
@@ -48,5 +49,39 @@ class TestActivate extends TestCase {
 		$this->assertInstanceOf( 'AP_Activate', $instacne1 );
 		$instacne2 = \AP_Activate::get_instance();
 		$this->assertSame( $instacne1, $instacne2 );
+	}
+
+	/**
+	 * @covers AP_Activate::delete_options
+	 */
+	public function testDeleteOptions() {
+		$ap_activate = \AP_Activate::get_instance();
+
+		// Setup initial values and test.
+		$options = array(
+			'user_page_title_questions' => 'Title Questions',
+			'user_page_slug_questions'  => 'slug-questions',
+			'user_page_title_answers'   => 'Title Answers',
+			'user_page_slug_answers'    => 'slug-answers',
+		);
+		update_option( 'anspress_opt', $options );
+		$initial_options = get_option( 'anspress_opt', array() );
+		$this->assertEquals( $options, get_option( 'anspress_opt' ) );
+		$this->assertArrayHasKey( 'user_page_title_questions', $initial_options );
+		$this->assertArrayHasKey( 'user_page_slug_questions', $initial_options );
+		$this->assertArrayHasKey( 'user_page_title_answers', $initial_options );
+		$this->assertArrayHasKey( 'user_page_slug_answers', $initial_options );
+
+		// Call the delete_options method and test.
+		$ap_activate->delete_options();
+		$updated_options = get_option( 'anspress_opt', array() );
+		$this->assertEmpty( $updated_options );
+		$this->assertEquals( array(), get_option( 'anspress_opt' ) );
+		$this->assertArrayNotHasKey( 'user_page_title_questions', $updated_options );
+		$this->assertArrayNotHasKey( 'user_page_slug_questions', $updated_options );
+		$this->assertArrayNotHasKey( 'user_page_title_answers', $updated_options );
+		$this->assertArrayNotHasKey( 'user_page_slug_answers', $updated_options );
+		$this->assertFalse( wp_cache_get( 'anspress_opt', 'ap' ) );
+		$this->assertFalse( wp_cache_get( 'ap_default_options', 'ap' ) );
 	}
 }
