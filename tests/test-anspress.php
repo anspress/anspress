@@ -422,4 +422,31 @@ class TestAnsPress extends TestCase {
 		$this->assertEquals( 10, has_action( 'wpmu_new_blog', [ 'AnsPress_Init', 'create_blog' ] ) );
 		$this->assertEquals( 10, has_action( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ] ) );
 	}
+
+	/**
+	 * @covers AnsPress::instance
+	 */
+	public function testInstanceInitialized() {
+		$anspress_instance = \AnsPress::instance();
+		$this->assertNotNull( $anspress_instance );
+		$this->assertInstanceOf( 'AnsPress', $anspress_instance );
+		$anspress_instance2 = \AnsPress::instance();
+		$this->assertSame( $anspress_instance, $anspress_instance2 );
+
+		// Test for others.
+		$this->assertTrue( method_exists( $anspress_instance, 'setup_constants' ) );
+		$this->assertTrue( method_exists( $anspress_instance, 'includes' ) );
+		$this->assertInstanceOf( 'AnsPress\Session', $anspress_instance->session );
+		$this->assertTrue( method_exists( $anspress_instance, 'site_include' ) );
+		$this->assertTrue( method_exists( $anspress_instance, 'ajax_hooks' ) );
+		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'init' ) );
+		$this->assertTrue( class_exists( 'AP_Roles' ) );
+		require_once ANSPRESS_DIR . 'admin/anspress-admin.php';
+		require_once ANSPRESS_DIR . 'admin/class-list-table-hooks.php';
+		$this->assertTrue( method_exists( 'AnsPress_Admin', 'init' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'init' ) );
+		$this->assertTrue( class_exists( 'AnsPress_Process_Form' ) );
+		add_action( 'anspress_loaded', function() {} );
+		$this->assertTrue( did_action( 'anspress_loaded' ) > 0 );
+	}
 }
