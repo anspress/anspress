@@ -747,4 +747,22 @@ class TestThemeFunctions extends TestCase {
 		$this->assertCount( 1, $result );
 		$this->assertEquals( 'Ask Page', $result[0]->title );
 	}
+
+	/**
+	 * @covers ::ap_ajax_tinymce_assets
+	 */
+	public function testAPAjaxTinyMCEAssets() {
+		ob_start();
+		ap_ajax_tinymce_assets();
+		$output = ob_get_clean();
+
+		// Test for assertions.
+		$this->assertStringContainsString( 'anspress-common-js', $output );
+		$this->assertStringContainsString( 'anspress-question-js', $output );
+		$this->assertStringContainsString( 'anspress-ask-js', $output );
+		$this->assertStringContainsString( 'anspress-list-js', $output );
+		$this->assertStringContainsString( 'anspress-notifications-js', $output );
+		$this->assertStringContainsString( 'anspress-theme-js', $output );
+		$this->assertMatchesRegularExpression( '/<script.*<\/script>/', $output );
+	}
 }
