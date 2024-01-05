@@ -449,4 +449,12 @@ class TestAnsPress extends TestCase {
 		add_action( 'anspress_loaded', function() {} );
 		$this->assertTrue( did_action( 'anspress_loaded' ) > 0 );
 	}
+
+	/**
+	 * @covers AnsPress_Init::load_anspress
+	 */
+	public function testLoadAnsPress() {
+		add_action( 'before_loading_anspress', function() {} );
+		$this->assertTrue( did_action( 'before_loading_anspress' ) > 0 );
+	}
 }
