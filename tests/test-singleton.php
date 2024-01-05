@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class Test_Singleton extends TestCase {
+class TestSingleton extends TestCase {
 
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( '\AnsPress\Singleton', 'init' ) );
