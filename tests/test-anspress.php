@@ -457,4 +457,51 @@ class TestAnsPress extends TestCase {
 		add_action( 'before_loading_anspress', function() {} );
 		$this->assertTrue( did_action( 'before_loading_anspress' ) > 0 );
 	}
+
+	/**
+	 * @covers AnsPress_Init::drop_blog_tables
+	 */
+	public function testdrop_blog_tables() {
+		global $wpdb;
+		$instance = new \AnsPress_Init();
+
+		// Test 1.
+		$blog_id = 2;
+		$GLOBALS['blog_id'] = $blog_id;
+		$result = $instance::drop_blog_tables( [], $blog_id );
+		$this->assertNotEmpty( $result );
+		$this->assertEquals(
+			[
+				$wpdb->prefix . 'ap_views',
+				$wpdb->prefix . 'ap_qameta',
+				$wpdb->prefix . 'ap_activity',
+				$wpdb->prefix . 'ap_votes',
+			],
+			$result
+		);
+
+		// Test 2.
+		$blog_id = 1;
+		$GLOBALS['blog_id'] = $blog_id;
+		$result = $instance::drop_blog_tables( [], $blog_id );
+		$this->assertEmpty( $result );
+
+		// Test 3.
+		$blog_id = 3;
+		$GLOBALS['blog_id'] = $blog_id;
+		$result = $instance::drop_blog_tables( [], 11 );
+		$this->assertEmpty( $result );
+
+		// Test 4.
+		$blog_id = 4;
+		$GLOBALS['blog_id'] = $blog_id;
+		$result = $instance::drop_blog_tables( [], '' );
+		$this->assertEmpty( $result );
+
+		// Test 5.
+		$blog_id = 5;
+		$GLOBALS['blog_id'] = $blog_id;
+		$result = $instance::drop_blog_tables( [], 'test' );
+		$this->assertEmpty( $result );
+	}
 }
