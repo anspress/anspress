@@ -182,4 +182,59 @@ class TestThemeClass extends TestCase {
 		$this->assertContains( 'anspress-content', $result );
 		$this->assertContains( 'ap-page-activities', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::question_answer_post_class
+	 */
+	public function testQuestionAnswerPostClass() {
+		// Test without visiting any page.
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertEmpty( $result );
+
+		// Test with basic page.
+		$post_id = $this->factory()->post->create();
+		$this->go_to( '/?post_type=post&id=' . $post_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertEmpty( $result );
+
+		// Test for question post type.
+		$question_id = $this->insert_question();
+
+		// For question without answer.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'answer-count-0', $result );
+
+		// For question with answer.
+		$a_id1 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'answer-count-1', $result );
+		$a_id2 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'answer-count-2', $result );
+
+		// For question with selected answer.
+		ap_set_selected_answer( $question_id, $a_id1 );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'answer-selected', $result );
+
+		// For question with featured question.
+		ap_set_featured_question( $question_id );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'featured-question', $result );
+
+		// Test for answer post type.
+		$id = $this->insert_answers( [], [], 5 );
+
+		// For answer with selected answer.
+		ap_set_selected_answer( $id['question'], $id['answers'][3] );
+		ap_update_answer_selected( $id['answers'][3] );
+		$this->go_to( '/?post_type=answer&p=' . $id['answers'][3] );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'best-answer', $result );
+	}
 }
