@@ -105,4 +105,81 @@ class TestThemeClass extends TestCase {
 		$this->assertNotContains( 'hentry', $result );
 		$this->assertContains( 'other-classes', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::body_class
+	 */
+	public function testBodyClass() {
+		// Test without visiting any page.
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertEmpty( $result );
+
+		// Test with basic page.
+		$post_id = $this->factory()->post->create();
+		$this->go_to( '/?post_type=post&id=' . $post_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertEmpty( $result );
+
+		// Test with AnsPress related pages.
+		// Single question page.
+		$question_id = $this->insert_question();
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-question', $result );
+
+		// Single answer page.
+		$answer_id = $this->insert_answer( $question_id );
+		$this->go_to( ap_get_short_link( [ 'ap_a' => $answer_id->a ] ) );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+
+		// Base page.
+		$base_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'base_page', $base_page_id );
+		$this->go_to( '/?page_id=' . $base_page_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-base', $result );
+
+		// Ask page.
+		$ask_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'ask_page', $ask_page_id );
+		$this->go_to( '/?page_id=' . $ask_page_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-ask', $result );
+
+		// User page.
+		$user_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'user_page', $user_page_id );
+		$this->go_to( '/?page_id=' . $user_page_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-user', $result );
+
+		// Categories page.
+		$categories_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'categories_page', $categories_page_id );
+		$this->go_to( '/?page_id=' . $categories_page_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-categories', $result );
+
+		// Tags page.
+		$tags_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'tags_page', $tags_page_id );
+		$this->go_to( '/?page_id=' . $tags_page_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-tags', $result );
+
+		// Activities page.
+		$activities_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'activities_page', $activities_page_id );
+		$this->go_to( '/?page_id=' . $activities_page_id );
+		$result = \AnsPress_Theme::body_class( [] );
+		$this->assertContains( 'anspress-content', $result );
+		$this->assertContains( 'ap-page-activities', $result );
+	}
 }
