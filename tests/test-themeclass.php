@@ -237,4 +237,28 @@ class TestThemeClass extends TestCase {
 		$result = \AnsPress_Theme::question_answer_post_class( [] );
 		$this->assertContains( 'best-answer', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::ap_before_html_body
+	 */
+	public function testAPBeforeHtmlBody() {
+		// Test with no user login.
+		ob_start();
+
+		\AnsPress_Theme::ap_before_html_body();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+
+		// Test with user login.
+		$this->setRole( 'subscriber' );
+		ob_start();
+		\AnsPress_Theme::ap_before_html_body();
+		$output = ob_get_clean();
+		$this->assertNotEmpty( $output );
+		$this->assertStringContainsString( 'apCurrentUser', $output );
+		$this->assertStringContainsString( 'user_login', $output );
+		$this->assertStringContainsString( 'display_name', $output );
+		$this->assertStringContainsString( 'user_email', $output );
+		$this->assertStringContainsString( 'avatar', $output );
+	}
 }
