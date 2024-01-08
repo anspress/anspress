@@ -255,4 +255,32 @@ class TestHooks extends TestCase {
 			$this->assertTrue( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}{$table}'" ) === $wpdb->prefix . $table );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::after_new_question
+	 */
+	public function testAfterNewQuestion() {
+		$this->assertEquals( 1, has_action( 'ap_processed_new_question', [ 'AnsPress_Hooks', 'after_new_question' ] ) );
+
+		// Test begins.
+		$hook_triggered = false;
+		add_action( 'ap_after_new_question', function ( $triggered_post_id, $triggered_post ) use ( &$hook_triggered ) {
+			$hook_triggered = true;
+		}, 10, 2 );
+
+		// Test by creating a new question.
+		$question = $this->factory->post->create_and_get(
+			array(
+				'post_title'   => 'Test question',
+				'post_content' => 'Test question content',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertTrue( $hook_triggered );
+
+		// Test by directly calling the method.
+		$hook_triggered = false;
+		\AnsPress_Hooks::after_new_question( $question->ID, $question );
+		$this->assertTrue( $hook_triggered );
+	}
 }
