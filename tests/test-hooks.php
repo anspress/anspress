@@ -283,4 +283,36 @@ class TestHooks extends TestCase {
 		\AnsPress_Hooks::after_new_question( $question->ID, $question );
 		$this->assertTrue( $hook_triggered );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::after_new_answer
+	 */
+	public function testAfterNewAnswer() {
+		$this->assertEquals( 1, has_action( 'ap_processed_new_answer', [ 'AnsPress_Hooks', 'after_new_answer' ] ) );
+
+		// Test begins.
+		$hook_triggered = false;
+		add_action( 'ap_after_new_answer', function ( $triggered_post_id, $triggered_post ) use ( &$hook_triggered ) {
+			$hook_triggered = true;
+		}, 10, 2 );
+
+		// Test by creating a new answer.
+		$question_id = $this->insert_question();
+		$answer = $this->factory->post->create_and_get(
+			array(
+				'post_title'   => 'Test answer',
+				'post_content' => 'Test answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->assertEquals( 1, ap_get_answers_count( $question_id ) );
+		$this->assertTrue( $hook_triggered );
+
+		// Test by directly calling the method.
+		$hook_triggered = false;
+		\AnsPress_Hooks::after_new_answer( $answer->ID, $answer );
+		$this->assertEquals( 1, ap_get_answers_count( $question_id ) );
+		$this->assertTrue( $hook_triggered );
+	}
 }
