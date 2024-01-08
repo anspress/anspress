@@ -261,4 +261,49 @@ class TestThemeClass extends TestCase {
 		$this->assertStringContainsString( 'user_email', $output );
 		$this->assertStringContainsString( 'avatar', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::wp_head
+	 */
+	public function testWPHead() {
+		// Test when not viewing the base page.
+		// Visiting home page.
+		$this->go_to( '/' );
+		ob_start();
+		\AnsPress_Theme::wp_head();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+
+		// Visting single question page.
+		$question_id = $this->insert_question();
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		\AnsPress_Theme::wp_head();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+
+		// Visting ask page.
+		$ask_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'ask_page', $ask_page_id );
+		$this->go_to( '/?page_id=' . $ask_page_id );
+		ob_start();
+		\AnsPress_Theme::wp_head();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+
+		// Visiting base page.
+		$base_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'base_page', $base_page_id );
+		$this->go_to( '/?page_id=' . $base_page_id );
+		ob_start();
+		\AnsPress_Theme::wp_head();
+		$output = ob_get_clean();
+		$this->assertNotEmpty( $output );
+		$q_feed = get_post_type_archive_feed_link( 'question' );
+		$a_feed = get_post_type_archive_feed_link( 'answer' );
+		$this->assertStringContainsString( esc_url( $q_feed ), $output );
+		$this->assertStringContainsString( esc_url( $a_feed ), $output );
+		$this->assertStringContainsString( '<link rel="alternate" type="application/rss+xml" title="Question Feed" href="' . esc_url( $q_feed ) . '" />', $output );
+		$this->assertStringContainsString( '<link rel="alternate" type="application/rss+xml" title="Answers Feed" href="' . esc_url( $a_feed ) . '" />', $output );
+	}
 }
