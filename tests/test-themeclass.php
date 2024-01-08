@@ -306,4 +306,46 @@ class TestThemeClass extends TestCase {
 		$this->assertStringContainsString( '<link rel="alternate" type="application/rss+xml" title="Question Feed" href="' . esc_url( $q_feed ) . '" />', $output );
 		$this->assertStringContainsString( '<link rel="alternate" type="application/rss+xml" title="Answers Feed" href="' . esc_url( $a_feed ) . '" />', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::ap_title
+	 */
+	public function testAPTitle() {
+		// Test on normal post page visit.
+		$post_id = $this->factory()->post->create( [ 'post_title' => 'Post Title' ] );
+		$this->go_to( '/?post_type=post&p=' . $post_id );
+		$result = \AnsPress_Theme::ap_title( 'Default Title' );
+		$this->assertEquals( 'Default Title', $result );
+
+		// Test on base page visit.
+		$base_page_id = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Base Page Title' ] );
+		ap_opt( 'base_page', $base_page_id );
+		$this->go_to( '/?page_id=' . $base_page_id );
+		$result = \AnsPress_Theme::ap_title( 'Default Title' );
+		$this->assertEquals( 'Default Title', $result );
+
+		// Test on single question page visit.
+		$question_id = $this->factory()->post->create( [ 'post_title' => 'Question Title', 'post_type' => 'question' ] );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::ap_title( 'Default Title' );
+		$this->assertEquals( 'Question Title  | ', $result );
+
+		// Test on single question page with with solved answer and solved prefix option disabled.
+		ap_opt( 'show_solved_prefix', false );
+		$question_id = $this->factory()->post->create( [ 'post_title' => 'Question Title', 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_title' => 'Answer Title', 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_set_selected_answer( $question_id, $answer_id );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::ap_title( 'Default Title' );
+		$this->assertEquals( 'Question Title | ', $result );
+
+		// Test on single question page with with solved answer and solved prefix option enabled.
+		ap_opt( 'show_solved_prefix', true );
+		$question_id = $this->factory()->post->create( [ 'post_title' => 'Question Title', 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_title' => 'Answer Title', 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_set_selected_answer( $question_id, $answer_id );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Theme::ap_title( 'Default Title' );
+		$this->assertEquals( 'Question Title [Solved]  | ', $result );
+	}
 }
