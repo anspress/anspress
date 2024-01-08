@@ -315,4 +315,17 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 1, ap_get_answers_count( $question_id ) );
 		$this->assertTrue( $hook_triggered );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::widget_comments_args
+	 */
+	public function testWidgetCommentsArgs() {
+		$this->assertEquals( 10, has_action( 'widget_comments_args', [ 'AnsPress_Hooks', 'widget_comments_args' ] ) );
+
+		// Test begins.
+		// Without adding any comments.
+		$modified_args = \AnsPress_Hooks::widget_comments_args( [] );
+		$this->assertArrayHasKey( 'type__not_in', $modified_args );
+		$this->assertEquals( array( 'anspress' ), $modified_args['type__not_in'] );
+	}
 }
