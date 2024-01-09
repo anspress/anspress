@@ -1961,4 +1961,69 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 'Unselected an answer', $actions['unselected']['verb'] );
 		$this->assertEquals( 'apicon-check', $actions['unselected']['icon'] );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::_before_delete
+	 */
+	public function testBeforeDelete() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// Test for other post types.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		$result = $activity::_before_delete( $post_id );
+		$this->assertNull( $result );
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content',
+				'post_type'    => 'page',
+			)
+		);
+		$result = $activity::_before_delete( $page_id );
+		$this->assertNull( $result );
+
+		// Test for valid post types.
+		$id = $this->insert_answer();
+
+		// For question.
+		$qactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertIsInt( $qactivity_id );
+		$q_activity = $activity->get_activity( $qactivity_id );
+		$this->assertNotEmpty( $q_activity );
+		$this->assertIsObject( $q_activity );
+		$result = $activity::_before_delete( $id->q );
+		$q_activity = $activity->get_activity( $qactivity_id );
+		$this->assertEmpty( $q_activity );
+		$this->assertNull( $q_activity );
+
+		// For answer.
+		$aactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$this->assertIsInt( $aactivity_id );
+		$a_activity = $activity->get_activity( $aactivity_id );
+		$this->assertNotEmpty( $a_activity );
+		$this->assertIsObject( $a_activity );
+		$result = $activity::_before_delete( $id->a );
+		$a_activity = $activity->get_activity( $aactivity_id );
+		$this->assertEmpty( $a_activity );
+		$this->assertNull( $a_activity );
+	}
 }
