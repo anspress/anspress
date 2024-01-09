@@ -139,4 +139,72 @@ class Test_Shortcode extends TestCase {
 		$this->assertEquals( [ 'order_by' => 'date' ], $_GET['filters'] );
 		$this->assertEquals( 10, get_query_var( 'post_parent' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Question_Shortcode::anspress_question_sc
+	 */
+	public function testAnsPressQuestionSC() {
+		$instance = \AnsPress_Question_Shortcode::get_instance();
+		add_action( 'ap_before_question_shortcode', function() {} );
+
+		$id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Sample question',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Sample question content',
+			)
+		);
+
+		// Set up attributes array.
+		$atts = [ 'ID' => $id ];
+
+		// Test begins.
+		// By directly invoking the method.
+		$content = $instance->anspress_question_sc( $atts, 'content' );
+		$this->assertStringContainsString( 'id="anspress"', $content );
+		$this->assertStringContainsString( 'class="ap-eq"', $content );
+		$this->assertStringContainsString( '<div id="anspress" class="ap-eq">', $content );
+		$this->assertStringContainsString( '</div>', $content );
+		$this->assertStringContainsString( 'Sample question', $content );
+		$this->assertStringContainsString( 'Sample question content', $content );
+		$this->assertTrue( did_action( 'ap_before_question_shortcode' ) > 0 );
+
+		// By using the shortcode method.
+		ob_start();
+		$content = do_shortcode( '[question id="' . $id . '"]' );
+		$output  = ob_get_clean();
+		$this->assertEquals( '', $output );
+		$this->assertFalse( empty( $content ) );
+		$this->assertStringContainsString( 'id="anspress"', $content );
+		$this->assertStringContainsString( 'id="anspress"', $content );
+		$this->assertStringContainsString( 'class="ap-eq"', $content );
+		$this->assertStringContainsString( '<div id="anspress" class="ap-eq">', $content );
+		$this->assertStringContainsString( '</div>', $content );
+		$this->assertStringContainsString( 'Sample question', $content );
+		$this->assertStringContainsString( 'Sample question content', $content );
+		$this->assertTrue( did_action( 'ap_before_question_shortcode' ) > 0 );
+
+		// Test with invalid question id.
+		$atts = [ 'ID' => -1 ];
+
+		// Test begins.
+		// By directly invoking the method.
+		$content = $instance->anspress_question_sc( $atts, 'content' );
+		$this->assertStringContainsString( '<div id="anspress" class="ap-eq">', $content );
+		$this->assertStringContainsString( '</div>', $content );
+		$this->assertStringContainsString( 'Invalid or non existing question id.', $content );
+		$this->assertTrue( did_action( 'ap_before_question_shortcode' ) > 0 );
+
+		// By using the shortcode method.
+		ob_start();
+		$content = do_shortcode( '[question id="-1"]' );
+		$output  = ob_get_clean();
+		$this->assertEquals( '', $output );
+		$this->assertFalse( empty( $content ) );
+		$this->assertStringContainsString( '<div id="anspress" class="ap-eq">', $content );
+		$this->assertStringContainsString( '</div>', $content );
+		$this->assertStringContainsString( 'Invalid or non existing question id.', $content );
+		$this->assertTrue( did_action( 'ap_before_question_shortcode' ) > 0 );
+	}
 }
