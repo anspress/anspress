@@ -35,8 +35,14 @@ class Test_Session extends TestCase {
 	 * @covers AnsPress\Session::init
 	 */
 	public function testInit() {
-		$class = new \ReflectionClass('AnsPress\Session');
-		$this->assertTrue($class->hasProperty('instance') && $class->getProperty('instance')->isStatic());
+		$class = new \ReflectionClass( 'AnsPress\Session' );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
+
+		// Test for instance match.
+		$session1 = \AnsPress\Session::init();
+		$this->assertInstanceOf( '\AnsPress\Session', $session1 );
+		$session2 = \AnsPress\Session::init();
+		$this->assertSame( $session1, $session2 );
 	}
 
 	/**
