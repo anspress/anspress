@@ -2120,4 +2120,132 @@ class TestActivity extends TestCase {
 		$this->assertEmpty( $c_activity );
 		$this->assertNull( $c_activity );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::_delete_user
+	 */
+	public function testDeleteUser() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// Add user.
+		$this->setRole( 'subscriber' );
+
+		// Test begins.
+		// For single user activity.
+		$id = $this->insert_answer();
+
+		// New question activity.
+		$qactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertIsInt( $qactivity_id );
+		$qactivity = $activity->get_activity( $qactivity_id );
+		$this->assertNotEmpty( $qactivity );
+		$this->assertIsObject( $qactivity );
+		$result = $activity::_delete_user( get_current_user_id() );
+		$qactivity = $activity->get_activity( $qactivity_id );
+		$this->assertEmpty( $qactivity );
+		$this->assertNull( $qactivity );
+
+		// New answer activity.
+		$aactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$this->assertIsInt( $aactivity_id );
+		$aactivity = $activity->get_activity( $aactivity_id );
+		$this->assertNotEmpty( $aactivity );
+		$this->assertIsObject( $aactivity );
+		$result = $activity::_delete_user( get_current_user_id() );
+		$aactivity = $activity->get_activity( $aactivity_id );
+		$this->assertEmpty( $aactivity );
+		$this->assertNull( $aactivity );
+
+		// New comment activity.
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$cactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'c_id'   => $c_id,
+			)
+		);
+		$this->assertIsInt( $cactivity_id );
+		$cactivity = $activity->get_activity( $cactivity_id );
+		$this->assertNotEmpty( $cactivity );
+		$this->assertIsObject( $cactivity );
+		$result = $activity::_delete_user( get_current_user_id() );
+		$cactivity = $activity->get_activity( $cactivity_id );
+		$this->assertEmpty( $cactivity );
+
+		// For multiple user activity.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$qactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			)
+		);
+		$this->assertIsInt( $qactivity_id );
+		$qactivity = $activity->get_activity( $qactivity_id );
+		$this->assertNotEmpty( $qactivity );
+		$this->assertIsObject( $qactivity );
+		$aactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			)
+		);
+		$this->assertIsInt( $aactivity_id );
+		$aactivity = $activity->get_activity( $aactivity_id );
+		$this->assertNotEmpty( $aactivity );
+		$this->assertIsObject( $aactivity );
+		$cactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'c_id'   => $c_id,
+			)
+		);
+		$this->assertIsInt( $cactivity_id );
+		$cactivity = $activity->get_activity( $cactivity_id );
+		$this->assertNotEmpty( $cactivity );
+		$this->assertIsObject( $cactivity );
+
+		// After deleting the user activities.
+		$result = $activity::_delete_user( get_current_user_id() );
+		$qactivity = $activity->get_activity( $qactivity_id );
+		$this->assertEmpty( $qactivity );
+		$this->assertNull( $qactivity );
+		$aactivity = $activity->get_activity( $aactivity_id );
+		$this->assertEmpty( $aactivity );
+		$this->assertNull( $aactivity );
+		$cactivity = $activity->get_activity( $cactivity_id );
+		$this->assertEmpty( $cactivity );
+		$this->assertNull( $cactivity );
+	}
 }
