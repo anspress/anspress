@@ -32,9 +32,9 @@ class Test_Shortcode extends TestCase {
 	 * @covers AnsPress_BasePage_Shortcode::get_instance
 	 */
 	public function testGetInstance() {
-		$class = new \ReflectionClass('AnsPress_BasePage_Shortcode');
-		$this->assertTrue($class->hasProperty('instance') && $class->getProperty('instance')->isStatic());
-		$this->assertTrue( shortcode_exists( 'anspress' ), 'anspress shortcode not registered.' );
+		$class = new \ReflectionClass( 'AnsPress_BasePage_Shortcode' );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic());
+		$this->assertTrue( shortcode_exists( 'anspress' ) );
 	}
 
 	/**
