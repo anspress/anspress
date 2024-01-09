@@ -1808,4 +1808,157 @@ class TestActivity extends TestCase {
 		$instacne2 = \AnsPress\Activity_Helper::get_instance();
 		$this->assertSame( $instacne1, $instacne2 );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::prepare_actions
+	 */
+	public function testPrepareActions() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$activity->prepare_actions();
+
+		// Modify the property so that test could get performed.
+		$reflection = new \ReflectionClass( $activity );
+		$actions_property = $reflection->getProperty( 'actions' );
+		$actions_property->setAccessible( true );
+		$actions = $actions_property->getValue( $activity );
+
+		// Test begins.
+		$this->assertTrue( is_array( $actions ) );
+		$this->assertGreaterThan( 0, count( $actions ) );
+
+		// Test for new question.
+		$this->assertArrayHasKey( 'new_q', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['new_q'] );
+		$this->assertArrayHasKey( 'verb', $actions['new_q'] );
+		$this->assertArrayHasKey( 'icon', $actions['new_q'] );
+		$this->assertEquals( 'question', $actions['new_q']['ref_type'] );
+		$this->assertEquals( 'Asked question', $actions['new_q']['verb'] );
+		$this->assertEquals( 'apicon-question', $actions['new_q']['icon'] );
+
+		// Test for edit question.
+		$this->assertArrayHasKey( 'edit_q', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['edit_q'] );
+		$this->assertArrayHasKey( 'verb', $actions['edit_q'] );
+		$this->assertArrayHasKey( 'icon', $actions['edit_q'] );
+		$this->assertEquals( 'question', $actions['edit_q']['ref_type'] );
+		$this->assertEquals( 'Edited question', $actions['edit_q']['verb'] );
+		$this->assertEquals( 'apicon-pencil', $actions['edit_q']['icon'] );
+
+		// Test for new answer.
+		$this->assertArrayHasKey( 'new_a', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['new_a'] );
+		$this->assertArrayHasKey( 'verb', $actions['new_a'] );
+		$this->assertArrayHasKey( 'icon', $actions['new_a'] );
+		$this->assertEquals( 'answer', $actions['new_a']['ref_type'] );
+		$this->assertEquals( 'Answered question', $actions['new_a']['verb'] );
+		$this->assertEquals( 'apicon-answer', $actions['new_a']['icon'] );
+
+		// Test for edit answer.
+		$this->assertArrayHasKey( 'edit_a', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['edit_a'] );
+		$this->assertArrayHasKey( 'verb', $actions['edit_a'] );
+		$this->assertArrayHasKey( 'icon', $actions['edit_a'] );
+		$this->assertEquals( 'answer', $actions['edit_a']['ref_type'] );
+		$this->assertEquals( 'Edited answer', $actions['edit_a']['verb'] );
+		$this->assertEquals( 'apicon-answer', $actions['edit_a']['icon'] );
+
+		// Test for new comment.
+		$this->assertArrayHasKey( 'new_c', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['new_c'] );
+		$this->assertArrayHasKey( 'verb', $actions['new_c'] );
+		$this->assertArrayHasKey( 'icon', $actions['new_c'] );
+		$this->assertEquals( 'comment', $actions['new_c']['ref_type'] );
+		$this->assertEquals( 'Posted new comment', $actions['new_c']['verb'] );
+		$this->assertEquals( 'apicon-comments', $actions['new_c']['icon'] );
+
+		// Test for edit comment.
+		$this->assertArrayHasKey( 'edit_c', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['edit_c'] );
+		$this->assertArrayHasKey( 'verb', $actions['edit_c'] );
+		$this->assertArrayHasKey( 'icon', $actions['edit_c'] );
+		$this->assertEquals( 'comment', $actions['edit_c']['ref_type'] );
+		$this->assertEquals( 'Edited comment', $actions['edit_c']['verb'] );
+		$this->assertEquals( 'apicon-comments', $actions['edit_c']['icon'] );
+
+		// Test for status publish.
+		$this->assertArrayHasKey( 'status_publish', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['status_publish'] );
+		$this->assertArrayHasKey( 'verb', $actions['status_publish'] );
+		$this->assertArrayHasKey( 'icon', $actions['status_publish'] );
+		$this->assertEquals( 'post', $actions['status_publish']['ref_type'] );
+		$this->assertEquals( 'Changed status to publish', $actions['status_publish']['verb'] );
+		$this->assertEquals( 'apicon-flag', $actions['status_publish']['icon'] );
+
+		// Test for status future.
+		$this->assertArrayHasKey( 'status_future', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['status_future'] );
+		$this->assertArrayHasKey( 'verb', $actions['status_future'] );
+		$this->assertArrayHasKey( 'icon', $actions['status_future'] );
+		$this->assertEquals( 'post', $actions['status_future']['ref_type'] );
+		$this->assertEquals( 'Changed publish date to future', $actions['status_future']['verb'] );
+		$this->assertEquals( 'apicon-flag', $actions['status_future']['icon'] );
+
+		// Test for status moderate.
+		$this->assertArrayHasKey( 'status_moderate', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['status_moderate'] );
+		$this->assertArrayHasKey( 'verb', $actions['status_moderate'] );
+		$this->assertArrayHasKey( 'icon', $actions['status_moderate'] );
+		$this->assertEquals( 'post', $actions['status_moderate']['ref_type'] );
+		$this->assertEquals( 'Changed status to moderate', $actions['status_moderate']['verb'] );
+		$this->assertEquals( 'apicon-flag', $actions['status_moderate']['icon'] );
+
+		// Test for status private post.
+		$this->assertArrayHasKey( 'status_private_post', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['status_private_post'] );
+		$this->assertArrayHasKey( 'verb', $actions['status_private_post'] );
+		$this->assertArrayHasKey( 'icon', $actions['status_private_post'] );
+		$this->assertEquals( 'post', $actions['status_private_post']['ref_type'] );
+		$this->assertEquals( 'Changed visibility to private', $actions['status_private_post']['verb'] );
+		$this->assertEquals( 'apicon-flag', $actions['status_private_post']['icon'] );
+
+		// Test for status trash.
+		$this->assertArrayHasKey( 'status_trash', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['status_trash'] );
+		$this->assertArrayHasKey( 'verb', $actions['status_trash'] );
+		$this->assertArrayHasKey( 'icon', $actions['status_trash'] );
+		$this->assertEquals( 'post', $actions['status_trash']['ref_type'] );
+		$this->assertEquals( 'Trashed', $actions['status_trash']['verb'] );
+		$this->assertEquals( 'apicon-trashcan', $actions['status_trash']['icon'] );
+
+		// Test for featured question.
+		$this->assertArrayHasKey( 'featured', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['featured'] );
+		$this->assertArrayHasKey( 'verb', $actions['featured'] );
+		$this->assertArrayHasKey( 'icon', $actions['featured'] );
+		$this->assertEquals( 'question', $actions['featured']['ref_type'] );
+		$this->assertEquals( 'Marked as featured question', $actions['featured']['verb'] );
+		$this->assertEquals( 'apicon-star', $actions['featured']['icon'] );
+
+		// Test for question closed.
+		$this->assertArrayHasKey( 'closed_q', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['closed_q'] );
+		$this->assertArrayHasKey( 'verb', $actions['closed_q'] );
+		$this->assertArrayHasKey( 'icon', $actions['closed_q'] );
+		$this->assertEquals( 'question', $actions['closed_q']['ref_type'] );
+		$this->assertEquals( 'Marked as closed', $actions['closed_q']['verb'] );
+		$this->assertEquals( 'apicon-alert', $actions['closed_q']['icon'] );
+
+		// Test for selected answer.
+		$this->assertArrayHasKey( 'selected', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['selected'] );
+		$this->assertArrayHasKey( 'verb', $actions['selected'] );
+		$this->assertArrayHasKey( 'icon', $actions['selected'] );
+		$this->assertEquals( 'answer', $actions['selected']['ref_type'] );
+		$this->assertEquals( 'Selected answer as best', $actions['selected']['verb'] );
+		$this->assertEquals( 'apicon-check', $actions['selected']['icon'] );
+
+		// Test for unselected answer.
+		$this->assertArrayHasKey( 'unselected', $actions );
+		$this->assertArrayHasKey( 'ref_type', $actions['unselected'] );
+		$this->assertArrayHasKey( 'verb', $actions['unselected'] );
+		$this->assertArrayHasKey( 'icon', $actions['unselected'] );
+		$this->assertEquals( 'answer', $actions['unselected']['ref_type'] );
+		$this->assertEquals( 'Unselected an answer', $actions['unselected']['verb'] );
+		$this->assertEquals( 'apicon-check', $actions['unselected']['icon'] );
+	}
 }
