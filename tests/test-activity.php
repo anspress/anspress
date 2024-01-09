@@ -1798,4 +1798,14 @@ class TestActivity extends TestCase {
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[3]->activity_user_id );
 		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[3]->activity_date );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::get_instance
+	 */
+	public function testGetInstance() {
+		$instacne1 = \AnsPress\Activity_Helper::get_instance();
+		$this->assertInstanceOf( 'AnsPress\Activity_Helper', $instacne1 );
+		$instacne2 = \AnsPress\Activity_Helper::get_instance();
+		$this->assertSame( $instacne1, $instacne2 );
+	}
 }
