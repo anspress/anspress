@@ -30,11 +30,30 @@ class Test_Shortcode extends TestCase {
 
 	/**
 	 * @covers AnsPress_BasePage_Shortcode::get_instance
+	 * @covers AnsPress_Question_Shortcode::get_instance
 	 */
 	public function testGetInstance() {
+		// For AnsPress_BasePage_Shortcode class.
 		$class = new \ReflectionClass( 'AnsPress_BasePage_Shortcode' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic());
 		$this->assertTrue( shortcode_exists( 'anspress' ) );
+
+		// For AnsPress_Question_Shortcode class.
+		$class = new \ReflectionClass( 'AnsPress_BasePage_Shortcode' );
+		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic());
+		$this->assertTrue( shortcode_exists( 'anspress' ) );
+
+		// Test on instance match for AnsPress_BasePage_Shortcode class.
+		$instance1 = \AnsPress_BasePage_Shortcode::get_instance();
+		$this->assertInstanceOf( 'AnsPress_BasePage_Shortcode', $instance1 );
+		$instance2 = \AnsPress_BasePage_Shortcode::get_instance();
+		$this->assertSame( $instance1, $instance2 );
+
+		// Test on instance match for AnsPress_Question_Shortcode class.
+		$instance1 = \AnsPress_Question_Shortcode::get_instance();
+		$this->assertInstanceOf( 'AnsPress_Question_Shortcode', $instance1 );
+		$instance2 = \AnsPress_Question_Shortcode::get_instance();
+		$this->assertSame( $instance1, $instance2 );
 	}
 
 	/**
