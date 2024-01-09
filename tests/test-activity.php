@@ -1968,7 +1968,6 @@ class TestActivity extends TestCase {
 	public function testBeforeDelete() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
-
 		$activity = \AnsPress\Activity_Helper::get_instance();
 
 		// Test for other post types.
@@ -2025,5 +2024,100 @@ class TestActivity extends TestCase {
 		$a_activity = $activity->get_activity( $aactivity_id );
 		$this->assertEmpty( $a_activity );
 		$this->assertNull( $a_activity );
+	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::_delete_comment
+	 */
+	public function testDeleteComment() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// Add user.
+		$this->setRole( 'subscriber' );
+
+		// Test for un-supported comment type.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		$comment_id = $this->factory->comment->create_object(
+			array(
+				'post_status'     => 'publish',
+				'comment_post_ID' => $post_id,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$cactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $post_id,
+				'c_id'   => $comment_id,
+			)
+		);
+		$this->assertIsInt( $cactivity_id );
+		$c_activity = $activity->get_activity( $cactivity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+		$result = $activity::_delete_comment( $comment_id );
+		$c_activity = $activity->get_activity( $cactivity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+
+		// Test for supported comment type.
+		// For question.
+		$id = $this->insert_answer();
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$cactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'c_id'   => $c_id,
+			)
+		);
+		$this->assertIsInt( $cactivity_id );
+		$c_activity = $activity->get_activity( $cactivity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+		$result = $activity::_delete_comment( $c_id );
+		$c_activity = $activity->get_activity( $cactivity_id );
+		$this->assertEmpty( $c_activity );
+		$this->assertNull( $c_activity );
+
+		// For answer.
+		$c_id = $this->factory->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->a,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$cactivity_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'c_id'   => $c_id,
+			)
+		);
+		$this->assertIsInt( $cactivity_id );
+		$c_activity = $activity->get_activity( $cactivity_id );
+		$this->assertNotEmpty( $c_activity );
+		$this->assertIsObject( $c_activity );
+		$result = $activity::_delete_comment( $c_id );
+		$c_activity = $activity->get_activity( $cactivity_id );
+		$this->assertEmpty( $c_activity );
+		$this->assertNull( $c_activity );
 	}
 }
