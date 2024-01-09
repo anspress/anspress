@@ -101,4 +101,42 @@ class Test_Shortcode extends TestCase {
 		$content = '[anspress]';
 		return $content;
 	}
+
+	/**
+	 * @covers AnsPress_BasePage_Shortcode::attributes
+	 */
+	public function testAttributes() {
+		$instance = \AnsPress_BasePage_Shortcode::get_instance();
+
+		// Set up attributes array.
+		$atts = [
+			'categories'          => 'category1, category2',
+			'tags'                => 'tag1, tag2',
+			'tax_relation'        => 'AND',
+			'tags_operator'       => 'OR',
+			'categories_operator' => 'IN',
+			'page'                => 11,
+			'hide_list_head'      => true,
+			'order_by'            => 'date',
+			'post_parent'         => 10,
+		];
+
+		// Invoke the attributes method.
+		$instance->attributes( $atts, 'content' );
+
+		// Test begins.
+		global $wp;
+		$this->assertEquals( [ 'category1', 'category2' ], $wp->query_vars['ap_categories'] );
+		$this->assertEquals( [ 'tag1', 'tag2' ], $wp->query_vars['ap_tags'] );
+		$this->assertEquals( 'AND', $wp->query_vars['ap_tax_relation'] );
+		$this->assertEquals( 'OR', $wp->query_vars['ap_tags_operator'] );
+		$this->assertEquals( 'IN', $wp->query_vars['ap_categories_operator'] );
+		$this->assertEquals( 11, $instance->current_page );
+		$this->assertEquals( 11, $_GET['ap_page'] );
+		$this->assertEquals( 11, get_query_var( 'ap_page' ) );
+		$this->assertEquals( true, get_query_var( 'ap_hide_list_head' ) );
+		$this->assertEquals( true, $_GET['ap_hide_list_head'] );
+		$this->assertEquals( [ 'order_by' => 'date' ], $_GET['filters'] );
+		$this->assertEquals( 10, get_query_var( 'post_parent' ) );
+	}
 }
