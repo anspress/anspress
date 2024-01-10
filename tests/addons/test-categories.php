@@ -49,4 +49,14 @@ class TestAddonCategories extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'modify_query_category_archive' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'widget' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Categories::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Categories', $instance1 );
+		$instance2 = \Anspress\Addons\Categories::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

@@ -52,4 +52,14 @@ class TestAddonEmail extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_trash_answer' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'form_allowed_tags' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Email::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Email', $instance1 );
+		$instance2 = \Anspress\Addons\Email::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

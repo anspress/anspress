@@ -38,4 +38,14 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Syntax_Highlighter', 'allowed_shortcodes' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Syntax_Highlighter', 'shortcode' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Syntax_Highlighter::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Syntax_Highlighter', $instance1 );
+		$instance2 = \Anspress\Addons\Syntax_Highlighter::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

@@ -45,4 +45,14 @@ class TestAddonReputation extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'bp_reputation_page' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'ap_all_options' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Reputation::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Reputation', $instance1 );
+		$instance2 = \Anspress\Addons\Reputation::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

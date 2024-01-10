@@ -49,4 +49,14 @@ class TestAddonNotifications extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Notifications', 'load_more_notifications' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Notifications', 'get_notifications' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Notifications::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Notifications', $instance1 );
+		$instance2 = \Anspress\Addons\Notifications::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

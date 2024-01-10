@@ -50,4 +50,14 @@ class TestAddonBuddyPress extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\BuddyPress', 'mark_bp_notify_as_read' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\BuddyPress', 'bp_loadmore' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\BuddyPress::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\BuddyPress::init();
+		$this->assertInstanceOf( 'Anspress\Addons\BuddyPress', $instance1 );
+		$instance2 = \Anspress\Addons\BuddyPress::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

@@ -53,4 +53,14 @@ class TestAddonTags extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Tags', 'ap_current_page' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Tags', 'modify_query_archive' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Tags::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Tags', $instance1 );
+		$instance2 = \Anspress\Addons\Tags::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

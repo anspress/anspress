@@ -31,4 +31,14 @@ class TestAddonAvatar extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Avatar', 'get_avatar' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Avatar', 'clear_avatar_cache' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Avatar::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Avatar', $instance1 );
+		$instance2 = \Anspress\Addons\Avatar::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }

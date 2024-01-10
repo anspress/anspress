@@ -31,4 +31,14 @@ class TestAddonCaptcha extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Captcha', 'options' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Captcha', 'ap_question_form_fields' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Captcha::instance
+	 */
+	public function testInit() {
+		$instance1 = \Anspress\Addons\Captcha::init();
+		$this->assertInstanceOf( 'Anspress\Addons\Captcha', $instance1 );
+		$instance2 = \Anspress\Addons\Captcha::init();
+		$this->assertSame( $instance1, $instance2 );
+	}
 }
