@@ -375,6 +375,7 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue( class_exists( 'AnsPress\Notifications' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Profile' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Captcha' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Syntax_Highlighter' ) );
 
 		// // For deactivated addons by default.
 		// $this->assertFalse( class_exists( 'AnsPress\Addons\Akismet' ) );
