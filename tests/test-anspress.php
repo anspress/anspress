@@ -370,6 +370,7 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Akismet' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar\Generator' ) );
+		$this->assertTrue( class_exists( 'AnsPress\Addons\BuddyPress' ) );
 
 		// // For deactivated addons by default.
 		// $this->assertFalse( class_exists( 'AnsPress\Addons\Akismet' ) );
