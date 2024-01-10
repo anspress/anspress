@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestAkismet extends TestCase {
+class TestAddonAkismet extends TestCase {
 
 	public function set_up() {
 		parent::set_up();

@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestBuddyPress extends TestCase {
+class TestAddonBuddyPress extends TestCase {
 
 	public function set_up() {
 		parent::set_up();

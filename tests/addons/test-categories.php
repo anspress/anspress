@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestCategories extends TestCase {
+class TestAddonCategories extends TestCase {
 
 	/**
 	 * @covers Anspress\Addons\Categories::instance

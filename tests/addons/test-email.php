@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestEmail extends TestCase {
+class TestAddonEmail extends TestCase {
 
 	/**
 	 * @covers Anspress\Addons\Email::instance

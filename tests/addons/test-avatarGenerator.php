@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestAvatarGenerator extends TestCase {
+class TestAddonAvatarGenerator extends TestCase {
 
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Avatar\Generator' );

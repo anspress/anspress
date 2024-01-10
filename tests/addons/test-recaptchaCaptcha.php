@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestCaptchaCaptcha extends TestCase {
+class TestAddonCaptchaCaptcha extends TestCase {
 
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Form\Field\Captcha' );

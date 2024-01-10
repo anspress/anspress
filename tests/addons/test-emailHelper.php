@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestEmailHelper extends TestCase {
+class TestAddonEmailHelper extends TestCase {
 
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Email\Helper' );

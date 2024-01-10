@@ -8,7 +8,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 // we include the file here directly for testing purpose.
 require_once ANSPRESS_ADDONS_DIR . '/categories/widget.php';
 
-class TestCategoriesWidget extends TestCase {
+class TestAddonCategoriesWidget extends TestCase {
 
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'Anspress\Widgets\Categories', '__construct' ) );

@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestNotificationsQuery extends TestCase {
+class TestAddonNotificationsQuery extends TestCase {
 
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Anspress\Notifications' );
