@@ -365,6 +365,10 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Email\Helper' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Reputation' ) );
 
+		// Since activating addons requires the addon files,
+		// so classes always exists.
+		$this->assertTrue( class_exists( 'AnsPress\Addons\Akismet' ) );
+
 		// // For deactivated addons by default.
 		// $this->assertFalse( class_exists( 'AnsPress\Addons\Akismet' ) );
 		// $this->assertFalse( class_exists( 'AnsPress\Addons\Avatar' ) );
