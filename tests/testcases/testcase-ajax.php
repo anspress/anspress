@@ -16,6 +16,7 @@ abstract class TestCaseAjax extends TestCase {
 		parent::set_up();
 
 		// Require the Ajax related files.
+		require_once ANSPRESS_DIR . 'admin/ajax.php';
 		require_once ANSPRESS_DIR . 'includes/ajax-hooks.php';
 
 		add_filter( 'wp_doing_ajax', '__return_true' );
