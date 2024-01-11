@@ -69,4 +69,29 @@ class TestAddonAkismet extends TestCase {
 		$this->assertArrayHasKey( 'akismet', $groups );
 		$this->assertEquals( 'Akismet', $groups['akismet']['label'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Akismet::option_form
+	 */
+	public function testOptionForm() {
+		$instance = \Anspress\Addons\Akismet::init();
+
+		// Add spam_post_action option.
+		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
+
+		// Call the method.
+		$form = $instance->option_form();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertEquals( 'Save add-on options', $form['submit_label'] );
+		$this->assertArrayHasKey( 'spam_post_action', $form['fields'] );
+		$this->assertEquals( 'moderate', $form['fields']['spam_post_action']['value'] );
+		$this->assertEquals( 'select', $form['fields']['spam_post_action']['type'] );
+		$this->assertArrayHasKey( 'moderate', $form['fields']['spam_post_action']['options'] );
+		$this->assertArrayHasKey( 'trash', $form['fields']['spam_post_action']['options'] );
+		$this->assertEquals( 'What to do when post is a spam?', $form['fields']['spam_post_action']['label'] );
+		$this->assertEquals( 'Change status to moderate', $form['fields']['spam_post_action']['options']['moderate'] );
+		$this->assertEquals( 'Trash the post', $form['fields']['spam_post_action']['options']['trash'] );
+	}
 }
