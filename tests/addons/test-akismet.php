@@ -44,4 +44,29 @@ class TestAddonAkismet extends TestCase {
 		$instance2 = \Anspress\Addons\Akismet::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Akismet::add_to_settings_page
+	 */
+	public function testAddToSettingsPage() {
+		$instance = \Anspress\Addons\Akismet::init();
+
+		// Call the method.
+		$groups = $instance->add_to_settings_page( [] );
+
+		// Test if the Akismet group is added to the settings page.
+		$this->assertArrayHasKey( 'akismet', $groups );
+		$this->assertEquals( 'Akismet', $groups['akismet']['label'] );
+
+		// Test by adding new group.
+		$groups = $instance->add_to_settings_page( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are rerained to the settings page.
+		$this->assertArrayHasKey( 'akismet', $groups );
+		$this->assertEquals( 'Akismet', $groups['akismet']['label'] );
+	}
 }
