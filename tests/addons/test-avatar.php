@@ -119,4 +119,39 @@ class TestAddonAvatar extends TestCase {
 		$this->assertEquals( 'checkbox', $form['fields']['avatar_force']['type'] );
 		$this->assertEquals( false, $form['fields']['avatar_force']['value'] );
 	}
+
+	/**
+	 * @covers ::ap_is_avatar_exists
+	 */
+	public function testAPIsAvatarExists() {
+		// Test for invalid user id.
+		$this->assertFalse( \Anspress\Addons\ap_is_avatar_exists( 0 ) );
+		$this->assertFalse( \Anspress\Addons\ap_is_avatar_exists( -1 ) );
+		$this->assertFalse( \Anspress\Addons\ap_is_avatar_exists( 'invalid' ) );
+
+		// Test for valid user id.
+		// Test 1.
+		$user_id = $this->factory()->user->create();
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars/';
+		wp_mkdir_p( $avatar_dir );
+		$filename   = md5( $user_id );
+		$avatar_file = $avatar_dir . $filename . '.jpg';
+		touch( $avatar_file );
+		$this->assertTrue( \Anspress\Addons\ap_is_avatar_exists( $user_id ) );
+		unlink( $avatar_file );
+		rmdir( $avatar_dir );
+
+		// Test 2.
+		$user_id = $this->factory()->user->create();
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars/';
+		wp_mkdir_p( $avatar_dir );
+		$filename   = md5( $user_id );
+		$avatar_file = $avatar_dir . $filename . '.jpg';
+		touch( $avatar_file );
+		$this->assertTrue( \Anspress\Addons\ap_is_avatar_exists( $user_id ) );
+		unlink( $avatar_file );
+		rmdir( $avatar_dir );
+	}
 }
