@@ -41,4 +41,29 @@ class TestAddonAvatar extends TestCase {
 		$instance2 = \Anspress\Addons\Avatar::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar::add_to_settings_page
+	 */
+	public function testAddToSettingsPage() {
+		$instance = \Anspress\Addons\Avatar::init();
+
+		// Call the method.
+		$groups = $instance->add_to_settings_page( [] );
+
+		// Test if the Avatar group is added to the settings page.
+		$this->assertArrayHasKey( 'avatar', $groups );
+		$this->assertEquals( 'Dynamic Avatar', $groups['avatar']['label'] );
+
+		// Test by adding new group.
+		$groups = $instance->add_to_settings_page( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are rerained to the settings page.
+		$this->assertArrayHasKey( 'avatar', $groups );
+		$this->assertEquals( 'Dynamic Avatar', $groups['avatar']['label'] );
+	}
 }
