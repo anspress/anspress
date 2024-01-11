@@ -66,4 +66,57 @@ class TestAddonAvatar extends TestCase {
 		$this->assertArrayHasKey( 'avatar', $groups );
 		$this->assertEquals( 'Dynamic Avatar', $groups['avatar']['label'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar::option_form
+	 */
+	public function testOptionForm() {
+		$instance = \Anspress\Addons\Avatar::init();
+
+		// Add avatar_font and avatar_force options.
+		ap_add_default_options(
+			array(
+				'avatar_font'  => 'Pacifico',
+				'avatar_force' => false,
+			)
+		);
+
+		// Call the method.
+		$form = $instance->option_form();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'avatar_font', $form['fields'] );
+		$this->assertArrayHasKey( 'avatar_force', $form['fields'] );
+		$this->assertArrayHasKey( 'clear_avatar_cache', $form['fields'] );
+		$this->assertArrayHasKey( 'submit_label', $form );
+		$this->assertEquals( 'Save add-on options', $form['submit_label'] );
+
+		// Test for clear_avatar_cache.
+		$this->assertArrayHasKey( 'label', $form['fields']['clear_avatar_cache'] );
+		$this->assertArrayHasKey( 'html', $form['fields']['clear_avatar_cache'] );
+		$this->assertEquals( 'Clear Cache', $form['fields']['clear_avatar_cache']['label'] );
+
+		// Test for avatar_font.
+		$this->assertEquals( 'Font family', $form['fields']['avatar_font']['label'] );
+		$this->assertEquals( 'Select font family for avatar letters.', $form['fields']['avatar_font']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['avatar_font']['type'] );
+		$this->assertArrayHasKey( 'calibri', $form['fields']['avatar_font']['options'] );
+		$this->assertEquals( 'Calibri', $form['fields']['avatar_font']['options']['calibri'] );
+		$this->assertArrayHasKey( 'Pacifico', $form['fields']['avatar_font']['options'] );
+		$this->assertEquals( 'Pacifico', $form['fields']['avatar_font']['options']['Pacifico'] );
+		$this->assertArrayHasKey( 'OpenSans', $form['fields']['avatar_font']['options'] );
+		$this->assertEquals( 'Open Sans', $form['fields']['avatar_font']['options']['OpenSans'] );
+		$this->assertArrayHasKey( 'Glegoo-Bold', $form['fields']['avatar_font']['options'] );
+		$this->assertEquals( 'Glegoo Bold', $form['fields']['avatar_font']['options']['Glegoo-Bold'] );
+		$this->assertArrayHasKey( 'DeliusSwashCaps', $form['fields']['avatar_font']['options'] );
+		$this->assertEquals( 'Delius Swash Caps', $form['fields']['avatar_font']['options']['DeliusSwashCaps'] );
+		$this->assertEquals( 'Pacifico', $form['fields']['avatar_font']['value'] );
+
+		// Test for avatar_force.
+		$this->assertEquals( 'Force avatar', $form['fields']['avatar_force']['label'] );
+		$this->assertEquals( 'Show AnsPress avatars by default instead of gravatar fallback. Useful in localhost development.', $form['fields']['avatar_force']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['avatar_force']['type'] );
+		$this->assertEquals( false, $form['fields']['avatar_force']['value'] );
+	}
 }
