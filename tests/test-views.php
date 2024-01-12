@@ -24,7 +24,7 @@ class TestViews extends TestCase {
 	 * @covers ::ap_is_viewed
 	 * @covers ::ap_get_views
 	 */
-	public function testInsertViews() {
+	public function testInsertGetViewsViewed() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_views}" );
 
@@ -82,5 +82,115 @@ class TestViews extends TestCase {
 		$views = ap_get_views( $id );
 		$this->assertIsInt( $views );
 		$this->assertEquals( 1, $views );
+	}
+
+	/**
+	 * @covers AnsPress_Views::insert_views
+	 * @covers AnsPress_Views::delete_views
+	 */
+	public function testInsertViews() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_views}" );
+
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+
+		// Test for AnsPress_Views::insert_views.
+		$this->go_to( '/?post_type=question&p=' . $id );
+		\AnsPress_Views::insert_views( '' );
+
+		// Test without defining specific views.
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( 1, $qameta->views );
+
+		// Test for AnsPress_Views::delete_views.
+		$result = \AnsPress_Views::delete_views( $id );
+		$this->assertNull( $result );
+
+		// Test with defining specific views.
+		ap_insert_qameta( $id, array( 'views' => 7 ) );
+		$this->go_to( '/?post_type=question&p=' . $id );
+		\AnsPress_Views::insert_views( '' );
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( 8, $qameta->views );
+
+		// Test for AnsPress_Views::delete_views.
+		$result = \AnsPress_Views::delete_views( $id );
+		$this->assertNull( $result );
+
+		// Test 2.
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$id = $this->insert_question();
+
+		// Test for AnsPress_Views::insert_views.
+		$this->go_to( '/?post_type=question&p=' . $id );
+		\AnsPress_Views::insert_views( '' );
+
+		// Test without defining specific views.
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( 1, $qameta->views );
+
+		// Test for AnsPress_Views::delete_views.
+		$result = \AnsPress_Views::delete_views( $id );
+		$this->assertNull( $result );
+
+		// Test with defining specific views.
+		ap_insert_qameta( $id, array( 'views' => 7 ) );
+		$this->go_to( '/?post_type=question&p=' . $id );
+		\AnsPress_Views::insert_views( '' );
+		$qameta = ap_get_qameta( $id );
+		$this->assertEquals( 8, $qameta->views );
+
+		// Test for AnsPress_Views::delete_views.
+		$result = \AnsPress_Views::delete_views( $id );
+		$this->assertNull( $result );
+
+		// Add filter.
+		add_filter( 'ap_insert_view_to_db', '__return_true' );
+		// Test 3.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+
+		// Test for AnsPress_Views::insert_views.
+		$this->go_to( '/?post_type=question&p=' . $id );
+		\AnsPress_Views::insert_views( '' );
+
+		// Test without defining specific views.
+		$views = ap_get_views( $id );
+		$this->assertIsInt( $views );
+		$this->assertEquals( 1, $views );
+
+		// Test for AnsPress_Views::delete_views.
+		$result = \AnsPress_Views::delete_views( $id );
+		$this->assertNull( $result );
+		$views = ap_get_views( $id );
+		$this->assertIsInt( $views );
+		$this->assertEquals( 0, $views );
+
+		// Test 4.
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$id = $this->insert_question();
+
+		// Test for AnsPress_Views::insert_views.
+		$this->go_to( '/?post_type=question&p=' . $id );
+		\AnsPress_Views::insert_views( '' );
+
+		// Test without defining specific views.
+		$views = ap_get_views( $id );
+		$this->assertIsInt( $views );
+		$this->assertEquals( 1, $views );
+
+		// Test for AnsPress_Views::delete_views.
+		$result = \AnsPress_Views::delete_views( $id );
+		$this->assertNull( $result );
+		$views = ap_get_views( $id );
+		$this->assertIsInt( $views );
+		$this->assertEquals( 0, $views );
+
+		// Add filter.
+		add_filter( 'ap_insert_view_to_db', '__return_false' );
 	}
 }
