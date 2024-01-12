@@ -19,6 +19,59 @@ class TestCommonPages extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress_Common_Pages::register_common_pages
+	 */
+	public function testRegisterCommonPages() {
+		// Test for base page.
+		$base = anspress()->pages['base'];
+		$this->assertIsArray( $base );
+		$this->assertEquals( 'Questions', $base['title'] );
+		$this->assertEquals( [ 'AnsPress_Common_Pages', 'base_page' ], $base['func'] );
+		$this->assertEquals( true, $base['show_in_menu'] );
+		$this->assertEquals( false, $base['private'] );
+
+		// Test for question page.
+		$question = anspress()->pages['question'];
+		$this->assertIsArray( $question );
+		$this->assertEquals( 'Question', $question['title'] );
+		$this->assertEquals( [ 'AnsPress_Common_Pages', 'question_page' ], $question['func'] );
+		$this->assertEquals( false, $question['show_in_menu'] );
+		$this->assertEquals( false, $question['private'] );
+
+		// Test for ask page.
+		$ask = anspress()->pages['ask'];
+		$this->assertIsArray( $ask );
+		$this->assertEquals( 'Ask a Question', $ask['title'] );
+		$this->assertEquals( [ 'AnsPress_Common_Pages', 'ask_page' ], $ask['func'] );
+		$this->assertEquals( true, $ask['show_in_menu'] );
+		$this->assertEquals( false, $ask['private'] );
+
+		// Test for search page.
+		$search = anspress()->pages['search'];
+		$this->assertIsArray( $search );
+		$this->assertEquals( 'Search', $search['title'] );
+		$this->assertEquals( [ 'AnsPress_Common_Pages', 'search_page' ], $search['func'] );
+		$this->assertEquals( false, $search['show_in_menu'] );
+		$this->assertEquals( false, $search['private'] );
+
+		// Test for edit page.
+		$edit = anspress()->pages['edit'];
+		$this->assertIsArray( $edit );
+		$this->assertEquals( 'Edit Answer', $edit['title'] );
+		$this->assertEquals( [ 'AnsPress_Common_Pages', 'edit_page' ], $edit['func'] );
+		$this->assertEquals( false, $edit['show_in_menu'] );
+		$this->assertEquals( false, $edit['private'] );
+
+		// Test for activities page.
+		$activities = anspress()->pages['activities'];
+		$this->assertIsArray( $activities );
+		$this->assertEquals( 'Activities', $activities['title'] );
+		$this->assertEquals( [ 'AnsPress_Common_Pages', 'activities_page' ], $activities['func'] );
+		$this->assertEquals( false, $activities['show_in_menu'] );
+		$this->assertEquals( false, $activities['private'] );
+	}
+
+	/**
 	 * @covers AnsPress_Common_Pages::set_404
 	 */
 	public function testSet404() {
