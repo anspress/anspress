@@ -17,4 +17,14 @@ class TestCommonPages extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Common_Pages', 'activities_page' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Common_Pages', 'set_404' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::set_404
+	 */
+	public function testSet404() {
+		ob_start();
+		\AnsPress_Common_Pages::set_404();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Error 404', $output );
+	}
 }
