@@ -120,4 +120,38 @@ class Test_PostTypes extends TestCase {
 		$this->assertArrayHasKey( 'moderate', $wp_post_statuses );
 		$this->assertArrayHasKey( 'private_post', $wp_post_statuses );
 	}
+
+	/**
+	 * @covers AnsPress_PostTypes::post_type_archive_link
+	 */
+	public function testPostTypeArchiveLink() {
+		// Remove filter so that we can test the method directly.
+		remove_filter( 'post_type_archive_link', [ 'AnsPress_PostTypes', 'post_type_archive_link' ], 10, 2 );
+
+		// Setup base page.
+		$base_page = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'base_page', $base_page );
+
+		// Test for other post type.
+		$post_type_archive_link = get_post_type_archive_link( 'post' );
+		$result = \AnsPress_PostTypes::post_type_archive_link( $post_type_archive_link, 'post' );
+		$this->assertEquals( $post_type_archive_link, $result );
+		$page_type_archive_link = get_post_type_archive_link( 'page' );
+		$result = \AnsPress_PostTypes::post_type_archive_link( $page_type_archive_link, 'page' );
+		$this->assertEquals( $page_type_archive_link, $result );
+
+		// For the question post type.
+		$question_type_archive_link = get_post_type_archive_link( 'question' );
+		$result = \AnsPress_PostTypes::post_type_archive_link( $question_type_archive_link, 'question' );
+		$this->assertEquals( get_permalink( $base_page ), $result );
+		$this->assertNotEquals( $question_type_archive_link, $result );
+
+		// For the answer post type.
+		$answer_type_archive_link = get_post_type_archive_link( 'answer' );
+		$result = \AnsPress_PostTypes::post_type_archive_link( $answer_type_archive_link, 'answer' );
+		$this->assertEquals( $answer_type_archive_link, $result );
+
+		// Re-add the filter.
+		add_filter( 'post_type_archive_link', [ 'AnsPress_PostTypes', 'post_type_archive_link' ], 10, 2 );
+	}
 }
