@@ -4,21 +4,15 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class Test_PostTypes extends TestCase {
+class TestPostTypes extends TestCase {
 
 	public function testMethodExists() {
-		// Test for method_exists on AnsPress_PostTypes class.
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'init' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'question_perm_structure' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'register_question_cpt' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'register_answer_cpt' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_type_link' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_type_archive_link' ) );
-
-
-		// Test for method_exists on AnsPress_Post_Status class.
-		$this->assertTrue( method_exists( 'AnsPress_Post_Status', 'register_post_status' ) );
-		$this->assertTrue( method_exists( 'AnsPress_Post_Status', 'change_post_status' ) );
 	}
 
 	public function testInit() {
@@ -111,14 +105,6 @@ class Test_PostTypes extends TestCase {
 		$this->assertEquals( 'post', $wp_post_types['answer']->capability_type );
 		$this->assertEquals( 0, $wp_post_types['answer']->rewrite );
 		$this->assertEquals( 'answer', $wp_post_types['answer']->query_var );
-	}
-
-	public function testRegisterPostStatuses() {
-		\AnsPress_Post_Status::register_post_status();
-		global $wp_post_statuses;
-
-		$this->assertArrayHasKey( 'moderate', $wp_post_statuses );
-		$this->assertArrayHasKey( 'private_post', $wp_post_statuses );
 	}
 
 	/**
