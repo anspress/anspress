@@ -154,4 +154,122 @@ class Test_PostTypes extends TestCase {
 		// Re-add the filter.
 		add_filter( 'post_type_archive_link', [ 'AnsPress_PostTypes', 'post_type_archive_link' ], 10, 2 );
 	}
+
+	/**
+	 * @covers AnsPress_PostTypes::question_perm_structure
+	 */
+	public function testQuestionPermStructure() {
+		// Test with default values.
+		// Test 1.
+		ap_opt( 'question_page_permalink', 'question_perma_1' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'questions/question/%question%', $result->rule );
+
+		// Test 2.
+		ap_opt( 'question_page_permalink', 'question_perma_2' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question%', $result->rule );
+
+		// Test 3.
+		ap_opt( 'question_page_permalink', 'question_perma_3' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question_id%', $result->rule );
+
+		// Test 4.
+		ap_opt( 'question_page_permalink', 'question_perma_4' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question_id%/%question%', $result->rule );
+
+		// Test 5.
+		ap_opt( 'question_page_permalink', 'question_perma_5' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question%/%question_id%', $result->rule );
+
+		// Test 6.
+		ap_opt( 'question_page_permalink', 'question_perma_6' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question_id%-%question%', $result->rule );
+
+		// Test 7.
+		ap_opt( 'question_page_permalink', 'question_perma_7' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question%-%question_id%', $result->rule );
+
+		// Test with base page change.
+		$base_page = $this->factory()->post->create( [ 'post_title' => 'base', 'post_type' => 'page' ] );
+		ap_opt( 'base_page', $base_page );
+
+		// Test 1.
+		ap_opt( 'question_page_permalink', 'question_perma_1' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'base/question/%question%', $result->rule );
+
+		// Test 2.
+		ap_opt( 'question_page_permalink', 'question_perma_2' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question%', $result->rule );
+
+		// Test 3.
+		ap_opt( 'question_page_permalink', 'question_perma_3' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question_id%', $result->rule );
+
+		// Test 4.
+		ap_opt( 'question_page_permalink', 'question_perma_4' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question_id%/%question%', $result->rule );
+
+		// Test 5.
+		ap_opt( 'question_page_permalink', 'question_perma_5' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question%/%question_id%', $result->rule );
+
+		// Test 6.
+		ap_opt( 'question_page_permalink', 'question_perma_6' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question_id%-%question%', $result->rule );
+
+		// Test 7.
+		ap_opt( 'question_page_permalink', 'question_perma_7' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'question/%question%-%question_id%', $result->rule );
+
+		// Test with question slug change.
+		ap_opt( 'question_page_slug', 'test' );
+
+		// Test 1.
+		ap_opt( 'question_page_permalink', 'question_perma_1' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'base/test/%question%', $result->rule );
+
+		// Test 2.
+		ap_opt( 'question_page_permalink', 'question_perma_2' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'test/%question%', $result->rule );
+
+		// Test 3.
+		ap_opt( 'question_page_permalink', 'question_perma_3' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'test/%question_id%', $result->rule );
+
+		// Test 4.
+		ap_opt( 'question_page_permalink', 'question_perma_4' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'test/%question_id%/%question%', $result->rule );
+
+		// Test 5.
+		ap_opt( 'question_page_permalink', 'question_perma_5' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'test/%question%/%question_id%', $result->rule );
+
+		// Test 6.
+		ap_opt( 'question_page_permalink', 'question_perma_6' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'test/%question_id%-%question%', $result->rule );
+
+		// Test 7.
+		ap_opt( 'question_page_permalink', 'question_perma_7' );
+		$result = \AnsPress_PostTypes::question_perm_structure();
+		$this->assertEquals( 'test/%question%-%question_id%', $result->rule );
+	}
 }
