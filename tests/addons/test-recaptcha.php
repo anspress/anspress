@@ -41,4 +41,17 @@ class TestAddonCaptcha extends TestCase {
 		$instance2 = \Anspress\Addons\Captcha::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Captcha::enqueue_scripts
+	 */
+	public function testEnqueueScripts() {
+		$instance = \Anspress\Addons\Captcha::init();
+
+		// Call the method.
+		$instance->enqueue_scripts();
+
+		// Test if the script is enqueued.
+		$this->assertTrue( wp_script_is( 'ap-recaptcha' ) );
+	}
 }
