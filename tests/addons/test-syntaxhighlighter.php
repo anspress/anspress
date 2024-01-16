@@ -50,19 +50,12 @@ class TestAddonSyntaxHighlighter extends TestCase {
 	}
 
 	/**
-	 * @covers Anspress\Addons\Syntax_Highlighter::brush
+	 * Return the available brushes lists.
+	 *
+	 * @return array
 	 */
-	public function testBrush() {
-		$instance = \Anspress\Addons\Syntax_Highlighter::init();
-
-		// Call the method.
-		$brush = $instance->brush();
-
-		// Get the brushes property.
-		$brushes = $instance->brushes;
-
-		// Test begins.
-		$expected_brushes = [
+	public static function brushes() {
+		return [
 			'php'        => 'PHP',
 			'css'        => 'CSS',
 			'xml'        => 'XML/HTML',
@@ -91,6 +84,61 @@ class TestAddonSyntaxHighlighter extends TestCase {
 			'scala'      => 'Scala',
 			'vb'         => 'VisualBasic',
 		];
+	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::brush
+	 */
+	public function testBrush() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Call the method.
+		$brush = $instance->brush();
+
+		// Get the brushes property.
+		$brushes = $instance->brushes;
+
+		// Test begins.
+		$expected_brushes = self::brushes();
 		$this->assertEquals( $expected_brushes, $brushes );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::scripts
+	 */
+	public function testScripts() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Assign the method contents in a variable.
+		ob_start();
+		$instance->scripts();
+		do_action( 'wp_enqueue_scripts' );
+		$scripts = ob_get_clean();
+
+		// Test begins.
+		$this->assertNotEmpty( $scripts );
+
+		// Test for enqueued scripts and styles.
+		$this->assertTrue( wp_script_is( 'syntaxhighlighter-core', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'syntaxhighlighter-autoloader', 'enqueued' ) );
+		$this->assertTrue( wp_script_is( 'syntaxhighlighter', 'enqueued' ) );
+		$this->assertTrue( wp_style_is( 'syntaxhighlighter-core', 'enqueued' ) );
+		$this->assertTrue( wp_style_is( 'syntaxhighlighter-theme-default', 'enqueued' ) );
+
+		// Test for script.
+		$this->assertStringContainsString( '<script type="text/javascript">', $scripts );
+		$this->assertStringContainsString( 'AP_Brushes = ', $scripts );
+		$this->assertStringContainsString( wp_json_encode( self::brushes() ), $scripts );
+		$this->assertStringContainsString( '</script>', $scripts );
+
+		// Test for inline script.
+		$inline_script = wp_scripts()->get_inline_script_data( 'syntaxhighlighter', 'before' );
+		$this->assertStringContainsString( 'aplang = aplang||{};', $inline_script );
+		$this->assertStringContainsString( 'aplang.shLanguage = \'Language\';', $inline_script );
+		$this->assertStringContainsString( 'aplang.shInline = \'Is inline?\';', $inline_script );
+		$this->assertStringContainsString( 'aplang.shTxtPlholder = \'Insert code snippet here ...\';', $inline_script );
+		$this->assertStringContainsString( 'aplang.shButton = \'Insert to editor\';', $inline_script );
+		$this->assertStringContainsString( 'aplang.shTitle = \'Insert code\';', $inline_script );
+		$this->assertStringContainsString( 'window.apBrushPath = "' . esc_url( ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/' ) . '";', $inline_script );
 	}
 }
