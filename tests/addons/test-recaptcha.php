@@ -79,4 +79,73 @@ class TestAddonCaptcha extends TestCase {
 		$this->assertArrayHasKey( 'recaptcha', $groups );
 		$this->assertEquals( 'reCaptcha', $groups['recaptcha']['label'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Captcha::options
+	 */
+	public function testOptions() {
+		$instance = \Anspress\Addons\Captcha::init();
+
+		// Add recaptcha_method and recaptcha_exclude_roles options.
+		ap_add_default_options(
+			array(
+				'recaptcha_method'        => 'post',
+				'recaptcha_exclude_roles' => array( 'ap_moderator' => 1 ),
+			)
+		);
+
+		// Call the method.
+		$form = $instance->options();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'recaptcha_site_key', $form['fields'] );
+		$this->assertArrayHasKey( 'recaptcha_secret_key', $form['fields'] );
+		$this->assertArrayHasKey( 'recaptcha_method', $form['fields'] );
+		$this->assertArrayHasKey( 'recaptcha_exclude_roles', $form['fields'] );
+
+		// Test for recaptcha_site_key field.
+		$this->assertArrayHasKey( 'label', $form['fields']['recaptcha_site_key'] );
+		$this->assertEquals( 'Recaptcha site key', $form['fields']['recaptcha_site_key']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['recaptcha_site_key'] );
+		$this->assertEquals( 'Enter your site key, if you dont have it get it from here https://www.google.com/recaptcha/admin', $form['fields']['recaptcha_site_key']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['recaptcha_site_key'] );
+		$this->assertEquals( ap_opt( 'recaptcha_site_key' ), $form['fields']['recaptcha_site_key']['value'] );
+
+		// Test for recaptcha_secret_key field.
+		$this->assertArrayHasKey( 'label', $form['fields']['recaptcha_secret_key'] );
+		$this->assertEquals( 'Recaptcha secret key', $form['fields']['recaptcha_secret_key']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['recaptcha_secret_key'] );
+		$this->assertEquals( 'Enter your secret key', $form['fields']['recaptcha_secret_key']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['recaptcha_secret_key'] );
+		$this->assertEquals( ap_opt( 'recaptcha_secret_key' ), $form['fields']['recaptcha_secret_key']['value'] );
+
+		// Test for recaptcha_method field.
+		$this->assertArrayHasKey( 'label', $form['fields']['recaptcha_method'] );
+		$this->assertEquals( 'Recaptcha Method', $form['fields']['recaptcha_method']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['recaptcha_method'] );
+		$this->assertEquals( 'Select method to use when verification keeps failing', $form['fields']['recaptcha_method']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['recaptcha_method'] );
+		$this->assertEquals( 'select', $form['fields']['recaptcha_method']['type'] );
+		$this->assertArrayHasKey( 'options', $form['fields']['recaptcha_method'] );
+		$this->assertArrayHasKey( 'curl', $form['fields']['recaptcha_method']['options'] );
+		$this->assertArrayHasKey( 'post', $form['fields']['recaptcha_method']['options'] );
+		$this->assertEquals( array( 'curl' => 'CURL', 'post' => 'POST' ), $form['fields']['recaptcha_method']['options'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['recaptcha_method'] );
+		$this->assertEquals( ap_opt( 'recaptcha_method' ), $form['fields']['recaptcha_method']['value'] );
+
+		// Test for recaptcha_exclude_roles field.
+		global $wp_roles;
+		$this->assertArrayHasKey( 'label', $form['fields']['recaptcha_exclude_roles'] );
+		$this->assertEquals( 'Hide reCaptcha for roles', $form['fields']['recaptcha_exclude_roles']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['recaptcha_exclude_roles'] );
+		$this->assertEquals( 'Select roles for which reCaptcha will be hidden.', $form['fields']['recaptcha_exclude_roles']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['recaptcha_exclude_roles'] );
+		$this->assertEquals( 'checkbox', $form['fields']['recaptcha_exclude_roles']['type'] );
+		$this->assertArrayHasKey( 'options', $form['fields']['recaptcha_exclude_roles'] );
+		foreach ( $wp_roles->roles as $role => $role_data ) {
+			$this->assertArrayHasKey( $role, $form['fields']['recaptcha_exclude_roles']['options'] );
+			$this->assertEquals( $role_data['name'], $form['fields']['recaptcha_exclude_roles']['options'][ $role ] );
+		}
+	}
 }
