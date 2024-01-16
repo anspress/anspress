@@ -54,4 +54,29 @@ class TestAddonCaptcha extends TestCase {
 		// Test if the script is enqueued.
 		$this->assertTrue( wp_script_is( 'ap-recaptcha' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Captcha::add_to_settings_page
+	 */
+	public function testAddToSettingsPage() {
+		$instance = \Anspress\Addons\Captcha::init();
+
+		// Call the method.
+		$groups = $instance->add_to_settings_page( [] );
+
+		// Test if the reCaptcha group is added to the settings page.
+		$this->assertArrayHasKey( 'recaptcha', $groups );
+		$this->assertEquals( 'reCaptcha', $groups['recaptcha']['label'] );
+
+		// Test by adding new group.
+		$groups = $instance->add_to_settings_page( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are rerained to the settings page.
+		$this->assertArrayHasKey( 'recaptcha', $groups );
+		$this->assertEquals( 'reCaptcha', $groups['recaptcha']['label'] );
+	}
 }
