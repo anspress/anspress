@@ -48,4 +48,49 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$instance2 = \Anspress\Addons\Syntax_Highlighter::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::brush
+	 */
+	public function testBrush() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Call the method.
+		$brush = $instance->brush();
+
+		// Get the brushes property.
+		$brushes = $instance->brushes;
+
+		// Test begins.
+		$expected_brushes = [
+			'php'        => 'PHP',
+			'css'        => 'CSS',
+			'xml'        => 'XML/HTML',
+			'jscript'    => 'Javascript',
+			'sql'        => 'SQL',
+			'bash'       => 'Bash/Shell',
+			'clojure'    => 'Clojure',
+			'cpp'        => 'C++/C',
+			'csharp'     => 'C#',
+			'delphi'     => 'Delphi',
+			'diff'       => 'Diff',
+			'erlang'     => 'Erlang',
+			'fsharp'     => 'F#',
+			'groovy'     => 'Groovy',
+			'java'       => 'Java',
+			'javafx'     => 'JavaFX',
+			'latex'      => 'Latex',
+			'plain'      => 'Plain text',
+			'matlab'     => 'Matlabkey',
+			'objc'       => 'Object',
+			'perl'       => 'Perl',
+			'powershell' => 'PowerShell',
+			'python'     => 'Python',
+			'r'          => 'R',
+			'ruby'       => 'Ruby/Rails',
+			'scala'      => 'Scala',
+			'vb'         => 'VisualBasic',
+		];
+		$this->assertEquals( $expected_brushes, $brushes );
+	}
 }
