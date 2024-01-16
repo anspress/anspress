@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonCaptcha extends TestCase {
 
+	use Testcases\Common;
+
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'recaptcha.php' );
@@ -147,5 +149,135 @@ class TestAddonCaptcha extends TestCase {
 			$this->assertArrayHasKey( $role, $form['fields']['recaptcha_exclude_roles']['options'] );
 			$this->assertEquals( $role_data['name'], $form['fields']['recaptcha_exclude_roles']['options'][ $role ] );
 		}
+	}
+
+	/**
+	 * @covers Anspress\Addons\Captcha::ap_question_form_fields
+	 */
+	public function testAPQuestionFormFields() {
+		$instance = \Anspress\Addons\Captcha::init();
+
+		// Required dummy reCaptcha Site Key.
+		ap_opt( 'recaptcha_site_key', 'anspressSamplereCaptchaSiteKey' );
+
+		// Create and assign ask page.
+		$ask_page = $this->factory->post->create( array( 'post_type' => 'page' ) );
+		ap_opt( 'ask_page', $ask_page );
+
+		// Test for showing captcha in form for non logged in users.
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'captcha', $form['fields'] );
+		$this->assertArrayHasKey( 'label', $form['fields']['captcha'] );
+		$this->assertEquals( 'Prove that you are a human', $form['fields']['captcha']['label'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['captcha'] );
+		$this->assertEquals( 'captcha', $form['fields']['captcha']['type'] );
+		$this->assertArrayHasKey( 'order', $form['fields']['captcha'] );
+		$this->assertEquals( 100, $form['fields']['captcha']['order'] );
+
+		// Test for subscriber.
+		$this->setRole( 'subscriber' );
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'captcha', $form['fields'] );
+		$this->assertArrayHasKey( 'label', $form['fields']['captcha'] );
+		$this->assertEquals( 'Prove that you are a human', $form['fields']['captcha']['label'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['captcha'] );
+		$this->assertEquals( 'captcha', $form['fields']['captcha']['type'] );
+		$this->assertArrayHasKey( 'order', $form['fields']['captcha'] );
+		$this->assertEquals( 100, $form['fields']['captcha']['order'] );
+
+		// Test for contributor.
+		$this->setRole( 'contributor' );
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'captcha', $form['fields'] );
+		$this->assertArrayHasKey( 'label', $form['fields']['captcha'] );
+		$this->assertEquals( 'Prove that you are a human', $form['fields']['captcha']['label'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['captcha'] );
+		$this->assertEquals( 'captcha', $form['fields']['captcha']['type'] );
+		$this->assertArrayHasKey( 'order', $form['fields']['captcha'] );
+		$this->assertEquals( 100, $form['fields']['captcha']['order'] );
+
+		// Test for ap_moderator.
+		$this->setRole( 'ap_moderator' );
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertEmpty( $form );
+		$this->assertArrayNotHasKey( 'fields', $form );
+
+		// Test for subscriber user role with exclude recaptcha enabled.
+		ap_opt( 'recaptcha_exclude_roles', [ 'subscriber' => 1 ] );
+		$this->setRole( 'subscriber' );
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertEmpty( $form );
+		$this->assertArrayNotHasKey( 'fields', $form );
+
+		// Test for administrator user role.
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+			$this->go_to( '/?post_type=page&p=' . $ask_page );
+			$form = $instance->ap_question_form_fields( [] );
+			$this->assertNotEmpty( $form );
+			$this->assertArrayHasKey( 'captcha', $form['fields'] );
+			$this->assertArrayHasKey( 'label', $form['fields']['captcha'] );
+			$this->assertEquals( 'Prove that you are a human', $form['fields']['captcha']['label'] );
+			$this->assertArrayHasKey( 'type', $form['fields']['captcha'] );
+			$this->assertEquals( 'captcha', $form['fields']['captcha']['type'] );
+			$this->assertArrayHasKey( 'order', $form['fields']['captcha'] );
+			$this->assertEquals( 100, $form['fields']['captcha']['order'] );
+
+			// Test for super admin user role.
+			$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
+			$this->go_to( '/?post_type=page&p=' . $ask_page );
+			$form = $instance->ap_question_form_fields( [] );
+			$this->assertNotEmpty( $form );
+			$this->assertArrayHasKey( 'captcha', $form['fields'] );
+			$this->assertArrayHasKey( 'label', $form['fields']['captcha'] );
+			$this->assertEquals( 'Prove that you are a human', $form['fields']['captcha']['label'] );
+			$this->assertArrayHasKey( 'type', $form['fields']['captcha'] );
+			$this->assertEquals( 'captcha', $form['fields']['captcha']['type'] );
+			$this->assertArrayHasKey( 'order', $form['fields']['captcha'] );
+			$this->assertEquals( 100, $form['fields']['captcha']['order'] );
+
+			// After granting super admin role.
+			grant_super_admin( $user_id );
+			$this->go_to( '/?post_type=page&p=' . $ask_page );
+			$form = $instance->ap_question_form_fields( [] );
+			$this->assertEmpty( $form );
+			$this->assertArrayNotHasKey( 'fields', $form );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->go_to( '/?post_type=page&p=' . $ask_page );
+			$form = $instance->ap_question_form_fields( [] );
+			$this->assertEmpty( $form );
+			$this->assertArrayNotHasKey( 'fields', $form );
+		}
+
+		// Logout current user.
+		$this->logout();
+
+		// Reset the reCaptcha Site Key.
+		ap_opt( 'recaptcha_site_key', '' );
+
+		// Test if reCaptcha Site Key is not added.
+		// Test for logged in user.
+		$this->setRole( 'subscriber' );
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertEmpty( $form );
+		$this->assertArrayNotHasKey( 'fields', $form );
+
+		// Test for non logged in user.
+		$this->logout();
+		$this->go_to( '/?post_type=page&p=' . $ask_page );
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertEmpty( $form );
+		$this->assertArrayNotHasKey( 'fields', $form );
 	}
 }
