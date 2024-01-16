@@ -141,4 +141,21 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertStringContainsString( 'aplang.shTitle = \'Insert code\';', $inline_script );
 		$this->assertStringContainsString( 'window.apBrushPath = "' . esc_url( ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/' ) . '";', $inline_script );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::mce_before_init
+	 */
+	public function testmce_before_init() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Call the method.
+		$mce_before_init = $instance->mce_before_init( [] );
+
+		// Test begins.
+		$this->assertNotEmpty( $mce_before_init );
+		$this->assertArrayHasKey( 'extended_valid_elements', $mce_before_init );
+		$this->assertStringContainsString( 'pre', $mce_before_init['extended_valid_elements'] );
+		$this->assertStringContainsString( 'code', $mce_before_init['extended_valid_elements'] );
+		$this->assertEquals( 'pre,code', $mce_before_init['extended_valid_elements'] );
+	}
 }
