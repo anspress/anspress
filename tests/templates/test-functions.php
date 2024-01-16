@@ -107,5 +107,11 @@ class TestTemplatesFunctions extends TestCase {
 		$this->assertStringContainsString( esc_url( admin_url( 'admin-ajax.php' ) ), $output );
 		$this->assertStringContainsString( wp_create_nonce( 'ap_ajax_nonce' ), $output );
 		$this->assertStringContainsString( $id, $output );
+
+		// Test for the inline style.
+		$inline_styles = wp_styles()->print_inline_style( 'anspress-main', false );
+		$this->assertStringContainsString( '#anspress .ap-q-cells', $inline_styles );
+		$this->assertStringContainsString( '#anspress .ap-a-cells', $inline_styles );
+		$this->assertStringContainsString( 'margin-', $inline_styles );
 	}
 }
