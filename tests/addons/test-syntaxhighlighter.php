@@ -297,4 +297,19 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$shortcode = do_shortcode( '[apcode language="php" inline="true"]' . $content . '[/apcode]' );
 		$this->assertEquals( $content, $shortcode );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::allowed_shortcodes
+	 */
+	public function testAllowedShortcodes() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Call the method.
+		$allowed_shortcodes = $instance->allowed_shortcodes( [] );
+
+		// Test begins.
+		$this->assertNotEmpty( $allowed_shortcodes );
+		$this->assertIsArray( $allowed_shortcodes );
+		$this->assertContains( 'apcode', $allowed_shortcodes );
+	}
 }
