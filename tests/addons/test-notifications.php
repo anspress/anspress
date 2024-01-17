@@ -155,4 +155,44 @@ class TestAddonNotifications extends TestCase {
 		}
 		$this->assertEquals( 'noti_id', $primary_key );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::ap_menu_object
+	 */
+	public function testAPMenuObject() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Add menu item arg.
+		$menu_item = [
+			(object) [
+				'object' => 'notifications',
+			]
+		];
+
+		// Test begins.
+		// For invalid menu item passing empty array.
+		$result = $instance->ap_menu_object( [] );
+		$this->assertEmpty( $result );
+
+		// For invalid menu item passing invalid values.
+		$result = $instance->ap_menu_object( [ (object) [ 'object' => 'some_menu_item' ] ] );
+		$this->assertNotEmpty( $result );
+		foreach ( $result as $item ) {
+			if ( 'some_menu_item' === $item->object ) {
+				$this->assertEquals( 'some_menu_item', $item->object );
+				$this->assertNotEquals( 'notifications', $item->object );
+			}
+		}
+
+		// For valid menu item.
+		$result = $instance->ap_menu_object( $menu_item );
+		$this->assertNotEmpty( $result );
+		foreach ( $result as $item ) {
+			if ( 'notifications' === $item->object ) {
+				$this->assertEquals( 'notifications', $item->object );
+				$this->assertEquals( '#apNotifications', $item->url );
+				$this->assertEquals( 'custom', $item->type );
+			}
+		}
+	}
 }
