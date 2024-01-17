@@ -127,4 +127,35 @@ class TestAddonReputation extends TestCase {
 		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_reputations'] );
 		$this->assertEquals( ap_opt( 'user_page_slug_reputations' ), $form['fields']['user_page_slug_reputations']['value'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::ap_bp_nav
+	 */
+	public function testapBPNav() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Dummy nav menu items.
+		$dummy_menu_items = [
+			[
+				'name' => 'Item 1',
+				'slug' => 'item-1',
+			],
+			[
+				'name' => 'Item 2',
+				'slug' => 'item-2',
+			],
+		];
+		$this->assertEquals( 2, count( $dummy_menu_items ) );
+
+		// Call the method.
+		$modified_nav = $instance->ap_bp_nav( $dummy_menu_items );
+
+		// Test begins.
+		$this->assertNotEmpty( $modified_nav );
+		$this->assertIsArray( $modified_nav );
+		$this->assertEquals( 3, count( $modified_nav ) );
+		$last_item = end( $modified_nav );
+		$this->assertEquals( 'Reputations', $last_item['name'] );
+		$this->assertEquals( 'reputations', $last_item['slug'] );
+	}
 }
