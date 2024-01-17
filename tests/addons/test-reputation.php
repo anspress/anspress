@@ -158,4 +158,40 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 'Reputations', $last_item['name'] );
 		$this->assertEquals( 'reputations', $last_item['slug'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::ap_all_options
+	 */
+	public function testAPAllOptions() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Dummy options.
+		$dummy_options = [
+			'option1' => [
+				'label'    => 'Option 1',
+				'template' => 'option-1.php',
+			],
+			'option2' => [
+				'label'    => 'Option 2',
+				'template' => 'option-2.php',
+			],
+		];
+		$this->assertEquals( 2, count( $dummy_options ) );
+
+		// Call the method.
+		$modified_options = $instance->ap_all_options( $dummy_options );
+
+		// Test begins.
+		$this->assertNotEmpty( $modified_options );
+		$this->assertIsArray( $modified_options );
+		$this->assertEquals( 3, count( $modified_options ) );
+
+		// Test for reputations options.
+		$reputations_options = end( $modified_options );
+		$this->assertArrayHasKey( 'reputations', $modified_options );
+		$this->assertArrayHasKey( 'label', $reputations_options );
+		$this->assertEquals( '⚙ Reputations', $reputations_options['label'] );
+		$this->assertArrayHasKey( 'template', $reputations_options );
+		$this->assertEquals( 'reputation-events.php', $reputations_options['template'] );
+	}
 }
