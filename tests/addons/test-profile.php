@@ -198,4 +198,41 @@ class TestAddonProfile extends TestCase {
 		$this->go_to( '/' );
 		$this->logout();
 	}
+
+	/**
+	 * @covers Anspress\Addons\Profile::ap_current_page
+	 */
+	public function testAPCurrentPage() {
+		$instance = \Anspress\Addons\Profile::init();
+
+		// Test by visting other pages.
+		$this->go_to( '/' );
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+
+		// Test by visting user profile page.
+		$user_page = $this->factory()->post->create(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => 'User profile',
+			)
+		);
+		ap_opt( 'user_page', $user_page );
+		$user = $this->factory()->user->create_and_get();
+		$this->go_to( '/?post_type=page&p=' . $user_page );
+		set_query_var( 'user_page', 'profile' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$wp_query->queried_object_id = $user->ID;
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+
+		// Test by visting/setting the user author archive page.
+		$this->setRole( 'editor' );
+		$this->go_to( get_author_posts_url( get_current_user_id() ) );
+		set_query_var( 'ap_page', 'user' );
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'user', $method );
+	}
 }
