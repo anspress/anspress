@@ -126,4 +126,33 @@ class TestAddonNotifications extends TestCase {
 		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_notifications'] );
 		$this->assertEquals( ap_opt( 'user_page_slug_notifications' ), $form['fields']['user_page_slug_notifications']['value'] );
 	}
+
+	/**
+	 * @covers ::ap_notification_addon_activation
+	 */
+	public function testAPNotificationAddonActivation() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'ap_notifications';
+
+		// Call the function.
+		\AnsPress\Addons\ap_notification_addon_activation();
+
+		// Test if the table is created with the correct columns.
+		$columns = $wpdb->get_col( "DESCRIBE $table_name" );
+		$expected_columns = [ 'noti_id', 'noti_user_id', 'noti_actor', 'noti_parent', 'noti_ref_id', 'noti_ref_type', 'noti_verb', 'noti_date', 'noti_seen' ];
+		foreach ( $expected_columns as $column ) {
+			$this->assertContains( $column, $columns );
+		}
+
+		// Test if the table has the expected primary key.
+		$primary_key = null;
+		$columns_info = $wpdb->get_results( "DESCRIBE $table_name" );
+		foreach ( $columns_info as $column ) {
+			if ( 'PRI' === $column->Key ) {
+				$primary_key = $column->Field;
+				break;
+			}
+		}
+		$this->assertEquals( 'noti_id', $primary_key );
+	}
 }
