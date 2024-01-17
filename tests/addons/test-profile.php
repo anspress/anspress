@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonProfile extends TestCase {
 
+	use Testcases\Common;
+
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'profile.php' );
@@ -149,5 +151,51 @@ class TestAddonProfile extends TestCase {
 		$this->assertEquals( [ $instance, 'user_page' ], $user_page['func'] );
 		$this->assertEquals( true, $user_page['show_in_menu'] );
 		$this->assertEquals( true, $user_page['private'] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Profile::current_user_id
+	 */
+	public function testCurrentUserID() {
+		$instance = \Anspress\Addons\Profile::init();
+
+		// Test for user id without visiting the user profile page.
+		$this->setRole( 'subscriber' );
+		$this->assertEquals( get_current_user_id(), $instance->current_user_id() );
+		$this->logout();
+
+		// Test for user id with visiting the user profile page.
+		// Test 1.
+		$user = $this->factory()->user->create_and_get();
+		$this->assertNotEquals( $user->ID, $instance->current_user_id() );
+		$user_page = $this->factory()->post->create(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => 'User profile',
+			)
+		);
+		ap_opt( 'user_page', $user_page );
+		$this->go_to( '/?post_type=page&p=' . $user_page );
+		set_query_var( 'user_page', 'profile' );
+		global $wp_query;
+		$wp_query->queried_object = $user;
+		$wp_query->queried_object_id = $user->ID;
+		$this->assertEquals( $user->ID, $instance->current_user_id() );
+		$this->go_to( '/' );
+
+		// Test 2.
+		wp_set_current_user( $user->ID );
+		$this->assertEquals( $user->ID, $instance->current_user_id() );
+		$new_user = $this->factory()->user->create_and_get();
+		$this->assertNotEquals( $new_user->ID, $instance->current_user_id() );
+		$this->go_to( '/?post_type=page&p=' . $user_page );
+		set_query_var( 'user_page', 'profile' );
+		global $wp_query;
+		$wp_query->queried_object = $new_user;
+		$wp_query->queried_object_id = $new_user->ID;
+		$this->assertEquals( $new_user->ID, $instance->current_user_id() );
+		$this->go_to( '/' );
+		$this->logout();
 	}
 }
