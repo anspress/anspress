@@ -78,6 +78,7 @@ class TestAddonReputation extends TestCase {
 
 		// Test if the new group is added to the settings page.
 		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertArrayHasKey( 'label', $groups['some_other_group'] );
 		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
 
 		// Test if the existing group are retained to the settings page.
