@@ -111,13 +111,13 @@ class TestAddonAvatar extends TestCase {
 		$this->assertEquals( 'Glegoo Bold', $form['fields']['avatar_font']['options']['Glegoo-Bold'] );
 		$this->assertArrayHasKey( 'DeliusSwashCaps', $form['fields']['avatar_font']['options'] );
 		$this->assertEquals( 'Delius Swash Caps', $form['fields']['avatar_font']['options']['DeliusSwashCaps'] );
-		$this->assertEquals( 'Pacifico', $form['fields']['avatar_font']['value'] );
+		$this->assertEquals( ap_opt( 'avatar_font' ), $form['fields']['avatar_font']['value'] );
 
 		// Test for avatar_force.
 		$this->assertEquals( 'Force avatar', $form['fields']['avatar_force']['label'] );
 		$this->assertEquals( 'Show AnsPress avatars by default instead of gravatar fallback. Useful in localhost development.', $form['fields']['avatar_force']['desc'] );
 		$this->assertEquals( 'checkbox', $form['fields']['avatar_force']['type'] );
-		$this->assertEquals( false, $form['fields']['avatar_force']['value'] );
+		$this->assertEquals( ap_opt( 'avatar_force' ), $form['fields']['avatar_force']['value'] );
 	}
 
 	/**

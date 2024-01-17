@@ -86,7 +86,7 @@ class TestAddonAkismet extends TestCase {
 		$this->assertNotEmpty( $form );
 		$this->assertEquals( 'Save add-on options', $form['submit_label'] );
 		$this->assertArrayHasKey( 'spam_post_action', $form['fields'] );
-		$this->assertEquals( 'moderate', $form['fields']['spam_post_action']['value'] );
+		$this->assertEquals( ap_opt( 'spam_post_action' ), $form['fields']['spam_post_action']['value'] );
 		$this->assertEquals( 'select', $form['fields']['spam_post_action']['type'] );
 		$this->assertArrayHasKey( 'moderate', $form['fields']['spam_post_action']['options'] );
 		$this->assertArrayHasKey( 'trash', $form['fields']['spam_post_action']['options'] );
