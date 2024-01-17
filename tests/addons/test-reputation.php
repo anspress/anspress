@@ -88,4 +88,43 @@ class TestAddonReputation extends TestCase {
 		$this->assertStringContainsString( '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">', $groups['reputation']['info'] );
 		$this->assertStringContainsString( 'Reputation Points', $groups['reputation']['info'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::load_options
+	 */
+	public function testLoadOptions() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Add user_page_title_reputations and user_page_slug_reputations options.
+		ap_add_default_options(
+			array(
+				'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
+				'user_page_slug_reputations'  => 'reputations',
+			)
+		);
+
+		// Call the method.
+		$form = $instance->load_options();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'user_page_title_reputations', $form['fields'] );
+		$this->assertArrayHasKey( 'user_page_slug_reputations', $form['fields'] );
+
+		// Test for user_page_title_reputations field.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_title_reputations'] );
+		$this->assertEquals( 'Reputations page title', $form['fields']['user_page_title_reputations']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_title_reputations'] );
+		$this->assertEquals( 'Custom title for user profile reputations page', $form['fields']['user_page_title_reputations']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_title_reputations'] );
+		$this->assertEquals( ap_opt( 'user_page_title_reputations' ), $form['fields']['user_page_title_reputations']['value'] );
+
+		// Test for user_page_slug_reputations field.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_slug_reputations'] );
+		$this->assertEquals( 'Reputations page slug', $form['fields']['user_page_slug_reputations']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_slug_reputations'] );
+		$this->assertEquals( 'Custom slug for user profile reputations page', $form['fields']['user_page_slug_reputations']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_reputations'] );
+		$this->assertEquals( ap_opt( 'user_page_slug_reputations' ), $form['fields']['user_page_slug_reputations']['value'] );
+	}
 }
