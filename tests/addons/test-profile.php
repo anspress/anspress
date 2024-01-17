@@ -54,4 +54,29 @@ class TestAddonProfile extends TestCase {
 		$instance2 = \Anspress\Addons\Profile::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Profile::add_to_settings_page
+	 */
+	public function testAddToSettingsPage() {
+		$instance = \Anspress\Addons\Profile::init();
+
+		// Call the method.
+		$groups = $instance->add_to_settings_page( [] );
+
+		// Test if the Profile group is added to the settings page.
+		$this->assertArrayHasKey( 'profile', $groups );
+		$this->assertEquals( 'Profile', $groups['profile']['label'] );
+
+		// Test by adding new group.
+		$groups = $instance->add_to_settings_page( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are retained to the settings page.
+		$this->assertArrayHasKey( 'profile', $groups );
+		$this->assertEquals( 'Profile', $groups['profile']['label'] );
+	}
 }

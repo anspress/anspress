@@ -65,7 +65,7 @@ class TestAddonAkismet extends TestCase {
 		$this->assertArrayHasKey( 'some_other_group', $groups );
 		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
 
-		// Test if the existing group are rerained to the settings page.
+		// Test if the existing group are retained to the settings page.
 		$this->assertArrayHasKey( 'akismet', $groups );
 		$this->assertEquals( 'Akismet', $groups['akismet']['label'] );
 	}
