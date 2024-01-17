@@ -59,4 +59,32 @@ class TestAddonNotifications extends TestCase {
 		$instance2 = \Anspress\Addons\Notifications::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::add_to_settings_page
+	 */
+	public function testAddToSettingsPage() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Call the method.
+		$groups = $instance->add_to_settings_page( [] );
+
+		// Test if the Notification group is added to the settings page.
+		$this->assertArrayHasKey( 'notification', $groups );
+		$this->assertArrayHasKey( 'label', $groups['notification'] );
+		$this->assertEquals( 'Notification', $groups['notification']['label'] );
+
+		// Test by adding new group.
+		$groups = $instance->add_to_settings_page( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertArrayHasKey( 'label', $groups['some_other_group'] );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are retained to the settings page.
+		$this->assertArrayHasKey( 'notification', $groups );
+		$this->assertArrayHasKey( 'label', $groups['notification'] );
+		$this->assertEquals( 'Notification', $groups['notification']['label'] );
+	}
 }
