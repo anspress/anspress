@@ -79,4 +79,63 @@ class TestAddonProfile extends TestCase {
 		$this->assertArrayHasKey( 'profile', $groups );
 		$this->assertEquals( 'Profile', $groups['profile']['label'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Profile::options
+	 */
+	public function testOptions() {
+		$instance = \Anspress\Addons\Profile::init();
+
+		// Add user_page_slug_questions, user_page_slug_answers, user_page_title_questions and user_page_title_answers options.
+		ap_add_default_options(
+			array(
+				'user_page_slug_questions'  => 'questions',
+				'user_page_slug_answers'    => 'answers',
+				'user_page_title_questions' => 'Questions',
+				'user_page_title_answers'   => 'Answers',
+			)
+		);
+
+		// Call the method.
+		$form = $instance->options();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'user_page_title_questions', $form['fields'] );
+		$this->assertArrayHasKey( 'user_page_slug_questions', $form['fields'] );
+		$this->assertArrayHasKey( 'user_page_title_answers', $form['fields'] );
+		$this->assertArrayHasKey( 'user_page_slug_answers', $form['fields'] );
+
+		// Test for user_page_slug_questions.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_title_questions'] );
+		$this->assertEquals( 'Questions page title', $form['fields']['user_page_title_questions']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_title_questions'] );
+		$this->assertEquals( 'Custom title for user profile questions page', $form['fields']['user_page_title_questions']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_title_questions'] );
+		$this->assertEquals( ap_opt( 'user_page_title_questions' ), $form['fields']['user_page_title_questions']['value'] );
+
+		// Test for user_page_slug_answers.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_slug_questions'] );
+		$this->assertEquals( 'Questions page slug', $form['fields']['user_page_slug_questions']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_slug_questions'] );
+		$this->assertEquals( 'Custom slug for user profile questions page', $form['fields']['user_page_slug_questions']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_questions'] );
+		$this->assertEquals( ap_opt( 'user_page_slug_questions' ), $form['fields']['user_page_slug_questions']['value'] );
+
+		// Test for user_page_title_answers.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_title_answers'] );
+		$this->assertEquals( 'Answers page title', $form['fields']['user_page_title_answers']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_title_answers'] );
+		$this->assertEquals( 'Custom title for user profile answers page', $form['fields']['user_page_title_answers']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_title_answers'] );
+		$this->assertEquals( ap_opt( 'user_page_title_answers' ), $form['fields']['user_page_title_answers']['value'] );
+
+		// Test for user_page_slug_answers.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_slug_answers'] );
+		$this->assertEquals( 'Answers page slug', $form['fields']['user_page_slug_answers']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_slug_answers'] );
+		$this->assertEquals( 'Custom slug for user profile answers page', $form['fields']['user_page_slug_answers']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_answers'] );
+		$this->assertEquals( ap_opt( 'user_page_slug_answers' ), $form['fields']['user_page_slug_answers']['value'] );
+	}
 }
