@@ -138,4 +138,16 @@ class TestAddonProfile extends TestCase {
 		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_answers'] );
 		$this->assertEquals( ap_opt( 'user_page_slug_answers' ), $form['fields']['user_page_slug_answers']['value'] );
 	}
+
+	public function testUserPageRegistered() {
+		$instance = \Anspress\Addons\Profile::init();
+
+		// Test if user page is registered or not.
+		$user_page = anspress()->pages['user'];
+		$this->assertIsArray( $user_page );
+		$this->assertEquals( 'User profile', $user_page['title'] );
+		$this->assertEquals( [ $instance, 'user_page' ], $user_page['func'] );
+		$this->assertEquals( true, $user_page['show_in_menu'] );
+		$this->assertEquals( true, $user_page['private'] );
+	}
 }
