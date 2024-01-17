@@ -55,4 +55,37 @@ class TestAddonReputation extends TestCase {
 		$instance2 = \Anspress\Addons\Reputation::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::add_to_settings_page
+	 */
+	public function testAddtoSettingsPage() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Call the method.
+		$groups = $instance->add_to_settings_page( [] );
+
+		// Test if the Reputation group is added to the settings page.
+		$this->assertArrayHasKey( 'reputation', $groups );
+		$this->assertEquals( 'Reputation', $groups['reputation']['label'] );
+		$this->assertArrayHasKey( 'info', $groups['reputation'] );
+		$this->assertStringContainsString( 'Reputation event points can be adjusted here', $groups['reputation']['info'] );
+		$this->assertStringContainsString( '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">', $groups['reputation']['info'] );
+		$this->assertStringContainsString( 'Reputation Points', $groups['reputation']['info'] );
+
+		// Test by adding new group.
+		$groups = $instance->add_to_settings_page( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are retained to the settings page.
+		$this->assertArrayHasKey( 'reputation', $groups );
+		$this->assertEquals( 'Reputation', $groups['reputation']['label'] );
+		$this->assertArrayHasKey( 'info', $groups['reputation'] );
+		$this->assertStringContainsString( 'Reputation event points can be adjusted here', $groups['reputation']['info'] );
+		$this->assertStringContainsString( '<a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">', $groups['reputation']['info'] );
+		$this->assertStringContainsString( 'Reputation Points', $groups['reputation']['info'] );
+	}
 }
