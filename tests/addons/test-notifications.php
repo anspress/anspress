@@ -87,4 +87,43 @@ class TestAddonNotifications extends TestCase {
 		$this->assertArrayHasKey( 'label', $groups['notification'] );
 		$this->assertEquals( 'Notification', $groups['notification']['label'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::load_options
+	 */
+	public function testLoadOptions() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Add user_page_title_notifications and user_page_slug_notifications options.
+		ap_add_default_options(
+			array(
+				'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
+				'user_page_slug_notifications'  => 'notifications',
+			)
+		);
+
+		// Call the method.
+		$form = $instance->load_options();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'user_page_title_notifications', $form['fields'] );
+		$this->assertArrayHasKey( 'user_page_slug_notifications', $form['fields'] );
+
+		// Test for user_page_title_notifications field.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_title_notifications'] );
+		$this->assertEquals( 'Notifications page title', $form['fields']['user_page_title_notifications']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_title_notifications'] );
+		$this->assertEquals( 'Custom title for user profile notifications page', $form['fields']['user_page_title_notifications']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_title_notifications'] );
+		$this->assertEquals( ap_opt( 'user_page_title_notifications' ), $form['fields']['user_page_title_notifications']['value'] );
+
+		// Test for user_page_slug_notifications field.
+		$this->assertArrayHasKey( 'label', $form['fields']['user_page_slug_notifications'] );
+		$this->assertEquals( 'Notifications page slug', $form['fields']['user_page_slug_notifications']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_slug_notifications'] );
+		$this->assertEquals( 'Custom slug for user profile notifications page', $form['fields']['user_page_slug_notifications']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_notifications'] );
+		$this->assertEquals( ap_opt( 'user_page_slug_notifications' ), $form['fields']['user_page_slug_notifications']['value'] );
+	}
 }
