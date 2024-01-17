@@ -158,4 +158,143 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertStringContainsString( 'code', $mce_before_init['extended_valid_elements'] );
 		$this->assertEquals( 'pre,code', $mce_before_init['extended_valid_elements'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::shortcode
+	 */
+	public function testShortcode() {
+		$this->assertTrue( shortcode_exists( 'apcode' ) );
+
+		// Test via directly calling the method.
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Test with empty attributes.
+		// Test 1.
+		$content = '<pre>Some code</pre>';
+		$shortcode = $instance->shortcode( [], $content );
+		$this->assertEquals( '<pre class="brush: plain">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code</code>';
+		$shortcode = $instance->shortcode( [], $content );
+		$this->assertEquals( '<code class="brush: plain">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts';
+		$shortcode = $instance->shortcode( [], $content );
+		$this->assertEquals( $content, $shortcode );
+
+		// Test with language attributes.
+		// Test 1.
+		$content = '<pre>Some code</pre>';
+		$shortcode = $instance->shortcode( [ 'language' => 'php' ], $content );
+		$this->assertEquals( '<pre class="brush: php">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code</code>';
+		$shortcode = $instance->shortcode( [ 'language' => 'php' ], $content );
+		$this->assertEquals( '<code class="brush: php">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts';
+		$shortcode = $instance->shortcode( [ 'language' => 'php' ], $content );
+		$this->assertEquals( $content, $shortcode );
+
+		// Test with inline attribute.
+		// Test 1.
+		$content = '<pre>Some code<br><br /></pre>';
+		$shortcode = $instance->shortcode( [ 'inline' => true ], $content );
+		$this->assertEquals( '<pre class="brush: plain">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code<br><br /></code>';
+		$shortcode = $instance->shortcode( [ 'inline' => true ], $content );
+		$this->assertEquals( '<code class="brush: plain">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts<br><br /><br>';
+		$shortcode = $instance->shortcode( [ 'inline' => true ], $content );
+		$this->assertEquals( 'Some texts', $shortcode );
+
+		// Test with both language and inline attributes.
+		// Test 1.
+		$content = '<pre>Some code</pre>';
+		$shortcode = $instance->shortcode( [ 'language' => 'php', 'inline' => true ], $content );
+		$this->assertEquals( '<pre class="brush: php">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code</code>';
+		$shortcode = $instance->shortcode( [ 'language' => 'php', 'inline' => true ], $content );
+		$this->assertEquals( '<code class="brush: php">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts';
+		$shortcode = $instance->shortcode( [ 'language' => 'php', 'inline' => true ], $content );
+		$this->assertEquals( $content, $shortcode );
+
+		// Test via shortcode.
+		// Test with empty attributes.
+		// Test 1.
+		$content = '<pre>Some code</pre>';
+		$shortcode = do_shortcode( '[apcode]' . $content . '[/apcode]' );
+		$this->assertEquals( '<pre class="brush: plain">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code</code>';
+		$shortcode = do_shortcode( '[apcode]' . $content . '[/apcode]' );
+		$this->assertEquals( '<code class="brush: plain">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts';
+		$shortcode = do_shortcode( '[apcode]' . $content . '[/apcode]' );
+		$this->assertEquals( $content, $shortcode );
+
+		// Test with language attributes.
+		// Test 1.
+		$content = '<pre>Some code</pre>';
+		$shortcode = do_shortcode( '[apcode language="php"]' . $content . '[/apcode]' );
+		$this->assertEquals( '<pre class="brush: php">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code</code>';
+		$shortcode = do_shortcode( '[apcode language="php"]' . $content . '[/apcode]' );
+		$this->assertEquals( '<code class="brush: php">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts';
+		$shortcode = do_shortcode( '[apcode language="php"]' . $content . '[/apcode]' );
+		$this->assertEquals( $content, $shortcode );
+
+		// Test with inline attribute.
+		// Test 1.
+		$content = '<pre>Some code<br><br /></pre>';
+		$shortcode = do_shortcode( '[apcode inline="true"]' . $content . '[/apcode]' );
+		$this->assertEquals( '<pre class="brush: plain">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code<br><br /></code>';
+		$shortcode = do_shortcode( '[apcode inline="true"]' . $content . '[/apcode]' );
+		$this->assertEquals( '<code class="brush: plain">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts<br><br /><br>';
+		$shortcode = do_shortcode( '[apcode inline="true"]' . $content . '[/apcode]' );
+		$this->assertEquals( 'Some texts', $shortcode );
+
+		// Test with both language and inline attributes.
+		// Test 1.
+		$content = '<pre>Some code</pre>';
+		$shortcode = do_shortcode( '[apcode language="php" inline="true"]' . $content . '[/apcode]' );
+		$this->assertEquals( '<pre class="brush: php">Some code</pre>', $shortcode );
+
+		// Test 2.
+		$content = '<code>Some code</code>';
+		$shortcode = do_shortcode( '[apcode language="php" inline="true"]' . $content . '[/apcode]' );
+		$this->assertEquals( '<code class="brush: php">Some code</code>', $shortcode );
+
+		// Test 3.
+		$content = 'Some texts';
+		$shortcode = do_shortcode( '[apcode language="php" inline="true"]' . $content . '[/apcode]' );
+		$this->assertEquals( $content, $shortcode );
+	}
 }
