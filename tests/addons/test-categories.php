@@ -282,4 +282,18 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( true, $categories_page['show_in_menu'] );
 		$this->assertEquals( false, $categories_page['private'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::widget
+	 */
+	public function testWidget() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Call the method.
+		$instance->widget();
+
+		// Test begins.
+		$this->assertTrue( class_exists( 'Anspress\Widgets\Categories' ) );
+		$this->assertTrue( array_key_exists( 'Anspress\Widgets\Categories', $GLOBALS['wp_widget_factory']->widgets ) );
+	}
 }
