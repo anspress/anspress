@@ -153,4 +153,45 @@ class TestAddonTags extends TestCase {
 		$this->assertArrayHasKey( 'value', $forms['fields']['tag_page_slug'] );
 		$this->assertEquals( ap_opt( 'tag_page_slug' ), $forms['fields']['tag_page_slug']['value'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::register_question_tag
+	 */
+	public function testRegisterQuestionTag() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Call the method.
+		$instance->register_question_tag();
+
+		// Test begins.
+		$tag_options = [
+			'max_tags'      => 5,
+			'min_tags'      => 1,
+			'tags_per_page' => 20,
+			'tag_page_slug' => 'tag',
+		];
+		foreach ( $tag_options as $key => $value ) {
+			$this->assertEquals( $value, ap_opt( $key ) );
+		}
+
+		global $wp_taxonomies;
+		$question_tag = $wp_taxonomies['question_tag'];
+		$this->assertTrue( isset( $question_tag ) );
+		$this->assertTrue( taxonomy_exists( 'question_tag' ) );
+		$this->assertEquals( 'question_tag', $question_tag->name );
+		$this->assertEquals( 'Question Tags', $question_tag->label );
+		$this->assertEquals( 'Question Tags', $question_tag->labels->name );
+		$this->assertEquals( 'Tag', $question_tag->labels->singular_name );
+		$this->assertEquals( 'All Tags', $question_tag->labels->all_items );
+		$this->assertEquals( 'Add New Tag', $question_tag->labels->add_new_item );
+		$this->assertEquals( 'Edit Tag', $question_tag->labels->edit_item );
+		$this->assertEquals( 'New Tag', $question_tag->labels->new_item );
+		$this->assertEquals( 'View Tag', $question_tag->labels->view_item );
+		$this->assertEquals( 'Search Tag', $question_tag->labels->search_items );
+		$this->assertEquals( 'Nothing Found', $question_tag->labels->not_found );
+		$this->assertEquals( 'Nothing found in Trash', $question_tag->labels->not_found_in_trash );
+		$this->assertEquals( '', $question_tag->labels->parent_item_colon );
+		$this->assertEquals( 1, $question_tag->hierarchical );
+		$this->assertEquals( 0, $question_tag->rewrite );
+	}
 }
