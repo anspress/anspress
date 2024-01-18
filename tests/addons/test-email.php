@@ -98,4 +98,35 @@ class TestAddonEmail extends TestCase {
 			$this->assertSame( $value, $ap_options[ $key ] );
 		}
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::load_options
+	 */
+	public function testLoadOptions() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Call the method.
+		$groups = $instance->load_options( [] );
+
+		// Test if the Email group is added to the settings page.
+		$this->assertArrayHasKey( 'email', $groups );
+		$this->assertEquals( 'Email', $groups['email']['label'] );
+		$this->assertStringContainsString( 'Email templates can be customized here', $groups['email']['info'] );
+		$this->assertStringContainsString( '<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">', $groups['email']['info'] );
+		$this->assertStringContainsString( 'Customize email templates', $groups['email']['info'] );
+
+		// Test by adding new group.
+		$groups = $instance->load_options( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are retained to the settings page.
+		$this->assertArrayHasKey( 'email', $groups );
+		$this->assertEquals( 'Email', $groups['email']['label'] );
+		$this->assertStringContainsString( 'Email templates can be customized here', $groups['email']['info'] );
+		$this->assertStringContainsString( '<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">', $groups['email']['info'] );
+		$this->assertStringContainsString( 'Customize email templates', $groups['email']['info'] );
+	}
 }
