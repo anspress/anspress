@@ -218,4 +218,48 @@ class TestAddonCategories extends TestCase {
 		$this->assertArrayHasKey( 'value', $forms['fields']['categories_image_height'] );
 		$this->assertEquals( ap_opt( 'categories_image_height' ), $forms['fields']['categories_image_height']['value'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::register_question_categories
+	 */
+	public function testRegisterQuestionCategories() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Call the method.
+		$instance->register_question_categories();
+
+		// Test begins.
+		$category_options = [
+			'form_category_orderby'   => 'count',
+			'categories_page_order'   => 'DESC',
+			'categories_page_orderby' => 'count',
+			'category_page_slug'      => 'category',
+			'categories_per_page'     => 20,
+			'categories_image_height' => 150,
+		];
+		foreach ( $category_options as $key => $value ) {
+			$this->assertEquals( $value, ap_opt( $key ) );
+		}
+
+		global $wp_taxonomies;
+		$question_category = $wp_taxonomies['question_category'];
+		$this->assertTrue( isset( $question_category ) );
+		$this->assertTrue( taxonomy_exists( 'question_category' ) );
+		$this->assertEquals( 'question_category', $question_category->name );
+		$this->assertEquals( 'Question Categories', $question_category->label );
+		$this->assertEquals( 'Question Categories', $question_category->labels->name );
+		$this->assertEquals( 'Category', $question_category->labels->singular_name );
+		$this->assertEquals( 'All Categories', $question_category->labels->all_items );
+		$this->assertEquals( 'Add New Category', $question_category->labels->add_new_item );
+		$this->assertEquals( 'Edit Category', $question_category->labels->edit_item );
+		$this->assertEquals( 'New Category', $question_category->labels->new_item );
+		$this->assertEquals( 'View Category', $question_category->labels->view_item );
+		$this->assertEquals( 'Search Category', $question_category->labels->search_items );
+		$this->assertEquals( 'Nothing Found', $question_category->labels->not_found );
+		$this->assertEquals( 'Nothing found in Trash', $question_category->labels->not_found_in_trash );
+		$this->assertEquals( '', $question_category->labels->parent_item_colon );
+		$this->assertEquals( 1, $question_category->hierarchical );
+		$this->assertEquals( 0, $question_category->rewrite );
+		$this->assertEquals( 1, $question_category->publicly_queryable );
+	}
 }
