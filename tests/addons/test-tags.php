@@ -194,4 +194,19 @@ class TestAddonTags extends TestCase {
 		$this->assertEquals( 1, $question_tag->hierarchical );
 		$this->assertEquals( 0, $question_tag->rewrite );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::widget_positions
+	 */
+	public function testWidgetPositions() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Call the method.
+		$instance->widget_positions();
+
+		global $wp_registered_sidebars;
+		$this->assertArrayHasKey( 'ap-tags', $wp_registered_sidebars );
+		$this->assertEquals( 'ap-tags', $wp_registered_sidebars['ap-tags']['id'] );
+		$this->assertEquals( '(AnsPress) Tags', $wp_registered_sidebars['ap-tags']['name'] );
+	}
 }
