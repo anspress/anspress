@@ -62,4 +62,40 @@ class TestAddonEmail extends TestCase {
 		$instance2 = \Anspress\Addons\Email::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::ap_default_options
+	 */
+	public function testAPDefaultOptions() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Get all available options.
+		$ap_options = ap_opt();
+
+		// Call the method.
+		$instance->ap_default_options();
+
+		// Test begins.
+		$expected_options = [
+			'email_admin_emails'         => get_option( 'admin_email' ),
+			'email_admin_new_question'   => true,
+			'email_admin_new_answer'     => true,
+			'email_admin_new_comment'    => true,
+			'email_admin_edit_question'  => true,
+			'email_admin_edit_answer'    => true,
+			'email_admin_trash_question' => true,
+			'email_admin_trash_answer'   => true,
+			'email_user_new_question'    => true,
+			'email_user_new_answer'      => true,
+			'email_user_select_answer'   => true,
+			'email_user_new_comment'     => true,
+			'email_user_edit_question'   => true,
+			'email_user_edit_answer'     => true,
+			'trash_answer_email_subject' => 'An answer is trashed by {user}',
+			'trash_answer_email_body'    => "Hello!\nAnswer on '{question_title}' is trashed by {user}.\n",
+		];
+		foreach ( $expected_options as $key => $value ) {
+			$this->assertSame( $value, $ap_options[ $key ] );
+		}
+	}
 }
