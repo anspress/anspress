@@ -262,4 +262,24 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 0, $question_category->rewrite );
 		$this->assertEquals( 1, $question_category->publicly_queryable );
 	}
+
+	public function testCategoryCategoriesPagesRegistered()	{
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test if the category page is registered.
+		$category_page = anspress()->pages['category'];
+		$this->assertIsArray( $category_page );
+		$this->assertEquals( 'Category', $category_page['title'] );
+		$this->assertEquals( [ $instance, 'category_page' ], $category_page['func'] );
+		$this->assertEquals( false, $category_page['show_in_menu'] );
+		$this->assertEquals( false, $category_page['private'] );
+
+		// Test if the categories page is registered.
+		$categories_page = anspress()->pages['categories'];
+		$this->assertIsArray( $categories_page );
+		$this->assertEquals( 'Categories', $categories_page['title'] );
+		$this->assertEquals( [ $instance, 'categories_page' ], $categories_page['func'] );
+		$this->assertEquals( true, $categories_page['show_in_menu'] );
+		$this->assertEquals( false, $categories_page['private'] );
+	}
 }

@@ -209,4 +209,24 @@ class TestAddonTags extends TestCase {
 		$this->assertEquals( 'ap-tags', $wp_registered_sidebars['ap-tags']['id'] );
 		$this->assertEquals( '(AnsPress) Tags', $wp_registered_sidebars['ap-tags']['name'] );
 	}
+
+	public function testTagTagsPagesRegistered() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Test if the tag page is registered.
+		$tag_page = anspress()->pages['tag'];
+		$this->assertIsArray( $tag_page );
+		$this->assertEquals( 'Tag', $tag_page['title'] );
+		$this->assertEquals( [ $instance, 'tag_page' ], $tag_page['func'] );
+		$this->assertEquals( false, $tag_page['show_in_menu'] );
+		$this->assertEquals( false, $tag_page['private'] );
+
+		// Test if the tags page is registered.
+		$tags_page = anspress()->pages['tags'];
+		$this->assertIsArray( $tags_page );
+		$this->assertEquals( 'Tags', $tags_page['title'] );
+		$this->assertEquals( [ $instance, 'tags_page' ], $tags_page['func'] );
+		$this->assertEquals( true, $tags_page['show_in_menu'] );
+		$this->assertEquals( false, $tags_page['private'] );
+	}
 }
