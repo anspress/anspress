@@ -98,4 +98,30 @@ class Test_Session extends TestCase {
 			$this->assertContains( $id, $session->get( 'questions' ) );
 		}
 	}
+
+	/**
+	 * @covers AnsPress\Session::set_file
+	 */
+	public function testset_file() {
+		$session = \AnsPress\Session::init();
+
+		// Test with empty file.
+		$session->set_file( '' );
+		$this->assertIsArray( $session->get( 'files' ) );
+		$this->assertEquals( [ 0 => '' ], $session->get( 'files' ) );
+
+		// Test with passing the file.
+		$session->set_file( 'example.txt' );
+		$this->assertContains( 'example.txt', $session->get( 'files' ) );
+
+		// Test with passing the file multiple times.
+		$session->set_file( 'example-1.txt' );
+		$session->set_file( 'example-2.txt' );
+		$session->set_file( 'example-3.txt' );
+		$this->assertContains( 'example.txt', $session->get( 'files' ) );
+		$this->assertContains( 'example-1.txt', $session->get( 'files' ) );
+		$this->assertContains( 'example-2.txt', $session->get( 'files' ) );
+		$this->assertContains( 'example-3.txt', $session->get( 'files' ) );
+		$this->assertEquals( 5, count( $session->get( 'files' ) ) );
+	}
 }
