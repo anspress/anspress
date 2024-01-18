@@ -59,4 +59,29 @@ class TestAddonCategories extends TestCase {
 		$instance2 = \Anspress\Addons\Categories::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::load_options
+	 */
+	public function testLoadOptions() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Call the method.
+		$groups = $instance->load_options( [] );
+
+		// Test if the Category group is added to the settings page.
+		$this->assertArrayHasKey( 'category', $groups );
+		$this->assertEquals( 'Category', $groups['category']['label'] );
+
+		// Test by adding new group.
+		$groups = $instance->load_options( [ 'some_other_group' => [ 'label' => 'Some Other Group' ] ] );
+
+		// Test if the new group is added to the settings page.
+		$this->assertArrayHasKey( 'some_other_group', $groups );
+		$this->assertEquals( 'Some Other Group', $groups['some_other_group']['label'] );
+
+		// Test if the existing group are retained to the settings page.
+		$this->assertArrayHasKey( 'category', $groups );
+		$this->assertEquals( 'Category', $groups['category']['label'] );
+	}
 }
