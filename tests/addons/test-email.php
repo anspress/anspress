@@ -337,4 +337,40 @@ class TestAddonEmail extends TestCase {
 		];
 		$this->assertEquals( $expected_template, $template );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::ap_all_options
+	 */
+	public function testAPAllOptions() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Dummy options.
+		$dummy_options = [
+			'option1' => [
+				'label'    => 'Option 1',
+				'template' => 'option-1.php',
+			],
+			'option2' => [
+				'label'    => 'Option 2',
+				'template' => 'option-2.php',
+			],
+		];
+		$this->assertEquals( 2, count( $dummy_options ) );
+
+		// Call the method.
+		$modified_options = $instance->ap_all_options( $dummy_options );
+
+		// Test begins.
+		$this->assertNotEmpty( $modified_options );
+		$this->assertIsArray( $modified_options );
+		$this->assertEquals( 3, count( $modified_options ) );
+
+		// Test for Emails options.
+		$emails_options = end( $modified_options );
+		$this->assertArrayHasKey( 'emails', $modified_options );
+		$this->assertArrayHasKey( 'label', $emails_options );
+		$this->assertEquals( '📧 Email Templates', $emails_options['label'] );
+		$this->assertArrayHasKey( 'template', $emails_options );
+		$this->assertEquals( 'emails.php', $emails_options['template'] );
+	}
 }
