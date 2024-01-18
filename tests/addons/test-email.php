@@ -129,4 +129,181 @@ class TestAddonEmail extends TestCase {
 		$this->assertStringContainsString( '<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">', $groups['email']['info'] );
 		$this->assertStringContainsString( 'Customize email templates', $groups['email']['info'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::register_option
+	 */
+	public function testRegisterOption() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Call the method.
+		$form = $instance->register_option();
+
+		// Test begins.
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'sep1', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_emails', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_new_question', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_new_answer', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_new_comment', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_edit_question', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_edit_answer', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_trash_question', $form['fields'] );
+		$this->assertArrayHasKey( 'email_admin_trash_answer', $form['fields'] );
+		$this->assertArrayHasKey( 'sep2', $form['fields'] );
+		$this->assertArrayHasKey( 'email_user_new_question', $form['fields'] );
+		$this->assertArrayHasKey( 'email_user_new_answer', $form['fields'] );
+		$this->assertArrayHasKey( 'email_user_new_comment', $form['fields'] );
+		$this->assertArrayHasKey( 'email_user_edit_question', $form['fields'] );
+		$this->assertArrayHasKey( 'email_user_edit_answer', $form['fields'] );
+		$this->assertArrayHasKey( 'email_user_select_answer', $form['fields'] );
+
+		// Test for sep1 field.
+		$this->assertArrayHasKey( 'html', $form['fields']['sep1'] );
+		$this->assertStringContainsString( 'Admin Notifications', $form['fields']['sep1']['html'] );
+		$this->assertStringContainsString( 'Select types of notification which will be sent to admin.', $form['fields']['sep1']['html'] );
+
+		// Test for email_admin_emails field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_emails'] );
+		$this->assertEquals( 'Admin email(s)', $form['fields']['email_admin_emails']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_emails'] );
+		$this->assertEquals( 'Email where all admin notification will be sent. It can have multiple emails separated by comma.', $form['fields']['email_admin_emails']['desc'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_emails'] );
+		$this->assertEquals( ap_opt( 'email_admin_emails' ), $form['fields']['email_admin_emails']['value'] );
+
+		// Test for email_admin_new_question field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_new_question'] );
+		$this->assertEquals( 'New question', $form['fields']['email_admin_new_question']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_new_question'] );
+		$this->assertEquals( 'Send new question notification to admin.', $form['fields']['email_admin_new_question']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_new_question'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_new_question']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_new_question'] );
+		$this->assertEquals( ap_opt( 'email_admin_new_question' ), $form['fields']['email_admin_new_question']['value'] );
+
+		// Test for email_admin_new_answer field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_new_answer'] );
+		$this->assertEquals( 'New answer', $form['fields']['email_admin_new_answer']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_new_answer'] );
+		$this->assertEquals( 'Send new answer notification to admin.', $form['fields']['email_admin_new_answer']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_new_answer'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_new_answer']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_new_answer'] );
+		$this->assertEquals( ap_opt( 'email_admin_new_answer' ), $form['fields']['email_admin_new_answer']['value'] );
+
+		// Test for email_admin_new_comment field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_new_comment'] );
+		$this->assertEquals( 'New comment', $form['fields']['email_admin_new_comment']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_new_comment'] );
+		$this->assertEquals( 'Send new comment notification to admin.', $form['fields']['email_admin_new_comment']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_new_comment'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_new_comment']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_new_comment'] );
+		$this->assertEquals( ap_opt( 'email_admin_new_comment' ), $form['fields']['email_admin_new_comment']['value'] );
+
+		// Test for email_admin_edit_question field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_edit_question'] );
+		$this->assertEquals( 'Edit question', $form['fields']['email_admin_edit_question']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_edit_question'] );
+		$this->assertEquals( 'Send notification to admin when question is edited.', $form['fields']['email_admin_edit_question']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_edit_question'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_edit_question']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_edit_question'] );
+		$this->assertEquals( ap_opt( 'email_admin_edit_question' ), $form['fields']['email_admin_edit_question']['value'] );
+
+		// Test for email_admin_edit_answer field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_edit_answer'] );
+		$this->assertEquals( 'Edit answer', $form['fields']['email_admin_edit_answer']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_edit_answer'] );
+		$this->assertEquals( 'Send email to admin when answer is edited.', $form['fields']['email_admin_edit_answer']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_edit_answer'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_edit_answer']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_edit_answer'] );
+		$this->assertEquals( ap_opt( 'email_admin_edit_answer' ), $form['fields']['email_admin_edit_answer']['value'] );
+
+		// Test for email_admin_trash_question field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_trash_question'] );
+		$this->assertEquals( 'Delete question', $form['fields']['email_admin_trash_question']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_trash_question'] );
+		$this->assertEquals( 'Send email to admin when question is trashed.', $form['fields']['email_admin_trash_question']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_trash_question'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_trash_question']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_trash_question'] );
+		$this->assertEquals( ap_opt( 'email_admin_trash_question' ), $form['fields']['email_admin_trash_question']['value'] );
+
+		// Test for email_admin_trash_answer field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_admin_trash_answer'] );
+		$this->assertEquals( 'Delete answer', $form['fields']['email_admin_trash_answer']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_admin_trash_answer'] );
+		$this->assertEquals( 'Send email to admin when answer is trashed.', $form['fields']['email_admin_trash_answer']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_admin_trash_answer'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_admin_trash_answer']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_admin_trash_answer'] );
+		$this->assertEquals( ap_opt( 'email_admin_trash_answer' ), $form['fields']['email_admin_trash_answer']['value'] );
+
+		// Test for sep2 field.
+		$this->assertArrayHasKey( 'html', $form['fields']['sep2'] );
+		$this->assertStringContainsString( 'User Notifications', $form['fields']['sep2']['html'] );
+		$this->assertStringContainsString( 'Select the types of notification which will be sent to user.', $form['fields']['sep2']['html'] );
+
+		// Test for email_user_new_question field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_user_new_question'] );
+		$this->assertEquals( 'New question', $form['fields']['email_user_new_question']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_user_new_question'] );
+		$this->assertEquals( 'Send new question notification to user?', $form['fields']['email_user_new_question']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_user_new_question'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_user_new_question']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_user_new_question'] );
+		$this->assertEquals( ap_opt( 'email_user_new_question' ), $form['fields']['email_user_new_question']['value'] );
+
+		// Test for email_user_new_answer field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_user_new_answer'] );
+		$this->assertEquals( 'New answer', $form['fields']['email_user_new_answer']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_user_new_answer'] );
+		$this->assertEquals( 'Send new answer notification to user?', $form['fields']['email_user_new_answer']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_user_new_answer'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_user_new_answer']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_user_new_answer'] );
+		$this->assertEquals( ap_opt( 'email_user_new_answer' ), $form['fields']['email_user_new_answer']['value'] );
+
+		// Test for email_user_new_comment field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_user_new_comment'] );
+		$this->assertEquals( 'New comment', $form['fields']['email_user_new_comment']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_user_new_comment'] );
+		$this->assertEquals( 'Send new comment notification to user?', $form['fields']['email_user_new_comment']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_user_new_comment'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_user_new_comment']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_user_new_comment'] );
+		$this->assertEquals( ap_opt( 'email_user_new_comment' ), $form['fields']['email_user_new_comment']['value'] );
+
+		// Test for email_user_edit_question field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_user_edit_question'] );
+		$this->assertEquals( 'Edit question', $form['fields']['email_user_edit_question']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_user_edit_question'] );
+		$this->assertEquals( 'Send edit question notification to user?', $form['fields']['email_user_edit_question']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_user_edit_question'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_user_edit_question']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_user_edit_question'] );
+		$this->assertEquals( ap_opt( 'email_user_edit_question' ), $form['fields']['email_user_edit_question']['value'] );
+
+		// Test for email_user_edit_answer field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_user_edit_answer'] );
+		$this->assertEquals( 'Edit answer', $form['fields']['email_user_edit_answer']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_user_edit_answer'] );
+		$this->assertEquals( 'Send edit answer notification to user?', $form['fields']['email_user_edit_answer']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_user_edit_answer'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_user_edit_answer']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_user_edit_answer'] );
+		$this->assertEquals( ap_opt( 'email_user_edit_answer' ), $form['fields']['email_user_edit_answer']['value'] );
+
+		// Test for email_user_select_answer field.
+		$this->assertArrayHasKey( 'label', $form['fields']['email_user_select_answer'] );
+		$this->assertEquals( 'Answer selected', $form['fields']['email_user_select_answer']['label'] );
+		$this->assertArrayHasKey( 'desc', $form['fields']['email_user_select_answer'] );
+		$this->assertEquals( 'Send notification to user when their answer get selected?', $form['fields']['email_user_select_answer']['desc'] );
+		$this->assertArrayHasKey( 'type', $form['fields']['email_user_select_answer'] );
+		$this->assertEquals( 'checkbox', $form['fields']['email_user_select_answer']['type'] );
+		$this->assertArrayHasKey( 'value', $form['fields']['email_user_select_answer'] );
+		$this->assertEquals( ap_opt( 'email_user_select_answer' ), $form['fields']['email_user_select_answer']['value'] );
+	}
 }
