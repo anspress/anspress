@@ -306,4 +306,35 @@ class TestAddonEmail extends TestCase {
 		$this->assertArrayHasKey( 'value', $form['fields']['email_user_select_answer'] );
 		$this->assertEquals( ap_opt( 'email_user_select_answer' ), $form['fields']['email_user_select_answer']['value'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::register_email_template
+	 */
+	public function testRegisterEmailTemplate() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Call the method.
+		$template = $instance->register_email_template();
+
+		// Test begins.
+		$expected_template = [
+			'fields' => [
+				'subject' => [
+					'label' => 'Email subject',
+				],
+				'body'    => [
+					'label'       => 'Email body',
+					'type'        => 'editor',
+					'editor_args' => [
+						'quicktags' => true,
+						'tinymce'   => true,
+					],
+				],
+				'tags'    => [
+					'html' => '<label class="ap-form-label" for="form_email_template-allowed_tags">Allowed tags</label><div class="ap-email-allowed-tags">' . apply_filters( 'ap_email_form_allowed_tags', '' ) . '</div>',
+				],
+			],
+		];
+		$this->assertEquals( $expected_template, $template );
+	}
 }
