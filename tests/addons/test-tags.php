@@ -88,4 +88,69 @@ class TestAddonTags extends TestCase {
 		$this->assertArrayHasKey( 'tag', $groups );
 		$this->assertEquals( 'Tag', $groups['tag']['label'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::option_fields
+	 */
+	public function testOptionFields() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Add max_tags, min_tags, tags_per_page and tag_page_slug options.
+		ap_add_default_options(
+			array(
+				'max_tags'      => 5,
+				'min_tags'      => 1,
+				'tags_per_page' => 20,
+				'tag_page_slug' => 'tag',
+			)
+		);
+
+		// Call the method.
+		$forms = $instance->option_fields();
+
+		// Test begins.
+		$this->assertNotEmpty( $forms );
+		$this->assertArrayHasKey( 'max_tags', $forms['fields'] );
+		$this->assertArrayHasKey( 'min_tags', $forms['fields'] );
+		$this->assertArrayHasKey( 'tags_per_page', $forms['fields'] );
+		$this->assertArrayHasKey( 'tag_page_slug', $forms['fields'] );
+
+		// Test for tags_per_page field.
+		$this->assertArrayHasKey( 'label', $forms['fields']['tags_per_page'] );
+		$this->assertEquals( 'Tags to show', $forms['fields']['tags_per_page']['label'] );
+		$this->assertArrayHasKey( 'description', $forms['fields']['tags_per_page'] );
+		$this->assertEquals( 'Numbers of tags to show in tags page.', $forms['fields']['tags_per_page']['description'] );
+		$this->assertArrayHasKey( 'subtype', $forms['fields']['tags_per_page'] );
+		$this->assertEquals( 'number', $forms['fields']['tags_per_page']['subtype'] );
+		$this->assertArrayHasKey( 'value', $forms['fields']['tags_per_page'] );
+		$this->assertEquals( ap_opt( 'tags_per_page' ), $forms['fields']['tags_per_page']['value'] );
+
+		// Test for max_tags field.
+		$this->assertArrayHasKey( 'label', $forms['fields']['max_tags'] );
+		$this->assertEquals( 'Maximum tags', $forms['fields']['max_tags']['label'] );
+		$this->assertArrayHasKey( 'description', $forms['fields']['max_tags'] );
+		$this->assertEquals( 'Maximum numbers of tags that user can add when asking.', $forms['fields']['max_tags']['description'] );
+		$this->assertArrayHasKey( 'subtype', $forms['fields']['max_tags'] );
+		$this->assertEquals( 'number', $forms['fields']['max_tags']['subtype'] );
+		$this->assertArrayHasKey( 'value', $forms['fields']['max_tags'] );
+		$this->assertEquals( ap_opt( 'max_tags' ), $forms['fields']['max_tags']['value'] );
+
+		// Test for min_tags field.
+		$this->assertArrayHasKey( 'label', $forms['fields']['min_tags'] );
+		$this->assertEquals( 'Minimum tags', $forms['fields']['min_tags']['label'] );
+		$this->assertArrayHasKey( 'description', $forms['fields']['min_tags'] );
+		$this->assertEquals( 'minimum numbers of tags that user must add when asking.', $forms['fields']['min_tags']['description'] );
+		$this->assertArrayHasKey( 'subtype', $forms['fields']['min_tags'] );
+		$this->assertEquals( 'number', $forms['fields']['min_tags']['subtype'] );
+		$this->assertArrayHasKey( 'value', $forms['fields']['min_tags'] );
+		$this->assertEquals( ap_opt( 'min_tags' ), $forms['fields']['min_tags']['value'] );
+
+		// Test for tag_page_slug field.
+		$this->assertArrayHasKey( 'label', $forms['fields']['tag_page_slug'] );
+		$this->assertEquals( 'Tag page slug', $forms['fields']['tag_page_slug']['label'] );
+		$this->assertArrayHasKey( 'desc', $forms['fields']['tag_page_slug'] );
+		$this->assertEquals( 'Slug for tag page', $forms['fields']['tag_page_slug']['desc'] );
+		$this->assertArrayHasKey( 'value', $forms['fields']['tag_page_slug'] );
+		$this->assertEquals( ap_opt( 'tag_page_slug' ), $forms['fields']['tag_page_slug']['value'] );
+	}
 }
