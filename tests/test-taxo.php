@@ -330,4 +330,106 @@ class TestTaxo extends TestCase {
 		remove_filter( 'ap_page_slug_tags', [ $this, 'tagsSlug' ] );
 		$this->assertEquals( 'tags', ap_get_tags_slug() );
 	}
+
+	/**
+	 * @covers ::ap_get_category_icon
+	 * @covers ::ap_category_icon
+	 */
+	public function testCategoryIcon() {
+		$cid = $this->factory->term->create(
+			[
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			]
+		);
+		$term_meta = [
+			'icon' => 'apicon-star',
+		];
+		$term = get_term_by( 'id', $cid, 'question_category' );
+
+		// Test begins.
+		// Test for empty icon.
+		// For ap_get_category_icon.
+		$result = ap_get_category_icon( $term->term_id );
+		$this->assertNull( $result );
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+
+		// For ap_category_icon.
+		ob_start();
+		ap_category_icon( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+
+		// Test for icon only.
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_icon.
+		$result = ap_get_category_icon( $term->term_id );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=""></span>', $result );
+
+		// For ap_category_icon.
+		ob_start();
+		ap_category_icon( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=""></span>', $result );
+
+		// Test for both icon and color option.
+		$term_meta['color'] = '#000000';
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_icon.
+		$result = ap_get_category_icon( $term->term_id );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertStringContainsString( 'background:#000000', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=" background:#000000;"></span>', $result );
+
+		// For ap_category_icon.
+		ob_start();
+		ap_category_icon( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertStringContainsString( 'background:#000000', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=" background:#000000;"></span>', $result );
+
+		// Test passing custom attributes.
+		// For ap_get_category_icon.
+		$result = ap_get_category_icon( $term->term_id, ' id="custom-id"' );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertStringContainsString( 'background:#000000', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=" background:#000000;" id="custom-id"></span>', $result );
+
+		// For ap_category_icon.
+		ob_start();
+		ap_category_icon( $term->term_id, ' id="custom-id"' );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertStringContainsString( 'background:#000000', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=" background:#000000;" id="custom-id"></span>', $result );
+
+		// Test passing custom attributes but without any icon.
+		update_term_meta( $cid, 'ap_category', [] );
+
+		// For ap_get_category_icon.
+		$result = ap_get_category_icon( $term->term_id, ' id="custom-id"' );
+		$this->assertNull( $result );
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+
+		// For ap_category_icon.
+		ob_start();
+		ap_category_icon( $term->term_id, ' id="custom-id"' );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+	}
 }
