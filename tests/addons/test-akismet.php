@@ -129,4 +129,52 @@ class TestAddonAkismet extends TestCase {
 		// Reset the spam_post_action option.
 		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Akismet::row_actions
+	 */
+	public function testRowActions() {
+		$instance = \Anspress\Addons\Akismet::init();
+
+		// Test begins.
+		// Test for invalid post type.
+		$post_id = $this->factory->post->create();
+		$result = $instance->row_actions( [], ap_get_post( $post_id ) );
+		$this->assertEmpty( $result );
+		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$result = $instance->row_actions( [], ap_get_post( $page_id ) );
+		$this->assertEmpty( $result );
+
+		// Test for valid post type but post_status is set to moderate.
+		$id = $this->insert_answer();
+		// For question post type.
+		wp_update_post( [ 'ID' => $id->q, 'post_status' => 'moderate' ] );
+		$result = $instance->row_actions( [], ap_get_post( $id->q ) );
+		$this->assertEmpty( $result );
+
+		// For answer post type.
+		wp_update_post( [ 'ID' => $id->a, 'post_status' => 'moderate' ] );
+		$result = $instance->row_actions( [], ap_get_post( $id->a ) );
+		$this->assertEmpty( $result );
+
+		// Test for valid post type and post_status is not set to moderate.
+		$id = $this->insert_answer();
+		$nonce = wp_create_nonce( 'send_spam' );
+
+		// For question post type.
+		$result = $instance->row_actions( [], ap_get_post( $id->q ) );
+		$this->assertNotEmpty( $result );
+		$this->assertArrayHasKey( 'report_spam', $result );
+		$this->assertStringContainsString( admin_url( 'admin.php?action=ap_mark_spam&post_id=' . $id->q . '&nonce=' . $nonce ), $result['report_spam'] );
+		$this->assertStringContainsString( 'Mark this post as a spam', $result['report_spam'] );
+		$this->assertStringContainsString( 'Mark as spam', $result['report_spam'] );
+
+		// For answer post type.
+		$result = $instance->row_actions( [], ap_get_post( $id->a ) );
+		$this->assertNotEmpty( $result );
+		$this->assertArrayHasKey( 'report_spam', $result );
+		$this->assertStringContainsString( admin_url( 'admin.php?action=ap_mark_spam&post_id=' . $id->a . '&nonce=' . $nonce ), $result['report_spam'] );
+		$this->assertStringContainsString( 'Mark this post as a spam', $result['report_spam'] );
+		$this->assertStringContainsString( 'Mark as spam', $result['report_spam'] );
+	}
 }
