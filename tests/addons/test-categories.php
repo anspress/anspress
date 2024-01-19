@@ -360,4 +360,58 @@ class TestAddonCategories extends TestCase {
 		$this->assertNotEmpty( $result );
 		$this->assertEquals( 'http://example.com?category=' . $term->term_id, $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::column_header
+	 */
+	public function testColumnHeader() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Call the method.
+		$columns = $instance->column_header( [] );
+
+		// Test begins.
+		$this->assertNotEmpty( $columns );
+		$this->assertArrayHasKey( 'icon', $columns );
+		$this->assertEquals( 'Icon', $columns['icon'] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::column_content
+	 */
+	public function testColumnContent() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		$category = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $category, 'question_category' );
+
+		// Test without any term meta values.
+		ob_start();
+		$instance->column_content( '', 'icon', $term->term_id );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+
+		// Test with term meta values.
+		// Test 1.
+		$term_meta = [ 'icon' => 'apicon-star' ];
+		update_term_meta( $term->term_id, 'ap_category', $term_meta );
+		ob_start();
+		$instance->column_content( '', 'icon', $term->term_id );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-star', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-star"style=""></span>', $result );
+
+		// Test 2.
+		$term_meta = [ 'icon' => 'apicon-question', 'color' => '#000000' ];
+		update_term_meta( $term->term_id, 'ap_category', $term_meta );
+		ob_start();
+		$instance->column_content( '', 'icon', $term->term_id );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'apicon-question', $result );
+		$this->assertStringContainsString( 'background:#000000', $result );
+		$this->assertEquals( '<span class="ap-category-icon apicon-question"style=" background:#000000;"></span>', $result );
+	}
 }
