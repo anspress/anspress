@@ -348,4 +348,52 @@ class TestThemeClass extends TestCase {
 		$result = \AnsPress_Theme::ap_title( 'Default Title' );
 		$this->assertEquals( 'Question Title [Solved]  | ', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::question_attachments
+	 */
+	public function testQuestionAttachments() {
+		// Test without attachments.
+		$question_id = $this->insert_question();
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		\AnsPress_Theme::question_attachments();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+
+		// Test with attachments.
+		// Test 1.
+		$question_id = $this->insert_question();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		\AnsPress_Theme::question_attachments();
+		$output = ob_get_clean();
+		$this->assertNotEmpty( $output );
+		$this->assertStringContainsString( 'Attachment', $output );
+		$this->assertStringContainsString( 'class="ap-attachments"', $output );
+		$this->assertStringContainsString( 'class="ap-attachment"', $output );
+		$media = get_post( $attachment_id );
+		$this->assertStringContainsString( esc_url( wp_get_attachment_url( $media->ID ) ), $output );
+		$this->assertStringContainsString( esc_html( basename( get_attached_file( $media->ID ) ) ), $output );
+		$this->assertStringContainsString( '<i class="apicon-file-image-o"></i>', $output );
+
+		// Test 2.
+		$question_id = $this->insert_question();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		\AnsPress_Theme::question_attachments();
+		$output = ob_get_clean();
+		$this->assertNotEmpty( $output );
+		$this->assertStringContainsString( 'Attachment', $output );
+		$this->assertStringContainsString( 'class="ap-attachments"', $output );
+		$this->assertStringContainsString( 'class="ap-attachment"', $output );
+		$media = get_post( $attachment_id );
+		$this->assertStringContainsString( esc_url( wp_get_attachment_url( $media->ID ) ), $output );
+		$this->assertStringContainsString( esc_html( basename( get_attached_file( $media->ID ) ) ), $output );
+		$this->assertStringContainsString( '<i class="apicon-file-pdf-o"></i>', $output );
+	}
 }
