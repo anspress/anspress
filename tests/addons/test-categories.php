@@ -296,4 +296,34 @@ class TestAddonCategories extends TestCase {
 		$this->assertTrue( class_exists( 'Anspress\Widgets\Categories' ) );
 		$this->assertTrue( array_key_exists( 'Anspress\Widgets\Categories', $GLOBALS['wp_widget_factory']->widgets ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::category_feed
+	 */
+	public function testCategoryFeed() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		// Test without viewing the category page.
+		$this->go_to( '/' );
+		ob_start();
+		$instance->category_feed();
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+
+		// Test with viewing the category page.
+		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $category_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		ob_start();
+		$instance->category_feed();
+		$result = ob_get_clean();
+		$this->assertNotNull( $result );
+		$this->assertStringContainsString( esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_attr( $term->slug ), $result );
+		$this->assertStringContainsString( 'Question category feed', $result );
+		$this->assertStringContainsString( 'application/rss+xml', $result );
+		$this->assertStringContainsString( 'alternate', $result );
+		$this->assertEquals( '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_attr( $term->slug ) . '" title="Question category feed" type="application/rss+xml" rel="alternate">', $result );
+	}
 }
