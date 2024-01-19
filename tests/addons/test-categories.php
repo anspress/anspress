@@ -326,4 +326,38 @@ class TestAddonCategories extends TestCase {
 		$this->assertStringContainsString( 'alternate', $result );
 		$this->assertEquals( '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_attr( $term->slug ) . '" title="Question category feed" type="application/rss+xml" rel="alternate">', $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_ask_btn_link
+	 */
+	public function testAPAskBtnLink() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		// Test without viewing the category page.
+		// Test 1.
+		$this->go_to( '/' );
+		$result = $instance->ap_ask_btn_link( '' );
+		$this->assertEmpty( $result );
+
+		// Test 2.
+		$result = $instance->ap_ask_btn_link( 'http://example.com' );
+		$this->assertNotEmpty( $result );
+		$this->assertEquals( 'http://example.com', $result );
+
+		// Test with viewing the category page.
+		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $category_id, 'question_category' );
+
+		// Test 1.
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$result = $instance->ap_ask_btn_link( '' );
+		$this->assertNotEmpty( $result );
+		$this->assertEquals( '?category=' . $term->term_id, $result );
+
+		// Test 2.
+		$result = $instance->ap_ask_btn_link( 'http://example.com' );
+		$this->assertNotEmpty( $result );
+		$this->assertEquals( 'http://example.com?category=' . $term->term_id, $result );
+	}
 }
