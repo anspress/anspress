@@ -432,4 +432,124 @@ class TestTaxo extends TestCase {
 		$this->assertEmpty( $result );
 		$this->assertEquals( '', $result );
 	}
+
+	/**
+	 * @covers ::ap_get_category_image
+	 * @covers ::ap_category_image
+	 */
+	public function testCategoryImage() {
+		$cid = $this->factory->term->create(
+			[
+				'name'     => 'Question category',
+				'taxonomy' => 'question_category',
+			]
+		);
+		$post = $this->factory->post->create_and_get();
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $post->ID );
+		$term_meta = [
+			'image' => [
+				'id'  => $attachment_id,
+				'url' => wp_get_attachment_url( $attachment_id ),
+			]
+		];
+		$term = get_term_by( 'id', $cid, 'question_category' );
+
+		// Test begins.
+		// Test for empty image.
+		// For ap_get_category_image.
+		$result = ap_get_category_image( $term->term_id );
+		$this->assertEquals( '<div class="ap-category-defimage" style="background:#333;height:32px;"></div>', $result );
+
+		// For ap_category_image.
+		ob_start();
+		ap_category_image( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertEquals( '<div class="ap-category-defimage" style="background:#333;height:32px;"></div>', $result );
+
+		// Test for image only.
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_image.
+		$result = ap_get_category_image( $term->term_id );
+		$this->assertStringContainsString( wp_get_attachment_url( $attachment_id ), $result );
+		$this->assertStringContainsString( 'class="attachment-900x32 size-900x32"', $result );
+
+		// For ap_category_image.
+		ob_start();
+		ap_category_image( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( wp_get_attachment_url( $attachment_id ), $result );
+		$this->assertStringContainsString( 'class="attachment-900x32 size-900x32"', $result );
+
+		// Test for both image and color option.
+		$term_meta['color'] = '#000000';
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_image.
+		$result = ap_get_category_image( $term->term_id );
+		$this->assertStringContainsString( wp_get_attachment_url( $attachment_id ), $result );
+		$this->assertStringNotContainsString( 'background:#000000', $result );
+
+		// For ap_category_image.
+		ob_start();
+		ap_category_image( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( wp_get_attachment_url( $attachment_id ), $result );
+		$this->assertStringNotContainsString( 'background:#000000', $result );
+
+		// Test for invalid attachment id.
+		$term_meta['image'] = [
+			'id'  => -1,
+			'url' => '',
+		];
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_image.
+		$result = ap_get_category_image( $term->term_id );
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+
+		// For ap_category_image.
+		ob_start();
+		ap_category_image( $term->term_id );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+		$this->assertEquals( '', $result );
+
+		// Test passing the height attribute and valid attachment id.
+		$term_meta['image'] = [
+			'id'  => $attachment_id,
+			'url' => wp_get_attachment_url( $attachment_id ),
+		];
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_image.
+		$result = ap_get_category_image( $term->term_id, 100 );
+		$this->assertStringContainsString( wp_get_attachment_url( $attachment_id ), $result );
+		$this->assertStringContainsString( 'class="attachment-900x100 size-900x100"', $result );
+
+		// For ap_category_image.
+		ob_start();
+		ap_category_image( $term->term_id, 100 );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( wp_get_attachment_url( $attachment_id ), $result );
+		$this->assertStringContainsString( 'class="attachment-900x100 size-900x100"', $result );
+
+		// Test passing the height attribute and attachment id as 0.
+		$term_meta['image'] = [
+			'id'  => 0,
+			'url' => '',
+		];
+		update_term_meta( $cid, 'ap_category', $term_meta );
+
+		// For ap_get_category_image.
+		$result = ap_get_category_image( $term->term_id, 100 );
+		$this->assertEquals( '<div class="ap-category-defimage" style=" background:#000000;height:100px;"></div>', $result );
+
+		// For ap_category_image.
+		ob_start();
+		ap_category_image( $term->term_id, 100 );
+		$result = ob_get_clean();
+		$this->assertEquals( '<div class="ap-category-defimage" style=" background:#000000;height:100px;"></div>', $result );
+	}
 }
