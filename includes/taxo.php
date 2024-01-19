@@ -278,7 +278,7 @@ function ap_get_category_icon( $term_id, $attributes = '' ) {
 	$option = get_term_meta( $term_id, 'ap_category', true );
 	$color  = ! empty( $option['color'] ) ? ' background:' . $option['color'] . ';' : '';
 
-	$style = 'style="' . $color . $attributes . '"';
+	$style = 'style="' . $color . '"' . $attributes;
 
 	if ( ! empty( $option['icon'] ) ) {
 		return '<span class="ap-category-icon ' . $option['icon'] . '"' . $style . '></span>';
