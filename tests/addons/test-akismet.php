@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonAkismet extends TestCase {
 
+	use Testcases\Common;
+
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'akismet.php' );
@@ -93,5 +95,38 @@ class TestAddonAkismet extends TestCase {
 		$this->assertEquals( 'What to do when post is a spam?', $form['fields']['spam_post_action']['label'] );
 		$this->assertEquals( 'Change status to moderate', $form['fields']['spam_post_action']['options']['moderate'] );
 		$this->assertEquals( 'Trash the post', $form['fields']['spam_post_action']['options']['trash'] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Akismet::spam_post_action
+	 */
+	public function testSpamPostAction() {
+		$instance = \Anspress\Addons\Akismet::init();
+
+		// Add spam_post_action option.
+		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
+
+		// Test begins.
+		// For default value.
+		$id = $this->insert_question();
+		$instance->spam_post_action( $id );
+		$question = ap_get_post( $id );
+		$this->assertEquals( 'moderate', $question->post_status );
+
+		// For modifying the spam_post_action option.
+		// Test 1.
+		ap_opt( 'spam_post_action', 'trash' );
+		$instance->spam_post_action( $id );
+		$question = ap_get_post( $id );
+		$this->assertEquals( 'trash', $question->post_status );
+
+		// Test 2.
+		ap_opt( 'spam_post_action', 'spam' );
+		$instance->spam_post_action( $id );
+		$question = ap_get_post( $id );
+		$this->assertEquals( 'spam', $question->post_status );
+
+		// Reset the spam_post_action option.
+		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
 	}
 }
