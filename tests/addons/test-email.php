@@ -598,4 +598,31 @@ class TestAddonEmail extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-email-content">{question_content}</div></div>', $template['body'] );
 		$this->assertEquals( '<div class="ap-email-event">A question is edited by <b class="user-name">{editor}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1><div class="ap-email-content">{question_content}</div></div>', $template['body'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::template_edit_answer
+	 */
+	public function testTemplateEditAnswer() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		$sample_template = [
+			'subject' => '',
+			'body'    => '',
+		];
+		$template = $instance->template_edit_answer( $sample_template );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertStringContainsString( '{editor}', $template['subject'] );
+		$this->assertEquals( 'A answer is edited by {editor}', $template['subject'] );
+		$this->assertStringContainsString( '{editor}', $template['body'] );
+		$this->assertStringContainsString( '{question_title}', $template['body'] );
+		$this->assertStringContainsString( '{answer_link}', $template['body'] );
+		$this->assertStringContainsString( '{answer_content}', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-event">A answer is edited by <b class="user-name">{editor}</b></div>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-content">{answer_content}</div></div>', $template['body'] );
+		$this->assertEquals( '<div class="ap-email-event">A answer is edited by <b class="user-name">{editor}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1><div class="ap-email-content">{answer_content}</div></div>', $template['body'] );
+	}
 }
