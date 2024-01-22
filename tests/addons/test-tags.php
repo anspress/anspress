@@ -229,4 +229,44 @@ class TestAddonTags extends TestCase {
 		$this->assertEquals( true, $tags_page['show_in_menu'] );
 		$this->assertEquals( false, $tags_page['private'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_current_page
+	 */
+	public function testAPCurrentPage() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Test by visiting other page.
+		$this->go_to( '/' );
+		$result = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $result );
+
+		// Test by visiting tags page.
+		$tags_page = $this->factory()->post->create(
+			[
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => 'Tags',
+			]
+		);
+		ap_opt( 'tags_page', $tags_page );
+		// Test by just visiting the tags page.
+		$this->go_to( '/?post_type=page&p=' . $tags_page );
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+		set_query_var( 'ap_page', 'tag' );
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+
+		// Test on the single tag page.
+		$tag_id = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term = get_term_by( 'id', $tag_id, 'question_tag' );
+		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
+		// Test for passing invalid query var.
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+		// Test for passing valid query var.
+		$method = $instance->ap_current_page( 'tags' );
+		$this->assertEquals( 'tag', $method );
+	}
 }
