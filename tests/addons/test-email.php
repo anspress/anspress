@@ -373,4 +373,42 @@ class TestAddonEmail extends TestCase {
 		$this->assertArrayHasKey( 'template', $emails_options );
 		$this->assertEquals( 'emails.php', $emails_options['template'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::form_allowed_tags
+	 */
+	public function testform_allowed_tags() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		// Test for new_question.
+		$_REQUEST['template'] = 'new_question';
+		$result = $instance->form_allowed_tags();
+		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{asker}</pre><pre>{question_title}</pre><pre>{question_link}</pre><pre>{question_content}</pre><pre>{question_excerpt}</pre>', $result );
+
+		// Test for edit_question.
+		$_REQUEST['template'] = 'edit_question';
+		$result = $instance->form_allowed_tags();
+		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{asker}</pre><pre>{question_title}</pre><pre>{question_link}</pre><pre>{question_content}</pre><pre>{question_excerpt}</pre>', $result );
+
+		// Test for new_answer.
+		$_REQUEST['template'] = 'new_answer';
+		$result = $instance->form_allowed_tags();
+		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{answerer}</pre><pre>{question_title}</pre><pre>{answer_link}</pre><pre>{answer_content}</pre><pre>{answer_excerpt}</pre>', $result );
+
+		// Test for edit_answer.
+		$_REQUEST['template'] = 'edit_answer';
+		$result = $instance->form_allowed_tags();
+		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{answerer}</pre><pre>{question_title}</pre><pre>{answer_link}</pre><pre>{answer_content}</pre><pre>{answer_excerpt}</pre>', $result );
+
+		// Test for select_answer.
+		$_REQUEST['template'] = 'select_answer';
+		$result = $instance->form_allowed_tags();
+		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{selector}</pre><pre>{question_title}</pre><pre>{answer_link}</pre><pre>{answer_content}</pre><pre>{answer_excerpt}</pre>', $result );
+
+		// Test for new_comment.
+		$_REQUEST['template'] = 'new_comment';
+		$result = $instance->form_allowed_tags();
+		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{commenter}</pre><pre>{question_title}</pre><pre>{comment_link}</pre><pre>{comment_content}</pre>', $result );
+	}
 }
