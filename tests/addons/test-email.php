@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonEmail extends TestCase {
 
+	use Testcases\Common;
+
 	/**
 	 * @covers Anspress\Addons\Email::instance
 	 */
@@ -697,5 +699,38 @@ class TestAddonEmail extends TestCase {
 		$recipients = $instance->default_recipients( $original_recipients, $comment_id );
 		$this->assertEmpty( $recipients );
 		$this->assertIsArray( $recipients );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Email::get_admin_emails
+	 */
+	public function testGetAdminEmails() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		// Test for invalid option id.
+		$emails = $instance->get_admin_emails( 'sample_option' );
+		$this->assertFalse( $emails );
+
+		// Admin email and current user email does not match on test,
+		// so we create a new user and set it as admin on the test.
+		ap_opt( 'email_admin_emails', 'admin@example.com' );
+		$user_id = $this->factory->user->create( [ 'role' => 'administrator', 'user_email' => 'admin@example.com' ] );
+		wp_set_current_user( $user_id );
+		$emails = $instance->get_admin_emails( 'email_admin_new_question' );
+		$this->assertFalse( $emails );
+
+		// Test for valid option id with email_admin_emails set as empty.
+		ap_opt( 'email_admin_emails', null );
+		$emails = $instance->get_admin_emails( 'email_admin_new_question' );
+		$this->assertFalse( $emails );
+		$this->logout();
+
+		// Test for valid option id with email_admin_emails set some email ids.
+		ap_opt( 'email_admin_emails', 'admin@example.com, webmaster@example.com, info@example.com' );
+		$emails = $instance->get_admin_emails( 'email_admin_new_question' );
+		$this->assertNotEmpty( $emails );
+		$this->assertIsArray( $emails );
+		$this->assertEquals( [ 'admin@example.com', 'webmaster@example.com', 'info@example.com' ], $emails );
 	}
 }
