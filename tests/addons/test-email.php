@@ -411,4 +411,57 @@ class TestAddonEmail extends TestCase {
 		$result = $instance->form_allowed_tags();
 		$this->assertEquals( '<pre>{site_name}</pre><pre>{site_url}</pre><pre>{site_description}</pre><pre>{commenter}</pre><pre>{question_title}</pre><pre>{comment_link}</pre><pre>{comment_content}</pre>', $result );
 	}
+
+	public function GetDefaultTemplate( $template ) {
+		$template['subject'] = 'Some subject';
+		$template['body']    = 'Some body';
+
+		return $template;
+	}
+
+	public function GetDefaultTemplateAdditional( $template ) {
+		$template['subject'] = 'Other subject';
+		$template['body']    = 'Other body';
+		$template['data']    = 'Other data';
+
+		return $template;
+	}
+
+	/**
+	 * @covers Anspress\Addons\Email::get_default_template
+	 */
+	public function testGetDefaultTemplate() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		// Basic test.
+		$template = $instance->get_default_template( 'some_event' );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertEquals( '', $template['subject'] );
+		$this->assertEquals( '', $template['body'] );
+
+		// Test with filter.
+		add_filter( 'ap_email_default_template_some_event', [ $this, 'GetDefaultTemplate' ] );
+		$template = $instance->get_default_template( 'some_event' );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertEquals( 'Some subject', $template['subject'] );
+		$this->assertEquals( 'Some body', $template['body'] );
+		remove_filter( 'ap_email_default_template_some_event', [ $this, 'GetDefaultTemplate' ] );
+
+		// Test with filter and additional datas.
+		add_filter( 'ap_email_default_template_other_event', [ $this, 'GetDefaultTemplateAdditional' ] );
+		$template = $instance->get_default_template( 'other_event' );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertArrayHasKey( 'data', $template );
+		$this->assertEquals( 'Other subject', $template['subject'] );
+		$this->assertEquals( 'Other body', $template['body'] );
+		$this->assertEquals( 'Other data', $template['data'] );
+		remove_filter( 'ap_email_default_template_other_event', [ $this, 'GetDefaultTemplateAdditional' ] );
+	}
 }
