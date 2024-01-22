@@ -675,4 +675,27 @@ class TestAddonEmail extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1></div>', $template['body'] );
 		$this->assertEquals( '<div class="ap-email-event">An answer is trashed by <b class="user-name">{user}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1></div>', $template['body'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::default_recipients
+	 */
+	public function testDefaultRecipients() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		$original_recipients = [ 'admin@example.com', 'webmaster@example.com', 'info@example.com' ];
+
+		// For non AnsPress comment type.
+		$comment_id = $this->factory->comment->create();
+		$recipients = $instance->default_recipients( $original_recipients, $comment_id );
+		$this->assertNotEmpty( $recipients );
+		$this->assertIsArray( $recipients );
+		$this->assertEquals( $original_recipients, $recipients );
+
+		// For anspress comment type.
+		$comment_id = $this->factory->comment->create( [ 'comment_type' => 'anspress' ] );
+		$recipients = $instance->default_recipients( $original_recipients, $comment_id );
+		$this->assertEmpty( $recipients );
+		$this->assertIsArray( $recipients );
+	}
 }
