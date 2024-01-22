@@ -544,4 +544,31 @@ class TestAddonEmail extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-email-content">{answer_content}</div></div>', $template['body'] );
 		$this->assertEquals( '<div class="ap-email-event">Your answer is selected as best by  <b class="user-name">{selector}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1><div class="ap-email-content">{answer_content}</div></div>', $template['body'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::template_new_comment
+	 */
+	public function testTemplateNewComment() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		$sample_template = [
+			'subject' => '',
+			'body'    => '',
+		];
+		$template = $instance->template_new_comment( $sample_template );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertStringContainsString( '{commenter}', $template['subject'] );
+		$this->assertEquals( 'New comment by {commenter}', $template['subject'] );
+		$this->assertStringContainsString( '{commenter}', $template['body'] );
+		$this->assertStringContainsString( '{question_title}', $template['body'] );
+		$this->assertStringContainsString( '{comment_link}', $template['body'] );
+		$this->assertStringContainsString( '{comment_content}', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-event">A new comment posted by <b class="user-name">{commenter}</b></div>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{comment_link}">{question_title}</a></h1>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-content">{comment_content}</div></div>', $template['body'] );
+		$this->assertEquals( '<div class="ap-email-event">A new comment posted by <b class="user-name">{commenter}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{comment_link}">{question_title}</a></h1><div class="ap-email-content">{comment_content}</div></div>', $template['body'] );
+	}
 }
