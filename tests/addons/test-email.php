@@ -518,4 +518,30 @@ class TestAddonEmail extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-email-content">{answer_excerpt} </div></div>', $template['body'] );
 		$this->assertEquals( '<div class="ap-email-event">A new answer is posted by <b class="user-name">{answerer}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1><div class="ap-email-content">{answer_excerpt} </div></div>', $template['body'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::template_select_answer
+	 */
+	public function testTemplateSelectAnswer() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		$sample_template = [
+			'subject' => '',
+			'body'    => '',
+		];
+		$template = $instance->template_select_answer( $sample_template );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertEquals( 'Your answer is selected as best!', $template['subject'] );
+		$this->assertStringContainsString( '{selector}', $template['body'] );
+		$this->assertStringContainsString( '{question_title}', $template['body'] );
+		$this->assertStringContainsString( '{answer_link}', $template['body'] );
+		$this->assertStringContainsString( '{answer_content}', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-event">Your answer is selected as best by  <b class="user-name">{selector}</b></div>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-content">{answer_content}</div></div>', $template['body'] );
+		$this->assertEquals( '<div class="ap-email-event">Your answer is selected as best by  <b class="user-name">{selector}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1><div class="ap-email-content">{answer_content}</div></div>', $template['body'] );
+	}
 }
