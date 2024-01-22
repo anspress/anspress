@@ -464,4 +464,31 @@ class TestAddonEmail extends TestCase {
 		$this->assertEquals( 'Other data', $template['data'] );
 		remove_filter( 'ap_email_default_template_other_event', [ $this, 'GetDefaultTemplateAdditional' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::template_new_question
+	 */
+	public function testTemplateNewQuestion() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		$sample_template = [
+			'subject' => '',
+			'body'    => '',
+		];
+		$template = $instance->template_new_question( $sample_template );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertStringContainsString( '{asker}', $template['subject'] );
+		$this->assertEquals( '{asker} have posted a new question', $template['subject'] );
+		$this->assertStringContainsString( '{asker}', $template['body'] );
+		$this->assertStringContainsString( '{question_title}', $template['body'] );
+		$this->assertStringContainsString( '{question_link}', $template['body'] );
+		$this->assertStringContainsString( '{question_content}', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-event">A new question is posted by <b class="user-name">{asker}</b></div>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-content">{question_content}</div></div>', $template['body'] );
+		$this->assertEquals( '<div class="ap-email-event">A new question is posted by <b class="user-name">{asker}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1><div class="ap-email-content">{question_content}</div></div>', $template['body'] );
+	}
 }
