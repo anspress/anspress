@@ -650,4 +650,29 @@ class TestAddonEmail extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1></div>', $template['body'] );
 		$this->assertEquals( '<div class="ap-email-event">A question is trashed by <b class="user-name">{user}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{question_link}">{question_title}</a></h1></div>', $template['body'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email::template_trash_answer
+	 */
+	public function testTemplateTrashAnswer() {
+		$instance = \Anspress\Addons\Email::init();
+
+		// Test begins.
+		$sample_template = [
+			'subject' => '',
+			'body'    => '',
+		];
+		$template = $instance->template_trash_answer( $sample_template );
+		$this->assertIsArray( $template );
+		$this->assertArrayHasKey( 'subject', $template );
+		$this->assertArrayHasKey( 'body', $template );
+		$this->assertStringContainsString( '{user}', $template['subject'] );
+		$this->assertEquals( 'An answer is trashed by {user}', $template['subject'] );
+		$this->assertStringContainsString( '{user}', $template['body'] );
+		$this->assertStringContainsString( '{question_title}', $template['body'] );
+		$this->assertStringContainsString( '{answer_link}', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-event">An answer is trashed by <b class="user-name">{user}</b></div>', $template['body'] );
+		$this->assertStringContainsString( '<div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1></div>', $template['body'] );
+		$this->assertEquals( '<div class="ap-email-event">An answer is trashed by <b class="user-name">{user}</b></div><div class="ap-email-body"><h1 class="ap-email-title"><a href="{answer_link}">{question_title}</a></h1></div>', $template['body'] );
+	}
 }
