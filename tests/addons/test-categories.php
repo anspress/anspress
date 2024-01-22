@@ -414,4 +414,44 @@ class TestAddonCategories extends TestCase {
 		$this->assertStringContainsString( 'background:#000000', $result );
 		$this->assertEquals( '<span class="ap-category-icon apicon-question"style=" background:#000000;"></span>', $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_current_page
+	 */
+	public function testAPCurrentPage() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test by visiting other page.
+		$this->go_to( '/' );
+		$result = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $result );
+
+		// Test by visiting categories page.
+		$categories_page = $this->factory()->post->create(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => 'Categories',
+			)
+		);
+		ap_opt( 'categories_page', $categories_page );
+		// Test by just visiting the categories page.
+		$this->go_to( '/?post_type=page&p=' . $categories_page );
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+		set_query_var( 'ap_page', 'category' );
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+
+		// Test on the single category page.
+		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $category_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		// Test for passing invalid query var.
+		$method = $instance->ap_current_page( 'other_query_var' );
+		$this->assertEquals( 'other_query_var', $method );
+		// Test for passing valid query var.
+		$method = $instance->ap_current_page( 'categories' );
+		$this->assertEquals( 'category', $method );
+	}
 }
