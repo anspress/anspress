@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonAvatarGenerator extends TestCase {
 
+	use Testcases\Common;
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Avatar\Generator' );
 		$this->assertTrue( $class->hasProperty( 'name' ) && $class->getProperty( 'name' )->isPublic() );
@@ -32,5 +34,44 @@ class TestAddonAvatarGenerator extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Avatar\Generator', 'image_center' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Avatar\Generator', 'image_gradientrect' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Avatar\Generator', 'color_luminance' ) );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::filename
+	 */
+	public function testFilename() {
+		// Test 1.
+		$user_id = $this->factory()->user->create();
+		$generator = new \Anspress\Addons\Avatar\Generator( $user_id );
+		$filename = $generator->filename();
+		$expectedFilename = md5( $user_id );
+		$this->assertEquals( $expectedFilename, $generator->filename );
+
+		// Test 2.
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+		$generator->name = 'anonymous';
+		$filename = $generator->filename();
+		$expectedFilename = md5( $generator->user_id );
+		$this->assertEquals( $expectedFilename, $generator->filename );
+
+		// Test 3.
+		$user_id = $this->factory()->user->create();
+		wp_set_current_user( $user_id );
+		$generator = new \Anspress\Addons\Avatar\Generator( get_userdata( $user_id ) );
+		$filename = $generator->filename();
+		$expectedFilename = md5( $user_id );
+		$this->assertEquals( $expectedFilename, $generator->filename );
+		$this->logout();
+
+		// Test 4.
+		$user_id = $this->factory()->user->create();
+		$id = $this->insert_question();
+		$comment_id = $this->factory()->comment->create( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'user_id' => $user_id ) );
+		$comment = get_comment( $comment_id );
+		$user = get_user_by( 'ID', $comment->user_id );
+		$generator = new \Anspress\Addons\Avatar\Generator( $user );
+		$filename = $generator->filename();
+		$expectedFilename = md5( $comment->user_id );
+		$this->assertEquals( $expectedFilename, $generator->filename );
 	}
 }
