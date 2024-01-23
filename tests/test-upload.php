@@ -75,4 +75,34 @@ class TestUpload extends TestCase {
 		$is_scheduled = wp_next_scheduled( 'ap_delete_temp_attachments' );
 		$this->assertNotFalse( $is_scheduled );
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::image_sizes_advanced
+	 */
+	public function testImageSizesAdvanced() {
+		// Test for allowing AnsPress custom image size.
+		global $ap_thumbnail_only;
+		$ap_thumbnail_only = true;
+		$expected = [
+			'thumbnail' => [
+				'width'  => 150,
+				'height' => 150,
+				'crop'   => true,
+			],
+		];
+		$result = \AnsPress_Uploader::image_sizes_advanced( [ 'original' => [ 'width' => 800, 'height' => 600, 'crop' => false ] ] );
+		$this->assertEquals( $expected, $result );
+
+		// Test for not allowing AnsPress custom image size.
+		$ap_thumbnail_only = false;
+		$expected = [
+			'medium' => [
+				'width'  => 300,
+				'height' => 300,
+				'crop'   => true,
+			],
+		];
+		$result = \AnsPress_Uploader::image_sizes_advanced( $expected );
+		$this->assertEquals( $expected, $result );
+	}
 }
