@@ -382,4 +382,27 @@ class TestHooks extends TestCase {
 		$this->assertEquals( '1 year', \AnsPress_Hooks::human_time_diff( '1 year' ) );
 		$this->assertEquals( '5 years', \AnsPress_Hooks::human_time_diff( '5 years' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::flush_rules
+	 */
+	public function testFlushRules() {
+		$this->assertEquals( 10, has_action( 'wp_loaded', [ 'AnsPress_Hooks', 'flush_rules' ] ) );
+
+		// Test begins.
+		// Test by directly calling the method.
+		$this->assertNull( \AnsPress_Hooks::flush_rules() );
+
+		// Test by modifying the ap_flush option.
+		// Test 1.
+		ap_opt( 'ap_flush', 'true' );
+		$this->assertEquals( 'true', ap_opt( 'ap_flush' ) );
+		\AnsPress_Hooks::flush_rules();
+		$this->assertEquals( 'false', ap_opt( 'ap_flush' ) );
+
+		// Test 2.
+		ap_opt( 'ap_flush', 'false' );
+		$this->assertEquals( 'false', ap_opt( 'ap_flush' ) );
+		$this->assertNull( \AnsPress_Hooks::flush_rules() );
+	}
 }
