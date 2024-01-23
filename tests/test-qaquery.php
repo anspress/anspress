@@ -1070,4 +1070,39 @@ class TestQAQuery extends TestCase {
 		$this->assertObjectHasProperty( 'last_updated', $answer_obj );
 		$this->assertObjectHasProperty( 'is_new', $answer_obj );
 	}
+
+	/**
+	 * @covers ::ap_get_time
+	 */
+	public function testAPGetTime() {
+		// Test for not passing post id.
+		$this->assertEmpty( ap_get_time() );
+		$this->assertEmpty( ap_get_time( null, 'U' ) );
+		$this->assertEmpty( ap_get_time( null, 'Y-m-d' ) );
+
+		// Test for passing the post object.
+		$id = $this->insert_question();
+		$this->assertIsInt( ap_get_time( get_post( $id ), 'U' ) );
+		$this->assertIsInt( ap_get_time( ap_get_post( $id ), 'U' ) );
+		$this->assertNotEmpty( ap_get_time( get_post( $id ), 'U' ) );
+		$this->assertNotEmpty( ap_get_time( ap_get_post( $id ), 'U' ) );
+
+		// Test for not passing post id but visiting the question page.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$this->assertIsInt( ap_get_time( null, 'U' ) );
+		$this->assertNotEmpty( ap_get_time( null, 'U' ) );
+
+		// Test for passing post id but not the date format.
+		$id = $this->insert_question();
+		$this->assertEmpty( ap_get_time( $id ) );
+
+		// Test for passing post id and the date format.
+		$id = $this->insert_question();
+		$this->assertIsInt( ap_get_time( $id, 'U' ) );
+		$this->assertNotEmpty( ap_get_time( $id, 'U' ) );
+
+		// Test for passing invalid post id.
+		$this->assertEmpty( ap_get_time( -1, 'U' ) );
+	}
 }
