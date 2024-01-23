@@ -396,4 +396,16 @@ class TestThemeClass extends TestCase {
 		$this->assertStringContainsString( esc_html( basename( get_attached_file( $media->ID ) ) ), $output );
 		$this->assertStringContainsString( '<i class="apicon-file-pdf-o"></i>', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::includes_theme
+	 */
+	public function testIncludesTheme() {
+		// Call the method.
+		\AnsPress_Theme::includes_theme();
+		$this->assertEquals( 10, has_action( 'widgets_init', 'ap_widgets_positions' ) );
+		$this->assertEquals( 1, has_action( 'wp_enqueue_scripts', 'ap_scripts_front' ) );
+		$this->assertTrue( function_exists( 'ap_scripts_front' ) );
+		$this->assertTrue( function_exists( 'ap_widgets_positions' ) );
+	}
 }
