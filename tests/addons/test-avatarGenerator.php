@@ -150,4 +150,33 @@ class TestAddonAvatarGenerator extends TestCase {
 		unlink( $avatar_file );
 		rmdir( $avatar_dir );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::filepath
+	 */
+	public function testFilepath() {
+		// Test 1.
+		$user_id = $this->factory()->user->create();
+		$generator = new \Anspress\Addons\Avatar\Generator( $user_id );
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
+		$avatar_file = $avatar_dir . '/' . $generator->filename . '.jpg';
+		wp_mkdir_p( $avatar_dir );
+		touch( $avatar_file );
+		$this->assertEquals( $avatar_file, $generator->filepath() );
+		unlink( $avatar_file );
+		rmdir( $avatar_dir );
+
+		// Test 2.
+		$user_id = $this->factory()->user->create();
+		$generator = new \Anspress\Addons\Avatar\Generator( get_userdata( $user_id ) );
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
+		$avatar_file = $avatar_dir . '/' . $generator->filename . '.jpg';
+		wp_mkdir_p( $avatar_dir );
+		touch( $avatar_file );
+		$this->assertEquals( $avatar_file, $generator->filepath() );
+		unlink( $avatar_file );
+		rmdir( $avatar_dir );
+	}
 }
