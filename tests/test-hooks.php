@@ -365,4 +365,21 @@ class TestHooks extends TestCase {
 		$this->assertEquals( [], $result );
 		$this->assertEmpty( $result );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::human_time_diff
+	 */
+	public function testHumanTimeDiff() {
+		// Test begins.
+		$this->assertEquals( '1 minute', \AnsPress_Hooks::human_time_diff( '1 min' ) );
+		$this->assertEquals( '5 minutes', \AnsPress_Hooks::human_time_diff( '5 mins' ) );
+		$this->assertEquals( '1 hour', \AnsPress_Hooks::human_time_diff( '1 hour' ) );
+		$this->assertEquals( '5 hours', \AnsPress_Hooks::human_time_diff( '5 hours' ) );
+		$this->assertEquals( '1 day', \AnsPress_Hooks::human_time_diff( '1 day' ) );
+		$this->assertEquals( '5 days', \AnsPress_Hooks::human_time_diff( '5 days' ) );
+		$this->assertEquals( '1 week', \AnsPress_Hooks::human_time_diff( '1 week' ) );
+		$this->assertEquals( '5 weeks', \AnsPress_Hooks::human_time_diff( '5 weeks' ) );
+		$this->assertEquals( '1 year', \AnsPress_Hooks::human_time_diff( '1 year' ) );
+		$this->assertEquals( '5 years', \AnsPress_Hooks::human_time_diff( '5 years' ) );
+	}
 }
