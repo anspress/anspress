@@ -344,4 +344,25 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 'Test &nbsp;&nbsp;    description', \AnsPress_Hooks::sanitize_description( 'Test &nbsp;&nbsp;    description' ) );
 		$this->assertEquals( 'Test     description', \AnsPress_Hooks::sanitize_description( 'Test     description' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::safe_style_css
+	 */
+	public function testSafeStyleCSS() {
+		$this->assertEquals( 11, has_action( 'safe_style_css', [ 'AnsPress_Hooks', 'safe_style_css' ] ) );
+
+		// Test for allowing custom style attributes.
+		global $ap_kses_check;
+		$ap_kses_check = true;
+		$result = \AnsPress_Hooks::safe_style_css( [] );
+		$this->assertTrue( in_array( 'text-decoration', $result ) );
+		$this->assertTrue( in_array( 'text-align', $result ) );
+		$this->assertEquals( [ 'text-decoration', 'text-align' ], $result );
+
+		// Test for disallowing custom style attributes.
+		$ap_kses_check = false;
+		$result = \AnsPress_Hooks::safe_style_css( [] );
+		$this->assertEquals( [], $result );
+		$this->assertEmpty( $result );
+	}
 }
