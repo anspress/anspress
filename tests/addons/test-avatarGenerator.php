@@ -200,4 +200,63 @@ class TestAddonAvatarGenerator extends TestCase {
 		$avatar_file = $avatar_dir . '/' . $generator->filename . '.jpg';
 		$this->assertEquals( $avatar_file, $generator->fileurl() );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::hex_to_rgb
+	 */
+	public function testHEXtoRGB() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+
+		// Make the hex_to_rgb method public.
+		$method = new \ReflectionMethod( 'Anspress\Addons\Avatar\Generator', 'hex_to_rgb' );
+		$method->setAccessible( true );
+
+		// Test 1.
+		$hex = 'invalid_hex_color';
+		$this->assertFalse( $method->invoke( $generator, $hex ) );
+
+		// Test 2.
+		$hex = '#FFFFFF';
+		$this->assertEquals( [ 'r' => 255, 'g' => 255, 'b' => 255 ], $method->invoke( $generator, $hex ) );
+
+		// Test 3.
+		$hex = '#FFF';
+		$this->assertEquals( [ 'r' => 255, 'g' => 255, 'b' => 255 ], $method->invoke( $generator, $hex ) );
+
+		// Test 4.
+		$hex = '#000000';
+		$this->assertEquals( [ 'r' => 0, 'g' => 0, 'b' => 0 ], $method->invoke( $generator, $hex ) );
+
+		// Test 5.
+		$hex = '#000';
+		$this->assertEquals( [ 'r' => 0, 'g' => 0, 'b' => 0 ], $method->invoke( $generator, $hex ) );
+
+		// Test 6.
+		$hex = '#ABCDEF';
+		$this->assertEquals( [ 'r' => 171, 'g' => 205, 'b' => 239 ], $method->invoke( $generator, $hex ) );
+
+		// Test 7.
+		$hex = '#ABC';
+		$this->assertEquals( [ 'r' => 170, 'g' => 187, 'b' => 204 ], $method->invoke( $generator, $hex ) );
+
+		// Test 8.
+		$hex = 'FF0000';
+		$this->assertEquals( [ 'r' => 255, 'g' => 0, 'b' => 0 ], $method->invoke( $generator, $hex ) );
+
+		// Test 9.
+		$hex = 'F00';
+		$this->assertEquals( [ 'r' => 255, 'g' => 0, 'b' => 0 ], $method->invoke( $generator, $hex ) );
+
+		// Test 10.
+		$hex = '#';
+		$this->assertFalse( $method->invoke( $generator, $hex ) );
+
+		// Test 11.
+		$hex = '#0000000';
+		$this->assertFalse( $method->invoke( $generator, $hex ) );
+
+		// Test 12.
+		$hex = '#0000';
+		$this->assertFalse( $method->invoke( $generator, $hex ) );
+	}
 }
