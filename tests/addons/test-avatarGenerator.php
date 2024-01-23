@@ -116,4 +116,38 @@ class TestAddonAvatarGenerator extends TestCase {
 			$this->assertNotContains( $color, $generator->colors );
 		}
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::avatar_exists
+	 */
+	public function testAvatarExists() {
+		$user_id = $this->factory()->user->create();
+		$generator = new \Anspress\Addons\Avatar\Generator( $user_id );
+
+		// Test for avatar not exists.
+		$this->assertFalse( $generator->avatar_exists() );
+
+		// Test for avatar exists.
+		// Test 1.
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
+		$avatar_file = $avatar_dir . '/' . $generator->filename . '.jpg';
+		wp_mkdir_p( $avatar_dir );
+		touch( $avatar_file );
+		$this->assertTrue( $generator->avatar_exists() );
+		unlink( $avatar_file );
+		rmdir( $avatar_dir );
+
+		// Test 2.
+		$user_id = $this->factory()->user->create();
+		$generator = new \Anspress\Addons\Avatar\Generator( get_userdata( $user_id ) );
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
+		$avatar_file = $avatar_dir . '/' . $generator->filename . '.jpg';
+		wp_mkdir_p( $avatar_dir );
+		touch( $avatar_file );
+		$this->assertTrue( $generator->avatar_exists() );
+		unlink( $avatar_file );
+		rmdir( $avatar_dir );
+	}
 }
