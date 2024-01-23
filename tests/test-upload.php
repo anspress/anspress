@@ -53,4 +53,26 @@ class TestUpload extends TestCase {
 		$this->assertArrayHasKey( 'gif', ap_allowed_mimes() );
 		$this->assertArrayHasKey( 'png', ap_allowed_mimes() );
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::create_single_schedule
+	 */
+	public function testCreateSingleSchedule() {
+		// Test when it is not scheduled initially.
+		wp_clear_scheduled_hook( 'ap_delete_temp_attachments' );
+		$is_scheduled = wp_next_scheduled( 'ap_delete_temp_attachments' );
+		$this->assertFalse( $is_scheduled );
+		\AnsPress_Uploader::create_single_schedule();
+		$is_scheduled = wp_next_scheduled( 'ap_delete_temp_attachments' );
+		$this->assertNotFalse( $is_scheduled );
+
+		// Test when it is already scheduled.
+		wp_clear_scheduled_hook( 'ap_delete_temp_attachments' );
+		\AnsPress_Uploader::create_single_schedule();
+		$is_scheduled = wp_next_scheduled( 'ap_delete_temp_attachments' );
+		$this->assertNotFalse( $is_scheduled );
+		\AnsPress_Uploader::create_single_schedule();
+		$is_scheduled = wp_next_scheduled( 'ap_delete_temp_attachments' );
+		$this->assertNotFalse( $is_scheduled );
+	}
 }
