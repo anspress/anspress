@@ -74,4 +74,46 @@ class TestAddonAvatarGenerator extends TestCase {
 		$expectedFilename = md5( $comment->user_id );
 		$this->assertEquals( $expectedFilename, $generator->filename );
 	}
+
+	public function Colors( $colors ) {
+		$colors[] = '#FFFFFF';
+		$colors[] = '#000000';
+		$colors[] = '#FF0000';
+		$colors[] = '#00FF00';
+		$colors[] = '#0000FF';
+		return $colors;
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::colors
+	 */
+	public function testColors() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+
+		// Test begins.
+		$colors = $generator->colors();
+
+		// Test 1.
+		$this->assertIsArray( $generator->colors );
+		$this->assertNotEmpty( $generator->colors );
+		$expected_colors = [ '#EA526F', '#FF0038', '#3C91E6', '#D64933', '#00A878', '#0A2472', '#736B92', '#FFAD05', '#DD9787', '#74D3AE', '#B9314F', '#878472', '#983628', '#E2AEDD', '#1B9AAA', '#FFC43D', '#4F3824', '#7A6F9B', '#376996', '#7B904B', '#613DC1' ];
+		foreach ( $expected_colors as $color ) {
+			$this->assertContains( $color, $generator->colors );
+		}
+
+		// Test 2.
+		add_filter( 'ap_addon_avatar_colors', [ $this, 'Colors' ] );
+		$colors = $generator->colors();
+		$expected_colors = [ '#FFFFFF', '#000000', '#FF0000', '#00FF00', '#0000FF' ];
+		foreach ( $expected_colors as $color ) {
+			$this->assertContains( $color, $generator->colors );
+		}
+		remove_filter( 'ap_addon_avatar_colors', [ $this, 'Colors' ] );
+
+		// Test 3.
+		$colors = $generator->colors();
+		foreach ( $expected_colors as $color ) {
+			$this->assertNotContains( $color, $generator->colors );
+		}
+	}
 }
