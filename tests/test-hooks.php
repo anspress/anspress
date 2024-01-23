@@ -328,4 +328,20 @@ class TestHooks extends TestCase {
 		$this->assertArrayHasKey( 'type__not_in', $modified_args );
 		$this->assertEquals( array( 'anspress' ), $modified_args['type__not_in'] );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::sanitize_description
+	 */
+	public function testSanitizeDescription() {
+		$this->assertEquals( 10, has_filter( 'ap_form_contents_filter', [ 'AnsPress_Hooks', 'sanitize_description' ] ) );
+
+		// Test begins.
+		$this->assertEquals( 'Test description', \AnsPress_Hooks::sanitize_description( '     Test description    ' ) );
+		$this->assertEquals( 'Test description', \AnsPress_Hooks::sanitize_description( 'Test description' ) );
+		$this->assertEquals( '<p>Test description</p>', \AnsPress_Hooks::sanitize_description( '<p>Test description</p>' ) );
+		$this->assertEquals( 'Test description', \AnsPress_Hooks::sanitize_description( 'Test description &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' ) );
+		$this->assertEquals( '<p>Test description</p><script>alert("test");</script>', \AnsPress_Hooks::sanitize_description( '<p>Test description</p><script>alert("test");</script>' ) );
+		$this->assertEquals( 'Test &nbsp;&nbsp;    description', \AnsPress_Hooks::sanitize_description( 'Test &nbsp;&nbsp;    description' ) );
+		$this->assertEquals( 'Test     description', \AnsPress_Hooks::sanitize_description( 'Test     description' ) );
+	}
 }
