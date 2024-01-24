@@ -124,4 +124,23 @@ class Test_Session extends TestCase {
 		$this->assertContains( 'example-3.txt', $session->get( 'files' ) );
 		$this->assertEquals( 5, count( $session->get( 'files' ) ) );
 	}
+
+	/**
+	 * @covers AnsPress\Session::generate_id
+	 */
+	public function testGenerateID() {
+		$session = \AnsPress\Session::init();
+
+		// Set the method to be accessible.
+		$method = new \ReflectionMethod( 'AnsPress\Session', 'generate_id' );
+		$method->setAccessible( true );
+
+		// Call the method.
+		$result = $method->invoke( $session );
+
+		// Test begins.
+		$this->assertIsString( $result );
+		$this->assertEquals( 32, strlen( $result ) );
+		$this->assertMatchesRegularExpression( '/^[0-9a-f]+$/', $result );
+	}
 }
