@@ -10,6 +10,8 @@ require_once ANSPRESS_DIR . 'admin/anspress-admin.php';
 
 class TestAnsPressAdmin extends TestCase {
 
+	use Testcases\Common;
+
 	/**
 	 * @covers AnsPress_Admin::instance
 	 */
@@ -142,5 +144,47 @@ class TestAnsPressAdmin extends TestCase {
 		\AnsPress_Admin::question_meta_box_class();
 		$this->assertTrue( class_exists( 'AP_Question_Meta_Box' ) );
 		$this->assertInstanceOf( 'AP_Question_Meta_Box', new \AP_Question_Meta_Box() );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::anspress_notice
+	 */
+	public function testAnsPressNotice() {
+		// Test for displaying notice.
+		// For db version.
+		update_option( 'anspress_db_version', 0 );
+		ob_start();
+		\AnsPress_Admin::anspress_notice();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<div class="ap-notice notice notice-error apicon-anspress-icon">', $output );
+		$this->assertStringContainsString( 'AnsPress database is not updated.', $output );
+		$this->assertStringContainsString( '<a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">Update now</a>', $output );
+
+		// For missing pages.
+		$this->assertStringContainsString( '<div class="ap-notice notice notice-error apicon-anspress-icon">', $output );
+		$this->assertStringContainsString( 'One or more AnsPress page(s) does not exists.', $output );
+		$this->assertStringContainsString( '<a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">Set automatically</a> Or <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">Set set by yourself</a>', $output );
+
+		// Test for not displaying notice.
+		// Generate required pages.
+		$this->setRole( 'administrator' );
+		ap_create_base_page();
+		flush_rewrite_rules();
+		delete_transient( 'ap_pages_check' );
+
+		// For db version.
+		update_option( 'anspress_db_version', AP_DB_VERSION );
+		ob_start();
+		\AnsPress_Admin::anspress_notice();
+		$output = ob_get_clean();
+		$this->assertStringNotContainsString( '<div class="ap-notice notice notice-error apicon-anspress-icon">', $output );
+		$this->assertStringNotContainsString( 'AnsPress database is not updated.', $output );
+		$this->assertStringNotContainsString( '<a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">Update now</a>', $output );
+
+		// For missing pages.
+		$this->assertStringNotContainsString( '<div class="ap-notice notice notice-error apicon-anspress-icon">', $output );
+		$this->assertStringNotContainsString( 'One or more AnsPress page(s) does not exists.', $output );
+		$this->assertStringNotContainsString( '<a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">Set automatically</a> Or <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">Set set by yourself</a>', $output );
+		$this->logout();
 	}
 }
