@@ -239,4 +239,26 @@ class TestAnsPressAdmin extends TestCase {
 		$result = \AnsPress_Admin::modify_answer_title( (array) get_post( $answer_id ) );
 		$this->assertEquals( 'Question title', $result['post_title'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::save_user_roles_fields
+	 */
+	public function testSaveUserRolesFields() {
+		// Test 1.
+		$user_id = $this->factory->user->create();
+		$_REQUEST['ap_role'] = 'administrator';
+		\AnsPress_Admin::save_user_roles_fields( $user_id );
+		$saved_role = get_user_meta( $user_id, 'ap_role', true );
+		$this->assertEquals( ap_sanitize_unslash( 'ap_role', 'p' ), $saved_role );
+
+		// Test 2.
+		$user_id = $this->factory->user->create();
+		$_REQUEST['ap_role'] = [ 'moderator', 'editor' ];
+		\AnsPress_Admin::save_user_roles_fields( $user_id );
+		$saved_role = get_user_meta( $user_id, 'ap_role', true );
+		$this->assertEquals( ap_sanitize_unslash( 'ap_role', 'p' ), $saved_role );
+
+		// Reset $_REQUEST.
+		unset( $_REQUEST['ap_role'] );
+	}
 }
