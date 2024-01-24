@@ -274,4 +274,18 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( 'message=99', $updated_location );
 		$this->assertEquals( $initial_location . '?message=99', $updated_location );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::change_post_menu_label
+	 */
+	public function testChangePostMenuLabel() {
+		// Test before the method is called.
+		global $submenu;
+		$submenu['anspress'][0][0] = 'Old Menu';
+		$this->assertEquals( 'Old Menu', $submenu['anspress'][0][0] );
+
+		// Test after the method is called.
+		\AnsPress_Admin::change_post_menu_label();
+		$this->assertEquals( 'AnsPress', $submenu['anspress'][0][0] );
+	}
 }
