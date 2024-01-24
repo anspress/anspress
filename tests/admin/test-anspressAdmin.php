@@ -117,4 +117,17 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( class_exists( 'AP_license' ) );
 		$this->assertInstanceOf('AP_license', new \AP_license() );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::add_action_links
+	 */
+	public function testAddActionLinks() {
+		$links = \AnsPress_Admin::init();
+
+		$links = \AnsPress_Admin::add_action_links( [] );
+		$this->assertArrayHasKey( 'settings', $links );
+		$this->assertStringContainsString( admin_url( 'admin.php?page=anspress_options' ), $links['settings'] );
+		$this->assertStringContainsString( 'Settings', $links['settings'] );
+		$this->assertEquals( '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">Settings</a>', $links['settings'] );
+	}
 }
