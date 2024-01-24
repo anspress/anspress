@@ -71,4 +71,15 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'save_addon_options' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'admin_footer' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::admin_footer
+	 */
+	public function testAdminFooter() {
+		ob_start();
+		\AnsPress_Admin::admin_footer();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '#adminmenu .anspress-license-count', $output );
+		$this->assertStringContainsString( 'background: #0073aa;', $output );
+	}
 }
