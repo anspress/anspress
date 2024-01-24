@@ -261,4 +261,17 @@ class TestAnsPressAdmin extends TestCase {
 		// Reset $_REQUEST.
 		unset( $_REQUEST['ap_role'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::custom_post_location
+	 */
+	public function testCustomPostLocation() {
+		$initial_location = 'http://example.com/sample-post/';
+		$updated_location = \AnsPress_Admin::custom_post_location( $initial_location );
+
+		// Test begins.
+		$this->assertStringNotContainsString( 'message=99', $initial_location );
+		$this->assertStringContainsString( 'message=99', $updated_location );
+		$this->assertEquals( $initial_location . '?message=99', $updated_location );
+	}
 }
