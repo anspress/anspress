@@ -34,4 +34,45 @@ class TestAPLicense extends TestCase {
 		$this->assertStringContainsString( 'Licenses', $result );
 		$this->assertStringContainsString( 'License keys for AnsPress products, i.e. extensions and themes.', $result );
 	}
+
+	public function AnsPressLicenseFields( $fields ) {
+		$fields['product'] = [
+			'name'      => 'Product Name',
+			'version'   => '1.0.0',
+			'author'    => 'Product Author',
+			'file'      => __FILE__,
+			'is_plugin' => false,
+		];
+
+		return $fields;
+	}
+
+	/**
+	 * @covers AP_License::ap_product_license_fields
+	 */
+	public function testAPProductLicenseFields() {
+		// Test by directly calling the function.
+		$fields = ap_product_license_fields();
+		$this->assertEmpty( $fields );
+		$this->assertIsArray( $fields );
+
+		// Test by filtering the anspress_license_fields hook.
+		add_filter( 'anspress_license_fields', [ $this, 'AnsPressLicenseFields' ] );
+		$fields = ap_product_license_fields();
+		$this->assertNotEmpty( $fields );
+		$this->assertIsArray( $fields );
+		$this->assertArrayHasKey( 'product', $fields );
+		$this->assertArrayHasKey( 'name', $fields['product'] );
+		$this->assertArrayHasKey( 'version', $fields['product'] );
+		$this->assertArrayHasKey( 'author', $fields['product'] );
+		$this->assertArrayHasKey( 'file', $fields['product'] );
+		$this->assertArrayHasKey( 'is_plugin', $fields['product'] );
+
+		// Test by removing the filter.
+		remove_filter( 'anspress_license_fields', [ $this, 'AnsPressLicenseFields' ] );
+		$fields = ap_product_license_fields();
+		$this->assertEmpty( $fields );
+		$this->assertIsArray( $fields );
+		$this->assertArrayNotHasKey( 'product', $fields );
+	}
 }
