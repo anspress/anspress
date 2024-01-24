@@ -22,4 +22,16 @@ class TestAPLicense extends TestCase {
 		$this->assertEquals( 10, has_action( 'ap_admin_menu', [ $license, 'menu' ] ) );
 		$this->assertEquals( 0, has_action( 'admin_init', [ $license, 'ap_plugin_updater' ] ) );
 	}
+
+	/**
+	 * @covers AP_License::display_plugin_licenses
+	 */
+	public function testDisplayPluginLicenses() {
+		$license = new \AP_License();
+		ob_start();
+		$license->display_plugin_licenses();
+		$result = ob_get_clean();
+		$this->assertStringContainsString( 'Licenses', $result );
+		$this->assertStringContainsString( 'License keys for AnsPress products, i.e. extensions and themes.', $result );
+	}
 }
