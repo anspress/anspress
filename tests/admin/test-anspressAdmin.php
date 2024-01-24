@@ -187,4 +187,56 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringNotContainsString( '<a href="' . admin_url( 'admin-post.php?action=anspress_create_base_page' ) . '">Set automatically</a> Or <a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">Set set by yourself</a>', $output );
 		$this->logout();
 	}
+
+	/**
+	 * @covers AnsPress_Admin::modify_answer_title
+	 */
+	public function testModifyAnswerTitle() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_type'    => 'question',
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content'
+			]
+		);
+		$answer_id = $this->factory->post->create(
+			[
+				'post_type'    => 'answer',
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_parent'  => $question_id
+			]
+		);
+		$post_id = $this->factory->post->create(
+			[
+				'post_type'    => 'post',
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content'
+			]
+		);
+		$page_id = $this->factory->post->create(
+			[
+				'post_type'    => 'page',
+				'post_title'   => 'Page title',
+				'post_content' => 'Page content'
+			]
+		);
+
+		// Test begins.
+		// Test for post post type.
+		$result = \AnsPress_Admin::modify_answer_title( (array) get_post( $post_id ) );
+		$this->assertEquals( 'Post title', $result['post_title'] );
+
+		// Test for page post type.
+		$result = \AnsPress_Admin::modify_answer_title( (array) get_post( $page_id ) );
+		$this->assertEquals( 'Page title', $result['post_title'] );
+
+		// Test for question post type.
+		$result = \AnsPress_Admin::modify_answer_title( (array) get_post( $question_id ) );
+		$this->assertEquals( 'Question title', $result['post_title'] );
+
+		// Test for answer post type.
+		$result = \AnsPress_Admin::modify_answer_title( (array) get_post( $answer_id ) );
+		$this->assertEquals( 'Question title', $result['post_title'] );
+	}
 }
