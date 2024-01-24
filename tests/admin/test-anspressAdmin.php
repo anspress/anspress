@@ -130,4 +130,17 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( 'Settings', $links['settings'] );
 		$this->assertEquals( '<a href="' . admin_url( 'admin.php?page=anspress_options' ) . '">Settings</a>', $links['settings'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::question_meta_box_class
+	 */
+	public function testQuestionMetaBoxClass() {
+		// Test before the method is called.
+		$this->assertFalse( class_exists( 'AP_Question_Meta_Box' ) );
+
+		// Test after the method is called.
+		\AnsPress_Admin::question_meta_box_class();
+		$this->assertTrue( class_exists( 'AP_Question_Meta_Box' ) );
+		$this->assertInstanceOf( 'AP_Question_Meta_Box', new \AP_Question_Meta_Box() );
+	}
 }

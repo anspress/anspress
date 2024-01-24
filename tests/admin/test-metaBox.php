@@ -4,10 +4,6 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-// Since this file is required only on admin pages and it included only via action hook so,
-// we include it directly for testing.
-require_once ANSPRESS_DIR . 'admin/meta-box.php';
-
 class TestAPQuestionMetaBox extends TestCase {
 
 	public function testMethodExists() {
