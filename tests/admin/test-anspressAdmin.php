@@ -879,4 +879,33 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'checkbox', $form['fields']['disable_down_vote_on_answer']['type'] );
 		$this->assertEquals( ap_opt( 'disable_down_vote_on_answer' ), $form['fields']['disable_down_vote_on_answer']['value'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_user_activity
+	 */
+	public function testOptionsUserActivity() {
+		$form = \AnsPress_Admin::options_user_activity();
+
+		// Get roles datas.
+		global $wp_roles;
+		$roles = array();
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$roles[ $key ] = $role['name'];
+		}
+
+		// Test starts.
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for activity_exclude_roles field.
+		$this->assertArrayHasKey( 'activity_exclude_roles', $form['fields'] );
+		$this->assertEquals( 'Select the roles to exclude in activity feed.', $form['fields']['activity_exclude_roles']['label'] );
+		$this->assertEquals( 'Selected role\'s activities will be excluded in site activity feed.', $form['fields']['activity_exclude_roles']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['activity_exclude_roles']['type'] );
+		$this->assertEquals( ap_opt( 'activity_exclude_roles' ), $form['fields']['activity_exclude_roles']['value'] );
+		$this->assertEquals( $roles, $form['fields']['activity_exclude_roles']['options'] );
+		foreach ( $roles as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['activity_exclude_roles']['options'] );
+			$this->assertEquals( $value, $form['fields']['activity_exclude_roles']['options'][ $key ] );
+		}
+	}
 }
