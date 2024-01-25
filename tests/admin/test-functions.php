@@ -145,4 +145,62 @@ class TestAdminFunctions extends TestCase {
 			}
 		}
 	}
+
+	/**
+	 * Filter callback for ap_load_admin_assets.
+	 */
+	public function APLoadAdminAssets( $load ) {
+		return true;
+	}
+
+	/**
+	 * @covers ::ap_load_admin_assets
+	 */
+	public function testAPLoadAdminAssets() {
+		// Test 1.
+		set_current_screen( 'question' );
+		$this->assertTrue( ap_load_admin_assets() );
+
+		// Test 2.
+		set_current_screen( 'answer' );
+		$this->assertTrue( ap_load_admin_assets() );
+
+		// Test 3.
+		set_current_screen( 'admin_page_custom_page' );
+		$this->assertFalse( ap_load_admin_assets() );
+
+		// Test 4.
+		set_current_screen( 'anspress' );
+		$this->assertTrue( ap_load_admin_assets() );
+
+		// Test 5.
+		set_current_screen( 'nav-menus' );
+		$this->assertTrue( ap_load_admin_assets() );
+
+		// Test 6.
+		set_current_screen( 'admin_page_ap_select_question' );
+		$this->assertTrue( ap_load_admin_assets() );
+
+		// Test 7.
+		set_current_screen( 'admin_page_anspress_update' );
+		$this->assertTrue( ap_load_admin_assets() );
+
+		// Test 8.
+		set_current_screen( 'custom-page' );
+		$this->assertFalse( ap_load_admin_assets() );
+		add_filter( 'ap_load_admin_assets', [ $this, 'APLoadAdminAssets' ] );
+		$this->assertTrue( ap_load_admin_assets() );
+		remove_filter( 'ap_load_admin_assets', [ $this, 'APLoadAdminAssets' ] );
+
+		// Test 9.
+		set_current_screen( 'front' );
+		$this->assertFalse( ap_load_admin_assets() );
+		add_filter( 'ap_load_admin_assets', [ $this, 'APLoadAdminAssets' ] );
+		$this->assertTrue( ap_load_admin_assets() );
+		remove_filter( 'ap_load_admin_assets', [ $this, 'APLoadAdminAssets' ] );
+
+		// Test 10.
+		set_current_screen( 'dashboard' );
+		$this->assertFalse( ap_load_admin_assets() );
+	}
 }
