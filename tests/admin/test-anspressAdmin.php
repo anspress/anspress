@@ -288,4 +288,42 @@ class TestAnsPressAdmin extends TestCase {
 		\AnsPress_Admin::change_post_menu_label();
 		$this->assertEquals( 'AnsPress', $submenu['anspress'][0][0] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_general_pages
+	 */
+	public function testOptionsGeneralPages() {
+		$form = \AnsPress_Admin::options_general_pages();
+
+		// Test starts.
+		$this->assertArrayHasKey( 'submit_label', $form );
+		$this->assertEquals( 'Save Pages', $form['submit_label'] );
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for author_credits field.
+		$this->assertArrayHasKey( 'author_credits', $form['fields'] );
+		$this->assertEquals( 'Hide author credits', $form['fields']['author_credits']['label'] );
+		$this->assertEquals( 'Hide link to AnsPress project site.', $form['fields']['author_credits']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['author_credits']['type'] );
+		$this->assertEquals( 0, $form['fields']['author_credits']['order'] );
+		$this->assertEquals( ap_opt( 'author_credits' ), $form['fields']['author_credits']['value'] );
+
+		// Test for sep-warning field.
+		$this->assertArrayHasKey( 'sep-warning', $form['fields'] );
+		$this->assertEquals( '<div class="ap-uninstall-warning">If you have created main pages manually then make sure to have [anspress] shortcode in all pages.</div>', $form['fields']['sep-warning']['html'] );
+
+		// For pages field.
+		foreach ( ap_main_pages() as $slug => $args ) {
+			$this->assertArrayHasKey( $slug, $form['fields'] );
+			$this->assertEquals( $args['label'], $form['fields'][ $slug ]['label'] );
+			$this->assertEquals( $args['desc'], $form['fields'][ $slug ]['desc'] );
+			$this->assertEquals( 'select', $form['fields'][ $slug ]['type'] );
+			$this->assertEquals( 'posts', $form['fields'][ $slug ]['options'] );
+			$this->assertArrayHasKey( 'post_type', $form['fields'][ $slug ]['posts_args'] );
+			$this->assertArrayHasKey( 'showposts', $form['fields'][ $slug ]['posts_args'] );
+			$this->assertEquals( [ 'post_type' => 'page', 'showposts' => -1 ], $form['fields'][ $slug ]['posts_args'] );
+			$this->assertEquals( ap_opt( $slug ), $form['fields'][ $slug ]['value'] );
+			$this->assertEquals( 'absint', $form['fields'][ $slug ]['sanitize'] );
+		}
+	}
 }
