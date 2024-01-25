@@ -509,4 +509,165 @@ class TestAnsPressAdmin extends TestCase {
 			$this->assertEquals( $value, $form['fields']['read_comment_per']['options'][ $key ] );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_uac_posting
+	 */
+	public function testOptionsUACPosting() {
+		$form = \AnsPress_Admin::options_uac_posting();
+
+		// Test starts.
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for post_question_per field.
+		$this->assertArrayHasKey( 'post_question_per', $form['fields'] );
+		$this->assertEquals( 'Who can post question?', $form['fields']['post_question_per']['label'] );
+		$this->assertEquals( 'Set who can submit a question from frontend.', $form['fields']['post_question_per']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['post_question_per']['type'] );
+		$this->assertEquals( ap_opt( 'post_question_per' ), $form['fields']['post_question_per']['value'] );
+		$options_args = [
+			'anyone'    => 'Anyone, including non-loggedin',
+			'logged_in' => 'Only logged in',
+			'have_cap'  => 'Only user having ap_new_question capability',
+		];
+		$this->assertEquals( $options_args, $form['fields']['post_question_per']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['post_question_per']['options'] );
+			$this->assertEquals( $value, $form['fields']['post_question_per']['options'][ $key ] );
+		}
+
+		// Test for post_answer_per field.
+		$this->assertArrayHasKey( 'post_answer_per', $form['fields'] );
+		$this->assertEquals( 'Who can post answer?', $form['fields']['post_answer_per']['label'] );
+		$this->assertEquals( 'Set who can submit an answer from frontend.', $form['fields']['post_answer_per']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['post_answer_per']['type'] );
+		$this->assertEquals( ap_opt( 'post_answer_per' ), $form['fields']['post_answer_per']['value'] );
+		$options_args = [
+			'anyone'    => 'Anyone, including non-loggedin',
+			'logged_in' => 'Only logged in',
+			'have_cap'  => 'Only user having ap_new_answer capability',
+		];
+		$this->assertEquals( $options_args, $form['fields']['post_answer_per']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['post_answer_per']['options'] );
+			$this->assertEquals( $value, $form['fields']['post_answer_per']['options'][ $key ] );
+		}
+
+		// Test for create_account field.
+		$this->assertArrayHasKey( 'create_account', $form['fields'] );
+		$this->assertEquals( 'Create account for non-registered', $form['fields']['create_account']['label'] );
+		$this->assertEquals( 'Allow non-registered users to create account by entering their email in question. After submitting post a confirmation email will be sent to the user.', $form['fields']['create_account']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['create_account']['type'] );
+		$this->assertEquals( ap_opt( 'create_account' ), $form['fields']['create_account']['value'] );
+
+		// Test for multiple_answers field.
+		$this->assertArrayHasKey( 'multiple_answers', $form['fields'] );
+		$this->assertEquals( 'Multiple answers', $form['fields']['multiple_answers']['label'] );
+		$this->assertEquals( 'Allow users to submit multiple answer per question.', $form['fields']['multiple_answers']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['multiple_answers']['type'] );
+		$this->assertEquals( ap_opt( 'multiple_answers' ), $form['fields']['multiple_answers']['value'] );
+
+		// Test for disallow_op_to_answer field.
+		$this->assertArrayHasKey( 'disallow_op_to_answer', $form['fields'] );
+		$this->assertEquals( 'OP can answer?', $form['fields']['disallow_op_to_answer']['label'] );
+		$this->assertEquals( 'OP: Original poster/asker. Enabling this option will prevent users to post an answer on their question.', $form['fields']['disallow_op_to_answer']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['disallow_op_to_answer']['type'] );
+		$this->assertEquals( ap_opt( 'disallow_op_to_answer' ), $form['fields']['disallow_op_to_answer']['value'] );
+
+		// Test for post_comment_per field.
+		$this->assertArrayHasKey( 'post_comment_per', $form['fields'] );
+		$this->assertEquals( 'Who can post comment?', $form['fields']['post_comment_per']['label'] );
+		$this->assertEquals( 'Set who can submit a comment from frontend.', $form['fields']['post_comment_per']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['post_comment_per']['type'] );
+		$this->assertEquals( ap_opt( 'post_comment_per' ), $form['fields']['post_comment_per']['value'] );
+		$options_args = [
+			'anyone'    => 'Anyone, including non-loggedin',
+			'logged_in' => 'Only logged in',
+			'have_cap'  => 'Only user having ap_new_comment capability',
+		];
+		$this->assertEquals( $options_args, $form['fields']['post_comment_per']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['post_comment_per']['options'] );
+			$this->assertEquals( $value, $form['fields']['post_comment_per']['options'][ $key ] );
+		}
+
+		// Test for new_question_status field.
+		$this->assertArrayHasKey( 'new_question_status', $form['fields'] );
+		$this->assertEquals( 'Status of new question', $form['fields']['new_question_status']['label'] );
+		$this->assertEquals( 'Default status of new question.', $form['fields']['new_question_status']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['new_question_status']['type'] );
+		$options_args = [
+			'publish'  => 'Publish',
+			'moderate' => 'Moderate',
+		];
+		$this->assertEquals( $options_args, $form['fields']['new_question_status']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['new_question_status']['options'] );
+			$this->assertEquals( $value, $form['fields']['new_question_status']['options'][ $key ] );
+		}
+		$this->assertEquals( ap_opt( 'new_question_status' ), $form['fields']['new_question_status']['value'] );
+
+		// Test for edit_question_status field.
+		$this->assertArrayHasKey( 'edit_question_status', $form['fields'] );
+		$this->assertEquals( 'Status of edited question', $form['fields']['edit_question_status']['label'] );
+		$this->assertEquals( 'Default status of edited question.', $form['fields']['edit_question_status']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['edit_question_status']['type'] );
+		$options_args = [
+			'publish'  => 'Publish',
+			'moderate' => 'Moderate',
+		];
+		$this->assertEquals( $options_args, $form['fields']['edit_question_status']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['edit_question_status']['options'] );
+			$this->assertEquals( $value, $form['fields']['edit_question_status']['options'][ $key ] );
+		}
+
+		// Test for new_answer_status field.
+		$this->assertArrayHasKey( 'new_answer_status', $form['fields'] );
+		$this->assertEquals( 'Status of new answer', $form['fields']['new_answer_status']['label'] );
+		$this->assertEquals( 'Default status of new answer.', $form['fields']['new_answer_status']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['new_answer_status']['type'] );
+		$options_args = [
+			'publish'  => 'Publish',
+			'moderate' => 'Moderate',
+		];
+		$this->assertEquals( $options_args, $form['fields']['new_answer_status']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['new_answer_status']['options'] );
+			$this->assertEquals( $value, $form['fields']['new_answer_status']['options'][ $key ] );
+		}
+		$this->assertEquals( ap_opt( 'new_answer_status' ), $form['fields']['new_answer_status']['value'] );
+
+		// Test for edit_answer_status field.
+		$this->assertArrayHasKey( 'edit_answer_status', $form['fields'] );
+		$this->assertEquals( 'Status of edited answer', $form['fields']['edit_answer_status']['label'] );
+		$this->assertEquals( 'Default status of edited answer.', $form['fields']['edit_answer_status']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['edit_answer_status']['type'] );
+		$options_args = [
+			'publish'  => 'Publish',
+			'moderate' => 'Moderate',
+		];
+		$this->assertEquals( $options_args, $form['fields']['edit_answer_status']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['edit_answer_status']['options'] );
+			$this->assertEquals( $value, $form['fields']['edit_answer_status']['options'][ $key ] );
+		}
+		$this->assertEquals( ap_opt( 'edit_answer_status' ), $form['fields']['edit_answer_status']['value'] );
+
+		// Test for anonymous_post_status field.
+		$this->assertArrayHasKey( 'anonymous_post_status', $form['fields'] );
+		$this->assertEquals( 'Status of non-loggedin post', $form['fields']['anonymous_post_status']['label'] );
+		$this->assertEquals( 'Default status of question or answer submitted by non-loggedin user.', $form['fields']['anonymous_post_status']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['anonymous_post_status']['type'] );
+		$options_args = [
+			'publish'  => 'Publish',
+			'moderate' => 'Moderate',
+		];
+		$this->assertEquals( $options_args, $form['fields']['anonymous_post_status']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['anonymous_post_status']['options'] );
+			$this->assertEquals( $value, $form['fields']['anonymous_post_status']['options'][ $key ] );
+		}
+		$this->assertEquals( ap_opt( 'anonymous_post_status' ), $form['fields']['anonymous_post_status']['value'] );
+	}
 }
