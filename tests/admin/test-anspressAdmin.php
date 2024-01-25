@@ -388,4 +388,64 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( ap_opt( 'author_page_title' ) ?? 'User', $form['fields']['author_page_title']['value'] );
 		$this->assertEquals( 'required', $form['fields']['author_page_title']['validate'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_general_layout
+	 */
+	public function testoptions_general_layout() {
+		$form = \AnsPress_Admin::options_general_layout();
+
+		// Test starts.
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for load_assets_in_anspress_only field.
+		$this->assertArrayHasKey( 'load_assets_in_anspress_only', $form['fields'] );
+		$this->assertEquals( '', $form['fields']['load_assets_in_anspress_only']['name'] );
+		$this->assertEquals( 'Load assets in AnsPress page only?', $form['fields']['load_assets_in_anspress_only']['label'] );
+		$this->assertEquals( 'Check this to load AnsPress JS and CSS on the AnsPress page only. Be careful, this might break layout.', $form['fields']['load_assets_in_anspress_only']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['load_assets_in_anspress_only']['type'] );
+		$this->assertEquals( ap_opt( 'load_assets_in_anspress_only' ), $form['fields']['load_assets_in_anspress_only']['value'] );
+
+		// Test for avatar_size_list field.
+		$this->assertArrayHasKey( 'avatar_size_list', $form['fields'] );
+		$this->assertEquals( 'List avatar size', $form['fields']['avatar_size_list']['label'] );
+		$this->assertEquals( 'User avatar size for questions list.', $form['fields']['avatar_size_list']['desc'] );
+		$this->assertEquals( 'number', $form['fields']['avatar_size_list']['subtype'] );
+		$this->assertEquals( ap_opt( 'avatar_size_list' ), $form['fields']['avatar_size_list']['value'] );
+
+		// Test for avatar_size_qquestion field.
+		$this->assertArrayHasKey( 'avatar_size_qquestion', $form['fields'] );
+		$this->assertEquals( 'Question avatar size', $form['fields']['avatar_size_qquestion']['label'] );
+		$this->assertEquals( 'User avatar size for question.', $form['fields']['avatar_size_qquestion']['desc'] );
+		$this->assertEquals( 'number', $form['fields']['avatar_size_qquestion']['subtype'] );
+		$this->assertEquals( ap_opt( 'avatar_size_qquestion' ), $form['fields']['avatar_size_qquestion']['value'] );
+
+		// Test for avatar_size_qanswer field.
+		$this->assertArrayHasKey( 'avatar_size_qanswer', $form['fields'] );
+		$this->assertEquals( 'Answer avatar size', $form['fields']['avatar_size_qanswer']['label'] );
+		$this->assertEquals( 'User avatar size for answer.', $form['fields']['avatar_size_qanswer']['desc'] );
+		$this->assertEquals( 'number', $form['fields']['avatar_size_qanswer']['subtype'] );
+		$this->assertEquals( ap_opt( 'avatar_size_qanswer' ), $form['fields']['avatar_size_qanswer']['value'] );
+
+		// Test for avatar_size_qcomment field.
+		$this->assertArrayHasKey( 'avatar_size_qcomment', $form['fields'] );
+		$this->assertEquals( 'Comment avatar size', $form['fields']['avatar_size_qcomment']['label'] );
+		$this->assertEquals( 'User avatar size for comments.', $form['fields']['avatar_size_qcomment']['desc'] );
+		$this->assertEquals( 'number', $form['fields']['avatar_size_qcomment']['subtype'] );
+		$this->assertEquals( ap_opt( 'avatar_size_qcomment' ), $form['fields']['avatar_size_qcomment']['value'] );
+
+		// Test for question_per_page field.
+		$this->assertArrayHasKey( 'question_per_page', $form['fields'] );
+		$this->assertEquals( 'Questions per page', $form['fields']['question_per_page']['label'] );
+		$this->assertEquals( 'Questions to show per page.', $form['fields']['question_per_page']['desc'] );
+		$this->assertEquals( 'number', $form['fields']['question_per_page']['subtype'] );
+		$this->assertEquals( ap_opt( 'question_per_page' ), $form['fields']['question_per_page']['value'] );
+
+		// Test for answers_per_page field.
+		$this->assertArrayHasKey( 'answers_per_page', $form['fields'] );
+		$this->assertEquals( 'Answers per page', $form['fields']['answers_per_page']['label'] );
+		$this->assertEquals( 'Answers to show per page.', $form['fields']['answers_per_page']['desc'] );
+		$this->assertEquals( 'number', $form['fields']['answers_per_page']['subtype'] );
+		$this->assertEquals( ap_opt( 'answers_per_page' ), $form['fields']['answers_per_page']['value'] );
+	}
 }
