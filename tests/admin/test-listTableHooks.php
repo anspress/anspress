@@ -41,4 +41,46 @@ class TestListTableHooks extends TestCase {
 		$this->assertStringContainsString( '<p>Please fill parent question field, Answer was not saved!</p>', $result );
 		$this->assertStringContainsString( '</div>', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::post_custom_message
+	 */
+	public function testPostCustomMessage() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+
+		// Test for question post type.
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$message = 'This is custom message for question post type.';
+		$result = $hooks->post_custom_message( $message );
+		$this->assertEquals( $message, $result );
+		$this->assertFalse( has_action( 'admin_notices', array( 'AnsPress_Post_Table_Hooks', 'ans_notice' ) ) );
+
+		// Test for answer post type.
+		// Test 1.
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
+		$this->go_to( '?post_type=answer&p=' . $answer_id );
+		$message = 'This is custom message for answer post type.';
+		$result = $hooks->post_custom_message( $message );
+		$this->assertEquals( $message, $result );
+		$this->assertFalse( has_action( 'admin_notices', array( 'AnsPress_Post_Table_Hooks', 'ans_notice' ) ) );
+
+		// Test 2.
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
+		$this->go_to( '?post_type=answer&p=' . $answer_id );
+		$_REQUEST['message'] = 10;
+		$message = 'This is custom message for answer post type.';
+		$result = $hooks->post_custom_message( $message );
+		$this->assertEquals( $message, $result );
+		$this->assertFalse( has_action( 'admin_notices', array( 'AnsPress_Post_Table_Hooks', 'ans_notice' ) ) );
+
+		// Test 3.
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
+		$this->go_to( '?post_type=answer&p=' . $answer_id );
+		$_REQUEST['message'] = 99;
+		$message = 'This is custom message for answer post type.';
+		$result = $hooks->post_custom_message( $message );
+		$this->assertEquals( $message, $result );
+		$this->assertEquals( 10, has_action( 'admin_notices', array( 'AnsPress_Post_Table_Hooks', 'ans_notice' ) ) );
+	}
 }
