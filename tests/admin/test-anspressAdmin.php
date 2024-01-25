@@ -908,4 +908,65 @@ class TestAnsPressAdmin extends TestCase {
 			$this->assertEquals( $value, $form['fields']['activity_exclude_roles']['options'][ $key ] );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Admin::append_post_status_list
+	 */
+	public function testAppendPostStatusList() {
+		global $post;
+
+		// Test for question post type.
+		// Test 1.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$post = get_post( $question_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Moderate', $output );
+		$this->assertStringContainsString( 'Private Post', $output );
+		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
+		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
+		$this->assertStringContainsString( '<option value=\'moderate\'  selected=\'selected\'>', $output );
+		$this->assertStringContainsString( '<span id=\'post-status-display\'>Moderate</span>', $output );
+
+		// Test 2.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$post = get_post( $question_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Moderate', $output );
+		$this->assertStringContainsString( 'Private Post', $output );
+		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
+		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
+		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
+		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
+
+		// Test for answer post type.
+		// Test 1.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate' ] );
+		$post = get_post( $answer_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Moderate', $output );
+		$this->assertStringContainsString( 'Private Post', $output );
+		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
+		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
+		$this->assertStringContainsString( '<option value=\'moderate\'  selected=\'selected\'>', $output );
+		$this->assertStringContainsString( '<span id=\'post-status-display\'>Moderate</span>', $output );
+
+		// Test 2.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'private_post' ] );
+		$post = get_post( $answer_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'Moderate', $output );
+		$this->assertStringContainsString( 'Private Post', $output );
+		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
+		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
+		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
+		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
+	}
 }
