@@ -326,4 +326,66 @@ class TestAnsPressAdmin extends TestCase {
 			$this->assertEquals( 'absint', $form['fields'][ $slug ]['sanitize'] );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_general_permalinks
+	 */
+	public function testOptionsGeneralPermalinks() {
+		$form = \AnsPress_Admin::options_general_permalinks();
+
+		// Test starts.
+		$this->assertArrayHasKey( 'submit_label', $form );
+		$this->assertEquals( 'Save Permalinks', $form['submit_label'] );
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for question_page_slug field.
+		$this->assertArrayHasKey( 'question_page_slug', $form['fields'] );
+		$this->assertEquals( 'Question slug', $form['fields']['question_page_slug']['label'] );
+		$this->assertEquals( 'Slug for single question page.', $form['fields']['question_page_slug']['desc'] );
+		$this->assertEquals( ap_opt( 'question_page_slug' ), $form['fields']['question_page_slug']['value'] );
+		$this->assertEquals( 'required', $form['fields']['question_page_slug']['validate'] );
+
+		// Test for question_page_permalink field.
+		$this->assertArrayHasKey( 'question_page_permalink', $form['fields'] );
+		$this->assertEquals( 'Question permalink', $form['fields']['question_page_permalink']['label'] );
+		$this->assertEquals( 'Select single question permalink structure.', $form['fields']['question_page_permalink']['desc'] );
+		$this->assertEquals( 'radio', $form['fields']['question_page_permalink']['type'] );
+		$options_args = [
+			'question_perma_1' => home_url( '/' . ap_base_page_slug() ) . '/<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/',
+			'question_perma_2' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/',
+			'question_perma_3' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213/',
+			'question_perma_4' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213/question-name/',
+			'question_perma_5' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name/213/',
+			'question_perma_6' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/213-question-name/',
+			'question_perma_7' => home_url( '/' ) . '<b class="ap-base-slug">' . ap_opt( 'question_page_slug' ) . '</b>/question-name-213/',
+		];
+		$this->assertEquals( $options_args, $form['fields']['question_page_permalink']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['question_page_permalink']['options'] );
+			$this->assertEquals( $value, $form['fields']['question_page_permalink']['options'][ $key ] );
+		}
+		$this->assertEquals( ap_opt( 'question_page_permalink' ), $form['fields']['question_page_permalink']['value'] );
+		$this->assertEquals( 'required', $form['fields']['question_page_permalink']['validate'] );
+
+		// Test for base_page_title field.
+		$this->assertArrayHasKey( 'base_page_title', $form['fields'] );
+		$this->assertEquals( 'Base page title', $form['fields']['base_page_title']['label'] );
+		$this->assertEquals( 'Main questions list page title', $form['fields']['base_page_title']['desc'] );
+		$this->assertEquals( ap_opt( 'base_page_title' ), $form['fields']['base_page_title']['value'] );
+		$this->assertEquals( 'required', $form['fields']['base_page_title']['validate'] );
+
+		// Test for search_page_title field.
+		$this->assertArrayHasKey( 'search_page_title', $form['fields'] );
+		$this->assertEquals( 'Search page title', $form['fields']['search_page_title']['label'] );
+		$this->assertEquals( 'Title of the search page', $form['fields']['search_page_title']['desc'] );
+		$this->assertEquals( ap_opt( 'search_page_title' ), $form['fields']['search_page_title']['value'] );
+		$this->assertEquals( 'required', $form['fields']['search_page_title']['validate'] );
+
+		// Test for author_page_title field.
+		$this->assertArrayHasKey( 'author_page_title', $form['fields'] );
+		$this->assertEquals( 'Author page title', $form['fields']['author_page_title']['label'] );
+		$this->assertEquals( 'Title of the author page', $form['fields']['author_page_title']['desc'] );
+		$this->assertEquals( ap_opt( 'author_page_title' ) ?? 'User', $form['fields']['author_page_title']['value'] );
+		$this->assertEquals( 'required', $form['fields']['author_page_title']['validate'] );
+	}
 }
