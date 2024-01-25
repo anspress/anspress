@@ -95,4 +95,54 @@ class TestAdminFunctions extends TestCase {
 		$this->assertEquals( 0, $result->private_post );
 		$this->assertEquals( 7, $result->total );
 	}
+
+	private function get_base_caps() {
+		$ap_roles = new \AP_Roles();
+		return $ap_roles->base_caps;
+	}
+
+	private function get_mod_caps() {
+		$ap_roles = new \AP_Roles();
+		return $ap_roles->mod_caps;
+	}
+
+	/**
+	 * @covers ::ap_update_caps_for_role
+	 */
+	public function testAPUpdateCapsForRole() {
+		// Test 1.
+		$result = ap_update_caps_for_role( '' );
+		$this->assertFalse( $result );
+
+		// Test 2.
+		$result = ap_update_caps_for_role( 'test_role', '' );
+		$this->assertFalse( $result );
+
+		// Test 3.
+		$test_role = 'test_role';
+		add_role( $test_role, 'Test Role' );
+		$caps = [
+			'ap_read_question' => true,
+			'ap_read_answer'   => true,
+			'ap_read_comment'  => true,
+			'read'             => true,
+			'publish_posts'    => true,
+			'switch_themes'    => true,
+			'manage_options'   => true,
+		];
+		$result = ap_update_caps_for_role( $test_role, $caps );
+		$this->assertNotFalse( $result );
+		$this->assertTrue( $result );
+
+		// Additional tests.
+		$role = get_role( $test_role );
+		$all_caps = $this->get_base_caps() + $this->get_mod_caps();
+		foreach ( $all_caps as $cap => $val ) {
+			if ( isset( $caps[ $cap ] ) ) {
+				$this->assertTrue( $role->has_cap( $cap ) );
+			} else {
+				$this->assertFalse( $role->has_cap( $cap ) );
+			}
+		}
+	}
 }
