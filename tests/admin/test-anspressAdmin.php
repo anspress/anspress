@@ -969,4 +969,59 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
 		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::get_pages
+	 */
+	public function testGetPages() {
+		// Test if base page is set.
+		// Create some pages and a base page.
+		$pages = [
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+		];
+		$base_page = ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) );
+		$pages[] = $base_page;
+
+		// Set the AnsPress base page.
+		ap_opt( 'base_page', $base_page->ID );
+
+		// Call the method.
+		$filtered_pages = \AnsPress_Admin::get_pages( $pages, [ 'name' => 'page_on_front' ] );
+
+		// Test begins.
+		foreach ( $filtered_pages as $page ) {
+			$page_id = (array) $page->ID;
+			$this->assertFalse( in_array( $base_page->ID, $page_id ) );
+			if ( $page->ID !== $base_page->ID ) {
+				$this->assertTrue( in_array( $page->ID, $page_id ) );
+			}
+		}
+
+		// Test if base page is not set.
+		// Create some pages.
+		$pages = [
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+		];
+
+		// Call the method.
+		$filtered_pages = \AnsPress_Admin::get_pages( $pages, [ 'name' => 'page_on_front' ] );
+
+		// Test begins.
+		foreach ( $filtered_pages as $page ) {
+			$page_id = (array) $page->ID;
+			$this->assertTrue( in_array( $page->ID, $page_id ) );
+		}
+		foreach ( $pages as $key => $page ) {
+			$page_id = (array) $filtered_pages[ $key ]->ID;
+			$this->assertTrue( in_array( $page->ID, $page_id ) );
+		}
+	}
 }
