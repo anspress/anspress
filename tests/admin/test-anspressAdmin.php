@@ -670,4 +670,40 @@ class TestAnsPressAdmin extends TestCase {
 		}
 		$this->assertEquals( ap_opt( 'anonymous_post_status' ), $form['fields']['anonymous_post_status']['value'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_uac_other
+	 */
+	public function testOptionsUACOther() {
+		$form = \AnsPress_Admin::options_uac_other();
+
+		// Test starts.
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for allow_upload field.
+		$this->assertArrayHasKey( 'allow_upload', $form['fields'] );
+		$this->assertEquals( 'Allow image upload', $form['fields']['allow_upload']['label'] );
+		$this->assertEquals( 'Allow logged-in users to upload image.', $form['fields']['allow_upload']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['allow_upload']['type'] );
+		$this->assertEquals( ap_opt( 'allow_upload' ), $form['fields']['allow_upload']['value'] );
+
+		// Test for uploads_per_post field.
+		$this->assertArrayHasKey( 'uploads_per_post', $form['fields'] );
+		$this->assertEquals( 'Max uploads per post', $form['fields']['uploads_per_post']['label'] );
+		$this->assertEquals( 'Set numbers of media user can upload for each post.', $form['fields']['uploads_per_post']['desc'] );
+		$this->assertEquals( ap_opt( 'uploads_per_post' ), $form['fields']['uploads_per_post']['value'] );
+
+		// Test for max_upload_size field.
+		$this->assertArrayHasKey( 'max_upload_size', $form['fields'] );
+		$this->assertEquals( 'Max upload size', $form['fields']['max_upload_size']['label'] );
+		$this->assertEquals( 'Set maximum upload size.', $form['fields']['max_upload_size']['desc'] );
+		$this->assertEquals( ap_opt( 'max_upload_size' ), $form['fields']['max_upload_size']['value'] );
+
+		// Test for allow_private_posts field.
+		$this->assertArrayHasKey( 'allow_private_posts', $form['fields'] );
+		$this->assertEquals( 'Allow private posts', $form['fields']['allow_private_posts']['label'] );
+		$this->assertEquals( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', $form['fields']['allow_private_posts']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['allow_private_posts']['type'] );
+		$this->assertEquals( ap_opt( 'allow_private_posts' ), $form['fields']['allow_private_posts']['value'] );
+	}
 }
