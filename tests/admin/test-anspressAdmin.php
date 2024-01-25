@@ -448,4 +448,65 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'number', $form['fields']['answers_per_page']['subtype'] );
 		$this->assertEquals( ap_opt( 'answers_per_page' ), $form['fields']['answers_per_page']['value'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::options_uac_reading
+	 */
+	public function testOptionsUACReading() {
+		$form = \AnsPress_Admin::options_uac_reading();
+
+		// Test starts.
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test for read_question_per field.
+		$this->assertArrayHasKey( 'read_question_per', $form['fields'] );
+		$this->assertEquals( 'Who can read question?', $form['fields']['read_question_per']['label'] );
+		$this->assertEquals( 'Set who can view or read a question.', $form['fields']['read_question_per']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['read_question_per']['type'] );
+		$this->assertEquals( ap_opt( 'read_question_per' ), $form['fields']['read_question_per']['value'] );
+		$options_args = [
+			'anyone'    => 'Anyone, including non-loggedin',
+			'logged_in' => 'Only logged in',
+			'have_cap'  => 'Only user having ap_read_question capability',
+		];
+		$this->assertEquals( $options_args, $form['fields']['read_question_per']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['read_question_per']['options'] );
+			$this->assertEquals( $value, $form['fields']['read_question_per']['options'][ $key ] );
+		}
+
+		// Test for read_answer_per field.
+		$this->assertArrayHasKey( 'read_answer_per', $form['fields'] );
+		$this->assertEquals( 'Who can read answers?', $form['fields']['read_answer_per']['label'] );
+		$this->assertEquals( 'Set who can view or read a answer.', $form['fields']['read_answer_per']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['read_answer_per']['type'] );
+		$this->assertEquals( ap_opt( 'read_answer_per' ), $form['fields']['read_answer_per']['value'] );
+		$options_args = [
+			'anyone'    => 'Anyone, including non-loggedin',
+			'logged_in' => 'Only logged in',
+			'have_cap'  => 'Only user having ap_read_answer capability',
+		];
+		$this->assertEquals( $options_args, $form['fields']['read_answer_per']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['read_answer_per']['options'] );
+			$this->assertEquals( $value, $form['fields']['read_answer_per']['options'][ $key ] );
+		}
+
+		// Test for read_comment_per field.
+		$this->assertArrayHasKey( 'read_comment_per', $form['fields'] );
+		$this->assertEquals( 'Who can read comment?', $form['fields']['read_comment_per']['label'] );
+		$this->assertEquals( 'Set who can view or read a comment.', $form['fields']['read_comment_per']['desc'] );
+		$this->assertEquals( 'select', $form['fields']['read_comment_per']['type'] );
+		$this->assertEquals( ap_opt( 'read_comment_per' ), $form['fields']['read_comment_per']['value'] );
+		$options_args = [
+			'anyone'    => 'Anyone, including non-loggedin',
+			'logged_in' => 'Only logged in',
+			'have_cap'  => 'Only user having ap_read_comment capability',
+		];
+		$this->assertEquals( $options_args, $form['fields']['read_comment_per']['options'] );
+		foreach ( $options_args as $key => $value ) {
+			$this->assertArrayHasKey( $key, $form['fields']['read_comment_per']['options'] );
+			$this->assertEquals( $value, $form['fields']['read_comment_per']['options'][ $key ] );
+		}
+	}
 }
