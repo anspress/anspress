@@ -285,4 +285,26 @@ class TestAddonTags extends TestCase {
 		$this->assertEquals( AP_VERSION, $wp_scripts->registered['anspress-tags']->ver );
 		$this->assertEquals( 1, $wp_scripts->registered['anspress-tags']->extra['group'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_localize_scripts
+	 */
+	public function testAPLocalizeScripts() {
+		global $wp_scripts;
+		$instance = \Anspress\Addons\Tags::init();
+		$instance->ap_localize_scripts();
+
+		// Test begins.
+		$this->assertTrue( wp_script_is( 'anspress-tags', 'enqueued' ) );
+		$localized_data = $wp_scripts->registered['anspress-tags']->extra['data'];
+		$expected_data  = [
+			'deleteTag'            => 'Delete Tag',
+			'addTag'               => 'Add Tag',
+			'tagAdded'             => 'added to the tags list.',
+			'tagRemoved'           => 'removed from the tags list.',
+			'suggestionsAvailable' => 'Suggestions are available. Use the up and down arrow keys to read it.',
+		];
+		$this->assertStringContainsString( 'apTagsTranslation', $localized_data );
+		$this->assertStringContainsString( wp_json_encode( $expected_data ), $localized_data );
+	}
 }
