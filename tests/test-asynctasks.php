@@ -243,4 +243,51 @@ class TestAsyncTasks extends TestCase {
 		$this->assertFalse( $action_triggered );
 		unset( $_REQUEST['test_request'] );
 	}
+
+	/**
+	 * @covers AnsPress\AsyncTasks\SelectAnswer::prepare_data
+	 * @covers AnsPress\AsyncTasks\SelectAnswer::run_action
+	 */
+	public function testSelectAnswer() {
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$answer_id = $this->factory->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		ap_set_selected_answer( $question_id, $answer_id );
+
+		// Initialize class.
+		$tasks = new \AnsPress\AsyncTasks\SelectAnswer();
+
+		// Test begins.
+		// For prepare_data method.
+		$method = new \ReflectionMethod( 'AnsPress\AsyncTasks\SelectAnswer', 'prepare_data' );
+		$method->setAccessible( true );
+		$data = $method->invoke( $tasks, [ ap_get_post( $answer_id ), $question_id ] );
+		$this->assertEquals( [ 'post_id' => $answer_id ], $data );
+
+		// For run_action method.
+		// Test 1.
+		$mock_post = ap_get_post( $answer_id );
+		$_REQUEST['post_id'] = $answer_id;
+		$action_triggered = false;
+		add_action( 'wp_async_ap_select_answer', function( $post ) use ( $mock_post, &$action_triggered ) {
+			$this->assertEquals( $mock_post, $post );
+			$action_triggered = true;
+		} );
+		$method = new \ReflectionMethod( 'AnsPress\AsyncTasks\SelectAnswer', 'run_action' );
+		$method->setAccessible( true );
+		$method->invoke( $tasks );
+		$this->assertTrue( $action_triggered );
+
+		// Test 2.
+		unset( $_REQUEST['post_id'] );
+		$action_triggered = false;
+		$method->invoke( $tasks );
+		$this->assertFalse( $action_triggered );
+
+		// Test 3.
+		$_REQUEST['test_request'] = $question_id;
+		$action_triggered = false;
+		$method->invoke( $tasks );
+		$this->assertFalse( $action_triggered );
+		unset( $_REQUEST['test_request'] );
+	}
 }
