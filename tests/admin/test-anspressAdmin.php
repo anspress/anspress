@@ -1040,4 +1040,35 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( '<input type="hidden" name="is_admin" value="true" />', $output );
 		$this->assertStringContainsString( '<div id="similar_suggestions">', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::trashed_post
+	 */
+	public function testTrashedPost() {
+		// Test 1.
+		$base_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'base_page', $base_page );
+		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
+		\AnsPress_Admin::trashed_post( $base_page );
+		$this->assertFalse( get_transient( 'ap_pages_check' ) );
+
+		// Test 2.
+		$ask_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'ask_page', $ask_page );
+		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
+		\AnsPress_Admin::trashed_post( $ask_page );
+		$this->assertFalse( get_transient( 'ap_pages_check' ) );
+
+		// Test 3.
+		$other_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
+		\AnsPress_Admin::trashed_post( $other_page );
+		$this->assertNotEmpty( get_transient( 'ap_pages_check' ) );
+
+		// Test 4.
+		$other_post = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
+		\AnsPress_Admin::trashed_post( $other_post );
+		$this->assertNotEmpty( get_transient( 'ap_pages_check' ) );
+	}
 }
