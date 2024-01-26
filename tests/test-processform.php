@@ -44,4 +44,14 @@ class TestProcessForm extends TestCase {
 		$process_form->process_form();
 		$this->assertTrue( $hook_triggered );
 	}
+
+	/**
+	 * @covers AnsPress_Process_Form::__construct
+	 */
+	public function testConstruct() {
+		$process_form = new \AnsPress_Process_Form();
+		$this->assertInstanceOf( 'AnsPress_Process_Form', $process_form );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_ajax', [ $process_form, 'ap_ajax' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_ap_ajax', [ $process_form, 'ap_ajax' ] ) );
+	}
 }
