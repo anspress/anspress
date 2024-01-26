@@ -290,4 +290,50 @@ class TestAsyncTasks extends TestCase {
 		$this->assertFalse( $action_triggered );
 		unset( $_REQUEST['test_request'] );
 	}
+
+	/**
+	 * @covers AnsPress\AsyncTasks\PublishComment::prepare_data
+	 * @covers AnsPress\AsyncTasks\PublishComment::run_action
+	 */
+	public function testPublishComment() {
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$comment_id = $this->factory->comment->create( array( 'comment_post_ID' => $question_id, 'comment_type' => 'anspress' ) );
+
+		// Initialize class.
+		$tasks = new \AnsPress\AsyncTasks\PublishComment();
+
+		// Test begins.
+		// For prepare_data method.
+		$method = new \ReflectionMethod( 'AnsPress\AsyncTasks\PublishComment', 'prepare_data' );
+		$method->setAccessible( true );
+		$data = $method->invoke( $tasks, [ get_comment( $comment_id ), $comment_id ] );
+		$this->assertEquals( [ 'comment_id' => $comment_id ], $data );
+
+		// For run_action method.
+		// Test 1.
+		$mock_comment = get_comment( $comment_id );
+		$_REQUEST['comment_id'] = $comment_id;
+		$action_triggered = false;
+		add_action( 'wp_async_ap_publish_comment', function( $comment ) use ( $mock_comment, &$action_triggered ) {
+			$this->assertEquals( $mock_comment, $comment );
+			$action_triggered = true;
+		} );
+		$method = new \ReflectionMethod( 'AnsPress\AsyncTasks\PublishComment', 'run_action' );
+		$method->setAccessible( true );
+		$method->invoke( $tasks );
+		$this->assertTrue( $action_triggered );
+
+		// Test 2.
+		unset( $_REQUEST['comment_id'] );
+		$action_triggered = false;
+		$method->invoke( $tasks );
+		$this->assertFalse( $action_triggered );
+
+		// Test 3.
+		$_REQUEST['test_request'] = $question_id;
+		$action_triggered = false;
+		$method->invoke( $tasks );
+		$this->assertFalse( $action_triggered );
+		unset( $_REQUEST['test_request'] );
+	}
 }
