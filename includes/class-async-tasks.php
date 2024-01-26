@@ -169,7 +169,7 @@ class PublishComment extends \WP_Async_Task { // phpcs:ignore
 	 * @since 4.1.8
 	 */
 	protected function run_action() {
-		$comment_id = ap_sanitize_unslash( 'comment_id' );
+		$comment_id = ap_sanitize_unslash( 'comment_id', 'g' );
 		$comment    = get_comment( $comment_id );
 
 		if ( $comment ) {
