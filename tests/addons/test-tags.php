@@ -269,4 +269,20 @@ class TestAddonTags extends TestCase {
 		$method = $instance->ap_current_page( 'tags' );
 		$this->assertEquals( 'tag', $method );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_assets_js
+	 */
+	public function testAPAssetsJS() {
+		global $wp_scripts;
+		$instance = \Anspress\Addons\Tags::init();
+		$instance->ap_assets_js();
+
+		// Test begins.
+		$this->assertTrue( wp_script_is( 'anspress-tags', 'enqueued' ) );
+		$deps = $wp_scripts->registered['anspress-tags']->deps;
+		$this->assertContains( 'anspress-list', $deps );
+		$this->assertEquals( AP_VERSION, $wp_scripts->registered['anspress-tags']->ver );
+		$this->assertEquals( 1, $wp_scripts->registered['anspress-tags']->extra['group'] );
+	}
 }
