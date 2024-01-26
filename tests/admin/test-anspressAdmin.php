@@ -1024,4 +1024,20 @@ class TestAnsPressAdmin extends TestCase {
 			$this->assertTrue( in_array( $page->ID, $page_id ) );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Admin::display_select_question
+	 */
+	public function testDisplaySelectQuestion() {
+		ob_start();
+		\AnsPress_Admin::display_select_question();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<div id="ap-admin-dashboard" class="wrap">', $output );
+		$this->assertStringContainsString( 'Select a question for new answer', $output );
+		$this->assertStringContainsString( 'Slowly type for question suggestion and then click select button right to question title.', $output );
+		$this->assertStringContainsString( '<form class="question-selection">', $output );
+		$this->assertStringContainsString( '<input type="text" name="question_id" class="ap-select-question" id="select-question-for-answer" />', $output );
+		$this->assertStringContainsString( '<input type="hidden" name="is_admin" value="true" />', $output );
+		$this->assertStringContainsString( '<div id="similar_suggestions">', $output );
+	}
 }
