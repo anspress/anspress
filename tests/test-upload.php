@@ -122,4 +122,30 @@ class TestUpload extends TestCase {
 		$result = ap_count_users_temp_media( $user_id );
 		$this->assertEquals( 5, $result );
 	}
+
+	/**
+	 * @covers ::ap_update_user_temp_media_count
+	 */
+	public function testAPUpdateUserTempMediaCount() {
+		// Test with passing user id.
+		$user_id = $this->factory()->user->create();
+
+		// Create some attachments.
+		$this->assertEmpty( get_user_meta( $user_id, '_ap_temp_media', true ) );
+		$this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id, 'post_status' => 'inherit', 'post_title' => '_ap_temp_media' ] );
+		$this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id, 'post_status' => 'publish', 'post_title' => '_non_temp_media' ] );
+		ap_update_user_temp_media_count( $user_id );
+		$this->assertEquals( 5, get_user_meta( $user_id, '_ap_temp_media', true ) );
+
+		// Test without passing user id.
+		$user_id = $this->factory()->user->create();
+		wp_set_current_user( $user_id );
+
+		// Create some attachments.
+		$this->assertEmpty( get_user_meta( $user_id, '_ap_temp_media', true ) );
+		$this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id, 'post_status' => 'inherit', 'post_title' => '_ap_temp_media' ] );
+		$this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id, 'post_status' => 'publish', 'post_title' => '_non_temp_media' ] );
+		ap_update_user_temp_media_count();
+		$this->assertEquals( 5, get_user_meta( $user_id, '_ap_temp_media', true ) );
+	}
 }
