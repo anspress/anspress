@@ -105,4 +105,21 @@ class TestUpload extends TestCase {
 		$result = \AnsPress_Uploader::image_sizes_advanced( $expected );
 		$this->assertEquals( $expected, $result );
 	}
+
+	/**
+	 * @covers ::ap_count_users_temp_media
+	 */
+	public function testAPCountUsersTempMedia() {
+		$user_id = $this->factory()->user->create();
+
+		// Create some temporary attachments.
+		$this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id, 'post_status' => 'inherit', 'post_title' => '_ap_temp_media' ] );
+		$result = ap_count_users_temp_media( $user_id );
+		$this->assertEquals( 5, $result );
+
+		// Create some permanent attachments.
+		$this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id, 'post_status' => 'publish', 'post_title' => '_non_temp_media' ] );
+		$result = ap_count_users_temp_media( $user_id );
+		$this->assertEquals( 5, $result );
+	}
 }
