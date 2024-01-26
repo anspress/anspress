@@ -454,4 +454,33 @@ class TestAddonCategories extends TestCase {
 		$method = $instance->ap_current_page( 'categories' );
 		$this->assertEquals( 'category', $method );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_assets_js
+	 */
+	public function testAPAssetsJS() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Required for wp_script_is() to work as expected.
+		ob_start();
+		do_action( 'wp_enqueue_scripts' );
+		ob_end_clean();
+
+		// Test begins.
+		// Directly cally the method.
+		$instance->ap_assets_js( [] );
+		$this->assertFalse( wp_script_is( 'anspress-theme' ) );
+
+		// Without visting the category page.
+		$this->go_to( '/' );
+		$instance->ap_assets_js( [] );
+		$this->assertFalse( wp_script_is( 'anspress-theme' ) );
+
+		// With visting the category page.
+		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $category_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$instance->ap_assets_js( [] );
+		$this->assertTrue( wp_script_is( 'anspress-theme' ) );
+	}
 }
