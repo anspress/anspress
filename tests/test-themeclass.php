@@ -517,4 +517,17 @@ class TestThemeClass extends TestCase {
 		$result = \AnsPress_Theme::get_the_excerpt( '', $post_id );
 		$this->assertEquals( '', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::template_include
+	 */
+	public function testTemplateInclude() {
+		$template = 'some-templates.php';
+		$expected = 'filtered-template.php';
+		add_filter( 'ap_template_include', function( $template ) use ( $expected ) {
+			return $expected;
+		} );
+		$result = \AnsPress_Theme::template_include( $template );
+		$this->assertEquals( $expected, $result );
+	}
 }
