@@ -530,4 +530,56 @@ class TestThemeClass extends TestCase {
 		$result = \AnsPress_Theme::template_include( $template );
 		$this->assertEquals( $expected, $result );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::template_include_theme_compat
+	 */
+	public function testTemplateIncludeThemeCompat() {
+		// Test 1.
+		$post_id = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		$this->go_to( '/?post_type=post&p=' . $post_id );
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		$result = \AnsPress_Theme::template_include_theme_compat( 'some-template.php' );
+		$this->assertEquals( 'some-template.php', $result );
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		global $post;
+		$this->assertStringNotContainsString( '<div class="anspress" id="anspress">', $post->post_content );
+		$this->assertStringNotContainsString( '<div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">', $post->post_content );
+		$this->assertStringNotContainsString( '<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">', $post->post_content );
+
+		// Test 2.
+		$id = $this->insert_question();
+		$this->go_to( '/?post_type=question&p=' . $id );
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		$result = \AnsPress_Theme::template_include_theme_compat();
+		$this->assertEquals( '', $result );
+		$this->assertEquals( true, anspress()->theme_compat->active );
+		global $post;
+		$this->assertStringContainsString( '<div class="anspress" id="anspress">', $post->post_content );
+		$this->assertStringContainsString( '<div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">', $post->post_content );
+		$this->assertStringContainsString( '<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">', $post->post_content );
+
+		// Test 3.
+		$id = $this->insert_answer();
+		$this->go_to( '/?post_type=question&p=' . $id->q );
+		anspress()->theme_compat->active = false;
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		$result = \AnsPress_Theme::template_include_theme_compat( 'some-template.php' );
+		$this->assertEquals( 'some-template.php', $result );
+		$this->assertEquals( true, anspress()->theme_compat->active );
+		global $post;
+		$this->assertStringContainsString( '<div class="anspress" id="anspress">', $post->post_content );
+		$this->assertStringContainsString( '<div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">', $post->post_content );
+		$this->assertStringContainsString( '<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">', $post->post_content );
+		$this->go_to( '/?post_type=answer&p=' . $id->a );
+		anspress()->theme_compat->active = false;
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		$result = \AnsPress_Theme::template_include_theme_compat( 'some-template.php' );
+		$this->assertEquals( 'some-template.php', $result );
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		global $post;
+		$this->assertStringNotContainsString( '<div class="anspress" id="anspress">', $post->post_content );
+		$this->assertStringNotContainsString( '<div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">', $post->post_content );
+		$this->assertStringNotContainsString( '<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">', $post->post_content );
+	}
 }
