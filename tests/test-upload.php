@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestUpload extends TestCase {
 
+	use Testcases\Common;
+
 	public function testHooks() {
 		$this->assertEquals( 10, has_action( 'deleted_post', [ 'AnsPress_Uploader', 'deleted_attachment' ] ) );
 		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Uploader', 'create_single_schedule' ] ) );
@@ -187,5 +189,28 @@ class TestUpload extends TestCase {
 
 		// Setting to default value.
 		ap_opt( 'uploads_per_post', 4 );
+	}
+
+	/**
+	 * @covers ::ap_post_attach_pre_fetch
+	 */
+	public function testAPPostAttachPreFetch() {
+		// Test for not passing attachment ids.
+		ap_post_attach_pre_fetch( [] );
+		$this->assertEmpty( wp_cache_get( 'posts', 'posts' ) );
+
+		// Test for passing attachment ids for non logged in user.
+		$attachment_ids = $this->factory()->attachment->create_many( 5 );
+		ap_post_attach_pre_fetch( $attachment_ids );
+		$this->assertEmpty( wp_cache_get( 'posts', 'posts' ) );
+
+		// Test for passing attachment ids for logged in user.
+		$this->setRole( 'subscriber' );
+		$attachment_ids = $this->factory()->attachment->create_many( 5 );
+		ap_post_attach_pre_fetch( $attachment_ids );
+		foreach ( $attachment_ids as $attachment_id ) {
+			$this->assertNotEmpty( wp_cache_get( $attachment_id, 'posts' ) );
+		}
+		$this->logout();
 	}
 }
