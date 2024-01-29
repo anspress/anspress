@@ -2638,4 +2638,22 @@ class TestFunctions extends TestCase {
 		ap_trigger_qa_update_hook( get_post( $id->a ), 'update' );
 		$this->assertTrue( did_action( 'ap_after_update_answer' ) > 0 );
 	}
+
+	/**
+	 * @covers ::ap_ajax_tinymce_assets
+	 */
+	public function testAPAjaxTinyMCEAssets() {
+		ob_start();
+		ap_ajax_tinymce_assets();
+		$output = ob_get_clean();
+
+		// Test for assertions.
+		$this->assertStringContainsString( 'anspress-common-js', $output );
+		$this->assertStringContainsString( 'anspress-question-js', $output );
+		$this->assertStringContainsString( 'anspress-ask-js', $output );
+		$this->assertStringContainsString( 'anspress-list-js', $output );
+		$this->assertStringContainsString( 'anspress-notifications-js', $output );
+		$this->assertStringContainsString( 'anspress-theme-js', $output );
+		$this->assertMatchesRegularExpression( '/<script.*<\/script>/', $output );
+	}
 }
