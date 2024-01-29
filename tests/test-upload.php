@@ -148,4 +148,44 @@ class TestUpload extends TestCase {
 		ap_update_user_temp_media_count();
 		$this->assertEquals( 5, get_user_meta( $user_id, '_ap_temp_media', true ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_upload_temp_media
+	 */
+	public function testAPUserCanUploadTempMedia() {
+		// Test without passing user id.
+		$user_id = $this->factory()->user->create();
+		wp_set_current_user( $user_id );
+
+		// Create some attachments.
+		$this->factory()->attachment->create_many( 3, [ 'post_author' => $user_id, 'post_status' => 'inherit', 'post_title' => '_ap_temp_media' ] );
+		ap_update_user_temp_media_count( $user_id );
+
+		// Test 1.
+		$this->assertTrue( ap_user_can_upload_temp_media() );
+
+		// Test 2.
+		ap_opt( 'uploads_per_post', 2 );
+		$this->assertFalse( ap_user_can_upload_temp_media() );
+
+		// Setting to default value.
+		ap_opt( 'uploads_per_post', 4 );
+
+		// Test with passing user id.
+		$user_id = $this->factory()->user->create();
+
+		// Create some attachments.
+		$this->factory()->attachment->create_many( 3, [ 'post_author' => $user_id, 'post_status' => 'inherit', 'post_title' => '_ap_temp_media' ] );
+		ap_update_user_temp_media_count( $user_id );
+
+		// Test 1.
+		$this->assertTrue( ap_user_can_upload_temp_media( $user_id ) );
+
+		// Test 2.
+		ap_opt( 'uploads_per_post', 2 );
+		$this->assertFalse( ap_user_can_upload_temp_media( $user_id ) );
+
+		// Setting to default value.
+		ap_opt( 'uploads_per_post', 4 );
+	}
 }
