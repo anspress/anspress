@@ -213,4 +213,50 @@ class TestUpload extends TestCase {
 		}
 		$this->logout();
 	}
+
+	/**
+	 * @covers ::ap_clear_unattached_media
+	 */
+	public function testAPClearUnattachedMedia() {
+		// Test for not passing user id.
+		$this->setRole( 'subscriber' );
+		$attachment_ids = $this->factory->attachment->create_many( 3, array(
+			'post_author' => get_current_user_id(),
+			'post_title' => '_ap_temp_media',
+		) );
+
+		// Before function is called.
+		foreach ( $attachment_ids as $attachment_id ) {
+			$attachment = get_post( $attachment_id );
+			$this->assertIsObject( $attachment );
+		}
+
+		// After function is called.
+		ap_clear_unattached_media();
+		foreach ( $attachment_ids as $attachment_id ) {
+			$attachment = get_post( $attachment_id );
+			$this->assertNull( $attachment );
+		}
+		$this->logout();
+
+		// Test for passing user id.
+		$user_id = $this->factory->user->create();
+		$attachment_ids = $this->factory->attachment->create_many( 3, array(
+			'post_author' => $user_id,
+			'post_title' => '_ap_temp_media',
+		) );
+
+		// Before function is called.
+		foreach ( $attachment_ids as $attachment_id ) {
+			$attachment = get_post( $attachment_id );
+			$this->assertIsObject( $attachment );
+		}
+
+		// After function is called.
+		ap_clear_unattached_media( $user_id );
+		foreach ( $attachment_ids as $attachment_id ) {
+			$attachment = get_post( $attachment_id );
+			$this->assertNull( $attachment );
+		}
+	}
 }
