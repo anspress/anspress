@@ -483,4 +483,22 @@ class TestAddonCategories extends TestCase {
 		$instance->ap_assets_js( [] );
 		$this->assertTrue( wp_script_is( 'anspress-theme' ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::image_field_new
+	 */
+	public function testImageFieldNew() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		ob_start();
+		$instance->image_field_new( '' );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="Upload image" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id">Upload image</a>', $result );
+		$this->assertStringContainsString( '<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="">', $result );
+		$this->assertStringContainsString( 'jQuery(\'#ap-category-color\').wpColorPicker();', $result );
+	}
 }
