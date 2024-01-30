@@ -837,4 +837,31 @@ class TestReputation extends TestCase {
 		$this->assertTrue( ap_delete_reputation_event_by_slug( 'comment' ) );
 		$this->assertNull( ap_get_reputation_event_by_slug( 'comment' ) );
 	}
+
+	/**
+	 * @covers ::ap_get_all_reputation_events
+	 */
+	public function testAPGetAllReputationEvents() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert reputation events.
+		$ap_reputation_events = \AnsPress\Addons\Reputation::init();
+		$ap_reputation_events->register_default_events();
+
+		// Test begins.
+		$all_reputation_events = ap_get_all_reputation_events();
+		$this->assertIsArray( $all_reputation_events );
+		foreach ( $all_reputation_events as $reputation_event ) {
+			$this->assertObjectHasProperty( 'rep_events_id', $reputation_event );
+			$this->assertObjectHasProperty( 'slug', $reputation_event );
+			$this->assertObjectHasProperty( 'icon', $reputation_event );
+			$this->assertObjectHasProperty( 'label', $reputation_event );
+			$this->assertObjectHasProperty( 'description', $reputation_event );
+			$this->assertObjectHasProperty( 'activity', $reputation_event );
+			$this->assertObjectHasProperty( 'parent', $reputation_event );
+			$this->assertObjectHasProperty( 'points', $reputation_event );
+		}
+	}
 }
