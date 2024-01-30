@@ -42,8 +42,10 @@ class TestTemplatesLoginSignUp extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-login">', $result );
 		$this->assertStringContainsString( '<div class="ap-login-buttons">', $result );
 		$this->assertStringContainsString( '<a href="' . esc_url( wp_login_url( get_the_permalink() ) ) . '">Login</a>', $result );
-		$this->assertStringContainsString( '<a href="' . esc_url( wp_registration_url() ) . '">Register</a>', $result );
 		$this->assertTrue( did_action( 'wordpress_social_login' ) > 0 );
+		if ( ! \is_multisite() ) {
+			$this->assertStringContainsString( '<a href="' . esc_url( wp_registration_url() ) . '">Register</a>', $result );
+		}
 
 		// Reset option.
 		update_option( 'users_can_register', false );
