@@ -195,4 +195,46 @@ class TestAddonReputation extends TestCase {
 		$this->assertArrayHasKey( 'template', $reputations_options );
 		$this->assertEquals( 'reputation-events.php', $reputations_options['template'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::register_default_events
+	 */
+	public function testRegisterDefaultEvents() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Reset the reputation tables.
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Test begins.
+		// Before calling the method.
+		$events = ap_get_all_reputation_events();
+		$events_cache = wp_cache_get( 'all', 'ap_get_all_reputation_events' );
+		$this->assertEmpty( $events );
+		$this->assertFalse( $events_cache );
+
+		// After calling the method.
+		$instance->register_default_events();
+		$events = ap_get_all_reputation_events();
+		$events_cache = wp_cache_get( 'all', 'ap_get_all_reputation_events' );
+		$this->assertNotEmpty( $events );
+		$this->assertCount( 10, $events );
+		$this->assertNotEmpty( $events_cache );
+
+		// Test for registered events.
+		$event_slugs = [ 'register', 'ask', 'answer', 'comment', 'select_answer', 'best_answer', 'received_vote_up', 'received_vote_down', 'given_vote_up', 'given_vote_down' ];
+		$event_lists = wp_list_pluck( $events, 'slug' );
+		$this->assertEquals( $event_slugs, $event_lists );
+		$this->assertContains( 'register', $event_lists );
+		$this->assertContains( 'ask', $event_lists );
+		$this->assertContains( 'answer', $event_lists );
+		$this->assertContains( 'comment', $event_lists );
+		$this->assertContains( 'select_answer', $event_lists );
+		$this->assertContains( 'best_answer', $event_lists );
+		$this->assertContains( 'received_vote_up', $event_lists );
+		$this->assertContains( 'received_vote_down', $event_lists );
+		$this->assertContains( 'given_vote_up', $event_lists );
+		$this->assertContains( 'given_vote_down', $event_lists );
+	}
 }
