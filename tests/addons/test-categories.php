@@ -656,4 +656,40 @@ class TestAddonCategories extends TestCase {
 		$result = $instance->subscribers_action_id( '111' );
 		$this->assertEquals( $term_id, $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_canonical_url
+	 */
+	public function testAPCanonicalUrl() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		// Test 1.
+		$this->go_to( '/' );
+		$result = $instance->ap_canonical_url( '' );
+		$this->assertEquals( '', $result );
+
+		// Test 2.
+		$this->go_to( '/' );
+		$result = $instance->ap_canonical_url( 'http://example.com' );
+		$this->assertEquals( 'http://example.com', $result );
+
+		// Test 3.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $term_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		global $question_category;
+		$question_category = $term;
+		$result = $instance->ap_canonical_url( '' );
+		$this->assertEquals( get_term_link( $term_id ), $result );
+
+		// Test 4.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $term_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		global $question_category;
+		$question_category = $term;
+		$result = $instance->ap_canonical_url( 'http://example.com' );
+		$this->assertEquals( get_term_link( $term_id ), $result );
+	}
 }
