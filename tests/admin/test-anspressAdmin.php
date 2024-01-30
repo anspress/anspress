@@ -1071,4 +1071,57 @@ class TestAnsPressAdmin extends TestCase {
 		\AnsPress_Admin::trashed_post( $other_post );
 		$this->assertNotEmpty( get_transient( 'ap_pages_check' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::menu_counts
+	 */
+	public function testMenuCounts() {
+		$this->setRole( 'subscriber' );
+
+		// Create some questions and answers.
+		$q_id1 = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$q_id2 = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$q_id3 = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$a_id1 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id1 ] );
+		$a_id2 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id2 ] );
+		$a_id3 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id3 ] );
+
+		// Add some flags to question and answer.
+		ap_add_flag( $q_id1 );
+		ap_update_flags_count( $q_id1 );
+		ap_add_flag( $q_id2 );
+		ap_update_flags_count( $q_id2 );
+		ap_add_flag( $a_id3 );
+		ap_update_flags_count( $a_id3 );
+
+		// Test begins.
+		$counts = \AnsPress_Admin::menu_counts();
+		$this->assertIsArray( $counts );
+		$this->assertArrayHasKey( 'question', $counts );
+		$this->assertArrayHasKey( 'answer', $counts );
+		$this->assertArrayHasKey( 'flagged', $counts );
+		$this->assertArrayHasKey( 'total', $counts );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">2</span></span>', $counts['question'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['answer'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">3</span></span>', $counts['flagged'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">6</span></span>', $counts['total'] );
+
+		// Test after removing the flag.
+		// Test 1.
+		ap_delete_flags( $q_id1 );
+		ap_delete_flags( $q_id2 );
+		$counts = \AnsPress_Admin::menu_counts();
+		$this->assertEquals( '', $counts['question'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['answer'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['flagged'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">2</span></span>', $counts['total'] );
+
+		// Test 2.
+		ap_delete_flags( $a_id3 );
+		$counts = \AnsPress_Admin::menu_counts();
+		$this->assertEquals( '', $counts['question'] );
+		$this->assertEquals( '', $counts['answer'] );
+		$this->assertEquals( '', $counts['flagged'] );
+		$this->assertEquals( '', $counts['total'] );
+	}
 }
