@@ -620,4 +620,40 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'apicon-star', $term_meta['icon'] );
 		$this->assertEquals( '#000000', $term_meta['color'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::subscribers_action_id
+	 */
+	public function testSubscribersActionID() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		// Test 1.
+		$this->go_to( '/' );
+		$result = $instance->subscribers_action_id( '' );
+		$this->assertEquals( '', $result );
+
+		// Test 2.
+		$this->go_to( '/' );
+		$result = $instance->subscribers_action_id( '123' );
+		$this->assertEquals( '123', $result );
+
+		// Test 3.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $term_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		global $question_category;
+		$question_category = $term;
+		$result = $instance->subscribers_action_id( '' );
+		$this->assertEquals( $term_id, $result );
+
+		// Test 4.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $term_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		global $question_category;
+		$question_category = $term;
+		$result = $instance->subscribers_action_id( '111' );
+		$this->assertEquals( $term_id, $result );
+	}
 }
