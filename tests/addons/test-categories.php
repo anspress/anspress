@@ -692,4 +692,47 @@ class TestAddonCategories extends TestCase {
 		$result = $instance->ap_canonical_url( 'http://example.com' );
 		$this->assertEquals( get_term_link( $term_id ), $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_load_admin_assets
+	 */
+	public function testAPLoadAdminAssets() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		// Test 1.
+		set_current_screen( 'edit-tags.php' );
+		$result = $instance->ap_load_admin_assets( true );
+		$this->assertTrue( $result );
+		$result = $instance->ap_load_admin_assets( false );
+		$this->assertFalse( $result );
+
+		// Test 2.
+		set_current_screen( 'dashboard' );
+		$result = $instance->ap_load_admin_assets( true );
+		$this->assertTrue( $result );
+		$result = $instance->ap_load_admin_assets( false );
+		$this->assertFalse( $result );
+
+		// Test 3.
+		set_current_screen( 'question_category' );
+		$result = $instance->ap_load_admin_assets( true );
+		$this->assertTrue( $result );
+		$result = $instance->ap_load_admin_assets( false );
+		$this->assertFalse( $result );
+
+		// Test 4,
+		set_current_screen( 'edit-question_tag' );
+		$result = $instance->ap_load_admin_assets( true );
+		$this->assertTrue( $result );
+		$result = $instance->ap_load_admin_assets( false );
+		$this->assertFalse( $result );
+
+		// Test 5.
+		set_current_screen( 'edit-question_category' );
+		$result = $instance->ap_load_admin_assets( true );
+		$this->assertTrue( $result );
+		$result = $instance->ap_load_admin_assets( false );
+		$this->assertTrue( $result );
+	}
 }
