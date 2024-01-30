@@ -29,4 +29,33 @@ class TestAddonEmailHelper extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Email\Helper', 'prepare_emails' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Email\Helper', 'send_emails' ) );
 	}
+
+	public function GetDefaultTemplate() {
+		return '<html><body>This is the default email template for the test event.</body></html>';
+	}
+
+	/**
+	 * @covers Anspress\Addons\Email\Helper::get_default_template
+	 */
+	public function testGetDefaultTemplate() {
+		// Test 1.
+		$instance = new \Anspress\Addons\Email\Helper( 'test_event' );
+		$this->assertEquals( '', $instance->get_default_template() );
+
+		// Test 2.
+		$instance = new \Anspress\Addons\Email\Helper( 'test_event' );
+		add_filter( 'ap_email_default_template_test_event', [ $this, 'GetDefaultTemplate' ] );
+		$this->assertEquals( $this->GetDefaultTemplate(), $instance->get_default_template() );
+		remove_filter( 'ap_email_default_template_test_event', [ $this, 'GetDefaultTemplate' ] );
+
+		// Test 3.
+		$instance = new \Anspress\Addons\Email\Helper( 'new_event' );
+		$this->assertEquals( '', $instance->get_default_template() );
+
+		// Test 4.
+		$instance = new \Anspress\Addons\Email\Helper( 'new_event' );
+		add_filter( 'ap_email_default_template_new_event', [ $this, 'GetDefaultTemplate' ] );
+		$this->assertEquals( $this->GetDefaultTemplate(), $instance->get_default_template() );
+		remove_filter( 'ap_email_default_template_new_event', [ $this, 'GetDefaultTemplate' ] );
+	}
 }
