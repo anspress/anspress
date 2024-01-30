@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonCategories extends TestCase {
 
+	use Testcases\Common;
+
 	/**
 	 * @covers Anspress\Addons\Categories::instance
 	 */
@@ -552,5 +554,70 @@ class TestAddonCategories extends TestCase {
 		$this->assertStringContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="' . $term_meta['color'] . '">', $result );
 		$this->assertStringNotContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="">', $result );
 		$this->assertStringContainsString( 'jQuery(\'#ap-category-color\').wpColorPicker();', $result );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::save_image_field
+	 */
+	public function testSaveImageField() {
+		$instance = \Anspress\Addons\Categories::init();
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+
+		// Test begins.
+		// Test without any input.
+		// For users who don't have manage_categories capability.
+		$this->setRole( 'subscriber' );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertEmpty( $term_meta );
+
+		// For users who have manage_categories capability.
+		$this->setRole( 'administrator' );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertEmpty( $term_meta );
+
+		// Test with invalid input.
+		$_REQUEST['ap_category_image_url'] = '';
+		$_REQUEST['ap_category_image_id'] = '';
+		$_REQUEST['ap_icon'] = '';
+		$_REQUEST['ap_color'] = '';
+
+		// For users who don't have manage_categories capability.
+		$this->setRole( 'subscriber' );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertEmpty( $term_meta );
+
+		// For users who have manage_categories capability.
+		$this->setRole( 'administrator' );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertEmpty( $term_meta );
+
+		// Test with valid input.
+		$_REQUEST['ap_category_image_url'] = 'http://example.com/image.jpg';
+		$_REQUEST['ap_category_image_id'] = 1;
+		$_REQUEST['ap_icon'] = 'apicon-star';
+		$_REQUEST['ap_color'] = '#000000';
+
+		// For users who don't have manage_categories capability.
+		$this->setRole( 'subscriber' );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertEmpty( $term_meta );
+
+		// For users who have manage_categories capability.
+		$this->setRole( 'administrator' );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertNotEmpty( $term_meta );
+		$this->assertArrayHasKey( 'image', $term_meta );
+		$this->assertArrayHasKey( 'icon', $term_meta );
+		$this->assertArrayHasKey( 'color', $term_meta );
+		$this->assertEquals( 'http://example.com/image.jpg', $term_meta['image']['url'] );
+		$this->assertEquals( 1, $term_meta['image']['id'] );
+		$this->assertEquals( 'apicon-star', $term_meta['icon'] );
+		$this->assertEquals( '#000000', $term_meta['color'] );
 	}
 }
