@@ -501,4 +501,56 @@ class TestAddonCategories extends TestCase {
 		$this->assertStringContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="">', $result );
 		$this->assertStringContainsString( 'jQuery(\'#ap-category-color\').wpColorPicker();', $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::image_field_edit
+	 */
+	public function testImageFieldEdit() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		// Test 1.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		ob_start();
+		$instance->image_field_edit( get_term( $term_id, 'question_category' ) );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="Upload image" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url">Upload image</a>', $result );
+		$this->assertStringContainsString( '<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="">', $result );
+		$this->assertStringContainsString( '<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">Remove image</a>', $result );
+		$this->assertStringContainsString( '<input id="ap_icon" type="text" name="ap_icon" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="">', $result );
+		$this->assertStringContainsString( 'jQuery(\'#ap-category-color\').wpColorPicker();', $result );
+		$this->assertStringNotContainsString( '<img id="ap_category_media_preview" data-action="ap_media_value" src="" />', $result );
+
+		// Test 2.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$meta = [
+			'image' => [
+				'id'  => 1,
+				'url' => 'http://example.com/image.jpg',
+			],
+			'icon'  => 'apicon-star',
+			'color' => '#000000',
+		];
+		update_term_meta( $term_id, 'ap_category', $meta );
+		ob_start();
+		$instance->image_field_edit( get_term( $term_id, 'question_category' ) );
+		$result = ob_get_clean();
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="Upload image" data-idc="#ap_category_media_id" data-urlc="#ap_category_media_url">Upload image</a>', $result );
+		$this->assertStringContainsString( '<img id="ap_category_media_preview" data-action="ap_media_value" src="' . esc_url( $term_meta['image']['url'] ) . '" />', $result );
+		$this->assertStringNotContainsString( '<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="' . esc_url( $term_meta['image']['url'] ) . '">', $result );
+		$this->assertStringNotContainsString( '<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="' . $term_meta['image']['id'] . '">', $result );
+		$this->assertStringContainsString( '<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">Remove image</a>', $result );
+		$this->assertStringContainsString( '<input id="ap_icon" type="text" name="ap_icon" value="' . $term_meta['icon'] . '">', $result );
+		$this->assertStringNotContainsString( '<input id="ap_icon" type="text" name="ap_icon" value="">', $result );
+		$this->assertStringContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="' . $term_meta['color'] . '">', $result );
+		$this->assertStringNotContainsString( '<input id="ap-category-color" type="text" name="ap_color" value="">', $result );
+		$this->assertStringContainsString( 'jQuery(\'#ap-category-color\').wpColorPicker();', $result );
+	}
 }
