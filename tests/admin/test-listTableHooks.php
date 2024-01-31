@@ -174,4 +174,38 @@ class TestListTableHooks extends TestCase {
 			$this->assertEquals( $value, $columns[ $key ] );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::comment_flag_view
+	 */
+	public function testCommentFlagView() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+
+		// Test begins.
+		// Test 1.
+		$views = $hooks->comment_flag_view( [] );
+		$expected = [
+			'flagged' => '<a href="edit-comments.php?show_flagged=true">Flagged</a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+
+		// Test 2.
+		$_REQUEST['show_flagged'] = 1;
+		$views = $hooks->comment_flag_view( [] );
+		$expected = [
+			'flagged' => '<a href="edit-comments.php?show_flagged=true" class="current">Flagged</a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+
+		// Reset $_REQUEST.
+		unset( $_REQUEST['show_flagged'] );
+	}
 }
