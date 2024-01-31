@@ -431,12 +431,12 @@ function ap_post_comments() {
 /**
  * Return or print new comment button.
  *
- * @param integer $post_id Post id.
- * @param boolean $output    Return or echo. Default is echo.
+ * @param integer $post_id     Post id.
+ * @param boolean $should_echo Return or echo. Default is echo.
  * @return string|void
  * @since 4.1.8
  */
-function ap_new_comment_btn( $post_id, $output = true ) {
+function ap_new_comment_btn( $post_id, $should_echo = true ) {
 	if ( ap_user_can_comment( $post_id ) ) {
 		$output = '';
 
@@ -452,7 +452,7 @@ function ap_new_comment_btn( $post_id, $output = true ) {
 		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
 		$output .= '</a>';
 
-		if ( false === $output ) {
+		if ( false === $should_echo ) {
 			return $output;
 		}
 
