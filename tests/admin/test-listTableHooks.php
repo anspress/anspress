@@ -208,4 +208,31 @@ class TestListTableHooks extends TestCase {
 		// Reset $_REQUEST.
 		unset( $_REQUEST['show_flagged'] );
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::comments_flag_query
+	 */
+	public function testCommentsFlagQuery() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+
+		// Test begins.
+		// Test 1.
+		$screen = set_current_screen( 'dashboard' );
+		$screen = $hooks->comments_flag_query( get_current_screen() );
+		$this->assertNull( $screen );
+		$this->assertFalse( has_action( 'comments_clauses', [ 'AnsPress_Admin', 'filter_comments_query' ] ) );
+
+		// Test 2.
+		$screen = set_current_screen( 'edit-comments' );
+		$screen = $hooks->comments_flag_query( get_current_screen() );
+		$this->assertNull( $screen );
+		$this->assertFalse( has_action( 'comments_clauses', [ 'AnsPress_Admin', 'filter_comments_query' ] ) );
+
+		// Test 2.
+		$screen = set_current_screen( 'edit-comments' );
+		$_REQUEST['show_flagged'] = 1;
+		$screen = $hooks->comments_flag_query( get_current_screen() );
+		$this->assertNull( $screen );
+		$this->assertEquals( 10, has_action( 'comments_clauses', [ 'AnsPress_Admin', 'filter_comments_query' ] ) );
+	}
 }
