@@ -83,4 +83,95 @@ class TestListTableHooks extends TestCase {
 		$this->assertEquals( $message, $result );
 		$this->assertEquals( 10, has_action( 'admin_notices', array( 'AnsPress_Post_Table_Hooks', 'ans_notice' ) ) );
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::cpt_question_columns
+	 */
+	public function testCPTQuestionColumns() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		$columns = $hooks->cpt_question_columns( [] );
+
+		// Expected columns.
+		$expected = [
+			'cb'                => '<input type="checkbox" />',
+			'ap_author'         => 'Author',
+			'title'             => 'Title',
+			'question_category' => 'Category',
+			'question_tag'      => 'Tag',
+			'status'            => 'Status',
+			'answers'           => 'Ans',
+			'comments'          => 'Comments',
+			'votes'             => 'Votes',
+			'flags'             => 'Flags',
+			'date'              => 'Date',
+		];
+		$this->assertEquals( $expected, $columns );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $columns );
+			$this->assertEquals( $value, $columns[ $key ] );
+		}
+	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::cpt_answer_columns
+	 */
+	public function testCPTAnswerColumns() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		$columns = $hooks->cpt_answer_columns( [] );
+
+		// Expected columns.
+		$expected = [
+			'cb'             => '<input type="checkbox" />',
+			'ap_author'      => 'Author',
+			'answer_content' => 'Content',
+			'status'         => 'Status',
+			'comments'       => 'Comments',
+			'votes'          => 'Votes',
+			'flags'          => 'Flags',
+			'date'           => 'Date',
+		];
+		$this->assertEquals( $expected, $columns );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $columns );
+			$this->assertEquals( $value, $columns[ $key ] );
+		}
+	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::admin_column_sort_flag
+	 */
+	public function testAdminColumnSortFlag() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		$columns = $hooks->admin_column_sort_flag( [] );
+
+		// Expected columns.
+		$expected = [
+			'flags'   => 'flags',
+			'answers' => 'answers',
+			'votes'   => 'votes',
+		];
+		$this->assertEquals( $expected, $columns );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $columns );
+			$this->assertEquals( $value, $columns[ $key ] );
+		}
+	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::comment_flag_column
+	 */
+	public function testCommentFlagColumn() {
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		$columns = $hooks->comment_flag_column( [] );
+
+		// Expected columns.
+		$expected = [
+			'comment_flag' => 'Flag',
+		];
+		$this->assertEquals( $expected, $columns );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $columns );
+			$this->assertEquals( $value, $columns[ $key ] );
+		}
+	}
 }
