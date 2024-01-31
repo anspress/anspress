@@ -747,4 +747,13 @@ class TestThemeFunctions extends TestCase {
 		$this->assertCount( 1, $result );
 		$this->assertEquals( 'Ask Page', $result[0]->title );
 	}
+
+	/**
+	 * @covers ::ap_display_answer_metas
+	 */
+	public function testAPResponceMessage() {
+		$this->setExpectedDeprecated( 'ap_display_answer_metas' );
+		ap_display_answer_metas();
+		$this->assertNull( ap_display_answer_metas() );
+	}
 }
