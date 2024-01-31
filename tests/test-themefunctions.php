@@ -756,4 +756,80 @@ class TestThemeFunctions extends TestCase {
 		ap_display_answer_metas();
 		$this->assertNull( ap_display_answer_metas() );
 	}
+
+	/**
+	 * @covers ::ap_theme_compat_reset_post
+	 */
+	public function testAPThemeCompatResetPost() {
+		// Test without setting any post.
+		global $wp_query;
+		$this->assertNull( $wp_query->post );
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		ap_theme_compat_reset_post();
+		$this->assertEquals( true, anspress()->theme_compat->active );
+		$this->assertNotNull( $wp_query->post );
+		global $post;
+		$this->assertEquals( $post, $wp_query->post );
+		$post_args = [
+			'ID'                    => -9999,
+			'post_status'           => 'publish',
+			'post_author'           => 0,
+			'post_parent'           => 0,
+			'post_type'             => 'page',
+			'post_date'             => 0,
+			'post_date_gmt'         => 0,
+			'post_modified'         => 0,
+			'post_modified_gmt'     => 0,
+			'post_content'          => '',
+			'post_title'            => '',
+			'post_excerpt'          => '',
+			'post_content_filtered' => '',
+			'post_mime_type'        => '',
+			'post_password'         => '',
+			'post_name'             => '',
+			'guid'                  => '',
+			'menu_order'            => 0,
+			'pinged'                => '',
+			'to_ping'               => '',
+			'ping_status'           => '',
+			'comment_status'        => 'closed',
+			'comment_count'         => 0,
+			'filter'                => 'raw',
+		];
+		foreach ( $post_args as $key => $value ) {
+			$this->assertEquals( $value, $post->$key );
+		}
+		$query_args = [
+			'is_404'     => false,
+			'is_page'    => false,
+			'is_single'  => false,
+			'is_archive' => false,
+			'is_tax'     => false,
+		];
+		foreach ( $query_args as $key => $value ) {
+			$this->assertEquals( $value, $wp_query->$key );
+		}
+
+		// Test with setting post.
+		anspress()->theme_compat->active = false;
+		$post_id = $this->factory->post->create();
+		$post = get_post( $post_id );
+		global $wp_query;
+		$this->assertNotNull( $wp_query->post );
+		$this->assertEquals( false, anspress()->theme_compat->active );
+		$wp_query->post = $post;
+		ap_theme_compat_reset_post();
+		$this->assertEquals( true, anspress()->theme_compat->active );
+		global $post;
+		$this->assertEquals( $post_id, $post->ID );
+		$this->assertEquals( $post, $wp_query->post );
+		$post_args = [ 'ID', 'post_status', 'post_author', 'post_parent', 'post_type', 'post_date', 'post_date_gmt', 'post_modified', 'post_modified_gmt', 'post_content', 'post_title', 'post_excerpt', 'post_content_filtered', 'post_mime_type', 'post_password', 'post_name', 'guid', 'menu_order', 'pinged', 'to_ping', 'ping_status', 'comment_status', 'comment_count', 'filter' ];
+		foreach ( $post_args as $key ) {
+			$this->assertEquals( $post->$key, $wp_query->post->$key );
+		}
+		$query_args = [ 'is_404', 'is_page', 'is_single', 'is_archive', 'is_tax' ];
+		foreach ( $query_args as $key ) {
+			$this->assertEquals( false, $wp_query->$key );
+		}
+	}
 }
