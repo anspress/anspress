@@ -112,4 +112,30 @@ class TestAPQuestionMetaBox extends TestCase {
 		$this->assertStringContainsString( '$(\'#ap-clear-flag\')', $result );
 		$this->assertStringContainsString( '$.ajax', $result );
 	}
+
+	/**
+	 * @covers AP_Question_Meta_Box::answers_meta_box_content
+	 */
+	public function testAnswersMetaBoxContent() {
+		$meta_box = new \AP_Question_Meta_Box();
+		$id = $this->insert_question();
+
+		// Store the result of the method in a variable.
+		global $post;
+		$post = get_post( $id );
+		ob_start();
+		$meta_box->answers_meta_box_content();
+		$result = ob_get_clean();
+
+		// Test begins.
+		$this->assertStringContainsString( '<div id="answers-list" data-questionid="' . $id . '">', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( admin_url( 'post-new.php?post_type=answer&post_parent=' . $id ) ) . '" class="button add-answer">Add an answer</a>', $result );
+		$this->assertStringContainsString( '<script type="text/html" id="ap-answer-template">', $result );
+		$this->assertStringContainsString( '<a href="#" class="ap-ansm-avatar">{{{avatar}}}</a>', $result );
+		$this->assertStringContainsString( '<span class="post-status">{{status}}</span>', $result );
+		$this->assertStringContainsString( '{{{activity}}}', $result );
+		$this->assertStringContainsString( '<div class="ap-ansm-content">{{{content}}}</div>', $result );
+		$this->assertStringContainsString( '<span><a href="{{{editLink}}}">Edit</a></span>', $result );
+		$this->assertStringContainsString( '<span class="delete vim-d vim-destructive"> | <a href="{{{trashLink}}}">Trash</a></span>', $result );
+	}
 }
