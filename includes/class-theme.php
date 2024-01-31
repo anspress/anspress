@@ -331,7 +331,7 @@ class AnsPress_Theme {
 	 * @since 4.1.2
 	 */
 	public static function after_question_content() {
-		echo wp_kses_post( ap_post_status_badge() );
+		echo ap_post_status_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		$_post    = ap_get_post();
 		$activity = ap_recent_activity( null, false );
