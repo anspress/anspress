@@ -832,4 +832,95 @@ class TestThemeFunctions extends TestCase {
 			$this->assertEquals( false, $wp_query->$key );
 		}
 	}
+
+	/**
+	 * @covers ::ap_subscribe_btn
+	 */
+	public function testAPSubscribeBtn() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$args = wp_json_encode(
+			array(
+				'__nonce' => wp_create_nonce( 'subscribe_' . $id ),
+				'id'      => $id,
+			)
+		);
+
+		// Test 1.
+		// Test for return value.
+		$result = ap_subscribe_btn( $id, false );
+		$this->assertStringContainsString( 'Subscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">0</span></a>', $result );
+
+		// Test for echo value.
+		ob_start();
+		ap_subscribe_btn( $id );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( 'Subscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">0</span></a>', $result );
+
+		// Test 2.
+		// Test for return value.
+		ap_new_subscriber( false, 'question', $id );
+		$result = ap_subscribe_btn( $id, false );
+		$this->assertStringContainsString( 'Unsubscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">1</span></a>', $result );
+
+		// Test for echo value.
+		ob_start();
+		ap_subscribe_btn( $id );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( 'Unsubscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">1</span></a>', $result );
+
+		// Test 3.
+		$id = $this->insert_question();
+		$args = wp_json_encode(
+			array(
+				'__nonce' => wp_create_nonce( 'subscribe_' . $id ),
+				'id'      => $id,
+			)
+		);
+		$user_id1 = $this->factory->user->create();
+		$user_id2 = $this->factory->user->create();
+		$user_id3 = $this->factory->user->create();
+		ap_new_subscriber( $user_id1, 'question', $id );
+		ap_new_subscriber( $user_id2, 'question', $id );
+		ap_new_subscriber( $user_id3, 'question', $id );
+
+		// Test for return value.
+		$result = ap_subscribe_btn( $id, false );
+		$this->assertStringContainsString( 'Subscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">3</span></a>', $result );
+
+		// Test for echo value.
+		ob_start();
+		ap_subscribe_btn( $id );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( 'Subscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">3</span></a>', $result );
+
+		// Test 4.
+		ap_new_subscriber( get_current_user_id(), 'question', $id );
+
+		// Test for return value.
+		$result = ap_subscribe_btn( $id, false );
+		$this->assertStringContainsString( 'Unsubscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">4</span></a>', $result );
+
+		// Test for echo value.
+		ob_start();
+		ap_subscribe_btn( $id );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( 'Unsubscribe', $result );
+		$this->assertStringContainsString( esc_js( $args ), $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">4</span></a>', $result );
+	}
 }
