@@ -431,14 +431,14 @@ function ap_post_comments() {
 /**
  * Return or print new comment button.
  *
- * @param integer $post_id     Post id.
- * @param boolean $should_echo Return or echo. Default is echo.
+ * @param integer $post_id Post id.
+ * @param boolean $output  Return or echo. Default is echo.
  * @return string|void
  * @since 4.1.8
  */
-function ap_new_comment_btn( $post_id, $should_echo = true ) {
+function ap_new_comment_btn( $post_id, $output = true ) {
 	if ( ap_user_can_comment( $post_id ) ) {
-		$output = '';
+		$html = '';
 
 		$btn_args = wp_json_encode(
 			array(
@@ -448,14 +448,14 @@ function ap_new_comment_btn( $post_id, $should_echo = true ) {
 			)
 		);
 
-		$output .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
-		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
-		$output .= '</a>';
+		$html .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
+		$html .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
+		$html .= '</a>';
 
-		if ( false === $should_echo ) {
-			return $output;
+		if ( false === $output ) {
+			return $html;
 		}
 
-		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
