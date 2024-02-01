@@ -1219,4 +1219,78 @@ class TestThemeFunctions extends TestCase {
 			}
 		}
 	}
+
+	/**
+	 * @covers ::ap_select_answer_btn_html
+	 */
+	public function testAPSelectAnswerBtnHtml() {
+		// Test 1.
+		$id = $this->insert_answer();
+		$result = ap_select_answer_btn_html( $id->a );
+		$this->assertNull( $result );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$result = ap_select_answer_btn_html( $id->a );
+		$this->assertNull( $result );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$result = ap_select_answer_btn_html( $id->a );
+		$this->assertNotEmpty( $result );
+		$args = wp_json_encode(
+			array(
+				'answer_id' => $id->a,
+				'__nonce'   => wp_create_nonce( 'select-answer-' . $id->a ),
+			)
+		);
+		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn " ap="select_answer" apquery="' . esc_js( $args ) . '" title="Select this answer as best">Select</a>', $result );
+
+		// Test 4.
+		ap_set_selected_answer( $id->q, $id->a );
+		$result = ap_select_answer_btn_html( $id->a );
+		$this->assertNotEmpty( $result );
+		$args = wp_json_encode(
+			array(
+				'answer_id' => $id->a,
+				'__nonce'   => wp_create_nonce( 'select-answer-' . $id->a ),
+			)
+		);
+		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn  active" ap="select_answer" apquery="' . esc_js( $args ) . '" title="Unselect this answer">Unselect</a>', $result );
+
+		// Test 5.
+		$ids = $this->factory->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $id->q ] );
+		ap_set_selected_answer( $id->q, $ids[2] );
+		$result = ap_select_answer_btn_html( $ids[0] );
+		$this->assertNotEmpty( $result );
+		$args = wp_json_encode(
+			array(
+				'answer_id' => $ids[0],
+				'__nonce'   => wp_create_nonce( 'select-answer-' . $ids[0] ),
+			)
+		);
+		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn  hide" ap="select_answer" apquery="' . esc_js( $args ) . '" title="Select this answer as best">Select</a>', $result );
+
+		// Test 6.
+		$result = ap_select_answer_btn_html( $ids[1] );
+		$this->assertNotEmpty( $result );
+		$args = wp_json_encode(
+			array(
+				'answer_id' => $ids[1],
+				'__nonce'   => wp_create_nonce( 'select-answer-' . $ids[1] ),
+			)
+		);
+		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn  hide" ap="select_answer" apquery="' . esc_js( $args ) . '" title="Select this answer as best">Select</a>', $result );
+
+		// Test 7.
+		$result = ap_select_answer_btn_html( $ids[2] );
+		$this->assertNotEmpty( $result );
+		$args = wp_json_encode(
+			array(
+				'answer_id' => $ids[2],
+				'__nonce'   => wp_create_nonce( 'select-answer-' . $ids[2] ),
+			)
+		);
+		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn  active" ap="select_answer" apquery="' . esc_js( $args ) . '" title="Unselect this answer">Unselect</a>', $result );
+	}
 }
