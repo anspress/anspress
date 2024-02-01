@@ -923,4 +923,92 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( esc_js( $args ), $result );
 		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">4</span></a>', $result );
 	}
+
+	/**
+	 * @covers ::ap_featured_post_args
+	 */
+	public function testAPFeaturedPostArgs() {
+		// Test passing question id.
+		$id = $this->insert_question();
+
+		// Test 1.
+		$result = ap_featured_post_args( $id );
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$result = ap_featured_post_args( $id );
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$result = ap_featured_post_args( $id );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$args = [
+			'cb'     => 'toggle_featured',
+			'active' => false,
+			'query'  => array(
+				'__nonce' => wp_create_nonce( 'set_featured_' . $id ),
+				'post_id' => $id,
+			),
+			'title'  => 'Mark this question as featured',
+			'label'  => 'Feature',
+		];
+		$this->assertEquals( $args, $result );
+
+		// Test 4.
+		ap_set_featured_question( $id );
+		$result = ap_featured_post_args( $id );
+		$args['active'] = true;
+		$args['title'] = 'Unmark this question as featured';
+		$args['label'] = 'Unfeature';
+		$this->assertEquals( $args, $result );
+		$this->logout();
+
+		// Test widthout passing question id.
+		$id = $this->insert_question();
+
+		// Test 1.
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = ap_featured_post_args();
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = ap_featured_post_args();
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = ap_featured_post_args();
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$args = [
+			'cb'     => 'toggle_featured',
+			'active' => false,
+			'query'  => array(
+				'__nonce' => wp_create_nonce( 'set_featured_' . $id ),
+				'post_id' => $id,
+			),
+			'title'  => 'Mark this question as featured',
+			'label'  => 'Feature',
+		];
+		$this->assertEquals( $args, $result );
+
+		// Test 4.
+		ap_set_featured_question( $id );
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = ap_featured_post_args();
+		$args['active'] = true;
+		$args['title'] = 'Unmark this question as featured';
+		$args['label'] = 'Unfeature';
+		$this->assertEquals( $args, $result );
+	}
 }
