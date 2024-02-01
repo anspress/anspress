@@ -1238,4 +1238,57 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( 'Test meta', $result );
 		remove_filter( 'ap_display_question_metas', [ $this, 'APDisplayQuestionMetas' ], 10, 2 );
 	}
+
+	/**
+	 * @covers ::ap_answers
+	 */
+	public function testAPAnswers() {
+		// Test 1.
+		$ids = $this->insert_answers( [], [], 5 );
+		$this->go_to( '?post_type=question&p=' . $ids['question'] );
+		ob_start();
+		ap_answers();
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<div id="ap-answers-c">', $result );
+		$this->assertStringContainsString( '<div class="ap-sorting-tab clearfix">', $result );
+		$this->assertStringContainsString( '<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">', $result );
+		$this->assertStringContainsString( '<span itemprop="answerCount">5</span>', $result );
+		$this->assertStringContainsString( 'Answers', $result );
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<div id="answers">', $result );
+		$this->assertStringContainsString( '<apanswers>', $result );
+
+		// Test 2.
+		$ids = $this->insert_answer();
+		$this->go_to( '?post_type=question&p=' . $ids->q );
+		ob_start();
+		ap_answers();
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<div id="ap-answers-c">', $result );
+		$this->assertStringContainsString( '<div class="ap-sorting-tab clearfix">', $result );
+		$this->assertStringContainsString( '<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">', $result );
+		$this->assertStringContainsString( '<span itemprop="answerCount">1</span>', $result );
+		$this->assertStringContainsString( 'Answer', $result );
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<div id="answers">', $result );
+		$this->assertStringContainsString( '<apanswers>', $result );
+
+		// Test 3.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		ob_start();
+		ap_answers();
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<div id="ap-answers-c">', $result );
+		$this->assertStringContainsString( '<div class="ap-sorting-tab clearfix">', $result );
+		$this->assertStringContainsString( '<h3 class="ap-answers-label ap-pull-left" ap="answers_count_t">', $result );
+		$this->assertStringContainsString( '<span itemprop="answerCount">0</span>', $result );
+		$this->assertStringContainsString( 'Answers', $result );
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<div id="answers">', $result );
+		$this->assertStringContainsString( '<apanswers>', $result );
+	}
 }
