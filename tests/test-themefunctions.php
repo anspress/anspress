@@ -224,6 +224,8 @@ class TestThemeFunctions extends TestCase {
 		ob_end_clean();
 
 		// Test on the ap_assets function.
+		$this->assertIsArray( ap_assets() );
+
 		// Test for register scripts.
 		$this->assertTrue( wp_script_is( 'selectize', 'registered' ) );
 		$this->assertTrue( wp_script_is( 'anspress-common', 'registered' ) );
