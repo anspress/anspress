@@ -1011,4 +1011,210 @@ class TestThemeFunctions extends TestCase {
 		$args['label'] = 'Unfeature';
 		$this->assertEquals( $args, $result );
 	}
+
+	/**
+	 * @covers ::ap_post_status_btn_args
+	 */
+	public function testAPPostStatusBtnArgs() {
+		// Test 1.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'trash' ] );
+		$result = ap_post_status_btn_args( $question_id );
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 2.
+		$this->setRole( 'administrator' );
+		$result = ap_post_status_btn_args( $question_id );
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 3.
+		$this->logout();
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$result = ap_post_status_btn_args( $question_id );
+		$this->assertNull( $result );
+
+		// Test 4.
+		$this->setRole( 'subscriber' );
+		$result = ap_post_status_btn_args( $question_id );
+		$this->assertNull( $result );
+
+		// Test 5.
+		$this->setRole( 'administrator' );
+		$result = ap_post_status_btn_args( $question_id );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'cb'     => 'status',
+				'active' => false,
+				'query'  => array(
+					'status'  => 'publish',
+					'__nonce' => wp_create_nonce( 'change-status-publish-' . $question_id ),
+					'post_id' => $question_id,
+				),
+				'label'  => 'Published',
+			],
+			[
+				'cb'     => 'status',
+				'active' => true,
+				'query'  => array(
+					'status'  => 'private_post',
+					'__nonce' => wp_create_nonce( 'change-status-private_post-' . $question_id ),
+					'post_id' => $question_id,
+				),
+				'label'  => 'Private',
+			],
+			[
+				'cb'     => 'status',
+				'active' => false,
+				'query'  => array(
+					'status'  => 'moderate',
+					'__nonce' => wp_create_nonce( 'change-status-moderate-' . $question_id ),
+					'post_id' => $question_id,
+				),
+				'label'  => 'Moderate',
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		foreach ( $expected as $key => $value ) {
+			$this->assertEquals( $value, $result[ $key ] );
+		}
+
+		// Test 6.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$result = ap_post_status_btn_args( $question_id );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'cb'     => 'status',
+				'active' => true,
+				'query'  => array(
+					'status'  => 'publish',
+					'__nonce' => wp_create_nonce( 'change-status-publish-' . $question_id ),
+					'post_id' => $question_id,
+				),
+				'label'  => 'Published',
+			],
+			[
+				'cb'     => 'status',
+				'active' => false,
+				'query'  => array(
+					'status'  => 'private_post',
+					'__nonce' => wp_create_nonce( 'change-status-private_post-' . $question_id ),
+					'post_id' => $question_id,
+				),
+				'label'  => 'Private',
+			],
+			[
+				'cb'     => 'status',
+				'active' => false,
+				'query'  => array(
+					'status'  => 'moderate',
+					'__nonce' => wp_create_nonce( 'change-status-moderate-' . $question_id ),
+					'post_id' => $question_id,
+				),
+				'label'  => 'Moderate',
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		foreach ( $expected as $key => $value ) {
+			$this->assertEquals( $value, $result[ $key ] );
+		}
+
+		// Test 7.
+		if ( \is_multisite() ) {
+			$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+			wp_set_current_user( $user_id );
+			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+			$result = ap_post_status_btn_args( $question_id );
+			$this->assertNull( $result );
+
+			// Test for super admin.
+			grant_super_admin( $user_id );
+			$result = ap_post_status_btn_args( $question_id );
+			$this->assertNotEmpty( $result );
+			$this->assertIsArray( $result );
+			$expected = [
+				[
+					'cb'     => 'status',
+					'active' => false,
+					'query'  => array(
+						'status'  => 'publish',
+						'__nonce' => wp_create_nonce( 'change-status-publish-' . $question_id ),
+						'post_id' => $question_id,
+					),
+					'label'  => 'Published',
+				],
+				[
+					'cb'     => 'status',
+					'active' => false,
+					'query'  => array(
+						'status'  => 'private_post',
+						'__nonce' => wp_create_nonce( 'change-status-private_post-' . $question_id ),
+						'post_id' => $question_id,
+					),
+					'label'  => 'Private',
+				],
+				[
+					'cb'     => 'status',
+					'active' => true,
+					'query'  => array(
+						'status'  => 'moderate',
+						'__nonce' => wp_create_nonce( 'change-status-moderate-' . $question_id ),
+						'post_id' => $question_id,
+					),
+					'label'  => 'Moderate',
+				],
+			];
+			$this->assertEquals( $expected, $result );
+			foreach ( $expected as $key => $value ) {
+				$this->assertEquals( $value, $result[ $key ] );
+			}
+		} else {
+			$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+			wp_set_current_user( $user_id );
+			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+			$result = ap_post_status_btn_args( $question_id );
+			$this->assertNotEmpty( $result );
+			$this->assertIsArray( $result );
+			$expected = [
+				[
+					'cb'     => 'status',
+					'active' => false,
+					'query'  => array(
+						'status'  => 'publish',
+						'__nonce' => wp_create_nonce( 'change-status-publish-' . $question_id ),
+						'post_id' => $question_id,
+					),
+					'label'  => 'Published',
+				],
+				[
+					'cb'     => 'status',
+					'active' => false,
+					'query'  => array(
+						'status'  => 'private_post',
+						'__nonce' => wp_create_nonce( 'change-status-private_post-' . $question_id ),
+						'post_id' => $question_id,
+					),
+					'label'  => 'Private',
+				],
+				[
+					'cb'     => 'status',
+					'active' => true,
+					'query'  => array(
+						'status'  => 'moderate',
+						'__nonce' => wp_create_nonce( 'change-status-moderate-' . $question_id ),
+						'post_id' => $question_id,
+					),
+					'label'  => 'Moderate',
+				],
+			];
+			$this->assertEquals( $expected, $result );
+			foreach ( $expected as $key => $value ) {
+				$this->assertEquals( $value, $result[ $key ] );
+			}
+		}
+	}
 }
