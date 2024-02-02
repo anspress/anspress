@@ -61,11 +61,11 @@ class TestWidgetSearch extends TestCase {
 		$this->assertStringContainsString( '<input type="hidden" name="post_type" value="question" />', $result );
 
 		// Test 2.
-		$instance_title = [
+		$instance_notitle = [
 			'title' => '',
 		];
 		ob_start();
-		$instance->widget( $args, $instance_title );
+		$instance->widget( $args, $instance_notitle );
 		$result = ob_get_clean();
 		$this->assertStringContainsString( '<section class="widget">', $result );
 		$this->assertStringNotContainsString( '<h2 class="widget-title">', $result );
