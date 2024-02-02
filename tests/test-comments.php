@@ -64,4 +64,254 @@ class TestComments extends TestCase {
 		$this->assertStringContainsString( '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">', $result );
 		$this->assertStringContainsString( 'Add a Comment', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::ap_comment_actions
+	 */
+	public function testAPCommentActions() {
+		$id = $this->insert_question();
+		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress' ) );
+
+		// Test begins.
+		// Test 1.
+		$result = ap_comment_actions( $comment );
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$result = ap_comment_actions( $comment );
+		$this->assertEmpty( $result );
+		$this->assertIsArray( $result );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$result = ap_comment_actions( $comment );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'label' => 'Edit',
+				'href'  => '#',
+				'query' => [
+					'action'     => 'comment_modal',
+					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+					'comment_id' => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Delete',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'delete_comment',
+					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		foreach ( $result as $key => $value ) {
+			$this->assertEquals( $value, $result[ $key ] );
+		}
+
+		// Test 4.
+		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'comment_approved' => 0 ) );
+		$result = ap_comment_actions( $comment );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'label' => 'Edit',
+				'href'  => '#',
+				'query' => [
+					'action'     => 'comment_modal',
+					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+					'comment_id' => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Delete',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'delete_comment',
+					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Approve',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'approve_comment',
+					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		foreach ( $result as $key => $value ) {
+			$this->assertEquals( $value, $result[ $key ] );
+		}
+
+		// Test 5.
+		$this->setRole( 'ap_moderator' );
+		$result = ap_comment_actions( $comment );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'label' => 'Edit',
+				'href'  => '#',
+				'query' => [
+					'action'     => 'comment_modal',
+					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+					'comment_id' => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Delete',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'delete_comment',
+					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Approve',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'approve_comment',
+					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		foreach ( $result as $key => $value ) {
+			$this->assertEquals( $value, $result[ $key ] );
+		}
+
+		// Test 6.
+		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress' ) );
+		add_role( 'user_can_edit_comment', 'Test Role', array( 'ap_edit_others_comment' => true ) );
+		$this->setRole( 'user_can_edit_comment' );
+		$result = ap_comment_actions( $comment );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'label' => 'Edit',
+				'href'  => '#',
+				'query' => [
+					'action'     => 'comment_modal',
+					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+					'comment_id' => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		$not_expected = [
+			[
+				'label' => 'Delete',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'delete_comment',
+					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Approve',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'approve_comment',
+					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertNotContains( $not_expected, $result );
+
+		// Test 7.
+		add_role( 'user_can_delete_comment', 'Test Role', array( 'ap_delete_others_comment' => true ) );
+		$this->setRole( 'user_can_delete_comment' );
+		$result = ap_comment_actions( $comment );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'label' => 'Delete',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'delete_comment',
+					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		$not_expected = [
+			[
+				'label' => 'Edit',
+				'href'  => '#',
+				'query' => [
+					'action'     => 'comment_modal',
+					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+					'comment_id' => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Approve',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'approve_comment',
+					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertNotContains( $not_expected, $result );
+
+		// Test 8.
+		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'comment_approved' => 0 ) );
+		add_role( 'user_can_approve_comment', 'Test Role', array( 'ap_approve_comment' => true ) );
+		$this->setRole( 'user_can_approve_comment' );
+		$result = ap_comment_actions( $comment );
+		$this->assertNotEmpty( $result );
+		$this->assertIsArray( $result );
+		$expected = [
+			[
+				'label' => 'Approve',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'approve_comment',
+					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertEquals( $expected, $result );
+		$not_expected = [
+			[
+				'label' => 'Edit',
+				'href'  => '#',
+				'query' => [
+					'action'     => 'comment_modal',
+					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+					'comment_id' => $comment->comment_ID,
+				],
+			],
+			[
+				'label' => 'Delete',
+				'href'  => '#',
+				'query' => [
+					'ap_ajax_action' => 'delete_comment',
+					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+					'comment_id'     => $comment->comment_ID,
+				],
+			],
+		];
+		$this->assertNotContains( $not_expected, $result );
+	}
 }
