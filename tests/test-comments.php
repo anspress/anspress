@@ -19,7 +19,7 @@ class TestComments extends TestCase {
 	}
 
 	/**
-	 * @covers AnsPress_Comment_Hooks::ap_new_comment_btn
+	 * @covers ::ap_new_comment_btn
 	 */
 	public function testAPNewCommentBtn() {
 		$question_id = $this->insert_question();
@@ -66,7 +66,7 @@ class TestComments extends TestCase {
 	}
 
 	/**
-	 * @covers AnsPress_Comment_Hooks::ap_comment_actions
+	 * @covers ::ap_comment_actions
 	 */
 	public function testAPCommentActions() {
 		$id = $this->insert_question();
@@ -313,5 +313,93 @@ class TestComments extends TestCase {
 			],
 		];
 		$this->assertNotContains( $not_expected, $result );
+	}
+
+	/**
+	 * @covers ::ap_comment_btn_html
+	 */
+	public function testAPCommentBtnHTML() {
+		$id = $this->insert_answer();
+
+		// Test begins.
+		// Test 1.
+		// For question post type.
+		$result = ap_comment_btn_html( $id->q );
+		$this->assertNull( $result );
+
+		// For answer post type.
+		$result = ap_comment_btn_html( $id->a );
+		$this->assertNull( $result );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+
+		// For question post type.
+		$btn_args = wp_json_encode(
+			array(
+				'action'  => 'comment_modal',
+				'post_id' => $id->q,
+				'__nonce' => wp_create_nonce( 'new_comment_' . $id->q ),
+			)
+		);
+		$result = ap_comment_btn_html( $id->q );
+		$this->assertStringContainsString( esc_js( $btn_args ), $result );
+		$this->assertStringContainsString( '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">', $result );
+		$this->assertStringContainsString( 'Add a Comment', $result );
+
+		// For answer post type.
+		$btn_args = wp_json_encode(
+			array(
+				'action'  => 'comment_modal',
+				'post_id' => $id->a,
+				'__nonce' => wp_create_nonce( 'new_comment_' . $id->a ),
+			)
+		);
+		$result = ap_comment_btn_html( $id->a );
+		$this->assertStringContainsString( esc_js( $btn_args ), $result );
+		$this->assertStringContainsString( '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">', $result );
+		$this->assertStringContainsString( 'Add a Comment', $result );
+
+		// Test 3.
+		ap_opt( 'disable_comments_on_question', true );
+
+		// For question post type.
+		$result = ap_comment_btn_html( $id->q );
+		$this->assertNull( $result );
+
+		// For answer post type.
+		$btn_args = wp_json_encode(
+			array(
+				'action'  => 'comment_modal',
+				'post_id' => $id->a,
+				'__nonce' => wp_create_nonce( 'new_comment_' . $id->a ),
+			)
+		);
+		$result = ap_comment_btn_html( $id->a );
+		$this->assertStringContainsString( esc_js( $btn_args ), $result );
+		$this->assertStringContainsString( '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">', $result );
+		$this->assertStringContainsString( 'Add a Comment', $result );
+
+		// Test 4.
+		ap_opt( 'disable_comments_on_answer', true );
+		ap_opt( 'disable_comments_on_question', false );
+
+		// For question post type.
+		$btn_args = wp_json_encode(
+			array(
+				'action'  => 'comment_modal',
+				'post_id' => $id->q,
+				'__nonce' => wp_create_nonce( 'new_comment_' . $id->q ),
+			)
+		);
+		$result = ap_comment_btn_html( $id->q );
+		$this->assertStringContainsString( esc_js( $btn_args ), $result );
+		$this->assertStringContainsString( '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">', $result );
+		$this->assertStringContainsString( 'Add a Comment', $result );
+
+		// For answer post type.
+		$result = ap_comment_btn_html( $id->a );
+		$this->assertNull( $result );
+		ap_opt( 'disable_comments_on_answer', false );
 	}
 }
