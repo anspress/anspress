@@ -469,4 +469,36 @@ class TestAnswerLoop extends TestCase {
 		// Reset global $answers.
 		$answers = null;
 	}
+
+	/**
+	 * @covers ::ap_total_answers_found
+	 */
+	public function testAPTotalAnswersFound() {
+		global $answers;
+
+		// Test 1.
+		$answers = (object) [ 'found_posts' => 0 ];
+		$result = ap_total_answers_found();
+		$this->assertEquals( 0, $result );
+
+		// Test 2.
+		$answers = (object) [ 'found_posts' => 11 ];
+		$result = ap_total_answers_found();
+		$this->assertEquals( 11, $result );
+
+		// Test 3.
+		$ids = $this->insert_answers( [], [], 0 );
+		$answers = new \WP_Query( [ 'post_type' => 'answer' ] );
+		$result = ap_total_answers_found();
+		$this->assertEquals( $answers->found_posts, $result );
+
+		// Test 4.
+		$ids = $this->insert_answers( [], [], 11 );
+		$answers = new \WP_Query( [ 'post_type' => 'answer', 'posts_per_page' => -1 ] );
+		$result = ap_total_answers_found();
+		$this->assertEquals( $answers->found_posts, $result );
+
+		// Reset global $answers.
+		$answers = null;
+	}
 }
