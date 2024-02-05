@@ -551,4 +551,68 @@ class TestAnswerLoop extends TestCase {
 		$result = ap_get_answer( 0 );
 		$this->assertNull( $result->post );
 	}
+
+	/**
+	 * @covers ::ap_get_answers
+	 */
+	public function testAPGetAnswers() {
+		$ids = $this->insert_answers( [], [], 5 );
+
+		// Test 1.
+		$result = ap_get_answers();
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNull( $result->post );
+
+		// Test 2.
+		$this->go_to( '?post_type=question&p=' . $ids['question'] );
+		$result = ap_get_answers();
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( 5, $result->found_posts );
+		$this->go_to( home_url() );
+
+		// Test 3.
+		$result = ap_get_answers( [ 'p' => $ids['answers'][0] ] );
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( $ids['answers'][0], $result->post->ID );
+		$this->assertEquals( 1, $result->found_posts );
+
+		// Test 4.
+		$this->go_to( '?post_type=question&p=' . $ids['question'] );
+		$result = ap_get_answers();
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( $ids['question'], $result->args['question_id'] );
+		$this->assertEquals( ap_opt( 'answers_sort' ), $result->args['ap_order_by'] );
+
+		// Test 5.
+		$_REQUEST['order_by'] = 'newest';
+		$result = ap_get_answers();
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( $ids['question'], $result->args['question_id'] );
+		$this->assertEquals( 'newest', $result->args['ap_order_by'] );
+
+		// Test 6.
+		$_REQUEST['order_by'] = 'oldest';
+		$args = [ 'p' => $ids['answers'][0] ];
+		$result = ap_get_answers( $args );
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( $ids['answers'][0], $result->post->ID );
+		$this->assertEquals( 1, $result->found_posts );
+		$this->assertEquals( 'oldest', $result->args['ap_order_by'] );
+		$this->assertEquals( $ids['answers'][0], $result->args['p'] );
+
+		// Test 7.
+		unset( $_REQUEST['order_by'] );
+		$args = [ 'test_arg' => 'test_value' ];
+		$result = ap_get_answers( $args );
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( $ids['question'], $result->args['question_id'] );
+		$this->assertEquals( ap_opt( 'answers_sort' ), $result->args['ap_order_by'] );
+		$this->assertEquals( 'test_value', $result->args['test_arg'] );
+	}
 }
