@@ -436,4 +436,37 @@ class TestAnswerLoop extends TestCase {
 		$this->assertStringNotContainsString( 'You are viewing 1 out of 11 answers, click here to view all answers.', $pagination );
 		$answers = null;
 	}
+
+	/**
+	 * @covers ::ap_answer_the_object
+	 */
+	public function testAPAnswerTheObject() {
+		global $answers;
+
+		// Test 1.
+		$result = ap_answer_the_object();
+		$this->assertNull( $result );
+
+		// Test 2.
+		$mock_answer = (object) [
+			'ID'           => 5,
+			'post_title'   => 'Answer title',
+			'post_content' => 'Answer content',
+			'post_type'    => 'answer',
+		];
+		$answers = (object) [ 'post' => $mock_answer ];
+		$result = ap_answer_the_object();
+		$this->assertSame( $mock_answer, $result );
+
+		// Test 3.
+		$mock_answer = (object) [
+			'ID' => 11,
+		];
+		$answers = (object) [ 'post' => $mock_answer ];
+		$result = ap_answer_the_object();
+		$this->assertSame( $mock_answer, $result );
+
+		// Reset global $answers.
+		$answers = null;
+	}
 }
