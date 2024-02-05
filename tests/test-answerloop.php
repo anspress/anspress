@@ -501,4 +501,37 @@ class TestAnswerLoop extends TestCase {
 		// Reset global $answers.
 		$answers = null;
 	}
+
+	/**
+	 * @covers ::ap_have_answers
+	 */
+	public function testAPHaveAnswers() {
+		global $answers;
+
+		// Test 1.
+		$question_id = $this->insert_question();
+		$answers     = new \WP_Query( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$result      = ap_have_answers();
+		$this->assertFalse( $result );
+
+		// Test 2.
+		$ids     = $this->insert_answers( [], [], 11 );
+		$answers = new \WP_Query( [ 'post_type' => 'answer', 'post_parent' => $ids['question'] ] );
+		$result  = ap_have_answers();
+		$this->assertTrue( $result );
+
+		// Test 3.
+		$ids     = $this->insert_answers( [], [], 0 );
+		$answers = new \WP_Query( [ 'post_type' => 'answer', 'post_parent' => $ids['question'] ] );
+		$result  = ap_have_answers();
+		$this->assertFalse( $result );
+
+		// Test 4.
+		$answers = null;
+		$result  = ap_have_answers();
+		$this->assertFalse( $result );
+
+		// Reset global $answers.
+		$answers = null;
+	}
 }
