@@ -259,4 +259,43 @@ class TestUpload extends TestCase {
 			$this->assertNull( $attachment );
 		}
 	}
+
+	/**
+	 * @covers ::ap_delete_images_not_in_content
+	 */
+	public function testAPDeleteImagesNotInContent() {
+		$id = $this->insert_answer();
+		$uploads = wp_upload_dir();
+
+		// Test begins.
+		// Test directly calling the function.
+		// Test 1.
+		update_post_meta( $id->q, 'anspress-image', 'test-image.jpg' );
+		$this->assertNotEmpty( get_post_meta( $id->q, 'anspress-image', true ) );
+		ap_delete_images_not_in_content( $id->q );
+		$this->assertEmpty( get_post_meta( $id->q, 'anspress-image', true ) );
+		$this->assertFalse( file_exists( $uploads['basedir'] . '/anspress-uploads/test-image.jpg' ) );
+
+		// Test 2.
+		update_post_meta( $id->a, 'anspress-image', 'test-image.jpg' );
+		$this->assertNotEmpty( get_post_meta( $id->a, 'anspress-image', true ) );
+		ap_delete_images_not_in_content( $id->a );
+		$this->assertEmpty( get_post_meta( $id->a, 'anspress-image', true ) );
+		$this->assertFalse( file_exists( $uploads['basedir'] . '/anspress-uploads/test-image.jpg' ) );
+
+		// Test by updating the question and answer.
+		// Test 1.
+		update_post_meta( $id->q, 'anspress-image', 'test-image.jpg' );
+		$this->assertNotEmpty( get_post_meta( $id->q, 'anspress-image', true ) );
+		wp_update_post( [ 'ID' => $id->q ] );
+		$this->assertEmpty( get_post_meta( $id->q, 'anspress-image', true ) );
+		$this->assertFalse( file_exists( $uploads['basedir'] . '/anspress-uploads/test-image.jpg' ) );
+
+		// Test 2.
+		update_post_meta( $id->a, 'anspress-image', 'test-image.jpg' );
+		$this->assertNotEmpty( get_post_meta( $id->a, 'anspress-image', true ) );
+		wp_update_post( [ 'ID' => $id->a ] );
+		$this->assertEmpty( get_post_meta( $id->a, 'anspress-image', true ) );
+		$this->assertFalse( file_exists( $uploads['basedir'] . '/anspress-uploads/test-image.jpg' ) );
+	}
 }
