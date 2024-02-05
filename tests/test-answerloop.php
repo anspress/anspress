@@ -534,4 +534,21 @@ class TestAnswerLoop extends TestCase {
 		// Reset global $answers.
 		$answers = null;
 	}
+
+	/**
+	 * @covers ::ap_get_answer
+	 */
+	public function testAPGetAnswer() {
+		$id = $this->insert_answer();
+
+		// Test 1.
+		$result = ap_get_answer( $id->a );
+		$this->assertInstanceOf( 'Answers_Query', $result );
+		$this->assertNotNull( $result->post );
+		$this->assertEquals( $id->a, $result->post->ID );
+
+		// Test 2.
+		$result = ap_get_answer( 0 );
+		$this->assertNull( $result->post );
+	}
 }
