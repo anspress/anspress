@@ -358,4 +358,82 @@ class TestAnswerLoop extends TestCase {
 		$this->assertNotEquals( 3, ap_count_other_answer( $id->q ) );
 		$this->assertEquals( 2, ap_count_other_answer( $q_id ) );
 	}
+
+	/**
+	 * @covers ::ap_answers_the_pagination
+	 */
+	public function testAPAnswersThePagination() {
+		$id = $this->insert_answers( [], [], 11 );
+
+		// Test 1.
+		$this->go_to( '?post_type=question&p=' . $id['question'] );
+		set_query_var( 'answer_id', $id['answers'][0] );
+		ob_start();
+		ap_answers_the_pagination();
+		$pagination = ob_get_clean();
+		$this->assertNotEmpty( $pagination );
+		$this->assertStringContainsString( 'ap-all-answers', $pagination );
+		$this->assertStringContainsString( 'You are viewing 1 out of 11 answers, click here to view all answers.', $pagination );
+		$this->assertStringContainsString( esc_url( get_permalink( $id['question'] ) ), $pagination );
+		$this->assertEquals( '<a class="ap-all-answers" href="' . esc_url( get_permalink( $id['question'] ) ) . '">You are viewing 1 out of 11 answers, click here to view all answers.</a>', $pagination );
+
+		// Test 2.
+		$this->go_to( '?post_type=question&p=' . $id['question'] );
+		set_query_var( 'answer_id', $id['answers'][5] );
+		ob_start();
+		ap_answers_the_pagination();
+		$pagination = ob_get_clean();
+		$this->assertNotEmpty( $pagination );
+		$this->assertStringContainsString( 'ap-all-answers', $pagination );
+		$this->assertStringContainsString( 'You are viewing 1 out of 11 answers, click here to view all answers.', $pagination );
+		$this->assertStringContainsString( esc_url( get_permalink( $id['question'] ) ), $pagination );
+		$this->assertEquals( '<a class="ap-all-answers" href="' . esc_url( get_permalink( $id['question'] ) ) . '">You are viewing 1 out of 11 answers, click here to view all answers.</a>', $pagination );
+
+		// Test 3.
+		$this->go_to( '?post_type=question&p=' . $id['question'] );
+		global $answers;
+		$answers = (object) [ 'max_num_pages' => 3 ];
+		ob_start();
+		ap_answers_the_pagination();
+		$pagination = ob_get_clean();
+		$this->assertNotEmpty( $pagination );
+		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $pagination );
+		$this->assertStringContainsString( '<span aria-current="page" class="page-numbers current">1</span>', $pagination );
+		$this->assertStringContainsString( 'class="next page-numbers" rel="next"', $pagination );
+		$this->assertStringNotContainsString( 'class="prev page-numbers" rel="prev"', $pagination );
+		$this->assertStringNotContainsString( 'You are viewing 1 out of 11 answers, click here to view all answers.', $pagination );
+		$answers = null;
+
+		// Test 4.
+		$this->go_to( '?post_type=question&p=' . $id['question'] );
+		set_query_var( 'ap_paged', 2 );
+		global $answers;
+		$answers = (object) [ 'max_num_pages' => 3 ];
+		ob_start();
+		ap_answers_the_pagination();
+		$pagination = ob_get_clean();
+		$this->assertNotEmpty( $pagination );
+		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $pagination );
+		$this->assertStringContainsString( '<span aria-current="page" class="page-numbers current">2</span>', $pagination );
+		$this->assertStringContainsString( 'class="next page-numbers" rel="next"', $pagination );
+		$this->assertStringContainsString( 'class="prev page-numbers" rel="prev"', $pagination );
+		$this->assertStringNotContainsString( 'You are viewing 1 out of 11 answers, click here to view all answers.', $pagination );
+		$answers = null;
+
+		// Test 5.
+		$this->go_to( '?post_type=question&p=' . $id['question'] );
+		set_query_var( 'ap_paged', 3 );
+		global $answers;
+		$answers = (object) [ 'max_num_pages' => 3 ];
+		ob_start();
+		ap_answers_the_pagination();
+		$pagination = ob_get_clean();
+		$this->assertNotEmpty( $pagination );
+		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $pagination );
+		$this->assertStringContainsString( '<span aria-current="page" class="page-numbers current">3</span>', $pagination );
+		$this->assertStringNotContainsString( 'class="next page-numbers" rel="next"', $pagination );
+		$this->assertStringContainsString( 'class="prev page-numbers" rel="prev"', $pagination );
+		$this->assertStringNotContainsString( 'You are viewing 1 out of 11 answers, click here to view all answers.', $pagination );
+		$answers = null;
+	}
 }
