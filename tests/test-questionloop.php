@@ -144,4 +144,98 @@ class TestQustionLoop extends TestCase {
 		$this->assertStringNotContainsString( 'class="next page-numbers" rel="next"', $pagination );
 		$this->assertStringContainsString( 'class="prev page-numbers" rel="prev"', $pagination );
 	}
+
+	/**
+	 * @covers ::ap_get_question
+	 */
+	public function testAPGetQuestion() {
+		// Test for publish question.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+
+		// Test 1.
+		$question = ap_get_question( $question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNotNull( $question->post );
+		$this->assertEquals( $question_id, $question->post->ID );
+
+		// Test for future question.
+		$future_question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'future', 'post_date' => '9999-12-31 23:59:59', ] );
+
+		// Test 1.
+		$question = ap_get_question( $future_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNull( $question->post );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$question = ap_get_question( $future_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNull( $question->post );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$question = ap_get_question( $future_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNotNull( $question->post );
+		$this->assertEquals( $future_question_id, $question->post->ID );
+
+		// Test for private question.
+		$this->logout();
+		$private_question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+
+		// Test 1.
+		$question = ap_get_question( $private_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNull( $question->post );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$question = ap_get_question( $private_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNull( $question->post );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$question = ap_get_question( $private_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNotNull( $question->post );
+
+		// Test 4.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question = ap_get_question( $question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNotNull( $question->post );
+		$this->assertEquals( $question_id, $question->post->ID );
+
+		// Test for moderate question.
+		$this->logout();
+		$moderate_question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+
+		// Test 1.
+		$question = ap_get_question( $moderate_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNull( $question->post );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$question = ap_get_question( $moderate_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNull( $question->post );
+
+		// Test 3.
+		$this->setRole( 'administrator' );
+		$question = ap_get_question( $moderate_question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNotNull( $question->post );
+
+		// Test 4.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question = ap_get_question( $question_id );
+		$this->assertInstanceOf( 'Question_Query', $question );
+		$this->assertNotNull( $question->post );
+		$this->assertEquals( $question_id, $question->post->ID );
+		$this->logout();
+	}
 }
