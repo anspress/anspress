@@ -298,4 +298,43 @@ class TestUpload extends TestCase {
 		$this->assertEmpty( get_post_meta( $id->a, 'anspress-image', true ) );
 		$this->assertFalse( file_exists( $uploads['basedir'] . '/anspress-uploads/test-image.jpg' ) );
 	}
+
+	/**
+	 * @covers ::ap_set_media_post_parent
+	 */
+	public function testAPSetMediaPostParent() {
+		$this->setRole( 'subscriber' );
+
+		// Test for not passing user id.
+		// Test 1.
+		$attachment_id = $this->factory()->attachment->create();
+		$post_id = $this->factory()->post->create();
+		ap_set_media_post_parent( $attachment_id, $post_id );
+		$this->assertEquals( $post_id, wp_get_post_parent_id( $attachment_id ) );
+
+		// Test 2.
+		$attachment_ids = $this->factory()->attachment->create_many( 5 );
+		$post_id = $this->factory()->post->create();
+		ap_set_media_post_parent( $attachment_ids, $post_id );
+		foreach ( $attachment_ids as $attachment_id ) {
+			$this->assertEquals( $post_id, wp_get_post_parent_id( $attachment_id ) );
+		}
+
+		// Test for passing user id.
+		$user_id = $this->factory()->user->create();
+
+		// Test 1.
+		$attachment_id = $this->factory()->attachment->create( [ 'post_author' => $user_id ] );
+		$post_id = $this->factory()->post->create();
+		ap_set_media_post_parent( $attachment_id, $post_id, $user_id );
+		$this->assertEquals( $post_id, wp_get_post_parent_id( $attachment_id ) );
+
+		// Test 2.
+		$attachment_ids = $this->factory()->attachment->create_many( 5, [ 'post_author' => $user_id ] );
+		$post_id = $this->factory()->post->create();
+		ap_set_media_post_parent( $attachment_ids, $post_id, $user_id );
+		foreach ( $attachment_ids as $attachment_id ) {
+			$this->assertEquals( $post_id, wp_get_post_parent_id( $attachment_id ) );
+		}
+	}
 }
