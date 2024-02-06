@@ -455,4 +455,31 @@ class TestComments extends TestCase {
 		$question_rendered = false;
 		$this->logout();
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::comment_link
+	 */
+	public function testCommentLink() {
+		// Test 1.
+		$post_id = $this->factory->post->create();
+		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $post_id ] );
+		$result = \AnsPress_Comment_Hooks::comment_link( 'http://example.com', $comment, [] );
+		$this->assertEquals( 'http://example.com', $result );
+
+		// Test 2.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $question_id ] );
+		$result = \AnsPress_Comment_Hooks::comment_link( 'http://example.com', $comment, [] );
+		$this->assertStringContainsString( '#/comment/' . $comment->comment_ID, $result );
+		$this->assertStringNotContainsString( 'http://example.com', $result );
+		$this->assertEquals( get_permalink( $question_id ) . '#/comment/' . $comment->comment_ID, $result );
+
+		// Test 3.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $answer_id ] );
+		$result = \AnsPress_Comment_Hooks::comment_link( 'http://example.com', $comment, [] );
+		$this->assertStringContainsString( '#/comment/' . $comment->comment_ID, $result );
+		$this->assertStringNotContainsString( 'http://example.com', $result );
+		$this->assertEquals( get_permalink( $answer_id ) . '#/comment/' . $comment->comment_ID, $result );
+	}
 }
