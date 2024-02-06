@@ -482,4 +482,27 @@ class TestComments extends TestCase {
 		$this->assertStringNotContainsString( 'http://example.com', $result );
 		$this->assertEquals( get_permalink( $answer_id ) . '#/comment/' . $comment->comment_ID, $result );
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::preprocess_comment
+	 */
+	public function testPreprocessComment() {
+		// Test 1.
+		$post_id = $this->factory->post->create();
+		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $post_id ] );
+		$result = \AnsPress_Comment_Hooks::preprocess_comment( (array) $comment );
+		$this->assertEquals( 'comment', $result['comment_type'] );
+
+		// Test 2.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$comment_data = [ 'comment_post_ID' => $question_id ];
+		$result = \AnsPress_Comment_Hooks::preprocess_comment( $comment_data );
+		$this->assertEquals( 'anspress', $result['comment_type'] );
+
+		// Test 3.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $answer_id ] );
+		$result = \AnsPress_Comment_Hooks::preprocess_comment( (array) $comment );
+		$this->assertEquals( 'anspress', $result['comment_type'] );
+	}
 }
