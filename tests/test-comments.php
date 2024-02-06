@@ -402,4 +402,57 @@ class TestComments extends TestCase {
 		$this->assertNull( $result );
 		ap_opt( 'disable_comments_on_answer', false );
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::comments_template_query_args
+	 */
+	public function testCommentsTemplateQueryArgs() {
+		// Test 1.
+		global $question_rendered;
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertIsArray( $result );
+		$this->assertEmpty( $result );
+
+		// Test 2.
+		$question_rendered = true;
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertIsArray( $result );
+		$this->assertEmpty( $result );
+
+		// Test 3.
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertFalse( $result );
+
+		// Test 4.
+		$question_rendered = false;
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertIsArray( $result );
+		$this->assertEmpty( $result );
+		$this->go_to( '/' );
+
+		// Test 5.
+		$this->setRole( 'subscriber' );
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertIsArray( $result );
+		$this->assertEmpty( $result );
+
+		// Test 6.
+		$this->setRole( 'administrator' );
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertIsArray( $result );
+		$this->assertNotEmpty( $result );
+		$this->assertArrayHasKey( 'status', $result );
+		$this->assertEquals( 'all', $result['status'] );
+
+		// Test 7.
+		$question_rendered = true;
+		$this->go_to( '?post_type=question&p=' . $id );
+		$result = \AnsPress_Comment_Hooks::comments_template_query_args( [] );
+		$this->assertFalse( $result );
+		$question_rendered = false;
+		$this->logout();
+	}
 }
