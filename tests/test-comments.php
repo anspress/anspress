@@ -505,4 +505,40 @@ class TestComments extends TestCase {
 		$result = \AnsPress_Comment_Hooks::preprocess_comment( (array) $comment );
 		$this->assertEquals( 'anspress', $result['comment_type'] );
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::comments_template
+	 */
+	public function testCommentsTemplate() {
+		$question_id = $this->insert_question();
+
+		// Test 1.
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Comment_Hooks::comments_template( '' );
+		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
+
+		// Test 2.
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = \AnsPress_Comment_Hooks::comments_template( 'test-template.php' );
+		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
+
+		// Test 3.
+		$this->go_to( '/' );
+		$result = \AnsPress_Comment_Hooks::comments_template( 'test-template.php' );
+		$this->assertEquals( 'test-template.php', $result );
+
+		// Test 4.
+		$base_page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'base_page', $base_page_id );
+		$this->go_to( '?page_id=' . $base_page_id );
+		$result = \AnsPress_Comment_Hooks::comments_template( '' );
+		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
+
+		// Test 5.
+		$categories_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'categories_page', $categories_page );
+		$this->go_to( '?page_id=' . $categories_page );
+		$result = \AnsPress_Comment_Hooks::comments_template( 'test-template.php' );
+		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
+	}
 }
