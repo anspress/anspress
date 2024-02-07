@@ -541,4 +541,44 @@ class TestComments extends TestCase {
 		$result = \AnsPress_Comment_Hooks::comments_template( 'test-template.php' );
 		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::ap_comment_delete_locked
+	 */
+	public function testAPCommentDeleteLocked() {
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id ] );
+
+		// Test 1.
+		$result = ap_comment_delete_locked( $comment_id );
+		$this->assertFalse( $result );
+
+		// Test 2.
+		$comment_date = date( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
+		wp_update_comment(
+			[
+				'comment_ID'       => $comment_id,
+				'comment_date'     => $comment_date,
+				'comment_date_gmt' => get_gmt_from_date( $comment_date ),
+			]
+		);
+		ap_opt( 'disable_delete_after', 604800 );
+		$result = ap_comment_delete_locked( $comment_id );
+		$this->assertFalse( $result );
+
+		// Test 3.
+		$comment_date = date( 'Y-m-d H:i:s', strtotime( '-8 days' ) );
+		wp_update_comment(
+			[
+				'comment_ID'       => $comment_id,
+				'comment_date'     => $comment_date,
+				'comment_date_gmt' => get_gmt_from_date( $comment_date ),
+			]
+		);
+		$result = ap_comment_delete_locked( $comment_id );
+		$this->assertTrue( $result );
+
+		// Reset disable_delete_after option.
+		ap_opt( 'disable_delete_after', 86400 );
+	}
 }
