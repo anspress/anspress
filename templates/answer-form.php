@@ -31,6 +31,7 @@ $ajax_query = wp_json_encode(
 			<div class="ap-cell-inner">
 				<div class="ap-minimal-placeholder">
 					<div class="ap-dummy-editor<?php echo esc_attr( ap_opt( 'answer_text_editor' ) ? ' ap-dummy-quick-editor' : '' ); ?>">
+						<?php if ( ap_opt( 'answer_text_editor' ) ) : ?>
 						<div class="quicktags-toolbar hide-if-no-js ap-dummy-toolbar">
 							<input type="button" class="ed_button button button-small" value="b">
 							<input type="button" class="ed_button button button-small" value="i">
@@ -45,7 +46,9 @@ $ajax_query = wp_json_encode(
 							<input type="button" class="ed_button button button-small" value="code">
 							<input type="button" class="ed_button button button-small" value="close tags">
 						</div>
+						<?php endif; ?>
 					</div>
+
 					<div class="ap-dummy-placeholder"><?php esc_attr_e( 'Write your answer.', 'anspress-question-answer' ); ?></div>
 					<div class="ap-editor-fade" ap="loadEditor" data-apquery="<?php echo esc_js( $ajax_query ); ?>"></div>
 				</div>
