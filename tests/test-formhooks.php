@@ -355,4 +355,302 @@ class TestFormHooks extends TestCase {
 		$this->assertEquals( 'Update Answer', $form['submit_label'] );
 		unset( $_REQUEST['id'] );
 	}
+
+	/**
+	 * @covers AP_Form_Hooks::question_form
+	 */
+	public function testQuestionForm() {
+		$question_id = $this->insert_question();
+
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertIsArray( $form );
+		$this->assertArrayHasKey( 'submit_label', $form );
+		$this->assertArrayHasKey( 'fields', $form );
+		$this->assertArrayNotHasKey( 'editing', $form['fields'] );
+		$this->assertArrayNotHasKey( 'editing_id', $form['fields'] );
+		$this->assertArrayNotHasKey( 'hidden_fields', $form['fields'] );
+
+		// Test on submit label.
+		$this->assertEquals( 'Submit Question', $form['submit_label'] );
+
+		// Test on fields.
+		// For post_title.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'post_title', $form['fields'] );
+		$expected_post_title = [
+			'type'       => 'input',
+			'label'      => 'Title',
+			'desc'       => 'Question in one sentence',
+			'attr'       => array(
+				'autocomplete'   => 'off',
+				'placeholder'    => 'Question title',
+				'data-action'    => 'suggest_similar_questions',
+				'data-loadclass' => 'q-title',
+			),
+			'min_length' => ap_opt( 'minimum_qtitle_length' ),
+			'max_length' => 100,
+			'validate'   => 'required,min_string_length,max_string_length,badwords',
+			'order'      => 2,
+		];
+		$this->assertEquals( $expected_post_title, $form['fields']['post_title'] );
+
+		// Test 2.
+		ap_opt( 'minimum_qtitle_length', 24 );
+		$form = \AP_Form_Hooks::question_form();
+		$expected_post_title = [
+			'type'       => 'input',
+			'label'      => 'Title',
+			'desc'       => 'Question in one sentence',
+			'attr'       => array(
+				'autocomplete'   => 'off',
+				'placeholder'    => 'Question title',
+				'data-action'    => 'suggest_similar_questions',
+				'data-loadclass' => 'q-title',
+			),
+			'min_length' => 24,
+			'max_length' => 100,
+			'validate'   => 'required,min_string_length,max_string_length,badwords',
+			'order'      => 2,
+		];
+		$this->assertEquals( $expected_post_title, $form['fields']['post_title'] );
+		ap_opt( 'minimum_qtitle_length', 10 );
+
+		// For post_content.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'post_content', $form['fields'] );
+		$expected_post_content = [
+			'type'        => 'editor',
+			'label'       => 'Description',
+			'min_length'  => ap_opt( 'minimum_question_length' ),
+			'validate'    => 'required,min_string_length,badwords',
+			'editor_args' => array(
+				'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
+			),
+		];
+		$this->assertEquals( $expected_post_content, $form['fields']['post_content'] );
+
+		// Test 2.
+		ap_opt( 'minimum_question_length', 24 );
+		ap_opt( 'question_text_editor', true );
+		$form = \AP_Form_Hooks::question_form();
+		$expected_post_content = [
+			'type'        => 'editor',
+			'label'       => 'Description',
+			'min_length'  => 24,
+			'validate'    => 'required,min_string_length,badwords',
+			'editor_args' => array(
+				'quicktags' => true,
+			),
+		];
+		$this->assertEquals( $expected_post_content, $form['fields']['post_content'] );
+		ap_opt( 'minimum_question_length', 10 );
+		ap_opt( 'question_text_editor', false );
+
+		// For is_private.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'is_private', $form['fields'] );
+		$expected_is_private = [
+			'type'  => 'checkbox',
+			'label' => 'Is private?',
+			'desc'  => 'Only visible to admin and moderator.',
+		];
+		$this->assertEquals( $expected_is_private, $form['fields']['is_private'] );
+
+		// Test 2.
+		ap_opt( 'allow_private_posts', false );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'is_private', $form['fields'] );
+		ap_opt( 'allow_private_posts', true );
+
+		// For anonymous_name.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'anonymous_name', $form['fields'] );
+		$expected_anonymous_name = [
+			'label'      => 'Your Name',
+			'attr'       => array(
+				'placeholder' => 'Enter your name to display',
+			),
+			'order'      => 20,
+			'validate'   => 'max_string_length,badwords',
+			'max_length' => 64,
+		];
+		$this->assertEquals( $expected_anonymous_name, $form['fields']['anonymous_name'] );
+
+		// Test 2.
+		ap_opt( 'post_question_per', 'logged_in' );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'anonymous_name', $form['fields'] );
+		ap_opt( 'post_question_per', 'anyone' );
+
+		// Test 3.
+		$this->setRole( 'subscriber' );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'anonymous_name', $form['fields'] );
+
+		// For email.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'email', $form['fields'] );
+
+		// Test 2.
+		ap_opt( 'post_question_per', 'logged_in' );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'email', $form['fields'] );
+		ap_opt( 'post_question_per', 'anyone' );
+
+		// Test 3.
+		$this->setRole( 'subscriber' );
+		$_REQUEST['id'] = $question_id;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'email', $form['fields'] );
+		$this->logout();
+
+		// Test 4.
+		$_REQUEST['id'] = $question_id;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'email', $form['fields'] );
+
+		// Test 5.
+		update_option( 'users_can_register', true );
+		unset( $_REQUEST['id'] );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'email', $form['fields'] );
+		$expected_email = [
+			'label'      => 'Your Email',
+			'attr'       => array(
+				'placeholder' => 'Enter your email',
+			),
+			'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+			'order'      => 20,
+			'validate'   => 'is_email,required',
+			'sanitize'   => 'email,required',
+			'max_length' => 64,
+		];
+		$this->assertEquals( $expected_email, $form['fields']['email'] );
+
+		// Test 6.
+		ap_opt( 'create_account', false );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'email', $form['fields'] );
+
+		// Test 7.
+		ap_opt( 'create_account', true );
+		$_REQUEST['id'] = $question_id;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'email', $form['fields'] );
+		update_option( 'users_can_register', false );
+		unset( $_REQUEST['id'] );
+
+		// For post_id.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'post_id', $form['fields'] );
+		$expected_post_id = [
+			'type'     => 'input',
+			'subtype'  => 'hidden',
+			'value'    => '',
+			'sanitize' => 'absint',
+		];
+		$this->assertEquals( $expected_post_id, $form['fields']['post_id'] );
+
+		// Test 2.
+		$_REQUEST['id'] = $question_id;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'post_id', $form['fields'] );
+		$expected_post_id = [
+			'type'     => 'input',
+			'subtype'  => 'hidden',
+			'value'    => $question_id,
+			'sanitize' => 'absint',
+		];
+		$this->assertEquals( $expected_post_id, $form['fields']['post_id'] );
+		unset( $_REQUEST['id'] );
+
+		// Test on editing.
+		// Test 1.
+		$question = $this->factory()->post->create_and_get( [
+			'post_title'   => 'Question Title',
+			'post_content' => 'Question Content',
+			'post_type'    => 'question',
+		] );
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'editing', $form );
+		$this->assertArrayNotHasKey( 'editing_id', $form );
+		$this->assertArrayHasKey( 'submit_label', $form );
+
+		// Test 2.
+		$_REQUEST['id'] = $question->ID;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'editing', $form );
+		$this->assertArrayHasKey( 'editing_id', $form );
+		$this->assertArrayHasKey( 'submit_label', $form );
+		$this->assertEquals( true, $form['editing'] );
+		$this->assertEquals( $question->ID, $form['editing_id'] );
+		$this->assertEquals( 'Update Question', $form['submit_label'] );
+		$this->assertEquals( 'Question Title', $form['fields']['post_title']['value'] );
+		$this->assertEquals( 'Question Content', $form['fields']['post_content']['value'] );
+		$this->assertEquals( false, $form['fields']['is_private']['value'] );
+		unset( $_REQUEST['id'] );
+
+		// Test 3.
+		$question = $this->factory()->post->create_and_get( [
+			'post_title'   => 'Question Title',
+			'post_content' => 'Question Content',
+			'post_type'    => 'question',
+			'post_status'  => 'private_post',
+		] );
+		$_REQUEST['id'] = $question->ID;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'editing', $form );
+		$this->assertArrayHasKey( 'editing_id', $form );
+		$this->assertArrayHasKey( 'submit_label', $form );
+		$this->assertEquals( true, $form['editing'] );
+		$this->assertEquals( $question->ID, $form['editing_id'] );
+		$this->assertEquals( 'Update Question', $form['submit_label'] );
+		$this->assertEquals( 'Question Title', $form['fields']['post_title']['value'] );
+		$this->assertEquals( 'Question Content', $form['fields']['post_content']['value'] );
+		$this->assertEquals( true, $form['fields']['is_private']['value'] );
+		unset( $_REQUEST['id'] );
+
+		// Test on hidden_fields.
+		// Test 1.
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayNotHasKey( 'hidden_fields', $form );
+
+		// Test 2.
+		$parent_question = $this->factory()->post->create_and_get( [
+			'post_title'   => 'Parent Question Title',
+			'post_content' => 'Parent Question Content',
+			'post_type'    => 'question',
+		] );
+		$child_question = $this->factory()->post->create_and_get( [
+			'post_title'   => 'Child Question Title',
+			'post_content' => 'Child Question Content',
+			'post_type'    => 'question',
+			'post_parent'  => $parent_question->ID,
+		] );
+		$nonce = wp_create_nonce( 'post_parent_' . $parent_question->ID );
+		$_REQUEST['post_parent'] = $parent_question->ID;
+		$_REQUEST['__nonce_pp'] = $nonce;
+		$form = \AP_Form_Hooks::question_form();
+		$this->assertArrayHasKey( 'hidden_fields', $form );
+		$expected_hidden_fields = [
+			[
+				'name'  => 'post_parent',
+				'value' => $parent_question->ID,
+			],
+			[
+				'name'  => '__nonce_pp',
+				'value' => $nonce
+			],
+		];
+		$this->assertEquals( $expected_hidden_fields, $form['hidden_fields'] );
+		unset( $_REQUEST['post_parent'] );
+		unset( $_REQUEST['__nonce_pp'] );
+	}
 }
