@@ -85,7 +85,7 @@ class AnsPress_Uploader {
 	public static function cron_delete_temp_attachments() {
 		global $wpdb;
 
-		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // phpcs:ignore WordPress.DB
+		$posts = $wpdb->get_results( "SELECT ID, post_author, post_parent FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date <= CURDATE()" ); // phpcs:ignore WordPress.DB
 
 		$authors = array();
 
