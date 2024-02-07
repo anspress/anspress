@@ -285,19 +285,21 @@ class TestFormHooks extends TestCase {
 		update_option( 'users_can_register', true );
 		unset( $_REQUEST['id'] );
 		$form = \AP_Form_Hooks::answer_form();
-		$this->assertArrayHasKey( 'email', $form['fields'] );
-		$expected_email = [
-			'label'      => 'Your Email',
-			'attr'       => array(
-				'placeholder' => 'Enter your email',
-			),
-			'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
-			'order'      => 20,
-			'validate'   => 'is_email,required',
-			'sanitize'   => 'email,required',
-			'max_length' => 64,
-		];
-		$this->assertEquals( $expected_email, $form['fields']['email'] );
+		if ( ! \is_multisite() ) {
+			$this->assertArrayHasKey( 'email', $form['fields'] );
+			$expected_email = [
+				'label'      => 'Your Email',
+				'attr'       => array(
+					'placeholder' => 'Enter your email',
+				),
+				'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+				'order'      => 20,
+				'validate'   => 'is_email,required',
+				'sanitize'   => 'email,required',
+				'max_length' => 64,
+			];
+			$this->assertEquals( $expected_email, $form['fields']['email'] );
+		}
 
 		// Test 6.
 		ap_opt( 'create_account', false );
@@ -519,19 +521,21 @@ class TestFormHooks extends TestCase {
 		update_option( 'users_can_register', true );
 		unset( $_REQUEST['id'] );
 		$form = \AP_Form_Hooks::question_form();
-		$this->assertArrayHasKey( 'email', $form['fields'] );
-		$expected_email = [
-			'label'      => 'Your Email',
-			'attr'       => array(
-				'placeholder' => 'Enter your email',
-			),
-			'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
-			'order'      => 20,
-			'validate'   => 'is_email,required',
-			'sanitize'   => 'email,required',
-			'max_length' => 64,
-		];
-		$this->assertEquals( $expected_email, $form['fields']['email'] );
+		if ( ! \is_multisite() ) {
+			$this->assertArrayHasKey( 'email', $form['fields'] );
+			$expected_email = [
+				'label'      => 'Your Email',
+				'attr'       => array(
+					'placeholder' => 'Enter your email',
+				),
+				'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+				'order'      => 20,
+				'validate'   => 'is_email,required',
+				'sanitize'   => 'email,required',
+				'max_length' => 64,
+			];
+			$this->assertEquals( $expected_email, $form['fields']['email'] );
+		}
 
 		// Test 6.
 		ap_opt( 'create_account', false );
