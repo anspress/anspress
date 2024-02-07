@@ -337,4 +337,69 @@ class TestUpload extends TestCase {
 			$this->assertEquals( $post_id, wp_get_post_parent_id( $attachment_id ) );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::cron_delete_temp_attachments
+	 */
+	public function testCronDeleteTempAttachments() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$attachment_ids = [
+			$this->factory->post->create( [
+				'post_type' => 'attachment',
+				'post_title' => '_ap_temp_media',
+				'post_parent' => $question_id,
+				'post_date' => date( 'Y-m-d H:i:s', strtotime( '-2 days' ) )
+			] ),
+			$this->factory->post->create( [
+				'post_type' => 'attachment',
+				'post_title' => '_ap_temp_media',
+				'post_parent' => $question_id,
+				'post_date' => date( 'Y-m-d H:i:s', strtotime( '-2 days' ) )
+			] ),
+			$this->factory->post->create( [
+				'post_type' => 'attachment',
+				'post_title' => '_ap_temp_media',
+				'post_parent' => $question_id,
+				'post_date' => date( 'Y-m-d H:i:s', strtotime( '-2 days' ) )
+			] ),
+		];
+
+		// Test before the method is called.
+		// Tests for attachments available.
+		foreach ( $attachment_ids as $attachment_id ) {
+			$attachment = get_post( $attachment_id );
+			$this->assertIsObject( $attachment );
+		}
+
+		// Test for question having attachments.
+		ap_update_post_attach_ids( $question_id );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertTrue( ap_have_attach() );
+		$this->go_to( '/' );
+
+		// Test for user meta for temp media.
+		ap_update_user_temp_media_count();
+		$user_meta = get_user_meta( get_current_user_id(), '_ap_temp_media', true );
+		$this->assertNotEmpty( $user_meta );
+
+		// Call the method.
+		\AnsPress_Uploader::cron_delete_temp_attachments();
+
+		// Test after the method is called.
+		// Tests for wp_delete_attachment function being called.
+		foreach ( $attachment_ids as $attachment_id ) {
+			$attachment = get_post( $attachment_id );
+			$this->assertNull( $attachment );
+		}
+
+		// Test for ap_update_post_attach_ids function being called.
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertFalse( ap_have_attach() );
+		$this->go_to( '/' );
+
+		// Test for ap_update_user_temp_media_count function being called.
+		$user_meta = get_user_meta( get_current_user_id(), '_ap_temp_media', true );
+		$this->assertEmpty( $user_meta );
+	}
 }
