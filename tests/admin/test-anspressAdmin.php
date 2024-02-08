@@ -1243,4 +1243,21 @@ class TestAnsPressAdmin extends TestCase {
 		$result = \AnsPress_Admin::get_free_menu_position( 20, 20 );
 		$this->assertEquals( 20, $result );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::ap_menu_metaboxes
+	 */
+	public function testAPMenuMetaboxes() {
+		$GLOBALS['wp_meta_boxes']['nav-menus']['side']['high'] = [];
+
+		// Test before calling the method.
+		$this->assertArrayNotHasKey( 'anspress-menu-mb', $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high'] );
+
+		// Test after calling the method.
+		\AnsPress_Admin::ap_menu_metaboxes();
+		$this->assertArrayHasKey( 'anspress-menu-mb', $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high'] );
+		$this->assertEquals( 'anspress-menu-mb', $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high']['anspress-menu-mb']['id'] );
+		$this->assertEquals( 'AnsPress', $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high']['anspress-menu-mb']['title'] );
+		$this->assertEquals( [ 'AnsPress_Admin', 'render_menu' ], $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high']['anspress-menu-mb']['callback'] );
+	}
 }
