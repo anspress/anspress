@@ -794,4 +794,69 @@ class TestAddonCategories extends TestCase {
 		update_option( 'ap_categories_path', 'categories' );
 		update_option( 'permalink_structure', '' );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_question_form_fields
+	 */
+	public function testAPQuestionFormFields() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test with empty question categories.
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertEmpty( $form );
+
+		// Test with question categories.
+		$term_id_1 = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id_2 = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id_3 = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$question_id = $this->insert_question();
+		wp_set_object_terms( $question_id, [ $term_id_2, $term_id_3 ], 'question_category' );
+
+		// Test.
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test on category field.
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertArrayHasKey( 'category', $form['fields'] );
+		$expected_category = [
+			'label'    => 'Category',
+			'desc'     => 'Select a topic that best fits your question.',
+			'type'     => 'select',
+			'options'  => 'terms',
+			'order'    => 2,
+			'validate' => 'required,not_zero',
+		];
+		$this->assertEquals( $expected_category, $form['fields']['category'] );
+
+		// Test if passing the category id.
+		$_REQUEST['category'] = $term_id_1;
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertArrayHasKey( 'value', $form['fields']['category'] );
+		$this->assertEquals( $term_id_1, $form['fields']['category']['value'] );
+		$expected_category['value'] = $term_id_1;
+		$this->assertEquals( $expected_category, $form['fields']['category'] );
+		unset( $_REQUEST['category'] );
+
+		// Test if passing editing id.
+		$_REQUEST['id'] = $question_id;
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertArrayHasKey( 'value', $form['fields']['category'] );
+		$this->assertEquals( $term_id_2, $form['fields']['category']['value'] );
+		$expected_category['value'] = $term_id_2;
+		$this->assertEquals( $expected_category, $form['fields']['category'] );
+		unset( $_REQUEST['id'] );
+
+		// Test passing both category id and editing id.
+		$_REQUEST['category'] = $term_id_3;
+		$_REQUEST['id'] = $question_id;
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertArrayHasKey( 'value', $form['fields']['category'] );
+		$this->assertEquals( $term_id_2, $form['fields']['category']['value'] );
+		$expected_category['value'] = $term_id_2;
+		$this->assertEquals( $expected_category, $form['fields']['category'] );
+		unset( $_REQUEST['category'] );
+		unset( $_REQUEST['id'] );
+	}
 }
