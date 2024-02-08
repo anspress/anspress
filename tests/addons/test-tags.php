@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonTags extends TestCase {
 
+	use Testcases\Common;
+
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'tags.php' );
@@ -306,5 +308,25 @@ class TestAddonTags extends TestCase {
 		];
 		$this->assertStringContainsString( 'apTagsTranslation', $localized_data );
 		$this->assertStringContainsString( wp_json_encode( $expected_data ), $localized_data );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::admin_tags_menu
+	 */
+	public function testAdminTagsMenu() {
+		$this->setRole( 'administrator' );
+		global $submenu;
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Test begins.
+		$instance->admin_tags_menu();
+		$this->assertNotEmpty( menu_page_url( 'edit-tags.php?taxonomy=question_tag', false ) );
+		$this->assertArrayHasKey( 'anspress', $submenu );
+		$this->assertContains( 'manage_options', $submenu['anspress'][0] );
+		$this->assertContains( 'Tags', $submenu['anspress'][0] );
+		$this->assertContains( 'Question Tags', $submenu['anspress'][0] );
+		$this->assertContains( 'edit-tags.php?taxonomy=question_tag', $submenu['anspress'][0] );
+		unset( $submenu['anspress'] );
+		$this->logout();
 	}
 }
