@@ -329,4 +329,44 @@ class TestAddonTags extends TestCase {
 		unset( $submenu['anspress'] );
 		$this->logout();
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::term_link_filter
+	 */
+	public function testTermLinkFilter() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Test begins.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term    = get_term_by( 'id', $term_id, 'question_tag' );
+
+		// Test 1.
+		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_category' );
+		$this->assertEquals( 'http://example.com/sample-page/', $result );
+
+		// Test 2.
+		update_option( 'permalink_structure', '' );
+		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_tag' );
+		$this->assertStringContainsString( 'ap_page=tag', $result );
+		$this->assertStringContainsString( 'question_tag=' . $term->slug, $result );
+		$this->assertEquals( home_url() . '?ap_page=tag&question_tag=' . $term->slug, $result );
+
+		// Test 3.
+		update_option( 'permalink_structure', '/%postname%/' );
+		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_tag' );
+		$this->assertStringContainsString( 'tags', $result );
+		$this->assertStringContainsString( $term->slug, $result );
+		$this->assertEquals( home_url() . '/tags/' . $term->slug, $result );
+
+		// Test 4.
+		update_option( 'ap_tags_path', 'tests' );
+		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_tag' );
+		$this->assertStringContainsString( 'tests', $result );
+		$this->assertStringContainsString( $term->slug, $result );
+		$this->assertEquals( home_url() . '/tests/' . $term->slug, $result );
+
+		// Reset options to default.
+		update_option( 'ap_tags_path', 'categories' );
+		update_option( 'permalink_structure', '' );
+	}
 }
