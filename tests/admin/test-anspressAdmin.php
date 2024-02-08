@@ -1210,4 +1210,37 @@ class TestAnsPressAdmin extends TestCase {
 		$result = \AnsPress_Admin::fix_active_admin_menu( 'test-screen' );
 		$this->assertEquals( 'test-screen', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::get_free_menu_position
+	 */
+	public function testGetFreeMenuPosition() {
+		global $menu;
+		$menu = [
+			5  => [ 'AnsPress', 'manage_options', 'anspress', 'AnsPress', 'menu-top toplevel_page_anspress', 'toplevel_page_anspress', 'dashicons-anspress' ],
+			10 => [ 'Questions', 'manage_options', 'questions', 'Questions', 'menu-top toplevel_page_questions', 'toplevel_page_questions', 'dashicons-questions' ],
+			15 => [ 'Answers', 'manage_options', 'answers', 'Answers', 'menu-top toplevel_page_answers', 'toplevel_page_answers', 'dashicons-answers' ],
+		];
+
+		// Test begins.
+		// Test 1.
+		$result = \AnsPress_Admin::get_free_menu_position( 10 );
+		$this->assertEquals( 10.99, $result );
+
+		// Test 2.
+		$result = \AnsPress_Admin::get_free_menu_position( 5, 0.5 );
+		$this->assertEquals( 5.5, $result );
+
+		// Test 3.
+		$result = \AnsPress_Admin::get_free_menu_position( 15, 0.15 );
+		$this->assertEquals( 15.15, $result );
+
+		// Test 4.
+		$result = \AnsPress_Admin::get_free_menu_position( 0 );
+		$this->assertEquals( 0, $result );
+
+		// Test 5.
+		$result = \AnsPress_Admin::get_free_menu_position( 20, 20 );
+		$this->assertEquals( 20, $result );
+	}
 }
