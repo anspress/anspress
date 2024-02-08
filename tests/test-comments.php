@@ -554,7 +554,7 @@ class TestComments extends TestCase {
 		$this->assertFalse( $result );
 
 		// Test 2.
-		$comment_date = date( 'Y-m-d H:i:s', strtotime( '-6 days' ) );
+		$comment_date = date( 'Y-m-d H:i:s', strtotime( '-5 days' ) );
 		wp_update_comment(
 			[
 				'comment_ID'       => $comment_id,
