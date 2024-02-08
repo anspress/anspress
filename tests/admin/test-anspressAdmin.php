@@ -1173,4 +1173,41 @@ class TestAnsPressAdmin extends TestCase {
 		$result = \AnsPress_Admin::tax_menu_correction( 'test-screen' );
 		$this->assertEquals( 'test-screen', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::fix_active_admin_menu
+	 */
+	public function testFixActiveAdminMenu() {
+		global $submenu_file, $current_screen;
+		$submenu_file = '';
+
+		// Test 1.
+		set_current_screen( 'question' );
+		$result = \AnsPress_Admin::fix_active_admin_menu( '' );
+		$this->assertEquals( 'anspress', $result );
+
+		// Test 2.
+		$current_screen = get_current_screen();
+		$current_screen->action = 'add';
+		$result = \AnsPress_Admin::fix_active_admin_menu( '' );
+		$this->assertEquals( 'anspress', $result );
+
+		// Test 3.
+		set_current_screen( 'question' );
+		$result = \AnsPress_Admin::fix_active_admin_menu( '' );
+		$this->assertEquals( 'anspress', $result );
+
+		// Test 4.
+		$current_screen = get_current_screen();
+		$current_screen->action = 'add';
+		$result = \AnsPress_Admin::fix_active_admin_menu( '' );
+		$this->assertEquals( 'anspress', $result );
+
+		// Test 5.
+		set_current_screen( 'post' );
+		$current_screen = get_current_screen();
+		$current_screen->action = 'edit';
+		$result = \AnsPress_Admin::fix_active_admin_menu( 'test-screen' );
+		$this->assertEquals( 'test-screen', $result );
+	}
 }
