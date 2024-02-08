@@ -859,4 +859,52 @@ class TestAddonCategories extends TestCase {
 		unset( $_REQUEST['category'] );
 		unset( $_REQUEST['id'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_list_filters
+	 */
+	public function testAPListFilters() {
+		global $wp;
+		$instance = \Anspress\Addons\Categories::init();
+		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $category_id, 'question_category' );
+
+		// Test begins.
+		// Test 1.
+		$wp->query_vars['ap_categories'] = '';
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$result = $instance->ap_list_filters( [] );
+		$this->assertIsArray( $result );
+		$this->assertEmpty( $result );
+
+		// Test 2.
+		$wp->query_vars['ap_categories'] = '';
+		$this->go_to( '/' );
+		$result = $instance->ap_list_filters( [] );
+		$this->assertIsArray( $result );
+		$this->assertNotEmpty( $result );
+		$expected_result = [
+			'category' => [
+				'title'    => 'Category',
+				'items'    => [],
+				'search'   => true,
+				'multiple' => true,
+			],
+		];
+		$this->assertEquals( $expected_result, $result );
+
+		// Test 3.
+		$wp->query_vars['ap_categories'] = '';
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		$filter_args = [
+			'category' => [
+				'title'       => 'Question Category',
+				'description' => 'Question Description',
+			],
+		];
+		$result = $instance->ap_list_filters( $filter_args );
+		$this->assertIsArray( $result );
+		$this->assertNotEmpty( $result );
+		$this->assertEqualSets( $filter_args, $result );
+	}
 }
