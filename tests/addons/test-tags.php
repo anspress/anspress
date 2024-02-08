@@ -369,4 +369,84 @@ class TestAddonTags extends TestCase {
 		update_option( 'ap_tags_path', 'categories' );
 		update_option( 'permalink_structure', '' );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_question_form_fields
+	 */
+	public function testAPQuestionFormFields() {
+		$instance = \Anspress\Addons\Tags::init();
+
+		// Create some question tags assign them to a question.
+		$term_id_1 = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term_id_2 = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term_id_3 = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$question_id = $this->insert_question();
+		wp_set_object_terms( $question_id, [ $term_id_2, $term_id_3 ], 'question_tag' );
+
+		// Test.
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertNotEmpty( $form );
+		$this->assertArrayHasKey( 'fields', $form );
+
+		// Test on tags field.
+		// Test 1.
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertArrayHasKey( 'tags', $form['fields'] );
+		$expected_tags = [
+			'label'      => 'Tags',
+			'desc'       => sprintf(
+				'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.',
+				ap_opt( 'min_tags' ),
+				ap_opt( 'max_tags' )
+			),
+			'type'       => 'tags',
+			'array_max'  => ap_opt( 'max_tags' ),
+			'array_min'  => ap_opt( 'min_tags' ),
+			'js_options' => array(
+				'create' => true,
+			),
+		];
+		$this->assertEquals( $expected_tags, $form['fields']['tags'] );
+
+		// Test 2.
+		ap_opt( 'min_tags', 2 );
+		ap_opt( 'max_tags', 10 );
+		$form = $instance->ap_question_form_fields( [] );
+		$expected_tags = [
+			'label'      => 'Tags',
+			'desc'       => 'Tagging will helps others to easily find your question. Minimum 2 and maximum 10 tags.',
+			'type'       => 'tags',
+			'array_max'  => 10,
+			'array_min'  => 2,
+			'js_options' => array(
+				'create' => true,
+			),
+		];
+		$this->assertEquals( $expected_tags, $form['fields']['tags'] );
+		ap_opt( 'min_tags', 1 );
+		ap_opt( 'max_tags', 5 );
+
+		// Test if padding editing id.
+		$_REQUEST['id'] = $question_id;
+		$form = $instance->ap_question_form_fields( [] );
+		$this->assertArrayHasKey( 'value', $form['fields']['tags'] );
+		$this->assertEquals( [ $term_id_2, $term_id_3 ], $form['fields']['tags']['value'] );
+		$expected_tags = [
+			'label'      => 'Tags',
+			'desc'       => sprintf(
+				'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.',
+				ap_opt( 'min_tags' ),
+				ap_opt( 'max_tags' )
+			),
+			'type'       => 'tags',
+			'array_max'  => ap_opt( 'max_tags' ),
+			'array_min'  => ap_opt( 'min_tags' ),
+			'js_options' => array(
+				'create' => true,
+			),
+			'value'      => [ $term_id_2, $term_id_3 ],
+		];
+		$this->assertEquals( $expected_tags, $form['fields']['tags'] );
+		unset( $_REQUEST['id'] );
+	}
 }
