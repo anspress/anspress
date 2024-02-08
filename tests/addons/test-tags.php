@@ -449,4 +449,83 @@ class TestAddonTags extends TestCase {
 		$this->assertEquals( $expected_tags, $form['fields']['tags'] );
 		unset( $_REQUEST['id'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_list_filters
+	 */
+	public function testAPListFilters() {
+		global $wp;
+		$instance = \Anspress\Addons\Tags::init();
+		$tag_id = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term = get_term_by( 'id', $tag_id, 'question_tag' );
+		$tags_page = $this->factory()->post->create(
+			[
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => 'Tags',
+			]
+		);
+		ap_opt( 'tags_page', $tags_page );
+
+		// Test begins.
+		// Test 1.
+		$wp->query_vars['ap_tags'] = '';
+		$this->go_to( '/?post_type=page&p=' . $tags_page );
+		$result = $instance->ap_list_filters( [] );
+		$this->assertIsArray( $result );
+		$this->assertNoTEmpty( $result );
+		$this->assertArrayHasKey( 'tags_order', $result );
+		$this->assertArrayNotHasKey( 'qtag', $result );
+		$expected_result = [
+			'tags_order' => [
+				'title' => 'Order',
+			],
+		];
+		$this->assertEquals( $expected_result, $result );
+
+		// Test 2.
+		$wp->query_vars['ap_tags'] = '';
+		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
+		$result = $instance->ap_list_filters( [] );
+		$this->assertIsArray( $result );
+		$this->assertNoTEmpty( $result );
+		$this->assertArrayHasKey( 'qtag', $result );
+		$this->assertArrayNotHasKey( 'tags_order', $result );
+		$expected_result = [
+			'qtag' => [
+				'title'    => 'Tag',
+				'search'   => true,
+				'multiple' => true,
+			],
+		];
+		$this->assertEquals( $expected_result, $result );
+
+		// Test 3.
+		$wp->query_vars['ap_tags'] = '';
+		$this->go_to( '/' );
+		$filter_args = [
+			'tag' => [
+				'title'       => 'Question Tag',
+				'description' => 'Question Description',
+			],
+		];
+		$result = $instance->ap_list_filters( $filter_args );
+		$this->assertIsArray( $result );
+		$this->assertNoTEmpty( $result );
+		$this->assertArrayHasKey( 'tag', $result );
+		$this->assertArrayHasKey( 'qtag', $result );
+		$this->assertArrayNotHasKey( 'tags_order', $result );
+		$expected_result = [
+			'qtag' => [
+				'title'    => 'Tag',
+				'search'   => true,
+				'multiple' => true,
+			],
+			'tag'  => [
+				'title'       => 'Question Tag',
+				'description' => 'Question Description',
+			],
+		];
+		$this->assertEquals( $expected_result, $result );
+	}
 }
