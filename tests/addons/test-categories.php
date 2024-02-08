@@ -735,4 +735,23 @@ class TestAddonCategories extends TestCase {
 		$result = $instance->ap_load_admin_assets( false );
 		$this->assertTrue( $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::admin_category_menu
+	 */
+	public function testAdminCategoryMenu() {
+		$this->setRole( 'administrator' );
+		global $submenu;
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test begins.
+		$instance->admin_category_menu();
+		$this->assertNotEmpty( menu_page_url( 'edit-tags.php?taxonomy=question_category', false ) );
+		$this->assertArrayHasKey( 'anspress', $submenu );
+		$this->assertContains( 'manage_options', $submenu['anspress'][0] );
+		$this->assertContains( 'Question Categories', $submenu['anspress'][0] );
+		$this->assertContains( 'edit-tags.php?taxonomy=question_category', $submenu['anspress'][0] );
+		unset( $submenu['anspress'] );
+		$this->logout();
+	}
 }
