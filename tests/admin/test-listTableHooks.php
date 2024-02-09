@@ -375,4 +375,126 @@ class TestListTableHooks extends TestCase {
 			$this->assertEquals( $value, $flag_link[ $key ] );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::posts_clauses
+	 */
+	public function testPostsClauses() {
+		global $pagenow, $wpdb;
+		$sql = [
+			'join'    => '',
+			'fields'  => '',
+			'where'   => '',
+			'orderby' => '',
+		];
+		$instance = new \stdClass();
+		$hooks = new \AnsPress_Post_Table_Hooks();
+
+		// Test begins.
+		// Test 1.
+		$instance->query_vars = [ 'post_type' => 'post' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertEmpty( $clauses['join'] );
+		$this->assertEmpty( $clauses['fields'] );
+
+		// Test 2.
+		$instance->query_vars = [ 'post_type' => 'question' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertEmpty( $clauses['where'] );
+		$this->assertEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+
+		// Test 3.
+		$pagenow = 'edit.php';
+		$instance->query_vars = [ 'post_type' => 'answer' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertEmpty( $clauses['where'] );
+		$this->assertEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+
+		// Test 4.
+		$pagenow = 'edit.php';
+		$_REQUEST['flagged'] = 1;
+		$instance->query_vars = [ 'post_type' => 'answer' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertNotEmpty( $clauses['where'] );
+		$this->assertNotEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+		$this->assertEquals( " AND qameta.flags > 0", $clauses['where'] );
+		$this->assertEquals( " qameta.flags DESC, ", $clauses['orderby'] );
+		unset( $_REQUEST['flagged'] );
+		$pagenow = '';
+
+		// Test 5.
+		$_REQUEST['orderby'] = 'flags';
+		$_REQUEST['order']   = 'desc';
+		$instance->query_vars = [ 'post_type' => 'question' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertEmpty( $clauses['where'] );
+		$this->assertNotEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+		$this->assertEquals( " qameta.flags desc", $clauses['orderby'] );
+		unset( $_REQUEST['orderby'] );
+		unset( $_REQUEST['order'] );
+
+		// Test 6.
+		$_REQUEST['orderby'] = 'votes';
+		$_REQUEST['order']   = 'asc';
+		$instance->query_vars = [ 'post_type' => 'question' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertEmpty( $clauses['where'] );
+		$this->assertNotEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+		$this->assertEquals( " votes_net asc", $clauses['orderby'] );
+		unset( $_REQUEST['orderby'] );
+		unset( $_REQUEST['order'] );
+
+		// Test 7.
+		$_REQUEST['orderby'] = 'answers';
+		$_REQUEST['order']   = 'desc';
+		$instance->query_vars = [ 'post_type' => 'question' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertEmpty( $clauses['where'] );
+		$this->assertNotEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+		$this->assertEquals( " qameta.answers desc", $clauses['orderby'] );
+		unset( $_REQUEST['orderby'] );
+		unset( $_REQUEST['order'] );
+
+		// Test 8.
+		$pagenow = 'edit.php';
+		$_REQUEST['orderby'] = 'flags';
+		$_REQUEST['flagged'] = 1;
+		$instance->query_vars = [ 'post_type' => 'answer' ];
+		$clauses = $hooks::posts_clauses( $sql, $instance );
+		$this->assertNotEmpty( $clauses['join'] );
+		$this->assertNotEmpty( $clauses['fields'] );
+		$this->assertNotEmpty( $clauses['where'] );
+		$this->assertNotEmpty( $clauses['orderby'] );
+		$this->assertEquals( " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID", $clauses['join'] );
+		$this->assertEquals( ", qameta.*, qameta.votes_up - qameta.votes_down AS votes_net", $clauses['fields'] );
+		$this->assertEquals( " AND qameta.flags > 0", $clauses['where'] );
+		$this->assertEquals( " qameta.flags desc", $clauses['orderby'] );
+		$this->assertNotEquals( " qameta.flags DESC, ", $clauses['orderby'] );
+		unset( $_REQUEST['orderby'] );
+		unset( $_REQUEST['flagged'] );
+	}
 }
