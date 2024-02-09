@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestCommonPages extends TestCase {
 
+	use Testcases\Common;
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Common_Pages', 'register_common_pages' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Common_Pages', 'base_page' ) );
@@ -79,5 +81,92 @@ class TestCommonPages extends TestCase {
 		\AnsPress_Common_Pages::set_404();
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Error 404', $output );
+	}
+
+	public function APQuestionPagePermissionMsg( $msg ) {
+		return 'This is a custom message';
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::question_permission_msg
+	 */
+	public function testQuestionPermissionMsg() {
+		$instance = new \AnsPress_Common_Pages();
+		$reflection = new \ReflectionClass( $instance );
+		$method = $reflection->getMethod( 'question_permission_msg' );
+		$method->setAccessible( true );
+
+		// Test 1.
+		$question = $this->factory()->post->create_and_get( [ 'post_type' => 'question' ] );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertFalse( $result );
+
+		// Test 2.
+		$question = $this->factory()->post->create_and_get( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertEquals( 'This question is awaiting moderation and cannot be viewed. Please check back later.', $result );
+
+		// Test 3.
+		$this->setRole( 'subscriber' );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertEquals( 'This question is awaiting moderation and cannot be viewed. Please check back later.', $result );
+
+		// Test 4.
+		$this->setRole( 'administrator' );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertFalse( $result );
+		$this->logout();
+
+		// Test 5.
+		$question = $this->factory()->post->create_and_get( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertEquals( 'Sorry! you are not allowed to read this question.', $result );
+
+		// Test 6.
+		$this->setRole( 'subscriber' );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertEquals( 'Sorry! you are not allowed to read this question.', $result );
+
+		// Test 7.
+		$this->setRole( 'administrator' );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertFalse( $result );
+		$this->logout();
+
+		// Test 8.
+		$question = $this->factory()->post->create_and_get( [ 'post_type' => 'question', 'post_status' => 'future', 'post_date' => '9999-12-31 23:59:59' ] );
+		$time_to_publish = human_time_diff( strtotime( $question->post_date ), ap_get_current_timestamp() );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertStringContainsString( 'Question will be published in', $result );
+		$this->assertStringContainsString( $time_to_publish, $result );
+		$this->assertStringContainsString( '<strong>Question will be published in ' . $time_to_publish . '</strong>', $result );
+		$this->assertStringContainsString( '<p>This question is not published yet and is not accessible to anyone until it get published.</p>', $result );
+
+		// Test 9.
+		$this->setRole( 'subscriber' );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertStringContainsString( 'Question will be published in', $result );
+		$this->assertStringContainsString( $time_to_publish, $result );
+		$this->assertStringContainsString( '<strong>Question will be published in ' . $time_to_publish . '</strong>', $result );
+		$this->assertStringContainsString( '<p>This question is not published yet and is not accessible to anyone until it get published.</p>', $result );
+
+		// Test 10.
+		$this->setRole( 'administrator' );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertFalse( $result );
+		$this->logout();
+
+		// Test 11.
+		add_filter( 'ap_question_page_permission_msg', [ $this, 'APQuestionPagePermissionMsg' ] );
+		$question = $this->factory()->post->create_and_get( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertEquals( 'This is a custom message', $result );
+		$this->assertNotEquals( 'This question is awaiting moderation and cannot be viewed. Please check back later.', $result );
+		remove_filter( 'ap_question_page_permission_msg', [ $this, 'APQuestionPagePermissionMsg' ] );
+
+		// Test 12.
+		$result = $method->invokeArgs( $instance, [ $question ] );
+		$this->assertNotEquals( 'This is a custom message', $result );
+		$this->assertEquals( 'This question is awaiting moderation and cannot be viewed. Please check back later.', $result );
 	}
 }
