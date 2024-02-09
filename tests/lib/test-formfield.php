@@ -62,4 +62,30 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress\Form\Field', 'after_save' ) );
 		$this->assertTrue( method_exists( 'AnsPress\Form\Field', 'save_cb' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::field_wrap_start
+	 * @covers AnsPress\Form\Field::field_wrap_end
+	 */
+	public function testFieldWrapStartEnd() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test begins.
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEquals( '', $property->getValue( $field ) );
+
+		// Test for field_wrap_start.
+		$method = $reflection->getMethod( 'field_wrap_start' );
+		$method->setAccessible( true );
+		$method->invoke( $field );
+		$this->assertStringContainsString( '<div class="ap-field-group-w">', $property->getValue( $field ) );
+
+		// Test for field_wrap_end.
+		$method = $reflection->getMethod( 'field_wrap_end' );
+		$method->setAccessible( true );
+		$method->invoke( $field );
+		$this->assertStringContainsString( '</div>', $property->getValue( $field ) );
+	}
 }
