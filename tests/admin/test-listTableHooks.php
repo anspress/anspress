@@ -235,4 +235,94 @@ class TestListTableHooks extends TestCase {
 		$this->assertNull( $screen );
 		$this->assertEquals( 10, has_action( 'comments_clauses', [ 'AnsPress_Admin', 'filter_comments_query' ] ) );
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::flag_view
+	 */
+	public function testFlagView() {
+		global $post_type_object;
+		$post_type_object = new \stdClass();
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+
+		// Test begins.
+		// Test for question post type.
+		// Test 1.
+		$post_type_object->name = 'question';
+		$views = $hooks::flag_view( [] );
+		$expected = [
+			'flagged' => '<a href="edit.php?flagged=true&#038;post_type=question">Flagged <span class="count">(0)</span></a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+
+		// Test 2.
+		$_REQUEST['flagged'] = 1;
+		$views = $hooks::flag_view( [] );
+		$expected = [
+			'flagged' => '<a class="current" href="edit.php?flagged=true&#038;post_type=question">Flagged <span class="count">(0)</span></a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+		unset( $_REQUEST['flagged'] );
+
+		// Test 3.
+		ap_add_flag( $question_id );
+		ap_update_flags_count( $question_id );
+		$views = $hooks::flag_view( [] );
+		$expected = [
+			'flagged' => '<a href="edit.php?flagged=true&#038;post_type=question">Flagged <span class="count">(1)</span></a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+
+		// Test for answer post type.
+		// Test 1.
+		$post_type_object->name = 'answer';
+		$views = $hooks::flag_view( [] );
+		$expected = [
+			'flagged' => '<a href="edit.php?flagged=true&#038;post_type=answer">Flagged <span class="count">(0)</span></a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+
+		// Test 2.
+		$_REQUEST['flagged'] = 1;
+		$views = $hooks::flag_view( [] );
+		$expected = [
+			'flagged' => '<a class="current" href="edit.php?flagged=true&#038;post_type=answer">Flagged <span class="count">(0)</span></a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+		unset( $_REQUEST['flagged'] );
+
+		// Test 3.
+		ap_add_flag( $answer_id );
+		ap_update_flags_count( $answer_id );
+		$views = $hooks::flag_view( [] );
+		$expected = [
+			'flagged' => '<a href="edit.php?flagged=true&#038;post_type=answer">Flagged <span class="count">(1)</span></a>',
+		];
+		$this->assertEquals( $expected, $views );
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $views );
+			$this->assertEquals( $value, $views[ $key ] );
+		}
+	}
 }
