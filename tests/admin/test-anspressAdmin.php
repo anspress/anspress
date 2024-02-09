@@ -1321,4 +1321,24 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertArrayHasKey( 'join', $result );
 		$this->assertEquals( "JOIN $wpdb->commentmeta ON $wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id AND meta_key = '_ap_flag'", $result['join'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::join_by_author_name
+	 */
+	public function testJoinByAuthorName() {
+		global $wpdb;
+		$query = new \stdClass();
+		$query->query_vars['ap_author_name'] = [ 'author_1', 'author_2', 'author_3' ];
+
+		// Test 1.
+		$result = \AnsPress_Admin::join_by_author_name( [ 'test' => 'Test Pieces' ], [] );
+		$this->assertArrayNotHasKey( 'join', $result );
+		$this->assertArrayHasKey( 'test', $result );
+		$this->assertEquals( [ 'test' => 'Test Pieces' ], $result );
+
+		// Test 2.
+		$result = \AnsPress_Admin::join_by_author_name( [], $query );
+		$this->assertArrayHasKey( 'join', $result );
+		$this->assertEquals( " JOIN $wpdb->users users ON users.ID = $wpdb->posts.post_author AND users.user_login IN ('author_1','author_2','author_3')", $result['join'] );
+	}
 }
