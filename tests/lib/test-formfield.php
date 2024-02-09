@@ -88,4 +88,40 @@ class TestAnsPressFormField extends TestCase {
 		$method->invoke( $field );
 		$this->assertStringContainsString( '</div>', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::sanitize_cb_args
+	 */
+	public function testSanitizeCbArgs() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb_args' );
+		$method->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$result = $method->invoke( $field, '' );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ '' ], $result );
+
+		// Test 2.
+		$result = $method->invoke( $field, 'test_cb' );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'test_cb' ], $result );
+
+		// Test 3.
+		$result = $method->invoke( $field, [ 'callback' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ [ 'callback' ] ], $result );
+
+		// Test 4.
+		$result = $method->invoke( $field, [ 'test_1', 'test_2' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ [ 'test_1', 'test_2' ] ], $result );
+
+		// Test 5.
+		$result = $method->invoke( $field, [ 'callback_1' => 'Test Callback 2', 'callback_2' => 'Test Callback 2' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ [ 'callback_1' => 'Test Callback 2', 'callback_2' => 'Test Callback 2' ] ], $result );
+	}
 }
