@@ -455,8 +455,8 @@ if ( $columns ) {
 								</a>
 							</li>
 							<li>
-								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/">
-									<?php esc_html_e( 'Documents and FAQ', 'anspress-question-answer' ); ?>
+								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/" target="_blank">
+									<?php esc_attr_e( 'Documentations and FAQ', 'anspress-question-answer' ); ?>
 								</a>
 							</li>
 						</ul>
