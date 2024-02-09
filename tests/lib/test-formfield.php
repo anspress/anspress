@@ -124,4 +124,20 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertIsArray( $result );
 		$this->assertEquals( [ [ 'callback_1' => 'Test Callback 2', 'callback_2' => 'Test Callback 2' ] ], $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::have_errors
+	 */
+	public function testHaveErrors() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test begins.
+		// Test 1.
+		$field->errors = [];
+		$this->assertFalse( $field->have_errors() );
+
+		// Test 2.
+		$field->errors = [ 'error' ];
+		$this->assertTrue( $field->have_errors() );
+	}
 }
