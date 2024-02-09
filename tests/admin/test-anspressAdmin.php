@@ -1260,4 +1260,48 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'AnsPress', $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high']['anspress-menu-mb']['title'] );
 		$this->assertEquals( [ 'AnsPress_Admin', 'render_menu' ], $GLOBALS['wp_meta_boxes']['nav-menus']['side']['high']['anspress-menu-mb']['callback'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::render_menu
+	 */
+	public function testRenderMenu() {
+		// Require files holding Walker_Nav_Menu_Checklist class and wp_nav_menu_disabled_check function.
+		if ( ! class_exists( 'Walker_Nav_Menu_Checklist' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-walker-nav-menu-checklist.php';
+		}
+		if ( ! function_exists( 'wp_nav_menu_disabled_check' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
+		}
+
+		// Test.
+		ob_start();
+		\AnsPress_Admin::render_menu();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<div id="anspress-div">', $output );
+		$this->assertStringContainsString( '<div id="tabs-panel-anspress-all" class="tabs-panel tabs-panel-active">', $output );
+		$this->assertStringContainsString( '<ul id="anspress-checklist-pop" class="categorychecklist form-no-clear" >', $output );
+		$this->assertStringContainsString( '<p class="button-controls">', $output );
+		$this->assertStringContainsString( '<span class="list-controls">', $output );
+		$this->assertStringContainsString( '#anspress-menu-mb" class="select-all"', $output );
+		$this->assertStringContainsString( 'Select All', $output );
+		$this->assertStringContainsString( '<span class="add-to-menu">', $output );
+		$this->assertStringContainsString( 'class="button-secondary submit-add-to-menu right" value="Add to Menu" name="add-anspress-menu-item" id="submit-anspress-div"', $output );
+		$this->assertStringContainsString( 'input type="submit"', $output );
+		$this->assertStringContainsString( '<span class="spinner"></span>', $output );
+		$this->assertStringContainsString( 'anspress-all=all', $output );
+		$this->assertStringContainsString( 'selectall=1', $output );
+		$this->assertStringContainsString( 'Questions', $output );
+		$this->assertStringContainsString( 'Ask a Question', $output );
+		$this->assertStringContainsString( 'Categories', $output );
+		$this->assertStringContainsString( 'Tags', $output );
+		$this->assertStringContainsString( 'User profile', $output );
+		$this->assertStringContainsString( 'Notifications', $output );
+		$this->assertStringContainsString( 'value="anspress-links"', $output );
+		$this->assertStringContainsString( 'value="anspress-menu-base"', $output );
+		$this->assertStringContainsString( 'value="anspress-menu-ask"', $output );
+		$this->assertStringContainsString( 'value="anspress-menu-categories"', $output );
+		$this->assertStringContainsString( 'value="anspress-menu-tags"', $output );
+		$this->assertStringContainsString( 'value="anspress-menu-user"', $output );
+		$this->assertStringContainsString( 'value="anspress-menu-notifications"', $output );
+	}
 }
