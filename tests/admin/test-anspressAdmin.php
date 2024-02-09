@@ -1304,4 +1304,21 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( 'value="anspress-menu-user"', $output );
 		$this->assertStringContainsString( 'value="anspress-menu-notifications"', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::filter_comments_query
+	 */
+	public function testFilterCommentsQuery() {
+		global $wpdb;
+
+		// Test 1.
+		$result = \AnsPress_Admin::filter_comments_query( [] );
+		$this->assertArrayHasKey( 'join', $result );
+		$this->assertEquals( "JOIN $wpdb->commentmeta ON $wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id AND meta_key = '_ap_flag'", $result['join'] );
+
+		// Test 2.
+		$result = \AnsPress_Admin::filter_comments_query( [ 'join' => 'test-join' ] );
+		$this->assertArrayHasKey( 'join', $result );
+		$this->assertEquals( "JOIN $wpdb->commentmeta ON $wpdb->comments.comment_ID = $wpdb->commentmeta.comment_id AND meta_key = '_ap_flag'", $result['join'] );
+	}
 }
