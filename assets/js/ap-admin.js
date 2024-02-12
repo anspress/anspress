@@ -217,7 +217,7 @@ APjs.admin = function () { };
 
 		$('#' + $('#ap-tools-selectroles').val()).slideDown();
 
-		$('#ap-tools-selectroles').change(function () {
+		$('#ap-tools-selectroles').on( 'change', function () {
 			var id = '#' + $(this).val();
 			$('.ap-tools-roleitem').hide();
 			$(id).fadeIn(300);
