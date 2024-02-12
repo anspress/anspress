@@ -175,4 +175,29 @@ class TestAnsPressFormField extends TestCase {
 		$field->add_html( '<span class="question-answer-form">QA Form</span>' );
 		$this->assertEquals( 'Test HTMLAnother Test HTML<span class="question-answer-form">QA Form</span>', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::pre_get
+	 */
+	public function testPreGet() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$result = $field->pre_get();
+		$this->assertNull( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::after_save
+	 */
+	public function testAfterSave() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test 1.
+		$args = [ 'post_id' => $this->factory->post->create( [ 'post_type' => 'question' ] ) ];
+		$result = $field->after_save( $args );
+		$this->assertNull( $result );
+
+		// Test 2.
+		$result = $field->after_save( $args );
+		$this->assertNull( $result );
+	}
 }
