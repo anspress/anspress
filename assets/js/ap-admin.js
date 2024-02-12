@@ -170,7 +170,6 @@ APjs.admin = function () { };
 					if (typeof textJSON !== 'undefined' && textJSON.length > 2) {
 						data = JSON.parse(textJSON);
 					}
-					console.log(data);
 					if (typeof data['html'] !== 'undefined')
 						jQuery('#similar_suggestions').html(data['html']);
 				},
