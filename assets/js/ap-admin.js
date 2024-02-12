@@ -153,6 +153,11 @@ APjs.admin = function () { };
 	}
 
 	$(document).ready(function () {
+		// Disable question form submit.
+		$( '.question-selection' ).on( 'submit', function( event ) {
+			event.preventDefault();
+		} );
+
 		$('#select-question-for-answer').on('keyup', function () {
 			const value = jQuery( this ).val();
 			if ( '' == value.trim() )
