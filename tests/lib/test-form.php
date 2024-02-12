@@ -40,4 +40,44 @@ class TestAnsPressForm extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress\Form', 'save_values_session' ) );
 		$this->assertTrue( method_exists( 'AnsPress\Form', 'delete_values_session' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form::add_error
+	 * @covers AnsPress\Form::have_errors
+	 */
+	public function testAddHaveErrors() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+
+		// Test begins.
+		// Before adding any error.
+		$this->assertFalse( $form->have_errors() );
+		$this->assertEmpty( $form->errors );
+		$this->assertIsArray( $form->errors );
+
+		// After adding some errors.
+		// Test 1.
+		$error_code = 'test_error';
+		$error_msg = 'This is a test error message';
+		$form->add_error( $error_code, $error_msg );
+		$this->assertTrue( $form->have_errors() );
+		$this->assertNotEmpty( $form->errors );
+		$this->assertIsArray( $form->errors );
+		$expected = [
+			'test_error' => 'This is a test error message',
+		];
+		$this->assertEquals( $expected, $form->errors );
+
+		// Test 2.
+		$error_code = 'new_error';
+		$error_msg = 'This is a new error message';
+		$form->add_error( $error_code, $error_msg );
+		$this->assertTrue( $form->have_errors() );
+		$this->assertNotEmpty( $form->errors );
+		$this->assertIsArray( $form->errors );
+		$expected = [
+			'test_error' => 'This is a test error message',
+			'new_error' => 'This is a new error message',
+		];
+		$this->assertEquals( $expected, $form->errors );
+	}
 }
