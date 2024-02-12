@@ -342,6 +342,7 @@ class TestUpload extends TestCase {
 	 * @covers AnsPress_Uploader::cron_delete_temp_attachments
 	 */
 	public function testCronDeleteTempAttachments() {
+		$this->assertEquals( 10, has_action( 'ap_delete_temp_attachments', [ 'AnsPress_Uploader', 'cron_delete_temp_attachments' ] ) );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$attachment_ids = [
@@ -401,5 +402,50 @@ class TestUpload extends TestCase {
 		// Test for ap_update_user_temp_media_count function being called.
 		$user_meta = get_user_meta( get_current_user_id(), '_ap_temp_media', true );
 		$this->assertEmpty( $user_meta );
+	}
+
+	/**
+	 * @covers AnsPress_Uploader::deleted_attachment
+	 */
+	public function testDeletedAttachment() {
+		$this->assertEquals( 10, has_action( 'deleted_post', [ 'AnsPress_Uploader', 'deleted_attachment' ] ) );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment', 'post_title' => '_ap_temp_media', 'post_parent' => $question_id ] );
+
+		// Test before the method is called.
+		// Test for attachment available.
+		$attachment = get_post( $attachment_id );
+		$this->assertIsObject( $attachment );
+
+		// Test for user meta for temp media.
+		ap_update_user_temp_media_count();
+		$user_meta = get_user_meta( get_current_user_id(), '_ap_temp_media', true );
+		$this->assertNotEmpty( $user_meta );
+
+		// Test for question having attachments.
+		ap_update_post_attach_ids( $question_id );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertTrue( ap_have_attach() );
+		$this->go_to( '/' );
+
+		// Call the method.
+		// \AnsPress_Uploader::deleted_attachment( $attachment_id );
+		// This method is triggered on 'deleted_post' action,
+		// so we need to delete the attachment using wp_delete_attachment function.
+		wp_delete_attachment( $attachment_id, true );
+
+		// Test for attachment available.
+		$attachment = get_post( $attachment_id );
+		$this->assertNull( $attachment );
+
+		// Test after the method is called.
+		// Test for ap_update_user_temp_media_count function being called.
+		$user_meta = get_user_meta( get_current_user_id(), '_ap_temp_media', true );
+		$this->assertEmpty( $user_meta );
+
+		// Test for ap_update_post_attach_ids function being called.
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertFalse( ap_have_attach() );
 	}
 }
