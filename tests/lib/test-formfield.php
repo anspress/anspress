@@ -200,4 +200,28 @@ class TestAnsPressFormField extends TestCase {
 		$result = $field->after_save( $args );
 		$this->assertNull( $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::field_markup
+	 */
+	public function testFieldMarkup() {
+		// Set up the action hook callback
+		$callback_triggered = false;
+		add_action( 'ap_before_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Before the action is triggered.
+		$this->assertFalse( $callback_triggered );
+		$this->assertFalse( did_action( 'ap_before_field_markup' ) > 0 );
+
+		// After the action is triggered.
+		$field->field_markup();
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_before_field_markup' ) > 0 );
+	}
 }
