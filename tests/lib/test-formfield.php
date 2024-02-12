@@ -140,4 +140,39 @@ class TestAnsPressFormField extends TestCase {
 		$field->errors = [ 'error' ];
 		$this->assertTrue( $field->have_errors() );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::add_html
+	 */
+	public function testAddHTML() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Test 2.
+		$field->add_html( '' );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$this->assertEquals( '', $property->getValue( $field ) );
+
+		// Test 3.
+		$field->add_html( 'Test HTML' );
+		$this->assertEquals( 'Test HTML', $property->getValue( $field ) );
+
+		// Test 4.
+		$field->add_html( 'Another Test HTML' );
+		$this->assertEquals( 'Test HTMLAnother Test HTML', $property->getValue( $field ) );
+
+		// Test 5.
+		$field->add_html( '' );
+		$this->assertEquals( 'Test HTMLAnother Test HTML', $property->getValue( $field ) );
+
+		// Test 6.
+		$field->add_html( '<span class="question-answer-form">QA Form</span>' );
+		$this->assertEquals( 'Test HTMLAnother Test HTML<span class="question-answer-form">QA Form</span>', $property->getValue( $field ) );
+	}
 }
