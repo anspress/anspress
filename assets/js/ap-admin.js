@@ -154,7 +154,8 @@ APjs.admin = function () { };
 
 	$(document).ready(function () {
 		$('#select-question-for-answer').on('keyup', function () {
-			if (jQuery.trim(jQuery(this).val()) == '')
+			const value = jQuery( this ).val();
+			if ( '' == value.trim() )
 				return;
 			jQuery.ajax({
 				type: 'POST',
