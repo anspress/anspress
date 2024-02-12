@@ -231,6 +231,15 @@ APjs.admin = function () { };
 			$(id).fadeIn(300);
 		})
 
+		// Submit category form on categories admin page.
+		$( document ).ajaxSuccess( function() {
+			if ( ! $( '.taxonomy-question_category #addtag .form-invalid' ).length ) {
+				$( 'input[data-action="ap_media_value"]' ).val( '' );
+				$( 'img[data-action="ap_media_value"]' ).remove();
+				$( 'a[data-action=ap_media_remove]' ).remove();
+				$( '.term-image-wrap' ).find( '.wp-picker-clear' ).trigger( 'click' );
+			}
+		} );
 	});
 
 })(jQuery);
