@@ -202,18 +202,21 @@ APjs.admin = function () { };
 				jQuery($btn.data('urlc')).val(image_url);
 				jQuery($btn.data('idc')).val(image_id);
 
-				if (!jQuery($btn.data('urlc')).prev().is('img'))
-					jQuery($btn.data('urlc')).before('<img id="ap_category_media_preview" src="' + image_url + '" />');
-				else
+				if (!jQuery($btn.data('urlc')).prev().is('img')) {
+					jQuery($btn.data('urlc')).before('<img id="ap_category_media_preview" data-action="ap_media_value" src="' + image_url + '" />');
+					jQuery($btn.data("idc")).after('<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">'+ removeImage + "</a>");
+				} else {
 					jQuery($btn.data('urlc')).prev().attr('src', image_url);
+				}
 			});
 		});
 
-		$('[data-action="ap_media_remove"]').on('click', function (e) {
+		$( document ).on( 'click', '[data-action="ap_media_remove"]', function (e) {
 			e.preventDefault();
 			$('input[data-action="ap_media_value"]').val('');
 			$('img[data-action="ap_media_value"]').remove();
-		});
+			$( this ).remove();
+		} );
 
 		$('.checkall').on('click', function () {
 			var checkbox = $(this).closest('.ap-tools-ck').find('input[type="checkbox"]:not(.checkall)');
