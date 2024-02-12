@@ -1,1 +1,228 @@
-jQuery((function(){jQuery.fn.apAjaxQueryString=function(){var t=jQuery(this).data("query").split("::"),a={action:"ap_ajax"};a.ap_ajax_action=t[0],a.__nonce=t[1],a.args={};var e=0;return jQuery.each(t,(function(i){0!=i&&1!=i&&(a.args[e]=t[i],e++)})),a},APjs.admin=new APjs.admin,APjs.admin.initialize()})),window.APjs={},APjs.admin=function(){},function(t){APjs.admin.prototype={initialize:function(){this.renameTaxo(),this.editPoints(),this.savePoints(),this.deleteFlag(),this.ajaxBtn()},renameTaxo:function(){jQuery(".ap-rename-taxo").on("click",(function(t){return t.preventDefault(),jQuery.ajax({url:ajaxurl,data:{action:"ap_taxo_rename"},context:this,success:function(t){jQuery(this).closest(".error").remove(),location.reload()}}),!1}))},editPoints:function(){jQuery(".wp-admin").on("click",'[data-action="ap-edit-reputation"]',(function(t){t.preventDefault(),t=jQuery(this).attr("href"),jQuery.ajax({type:"POST",url:ajaxurl,data:{action:"ap_edit_reputation",id:t},context:this,dataType:"json",success:function(t){t.status&&(jQuery("#ap-reputation-edit").remove(),jQuery("#anspress-reputation-table").hide(),jQuery("#anspress-reputation-table").after(t.html))}})}))},savePoints:function(){jQuery(".wp-admin").on("submit",'[data-action="ap-save-reputation"]',(function(t){return t.preventDefault(),jQuery(".button-primary",this).attr("disabled","disabled"),jQuery(this).attr("href"),jQuery.ajax({type:"POST",url:ajaxurl,cache:!1,data:jQuery(this).serialize({checkboxesAsBools:!0}),context:this,dataType:"json",success:function(t){t.status&&jQuery(".wrap").empty().html(t.html)}}),!1}))},deleteFlag:function(){jQuery('[data-action="ap-delete-flag"]').on("click",(function(t){t.preventDefault(),jQuery.ajax({type:"POST",url:ajaxurl,data:jQuery(this).attr("href"),context:this,success:function(t){jQuery(this).closest(".flag-item").remove()}})}))},ajaxBtn:function(){t(".ap-ajax-btn").on("click",(function(a){a.preventDefault(),a=t(this).apAjaxQueryString(),t.ajax({url:ajaxurl,data:a,context:this,type:"POST",success:function(a){var e;void 0!==t(this).data("cb")&&(e=t(this).data("cb"),"function"==typeof APjs.admin[e]&&APjs.admin[e](a,this))}})}))},replaceText:function(a,e){t(e).closest("li").find("strong").text(a)}},t(document).ready((function(){t(".question-selection").on("submit",(function(t){t.preventDefault()})),t("#select-question-for-answer").on("keyup",(function(){var t=jQuery(this).val();""!=t.trim()&&jQuery.ajax({type:"POST",url:ajaxurl,data:{action:"ap_ajax",ap_ajax_action:"suggest_similar_questions",value:t,is_admin:!0},success:function(t){var a=jQuery(t).filter("#ap-response").html();void 0!==a&&2<a.length&&(t=JSON.parse(a)),void 0!==t.html&&jQuery("#similar_suggestions").html(t.html)},context:this})})),t('[data-action="ap_media_uplaod"]').on("click",(function(t){t.preventDefault(),$btn=jQuery(this);var a=wp.media({title:jQuery(this).data("title"),multiple:!1}).open().on("select",(function(t){var e=(i=a.state().get("selection").first()).toJSON().url,i=i.toJSON().id;jQuery($btn.data("urlc")).val(e),jQuery($btn.data("idc")).val(i),jQuery($btn.data("urlc")).prev().is("img")?jQuery($btn.data("urlc")).prev().attr("src",e):jQuery($btn.data("urlc")).before('<img id="ap_category_media_preview" data-action="ap_media_value" src="'+e+'" />'),jQuery($btn.data("idc")).after('<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">'+removeImage+"</a>")}))})),t(document).on("click",'[data-action="ap_media_remove"]',(function(a){a.preventDefault(),t('input[data-action="ap_media_value"]').val(""),t('img[data-action="ap_media_value"]').remove(),t(this).remove()})),t(".checkall").on("click",(function(){t(this).closest(".ap-tools-ck").find('input[type="checkbox"]:not(.checkall)').prop("checked",t(this).prop("checked"))})),t("#"+t("#ap-tools-selectroles").val()).slideDown(),t("#ap-tools-selectroles").on("change",(function(){var a="#"+t(this).val();t(".ap-tools-roleitem").hide(),t(a).fadeIn(300)})),t(document).ajaxSuccess((function(){t(".taxonomy-question_category #addtag .form-invalid").length||(t('input[data-action="ap_media_value"]').val(""),t('img[data-action="ap_media_value"]').remove(),t("a[data-action=ap_media_remove]").remove(),t(".term-image-wrap").find(".wp-picker-clear").trigger("click"))}))}))}(jQuery);
+/* on start */
+
+jQuery(function () {
+	jQuery.fn.apAjaxQueryString = function () {
+		var query = jQuery(this).data('query').split("::");
+
+		var newQuery = {};
+
+		newQuery['action'] = 'ap_ajax';
+		newQuery['ap_ajax_action'] = query[0];
+		newQuery['__nonce'] = query[1];
+		newQuery['args'] = {};
+
+		var newi = 0;
+		jQuery.each(query, function (i) {
+			if (i != 0 && i != 1) {
+				newQuery['args'][newi] = query[i];
+				newi++;
+			}
+		});
+
+		return newQuery;
+	};
+
+	/* create document */
+	APjs.admin = new APjs.admin();
+	/* need to call init manually with jQuery */
+	APjs.admin.initialize();
+});
+
+/* namespace */
+window.APjs = {};
+APjs.admin = function () { };
+
+(function ($) {
+	APjs.admin.prototype = {
+
+		/* automatically called */
+		initialize: function () {
+			this.renameTaxo();
+			this.editPoints();
+			this.savePoints();
+			this.deleteFlag();
+			this.ajaxBtn();
+		},
+
+
+		renameTaxo: function () {
+			jQuery('.ap-rename-taxo').on('click', function (e) {
+				e.preventDefault();
+				jQuery.ajax({
+					url: ajaxurl,
+					data: {
+						action: 'ap_taxo_rename'
+					},
+					context: this,
+					success: function (data) {
+						jQuery(this).closest('.error').remove();
+						location.reload();
+					}
+				});
+				return false;
+			});
+		},
+		editPoints: function () {
+			jQuery('.wp-admin').on('click', '[data-action="ap-edit-reputation"]', function (e) {
+				e.preventDefault();
+				var id = jQuery(this).attr('href');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: {
+						action: 'ap_edit_reputation',
+						id: id
+					},
+					context: this,
+					dataType: 'json',
+					success: function (data) {
+						if (data['status']) {
+							jQuery('#ap-reputation-edit').remove();
+							jQuery('#anspress-reputation-table').hide();
+							jQuery('#anspress-reputation-table').after(data['html']);
+						}
+					}
+				});
+			});
+		},
+
+		savePoints: function () {
+			jQuery('.wp-admin').on('submit', '[data-action="ap-save-reputation"]', function (e) {
+				e.preventDefault();
+				jQuery('.button-primary', this).attr('disabled', 'disabled');
+				var id = jQuery(this).attr('href');
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					cache: false,
+					data: jQuery(this).serialize({
+						checkboxesAsBools: true
+					}),
+					context: this,
+					dataType: 'json',
+					success: function (data) {
+						if (data['status']) {
+							jQuery('.wrap').empty().html(data['html']);
+						}
+					}
+				});
+
+				return false;
+			});
+		},
+		deleteFlag: function () {
+			jQuery('[data-action="ap-delete-flag"]').on('click', function (e) {
+				e.preventDefault();
+				jQuery.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: jQuery(this).attr('href'),
+					context: this,
+					success: function (data) {
+						jQuery(this).closest('.flag-item').remove();
+					}
+				});
+			});
+		},
+
+		ajaxBtn: function () {
+			$('.ap-ajax-btn').on('click', function (e) {
+				e.preventDefault();
+				var q = $(this).apAjaxQueryString();
+				$.ajax({
+					url: ajaxurl,
+					data: q,
+					context: this,
+					type: 'POST',
+					success: function (data) {
+						if (typeof $(this).data('cb') !== 'undefined') {
+							var cb = $(this).data("cb");
+							if (typeof APjs.admin[cb] === 'function') {
+								APjs.admin[cb](data, this);
+							}
+						}
+					}
+				});
+
+			});
+		},
+		replaceText: function (data, elm) {
+			$(elm).closest('li').find('strong').text(data);
+		}
+
+	}
+
+	$(document).ready(function () {
+		$('#select-question-for-answer').on('keyup', function () {
+			if (jQuery.trim(jQuery(this).val()) == '')
+				return;
+			jQuery.ajax({
+				type: 'POST',
+				url: ajaxurl,
+				data: {
+					action: 'ap_ajax',
+					ap_ajax_action: 'suggest_similar_questions',
+					value: jQuery(this).val(),
+					is_admin: true
+				},
+				success: function (data) {
+					var textJSON = jQuery(data).filter('#ap-response').html();
+					if (typeof textJSON !== 'undefined' && textJSON.length > 2) {
+						data = JSON.parse(textJSON);
+					}
+					console.log(data);
+					if (typeof data['html'] !== 'undefined')
+						jQuery('#similar_suggestions').html(data['html']);
+				},
+				context: this,
+			});
+		});
+
+		$('[data-action="ap_media_uplaod"]').on('click', function (e) {
+			e.preventDefault();
+			$btn = jQuery(this);
+			var image = wp.media({
+				title: jQuery(this).data('title'),
+				// mutiple: true if you want to upload multiple files at once
+				multiple: false
+			}).open().on('select', function (e) {
+				// This will return the selected image from the Media Uploader, the result is an object
+				var uploaded_image = image.state().get('selection').first();
+				// We convert uploaded_image to a JSON object to make accessing it easier
+				// Output to the console uploaded_image
+				var image_url = uploaded_image.toJSON().url;
+				var image_id = uploaded_image.toJSON().id;
+
+				// Let's assign the url value to the input field
+				jQuery($btn.data('urlc')).val(image_url);
+				jQuery($btn.data('idc')).val(image_id);
+
+				if (!jQuery($btn.data('urlc')).prev().is('img'))
+					jQuery($btn.data('urlc')).before('<img id="ap_category_media_preview" src="' + image_url + '" />');
+				else
+					jQuery($btn.data('urlc')).prev().attr('src', image_url);
+			});
+		});
+
+		$('[data-action="ap_media_remove"]').on('click', function (e) {
+			e.preventDefault();
+			$('input[data-action="ap_media_value"]').val('');
+			$('img[data-action="ap_media_value"]').remove();
+		});
+
+		$('.checkall').on('click', function () {
+			var checkbox = $(this).closest('.ap-tools-ck').find('input[type="checkbox"]:not(.checkall)');
+			checkbox.prop('checked', $(this).prop("checked"));
+		})
+
+		$('#' + $('#ap-tools-selectroles').val()).slideDown();
+
+		$('#ap-tools-selectroles').change(function () {
+			var id = '#' + $(this).val();
+			$('.ap-tools-roleitem').hide();
+			$(id).fadeIn(300);
+		})
+
+	});
+
+})(jQuery);
