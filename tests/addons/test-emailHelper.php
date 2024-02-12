@@ -58,4 +58,45 @@ class TestAddonEmailHelper extends TestCase {
 		$this->assertEquals( $this->GetDefaultTemplate(), $instance->get_default_template() );
 		remove_filter( 'ap_email_default_template_new_event', [ $this, 'GetDefaultTemplate' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email\Helper::add_user
+	 */
+	public function testAddUser() {
+		$instance = new \Anspress\Addons\Email\Helper( 'test_event' );
+
+		// Test begins.
+		// Test 1.
+		$this->assertIsArray( $instance->args['users'] );
+		$this->assertEmpty( $instance->args['users'] );
+
+		// Test 2.
+		$user_id = $this->factory->user->create();
+		$instance->add_user( $user_id );
+		$this->assertIsArray( $instance->args['users'] );
+		$this->assertNotEmpty( $instance->args['users'] );
+		$this->assertContains( $user_id, $instance->args['users'] );
+		$this->assertEquals( 1, count( $instance->args['users'] ) );
+
+		// Test 3.
+		$user_email = 'user1@example.com';
+		$instance->add_user( $user_email );
+		$this->assertIsArray( $instance->args['users'] );
+		$this->assertNotEmpty( $instance->args['users'] );
+		$this->assertContains( $user_email, $instance->args['users'] );
+		$this->assertEquals( 2, count( $instance->args['users'] ) );
+
+		// Test 4.
+		$new_user_id = $this->factory->user->create();
+		$new_user_email = 'user2@example.com';
+		$instance->add_user( $new_user_id );
+		$instance->add_user( $new_user_email );
+		$this->assertContains( $new_user_email, $instance->args['users'] );
+		$this->assertEquals( 4, count( $instance->args['users'] ) );
+
+		// Test 5.
+		$instance->add_user( $user_id );
+		$instance->add_user( $user_email );
+		$this->assertEquals( 4, count( $instance->args['users'] ) );
+	}
 }
