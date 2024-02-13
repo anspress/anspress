@@ -1135,4 +1135,75 @@ class TestAnsPressFormValidate extends TestCase {
 		$result = \AnsPress\Form\Validate::sanitize_upload( $value, $upload_options );
 		$this->assertEquals( '', $result );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_required
+	 */
+	public function testValidateRequired() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'required',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_required( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'required' =>  'Simple text field is required.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Other text',
+			'validate' => 'required',
+			'value'    => 'AnsPress Question Answer Plugin',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_required( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'required',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_required( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'required' =>  'Question Label field is required.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'required',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_required( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'required' =>  'Answer Label field is required.' ], $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'required',
+			'value'    => 'AnsPress Question Answer Plugin',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_required( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'required,not_zero',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_required( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'required' =>  'Description Label field is required.' ], $field->errors );
+	}
 }
