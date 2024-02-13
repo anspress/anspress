@@ -408,6 +408,9 @@ class Profile extends \AnsPress\Singleton {
 		}
 		$html = ob_get_clean();
 
+		// Pagination fix on Ajax load more event.
+		$paged = $answers->max_num_pages > $paged ? $paged : 0;
+
 		ap_ajax_json(
 			array(
 				'success' => true,
