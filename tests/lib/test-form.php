@@ -80,4 +80,42 @@ class TestAnsPressForm extends TestCase {
 		];
 		$this->assertEquals( $expected, $form->errors );
 	}
+
+	/**
+	 * @covers AnsPress\Form::is_submitted
+	 */
+	public function testIsSubmitted() {
+		// Test 1.
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$this->assertFalse( $form->submitted );
+		$this->assertFalse( $form->is_submitted() );
+		$this->assertFalse( $form->submitted );
+
+		// Test 2.
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$_REQUEST['Sample Form_nonce'] = wp_create_nonce( 'Sample Form' );
+		$_REQUEST['Sample Form_submit'] = true;
+		$this->assertFalse( $form->submitted );
+		$this->assertTrue( $form->is_submitted() );
+		$this->assertTrue( $form->submitted );
+		unset( $_REQUEST['Sample Form_nonce'], $_REQUEST['Sample Form_submit'] );
+
+		// Test 3.
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$_REQUEST['Sample Form_nonce'] = 'invalid_nonce';
+		$_REQUEST['Sample Form_submit'] = true;
+		$this->assertFalse( $form->submitted );
+		$this->assertFalse( $form->is_submitted() );
+		$this->assertFalse( $form->submitted );
+		unset( $_REQUEST['Sample Form_nonce'], $_REQUEST['Sample Form_submit'] );
+
+		// Test 4.
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$_REQUEST['Sample Form_nonce'] = wp_create_nonce( 'Sample Form' );
+		$_REQUEST['Sample Form_submit'] = false;
+		$this->assertFalse( $form->submitted );
+		$this->assertFalse( $form->is_submitted() );
+		$this->assertFalse( $form->submitted );
+		unset( $_REQUEST['Sample Form_nonce'], $_REQUEST['Sample Form_submit'] );
+	}
 }
