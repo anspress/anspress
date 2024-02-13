@@ -1874,4 +1874,100 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'max-string-length' => 'Value provided in field Label must not exceeds 24 characters.' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_is_checked
+	 */
+	public function testValidateIsChecked() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_checked',
+			'value'    => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-checked' =>  'You are required to check Simple text field' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_checked',
+			'value'    => '1',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_checked,is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-checked' =>  'You are required to check Simple text field' ], $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'is_checked',
+			'value'    => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-checked' =>  'You are required to check Question Label field' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'is_checked',
+			'value'    => '1',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'is_checked',
+			'value'    => '',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-checked' =>  'You are required to check Comment Label field' ], $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'is_checked,required,is_url',
+			'value'    => '1',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'validate' => 'is_checked,required,is_url',
+			'value'    => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_checked( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-checked' =>  'You are required to check Label field' ], $field->errors );
+	}
 }
