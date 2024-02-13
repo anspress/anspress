@@ -1391,4 +1391,140 @@ class TestAnsPressFormValidate extends TestCase {
 		\AnsPress\Form\Validate::validate_is_email( $field );
 		$this->assertEmpty( $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_is_url
+	 */
+	public function testValidateIsURL() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'subtype'  => 'url',
+			'validate' => 'is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'invalid_url',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-url' => 'Value provided in field Simple text is not a valid URL.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'subtype'  => 'url',
+			'validate' => 'is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'https://example.com/',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'subtype'  => 'url',
+			'validate' => 'is_url,required,is_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => '/example.com/',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-url' => 'Value provided in field Simple text is not a valid URL.' ], $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'subtype'  => 'url',
+			'validate' => 'is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'invalid_url',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-url' => 'Value provided in field Question Label is not a valid URL.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'subtype'  => 'url',
+			'validate' => 'is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'https://example.com/',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'subtype'  => 'url',
+			'validate' => 'is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => '',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'subtype'  => 'url',
+			'validate' => 'required,is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'https://example.com/sample-page/#section',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'subtype'  => 'url',
+			'validate' => 'required,is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => '/example/',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_url( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-url' => 'Value provided in field Label is not a valid URL.' ], $field->errors );
+	}
 }
