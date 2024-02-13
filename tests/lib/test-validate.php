@@ -1970,4 +1970,120 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'is-checked' =>  'You are required to check Label field' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_is_array
+	 */
+	public function testValidateIsArray() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_array',
+			'value'    => 'invalid_array',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-array' =>  'Value provided in field Simple text is not an array.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_array',
+			'value'    => [ 'item1', 'item2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_array',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_array,required,is_url',
+			'value'    => [],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_array,required,is_url',
+			'value'    => [ 'item1' => 'Item 1', 'item2' => 'Item 2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'is_array',
+			'value'    => 'invalid_array',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-array' =>  'Value provided in field Question Label is not an array.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'is_array',
+			'value'    => [ 'item1', 'item2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'is_array',
+			'value'    => [],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'is_array,required,is_url',
+			'value'    => [ 'item1' => 'Item 1', 'item2' => 'Item 2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'validate' => 'is_array,required,is_url',
+			'value'    => 'invalid_array',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_array( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-array' =>  'Value provided in field Label is not an array.' ], $field->errors );
+	}
 }
