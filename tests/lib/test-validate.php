@@ -1758,4 +1758,120 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'min-string-length' => 'Value provided in field Label must be at least 24 characters long.' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_max_string_length
+	 */
+	public function testValidateMaxStringLength() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'max_string_length',
+			'max_length' => '24',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-string-length' => 'Value provided in field Simple text must not exceeds 24 characters.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'max_string_length',
+			'max_length' => '100',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'max_string_length',
+			'max_length' => '100',
+			'value'      => '',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'max_string_length,is_url',
+			'max_length' => '36',
+			'value'      => 'https://example.com/sample-page/#section',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-string-length' => 'Value provided in field Simple text must not exceeds 36 characters.' ], $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Question Label',
+			'validate'   => 'max_string_length',
+			'max_length' => '24',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-string-length' => 'Value provided in field Question Label must not exceeds 24 characters.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Answer Label',
+			'validate'   => 'max_string_length',
+			'max_length' => '24',
+			'value'      => '123',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Comment Label',
+			'validate'   => 'max_string_length',
+			'max_length' => '24',
+			'value'      => '',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Description Label',
+			'validate'   => 'max_string_length,required,is_url',
+			'max_length' => '100',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Label',
+			'validate'   => 'max_string_length,required,is_url',
+			'max_length' => '24',
+			'value'      => 'https://example.com/sample-page/#section',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_max_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-string-length' => 'Value provided in field Label must not exceeds 24 characters.' ], $field->errors );
+	}
 }
