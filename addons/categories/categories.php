@@ -660,7 +660,7 @@ class Categories extends \AnsPress\Singleton {
 				$term_meta = array( 'image' => array() );
 			}
 
-			if ( ! is_array( $term_meta['image'] ) ) {
+			if ( isset( $term_meta['image'] ) && ! is_array( $term_meta['image'] ) ) {
 				$term_meta['image'] = array();
 			}
 
