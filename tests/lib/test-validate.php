@@ -1527,4 +1527,131 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'is-url' => 'Value provided in field Label is not a valid URL.' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_is_numeric
+	 */
+	public function testValidateIsNumeric() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'invalid_number',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-numeric' =>  'Value provided in field Simple text is not numeric.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => '123',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_numeric,required,is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => '123.45',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'invalid_number',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-numeric' =>  'Value provided in field Question Label is not numeric.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => '123',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => '',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'required,is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => '123.45',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'validate' => 'required,is_numeric',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'invalid_number',
+			]
+		];
+		\AnsPress\Form\Validate::validate_is_numeric( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-numeric' =>  'Value provided in field Label is not numeric.' ], $field->errors );
+	}
 }
