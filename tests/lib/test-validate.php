@@ -1654,4 +1654,108 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'is-numeric' =>  'Value provided in field Label is not numeric.' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_min_string_length
+	 */
+	public function testValidateMinStringLength() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'min_string_length',
+			'min_length' => '10',
+			'value'      => '123',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'min-string-length' => 'Value provided in field Simple text must be at least 10 characters long.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'min_string_length',
+			'min_length' => '5',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'      => 'Simple text',
+			'validate'   => 'min_string_length,is_url',
+			'min_length' => '100',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'min-string-length' => 'Value provided in field Simple text must be at least 100 characters long.' ], $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Question Label',
+			'validate'   => 'min_string_length',
+			'min_length' => '24',
+			'value'      => '123',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'min-string-length' => 'Value provided in field Question Label must be at least 24 characters long.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Answer Label',
+			'validate'   => 'min_string_length',
+			'min_length' => '24',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Comment Label',
+			'validate'   => 'min_string_length',
+			'min_length' => '24',
+			'value'      => '',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Description Label',
+			'validate'   => 'min_string_length,required,is_url',
+			'min_length' => '24',
+			'value'      => 'AnsPress Question Answer Plugn',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'      => 'Label',
+			'validate'   => 'min_string_length,required,is_url',
+			'min_length' => '24',
+			'value'      => '123',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_min_string_length( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'min-string-length' => 'Value provided in field Label must be at least 24 characters long.' ], $field->errors );
+	}
 }
