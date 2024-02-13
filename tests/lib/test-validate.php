@@ -1298,4 +1298,97 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'is-zero' =>  'Label field is required.' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_is_email
+	 */
+	public function testValidateIsEmail() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'is_email',
+			'value'    => 'invalid_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-email' =>  'Value provided in field Simple text is not a valid email.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Other text',
+			'validate' => 'is_email',
+			'value'    => 'user1@example.com',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Other text',
+			'validate' => 'is_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'is_email',
+			'value'    => 'invalid_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-email' =>  'Value provided in field Question Label is not a valid email.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'is_email',
+			'value'    => 'user1@example.com',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'is_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'required,is_email',
+			'value'    => 'user1 @example.com',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-email' =>  'Value provided in field Description Label is not a valid email.' ], $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'validate' => 'required,is_email',
+			'value'    => '',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_is_email( $field );
+		$this->assertEmpty( $field->errors );
+	}
 }
