@@ -1206,4 +1206,96 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'required' =>  'Description Label field is required.' ], $field->errors );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Validate::validate_not_zero
+	 */
+	public function testValidateNotZero() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'not_zero',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Other text',
+			'validate' => 'not_zero',
+			'value'    => '1',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Other text',
+			'validate' => 'not_zero',
+			'value'    => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-zero' =>  'Other text field is required.' ], $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'not_zero',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'not_zero',
+			'value'    => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-zero' =>  'Answer Label field is required.' ], $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'not_zero',
+			'value'    => '1',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'required,not_zero',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'validate' => 'required,not_zero',
+			'value'    => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_not_zero( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'is-zero' =>  'Label field is required.' ], $field->errors );
+	}
 }
