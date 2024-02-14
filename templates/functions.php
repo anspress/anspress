@@ -36,7 +36,7 @@ function ap_scripts_front() {
 	do_action( 'ap_enqueue' );
 
 	// Enqueue the TinyMCE JavaScript library file.
-	if ( ap_opt( 'question_text_editor' ) || ap_opt( 'answer_text_editor' ) ) {
+	if ( ( is_question() || is_ask() ) && ( ap_opt( 'question_text_editor' ) || ap_opt( 'answer_text_editor' ) ) ) {
 		wp_enqueue_script( 'wp-tinymce' );
 	}
 
