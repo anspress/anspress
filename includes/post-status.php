@@ -61,7 +61,7 @@ class AnsPress_Post_Status {
 		$status  = ap_sanitize_unslash( 'status', 'request' );
 
 		// Check if user has permission else die.
-		if ( ! is_user_logged_in() || ! in_array( $status, array( 'publish', 'moderate', 'private_post', 'trash' ), true ) || ! ap_verify_nonce( 'change-status-' . $status . '-' . $post_id ) || ! ap_user_can_change_status( $post_id ) ) {
+		if ( ! is_user_logged_in() || ! in_array( $status, array( 'publish', 'moderate', 'private_post', 'trash' ), true ) || ! anspress_verify_nonce( 'change-status-' . $status . '-' . $post_id ) || ! ap_user_can_change_status( $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
