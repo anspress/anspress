@@ -966,17 +966,16 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
 	return get_the_title( $question_id );
 }
 
-if ( ! function_exists( 'ap_verify_nonce' ) ) {
-	/**
-	 * Verify the __nonce field.
-	 *
-	 * @param string $action Action.
-	 * @return bool
-	 * @since  2.4
-	 */
-	function ap_verify_nonce( $action ) {
-		return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
-	}
+/**
+ * Verify the __nonce field.
+ *
+ * @param string $action Action.
+ * @return bool
+ * @since  2.4
+ * @since  4.4.0 Modified function name from ap_verify_nonce.
+ */
+function anspress_verify_nonce( $action ) {
+	return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
 }
 
 /**
