@@ -2504,7 +2504,7 @@ function ap_get_current_timestamp() {
  * @return array Merged user defined values with the default array.
  * @since 4.4.0
  */
-function ap_parse_args( $args, $defaults ) {
+function ap_parse_args( array $args, array $defaults ) {
 	$new_args = (array) $defaults;
 
 	foreach ( $args as $key => $value ) {
