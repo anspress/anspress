@@ -206,7 +206,7 @@ class AnsPress_Common_Pages {
 	 */
 	public static function activities_page() {
 		$roles_exclude = ap_opt( 'activity_exclude_roles' );
-		$roles         = ! is_array( $roles_exclude ) ? array_keys( $roles_exclude ) : array();
+		$roles         = is_array( $roles_exclude ) ? array_keys( $roles_exclude ) : array();
 		$args          = array();
 
 		if ( ! empty( $roles ) ) {
