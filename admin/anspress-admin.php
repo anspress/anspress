@@ -720,7 +720,7 @@ class AnsPress_Admin {
 
 			$pages_in = array();
 			foreach ( $pages_slug as $slug ) {
-				if ( $opt[ $slug ] ) {
+				if ( ! empty( $opt[ $slug ] ) ) {
 					$pages_in[] = $opt[ $slug ];
 				}
 			}
