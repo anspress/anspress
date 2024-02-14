@@ -1533,6 +1533,12 @@ class AnsPress_Admin {
 					background: #0073aa;
 				}
 			</style>
+			<script type="text/javascript">
+				jQuery( document ).ready( function( $ ) {
+					// Open the Theme & Extensions submenu link in a new tab/window.
+					$( '#anspress-submenu-external-link' ).parent().attr( 'target', '_blank' );
+				} );
+			</script>
 		<?php
 	}
 }
