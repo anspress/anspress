@@ -2086,4 +2086,122 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'is-array' =>  'Value provided in field Label is not an array.' ], $field->errors );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_array_min
+	 */
+	public function testValidateArrayMin() {
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'     => 'Simple text',
+			'array_min' => '5',
+			'value'     => [ 'item1', 'item2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'array-min' => 'Minimum 5 values are required in field Simple text.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'     => 'Simple text',
+			'array_min' => '2',
+			'value'     => [ 'item1', 'item2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'     => 'Simple text',
+			'array_min' => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'     => 'Simple text',
+			'array_min' => '2',
+			'value'     => 'invalid_array',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'array-min' => 'Minimum 2 values are required in field Simple text.' ], $field->errors );
+
+		// Test 5.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'     => 'Simple text',
+			'array_min' => '3',
+			'value'     => [],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'array-min' => 'Minimum 3 values are required in field Simple text.' ], $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'     => 'Question Label',
+			'array_min' => '5',
+			'value'     => [ 'item1', 'item2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'array-min' => 'Minimum 5 values are required in field Question Label.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'     => 'Answer Label',
+			'array_min' => '2',
+			'value'     => [ 'item1', 'item2' ],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'     => 'Comment Label',
+			'array_min' => '0',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'     => 'Description Label',
+			'array_min' => '2',
+			'value'     => 'invalid_array',
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'array-min' => 'Minimum 2 values are required in field Description Label.' ], $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'     => 'Label',
+			'array_min' => '3',
+			'value'     => [],
+		] );
+		$this->assertEmpty( $field->errors );
+		\AnsPress\Form\Validate::validate_array_min( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'array-min' => 'Minimum 3 values are required in field Label.' ], $field->errors );
+	}
 }
