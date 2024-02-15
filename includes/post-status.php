@@ -90,7 +90,13 @@ class AnsPress_Post_Status {
 		ap_ajax_json(
 			array(
 				'success'     => true,
-				'snackbar'    => array( 'message' => __( 'Post status updated successfully', 'anspress-question-answer' ) ),
+				'snackbar'    => array(
+					'message' => sprintf(
+						/* Translators: %s Question or Answer post type label for post status change */
+						__( '%s status updated successfully', 'anspress-question-answer' ),
+						( 'question' === $post->post_type ) ? esc_html__( 'Question', 'anspress-question-answer' ) : esc_html__( 'Answer', 'anspress-question-answer' )
+					),
+				),
 				'action'      => array( 'active' => true ),
 				'postmessage' => ap_get_post_status_message( $post->ID ),
 				'newStatus'   => $status,
