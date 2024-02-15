@@ -162,7 +162,7 @@ class AnsPress_Admin {
 			'flagged'  => $q_flagged->total + $a_flagged->total,
 		);
 
-		$types['total'] = array_sum( $types );
+		$types['total'] = (int) $types['flagged'];
 		$types_html     = array();
 
 		foreach ( (array) $types as $k => $count ) {
