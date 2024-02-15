@@ -619,4 +619,74 @@ class TestAnsPressFormField extends TestCase {
 		$this->expectExceptionMessage( 'Requested form: Unknown Form is not registered .' );
 		$field->form();
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::desc
+	 */
+	public function testDesc() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => 'Test Description',
+			'type'  => 'editor',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc">Test Description</div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<strong>Test Description<strong>',
+			'type'  => 'textarea',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc"><strong>Test Description<strong></div>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<script>alert("Malicious Script");</script>Test Description',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc">alert("Malicious Script");Test Description</div>', $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<i class="italic-text">Test Description</i>',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc"><i class="italic-text">Test Description</i></div>', $property->getValue( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<anspress><p><hr class="line">Test Description<br /></p></anspress>',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc"><p><hr class="line">Test Description<br /></p></div>', $property->getValue( $field ) );
+	}
 }
