@@ -594,4 +594,29 @@ class TestAnsPressFormField extends TestCase {
 		// Reset the property value.
 		$property->setValue( $field, [] );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::form
+	 */
+	public function testForm() {
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$this->assertInstanceOf( 'AnsPress\Form', $field->form() );
+		$this->assertEquals( anspress()->forms['Sample Form'], $field->form() );
+		$this->assertEquals( 'Sample Form', $field->form()->form_name );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Test Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$this->assertInstanceOf( 'AnsPress\Form', $field->form() );
+		$this->assertEquals( anspress()->forms['Sample Form'], $field->form() );
+		$this->assertEquals( 'Test Form', $field->form()->form_name );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Unknown Form', 'Unknown-form', [] );
+		$this->expectException( \Exception::class );
+		$this->expectExceptionMessage( 'Requested form: Unknown Form is not registered .' );
+		$field->form();
+	}
 }
