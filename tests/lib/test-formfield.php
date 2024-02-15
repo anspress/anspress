@@ -308,4 +308,85 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertNull( $field->get( 'parent.non_existing_child', null, $test_args ) );
 		$this->assertNull( $field->get( 'parent.child.non_existing_grand_child', null, $test_args ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::unsafe_value
+	 */
+	public function testUnsafeValue() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test 1.
+		$_REQUEST = 'Request Value';
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 2.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'Request Value',
+			],
+		];
+		$this->assertEquals( 'Request Value', $field->unsafe_value() );
+
+		// Test 3.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => 'Request Value',
+					],
+				],
+			],
+		];
+		$this->assertEquals( [ 'child' => [ 'grand_child' => 'Request Value' ] ], $field->unsafe_value() );
+
+		// Test 4.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '',
+			],
+		];
+		$this->assertEquals( '', $field->unsafe_value() );
+
+		// Test 5.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '\\\\ This is a test value \\\\',
+			],
+		];
+		$this->assertEquals( '\\ This is a test value \\', $field->unsafe_value() );
+
+		// Test 6.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => '\\\\ This is a test value \\\\',
+					],
+				],
+			],
+		];
+		$this->assertEquals( [ 'child' => [ 'grand_child' => '\\ This is a test value \\' ] ], $field->unsafe_value() );
+
+		// Test 7.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '     Request value     ',
+			],
+		];
+		$this->assertEquals( '     Request value     ', $field->unsafe_value() );
+
+		// Test 8.
+		$_REQUEST = [
+			'Sample Form' => 'Request value',
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 9.
+		$_REQUEST = [
+			'Test Form' => [
+				'sample-form' => 'Request value',
+			],
+		];
+		$this->assertNull( $field->unsafe_value() );
+	}
 }
