@@ -2373,4 +2373,168 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertEquals( [ 'badword1', 'badword2', 'badword3' ], $result );
 		ap_opt( 'bad_words', '' );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_badwords
+	 */
+	public function testValidateBadwords() {
+		// Add some badwords first for testing.
+		ap_opt( 'bad_words', 'badword1,badword2,badword3' );
+
+		// Test with different forms.
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'badwords',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'badword1,badword2,okword'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'bad-words' => 'Found bad words in field Simple text. Remove them and try again.' ], $field->errors );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'badwords',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'okword1,okword2'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'badwords',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => ''
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'badwords,is_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'badword1,badword2,badword3'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'bad-words' => 'Found bad words in field Simple text. Remove them and try again.' ], $field->errors );
+
+		// Test 5.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-field', [
+			'label'    => 'Simple text',
+			'validate' => 'badwords,is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-field' => 'badword'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test with same form multiple times.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Question Label',
+			'validate' => 'badwords',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'badword1,badword2,okword'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'bad-words' => 'Found bad words in field Question Label. Remove them and try again.' ], $field->errors );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Answer Label',
+			'validate' => 'badwords',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'okword1,okword2'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Comment Label',
+			'validate' => 'badwords',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => ''
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Description Label',
+			'validate' => 'badwords,is_email',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'badword1,badword2,badword3'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'bad-words' => 'Found bad words in field Description Label. Remove them and try again.' ], $field->errors );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'    => 'Label',
+			'validate' => 'badwords,is_url',
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'badword'
+			]
+		];
+		\AnsPress\Form\Validate::validate_badwords( $field );
+		$this->assertEmpty( $field->errors );
+
+		// Remove added badwords.
+		ap_opt( 'bad_words', '' );
+	}
 }
