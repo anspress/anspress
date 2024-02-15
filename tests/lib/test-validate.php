@@ -2320,4 +2320,57 @@ class TestAnsPressFormValidate extends TestCase {
 		$this->assertNotEmpty( $field->errors );
 		$this->assertEquals( [ 'array-max' => 'Maximum values allowed in field Label is 0.' ], $field->errors );
 	}
+
+	public function APGetThemeLocation() {
+		return __DIR__ . '/badwords.txt';
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::get_bad_words
+	 */
+	public function testGetBadWords() {
+		// Test 1.
+		$result = \AnsPress\Form\Validate::get_bad_words();
+		$this->assertEmpty( $result );
+
+		// Test 2.
+		$bad_words_content = "badword1\nbadword2\nbadword3";
+		$bad_words_file = __DIR__ . '/badwords.txt';
+		file_put_contents( $bad_words_file, $bad_words_content );
+		add_filter( 'ap_get_theme_location', [ $this, 'APGetThemeLocation' ] );
+		$result = \AnsPress\Form\Validate::get_bad_words();
+		$this->assertEquals( [ 'badword1', 'badword2', 'badword3' ], $result );
+		unlink( $bad_words_file );
+		remove_filter( 'ap_get_theme_location', [ $this, 'APGetThemeLocation' ] );
+
+		// Test 3.
+		$bad_words_content = "badword1\nbadword2\nbadword3";
+		$bad_words_file = get_template_directory() . '/anspress/badwords.txt';
+		file_put_contents( $bad_words_file, $bad_words_content );
+		$result = \AnsPress\Form\Validate::get_bad_words();
+		$this->assertEquals( [ 'badword1', 'badword2', 'badword3' ], $result );
+		unlink( $bad_words_file );
+
+		// Test 4.
+		$bad_words_content = "badword1\nbadword2\nbadword3";
+		$bad_words_file = get_stylesheet_directory() . '/anspress/badwords.txt';
+		file_put_contents( $bad_words_file, $bad_words_content );
+		$result = \AnsPress\Form\Validate::get_bad_words();
+		$this->assertEquals( [ 'badword1', 'badword2', 'badword3' ], $result );
+		unlink( $bad_words_file );
+
+		// Test 5.
+		$bad_words_content = "badword1\nbadword2\nbadword3";
+		$bad_words_file = ANSPRESS_THEME_DIR . '/badwords.txt';
+		file_put_contents( $bad_words_file, $bad_words_content );
+		$result = \AnsPress\Form\Validate::get_bad_words();
+		$this->assertEquals( [ 'badword1', 'badword2', 'badword3' ], $result );
+		unlink( $bad_words_file );
+
+		// Test 6.
+		ap_opt( 'bad_words', 'badword1,badword2,badword3' );
+		$result = \AnsPress\Form\Validate::get_bad_words();
+		$this->assertEquals( [ 'badword1', 'badword2', 'badword3' ], $result );
+		ap_opt( 'bad_words', '' );
+	}
 }
