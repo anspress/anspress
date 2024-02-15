@@ -389,4 +389,97 @@ class TestAnsPressFormField extends TestCase {
 		];
 		$this->assertNull( $field->unsafe_value() );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::isset_value
+	 */
+	public function testIssetValue() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test 1.
+		$_REQUEST = 'Request Value';
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 2.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'Request Value',
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 3.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => 'Request Value',
+					],
+				],
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 4.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '',
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 5.
+		$_REQUEST = [
+			'Sample Form' => 'Request value',
+		];
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 6.
+		$_REQUEST = [
+			'Test Form' => [
+				'sample-form' => 'Request value',
+			],
+		];
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 7.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => null,
+			],
+		];
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 8.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => null,
+					],
+				],
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 9.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => '',
+					],
+				],
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 10.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '<script>alert("Hello World!");</script>',
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+	}
 }
