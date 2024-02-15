@@ -268,4 +268,44 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertNotEquals( $custom_output_order, $property->getValue( $field ) );
 		$this->assertNotEquals( $new_custom_output_order, $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::get
+	 */
+	public function testGet() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'sanitize_cb',
+			'validate' => 'validate_cb',
+			'value'    => 'Test Value',
+			'type'     => 'text',
+		] );
+		$test_args = [
+			'parent' => [
+				'child' => [
+					'grand_child' => 'value',
+				],
+			],
+		];
+
+		// Test for default values.
+		$this->assertEquals( 'Test Value', $field->get( 'value' ) );
+		$this->assertEquals( 'text', $field->get( 'type' ) );
+		$this->assertEquals( 'sanitize_cb', $field->get( 'sanitize' ) );
+		$this->assertEquals( 'validate_cb', $field->get( 'validate' ) );
+
+		// Test 1.
+		$this->assertEquals( [ 'child' => [ 'grand_child' => 'value' ] ], $field->get( 'parent', null, $test_args ) );
+		$this->assertEquals( [ 'grand_child' => 'value' ], $field->get( 'parent.child', null, $test_args ) );
+		$this->assertEquals( 'value', $field->get( 'parent.child.grand_child', null, $test_args ) );
+
+		// Test 2.
+		$this->assertEquals( 'default_value', $field->get( 'non_existing_parent', 'default_value', $test_args ) );
+		$this->assertEquals( 'default_value', $field->get( 'parent.non_existing_child', 'default_value', $test_args ) );
+		$this->assertEquals( 'default_value', $field->get( 'parent.child.non_existing_grand_child', 'default_value', $test_args ) );
+
+		// Test 3.
+		$this->assertNull( $field->get( 'non_existing_parent', null, $test_args ) );
+		$this->assertNull( $field->get( 'parent.non_existing_child', null, $test_args ) );
+		$this->assertNull( $field->get( 'parent.child.non_existing_grand_child', null, $test_args ) );
+	}
 }
