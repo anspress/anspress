@@ -211,12 +211,7 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Settings', 'anspress-question-answer' ), __( 'Settings', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
-		// Theme & Extensions submenu item link.
-		$submenu['anspress'][500] = array( // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-			'<div id="anspress-submenu-external-link">' . esc_html__( 'Theme & Extensions', 'anspress-question-answer' ) . '</div>',
-			'manage_options',
-			'https://anspress.net/themes/',
-		);
+		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
 
 	/**
@@ -1531,12 +1526,6 @@ class AnsPress_Admin {
 					background: #0073aa;
 				}
 			</style>
-			<script type="text/javascript">
-				jQuery( document ).ready( function( $ ) {
-					// Open the Theme & Extensions submenu link in a new tab/window.
-					$( '#anspress-submenu-external-link' ).parent().attr( 'target', '_blank' );
-				} );
-			</script>
 		<?php
 	}
 }
