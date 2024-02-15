@@ -365,6 +365,7 @@
 			AnsPress.ajax({
 				data: $(e.target).data('apquery'),
 				success: function (data) {
+					console.log(data)
 					AnsPress.hideLoading(e.target);
 					$('#ap-form-main').html(data);
 					$(e.target).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
@@ -378,9 +379,7 @@
 			if (data.success && data.form === 'answer') {
 				AnsPress.trigger('answerFormPosted', data);
 				$('apanswersw').show();
-				if (typeof tinymce !== 'undefined') {
-          tinymce.remove();
-        }
+				tinymce.remove();
 
 				// Clear editor contents
 				$('#ap-form-main').html('');
