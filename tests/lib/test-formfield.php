@@ -689,4 +689,51 @@ class TestAnsPressFormField extends TestCase {
 		$field->desc();
 		$this->assertStringContainsString( '<div class="ap-field-desc"><p><hr class="line">Test Description<br /></p></div>', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::id
+	 */
+	public function testID() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->field_id = '';
+		$result = $field->id();
+		$this->assertEquals( 'SampleForm-sample-form', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [] );
+		$field->field_id = '';
+		$result = $field->id( 'Form [ID]' );
+		$this->assertEquals( 'Form-ID', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'New Form', 'new-form', [] );
+		$field->field_id = 'Test-ID';
+		$result = $field->id();
+		$this->assertEquals( 'Test-ID', $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$field->field_id = '';
+		$result = $field->id();
+		$this->assertEquals( 'AnotherForm-another-form', $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$field->field_id = '';
+		$result = $field->id( 'Form---[ID]---' );
+		$this->assertEquals( 'Form-ID', $result );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Another ----- Form -----[]', 'another-form', [] );
+		$field->field_id = '';
+		$result = $field->id();
+		$this->assertEquals( 'Another-Form-another-form', $result );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$field->field_id = 'another-----form-----';
+		$result = $field->id();
+		$this->assertEquals( 'another-----form-----', $result );
+	}
 }
