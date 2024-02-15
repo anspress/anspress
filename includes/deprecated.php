@@ -52,3 +52,19 @@ function ap_responce_message( $id, $only_message = false ) {
 	_deprecated_function( __FUNCTION__, '4.4.0', 'ap_response_message()' );
 	return ap_response_message( $id, $only_message );
 }
+
+if ( ! function_exists( 'ap_verify_nonce' ) ) {
+
+	/**
+	 * Verify the __nonce field.
+	 *
+	 * @param string $action Action.
+	 * @return bool
+	 *
+	 * @deprecated 4.4.0
+	 */
+	function ap_verify_nonce( $action ) {
+		_deprecated_function( __FUNCTION__, '4.4.0', 'anspress_verify_nonce()' );
+		return anspress_verify_nonce( $action );
+	}
+}

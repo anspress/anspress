@@ -26,7 +26,7 @@ class AnsPress_Flag {
 	public static function action_flag() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
+		if ( ! anspress_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
 			ap_ajax_json( 'something_wrong' );
 		}
 

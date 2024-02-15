@@ -488,7 +488,7 @@ class Notifications extends \AnsPress\Singleton {
 	 * as seen.
 	 */
 	public function mark_notifications_seen() {
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'mark_notifications_seen' ) ) {
+		if ( ! is_user_logged_in() || ! anspress_verify_nonce( 'mark_notifications_seen' ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,

@@ -154,7 +154,7 @@ class AnsPress_Ajax {
 			'snackbar' => array( 'message' => __( 'Unable to trash this post', 'anspress-question-answer' ) ),
 		);
 
-		if ( ! ap_verify_nonce( 'trash_post_' . $post_id ) ) {
+		if ( ! anspress_verify_nonce( 'trash_post_' . $post_id ) ) {
 			ap_ajax_json( $failed_response );
 		}
 
@@ -225,7 +225,7 @@ class AnsPress_Ajax {
 	public static function permanent_delete_post() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {
+		if ( ! anspress_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -291,7 +291,7 @@ class AnsPress_Ajax {
 	public static function toggle_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_user_can_toggle_featured() || ! ap_verify_nonce( 'set_featured_' . $post_id ) ) {
+		if ( ! ap_user_can_toggle_featured() || ! anspress_verify_nonce( 'set_featured_' . $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -429,7 +429,7 @@ class AnsPress_Ajax {
 	public static function convert_to_post() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin() || current_user_can( 'manage_options' ) ) ) {
+		if ( ! anspress_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin() || current_user_can( 'manage_options' ) ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -500,7 +500,7 @@ class AnsPress_Ajax {
 
 		$_post = ap_get_post( $post_id );
 
-		if ( 'question' === $_post->post_type && ! ap_verify_nonce( 'subscribe_' . $post_id ) ) {
+		if ( 'question' === $_post->post_type && ! anspress_verify_nonce( 'subscribe_' . $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -570,7 +570,7 @@ class AnsPress_Ajax {
 		$form       = ap_sanitize_unslash( 'form', 'r' );
 		$field_name = ap_sanitize_unslash( 'field', 'r' );
 
-		if ( ! ap_verify_nonce( 'tags_' . $form . $field_name ) ) {
+		if ( ! anspress_verify_nonce( 'tags_' . $form . $field_name ) ) {
 			wp_send_json( '{}' );
 		}
 

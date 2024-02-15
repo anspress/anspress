@@ -972,8 +972,9 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
  * @param string $action Action.
  * @return bool
  * @since  2.4
+ * @since  4.4.0 Modified function name from ap_verify_nonce.
  */
-function ap_verify_nonce( $action ) {
+function anspress_verify_nonce( $action ) {
 	return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
 }
 
