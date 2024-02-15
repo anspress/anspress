@@ -482,4 +482,116 @@ class TestAnsPressFormField extends TestCase {
 		];
 		$this->assertTrue( $field->isset_value() );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::sanitize_cb
+	 */
+	public function testSanitizeCB() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$property->setValue( $field, [] );
+		$sanitize_args = [ 'callback1', 'callback2' ];
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $sanitize_args, $property->getValue( $field ) );
+
+		// Test 2.
+		$property->setValue( $field, [] );
+		$sanitize_args = 'callback1,callback2';
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 3.
+		$property->setValue( $field, [] );
+		$sanitize_args = [ 'callback1', 'callback2', 'callback2' ];
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 4.
+		$property->setValue( $field, [] );
+		$sanitize_args = 'callback1,callback2,callback2';
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 5.
+		$property->setValue( $field, [] );
+		$sanitize_args = '';
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Reset the property value.
+		$property->setValue( $field, [] );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::validate_cb
+	 */
+	public function testValidateCB() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'validate_cb' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'validate_cb' );
+		$property->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$property->setValue( $field, [] );
+		$validate_args = [ 'callback1', 'callback2' ];
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $validate_args, $property->getValue( $field ) );
+
+		// Test 2.
+		$property->setValue( $field, [] );
+		$validate_args = 'callback1,callback2';
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 3.
+		$property->setValue( $field, [] );
+		$validate_args = [ 'callback1', 'callback2', 'callback2' ];
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 4.
+		$property->setValue( $field, [] );
+		$validate_args = 'callback1,callback2,callback2';
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 5.
+		$property->setValue( $field, [] );
+		$validate_args = '';
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Reset the property value.
+		$property->setValue( $field, [] );
+	}
 }
