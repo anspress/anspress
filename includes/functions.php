@@ -2505,7 +2505,7 @@ function ap_get_current_timestamp() {
  * @since 4.4.0
  */
 function ap_parse_args( array $args, array $defaults ) {
-	$new_args = (array) $defaults;
+	$new_args = $defaults;
 
 	foreach ( $args as $key => $value ) {
 		if ( is_array( $value ) && isset( $new_args[ $key ] ) ) {
