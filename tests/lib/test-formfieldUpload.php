@@ -33,4 +33,48 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Upload', 'upload' ) );
 		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Upload', 'get_uploaded_files_url' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Upload::html_order
+	 */
+	public function testHTMLOrder() {
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$default_output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'file_list', 'field_wrap_end', 'wrapper_end' ];
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $default_output_order, $property->getValue( $field ) );
+
+		// Test 2.
+		$custom_output_order = [ 'wrapper_start', 'label', 'desc', 'errors', 'file_list', 'field_wrap_start', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$field->args['output_order'] = $custom_output_order;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $custom_output_order, $property->getValue( $field ) );
+		$this->assertNotEquals( $default_output_order, $property->getValue( $field ) );
+
+		// Test 3.
+		$new_custom_output_order = [ 'label', 'desc', 'errors', 'file_list', 'field_markup' ];
+		$field->args['output_order'] = $new_custom_output_order;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $new_custom_output_order, $property->getValue( $field ) );
+		$this->assertNotEquals( $custom_output_order, $property->getValue( $field ) );
+		$this->assertNotEquals( $default_output_order, $property->getValue( $field ) );
+
+		// Test 4.
+		$field->args['output_order'] = [];
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $default_output_order, $property->getValue( $field ) );
+		$this->assertNotEquals( $custom_output_order, $property->getValue( $field ) );
+		$this->assertNotEquals( $new_custom_output_order, $property->getValue( $field ) );
+	}
 }
