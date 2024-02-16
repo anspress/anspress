@@ -77,4 +77,96 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$this->assertNotEquals( $custom_output_order, $property->getValue( $field ) );
 		$this->assertNotEquals( $new_custom_output_order, $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Upload::sanitize_cb_args
+	 */
+	public function testSanitizeCBArgs() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => array(
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				),
+				'label_deny_type' => 'Invalid file type',
+				'async_upload'    => false,
+				'max_files'       => 'You can only upload one file',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb_args' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field, 'test_value' );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'test_value', $field->args['upload_options'] ], $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 2,
+				'allowed_mimes'   => array(
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+				),
+				'label_deny_type' => 'Invalid file',
+				'async_upload'    => true,
+				'max_files'       => 'Uploading only 2 files is allowed',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb_args' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field, 'new_value' );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'new_value', $field->args['upload_options'] ], $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 5,
+				'allowed_mimes'   => array(
+					'gif' => 'image/gif',
+					'png' => 'image/png',
+				),
+				'label_deny_type' => 'File type is not allowed',
+				'async_upload'    => '',
+				'max_files'       => 'Max 5 files can be uploaded',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb_args' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field, [ 'array_value' ] );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ [ 'array_value' ], $field->args['upload_options'] ], $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'  => true,
+				'max_files' => 3,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb_args' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field, 'additional_value' );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'additional_value', $field->args['upload_options'] ], $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [ 'upload_options' => [] ] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb_args' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field, 'latest_value' );
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'latest_value', $field->args['upload_options'] ], $result );
+	}
 }
