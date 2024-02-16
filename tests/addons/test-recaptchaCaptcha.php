@@ -13,8 +13,8 @@ class TestAddonCaptchaCaptcha extends TestCase {
 	}
 
 	public function testMethodExists() {
-		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Editor', 'prepare' ) );
-		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Editor', 'sanitize' ) );
-		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Editor', 'field_markup' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Captcha', 'prepare' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Captcha', 'sanitize' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Form\Field\Captcha', 'field_markup' ) );
 	}
 }
