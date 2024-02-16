@@ -736,4 +736,59 @@ class TestAnsPressFormField extends TestCase {
 		$result = $field->id();
 		$this->assertEquals( 'another-----form-----', $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::label
+	 */
+	public function testLabel() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="SampleForm-sample-form">Test Label</label>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [
+			'label' => '<h2>Test Label</h2>',
+			'type'  => 'textarea',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="TestForm-test-form">&lt;h2&gt;Test Label&lt;/h2&gt;</label>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => '<script>alert("Malicious Script");</script>Test Label',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$field->field_id = 'custom-form-id';
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="custom-form-id">&lt;script&gt;alert(&quot;Malicious Script&quot;);&lt;/script&gt;Test Label</label>', $property->getValue( $field ) );
+		$field->field_id = '';
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'test-form', [
+			'label' => '<i class="italic-text">Test Label</i>',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="SampleForm-test-form">&lt;i class=&quot;italic-text&quot;&gt;Test Label&lt;/i&gt;</label>', $property->getValue( $field ) );
+	}
 }
