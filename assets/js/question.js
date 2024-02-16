@@ -378,7 +378,9 @@
 			if (data.success && data.form === 'answer') {
 				AnsPress.trigger('answerFormPosted', data);
 				$('apanswersw').show();
-				tinymce.remove();
+				if ( typeof tinymce !== 'undefined' ) {
+					tinymce.remove();
+				}
 
 				// Clear editor contents
 				$('#ap-form-main').html('');
