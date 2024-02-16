@@ -50,4 +50,69 @@ class TestAnsPressFormFieldGroup extends TestCase {
 		$this->assertEquals( $accepted_html_order, $property->getValue( $field ) );
 		$this->assertNotEquals( $custom_output_order, $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Group::label
+	 */
+	public function testLabel() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Group( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertNotEmpty( $property->getValue( $field ) );
+		$this->assertEquals( '<label class="ap-form-label" for="SampleFormsample-form">Test Label</label>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Group( 'Sample Form', 'sample-form', [
+			'label'         => 'Test Label',
+			'type'          => 'text',
+			'delete_button' => true,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertNotEmpty( $property->getValue( $field ) );
+		$this->assertStringContainsString( '<button class="ap-btn ap-repeatable-delete">Delete</button>', $property->getValue( $field ) );
+		$this->assertEquals( '<label class="ap-form-label" for="SampleFormsample-form">Test Label<button class="ap-btn ap-repeatable-delete">Delete</button></label>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Group( 'Sample Form', 'sample-form', [
+			'label'         => '<i class="sample-icon">Test Label</i>',
+			'type'          => 'text',
+			'delete_button' => false,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_id = 'custom-field-id';
+		$field->label();
+		$this->assertNotEmpty( $property->getValue( $field ) );
+		$this->assertStringNotContainsString( '<button class="ap-btn ap-repeatable-delete">Delete</button>', $property->getValue( $field ) );
+		$this->assertEquals( '<label class="ap-form-label" for="SampleFormsample-form">&lt;i class=&quot;sample-icon&quot;&gt;Test Label&lt;/i&gt;</label>', $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Group( 'Sample Form', 'sample-form', [
+			'label'         => '<h2>Test Label</h2>',
+			'type'          => 'text',
+			'delete_button' => true,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_name = 'custom-field-name';
+		$field->label();
+		$this->assertNotEmpty( $property->getValue( $field ) );
+		$this->assertStringContainsString( '<button class="ap-btn ap-repeatable-delete">Delete</button>', $property->getValue( $field ) );
+		$this->assertEquals( '<label class="ap-form-label" for="custom-field-name">&lt;h2&gt;Test Label&lt;/h2&gt;<button class="ap-btn ap-repeatable-delete">Delete</button></label>', $property->getValue( $field ) );
+	}
 }
