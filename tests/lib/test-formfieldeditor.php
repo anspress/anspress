@@ -80,4 +80,82 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
 		$this->logout();
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Editor::unsafe_value
+	 */
+	public function testUnsafeValue() {
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+
+		// Test begins.
+		// Test 1.
+		$_REQUEST = 'Request Value';
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 2.
+		$_REQUEST = [
+			'sample-form' => 'Request Value',
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 3.
+		$_REQUEST = [
+			'Sample Form' => 'Request Value',
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 4.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'Request Value',
+			],
+		];
+		$this->assertEquals( 'Request Value', $field->unsafe_value() );
+
+		// Test 5.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'key' => 'Request Value',
+				],
+			],
+		];
+		$this->assertEquals( [ 'key' => 'Request Value' ], $field->unsafe_value() );
+
+		// Test 6.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => '\\\\ This is a test value \\\\',
+					],
+				],
+			],
+		];
+		$this->assertEquals( [ 'child' => [ 'grand_child' => '\\\\ This is a test value \\\\' ] ], $field->unsafe_value() );
+
+		// Test 7.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '     \\\\ This is a test value \\\\     ',
+			],
+		];
+		$this->assertEquals( '     \\\\ This is a test value \\\\     ', $field->unsafe_value() );
+
+		// Test 8.
+		$_REQUEST = [
+			'Test Form' => [
+				'sample-form' => 'Request Value',
+			],
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 9.
+		$_REQUEST = [
+			'Sample Form' => [
+				'test-form' => 'Request Value',
+			],
+		];
+		$this->assertNull( $field->unsafe_value() );
+	}
 }
