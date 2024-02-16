@@ -195,4 +195,90 @@ class TestAddonNotifications extends TestCase {
 			}
 		}
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::register_verbs
+	 */
+	public function testRegisterVerbs() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test before calling the method.
+		$verbs = ap_notification_verbs();
+		$this->assertEmpty( $verbs );
+
+		// Test after calling the method.
+		$instance->register_verbs();
+		$verbs = ap_notification_verbs();
+		$this->assertNotEmpty( $verbs );
+
+		// Test for new_answer verb.
+		$this->assertArrayHasKey( 'new_answer', $verbs );
+		$expected_array = [
+			'ref_type'   => 'post',
+			'label'      => 'posted an answer on your question',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $expected_array, $verbs['new_answer'] );
+
+		// Test for new_comment verb.
+		$this->assertArrayHasKey( 'new_comment', $verbs );
+		$expected_array = [
+			'ref_type'   => 'comment',
+			'label'      => 'commented on your %cpt%',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $expected_array, $verbs['new_comment'] );
+
+		// Test for vote_up verb.
+		$this->assertArrayHasKey( 'vote_up', $verbs );
+		$expected_array = [
+			'ref_type'   => 'post',
+			'label'      => 'up voted your %cpt%',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $expected_array, $verbs['vote_up'] );
+
+		// Test for vote_down verb.
+		$this->assertArrayHasKey( 'vote_down', $verbs );
+		$expected_array = [
+			'ref_type'   => 'post',
+			'label'      => 'down voted your %cpt%',
+			'hide_actor' => true,
+			'icon'       => 'apicon-thumb-down',
+		];
+		$this->assertEquals( $expected_array, $verbs['vote_down'] );
+
+		// Test for best_answer verb.
+		$this->assertArrayHasKey( 'best_answer', $verbs );
+		$expected_array = [
+			'ref_type'   => 'post',
+			'label'      => 'selected your answer',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $expected_array, $verbs['best_answer'] );
+
+		// Test for new_points verb.
+		$this->assertArrayHasKey( 'new_points', $verbs );
+		$expected_array = [
+			'ref_type'   => 'reputation',
+			'label'      => 'You have earned %points% points',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $expected_array, $verbs['new_points'] );
+
+		// Test for lost_points verb.
+		$this->assertArrayHasKey( 'lost_points', $verbs );
+		$expected_array = [
+			'ref_type'   => 'reputation',
+			'label'      => 'You lose %points% points',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $expected_array, $verbs['lost_points'] );
+	}
 }
