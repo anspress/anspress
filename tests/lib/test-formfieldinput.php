@@ -135,4 +135,96 @@ class TestAnsPressFormFieldInput extends TestCase {
 		$method->invoke( $field );
 		$this->assertEquals( $default_output_order, $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Input::field_markup
+	 */
+	public function testFieldMarkup() {
+		// Set up the action hook callback
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Input', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [
+			'type'  => 'text',
+			'value' => 'Sample Value',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<input type="text" value="Sample Value" name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "/>', $property->getValue( $field ) );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Input( 'Test Form', 'sample-form', [
+			'type'    => 'text',
+			'subtype' => 'hidden',
+			'value'   => 'Test Value',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<input type="hidden" value="Test Value" name="Test Form[sample-form]" id="TestForm-sample-form" class="ap-form-control "/>', $property->getValue( $field ) );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [
+			'type'  => 'text',
+			'value' => 'Test Value',
+			'html'  => '<div>Custom HTML</div>',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div>Custom HTML</div>', $property->getValue( $field ) );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Input( 'Test Form', 'test-form', [
+			'type'  => 'text',
+			'value' => 'Test Value',
+			'attr'  => [
+				'placeholder' => 'Placeholder',
+				'data-custom' => 'Custom data',
+			],
+			'class' => 'custom-class',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<input type="text" value="Test Value" name="Test Form[test-form]" id="TestForm-test-form" class="ap-form-control custom-class" placeholder="Placeholder" data-custom="Custom data"/>', $property->getValue( $field ) );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Input( 'Test Form', 'test-form', [
+			'type'  => 'text',
+			'value' => 'Test Value',
+			'attr'  => [
+				'placeholder' => 'Placeholder',
+				'data-custom' => 'Custom data',
+			],
+			'class' => 'custom-class',
+			'html'  => '<div>Custom HTML</div>',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div>Custom HTML</div>', $property->getValue( $field ) );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
 }
