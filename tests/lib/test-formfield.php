@@ -1236,4 +1236,94 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertEquals( [ $error_code => $error_message ], $field->errors );
 		$this->assertEquals( [ 'fields-error' => 'Error found in fields, please check and re-submit' ], anspress()->forms['Sample Form']->errors );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::errors
+	 */
+	public function testErrors() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"></div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->errors['required'] = 'This field is required';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"><div class="ap-field-errors"><span class="ap-field-error ecode-required">This field is required</span></div></div>', $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+				'atts'  => [
+					'data-attr'   => 'test-attr',
+					'placeholder' => 'Test Placeholder',
+				],
+			],
+		] );
+		$field->errors['required'] = 'This field is required';
+		$field->errors['invalid'] = 'Invalid value';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"><div class="ap-field-errors"><span class="ap-field-error ecode-required">This field is required</span><span class="ap-field-error ecode-invalid">Invalid value</span></div></div>', $property->getValue( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->errors = [];
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"></div>', $property->getValue( $field ) );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->errors['invalid'] = 'Invalid value';
+		$field->errors['test'] = 'This is test error';
+		$field->errors['new-error'] = 'New error message';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"><div class="ap-field-errors"><span class="ap-field-error ecode-invalid">Invalid value</span><span class="ap-field-error ecode-test">This is test error</span><span class="ap-field-error ecode-new-error">New error message</span></div></div>', $property->getValue( $field ) );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$field->errors['invalid'] = 'Invalid value';
+		$field->errors['test'] = 'This is test error';
+		$field->errors['new-error'] = 'New error message';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errors"><span class="ap-field-error ecode-invalid">Invalid value</span><span class="ap-field-error ecode-test">This is test error</span><span class="ap-field-error ecode-new-error">New error message</span></div>', $property->getValue( $field ) );
+	}
 }
