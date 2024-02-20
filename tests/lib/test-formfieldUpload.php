@@ -169,4 +169,97 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$this->assertIsArray( $result );
 		$this->assertEquals( [ 'latest_value', $field->args['upload_options'] ], $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Upload::js_args
+	 */
+	public function testJSArgs() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => array(
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				),
+				'label_deny_type' => 'Invalid file type',
+				'async_upload'    => false,
+				'label_max_added' => 'No more than 1 file is allowed',
+			],
+		] );
+		$result = $field->js_args();
+		$expected = wp_json_encode( [
+			'max_files'       => 1,
+			'multiple'        => false,
+			'label_deny_type' => 'Invalid file type',
+			'async_upload'    => false,
+			'label_max_added' => 'No more than 1 file is allowed',
+			'field_name'      => 'sample-form',
+			'form_name'       => 'Sample Form',
+		] );
+		$this->assertEquals( $expected, $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 2,
+				'allowed_mimes'   => array(
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+				),
+				'label_deny_type' => 'Invalid file',
+				'async_upload'    => true,
+				'label_max_added' => 'Max 2 files are allowed',
+			],
+		] );
+		$result = $field->js_args();
+		$expected = wp_json_encode( [
+			'max_files'       => 2,
+			'multiple'        => true,
+			'label_deny_type' => 'Invalid file',
+			'async_upload'    => true,
+			'label_max_added' => 'Max 2 files are allowed',
+			'field_name'      => 'sample-form',
+			'form_name'       => 'Sample Form',
+		] );
+		$this->assertEquals( $expected, $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'  => true,
+				'max_files' => 5,
+			],
+		] );
+		$result = $field->js_args();
+		$expected = wp_json_encode( [
+			'max_files'       => 5,
+			'multiple'        => true,
+			'label_deny_type' => 'This file type is not allowed to upload.',
+			'async_upload'    => false,
+			'label_max_added' => 'You cannot add more then 5 files',
+			'field_name'      => 'sample-form',
+			'form_name'       => 'Sample Form',
+		] );
+		$this->assertEquals( $expected, $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [
+			'upload_options' => [],
+		] );
+		$result = $field->js_args();
+		$expected = wp_json_encode( [
+			'max_files'       => 1,
+			'multiple'        => false,
+			'label_deny_type' => 'This file type is not allowed to upload.',
+			'async_upload'    => false,
+			'label_max_added' => 'You cannot add more then 1 files',
+			'field_name'      => 'test-form',
+			'form_name'       => 'Test Form',
+		] );
+		$this->assertEquals( $expected, $result );
+	}
 }
