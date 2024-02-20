@@ -791,4 +791,52 @@ class TestAnsPressFormField extends TestCase {
 		$field->label();
 		$this->assertStringContainsString( '<label class="ap-form-label" for="SampleForm-test-form">&lt;i class=&quot;italic-text&quot;&gt;Test Label&lt;/i&gt;</label>', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::get_attr
+	 */
+	public function testGetAttr() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attr' );
+		$method->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$array = [
+			'key-1' => 'value-1',
+			'key-2' => 'value-2',
+		];
+		$result = $method->invoke( $field, $array );
+		$expected = ' key-1="value-1" key-2="value-2"';
+		$this->assertEquals( $expected, $result );
+
+		// Test 2.
+		$array = [
+			'key-1' => 'value-1',
+			'key-2' => 'value-2',
+			'key-3' => '',
+		];
+		$result = $method->invoke( $field, $array );
+		$expected = ' key-1="value-1" key-2="value-2" key-3=""';
+		$this->assertEquals( $expected, $result );
+
+		// Test 3.
+		$array = [];
+		$result = $method->invoke( $field, $array );
+		$this->assertEmpty( $result );
+
+		// Test 4.
+		$array = 'invalid array';
+		$result = $method->invoke( $field, $array );
+		$this->assertEmpty( $result );
+
+		// Test 5.
+		$array = [
+			'key-1' => 'Value 1',
+		];
+		$result = $method->invoke( $field, $array );
+		$expected = ' key-1="Value 1"';
+		$this->assertEquals( $expected, $result );
+	}
 }
