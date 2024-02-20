@@ -908,4 +908,71 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertStringContainsString( 'class="ap-form-control "', $result );
 		$this->assertEquals( ' name="Test Form[test-form]" id="TestForm-test-form" class="ap-form-control "', $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::custom_attr
+	 */
+	public function testCustomAttr() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => [
+				'placeholder' => 'Test Placeholder',
+			],
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEquals( ' placeholder="Test Placeholder"', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => [
+				'placeholder' => 'Test Placeholder',
+				'data-text'   => 'Sample Text',
+				'rows'        => '10',
+			],
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEquals( ' placeholder="Test Placeholder" data-text="Sample Text" rows="10"', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => [],
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => 'invalid array',
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+	}
 }
