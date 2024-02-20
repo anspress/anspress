@@ -158,4 +158,45 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		];
 		$this->assertNull( $field->unsafe_value() );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Editor::apcode_cb
+	 */
+	public function testApcodeCb() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+		$args = [
+			0 => '[apcode language="php" inline="true"]content[/apcode]',
+			3 => ' language="php" inline="true"',
+			5 => 'content',
+		];
+		$this->assertEquals( '[apcode language="php" inline="true"]content[/apcode]', $field->apcode_cb( $args ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+		$args = [
+			0 => '[apcode]content[/apcode]',
+			3 => '',
+			5 => 'content',
+		];
+		$this->assertEquals( '[apcode]content[/apcode]', $field->apcode_cb( $args ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+		$args = [
+			0 => '[apcode language="php"]content[/apcode]',
+			3 => ' language="php"',
+			5 => 'content',
+		];
+		$this->assertEquals( '[apcode language="php"]content[/apcode]', $field->apcode_cb( $args ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+		$args = [
+			0 => '[apcode inline="true"]content[/apcode]',
+			3 => ' inline="true"',
+			5 => 'content',
+		];
+		$this->assertEquals( '[apcode inline="true"]content[/apcode]', $field->apcode_cb( $args ) );
+	}
 }
