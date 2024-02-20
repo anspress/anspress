@@ -1006,4 +1006,84 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertNotEmpty( $validate_cb->getValue( $field ) );
 		$this->assertEquals( $validate_args, $validate_cb->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::value
+	 */
+	public function testValue() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$result = $field->value( 'Test Value' );
+		$this->assertEquals( 'Test Value', $field->value );
+		$this->assertTrue( $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->value = 'This is the default value';
+		$result = $field->value();
+		$this->assertEquals( 'This is the default value', $result );
+		$this->assertNotTrue( $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->value = 'This is the default value';
+		$result = $field->value( 'New Value' );
+		$this->assertEquals( 'New Value', $field->value );
+		$this->assertTrue( $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'email',
+		] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'user1@example.com',
+			],
+		];
+		$result = $field->value();
+		$this->assertEquals( 'user1@example.com', $result );
+		$this->assertNotTrue( $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'email',
+		] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'invalid-email',
+			],
+		];
+		$result = $field->value();
+		$this->assertEmpty( $result );
+		$this->assertNotTrue( $result );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'email',
+		] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'user1@example.com',
+			],
+		];
+		$result = $field->value( 'Test Email' );
+		$this->assertEquals( 'Test Email', $result );
+		$this->assertTrue( $result );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'value' => 'This is test value passed within form',
+		] );
+		$result = $field->value();
+		$this->assertEquals( 'This is test value passed within form', $result );
+		$this->assertNotTrue( $result );
+
+		// Test 8.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'value' => 'This is test value passed within form',
+		] );
+		$result = $field->value( 'New Value' );
+		$this->assertEquals( 'New Value', $field->value );
+		$this->assertTrue( $result );
+	}
 }
