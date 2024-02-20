@@ -975,4 +975,35 @@ class TestAnsPressFormField extends TestCase {
 		$result = $method->invoke( $field );
 		$this->assertEmpty( $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::prepare
+	 */
+	public function testPrepare() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'prepare' );
+		$method->setAccessible( true );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+
+		// Test begins.
+		$sanitize_args = [ 'callback1', 'callback2' ];
+		$validate_args = [ 'callback1', 'callback2' ];
+		$field->args['sanitize'] = $sanitize_args;
+		$field->args['validate'] = $validate_args;
+
+		// Before calling the method.
+		$this->assertEmpty( $sanitize_cb->getValue( $field ) );
+		$this->assertEmpty( $validate_cb->getValue( $field ) );
+
+		// After calling the method.
+		$method->invoke( $field );
+		$this->assertNotEmpty( $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( $sanitize_args, $sanitize_cb->getValue( $field ) );
+		$this->assertNotEmpty( $validate_cb->getValue( $field ) );
+		$this->assertEquals( $validate_args, $validate_cb->getValue( $field ) );
+	}
 }
