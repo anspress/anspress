@@ -1213,4 +1213,27 @@ class TestAnsPressFormField extends TestCase {
 		$method->invoke( $field );
 		$this->assertEmpty( $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::add_error
+	 */
+	public function testAddError() {
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$error_code = 'test-error';
+		$error_message = 'Test Error';
+		$field->add_error( $error_code, $error_message );
+		$this->assertEquals( [ $error_code => $error_message ], $field->errors );
+		$this->assertEquals( [ 'fields-error' => 'Error found in fields, please check and re-submit' ], anspress()->forms['Sample Form']->errors );
+
+		// Test 2.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [] );
+		$error_code = 'new-error';
+		$error_message = 'New Error';
+		$field->add_error( $error_code, $error_message );
+		$this->assertEquals( [ $error_code => $error_message ], $field->errors );
+		$this->assertEquals( [ 'fields-error' => 'Error found in fields, please check and re-submit' ], anspress()->forms['Sample Form']->errors );
+	}
 }
