@@ -137,7 +137,7 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertFalse( $field->have_errors() );
 
 		// Test 2.
-		$field->errors = [ 'error' ];
+		$field->errors['test-error'] = 'Test error message';
 		$this->assertTrue( $field->have_errors() );
 	}
 
