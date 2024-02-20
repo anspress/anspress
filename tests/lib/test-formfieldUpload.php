@@ -94,7 +94,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				),
 				'label_deny_type' => 'Invalid file type',
 				'async_upload'    => false,
-				'max_files'       => 'You can only upload one file',
+				'label_max_added' => 'You can only upload one file',
 			],
 		] );
 		$reflection = new \ReflectionClass( $field );
@@ -115,7 +115,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				),
 				'label_deny_type' => 'Invalid file',
 				'async_upload'    => true,
-				'max_files'       => 'Uploading only 2 files is allowed',
+				'label_max_added' => 'Uploading only 2 files is allowed',
 			],
 		] );
 		$reflection = new \ReflectionClass( $field );
@@ -136,7 +136,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				),
 				'label_deny_type' => 'File type is not allowed',
 				'async_upload'    => '',
-				'max_files'       => 'Max 5 files can be uploaded',
+				'label_max_added' => 'Max 5 files can be uploaded',
 			],
 		] );
 		$reflection = new \ReflectionClass( $field );
