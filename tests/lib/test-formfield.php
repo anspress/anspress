@@ -839,4 +839,73 @@ class TestAnsPressFormField extends TestCase {
 		$expected = ' key-1="Value 1"';
 		$this->assertEquals( $expected, $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::common_attr
+	 */
+	public function testCommonAttr() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => 'test-class',
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control test-class"', $result );
+		$this->assertEquals( ' name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control test-class"', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => 'test-class another-class',
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$field->field_id = 'custom-form-id';
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control test-class another-class"', $result );
+		$this->assertEquals( ' name="Sample Form[sample-form]" id="custom-form-id" class="ap-form-control test-class another-class"', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => 'another-class',
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$field->field_id = 'form-id';
+		$field->field_name = 'Form Name';
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control another-class"', $result );
+		$this->assertEquals( ' name="Form Name" id="form-id" class="ap-form-control another-class"', $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => '',
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control "', $result );
+		$this->assertEquals( ' name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "', $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control "', $result );
+		$this->assertEquals( ' name="Test Form[test-form]" id="TestForm-test-form" class="ap-form-control "', $result );
+	}
 }
