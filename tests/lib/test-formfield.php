@@ -1169,4 +1169,48 @@ class TestAnsPressFormField extends TestCase {
 		$method->invoke( $field );
 		$this->assertEquals( '<div class="ap-form-group ap-field-SampleForm-sample-form ap-field-type-input ap-have-errors custom-wrapper" data-attr="test-attr" placeholder="Test Placeholder">', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::wrapper_end
+	 */
+	public function testWrapperEnd() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_end' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '</div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_end' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '</div>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_end' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEmpty( $property->getValue( $field ) );
+	}
 }
