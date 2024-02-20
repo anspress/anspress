@@ -1326,4 +1326,46 @@ class TestAnsPressFormField extends TestCase {
 		$field->errors();
 		$this->assertEquals( '<div class="ap-field-errors"><span class="ap-field-error ecode-invalid">Invalid value</span><span class="ap-field-error ecode-test">This is test error</span><span class="ap-field-error ecode-new-error">New error message</span></div>', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field::__construct
+	 */
+	public function testConstruct() {
+		// Test 1.
+		$args = [
+			'label' => 'Test Label',
+			'desc'  => 'Test Description',
+			'type'  => 'text',
+			'value' => 'Test Value',
+		];
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', $args );
+		$this->assertEquals( 'Sample Form', $field->form_name );
+		$this->assertEquals( 'Sample Form[sample-form]', $field->field_name );
+		$this->assertEquals( 'sample-form', $field->original_name );
+		$this->assertEquals( $args, $field->args );
+		$this->assertEquals( 'SampleForm-sample-form', $field->field_id );
+
+		// Test 2.
+		$args = [
+			'label'   => 'Sample Form Label',
+			'desc'    => 'Sample Form Description',
+			'type'    => 'text',
+			'subtype' => 'email',
+			'value'   => 'user1@example.com',
+		];
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', $args );
+		$this->assertEquals( 'Test Form', $field->form_name );
+		$this->assertEquals( 'Test Form[test-form]', $field->field_name );
+		$this->assertEquals( 'test-form', $field->original_name );
+		$this->assertEquals( $args, $field->args );
+		$this->assertEquals( 'TestForm-test-form', $field->field_id );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$this->assertEquals( 'Another Form', $field->form_name );
+		$this->assertEquals( 'Another Form[another-form]', $field->field_name );
+		$this->assertEquals( 'another-form', $field->original_name );
+		$this->assertEmpty( $field->args );
+		$this->assertEquals( 'AnotherForm-another-form', $field->field_id );
+	}
 }
