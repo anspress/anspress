@@ -199,4 +199,81 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		];
 		$this->assertEquals( '[apcode inline="true"]content[/apcode]', $field->apcode_cb( $args ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Editor::get_attached_images
+	 */
+	public function testGetAttachedImages() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => '{{apimage "image1.jpg"}}'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEquals( [ 'image1.jpg' ], $method->invoke( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => '{{apimage "image1.jpg"}}{{apimage "image2.jpg"}}'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEquals( [ 'image1.jpg', 'image2.jpg' ], $method->invoke( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => '{{apimage "image1.jpg"}}This is test image. {{apimage "image2.jpg"}} Test image.{{apimage "image3.jpg"}}'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEquals( [ 'image1.jpg', 'image2.jpg', 'image3.jpg' ], $method->invoke( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => 'This is test image'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEmpty( $method->invoke( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => ''
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEmpty( $method->invoke( $field ) );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => 'These are the images available: {{apimage "image1.jpg"}}{{apimage "image2.jpg"}}{{apimage "image3.jpg"}}'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEquals( [ 'image1.jpg', 'image2.jpg', 'image3.jpg' ], $method->invoke( $field ) );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => '{{apimage image1.jpg}}'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEmpty( $method->invoke( $field ) );
+
+		// Test 8.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'value' => '{{apimage image1.jpg}}{{apimage "image2.jpg"}}{{apimage ""}}'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attached_images' );
+		$method->setAccessible( true );
+		$this->assertEquals( [ 'image2.jpg', '' ], $method->invoke( $field ) );
+	}
 }
