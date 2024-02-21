@@ -81,4 +81,64 @@ class TestAnsPressFormFieldTags extends TestCase {
 		$this->assertIsArray( $result );
 		$this->assertEquals( [ [ 'new_value' ], $field->args ], $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::unsafe_value
+	 */
+	public function testUnsafeValue() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'test1,test2',
+			],
+		];
+		$result = $field->unsafe_value();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'test1', 'test2' ], $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Tags( 'Test Form', 'test-form', [] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-form' => 'test1',
+			],
+		];
+		$result = $field->unsafe_value();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'test1' ], $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Tags( 'Test Form', 'test-form', [] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-form' => '',
+			],
+		];
+		$result = $field->unsafe_value();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ '' ], $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Tags( 'Test Form', 'test-form', [] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-form' => 'this is test, \\test value\\',
+			],
+		];
+		$result = $field->unsafe_value();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ 'this is test', ' test value' ], $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Tags( 'Test Form', 'test-form', [] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-form' => '0,test value,valid tag id,\\valid tag name\\',
+			],
+		];
+		$result = $field->unsafe_value();
+		$this->assertIsArray( $result );
+		$this->assertEquals( [ '0', 'test value', 'valid tag id', 'valid tag name' ], $result );
+	}
 }
