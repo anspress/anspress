@@ -274,6 +274,13 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function new_answer( $post_id, $_post ) {
 		$_question = get_post( $_post->post_parent );
+
+		// Return if question is not available.
+		if ( ! $_question ) {
+			return;
+		}
+
+		// Insert the notification.
 		ap_insert_notification(
 			array(
 				'user_id'  => $_question->post_author,
