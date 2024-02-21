@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAnsPressFormFieldUpload extends TestCase {
 
+	use Testcases\Common;
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Form\Field\Upload' );
 		$this->assertTrue( $class->hasProperty( 'type' ) && $class->getProperty( 'type' )->isPublic() );
@@ -261,5 +263,56 @@ class TestAnsPressFormFieldUpload extends TestCase {
 			'form_name'       => 'Test Form',
 		] );
 		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Upload::file_list
+	 */
+	public function testFileList() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->file_list();
+		$this->assertEquals( '<div class="ap-upload-list"></div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$question_id = $this->insert_question();
+		$attachment_id = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/files/anspress.pdf', $question_id, [
+			'post_title' => '_ap_temp_media',
+		] );
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->file_list();
+		$media = get_post( $attachment_id );
+		$this->assertEquals( '<div class="ap-upload-list"><div><span class="ext">' . pathinfo( $media->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media->ID ) ), 2 ) . '</span></div></div>', $property->getValue( $field ) );
+		wp_delete_attachment( $attachment_id );
+
+		// Test 3.
+		$id = $this->insert_answer();
+		$attachment_id_1 = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/img/question.png', $id->q, [
+			'post_title' => '_ap_temp_media',
+		] );
+		$attachment_id_2 = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/img/answer.png', $id->a, [
+			'post_title' => '_ap_temp_media',
+		] );
+		$attachment_id_3 = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/img/anspress-hero.png', $id->a, [
+			'post_title' => '_ap_temp_media',
+		] );
+		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->file_list();
+		$media_1 = get_post( $attachment_id_1 );
+		$media_2 = get_post( $attachment_id_2 );
+		$media_3 = get_post( $attachment_id_3 );
+		$this->assertEquals( '<div class="ap-upload-list"><div><span class="ext">' . pathinfo( $media_1->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_1->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_1->ID ) ), 2 ) . '</span></div><div><span class="ext">' . pathinfo( $media_2->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_2->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_2->ID ) ), 2 ) . '</span></div><div><span class="ext">' . pathinfo( $media_3->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_3->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_3->ID ) ), 2 ) . '</span></div></div>', $property->getValue( $field ) );
 	}
 }
