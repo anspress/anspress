@@ -67,7 +67,9 @@ class AnsPress_Admin {
 		anspress()->add_filter( 'posts_clauses', __CLASS__, 'join_by_author_name', 10, 2 );
 		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
 		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
+		anspress()->add_action( 'admin_footer-edit.php', __CLASS__, 'append_post_status_list_edit' );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
+		anspress()->add_action( 'admin_footer-post-new.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
 		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
@@ -634,32 +636,42 @@ class AnsPress_Admin {
 	}
 
 	/**
+	 * Add AnsPress post status to bulk edit select box.
+	 */
+	public static function append_post_status_list_edit() {
+		global $post;
+
+		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
+			echo '<script>
+				jQuery( document ).ready( function() {
+					jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>" );
+					jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>" );
+				} );
+			</script>';
+		}
+	}
+
+	/**
 	 * Add AnsPress post status to post edit select box.
 	 */
 	public static function append_post_status_list() {
 		global $post;
-
-		$complete = '';
-		$label    = '';
+		$label = '';
 
 		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 			if ( 'moderate' === $post->post_status ) {
-					$complete = ' selected=\'selected\'';
-					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
+				$label = esc_attr__( 'Moderate', 'anspress-question-answer' );
 			} elseif ( 'private_post' === $post->post_status ) {
-					$complete = ' selected=\'selected\'';
-					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
+				$label = esc_attr__( 'Private Post', 'anspress-question-answer' );
 			}
 
-			// phpcs:disable
 			echo '<script>
-				jQuery(document).ready(function(){
-					jQuery("select#post_status").append("<option value=\'moderate\' ' . $complete . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>");
-					jQuery("select#post_status").append("<option value=\'private_post\' ' . $complete . '>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>");
-					jQuery(".misc-pub-section label").append("' . $label . '");
-				});
+				jQuery( document ).ready( function() {
+					jQuery( "select#post_status" ).append( "<option value=\'moderate\'' . ( 'moderate' === $post->post_status ? ' selected=\'selected\'' : '' ) . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>" );
+					jQuery( "select#post_status" ).append( "<option value=\'private_post\'' . ( 'private_post' === $post->post_status ? ' selected=\'selected\'' : '' ) . '>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>" );'
+					. ( ( 'moderate' === $post->post_status || 'private_post' === $post->post_status ) ? 'jQuery( "select#post_status" ).closest( ".misc-pub-section" ).find( "#post-status-display" ).html( "' . esc_html( $label ) . '" );' : '' ) . '
+				} );
 			</script>';
-			// phpcs:enable
 		}
 	}
 
@@ -676,7 +688,7 @@ class AnsPress_Admin {
 				'type'    => 'error',
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:disable Universal.Operators.StrictComparisons.LooseNotEqual
+				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 			),
 			'missing_pages' => array(
 				'type'    => 'error',
