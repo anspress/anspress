@@ -17,6 +17,38 @@ class TestAnsPressFormFieldTextarea extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress\Form\Field\Textarea::prepare
+	 */
+	public function testPrepare() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Textarea( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'textarea_field' ], $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'AnsPress Textarea Field', 'attr' => [ 'rows' => 8 ] ], $field->args );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Textarea( 'Sample Form', 'sample-form', [
+			'value' => 'This is textarea custom value',
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+			'attr'  => [
+				'rows' => 10,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'textarea_field' ], $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'Test Label', 'type'  => 'textarea', 'attr' => [ 'rows' => 10 ], 'value' => 'This is textarea custom value', ], $field->args );
+	}
+
+	/**
 	 * @covers AnsPress\Form\Field\Textarea::field_markup
 	 */
 	public function testFieldMarkup() {
