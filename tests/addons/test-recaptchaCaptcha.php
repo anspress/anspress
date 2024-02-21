@@ -19,6 +19,50 @@ class TestAddonCaptchaCaptcha extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress\Form\Field\Captcha::prepare
+	 */
+	public function testPrepare() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Captcha( 'Sample Form', 'sample-form', [] );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertEquals( [ 'label' => 'AnsPress reCaptcha Field' ], $field->args );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Captcha( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+		] );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertEquals( [ 'label' => 'Test Label' ], $field->args );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Captcha( 'Sample Form', 'sample-form', [
+			'desc' => 'Test description',
+		] );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertEquals( [ 'label' => 'AnsPress reCaptcha Field', 'desc' => 'Test description' ], $field->args );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Captcha( 'Sample Form', 'sample-form', [
+			'sanitize' => 'custom_sanitize_cb',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'AnsPress reCaptcha Field', 'sanitize' => 'custom_sanitize_cb' ], $field->args );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Captcha( 'Sample Form', 'sample-form', [
+			'validate' => 'custom_validate_cb',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'validate_cb' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'AnsPress reCaptcha Field', 'validate' => 'custom_validate_cb' ], $field->args );
+	}
+
+	/**
 	 * @covers AnsPress\Form\Field\Captcha::field_markup
 	 */
 	public function testFieldMarkup() {
