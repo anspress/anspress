@@ -76,7 +76,6 @@ class AnsPress_BasePage_Shortcode {
 			return __( 'AnsPress shortcode cannot be nested.', 'anspress-question-answer' );
 		}
 
-		wp_enqueue_script( 'anspress-main' );
 		wp_enqueue_script( 'anspress-theme' );
 		wp_enqueue_style( 'anspress-main' );
 		wp_enqueue_style( 'anspress-fonts' );
