@@ -315,4 +315,132 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$media_3 = get_post( $attachment_id_3 );
 		$this->assertEquals( '<div class="ap-upload-list"><div><span class="ext">' . pathinfo( $media_1->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_1->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_1->ID ) ), 2 ) . '</span></div><div><span class="ext">' . pathinfo( $media_2->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_2->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_2->ID ) ), 2 ) . '</span></div><div><span class="ext">' . pathinfo( $media_3->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_3->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_3->ID ) ), 2 ) . '</span></div></div>', $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Upload::field_markup
+	 */
+	public function testFieldMarkup() {
+		// Set up the action hook callback
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Upload', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		// Test 1.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => array(
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				),
+				'label_deny_type' => 'Invalid file type',
+				'async_upload'    => false,
+				'label_max_added' => 'No more than 1 file is allowed',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="SampleForm-sample-form" id="SampleForm-sample-form" class="ap-form-control " accept=".jpg,.jpeg,.gif,.png"  /></div>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 2.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 2,
+				'allowed_mimes'   => array(
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+				),
+				'label_deny_type' => 'Invalid file',
+				'async_upload'    => true,
+				'label_max_added' => 'Max 2 files are allowed',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="TestForm-test-form[]" id="TestForm-test-form" class="ap-form-control " multiple="multiple" accept=".jpg,.jpeg,.gif"  /></div>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 3.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'wrapper'        => [
+				'class' => 'custom-class',
+				'attr'  => [
+					'data-custom' => 'custom-data',
+					'placeholder' => 'Custom Placeholder',
+				],
+			],
+			'upload_options' => [
+				'multiple'  => true,
+				'max_files' => 5,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="SampleForm-sample-form[]" id="SampleForm-sample-form" class="ap-form-control " multiple="multiple" accept=".jpg,.jpeg,.gif,.png,.doc,.docx,.xls"  /></div>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 4.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [
+			'class' => 'custom-class',
+			'attr'  => [
+				'data-custom' => 'custom-data',
+				'placeholder' => 'Custom Placeholder',
+			],
+			'upload_options' => [],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="TestForm-test-form" id="TestForm-test-form" class="ap-form-control custom-class" data-custom="custom-data" placeholder="Custom Placeholder" accept=".jpg,.jpeg,.gif,.png,.doc,.docx,.xls"  /></div>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 5.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [
+			'upload_options' => [
+				'allowed_mimes' => [],
+				'multiple'      => true,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="TestForm-test-form[]" id="TestForm-test-form" class="ap-form-control " multiple="multiple" accept="."  /></div>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
 }
