@@ -27,6 +27,49 @@ class TestAnsPressFormFieldEditor extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress\Form\Field\Editor::prepare
+	 */
+	public function testPrepare() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'description', 'wp_kses' ], $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'AnsPress Editor Field', 'editor_args' => [ 'quicktags' => false ] ], $field->args );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'label'       => 'Test Label',
+			'editor_args' => [
+				'quicktags' => true,
+			],
+			'value'       => 'This is a test value'
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'description', 'wp_kses' ], $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'Test Label', 'editor_args' => [ 'quicktags' => true ], 'value' => 'This is a test value' ], $field->args );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [
+			'sanitize' => 'sanitize_text_field',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'description', 'wp_kses', 'sanitize_text_field' ], $property->getValue( $field ) );
+		$this->assertEquals( [ 'label' => 'AnsPress Editor Field', 'editor_args' => [ 'quicktags' => false ], 'sanitize' => 'sanitize_text_field' ], $field->args );
+	}
+
+	/**
 	 * @covers AnsPress\Form\Field\Editor::image_button
 	 */
 	public function testImageButton() {
