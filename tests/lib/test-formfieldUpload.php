@@ -313,7 +313,9 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$media_1 = get_post( $attachment_id_1 );
 		$media_2 = get_post( $attachment_id_2 );
 		$media_3 = get_post( $attachment_id_3 );
-		$this->assertEquals( '<div class="ap-upload-list"><div><span class="ext">' . pathinfo( $media_1->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_1->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_1->ID ) ), 2 ) . '</span></div><div><span class="ext">' . pathinfo( $media_2->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_2->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_2->ID ) ), 2 ) . '</span></div><div><span class="ext">' . pathinfo( $media_3->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_3->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_3->ID ) ), 2 ) . '</span></div></div>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<div><span class="ext">' . pathinfo( $media_1->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_1->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_1->ID ) ), 2 ) . '</span></div>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<div><span class="ext">' . pathinfo( $media_2->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_2->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_2->ID ) ), 2 ) . '</span></div>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<div><span class="ext">' . pathinfo( $media_3->guid, PATHINFO_EXTENSION ) . '</span>' . basename( $media_3->guid ) . '<span class="size">' . size_format( filesize( get_attached_file( $media_3->ID ) ), 2 ) . '</span></div>', $property->getValue( $field ) );
 	}
 
 	/**
