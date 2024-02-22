@@ -393,6 +393,13 @@ class AnsPress_Ajax {
 					'action' => 'closed_q',
 				)
 			);
+		} else {
+			ap_activity_add(
+				array(
+					'q_id'   => $_post->ID,
+					'action' => 'open_q',
+				)
+			);
 		}
 
 		$results = array(
