@@ -67,7 +67,10 @@ SyntaxHighlighter.all();
 
 			var code = $(this).find('textarea').val();
 			code = code.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-			code = tinyMCE.DOM.encode(code).replace(/^[\s]+/gm, function (m) {
+			if ( typeof tinymce !== 'undefined' ) {
+				code = tinyMCE.DOM.encode(code);
+			}
+			code = code.replace(/^[\s]+/gm, function (m) {
 				var leadingSpaces = arguments[0].length;
 				var str = '';
 				while (leadingSpaces > 0) {
@@ -84,7 +87,7 @@ SyntaxHighlighter.all();
 			var attr = 'language="' + lang + '"';
 			var cont = '[apcode ' + attr + ']<' + tag + ' data-mce-contenteditable="false">' + code + '</' + tag + '>[/apcode]';
 
-			if ( tinyMCE.activeEditor !== null ) {
+			if ( typeof tinymce !== 'undefined' ) {
 				tinymce.activeEditor.insertContent(cont);
 				tinymce.activeEditor.focus();
 				tinymce.activeEditor.selection.collapse(0);
