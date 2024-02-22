@@ -124,6 +124,16 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		$options = get_option( 'anspress_opt', array() );
 
 		foreach ( $values as $key => $opt ) {
+			// Modify the max_upload_size options data to not
+			// exceed the value set in php.ini config.
+			if ( 'max_upload_size' === $key ) {
+				$max_upload = wp_max_upload_size();
+				if ( $opt['value'] > $max_upload ) {
+					$opt['value'] = (int) $max_upload;
+				} else {
+					$opt['value'] = (int) $opt['value'];
+				}
+			}
 			$options[ $key ] = $opt['value'];
 		}
 
