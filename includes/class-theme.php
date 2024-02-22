@@ -262,6 +262,10 @@ class AnsPress_Theme {
 		if ( is_anspress() ) {
 			$templates = array( 'anspress.php', 'page.php', 'singular.php', 'index.php' );
 
+			if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+				$templates = array();
+			}
+
 			if ( is_page() ) {
 				$_post = get_queried_object();
 
