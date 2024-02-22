@@ -232,7 +232,7 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function notification_page() {
 		$user_id = ap_current_user_id();
-		$seen    = ap_sanitize_unslash( 'seen', 'r', 'all' );
+		$seen    = ! empty( ap_sanitize_unslash( 'seen', 'r' ) ) ? ap_sanitize_unslash( 'seen', 'r', 'all' ) : 0;
 
 		if ( get_current_user_id() === $user_id ) {
 			$seen          = 'all' === $seen ? null : (int) $seen;
