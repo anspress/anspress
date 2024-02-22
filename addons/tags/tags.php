@@ -444,7 +444,10 @@ class Tags extends \AnsPress\Singleton {
 		} elseif ( is_question_tag() ) {
 			$tag_id = sanitize_title( get_query_var( 'q_tag' ) );
 			$tag    = $tag_id ? get_term_by( 'slug', $tag_id, 'question_tag' ) : get_queried_object();
-			$title  = $tag->name;
+
+			if ( $tag ) {
+				$title = $tag->name;
+			}
 		}
 
 		return $title;
