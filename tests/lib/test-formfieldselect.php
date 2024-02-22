@@ -309,4 +309,137 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		];
 		$this->assertEquals( $expected, $result );
 	}
+
+	/**
+	 * @covers \AnsPress\Form\Field\Select::field_markup
+	 */
+	public function testFieldMarkup() {
+		// Set up the action hook callback
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Select', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		// Test 1.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+				'option3' => 'Option 3',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option><option value="option1" >Option 1</option><option value="option2" >Option 2</option><option value="option3" >Option 3</option></select>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 2.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
+			'options' => 'terms',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option></select>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 3.
+		$callback_triggered = false;
+		$category_1 = $this->factory->term->create( [ 'name' => 'Category 1', 'taxonomy' => 'question_category' ] );
+		$category_2 = $this->factory->term->create( [ 'name' => 'Category 2', 'taxonomy' => 'question_category' ] );
+		$category_3 = $this->factory->term->create( [ 'name' => 'Category 3', 'taxonomy' => 'question_category' ] );
+		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
+			'options' => 'terms',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option><option value="' . $category_1 . '" >Category 1</option><option value="' . $category_2 . '" >Category 2</option><option value="' . $category_3 . '" >Category 3</option></select>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 4.
+		$callback_triggered = false;
+		$page1 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 1' ] );
+		$page2 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 2' ] );
+		$page3 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 3' ] );
+		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
+			'options' => 'posts',
+			'posts_args' => [
+				'post_type' => 'page',
+				'showposts' => -1,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option><option value="' . $page1 . '" >Page 1</option><option value="' . $page2 . '" >Page 2</option><option value="' . $page3 . '" >Page 3</option></select>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 5.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
+			'label'   => 'Sample Label',
+			'desc'    => 'Sample Description',
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option><option value="option1" >Option 1</option><option value="option2" >Option 2</option></select>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 6.
+		$callback_triggered = false;
+		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
+			'label'      => 'Sample Label',
+			'desc'       => 'Sample Description',
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+			],
+			'class'      => 'custom-class',
+			'attr'       => [
+				'data-attr'   => 'Attr Value',
+				'data-custom' => 'Custom Attr Value',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control custom-class" data-attr="Attr Value" data-custom="Custom Attr Value"><option value="">Select an option</option><option value="option1" >Option 1</option><option value="option2" >Option 2</option></select>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
 }
