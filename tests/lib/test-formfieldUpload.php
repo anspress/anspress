@@ -635,4 +635,41 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Upload::__construct
+	 */
+	public function testConstruct() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		$this->assertEquals( 'SampleForm-sample-form', $field->field_name );
+		$this->assertEquals( false, $field->multiple_upload );
+		$this->assertEquals( [ 'upload' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( [ 'upload' ], $validate_cb->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [
+			'label'          => 'Test Label',
+			'upload_options' => [
+				'multiple' => true,
+			],
+			'sanitize'       => 'custom_sanitize_cb',
+			'validate'       => 'custom_validate_cb',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		$this->assertNotEquals( 'TestForm-test-form', $field->field_name );
+		$this->assertEquals( 'TestForm-test-form[]', $field->field_name );
+		$this->assertEquals( true, $field->multiple_upload );
+		$this->assertEquals( [ 'upload', 'custom_sanitize_cb' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( [ 'upload', 'custom_validate_cb' ], $validate_cb->getValue( $field ) );
+	}
 }
