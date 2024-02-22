@@ -385,6 +385,8 @@ class TestAnsPressFormFieldSelect extends TestCase {
 			'posts_args' => [
 				'post_type' => 'page',
 				'showposts' => -1,
+				'order'     => 'ASC',
+				'orderby'   => 'title',
 			],
 		] );
 		$reflection = new \ReflectionClass( $field );
@@ -393,7 +395,7 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		$this->assertFalse( $callback_triggered );
 		$this->assertEmpty( $property->getValue( $field ) );
 		$field->field_markup();
-		$this->assertStringContainsString( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option><option value="' . $page1 . '" >Page 1</option><option value="' . $page2 . '" >Page 2</option><option value="' . $page3 . '" >Page 3</option></select>', $property->getValue( $field ) );
+		$this->assertEquals( '<select name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "><option value="">Select an option</option><option value="' . $page1 . '" >Page 1</option><option value="' . $page2 . '" >Page 2</option><option value="' . $page3 . '" >Page 3</option></select>', $property->getValue( $field ) );
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
 
