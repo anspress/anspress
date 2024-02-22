@@ -1180,10 +1180,6 @@ function ap_sanitize_unslash( $str, $from = false, $default_val = '' ) {
 		}
 	}
 
-	if ( '0' == $str ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
-		return sanitize_text_field( wp_unslash( $str ) );
-	}
-
 	if ( empty( $str ) ) {
 		return $default_val;
 	}
