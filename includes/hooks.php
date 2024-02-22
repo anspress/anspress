@@ -56,6 +56,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
+			anspress()->add_filter( 'show_admin_bar', __CLASS__, 'show_admin_bar' );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
@@ -1061,5 +1062,18 @@ class AnsPress_Hooks {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Disable admin bar for non-administrator users.
+	 *
+	 * @since 4.4.0
+	 */
+	public static function show_admin_bar() {
+		if ( ! ap_opt( 'show_admin_bar' ) && ! is_super_admin() ) {
+			return apply_filters( 'ap_show_admin_bar', false );
+		}
+
+		return true;
 	}
 }
