@@ -76,7 +76,6 @@ class AnsPress_Admin {
 		anspress()->add_action( 'admin_action_ap_addon_options', __CLASS__, 'ap_addon_options' );
 		anspress()->add_action( 'admin_action_ap_save_addon_options', __CLASS__, 'save_addon_options' );
 		anspress()->add_action( 'admin_footer', __CLASS__, 'admin_footer' );
-		anspress()->add_filter( 'anspress_opt_modify_before_update', __CLASS__, 'anspress_opt_modify_before_update', 10, 2 );
 	}
 
 	/**
@@ -1530,31 +1529,5 @@ class AnsPress_Admin {
 				}
 			</style>
 		<?php
-	}
-
-	/**
-	 * Modify the AnsPress options data before the
-	 * actual AnsPress options data is modified
-	 * for the save event.
-	 *
-	 * @param string $key Option key.
-	 * @param array  $opt Option value.
-	 */
-	public static function anspress_opt_modify_before_update( $key, $opt ) {
-		// Modify the max_upload_size options data to not
-		// exceed the value set in php.ini config.
-		if ( 'max_upload_size' === $key ) {
-			$max_upload = wp_max_upload_size();
-			if ( $opt['value'] > $max_upload ) {
-				$opt['value'] = (int) $max_upload;
-			} else {
-				$opt['value'] = (int) $opt['value'];
-			}
-		}
-
-		return array(
-			'key' => $key,
-			'opt' => $opt,
-		);
 	}
 }
