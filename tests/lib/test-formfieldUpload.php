@@ -37,6 +37,196 @@ class TestAnsPressFormFieldUpload extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress\Form\Field\Upload::prepare
+	 */
+	public function testPrepare() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [] );
+		$expected = [
+			'label'          => 'AnsPress Upload Field',
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+					'doc|docx' => 'application/msword',
+					'xls'      => 'application/vnd.ms-excel',
+				],
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'You cannot add more then 1 files',
+			],
+			'browse_label'   => 'Select file(s) to upload',
+		];
+		$this->assertEquals( $expected, $field->args );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 2,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+				],
+				'label_deny_type' => 'Invalid file',
+				'async_upload'    => true,
+				'label_max_added' => 'Max 2 files are allowed',
+			],
+		] );
+		$expected = [
+			'label'          => 'AnsPress Upload Field',
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 2,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+				],
+				'label_deny_type' => 'Invalid file',
+				'async_upload'    => true,
+				'label_max_added' => 'Max 2 files are allowed',
+			],
+			'browse_label'   => 'Select file(s) to upload',
+		];
+		$this->assertEquals( $expected, $field->args );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'label'        => 'Sample Label',
+			'desc'         => 'Sample Description',
+			'browse_label' => 'Browse files',
+		] );
+		$expected = [
+			'label'          => 'Sample Label',
+			'desc'           => 'Sample Description',
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+					'doc|docx' => 'application/msword',
+					'xls'      => 'application/vnd.ms-excel',
+				],
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'You cannot add more then 1 files',
+			],
+			'browse_label'   => 'Browse files',
+		];
+		$this->assertEquals( $expected, $field->args );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'label'          => 'Sample Label',
+			'desc'           => 'Sample Description',
+			'upload_options' => [],
+		] );
+		$expected = [
+			'label'          => 'Sample Label',
+			'desc'           => 'Sample Description',
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+					'doc|docx' => 'application/msword',
+					'xls'      => 'application/vnd.ms-excel',
+				],
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'You cannot add more then 1 files',
+			],
+			'browse_label'   => 'Select file(s) to upload',
+		];
+		$this->assertEquals( $expected, $field->args );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'label'          => 'Sample Label',
+			'desc'           => 'Sample Description',
+			'upload_options' => [
+				'allowed_mimes'   => [],
+				'label_max_added' => 'No files can be uploaded',
+			],
+			'browse_label'   => 'Browse for files',
+		] );
+		$expected = [
+			'label'          => 'Sample Label',
+			'desc'           => 'Sample Description',
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => [],
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'No files can be uploaded',
+			],
+			'browse_label'   => 'Browse for files',
+		];
+		$this->assertEquals( $expected, $field->args );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'label_max_added' => 'Testing max files',
+			],
+		] );
+		$expected = [
+			'label'          => 'AnsPress Upload Field',
+			'upload_options' => [
+				'multiple'        => false,
+				'max_files'       => 1,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+					'doc|docx' => 'application/msword',
+					'xls'      => 'application/vnd.ms-excel',
+				],
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'Testing max files',
+			],
+			'browse_label'   => 'Select file(s) to upload',
+		];
+		$this->assertEquals( $expected, $field->args );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 3,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+				],
+				'label_max_added' => 'Max 3 files are allowed to get uploaded',
+			],
+		] );
+		$expected = [
+			'label'          => 'AnsPress Upload Field',
+			'upload_options' => [
+				'multiple'        => true,
+				'max_files'       => 3,
+				'allowed_mimes'   => [
+					'jpg|jpeg' => 'image/jpeg',
+				],
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'Max 3 files are allowed to get uploaded',
+			],
+			'browse_label'   => 'Select file(s) to upload',
+		];
+		$this->assertEquals( $expected, $field->args );
+	}
+
+	/**
 	 * @covers AnsPress\Form\Field\Upload::html_order
 	 */
 	public function testHTMLOrder() {
