@@ -20,6 +20,134 @@ class TestAnsPressFormFieldInput extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress\Form\Field\Input::prepare
+	 */
+	public function testPrepare() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'text', $field->subtype );
+		$this->assertEquals( [ 'text_field' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEmpty( $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'text', 'label' => 'AnsPress Input Field' ], $field->args );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [ 'subtype' => 'number' ] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'number', $field->subtype );
+		$this->assertEquals( [ 'intval' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( [ 'is_numeric' ], $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'number', 'label' => 'AnsPress Input Field' ], $field->args );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [ 'subtype' => 'email' ] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'email', $field->subtype );
+		$this->assertEquals( [ 'email' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( [ 'is_email' ], $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'email', 'label' => 'AnsPress Input Field' ], $field->args );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [ 'subtype' => 'url' ] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'url', $field->subtype );
+		$this->assertEquals( [ 'esc_url' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( [ 'is_url' ], $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'url', 'label' => 'AnsPress Input Field' ], $field->args );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [
+			'subtype' => 'invalid',
+			'label'   => 'Custom Label',
+			'html'    => '<div>Custom HTML</div>',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'text', $field->subtype );
+		$this->assertEquals( [ 'text_field' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEmpty( $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'invalid', 'html' => '<div>Custom HTML</div>' ], $field->args );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [
+			'subtype'  => 'number',
+			'label'    => 'Custom Label',
+			'html'     => '<div>Custom HTML</div>',
+			'sanitize' => 'custom_sanitize_cb',
+			'validate' => 'custom_validate_cb',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'number', $field->subtype );
+		$this->assertEquals( [ 'intval', 'custom_sanitize_cb' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( [ 'is_numeric', 'custom_validate_cb' ], $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'number', 'html' => '<div>Custom HTML</div>', 'sanitize' => 'custom_sanitize_cb', 'validate' => 'custom_validate_cb' ], $field->args );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field\Input( 'Sample Form', 'sample-form', [
+			'subtype' => 'password',
+			'label'   => 'Custom Label',
+			'attr'    => [
+				'placeholder' => 'Placeholder',
+				'data-custom' => 'Custom data',
+			],
+			'class'   => 'custom-class',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+		// No need to invoke prepare() method as it is called in constructor.
+		$this->assertIsArray( $sanitize_cb->getValue( $field ) );
+		$this->assertIsArray( $validate_cb->getValue( $field ) );
+		$this->assertEquals( 'password', $field->subtype );
+		$this->assertEquals( [ 'text_field' ], $sanitize_cb->getValue( $field ) );
+		$this->assertEmpty( $validate_cb->getValue( $field ) );
+		$this->assertEquals( [ 'subtype' => 'password', 'label' => 'Custom Label', 'attr' => [ 'placeholder' => 'Placeholder', 'data-custom' => 'Custom data' ], 'class' => 'custom-class' ], $field->args );
+	}
+
+	/**
 	 * @covers AnsPress\Form\Field\Input::set_subtype
 	 */
 	public function testSetSubtype() {
