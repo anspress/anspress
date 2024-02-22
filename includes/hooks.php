@@ -100,7 +100,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'request', 'AnsPress_Rewrite', 'alter_the_query' );
 			anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
-			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
+			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'pagination_fix' );
 			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
 			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
 
