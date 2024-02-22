@@ -516,13 +516,13 @@ _.templateSettings = {
 			$('<img class="ap-img-preview" src="' + src + '" />').appendTo(el);
 		},
 		imageUploaded: function (data) {
-			if (data.action !== 'ap_image_upload' || typeof tinymce === 'undefined')
+			if (data.action !== 'ap_image_upload')
 				return;
 
 			if (data.files)
 				$.each(data.files, function (old, newFile) {
 					var cont = '<img src="' + newFile + '" />';
-					if ( tinyMCE.activeEditor !== null ) {
+					if ( typeof tinymce !== 'undefined' ) {
 						tinymce.activeEditor.insertContent(cont);
 					} else {
 						var elem = $( '.ap-editor .wp-editor-area' );
