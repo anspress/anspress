@@ -516,12 +516,26 @@ _.templateSettings = {
 			$('<img class="ap-img-preview" src="' + src + '" />').appendTo(el);
 		},
 		imageUploaded: function (data) {
-			if (data.action !== 'ap_image_upload' || typeof tinymce === 'undefined')
+			if (data.action !== 'ap_image_upload')
 				return;
 
 			if (data.files)
 				$.each(data.files, function (old, newFile) {
-					tinymce.activeEditor.insertContent('<img src="' + newFile + '" />');
+					var cont = '<img src="' + newFile + '" />';
+					if ( typeof tinymce !== 'undefined' ) {
+						tinymce.activeEditor.insertContent(cont);
+					} else {
+						var elem = $( '.ap-editor .wp-editor-area' );
+						var value = elem.val();
+						var start = elem[0].selectionStart;
+						var end = elem[0].selectionEnd;
+						var before = value.substring( 0, start );
+						var after = value.substring( end, value.length );
+						var cursorPos = elem.prop( 'selectionStart' );
+						elem.val( before + cont + after );
+						elem.focus();
+						elem.prop( 'selectionEnd', cursorPos + cont.length );
+					}
 				});
 
 			AnsPress.hideModal('imageUpload');
