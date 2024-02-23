@@ -240,7 +240,7 @@ class AnsPress_Hooks {
 			 */
 			do_action( 'ap_before_delete_question', $post->ID, $post );
 
-			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer' ] ); // @codingStandardsIgnoreLine
+			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer', 'post_status' => get_post_stati() ] ); // @codingStandardsIgnoreLine
 
 			foreach ( (array) $answers as $a ) {
 				self::delete_answer( $a->ID, $a );
