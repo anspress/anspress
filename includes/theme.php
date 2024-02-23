@@ -292,10 +292,18 @@ function ap_post_actions( $_post = null ) {
 	if ( ap_user_can_delete_post( $_post->ID ) ) {
 		if ( 'trash' === $_post->post_status ) {
 			$label = __( 'Undelete', 'anspress-question-answer' );
-			$title = __( 'Restore this post', 'anspress-question-answer' );
+			$title = sprintf(
+				/* Translators: %s Question or Answer post type label for restoring a question or answer. */
+				__( 'Restore this %s', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			);
 		} else {
 			$label = __( 'Delete', 'anspress-question-answer' );
-			$title = __( 'Delete this post (can be restored again)', 'anspress-question-answer' );
+			$title = sprintf(
+				/* Translators: %s Question or Answer post type label for deleting a question or answer. */
+				__( 'Delete this %s (can be restored again)', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			);
 		}
 
 		$actions[] = array(
@@ -318,7 +326,11 @@ function ap_post_actions( $_post = null ) {
 				'__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ),
 			),
 			'label' => __( 'Delete Permanently', 'anspress-question-answer' ),
-			'title' => __( 'Delete post permanently (cannot be restored again)', 'anspress-question-answer' ),
+			'title' => sprintf(
+				/* Translators: %s Question or Answer post type label for permanently deleting a question or answer. */
+				__( 'Delete %s permanently (cannot be restored again)', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			),
 		);
 	}
 
@@ -410,6 +422,11 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
 		'key'   => 'order_by',
 		'value' => 'views',
 		'label' => __( 'Views', 'anspress-question-answer' ),
+	);
+	$navs[] = array(
+		'key'   => 'order_by',
+		'value' => 'solved',
+		'label' => __( 'Solved', 'anspress-question-answer' ),
 	);
 	$navs[] = array(
 		'key'   => 'order_by',
@@ -599,7 +616,9 @@ function ap_current_page( $looking_for = false ) {
 	} elseif ( in_array( $query_var . '_page', $main_pages, true ) ) {
 		$query_var = $query_var;
 	} elseif ( in_array( get_the_ID(), array_keys( $page_ids ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
-		$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
+		if ( ! empty( $page_ids[ get_the_ID() ] ) ) {
+			$query_var = str_replace( '_page', '', $page_ids[ get_the_ID() ] );
+		}
 	} elseif ( 'base' === $query_var ) {
 		$query_var = 'base';
 	} elseif ( is_404() ) {
@@ -657,6 +676,48 @@ function ap_enqueue_scripts() {
 	if ( is_rtl() ) {
 		wp_enqueue_style( 'anspress-rtl' );
 	}
+}
+
+/**
+ * Localize scripts for enqueue.
+ *
+ * @since 4.4.0
+ */
+function ap_localize_script() {
+	$aplang = array(
+		'loading'                => __( 'Loading..', 'anspress-question-answer' ),
+		'sending'                => __( 'Sending request', 'anspress-question-answer' ),
+		// translators: %s is file size in MB.
+		'file_size_error'        => esc_attr( sprintf( __( 'File size is bigger than %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) ),
+		'attached_max'           => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),
+		'commented'              => __( 'commented', 'anspress-question-answer' ),
+		'comment'                => __( 'Comment', 'anspress-question-answer' ),
+		'cancel'                 => __( 'Cancel', 'anspress-question-answer' ),
+		'update'                 => __( 'Update', 'anspress-question-answer' ),
+		'your_comment'           => __( 'Write your comment...', 'anspress-question-answer' ),
+		'notifications'          => __( 'Notifications', 'anspress-question-answer' ),
+		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
+		'search'                 => __( 'Search', 'anspress-question-answer' ),
+		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
+		'ajax_error'             => array(
+			'snackbar' => array(
+				'success' => false,
+				'message' => esc_html__( 'Something went wrong. Please try again.', 'anspress-question-answer' ),
+			),
+			'modal'    => array(
+				'imageUpload',
+			),
+		),
+	);
+
+	echo '<script type="text/javascript">';
+	echo 'var ajaxurl = "' . esc_url( admin_url( 'admin-ajax.php' ) ) . '",';
+	echo 'ap_nonce 	= "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
+	echo 'apTemplateUrl = "' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '";';
+	echo 'apQuestionID = "' . (int) get_question_id() . '";';
+	echo 'aplang = ' . wp_json_encode( $aplang ) . ';';
+	echo 'disable_q_suggestion = "' . (bool) ap_opt( 'disable_q_suggestion' ) . '";';
+	echo '</script>';
 }
 
 /**
@@ -889,7 +950,7 @@ function ap_subscribe_btn( $_post = false, $output = true ) {
 	$subscribed  = ap_is_user_subscriber( 'question', $_post->ID );
 	$label       = $subscribed ? __( 'Unsubscribe', 'anspress-question-answer' ) : __( 'Subscribe', 'anspress-question-answer' );
 
-	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '">' . esc_attr( $label ) . '<span class="apsubscribers-count">' . esc_attr( $subscribers ) . '</span></a>';
+	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">' . esc_html( $label ) . '</span><span class="apsubscribers-count">' . esc_html( $subscribers ) . '</span></a>';
 
 	if ( ! $output ) {
 		return $html;
@@ -919,12 +980,16 @@ function ap_menu_obejct() {
 			$main_pages = array_keys( ap_main_pages() );
 
 			if ( in_array( $k . '_page', $main_pages, true ) ) {
-				$post      = get_post( ap_opt( $k . '_page' ) );
-				$object_id = ap_opt( $k . '_page' );
-				$object    = 'page';
-				$url       = get_permalink( $post );
-				$title     = $post->post_title;
-				$type      = 'post_type';
+				$post = get_post( ap_opt( $k . '_page' ) );
+
+				// Proceed only if post is available.
+				if ( $post ) {
+					$object_id = ap_opt( $k . '_page' );
+					$object    = 'page';
+					$url       = get_permalink( $post );
+					$title     = $post->post_title;
+					$type      = 'post_type';
+				}
 			}
 
 			$menu_items[] = (object) array(

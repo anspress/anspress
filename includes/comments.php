@@ -111,7 +111,7 @@ class AnsPress_Comment_Hooks {
 	public static function approve_comment() {
 		$comment_id = (int) ap_sanitize_unslash( 'comment_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'approve_comment_' . $comment_id ) || ! ap_user_can_approve_comment() ) {
+		if ( ! anspress_verify_nonce( 'approve_comment_' . $comment_id ) || ! ap_user_can_approve_comment() ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,

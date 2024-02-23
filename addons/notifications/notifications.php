@@ -232,7 +232,7 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function notification_page() {
 		$user_id = ap_current_user_id();
-		$seen    = ap_sanitize_unslash( 'seen', 'r', 'all' );
+		$seen    = ! empty( ap_sanitize_unslash( 'seen', 'r' ) ) ? ap_sanitize_unslash( 'seen', 'r', 'all' ) : 0;
 
 		if ( get_current_user_id() === $user_id ) {
 			$seen          = 'all' === $seen ? null : (int) $seen;
@@ -274,6 +274,13 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function new_answer( $post_id, $_post ) {
 		$_question = get_post( $_post->post_parent );
+
+		// Return if question is not available.
+		if ( ! $_question ) {
+			return;
+		}
+
+		// Insert the notification.
 		ap_insert_notification(
 			array(
 				'user_id'  => $_question->post_author,
@@ -488,7 +495,7 @@ class Notifications extends \AnsPress\Singleton {
 	 * as seen.
 	 */
 	public function mark_notifications_seen() {
-		if ( ! is_user_logged_in() || ! ap_verify_nonce( 'mark_notifications_seen' ) ) {
+		if ( ! is_user_logged_in() || ! anspress_verify_nonce( 'mark_notifications_seen' ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,

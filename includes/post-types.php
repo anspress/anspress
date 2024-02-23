@@ -26,8 +26,10 @@ class AnsPress_PostTypes {
 		// Register Custom Post types and taxonomy.
 		anspress()->add_action( 'init', __CLASS__, 'register_question_cpt', 0 );
 		anspress()->add_action( 'init', __CLASS__, 'register_answer_cpt', 0 );
-		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 2 );
+		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 4 );
 		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
+		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_updated_messages', 10 );
+		anspress()->add_filter( 'bulk_post_updated_messages', __CLASS__, 'bulk_post_updated_messages', 10, 2 );
 	}
 
 	/**
@@ -121,7 +123,7 @@ class AnsPress_PostTypes {
 			'show_in_menu'        => false,
 			'show_in_nav_menus'   => false,
 			'show_in_admin_bar'   => true,
-			'menu_icon'           => ANSPRESS_URL . '/assets/question.png',
+			'menu_icon'           => ANSPRESS_URL . 'assets/question.png',
 			'can_export'          => true,
 			'has_archive'         => true,
 			'exclude_from_search' => true,
@@ -195,7 +197,7 @@ class AnsPress_PostTypes {
 			'show_in_menu'        => false,
 			'show_in_nav_menus'   => false,
 			'show_in_admin_bar'   => false,
-			'menu_icon'           => ANSPRESS_URL . '/assets/answer.png',
+			'menu_icon'           => ANSPRESS_URL . 'assets/answer.png',
 			'can_export'          => true,
 			'has_archive'         => true,
 			'exclude_from_search' => true,
@@ -219,12 +221,14 @@ class AnsPress_PostTypes {
 	/**
 	 * Alter question and answer CPT permalink.
 	 *
-	 * @param  string $link Link.
-	 * @param  object $post Post object.
+	 * @param  string $link      Link.
+	 * @param  object $post      Post object.
+	 * @param  bool   $leavename Whether to keep the post name.
+	 * @param  bool   $sample    Is it a sample permalink.
 	 * @return string
 	 * @since 2.0.0
 	 */
-	public static function post_type_link( $link, $post ) {
+	public static function post_type_link( $link, $post, $leavename, $sample ) {
 		if ( 'question' === $post->post_type ) {
 			$question_slug = ap_opt( 'question_page_permalink' );
 
@@ -236,13 +240,13 @@ class AnsPress_PostTypes {
 
 			// Support polylang permalink.
 			if ( function_exists( 'pll_default_language' ) ) {
-				$default_lang = pll_default_language();
+				$default_lang = pll_get_post_language( $post->ID ) ? pll_get_post_language( $post->ID ) : pll_default_language();
 			}
 
 			if ( get_option( 'permalink_structure' ) ) {
 				$structure = self::question_perm_structure();
 				$rule      = str_replace( '%question_id%', $post->ID, $structure->rule );
-				$rule      = str_replace( '%question%', $post->post_name, $rule );
+				$rule      = str_replace( '%question%', ( $leavename ? '%question%' : $post->post_name ), $rule );
 				$link      = home_url( $default_lang . '/' . $rule . '/' );
 			} else {
 				$link = add_query_arg( array( 'question' => $post->ID ), ap_base_page_link() );
@@ -254,17 +258,41 @@ class AnsPress_PostTypes {
 			 * @param string $link Question link.
 			 * @param object $post Post object.
 			 */
-			return apply_filters( 'ap_question_post_type_link', $link, $post );
+			$link = apply_filters_deprecated( 'ap_question_post_type_link', array( $link, $post ), '4.4.0', 'ap_question_post_type_link_structure' );
+
+			/**
+			 * Allow overriding of question post type permalink
+			 *
+			 * @param string $link      Question link.
+			 * @param object $post      Post object.
+			 * @param bool   $leavename Whether to keep the post name.
+			 * @param bool   $sample    Is it a sample permalink.
+			 */
+			$link = apply_filters( 'ap_question_post_type_link_structure', $link, $post, $leavename, $sample );
+
+			return $link;
 		} elseif ( 'answer' === $post->post_type && 0 !== (int) $post->post_parent ) {
 			$link = get_permalink( $post->post_parent ) . "answer/{$post->ID}/";
 
 			/**
 			 * Allow overriding of answer post type permalink.
 			 *
-			 * @param string $link Question link.
+			 * @param string $link Answer link.
 			 * @param object $post Post object.
 			 */
-			return apply_filters( 'ap_answer_post_type_link', $link, $post );
+			$link = apply_filters_deprecated( 'ap_answer_post_type_link', array( $link, $post ), '4.4.0', 'ap_answer_post_type_link_structure' );
+
+			/**
+			 * Allow overriding of answer post type permalink
+			 *
+			 * @param string $link      Answer link.
+			 * @param object $post      Post object.
+			 * @param bool   $leavename Whether to keep the post name.
+			 * @param bool   $sample    Is it a sample permalink.
+			 */
+			$link = apply_filters( 'ap_answer_post_type_link_structure', $link, $post, $leavename, $sample );
+
+			return $link;
 		}
 
 		return $link;
@@ -283,5 +311,116 @@ class AnsPress_PostTypes {
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Filter the post updated messages to add Question and Answer
+	 * custom post type post updated messages.
+	 *
+	 * @param array[] $messages Post updated messages.
+	 */
+	public static function post_updated_messages( $messages ) {
+		global $post;
+		$permalink      = get_permalink( $post->ID );
+		$scheduled_date = sprintf(
+			/* translators: Publish box date string. 1: Date, 2: Time. */
+			__( '%1$s at %2$s', 'anspress-question-answer' ),
+			/* translators: Publish box date format, see https://www.php.net/manual/datetime.format.php */
+			date_i18n( _x( 'M j, Y', 'publish box date format', 'anspress-question-answer' ), strtotime( $post->post_date ) ),
+			/* translators: Publish box time format, see https://www.php.net/manual/datetime.format.php */
+			date_i18n( _x( 'H:i', 'publish box time format', 'anspress-question-answer' ), strtotime( $post->post_date ) )
+		);
+
+		// Post updated message for Question post type.
+		$messages['question'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			/* translators: %s Question view URL. */
+			1  => sprintf( __( 'Question updated. <a href="%s">View Question</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			2  => __( 'Custom field updated.', 'anspress-question-answer' ),
+			3  => __( 'Custom field deleted.', 'anspress-question-answer' ),
+			4  => __( 'Question updated.', 'anspress-question-answer' ),
+			/* translators: %s: Date and time of the revision. */
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Question restored to revision from %s.', 'anspress-question-answer' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			/* translators: %s: Question url */
+			6  => sprintf( __( 'Question published. <a href="%s">View Question</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			7  => __( 'Question saved.', 'anspress-question-answer' ),
+			/* translators: %s: Question url */
+			8  => sprintf( __( 'Question submitted. <a target="_blank" href="%s">Preview question</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+			9  => sprintf(
+				/* translators: 1: Scheduled date for the question 2: Question url */
+				__( 'Question scheduled for: %1$s. <a target="_blank" href="%2$s">Preview question</a>', 'anspress-question-answer' ),
+				'<strong>' . $scheduled_date . '</strong>',
+				esc_url( $permalink )
+			),
+			/* translators: %s: Question url */
+			10 => sprintf( __( 'Question draft updated. <a target="_blank" href="%s">Preview question</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+		);
+
+		// Post updated message for Answer post type.
+		$messages['answer'] = array(
+			0  => '', // Unused. Messages start at index 1.
+			/* translators: %s Answer view URL. */
+			1  => sprintf( __( 'Answer updated. <a href="%s">View Answer</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			2  => __( 'Custom field updated.', 'anspress-question-answer' ),
+			3  => __( 'Custom field deleted.', 'anspress-question-answer' ),
+			4  => __( 'Answer updated.', 'anspress-question-answer' ),
+			/* translators: %s: Date and time of the revision. */
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Answer restored to revision from %s.', 'anspress-question-answer' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			/* translators: %s: Answer url */
+			6  => sprintf( __( 'Answer published. <a href="%s">View Answer</a>', 'anspress-question-answer' ), esc_url( $permalink ) ),
+			7  => __( 'Answer saved.', 'anspress-question-answer' ),
+			/* translators: %s: Answer url */
+			8  => sprintf( __( 'Answer submitted. <a target="_blank" href="%s">Preview answer</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+			9  => sprintf(
+				/* translators: 1: Scheduled date for the answer 2: Answer url */
+				__( 'Answer scheduled for: %1$s. <a target="_blank" href="%2$s">Preview answer</a>', 'anspress-question-answer' ),
+				'<strong>' . $scheduled_date . '</strong>',
+				esc_url( $permalink )
+			),
+			/* translators: %s: Answer url */
+			10 => sprintf( __( 'Answer draft updated. <a target="_blank" href="%s">Preview answer</a>', 'anspress-question-answer' ), esc_url( get_preview_post_link( $post ) ) ),
+		);
+
+		return $messages;
+	}
+
+	/**
+	 * Filter the bulk action updated messages to add Question and Answer
+	 * custom post type bulk post updated messages.
+	 *
+	 * @param array[] $bulk_messages Arrays of messages, each keyed by the corresponding post type. Messages are
+	 *                               keyed with 'updated', 'locked', 'deleted', 'trashed', and 'untrashed'.
+	 * @param int[]   $bulk_counts   Array of item counts for each message, used to build internationalized strings.
+	 */
+	public static function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
+		$bulk_messages['question'] = array(
+			/* translators: %s: Number of questions. */
+			'updated'   => _n( '%s question updated.', '%s questions updated.', $bulk_counts['updated'], 'anspress-question-answer' ),
+			'locked'    => ( 1 === $bulk_counts['locked'] ) ? __( '1 question not updated, somebody is editing it.', 'anspress-question-answer' ) :
+							/* translators: %s: Number of questions. */
+							_n( '%s question not updated, somebody is editing it.', '%s questions not updated, somebody is editing them.', $bulk_counts['locked'], 'anspress-question-answer' ),
+			/* translators: %s: Number of questions. */
+			'deleted'   => _n( '%s question permanently deleted.', '%s questions permanently deleted.', $bulk_counts['deleted'], 'anspress-question-answer' ),
+			/* translators: %s: Number of questions. */
+			'trashed'   => _n( '%s question moved to the Trash.', '%s questions moved to the Trash.', $bulk_counts['trashed'], 'anspress-question-answer' ),
+			/* translators: %s: Number of questions. */
+			'untrashed' => _n( '%s question restored from the Trash.', '%s questions restored from the Trash.', $bulk_counts['untrashed'], 'anspress-question-answer' ),
+		);
+
+		$bulk_messages['answer'] = array(
+			/* translators: %s: Number of answers. */
+			'updated'   => _n( '%s answer updated.', '%s answers updated.', $bulk_counts['updated'], 'anspress-question-answer' ),
+			'locked'    => ( 1 === $bulk_counts['locked'] ) ? __( '1 answer not updated, somebody is editing it.', 'anspress-question-answer' ) :
+							/* translators: %s: Number of answers. */
+							_n( '%s answer not updated, somebody is editing it.', '%s answers not updated, somebody is editing them.', $bulk_counts['locked'], 'anspress-question-answer' ),
+			/* translators: %s: Number of answers. */
+			'deleted'   => _n( '%s answer permanently deleted.', '%s answers permanently deleted.', $bulk_counts['deleted'], 'anspress-question-answer' ),
+			/* translators: %s: Number of answers. */
+			'trashed'   => _n( '%s answer moved to the Trash.', '%s answers moved to the Trash.', $bulk_counts['trashed'], 'anspress-question-answer' ),
+			/* translators: %s: Number of answers. */
+			'untrashed' => _n( '%s answer restored from the Trash.', '%s answers restored from the Trash.', $bulk_counts['untrashed'], 'anspress-question-answer' ),
+		);
+
+		return $bulk_messages;
 	}
 }

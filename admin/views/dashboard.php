@@ -130,7 +130,7 @@ class AnsPress_Dashboard {
 						?>
 						<li>
 							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a> -
-							<span class="posted"><?php the_date(); ?></span>
+							<span class="posted"><?php echo esc_html( get_the_date() ); ?></span>
 						</li>
 					<?php endwhile; ?>
 				</ul>
@@ -165,6 +165,7 @@ class AnsPress_Dashboard {
 				array(
 					'ap_order_by' => 'newest',
 					'showposts'   => 5,
+					'question_id' => 'all',
 				)
 			);
 			?>
@@ -177,7 +178,7 @@ class AnsPress_Dashboard {
 						?>
 						<li>
 							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a> -
-							<span class="posted"><?php the_date(); ?></span>
+							<span class="posted"><?php echo esc_html( get_the_date() ); ?></span>
 						</li>
 					<?php endwhile; ?>
 				</ul>
@@ -455,8 +456,8 @@ if ( $columns ) {
 								</a>
 							</li>
 							<li>
-								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/">
-									<?php esc_html_e( 'Documents and FAQ', 'anspress-question-answer' ); ?>
+								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/" target="_blank">
+									<?php esc_attr_e( 'Documentations and FAQ', 'anspress-question-answer' ); ?>
 								</a>
 							</li>
 						</ul>
