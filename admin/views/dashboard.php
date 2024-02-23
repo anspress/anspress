@@ -199,6 +199,12 @@ class AnsPress_Dashboard {
 		$answer_count    = wp_count_posts( 'answer', 'readable' );
 		?>
 		<div class="main attn">
+			<?php
+			if ( ! $q_flagged_count->total && ! $question_count->moderate && ! $a_flagged_count->total && ! $answer_count->moderate ) :
+				esc_attr_e( 'All looks fine', 'anspress-question-answer' );
+			endif;
+			?>
+
 			<?php if ( $q_flagged_count->total || $question_count->moderate ) : ?>
 				<strong><?php esc_attr_e( 'Questions', 'anspress-question-answer' ); ?></strong>
 				<ul>
@@ -226,8 +232,6 @@ class AnsPress_Dashboard {
 						</li>
 					<?php endif; ?>
 				</ul>
-			<?php else : ?>
-				<?php esc_attr_e( 'All looks fine', 'anspress-question-answer' ); ?>
 			<?php endif; ?>
 
 			<?php if ( $a_flagged_count->total || $answer_count->moderate ) : ?>
