@@ -699,6 +699,8 @@ function ap_localize_script() {
 		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
 		'search'                 => __( 'Search', 'anspress-question-answer' ),
 		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
+		/* translators: %s is post type. */
+		'ajax_events'            => __( 'Are you sure you want to %s?', 'anspress-question-answer' ),
 		'ajax_error'             => array(
 			'snackbar' => array(
 				'success' => false,
