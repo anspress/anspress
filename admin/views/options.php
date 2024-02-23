@@ -172,8 +172,8 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		<div class="social-links clearfix">
 			<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
 			<a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
-			<a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
-			<a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
+			<a href="https://twitter.com/anspress_net" target="_blank">@anspress_net</a>
+			<a href="https://www.facebook.com/anspress.io" target="_blank">Facebook</a>
 		</div>
 	</h2>
 	<div class="clear"></div>
