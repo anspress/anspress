@@ -210,7 +210,7 @@ class AnsPress_Dashboard {
 				<ul>
 					<?php if ( $q_flagged_count->total ) : ?>
 						<li>
-							<a href=""><i class="apicon-flag"></i>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?flagged=true&post_type=question' ) ); ?>"><i class="apicon-flag"></i>
 							<?php
 								// translators: Placeholder contains total flagged question count.
 								echo esc_attr( sprintf( __( '%d Flagged questions', 'anspress-question-answer' ), $q_flagged_count->total ) );
@@ -221,7 +221,7 @@ class AnsPress_Dashboard {
 
 					<?php if ( $question_count->moderate ) : ?>
 						<li>
-							<a href=""><i class="apicon-stop"></i>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_status=moderate&post_type=question' ) ); ?>"><i class="apicon-stop"></i>
 								<?php
 									echo esc_attr(
 										// translators: placeholder contains total question awaiting moderation.
@@ -239,7 +239,7 @@ class AnsPress_Dashboard {
 				<ul>
 					<?php if ( $a_flagged_count->total ) : ?>
 						<li>
-							<a href="">
+							<a href="<?php echo esc_url( admin_url( 'edit.php?flagged=true&post_type=answer' ) ); ?>">
 								<i class="apicon-flag"></i>
 								<?php
 									echo esc_attr(
@@ -256,7 +256,7 @@ class AnsPress_Dashboard {
 
 					<?php if ( $answer_count->moderate ) : ?>
 						<li>
-							<a href="">
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_status=moderate&post_type=answer' ) ); ?>">
 								<i class="apicon-stop"></i>
 								<?php
 									echo esc_attr(
