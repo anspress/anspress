@@ -766,6 +766,21 @@ jQuery(document).ready(function ($) {
 				if (typeof data.redirect !== 'undefined') {
 					window.location = data.redirect;
 				}
+			},
+			error: function() {
+				if ( submitBtn.length > 0 ) {
+					AnsPress.hideLoading( submitBtn );
+				}
+
+				if ( aplang.ajax_error.snackbar ) {
+					AnsPress.trigger( 'snackbar', aplang.ajax_error );
+				}
+
+				if ( aplang.ajax_error.modal ) {
+					$.each( aplang.ajax_error.modal, function( i, modal ) {
+						AnsPress.hideModal( modal );
+					} );
+				}
 			}
 		});
 	});
