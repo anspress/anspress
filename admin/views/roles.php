@@ -21,14 +21,14 @@ $class = 'is-dismissible';
 
 if (
 	ap_sanitize_unslash( 'role_name', 'p' ) &&
-	ap_verify_nonce( 'ap_role_' . ap_sanitize_unslash( 'role_name', 'p' ) . '_update' ) &&
+	anspress_verify_nonce( 'ap_role_' . ap_sanitize_unslash( 'role_name', 'p' ) . '_update' ) &&
 	is_super_admin()
 	) {
 	$caps = ap_sanitize_unslash( 'c', 'p' ) ? ap_sanitize_unslash( 'c', 'p' ) : array();
 	$caps = array_map( 'sanitize_text_field', $caps );
 
 	ap_update_caps_for_role( ap_sanitize_unslash( 'role_name', 'p' ), $caps );
-} elseif ( ap_sanitize_unslash( 'new_role', 'p' ) && ap_verify_nonce( 'ap_new_role' ) ) {
+} elseif ( ap_sanitize_unslash( 'new_role', 'p' ) && anspress_verify_nonce( 'ap_new_role' ) ) {
 	$role_name = ap_sanitize_unslash( 'role_name', 'p' );
 	$role_slug = sanitize_title_with_dashes( ap_sanitize_unslash( 'role_slug', 'p' ) );
 
@@ -147,4 +147,3 @@ if ( ! empty( $message ) ) {
 		</table>
 	</div>
 </div>
-

@@ -37,6 +37,20 @@ class Categories extends \WP_Widget {
 	 * @param array $instance Widget instance.
 	 */
 	public function widget( $args, $instance ) {
+		$instance = wp_parse_args(
+			$instance,
+			array(
+				'title'       => __( 'Categories', 'anspress-question-answer' ),
+				'hide_empty'  => false,
+				'parent'      => 0,
+				'number'      => 10,
+				'orderby'     => 'count',
+				'order'       => 'DESC',
+				'icon_width'  => 32,
+				'icon_height' => 32,
+			)
+		);
+
 		/**
 		 * This filter is documented in widgets/question_stats.php
 		 */
@@ -57,8 +71,8 @@ class Categories extends \WP_Widget {
 			'order'      => $instance['order'],
 		);
 
-		$icon_width  = ! empty( $instance['icon_width'] ) ? $instance['icon_width'] : 32;
-		$icon_height = ! empty( $instance['icon_height'] ) ? $instance['icon_height'] : 32;
+		$icon_width  = ( ! empty( $instance['icon_width'] ) && is_numeric( $instance['icon_width'] ) ) ? $instance['icon_width'] : 32;
+		$icon_height = ( ! empty( $instance['icon_height'] ) && is_numeric( $instance['icon_height'] ) ) ? $instance['icon_height'] : 32;
 
 		$categories = get_terms( $cat_args );
 		?>
@@ -73,10 +87,11 @@ class Categories extends \WP_Widget {
 					'icon'  => 'apicon-category',
 				)
 			);
+			$cat_color     = ! empty( $ap_category['color'] ) ? $ap_category['color'] : '#333';
 			$sub_cat_count = count( get_term_children( $category->term_id, 'question_category' ) );
 			?>
 			<li class="clearfix">
-			<a class="ap-cat-image" style="height:<?php echo esc_attr( $icon_height ); ?>px;width:<?php echo esc_attr( $icon_width ); ?>px;background: <?php echo esc_attr( $ap_category['color'] ); ?>" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
+			<a class="ap-cat-image" style="height:<?php echo esc_attr( $icon_height ); ?>px;width:<?php echo esc_attr( $icon_width ); ?>px;background: <?php echo esc_attr( $cat_color ); ?>" href="<?php echo esc_url( get_category_link( $category ) ); ?>">
 				<span class="ap-category-icon <?php echo esc_attr( $ap_category['icon'] ); ?>"></span>
 			</a>
 			<a class="ap-cat-wid-title" href="<?php echo esc_url( get_category_link( $category ) ); ?>">

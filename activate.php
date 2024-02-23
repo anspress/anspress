@@ -71,8 +71,6 @@ class AP_Activate {
 		$this->network_wide = $network_wide;
 		$this->disable_ext();
 		$this->delete_options();
-		$this->enable_addons();
-		$this->reactivate_addons();
 
 		// Append table names in $wpdb.
 		ap_append_table_names();
@@ -82,6 +80,10 @@ class AP_Activate {
 		} else {
 			$this->activate();
 		}
+
+		// Enable/Disable addon.
+		$this->enable_addons();
+		$this->reactivate_addons();
 	}
 
 	/**
@@ -125,6 +127,12 @@ class AP_Activate {
 	 * @since 4.1.8 Fixed #425
 	 */
 	public function enable_addons() {
+		// Return if `ap_installed` option is available.
+		if ( ap_opt( 'ap_installed' ) ) {
+			return;
+		}
+
+		// Activate required addons.
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'categories.php' );

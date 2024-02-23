@@ -28,7 +28,7 @@ $i = 1;
 			<td>
 				<p>
 					<?php esc_attr_e( 'More email options can be found in addon options', 'anspress-question-answer' ); ?>
-					<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_addons&active_addon=free%2Femail.php' ) ); ?>">
+					<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=features#features-email' ) ); ?>">
 						<?php esc_attr_e( 'More email options', 'anspress-question-answer' ); ?>
 					</a>
 				</p>

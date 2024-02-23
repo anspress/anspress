@@ -84,13 +84,13 @@ class AP_Form_Hooks {
 				'max_length' => 64,
 			);
 
-			if ( empty( $editing_id ) && ap_opt( 'create_account' ) ) {
+			if ( empty( $editing_id ) && ap_opt( 'create_account' ) && get_option( 'users_can_register' ) ) {
 				$form['fields']['email'] = array(
 					'label'      => __( 'Your Email', 'anspress-question-answer' ),
 					'attr'       => array(
 						'placeholder' => __( 'Enter your email', 'anspress-question-answer' ),
 					),
-					'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+					'desc'       => __( 'An account for you will be created and a confirmation link will be sent to you with the password.', 'anspress-question-answer' ),
 					'order'      => 20,
 					'validate'   => 'is_email,required',
 					'sanitize'   => 'email,required',
@@ -171,7 +171,7 @@ class AP_Form_Hooks {
 					'min_length'  => ap_opt( 'minimum_ans_length' ),
 					'validate'    => 'required,min_string_length,badwords',
 					'editor_args' => array(
-						'quicktags' => ap_opt( 'question_text_editor' ) ? true : false,
+						'quicktags' => ap_opt( 'answer_text_editor' ) ? true : false,
 					),
 				),
 			),
@@ -198,13 +198,13 @@ class AP_Form_Hooks {
 				'max_length' => 20,
 			);
 
-			if ( empty( $editing_id ) && ap_opt( 'create_account' ) ) {
+			if ( empty( $editing_id ) && ap_opt( 'create_account' ) && get_option( 'users_can_register' ) ) {
 				$form['fields']['email'] = array(
 					'label'      => __( 'Your Email', 'anspress-question-answer' ),
 					'attr'       => array(
 						'placeholder' => __( 'Enter your email', 'anspress-question-answer' ),
 					),
-					'desc'       => 'An account for you will be created and a confirmation link will be sent to you with the password.',
+					'desc'       => __( 'An account for you will be created and a confirmation link will be sent to you with the password.', 'anspress-question-answer' ),
 					'order'      => 20,
 					'validate'   => 'is_email,required',
 					'sanitize'   => 'email,required',
@@ -399,7 +399,7 @@ class AP_Form_Hooks {
 		}
 
 		// Create user if enabled.
-		if ( ! $editing && ! is_user_logged_in() && ap_opt( 'create_account' ) ) {
+		if ( ! $editing && ! is_user_logged_in() && ap_opt( 'create_account' ) && get_option( 'users_can_register' ) ) {
 			self::create_user( $values, $question_args, $manual );
 		}
 
@@ -623,7 +623,7 @@ class AP_Form_Hooks {
 		}
 
 		// Create user if enabled.
-		if ( ! $editing && ! is_user_logged_in() && ap_opt( 'create_account' ) ) {
+		if ( ! $editing && ! is_user_logged_in() && ap_opt( 'create_account' ) && get_option( 'users_can_register' ) ) {
 			self::create_user( $values, $answer_args, $manual );
 		}
 

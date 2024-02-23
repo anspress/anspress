@@ -56,7 +56,7 @@ class AP_License {
 	 * AnsPress license form.
 	 */
 	public static function ap_product_license() {
-		if ( ! current_user_can( 'manage_options' ) || ! ap_verify_nonce( 'ap_licenses_nonce' ) ) {
+		if ( ! current_user_can( 'manage_options' ) || ! anspress_verify_nonce( 'ap_licenses_nonce' ) ) {
 			return;
 		}
 

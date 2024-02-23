@@ -58,8 +58,8 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 * @return void
 	 */
 	public function scripts() {
-		$js_url  = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/';
-		$css_url = ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/styles/';
+		$js_url  = ANSPRESS_URL . 'addons/syntaxhighlighter/syntaxhighlighter/scripts/';
+		$css_url = ANSPRESS_URL . 'addons/syntaxhighlighter/syntaxhighlighter/styles/';
 
 		echo '<script type="text/javascript">AP_Brushes = ' . wp_json_encode( $this->brushes ) . ';</script>';
 		wp_enqueue_script( 'syntaxhighlighter-core', $js_url . 'shCore.js', array( 'jquery', 'anspress-common' ), AP_VERSION, true );
@@ -79,7 +79,7 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 			aplang.shButton = '<?php esc_attr_e( 'Insert to editor', 'anspress-question-answer' ); ?>';
 			aplang.shTitle = '<?php esc_attr_e( 'Insert code', 'anspress-question-answer' ); ?>';
 
-			window.apBrushPath = "<?php echo esc_url( ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/' ); ?>";
+			window.apBrushPath = "<?php echo esc_url( ANSPRESS_URL . 'addons/syntaxhighlighter/syntaxhighlighter/scripts/' ); ?>";
 		<?php
 		$script = ob_get_clean();
 		wp_add_inline_script( 'syntaxhighlighter', $script, 'before' );
