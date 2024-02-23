@@ -27,7 +27,7 @@ class AnsPress_Uploader {
 	public static function delete_attachment() {
 		$attachment_id = ap_sanitize_unslash( 'attachment_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
+		if ( ! anspress_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
@@ -137,7 +137,7 @@ class AnsPress_Uploader {
 	 */
 	public static function upload_modal() {
 		// Check nonce.
-		if ( ! ap_verify_nonce( 'ap_upload_image' ) ) {
+		if ( ! anspress_verify_nonce( 'ap_upload_image' ) ) {
 			ap_send_json( 'something_wrong' );
 		}
 

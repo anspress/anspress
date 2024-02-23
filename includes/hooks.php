@@ -56,6 +56,7 @@ class AnsPress_Hooks {
 			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
 			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
 			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
+			anspress()->add_filter( 'show_admin_bar', __CLASS__, 'show_admin_bar' );
 
 			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
 			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
@@ -70,6 +71,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
 			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
 			anspress()->add_filter( 'wp_title', 'AnsPress_Theme', 'ap_title', 0 );
+			anspress()->add_filter( 'document_title_parts', 'AnsPress_Theme', 'ap_title_parts', 0 );
 			anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
 			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
 			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
@@ -99,7 +101,7 @@ class AnsPress_Hooks {
 			anspress()->add_filter( 'request', 'AnsPress_Rewrite', 'alter_the_query' );
 			anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
 			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
-			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'bp_com_paged' );
+			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'pagination_fix' );
 			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
 			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
 
@@ -1082,5 +1084,18 @@ class AnsPress_Hooks {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * Disable admin bar for non-administrator users.
+	 *
+	 * @since 4.4.0
+	 */
+	public static function show_admin_bar() {
+		if ( ! ap_opt( 'show_admin_bar' ) && ! is_super_admin() ) {
+			return apply_filters( 'ap_show_admin_bar', false );
+		}
+
+		return true;
 	}
 }

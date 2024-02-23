@@ -30,7 +30,7 @@ class AnsPress_Vote {
 	public static function vote() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_verify_nonce( 'vote_' . $post_id ) ) {
+		if ( ! anspress_verify_nonce( 'vote_' . $post_id ) ) {
 				ap_ajax_json( 'something_wrong' );
 		}
 

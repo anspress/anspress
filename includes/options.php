@@ -117,6 +117,7 @@ function ap_default_options() {
 		'recaptcha_site_key'            => '',
 		'recaptcha_secret_key'          => '',
 		'show_question_sidebar'         => true,
+		'show_admin_bar'                => true,
 		'allow_upload'                  => true,
 		'uploads_per_post'              => 4,
 		'question_page_slug'            => 'question',

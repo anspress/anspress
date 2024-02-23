@@ -40,10 +40,12 @@ class AP_Askform_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
+		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
+
 		/**
 		 * This filter is documented in widgets/question_stats.php
 		 */
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		$title = apply_filters( 'widget_title', $title );
 		$title = is_string( $title ) ? $title : '';
 
 		echo wp_kses_post( $args['before_widget'] );

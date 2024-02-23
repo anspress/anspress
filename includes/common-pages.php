@@ -153,7 +153,7 @@ class AnsPress_Common_Pages {
 	public static function ask_page() {
 		$post_id = ap_sanitize_unslash( 'id', 'r', false );
 
-		if ( $post_id && ! ap_verify_nonce( 'edit-post-' . $post_id ) ) {
+		if ( $post_id && ! anspress_verify_nonce( 'edit-post-' . $post_id ) ) {
 			esc_attr_e( 'Something went wrong, please try again', 'anspress-question-answer' );
 			return;
 		}
@@ -186,7 +186,7 @@ class AnsPress_Common_Pages {
 	public static function edit_page() {
 		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
 
-		if ( ! ap_verify_nonce( 'edit-post-' . $post_id ) || empty( $post_id ) || ! ap_user_can_edit_answer( $post_id ) ) {
+		if ( ! anspress_verify_nonce( 'edit-post-' . $post_id ) || empty( $post_id ) || ! ap_user_can_edit_answer( $post_id ) ) {
 				echo '<p>' . esc_attr__( 'Sorry, you cannot edit this answer.', 'anspress-question-answer' ) . '</p>';
 				return;
 		}
@@ -205,8 +205,9 @@ class AnsPress_Common_Pages {
 	 * @since 4.1.8 Added Exclude roles arguments.
 	 */
 	public static function activities_page() {
-		$roles = array_keys( ap_opt( 'activity_exclude_roles' ) );
-		$args  = array();
+		$roles_exclude = ap_opt( 'activity_exclude_roles' );
+		$roles         = is_array( $roles_exclude ) ? array_keys( $roles_exclude ) : array();
+		$args          = array();
 
 		if ( ! empty( $roles ) ) {
 			$args['exclude_roles'] = $roles;

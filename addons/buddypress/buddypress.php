@@ -317,30 +317,46 @@ class BuddyPress extends \AnsPress\Singleton {
 		bp_activity_set_post_type_tracking_args(
 			'question',
 			array(
-				'component_id'             => 'activity',
-				'action_id'                => 'new_question',
-				'contexts'                 => array( 'activity', 'member' ),
-				'bp_activity_admin_filter' => __( 'Question', 'anspress-question-answer' ),
-				'bp_activity_front_filter' => __( 'Question', 'anspress-question-answer' ),
+				'component_id'                      => 'activity',
+				'action_id'                         => 'new_question',
+				'contexts'                          => array( 'activity', 'member' ),
+				'bp_activity_admin_filter'          => __( 'Question', 'anspress-question-answer' ),
+				'bp_activity_front_filter'          => __( 'Question', 'anspress-question-answer' ),
 				// translators: First placeholder contains user link and name.
-				'bp_activity_new_post'     => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
+				'bp_activity_new_post'              => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>', 'anspress-question-answer' ),
 				// translators: First placeholder contains user link and name.
-				'bp_activity_new_post_ms'  => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
+				'bp_activity_new_post_ms'           => __( '%1$s asked a new <a href="AP_CPT_LINK">question</a>, on the site %3$s', 'anspress-question-answer' ),
+				'activity_comment'                  => true,
+				'comment_action_id'                 => 'new_comment_question',
+				'bp_activity_comments_admin_filter' => __( 'Commented on Question', 'anspress-question-answer' ),
+				'bp_activity_comments_front_filter' => __( 'Commented on Question', 'anspress-question-answer' ),
+				// translators: First placeholder contains user link and name.
+				'bp_activity_new_comment'           => __( '%1$s commented on <a href="%2$s">question</a>', 'anspress-question-answer' ),
+				// translators: First placeholder contains user link and name.
+				'bp_activity_new_comment_ms'        => __( '%1$s commented on <a href="%2$s">question</a>, on the site %3$s', 'anspress-question-answer' ),
 			)
 		);
 
 		bp_activity_set_post_type_tracking_args(
 			'answer',
 			array(
-				'component_id'             => 'activity',
-				'action_id'                => 'new_answer',
-				'contexts'                 => array( 'activity', 'member' ),
-				'bp_activity_admin_filter' => __( 'Answer', 'anspress-question-answer' ),
-				'bp_activity_front_filter' => __( 'Answer', 'anspress-question-answer' ),
+				'component_id'                      => 'activity',
+				'action_id'                         => 'new_answer',
+				'contexts'                          => array( 'activity', 'member' ),
+				'bp_activity_admin_filter'          => __( 'Answer', 'anspress-question-answer' ),
+				'bp_activity_front_filter'          => __( 'Answer', 'anspress-question-answer' ),
 				// translators: First placeholder contains user name and link.
-				'bp_activity_new_post'     => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
+				'bp_activity_new_post'              => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question', 'anspress-question-answer' ),
 				// translators: First placeholder contains user name and link.
-				'bp_activity_new_post_ms'  => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
+				'bp_activity_new_post_ms'           => __( '%1$s <a href="AP_CPT_LINK">answered</a> a question, on the site %3$s', 'anspress-question-answer' ),
+				'activity_comment'                  => true,
+				'comment_action_id'                 => 'new_comment_answer',
+				'bp_activity_comments_admin_filter' => __( 'Commented on Answer', 'anspress-question-answer' ),
+				'bp_activity_comments_front_filter' => __( 'Commented on Answer', 'anspress-question-answer' ),
+				// translators: First placeholder contains user link and name.
+				'bp_activity_new_comment'           => __( '%1$s commented on <a href="%2$s">answer</a>', 'anspress-question-answer' ),
+				// translators: First placeholder contains user link and name.
+				'bp_activity_new_comment_ms'        => __( '%1$s commented on <a href="%2$s">answer</a>, on the site %3$s', 'anspress-question-answer' ),
 			)
 		);
 	}
@@ -428,7 +444,7 @@ class BuddyPress extends \AnsPress\Singleton {
 	 *
 	 * @since 4.1.8
 	 */
-	public function notifications_for_user( $action, $item_id, $secondary_item_id, $total_items, $format = 'string', $component_action_name, $component_name, $id ) {
+	public function notifications_for_user( $action, $item_id, $secondary_item_id, $total_items, $format = 'string', $component_action_name = '', $component_name = '', $id = '' ) {
 		if ( method_exists( $this, 'notification_' . $component_action_name ) ) {
 			$method = 'notification_' . $action;
 			return $this->$method( $item_id, $secondary_item_id, $total_items, $format, $id );

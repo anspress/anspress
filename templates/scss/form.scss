@@ -291,6 +291,21 @@
 		margin-bottom: 10px;
 		border-bottom: solid 2px #eee;
 	}
+	.ap-dummy-quick-editor {
+		background: none;
+		padding: 5px;
+		.ap-dummy-toolbar {
+			display: flex;
+
+			.ed_button{
+				background: white;
+				border: solid 1px #ddd;
+				padding: 5px 7px;
+				margin-right: 4px;
+				opacity: 0.8;
+			}
+		}
+	}
 	.ap-dummy-placeholder{
 		padding: 10px;
 	}
