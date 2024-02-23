@@ -289,14 +289,7 @@ function ap_post_actions( $_post = null ) {
 		$actions[] = array( 'header' => true );
 	}
 
-	$answers = get_posts(
-		array(
-			'post_type'   => 'answer',
-			'post_status' => 'publish',
-			'post_parent' => $_post->ID,
-			'showposts'   => -1,
-		)
-	);
+	$answers = ap_count_published_answers( $_post->ID );
 
 	if ( ap_user_can_delete_post( $_post->ID ) && ( ! ap_opt( 'trashing_question_with_answer' ) || ( ap_opt( 'trashing_question_with_answer' ) && empty( $answers ) ) ) ) {
 		if ( 'trash' === $_post->post_status ) {
