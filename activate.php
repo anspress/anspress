@@ -77,6 +77,9 @@ class AP_Activate {
 		// Append table names in $wpdb.
 		ap_append_table_names();
 
+		// Set the reputation events icon.
+		$this->set_reputation_events_icon();
+
 		if ( $this->network_wide ) {
 			$this->network_activate();
 		} else {
@@ -403,6 +406,36 @@ class AP_Activate {
 
 				ap_activate_addon( $new_addon_name );
 			}
+		}
+	}
+
+	/**
+	 * Set the reputation events icon.
+	 *
+	 * @since 4.4.0
+	 */
+	public function set_reputation_events_icon() {
+		$events = array(
+			'register'           => 'apicon-question',
+			'ask'                => 'apicon-question',
+			'answer'             => 'apicon-answer',
+			'comment'            => 'apicon-comments',
+			'select_answer'      => 'apicon-check',
+			'best_answer'        => 'apicon-check',
+			'received_vote_up'   => 'apicon-thumb-up',
+			'received_vote_down' => 'apicon-thumb-down',
+			'given_vote_up'      => 'apicon-thumb-up',
+			'given_vote_down'    => 'apicon-thumb-down',
+		);
+
+		// Modify reputation events icon.
+		global $wpdb;
+		foreach ( $events as $slug => $icon ) {
+			$wpdb->update( // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prefix . 'ap_reputation_events',
+				array( 'icon' => $icon ),
+				array( 'slug' => $slug )
+			);
 		}
 	}
 }
