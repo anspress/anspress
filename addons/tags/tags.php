@@ -590,7 +590,7 @@ class Tags extends \AnsPress\Singleton {
 	public function ap_list_filters( $filters ) {
 		global $wp;
 
-		if ( ! isset( $wp->query_vars['ap_tags'] ) ) {
+		if ( ! isset( $wp->query_vars['ap_tags'] ) && 'tag' !== ap_current_page() ) {
 			$filters['qtag'] = array(
 				'title'    => __( 'Tag', 'anspress-question-answer' ),
 				'search'   => true,
