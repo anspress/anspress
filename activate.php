@@ -415,12 +415,8 @@ class AP_Activate {
 	 * @since 4.4.0
 	 */
 	public function migrate() {
-
-		// Migrate old datas according to the AP_DB_VERSION constant.
-		switch ( AP_DB_VERSION ) {
-			case 38:
-				$this->set_reputation_events_icon();
-				break;
+		if ( 38 === AP_DB_VERSION ) {
+			$this->set_reputation_events_icon();
 		}
 	}
 
