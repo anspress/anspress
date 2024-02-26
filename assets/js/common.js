@@ -499,20 +499,22 @@ jQuery(document).ready(function ($) {
 			return;
 
 		var self = $(this);
-		const string = aplang.ajax_events.replace( '%s', self.attr( 'title' ) );
-		const apAjaxEventClass = [
-			'comment-delete',
-		];
-		let eventTrigger = true;
-		$.each( apAjaxEventClass, function( i, eventClassName ) {
-			if ( self.hasClass( eventClassName ) ) {
-				if ( ! confirm( string ) ) {
-					eventTrigger = false;
+		if ( typeof aplang.ajax_events !== 'undefined' ) {
+			const string = aplang.ajax_events.replace( '%s', self.attr( 'title' ) );
+			const apAjaxEventClass = [
+				'comment-delete',
+			];
+			let eventTrigger = true;
+			$.each( apAjaxEventClass, function( i, eventClassName ) {
+				if ( self.hasClass( eventClassName ) ) {
+					if ( ! confirm( string ) ) {
+						eventTrigger = false;
+					}
 				}
+			} );
+			if ( ! eventTrigger ) {
+				return;
 			}
-		} );
-		if ( ! eventTrigger ) {
-			return;
 		}
 
 		var query = JSON.parse(self.attr('apquery'));
