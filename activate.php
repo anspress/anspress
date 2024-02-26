@@ -77,8 +77,8 @@ class AP_Activate {
 		// Append table names in $wpdb.
 		ap_append_table_names();
 
-		// Set the reputation events icon.
-		$this->set_reputation_events_icon();
+		// Migrate old datas.
+		$this->migrate();
 
 		if ( $this->network_wide ) {
 			$this->network_activate();
@@ -406,6 +406,21 @@ class AP_Activate {
 
 				ap_activate_addon( $new_addon_name );
 			}
+		}
+	}
+
+	/**
+	 * Migrate old datas.
+	 *
+	 * @since 4.4.0
+	 */
+	public function migrate() {
+
+		// Migrate old datas according to the AP_DB_VERSION constant.
+		switch ( AP_DB_VERSION ) {
+			case 38:
+				$this->set_reputation_events_icon();
+				break;
 		}
 	}
 
