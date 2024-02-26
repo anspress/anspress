@@ -320,7 +320,7 @@ function ap_post_actions( $_post = null ) {
 	}
 
 	// Permanent delete link.
-	if ( ap_user_can_permanent_delete( $_post->ID ) && ( ! ap_opt( 'deleting_question_with_answer' ) || ( empty( $answers ) ) ) ) {
+	if ( ap_user_can_permanent_delete( $_post->ID ) && ( ! ap_opt( 'deleting_question_with_answer' ) || empty( $answers ) ) ) {
 		$actions[] = array(
 			'cb'    => 'delete_permanently',
 			'query' => array(
