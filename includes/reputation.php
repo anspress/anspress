@@ -340,6 +340,7 @@ function ap_get_users_reputation( $user_ids ) {
  *
  * @return int|WP_Error Return insert event id on success and WP_Error on failure.
  * @since 4.3.0
+ * @since 4.4.0 Added new argument `$icon` for setting the respective reputation event icon.
  */
 function ap_insert_reputation_event( $slug, $label, $description, $points, $activity, $parent_type = '', $icon = '' ) {
 	global $wpdb;
