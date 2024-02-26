@@ -65,4 +65,88 @@ class TestRewrite extends TestCase {
 		$anspress_rewrite = \AnsPress_Rewrite::incr_hash( '' );
 		$this->assertEquals( 5, $anspress_rewrite );
 	}
+
+	/**
+	 * Covers AnsPress_Rewrite::alter_the_query
+	 */
+	public function testAlterTheQuery() {
+		// Test 1.
+		$request = [
+			'post_type'   => 'answer',
+			'feed'        => 'rss',
+			'question_id' => 123,
+			'answer'      => 456,
+		];
+		$result  = \AnsPress_Rewrite::alter_the_query( $request );
+		$this->assertArrayNotHasKey( 'question_id', $result );
+		$this->assertArrayNotHasKey( 'answer', $result );
+		$expected = [
+			'post_type' => 'answer',
+			'feed'      => 'rss',
+		];
+		$this->assertEquals( $expected, $result );
+
+		// Test 2.
+		$request = [
+			'post_type' => 'answer',
+			'embed'     => 'true',
+			'answer_id' => 123,
+		];
+		$result  = \AnsPress_Rewrite::alter_the_query( $request );
+		$this->assertArrayNotHasKey( 'question_id', $result );
+		$this->assertArrayNotHasKey( 'answer', $result );
+		$this->assertArrayHasKey( 'p', $result );
+		$expected = [
+			'post_type' => 'answer',
+			'embed'     => 'true',
+			'p'         => 123,
+			'answer_id' => 123,
+		];
+		$this->assertEquals( $expected, $result );
+
+		// Test 3.
+		$request = [
+			'post_type'   => 'question',
+			'feed'        => 'rss',
+			'embed'       => 'true',
+			'question_id' => 123,
+			'answer_id'   => 456,
+		];
+		$result  = \AnsPress_Rewrite::alter_the_query( $request );
+		$this->assertArrayHasKey( 'question_id', $result );
+		$this->assertArrayHasKey( 'feed', $result );
+		$this->assertArrayHasKey( 'embed', $result );
+		$this->assertArrayHasKey( 'question_id', $result );
+		$this->assertArrayHasKey( 'answer_id', $result );
+		$expected = [
+			'post_type'   => 'question',
+			'feed'        => 'rss',
+			'embed'       => 'true',
+			'question_id' => 123,
+			'answer_id'   => 456,
+		];
+		$this->assertEquals( $expected, $result );
+
+		// Test 4.
+		$request = [
+			'post_type'   => 'answer',
+			'feed'        => 'rss',
+			'embed'       => 'true',
+			'question_id' => 123,
+			'answer_id'   => 456,
+			'answer'      => 456,
+		];
+		$result  = \AnsPress_Rewrite::alter_the_query( $request );
+		$this->assertArrayNotHasKey( 'question_id', $result );
+		$this->assertArrayNotHasKey( 'answer', $result );
+		$this->assertArrayHasKey( 'p', $result );
+		$expected = [
+			'post_type' => 'answer',
+			'feed'      => 'rss',
+			'p'         => 456,
+			'embed'     => 'true',
+			'answer_id' => 456,
+		];
+		$this->assertEquals( $expected, $result );
+	}
 }
