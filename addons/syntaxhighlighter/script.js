@@ -85,7 +85,7 @@ SyntaxHighlighter.all();
 			var tag = $(this).find('input').is(":checked") ? 'code' : 'pre';
 
 			var attr = 'language="' + lang + '"';
-			var cont = '[apcode ' + attr + ']<' + tag + ' data-mce-contenteditable="false">' + code + '</' + tag + '>[/apcode]';
+			var cont = '[apcode ' + attr + ']<' + tag + '>' + code + '</' + tag + '>[/apcode]';
 
 			if ( typeof tinymce !== 'undefined' ) {
 				tinymce.activeEditor.insertContent(cont);
@@ -108,7 +108,6 @@ SyntaxHighlighter.all();
 
 			return false;
 		});
-
 	});
 
 })(jQuery);
