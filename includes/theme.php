@@ -291,7 +291,7 @@ function ap_post_actions( $_post = null ) {
 
 	$answers = ap_count_published_answers( $_post->ID );
 
-	if ( ap_user_can_delete_post( $_post->ID ) && ( ! ap_opt( 'trashing_question_with_answer' ) || ( ap_opt( 'trashing_question_with_answer' ) && empty( $answers ) ) ) ) {
+	if ( ap_user_can_delete_post( $_post->ID ) && ( ! ap_opt( 'trashing_question_with_answer' ) || empty( $answers ) ) ) {
 		if ( 'trash' === $_post->post_status ) {
 			$label = __( 'Undelete', 'anspress-question-answer' );
 			$title = sprintf(
@@ -320,7 +320,7 @@ function ap_post_actions( $_post = null ) {
 	}
 
 	// Permanent delete link.
-	if ( ap_user_can_permanent_delete( $_post->ID ) && ( ! ap_opt( 'deleting_question_with_answer' ) || ( ap_opt( 'deleting_question_with_answer' ) && empty( $answers ) ) ) ) {
+	if ( ap_user_can_permanent_delete( $_post->ID ) && ( ! ap_opt( 'deleting_question_with_answer' ) || ( empty( $answers ) ) ) ) {
 		$actions[] = array(
 			'cb'    => 'delete_permanently',
 			'query' => array(
