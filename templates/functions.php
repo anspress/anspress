@@ -18,6 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function ap_scripts_front() {
 	ap_assets();
 
+	// Localize scripts for enqueue.
+	ap_localize_script();
+
 	if ( ! is_anspress() && ap_opt( 'load_assets_in_anspress_only' ) ) {
 		return;
 	}
@@ -36,32 +39,6 @@ function ap_scripts_front() {
 	do_action( 'ap_enqueue' );
 
 	wp_enqueue_style( 'ap-overrides', ap_get_theme_url( 'css/overrides.css' ), array( 'anspress-main' ), AP_VERSION );
-
-	$aplang = array(
-		'loading'                => __( 'Loading..', 'anspress-question-answer' ),
-		'sending'                => __( 'Sending request', 'anspress-question-answer' ),
-		// translators: %s is file size in MB.
-		'file_size_error'        => esc_attr( sprintf( __( 'File size is bigger than %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) ),
-		'attached_max'           => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),
-		'commented'              => __( 'commented', 'anspress-question-answer' ),
-		'comment'                => __( 'Comment', 'anspress-question-answer' ),
-		'cancel'                 => __( 'Cancel', 'anspress-question-answer' ),
-		'update'                 => __( 'Update', 'anspress-question-answer' ),
-		'your_comment'           => __( 'Write your comment...', 'anspress-question-answer' ),
-		'notifications'          => __( 'Notifications', 'anspress-question-answer' ),
-		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
-		'search'                 => __( 'Search', 'anspress-question-answer' ),
-		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
-	);
-
-	echo '<script type="text/javascript">';
-	echo 'var ajaxurl = "' . esc_url( admin_url( 'admin-ajax.php' ) ) . '",';
-	echo 'ap_nonce 	= "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
-	echo 'apTemplateUrl = "' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '";';
-	echo 'apQuestionID = "' . (int) get_question_id() . '";';
-	echo 'aplang = ' . wp_json_encode( $aplang ) . ';';
-	echo 'disable_q_suggestion = "' . (bool) ap_opt( 'disable_q_suggestion' ) . '";';
-	echo '</script>';
 }
 add_action( 'wp_enqueue_scripts', 'ap_scripts_front', 1 );
 

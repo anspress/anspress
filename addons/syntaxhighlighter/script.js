@@ -67,7 +67,10 @@ SyntaxHighlighter.all();
 
 			var code = $(this).find('textarea').val();
 			code = code.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-			code = tinyMCE.DOM.encode(code).replace(/^[\s]+/gm, function (m) {
+			if ( typeof tinymce !== 'undefined' ) {
+				code = tinyMCE.DOM.encode(code);
+			}
+			code = code.replace(/^[\s]+/gm, function (m) {
 				var leadingSpaces = arguments[0].length;
 				var str = '';
 				while (leadingSpaces > 0) {
@@ -83,16 +86,28 @@ SyntaxHighlighter.all();
 
 			var attr = 'language="' + lang + '"';
 			var cont = '[apcode ' + attr + ']<' + tag + '>' + code + '</' + tag + '>[/apcode]';
-			tinymce.activeEditor.insertContent(cont);
-			tinymce.activeEditor.focus();
-			tinymce.activeEditor.selection.collapse(0);
+
+			if ( typeof tinymce !== 'undefined' ) {
+				tinymce.activeEditor.insertContent(cont);
+				tinymce.activeEditor.focus();
+				tinymce.activeEditor.selection.collapse(0);
+			} else {
+				var elem = $( '.ap-editor .wp-editor-area' );
+				var value = elem.val();
+				var start = elem[0].selectionStart;
+				var end = elem[0].selectionEnd;
+				var before = value.substring( 0, start );
+				var after = value.substring( end, value.length );
+				var cursorPos = elem.prop( 'selectionStart' );
+				elem.val( before + cont + after );
+				elem.focus();
+				elem.prop( 'selectionEnd', cursorPos + cont.length );
+			}
+
 			AnsPress.hideModal('code');
 
 			return false;
 		});
-
-
-
 	});
 
 })(jQuery);

@@ -53,13 +53,17 @@ class AnsPress_Comment_Hooks {
 
 		if ( ! empty( $comment_id ) ) {
 			$_comment = get_comment( $comment_id );
-			$post_id  = $_comment->comment_post_ID;
+			if ( isset( $_comment->comment_post_ID ) && $_comment->comment_post_ID ) {
+				$post_id = $_comment->comment_post_ID;
+			}
 		} else {
 			$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 			$paged   = max( 1, ap_isset_post_value( 'paged', 1 ) );
 		}
 
-		$_post = ap_get_post( $post_id );
+		if ( isset( $post_id ) && $post_id ) {
+			$_post = ap_get_post( $post_id );
+		}
 
 		$args = array(
 			'show_more' => false,
@@ -71,10 +75,16 @@ class AnsPress_Comment_Hooks {
 		}
 
 		ob_start();
-		ap_the_comments( $post_id, $args );
+		if ( isset( $post_id ) && $post_id ) {
+			ap_the_comments( $post_id, $args );
+		} else {
+			ap_the_comments( -1, $args );
+		}
 		$html = ob_get_clean();
 
-		$type = 'question' === $_post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
+		if ( isset( $_post ) && $_post->post_type ) {
+			$type = 'question' === $_post->post_type ? __( 'Question', 'anspress-question-answer' ) : __( 'Answer', 'anspress-question-answer' );
+		}
 
 		$result = array(
 			'success' => true,
@@ -111,7 +121,7 @@ class AnsPress_Comment_Hooks {
 	public static function approve_comment() {
 		$comment_id = (int) ap_sanitize_unslash( 'comment_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'approve_comment_' . $comment_id ) || ! ap_user_can_approve_comment() ) {
+		if ( ! anspress_verify_nonce( 'approve_comment_' . $comment_id ) || ! ap_user_can_approve_comment() ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -259,6 +269,7 @@ function ap_comment_actions( $comment ) {
 
 	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
 		$actions[] = array(
+			'title' => __( 'Edit this Comment', 'anspress-question-answer' ),
 			'label' => __( 'Edit', 'anspress-question-answer' ),
 			'href'  => '#',
 			'query' => array(
@@ -271,6 +282,7 @@ function ap_comment_actions( $comment ) {
 
 	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {
 		$actions[] = array(
+			'title' => __( 'Delete this Comment', 'anspress-question-answer' ),
 			'label' => __( 'Delete', 'anspress-question-answer' ),
 			'href'  => '#',
 			'query' => array(
@@ -283,6 +295,7 @@ function ap_comment_actions( $comment ) {
 
 	if ( '0' === $comment->comment_approved && ap_user_can_approve_comment() ) {
 		$actions[] = array(
+			'title' => __( 'Approve this Comment', 'anspress-question-answer' ),
 			'label' => __( 'Approve', 'anspress-question-answer' ),
 			'href'  => '#',
 			'query' => array(

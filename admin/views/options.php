@@ -124,6 +124,16 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		$options = get_option( 'anspress_opt', array() );
 
 		foreach ( $values as $key => $opt ) {
+			// Modify the max_upload_size options data to not
+			// exceed the value set in php.ini config.
+			if ( 'max_upload_size' === $key ) {
+				$max_upload = wp_max_upload_size();
+				if ( $opt['value'] > $max_upload ) {
+					$opt['value'] = (int) $max_upload;
+				} else {
+					$opt['value'] = (int) $opt['value'];
+				}
+			}
 			$options[ $key ] = $opt['value'];
 		}
 
@@ -138,7 +148,11 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 			foreach ( $main_pages as $slug ) {
 				if ( isset( $values[ $slug ] ) ) {
 					$_post = get_post( $values[ $slug ]['value'] );
-					ap_opt( $slug . '_id', $_post->post_name );
+
+					// Proceed only if there is post available.
+					if ( $_post ) {
+						ap_opt( $slug . '_id', $_post->post_name );
+					}
 				}
 			}
 
@@ -158,8 +172,8 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 		<div class="social-links clearfix">
 			<a href="https://github.com/anspress/anspress" target="_blank">GitHub</a>
 			<a href="https://wordpress.org/plugins/anspress-question-answer/" target="_blank">WordPress.org</a>
-			<a href="https://twitter.com/anspress_io" target="_blank">@anspress_io</a>
-			<a href="https://www.facebook.com/wp.anspress" target="_blank">Facebook</a>
+			<a href="https://twitter.com/anspress_net" target="_blank">@anspress_net</a>
+			<a href="https://www.facebook.com/anspress.io" target="_blank">Facebook</a>
 		</div>
 	</h2>
 	<div class="clear"></div>

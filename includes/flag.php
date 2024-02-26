@@ -26,10 +26,11 @@ class AnsPress_Flag {
 	public static function action_flag() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
+		if ( ! anspress_verify_nonce( 'flag_' . $post_id ) || ! is_user_logged_in() ) {
 			ap_ajax_json( 'something_wrong' );
 		}
 
+		$post       = ap_get_post( $post_id );
 		$userid     = get_current_user_id();
 		$is_flagged = ap_is_user_flagged( $post_id );
 
@@ -38,7 +39,13 @@ class AnsPress_Flag {
 			ap_ajax_json(
 				array(
 					'success'  => false,
-					'snackbar' => array( 'message' => __( 'You have already reported this post.', 'anspress-question-answer' ) ),
+					'snackbar' => array(
+						'message' => sprintf(
+							/* Translators: %s Question or Answer post type label for already reported question or answer. */
+							__( 'You have already reported this %s.', 'anspress-question-answer' ),
+							( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+						),
+					),
 				)
 			);
 		}
@@ -53,7 +60,13 @@ class AnsPress_Flag {
 					'count'  => $count,
 					'active' => true,
 				),
-				'snackbar' => array( 'message' => __( 'Thank you for reporting this post.', 'anspress-question-answer' ) ),
+				'snackbar' => array(
+					'message' => sprintf(
+						/* Translators: %s Question or Answer post type label for reported question or answer. */
+						__( 'Thank you for reporting this %s.', 'anspress-question-answer' ),
+						( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+					),
+				),
 			)
 		);
 	}
@@ -129,7 +142,19 @@ function ap_flag_btn_args( $post = null ) {
 	$_post   = ap_get_post( $post );
 	$flagged = ap_is_user_flagged( $_post );
 
-	$title = ( ! $flagged ) ? ( __( 'Flag this post', 'anspress-question-answer' ) ) : ( __( 'You have flagged this post', 'anspress-question-answer' ) );
+	if ( ! $flagged ) {
+		$title = sprintf(
+			/* Translators: %s Question or Answer post type label for flagging question or answer. */
+			__( 'Flag this %s', 'anspress-question-answer' ),
+			( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+		);
+	} else {
+		$title = sprintf(
+			/* Translators: %s Question or Answer post type label for already flagged question or answer. */
+			__( 'You have flagged this %s', 'anspress-question-answer' ),
+			( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+		);
+	}
 
 	$actions['close'] = array(
 		'cb'     => 'flag',

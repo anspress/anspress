@@ -67,7 +67,9 @@ class AnsPress_Admin {
 		anspress()->add_filter( 'posts_clauses', __CLASS__, 'join_by_author_name', 10, 2 );
 		anspress()->add_action( 'get_pages', __CLASS__, 'get_pages', 10, 2 );
 		anspress()->add_action( 'wp_insert_post_data', __CLASS__, 'modify_answer_title', 10, 2 );
+		anspress()->add_action( 'admin_footer-edit.php', __CLASS__, 'append_post_status_list_edit' );
 		anspress()->add_action( 'admin_footer-post.php', __CLASS__, 'append_post_status_list' );
+		anspress()->add_action( 'admin_footer-post-new.php', __CLASS__, 'append_post_status_list' );
 		anspress()->add_action( 'admin_post_anspress_update_db', __CLASS__, 'update_db' );
 		anspress()->add_action( 'admin_post_anspress_create_base_page', __CLASS__, 'anspress_create_base_page' );
 		anspress()->add_action( 'admin_notices', __CLASS__, 'anspress_notice' );
@@ -104,12 +106,12 @@ class AnsPress_Admin {
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
-		wp_register_script( 'anspress-common', ANSPRESS_URL . '/assets/js/common.js', array( 'jquery', 'jquery-form', 'backbone' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-question', ANSPRESS_URL . '/assets/js/question.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-ask', ANSPRESS_URL . '/assets/js/ask.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-list', ANSPRESS_URL . '/assets/js/list.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . '/assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . '/assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', array( 'jquery', 'jquery-form', 'backbone' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-question', ANSPRESS_URL . 'assets/js/question.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
+		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 
 		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
 
@@ -131,6 +133,7 @@ class AnsPress_Admin {
 				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
 				aplang = {};
 				apShowComments  = false;
+				removeImage = '<?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?>';
 			</script>
 		<?php
 
@@ -161,7 +164,7 @@ class AnsPress_Admin {
 			'flagged'  => $q_flagged->total + $a_flagged->total,
 		);
 
-		$types['total'] = array_sum( $types );
+		$types['total'] = (int) $types['flagged'];
 		$types_html     = array();
 
 		foreach ( (array) $types as $k => $count ) {
@@ -191,7 +194,7 @@ class AnsPress_Admin {
 		$counts = self::menu_counts();
 		$pos    = self::get_free_menu_position( 12.11 );
 
-		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . '/assets/answer.png', $pos );
+		add_menu_page( 'AnsPress', 'AnsPress' . $counts['total'], 'delete_pages', 'anspress', array( __CLASS__, 'dashboard_page' ), ANSPRESS_URL . 'assets/answer.png', $pos );
 
 		add_submenu_page( 'anspress', __( 'All Questions', 'anspress-question-answer' ), __( 'All Questions', 'anspress-question-answer' ) . $counts['question'], 'delete_pages', 'edit.php?post_type=question', '' );
 
@@ -210,7 +213,12 @@ class AnsPress_Admin {
 
 		add_submenu_page( 'anspress', __( 'AnsPress Settings', 'anspress-question-answer' ), __( 'Settings', 'anspress-question-answer' ), 'manage_options', 'anspress_options', array( __CLASS__, 'display_plugin_options_page' ) );
 
-		$submenu['anspress'][500] = array( 'Theme & Extensions', 'manage_options', 'https://anspress.net/themes/' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		// Theme & Extensions submenu item link.
+		$submenu['anspress'][500] = array( // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			'<div id="anspress-submenu-external-link">' . esc_html__( 'Theme & Extensions', 'anspress-question-answer' ) . '</div>',
+			'manage_options',
+			'https://anspress.net/themes/',
+		);
 	}
 
 	/**
@@ -503,19 +511,17 @@ class AnsPress_Admin {
 
 			<p class="button-controls">
 				<span class="list-controls">
-					<a href="
 					<?php
-						echo esc_url(
-							add_query_arg(
-								array(
-									'anspress-all' => 'all',
-									'selectall'    => 1,
-								),
-								remove_query_arg( $removed_args )
-							)
-						);
+					$url = add_query_arg(
+						array(
+							'anspress-all' => 'all',
+							'selectall'    => 1,
+						),
+						remove_query_arg( $removed_args )
+					);
+					$url = $url . '#anspress-menu-mb';
 					?>
-					#anspress-menu-mb" class="select-all"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
+					<a href="<?php echo esc_url( $url ); ?>" class="select-all anspress-menu-mb"><?php esc_attr_e( 'Select All', 'anspress-question-answer' ); ?></a>
 				</span>
 
 				<span class="add-to-menu">
@@ -630,32 +636,42 @@ class AnsPress_Admin {
 	}
 
 	/**
+	 * Add AnsPress post status to bulk edit select box.
+	 */
+	public static function append_post_status_list_edit() {
+		global $post;
+
+		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
+			echo '<script>
+				jQuery( document ).ready( function() {
+					jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>" );
+					jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>" );
+				} );
+			</script>';
+		}
+	}
+
+	/**
 	 * Add AnsPress post status to post edit select box.
 	 */
 	public static function append_post_status_list() {
 		global $post;
-
-		$complete = '';
-		$label    = '';
+		$label = '';
 
 		if ( in_array( $post->post_type, array( 'question', 'answer' ), true ) ) {
 			if ( 'moderate' === $post->post_status ) {
-					$complete = ' selected=\'selected\'';
-					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</span>';
+				$label = esc_attr__( 'Moderate', 'anspress-question-answer' );
 			} elseif ( 'private_post' === $post->post_status ) {
-					$complete = ' selected=\'selected\'';
-					$label    = '<span id=\'post-status-display\'>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</span>';
+				$label = esc_attr__( 'Private Post', 'anspress-question-answer' );
 			}
 
-			// phpcs:disable
 			echo '<script>
-				jQuery(document).ready(function(){
-					jQuery("select#post_status").append("<option value=\'moderate\' ' . $complete . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>");
-					jQuery("select#post_status").append("<option value=\'private_post\' ' . $complete . '>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>");
-					jQuery(".misc-pub-section label").append("' . $label . '");
-				});
+				jQuery( document ).ready( function() {
+					jQuery( "select#post_status" ).append( "<option value=\'moderate\'' . ( 'moderate' === $post->post_status ? ' selected=\'selected\'' : '' ) . '>' . esc_attr__( 'Moderate', 'anspress-question-answer' ) . '</option>" );
+					jQuery( "select#post_status" ).append( "<option value=\'private_post\'' . ( 'private_post' === $post->post_status ? ' selected=\'selected\'' : '' ) . '>' . esc_attr__( 'Private Post', 'anspress-question-answer' ) . '</option>" );'
+					. ( ( 'moderate' === $post->post_status || 'private_post' === $post->post_status ) ? 'jQuery( "select#post_status" ).closest( ".misc-pub-section" ).find( "#post-status-display" ).html( "' . esc_html( $label ) . '" );' : '' ) . '
+				} );
 			</script>';
-			// phpcs:enable
 		}
 	}
 
@@ -672,7 +688,7 @@ class AnsPress_Admin {
 				'type'    => 'error',
 				'message' => __( 'AnsPress database is not updated.', 'anspress-question-answer' ),
 				'button'  => ' <a class="button" href="' . admin_url( 'admin-post.php?action=anspress_update_db' ) . '">' . __( 'Update now', 'anspress-question-answer' ) . '</a>',
-				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:disable Universal.Operators.StrictComparisons.LooseNotEqual
+				'show'    => ( get_option( 'anspress_db_version' ) != AP_DB_VERSION ), // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
 			),
 			'missing_pages' => array(
 				'type'    => 'error',
@@ -720,7 +736,9 @@ class AnsPress_Admin {
 
 			$pages_in = array();
 			foreach ( $pages_slug as $slug ) {
-				$pages_in[] = $opt[ $slug ];
+				if ( ! empty( $opt[ $slug ] ) ) {
+					$pages_in[] = $opt[ $slug ];
+				}
 			}
 
 			$args = array(
@@ -817,6 +835,8 @@ class AnsPress_Admin {
 		);
 
 		foreach ( ap_main_pages() as $slug => $args ) {
+			$value = isset( $opt[ $slug ] ) ? $opt[ $slug ] : '';
+
 			$form['fields'][ $slug ] = array(
 				'label'      => $args['label'],
 				'desc'       => $args['desc'],
@@ -826,7 +846,7 @@ class AnsPress_Admin {
 					'post_type' => 'page',
 					'showposts' => -1,
 				),
-				'value'      => $opt[ $slug ],
+				'value'      => $value,
 				'sanitize'   => 'absint',
 			);
 		}
@@ -1155,6 +1175,12 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
+				'show_admin_bar'      => array(
+					'label' => __( 'Show admin bar', 'anspress-question-answer' ),
+					'desc'  => __( 'Show admin bar for non administrator users.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['show_admin_bar'],
+				),
 				'allow_upload'        => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
@@ -1168,7 +1194,7 @@ class AnsPress_Admin {
 				),
 				'max_upload_size'     => array(
 					'label' => __( 'Max upload size', 'anspress-question-answer' ),
-					'desc'  => __( 'Set maximum upload size.', 'anspress-question-answer' ),
+					'desc'  => __( 'Set maximum upload size in bytes.', 'anspress-question-answer' ),
 					'value' => $opt['max_upload_size'],
 				),
 				'allow_private_posts' => array(
@@ -1416,6 +1442,7 @@ class AnsPress_Admin {
 				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
 				aplang = {};
 				apShowComments  = false;
+				removeImage = '<?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?>';
 			</script>
 		<?php
 
@@ -1522,6 +1549,12 @@ class AnsPress_Admin {
 					background: #0073aa;
 				}
 			</style>
+			<script type="text/javascript">
+				jQuery( document ).ready( function( $ ) {
+					// Open the Theme & Extensions submenu link in a new tab/window.
+					$( '#anspress-submenu-external-link' ).parent().attr( 'target', '_blank' );
+				} );
+			</script>
 		<?php
 	}
 }

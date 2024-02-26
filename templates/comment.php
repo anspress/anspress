@@ -38,6 +38,7 @@ $approved = '1' != $comment->comment_approved ? 'unapproved' : 'approved'; // ph
 				<div class="ap-comment-actions">
 					<?php foreach ( ap_comment_actions( $comment ) as $comment_action ) : ?>
 						<a href="<?php echo esc_url( $comment_action['href'] ); ?>"
+							<?php echo ' class="comment-' . esc_attr( str_replace( ' ', '-', strtolower( $comment_action['label'] ) ) ) . '"'; ?>
 							<?php echo ! empty( $comment_action['title'] ) ? ' title="' . esc_attr( $comment_action['title'] ) . '"' : ''; ?>
 							<?php echo ! empty( $comment_action['query'] ) ? ' apajaxbtn apquery="' . esc_js( wp_json_encode( $comment_action['query'] ) ) . '"' : ''; ?>
 							>

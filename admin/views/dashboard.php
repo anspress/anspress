@@ -165,6 +165,7 @@ class AnsPress_Dashboard {
 				array(
 					'ap_order_by' => 'newest',
 					'showposts'   => 5,
+					'question_id' => 'all',
 				)
 			);
 			?>
@@ -177,7 +178,7 @@ class AnsPress_Dashboard {
 						?>
 						<li>
 							<a target="_blank" href="<?php the_permalink(); ?>"><?php echo esc_html( get_the_title() ); ?></a> -
-							<span class="posted"><?php the_date(); ?></span>
+							<span class="posted"><?php echo esc_html( get_the_date() ); ?></span>
 						</li>
 					<?php endwhile; ?>
 				</ul>
@@ -198,12 +199,18 @@ class AnsPress_Dashboard {
 		$answer_count    = wp_count_posts( 'answer', 'readable' );
 		?>
 		<div class="main attn">
+			<?php
+			if ( ! $q_flagged_count->total && ! $question_count->moderate && ! $a_flagged_count->total && ! $answer_count->moderate ) :
+				esc_attr_e( 'All looks fine', 'anspress-question-answer' );
+			endif;
+			?>
+
 			<?php if ( $q_flagged_count->total || $question_count->moderate ) : ?>
 				<strong><?php esc_attr_e( 'Questions', 'anspress-question-answer' ); ?></strong>
 				<ul>
 					<?php if ( $q_flagged_count->total ) : ?>
 						<li>
-							<a href=""><i class="apicon-flag"></i>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?flagged=true&post_type=question' ) ); ?>"><i class="apicon-flag"></i>
 							<?php
 								// translators: Placeholder contains total flagged question count.
 								echo esc_attr( sprintf( __( '%d Flagged questions', 'anspress-question-answer' ), $q_flagged_count->total ) );
@@ -214,7 +221,7 @@ class AnsPress_Dashboard {
 
 					<?php if ( $question_count->moderate ) : ?>
 						<li>
-							<a href=""><i class="apicon-stop"></i>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_status=moderate&post_type=question' ) ); ?>"><i class="apicon-stop"></i>
 								<?php
 									echo esc_attr(
 										// translators: placeholder contains total question awaiting moderation.
@@ -225,8 +232,6 @@ class AnsPress_Dashboard {
 						</li>
 					<?php endif; ?>
 				</ul>
-			<?php else : ?>
-				<?php esc_attr_e( 'All looks fine', 'anspress-question-answer' ); ?>
 			<?php endif; ?>
 
 			<?php if ( $a_flagged_count->total || $answer_count->moderate ) : ?>
@@ -234,7 +239,7 @@ class AnsPress_Dashboard {
 				<ul>
 					<?php if ( $a_flagged_count->total ) : ?>
 						<li>
-							<a href="">
+							<a href="<?php echo esc_url( admin_url( 'edit.php?flagged=true&post_type=answer' ) ); ?>">
 								<i class="apicon-flag"></i>
 								<?php
 									echo esc_attr(
@@ -251,7 +256,7 @@ class AnsPress_Dashboard {
 
 					<?php if ( $answer_count->moderate ) : ?>
 						<li>
-							<a href="">
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_status=moderate&post_type=answer' ) ); ?>">
 								<i class="apicon-stop"></i>
 								<?php
 									echo esc_attr(
@@ -455,8 +460,8 @@ if ( $columns ) {
 								</a>
 							</li>
 							<li>
-								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/">
-									<?php esc_html_e( 'Documents and FAQ', 'anspress-question-answer' ); ?>
+								<a class="welcome-icon welcome-learn-more" href="https://anspress.net/docs/" target="_blank">
+									<?php esc_attr_e( 'Documentations and FAQ', 'anspress-question-answer' ); ?>
 								</a>
 							</li>
 						</ul>

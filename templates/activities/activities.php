@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="ap-activities">
+<div class="ap-activities<?php echo esc_attr( ! $activities->has() ? ' ap-no-activities' : '' ); ?>">
 	<?php if ( $activities->have() ) : ?>
 
 		<?php
