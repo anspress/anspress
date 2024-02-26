@@ -137,7 +137,6 @@ class Reputation extends \AnsPress\Singleton {
 					'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
 					'icon'        => 'apicon-question',
 					'activity'    => __( 'Registered', 'anspress-question-answer' ),
-					'parent'      => 'question',
 					'points'      => 10,
 				),
 				array(
@@ -230,7 +229,8 @@ class Reputation extends \AnsPress\Singleton {
 					$event['description'],
 					$points,
 					! empty( $event['activity'] ) ? $event['activity'] : '',
-					! empty( $event['parent'] ) ? $event['parent'] : ''
+					! empty( $event['parent'] ) ? $event['parent'] : '',
+					$event['icon']
 				);
 			}
 
