@@ -49,4 +49,30 @@ class TestQAQueryHooks extends TestCase {
 		$this->assertEquals( 'moderate', $result->post_status );
 		$this->assertEquals( 'question', $result->post_type );
 	}
+
+	/**
+	 * @covers AP_QA_Query_Hooks::pre_get_posts
+	 */
+	public function testPreGetPosts() {
+		global $wp_query;
+
+		// Test 1.
+		\AP_QA_Query_Hooks::pre_get_posts( $wp_query );
+		$this->assertEmpty( $wp_query->get( 'post_status' ) );
+
+		// Test 2.
+		$wp_query->is_single = false;
+		$wp_query->is_main_query = false;
+		set_query_var( 'post_type', 'question' );
+		\AP_QA_Query_Hooks::pre_get_posts( $wp_query );
+		$this->assertEmpty( $wp_query->get( 'post_status' ) );
+
+		// Test 3.
+		$wp_query->is_single = true;
+		$wp_query->is_main_query = true;
+		set_query_var( 'post_type', 'question' );
+		\AP_QA_Query_Hooks::pre_get_posts( $wp_query );
+		$expected = [ 'publish', 'trash', 'moderate', 'private_post', 'future', 'ap_spam' ];
+		$this->assertEquals( $expected, $wp_query->get( 'post_status' ) );
+	}
 }
