@@ -1300,7 +1300,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( '<ul id="anspress-checklist-pop" class="categorychecklist form-no-clear" >', $output );
 		$this->assertStringContainsString( '<p class="button-controls">', $output );
 		$this->assertStringContainsString( '<span class="list-controls">', $output );
-		$this->assertStringContainsString( '#anspress-menu-mb" class="select-all"', $output );
+		$this->assertStringContainsString( '#anspress-menu-mb" class="select-all anspress-menu-mb"', $output );
 		$this->assertStringContainsString( 'Select All', $output );
 		$this->assertStringContainsString( '<span class="add-to-menu">', $output );
 		$this->assertStringContainsString( 'class="button-secondary submit-add-to-menu right" value="Add to Menu" name="add-anspress-menu-item" id="submit-anspress-div"', $output );
