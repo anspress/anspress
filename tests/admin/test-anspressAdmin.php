@@ -952,10 +952,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'moderate\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Moderate</span>', $output );
+		$this->assertStringContainsString( '<option value=\'moderate\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Moderate" );', $output );
 
 		// Test 2.
 		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
@@ -965,10 +966,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
+		$this->assertStringContainsString( '<option value=\'private_post\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Private Post" );', $output );
 
 		// Test for answer post type.
 		// Test 1.
@@ -979,10 +981,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'moderate\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Moderate</span>', $output );
+		$this->assertStringContainsString( '<option value=\'moderate\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Moderate" );', $output );
 
 		// Test 2.
 		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'private_post' ] );
@@ -992,10 +995,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
+		$this->assertStringContainsString( '<option value=\'private_post\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Private Post" );', $output );
 	}
 
 	/**
