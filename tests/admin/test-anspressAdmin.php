@@ -1136,7 +1136,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">2</span></span>', $counts['question'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['answer'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">3</span></span>', $counts['flagged'] );
-		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">6</span></span>', $counts['total'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">3</span></span>', $counts['total'] );
 
 		// Test after removing the flag.
 		// Test 1.
@@ -1146,7 +1146,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( '', $counts['question'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['answer'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['flagged'] );
-		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">2</span></span>', $counts['total'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['total'] );
 
 		// Test 2.
 		ap_delete_flags( $a_id3 );
