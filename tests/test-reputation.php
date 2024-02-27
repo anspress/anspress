@@ -381,16 +381,16 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'new_event' ) );
 
 		// Test for pre-existing events.
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'register' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'ask' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'answer' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'comment' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'select_answer' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'best_answer' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'received_vote_up' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'received_vote_down' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'given_vote_up' ) );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'given_vote_down' ) );
+		$this->assertEquals( 'apicon-question', ap_get_reputation_event_icon( 'register' ) );
+		$this->assertEquals( 'apicon-question', ap_get_reputation_event_icon( 'ask' ) );
+		$this->assertEquals( 'apicon-answer', ap_get_reputation_event_icon( 'answer' ) );
+		$this->assertEquals( 'apicon-comments', ap_get_reputation_event_icon( 'comment' ) );
+		$this->assertEquals( 'apicon-check', ap_get_reputation_event_icon( 'select_answer' ) );
+		$this->assertEquals( 'apicon-check', ap_get_reputation_event_icon( 'best_answer' ) );
+		$this->assertEquals( 'apicon-thumb-up', ap_get_reputation_event_icon( 'received_vote_up' ) );
+		$this->assertEquals( 'apicon-thumb-down', ap_get_reputation_event_icon( 'received_vote_down' ) );
+		$this->assertEquals( 'apicon-thumb-up', ap_get_reputation_event_icon( 'given_vote_up' ) );
+		$this->assertEquals( 'apicon-thumb-down', ap_get_reputation_event_icon( 'given_vote_down' ) );
 
 		// Test for new reputation event.
 		$args = [
@@ -768,7 +768,7 @@ class TestReputation extends TestCase {
 		$this->assertNotNull( $reputation_event_by_slug );
 		$this->assertisObject( $reputation_event_by_slug );
 		$this->assertEquals( 'ask', $reputation_event_by_slug->slug );
-		$this->assertEquals( '', $reputation_event_by_slug->icon );
+		$this->assertEquals( 'apicon-question', $reputation_event_by_slug->icon );
 		$this->assertEquals( 'Asking', $reputation_event_by_slug->label );
 		$this->assertEquals( 'Points awarded when user asks a question', $reputation_event_by_slug->description );
 		$this->assertEquals( 'Asked a question', $reputation_event_by_slug->activity );
@@ -780,7 +780,7 @@ class TestReputation extends TestCase {
 		$this->assertNotNull( $reputation_event_by_slug );
 		$this->assertisObject( $reputation_event_by_slug );
 		$this->assertEquals( 'answer', $reputation_event_by_slug->slug );
-		$this->assertEquals( '', $reputation_event_by_slug->icon );
+		$this->assertEquals( 'apicon-answer', $reputation_event_by_slug->icon );
 		$this->assertEquals( 'Answering', $reputation_event_by_slug->label );
 		$this->assertEquals( 'Points awarded when user answers a question', $reputation_event_by_slug->description );
 		$this->assertEquals( 'Posted an answer', $reputation_event_by_slug->activity );
@@ -792,7 +792,7 @@ class TestReputation extends TestCase {
 		$this->assertNotNull( $reputation_event_by_slug );
 		$this->assertisObject( $reputation_event_by_slug );
 		$this->assertEquals( 'best_answer', $reputation_event_by_slug->slug );
-		$this->assertEquals( '', $reputation_event_by_slug->icon );
+		$this->assertEquals( 'apicon-check', $reputation_event_by_slug->icon );
 		$this->assertEquals( 'Answer selected as best', $reputation_event_by_slug->label );
 		$this->assertEquals( 'Points awarded when user\'s answer is selected as best', $reputation_event_by_slug->description );
 		$this->assertEquals( 'Answer was selected as best', $reputation_event_by_slug->activity );
