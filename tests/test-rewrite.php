@@ -18,7 +18,7 @@ class TestRewrite extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'rewrite_rules' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'rewrites' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'incr_hash' ) );
-		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'bp_com_paged' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'pagination_fix' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'add_query_var' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'shortlink' ) );
 	}
