@@ -460,10 +460,9 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_get_active_addons
 	 */
 	public function testAPGetActiveAddons() {
-		// For default addon active check.
-		$this->assertArrayHasKey( 'categories.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'categories.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'akismet.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'buddypress.php', ap_get_active_addons() );
@@ -482,16 +481,14 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'recaptcha.php' );
 		ap_activate_addon( 'syntaxhighlighter.php' );
 		ap_activate_addon( 'tags.php' );
-
-		// Default addon deactivate and check.
-		ap_deactivate_addon( 'categories.php' );
-		ap_deactivate_addon( 'email.php' );
-		ap_deactivate_addon( 'reputation.php' );
+		ap_activate_addon( 'categories.php' );
+		ap_activate_addon( 'email.php' );
+		ap_activate_addon( 'reputation.php' );
 
 		// Checks.
-		$this->assertArrayNotHasKey( 'categories.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'categories.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_active_addons() );
@@ -693,9 +690,9 @@ class TestFunctions extends TestCase {
 	 */
 	public function testAPActivateAddon() {
 		// For default addons activate behaviour.
-		$this->assertArrayHasKey( 'categories.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'email.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'categories.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
@@ -706,6 +703,9 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
 
 		// For addons activate behaviour test.
+		ap_activate_addon( 'categories.php' );
+		ap_activate_addon( 'email.php' );
+		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
 		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
