@@ -139,7 +139,7 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertStringContainsString( 'aplang.shTxtPlholder = \'Insert code snippet here ...\';', $inline_script );
 		$this->assertStringContainsString( 'aplang.shButton = \'Insert to editor\';', $inline_script );
 		$this->assertStringContainsString( 'aplang.shTitle = \'Insert code\';', $inline_script );
-		$this->assertStringContainsString( 'window.apBrushPath = "' . esc_url( ANSPRESS_URL . '/addons/syntaxhighlighter/syntaxhighlighter/scripts/' ) . '";', $inline_script );
+		$this->assertStringContainsString( 'window.apBrushPath = "' . esc_url( ANSPRESS_URL . 'addons/syntaxhighlighter/syntaxhighlighter/scripts/' ) . '";', $inline_script );
 	}
 
 	/**
