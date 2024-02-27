@@ -1,6 +1,6 @@
 (function ($) {
     $(document).ready(function () {
-        $('textarea.autogrow, textarea#post_content').autogrow({
+        $('.wp-editor-area').autogrow({
             onInitialize: true
         });
 
