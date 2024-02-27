@@ -934,6 +934,24 @@ ul.ap-meta-list {
 .ap-q-suggestion-item {
   border-bottom: 1px solid #eee;
   padding: 10px 0;
+  &.clearfix:after {
+    @media (max-width: 782px) {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+  .ap-similar-questions & {
+    .select-question-button {
+      @media (max-width: 782px) {
+        font-size: 11px;
+        padding: 0 8px;
+        margin-bottom: 0;
+        line-height: 2.18181818;
+        min-height: unset;
+      }
+    }
+  }
 }
 
 .ap-form-fields {
@@ -1557,6 +1575,11 @@ span.recount-msg {
     position: relative;
     align-items: flex-start;
 
+    @media (max-width: 782px) {
+      flex-wrap: wrap;
+      grid-gap: 20px;
+    }
+
     &-tab {
       width: 250px;
       margin-right: 20px;
@@ -1568,10 +1591,19 @@ span.recount-msg {
       a{
         display: block;
       }
+
+      @media (max-width: 782px) {
+        width: 100%;
+        margin-right: 0;
+      }
     }
 
     &-body{
       flex: calc( 100% - 250px);
+
+      @media (max-width: 782px) {
+        flex: 100%;
+      }
     }
 
 		&-inside-toggle_features {
@@ -1614,6 +1646,10 @@ span.recount-msg {
       > h3{
         padding: 0px 20px;
       }
+
+      &.closed {
+        border-bottom: 1px solid #c3c4c7;
+      }
     }
 
 		&-info{
@@ -1626,6 +1662,11 @@ span.recount-msg {
 		&-right {
 			flex: 300px;
 			margin-left: 20px;
+
+      @media (max-width: 782px) {
+        flex: 100%;
+        margin-left: 0;
+      }
 		}
   }
 }

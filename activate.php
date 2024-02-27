@@ -71,17 +71,22 @@ class AP_Activate {
 		$this->network_wide = $network_wide;
 		$this->disable_ext();
 		$this->delete_options();
-		$this->enable_addons();
-		$this->reactivate_addons();
 
 		// Append table names in $wpdb.
 		ap_append_table_names();
+
+		// Migrate old datas.
+		$this->migrate();
 
 		if ( $this->network_wide ) {
 			$this->network_activate();
 		} else {
 			$this->activate();
 		}
+
+		// Enable/Disable addon.
+		$this->enable_addons();
+		$this->reactivate_addons();
 	}
 
 	/**
@@ -125,6 +130,12 @@ class AP_Activate {
 	 * @since 4.1.8 Fixed #425
 	 */
 	public function enable_addons() {
+		// Return if `ap_installed` option is available.
+		if ( ap_opt( 'ap_installed' ) ) {
+			return;
+		}
+
+		// Activate required addons.
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'categories.php' );
@@ -403,6 +414,47 @@ class AP_Activate {
 
 				ap_activate_addon( $new_addon_name );
 			}
+		}
+	}
+
+	/**
+	 * Migrate old datas.
+	 *
+	 * @since 4.4.0
+	 */
+	public function migrate() {
+		if ( 38 === AP_DB_VERSION ) {
+			$this->set_reputation_events_icon();
+		}
+	}
+
+	/**
+	 * Set the reputation events icon.
+	 *
+	 * @since 4.4.0
+	 */
+	public function set_reputation_events_icon() {
+		$events = array(
+			'register'           => 'apicon-question',
+			'ask'                => 'apicon-question',
+			'answer'             => 'apicon-answer',
+			'comment'            => 'apicon-comments',
+			'select_answer'      => 'apicon-check',
+			'best_answer'        => 'apicon-check',
+			'received_vote_up'   => 'apicon-thumb-up',
+			'received_vote_down' => 'apicon-thumb-down',
+			'given_vote_up'      => 'apicon-thumb-up',
+			'given_vote_down'    => 'apicon-thumb-down',
+		);
+
+		// Modify reputation events icon.
+		global $wpdb;
+		foreach ( $events as $slug => $icon ) {
+			$wpdb->update( // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prefix . 'ap_reputation_events',
+				array( 'icon' => $icon ),
+				array( 'slug' => $slug )
+			);
 		}
 	}
 }

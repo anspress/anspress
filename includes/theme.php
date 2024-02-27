@@ -291,13 +291,23 @@ function ap_post_actions( $_post = null ) {
 		$actions[] = array( 'header' => true );
 	}
 
-	if ( ap_user_can_delete_post( $_post->ID ) ) {
+	$answers = ap_count_published_answers( $_post->ID );
+
+	if ( ap_user_can_delete_post( $_post->ID ) && ( ! ap_opt( 'trashing_question_with_answer' ) || empty( $answers ) ) ) {
 		if ( 'trash' === $_post->post_status ) {
 			$label = __( 'Undelete', 'anspress-question-answer' );
-			$title = __( 'Restore this post', 'anspress-question-answer' );
+			$title = sprintf(
+				/* Translators: %s Question or Answer post type label for restoring a question or answer. */
+				__( 'Restore this %s', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			);
 		} else {
 			$label = __( 'Delete', 'anspress-question-answer' );
-			$title = __( 'Delete this post (can be restored again)', 'anspress-question-answer' );
+			$title = sprintf(
+				/* Translators: %s Question or Answer post type label for deleting a question or answer. */
+				__( 'Delete this %s (can be restored again)', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			);
 		}
 
 		$actions[] = array(
@@ -312,7 +322,7 @@ function ap_post_actions( $_post = null ) {
 	}
 
 	// Permanent delete link.
-	if ( ap_user_can_permanent_delete( $_post->ID ) ) {
+	if ( ap_user_can_permanent_delete( $_post->ID ) && ( ! ap_opt( 'deleting_question_with_answer' ) || empty( $answers ) ) ) {
 		$actions[] = array(
 			'cb'    => 'delete_permanently',
 			'query' => array(
@@ -320,7 +330,11 @@ function ap_post_actions( $_post = null ) {
 				'__nonce' => wp_create_nonce( 'delete_post_' . $_post->ID ),
 			),
 			'label' => __( 'Delete Permanently', 'anspress-question-answer' ),
-			'title' => __( 'Delete post permanently (cannot be restored again)', 'anspress-question-answer' ),
+			'title' => sprintf(
+				/* Translators: %s Question or Answer post type label for permanently deleting a question or answer. */
+				__( 'Delete %s permanently (cannot be restored again)', 'anspress-question-answer' ),
+				( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+			),
 		);
 	}
 
@@ -412,6 +426,11 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
 		'key'   => 'order_by',
 		'value' => 'views',
 		'label' => __( 'Views', 'anspress-question-answer' ),
+	);
+	$navs[] = array(
+		'key'   => 'order_by',
+		'value' => 'solved',
+		'label' => __( 'Solved', 'anspress-question-answer' ),
 	);
 	$navs[] = array(
 		'key'   => 'order_by',
@@ -663,6 +682,50 @@ function ap_enqueue_scripts() {
 }
 
 /**
+ * Localize scripts for enqueue.
+ *
+ * @since 4.4.0
+ */
+function ap_localize_script() {
+	$aplang = array(
+		'loading'                => __( 'Loading..', 'anspress-question-answer' ),
+		'sending'                => __( 'Sending request', 'anspress-question-answer' ),
+		// translators: %s is file size in MB.
+		'file_size_error'        => esc_attr( sprintf( __( 'File size is bigger than %s MB', 'anspress-question-answer' ), round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) ),
+		'attached_max'           => __( 'You have already attached maximum numbers of allowed attachments', 'anspress-question-answer' ),
+		'commented'              => __( 'commented', 'anspress-question-answer' ),
+		'comment'                => __( 'Comment', 'anspress-question-answer' ),
+		'cancel'                 => __( 'Cancel', 'anspress-question-answer' ),
+		'update'                 => __( 'Update', 'anspress-question-answer' ),
+		'your_comment'           => __( 'Write your comment...', 'anspress-question-answer' ),
+		'notifications'          => __( 'Notifications', 'anspress-question-answer' ),
+		'mark_all_seen'          => __( 'Mark all as seen', 'anspress-question-answer' ),
+		'search'                 => __( 'Search', 'anspress-question-answer' ),
+		'no_permission_comments' => __( 'Sorry, you don\'t have permission to read comments.', 'anspress-question-answer' ),
+		/* translators: %s is post type. */
+		'ajax_events'            => __( 'Are you sure you want to %s?', 'anspress-question-answer' ),
+		'ajax_error'             => array(
+			'snackbar' => array(
+				'success' => false,
+				'message' => esc_html__( 'Something went wrong. Please try again.', 'anspress-question-answer' ),
+			),
+			'modal'    => array(
+				'imageUpload',
+			),
+		),
+	);
+
+	echo '<script type="text/javascript">';
+	echo 'var ajaxurl = "' . esc_url( admin_url( 'admin-ajax.php' ) ) . '",';
+	echo 'ap_nonce 	= "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
+	echo 'apTemplateUrl = "' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '";';
+	echo 'apQuestionID = "' . (int) get_question_id() . '";';
+	echo 'aplang = ' . wp_json_encode( $aplang ) . ';';
+	echo 'disable_q_suggestion = "' . (bool) ap_opt( 'disable_q_suggestion' ) . '";';
+	echo '</script>';
+}
+
+/**
  * Get all list filters.
  */
 function ap_get_list_filters() {
@@ -892,7 +955,7 @@ function ap_subscribe_btn( $_post = false, $output = true ) {
 	$subscribed  = ap_is_user_subscriber( 'question', $_post->ID );
 	$label       = $subscribed ? __( 'Unsubscribe', 'anspress-question-answer' ) : __( 'Subscribe', 'anspress-question-answer' );
 
-	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '">' . esc_attr( $label ) . '<span class="apsubscribers-count">' . esc_attr( $subscribers ) . '</span></a>';
+	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">' . esc_html( $label ) . '</span><span class="apsubscribers-count">' . esc_html( $subscribers ) . '</span></a>';
 
 	if ( ! $output ) {
 		return $html;

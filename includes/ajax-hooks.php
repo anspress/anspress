@@ -154,7 +154,7 @@ class AnsPress_Ajax {
 			'snackbar' => array( 'message' => __( 'Unable to trash this post', 'anspress-question-answer' ) ),
 		);
 
-		if ( ! ap_verify_nonce( 'trash_post_' . $post_id ) ) {
+		if ( ! anspress_verify_nonce( 'trash_post_' . $post_id ) ) {
 			ap_ajax_json( $failed_response );
 		}
 
@@ -175,7 +175,11 @@ class AnsPress_Ajax {
 					'action'      => array(
 						'active' => false,
 						'label'  => __( 'Delete', 'anspress-question-answer' ),
-						'title'  => __( 'Delete this post (can be restored again)', 'anspress-question-answer' ),
+						'title'  => sprintf(
+							/* Translators: %s Question or Answer post type label for deleting a question or answer. */
+							__( 'Delete this %s (can be restored again)', 'anspress-question-answer' ),
+							( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+						),
 					),
 					// translators: %s post type.
 					'snackbar'    => array( 'message' => sprintf( __( '%s is restored', 'anspress-question-answer' ), $post_type ) ),
@@ -209,7 +213,11 @@ class AnsPress_Ajax {
 				'action'      => array(
 					'active' => true,
 					'label'  => __( 'Undelete', 'anspress-question-answer' ),
-					'title'  => __( 'Restore this post', 'anspress-question-answer' ),
+					'title'  => sprintf(
+						/* Translators: %s Question or Answer post type label for restoring a question or answer. */
+						__( 'Restore this %s', 'anspress-question-answer' ),
+						( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+					),
 				),
 				// translators: %s is post type.
 				'snackbar'    => array( 'message' => sprintf( __( '%s is trashed', 'anspress-question-answer' ), $post_type ) ),
@@ -225,7 +233,7 @@ class AnsPress_Ajax {
 	public static function permanent_delete_post() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {
+		if ( ! anspress_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -291,7 +299,7 @@ class AnsPress_Ajax {
 	public static function toggle_featured() {
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
-		if ( ! ap_user_can_toggle_featured() || ! ap_verify_nonce( 'set_featured_' . $post_id ) ) {
+		if ( ! ap_user_can_toggle_featured() || ! anspress_verify_nonce( 'set_featured_' . $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -315,6 +323,15 @@ class AnsPress_Ajax {
 		// Check if current question ID is in featured question array.
 		if ( ap_is_featured_question( $post ) ) {
 			ap_unset_featured_question( $post->ID );
+
+			// Update activity.
+			ap_activity_add(
+				array(
+					'q_id'   => $post->ID,
+					'action' => 'unfeatured',
+				)
+			);
+
 			ap_ajax_json(
 				array(
 					'success'  => true,
@@ -385,6 +402,13 @@ class AnsPress_Ajax {
 					'action' => 'closed_q',
 				)
 			);
+		} else {
+			ap_activity_add(
+				array(
+					'q_id'   => $_post->ID,
+					'action' => 'open_q',
+				)
+			);
 		}
 
 		$results = array(
@@ -429,7 +453,7 @@ class AnsPress_Ajax {
 	public static function convert_to_post() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin() || current_user_can( 'manage_options' ) ) ) {
+		if ( ! anspress_verify_nonce( 'convert-post-' . $post_id ) || ! ( is_super_admin() || current_user_can( 'manage_options' ) ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -500,7 +524,7 @@ class AnsPress_Ajax {
 
 		$_post = ap_get_post( $post_id );
 
-		if ( 'question' === $_post->post_type && ! ap_verify_nonce( 'subscribe_' . $post_id ) ) {
+		if ( 'question' === $_post->post_type && ! anspress_verify_nonce( 'subscribe_' . $post_id ) ) {
 			ap_ajax_json(
 				array(
 					'success'  => false,
@@ -517,7 +541,13 @@ class AnsPress_Ajax {
 			ap_ajax_json(
 				array(
 					'success'  => true,
-					'snackbar' => array( 'message' => __( 'Successfully unsubscribed from question', 'anspress-question-answer' ) ),
+					'snackbar' => array(
+						'message' => sprintf(
+							/* Translators: %s Unsubscribed to the question title */
+							__( 'Successfully unsubscribed from question: %s', 'anspress-question-answer' ),
+							$_post->post_title
+						),
+					),
 					'count'    => ap_get_post_field( 'subscribers', $post_id ),
 					'label'    => __( 'Subscribe', 'anspress-question-answer' ),
 				)
@@ -539,7 +569,13 @@ class AnsPress_Ajax {
 		ap_ajax_json(
 			array(
 				'success'  => true,
-				'snackbar' => array( 'message' => __( 'Successfully subscribed to question', 'anspress-question-answer' ) ),
+				'snackbar' => array(
+					'message' => sprintf(
+						/* Translators: %s Subscribed to the question title */
+						__( 'Successfully subscribed to question: %s', 'anspress-question-answer' ),
+						$_post->post_title
+					),
+				),
 				'count'    => ap_get_post_field( 'subscribers', $post_id ),
 				'label'    => __( 'Unsubscribe', 'anspress-question-answer' ),
 			)
@@ -558,7 +594,7 @@ class AnsPress_Ajax {
 		$form       = ap_sanitize_unslash( 'form', 'r' );
 		$field_name = ap_sanitize_unslash( 'field', 'r' );
 
-		if ( ! ap_verify_nonce( 'tags_' . $form . $field_name ) ) {
+		if ( ! anspress_verify_nonce( 'tags_' . $form . $field_name ) ) {
 			wp_send_json( '{}' );
 		}
 

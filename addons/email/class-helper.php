@@ -90,7 +90,7 @@ class Helper {
 	public function __construct( $event, $args = array() ) {
 		$this->event = $event;
 
-		$this->args = wp_parse_args(
+		$this->args = ap_parse_args(
 			$args,
 			array(
 				'users'    => array(),

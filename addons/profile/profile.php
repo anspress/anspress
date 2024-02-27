@@ -60,6 +60,7 @@ class Profile extends \AnsPress\Singleton {
 		anspress()->add_action( 'ap_ajax_user_more_answers', $this, 'load_more_answers', 10, 2 );
 		anspress()->add_filter( 'wp_title', $this, 'page_title' );
 		anspress()->add_action( 'the_post', $this, 'filter_page_title' );
+		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
 		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
 		anspress()->add_filter( 'posts_pre_query', $this, 'modify_query_archive', 999, 2 );
 	}
@@ -179,6 +180,12 @@ class Profile extends \AnsPress\Singleton {
 			$rewrite = ap_opt( 'user_page_slug_' . $args['slug'] );
 			$title   = ap_opt( 'user_page_title_' . $args['slug'] );
 
+			// If BuddyPress addon is active then, do not modify the slug since
+			// template file loaded has the exact name with slug.
+			if ( ap_is_addon_active( 'buddypress.php' ) ) {
+				$rewrite = $args['slug'];
+			}
+
 			// Override user page slug.
 			if ( empty( $args['rewrite'] ) ) {
 				anspress()->user_pages[ $key ]['rewrite'] = ! empty( $rewrite ) ? sanitize_title( $rewrite ) : $args['slug'];
@@ -201,13 +208,20 @@ class Profile extends \AnsPress\Singleton {
 	/**
 	 * Output user profile menu.
 	 *
-	 * @param int|false $user_id Id of user, default is current user.
-	 * @param string    $class_name   CSS class.
+	 * @param int|false $user_id    Id of user, default is current user.
+	 * @param string    $class_name CSS class.
 	 */
 	public function user_menu( $user_id = false, $class_name = '' ) {
 		$user_id     = false !== $user_id ? $user_id : ap_current_user_id();
+		$user        = get_user_by( 'id', $user_id );
 		$current_tab = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
 		$ap_menu     = apply_filters( 'ap_user_menu_items', anspress()->user_pages, $user_id );
+
+		// If BuddyPress addon is active, set the profile menu active links as required
+		// with the help of the 'pagename' query var.
+		if ( ap_is_addon_active( 'buddypress.php' ) ) {
+			$current_tab = 'qa' === get_query_var( 'pagename' ) ? 'questions' : get_query_var( 'pagename' );
+		}
 
 		echo '<ul class="ap-tab-nav clearfix ' . esc_attr( $class_name ) . '">';
 
@@ -216,6 +230,14 @@ class Profile extends \AnsPress\Singleton {
 				echo '<li class="ap-menu-' . esc_attr( $args['slug'] ) . ( $args['rewrite'] === $current_tab ? ' active' : '' ) . '">';
 
 				$url = isset( $args['url'] ) ? $args['url'] : ap_user_link( $user_id, $args['rewrite'] );
+				if (
+					( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) )
+					&& ( in_array( 'about', $args, true ) || in_array( 'edit-profile', $args, true ) )
+				) {
+					$slug = get_option( 'ap_user_path' );
+					$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
+					$url  = isset( $args['url'] ) ? $args['url'] : $link . $args['rewrite'];
+				}
 				echo '<a href="' . esc_url( $url ) . '">';
 
 				// Show icon.
@@ -278,6 +300,34 @@ class Profile extends \AnsPress\Singleton {
 		if ( 'user' === ap_current_page() && ap_opt( 'user_page' ) == $_post->ID && ! is_admin() ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 			$_post->post_title = $this->user_page_title();
 		}
+	}
+
+	/**
+	 * Hook into AnsPress breadcrums to show user profile page.
+	 *
+	 * @param  array $navs Breadcrumbs navs.
+	 * @return array
+	 */
+	public function ap_breadcrumbs( $navs ) {
+		if ( 'user' === ap_current_page() ) {
+			$navs['page'] = array(
+				'title' => ap_user_display_name( ap_current_user_id() ),
+				'link'  => ap_user_link( ap_current_user_id() ),
+				'order' => 8,
+			);
+
+			$current      = get_query_var( 'user_page', ap_opt( 'user_page_slug_questions' ) );
+			$current_page = ap_search_array( anspress()->user_pages, 'rewrite', $current );
+			if ( ! empty( $current_page ) ) {
+				$navs['user'] = array(
+					'title' => $current_page[0]['label'],
+					'link'  => ap_user_link( ap_current_user_id() ) . $current . '/',
+					'order' => 8,
+				);
+			}
+		}
+
+		return $navs;
 	}
 
 	/**
@@ -386,6 +436,9 @@ class Profile extends \AnsPress\Singleton {
 			endwhile;
 		}
 		$html = ob_get_clean();
+
+		// Pagination fix on Ajax load more event.
+		$paged = $answers->max_num_pages > $paged ? $paged : 0;
 
 		ap_ajax_json(
 			array(
