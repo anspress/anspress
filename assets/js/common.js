@@ -265,7 +265,9 @@ _.templateSettings = {
 			resize: 'none'
 		}) //prevent scrollies
 			,
-			selector = that.selector,
+			selector = '',
+			selectorID = that.attr('id'),
+			selectorClass = that.attr('class'),
 			defaults = {
 				context: $(document) //what to wire events to
 				,
@@ -283,6 +285,12 @@ _.templateSettings = {
 			context: opts ? opts : $(document)
 		};
 		opts = $.extend({}, defaults, opts);
+		// Setup the selector.
+		if (selectorID !== undefined) {
+			selector = '#' + selectorID;
+		} else if (selectorClass !== undefined) {
+			selector = '.' + selectorClass;
+		}
 		that.each(function (i, elem) {
 			var min, clone;
 			elem = $(elem);
