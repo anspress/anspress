@@ -418,7 +418,7 @@ class TestFlag extends TestCase {
 		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
 		$this->assertEquals( $id, $flag_button_args['query']['post_id'] );
 		$this->assertEquals( 'Flag', $flag_button_args['label'] );
-		$this->assertEquals( 'Flag this post', $flag_button_args['title'] );
+		$this->assertEquals( 'Flag this question', $flag_button_args['title'] );
 		$this->assertEquals( 0, $flag_button_args['count'] );
 		$this->assertFalse( $flag_button_args['active'] );
 
@@ -448,7 +448,7 @@ class TestFlag extends TestCase {
 		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
 		$this->assertEquals( $id, $flag_button_args['query']['post_id'] );
 		$this->assertEquals( 'Flag', $flag_button_args['label'] );
-		$this->assertEquals( 'You have flagged this post', $flag_button_args['title'] );
+		$this->assertEquals( 'You have flagged this question', $flag_button_args['title'] );
 		$this->assertEquals( 1, $flag_button_args['count'] );
 		$this->assertTrue( $flag_button_args['active'] );
 	}
