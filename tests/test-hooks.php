@@ -82,7 +82,7 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_filter( 'request', [ 'AnsPress_Rewrite', 'alter_the_query' ] ) );
 		$this->assertEquals( 10, has_filter( 'query_vars', [ 'AnsPress_Rewrite', 'query_var' ] ) );
 		$this->assertEquals( 1, has_action( 'generate_rewrite_rules', [ 'AnsPress_Rewrite', 'rewrites' ] ) );
-		$this->assertEquals( 10, has_filter( 'paginate_links', [ 'AnsPress_Rewrite', 'bp_com_paged' ] ) );
+		$this->assertEquals( 10, has_filter( 'paginate_links', [ 'AnsPress_Rewrite', 'pagination_fix' ] ) );
 		$this->assertEquals( 10, has_filter( 'parse_request', [ 'AnsPress_Rewrite', 'add_query_var' ] ) );
 		$this->assertEquals( 10, has_action( 'template_redirect', [ 'AnsPress_Rewrite', 'shortlink' ] ) );
 
