@@ -2166,7 +2166,7 @@ class TestFunctions extends TestCase {
 		// Set as selected answer.
 		ap_set_selected_answer( $id->q, $id->a );
 		$this->go_to( '?post_type=question&p=' . $id->q );
-		$question_title = get_the_title( $id->q ) . ' [Solved] ';
+		$question_title = '[Solved] ' . get_the_title( $id->q ) . ' ';
 		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
 
 		// Test when the prefix option is disabled.
@@ -2178,7 +2178,7 @@ class TestFunctions extends TestCase {
 		// Re-test when the prefix option is enabled.
 		ap_opt( 'show_solved_prefix', true );
 		$this->go_to( '?post_type=question&p=' . $id->q );
-		$question_title = get_the_title( $id->q ) . ' [Solved] ';
+		$question_title = '[Solved] ' . get_the_title( $id->q ) . ' ';
 		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
 	}
 
