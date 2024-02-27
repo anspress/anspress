@@ -719,6 +719,20 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', $form['fields']['allow_private_posts']['desc'] );
 		$this->assertEquals( 'checkbox', $form['fields']['allow_private_posts']['type'] );
 		$this->assertEquals( ap_opt( 'allow_private_posts' ), $form['fields']['allow_private_posts']['value'] );
+
+		// Test for trashing_question_with_answer field.
+		$this->assertArrayHasKey( 'trashing_question_with_answer', $form['fields'] );
+		$this->assertEquals( 'Trashing Question', $form['fields']['trashing_question_with_answer']['label'] );
+		$this->assertEquals( 'Disable trashing the question if there are answers already available to the question.', $form['fields']['trashing_question_with_answer']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['trashing_question_with_answer']['type'] );
+		$this->assertEquals( ap_opt( 'trashing_question_with_answer' ), $form['fields']['trashing_question_with_answer']['value'] );
+
+		// Test for deleting_question_with_answer field.
+		$this->assertArrayHasKey( 'deleting_question_with_answer', $form['fields'] );
+		$this->assertEquals( 'Deleting Question', $form['fields']['deleting_question_with_answer']['label'] );
+		$this->assertEquals( 'Disable deleting the question permanently if there are answers already available to the question.', $form['fields']['deleting_question_with_answer']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['deleting_question_with_answer']['type'] );
+		$this->assertEquals( ap_opt( 'deleting_question_with_answer' ), $form['fields']['deleting_question_with_answer']['value'] );
 	}
 
 	/**
