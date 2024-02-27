@@ -94,6 +94,7 @@ class TestAnsPressFormFieldEditor extends TestCase {
 
 		// After method is called.
 		// Test 1.
+		$property->SetValue( $field, '' );
 		$btn_args = wp_json_encode(
 			array(
 				'__nonce'   => wp_create_nonce( 'ap_upload_image' ),
@@ -108,6 +109,7 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
 
 		// Test 2.
+		$property->SetValue( $field, '' );
 		$this->setRole( 'subscriber' );
 		$btn_args = wp_json_encode(
 			array(
@@ -122,6 +124,27 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		$this->assertStringContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert image</button>', $property->getValue( $field ) );
 		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
 		$this->logout();
+
+		// Test 3.
+		$property->SetValue( $field, '' );
+		$this->setRole( 'subscriber' );
+		ap_opt( 'allow_upload', false );
+		$btn_args = wp_json_encode(
+			array(
+				'__nonce'   => wp_create_nonce( 'ap_upload_image' ),
+				'action'    => 'ap_upload_modal',
+				'form_name' => 'Sample Form',
+			)
+		);
+		$field->image_button();
+		$this->assertEmpty( $property->getValue( $field ) );
+		$this->assertStringNotContainsString( esc_js( $btn_args ), $property->getValue( $field ) );
+		$this->assertStringNotContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert image</button>', $property->getValue( $field ) );
+		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
+		$this->logout();
+
+		// Reset the option.
+		ap_opt( 'allow_upload', true );
 	}
 
 	/**
