@@ -29,7 +29,7 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		// No need to invoke prepare() method as it is called in constructor.
 		$this->assertIsArray( $property->getValue( $field ) );
 		$this->assertEquals( [ 'text_field' ], $property->getValue( $field ) );
-		$this->assertEquals( [ 'label' => 'AnsPress Select Field', 'options' => [], 'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name' ] ], $field->args );
+		$this->assertEquals( [ 'label' => 'AnsPress Select Field', 'options' => [], 'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name', 'orderby' => null ] ], $field->args );
 
 		// Test 2.
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [ 'options' => 'terms' ] );
@@ -39,7 +39,7 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		// No need to invoke prepare() method as it is called in constructor.
 		$this->assertIsArray( $property->getValue( $field ) );
 		$this->assertEquals( [ 'absint' ], $property->getValue( $field ) );
-		$this->assertEquals( [ 'label' => 'AnsPress Select Field', 'options' => 'terms', 'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name' ] ], $field->args );
+		$this->assertEquals( [ 'label' => 'AnsPress Select Field', 'options' => 'terms', 'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name', 'orderby' => null ] ], $field->args );
 
 		// Test 3.
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [ 'options' => 'posts' ] );
@@ -49,7 +49,7 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		// No need to invoke prepare() method as it is called in constructor.
 		$this->assertIsArray( $property->getValue( $field ) );
 		$this->assertEquals( [ 'absint' ], $property->getValue( $field ) );
-		$this->assertEquals( [ 'label' => 'AnsPress Select Field', 'options' => 'posts', 'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name' ] ], $field->args );
+		$this->assertEquals( [ 'label' => 'AnsPress Select Field', 'options' => 'posts', 'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name', 'orderby' => null ] ], $field->args );
 
 		// Test 4.
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
@@ -73,7 +73,7 @@ class TestAnsPressFormFieldSelect extends TestCase {
 				'option2' => 'Option 2',
 				'option3' => 'Option 3',
 			],
-			'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name' ]
+			'terms_args' => [ 'taxonomy' => 'question_category', 'hide_empty' => false, 'fields' => 'id=>name', 'orderby' => null ]
 		];
 		$this->assertEquals( $expected, $field->args );
 
