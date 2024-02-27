@@ -1647,22 +1647,6 @@ class TestFunctions extends TestCase {
 	}
 
 	/**
-	 * @covers ::ap_verify_nonce
-	 */
-	public function testAPVerifyNonce() {
-		// Test on invalid nonce.
-		$this->assertFalse( ap_verify_nonce( 'anspress-tests' ) );
-		$this->assertFalse( ap_verify_nonce( 'anspress-tests1' ) );
-
-		// Test on valid nonce.
-		$_REQUEST['__nonce'] = wp_create_nonce( 'anspress-tests' );
-		$this->assertIsInt( ap_verify_nonce( 'anspress-tests' ) );
-		$_REQUEST['__nonce'] = wp_create_nonce( 'anspress-tests1' );
-		$this->assertIsInt( ap_verify_nonce( 'anspress-tests1' ) );
-		unset( $_REQUEST['__nonce'] );
-	}
-
-	/**
 	 * @covers ::ap_canonical_url
 	 */
 	public function testap_canonical_url() {

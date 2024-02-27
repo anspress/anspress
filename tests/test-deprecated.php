@@ -29,4 +29,12 @@ class TestDeprecated extends TestCase {
 		$this->setExpectedDeprecated( 'ap_responce_message' );
 		ap_responce_message( 'id' );
 	}
+
+	/**
+	 * @covers ::ap_verify_nonce
+	 */
+	public function testAPVerifyNonce() {
+		$this->setExpectedDeprecated( 'ap_verify_nonce' );
+		ap_verify_nonce( 'anspress-tests' );
+	}
 }
