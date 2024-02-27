@@ -323,12 +323,10 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_is_addon_active
 	 */
 	public function testIsAddonActive() {
-		// Default addons enabled check on plugin activation.
-		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
-
-		// Check for other addons is not enabled.
+		// Check for addons is not enabled.
+		$this->assertFalse( ap_is_addon_active( 'categories.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'email.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'akismet.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'buddypress.php' ) );
@@ -339,6 +337,9 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'tags.php' ) );
 
 		// Check for addons enabled.
+		ap_activate_addon( 'categories.php' );
+		ap_activate_addon( 'email.php' );
+		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
 		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
@@ -349,6 +350,9 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'tags.php' );
 
 		// Checks.
+		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'akismet.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'buddypress.php' ) );
