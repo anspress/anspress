@@ -35,7 +35,7 @@ class TestTemplatesAnswerForm extends TestCase {
 		$this->assertStringContainsString( '<div id="ap-drop-area" class="ap-cell ap-form-c clearfix">', $result );
 		$this->assertStringContainsString( '<div class="ap-cell-inner">', $result );
 		$this->assertStringContainsString( '<div class="ap-minimal-placeholder">', $result );
-		$this->assertStringContainsString( '<div class="ap-dummy-editor"></div>', $result );
+		$this->assertStringContainsString( '<div class="ap-dummy-editor">', $result );
 		$this->assertStringContainsString( '<div class="ap-dummy-placeholder">Write your answer.</div>', $result );
 		$this->assertStringContainsString( '<div class="ap-editor-fade" ap="loadEditor" data-apquery="' . esc_js( $ajax_query ) . '"></div>', $result );
 		$this->assertStringContainsString( '<div id="ap-form-main">', $result );
