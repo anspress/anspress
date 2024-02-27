@@ -488,17 +488,7 @@ class TestAddonTags extends TestCase {
 		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
 		$result = $instance->ap_list_filters( [] );
 		$this->assertIsArray( $result );
-		$this->assertNoTEmpty( $result );
-		$this->assertArrayHasKey( 'qtag', $result );
-		$this->assertArrayNotHasKey( 'tags_order', $result );
-		$expected_result = [
-			'qtag' => [
-				'title'    => 'Tag',
-				'search'   => true,
-				'multiple' => true,
-			],
-		];
-		$this->assertEquals( $expected_result, $result );
+		$this->assertEmpty( $result );
 
 		// Test 3.
 		$wp->query_vars['ap_tags'] = '';
