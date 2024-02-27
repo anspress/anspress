@@ -710,7 +710,7 @@ class TestAnsPressAdmin extends TestCase {
 		// Test for max_upload_size field.
 		$this->assertArrayHasKey( 'max_upload_size', $form['fields'] );
 		$this->assertEquals( 'Max upload size', $form['fields']['max_upload_size']['label'] );
-		$this->assertEquals( 'Set maximum upload size.', $form['fields']['max_upload_size']['desc'] );
+		$this->assertEquals( 'Set maximum upload size in bytes.', $form['fields']['max_upload_size']['desc'] );
 		$this->assertEquals( ap_opt( 'max_upload_size' ), $form['fields']['max_upload_size']['value'] );
 
 		// Test for allow_private_posts field.
