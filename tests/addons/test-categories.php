@@ -8,6 +8,16 @@ class TestAddonCategories extends TestCase {
 
 	use Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'categories.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		ap_deactivate_addon( 'categories.php' );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Categories::instance
 	 */

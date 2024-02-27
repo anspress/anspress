@@ -8,6 +8,16 @@ class TestAddonEmail extends TestCase {
 
 	use Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'email.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		ap_deactivate_addon( 'email.php' );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Email::instance
 	 */
@@ -71,11 +81,11 @@ class TestAddonEmail extends TestCase {
 	public function testAPDefaultOptions() {
 		$instance = \Anspress\Addons\Email::init();
 
-		// Get all available options.
-		$ap_options = ap_opt();
-
 		// Call the method.
 		$instance->ap_default_options();
+
+		// Get all available options.
+		$ap_options = ap_opt();
 
 		// Test begins.
 		$expected_options = [
@@ -139,6 +149,7 @@ class TestAddonEmail extends TestCase {
 		$instance = \Anspress\Addons\Email::init();
 
 		// Call the method.
+		$instance->ap_default_options();
 		$form = $instance->register_option();
 
 		// Test begins.

@@ -6,6 +6,16 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonReputation extends TestCase {
 
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'reputation.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		ap_deactivate_addon( 'reputation.php' );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Reputation::instance
 	 */
