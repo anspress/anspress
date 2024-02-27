@@ -343,8 +343,10 @@ class AP_Activate {
 		ap_create_base_page();
 
 		// Insert reputation events.
-		$ap_reputation_events = AnsPress\Addons\Reputation::init();
-		$ap_reputation_events->register_default_events();
+		if ( class_exists( 'AnsPress\Addons\Reputation' ) ) {
+			$ap_reputation_events = AnsPress\Addons\Reputation::init();
+			$ap_reputation_events->register_default_events();
+		}
 
 		ap_opt( 'ap_flush', 'true' );
 	}
