@@ -25,7 +25,9 @@ trait Ajax {
 		try {
 			$this->_handleAjax( $action );
 		} catch ( \WPAjaxDieStopException $e ) {
-			$this->_last_response = $e->getMessage();
+			// Do nothing.
+		} catch ( \WPAjaxDieContinueException $e ) {
+			// Do nothing.
 		}
 	}
 }
