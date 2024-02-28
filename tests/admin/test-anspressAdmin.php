@@ -68,6 +68,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'join_by_author_name' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'get_pages' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'modify_answer_title' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Admin', 'append_post_status_list_edit' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'append_post_status_list' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'anspress_notice' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'check_pages_exists' ) );
@@ -935,6 +936,43 @@ class TestAnsPressAdmin extends TestCase {
 			$this->assertArrayHasKey( $key, $form['fields']['activity_exclude_roles']['options'] );
 			$this->assertEquals( $value, $form['fields']['activity_exclude_roles']['options'][ $key ] );
 		}
+	}
+
+	/**
+	 * @covers AnsPress_Admin::append_post_status_list_edit
+	 */
+	public function testAppendPostStatusListEdit() {
+		global $post;
+
+		// Test 1.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post = get_post( $question_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list_edit();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<script>', $output );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>Moderate</option>" );', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>Private Post</option>" );', $output );
+
+		// Test 2.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post = get_post( $answer_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list_edit();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<script>', $output );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>Moderate</option>" );', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>Private Post</option>" );', $output );
+
+		// Test 3.
+		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$post = get_post( $page_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list_edit();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
 	}
 
 	/**
