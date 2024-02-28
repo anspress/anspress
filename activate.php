@@ -75,9 +75,6 @@ class AP_Activate {
 		// Append table names in $wpdb.
 		ap_append_table_names();
 
-		// Migrate old datas.
-		$this->migrate();
-
 		if ( $this->network_wide ) {
 			$this->network_activate();
 		} else {
@@ -87,6 +84,9 @@ class AP_Activate {
 		// Enable/Disable addon.
 		$this->enable_addons();
 		$this->reactivate_addons();
+
+		// Migrate old datas.
+		$this->migrate();
 	}
 
 	/**
