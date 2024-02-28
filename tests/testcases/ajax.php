@@ -13,7 +13,7 @@ trait Ajax {
 			return $res;
 		}
 		if ( false !== $key ) {
-			$this->assertObjectHasAttribute( $key, $res );
+			$this->assertObjectHasProperty( $key, $res );
 			if ( ! isset( $res->$key ) ) {
 				return false;
 			}
