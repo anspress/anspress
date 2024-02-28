@@ -4,11 +4,7 @@ namespace AnsPress\Tests\Testcases;
 
 trait Ajax {
 	public function ap_ajax_success( $key = false, $return_json = false ) {
-		preg_match( '#<div[^>]*>(.*?)</div>#', $this->_last_response, $match );
-		if ( ! isset( $match[1] ) ) {
-			return false;
-		}
-		$res = json_decode( $match[1] );
+		$res = json_decode( $this->_last_response );
 		if ( false !== $return_json ) {
 			return $res;
 		}
