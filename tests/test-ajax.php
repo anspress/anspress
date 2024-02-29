@@ -405,4 +405,85 @@ class TestAjax extends TestCaseAjax {
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on restricted posts are not allowed.' );
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::load_comments
+	 */
+	public function testLoadComments() {
+		$this->setRole( 'subscriber' );
+
+		// Test 1.
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&ap_ajax_action=load_comments' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertStringNotContainsString( 'apcomment', $this->_last_response );
+		$this->assertStringContainsString( 'No comments found.', $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$page_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Comment form loading',
+				'post_type'    => 'page',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $page_id,
+				'comment_type'    => 'anspress',
+			)
+		);
+		$this->_set_post_data( 'post_id=' . $page_id . '&ap_ajax_action=load_comments' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertStringNotContainsString( 'apcomment', $this->_last_response );
+		$this->assertStringContainsString( 'Not a valid post ID.', $this->_last_response );
+
+		// Test 3.
+		$this->setRole( 'ap_banned' );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+				'post_content' => 'Donec nec nunc purus',
+				'post_author'  => $user_id,
+			)
+		);
+		$comment_ids = $this->factory->comment->create_many(
+			5,
+			array(
+				'comment_type'    => 'anspress',
+				'comment_post_ID' => $question_id,
+			)
+		);
+		$this->_last_response = '';
+		$this->_set_post_data( 'post_id=' . $question_id . '&ap_ajax_action=load_comments' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertStringNotContainsString( 'apcomment', $this->_last_response );
+		$this->assertStringContainsString( 'Sorry, you do not have permission to read comments.', $this->_last_response );
+		$this->logout();
+
+		// Test 4.
+		$this->_last_response = '';
+		$comment_ids = $this->factory->comment->create_many(
+			5,
+			array(
+				'comment_type'    => 'anspress',
+				'comment_post_ID' => self::$current_post,
+			)
+		);
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&ap_ajax_action=load_comments' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertStringContainsString( 'apcomment', $this->_last_response );
+	}
 }
