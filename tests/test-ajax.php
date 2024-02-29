@@ -163,4 +163,246 @@ class TestAjax extends TestCaseAjax {
 		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
 		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
 	}
+
+	/**
+	 * @covers AnsPress_Vote::vote
+	 */
+	public function testVote() {
+		// Test for user who can vote.
+		$this->setRole( 'subscriber' );
+
+		// Up vote.
+		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'voted' );
+		$this->assertTrue( $this->ap_ajax_success( 'vote_type' ) === 'vote_up' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Thank you for voting.' );
+		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 1 );
+		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->active === 'vote_up' );
+		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . self::$current_post ) === 1 );
+
+		// Down vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Undo your vote first.' );
+		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->active === 'vote_down' );
+		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . self::$current_post ) === 1 );
+		$this->_last_response = '';
+
+		// Undo vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
+		$this->_set_post_data( 'action=ap_ajax&post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'undo' );
+		$this->assertTrue( $this->ap_ajax_success( 'vote_type' ) === 'vote_up' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Your vote has been removed.' );
+		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->net === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'voteData' )->active === '' );
+		$this->assertTrue( wp_verify_nonce( $this->ap_ajax_success( 'voteData' )->nonce, 'vote_' . self::$current_post ) === 1 );
+
+		// Test for user who can not vote.
+		$this->setRole( 'ap_banned' );
+
+		// Up vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You do not have permission to vote.' );
+
+		// Down vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You do not have permission to vote.' );
+
+		// Test on disabling down vote.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		ap_opt( 'disable_down_vote_on_question', true );
+		ap_opt( 'disable_down_vote_on_answer', true );
+
+		// For question post type.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_author'  => $user_id,
+			)
+		);
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $question_id );
+		$this->_set_post_data( 'post_id=' . $question_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting down is disabled.' );
+
+		// For answer post type.
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_author'  => $user_id,
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $answer_id );
+		$this->_set_post_data( 'post_id=' . $answer_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting down is disabled.' );
+
+		// Reset option.
+		ap_opt( 'disable_down_vote_on_question', false );
+		ap_opt( 'disable_down_vote_on_answer', false );
+
+		// Voting on own question and answer.
+		$this->setRole( 'subscriber' );
+
+		// For question.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+
+		// Up vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $question_id );
+		$this->_set_post_data( 'post_id=' . $question_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on own post is not allowed' );
+
+		// Down vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $question_id );
+		$this->_set_post_data( 'post_id=' . $question_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on own post is not allowed' );
+
+		// For answer.
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id,
+			)
+		);
+
+		// Up vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $answer_id );
+		$this->_set_post_data( 'post_id=' . $answer_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on own post is not allowed' );
+
+		// Down vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $answer_id );
+		$this->_set_post_data( 'post_id=' . $answer_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on own post is not allowed' );
+
+		// Test for invalid nonce or nonce not passed.
+		$this->setRole( 'subscriber' );
+
+		// Invalid nonce.
+		$this->_last_response = '';
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=invalid_nonce&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+
+		// Nonce not passed.
+		$this->_last_response = '';
+		$this->_set_post_data( 'post_id=' . self::$current_post . '&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+
+		// Test for voting on restricted question and answer.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+
+		// For question.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+				'post_content' => 'Donec nec nunc purus',
+				'post_author'  => $user_id,
+			)
+		);
+
+		// Up vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $question_id );
+		$this->_set_post_data( 'post_id=' . $question_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on restricted posts are not allowed.' );
+
+		// Down vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $question_id );
+		$this->_set_post_data( 'post_id=' . $question_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on restricted posts are not allowed.' );
+
+		// For answer.
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_content' => 'Donec nec nunc purus',
+				'post_author'  => $user_id,
+				'post_parent'  => $question_id,
+			)
+		);
+
+		// Up vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $answer_id );
+		$this->_set_post_data( 'post_id=' . $answer_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on restricted posts are not allowed.' );
+
+		// Down vote.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'vote_' . $answer_id );
+		$this->_set_post_data( 'post_id=' . $answer_id . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_down' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on restricted posts are not allowed.' );
+	}
 }
