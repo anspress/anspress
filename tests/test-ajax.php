@@ -44,4 +44,44 @@ class TestAjax extends TestCaseAjax {
 			$_POST[ $key ] = $value;
 		}
 	}
+
+	/**
+	 * @covers ::ap_send_json
+	 */
+	public function testAPSendJSON() {
+		// Test 1.
+		$this->functionHandle( 'ap_send_json' );
+		$expected = wp_json_encode( [ 'is_ap_ajax' => true ] );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$test_data = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+		);
+		$this->functionHandle( 'ap_send_json', $test_data );
+		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true ], $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 3.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'something_wrong',
+		);
+		$this->functionHandle( 'ap_send_json', $test_data );
+		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true ], $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 4.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'success',
+			'key1'    => 'value1',
+			'key2'    => 'value2',
+		);
+		$this->functionHandle( 'ap_send_json', $test_data );
+		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true ], $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+	}
 }
