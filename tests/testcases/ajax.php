@@ -30,4 +30,28 @@ trait Ajax {
 			// Do nothing.
 		}
 	}
+
+	public function functionHandle( $function, $args = [] ) {
+		// Clear the output buffer.
+		while ( ob_get_level() > 0 ) {
+			ob_end_clean();
+		}
+
+		ini_set( 'implicit_flush', false );
+		ob_start();
+		try {
+			$function( $args );
+		} catch ( \WPAjaxDieStopException $e ) {
+			// Do nothing.
+		} catch ( \WPAjaxDieContinueException $e ) {
+			// Do nothing.
+		}
+		$buffer = ob_get_clean();
+		if ( ! empty( $buffer ) ) {
+			$this->_last_response .= $buffer;
+		}
+
+		// Start output buffering again.
+		ob_start();
+	}
 }
