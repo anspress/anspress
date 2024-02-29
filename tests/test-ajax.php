@@ -84,4 +84,83 @@ class TestAjax extends TestCaseAjax {
 		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true ], $test_data ) );
 		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
 	}
+
+	/**
+	 * @covers ::ap_ajax_json
+	 */
+	public function testAPAjaxJSON() {
+		// Test 1.
+		$test_data = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+		);
+		$this->functionHandle( 'ap_ajax_json', $test_data );
+		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true, 'ap_responce' => true ], $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$test_data = array(
+			'success' => false,
+		);
+		$this->functionHandle( 'ap_ajax_json', $test_data );
+		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true, 'ap_responce' => true ], $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 3.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'something_wrong',
+		);
+		$this->functionHandle( 'ap_ajax_json', $test_data );
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'Something went wrong, last action failed.',
+				'message_type' => 'error',
+			],
+			'success'     => false,
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 4.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'success',
+			'key1'    => 'value1',
+			'key2'    => 'value2',
+		);
+		$this->functionHandle( 'ap_ajax_json', $test_data );
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'Success',
+				'message_type' => 'success',
+			],
+			'success'     => true,
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 5.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'upload_limit_crossed'
+		);
+		$this->functionHandle( 'ap_ajax_json', $test_data );
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'You have already attached maximum numbers of allowed uploads.',
+				'message_type' => 'warning',
+			],
+			'success'     => true,
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+	}
 }
