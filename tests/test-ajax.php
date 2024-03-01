@@ -83,6 +83,9 @@ class TestAjax extends TestCaseAjax {
 		$this->functionHandle( 'ap_send_json', $test_data );
 		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true ], $test_data ) );
 		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Start output buffer.
+		ob_start();
 	}
 
 	/**
@@ -162,6 +165,9 @@ class TestAjax extends TestCaseAjax {
 		);
 		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
 		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Start output buffer.
+		ob_start();
 	}
 
 	/**
