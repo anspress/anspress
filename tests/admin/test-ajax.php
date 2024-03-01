@@ -488,4 +488,178 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertNotEmpty( $vote_count );
 		$this->assertEquals( 1, $vote_count );
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::get_all_answers
+	 */
+	public function testGetAllAnswers() {
+		add_action( 'ap_ajax_ap_get_all_answers', array( 'AnsPress_Admin_Ajax', 'get_all_answers' ) );
+
+		// For tests.
+		$user_id_1   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 1' ) );
+		$user_id_2   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 2' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+		$answer_id_1 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id_1,
+			)
+		);
+		$answer_id_2 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Lorem ipsum dolor sit amit',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id_2,
+			)
+		);
+		$answers     = [
+			[
+				'ID'        => $answer_id_1,
+				'content'   => 'Donec nec nunc purus',
+				'avatar'    => ap_get_author_avatar( 30, $answer_id_1 ),
+				'author'    => 'User 1',
+				'activity'  => ap_get_recent_post_activity( $answer_id_1 ),
+				'editLink'  => get_edit_post_link( $answer_id_1 ),
+				'trashLink' => get_delete_post_link( $answer_id_1 ),
+				'status'    => 'Published',
+				'selected'  => ap_get_post_field( 'selected', $answer_id_1 ),
+			],
+			[
+				'ID'        => $answer_id_2,
+				'content'   => 'Lorem ipsum dolor sit amit',
+				'avatar'    => ap_get_author_avatar( 30, $answer_id_2 ),
+				'author'    => 'User 2',
+				'activity'  => ap_get_recent_post_activity( $answer_id_2 ),
+				'editLink'  => get_edit_post_link( $answer_id_2 ),
+				'trashLink' => get_delete_post_link( $answer_id_2 ),
+				'status'    => 'Published',
+				'selected'  => ap_get_post_field( 'selected', $answer_id_2 ),
+			],
+		];
+
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'question_id=' . $question_id . '&ap_ajax_action=ap_get_all_answers' );
+		@$this->handle( 'ap_ajax' );
+		$response = json_decode( $this->_last_response, true );
+		foreach ( $response as $idx => $answer ) {
+			$this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
+			$this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
+			$this->assertEquals( $answers[ $idx ]['avatar'], $answer['avatar'] );
+			$this->assertEquals( $answers[ $idx ]['author'], $answer['author'] );
+			$this->assertEquals( $answers[ $idx ]['activity'], $answer['activity'] );
+			$this->assertEquals( $answers[ $idx ]['editLink'], $answer['editLink'] );
+			$this->assertEquals( $answers[ $idx ]['trashLink'], $answer['trashLink'] );
+			$this->assertEquals( $answers[ $idx ]['status'], $answer['status'] );
+			$this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
+		}
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->setRole( 'administrator' );
+		$user_id_1   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 1' ) );
+		$user_id_2   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 2' ) );
+		$user_id_3   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 3' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+		$answer_id_1 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id_1,
+			)
+		);
+		$answer_id_2 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Lorem ipsum dolor sit amit',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id_2,
+			)
+		);
+		$answer_id_3 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'moderate',
+				'post_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a consectetur magna, eu volutpat ipsum',
+				'post_parent'  => $question_id,
+				'post_author'  => $user_id_3,
+			)
+		);
+		$answers     = [
+			[
+				'ID'        => $answer_id_1,
+				'content'   => 'Donec nec nunc purus',
+				'avatar'    => ap_get_author_avatar( 30, $answer_id_1 ),
+				'author'    => 'User 1',
+				'activity'  => ap_get_recent_post_activity( $answer_id_1 ),
+				'editLink'  => get_edit_post_link( $answer_id_1 ),
+				'trashLink' => get_delete_post_link( $answer_id_1 ),
+				'status'    => 'Published',
+				'selected'  => ap_get_post_field( 'selected', $answer_id_1 ),
+			],
+			[
+				'ID'        => $answer_id_2,
+				'content'   => 'Lorem ipsum dolor sit amit',
+				'avatar'    => ap_get_author_avatar( 30, $answer_id_2 ),
+				'author'    => 'User 2',
+				'activity'  => ap_get_recent_post_activity( $answer_id_2 ),
+				'editLink'  => get_edit_post_link( $answer_id_2 ),
+				'trashLink' => get_delete_post_link( $answer_id_2 ),
+				'status'    => 'Published',
+				'selected'  => ap_get_post_field( 'selected', $answer_id_2 ),
+			],
+			[
+				'ID'        => $answer_id_3,
+				'content'   => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a consectetur magna, eu volutpat ipsum',
+				'avatar'    => ap_get_author_avatar( 30, $answer_id_3 ),
+				'author'    => 'User 3',
+				'activity'  => ap_get_recent_post_activity( $answer_id_3 ),
+				'editLink'  => get_edit_post_link( $answer_id_3 ),
+				'trashLink' => get_delete_post_link( $answer_id_3 ),
+				'status'    => 'Moderate',
+				'selected'  => ap_get_post_field( 'selected', $answer_id_3 ),
+			],
+		];
+		$this->_set_post_data( 'question_id=' . $question_id . '&ap_ajax_action=ap_get_all_answers' );
+		@$this->handle( 'ap_ajax' );
+		$response = json_decode( $this->_last_response, true );
+		foreach ( $response as $idx => $answer ) {
+			$this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
+			$this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
+			$this->assertEquals( $answers[ $idx ]['avatar'], $answer['avatar'] );
+			$this->assertEquals( $answers[ $idx ]['author'], $answer['author'] );
+			$this->assertEquals( $answers[ $idx ]['activity'], $answer['activity'] );
+			$this->assertEquals( $answers[ $idx ]['editLink'], $answer['editLink'] );
+			$this->assertEquals( $answers[ $idx ]['trashLink'], $answer['trashLink'] );
+			$this->assertEquals( $answers[ $idx ]['status'], $answer['status'] );
+			$this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
+		}
+	}
 }
