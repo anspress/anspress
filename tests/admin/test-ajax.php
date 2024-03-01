@@ -36,7 +36,7 @@ class TestAdminAjax extends TestCaseAjax {
 	/**
 	 * @covers AnsPress_Admin_Ajax::ap_delete_flag
 	 */
-	public function testAdminAPDeleteFlag() {
+	public function testAPDeleteFlag() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
