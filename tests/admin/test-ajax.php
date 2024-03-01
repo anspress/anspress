@@ -662,4 +662,258 @@ class TestAdminAjax extends TestCaseAjax {
 			$this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::ap_uninstall_data
+	 */
+	public function testAPUninstallData() {
+		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
+
+		// For user who do not have access to uninstall data.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'action=ap_uninstall_data&data_type=qa&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+		$this->handle( 'ap_uninstall_data' );
+		$this->assertEquals( '[]', $this->_last_response );
+
+		// For user having access to uninstall data.
+		// Invalid data type.
+		$this->_last_response = '';
+		if ( is_multisite() ) {
+			$this->setRole( 'administrator' );
+			grant_super_admin( get_current_user_id() );
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=invalid&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertEquals( '[]', $this->_last_response );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=invalid&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertEquals( '[]', $this->_last_response );
+		}
+
+		// Deleting questions and answers.
+		$this->_last_response = '';
+		$question_id_1 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+		$answer_id_1   = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id_1,
+			)
+		);
+		$question_id_2 = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+		$answer_id_2   = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id_2,
+			)
+		);
+		if ( is_multisite() ) {
+			$this->setRole( 'administrator' );
+			grant_super_admin( get_current_user_id() );
+
+			// Before Ajax call.
+			$questions = get_posts( [ 'post_type' => 'question' ] );
+			$answers   = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $questions );
+			$this->assertNotEmpty( $answers );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=qa&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$questions = get_posts( [ 'post_type' => 'question' ] );
+			$answers   = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertEmpty( $questions );
+			$this->assertEmpty( $answers );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 4 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 4 );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Before Ajax call.
+			$questions = get_posts( [ 'post_type' => 'question' ] );
+			$answers   = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $questions );
+			$this->assertNotEmpty( $answers );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=qa&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$questions = get_posts( [ 'post_type' => 'question' ] );
+			$answers   = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertEmpty( $questions );
+			$this->assertEmpty( $answers );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 4 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 4 );
+		}
+
+		// Deleting answers.
+		$this->_last_response = '';
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+		$answer_ids = $this->factory->post->create_many(
+			3,
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id,
+			)
+		);
+		if ( is_multisite() ) {
+			$this->setRole( 'administrator' );
+			grant_super_admin( get_current_user_id() );
+
+			// Before Ajax call.
+			$answers = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $answers );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=answers&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$answers = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertEmpty( $answers );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 3 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 3 );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Before Ajax call.
+			$answers = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $answers );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=answers&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$answers = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertEmpty( $answers );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 3 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 3 );
+		}
+
+		// Deleting options.
+		$this->_last_response = '';
+		if ( is_multisite() ) {
+			$this->setRole( 'administrator' );
+			grant_super_admin( get_current_user_id() );
+
+			// Tests.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=options&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertFalse( get_option( 'anspress_opt' ) );
+			$this->assertFalse( get_option( 'anspress_reputation_events' ) );
+			$this->assertFalse( get_option( 'anspress_addons' ) );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 1 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Tests.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=options&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertFalse( get_option( 'anspress_opt' ) );
+			$this->assertFalse( get_option( 'anspress_reputation_events' ) );
+			$this->assertFalse( get_option( 'anspress_addons' ) );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 1 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
+		}
+
+		// Deleting terms.
+		$this->_last_response = '';
+		$category_1 = $this->factory->term->create( array( 'taxonomy' => 'question_category' ) );
+		$category_2 = $this->factory->term->create( array( 'taxonomy' => 'question_category' ) );
+		$tag_1      = $this->factory->term->create( array( 'taxonomy' => 'question_tag' ) );
+		$tag_2      = $this->factory->term->create( array( 'taxonomy' => 'question_tag' ) );
+		if ( is_multisite() ) {
+			$this->setRole( 'administrator' );
+			grant_super_admin( get_current_user_id() );
+
+			// Before Ajax call.
+			$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+			$tags       = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => false ] );
+			$this->assertNotEmpty( $categories );
+			$this->assertNotEmpty( $tags );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=terms&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+			$tags       = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => false ] );
+			$this->assertEmpty( $categories );
+			$this->assertEmpty( $tags );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 1 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Before Ajax call.
+			$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+			$tags       = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => false ] );
+			$this->assertNotEmpty( $categories );
+			$this->assertNotEmpty( $tags );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=terms&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+			$tags       = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => false ] );
+			$this->assertEmpty( $categories );
+			$this->assertEmpty( $tags );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 1 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
+		}
+
+		// Deleting tables.
+		$this->_last_response = '';
+		if ( is_multisite() ) {
+			$this->setRole( 'administrator' );
+			grant_super_admin( get_current_user_id() );
+
+			// Tests.
+			// Table exists could not get tested since it behaves differently on unit tests
+			// and test on real site works fine.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=tables&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 1 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Table exists could not get tested since it behaves differently on unit tests
+			// and test on real site works fine.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=tables&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertTrue( $this->ap_ajax_success( 'done' ) === 1 );
+			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
+		}
+
+		// Deleting userdata test for now could not be done since it hampers other tests.
+	}
 }
