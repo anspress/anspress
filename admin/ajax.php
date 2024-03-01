@@ -123,8 +123,6 @@ class AnsPress_Admin_Ajax {
 		endwhile;
 
 		wp_send_json( $answers_arr );
-
-		wp_die();
 	}
 
 	/**
