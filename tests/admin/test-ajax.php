@@ -39,6 +39,7 @@ class TestAdminAjax extends TestCaseAjax {
 	public function testAPDeleteFlag() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+		add_action( 'wp_ajax_ap_delete_flag', array( 'AnsPress_Admin_Ajax', 'ap_delete_flag' ) );
 
 		// For user who do not have access to delete flag.
 		$this->setRole( 'subscriber' );
@@ -124,7 +125,6 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// After Ajax call.
 		$this->_set_post_data( 'id=' . $question_id . '&action=ap_delete_flag&__nonce=' . wp_create_nonce( 'flag_delete' . $question_id ) );
-		add_action( 'wp_ajax_ap_delete_flag', array( 'AnsPress_Admin_Ajax', 'ap_delete_flag' ) );
 		$this->handle( 'ap_delete_flag' );
 		$get_qameta = ap_get_qameta( $question_id );
 		$flag_count = $get_qameta->flags;
