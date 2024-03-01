@@ -296,4 +296,196 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEmpty( $flag_count );
 		$this->assertEquals( 0, $flag_count );
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::ap_admin_vote
+	 */
+	public function testAPAdminVote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+		add_action( 'ap_ajax_ap_admin_vote', array( 'AnsPress_Admin_Ajax', 'ap_admin_vote' ) );
+
+		// For user who do not have access to vote.
+		$this->setRole( 'subscriber' );
+
+		// For question post type.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+
+		// Vote up.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertEmpty( $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $question_id, 'up' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertEmpty( $vote_count );
+
+		// Vote down.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertEmpty( $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $question_id, 'down' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertEmpty( $vote_count );
+
+		// For answer post type.
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id,
+			)
+		);
+
+		// Vote up.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertEmpty( $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $answer_id, 'up' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertEmpty( $vote_count );
+
+		// Vote down.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertEmpty( $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $answer_id, 'down' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertEmpty( $vote_count );
+
+		// Delete question and answer created previously
+		// to avoid conflicts with other tests.
+		wp_delete_post( $question_id, true );
+		wp_delete_post( $answer_id, true );
+
+		// For user having access to vote.
+		$this->setRole( 'administrator' );
+
+		// For question post type.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+
+		// Vote up.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertEmpty( $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $question_id, 'up' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 1, $vote_count );
+
+		// Vote up.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 1, $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $question_id, 'up' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 2, $vote_count );
+
+		// Vote down.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 2, $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $question_id, 'down' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $question_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 1, $vote_count );
+
+		// For answer post type.
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer post',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+				'post_parent'  => $question_id,
+			)
+		);
+
+		// Vote up.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertEmpty( $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $answer_id, 'up' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 1, $vote_count );
+
+		// Vote up.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 1, $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $answer_id, 'up' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 2, $vote_count );
+
+		// Vote down.
+		// Before Ajax call.
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 2, $vote_count );
+
+		// After Ajax call.
+		$this->_set_post_data( 'ap_ajax_action=ap_admin_vote&__nonce=' . wp_create_nonce( 'admin_vote' ) );
+		$_POST['args'] = [ $answer_id, 'down' ];
+		$this->handle( 'ap_ajax' );
+		$vote_count = ap_get_votes_net( $answer_id );
+		$this->assertNotEmpty( $vote_count );
+		$this->assertEquals( 1, $vote_count );
+	}
 }
