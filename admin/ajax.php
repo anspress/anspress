@@ -88,7 +88,7 @@ class AnsPress_Admin_Ajax {
 				echo esc_attr( $counts['votes_net'] );
 			}
 		}
-		die();
+		wp_die();
 	}
 
 	/**
