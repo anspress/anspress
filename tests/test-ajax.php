@@ -176,11 +176,11 @@ class TestAjax extends TestCaseAjax {
 	public function testVote() {
 		// Test for user who can vote.
 		$this->setRole( 'subscriber' );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 
 		// Up vote.
 		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
 		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'voted' );
@@ -221,7 +221,6 @@ class TestAjax extends TestCaseAjax {
 		$this->_last_response = '';
 		$nonce = wp_create_nonce( 'vote_' . self::$current_post );
 		$this->_set_post_data( 'post_id=' . self::$current_post . '&__nonce=' . $nonce . '&ap_ajax_action=vote&type=vote_up' );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You do not have permission to vote.' );
@@ -417,10 +416,10 @@ class TestAjax extends TestCaseAjax {
 	 */
 	public function testLoadComments() {
 		$this->setRole( 'subscriber' );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 
 		// Test 1.
 		$this->_set_post_data( 'post_id=' . self::$current_post . '&ap_ajax_action=load_comments' );
-		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertStringNotContainsString( 'apcomment', $this->_last_response );
@@ -443,7 +442,6 @@ class TestAjax extends TestCaseAjax {
 			)
 		);
 		$this->_set_post_data( 'post_id=' . $page_id . '&ap_ajax_action=load_comments' );
-		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertStringNotContainsString( 'apcomment', $this->_last_response );
@@ -470,7 +468,6 @@ class TestAjax extends TestCaseAjax {
 		);
 		$this->_last_response = '';
 		$this->_set_post_data( 'post_id=' . $question_id . '&ap_ajax_action=load_comments' );
-		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertStringNotContainsString( 'apcomment', $this->_last_response );
@@ -487,7 +484,6 @@ class TestAjax extends TestCaseAjax {
 			)
 		);
 		$this->_set_post_data( 'post_id=' . self::$current_post . '&ap_ajax_action=load_comments' );
-		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertStringContainsString( 'apcomment', $this->_last_response );
@@ -497,6 +493,8 @@ class TestAjax extends TestCaseAjax {
 	 * @covers AnsPress\Ajax::Comment_Modal
 	 */
 	public function testCommentModal() {
+		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
+
 		// Test 1.
 		$question_id = $this->factory->post->create(
 			array(
@@ -507,7 +505,6 @@ class TestAjax extends TestCaseAjax {
 			)
 		);
 		$this->_set_post_data( 'post_id=' . $question_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'new_comment_' . $question_id ) );
-		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 		$this->handle( 'comment_modal' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
@@ -525,7 +522,6 @@ class TestAjax extends TestCaseAjax {
 		);
 		$this->setRole( 'subscriber' );
 		$this->_set_post_data( 'post_id=' . $question_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'new_comment_' . $question_id ) );
-		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 		@$this->handle( 'comment_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$modal = $this->ap_ajax_success( 'modal' );
@@ -552,7 +548,6 @@ class TestAjax extends TestCaseAjax {
 			)
 		);
 		$this->_set_post_data( 'comment_id=' . $comment_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'edit_comment_' . $comment_id ) );
-		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 		$this->handle( 'comment_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$modal = $this->ap_ajax_success( 'modal' );
@@ -580,7 +575,6 @@ class TestAjax extends TestCaseAjax {
 			)
 		);
 		$this->_set_post_data( 'comment_id=' . $comment_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'edit_comment_' . $comment_id ) );
-		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 		$this->handle( 'comment_modal' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
@@ -598,7 +592,6 @@ class TestAjax extends TestCaseAjax {
 		);
 		$this->setRole( 'subscriber' );
 		$this->_set_post_data( 'post_id=' . $question_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'new_comment_' . $question_id ) );
-		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 		$this->handle( 'comment_modal' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
