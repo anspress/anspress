@@ -999,4 +999,139 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertFalse( get_transient( 'ap_pages_check' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::recount_votes
+	 */
+	public function testRecountVotes() {
+		add_action( 'wp_ajax_ap_recount_votes', [ 'AnsPress_Admin_Ajax', 'recount_votes' ] );
+
+		// For user who do not have access to recount votes.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'action=ap_recount_votes&__nonce=' . wp_create_nonce( 'recount_votes' ) );
+		$this->handle( 'ap_recount_votes' );
+		$this->assertEmpty( $this->_last_response );
+
+		// For user having access to recount votes.
+		$this->setRole( 'administrator' );
+
+		// Tests.
+		// For invalid nonce passed.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_votes&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_recount_votes' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Test 1.
+		$this->_last_response = '';
+		$ids = $this->insert_answers( [], [], 5 );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		ap_vote_insert( $ids['question'], $user_id, 'vote', get_current_user_id(), '1' );
+		ap_vote_insert( $ids['answers'][0], $user_id, 'vote', get_current_user_id(), '1' );
+		ap_vote_insert( $ids['answers'][1], $user_id, 'vote', get_current_user_id(), '1' );
+		ap_vote_insert( $ids['answers'][2], $user_id, 'vote', get_current_user_id(), '-1' );
+
+		// Before Ajax call.
+		$test_vote_1 = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 0, $test_vote_1->votes_net );
+		$test_vote_2 = ap_get_qameta( $ids['answers'][0] );
+		$this->assertEquals( 0, $test_vote_2->votes_net );
+		$test_vote_3 = ap_get_qameta( $ids['answers'][1] );
+		$this->assertEquals( 0, $test_vote_3->votes_net );
+		$test_vote_4 = ap_get_qameta( $ids['answers'][2] );
+		$this->assertEquals( 0, $test_vote_4->votes_net );
+
+		// After Ajax call.
+		$this->_set_post_data( 'action=ap_recount_votes&__nonce=' . wp_create_nonce( 'recount_votes' ) );
+		$this->handle( 'ap_recount_votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '6' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '6 done out of 6' );
+		$test_vote_1 = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 1, $test_vote_1->votes_net );
+		$test_vote_2 = ap_get_qameta( $ids['answers'][0] );
+		$this->assertEquals( 1, $test_vote_2->votes_net );
+		$test_vote_4 = ap_get_qameta( $ids['answers'][1] );
+		$this->assertEquals( 1, $test_vote_4->votes_net );
+		$test_vote_4 = ap_get_qameta( $ids['answers'][2] );
+		$this->assertEquals( 1, $test_vote_4->votes_net );
+
+		// Delete all questions and answers so that it does not effect any other tests.
+		wp_delete_post( $ids['question'] );
+		wp_delete_post( $ids['answers'][0] );
+		wp_delete_post( $ids['answers'][1] );
+		wp_delete_post( $ids['answers'][2] );
+		wp_delete_post( $ids['answers'][3] );
+		wp_delete_post( $ids['answers'][4] );
+
+		// Test 2.
+		// First set of questions and answers.
+		$question_ids = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[0] ] );
+		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[1] ] );
+		$answer_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[2] ] );
+		$answer_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[3] ] );
+		$answer_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[4] ] );
+		$answer_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[5] ] );
+		$answer_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[6] ] );
+		$answer_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[7] ] );
+		$answer_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[8] ] );
+		$answer_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[9] ] );
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		ap_vote_insert( $question_ids[0], $user_id, 'vote', get_current_user_id(), '1' );
+		ap_vote_insert( $question_ids[5], $user_id, 'vote', get_current_user_id(), '-1' );
+		ap_vote_insert( $answer_ids_set_1[0], $user_id, 'vote', get_current_user_id(), '1' );
+		ap_vote_insert( $answer_ids_set_2[2], $user_id, 'vote', get_current_user_id(), '1' );
+		ap_vote_insert( $answer_ids_set_3[4], $user_id, 'vote', get_current_user_id(), '-1' );
+
+		// Before Ajax call.
+		$test_vote_1 = ap_get_qameta( $question_ids[0] );
+		$this->assertEquals( 0, $test_vote_1->votes_net );
+		$test_vote_2 = ap_get_qameta( $question_ids[5] );
+		$this->assertEquals( 0, $test_vote_2->votes_net );
+		$test_vote_4 = ap_get_qameta( $answer_ids_set_1[0] );
+		$this->assertEquals( 0, $test_vote_4->votes_net );
+		$test_vote_4 = ap_get_qameta( $answer_ids_set_2[2] );
+		$this->assertEquals( 0, $test_vote_4->votes_net );
+		$test_vote_5 = ap_get_qameta( $answer_ids_set_3[4] );
+		$this->assertEquals( 0, $test_vote_5->votes_net );
+
+		// After Ajax call.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'recount_votes' );
+		$this->_set_post_data( 'action=ap_recount_votes&__nonce=' . $nonce );
+		$this->handle( 'ap_recount_votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '110' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 10 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '100 done out of 110' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->action === 'ap_recount_votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->__nonce === $nonce );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->paged === 1 );
+
+		// Second set of questions and answers.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_votes&__nonce=' . $nonce . '&paged=1' );
+		$this->handle( 'ap_recount_votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '110' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-votes' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '110 done out of 110' );
+
+		// Tests after successful Ajax call.
+		$test_vote_1 = ap_get_qameta( $question_ids[0] );
+		$this->assertEquals( 1, $test_vote_1->votes_net );
+		$test_vote_2 = ap_get_qameta( $question_ids[5] );
+		$this->assertEquals( 1, $test_vote_2->votes_net );
+		$test_vote_3 = ap_get_qameta( $answer_ids_set_1[0] );
+		$this->assertEquals( 1, $test_vote_3->votes_net );
+		$test_vote_4 = ap_get_qameta( $answer_ids_set_2[2] );
+		$this->assertEquals( 1, $test_vote_4->votes_net );
+		$test_vote_5 = ap_get_qameta( $answer_ids_set_3[4] );
+		$this->assertEquals( 1, $test_vote_5->votes_net );
+	}
 }
