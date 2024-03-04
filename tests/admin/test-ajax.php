@@ -556,16 +556,17 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_set_post_data( 'question_id=' . $question_id . '&ap_ajax_action=ap_get_all_answers' );
 		@$this->handle( 'ap_ajax' );
 		$response = json_decode( $this->_last_response, true );
+		$answers = array_reverse( $answers, true );
 		foreach ( $response as $idx => $answer ) {
-			// $this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
-			// $this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
-			// $this->assertEquals( $answers[ $idx ]['avatar'], $answer['avatar'] );
-			// $this->assertEquals( $answers[ $idx ]['author'], $answer['author'] );
-			// $this->assertEquals( $answers[ $idx ]['activity'], $answer['activity'] );
-			// $this->assertEquals( $answers[ $idx ]['editLink'], $answer['editLink'] );
-			// $this->assertEquals( $answers[ $idx ]['trashLink'], $answer['trashLink'] );
-			// $this->assertEquals( $answers[ $idx ]['status'], $answer['status'] );
-			// $this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
+			$this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
+			$this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
+			$this->assertEquals( $answers[ $idx ]['avatar'], $answer['avatar'] );
+			$this->assertEquals( $answers[ $idx ]['author'], $answer['author'] );
+			$this->assertEquals( $answers[ $idx ]['activity'], $answer['activity'] );
+			$this->assertEquals( $answers[ $idx ]['editLink'], $answer['editLink'] );
+			$this->assertEquals( $answers[ $idx ]['trashLink'], $answer['trashLink'] );
+			$this->assertEquals( $answers[ $idx ]['status'], $answer['status'] );
+			$this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
 		}
 
 		// Test 2.
@@ -650,20 +651,18 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_set_post_data( 'question_id=' . $question_id . '&ap_ajax_action=ap_get_all_answers' );
 		@$this->handle( 'ap_ajax' );
 		$response = json_decode( $this->_last_response, true );
+		$answers = array_reverse( $answers, true );
 		foreach ( $response as $idx => $answer ) {
-			// $this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
-			// $this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
-			// $this->assertEquals( $answers[ $idx ]['avatar'], $answer['avatar'] );
-			// $this->assertEquals( $answers[ $idx ]['author'], $answer['author'] );
-			// $this->assertEquals( $answers[ $idx ]['activity'], $answer['activity'] );
-			// $this->assertEquals( $answers[ $idx ]['editLink'], $answer['editLink'] );
-			// $this->assertEquals( $answers[ $idx ]['trashLink'], $answer['trashLink'] );
-			// $this->assertEquals( $answers[ $idx ]['status'], $answer['status'] );
-			// $this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
+			$this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
+			$this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
+			$this->assertEquals( $answers[ $idx ]['avatar'], $answer['avatar'] );
+			$this->assertEquals( $answers[ $idx ]['author'], $answer['author'] );
+			$this->assertEquals( $answers[ $idx ]['activity'], $answer['activity'] );
+			$this->assertEquals( $answers[ $idx ]['editLink'], $answer['editLink'] );
+			$this->assertEquals( $answers[ $idx ]['trashLink'], $answer['trashLink'] );
+			$this->assertEquals( $answers[ $idx ]['status'], $answer['status'] );
+			$this->assertEquals( $answers[ $idx ]['selected'], $answer['selected'] );
 		}
-
-		// Temporary test.
-		$this->assertTrue( true );
 	}
 
 	/**
