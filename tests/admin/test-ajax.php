@@ -1004,6 +1004,8 @@ class TestAdminAjax extends TestCaseAjax {
 	 * @covers AnsPress_Admin_Ajax::recount_votes
 	 */
 	public function testRecountVotes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 		add_action( 'wp_ajax_ap_recount_votes', [ 'AnsPress_Admin_Ajax', 'recount_votes' ] );
 
 		// For user who do not have access to recount votes.
@@ -1139,6 +1141,8 @@ class TestAdminAjax extends TestCaseAjax {
 	 * @covers AnsPress_Admin_Ajax::recount_answers
 	 */
 	public function testRecountAnswers() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 		add_action( 'wp_ajax_ap_recount_answers', [ 'AnsPress_Admin_Ajax', 'recount_answers' ] );
 
 		// For user who do not have access to recount answers.
