@@ -1379,4 +1379,110 @@ class TestAdminAjax extends TestCaseAjax {
 		$test_flag_5 = ap_get_qameta( $question_ids_set_2[2] );
 		$this->assertEquals( 1, $test_flag_5->flags );
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::recount_subscribers
+	 */
+	public function testRecountSubscribers() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+		add_action( 'wp_ajax_ap_recount_subscribers', [ 'AnsPress_Admin_Ajax', 'recount_subscribers' ] );
+
+		// For user who do not have access to recount subscribers.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'action=ap_recount_subscribers&__nonce=' . wp_create_nonce( 'recount_subscribers' ) );
+		$this->handle( 'ap_recount_subscribers' );
+		$this->assertEmpty( $this->_last_response );
+
+		// For user having access to recount subscribers.
+		$this->setRole( 'administrator' );
+
+		// Tests.
+		// For invalid nonce passed.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_subscribers&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_recount_subscribers' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Test 1.
+		$this->_last_response = '';
+		$ids = $this->insert_answers( [], [], 5 );
+		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		ap_new_subscriber( $user_id_1, 'question', $ids['question'] );
+		ap_new_subscriber( $user_id_2, 'question', $ids['question'] );
+
+		// Before Ajax call.
+		$test_subscriber_1 = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 2, $test_subscriber_1->subscribers );
+
+		// After Ajax call.
+		$this->_set_post_data( 'action=ap_recount_subscribers&__nonce=' . wp_create_nonce( 'recount_subscribers' ) );
+		$this->handle( 'ap_recount_subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '1' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '1 done out of 1' );
+		$test_subscriber_1 = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 2, $test_subscriber_1->subscribers );
+
+		// Delete all questions and answers so that it does not effect any other tests.
+		wp_delete_post( $ids['question'] );
+		wp_delete_post( $ids['answers'][0] );
+		wp_delete_post( $ids['answers'][1] );
+		wp_delete_post( $ids['answers'][2] );
+		wp_delete_post( $ids['answers'][3] );
+
+		// Test 2.
+		$question_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_11 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
+		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		ap_new_subscriber( $user_id_1, 'question', $question_ids_set_1[0] );
+		ap_new_subscriber( $user_id_2, 'question', $question_ids_set_1[0] );
+
+		// Before Ajax call.
+		$test_subscriber_1 = ap_get_qameta( $question_ids_set_1[0] );
+		$this->assertEquals( 3, $test_subscriber_1->subscribers );
+
+		// After Ajax call.
+		// First set of questions and answers.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'recount_subscribers' );
+		$this->_set_post_data( 'action=ap_recount_subscribers&__nonce=' . $nonce );
+		$this->handle( 'ap_recount_subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '110' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 10 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '100 done out of 110' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->action === 'ap_recount_subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->__nonce === $nonce );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->paged === 1 );
+
+		// Second set of questions and answers.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_subscribers&__nonce=' . $nonce . '&paged=1' );
+		$this->handle( 'ap_recount_subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '110' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-subscribers' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '110 done out of 110' );
+
+		// Tests after successful Ajax call.
+		$test_subscriber_1 = ap_get_qameta( $question_ids_set_1[0] );
+		$this->assertEquals( 3, $test_subscriber_1->subscribers );
+	}
 }
