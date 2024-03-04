@@ -1485,4 +1485,137 @@ class TestAdminAjax extends TestCaseAjax {
 		$test_subscriber_1 = ap_get_qameta( $question_ids_set_1[0] );
 		$this->assertEquals( 3, $test_subscriber_1->subscribers );
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::recount_reputation
+	 */
+	public function testRecountReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+		add_action( 'wp_ajax_ap_recount_reputation', [ 'AnsPress_Admin_Ajax', 'recount_reputation' ] );
+
+		// For user who do not have access to recount reputation.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'action=ap_recount_reputation&__nonce=' . wp_create_nonce( 'recount_reputation' ) );
+		$this->handle( 'ap_recount_reputation' );
+		$this->assertEmpty( $this->_last_response );
+
+		// For user having access to recount reputation.
+		$this->setRole( 'administrator' );
+
+		// Tests.
+		// For invalid nonce passed.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_reputation&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_recount_reputation' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Test 1.
+		$this->_last_response = '';
+		$ids = $this->insert_answers( [], [], 5 );
+		ap_insert_reputation( 'ask', $ids['question'] );
+		ap_insert_reputation( 'answer', $ids['answers'][0] );
+		ap_insert_reputation( 'answer', $ids['answers'][3] );
+
+		// Before Ajax call.
+		update_user_meta( get_current_user_id(), 'ap_reputations', 0 );
+		$test_reputation_1 = get_user_meta( get_current_user_id(), 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_1 );
+
+		// After Ajax call.
+		$this->_set_post_data( 'action=ap_recount_reputation&__nonce=' . wp_create_nonce( 'recount_reputation' ) );
+		$this->handle( 'ap_recount_reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '3' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '3 done out of 3' );
+		$test_reputation_1 = get_user_meta( get_current_user_id(), 'ap_reputations', true );
+		$this->assertEquals( 12, $test_reputation_1 );
+
+		// Delete all reputations so that it does not effect any other tests.
+		ap_delete_reputation( 'ask', $ids['question'] );
+		ap_delete_reputation( 'answer', $ids['answers'][0] );
+		ap_delete_reputation( 'answer', $ids['answers'][3] );
+
+		// Test 2.
+		$ids = $this->insert_answers( [], [], 5 );
+		$user_ids_set_1 = $this->factory->user->create_many( 10 );
+		$user_ids_set_2 = $this->factory->user->create_many( 10 );
+		$user_ids_set_3 = $this->factory->user->create_many( 10 );
+		$user_ids_set_4 = $this->factory->user->create_many( 10 );
+		$user_ids_set_5 = $this->factory->user->create_many( 10 );
+		$user_ids_set_6 = $this->factory->user->create_many( 10 );
+		$user_ids_set_7 = $this->factory->user->create_many( 10 );
+		$user_ids_set_8 = $this->factory->user->create_many( 10 );
+		$user_ids_set_9 = $this->factory->user->create_many( 10 );
+		$user_ids_set_10 = $this->factory->user->create_many( 10 );
+		$user_ids_set_11 = $this->factory->user->create_many( 10 );
+		ap_insert_reputation( 'ask', $ids['question'], $user_ids_set_1[0] );
+		ap_insert_reputation( 'ask', $ids['question'], $user_ids_set_2[0] );
+		ap_insert_reputation( 'ask', $ids['question'], $user_ids_set_3[0] );
+		ap_insert_reputation( 'answer', $ids['answers'][0], $user_ids_set_1[1] );
+		ap_insert_reputation( 'answer', $ids['answers'][0], $user_ids_set_2[1] );
+		ap_insert_reputation( 'answer', $ids['answers'][0], $user_ids_set_3[1] );
+
+		// Before Ajax call.
+		update_user_meta( $user_ids_set_1[0], 'ap_reputations', 0 );
+		$test_reputation_1 = get_user_meta( $user_ids_set_1[0], 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_1 );
+		update_user_meta( $user_ids_set_2[0], 'ap_reputations', 0 );
+		$test_reputation_2 = get_user_meta( $user_ids_set_2[0], 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_2 );
+		update_user_meta( $user_ids_set_3[0], 'ap_reputations', 0 );
+		$test_reputation_3 = get_user_meta( $user_ids_set_3[0], 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_3 );
+		update_user_meta( $user_ids_set_1[1], 'ap_reputations', 0 );
+		$test_reputation_4 = get_user_meta( $user_ids_set_1[1], 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_4 );
+		update_user_meta( $user_ids_set_2[1], 'ap_reputations', 0 );
+		$test_reputation_5 = get_user_meta( $user_ids_set_2[1], 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_5 );
+		update_user_meta( $user_ids_set_3[1], 'ap_reputations', 0 );
+		$test_reputation_6 = get_user_meta( $user_ids_set_3[1], 'ap_reputations', true );
+		$this->assertEquals( 0, $test_reputation_6 );
+
+		// After Ajax call.
+		// First set of users.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'recount_reputation' );
+		$this->_set_post_data( 'action=ap_recount_reputation&__nonce=' . $nonce );
+		$this->handle( 'ap_recount_reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '113' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 13 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '100 done out of 113' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->action === 'ap_recount_reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->__nonce === $nonce );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->paged === 1 );
+
+		// Second set of users.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_reputation&__nonce=' . $nonce . '&paged=1' );
+		$this->handle( 'ap_recount_reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '113' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-reputation' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '113 done out of 113' );
+
+		// Tests after successful Ajax call.
+		$test_reputation_1 = get_user_meta( $user_ids_set_1[0], 'ap_reputations', true );
+		$this->assertEquals( 2, $test_reputation_1 );
+		$test_reputation_2 = get_user_meta( $user_ids_set_2[0], 'ap_reputations', true );
+		$this->assertEquals( 2, $test_reputation_2 );
+		$test_reputation_3 = get_user_meta( $user_ids_set_3[0], 'ap_reputations', true );
+		$this->assertEquals( 2, $test_reputation_3 );
+		$test_reputation_4 = get_user_meta( $user_ids_set_1[1], 'ap_reputations', true );
+		$this->assertEquals( 5, $test_reputation_4 );
+		$test_reputation_5 = get_user_meta( $user_ids_set_2[1], 'ap_reputations', true );
+		$this->assertEquals( 5, $test_reputation_5 );
+		$test_reputation_6 = get_user_meta( $user_ids_set_3[1], 'ap_reputations', true );
+		$this->assertEquals( 5, $test_reputation_6 );
+	}
 }
