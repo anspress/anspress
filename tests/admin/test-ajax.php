@@ -918,4 +918,85 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// Deleting userdata test for now could not be done since it hampers other tests.
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::ap_toggle_addon
+	 */
+	public function testAPToggleAddon() {
+		add_action( 'wp_ajax_ap_toggle_addon', [ 'AnsPress_Admin_Ajax', 'ap_toggle_addon' ] );
+
+		// For user who do not have access to toggle addon.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'action=ap_toggle_addon&addon_id=categories.php&__nonce=' . wp_create_nonce( 'toggle_addon' ) );
+		$this->handle( 'ap_toggle_addon' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === false );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, you do not have permission!' );
+
+		// For user having access to toggle addon.
+		$this->setRole( 'administrator' );
+
+		// Tests.
+		// For invalid nonce passed.
+		$this->_last_response = '';
+		set_transient( 'ap_pages_check', 'Test transient' );
+		ap_activate_addon( 'categories.php' );
+		$this->_set_post_data( 'action=ap_toggle_addon&addon_id=categories.php&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_toggle_addon' );
+		$this->assertEmpty( $this->_last_response );
+		$this->assertEquals( 'Test transient', get_transient( 'ap_pages_check' ) );
+
+		// For activated addon.
+		// Test 1.
+		$this->_last_response = '';
+		set_transient( 'ap_pages_check', 'Test transient' );
+		ap_activate_addon( 'categories.php' );
+		$this->_set_post_data( 'action=ap_toggle_addon&addon_id=categories.php&__nonce=' . wp_create_nonce( 'toggle_addon' ) );
+		$this->handle( 'ap_toggle_addon' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully disabled addon. Redirecting!' );
+		$this->assertTrue( $this->ap_ajax_success( 'addon_id' ) === 'categories.php' );
+		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'toggleAddon' );
+		$this->assertFalse( ap_is_addon_active( 'categories.php' ) );
+		$this->assertFalse( get_transient( 'ap_pages_check' ) );
+
+		// Test 2.
+		$this->_last_response = '';
+		set_transient( 'ap_pages_check', 'Test transient' );
+		ap_activate_addon( 'tags.php' );
+		$this->_set_post_data( 'action=ap_toggle_addon&addon_id=tags.php&__nonce=' . wp_create_nonce( 'toggle_addon' ) );
+		$this->handle( 'ap_toggle_addon' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully disabled addon. Redirecting!' );
+		$this->assertTrue( $this->ap_ajax_success( 'addon_id' ) === 'tags.php' );
+		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'toggleAddon' );
+		$this->assertFalse( ap_is_addon_active( 'tags.php' ) );
+		$this->assertFalse( get_transient( 'ap_pages_check' ) );
+
+		// For deactivated addon.
+		// Test 1.
+		$this->_last_response = '';
+		set_transient( 'ap_pages_check', 'Test transient' );
+		ap_deactivate_addon( 'reputation.php' );
+		$this->_set_post_data( 'action=ap_toggle_addon&addon_id=reputation.php&__nonce=' . wp_create_nonce( 'toggle_addon' ) );
+		$this->handle( 'ap_toggle_addon' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully enabled addon. Redirecting!' );
+		$this->assertTrue( $this->ap_ajax_success( 'addon_id' ) === 'reputation.php' );
+		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'toggleAddon' );
+		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
+		$this->assertFalse( get_transient( 'ap_pages_check' ) );
+
+		// Test 2.
+		$this->_last_response = '';
+		set_transient( 'ap_pages_check', 'Test transient' );
+		ap_deactivate_addon( 'notifications.php' );
+		$this->_set_post_data( 'action=ap_toggle_addon&addon_id=notifications.php&__nonce=' . wp_create_nonce( 'toggle_addon' ) );
+		$this->handle( 'ap_toggle_addon' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully enabled addon. Redirecting!' );
+		$this->assertTrue( $this->ap_ajax_success( 'addon_id' ) === 'notifications.php' );
+		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'toggleAddon' );
+		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
+		$this->assertFalse( get_transient( 'ap_pages_check' ) );
+	}
 }
