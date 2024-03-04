@@ -1067,7 +1067,6 @@ class TestAdminAjax extends TestCaseAjax {
 		wp_delete_post( $ids['answers'][4] );
 
 		// Test 2.
-		// First set of questions and answers.
 		$question_ids = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
 		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[0] ] );
 		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[1] ] );
@@ -1099,6 +1098,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 0, $test_vote_5->votes_net );
 
 		// After Ajax call.
+		// First set of questions and answers.
 		$this->_last_response = '';
 		$nonce = wp_create_nonce( 'recount_votes' );
 		$this->_set_post_data( 'action=ap_recount_votes&__nonce=' . $nonce );
@@ -1133,5 +1133,116 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 1, $test_vote_4->votes_net );
 		$test_vote_5 = ap_get_qameta( $answer_ids_set_3[4] );
 		$this->assertEquals( 1, $test_vote_5->votes_net );
+	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::recount_answers
+	 */
+	public function testRecountAnswers() {
+		add_action( 'wp_ajax_ap_recount_answers', [ 'AnsPress_Admin_Ajax', 'recount_answers' ] );
+
+		// For user who do not have access to recount answers.
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'action=ap_recount_answers&__nonce=' . wp_create_nonce( 'recount_answers' ) );
+		$this->handle( 'ap_recount_answers' );
+		$this->assertEmpty( $this->_last_response );
+
+		// For user having access to recount answers.
+		$this->setRole( 'administrator' );
+
+		// Tests.
+		// For invalid nonce passed.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_answers&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_recount_answers' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Test 1.
+		$this->_last_response = '';
+		$ids = $this->insert_answers( [], [], 5 );
+
+		// Before Ajax call.
+		ap_insert_qameta( $ids['question'], [ 'answers' => 0 ] );
+		$test_answer_1 = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 0, $test_answer_1->answers );
+
+		// After Ajax call.
+		$this->_set_post_data( 'action=ap_recount_answers&__nonce=' . wp_create_nonce( 'recount_answers' ) );
+		$this->handle( 'ap_recount_answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '1' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '1 done out of 1' );
+		$test_answer_1 = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 5, $test_answer_1->answers );
+
+		// Delete all questions and answers so that it does not effect any other tests.
+		wp_delete_post( $ids['question'] );
+		wp_delete_post( $ids['answers'][0] );
+		wp_delete_post( $ids['answers'][1] );
+		wp_delete_post( $ids['answers'][2] );
+		wp_delete_post( $ids['answers'][3] );
+		wp_delete_post( $ids['answers'][4] );
+
+		// Test 2.
+		$question_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_11 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
+		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
+		$answer_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
+		ap_insert_qameta( $question_ids_set_1[0], [ 'answers' => 0 ] );
+		ap_insert_qameta( $question_ids_set_1[2], [ 'answers' => 0 ] );
+		ap_insert_qameta( $question_ids_set_1[4], [ 'answers' => 0 ] );
+
+		// Before Ajax call.
+		$test_answer_1 = ap_get_qameta( $question_ids_set_1[0] );
+		$this->assertEquals( 0, $test_answer_1->answers );
+		$test_answer_2 = ap_get_qameta( $question_ids_set_1[2] );
+		$this->assertEquals( 0, $test_answer_2->answers );
+		$test_answer_3 = ap_get_qameta( $question_ids_set_1[4] );
+		$this->assertEquals( 0, $test_answer_3->answers );
+
+		// After Ajax call.
+		// First set of questions and answers.
+		$this->_last_response = '';
+		$nonce = wp_create_nonce( 'recount_answers' );
+		$this->_set_post_data( 'action=ap_recount_answers&__nonce=' . $nonce );
+		$this->handle( 'ap_recount_answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '110' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 10 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '100 done out of 110' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->action === 'ap_recount_answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->__nonce === $nonce );
+		$this->assertTrue( $this->ap_ajax_success( 'q' )->paged === 1 );
+
+		// Second set of questions and answers.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_recount_answers&__nonce=' . $nonce . '&paged=1' );
+		$this->handle( 'ap_recount_answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '110' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '110 done out of 110' );
+
+		// Tests after successful Ajax call.
+		$test_answer_1 = ap_get_qameta( $question_ids_set_1[0] );
+		$this->assertEquals( 10, $test_answer_1->answers );
+		$test_answer_2 = ap_get_qameta( $question_ids_set_1[2] );
+		$this->assertEquals( 10, $test_answer_2->answers );
+		$test_answer_3 = ap_get_qameta( $question_ids_set_1[4] );
+		$this->assertEquals( 10, $test_answer_3->answers );
 	}
 }
