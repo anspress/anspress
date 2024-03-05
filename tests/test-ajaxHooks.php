@@ -240,4 +240,74 @@ class TestAjaxHooks extends TestCaseAjax {
 		$answer_id_3 = get_post( $answer_ids[2] );
 		$this->assertNull( $answer_id_3 );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::subscribe_to_question
+	 */
+	public function testSubscribeToQuestion() {
+		add_action( 'ap_ajax_subscribe', [ 'AnsPress_Ajax', 'subscribe_to_question' ] );
+
+		// For users who do not have permission to subscribe to question.
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=subscribe&id=' . $question_id );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You must be logged in to subscribe to a question' );
+
+		// For users who have permission to subscribe to question.
+		$this->setRole( 'subscriber' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=subscribe&id=' . $question_id );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, unable to subscribe' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$post_id = $this->factory->post->create( [ 'post_type' => 'post', 'post_title' => 'Post Title' ] );
+		$this->_set_post_data( 'ap_ajax_action=subscribe&id=' . $post_id . '&__nonce=' . wp_create_nonce( 'subscribe_' . $post_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully subscribed to question: Post Title' );
+		$this->assertTrue( $this->ap_ajax_success( 'count' ) === '' );
+		$this->assertTrue( $this->ap_ajax_success( 'label' ) === 'Unsubscribe' );
+
+		// Test 3.
+		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title', 'post_author' => $user_id ] );
+
+		// Before Ajax call.
+		$this->assertEquals( 1, ap_subscribers_count( 'question', $question_id ) );
+
+		// After Ajax call.
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=subscribe&id=' . $question_id . '&__nonce=' . wp_create_nonce( 'subscribe_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully subscribed to question: Question Title' );
+		$this->assertTrue( $this->ap_ajax_success( 'count' ) === '2' );
+		$this->assertTrue( $this->ap_ajax_success( 'label' ) === 'Unsubscribe' );
+		$this->assertEquals( 2, ap_subscribers_count( 'question', $question_id ) );
+
+		// Test 4.
+		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?', 'post_author' => $user_id ] );
+		ap_new_subscriber( get_current_user_id(), 'question', $question_id );
+
+		// Before Ajax call.
+		$this->assertEquals( 2, ap_subscribers_count( 'question', $question_id ) );
+
+		// After Ajax call.
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=subscribe&id=' . $question_id . '&__nonce=' . wp_create_nonce( 'subscribe_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully unsubscribed from question: What is Lorem Ipsum?' );
+		$this->assertTrue( $this->ap_ajax_success( 'count' ) === '1' );
+		$this->assertTrue( $this->ap_ajax_success( 'label' ) === 'Subscribe' );
+		$this->assertEquals( 1, ap_subscribers_count( 'question', $question_id ) );
+	}
 }
