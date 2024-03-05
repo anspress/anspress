@@ -183,4 +183,61 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertStringContainsString( 'tinymce', $this->_last_response );
 		$this->assertStringContainsString( 'quicktags', $this->_last_response );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::convert_to_post
+	 */
+	public function testConvertToPost() {
+		global $wpdb;
+		add_action( 'ap_ajax_action_convert_to_post', [ 'AnsPress_Ajax', 'convert_to_post' ] );
+
+		// For user who do not have permission to convert question to post.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_convert_to_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'convert-post-' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, you are not allowed to convert this question to post' );
+
+		// For user who have permission to convert question to post.
+		$this->setRole( 'administrator' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_convert_to_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, you are not allowed to convert this question to post' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_convert_to_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'convert-post-' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === ' Question &ldquo;Question title&rdquo; is converted to post and its answers are trashed' );
+		$this->assertTrue( $this->ap_ajax_success( 'redirect' ) === get_permalink( $question_id ) );
+
+		// Test 3.
+		$this->_last_response = '';
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?' ] );
+		$answer_ids = $this->factory->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id_1 = get_post( $answer_ids[0] );
+		$this->assertTrue( $answer_id_1->post_status === 'publish' );
+		$answer_id_2 = get_post( $answer_ids[1] );
+		$this->assertTrue( $answer_id_2->post_status === 'publish' );
+		$answer_id_3 = get_post( $answer_ids[2] );
+		$this->assertTrue( $answer_id_3->post_status === 'publish' );
+		$this->_set_post_data( 'ap_ajax_action=action_convert_to_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'convert-post-' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === ' Question &ldquo;What is Lorem Ipsum?&rdquo; is converted to post and its answers are trashed' );
+		$answer_id_1 = get_post( $answer_ids[0] );
+		$this->assertNull( $answer_id_1 );
+		$answer_id_2 = get_post( $answer_ids[1] );
+		$this->assertNull( $answer_id_2 );
+		$answer_id_3 = get_post( $answer_ids[2] );
+		$this->assertNull( $answer_id_3 );
+	}
 }
