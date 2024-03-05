@@ -155,4 +155,32 @@ class TestAjaxHooks extends TestCaseAjax {
 		$expected = wp_json_encode( [ 'success' => true, 'multiple' => false, 'items' => ap_get_questions_orderby(), 'is_ap_ajax' => true, 'ap_responce' => true ] );
 		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::load_tinymce
+	 */
+	public function testLoadTinyMCE() {
+		add_action( 'ap_ajax_load_tinymce', [ 'AnsPress_Ajax', 'load_tinymce' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Test 1.
+		$this->_set_post_data( 'ap_ajax_action=load_tinymce&question_id=' . $question_id );
+		$this->handle( 'ap_ajax' );
+		$this->assertStringContainsString( 'You do not have permission to answer this question.', $this->_last_response );
+		$this->assertStringContainsString( 'tinyMCEPreInit', $this->_last_response );
+		$this->assertStringContainsString( 'tinymce', $this->_last_response );
+		$this->assertStringContainsString( 'quicktags', $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'ap_ajax_action=load_tinymce&question_id=' . $question_id );
+		@$this->handle( 'ap_ajax' );
+		$this->assertStringNotContainsString( 'You do not have permission to answer this question.', $this->_last_response );
+		$this->assertStringContainsString( '<form id="form_answer" name="form_answer" method="POST" enctype="multipart/form-data" action=""  apform>', $this->_last_response );
+		$this->assertStringContainsString( '<div id="wp-form_answer-post_content-editor-container" class="wp-editor-container">', $this->_last_response );
+		$this->assertStringContainsString( 'tinyMCEPreInit', $this->_last_response );
+		$this->assertStringContainsString( 'tinymce', $this->_last_response );
+		$this->assertStringContainsString( 'quicktags', $this->_last_response );
+	}
 }

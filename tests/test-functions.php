@@ -2652,12 +2652,9 @@ class TestFunctions extends TestCase {
 		$output = ob_get_clean();
 
 		// Test for assertions.
-		$this->assertStringContainsString( 'anspress-common-js', $output );
-		$this->assertStringContainsString( 'anspress-question-js', $output );
-		$this->assertStringContainsString( 'anspress-ask-js', $output );
-		$this->assertStringContainsString( 'anspress-list-js', $output );
-		$this->assertStringContainsString( 'anspress-notifications-js', $output );
-		$this->assertStringContainsString( 'anspress-theme-js', $output );
-		$this->assertMatchesRegularExpression( '/<script.*<\/script>/', $output );
+		$this->assertStringContainsString( 'tinyMCEPreInit', $output );
+		$this->assertStringContainsString( 'ajaxurl', $output );
+		$this->assertStringContainsString( 'tinymce', $output );
+		$this->assertStringContainsString( 'quicktags', $output );
 	}
 }
