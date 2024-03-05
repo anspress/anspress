@@ -514,6 +514,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 				'post_parent'  => $question_id,
 				'post_author'  => $user_id_1,
+				'post_date'    => '2024-01-02 00:00:00',
 			)
 		);
 		$answer_id_2 = $this->factory->post->create(
@@ -524,6 +525,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Lorem ipsum dolor sit amit',
 				'post_parent'  => $question_id,
 				'post_author'  => $user_id_2,
+				'post_date'    => '2024-01-01 00:00:00',
 			)
 		);
 		$answers     = [
@@ -590,6 +592,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 				'post_parent'  => $question_id,
 				'post_author'  => $user_id_1,
+				'post_date'    => '2024-01-03 00:00:00',
 			)
 		);
 		$answer_id_2 = $this->factory->post->create(
@@ -600,6 +603,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Lorem ipsum dolor sit amit',
 				'post_parent'  => $question_id,
 				'post_author'  => $user_id_2,
+				'post_date'    => '2024-01-02 00:00:00',
 			)
 		);
 		$answer_id_3 = $this->factory->post->create(
@@ -610,6 +614,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a consectetur magna, eu volutpat ipsum',
 				'post_parent'  => $question_id,
 				'post_author'  => $user_id_3,
+				'post_date'    => '2024-01-01 00:00:00',
 			)
 		);
 		$answers     = [
