@@ -556,6 +556,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_set_post_data( 'question_id=' . $question_id . '&ap_ajax_action=ap_get_all_answers' );
 		@$this->handle( 'ap_ajax' );
 		$response = json_decode( $this->_last_response, true );
+		$response = array_reverse( $response, true );
 		foreach ( $response as $idx => $answer ) {
 			$this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
 			$this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
@@ -650,6 +651,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_set_post_data( 'question_id=' . $question_id . '&ap_ajax_action=ap_get_all_answers' );
 		@$this->handle( 'ap_ajax' );
 		$response = json_decode( $this->_last_response, true );
+		$response = array_reverse( $response, true );
 		foreach ( $response as $idx => $answer ) {
 			$this->assertEquals( $answers[ $idx ]['ID'], $answer['ID'] );
 			$this->assertEquals( $answers[ $idx ]['content'], $answer['content'] );
