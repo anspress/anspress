@@ -116,4 +116,43 @@ class TestAjaxHooks extends TestCaseAjax {
 		// Start output buffer.
 		ob_start();
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::load_filter_order_by
+	 */
+	public function testLoadFilterOrderBy() {
+		add_action( 'ap_ajax_load_filter_order_by', [ 'AnsPress_Ajax', 'load_filter_order_by' ] );
+
+		// Test 1.
+		$this->_set_post_data( 'ap_ajax_action=load_filter_order_by&__nonce=' . wp_create_nonce( 'filter_tags' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=load_filter_order_by&filter=questions&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Test 3.
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=load_filter_order_by&filter=answers&__nonce=' . wp_create_nonce( 'filter_answers' ) );
+		$this->handle( 'ap_ajax' );
+		$expected = wp_json_encode( [ 'success' => true, 'multiple' => false, 'items' => ap_get_questions_orderby(), 'is_ap_ajax' => true, 'ap_responce' => true ] );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 4.
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=load_filter_order_by&filter=solved&__nonce=' . wp_create_nonce( 'filter_solved' ) );
+		$this->handle( 'ap_ajax' );
+		$expected = wp_json_encode( [ 'success' => true, 'multiple' => false, 'items' => ap_get_questions_orderby(), 'is_ap_ajax' => true, 'ap_responce' => true ] );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 5.
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=load_filter_order_by&filter=invalid&__nonce=' . wp_create_nonce( 'filter_invalid' ) );
+		$this->handle( 'ap_ajax' );
+		$expected = wp_json_encode( [ 'success' => true, 'multiple' => false, 'items' => ap_get_questions_orderby(), 'is_ap_ajax' => true, 'ap_responce' => true ] );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+	}
 }
