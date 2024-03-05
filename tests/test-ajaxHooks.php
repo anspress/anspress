@@ -23,4 +23,97 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'subscribe_to_question' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'search_tags' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::send
+	 */
+	public function testSend() {
+		// Test 1.
+		$test_data = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+		);
+		$this->functionHandle( 'AnsPress_Ajax::send', $test_data );
+		$expected = wp_json_encode( array_merge( [ 'is_ap_ajax' => true, 'ap_responce' => true ], $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'something_wrong',
+		);
+		$this->functionHandle( 'AnsPress_Ajax::send', $test_data );
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'Something went wrong, last action failed.',
+				'message_type' => 'error',
+			],
+			'success'     => false,
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 3.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'something_wrong',
+			'success' => true,
+		);
+		$this->functionHandle( 'AnsPress_Ajax::send', $test_data );
+		$test_data['success'] = false;
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'Something went wrong, last action failed.',
+				'message_type' => 'error',
+			],
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 4.
+		$this->_last_response = '';
+		$test_data = array(
+			'message' => 'post_image_uploaded',
+			'success' => false,
+		);
+		$this->functionHandle( 'AnsPress_Ajax::send', $test_data );
+		$test_data['success'] = true;
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'Image uploaded successfully',
+				'message_type' => 'success',
+			],
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Test 5.
+		$this->_last_response = '';
+		$test_data = array(
+			'key1'    => 'value1',
+			'key2'    => 'value2',
+			'message' => 'no_permission_to_view_private',
+			'success' => true,
+		);
+		$this->functionHandle( 'AnsPress_Ajax::send', $test_data );
+		$additional = array(
+			'is_ap_ajax'  => true,
+			'ap_responce' => true,
+			'snackbar'    => [
+				'message'      => 'You do not have permission to view private posts.',
+				'message_type' => 'warning',
+			],
+		);
+		$expected = wp_json_encode( array_merge( $additional, $test_data ) );
+		$this->assertJsonStringEqualsJsonString( $expected, $this->_last_response );
+
+		// Start output buffer.
+		ob_start();
+	}
 }
