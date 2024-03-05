@@ -3,6 +3,14 @@
 namespace AnsPress\Tests\Testcases;
 
 trait Ajax {
+	public function _set_post_data( $query ) {
+		$args            = wp_parse_args( $query );
+		$_POST['action'] = 'ap_ajax';
+		foreach ( $args as $key => $value ) {
+			$_POST[ $key ] = $value;
+		}
+	}
+
 	public function ap_ajax_success( $key = false, $return_json = false ) {
 		$res = json_decode( $this->_last_response );
 		if ( false !== $return_json ) {

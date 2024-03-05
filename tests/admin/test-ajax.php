@@ -25,14 +25,6 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertTrue( method_exists( 'AnsPress_Admin_Ajax', 'recount_views' ) );
 	}
 
-	public function _set_post_data( $query ) {
-		$args            = wp_parse_args( $query );
-		$_POST['action'] = 'ap_ajax';
-		foreach ( $args as $key => $value ) {
-			$_POST[ $key ] = $value;
-		}
-	}
-
 	/**
 	 * @covers AnsPress_Admin_Ajax::ap_delete_flag
 	 */
