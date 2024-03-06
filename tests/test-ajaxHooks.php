@@ -310,4 +310,190 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'label' ) === 'Subscribe' );
 		$this->assertEquals( 1, ap_subscribers_count( 'question', $question_id ) );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::suggest_similar_questions
+	 */
+	public function testSuggestSimilarQuestions() {
+		add_action( 'ap_ajax_suggest_similar_questions', [ 'AnsPress_Ajax', 'suggest_similar_questions' ] );
+
+		// Test for users who do not have permission to suggest similar questions.
+		$this->setRole( 'subscriber' );
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+
+		// Test for users who have permission to suggest similar questions.
+		$this->setRole( 'administrator' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEmpty( $this->_last_response );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<div class="ap-similar-questions-head">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<p><strong>1 similar question found</strong></p>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'We have found some similar questions that have been asked earlier.', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-similar-questions">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_2 ) . '">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">0 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="highlight_word">Test</span> <span class="highlight_word">Question</span></span>', $this->ap_ajax_success( 'html' ) );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+
+		// Test 3.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		add_filter( 'ap_disable_question_suggestion', '__return_true' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEmpty( $this->_last_response );
+		remove_filter( 'ap_disable_question_suggestion', '__return_true' );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+
+		// Test 4.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&ap_ajax_nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<div class="ap-similar-questions-head">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<p><strong>1 similar question found</strong></p>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'We have found some similar questions that have been asked earlier.', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-similar-questions">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_2 ) . '">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">0 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="highlight_word">Test</span> <span class="highlight_word">Question</span></span>', $this->ap_ajax_success( 'html' ) );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+
+		// Test 5.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$question_id_3 = $this->insert_question( 'What is Lorem Ipsum?' );
+		$question_id_4 = $this->insert_question( 'This is another Test' );
+		$question_id_5 = $this->insert_question( 'This is another Question' );
+		$answer_ids_set_1 = $this->factory->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id_1 ] );
+		$answer_ids_set_2 = $this->factory->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ] );
+		$answer_ids_set_3 = $this->factory->post->create_many( 2, [ 'post_type' => 'answer', 'post_parent' => $question_id_3 ] );
+		$answer_ids_set_4 = $this->factory->post->create_many( 4, [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ] );
+		$answer_ids_set_5 = $this->factory->post->create_many( 1, [ 'post_type' => 'answer', 'post_parent' => $question_id_5 ] );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<div class="ap-similar-questions-head">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<p><strong>2 similar questions found</strong></p>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'We have found some similar questions that have been asked earlier.', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-similar-questions">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_2 ) . '">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">5 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="highlight_word">Test</span> <span class="highlight_word">Question</span></span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_4 ) . '">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">4 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'This is another <span class="highlight_word">Test</span></span>', $this->ap_ajax_success( 'html' ) );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+		wp_delete_post( $question_id_3, true );
+		wp_delete_post( $question_id_4, true );
+		wp_delete_post( $question_id_5, true );
+
+		// Test 6.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&is_admin=true&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<div class="ap-similar-questions-head">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<p><strong>1 similar question found</strong></p>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'We have found some similar questions that have been asked earlier.', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-similar-questions">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-q-suggestion-item clearfix">', $this->ap_ajax_success( 'html' ) );
+		$query_args = add_query_arg( [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ], admin_url( 'post-new.php' ) );
+		$this->assertStringContainsString( '<a class="select-question-button button button-primary button-small" href="' . $query_args . '">Select</a>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="highlight_word">Test</span> <span class="highlight_word">Question</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">0 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringNotContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_2 ) . '">', $this->ap_ajax_success( 'html' ) );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+		wp_delete_post( $question_id_3, true );
+
+		// Test 7.
+		$this->_last_response = '';
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$question_id_3 = $this->insert_question( 'What is Lorem Ipsum?' );
+		$question_id_4 = $this->insert_question( 'This is another Test' );
+		$question_id_5 = $this->insert_question( 'This is another Question' );
+		$answer_ids_set_1 = $this->factory->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id_1 ] );
+		$answer_ids_set_2 = $this->factory->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ] );
+		$answer_ids_set_3 = $this->factory->post->create_many( 2, [ 'post_type' => 'answer', 'post_parent' => $question_id_3 ] );
+		$answer_ids_set_4 = $this->factory->post->create_many( 4, [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ] );
+		$answer_ids_set_5 = $this->factory->post->create_many( 1, [ 'post_type' => 'answer', 'post_parent' => $question_id_5 ] );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&is_admin=true&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<div class="ap-similar-questions-head">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<p><strong>2 similar questions found</strong></p>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'We have found some similar questions that have been asked earlier.', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-similar-questions">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-q-suggestion-item clearfix">', $this->ap_ajax_success( 'html' ) );
+		$query_args = add_query_arg( [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ], admin_url( 'post-new.php' ) );
+		$this->assertStringContainsString( '<a class="select-question-button button button-primary button-small" href="' . $query_args . '">Select</a>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="highlight_word">Test</span> <span class="highlight_word">Question</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">5 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-q-suggestion-item clearfix">', $this->ap_ajax_success( 'html' ) );
+		$query_args = add_query_arg( [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ], admin_url( 'post-new.php' ) );
+		$this->assertStringContainsString( '<a class="select-question-button button button-primary button-small" href="' . $query_args . '">Select</a>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'This is another <span class="highlight_word">Test</span></span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<span class="acount">4 Answers</span>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringNotContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_2 ) . '">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringNotContainsString( '<a class="ap-sqitem clearfix" target="_blank" href="' . get_permalink( $question_id_4 ) . '">', $this->ap_ajax_success( 'html' ) );
+
+		// Delete already created questions.
+		wp_delete_post( $question_id_1, true );
+		wp_delete_post( $question_id_2, true );
+		wp_delete_post( $question_id_3, true );
+		wp_delete_post( $question_id_4, true );
+		wp_delete_post( $question_id_5, true );
+	}
 }
