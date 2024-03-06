@@ -812,4 +812,78 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertEquals( 'Unfeatured the question', $recent_activity->action['verb'] );
 		$this->assertEquals( 'apicon-question', $recent_activity->action['icon'] );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::close_question
+	 */
+	public function testCloseQuestion() {
+		add_action( 'ap_ajax_action_close', [ 'AnsPress_Ajax', 'close_question' ] );
+
+		// For users who do not have permission to close question.
+		// Test 1.
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_close&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'close_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You cannot close a question' );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_close&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'close_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You cannot close a question' );
+
+		// For users who have permission to close question.
+		$this->setRole( 'administrator' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_close&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You cannot close a question' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 0, $get_qameta->closed );
+		$this->_set_post_data( 'ap_ajax_action=action_close&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'close_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 1, $get_qameta->closed );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Open' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Open this question for new answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question closed' );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '<div class="ap-notice status-publish closed"><i class="apicon-x"></i><span>Question is closed for new answers.</span></div>' );
+		$recent_activity = ap_get_recent_activity( $question_id );
+		$this->assertEquals( 'question', $recent_activity->action['ref_type'] );
+		$this->assertEquals( 'Marked as closed', $recent_activity->action['verb'] );
+		$this->assertEquals( 'apicon-alert', $recent_activity->action['icon'] );
+
+		// Test 3.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		ap_insert_qameta( $question_id, array( 'closed' => 1 ) );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 1, $get_qameta->closed );
+		$this->_set_post_data( 'ap_ajax_action=action_close&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'close_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( 0, $get_qameta->closed );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Close' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Close this question for new answer.' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is opened' );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '' );
+		$recent_activity = ap_get_recent_activity( $question_id );
+		$this->assertEquals( 'question', $recent_activity->action['ref_type'] );
+		$this->assertEquals( 'Re-opened the question', $recent_activity->action['verb'] );
+		$this->assertEquals( 'apicon-question', $recent_activity->action['icon'] );
+	}
 }
