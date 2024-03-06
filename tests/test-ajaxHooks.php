@@ -496,4 +496,147 @@ class TestAjaxHooks extends TestCaseAjax {
 		wp_delete_post( $question_id_4, true );
 		wp_delete_post( $question_id_5, true );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::toggle_delete_post
+	 */
+	public function testToggleDeletePost() {
+		add_action( 'ap_ajax_action_toggle_delete_post', [ 'AnsPress_Ajax', 'toggle_delete_post' ] );
+
+		// For users who do not have permission to delete post.
+		$question_id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to trash this post' );
+
+		// For users who have permission to delete post.
+		// For normal user.
+		$this->setRole( 'subscriber' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to trash this post' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Undelete' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Restore this question' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is trashed' );
+		$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'trash' );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '<div class="ap-notice status-trash"><i class="apicon-trashcan"></i><span>This Question has been trashed, you can delete it permanently from wp-admin.</span></div>' );
+
+		// Test 3.
+		$this->_last_response = '';
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'trash' ] );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === false );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Delete' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Delete this question (can be restored again)' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is restored' );
+		$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'publish' );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '' );
+
+		// For administrator.
+		$this->setRole( 'administrator' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to trash this post' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Undelete' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Restore this question' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is trashed' );
+		$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'trash' );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '<div class="ap-notice status-trash"><i class="apicon-trashcan"></i><span>This Question has been trashed, you can delete it permanently from wp-admin.</span></div>' );
+
+		// Test 3.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'trash' ] );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === false );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Delete' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Delete this question (can be restored again)' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is restored' );
+		$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'publish' );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '' );
+
+		// Test for delete after.
+		// Test 1.
+		$this->setRole( 'ap_moderator' );
+		$this->_last_response = '';
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'This post was created January 1, 2020, hence you cannot trash it' );
+
+		// Test 2.
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin role.
+			$this->_last_response = '';
+			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+			$this->handle( 'ap_ajax' );
+			$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+			$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'This post was created January 1, 2020, hence you cannot trash it' );
+
+			// After granting super admin role.
+			grant_super_admin( get_current_user_id() );
+			$this->_last_response = '';
+			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+			$this->handle( 'ap_ajax' );
+			$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
+			$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Undelete' );
+			$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Restore this question' );
+			$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is trashed' );
+			$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'trash' );
+			$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '<div class="ap-notice status-trash"><i class="apicon-trashcan"></i><span>This Question has been trashed, you can delete it permanently from wp-admin.</span></div>' );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Tests.
+			$this->_last_response = '';
+			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+			$this->handle( 'ap_ajax' );
+			$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
+			$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Undelete' );
+			$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Restore this question' );
+			$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is trashed' );
+			$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'trash' );
+			$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '<div class="ap-notice status-trash"><i class="apicon-trashcan"></i><span>This Question has been trashed, you can delete it permanently from wp-admin.</span></div>' );
+		}
+	}
 }
