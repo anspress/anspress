@@ -743,4 +743,73 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertTrue( $trash_answer_triggered );
 		$this->assertTrue( did_action( 'ap_wp_trash_answer' ) > 0 );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::toggle_featured
+	 */
+	public function testToggleFeatured() {
+		add_action( 'ap_ajax_action_toggle_featured', [ 'AnsPress_Ajax', 'toggle_featured' ] );
+
+		// For users who do not have permission to feature post.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_featured&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'set_featured_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, you cannot toggle a featured question' );
+
+		// For users who have permission to feature post.
+		$this->setRole( 'administrator' );
+
+		// Test 1.
+		$question_id = $this->insert_question();
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_featured&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, you cannot toggle a featured question' );
+
+		// Test 2.
+		$post_id = $this->factory->post->create();
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_featured&post_id=' . $post_id . '&__nonce=' . wp_create_nonce( 'set_featured_' . $post_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Only question can be set as featured' );
+
+		// Test 3.
+		$question_id = $this->insert_question();
+		$this->assertFalse( ap_is_featured_question( $question_id ) );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_featured&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'set_featured_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( ap_is_featured_question( $question_id ) );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Unfeature' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Unmark this question as featured' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is marked as featured.' );
+		$recent_activity = ap_get_recent_activity( $question_id );
+		$this->assertEquals( 'question', $recent_activity->action['ref_type'] );
+		$this->assertEquals( 'Marked as featured question', $recent_activity->action['verb'] );
+		$this->assertEquals( 'apicon-star', $recent_activity->action['icon'] );
+
+		// Test 4.
+		$question_id = $this->insert_question();
+		ap_set_featured_question( $question_id );
+		$this->assertTrue( ap_is_featured_question( $question_id ) );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_featured&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'set_featured_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( ap_is_featured_question( $question_id ) );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === false );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Feature' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->title === 'Mark this question as featured' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is unmarked as featured.' );
+		$recent_activity = ap_get_recent_activity( $question_id );
+		$this->assertEquals( 'question', $recent_activity->action['ref_type'] );
+		$this->assertEquals( 'Unfeatured the question', $recent_activity->action['verb'] );
+		$this->assertEquals( 'apicon-question', $recent_activity->action['icon'] );
+	}
 }
