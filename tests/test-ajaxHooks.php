@@ -639,4 +639,108 @@ class TestAjaxHooks extends TestCaseAjax {
 			$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '<div class="ap-notice status-trash"><i class="apicon-trashcan"></i><span>This Question has been trashed, you can delete it permanently from wp-admin.</span></div>' );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::permanent_delete_post
+	 */
+	public function testPermanentDeletePost() {
+		add_action( 'ap_ajax_action_delete_permanently', [ 'AnsPress_Ajax', 'permanent_delete_post' ] );
+
+		// Create base page.
+		$base_page = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Base Page' ] );
+		ap_opt( 'base_page', $base_page );
+
+		// For testing the actions.
+		$trash_question_triggered = false;
+		add_action( 'ap_wp_trash_question', function( $post_id ) use ( &$trash_question_triggered ) {
+			$trash_question_triggered = true;
+		} );
+		$trash_answer_triggered = false;
+		add_action( 'ap_wp_trash_answer', function( $post_id ) use ( &$trash_answer_triggered ) {
+			$trash_answer_triggered = true;
+		} );
+
+		// For users who do not have permission to delete post.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$this->_set_post_data( 'ap_ajax_action=action_delete_permanently&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'delete_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, unable to delete post' );
+
+		// For users who have permission to delete post.
+		$this->setRole( 'administrator' );
+
+		// Test 1.
+		$trash_question_triggered = false;
+		$trash_answer_triggered = false;
+		$question_id = $this->insert_question();
+		$this->assertFalse( $trash_question_triggered );
+		$this->assertFalse( $trash_answer_triggered );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_delete_permanently&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, unable to delete post' );
+		$this->assertFalse( did_action( 'ap_wp_trash_question' ) > 0 );
+		$this->assertFalse( did_action( 'ap_wp_trash_answer' ) > 0 );
+
+		// Test 2.
+		$trash_question_triggered = false;
+		$question_id = $this->insert_question();
+		$this->assertFalse( $trash_question_triggered );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_delete_permanently&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'delete_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Question is deleted permanently' );
+		$this->assertTrue( $this->ap_ajax_success( 'redirect' ) === ap_base_page_link() );
+		$this->assertTrue( $trash_question_triggered );
+		$this->assertTrue( did_action( 'ap_wp_trash_question' ) > 0 );
+
+		// Test 3.
+		$trash_answer_triggered = false;
+		$id = $this->insert_answer();
+		$this->assertFalse( $trash_answer_triggered );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_delete_permanently&post_id=' . $id->a . '&__nonce=' . wp_create_nonce( 'delete_post_' . $id->a ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Answer is deleted permanently' );
+		$this->assertTrue( $this->ap_ajax_success( 'deletePost' ) === $id->a );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->text === '0 Answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->number === '0' );
+		$this->assertTrue( $trash_answer_triggered );
+		$this->assertTrue( did_action( 'ap_wp_trash_answer' ) > 0 );
+
+		// Test 4.
+		$trash_answer_triggered = false;
+		$ids = $this->insert_answers( [], [], 3 );
+		$this->assertFalse( $trash_answer_triggered );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_delete_permanently&post_id=' . $ids['answers'][0] . '&__nonce=' . wp_create_nonce( 'delete_post_' . $ids['answers'][0] ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Answer is deleted permanently' );
+		$this->assertTrue( $this->ap_ajax_success( 'deletePost' ) === $ids['answers'][0] );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->text === '2 Answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->number === '2' );
+		$this->assertTrue( $trash_answer_triggered );
+		$this->assertTrue( did_action( 'ap_wp_trash_answer' ) > 0 );
+
+		// Test 5.
+		$trash_answer_triggered = false;
+		$ids = $this->insert_answers( [], [], 2 );
+		$this->assertFalse( $trash_answer_triggered );
+		$this->_last_response = '';
+		$this->_set_post_data( 'ap_ajax_action=action_delete_permanently&post_id=' . $ids['answers'][1] . '&__nonce=' . wp_create_nonce( 'delete_post_' . $ids['answers'][1] ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Answer is deleted permanently' );
+		$this->assertTrue( $this->ap_ajax_success( 'deletePost' ) === $ids['answers'][1] );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->text === '1 Answer' );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->number === '1' );
+		$this->assertTrue( $trash_answer_triggered );
+		$this->assertTrue( did_action( 'ap_wp_trash_answer' ) > 0 );
+	}
 }
