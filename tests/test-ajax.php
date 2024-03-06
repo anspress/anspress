@@ -574,4 +574,105 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Trying to cheat?!' );
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::delete_attachment
+	 */
+	public function testdelete_attachment() {
+		add_action( 'ap_ajax_delete_attachment', array( 'AnsPress_Uploader', 'delete_attachment' ) );
+
+		// Test 1.
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'message' ) === 'no_permission' );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'message' ) === 'no_permission' );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+
+		// Test 3.
+		$this->_last_response = '';
+		$this->setRole( 'subsciber' );
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertFalse( ap_have_attach( $question_id ) );
+		$attachment = get_post( $attachment_id );
+		$this->assertNull( $attachment );
+
+		// Test 4.
+		$this->_last_response = '';
+		$this->setRole( 'subsciber' );
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id_1 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$attachment_id_2 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $question_id );
+		$attachment_id_3 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $question_id );
+		$attachment_id_4 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id_1 . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id_1 ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+		$attachment_1 = get_post( $attachment_id_1 );
+		$this->assertNull( $attachment_1 );
+		$attachment_2 = get_post( $attachment_id_2 );
+		$this->assertNotNull( $attachment_2 );
+		$attachment_3 = get_post( $attachment_id_3 );
+		$this->assertNotNull( $attachment_3 );
+		$attachment_4 = get_post( $attachment_id_4 );
+		$this->assertNotNull( $attachment_4 );
+
+		// Test 5.
+		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		ap_update_post_attach_ids( $question_id );
+		$this->assertTrue( ap_have_attach( $question_id ) );
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin role.
+			$this->_last_response = '';
+			$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id ) );
+			$this->handle( 'ap_ajax' );
+			$this->assertTrue( $this->ap_ajax_success( 'message' ) === 'no_permission' );
+			$this->assertTrue( ap_have_attach( $question_id ) );
+
+			// After granting super admin role.
+			$this->_last_response = '';
+			grant_super_admin( get_current_user_id() );
+			$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id ) );
+			$this->handle( 'ap_ajax' );
+			$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+			$this->assertFalse( ap_have_attach( $question_id ) );
+		} else {
+			$this->setRole( 'administrator' );
+
+			// Tests.
+			$this->_last_response = '';
+			$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id ) );
+			$this->handle( 'ap_ajax' );
+			$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+			$this->assertFalse( ap_have_attach( $question_id ) );
+		}
+	}
 }
