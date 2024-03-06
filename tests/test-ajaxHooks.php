@@ -9,6 +9,18 @@ class TestAjaxHooks extends TestCaseAjax {
 	use Testcases\Ajax;
 	use Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_tag', array( 'question' ) );
+	}
+
+	public function tear_down() {
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_tag' );
+		parent::tear_down();
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'init' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Ajax', 'suggest_similar_questions' ) );
@@ -885,5 +897,208 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertEquals( 'question', $recent_activity->action['ref_type'] );
 		$this->assertEquals( 'Re-opened the question', $recent_activity->action['verb'] );
 		$this->assertEquals( 'apicon-question', $recent_activity->action['icon'] );
+	}
+
+	/**
+	 * @covers AnsPress_Ajax::search_tags
+	 */
+	public function testSearchTags() {
+		add_action( 'wp_ajax_ap_search_tags', [ 'AnsPress_Ajax', 'search_tags' ] );
+
+		// Test for tags.
+		// Create some tags for testing.
+		$tag_id_1 = $this->factory->term->create( [ 'name' => 'Tag 1', 'description' => 'Description for Tag 1', 'taxonomy' => 'question_tag' ] );
+		$tag_id_2 = $this->factory->term->create( [ 'name' => 'Tag 2', 'description' => 'Description for Tag 2', 'taxonomy' => 'question_tag' ] );
+		$tag_id_3 = $this->factory->term->create( [ 'name' => 'Test Tag', 'description' => 'Description for Test Tag', 'taxonomy' => 'question_tag' ] );
+		$tag_id_4 = $this->factory->term->create( [ 'name' => 'Another Tag', 'description' => 'Description for Another Tag', 'taxonomy' => 'question_tag' ] );
+		$tag_id_5 = $this->factory->term->create( [ 'name' => 'AnsPress', 'description' => 'Description for AnsPress', 'taxonomy' => 'question_tag' ] );
+		$tag_id_6 = $this->factory->term->create( [ 'name' => 'Question', 'description' => 'Description for Question', 'taxonomy' => 'question_tag' ] );
+		$tag_id_7 = $this->factory->term->create( [ 'name' => 'Answer', 'description' => 'Description for Answer', 'taxonomy' => 'question_tag' ] );
+		$tag_id_8 = $this->factory->term->create( [ 'name' => 'WordPress', 'description' => 'Description for WordPress', 'taxonomy' => 'question_tag' ] );
+		$tag_id_9 = $this->factory->term->create( [ 'name' => 'Themes', 'description' => 'Description for Themes', 'taxonomy' => 'question_tag' ] );
+		$tag_id_10 = $this->factory->term->create( [ 'name' => 'Plugins', 'description' => 'Description for Plugins', 'taxonomy' => 'question_tag' ] );
+
+		// Create a valid form for testing.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'tags' => [
+					'type'       => 'tags',
+					'terms_args' => [
+						'taxonomy'   => 'question_tag',
+						'hide_empty' => false,
+						'fields'     => 'id=>name',
+					],
+				],
+			],
+		] );
+
+		// Test 1.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=Tag&form=Sample Form&field=tags&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_search_tags' );
+		$this->assertEquals( '"{}"', $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=Tag&form=Test Form&field=tags&__nonce=' . wp_create_nonce( 'tags_Test Formtags' ) );
+		$this->handle( 'ap_search_tags' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+
+		// Test 3.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=WordPress&form=Sample Form&field=tags&__nonce=' . wp_create_nonce( 'tags_Sample Formtags' ) );
+		$this->handle( 'ap_search_tags' );
+		$response = json_decode( $this->_last_response );
+		$expected = [
+			[
+				'term_id'     => $tag_id_8,
+				'name'        => 'WordPress',
+				'description' => 'Description for WordPress',
+				'count'       => '0 Questions',
+			],
+		];
+		foreach ( $response as $result ) {
+			$this->assertTrue( in_array( (array) $result, $expected, true ) );
+		}
+
+		// Test 4.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=Tag&form=Sample Form&field=tags&__nonce=' . wp_create_nonce( 'tags_Sample Formtags' ) );
+		$this->handle( 'ap_search_tags' );
+		$response = json_decode( $this->_last_response );
+		$expected = [
+			[
+				'term_id'     => $tag_id_1,
+				'name'        => 'Tag 1',
+				'description' => 'Description for Tag 1',
+				'count'       => '0 Questions',
+			],
+			[
+				'term_id'     => $tag_id_2,
+				'name'        => 'Tag 2',
+				'description' => 'Description for Tag 2',
+				'count'       => '0 Questions',
+			],
+			[
+				'term_id'     => $tag_id_3,
+				'name'        => 'Test Tag',
+				'description' => 'Description for Test Tag',
+				'count'       => '0 Questions',
+			],
+			[
+				'term_id'     => $tag_id_4,
+				'name'        => 'Another Tag',
+				'description' => 'Description for Another Tag',
+				'count'       => '0 Questions',
+			],
+		];
+		foreach ( $response as $result ) {
+			$this->assertTrue( in_array( (array) $result, $expected, true ) );
+		}
+
+		// Test 5.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'tags' => [
+					'type'       => 'categories',
+					'terms_args' => [
+						'taxonomy'   => 'question_tag',
+						'hide_empty' => false,
+						'fields'     => 'id=>name',
+					],
+				],
+			],
+		] );
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=Tag&form=Sample Form&field=tags&__nonce=' . wp_create_nonce( 'tags_Sample Formtags' ) );
+		$this->handle( 'ap_search_tags' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+
+		// Test for categories.
+		// Create some categories for testing.
+		$cat_id_1 = $this->factory->term->create( [ 'name' => 'Category 1', 'description' => 'Description for Category 1', 'taxonomy' => 'question_category' ] );
+		$cat_id_2 = $this->factory->term->create( [ 'name' => 'Category 2', 'description' => 'Description for Category 2', 'taxonomy' => 'question_category' ] );
+		$cat_id_3 = $this->factory->term->create( [ 'name' => 'Test Category', 'description' => 'Description for Test Category', 'taxonomy' => 'question_category' ] );
+		$cat_id_4 = $this->factory->term->create( [ 'name' => 'Another Category', 'description' => 'Description for Another Category', 'taxonomy' => 'question_category' ] );
+		$cat_id_5 = $this->factory->term->create( [ 'name' => 'AnsPress', 'description' => 'Description for AnsPress', 'taxonomy' => 'question_category' ] );
+		$cat_id_6 = $this->factory->term->create( [ 'name' => 'Question', 'description' => 'Description for Question', 'taxonomy' => 'question_category' ] );
+		$cat_id_7 = $this->factory->term->create( [ 'name' => 'Answer', 'description' => 'Description for Answer', 'taxonomy' => 'question_category' ] );
+		$cat_id_8 = $this->factory->term->create( [ 'name' => 'WordPress', 'description' => 'Description for WordPress', 'taxonomy' => 'question_category' ] );
+		$cat_id_9 = $this->factory->term->create( [ 'name' => 'Themes', 'description' => 'Description for Themes', 'taxonomy' => 'question_category' ] );
+		$cat_id_10 = $this->factory->term->create( [ 'name' => 'Plugins', 'description' => 'Description for Plugins', 'taxonomy' => 'question_category' ] );
+
+		// Create a valid form for testing.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'categories' => [
+					'type'       => 'tags',
+					'terms_args' => [
+						'taxonomy'   => 'question_category',
+						'hide_empty' => false,
+						'fields'     => 'id=>name',
+					],
+				],
+			],
+		] );
+
+		// Test 1.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=Category&form=Sample Form&field=categories&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_search_tags' );
+		$this->assertEquals( '"{}"', $this->_last_response );
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=WordPress&form=Sample Form&field=categories&__nonce=' . wp_create_nonce( 'categories_Sample Formcategories' ) );
+		$this->handle( 'ap_search_tags' );
+		$response = json_decode( $this->_last_response );
+		$expected = [
+			[
+				'term_id'     => $cat_id_8,
+				'name'        => 'WordPress',
+				'description' => 'Description for WordPress',
+				'count'       => '0 Questions',
+			],
+		];
+		foreach ( $response as $result ) {
+			$this->assertTrue( in_array( (array) $result, $expected, true ) );
+		}
+
+		// Test 3.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_search_tags&q=Category&form=Sample Form&field=categories&__nonce=' . wp_create_nonce( 'categories_Sample Formcategories' ) );
+		$this->handle( 'ap_search_tags' );
+		$response = json_decode( $this->_last_response );
+		$expected = [
+			[
+				'term_id'     => $cat_id_1,
+				'name'        => 'Category 1',
+				'description' => 'Description for Category 1',
+				'count'       => '0 Questions',
+			],
+			[
+				'term_id'     => $cat_id_2,
+				'name'        => 'Category 2',
+				'description' => 'Description for Category 2',
+				'count'       => '0 Questions',
+			],
+			[
+				'term_id'     => $cat_id_3,
+				'name'        => 'Test Category',
+				'description' => 'Description for Test Category',
+				'count'       => '0 Questions',
+			],
+			[
+				'term_id'     => $cat_id_4,
+				'name'        => 'Another Category',
+				'description' => 'Description for Another Category',
+				'count'       => '0 Questions',
+			],
+		];
+		foreach ( $response as $result ) {
+			$this->assertTrue( in_array( (array) $result, $expected, true ) );
+		}
 	}
 }
