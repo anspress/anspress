@@ -138,7 +138,7 @@ class AnsPress_Uploader {
 	public static function upload_modal() {
 		// Check nonce.
 		if ( ! anspress_verify_nonce( 'ap_upload_image' ) ) {
-			ap_send_json( 'something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		// Check if user have permission to upload tem image.
