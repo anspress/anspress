@@ -675,4 +675,91 @@ class TestAjax extends TestCaseAjax {
 			$this->assertFalse( ap_have_attach( $question_id ) );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::upload_modal
+	 */
+	public function testUploadModal() {
+		add_action( 'wp_ajax_ap_upload_modal', array( 'AnsPress_Uploader', 'upload_modal' ) );
+
+		// For user who do not have access to upload image.
+		$this->_set_post_data( 'action=ap_upload_modal&__nonce=' . wp_create_nonce( 'ap_upload_image' ) );
+		$this->handle( 'ap_upload_modal' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry! you do not have permission to upload image.' );
+
+		// For user who have access to upload image.
+		$this->setRole( 'subscriber' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_upload_modal&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_upload_modal' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_upload_modal&__nonce=' . wp_create_nonce( 'ap_upload_image' ) );
+		$this->handle( 'ap_upload_modal' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_upload_modal' );
+		$this->assertTrue( $this->ap_ajax_success( 'title' ) === 'Select image file to upload' );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<form id="form_image_upload" name="form_image_upload" method="POST" enctype="multipart/form-data" action=""  apform>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-form-group ap-field-form_image_upload-image ap-field-type-upload ">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<label class="ap-form-label" for="form_image_upload-image">Image</label>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-field-group-w">', $this->ap_ajax_success( 'html' ) );
+		$custom_attrs = wp_json_encode(
+			array(
+				'max_files'       => 1,
+				'multiple'        => false,
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'You cannot add more then 1 files',
+				'field_name'      => 'image',
+				'form_name'       => 'form_image_upload',
+			)
+		);
+		$this->assertStringContainsString( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $custom_attrs ) . '" name="form_image_upload-image" id="form_image_upload-image" class="ap-form-control " accept=".jpg,.jpeg,.gif,.png"  /></div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-field-desc">Select image(s) to upload. Only .jpg, .png and .gif files allowed.</div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-upload-list"></div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="ap_form_name" value="form_image_upload" />', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="form_image_upload_nonce" value="' . wp_create_nonce( 'form_image_upload' ) . '" />', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="form_image_upload_submit" value="true" />', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<button type="submit" class="ap-btn ap-btn-submit">Upload &amp; insert</button>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="action" value="ap_image_upload" /><input type="hidden" name="image_for" value="" />', $this->ap_ajax_success( 'html' ) );
+
+		// Test 3.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_upload_modal&__nonce=' . wp_create_nonce( 'ap_upload_image' ) . '&image_for=question' );
+		$this->handle( 'ap_upload_modal' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_upload_modal' );
+		$this->assertTrue( $this->ap_ajax_success( 'title' ) === 'Select image file to upload' );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( '<form id="form_image_upload" name="form_image_upload" method="POST" enctype="multipart/form-data" action=""  apform>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-form-group ap-field-form_image_upload-image ap-field-type-upload ">', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<label class="ap-form-label" for="form_image_upload-image">Image</label>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-field-group-w">', $this->ap_ajax_success( 'html' ) );
+		$custom_attrs = wp_json_encode(
+			array(
+				'max_files'       => 1,
+				'multiple'        => false,
+				'label_deny_type' => 'This file type is not allowed to upload.',
+				'async_upload'    => false,
+				'label_max_added' => 'You cannot add more then 1 files',
+				'field_name'      => 'image',
+				'form_name'       => 'form_image_upload',
+			)
+		);
+		$this->assertStringContainsString( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $custom_attrs ) . '" name="form_image_upload-image" id="form_image_upload-image" class="ap-form-control " accept=".jpg,.jpeg,.gif,.png"  /></div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-field-desc">Select image(s) to upload. Only .jpg, .png and .gif files allowed.</div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-upload-list"></div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="ap_form_name" value="form_image_upload" />', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="form_image_upload_nonce" value="' . wp_create_nonce( 'form_image_upload' ) . '" />', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="form_image_upload_submit" value="true" />', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<button type="submit" class="ap-btn ap-btn-submit">Upload &amp; insert</button>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<input type="hidden" name="action" value="ap_image_upload" /><input type="hidden" name="image_for" value="question" />', $this->ap_ajax_success( 'html' ) );
+	}
 }
