@@ -206,7 +206,7 @@ class AnsPress_Uploader {
 
 		// Nonce check.
 		if ( ! $form->is_submitted() ) {
-			ap_send_json( 'something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$image_for = ap_sanitize_unslash( 'image_for', 'r' );
@@ -244,7 +244,7 @@ class AnsPress_Uploader {
 			ap_send_json( $res );
 		}
 
-		ap_send_json( 'something_wrong' );
+		ap_ajax_json( 'something_wrong' );
 	}
 
 	/**
