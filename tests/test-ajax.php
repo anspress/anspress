@@ -578,7 +578,7 @@ class TestAjax extends TestCaseAjax {
 	/**
 	 * @covers AnsPress_Uploader::delete_attachment
 	 */
-	public function testdelete_attachment() {
+	public function testDeleteAttachment() {
 		add_action( 'ap_ajax_delete_attachment', array( 'AnsPress_Uploader', 'delete_attachment' ) );
 
 		// Test 1.
