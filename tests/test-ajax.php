@@ -762,4 +762,71 @@ class TestAjax extends TestCaseAjax {
 		$this->assertStringContainsString( '<button type="submit" class="ap-btn ap-btn-submit">Upload &amp; insert</button>', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<input type="hidden" name="action" value="ap_image_upload" /><input type="hidden" name="image_for" value="question" />', $this->ap_ajax_success( 'html' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::image_upload
+	 */
+	public function testImageUpload() {
+		add_action( 'wp_ajax_ap_image_upload', array( 'AnsPress_Uploader', 'image_upload' ) );
+
+		// For user who do not have access to upload image.
+		$this->_set_post_data( 'action=ap_image_upload&form_image_upload_submit=true&form_image_upload_nonce=' . wp_create_nonce( 'form_image_upload' ) );
+		$this->handle( 'ap_image_upload' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry! you do not have permission to upload image.' );
+
+		// For user who have access to upload image.
+		$this->setRole( 'subscriber' );
+
+		// Test 1.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_image_upload&form_image_upload_submit=true&form_image_upload_nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_image_upload' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_image_upload&form_image_upload_submit=true&form_image_upload_nonce=' . wp_create_nonce( 'form_image_upload' ) );
+		$this->handle( 'ap_image_upload' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_image_upload' );
+		$this->assertTrue( $this->ap_ajax_success( 'image_for' ) === '' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully uploaded image' );
+		$this->assertTrue( $this->ap_ajax_success( 'files' ) === [] );
+
+		// Test 3.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_image_upload&form_image_upload_submit=true&form_image_upload_nonce=' . wp_create_nonce( 'form_image_upload' ) . '&image_for=question' );
+		$this->handle( 'ap_image_upload' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_image_upload' );
+		$this->assertTrue( $this->ap_ajax_success( 'image_for' ) === 'question' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully uploaded image' );
+		$this->assertTrue( $this->ap_ajax_success( 'files' ) === [] );
+
+		// Test 4.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_image_upload&form_image_upload_submit=true&form_image_upload_nonce=' . wp_create_nonce( 'form_image_upload' ) . '&image_for=question' );
+		$form = anspress()->get_form( 'image_upload' );
+		$form->add_error( 'warning', 'This file type is not allowed to upload.' );
+		$this->handle( 'ap_image_upload' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to upload image(s). Please check errors.' );
+		$this->assertTrue( $this->ap_ajax_success( 'form_errors' )->warning === 'This file type is not allowed to upload.' );
+		$this->assertTrue( $this->ap_ajax_success( 'fields_errors' ) === [] );
+
+		// Test 5.
+		$this->_last_response = '';
+		$this->_set_post_data( 'action=ap_image_upload&form_image_upload_submit=true&form_image_upload_nonce=' . wp_create_nonce( 'form_image_upload' ) . '&image_for=question' );
+		$form = anspress()->get_form( 'image_upload' );
+		$form->errors = [];
+		$form->add_error( 'error', 'Upload file size is more than allowed.' );
+		$this->handle( 'ap_image_upload' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to upload image(s). Please check errors.' );
+		$this->assertTrue( $this->ap_ajax_success( 'form_errors' )->error === 'Upload file size is more than allowed.' );
+		$this->assertTrue( $this->ap_ajax_success( 'fields_errors' ) === [] );
+		$form->errors = [];
+	}
 }
