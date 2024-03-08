@@ -677,6 +677,15 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_last_response = '';
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin access.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=invalid&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertEquals( '[]', $this->_last_response );
+
+			// After granting super admin access.
+			$this->_last_response = '';
 			grant_super_admin( get_current_user_id() );
 			$this->_set_post_data( 'action=ap_uninstall_data&data_type=invalid&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
 			$this->handle( 'ap_uninstall_data' );
@@ -726,6 +735,26 @@ class TestAdminAjax extends TestCaseAjax {
 		);
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin access.
+			// Before Ajax call.
+			$questions = get_posts( [ 'post_type' => 'question' ] );
+			$answers   = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $questions );
+			$this->assertNotEmpty( $answers );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=qa&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$questions = get_posts( [ 'post_type' => 'question' ] );
+			$answers   = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $questions );
+			$this->assertNotEmpty( $answers );
+			$this->assertEquals( '[]', $this->_last_response );
+
+			// After granting super admin access.
+			$this->_last_response = '';
 			grant_super_admin( get_current_user_id() );
 
 			// Before Ajax call.
@@ -785,6 +814,22 @@ class TestAdminAjax extends TestCaseAjax {
 		);
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin access.
+			// Before Ajax call.
+			$answers = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $answers );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=answers&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$answers = get_posts( [ 'post_type' => 'answer' ] );
+			$this->assertNotEmpty( $answers );
+			$this->assertEquals( '[]', $this->_last_response );
+
+			// After granting super admin access.
+			$this->_last_response = '';
 			grant_super_admin( get_current_user_id() );
 
 			// Before Ajax call.
@@ -816,11 +861,28 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// Deleting options.
 		$this->_last_response = '';
+		update_option( 'anspress_reputation_events', [ 'register' => 10 ] );
+		update_option( 'anspress_addons', [ 'categories.php' => 1 ] );
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin access.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=options&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertNotEmpty( get_option( 'anspress_opt' ) );
+			$this->assertNotEmpty( get_option( 'anspress_reputation_events' ) );
+			$this->assertNotEmpty( get_option( 'anspress_addons' ) );
+			$this->assertEquals( '[]', $this->_last_response );
+
+			// After granting super admin access.
+			$this->_last_response = '';
 			grant_super_admin( get_current_user_id() );
 
 			// Tests.
+			$this->assertNotEmpty( get_option( 'anspress_opt' ) );
+			$this->assertNotEmpty( get_option( 'anspress_reputation_events' ) );
+			$this->assertNotEmpty( get_option( 'anspress_addons' ) );
 			$this->_set_post_data( 'action=ap_uninstall_data&data_type=options&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
 			$this->handle( 'ap_uninstall_data' );
 			$this->assertFalse( get_option( 'anspress_opt' ) );
@@ -832,6 +894,9 @@ class TestAdminAjax extends TestCaseAjax {
 			$this->setRole( 'administrator' );
 
 			// Tests.
+			$this->assertNotEmpty( get_option( 'anspress_opt' ) );
+			$this->assertNotEmpty( get_option( 'anspress_reputation_events' ) );
+			$this->assertNotEmpty( get_option( 'anspress_addons' ) );
 			$this->_set_post_data( 'action=ap_uninstall_data&data_type=options&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
 			$this->handle( 'ap_uninstall_data' );
 			$this->assertFalse( get_option( 'anspress_opt' ) );
@@ -849,6 +914,26 @@ class TestAdminAjax extends TestCaseAjax {
 		$tag_2      = $this->factory->term->create( array( 'taxonomy' => 'question_tag' ) );
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin access.
+			// Before Ajax call.
+			$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+			$tags       = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => false ] );
+			$this->assertNotEmpty( $categories );
+			$this->assertNotEmpty( $tags );
+
+			// After Ajax call.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=terms&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$categories = get_terms( [ 'taxonomy' => 'question_category', 'hide_empty' => false ] );
+			$tags       = get_terms( [ 'taxonomy' => 'question_tag', 'hide_empty' => false ] );
+			$this->assertNotEmpty( $categories );
+			$this->assertNotEmpty( $tags );
+			$this->assertEquals( '[]', $this->_last_response );
+
+			// After granting super admin access.
+			$this->_last_response = '';
 			grant_super_admin( get_current_user_id() );
 
 			// Before Ajax call.
@@ -890,6 +975,17 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_last_response = '';
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
+
+			// Tests.
+			// Before granting super admin access.
+			// Table exists could not get tested since it behaves differently on unit tests
+			// and test on real site works fine.
+			$this->_set_post_data( 'action=ap_uninstall_data&data_type=tables&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+			$this->handle( 'ap_uninstall_data' );
+			$this->assertEquals( '[]', $this->_last_response );
+
+			// After granting super admin access.
+			$this->_last_response = '';
 			grant_super_admin( get_current_user_id() );
 
 			// Tests.
@@ -911,7 +1007,7 @@ class TestAdminAjax extends TestCaseAjax {
 			$this->assertTrue( $this->ap_ajax_success( 'total' ) === 0 );
 		}
 
-		// Deleting userdata test for now could not be done since it hampers other tests.
+		// Deleting userdata test for now could not be done since it seems to hamper other tests.
 	}
 
 	/**
