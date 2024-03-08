@@ -98,6 +98,9 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( '#adminmenu .anspress-license-count', $output );
 		$this->assertStringContainsString( 'background: #0073aa;', $output );
+		$this->assertStringContainsString( '<script type="text/javascript">', $output );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $output );
+		$this->assertStringContainsString( '$( \'#anspress-submenu-external-link\' ).parent().attr( \'target\', \'_blank\' )', $output );
 	}
 
 	/**
