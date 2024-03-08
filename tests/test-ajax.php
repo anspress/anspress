@@ -720,4 +720,147 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'fields_errors' ) === [] );
 		$form->errors = [];
 	}
+
+	/**
+	 * @covers AnsPress_Comment_Hooks::approve_comment
+	 */
+	public function testApproveComment() {
+		add_action( 'ap_ajax_approve_comment', array( 'AnsPress_Comment_Hooks', 'approve_comment' ) );
+
+		// Test 1.
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->_set_post_data( 'ap_ajax_action=approve_comment&comment_id=' . $comment_id . '&__nonce=' . wp_create_nonce( 'approve_comment_' . $comment_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, unable to approve comment' );
+
+		// Test 2.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->setRole( 'subscriber' );
+		$this->_set_post_data( 'ap_ajax_action=approve_comment&comment_id=' . $comment_id . '&__nonce=' . wp_create_nonce( 'approve_comment_' . $comment_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, unable to approve comment' );
+
+		// Test 3.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->setRole( 'administrator' );
+		$this->_set_post_data( 'ap_ajax_action=approve_comment&comment_id=' . $comment_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, unable to approve comment' );
+
+		// Test 4.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id ) );
+		$this->setRole( 'administrator' );
+		$this->_set_post_data( 'ap_ajax_action=approve_comment&comment_id=' . $comment_id . '&__nonce=' . wp_create_nonce( 'approve_comment_' . $comment_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEquals( 'approved', wp_get_comment_status( $comment_id ) );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'commentApproved' );
+		$this->assertTrue( $this->ap_ajax_success( 'comment_ID' ) === $comment_id );
+		$this->assertTrue( $this->ap_ajax_success( 'post_ID' ) === (string) $question_id );
+		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->text === '1 Comment' );
+		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->number === 1 );
+		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->unapproved === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Comment approved successfully.' );
+
+		// Test 5.
+		$this->_last_response = '';
+		$question_id = $this->insert_question();
+		$comment_id_1 = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$comment_id_2 = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$comment_id_3 = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 1,
+			)
+		);
+		$comment_id_4 = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$comment_id_5 = $this->factory->comment->create(
+			array(
+				'comment_post_ID'  => $question_id,
+				'comment_type'     => 'anspress',
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_1 ) );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_2 ) );
+		$this->assertEquals( 'approved', wp_get_comment_status( $comment_id_3 ) );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_4 ) );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_5 ) );
+		$this->setRole( 'administrator' );
+		$this->_set_post_data( 'ap_ajax_action=approve_comment&comment_id=' . $comment_id_1 . '&__nonce=' . wp_create_nonce( 'approve_comment_' . $comment_id_1 ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertEquals( 'approved', wp_get_comment_status( $comment_id_1 ) );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_2 ) );
+		$this->assertEquals( 'approved', wp_get_comment_status( $comment_id_3 ) );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_4 ) );
+		$this->assertEquals( 'unapproved', wp_get_comment_status( $comment_id_5 ) );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'commentApproved' );
+		$this->assertTrue( $this->ap_ajax_success( 'comment_ID' ) === $comment_id_1 );
+		$this->assertTrue( $this->ap_ajax_success( 'post_ID' ) === (string) $question_id );
+		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->text === '5 Comments' );
+		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->number === 5 );
+		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->unapproved === 3 );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Comment approved successfully.' );
+	}
 }
