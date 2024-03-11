@@ -658,4 +658,222 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_vote_down', [ $instance, 'vote_down' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::undo_vote_up
+	 */
+	public function testUndoVoteUp() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_up( $question_id );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_up( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question( '', '', $user_id );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_up( $question_id );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_up( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_up( $answer_id );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_up( $answer_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_up( $answer_id );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_up( $answer_id );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by undoing vote up.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_up( $question_id );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $question_id, get_current_user_id(), 'vote_up' );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question( '', '', $user_id );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_up( $question_id );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $question_id, get_current_user_id(), 'vote_up' );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_up( $answer_id );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $answer_id, get_current_user_id(), 'vote_up' );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_up( $answer_id );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $answer_id, get_current_user_id(), 'vote_up' );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::undo_vote_down
+	 */
+	public function testUndoVoteDown() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_down( $question_id );
+		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_down( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question( '', '', $user_id );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_down( $question_id );
+		$this->assertEquals( -2, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_down( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_down( $answer_id );
+		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_down( $answer_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_down( $answer_id );
+		$this->assertEquals( -2, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->undo_vote_down( $answer_id );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by undoing vote down.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_down( $question_id );
+		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $question_id, get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question( '', '', $user_id );
+		ap_add_post_vote( $question_id, get_current_user_id(), false );
+		$instance->vote_down( $question_id );
+		$this->assertEquals( -2, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $question_id, get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_down( $answer_id );
+		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $answer_id, get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		ap_add_post_vote( $answer_id, get_current_user_id(), false );
+		$instance->vote_down( $answer_id );
+		$this->assertEquals( -2, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		ap_delete_post_vote( $answer_id, get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
+	}
 }
