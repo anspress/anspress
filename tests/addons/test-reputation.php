@@ -247,4 +247,23 @@ class TestAddonReputation extends TestCase {
 		$this->assertContains( 'given_vote_up', $event_lists );
 		$this->assertContains( 'given_vote_down', $event_lists );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::user_register
+	 */
+	public function testUserRegister() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		$user_id = $this->factory->user->create();
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$instance->user_register( $user_id );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+
+		// Test by creating a new user.
+		add_filter( 'user_register', [ $instance, 'user_register' ] );
+		$user_id = $this->factory->user->create();
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		remove_filter( 'user_register', [ $instance, 'user_register' ] );
+	}
 }
