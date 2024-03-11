@@ -368,4 +368,108 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::select_answer
+	 */
+	public function testSelectAnswer() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->select_answer( get_post( $answer_id ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$user_id = $this->factory->user->create();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->select_answer( get_post( $answer_id ) );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by selecting an answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_set_selected_answer( $question_id, $answer_id );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$user_id = $this->factory->user->create();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		ap_set_selected_answer( $question_id, $answer_id );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::unselect_answer
+	 */
+	public function testUnselectAnswer() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$instance->select_answer( get_post( $answer_id ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->unselect_answer( get_post( $answer_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$user_id = $this->factory->user->create();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$instance->select_answer( get_post( $answer_id ) );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->unselect_answer( get_post( $answer_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by unselecting an answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		ap_set_selected_answer( $question_id, $answer_id );
+		$instance->select_answer( get_post( $answer_id ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
+		ap_unset_selected_answer( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$user_id = $this->factory->user->create();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		ap_set_selected_answer( $question_id, $answer_id );
+		$instance->select_answer( get_post( $answer_id ) );
+		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		ap_unset_selected_answer( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
+	}
 }
