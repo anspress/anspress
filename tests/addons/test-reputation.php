@@ -876,4 +876,202 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::new_comment
+	 */
+	public function testNewComment() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+
+		// Test by adding a new comment.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::delete_comment
+	 */
+	public function testDeleteComment() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->delete_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		$instance->delete_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->delete_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$instance->new_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		$instance->delete_comment( get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+
+		// Test by deleting a comment.
+		// For question.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+
+		// For answer.
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$user_id = $this->factory->user->create();
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
+		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+	}
 }
