@@ -419,6 +419,7 @@ class AP_Activate {
 	public function migrate() {
 		if ( 38 === AP_DB_VERSION ) {
 			$this->set_reputation_events_icon();
+			$this->update_disallow_op_to_answer();
 		}
 	}
 
@@ -449,6 +450,23 @@ class AP_Activate {
 				array( 'icon' => $icon ),
 				array( 'slug' => $slug )
 			);
+		}
+	}
+
+	/**
+	 * Update disallow_op_to_answer option.
+	 *
+	 * @since 4.4.0
+	 */
+	public function update_disallow_op_to_answer() {
+		// Get the old disallow_op_to_answer option value.
+		$op_can_answer = ap_opt( 'disallow_op_to_answer' );
+
+		// Update the disallow_op_to_answer option value.
+		if ( false === $op_can_answer ) {
+			ap_opt( 'disallow_op_to_answer', true );
+		} else {
+			ap_opt( 'disallow_op_to_answer', false );
 		}
 	}
 }
