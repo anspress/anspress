@@ -171,6 +171,19 @@ class AnsPress_Rewrite {
 	}
 
 	/**
+	 * BuddyPress pagination fix.
+	 *
+	 * @param array $args Arguments.
+	 * @return array
+	 *
+	 * @deprecated 4.4.0
+	 */
+	public static function bp_com_paged( $args ) {
+		_deprecated_function( __METHOD__, '4.4.0', 'AnsPress_Rewrite::pagination_fix()' );
+		return self::pagination_fix( $args );
+	}
+
+	/**
 	 * Pagination fix.
 	 *
 	 * @param array $args Arguments.
