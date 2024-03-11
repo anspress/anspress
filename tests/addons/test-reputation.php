@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonReputation extends TestCase {
 
+	use Testcases\Common;
+
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'reputation.php' );
@@ -265,5 +267,49 @@ class TestAddonReputation extends TestCase {
 		$user_id = $this->factory->user->create();
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
 		remove_filter( 'user_register', [ $instance, 'user_register' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::new_question
+	 */
+	public function testNewQuestion() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by creating a new question.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_after_new_question', [ $instance, 'new_question' ], 10, 2 );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_after_new_question', [ $instance, 'new_question' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::new_answer
+	 */
+	public function testNewAnswer() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by creating a new answer.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
 	}
 }
