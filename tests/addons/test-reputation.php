@@ -312,4 +312,60 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::trash_question
+	 */
+	public function testTrashQuestion() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->trash_question( $question_id, get_post( $question_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by trashing a question.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_trash_question', [ $instance, 'trash_question' ], 10, 2 );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		wp_trash_post( $question_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_trash_question', [ $instance, 'trash_question' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::trash_answer
+	 */
+	public function testTrashAnswer() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->trash_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by trashing an answer.
+		$this->setRole( 'subscriber' );
+		add_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		wp_trash_post( $answer_id );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
+	}
 }
