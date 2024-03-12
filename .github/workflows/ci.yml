@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         php_version:
+          - '8.2'
           - '8.1'
           - '8.0'
-          - '7.4'
     services:
       mysql:
         image: mysql:8.0

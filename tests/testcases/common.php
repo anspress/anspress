@@ -11,11 +11,15 @@ trait Common {
 	 *
 	 * @param string $role The role to set.
 	 */
-	public function setRole( $role ) {
+	public function setRole( $role, $muSuperAdmin = false ) {
 		$post    = $_POST;
 		$user_id = $this->factory()->user->create( array( 'role' => $role ) );
 		wp_set_current_user( $user_id );
 		$_POST = array_merge( $_POST, $post );
+
+		if ( $role === 'administrator' && $muSuperAdmin ) {
+			grant_super_admin( $user_id );
+		}
 	}
 
 	/**

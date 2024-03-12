@@ -3,7 +3,6 @@
 namespace Anspress\Tests;
 
 use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
-use SebastianBergmann\Environment\Console;
 
 class TestCommentDelete extends TestCaseAjax {
 
@@ -329,7 +328,7 @@ class TestCommentDelete extends TestCaseAjax {
 			)
 		);
 
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 
 		$comment_id = $this->factory->comment->create(
 			array(

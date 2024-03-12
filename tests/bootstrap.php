@@ -47,7 +47,7 @@ tests_add_filter(
 
 WPIntegration\bootstrap_it();
 
-activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
+// activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
 
 echo "Setting up AnsPress...\n";
 
