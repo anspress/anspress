@@ -1074,4 +1074,33 @@ class TestAddonReputation extends TestCase {
 		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
 		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::delete_user
+	 */
+	public function testDeleteUser() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test by directly calling the method.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => get_current_user_id() ] );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertEquals( 7, ap_get_user_reputation( get_current_user_id() ) );
+		$instance->delete_user( get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+
+		// Test by deleting a user.
+		add_action( 'delete_user', [ $instance, 'delete_user' ] );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => get_current_user_id() ] );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertEquals( 7, ap_get_user_reputation( get_current_user_id() ) );
+		wp_delete_user( get_current_user_id() );
+		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		remove_action( 'delete_user', [ $instance, 'delete_user' ] );
+	}
 }
