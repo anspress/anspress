@@ -154,7 +154,7 @@ class TestCommentModal extends TestCaseAjax {
 		$this->_set_post_data( 'comment_id=' . $comment_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'edit_comment_' . $comment_id ) );
 
 		$this->handle( 'comment_modal' );
-		var_dump( $this->_last_response );
+
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You don\'t have enough permissions to do this action.' );

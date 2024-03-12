@@ -67,8 +67,14 @@ jobs:
           if [[ ! -z "$WP_VERSION" ]]; then
             bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 $WP_VERSION
             php ./vendor/bin/phpunit
-            WP_MULTISITE=1 php ./vendor/bin/phpunit
+            XDEBUG_MODE=coverage WP_MULTISITE=1 php ./vendor/bin/phpunit --coverage-clover coverage.clover
           fi
+
+      - name: Enforce minimum coverage
+        uses: php-actions/code-coverage@v2
+        with:
+          clover: coverage.clover
+          threshold: 80 # Minimum coverage percentage
 
       - name: Run PHP CodeSniffer
         run: |
