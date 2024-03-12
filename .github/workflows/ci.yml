@@ -57,8 +57,6 @@ jobs:
         run: composer install
 
       - name: Run PHPUnit tests
-        with:
-          php_extensions: "xdebug"
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
