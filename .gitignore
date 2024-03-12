@@ -17,6 +17,7 @@
 /tests/ui.suite.dist.yml
 /tests/activator.suite.yml
 /build
+/.coverage
 
 __MACOSX
 .DS_Store

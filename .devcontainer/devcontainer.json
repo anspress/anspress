@@ -85,7 +85,9 @@
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "EditorConfig.EditorConfig",
-        "Chouzz.vscode-better-align"
+        "Chouzz.vscode-better-align",
+        "emallin.phpunit",
+        "ValeryanM.vscode-phpsab"
       ]
     }
   },

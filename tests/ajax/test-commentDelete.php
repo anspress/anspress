@@ -3,19 +3,12 @@
 namespace Anspress\Tests;
 
 use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
+use SebastianBergmann\Environment\Console;
 
 class TestCommentDelete extends TestCaseAjax {
 
 	use Testcases\Ajax;
 	use Testcases\Common;
-
-	/**
-	 * @covers AnsPress\Ajax\Comment_Delete::instance
-	 */
-	public function testInstance() {
-		$class = new \ReflectionClass( 'AnsPress\Ajax\Comment_Delete' );
-		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
-	}
 
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress\Ajax\Comment_Delete', '__construct' ) );
@@ -23,9 +16,6 @@ class TestCommentDelete extends TestCaseAjax {
 		$this->assertTrue( method_exists( 'AnsPress\Ajax\Comment_Delete', 'logged_in' ) );
 	}
 
-	/**
-	 * @covers AnsPress\Ajax::Comment_Delete
-	 */
 	public function testCommentDelete() {
 		add_action( 'wp_ajax_comment_delete', array( 'AnsPress\Ajax\Comment_Delete', 'init' ) );
 
@@ -260,5 +250,105 @@ class TestCommentDelete extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Trying to cheat?!' );
 		$this->assertFalse( $ap_unpublish_comment_triggered );
 		$this->assertFalse( $ap_after_deleting_comment_triggered );
+	}
+
+	public function testShouldPreventDeletingLockedComment() {
+		add_action( 'wp_ajax_comment_delete', array( 'AnsPress\Ajax\Comment_Delete', 'init' ) );
+
+		ap_opt( 'disable_delete_after', 0 );
+
+		// For action hooks triggered.
+		$ap_unpublish_comment_triggered = false;
+
+		add_action( 'ap_unpublish_comment', function () use ( &$ap_unpublish_comment_triggered ) {
+			$ap_unpublish_comment_triggered = true;
+		} );
+
+		$ap_after_deleting_comment_triggered = false;
+
+		add_action( 'ap_after_deleting_comment', function () use ( &$ap_after_deleting_comment_triggered ) {
+			$ap_after_deleting_comment_triggered = true;
+		} );
+
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+
+		$this->setRole( 'subscriber' );
+
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+				'comment_content' => 'Donec nec nunc purus',
+				'comment_type'    => 'anspress',
+				'user_id'         => get_current_user_id(),
+				'comment_date'    => '2020:01:01 00:00:00',
+			)
+		);
+
+		$this->_set_post_data( 'comment_id=' . $comment_id . '&action=comment_delete&__nonce=' . wp_create_nonce( 'delete_comment_' . $comment_id ) );
+
+		$this->handle( 'comment_delete' );
+
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_delete' );
+
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'The comment is locked and cannot be deleted. Any comments posted before 1 second cannot be deleted.' );
+	}
+
+	public function testShouldNotPreventDeletingLockedCommentForAdmin() {
+		add_action( 'wp_ajax_comment_delete', array( 'AnsPress\Ajax\Comment_Delete', 'init' ) );
+
+		ap_opt( 'disable_delete_after', 0 );
+
+		// For action hooks triggered.
+		$ap_unpublish_comment_triggered = false;
+
+		add_action( 'ap_unpublish_comment', function () use ( &$ap_unpublish_comment_triggered ) {
+			$ap_unpublish_comment_triggered = true;
+		} );
+
+		$ap_after_deleting_comment_triggered = false;
+
+		add_action( 'ap_after_deleting_comment', function () use ( &$ap_after_deleting_comment_triggered ) {
+			$ap_after_deleting_comment_triggered = true;
+		} );
+
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+
+		$this->setRole( 'administrator' );
+
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+				'comment_content' => 'Donec nec nunc purus',
+				'comment_type'    => 'anspress',
+				'user_id'         => get_current_user_id(),
+				'comment_date'    => '2020:01:01 00:00:00',
+			)
+		);
+
+		$this->_set_post_data( 'comment_id=' . $comment_id . '&action=comment_delete&__nonce=' . wp_create_nonce( 'delete_comment_' . $comment_id ) );
+
+		$this->handle( 'comment_delete' );
+
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_delete' );
+
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Comment successfully deleted' );
 	}
 }

@@ -15,6 +15,11 @@
 
 	</testsuites>
 
+	<logging>
+    <log type="coverage-text" target="php://stdout"/>
+    <log type="coverage-clover" target="cov.xml"/>
+  </logging>
+
 	<coverage>
 		<include>
 			<directory suffix=".php">./includes/</directory>
