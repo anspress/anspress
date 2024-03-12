@@ -32,7 +32,8 @@ if ( ! defined( 'WPINC' ) ) {
 			<?php
 				$questions = new Question_Query(
 					array(
-						'post_status' => array( 'publish', 'private_post' ),
+						'post_status'         => array( 'publish', 'private_post' ),
+						'post_status__not_in' => array( 'trash' ),
 					)
 				);
 				?>

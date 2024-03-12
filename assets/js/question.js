@@ -33,7 +33,7 @@
 			return this.postID;
 		},
 		className: function () {
-			var klass = '';
+			var klass = this.model.get( 'label' ).replaceAll( ' ', '-' ).toLowerCase();
 			if (this.model.get('header')) klass += ' ap-dropdown-header';
 			if (this.model.get('active')) klass += ' active';
 			return klass;
@@ -61,6 +61,24 @@
 				return;
 
 			e.preventDefault();
+			const string = aplang.ajax_events.replace( '%s', $( e.target ).attr( 'title' ) );
+			const apAjaxEventClass = [
+				'delete',
+				'delete-permanently',
+				'convert-to-post',
+			];
+			let eventTrigger = true;
+			$.each( apAjaxEventClass, function( i, eventClassName ) {
+				if ( $( e.target ).closest( 'li' ).hasClass( eventClassName ) ) {
+					if ( ! confirm( string ) ) {
+						eventTrigger = false;
+					}
+				}
+			} );
+			if ( ! eventTrigger ) {
+				return;
+			}
+
 			var self = this;
 			AnsPress.showLoading(e.target);
 			var cb = this.model.get('cb');
@@ -365,7 +383,6 @@
 			AnsPress.ajax({
 				data: $(e.target).data('apquery'),
 				success: function (data) {
-					console.log(data)
 					AnsPress.hideLoading(e.target);
 					$('#ap-form-main').html(data);
 					$(e.target).closest('.ap-minimal-editor').removeClass('ap-minimal-editor');
@@ -379,7 +396,9 @@
 			if (data.success && data.form === 'answer') {
 				AnsPress.trigger('answerFormPosted', data);
 				$('apanswersw').show();
-				tinymce.remove();
+				if ( typeof tinymce !== 'undefined' ) {
+					tinymce.remove();
+				}
 
 				// Clear editor contents
 				$('#ap-form-main').html('');

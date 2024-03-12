@@ -117,6 +117,7 @@ function ap_default_options() {
 		'recaptcha_site_key'            => '',
 		'recaptcha_secret_key'          => '',
 		'show_question_sidebar'         => true,
+		'show_admin_bar'                => true,
 		'allow_upload'                  => true,
 		'uploads_per_post'              => 4,
 		'question_page_slug'            => 'question',
@@ -142,6 +143,8 @@ function ap_default_options() {
 		'activity_exclude_roles'        => array(),
 		'create_account'                => true,
 		'allow_private_posts'           => true,
+		'trashing_question_with_answer' => false,
+		'deleting_question_with_answer' => false,
 	);
 
 	/**

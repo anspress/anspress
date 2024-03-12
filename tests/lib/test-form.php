@@ -118,4 +118,40 @@ class TestAnsPressForm extends TestCase {
 		$this->assertFalse( $form->submitted );
 		unset( $_REQUEST['Sample Form_nonce'], $_REQUEST['Sample Form_submit'] );
 	}
+
+	/**
+	 * @covers AnsPress\Form::get
+	 */
+	public function testGet() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$test_args = [
+			'parent' => [
+				'child' => [
+					'grand_child' => 'value',
+				],
+			],
+		];
+
+		// Test for default values.
+		$this->assertEquals( true, $form->get( 'form_tag' ) );
+		$this->assertEquals( true, $form->get( 'submit_button' ) );
+		$this->assertEquals( 'Submit', $form->get( 'submit_label' ) );
+		$this->assertEquals( false, $form->get( 'editing' ) );
+		$this->assertEquals( 0, $form->get( 'editing_id' ) );
+
+		// Test 1.
+		$this->assertEquals( [ 'child' => [ 'grand_child' => 'value' ] ], $form->get( 'parent', null, $test_args ) );
+		$this->assertEquals( [ 'grand_child' => 'value' ], $form->get( 'parent.child', null, $test_args ) );
+		$this->assertEquals( 'value', $form->get( 'parent.child.grand_child', null, $test_args ) );
+
+		// Test 2.
+		$this->assertEquals( 'default_value', $form->get( 'non_existing_parent', 'default_value', $test_args ) );
+		$this->assertEquals( 'default_value', $form->get( 'parent.non_existing_child', 'default_value', $test_args ) );
+		$this->assertEquals( 'default_value', $form->get( 'parent.child.non_existing_grand_child', 'default_value', $test_args ) );
+
+		// Test 3.
+		$this->assertNull( $form->get( 'non_existing_parent', null, $test_args ) );
+		$this->assertNull( $form->get( 'parent.non_existing_child', null, $test_args ) );
+		$this->assertNull( $form->get( 'parent.child.non_existing_grand_child', null, $test_args ) );
+	}
 }

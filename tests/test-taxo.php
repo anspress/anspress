@@ -552,4 +552,238 @@ class TestTaxo extends TestCase {
 		$result = ob_get_clean();
 		$this->assertEquals( '<div class="ap-category-defimage" style=" background:#000000;height:100px;"></div>', $result );
 	}
+
+	/**
+	 * @covers ::ap_question_categories_html
+	 */
+	public function testAPQuestionCategoriesHTML() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			]
+		);
+
+		// Test before assigning categories.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		// Test for return value.
+		$result = ap_question_categories_html( [] );
+		$this->assertNull( $result );
+
+		// Test for echoed value.
+		ob_start();
+		ap_question_categories_html( [ 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+
+		// Test after assigning categories.
+		$category_id_1 = $this->factory->term->create(
+			[
+				'name'     => 'Question category 1',
+				'taxonomy' => 'question_category',
+			]
+		);
+		$category_id_2 = $this->factory->term->create(
+			[
+				'name'     => 'Question category 2',
+				'taxonomy' => 'question_category',
+			]
+		);
+		$category_id_3 = $this->factory->term->create(
+			[
+				'name'     => 'Question category 3',
+				'taxonomy' => 'question_category',
+			]
+		);
+		wp_set_object_terms( $question_id, [ $category_id_1, $category_id_2, $category_id_3 ], 'question_category' );
+		$cat_1 = get_term_by( 'id', $category_id_1, 'question_category' );
+		$cat_2 = get_term_by( 'id', $category_id_2, 'question_category' );
+		$cat_3 = get_term_by( 'id', $category_id_3, 'question_category' );
+
+		// Test for return value.
+		// Test 1.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_categories_html( [] );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Categories', $result );
+		$this->assertStringContainsString( '<span class="question-categories">', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_1->term_id . '" href="' . esc_url( get_term_link( $category_id_1 ) ) . '" title="' . $cat_1->description . '">Question category 1</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_2->term_id . '" href="' . esc_url( get_term_link( $category_id_2 ) ) . '" title="' . $cat_2->description . '">Question category 2</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_3->term_id . '" href="' . esc_url( get_term_link( $category_id_3 ) ) . '" title="' . $cat_3->description . '">Question category 3</a>', $result );
+
+		// Test 2.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_categories_html( [ 'list' => true, 'label' => 'Available Categories', 'class' => 'categories-lists', 'tag' => 'strong' ] );
+		$this->assertNotEmpty( $result );
+		$this->assertStringNotContainsString( 'Available Categories', $result );
+		$this->assertStringContainsString( '<ul class="categories-lists">', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $category_id_1 ) ) . '" data-catid="' . $cat_1->term_id . '" title="' . $cat_1->description . '">Question category 1</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $category_id_2 ) ) . '" data-catid="' . $cat_2->term_id . '" title="' . $cat_2->description . '">Question category 2</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $category_id_3 ) ) . '" data-catid="' . $cat_3->term_id . '" title="' . $cat_3->description . '">Question category 3</a></li>', $result );
+
+		// Test 3.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_categories_html( [ 'list' => false, 'label' => 'Available Categories', 'class' => 'categories-lists', 'tag' => 'strong' ] );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Available Categories', $result );
+		$this->assertStringContainsString( '<strong class="categories-lists">', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_1->term_id . '" href="' . esc_url( get_term_link( $category_id_1 ) ) . '" title="' . $cat_1->description . '">Question category 1</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_2->term_id . '" href="' . esc_url( get_term_link( $category_id_2 ) ) . '" title="' . $cat_2->description . '">Question category 2</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_3->term_id . '" href="' . esc_url( get_term_link( $category_id_3 ) ) . '" title="' . $cat_3->description . '">Question category 3</a>', $result );
+
+		// Test for echoed value.
+		// Test 1.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_question_categories_html( [ 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Categories', $result );
+		$this->assertStringContainsString( '<span class="question-categories">', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_1->term_id . '" href="' . esc_url( get_term_link( $category_id_1 ) ) . '" title="' . $cat_1->description . '">Question category 1</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_2->term_id . '" href="' . esc_url( get_term_link( $category_id_2 ) ) . '" title="' . $cat_2->description . '">Question category 2</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_3->term_id . '" href="' . esc_url( get_term_link( $category_id_3 ) ) . '" title="' . $cat_3->description . '">Question category 3</a>', $result );
+
+		// Test 2.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_question_categories_html( [ 'list' => true, 'label' => 'Available Categories', 'class' => 'categories-lists', 'tag' => 'strong', 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringNotContainsString( 'Available Categories', $result );
+		$this->assertStringContainsString( '<ul class="categories-lists">', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $category_id_1 ) ) . '" data-catid="' . $cat_1->term_id . '" title="' . $cat_1->description . '">Question category 1</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $category_id_2 ) ) . '" data-catid="' . $cat_2->term_id . '" title="' . $cat_2->description . '">Question category 2</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $category_id_3 ) ) . '" data-catid="' . $cat_3->term_id . '" title="' . $cat_3->description . '">Question category 3</a></li>', $result );
+
+		// Test 3.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_question_categories_html( [ 'list' => false, 'label' => 'Available Categories', 'class' => 'categories-lists', 'tag' => 'strong', 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Available Categories', $result );
+		$this->assertStringContainsString( '<strong class="categories-lists">', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_1->term_id . '" href="' . esc_url( get_term_link( $category_id_1 ) ) . '" title="' . $cat_1->description . '">Question category 1</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_2->term_id . '" href="' . esc_url( get_term_link( $category_id_2 ) ) . '" title="' . $cat_2->description . '">Question category 2</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_3->term_id . '" href="' . esc_url( get_term_link( $category_id_3 ) ) . '" title="' . $cat_3->description . '">Question category 3</a>', $result );
+	}
+
+	/**
+	 * @covers ::ap_question_tags_html
+	 */
+	public function testAPQuestionTagsHTML() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			]
+		);
+
+		// Test before assigning tags.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		// Test for return value.
+		$result = ap_question_tags_html( [] );
+		$this->assertNull( $result );
+
+		// Test for echoed value.
+		ob_start();
+		ap_question_tags_html( [ 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+
+		// Test after assigning tags.
+		$tag_id_1 = $this->factory->term->create(
+			[
+				'name'     => 'Question tag 1',
+				'taxonomy' => 'question_tag',
+			]
+		);
+		$tag_id_2 = $this->factory->term->create(
+			[
+				'name'     => 'Question tag 2',
+				'taxonomy' => 'question_tag',
+			]
+		);
+		$tag_id_3 = $this->factory->term->create(
+			[
+				'name'     => 'Question tag 3',
+				'taxonomy' => 'question_tag',
+			]
+		);
+		wp_set_object_terms( $question_id, [ $tag_id_1, $tag_id_2, $tag_id_3 ], 'question_tag' );
+		$tag_1 = get_term_by( 'id', $tag_id_1, 'question_tag' );
+		$tag_2 = get_term_by( 'id', $tag_id_2, 'question_tag' );
+		$tag_3 = get_term_by( 'id', $tag_id_3, 'question_tag' );
+
+		// Test for return value.
+		// Test 1.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_tags_html( [] );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Tagged', $result );
+		$this->assertStringContainsString( '<span class="question-tags" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3</a>', $result );
+
+		// Test 2.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_tags_html( [ 'list' => true, 'label' => 'Available Tags', 'class' => 'tags-lists', 'tag' => 'strong' ] );
+		$this->assertNotEmpty( $result );
+		$this->assertStringNotContainsString( 'Available Tags', $result );
+		$this->assertStringContainsString( '<ul class="tags-lists" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1 &times; <i class="tax-count">' . $tag_1->count . '</i></a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2 &times; <i class="tax-count">' . $tag_2->count . '</i></a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3 &times; <i class="tax-count">' . $tag_3->count . '</i></a></li>', $result );
+
+		// Test 3.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_tags_html( [ 'list' => false, 'label' => 'Available Tags', 'class' => 'tags-lists', 'tag' => 'strong' ] );
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Available Tags', $result );
+		$this->assertStringContainsString( '<strong class="tags-lists" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3</a>', $result );
+
+		// Test for echoed value.
+		// Test 1.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_question_tags_html( [ 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Tagged', $result );
+		$this->assertStringContainsString( '<span class="question-tags" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3</a>', $result );
+
+		// Test 2.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_question_tags_html( [ 'list' => true, 'label' => 'Available Tags', 'class' => 'tags-lists', 'tag' => 'strong', 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringNotContainsString( 'Available Tags', $result );
+		$this->assertStringContainsString( '<ul class="tags-lists" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1 &times; <i class="tax-count">' . $tag_1->count . '</i></a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2 &times; <i class="tax-count">' . $tag_2->count . '</i></a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3 &times; <i class="tax-count">' . $tag_3->count . '</i></a></li>', $result );
+
+		// Test 3.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_question_tags_html( [ 'list' => false, 'label' => 'Available Tags', 'class' => 'tags-lists', 'tag' => 'strong', 'echo' => true ] );
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( 'Available Tags', $result );
+		$this->assertStringContainsString( '<strong class="tags-lists" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3</a>', $result );
+	}
 }

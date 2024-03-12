@@ -8,6 +8,16 @@ class TestAddonEmail extends TestCase {
 
 	use Testcases\Common;
 
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'email.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		ap_deactivate_addon( 'email.php' );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Email::instance
 	 */
@@ -71,11 +81,11 @@ class TestAddonEmail extends TestCase {
 	public function testAPDefaultOptions() {
 		$instance = \Anspress\Addons\Email::init();
 
-		// Get all available options.
-		$ap_options = ap_opt();
-
 		// Call the method.
 		$instance->ap_default_options();
+
+		// Get all available options.
+		$ap_options = ap_opt();
 
 		// Test begins.
 		$expected_options = [
@@ -106,6 +116,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testLoadOptions() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Call the method.
 		$groups = $instance->load_options( [] );
@@ -137,6 +148,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testRegisterOption() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Call the method.
 		$form = $instance->register_option();
@@ -314,6 +326,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testRegisterEmailTemplate() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Call the method.
 		$template = $instance->register_email_template();
@@ -345,6 +358,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testAPAllOptions() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Dummy options.
 		$dummy_options = [
@@ -381,6 +395,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testform_allowed_tags() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		// Test for new_question.
@@ -434,6 +449,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testGetDefaultTemplate() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		// Basic test.
@@ -472,6 +488,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateNewQuestion() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -499,6 +516,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateNewAnswer() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -526,6 +544,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateSelectAnswer() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -552,6 +571,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateNewComment() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -579,6 +599,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateEditQuestion() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -606,6 +627,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateEditAnswer() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -633,6 +655,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateTrashQuestion() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -658,6 +681,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testTemplateTrashAnswer() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$sample_template = [
@@ -683,6 +707,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testDefaultRecipients() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		$original_recipients = [ 'admin@example.com', 'webmaster@example.com', 'info@example.com' ];
@@ -706,6 +731,7 @@ class TestAddonEmail extends TestCase {
 	 */
 	public function testGetAdminEmails() {
 		$instance = \Anspress\Addons\Email::init();
+		$instance->ap_default_options();
 
 		// Test begins.
 		// Test for invalid option id.

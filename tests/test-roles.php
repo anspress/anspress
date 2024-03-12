@@ -251,6 +251,7 @@ class Test_Roles extends TestCase {
 				'post_parent'  => $qid,
 			)
 		);
+		ap_opt( 'disallow_op_to_answer', false );
 		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
 		ap_set_selected_answer( $qid, $aid );
 		$this->assertFalse( ap_user_can_answer( $qid, $user_id ) );

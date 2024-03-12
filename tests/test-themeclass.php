@@ -346,7 +346,7 @@ class TestThemeClass extends TestCase {
 		ap_set_selected_answer( $question_id, $answer_id );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		$result = \AnsPress_Theme::ap_title( 'Default Title' );
-		$this->assertEquals( 'Question Title [Solved]  | ', $result );
+		$this->assertEquals( '[Solved] Question Title  | ', $result );
 	}
 
 	/**

@@ -38,6 +38,7 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_action( 'ap_vote_removed', [ 'AnsPress_Hooks', 'update_user_vote_casted_count' ] ) );
 		$this->assertEquals( 100, has_action( 'ap_display_question_metas', [ 'AnsPress_Hooks', 'display_question_metas' ] ) );
 		$this->assertEquals( 10, has_action( 'widget_comments_args', [ 'AnsPress_Hooks', 'widget_comments_args' ] ) );
+		$this->assertEquals( 10, has_action( 'show_admin_bar', [ 'AnsPress_Hooks', 'show_admin_bar' ] ) );
 
 		// Filter hooks.
 		$this->assertEquals( 1, has_filter( 'posts_clauses', [ 'AP_QA_Query_Hooks', 'sql_filter' ] ) );
@@ -82,7 +83,7 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_filter( 'request', [ 'AnsPress_Rewrite', 'alter_the_query' ] ) );
 		$this->assertEquals( 10, has_filter( 'query_vars', [ 'AnsPress_Rewrite', 'query_var' ] ) );
 		$this->assertEquals( 1, has_action( 'generate_rewrite_rules', [ 'AnsPress_Rewrite', 'rewrites' ] ) );
-		$this->assertEquals( 10, has_filter( 'paginate_links', [ 'AnsPress_Rewrite', 'bp_com_paged' ] ) );
+		$this->assertEquals( 10, has_filter( 'paginate_links', [ 'AnsPress_Rewrite', 'pagination_fix' ] ) );
 		$this->assertEquals( 10, has_filter( 'parse_request', [ 'AnsPress_Rewrite', 'add_query_var' ] ) );
 		$this->assertEquals( 10, has_action( 'template_redirect', [ 'AnsPress_Rewrite', 'shortlink' ] ) );
 
@@ -404,5 +405,44 @@ class TestHooks extends TestCase {
 		ap_opt( 'ap_flush', 'false' );
 		$this->assertEquals( 'false', ap_opt( 'ap_flush' ) );
 		$this->assertNull( \AnsPress_Hooks::flush_rules() );
+	}
+
+	/**
+	 * @covers AnsPress_Hooks::show_admin_bar
+	 */
+	public function testShowAdminBar() {
+		$this->assertEquals( 10, has_action( 'show_admin_bar', [ 'AnsPress_Hooks', 'show_admin_bar' ] ) );
+
+		// Test begins.
+		// Test 1.
+		$this->assertTrue( \AnsPress_Hooks::show_admin_bar() );
+
+		// Test 2.
+		ap_opt( 'show_admin_bar', false );
+		$this->assertFalse( \AnsPress_Hooks::show_admin_bar() );
+
+		// Test 3.
+		add_filter( 'ap_show_admin_bar', '__return_true' );
+		$this->assertTrue( \AnsPress_Hooks::show_admin_bar() );
+		remove_filter( 'ap_show_admin_bar', '__return_true' );
+		$this->assertFalse( \AnsPress_Hooks::show_admin_bar() );
+
+		// Test 4.
+		if ( \is_multisite() ) {
+			$this->setRole( 'administrator' );
+
+			// Before granting super admin role.
+			$this->assertFalse( \AnsPress_Hooks::show_admin_bar() );
+
+			// After granting super admin role.
+			grant_super_admin( get_current_user_id() );
+			$this->assertTrue( \AnsPress_Hooks::show_admin_bar() );
+		} else {
+			$this->setRole( 'administrator' );
+			$this->assertTrue( \AnsPress_Hooks::show_admin_bar() );
+		}
+
+		// Reset the option.
+		ap_opt( 'show_admin_bar', true );
 	}
 }

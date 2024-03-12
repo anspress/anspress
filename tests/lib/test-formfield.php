@@ -137,7 +137,7 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertFalse( $field->have_errors() );
 
 		// Test 2.
-		$field->errors = [ 'error' ];
+		$field->errors['test-error'] = 'Test error message';
 		$this->assertTrue( $field->have_errors() );
 	}
 
@@ -267,5 +267,1105 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertEquals( $default_output_order, $property->getValue( $field ) );
 		$this->assertNotEquals( $custom_output_order, $property->getValue( $field ) );
 		$this->assertNotEquals( $new_custom_output_order, $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::get
+	 */
+	public function testGet() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'sanitize_cb',
+			'validate' => 'validate_cb',
+			'value'    => 'Test Value',
+			'type'     => 'text',
+		] );
+		$test_args = [
+			'parent' => [
+				'child' => [
+					'grand_child' => 'value',
+				],
+			],
+		];
+
+		// Test for default values.
+		$this->assertEquals( 'Test Value', $field->get( 'value' ) );
+		$this->assertEquals( 'text', $field->get( 'type' ) );
+		$this->assertEquals( 'sanitize_cb', $field->get( 'sanitize' ) );
+		$this->assertEquals( 'validate_cb', $field->get( 'validate' ) );
+
+		// Test 1.
+		$this->assertEquals( [ 'child' => [ 'grand_child' => 'value' ] ], $field->get( 'parent', null, $test_args ) );
+		$this->assertEquals( [ 'grand_child' => 'value' ], $field->get( 'parent.child', null, $test_args ) );
+		$this->assertEquals( 'value', $field->get( 'parent.child.grand_child', null, $test_args ) );
+
+		// Test 2.
+		$this->assertEquals( 'default_value', $field->get( 'non_existing_parent', 'default_value', $test_args ) );
+		$this->assertEquals( 'default_value', $field->get( 'parent.non_existing_child', 'default_value', $test_args ) );
+		$this->assertEquals( 'default_value', $field->get( 'parent.child.non_existing_grand_child', 'default_value', $test_args ) );
+
+		// Test 3.
+		$this->assertNull( $field->get( 'non_existing_parent', null, $test_args ) );
+		$this->assertNull( $field->get( 'parent.non_existing_child', null, $test_args ) );
+		$this->assertNull( $field->get( 'parent.child.non_existing_grand_child', null, $test_args ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::unsafe_value
+	 */
+	public function testUnsafeValue() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test 1.
+		$_REQUEST = 'Request Value';
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 2.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'Request Value',
+			],
+		];
+		$this->assertEquals( 'Request Value', $field->unsafe_value() );
+
+		// Test 3.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => 'Request Value',
+					],
+				],
+			],
+		];
+		$this->assertEquals( [ 'child' => [ 'grand_child' => 'Request Value' ] ], $field->unsafe_value() );
+
+		// Test 4.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '',
+			],
+		];
+		$this->assertEquals( '', $field->unsafe_value() );
+
+		// Test 5.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '\\\\ This is a test value \\\\',
+			],
+		];
+		$this->assertEquals( '\\ This is a test value \\', $field->unsafe_value() );
+
+		// Test 6.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => '\\\\ This is a test value \\\\',
+					],
+				],
+			],
+		];
+		$this->assertEquals( [ 'child' => [ 'grand_child' => '\\ This is a test value \\' ] ], $field->unsafe_value() );
+
+		// Test 7.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '     Request value     ',
+			],
+		];
+		$this->assertEquals( '     Request value     ', $field->unsafe_value() );
+
+		// Test 8.
+		$_REQUEST = [
+			'Sample Form' => 'Request value',
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 9.
+		$_REQUEST = [
+			'Test Form' => [
+				'sample-form' => 'Request value',
+			],
+		];
+		$this->assertNull( $field->unsafe_value() );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::isset_value
+	 */
+	public function testIssetValue() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+
+		// Test 1.
+		$_REQUEST = 'Request Value';
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 2.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'Request Value',
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 3.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => 'Request Value',
+					],
+				],
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 4.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '',
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 5.
+		$_REQUEST = [
+			'Sample Form' => 'Request value',
+		];
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 6.
+		$_REQUEST = [
+			'Test Form' => [
+				'sample-form' => 'Request value',
+			],
+		];
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 7.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => null,
+			],
+		];
+		$this->assertFalse( $field->isset_value() );
+
+		// Test 8.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => null,
+					],
+				],
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 9.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'child' => [
+						'grand_child' => '',
+					],
+				],
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+
+		// Test 10.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '<script>alert("Hello World!");</script>',
+			],
+		];
+		$this->assertTrue( $field->isset_value() );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::sanitize_cb
+	 */
+	public function testSanitizeCB() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'sanitize_cb' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'sanitize_cb' );
+		$property->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$property->setValue( $field, [] );
+		$sanitize_args = [ 'callback1', 'callback2' ];
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $sanitize_args, $property->getValue( $field ) );
+
+		// Test 2.
+		$property->setValue( $field, [] );
+		$sanitize_args = 'callback1,callback2';
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 3.
+		$property->setValue( $field, [] );
+		$sanitize_args = [ 'callback1', 'callback2', 'callback2' ];
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 4.
+		$property->setValue( $field, [] );
+		$sanitize_args = 'callback1,callback2,callback2';
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 5.
+		$property->setValue( $field, [] );
+		$sanitize_args = '';
+		$field->args['sanitize'] = $sanitize_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Reset the property value.
+		$property->setValue( $field, [] );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::validate_cb
+	 */
+	public function testValidateCB() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'validate_cb' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'validate_cb' );
+		$property->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$property->setValue( $field, [] );
+		$validate_args = [ 'callback1', 'callback2' ];
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( $validate_args, $property->getValue( $field ) );
+
+		// Test 2.
+		$property->setValue( $field, [] );
+		$validate_args = 'callback1,callback2';
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 3.
+		$property->setValue( $field, [] );
+		$validate_args = [ 'callback1', 'callback2', 'callback2' ];
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 4.
+		$property->setValue( $field, [] );
+		$validate_args = 'callback1,callback2,callback2';
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEquals( [ 'callback1', 'callback2' ], $property->getValue( $field ) );
+
+		// Test 5.
+		$property->setValue( $field, [] );
+		$validate_args = '';
+		$field->args['validate'] = $validate_args;
+		$method->invoke( $field );
+		$this->assertIsArray( $property->getValue( $field ) );
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Reset the property value.
+		$property->setValue( $field, [] );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::form
+	 */
+	public function testForm() {
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$this->assertInstanceOf( 'AnsPress\Form', $field->form() );
+		$this->assertEquals( anspress()->forms['Sample Form'], $field->form() );
+		$this->assertEquals( 'Sample Form', $field->form()->form_name );
+
+		// Test 2.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Test Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$this->assertInstanceOf( 'AnsPress\Form', $field->form() );
+		$this->assertEquals( anspress()->forms['Sample Form'], $field->form() );
+		$this->assertEquals( 'Test Form', $field->form()->form_name );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Unknown Form', 'Unknown-form', [] );
+		$this->expectException( \Exception::class );
+		$this->expectExceptionMessage( 'Requested form: Unknown Form is not registered .' );
+		$field->form();
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::desc
+	 */
+	public function testDesc() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => 'Test Description',
+			'type'  => 'editor',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc">Test Description</div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<strong>Test Description<strong>',
+			'type'  => 'textarea',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc"><strong>Test Description<strong></div>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<script>alert("Malicious Script");</script>Test Description',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc">alert("Malicious Script");Test Description</div>', $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<i class="italic-text">Test Description</i>',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc"><i class="italic-text">Test Description</i></div>', $property->getValue( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'desc'  => '<anspress><p><hr class="line">Test Description<br /></p></anspress>',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->desc();
+		$this->assertStringContainsString( '<div class="ap-field-desc"><p><hr class="line">Test Description<br /></p></div>', $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::id
+	 */
+	public function testID() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->field_id = '';
+		$result = $field->id();
+		$this->assertEquals( 'SampleForm-sample-form', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [] );
+		$field->field_id = '';
+		$result = $field->id( 'Form [ID]' );
+		$this->assertEquals( 'Form-ID', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'New Form', 'new-form', [] );
+		$field->field_id = 'Test-ID';
+		$result = $field->id();
+		$this->assertEquals( 'Test-ID', $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$field->field_id = '';
+		$result = $field->id();
+		$this->assertEquals( 'AnotherForm-another-form', $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$field->field_id = '';
+		$result = $field->id( 'Form---[ID]---' );
+		$this->assertEquals( 'Form-ID', $result );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Another ----- Form -----[]', 'another-form', [] );
+		$field->field_id = '';
+		$result = $field->id();
+		$this->assertEquals( 'Another-Form-another-form', $result );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$field->field_id = 'another-----form-----';
+		$result = $field->id();
+		$this->assertEquals( 'another-----form-----', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::label
+	 */
+	public function testLabel() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => 'Test Label',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="SampleForm-sample-form">Test Label</label>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [
+			'label' => '<h2>Test Label</h2>',
+			'type'  => 'textarea',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="TestForm-test-form">&lt;h2&gt;Test Label&lt;/h2&gt;</label>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'label' => '<script>alert("Malicious Script");</script>Test Label',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$field->field_id = 'custom-form-id';
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="custom-form-id">&lt;script&gt;alert(&quot;Malicious Script&quot;);&lt;/script&gt;Test Label</label>', $property->getValue( $field ) );
+		$field->field_id = '';
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'test-form', [
+			'label' => '<i class="italic-text">Test Label</i>',
+			'type'  => 'text',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->label();
+		$this->assertStringContainsString( '<label class="ap-form-label" for="SampleForm-test-form">&lt;i class=&quot;italic-text&quot;&gt;Test Label&lt;/i&gt;</label>', $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::get_attr
+	 */
+	public function testGetAttr() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_attr' );
+		$method->setAccessible( true );
+
+		// Test begins.
+		// Test 1.
+		$array = [
+			'key-1' => 'value-1',
+			'key-2' => 'value-2',
+		];
+		$result = $method->invoke( $field, $array );
+		$expected = ' key-1="value-1" key-2="value-2"';
+		$this->assertEquals( $expected, $result );
+
+		// Test 2.
+		$array = [
+			'key-1' => 'value-1',
+			'key-2' => 'value-2',
+			'key-3' => '',
+		];
+		$result = $method->invoke( $field, $array );
+		$expected = ' key-1="value-1" key-2="value-2" key-3=""';
+		$this->assertEquals( $expected, $result );
+
+		// Test 3.
+		$array = [];
+		$result = $method->invoke( $field, $array );
+		$this->assertEmpty( $result );
+
+		// Test 4.
+		$array = 'invalid array';
+		$result = $method->invoke( $field, $array );
+		$this->assertEmpty( $result );
+
+		// Test 5.
+		$array = [
+			'key-1' => 'Value 1',
+		];
+		$result = $method->invoke( $field, $array );
+		$expected = ' key-1="Value 1"';
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::common_attr
+	 */
+	public function testCommonAttr() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => 'test-class',
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control test-class"', $result );
+		$this->assertEquals( ' name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control test-class"', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => 'test-class another-class',
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$field->field_id = 'custom-form-id';
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control test-class another-class"', $result );
+		$this->assertEquals( ' name="Sample Form[sample-form]" id="custom-form-id" class="ap-form-control test-class another-class"', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => 'another-class',
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$field->field_id = 'form-id';
+		$field->field_name = 'Form Name';
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control another-class"', $result );
+		$this->assertEquals( ' name="Form Name" id="form-id" class="ap-form-control another-class"', $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'class' => '',
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control "', $result );
+		$this->assertEquals( ' name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "', $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'common_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertStringContainsString( 'class="ap-form-control "', $result );
+		$this->assertEquals( ' name="Test Form[test-form]" id="TestForm-test-form" class="ap-form-control "', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::custom_attr
+	 */
+	public function testCustomAttr() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => [
+				'placeholder' => 'Test Placeholder',
+			],
+			'type'  => 'text',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEquals( ' placeholder="Test Placeholder"', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => [
+				'placeholder' => 'Test Placeholder',
+				'data-text'   => 'Sample Text',
+				'rows'        => '10',
+			],
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEquals( ' placeholder="Test Placeholder" data-text="Sample Text" rows="10"', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => [],
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'attr' => 'invalid array',
+			'type'  => 'textarea',
+			'label' => 'Test Label',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'custom_attr' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::prepare
+	 */
+	public function testPrepare() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'prepare' );
+		$method->setAccessible( true );
+		$sanitize_cb = $reflection->getProperty( 'sanitize_cb' );
+		$sanitize_cb->setAccessible( true );
+		$validate_cb = $reflection->getProperty( 'validate_cb' );
+		$validate_cb->setAccessible( true );
+
+		// Test begins.
+		$sanitize_args = [ 'callback1', 'callback2' ];
+		$validate_args = [ 'callback1', 'callback2' ];
+		$field->args['sanitize'] = $sanitize_args;
+		$field->args['validate'] = $validate_args;
+
+		// Before calling the method.
+		$this->assertEmpty( $sanitize_cb->getValue( $field ) );
+		$this->assertEmpty( $validate_cb->getValue( $field ) );
+
+		// After calling the method.
+		$method->invoke( $field );
+		$this->assertNotEmpty( $sanitize_cb->getValue( $field ) );
+		$this->assertEquals( $sanitize_args, $sanitize_cb->getValue( $field ) );
+		$this->assertNotEmpty( $validate_cb->getValue( $field ) );
+		$this->assertEquals( $validate_args, $validate_cb->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::value
+	 */
+	public function testValue() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$result = $field->value( 'Test Value' );
+		$this->assertEquals( 'Test Value', $field->value );
+		$this->assertTrue( $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->value = 'This is the default value';
+		$result = $field->value();
+		$this->assertEquals( 'This is the default value', $result );
+		$this->assertNotTrue( $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->value = 'This is the default value';
+		$result = $field->value( 'New Value' );
+		$this->assertEquals( 'New Value', $field->value );
+		$this->assertTrue( $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'email',
+		] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'user1@example.com',
+			],
+		];
+		$result = $field->value();
+		$this->assertEquals( 'user1@example.com', $result );
+		$this->assertNotTrue( $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'email',
+		] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'invalid-email',
+			],
+		];
+		$result = $field->value();
+		$this->assertEmpty( $result );
+		$this->assertNotTrue( $result );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'sanitize' => 'email',
+		] );
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'user1@example.com',
+			],
+		];
+		$result = $field->value( 'Test Email' );
+		$this->assertEquals( 'Test Email', $result );
+		$this->assertTrue( $result );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'value' => 'This is test value passed within form',
+		] );
+		$result = $field->value();
+		$this->assertEquals( 'This is test value passed within form', $result );
+		$this->assertNotTrue( $result );
+
+		// Test 8.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'value' => 'This is test value passed within form',
+		] );
+		$result = $field->value( 'New Value' );
+		$this->assertEquals( 'New Value', $field->value );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::wrapper_start
+	 */
+	public function testWrapperStart() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_start' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '<div class="ap-form-group ap-field-SampleForm-sample-form ap-field-type-input ">', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_start' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '<div class="ap-form-group ap-field-SampleForm-sample-form ap-field-type-input custom-wrapper">', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+				'attr'  => [
+					'data-attr'   => 'test-attr',
+					'placeholder' => 'Test Placeholder',
+				],
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_start' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '<div class="ap-form-group ap-field-SampleForm-sample-form ap-field-type-input custom-wrapper" data-attr="test-attr" placeholder="Test Placeholder">', $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_start' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+				'attr'  => [
+					'data-attr'   => 'test-attr',
+					'placeholder' => 'Test Placeholder',
+				],
+			],
+		] );
+		$field->errors[ 'test-error' ] = 'Test Error';
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_start' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '<div class="ap-form-group ap-field-SampleForm-sample-form ap-field-type-input ap-have-errors custom-wrapper" data-attr="test-attr" placeholder="Test Placeholder">', $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::wrapper_end
+	 */
+	public function testWrapperEnd() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_end' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '</div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_end' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEquals( '</div>', $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'wrapper_end' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$method->invoke( $field );
+		$this->assertEmpty( $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::add_error
+	 */
+	public function testAddError() {
+		// Test 1.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$error_code = 'test-error';
+		$error_message = 'Test Error';
+		$field->add_error( $error_code, $error_message );
+		$this->assertEquals( [ $error_code => $error_message ], $field->errors );
+		$this->assertEquals( [ 'fields-error' => 'Error found in fields, please check and re-submit' ], anspress()->forms['Sample Form']->errors );
+
+		// Test 2.
+		anspress()->forms['Test Form'] = new \AnsPress\Form( 'Test Form', [] );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', [] );
+		$error_code = 'new-error';
+		$error_message = 'New Error';
+		$field->add_error( $error_code, $error_message );
+		$this->assertEquals( [ $error_code => $error_message ], $field->errors );
+		$this->assertEquals( [ 'fields-error' => 'Error found in fields, please check and re-submit' ], anspress()->forms['Sample Form']->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::errors
+	 */
+	public function testErrors() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"></div>', $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEmpty( $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->errors['required'] = 'This field is required';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"><div class="ap-field-errors"><span class="ap-field-error ecode-required">This field is required</span></div></div>', $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => [
+				'class' => 'custom-wrapper',
+				'atts'  => [
+					'data-attr'   => 'test-attr',
+					'placeholder' => 'Test Placeholder',
+				],
+			],
+		] );
+		$field->errors['required'] = 'This field is required';
+		$field->errors['invalid'] = 'Invalid value';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"><div class="ap-field-errors"><span class="ap-field-error ecode-required">This field is required</span><span class="ap-field-error ecode-invalid">Invalid value</span></div></div>', $property->getValue( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->errors = [];
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"></div>', $property->getValue( $field ) );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
+		$field->errors['invalid'] = 'Invalid value';
+		$field->errors['test'] = 'This is test error';
+		$field->errors['new-error'] = 'New error message';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errorsc"><div class="ap-field-errors"><span class="ap-field-error ecode-invalid">Invalid value</span><span class="ap-field-error ecode-test">This is test error</span><span class="ap-field-error ecode-new-error">New error message</span></div></div>', $property->getValue( $field ) );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'wrapper' => false,
+		] );
+		$field->errors['invalid'] = 'Invalid value';
+		$field->errors['test'] = 'This is test error';
+		$field->errors['new-error'] = 'New error message';
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->errors();
+		$this->assertEquals( '<div class="ap-field-errors"><span class="ap-field-error ecode-invalid">Invalid value</span><span class="ap-field-error ecode-test">This is test error</span><span class="ap-field-error ecode-new-error">New error message</span></div>', $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::__construct
+	 */
+	public function testConstruct() {
+		// Test 1.
+		$args = [
+			'label' => 'Test Label',
+			'desc'  => 'Test Description',
+			'type'  => 'text',
+			'value' => 'Test Value',
+		];
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', $args );
+		$this->assertEquals( 'Sample Form', $field->form_name );
+		$this->assertEquals( 'Sample Form[sample-form]', $field->field_name );
+		$this->assertEquals( 'sample-form', $field->original_name );
+		$this->assertEquals( $args, $field->args );
+		$this->assertEquals( 'SampleForm-sample-form', $field->field_id );
+
+		// Test 2.
+		$args = [
+			'label'   => 'Sample Form Label',
+			'desc'    => 'Sample Form Description',
+			'type'    => 'text',
+			'subtype' => 'email',
+			'value'   => 'user1@example.com',
+		];
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-form', $args );
+		$this->assertEquals( 'Test Form', $field->form_name );
+		$this->assertEquals( 'Test Form[test-form]', $field->field_name );
+		$this->assertEquals( 'test-form', $field->original_name );
+		$this->assertEquals( $args, $field->args );
+		$this->assertEquals( 'TestForm-test-form', $field->field_id );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Another Form', 'another-form', [] );
+		$this->assertEquals( 'Another Form', $field->form_name );
+		$this->assertEquals( 'Another Form[another-form]', $field->field_name );
+		$this->assertEquals( 'another-form', $field->original_name );
+		$this->assertEmpty( $field->args );
+		$this->assertEquals( 'AnotherForm-another-form', $field->field_id );
 	}
 }

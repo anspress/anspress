@@ -68,6 +68,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'join_by_author_name' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'get_pages' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'modify_answer_title' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Admin', 'append_post_status_list_edit' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'append_post_status_list' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'anspress_notice' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin', 'check_pages_exists' ) );
@@ -97,6 +98,9 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( '#adminmenu .anspress-license-count', $output );
 		$this->assertStringContainsString( 'background: #0073aa;', $output );
+		$this->assertStringContainsString( '<script type="text/javascript">', $output );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $output );
+		$this->assertStringContainsString( '$( \'#anspress-submenu-external-link\' ).parent().attr( \'target\', \'_blank\' )', $output );
 	}
 
 	/**
@@ -710,7 +714,7 @@ class TestAnsPressAdmin extends TestCase {
 		// Test for max_upload_size field.
 		$this->assertArrayHasKey( 'max_upload_size', $form['fields'] );
 		$this->assertEquals( 'Max upload size', $form['fields']['max_upload_size']['label'] );
-		$this->assertEquals( 'Set maximum upload size.', $form['fields']['max_upload_size']['desc'] );
+		$this->assertEquals( 'Set maximum upload size in bytes.', $form['fields']['max_upload_size']['desc'] );
 		$this->assertEquals( ap_opt( 'max_upload_size' ), $form['fields']['max_upload_size']['value'] );
 
 		// Test for allow_private_posts field.
@@ -719,6 +723,20 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', $form['fields']['allow_private_posts']['desc'] );
 		$this->assertEquals( 'checkbox', $form['fields']['allow_private_posts']['type'] );
 		$this->assertEquals( ap_opt( 'allow_private_posts' ), $form['fields']['allow_private_posts']['value'] );
+
+		// Test for trashing_question_with_answer field.
+		$this->assertArrayHasKey( 'trashing_question_with_answer', $form['fields'] );
+		$this->assertEquals( 'Trashing Question', $form['fields']['trashing_question_with_answer']['label'] );
+		$this->assertEquals( 'Disable trashing the question if there are answers already available to the question.', $form['fields']['trashing_question_with_answer']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['trashing_question_with_answer']['type'] );
+		$this->assertEquals( ap_opt( 'trashing_question_with_answer' ), $form['fields']['trashing_question_with_answer']['value'] );
+
+		// Test for deleting_question_with_answer field.
+		$this->assertArrayHasKey( 'deleting_question_with_answer', $form['fields'] );
+		$this->assertEquals( 'Deleting Question', $form['fields']['deleting_question_with_answer']['label'] );
+		$this->assertEquals( 'Disable deleting the question permanently if there are answers already available to the question.', $form['fields']['deleting_question_with_answer']['desc'] );
+		$this->assertEquals( 'checkbox', $form['fields']['deleting_question_with_answer']['type'] );
+		$this->assertEquals( ap_opt( 'deleting_question_with_answer' ), $form['fields']['deleting_question_with_answer']['value'] );
 	}
 
 	/**
@@ -924,6 +942,43 @@ class TestAnsPressAdmin extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress_Admin::append_post_status_list_edit
+	 */
+	public function testAppendPostStatusListEdit() {
+		global $post;
+
+		// Test 1.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post = get_post( $question_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list_edit();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<script>', $output );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>Moderate</option>" );', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>Private Post</option>" );', $output );
+
+		// Test 2.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post = get_post( $answer_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list_edit();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<script>', $output );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'moderate\'>Moderate</option>" );', $output );
+		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>Private Post</option>" );', $output );
+
+		// Test 3.
+		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$post = get_post( $page_id );
+		ob_start();
+		\AnsPress_Admin::append_post_status_list_edit();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+	}
+
+	/**
 	 * @covers AnsPress_Admin::append_post_status_list
 	 */
 	public function testAppendPostStatusList() {
@@ -938,10 +993,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'moderate\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Moderate</span>', $output );
+		$this->assertStringContainsString( '<option value=\'moderate\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Moderate" );', $output );
 
 		// Test 2.
 		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
@@ -951,10 +1007,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
+		$this->assertStringContainsString( '<option value=\'private_post\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Private Post" );', $output );
 
 		// Test for answer post type.
 		// Test 1.
@@ -965,10 +1022,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'moderate\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Moderate</span>', $output );
+		$this->assertStringContainsString( '<option value=\'moderate\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Moderate" );', $output );
 
 		// Test 2.
 		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'private_post' ] );
@@ -978,10 +1036,11 @@ class TestAnsPressAdmin extends TestCase {
 		$output = ob_get_clean();
 		$this->assertStringContainsString( 'Moderate', $output );
 		$this->assertStringContainsString( 'Private Post', $output );
-		$this->assertStringContainsString( 'jQuery("select#post_status")', $output );
-		$this->assertStringContainsString( 'jQuery(".misc-pub-section label")', $output );
-		$this->assertStringContainsString( '<option value=\'private_post\'  selected=\'selected\'>', $output );
-		$this->assertStringContainsString( '<span id=\'post-status-display\'>Private Post</span>', $output );
+		$this->assertStringContainsString( '<option value=\'private_post\' selected=\'selected\'>', $output );
+		$this->assertStringContainsString( 'jQuery( "select#post_status" )', $output );
+		$this->assertStringContainsString( '.closest( ".misc-pub-section" )', $output );
+		$this->assertStringContainsString( '.find( "#post-status-display" )', $output );
+		$this->assertStringContainsString( '.html( "Private Post" );', $output );
 	}
 
 	/**
@@ -1118,7 +1177,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">2</span></span>', $counts['question'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['answer'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">3</span></span>', $counts['flagged'] );
-		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">6</span></span>', $counts['total'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">3</span></span>', $counts['total'] );
 
 		// Test after removing the flag.
 		// Test 1.
@@ -1128,7 +1187,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( '', $counts['question'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['answer'] );
 		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['flagged'] );
-		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">2</span></span>', $counts['total'] );
+		$this->assertEquals( ' <span class="update-plugins count ap-menu-counts"><span class="plugin-count">1</span></span>', $counts['total'] );
 
 		// Test 2.
 		ap_delete_flags( $a_id3 );
@@ -1282,7 +1341,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( '<ul id="anspress-checklist-pop" class="categorychecklist form-no-clear" >', $output );
 		$this->assertStringContainsString( '<p class="button-controls">', $output );
 		$this->assertStringContainsString( '<span class="list-controls">', $output );
-		$this->assertStringContainsString( '#anspress-menu-mb" class="select-all"', $output );
+		$this->assertStringContainsString( '#anspress-menu-mb" class="select-all anspress-menu-mb"', $output );
 		$this->assertStringContainsString( 'Select All', $output );
 		$this->assertStringContainsString( '<span class="add-to-menu">', $output );
 		$this->assertStringContainsString( 'class="button-secondary submit-add-to-menu right" value="Add to Menu" name="add-anspress-menu-item" id="submit-anspress-div"', $output );

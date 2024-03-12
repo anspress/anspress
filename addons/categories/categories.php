@@ -389,8 +389,15 @@ class Categories extends \AnsPress\Singleton {
 	public function term_link_filter( $url, $term, $taxonomy ) {
 		if ( 'question_category' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) !== '' ) {
-				$opt = get_option( 'ap_categories_path', 'categories' );
-				return home_url( $opt ) . '/' . $term->slug . '/';
+				$opt          = get_option( 'ap_categories_path', 'categories' );
+				$default_lang = '';
+
+				// Support polylang permalink.
+				if ( function_exists( 'pll_default_language' ) ) {
+					$default_lang = pll_get_term_language( $term->term_id ) ? pll_get_term_language( $term->term_id ) : pll_default_language();
+				}
+
+				return home_url( $default_lang . '/' . $opt ) . '/' . $term->slug . '/';
 			} else {
 				return add_query_arg(
 					array(
@@ -548,8 +555,8 @@ class Categories extends \AnsPress\Singleton {
 		<div class='form-field term-image-wrap'>
 			<label for='ap_image'><?php esc_attr_e( 'Image', 'anspress-question-answer' ); ?></label>
 			<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="<?php esc_attr_e( 'Upload image', 'anspress-question-answer' ); ?>" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id"><?php esc_attr_e( 'Upload image', 'anspress-question-answer' ); ?></a>
-			<input id="ap_category_media_url" type="hidden" name="ap_category_image_url" value="">
-			<input id="ap_category_media_id" type="hidden" name="ap_category_image_id" value="">
+			<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="">
+			<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="">
 
 			<p class="description"><?php esc_attr_e( 'Category image', 'anspress-question-answer' ); ?></p>
 		</div>
@@ -557,7 +564,23 @@ class Categories extends \AnsPress\Singleton {
 		<div class='form-field term-image-wrap'>
 			<label for='ap_icon'><?php esc_attr_e( 'Category icon class', 'anspress-question-answer' ); ?></label>
 			<input id="ap_icon" type="text" name="ap_icon" value="">
-			<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+			<p class="description">
+				<?php
+				echo wp_kses(
+					sprintf(
+						/* translators: %s Link to font icon class. */
+						__( 'Font icon class, if image not set. Find our official list of icons from <a href="%s" target="_blank">here</a>.', 'anspress-question-answer' ),
+						esc_url( 'https://htmlpreview.github.io/?https://github.com/anspress/anspress/blob/3.0.7/theme/default/fonts/demo.html' )
+					),
+					array(
+						'a' => array(
+							'href'   => array(),
+							'target' => array(),
+						),
+					)
+				);
+				?>
+			</p>
 		</div>
 
 		<div class='form-field term-image-wrap'>
@@ -607,7 +630,10 @@ class Categories extends \AnsPress\Singleton {
 					<input id="ap_category_media_url" type="hidden" data-action="ap_media_value" name="ap_category_image_url" value="<?php echo esc_url( $term_meta['image']['url'] ); ?>">
 
 					<input id="ap_category_media_id" type="hidden" data-action="ap_media_value" name="ap_category_image_id" value="<?php echo esc_attr( $term_meta['image']['id'] ); ?>">
-					<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
+
+					<?php if ( is_array( $term_meta ) && ! empty( $term_meta['image'] ) && ! empty( $term_meta['image']['url'] ) ) { ?>
+						<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove"><?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?></a>
+					<?php } ?>
 
 					<p class='description'><?php esc_attr_e( 'Featured image for category', 'anspress-question-answer' ); ?></p>
 				</td>
@@ -618,16 +644,32 @@ class Categories extends \AnsPress\Singleton {
 				</th>
 				<td>
 					<input id="ap_icon" type="text" name="ap_icon" value="<?php echo esc_attr( $term_meta['icon'] ); ?>">
-					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+					<p class="description">
+						<?php
+						echo wp_kses(
+							sprintf(
+								/* translators: %s Link to font icon class. */
+								__( 'Font icon class, if image not set. Find our official list of icons from <a href="%s" target="_blank">here</a>.', 'anspress-question-answer' ),
+								esc_url( 'https://htmlpreview.github.io/?https://github.com/anspress/anspress/blob/3.0.7/theme/default/fonts/demo.html' )
+							),
+							array(
+								'a' => array(
+									'href'   => array(),
+									'target' => array(),
+								),
+							)
+						);
+						?>
+					</p>
 				</td>
 			</tr>
 			<tr class='form-field term-name-wrap'>
 				<th scope='row'>
-					<label for='ap-category-color'><?php esc_attr_e( 'Category icon color', 'anspress-question-answer' ); ?></label>
+					<label for='ap-category-color'><?php esc_attr_e( 'Icon background color', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
 					<input id="ap-category-color" type="text" name="ap_color" value="<?php echo esc_attr( $term_meta['color'] ); ?>">
-					<p class="description"><?php esc_attr_e( 'Font icon class, if image not set', 'anspress-question-answer' ); ?></p>
+					<p class="description"><?php esc_attr_e( 'Set background color to be used with icon', 'anspress-question-answer' ); ?></p>
 					<script type="text/javascript">
 						jQuery(document).ready(function(){
 							jQuery('#ap-category-color').wpColorPicker();
@@ -657,7 +699,7 @@ class Categories extends \AnsPress\Singleton {
 				$term_meta = array( 'image' => array() );
 			}
 
-			if ( ! is_array( $term_meta['image'] ) ) {
+			if ( isset( $term_meta['image'] ) && ! is_array( $term_meta['image'] ) ) {
 				$term_meta['image'] = array();
 			}
 
@@ -715,10 +757,12 @@ class Categories extends \AnsPress\Singleton {
 	public function rewrite_rules( $rules, $slug, $base_page_id ) {
 		$base_slug = get_page_uri( ap_opt( 'categories_page' ) );
 		update_option( 'ap_categories_path', $base_slug, true );
+		$lang_rule    = str_replace( ap_base_page_slug() . '/', '', $slug );
+		$lang_rewrite = str_replace( ap_opt( 'base_page' ), '', $base_page_id );
 
 		$cat_rules = array(
-			$base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => 'index.php?question_category=$matches[#]&paged=$matches[#]&ap_page=category',
-			$base_slug . '/([^/]+)/?$'                   => 'index.php?question_category=$matches[#]&ap_page=category',
+			$lang_rule . $base_slug . '/([^/]+)/page/?([0-9]{1,})/?$' => $lang_rewrite . 'index.php?question_category=$matches[#]&paged=$matches[#]&ap_page=category',
+			$lang_rule . $base_slug . '/([^/]+)/?$' => $lang_rewrite . 'index.php?question_category=$matches[#]&ap_page=category',
 		);
 
 		return $cat_rules + $rules;

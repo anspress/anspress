@@ -53,8 +53,20 @@ class AnsPress_Breadcrumbs_Widget extends WP_Widget {
 
 		if ( is_question() ) {
 			$a['page'] = array(
-				'title' => $title,
+				'title' => get_the_title(),
 				'link'  => get_permalink( get_question_id() ),
+				'order' => 10,
+			);
+		} elseif ( 'ask' === $current_page ) {
+			$a['page'] = array(
+				'title' => get_the_title(),
+				'link'  => ap_get_link_to( 'ask' ),
+				'order' => 10,
+			);
+		} elseif ( 'activities' === $current_page ) {
+			$a['page'] = array(
+				'title' => get_the_title(),
+				'link'  => ap_get_link_to( 'activities' ),
 				'order' => 10,
 			);
 		} elseif ( 'base' !== $current_page && '' !== $current_page ) {

@@ -142,6 +142,16 @@
 				dpView.$el.hide();
 			}
 		});
+
+		// Clicking on Mark all as seen button removes/resets the notification numbers.
+		$( document ).on( 'click', '.ap-btn-markall-read', function() {
+			$( document ).ajaxSuccess( function() {
+				$( '.ap-btn-markall-read' ).remove();
+				$( '.ap-menu-notifications' ).find( 'span' ).remove();
+				$( '.ap-noti-unseen' ).remove();
+				$( '[href="#apNotifications"]' ).find( 'span' ).html( '0' );
+			} );
+		} );
 	});
 
 })(jQuery);

@@ -853,7 +853,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ap_subscribe_btn( $id, false );
 		$this->assertStringContainsString( 'Subscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">0</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Subscribe</span><span class="apsubscribers-count">0</span></a>', $result );
 
 		// Test for echo value.
 		ob_start();
@@ -861,7 +861,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ob_get_clean();
 		$this->assertStringContainsString( 'Subscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">0</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Subscribe</span><span class="apsubscribers-count">0</span></a>', $result );
 
 		// Test 2.
 		// Test for return value.
@@ -869,7 +869,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ap_subscribe_btn( $id, false );
 		$this->assertStringContainsString( 'Unsubscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">1</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Unsubscribe</span><span class="apsubscribers-count">1</span></a>', $result );
 
 		// Test for echo value.
 		ob_start();
@@ -877,7 +877,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ob_get_clean();
 		$this->assertStringContainsString( 'Unsubscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">1</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Unsubscribe</span><span class="apsubscribers-count">1</span></a>', $result );
 
 		// Test 3.
 		$id = $this->insert_question();
@@ -898,7 +898,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ap_subscribe_btn( $id, false );
 		$this->assertStringContainsString( 'Subscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">3</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Subscribe</span><span class="apsubscribers-count">3</span></a>', $result );
 
 		// Test for echo value.
 		ob_start();
@@ -906,7 +906,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ob_get_clean();
 		$this->assertStringContainsString( 'Subscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '">Subscribe<span class="apsubscribers-count">3</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small " apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Subscribe</span><span class="apsubscribers-count">3</span></a>', $result );
 
 		// Test 4.
 		ap_new_subscriber( get_current_user_id(), 'question', $id );
@@ -915,7 +915,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ap_subscribe_btn( $id, false );
 		$this->assertStringContainsString( 'Unsubscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">4</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Unsubscribe</span><span class="apsubscribers-count">4</span></a>', $result );
 
 		// Test for echo value.
 		ob_start();
@@ -923,7 +923,7 @@ class TestThemeFunctions extends TestCase {
 		$result = ob_get_clean();
 		$this->assertStringContainsString( 'Unsubscribe', $result );
 		$this->assertStringContainsString( esc_js( $args ), $result );
-		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '">Unsubscribe<span class="apsubscribers-count">4</span></a>', $result );
+		$this->assertEquals( '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small active" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">Unsubscribe</span><span class="apsubscribers-count">4</span></a>', $result );
 	}
 
 	/**

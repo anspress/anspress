@@ -345,4 +345,29 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( ap_is_user_subscriber( 'question', $id ) );
 		$this->assertFalse( ap_is_user_subscriber( 'question', $id, $user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_delete_subscribers_cache
+	 */
+	public function testAPDeleteSubscribersCache() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		// Set some caches for testing.
+		wp_cache_set( 'question_1234', 1, 'ap_subscribers_count' );
+		wp_cache_set( 'question_0', 1, 'ap_subscribers_count' );
+		wp_cache_set( '_01234', 1, 'ap_subscribers_count' );
+		wp_cache_set( '_', 1, 'ap_subscribers_count' );
+		$this->assertNotNull( wp_cache_get( 'question_1234', 'ap_subscribers_count' ) );
+		$this->assertNotNull( wp_cache_get( 'question_0', 'ap_subscribers_count' ) );
+		$this->assertNotNull( wp_cache_get( '_01234', 'ap_subscribers_count' ) );
+		$this->assertNotNull( wp_cache_get( '_', 'ap_subscribers_count' ) );
+
+		// Test begins.
+		ap_delete_subscribers_cache( 1234, 'question' );
+		$this->assertFalse( wp_cache_get( 'question_1234', 'ap_subscribers_count' ) );
+		$this->assertFalse( wp_cache_get( 'question_0', 'ap_subscribers_count' ) );
+		$this->assertFalse( wp_cache_get( '_01234', 'ap_subscribers_count' ) );
+		$this->assertFalse( wp_cache_get( '_', 'ap_subscribers_count' ) );
+	}
 }

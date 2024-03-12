@@ -166,6 +166,25 @@ class AnsPress_Theme {
 	}
 
 	/**
+	 * Filter document_title_parts.
+	 *
+	 * @param  array $title The document title parts.
+	 * @return array
+	 * @since 4.4.0
+	 */
+	public static function ap_title_parts( $title ) {
+		if ( is_anspress() ) {
+			remove_filter( 'document_title_parts', array( __CLASS__, 'ap_title_parts' ) );
+
+			if ( is_question() ) {
+				$title['title'] = ap_question_title_with_solved_prefix();
+			}
+		}
+
+		return $title;
+	}
+
+	/**
 	 * Add default before body sidebar in AnsPress contents
 	 */
 	public static function ap_before_html_body() {
@@ -242,6 +261,10 @@ class AnsPress_Theme {
 	public static function anspress_basepage_template( $template ) {
 		if ( is_anspress() ) {
 			$templates = array( 'anspress.php', 'page.php', 'singular.php', 'index.php' );
+
+			if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+				$templates = array();
+			}
 
 			if ( is_page() ) {
 				$_post = get_queried_object();

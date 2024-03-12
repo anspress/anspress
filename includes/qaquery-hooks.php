@@ -89,6 +89,8 @@ class AP_QA_Query_Hooks {
 				$sql['orderby'] = 'IFNULL(qameta.answers, 0) ASC,' . $sql['orderby'];
 			} elseif ( 'voted' === $ap_order_by ) {
 				$sql['orderby'] = 'CASE WHEN IFNULL(votes_net, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(votes_net) DESC, ' . $sql['orderby'];
+			} elseif ( 'solved' === $ap_order_by && ! $answer_query ) {
+				$sql['orderby'] = "if( qameta.selected_id = '' or qameta.selected_id is null, 0, 1 ) DESC," . $sql['orderby'];
 			} elseif ( 'unsolved' === $ap_order_by && ! $answer_query ) {
 				$sql['orderby'] = "if( qameta.selected_id = '' or qameta.selected_id is null, 1, 0 ) DESC," . $sql['orderby'];
 			} elseif ( 'oldest' === $ap_order_by ) {

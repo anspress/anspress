@@ -3,17 +3,21 @@
 namespace AnsPress\Tests\Testcases;
 
 trait Ajax {
-	public function ap_ajax_success( $key = false, $return_json = false ) {
-		preg_match( '#<div[^>]*>(.*?)</div>#', $this->_last_response, $match );
-		if ( ! isset( $match[1] ) ) {
-			return false;
+	public function _set_post_data( $query ) {
+		$args            = wp_parse_args( $query );
+		$_POST['action'] = 'ap_ajax';
+		foreach ( $args as $key => $value ) {
+			$_POST[ $key ] = $value;
 		}
-		$res = json_decode( $match[1] );
+	}
+
+	public function ap_ajax_success( $key = false, $return_json = false ) {
+		$res = json_decode( $this->_last_response );
 		if ( false !== $return_json ) {
 			return $res;
 		}
 		if ( false !== $key ) {
-			$this->assertObjectHasAttribute( $key, $res );
+			$this->assertObjectHasProperty( $key, $res );
 			if ( ! isset( $res->$key ) ) {
 				return false;
 			}
@@ -29,7 +33,25 @@ trait Ajax {
 		try {
 			$this->_handleAjax( $action );
 		} catch ( \WPAjaxDieStopException $e ) {
-			$this->_last_response = $e->getMessage();
+			// Do nothing.
+		} catch ( \WPAjaxDieContinueException $e ) {
+			// Do nothing.
+		}
+	}
+
+	public function functionHandle( $function, $args = [] ) {
+		ini_set( 'implicit_flush', false );
+		ob_start();
+		try {
+			$function( $args );
+		} catch ( \WPAjaxDieStopException $e ) {
+			// Do nothing.
+		} catch ( \WPAjaxDieContinueException $e ) {
+			// Do nothing.
+		}
+		$buffer = ob_get_clean();
+		if ( ! empty( $buffer ) ) {
+			$this->_last_response .= $buffer;
 		}
 	}
 }

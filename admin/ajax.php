@@ -46,7 +46,7 @@ class AnsPress_Admin_Ajax {
 	public static function ap_delete_flag() {
 		$post_id = (int) ap_sanitize_unslash( 'id', 'p' );
 
-		if ( ap_verify_nonce( 'flag_delete' . $post_id ) && current_user_can( 'manage_options' ) ) {
+		if ( anspress_verify_nonce( 'flag_delete' . $post_id ) && current_user_can( 'manage_options' ) ) {
 			ap_set_flag_count( $post_id, 0 );
 		}
 
@@ -61,7 +61,7 @@ class AnsPress_Admin_Ajax {
 	public static function clear_flag() {
 		$post_id = ap_sanitize_unslash( 'post_id', 'p' );
 
-		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'clear_flag_' . $post_id ) ) {
+		if ( current_user_can( 'manage_options' ) && anspress_verify_nonce( 'clear_flag_' . $post_id ) ) {
 			ap_delete_flags( $post_id, 'flag' );
 			echo 0;
 		}
@@ -79,7 +79,7 @@ class AnsPress_Admin_Ajax {
 	public static function ap_admin_vote() {
 		$args = ap_sanitize_unslash( 'args', 'p' );
 
-		if ( current_user_can( 'manage_options' ) && ap_verify_nonce( 'admin_vote' ) ) {
+		if ( current_user_can( 'manage_options' ) && anspress_verify_nonce( 'admin_vote' ) ) {
 			$post = ap_get_post( $args[0] );
 
 			if ( $post ) {
@@ -88,7 +88,7 @@ class AnsPress_Admin_Ajax {
 				echo esc_attr( $counts['votes_net'] );
 			}
 		}
-		die();
+		wp_die();
 	}
 
 	/**
@@ -123,8 +123,6 @@ class AnsPress_Admin_Ajax {
 		endwhile;
 
 		wp_send_json( $answers_arr );
-
-		wp_die();
 	}
 
 	/**
@@ -270,8 +268,10 @@ class AnsPress_Admin_Ajax {
 
 		$addon_id = ap_sanitize_unslash( 'addon_id', 'r' );
 		if ( ap_is_addon_active( $addon_id ) ) {
+			$message = __( 'Successfully disabled addon. Redirecting!', 'anspress-question-answer' );
 			ap_deactivate_addon( $addon_id );
 		} else {
+			$message = __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' );
 			ap_activate_addon( $addon_id );
 		}
 
@@ -282,7 +282,7 @@ class AnsPress_Admin_Ajax {
 			array(
 				'success'  => true,
 				'addon_id' => $addon_id,
-				'snackbar' => array( 'message' => __( 'Successfully enabled addon. Redirecting!', 'anspress-question-answer' ) ),
+				'snackbar' => array( 'message' => $message ),
 				'cb'       => 'toggleAddon',
 			)
 		);
@@ -295,7 +295,7 @@ class AnsPress_Admin_Ajax {
 	 * @since 4.0.5
 	 */
 	public static function recount_votes() {
-		if ( ! ap_verify_nonce( 'recount_votes' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! anspress_verify_nonce( 'recount_votes' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
 
@@ -342,7 +342,7 @@ class AnsPress_Admin_Ajax {
 	 * @since 4.0.5
 	 */
 	public static function recount_answers() {
-		if ( ! ap_verify_nonce( 'recount_answers' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! anspress_verify_nonce( 'recount_answers' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
 
@@ -390,7 +390,7 @@ class AnsPress_Admin_Ajax {
 	 * @since 4.0.5
 	 */
 	public static function recount_flagged() {
-		if ( ! ap_verify_nonce( 'recount_flagged' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! anspress_verify_nonce( 'recount_flagged' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
 
@@ -437,7 +437,7 @@ class AnsPress_Admin_Ajax {
 	 * @since 4.0.5
 	 */
 	public static function recount_subscribers() {
-		if ( ! ap_verify_nonce( 'recount_subscribers' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! anspress_verify_nonce( 'recount_subscribers' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
 
@@ -484,7 +484,7 @@ class AnsPress_Admin_Ajax {
 	 * @since 4.0.5
 	 */
 	public static function recount_reputation() {
-		if ( ! ap_verify_nonce( 'recount_reputation' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! anspress_verify_nonce( 'recount_reputation' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
 
@@ -531,7 +531,7 @@ class AnsPress_Admin_Ajax {
 	 * @since 4.0.5
 	 */
 	public static function recount_views() {
-		if ( ! ap_verify_nonce( 'recount_views' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! anspress_verify_nonce( 'recount_views' ) || ! current_user_can( 'manage_options' ) ) {
 			wp_die();
 		}
 

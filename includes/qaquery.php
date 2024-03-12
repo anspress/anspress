@@ -87,9 +87,18 @@ class Question_Query extends WP_Query {
 			if ( is_super_admin() ) {
 				$this->args['post_status'][] = 'trash';
 			}
-
-			$this->args['post_status'] = array_unique( $this->args['post_status'] );
 		}
+
+		// Post status to ignore if passed via args.
+		if ( isset( $this->args['post_status__not_in'] ) ) {
+			$post_status__not_in = $this->args['post_status__not_in'];
+
+			// Update the post_status args.
+			$this->args['post_status'] = array_diff( $this->args['post_status'], $post_status__not_in );
+		}
+
+		// Updated post_status args to have the unique array.
+		$this->args['post_status'] = array_unique( $this->args['post_status'] );
 
 		// Show only the unpublished post of author.
 		if ( isset( $args['ap_show_unpublished'] ) && true === $this->args['ap_show_unpublished'] ) {
@@ -376,7 +385,10 @@ function ap_author_avatar( $size = 45, $_post = null ) {
  */
 function ap_get_answers_count( $_post = null ) {
 	$_post = ap_get_post( $_post );
-	return (int) $_post->answers;
+	if ( $_post && $_post->answers ) {
+		return (int) $_post->answers;
+	}
+	return 0;
 }
 
 /**
@@ -505,9 +517,12 @@ function ap_recent_post_activity() {
  * @since  2.4.8 Convert mysql date to GMT.
  */
 function ap_get_last_active( $post_id = null ) {
-	$p    = ap_get_post( $post_id );
-	$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
-	return ap_human_time( get_gmt_from_date( $date ), false );
+	$p = ap_get_post( $post_id );
+	if ( $p ) {
+		$date = ! empty( $p->last_updated ) ? $p->last_updated : $p->post_modified_gmt;
+		return ap_human_time( get_gmt_from_date( $date ), false );
+	}
+	return __( 'Invalid post', 'anspress-question-answer' );
 }
 
 /**

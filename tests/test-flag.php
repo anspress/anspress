@@ -389,6 +389,7 @@ class TestFlag extends TestCase {
 	 * @covers ::ap_flag_btn_args
 	 */
 	public function testAPFlagBtnArgs() {
+		// Test for question post type.
 		// Test for not logged in user.
 		$id = $this->insert_question();
 		$this->assertNull( ap_flag_btn_args() );
@@ -418,11 +419,11 @@ class TestFlag extends TestCase {
 		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
 		$this->assertEquals( $id, $flag_button_args['query']['post_id'] );
 		$this->assertEquals( 'Flag', $flag_button_args['label'] );
-		$this->assertEquals( 'Flag this post', $flag_button_args['title'] );
+		$this->assertEquals( 'Flag this question', $flag_button_args['title'] );
 		$this->assertEquals( 0, $flag_button_args['count'] );
 		$this->assertFalse( $flag_button_args['active'] );
 
-		// Test for already logged in user but the user is already flagged.
+		// Test for already logged in user but the user has already flagged.
 		$this->setRole( 'subscriber' );
 		$id = $this->insert_question();
 		ap_add_flag( $id );
@@ -448,8 +449,74 @@ class TestFlag extends TestCase {
 		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
 		$this->assertEquals( $id, $flag_button_args['query']['post_id'] );
 		$this->assertEquals( 'Flag', $flag_button_args['label'] );
-		$this->assertEquals( 'You have flagged this post', $flag_button_args['title'] );
+		$this->assertEquals( 'You have flagged this question', $flag_button_args['title'] );
 		$this->assertEquals( 1, $flag_button_args['count'] );
 		$this->assertTrue( $flag_button_args['active'] );
+		$this->logout();
+
+		// Test for answer post type.
+		// Test for not logged in user.
+		$id = $this->insert_answer();
+		$this->assertNull( ap_flag_btn_args() );
+		$this->assertNull( ap_flag_btn_args( $id->a ) );
+
+		// Test for logged in user.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$flag_button_args = ap_flag_btn_args( $id->a );
+
+		// Test begins.
+		$this->assertIsArray( $flag_button_args );
+		$this->assertArrayHasKey( 'cb', $flag_button_args );
+		$this->assertArrayHasKey( 'icon', $flag_button_args );
+		$this->assertArrayHasKey( 'query', $flag_button_args );
+		$this->assertArrayHasKey( '__nonce', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'post_id', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'label', $flag_button_args );
+		$this->assertArrayHasKey( 'title', $flag_button_args );
+		$this->assertArrayHasKey( 'count', $flag_button_args );
+		$this->assertArrayHasKey( 'active', $flag_button_args );
+
+		// Test for values.
+		$nonce = wp_create_nonce( 'flag_' . $id->a );
+		$this->assertEquals( 'flag', $flag_button_args['cb'] );
+		$this->assertEquals( 'apicon-check', $flag_button_args['icon'] );
+		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
+		$this->assertEquals( $id->a, $flag_button_args['query']['post_id'] );
+		$this->assertEquals( 'Flag', $flag_button_args['label'] );
+		$this->assertEquals( 'Flag this answer', $flag_button_args['title'] );
+		$this->assertEquals( 0, $flag_button_args['count'] );
+		$this->assertFalse( $flag_button_args['active'] );
+
+		// Test for already logged in user but the user has already flagged.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_add_flag( $id->a );
+		ap_update_flags_count( $id->a );
+		$flag_button_args = ap_flag_btn_args( $id->a );
+
+		// Test begins.
+		$this->assertIsArray( $flag_button_args );
+		$this->assertArrayHasKey( 'cb', $flag_button_args );
+		$this->assertArrayHasKey( 'icon', $flag_button_args );
+		$this->assertArrayHasKey( 'query', $flag_button_args );
+		$this->assertArrayHasKey( '__nonce', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'post_id', $flag_button_args['query'] );
+		$this->assertArrayHasKey( 'label', $flag_button_args );
+		$this->assertArrayHasKey( 'title', $flag_button_args );
+		$this->assertArrayHasKey( 'count', $flag_button_args );
+		$this->assertArrayHasKey( 'active', $flag_button_args );
+
+		// Test for values.
+		$nonce = wp_create_nonce( 'flag_' . $id->a );
+		$this->assertEquals( 'flag', $flag_button_args['cb'] );
+		$this->assertEquals( 'apicon-check', $flag_button_args['icon'] );
+		$this->assertEquals( $nonce, $flag_button_args['query']['__nonce'] );
+		$this->assertEquals( $id->a, $flag_button_args['query']['post_id'] );
+		$this->assertEquals( 'Flag', $flag_button_args['label'] );
+		$this->assertEquals( 'You have flagged this answer', $flag_button_args['title'] );
+		$this->assertEquals( 1, $flag_button_args['count'] );
+		$this->assertTrue( $flag_button_args['active'] );
+		$this->logout();
 	}
 }

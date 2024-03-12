@@ -707,9 +707,12 @@ function ap_get_link_to( $sub ) {
 		 * @var array
 		 */
 		$default_pages = array(
-			'question' => ap_opt( 'question_page_slug' ),
-			'users'    => ap_opt( 'users_page_slug' ),
-			'user'     => ap_opt( 'user_page_slug' ),
+			'question'   => ap_opt( 'question_page_slug' ),
+			'users'      => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'users_page' ) ) ),
+			'user'       => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'user_page' ) ) ),
+			'activities' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'activities' ) ) ),
+			'categories' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'categories_page' ) ) ),
+			'tags'       => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'tags_page' ) ) ),
 		);
 
 		$default_pages = apply_filters( 'ap_default_page_slugs', $default_pages );
@@ -960,7 +963,7 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
 	$solved = ap_have_answer_selected( $question_id );
 
 	if ( ap_opt( 'show_solved_prefix' ) ) {
-		return get_the_title( $question_id ) . ' ' . ( $solved ? __( '[Solved] ', 'anspress-question-answer' ) : '' );
+		return ( $solved ? __( '[Solved] ', 'anspress-question-answer' ) : '' ) . get_the_title( $question_id ) . ' ';
 	}
 
 	return get_the_title( $question_id );
@@ -972,8 +975,9 @@ function ap_question_title_with_solved_prefix( $question_id = false ) {
  * @param string $action Action.
  * @return bool
  * @since  2.4
+ * @since  4.4.0 Modified function name from ap_verify_nonce.
  */
-function ap_verify_nonce( $action ) {
+function anspress_verify_nonce( $action ) {
 	return wp_verify_nonce( ap_sanitize_unslash( '__nonce', 'p' ), $action );
 }
 
@@ -1474,8 +1478,8 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 		if ( ! $user ) {
 			$link = '#/user/anonymous';
-		} elseif ( function_exists( 'bp_core_get_userlink' ) ) {
-			$link = bp_core_get_userlink( $user_id, false, true );
+		} elseif ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
+			$link = bp_core_get_userlink( $user_id, false, true ) . 'qa/';
 		} elseif ( ap_is_addon_active( 'profile.php' ) ) {
 			$slug = get_option( 'ap_user_path' );
 			$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
@@ -2313,6 +2317,13 @@ function ap_ajax_tinymce_assets() {
 
 	\_WP_Editors::enqueue_scripts();
 
+	// Enqueue wp-tinymce when Jetpack photon-cdn module is enabled,
+	// since while user are trying to add an answer to the question,
+	// creates JS console error and hence, the editor does not work.
+	if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon-cdn' ) ) {
+		wp_enqueue_script( 'wp-tinymce' );
+	}
+
 	ob_start();
 	print_footer_scripts();
 	$scripts = ob_get_clean();
@@ -2492,4 +2503,28 @@ function ap_get_current_timestamp() {
 	$local_time = current_datetime();
 
 	return $local_time->getTimestamp() + $local_time->getOffset();
+}
+
+/**
+ * Merges user defined array arguments into the defaults array,
+ * which works with arrays only.
+ *
+ * @param array $args     Value to be merged with the defaults array.
+ * @param array $defaults Array that serves as the defaults.
+ *
+ * @return array Merged user defined values with the default array.
+ * @since 4.4.0
+ */
+function ap_parse_args( array $args, $defaults = array() ) {
+	$new_args = $defaults;
+
+	foreach ( $args as $key => $value ) {
+		if ( is_array( $value ) && isset( $new_args[ $key ] ) ) {
+			$new_args[ $key ] = ap_parse_args( $value, $new_args[ $key ] );
+		} else {
+			$new_args[ $key ] = $value;
+		}
+	}
+
+	return $new_args;
 }

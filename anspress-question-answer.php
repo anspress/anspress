@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
 
 // Define database version.
-define( 'AP_DB_VERSION', 37 );
+define( 'AP_DB_VERSION', 38 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {

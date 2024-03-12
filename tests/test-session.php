@@ -70,11 +70,10 @@ class Test_Session extends TestCase {
 	}
 
 	/**
-	 * @covers AnsPress\Session::post_in_session
-	 *
-	 * @return void
+	 * @covers AnsPress\Session::set_question
+	 * @covers AnsPress\Session::set_answer
 	 */
-	public function testPostInSession() {
+	public function testSetQuestionAnswer() {
 		$id = $this->factory->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',

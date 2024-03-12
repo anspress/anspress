@@ -88,11 +88,9 @@ class TestActivate extends TestCase {
 	 * @covers AP_Activate::enable_addons
 	 */
 	public function testEnableAddons() {
-		// By default these addons are activated on plugin activation,
-		// so we need to deactivate them first.
-		ap_deactivate_addon( 'reputation.php' );
-		ap_deactivate_addon( 'email.php' );
-		ap_deactivate_addon( 'categories.php' );
+		// Addons are enabled by default but we've set the flag
+		// so we need this to be set to false for proper testing.
+		ap_opt( 'ap_installed', false );
 
 		// Test if the addons are not active.
 		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );

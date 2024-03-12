@@ -98,6 +98,7 @@ class TestComments extends TestCase {
 					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
 					'comment_id' => $comment->comment_ID,
 				],
+				'title' => 'Edit this Comment',
 			],
 			[
 				'label' => 'Delete',
@@ -107,6 +108,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Delete this Comment',
 			],
 		];
 		$this->assertEquals( $expected, $result );
@@ -128,6 +130,7 @@ class TestComments extends TestCase {
 					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
 					'comment_id' => $comment->comment_ID,
 				],
+				'title' => 'Edit this Comment',
 			],
 			[
 				'label' => 'Delete',
@@ -137,6 +140,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Delete this Comment',
 			],
 			[
 				'label' => 'Approve',
@@ -146,6 +150,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Approve this Comment',
 			],
 		];
 		$this->assertEquals( $expected, $result );
@@ -167,6 +172,7 @@ class TestComments extends TestCase {
 					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
 					'comment_id' => $comment->comment_ID,
 				],
+				'title' => 'Edit this Comment',
 			],
 			[
 				'label' => 'Delete',
@@ -176,6 +182,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Delete this Comment',
 			],
 			[
 				'label' => 'Approve',
@@ -185,6 +192,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Approve this Comment',
 			],
 		];
 		$this->assertEquals( $expected, $result );
@@ -208,6 +216,7 @@ class TestComments extends TestCase {
 					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
 					'comment_id' => $comment->comment_ID,
 				],
+				'title' => 'Edit this Comment',
 			],
 		];
 		$this->assertEquals( $expected, $result );
@@ -220,6 +229,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Delete this Comment',
 			],
 			[
 				'label' => 'Approve',
@@ -229,6 +239,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Approve this Comment',
 			],
 		];
 		$this->assertNotContains( $not_expected, $result );
@@ -248,6 +259,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Delete this Comment',
 			],
 		];
 		$this->assertEquals( $expected, $result );
@@ -260,6 +272,7 @@ class TestComments extends TestCase {
 					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
 					'comment_id' => $comment->comment_ID,
 				],
+				'title' => 'Edit this Comment',
 			],
 			[
 				'label' => 'Approve',
@@ -269,6 +282,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Approve this Comment',
 			],
 		];
 		$this->assertNotContains( $not_expected, $result );
@@ -289,6 +303,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'approve_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Approve this Comment',
 			],
 		];
 		$this->assertEquals( $expected, $result );
@@ -301,6 +316,7 @@ class TestComments extends TestCase {
 					'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
 					'comment_id' => $comment->comment_ID,
 				],
+				'title' => 'Edit this Comment',
 			],
 			[
 				'label' => 'Delete',
@@ -310,6 +326,7 @@ class TestComments extends TestCase {
 					'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
 					'comment_id'     => $comment->comment_ID,
 				],
+				'title' => 'Delete this Comment',
 			],
 		];
 		$this->assertNotContains( $not_expected, $result );

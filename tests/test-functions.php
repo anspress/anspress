@@ -323,12 +323,10 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_is_addon_active
 	 */
 	public function testIsAddonActive() {
-		// Default addons enabled check on plugin activation.
-		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
-
-		// Check for other addons is not enabled.
+		// Check for addons is not enabled.
+		$this->assertFalse( ap_is_addon_active( 'categories.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'email.php' ) );
+		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'akismet.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'buddypress.php' ) );
@@ -339,6 +337,9 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'tags.php' ) );
 
 		// Check for addons enabled.
+		ap_activate_addon( 'categories.php' );
+		ap_activate_addon( 'email.php' );
+		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
 		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
@@ -349,6 +350,9 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'tags.php' );
 
 		// Checks.
+		$this->assertTrue( ap_is_addon_active( 'categories.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
+		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'akismet.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'buddypress.php' ) );
@@ -460,10 +464,9 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_get_active_addons
 	 */
 	public function testAPGetActiveAddons() {
-		// For default addon active check.
-		$this->assertArrayHasKey( 'categories.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'categories.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
+		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'akismet.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'buddypress.php', ap_get_active_addons() );
@@ -482,16 +485,14 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'recaptcha.php' );
 		ap_activate_addon( 'syntaxhighlighter.php' );
 		ap_activate_addon( 'tags.php' );
-
-		// Default addon deactivate and check.
-		ap_deactivate_addon( 'categories.php' );
-		ap_deactivate_addon( 'email.php' );
-		ap_deactivate_addon( 'reputation.php' );
+		ap_activate_addon( 'categories.php' );
+		ap_activate_addon( 'email.php' );
+		ap_activate_addon( 'reputation.php' );
 
 		// Checks.
-		$this->assertArrayNotHasKey( 'categories.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'categories.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
+		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_active_addons() );
@@ -693,9 +694,9 @@ class TestFunctions extends TestCase {
 	 */
 	public function testAPActivateAddon() {
 		// For default addons activate behaviour.
-		$this->assertArrayHasKey( 'categories.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'email.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'categories.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
+		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
@@ -706,6 +707,9 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
 
 		// For addons activate behaviour test.
+		ap_activate_addon( 'categories.php' );
+		ap_activate_addon( 'email.php' );
+		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
 		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
@@ -1647,18 +1651,18 @@ class TestFunctions extends TestCase {
 	}
 
 	/**
-	 * @covers ::ap_verify_nonce
+	 * @covers ::anspress_verify_nonce
 	 */
-	public function testAPVerifyNonce() {
+	public function testAnsPressVerifyNonce() {
 		// Test on invalid nonce.
-		$this->assertFalse( ap_verify_nonce( 'anspress-tests' ) );
-		$this->assertFalse( ap_verify_nonce( 'anspress-tests1' ) );
+		$this->assertFalse( anspress_verify_nonce( 'anspress-tests' ) );
+		$this->assertFalse( anspress_verify_nonce( 'anspress-tests1' ) );
 
 		// Test on valid nonce.
 		$_REQUEST['__nonce'] = wp_create_nonce( 'anspress-tests' );
-		$this->assertIsInt( ap_verify_nonce( 'anspress-tests' ) );
+		$this->assertIsInt( anspress_verify_nonce( 'anspress-tests' ) );
 		$_REQUEST['__nonce'] = wp_create_nonce( 'anspress-tests1' );
-		$this->assertIsInt( ap_verify_nonce( 'anspress-tests1' ) );
+		$this->assertIsInt( anspress_verify_nonce( 'anspress-tests1' ) );
 		unset( $_REQUEST['__nonce'] );
 	}
 
@@ -2166,7 +2170,7 @@ class TestFunctions extends TestCase {
 		// Set as selected answer.
 		ap_set_selected_answer( $id->q, $id->a );
 		$this->go_to( '?post_type=question&p=' . $id->q );
-		$question_title = get_the_title( $id->q ) . ' [Solved] ';
+		$question_title = '[Solved] ' . get_the_title( $id->q ) . ' ';
 		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
 
 		// Test when the prefix option is disabled.
@@ -2178,7 +2182,7 @@ class TestFunctions extends TestCase {
 		// Re-test when the prefix option is enabled.
 		ap_opt( 'show_solved_prefix', true );
 		$this->go_to( '?post_type=question&p=' . $id->q );
-		$question_title = get_the_title( $id->q ) . ' [Solved] ';
+		$question_title = '[Solved] ' . get_the_title( $id->q ) . ' ';
 		$this->assertEquals( $question_title, ap_question_title_with_solved_prefix() );
 	}
 
@@ -2648,12 +2652,9 @@ class TestFunctions extends TestCase {
 		$output = ob_get_clean();
 
 		// Test for assertions.
-		$this->assertStringContainsString( 'anspress-common-js', $output );
-		$this->assertStringContainsString( 'anspress-question-js', $output );
-		$this->assertStringContainsString( 'anspress-ask-js', $output );
-		$this->assertStringContainsString( 'anspress-list-js', $output );
-		$this->assertStringContainsString( 'anspress-notifications-js', $output );
-		$this->assertStringContainsString( 'anspress-theme-js', $output );
-		$this->assertMatchesRegularExpression( '/<script.*<\/script>/', $output );
+		$this->assertStringContainsString( 'tinyMCEPreInit', $output );
+		$this->assertStringContainsString( 'ajaxurl', $output );
+		$this->assertStringContainsString( 'tinymce', $output );
+		$this->assertStringContainsString( 'quicktags', $output );
 	}
 }

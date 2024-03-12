@@ -27,7 +27,7 @@ class AnsPress_Uploader {
 	public static function delete_attachment() {
 		$attachment_id = ap_sanitize_unslash( 'attachment_id', 'r' );
 
-		if ( ! ap_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
+		if ( ! anspress_verify_nonce( 'delete-attachment-' . $attachment_id ) ) {
 			ap_ajax_json( 'no_permission' );
 		}
 
@@ -137,8 +137,8 @@ class AnsPress_Uploader {
 	 */
 	public static function upload_modal() {
 		// Check nonce.
-		if ( ! ap_verify_nonce( 'ap_upload_image' ) ) {
-			ap_send_json( 'something_wrong' );
+		if ( ! anspress_verify_nonce( 'ap_upload_image' ) ) {
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		// Check if user have permission to upload tem image.
@@ -206,7 +206,7 @@ class AnsPress_Uploader {
 
 		// Nonce check.
 		if ( ! $form->is_submitted() ) {
-			ap_send_json( 'something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$image_for = ap_sanitize_unslash( 'image_for', 'r' );
@@ -244,7 +244,7 @@ class AnsPress_Uploader {
 			ap_send_json( $res );
 		}
 
-		ap_send_json( 'something_wrong' );
+		ap_ajax_json( 'something_wrong' );
 	}
 
 	/**
