@@ -16,9 +16,6 @@ class TestAddonNotifications extends TestCase {
 		ap_deactivate_addon( 'notifications.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Notifications::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Notifications' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -50,9 +47,6 @@ class TestAddonNotifications extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Notifications', 'get_notifications' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Notifications::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Notifications::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Notifications', $instance1 );
@@ -127,9 +121,6 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEquals( ap_opt( 'user_page_slug_notifications' ), $form['fields']['user_page_slug_notifications']['value'] );
 	}
 
-	/**
-	 * @covers ::ap_notification_addon_activation
-	 */
 	public function testAPNotificationAddonActivation() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'ap_notifications';

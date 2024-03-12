@@ -47,9 +47,6 @@ class TestAPLicense extends TestCase {
 		return $fields;
 	}
 
-	/**
-	 * @covers AP_License::ap_product_license_fields
-	 */
 	public function testAPProductLicenseFields() {
 		// Test by directly calling the function.
 		$fields = ap_product_license_fields();

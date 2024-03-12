@@ -16,9 +16,6 @@ class TestAddonBuddyPress extends TestCase {
 		ap_deactivate_addon( 'buddypress.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\BuddyPress::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\BuddyPress' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -51,9 +48,6 @@ class TestAddonBuddyPress extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\BuddyPress', 'bp_loadmore' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\BuddyPress::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\BuddyPress::init();
 		$this->assertInstanceOf( 'Anspress\Addons\BuddyPress', $instance1 );

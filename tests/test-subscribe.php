@@ -177,9 +177,6 @@ class TestSubscribe extends TestCase {
 		$this->assertEquals( 0, ap_subscribers_count( 'question', 1236 ) );
 	}
 
-	/**
-	 * @covers AnsPress_Hooks::ap_after_new_question
-	 */
 	public function testQuestionSubscriptionHook() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );

@@ -6,9 +6,6 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestActivate extends TestCase {
 
-	/**
-	 * @covers AP_Activate::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AP_Activate' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );

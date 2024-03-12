@@ -18,9 +18,6 @@ class TestAddonAkismet extends TestCase {
 		ap_deactivate_addon( 'akismet.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Akismet::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Akismet' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -37,9 +34,6 @@ class TestAddonAkismet extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Akismet', 'row_actions' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Akismet::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Akismet::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Akismet', $instance1 );

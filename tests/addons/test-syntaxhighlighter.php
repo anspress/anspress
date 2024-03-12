@@ -16,9 +16,6 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		ap_deactivate_addon( 'syntaxhighlighter.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Syntax_Highlighter::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Syntax_Highlighter' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -39,9 +36,6 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Syntax_Highlighter', 'shortcode' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Syntax_Highlighter::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Syntax_Highlighter::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Syntax_Highlighter', $instance1 );

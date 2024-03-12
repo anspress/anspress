@@ -18,9 +18,6 @@ class TestAddonProfile extends TestCase {
 		ap_deactivate_addon( 'profile.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Profile::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Profile' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -47,9 +44,6 @@ class TestAddonProfile extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Profile', 'current_user_id' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Profile::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Profile::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Profile', $instance1 );

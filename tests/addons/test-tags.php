@@ -18,9 +18,6 @@ class TestAddonTags extends TestCase {
 		ap_deactivate_addon( 'tags.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Tags::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Tags' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -56,9 +53,6 @@ class TestAddonTags extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Tags', 'modify_query_archive' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Tags::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Tags::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Tags', $instance1 );

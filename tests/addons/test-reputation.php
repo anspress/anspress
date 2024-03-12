@@ -20,9 +20,6 @@ class TestAddonReputation extends TestCase {
 		ap_deactivate_addon( 'buddypress.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Reputation' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -60,9 +57,6 @@ class TestAddonReputation extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'ap_all_options' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Reputation::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Reputation', $instance1 );

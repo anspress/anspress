@@ -16,9 +16,6 @@ class TestAddonAvatar extends TestCase {
 		ap_deactivate_addon( 'avatar.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Avatar::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Avatar' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -32,9 +29,6 @@ class TestAddonAvatar extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Avatar', 'clear_avatar_cache' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Avatar::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Avatar::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Avatar', $instance1 );
@@ -120,9 +114,6 @@ class TestAddonAvatar extends TestCase {
 		$this->assertEquals( ap_opt( 'avatar_force' ), $form['fields']['avatar_force']['value'] );
 	}
 
-	/**
-	 * @covers ::ap_is_avatar_exists
-	 */
 	public function testAPIsAvatarExists() {
 		// Test for invalid user id.
 		$this->assertFalse( \Anspress\Addons\ap_is_avatar_exists( 0 ) );

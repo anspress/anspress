@@ -559,9 +559,6 @@ class TestComments extends TestCase {
 		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
 	}
 
-	/**
-	 * @covers AnsPress_Comment_Hooks::ap_comment_delete_locked
-	 */
 	public function testAPCommentDeleteLocked() {
 		$question_id = $this->insert_question();
 		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id ] );

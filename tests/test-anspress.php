@@ -436,9 +436,6 @@ class TestAnsPress extends TestCase {
 		$this->assertEquals( 10, has_action( 'wpmu_drop_tables', [ 'AnsPress_Init', 'drop_blog_tables' ] ) );
 	}
 
-	/**
-	 * @covers AnsPress::instance
-	 */
 	public function testInstanceInitialized() {
 		$anspress_instance = \AnsPress::instance();
 		$this->assertNotNull( $anspress_instance );

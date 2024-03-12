@@ -8,9 +8,6 @@ class TestActivity extends TestCase {
 
 	use Testcases\Common;
 
-	/**
-	 * @covers AnsPress\Activity_Helper::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AnsPress\Activity_Helper' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -553,9 +550,6 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $activity->delete( [ 'action' => 'test_activity' ] ) );
 	}
 
-	/**
-	 * @covers AnsPress\Activity_Helper::before_delete
-	 */
 	public function testAnsPressActivityHelperBeforeDelete() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );

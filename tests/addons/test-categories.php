@@ -18,9 +18,6 @@ class TestAddonCategories extends TestCase {
 		ap_deactivate_addon( 'categories.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Categories' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -62,9 +59,6 @@ class TestAddonCategories extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'widget' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Categories::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Categories', $instance1 );

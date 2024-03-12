@@ -18,9 +18,6 @@ class TestAddonEmail extends TestCase {
 		ap_deactivate_addon( 'email.php' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Email::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Email' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -65,9 +62,6 @@ class TestAddonEmail extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'form_allowed_tags' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Email::instance
-	 */
 	public function testInit() {
 		$instance1 = \Anspress\Addons\Email::init();
 		$this->assertInstanceOf( 'Anspress\Addons\Email', $instance1 );

@@ -85,9 +85,6 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $template_f . $file, ap_get_theme_location( $file ) );
 	}
 
-	/**
-	 * @covers :: ap_get_theme_url
-	 */
 	public function testApGetThemeUrl() {
 		$file = 'test.css';
 

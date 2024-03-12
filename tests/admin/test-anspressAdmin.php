@@ -26,9 +26,6 @@ class TestAnsPressAdmin extends TestCase {
 		parent::tear_down();
 	}
 
-	/**
-	 * @covers AnsPress_Admin::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AnsPress_Admin' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );

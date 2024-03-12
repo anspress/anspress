@@ -9,9 +9,6 @@ class TestRepeatableField extends TestCaseAjax {
 	use Testcases\Ajax;
 	use Testcases\Common;
 
-	/**
-	 * @covers AnsPress\Ajax\Repeatable_Field::instance
-	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AnsPress\Ajax\Repeatable_Field' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
