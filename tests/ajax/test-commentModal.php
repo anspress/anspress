@@ -9,9 +9,12 @@ class TestCommentModal extends TestCaseAjax {
 	use Testcases\Ajax;
 	use Testcases\Common;
 
-	/**
-	 * @covers AnsPress\Ajax\Comment_Modal::instance
-	 */
+	public function set_up()
+	{
+		parent::set_up();
+		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
+	}
+
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AnsPress\Ajax\Comment_Modal' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -24,9 +27,6 @@ class TestCommentModal extends TestCaseAjax {
 		$this->assertTrue( method_exists( 'AnsPress\Ajax\Comment_Modal', 'nopriv' ) );
 	}
 
-	/**
-	 * @covers AnsPress\Ajax::Comment_Modal
-	 */
 	public function testCommentModal() {
 		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 
@@ -131,5 +131,32 @@ class TestCommentModal extends TestCaseAjax {
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Trying to cheat?!' );
+	}
+
+	public function testShouldNotAllowNonLoggedInToDelete() {
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question post',
+				'post_type'    => 'question',
+				'post_status'  => 'publish',
+				'post_content' => 'Donec nec nunc purus',
+			)
+		);
+
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+				'comment_type'    => 'anspress',
+			)
+		);
+
+		$this->logout();
+		$this->_set_post_data( 'comment_id=' . $comment_id . '&action=comment_modal&__nonce=' . wp_create_nonce( 'edit_comment_' . $comment_id ) );
+
+		$this->handle( 'comment_modal' );
+		var_dump( $this->_last_response );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_comment_modal' );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'You don\'t have enough permissions to do this action.' );
 	}
 }

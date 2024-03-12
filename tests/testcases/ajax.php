@@ -13,7 +13,12 @@ trait Ajax {
 
 	public function ap_ajax_success( $key = false, $return_json = false ) {
 		$res = json_decode( $this->_last_response );
-		if ( false !== $return_json ) {
+
+		if ( !$res ) {
+			return false;
+		}
+
+		if ( false !== $return_json) {
 			return $res;
 		}
 		if ( false !== $key ) {
