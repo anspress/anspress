@@ -16,6 +16,8 @@ class TestAddonReputation extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 		ap_deactivate_addon( 'reputation.php' );
+		ap_deactivate_addon( 'profile.php' );
+		ap_deactivate_addon( 'buddypress.php' );
 	}
 
 	/**
@@ -1102,5 +1104,56 @@ class TestAddonReputation extends TestCase {
 		wp_delete_user( get_current_user_id() );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'delete_user', [ $instance, 'delete_user' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::display_name
+	 */
+	public function testDisplayName() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Create mock BuddyPress function as BuddyPress plugin will not be active.
+		if ( ! function_exists( 'bp_core_get_userlink' ) ) {
+			function bp_core_get_userlink() {}
+		}
+
+		// Test 1.
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$result = $instance->display_name( 'User Testing', [ 'user_id' => 0 ] );
+		$this->assertEquals( 'User Testing', $result );
+
+		// Test 2.
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$question_id = $this->insert_question( '', '', $user_id );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => false ] );
+		$this->assertEquals( 'User Testing', $result );
+
+		// Test 3.
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$question_id = $this->insert_question( '', '', $user_id );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
+		$this->assertEquals( 'User Testing<span class="ap-user-reputation" title="Reputation">2</span>', $result );
+
+		// Test 4.
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$question_id = $this->insert_question( '', '', $user_id );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		ap_activate_addon( 'profile.php' );
+		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
+		$this->assertEquals( 'User Testing<a href="' . ap_user_link( $user_id ) . 'reputations/" class="ap-user-reputation" title="Reputation">7</a>', $result );
+
+		// Test 5.
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$question_id = $this->insert_question( '', '', $user_id );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$instance->new_question( $question_id, get_post( $question_id ) );
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		ap_activate_addon( 'buddypress.php' );
+		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
+		$this->assertEquals( 'User Testing<a href="' . ap_user_link( $user_id ) . 'reputations/" class="ap-user-reputation" title="Reputation">7</a>', $result );
 	}
 }
