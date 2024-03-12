@@ -1156,4 +1156,32 @@ class TestAddonReputation extends TestCase {
 		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
 		$this->assertEquals( 'User Testing<a href="' . ap_user_link( $user_id ) . 'reputations/" class="ap-user-reputation" title="Reputation">7</a>', $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Reputation::ap_user_pages
+	 */
+	public function testAPUserPages() {
+		$instance = \Anspress\Addons\Reputation::init();
+
+		// Test begins.
+		// Before calling the method.
+		anspress()->user_pages = null;
+		$user_pages = anspress()->user_pages;
+		$this->assertNull( $user_pages );
+
+		// After calling the method.
+		$instance->ap_user_pages();
+		$user_pages = anspress()->user_pages;
+		$this->assertNotNull( $user_pages );
+		$expected = [
+			[
+				'slug'  => 'reputations',
+				'label' => 'Reputations',
+				'icon'  => 'apicon-reputation',
+				'cb'    => array( $instance, 'reputation_page' ),
+				'order' => 5,
+			]
+		];
+		$this->assertEquals( $expected, $user_pages );
+	}
 }

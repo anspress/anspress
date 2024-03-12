@@ -281,4 +281,33 @@ class TestAddonNotifications extends TestCase {
 		];
 		$this->assertEquals( $expected_array, $verbs['lost_points'] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::ap_user_pages
+	 */
+	public function testAPUserPages() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		// Before calling the method.
+		anspress()->user_pages = null;
+		$user_pages = anspress()->user_pages;
+		$this->assertNull( $user_pages );
+
+		// After calling the method.
+		$instance->ap_user_pages();
+		$user_pages = anspress()->user_pages;
+		$this->assertNotNull( $user_pages );
+		$expected = [
+			[
+				'slug'    => 'notifications',
+				'label'   => 'Notifications',
+				'count'   => ap_count_unseen_notifications(),
+				'icon'    => 'apicon-globe',
+				'cb'      => array( $instance, 'notification_page' ),
+				'private' => true,
+			]
+		];
+		$this->assertEquals( $expected, $user_pages );
+	}
 }
