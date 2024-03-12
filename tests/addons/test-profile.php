@@ -235,4 +235,105 @@ class TestAddonProfile extends TestCase {
 		$method = $instance->ap_current_page( 'other_query_var' );
 		$this->assertEquals( 'user', $method );
 	}
+
+	public static function APUserPages() {
+		anspress()->user_pages[] = array(
+			'slug' => 'test',
+			'icon' => 'apicon-test',
+		);
+	}
+
+	/**
+	 * @covers Anspress\Addons\Profile::user_pages
+	 */
+	public function testUserPages() {
+		$instance = \Anspress\Addons\Profile::init();
+
+		// Test for action hook trigger.
+		$callback_triggered = false;
+		add_action( 'ap_user_pages', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Before calling the method.
+		anspress()->user_pages = null;
+		$user_pages = anspress()->user_pages;
+		$this->assertNull( $user_pages );
+
+		// After calling the method.
+		// Test 1.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$instance->user_pages();
+		$user_pages = anspress()->user_pages;
+		$this->assertNotNull( $user_pages );
+		$expected = [
+			[
+				'slug'  => 'questions',
+				'label' => 'Questions',
+				'icon'  => 'apicon-question',
+				'cb'    => [ $instance, 'question_page' ],
+				'order' => 2,
+				'rewrite' => 'questions',
+			],
+			[
+				'slug'  => 'answers',
+				'label' => 'Answers',
+				'icon'  => 'apicon-answer',
+				'cb'    => [ $instance, 'answer_page' ],
+				'order' => 2,
+				'rewrite' => 'answers',
+			],
+		];
+		$this->assertEquals( $expected, $user_pages );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_user_pages' ) > 0 );
+
+		// Test 2.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$instance->user_pages();
+		$this->assertFalse( $callback_triggered );
+
+		// Test for adding custom pages via action hook.
+		anspress()->user_pages = null;
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		add_action( 'ap_user_pages', [ $this, 'APUserPages' ], 11 );
+		ap_opt( 'user_page_slug_test', 'tests-link' );
+		ap_opt( 'user_page_title_test', 'Test title' );
+		$instance->user_pages();
+		$user_pages = anspress()->user_pages;
+		$expected = [
+			[
+				'slug'  => 'questions',
+				'label' => 'Questions',
+				'icon'  => 'apicon-question',
+				'cb'    => [ $instance, 'question_page' ],
+				'order' => 2,
+				'rewrite' => 'questions',
+			],
+			[
+				'slug'  => 'answers',
+				'label' => 'Answers',
+				'icon'  => 'apicon-answer',
+				'cb'    => [ $instance, 'answer_page' ],
+				'order' => 2,
+				'rewrite' => 'answers',
+			],
+			[
+				'slug'    => 'test',
+				'icon'    => 'apicon-test',
+				'rewrite' => 'tests-link',
+				'label'   => 'Test title',
+				'order'   => 10,
+			]
+		];
+		$this->assertEquals( $expected, $user_pages );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_user_pages' ) > 0 );
+		ap_opt( 'user_page_slug_test', '' );
+		ap_opt( 'user_page_title_test', '' );
+		remove_action( 'ap_user_pages', [ $this, 'APUserPages' ], 11 );
+	}
 }
