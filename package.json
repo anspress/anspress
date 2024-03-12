@@ -20,8 +20,7 @@
         "test": "php ./vendor/bin/phpunit",
         "phpcs": "php ./vendor/bin/phpcs",
         "build": "grunt build",
-        "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80",
-        "setup:phpunit": "./bin/install-wp-tests.sh test_wordpress root root db"
+        "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80"
     },
     "author": "Rahul Aryan",
     "license": "GPL 3+"
