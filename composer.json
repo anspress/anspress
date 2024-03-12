@@ -42,6 +42,7 @@
         "phpstan": "phpstan --memory-limit=1G",
         "phpcbf": "phpcbf",
         "test:coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover .coverage/cov.xml",
+        "test:coverage-text": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-text",
         "test:coverage-check": "./vendor/bin/coverage-check .coverage/cov.xml 50",
         "test:setup": "./bin/install-wp-tests.sh test_wordpress root root db"
     },

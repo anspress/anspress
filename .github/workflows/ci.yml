@@ -66,9 +66,8 @@ jobs:
         run: |
           if [[ ! -z "$WP_VERSION" ]]; then
             bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 $WP_VERSION
-            composer run test:coverage
-            composer run test:coverage-check
-            WP_MULTISITE=1 composer run test:coverage
+            composer run test:coverage-text
+            WP_MULTISITE=1 composer run test:coverage-text
           fi
 
       - name: Run PHP CodeSniffer
