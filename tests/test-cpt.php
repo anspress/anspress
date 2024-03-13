@@ -13,6 +13,8 @@ class TestPostTypes extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'register_answer_cpt' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_type_link' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_type_archive_link' ) );
+		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_updated_messages' ) );
+		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'bulk_post_updated_messages' ) );
 	}
 
 	public function testInit() {
@@ -20,6 +22,8 @@ class TestPostTypes extends TestCase {
 		$this->assertEquals( 0, has_action( 'init', [ 'AnsPress_PostTypes', 'register_answer_cpt' ] ) );
 		$this->assertEquals( 10, has_action( 'post_type_link', [ 'AnsPress_PostTypes', 'post_type_link' ] ) );
 		$this->assertEquals( 10, has_filter( 'post_type_archive_link', [ 'AnsPress_PostTypes', 'post_type_archive_link' ] ) );
+		$this->assertEquals( 10, has_filter( 'post_updated_messages', [ 'AnsPress_PostTypes', 'post_updated_messages' ] ) );
+		$this->assertEquals( 10, has_filter( 'bulk_post_updated_messages', [ 'AnsPress_PostTypes', 'bulk_post_updated_messages' ] ) );
 	}
 
 	/**
