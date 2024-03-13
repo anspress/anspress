@@ -9,6 +9,37 @@ class TestAdminAjax extends TestCaseAjax {
 	use Testcases\Common;
 	use Testcases\Ajax;
 
+	public function test_init() {
+		\AnsPress_Admin_Ajax::init();
+
+		anspress()->setup_hooks();
+
+		// Check that the actions were added
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_delete_flag', [ \AnsPress_Admin_Ajax::class, 'ap_delete_flag' ] ) );
+
+		$this->assertEquals( 10, has_action( 'ap_ajax_ap_clear_flag', [ \AnsPress_Admin_Ajax::class, 'clear_flag' ] ) );
+
+		$this->assertEquals( 10, has_action( 'ap_ajax_ap_admin_vote', [ \AnsPress_Admin_Ajax::class, 'ap_admin_vote' ] ) );
+
+		$this->assertEquals( 10, has_action( 'ap_ajax_get_all_answers', [ \AnsPress_Admin_Ajax::class, 'get_all_answers' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_uninstall_data', [ \AnsPress_Admin_Ajax::class, 'ap_uninstall_data' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_toggle_addon', [ \AnsPress_Admin_Ajax::class, 'ap_toggle_addon' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_recount_votes', [ \AnsPress_Admin_Ajax::class, 'recount_votes' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_recount_answers', [ \AnsPress_Admin_Ajax::class, 'recount_answers' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_recount_flagged', [ \AnsPress_Admin_Ajax::class, 'recount_flagged' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_recount_subscribers', [ \AnsPress_Admin_Ajax::class, 'recount_subscribers' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_recount_reputation', [ \AnsPress_Admin_Ajax::class, 'recount_reputation' ] ) );
+
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_recount_views', [ \AnsPress_Admin_Ajax::class, 'recount_views' ] ) );
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Admin_Ajax', 'init' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Admin_Ajax', 'ap_delete_flag' ) );

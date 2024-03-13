@@ -10,10 +10,11 @@
  * @since 4.2.0 Fixed: CS bugs.
  */
 
-// If this file is called directly, abort.
+// @codeCoverageIgnoreStart
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * This class should ideally be used to work with the
