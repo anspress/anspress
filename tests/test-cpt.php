@@ -13,6 +13,8 @@ class TestPostTypes extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'register_answer_cpt' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_type_link' ) );
 		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_type_archive_link' ) );
+		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'post_updated_messages' ) );
+		$this->assertTrue( method_exists( 'AnsPress_PostTypes', 'bulk_post_updated_messages' ) );
 	}
 
 	public function testInit() {
@@ -20,6 +22,8 @@ class TestPostTypes extends TestCase {
 		$this->assertEquals( 0, has_action( 'init', [ 'AnsPress_PostTypes', 'register_answer_cpt' ] ) );
 		$this->assertEquals( 10, has_action( 'post_type_link', [ 'AnsPress_PostTypes', 'post_type_link' ] ) );
 		$this->assertEquals( 10, has_filter( 'post_type_archive_link', [ 'AnsPress_PostTypes', 'post_type_archive_link' ] ) );
+		$this->assertEquals( 10, has_filter( 'post_updated_messages', [ 'AnsPress_PostTypes', 'post_updated_messages' ] ) );
+		$this->assertEquals( 10, has_filter( 'bulk_post_updated_messages', [ 'AnsPress_PostTypes', 'bulk_post_updated_messages' ] ) );
 	}
 
 	/**
@@ -257,5 +261,180 @@ class TestPostTypes extends TestCase {
 		ap_opt( 'question_page_permalink', 'question_perma_7' );
 		$result = \AnsPress_PostTypes::question_perm_structure();
 		$this->assertEquals( 'test/%question%-%question_id%', $result->rule );
+	}
+
+	/**
+	 * @covers AnsPress_PostTypes::bulk_post_updated_messages
+	 */
+	public function testBulkPostUpdatedMessages() {
+		// Test 1.
+		$bulk_messages = [
+			'question' => [
+				'updated'   => '%s questions updated.',
+				'locked'    => '%s questions not updated, somebody is editing them.',
+				'deleted'   => '%s questions permanently deleted.',
+				'trashed'   => '%s question moved to the Trash.',
+				'untrashed' => '%s questions restored from the Trash.',
+			],
+			'answer'   => [
+				'updated'   => '%s answers updated.',
+				'locked'    => '%s answers not updated, somebody is editing them.',
+				'deleted'   => '%s answers permanently deleted.',
+				'trashed'   => '%s answer moved to the Trash.',
+				'untrashed' => '%s answers restored from the Trash.',
+			],
+		];
+		$bulk_counts = [
+			'updated'   => 4,
+			'locked'    => 2,
+			'deleted'   => 3,
+			'trashed'   => 1,
+			'untrashed' => 5,
+		];
+		$result = \AnsPress_PostTypes::bulk_post_updated_messages( $bulk_messages, $bulk_counts );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $bulk_messages['question'], $result['question'] );
+		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
+
+		// Test 2.
+		$bulk_messages = [
+			'question' => [
+				'updated'   => '%s question updated.',
+				'locked'    => '1 question not updated, somebody is editing it.',
+				'deleted'   => '%s question permanently deleted.',
+				'trashed'   => '%s questions moved to the Trash.',
+				'untrashed' => '%s question restored from the Trash.',
+			],
+			'answer'   => [
+				'updated'   => '%s answer updated.',
+				'locked'    => '1 answer not updated, somebody is editing it.',
+				'deleted'   => '%s answer permanently deleted.',
+				'trashed'   => '%s answers moved to the Trash.',
+				'untrashed' => '%s answer restored from the Trash.',
+			],
+		];
+		$bulk_counts = [
+			'updated'   => 1,
+			'locked'    => 1,
+			'deleted'   => 1,
+			'trashed'   => 2,
+			'untrashed' => 1,
+		];
+		$result = \AnsPress_PostTypes::bulk_post_updated_messages( $bulk_messages, $bulk_counts );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $bulk_messages['question'], $result['question'] );
+		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
+
+		// Test 3.
+		$bulk_messages = [
+			'question' => [
+				'updated'   => '%s questions updated.',
+				'locked'    => '%s question not updated, somebody is editing it.',
+				'deleted'   => '%s questions permanently deleted.',
+				'trashed'   => '%s questions moved to the Trash.',
+				'untrashed' => '%s questions restored from the Trash.',
+			],
+			'answer'   => [
+				'updated'   => '%s answers updated.',
+				'locked'    => '%s answer not updated, somebody is editing it.',
+				'deleted'   => '%s answers permanently deleted.',
+				'trashed'   => '%s answers moved to the Trash.',
+				'untrashed' => '%s answers restored from the Trash.',
+			],
+		];
+		$bulk_counts = [
+			'updated'   => '4',
+			'locked'    => '1',
+			'deleted'   => '2',
+			'trashed'   => '3',
+			'untrashed' => '5',
+		];
+		$result = \AnsPress_PostTypes::bulk_post_updated_messages( $bulk_messages, $bulk_counts );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $bulk_messages['question'], $result['question'] );
+		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
+	}
+
+	/**
+	 * @covers AnsPress_PostTypes::post_updated_messages
+	 */
+	public function testPostUpdatedMessages() {
+		// Test 1.
+		global $post;
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+		$post = get_post( $question_id );
+		$messages = [
+			'question' => [
+				0  => '',
+				1  => 'Question updated. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Question</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Question updated.',
+				5  => false,
+				6  => 'Question published. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Question</a>',
+				7  => 'Question saved.',
+				8  => 'Question submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview question</a>',
+				9  => 'Question scheduled for: <strong>Jan 1, 2020 at 00:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $question_id ) ) . '">Preview question</a>',
+				10 => 'Question draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview question</a>',
+			],
+			'answer'   => [
+				0  => '',
+				1  => 'Answer updated. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Answer</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Answer updated.',
+				5  => false,
+				6  => 'Answer published. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Answer</a>',
+				7  => 'Answer saved.',
+				8  => 'Answer submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview answer</a>',
+				9  => 'Answer scheduled for: <strong>Jan 1, 2020 at 00:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $question_id ) ) . '">Preview answer</a>',
+				10 => 'Answer draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview answer</a>',
+			],
+		];
+		$result = \AnsPress_PostTypes::post_updated_messages( $messages );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $messages['question'], $result['question'] );
+		$this->assertEquals( $messages['answer'], $result['answer'] );
+
+		// Test 2.
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_date' => '2020:01:01 12:00:00' ] );
+		$post = get_post( $answer_id );
+		$messages = [
+			'question' => [
+				0  => '',
+				1  => 'Question updated. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Question</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Question updated.',
+				5  => false,
+				6  => 'Question published. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Question</a>',
+				7  => 'Question saved.',
+				8  => 'Question submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview question</a>',
+				9  => 'Question scheduled for: <strong>Jan 1, 2020 at 12:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $answer_id ) ) . '">Preview question</a>',
+				10 => 'Question draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview question</a>',
+			],
+			'answer'   => [
+				0  => '',
+				1  => 'Answer updated. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Answer</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Answer updated.',
+				5  => false,
+				6  => 'Answer published. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Answer</a>',
+				7  => 'Answer saved.',
+				8  => 'Answer submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview answer</a>',
+				9  => 'Answer scheduled for: <strong>Jan 1, 2020 at 12:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $answer_id ) ) . '">Preview answer</a>',
+				10 => 'Answer draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview answer</a>',
+			],
+		];
+		$result = \AnsPress_PostTypes::post_updated_messages( $messages );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $messages['question'], $result['question'] );
+		$this->assertEquals( $messages['answer'], $result['answer'] );
 	}
 }

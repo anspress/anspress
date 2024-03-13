@@ -18,6 +18,7 @@ class TestRewrite extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'rewrite_rules' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'rewrites' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'incr_hash' ) );
+		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'bp_com_paged' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'pagination_fix' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'add_query_var' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Rewrite', 'shortlink' ) );
@@ -148,5 +149,72 @@ class TestRewrite extends TestCase {
 			'answer_id' => 456,
 		];
 		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::bp_com_paged
+	 */
+	public function testBPComPaged() {
+		$this->setExpectedDeprecated( 'AnsPress_Rewrite::bp_com_paged' );
+		$args = 'test/args';
+		$result = \AnsPress_Rewrite::bp_com_paged( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::pagination_fix
+	 */
+	public function testPaginationFix() {
+		// Test 1.
+		$args = 'test/args';
+		$result = \AnsPress_Rewrite::pagination_fix( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+
+		// Test 2.
+		$args = 'page/3/';
+		$result = \AnsPress_Rewrite::pagination_fix( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+
+		// Test 3.
+		$args = 'tests/page';
+		$result = \AnsPress_Rewrite::pagination_fix( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::pagination_fix
+	 */
+	public function testPaginationFixHomePage() {
+		// Test 1.
+		$this->go_to( '/' );
+		$result = \AnsPress_Rewrite::pagination_fix( [ 'page/3/' ] );
+		$this->assertEquals( [ '?page=3' ], $result );
+
+		// Test 2.
+		$this->go_to( '/' );
+		$result = \AnsPress_Rewrite::pagination_fix( [ 'page/11' ] );
+		$this->assertEquals( [ '?page=11' ], $result );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::add_query_var
+	 */
+	public function testAddQueryVarEmptyUser() {
+		global $wp;
+		$wp->query_vars['ap_user'] = '';
+		\AnsPress_Rewrite::add_query_var( $wp );
+		$this->assertFalse( isset( $wp->query_vars['ap_user_id'] ) );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::add_query_var
+	 */
+	public function testAddQueryVarUserFound() {
+		$user_login = 'test_user';
+		$user_id = $this->factory->user->create( [ 'user_login' => $user_login ] );
+		global $wp;
+		$wp->query_vars['ap_user'] = urldecode( $user_login );
+		\AnsPress_Rewrite::add_query_var( $wp );
+		$this->assertEquals( $user_id, $wp->query_vars['ap_user_id'] );
 	}
 }
