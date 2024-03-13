@@ -262,4 +262,99 @@ class TestPostTypes extends TestCase {
 		$result = \AnsPress_PostTypes::question_perm_structure();
 		$this->assertEquals( 'test/%question%-%question_id%', $result->rule );
 	}
+
+	/**
+	 * @covers AnsPress_PostTypes::bulk_post_updated_messages
+	 */
+	public function testBulkPostUpdatedMessages() {
+		// Test 1.
+		$bulk_messages = [
+			'question' => [
+				'updated'   => '%s questions updated.',
+				'locked'    => '%s questions not updated, somebody is editing them.',
+				'deleted'   => '%s questions permanently deleted.',
+				'trashed'   => '%s question moved to the Trash.',
+				'untrashed' => '%s questions restored from the Trash.',
+			],
+			'answer'   => [
+				'updated'   => '%s answers updated.',
+				'locked'    => '%s answers not updated, somebody is editing them.',
+				'deleted'   => '%s answers permanently deleted.',
+				'trashed'   => '%s answer moved to the Trash.',
+				'untrashed' => '%s answers restored from the Trash.',
+			],
+		];
+		$bulk_counts = [
+			'updated'   => 4,
+			'locked'    => 2,
+			'deleted'   => 3,
+			'trashed'   => 1,
+			'untrashed' => 5,
+		];
+		$result = \AnsPress_PostTypes::bulk_post_updated_messages( $bulk_messages, $bulk_counts );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $bulk_messages['question'], $result['question'] );
+		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
+
+		// Test 2.
+		$bulk_messages = [
+			'question' => [
+				'updated'   => '%s question updated.',
+				'locked'    => '1 question not updated, somebody is editing it.',
+				'deleted'   => '%s question permanently deleted.',
+				'trashed'   => '%s questions moved to the Trash.',
+				'untrashed' => '%s question restored from the Trash.',
+			],
+			'answer'   => [
+				'updated'   => '%s answer updated.',
+				'locked'    => '1 answer not updated, somebody is editing it.',
+				'deleted'   => '%s answer permanently deleted.',
+				'trashed'   => '%s answers moved to the Trash.',
+				'untrashed' => '%s answer restored from the Trash.',
+			],
+		];
+		$bulk_counts = [
+			'updated'   => 1,
+			'locked'    => 1,
+			'deleted'   => 1,
+			'trashed'   => 2,
+			'untrashed' => 1,
+		];
+		$result = \AnsPress_PostTypes::bulk_post_updated_messages( $bulk_messages, $bulk_counts );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $bulk_messages['question'], $result['question'] );
+		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
+
+		// Test 3.
+		$bulk_messages = [
+			'question' => [
+				'updated'   => '%s questions updated.',
+				'locked'    => '%s question not updated, somebody is editing it.',
+				'deleted'   => '%s questions permanently deleted.',
+				'trashed'   => '%s questions moved to the Trash.',
+				'untrashed' => '%s questions restored from the Trash.',
+			],
+			'answer'   => [
+				'updated'   => '%s answers updated.',
+				'locked'    => '%s answer not updated, somebody is editing it.',
+				'deleted'   => '%s answers permanently deleted.',
+				'trashed'   => '%s answers moved to the Trash.',
+				'untrashed' => '%s answers restored from the Trash.',
+			],
+		];
+		$bulk_counts = [
+			'updated'   => '4',
+			'locked'    => '1',
+			'deleted'   => '2',
+			'trashed'   => '3',
+			'untrashed' => '5',
+		];
+		$result = \AnsPress_PostTypes::bulk_post_updated_messages( $bulk_messages, $bulk_counts );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $bulk_messages['question'], $result['question'] );
+		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
+	}
 }
