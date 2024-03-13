@@ -97,6 +97,8 @@ class Test_Roles extends TestCase {
 	public function testAddCapabilities() {
 		global $wp_roles;
 
+		(new \AP_Roles())->add_roles();
+
 		if ( class_exists( 'WP_Roles' ) ) {
 			if ( ! isset( $wp_roles ) ) {
 				$wp_roles = new \WP_Roles(); }

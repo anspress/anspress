@@ -1041,6 +1041,93 @@ class TestAdminAjax extends TestCaseAjax {
 		// Deleting userdata test for now could not be done since it seems to hamper other tests.
 	}
 
+	public function test_ap_uninstall_data_userdata() {
+		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
+
+		$this->setRole( 'administrator' );
+
+		$this->_set_post_data( 'action=ap_uninstall_data&data_type=userdata&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+
+		$this->handle( 'ap_uninstall_data' );
+
+		$this->assertEquals( '{"done":1,"total":0}', $this->_last_response );
+	}
+
+	public function test_ap_uninstall_data_userdata_delete_avatar_dir() {
+		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
+
+		$this->setRole( 'administrator' );
+
+		// Create avatar directory.
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
+		wp_mkdir_p( $avatar_dir );
+
+		$this->assertTrue( is_dir( $avatar_dir ) );
+
+		$this->_set_post_data( 'action=ap_uninstall_data&data_type=userdata&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+
+		$this->handle( 'ap_uninstall_data' );
+
+		$this->assertEquals( '{"done":1,"total":0}', $this->_last_response );
+
+		$this->assertFalse( is_dir( $avatar_dir ) );
+	}
+
+	public function test_ap_uninstall_data_userdata_delete_user_meta() {
+		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
+
+		$this->setRole( 'administrator' );
+
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		add_user_meta( $user_id, '__up_vote_casted', 100 );
+		add_user_meta( $user_id, '__down_vote_casted', 100 );
+
+		$this->assertEquals( 100, get_user_meta( $user_id, '__up_vote_casted', true ) );
+		$this->assertEquals( 100, get_user_meta( $user_id, '__down_vote_casted', true ) );
+
+		wp_cache_delete_multiple( [$user_id], 'user_meta' );
+
+		$this->_set_post_data( 'action=ap_uninstall_data&data_type=userdata&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+
+		$this->handle( 'ap_uninstall_data' );
+
+		$this->assertEquals( '{"done":1,"total":0}', $this->_last_response );
+
+		$this->assertEmpty( get_user_meta( $user_id, '__up_vote_casted', true ) );
+		$this->assertEmpty( get_user_meta( $user_id, '__down_vote_casted', true ) );
+	}
+
+	public function test_ap_uninstall_data_userdata_delete_roles() {
+		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
+
+		global $wp_roles;
+
+		(new \AP_Roles())->add_roles();
+
+		$this->setRole( 'administrator' );
+
+		// Check role exists.
+		$this->assertTrue( $wp_roles->is_role( 'ap_participant' ) );
+		$this->assertTrue( $wp_roles->is_role( 'ap_moderator' ) );
+		$this->assertTrue( $wp_roles->is_role( 'ap_banned' ) );
+
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		$this->_set_post_data( 'action=ap_uninstall_data&data_type=userdata&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
+
+		$this->handle( 'ap_uninstall_data' );
+
+		$this->assertEquals( '{"done":1,"total":0}', $this->_last_response );
+
+		$this->assertEquals( 'subscriber', get_userdata( $user_id )->roles[0] );
+
+		$this->assertFalse( $wp_roles->is_role( 'ap_participant' ) );
+		$this->assertFalse( $wp_roles->is_role( 'ap_moderator' ) );
+		$this->assertFalse( $wp_roles->is_role( 'ap_banned' ) );
+	}
+
 	/**
 	 * @covers AnsPress_Admin_Ajax::ap_toggle_addon
 	 */

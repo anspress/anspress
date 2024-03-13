@@ -177,10 +177,13 @@ class AnsPress_Admin_Ajax {
 					)
 				);
 			} elseif ( 'userdata' === $data_type ) {
-				$upload_dir = wp_upload_dir();
+				$wp_filesystem = new WP_Filesystem_Direct( false );
+				$upload_dir    = wp_upload_dir();
+				$avatar_dir    = $upload_dir['basedir'] . '/ap_avatars';
 
-				// Delete avatar folder.
-				wp_delete_file( $upload_dir['baseurl'] . '/ap_avatars' );
+				if ( $wp_filesystem->is_dir( $avatar_dir ) ) {
+					$wp_filesystem->rmdir( $avatar_dir, true );
+				}
 
 				// Remove user roles.
 				AP_Roles::remove_roles();
