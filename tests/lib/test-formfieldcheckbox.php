@@ -331,4 +331,66 @@ class TestAnsPressFormFieldCheckbox extends TestCase {
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Checkbox::unsafe_value
+	 */
+	public function testUnsafeValue() {
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [] );
+
+		// Test begins.
+		// Test 1.
+		$_REQUEST = 'Request Value';
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 2.
+		$_REQUEST = [
+			'sample-form' => 'Request Value',
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 3.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => 'Request Value',
+			]
+		];
+		$this->assertEquals( 'Request Value', $field->unsafe_value() );
+
+		// Test 4.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => [
+					'option1' => 'Request Value',
+				]
+			]
+		];
+		$this->assertEquals( [ 'option1' => 'Request Value' ], $field->unsafe_value() );
+
+		// Test 5.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '\\\\\\ Request Value \\\\\\',
+			]
+		];
+		$this->assertEquals( '\\ Request Value \\', $field->unsafe_value() );
+
+		// Test 6.
+		$_REQUEST = [
+			'Tes Form' => [
+				'sample-form' => [
+					'option1' => 'Request Value',
+				]
+			]
+		];
+		$this->assertNull( $field->unsafe_value() );
+
+		// Test 7.
+		$_REQUEST = [
+			'Sample Form' => [
+				'sample-form' => '\\ <script>alert( "Hello World!" )</script> \\'
+			]
+		];
+		$this->assertEquals( ' <script>alert( "Hello World!" )</script> ', $field->unsafe_value() );
+	}
 }
