@@ -164,4 +164,171 @@ class TestAnsPressFormFieldCheckbox extends TestCase {
 		$output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
 		$this->assertEquals( $output_order, $property->getValue( $field ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Checkbox::field_markup
+	 */
+	public function testFieldMarkup() {
+		// Set up the action hook callback
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Checkbox', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		// Test 1.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type' => 'checkbox',
+			'desc' => 'Test Description',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<label><input type="checkbox" value="1"  name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "/>Test Description</label>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 2.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type'  => 'checkbox',
+			'desc'  => 'Test Description',
+			'value' => 1,
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<label><input type="checkbox" value="1"  checked=\'checked\' name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control "/>Test Description</label>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 3.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type'  => 'checkbox',
+			'desc'  => 'Test Description',
+			'value' => 0,
+			'attr'  => [
+				'placeholder' => 'Placeholder',
+				'data-custom' => 'Custom data',
+			],
+			'class' => 'custom-class',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertEquals( '<label><input type="checkbox" value="1"  name="Sample Form[sample-form]" id="SampleForm-sample-form" class="ap-form-control custom-class" placeholder="Placeholder" data-custom="Custom data"/>Test Description</label>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 4.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type'    => 'checkbox',
+			'desc'    => 'Test Description',
+			'value'   => [],
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option1]" id="SampleFormsample-formoption1" class="ap-form-control" />Option 1</label>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option2]" id="SampleFormsample-formoption2" class="ap-form-control" />Option 2</label>', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( 'Test Description', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 5.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type'    => 'checkbox',
+			'desc'    => 'Test Description',
+			'value'   => [ 'option1' => 1 ],
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option1]" id="SampleFormsample-formoption1" class="ap-form-control"  checked=\'checked\'/>Option 1</label>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option2]" id="SampleFormsample-formoption2" class="ap-form-control" />Option 2</label>', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( 'Test Description', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 6.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type'    => 'checkbox',
+			'desc'    => 'Test Description',
+			'value'   => [ 'option1' => 1, 'option2' => 1 ],
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option1]" id="SampleFormsample-formoption1" class="ap-form-control"  checked=\'checked\'/>Option 1</label>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option2]" id="SampleFormsample-formoption2" class="ap-form-control"  checked=\'checked\'/>Option 2</label>', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( 'Test Description', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+
+		// Test 7.
+		$callback_triggered = false;
+		$this->assertFalse( $callback_triggered );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [
+			'type'    => 'checkbox',
+			'desc'    => 'Test Description',
+			'value'   => [ 'option1' => 0, 'option2' => 0 ],
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+			],
+			'attr'  => [
+				'placeholder' => 'Placeholder',
+				'data-custom' => 'Custom data',
+			],
+			'class' => 'custom-class',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option1]" id="SampleFormsample-formoption1" class="ap-form-control"  checked=\'checked\' placeholder="Placeholder" data-custom="Custom data"/>Option 1</label>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<label><input type="checkbox" value="1" name="Sample Form[sample-form][option2]" id="SampleFormsample-formoption2" class="ap-form-control"  checked=\'checked\' placeholder="Placeholder" data-custom="Custom data"/>Option 2</label>', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( 'Test Description', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( 'custom-class', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
 }
