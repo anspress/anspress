@@ -99,4 +99,61 @@ class TestAddonEmailHelper extends TestCase {
 		$instance->add_user( $user_email );
 		$this->assertEquals( 4, count( $instance->args['users'] ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Email\Helper::add_email
+	 */
+	public function testAddEmail() {
+		$instance = new \Anspress\Addons\Email\Helper( 'test_event' );
+		$reflection = new \ReflectionClass( $instance );
+		$property = $reflection->getProperty( 'emails' );
+		$property->setAccessible( true );
+
+		// Test for action hook.
+		$action_triggered = false;
+		add_action( 'ap_before_email_to_list', function ( $emailHelper ) use ( &$action_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Addons\Email\Helper', $emailHelper );
+			$action_triggered = true;
+		} );
+
+		// Test begins.
+		$this->assertIsArray( $property->getValue( $instance ) );
+		$this->assertEmpty( $property->getValue( $instance ) );
+
+		// Test 1.
+		$action_triggered = false;
+		$this->assertFalse( $action_triggered );
+		$instance->add_email( 'user1@example.com' );
+		$this->assertNotEmpty( $property->getValue( $instance ) );
+		$this->assertContains( 'user1@example.com', $property->getValue( $instance ) );
+		$this->assertTrue( $action_triggered );
+		$this->assertTrue( did_action( 'ap_before_email_to_list' ) > 0 );
+
+		// Test 2.
+		$action_triggered = false;
+		$this->assertFalse( $action_triggered );
+		$instance->add_email( 'user2@example.com' );
+		$this->assertNotEmpty( $property->getValue( $instance ) );
+		$this->assertContains( 'user2@example.com', $property->getValue( $instance ) );
+		$this->assertTrue( $action_triggered );
+		$this->assertTrue( did_action( 'ap_before_email_to_list' ) > 0 );
+
+		// Test 3.
+		$action_triggered = false;
+		$this->assertFalse( $action_triggered );
+		$instance->add_email( '   user3$example.com   ' );
+		$this->assertNotEmpty( $property->getValue( $instance ) );
+		$this->assertContains( 'user3$example.com', $property->getValue( $instance ) );
+		$this->assertTrue( $action_triggered );
+		$this->assertTrue( did_action( 'ap_before_email_to_list' ) > 0 );
+
+		// Test 4.
+		$action_triggered = false;
+		$this->assertFalse( $action_triggered );
+		$instance->add_email( 'user3$example.com' );
+		$this->assertNotEmpty( $property->getValue( $instance ) );
+		$this->assertContains( 'user3$example.com', $property->getValue( $instance ) );
+		$this->assertFalse( $action_triggered );
+		$this->assertEquals( 3, count( $property->getValue( $instance ) ) );
+	}
 }
