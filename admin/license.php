@@ -70,7 +70,7 @@ class AP_License {
 		if ( ap_isset_post_value( 'save_licenses' ) ) {
 			foreach ( (array) $fields as $slug => $prod ) {
 				$prod_license = ap_isset_post_value( 'ap_license_' . $slug, '' );
-				if ( ! empty( $prod_license ) && ! isset( $licenses[ $slug ] ) || $prod_license !== $licenses[ $slug ]['key'] ) {
+				if ( ( ! empty( $prod_license ) && ! isset( $licenses[ $slug ] ) ) || $prod_license !== $licenses[ $slug ]['key'] ) {
 					$licenses[ $slug ] = array(
 						'key'    => trim( ap_sanitize_unslash( 'ap_license_' . $slug, 'g', '' ) ),
 						'status' => false,

@@ -542,7 +542,7 @@ class AnsPress_Admin {
 		$screen = get_current_screen();
 
 		if ( isset( $query->query_vars['s'], $screen->id, $screen->post_type ) &&
-			( 'edit-question' === $screen->id && 'question' === $screen->post_type || 'edit-answer' === $screen->id && 'answer' === $screen->post_type ) &&
+			( ( 'edit-question' === $screen->id && 'question' === $screen->post_type ) || ( 'edit-answer' === $screen->id && 'answer' === $screen->post_type ) ) &&
 			$query->is_main_query() ) {
 			$search_q = ap_parse_search_string( get_search_query() );
 

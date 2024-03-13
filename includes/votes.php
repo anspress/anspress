@@ -550,7 +550,7 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
  */
 function ap_vote_btn( $post = null, $output = true ) {
 	$post = ap_get_post( $post );
-	if ( ! $post || 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
+	if ( ! $post || ( 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) ) {
 		return;
 	}
 
