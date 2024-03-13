@@ -162,6 +162,41 @@ class TestRewrite extends TestCase {
 	}
 
 	/**
+	 * Covers AnsPress_Rewrite::pagination_fix
+	 */
+	public function testPaginationFix() {
+		// Test 1.
+		$args = 'test/args';
+		$result = \AnsPress_Rewrite::pagination_fix( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+
+		// Test 2.
+		$args = 'page/3/';
+		$result = \AnsPress_Rewrite::pagination_fix( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+
+		// Test 3.
+		$args = 'tests/page';
+		$result = \AnsPress_Rewrite::pagination_fix( [ $args ] );
+		$this->assertEquals( [ $args ], $result );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::pagination_fix
+	 */
+	public function testPaginationFixHomePage() {
+		// Test 1.
+		$this->go_to( '/' );
+		$result = \AnsPress_Rewrite::pagination_fix( [ 'page/3/' ] );
+		$this->assertEquals( [ '?page=3' ], $result );
+
+		// Test 2.
+		$this->go_to( '/' );
+		$result = \AnsPress_Rewrite::pagination_fix( [ 'page/11' ] );
+		$this->assertEquals( [ '?page=11' ], $result );
+	}
+
+	/**
 	 * Covers AnsPress_Rewrite::add_query_var
 	 */
 	public function testAddQueryVarEmptyUser() {
