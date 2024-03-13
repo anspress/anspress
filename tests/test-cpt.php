@@ -357,4 +357,84 @@ class TestPostTypes extends TestCase {
 		$this->assertEquals( $bulk_messages['question'], $result['question'] );
 		$this->assertEquals( $bulk_messages['answer'], $result['answer'] );
 	}
+
+	/**
+	 * @covers AnsPress_PostTypes::post_updated_messages
+	 */
+	public function testPostUpdatedMessages() {
+		// Test 1.
+		global $post;
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+		$post = get_post( $question_id );
+		$messages = [
+			'question' => [
+				0  => '',
+				1  => 'Question updated. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Question</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Question updated.',
+				5  => false,
+				6  => 'Question published. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Question</a>',
+				7  => 'Question saved.',
+				8  => 'Question submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview question</a>',
+				9  => 'Question scheduled for: <strong>Jan 1, 2020 at 00:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $question_id ) ) . '">Preview question</a>',
+				10 => 'Question draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview question</a>',
+			],
+			'answer'   => [
+				0  => '',
+				1  => 'Answer updated. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Answer</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Answer updated.',
+				5  => false,
+				6  => 'Answer published. <a href="' . esc_url( get_permalink( $question_id ) ) . '">View Answer</a>',
+				7  => 'Answer saved.',
+				8  => 'Answer submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview answer</a>',
+				9  => 'Answer scheduled for: <strong>Jan 1, 2020 at 00:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $question_id ) ) . '">Preview answer</a>',
+				10 => 'Answer draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $question_id ) ) . '">Preview answer</a>',
+			],
+		];
+		$result = \AnsPress_PostTypes::post_updated_messages( $messages );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $messages['question'], $result['question'] );
+		$this->assertEquals( $messages['answer'], $result['answer'] );
+
+		// Test 2.
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_date' => '2020:01:01 12:00:00' ] );
+		$post = get_post( $answer_id );
+		$messages = [
+			'question' => [
+				0  => '',
+				1  => 'Question updated. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Question</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Question updated.',
+				5  => false,
+				6  => 'Question published. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Question</a>',
+				7  => 'Question saved.',
+				8  => 'Question submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview question</a>',
+				9  => 'Question scheduled for: <strong>Jan 1, 2020 at 12:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $answer_id ) ) . '">Preview question</a>',
+				10 => 'Question draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview question</a>',
+			],
+			'answer'   => [
+				0  => '',
+				1  => 'Answer updated. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Answer</a>',
+				2  => 'Custom field updated.',
+				3  => 'Custom field deleted.',
+				4  => 'Answer updated.',
+				5  => false,
+				6  => 'Answer published. <a href="' . esc_url( get_permalink( $answer_id ) ) . '">View Answer</a>',
+				7  => 'Answer saved.',
+				8  => 'Answer submitted. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview answer</a>',
+				9  => 'Answer scheduled for: <strong>Jan 1, 2020 at 12:00</strong>. <a target="_blank" href="' . esc_url( get_permalink( $answer_id ) ) . '">Preview answer</a>',
+				10 => 'Answer draft updated. <a target="_blank" href="' . esc_url( get_preview_post_link( $answer_id ) ) . '">Preview answer</a>',
+			],
+		];
+		$result = \AnsPress_PostTypes::post_updated_messages( $messages );
+		$this->assertArrayHasKey( 'question', $result );
+		$this->assertArrayHasKey( 'answer', $result );
+		$this->assertEquals( $messages['question'], $result['question'] );
+		$this->assertEquals( $messages['answer'], $result['answer'] );
+	}
 }
