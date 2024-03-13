@@ -710,7 +710,7 @@ function ap_get_link_to( $sub ) {
 			'question'   => ap_opt( 'question_page_slug' ),
 			'users'      => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'users_page' ) ) ),
 			'user'       => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'user_page' ) ) ),
-			'activities' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'activities' ) ) ),
+			'activities' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'activities_page' ) ) ),
 			'categories' => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'categories_page' ) ) ),
 			'tags'       => str_replace( ap_base_page_link(), '', get_permalink( ap_opt( 'tags_page' ) ) ),
 		);
@@ -728,7 +728,11 @@ function ap_get_link_to( $sub ) {
 
 		if ( get_option( 'permalink_structure' ) !== '' ) {
 			if ( ! is_array( $sub ) && 'base' !== $sub ) {
-				$args = $sub ? '/' . $sub : '';
+				if ( strpos( $sub, 'http://' ) === 0 || strpos( $sub, 'https://' ) === 0 ) {
+					$args = $sub;
+				} else {
+					$args = $sub ? '/' . $sub : '';
+				}
 			} elseif ( is_array( $sub ) ) {
 				$args = '/';
 
@@ -741,7 +745,7 @@ function ap_get_link_to( $sub ) {
 
 			$args = user_trailingslashit( rtrim( $args, '/' ) );
 		} elseif ( ! is_array( $sub ) ) {
-				$args = $sub ? '&ap_page=' . $sub : '';
+			$args = $sub ? '&ap_page=' . $sub : '';
 		} elseif ( is_array( $sub ) ) {
 			$args = '';
 
@@ -752,7 +756,7 @@ function ap_get_link_to( $sub ) {
 			}
 		}
 
-		$url = $base . $args;
+		$url = get_option( 'permalink_structure' ) ? $base . $args : $base;
 	}
 
 	/**

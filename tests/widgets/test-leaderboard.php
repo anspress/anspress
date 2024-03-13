@@ -9,7 +9,8 @@ class TestWidgetLeaderboard extends TestCase {
 	public function testWidgetsInit() {
 		$this->assertEquals( 10, has_action( 'widgets_init', 'ap_leaderboard_register_widgets' ) );
 		$this->assertTrue( class_exists( 'AnsPress_Leaderboard_Widget' ) );
-		$this->assertTrue( array_key_exists( 'AnsPress_Leaderboard_Widget', $GLOBALS['wp_widget_factory']->widgets ) );
+		ap_leaderboard_register_widgets();
+		$this->assertArrayHasKey( 'AnsPress_Leaderboard_Widget', $GLOBALS['wp_widget_factory']->widgets );
 	}
 
 	public function testMethodExists() {

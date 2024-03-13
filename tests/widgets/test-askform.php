@@ -127,4 +127,28 @@ class TestWidgetAskForm extends TestCase {
 		$updated_notitle = $instance->update( $new_notitle, $old_notitle );
 		$this->assertEquals( '', $updated_notitle['title'] );
 	}
+
+	public function testWidgetRegistration() {
+        ap_quickask_register_widgets();
+
+        $this->assertTrue(in_array('AP_Askform_Widget', array_keys($GLOBALS['wp_widget_factory']->widgets)));
+
+		do_action( 'widgets_init' );
+        $this->assertEquals(has_action('widgets_init', 'ap_quickask_register_widgets'), 10);
+    }
+
+	public function testFormDefaultTitle() {
+		$instance = new \AP_Askform_Widget();
+
+		// Test begins.
+		// Test 1.
+		$instance_title = [
+
+		];
+		ob_start();
+		$instance->form( $instance_title );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Ask questions"', $result );
+	}
 }

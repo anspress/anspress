@@ -7,8 +7,10 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 class TestWidgetSearch extends TestCase {
 
 	public function testWidgetsInit() {
+		do_action( 'widgets_init' );
 		$this->assertEquals( 10, has_action( 'widgets_init', 'ap_search_register_widgets' ) );
 		$this->assertTrue( class_exists( 'AP_Search_Widget' ) );
+		ap_search_register_widgets();
 		$this->assertTrue( array_key_exists( 'AP_Search_Widget', $GLOBALS['wp_widget_factory']->widgets ) );
 	}
 
