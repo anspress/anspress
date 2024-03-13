@@ -160,4 +160,26 @@ class TestRewrite extends TestCase {
 		$result = \AnsPress_Rewrite::bp_com_paged( [ $args ] );
 		$this->assertEquals( [ $args ], $result );
 	}
+
+	/**
+	 * Covers AnsPress_Rewrite::add_query_var
+	 */
+	public function testAddQueryVarEmptyUser() {
+		global $wp;
+		$wp->query_vars['ap_user'] = '';
+		\AnsPress_Rewrite::add_query_var( $wp );
+		$this->assertFalse( isset( $wp->query_vars['ap_user_id'] ) );
+	}
+
+	/**
+	 * Covers AnsPress_Rewrite::add_query_var
+	 */
+	public function testAddQueryVarUserFound() {
+		$user_login = 'test_user';
+		$user_id = $this->factory->user->create( [ 'user_login' => $user_login ] );
+		global $wp;
+		$wp->query_vars['ap_user'] = urldecode( $user_login );
+		\AnsPress_Rewrite::add_query_var( $wp );
+		$this->assertEquals( $user_id, $wp->query_vars['ap_user_id'] );
+	}
 }
