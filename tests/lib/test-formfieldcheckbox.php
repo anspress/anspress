@@ -76,4 +76,92 @@ class TestAnsPressFormFieldCheckbox extends TestCase {
 		$this->assertEquals( [ 'array_remove_empty', 'text_field', 'custom_sanitize_cb' ], $property->getValue( $field ) );
 		$this->assertEquals( [ 'label' => 'AnsPress Checkbox Field', 'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2', ], 'sanitize' => 'custom_sanitize_cb' ], $field->args );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Checkbox::html_order
+	 */
+	public function testHTMLOrder() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [ 'options' => [] ] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$method->invoke( $field );
+		$this->assertEquals( $output_order, $property->getValue( $field ) );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$method->invoke( $field );
+		$this->assertEquals( $output_order, $property->getValue( $field ) );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [ 'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ] ] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		$method->invoke( $field );
+		$this->assertEquals( $output_order, $property->getValue( $field ) );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [ 'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ] ] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$custom_output_order = [ 'wrapper_start', 'label', 'desc', 'errors', 'field_wrap_start', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$field->args['output_order'] = $custom_output_order;
+		$method->invoke( $field );
+		$this->assertEquals( $custom_output_order, $property->getValue( $field ) );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [ 'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ] ] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$custom_output_order = [ 'label', 'desc', 'errors', 'field_markup' ];
+		$field->args['output_order'] = $custom_output_order;
+		$method->invoke( $field );
+		$this->assertEquals( $custom_output_order, $property->getValue( $field ) );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [ 'options' => [ 'option1' => 'Option 1', 'option2' => 'Option 2' ] ] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$custom_output_order = [];
+		$field->args['output_order'] = $custom_output_order;
+		$method->invoke( $field );
+		$output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'desc', 'field_wrap_end', 'wrapper_end' ];
+		$this->assertEquals( $output_order, $property->getValue( $field ) );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'html_order' );
+		$method->setAccessible( true );
+		$property = $reflection->getProperty( 'output_order' );
+		$property->setAccessible( true );
+		$custom_output_order = [ 'label', 'desc', 'errors', 'field_markup' ];
+		$field->args['output_order'] = $custom_output_order;
+		$method->invoke( $field );
+		$output_order = [ 'wrapper_start', 'label', 'field_wrap_start', 'errors', 'field_markup', 'field_wrap_end', 'wrapper_end' ];
+		$this->assertEquals( $output_order, $property->getValue( $field ) );
+	}
 }
