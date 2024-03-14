@@ -102,6 +102,30 @@ class Test_Roles extends TestCase {
 	}
 
 	/**
+	 * @covers AP_Roles::remove_roles
+	 */
+	public function testRemoveRoles() {
+		global $wp_roles;
+		// Add roles.
+		$role = new \AP_Roles();
+		$role->add_roles();
+		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_participant' ) );
+		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_moderator' ) );
+		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_banned' ) );
+
+		// Call the method and test.
+		$role->remove_roles();
+		$this->assertFalse( isset( $wp_roles->roles['ap_participant'] ) );
+		$this->assertFalse( isset( $wp_roles->roles['ap_moderator'] ) );
+		$this->assertFalse( isset( $wp_roles->roles['ap_banned'] ) );
+
+		// Re-add roles since it hampers other tests.
+		add_role( 'ap_moderator', 'AnsPress Moderator', ap_role_caps( 'moderator' ) );
+		add_role( 'ap_participant', 'AnsPress Participants', ap_role_caps( 'participant' ) );
+		add_role( 'ap_banned', 'AnsPress Banned', [ 'read' => true ] );
+	}
+
+	/**
 	 * @covers AP_Roles::add_capabilities
 	 */
 	public function testAddCapabilities() {
