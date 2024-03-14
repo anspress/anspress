@@ -10,6 +10,14 @@ require_once ANSPRESS_ADDONS_DIR . '/categories/widget.php';
 
 class TestAddonCategoriesWidget extends TestCase {
 
+	public function testWidgetsInit() {
+		$instance = \Anspress\Addons\Categories::init();
+		anspress()->setup_hooks();
+		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget' ] ) );
+		$this->assertTrue( class_exists( 'Anspress\Widgets\Categories' ) );
+		$this->assertTrue( array_key_exists( 'Anspress\Widgets\Categories', $GLOBALS['wp_widget_factory']->widgets ) );
+	}
+
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'Anspress\Widgets\Categories', '__construct' ) );
 		$this->assertTrue( method_exists( 'Anspress\Widgets\Categories', 'widget' ) );
