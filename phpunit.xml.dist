@@ -26,6 +26,9 @@
 			<directory suffix=".php">./lib/</directory>
 			<directory suffix=".php">./widgets/</directory>
 		</include>
+		<exclude>
+			<directory suffix=".php">./addons/recaptcha/recaptcha/</directory>
+		</exclude>
 	</coverage>
 
 	<php>

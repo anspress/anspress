@@ -3,7 +3,6 @@
 namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-
 class TestAddonCategories extends TestCase {
 
 	use Testcases\Common;
@@ -64,6 +63,115 @@ class TestAddonCategories extends TestCase {
 		$this->assertInstanceOf( 'Anspress\Addons\Categories', $instance1 );
 		$instance2 = \Anspress\Addons\Categories::init();
 		$this->assertSame( $instance1, $instance2 );
+	}
+
+	public function test_register_category_page()
+	{
+		$this->assertEquals( 'Category', anspress()->pages['category']['title'] );
+		$this->assertEquals( [ \Anspress\Addons\Categories::init(), 'category_page' ], anspress()->pages['category']['func'] );
+		$this->assertEquals( false, anspress()->pages['category']['show_in_menu'] );
+		$this->assertEquals( false, anspress()->pages['category']['private'] );
+	}
+
+	public function test_after_new_question()
+	{
+		anspress()->setup_hooks();
+		$this->assertEquals( 0, has_action( 'save_post_question', [ \Anspress\Addons\Categories::init(), 'after_new_question' ] ) );
+	}
+
+	public function test_ap_breadcrumbs_single_question()
+	{
+		anspress()->setup_hooks();
+
+		$question = $this->factory()->post->create_and_get([
+			'post_type'  => 'question',
+			'post_title' => 'Question Title',
+		]);
+
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Call the method.
+		$instance->register_question_categories();
+
+		$category = $this->factory()->term->create_and_get([
+			'taxonomy' => 'question_category',
+			'name'     => 'Category Name',
+		]);
+
+		wp_set_post_terms( $question->ID, $category->term_id, 'question_category' );
+
+		$this->go_to( '/?post_type=question&p=' . $question->ID );
+
+		$breadcrumbs = apply_filters( 'ap_breadcrumbs', [] );
+
+		$this->assertNotEmpty( $breadcrumbs['category'] );
+		$this->assertEquals(
+			[
+				'title' => 'Category Name',
+				'link'   => get_term_link( $category->term_id, 'question_category' ),
+				'order' => 2,
+			],
+			$breadcrumbs['category']
+		);
+	}
+
+	public function test_ap_breadcrumbs_single_category()
+	{
+		anspress()->setup_hooks();
+
+		$categories_page = $this->factory()->post->create_and_get([
+			'post_type'  => 'page',
+			'post_title' => 'Categories',
+		]);
+
+		ap_opt( 'categories_page', $categories_page->ID );
+
+		$question = $this->factory()->post->create_and_get([
+			'post_type'  => 'question',
+			'post_title' => 'Question Title',
+		]);
+
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Call the method.
+		$instance->register_question_categories();
+
+		$category = $this->factory()->term->create_and_get([
+			'taxonomy' => 'question_category',
+			'name'     => 'Category Name',
+		]);
+
+		wp_set_post_terms( $question->ID, $category->term_id, 'question_category' );
+
+		$this->go_to( '/?ap_page=category&question_category=' . $category->slug );
+
+		$breadcrumbs = apply_filters( 'ap_breadcrumbs', [] );
+
+		$this->assertNotEmpty( $breadcrumbs['category'] );
+		$this->assertEquals(
+			[
+				'title' => 'Category Name',
+				'link'   => get_term_link( $category->term_id, 'question_category' ),
+				'order' => 8,
+			],
+			$breadcrumbs['category']
+		);
+		$this->assertEquals(
+			array(
+				'title' => 'Categories',
+				'link'  => ap_get_link_to( 'categories' ),
+				'order' => 8,
+			),
+			$breadcrumbs['page']
+		);
+	}
+
+	public function test_register_categories_page()
+	{
+		$this->assertEquals( 'Categories', anspress()->pages['categories']['title'] );
+		$this->assertEquals( [ \Anspress\Addons\Categories::init(), 'categories_page' ], anspress()->pages['categories']['func'] );
+		$this->assertEquals( true, anspress()->pages['categories']['show_in_menu'] );
+		$this->assertEquals( false, anspress()->pages['categories']['private'] );
 	}
 
 	public function testHooksFilters() {
