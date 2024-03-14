@@ -80,6 +80,12 @@
           "zip",
           "zlib",
           "wordpress"
+        ],
+        "coverage-gutters.coverageReportFileName": ".coverage/**/index.html",
+        "coverage-gutters.showLineCoverage": true,
+        "coverage-gutters.coverageBaseDir": ".coverage",
+        "coverage-gutters.coverageFileNames": [
+          "cov.xml"
         ]
       },
       "extensions": [
@@ -87,7 +93,8 @@
         "EditorConfig.EditorConfig",
         "Chouzz.vscode-better-align",
         "emallin.phpunit",
-        "ValeryanM.vscode-phpsab"
+        "ValeryanM.vscode-phpsab",
+        "ryanluker.vscode-coverage-gutters"
       ]
     }
   },
