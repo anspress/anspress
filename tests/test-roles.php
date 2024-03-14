@@ -86,6 +86,16 @@ class Test_Roles extends TestCase {
 	 * @covers AP_Roles::add_roles
 	 */
 	public function testAddRoles() {
+		global $wp_roles;
+		// Remove roles.
+		$role = new \AP_Roles();
+		$role->remove_roles();
+		$this->assertFalse( isset( $wp_roles->roles['ap_participant'] ) );
+		$this->assertFalse( isset( $wp_roles->roles['ap_moderator'] ) );
+		$this->assertFalse( isset( $wp_roles->roles['ap_banned'] ) );
+
+		// Call the method and test.
+		$role->add_roles();
 		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_participant' ) );
 		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_moderator' ) );
 		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_banned' ) );
