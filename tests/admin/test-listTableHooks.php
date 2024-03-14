@@ -30,6 +30,32 @@ class TestListTableHooks extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress_Post_Table_Hooks::init
+	 */
+	public function testInit() {
+		\AnsPress_Post_Table_Hooks::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'views_edit-question', [ 'AnsPress_Post_Table_Hooks', 'flag_view' ] ) );
+		$this->assertEquals( 10, has_filter( 'views_edit-answer', [ 'AnsPress_Post_Table_Hooks', 'flag_view' ] ) );
+		$this->assertEquals( 10, has_action( 'posts_clauses', [ 'AnsPress_Post_Table_Hooks', 'posts_clauses' ] ) );
+		$this->assertEquals( 10, has_action( 'manage_answer_posts_custom_column', [ 'AnsPress_Post_Table_Hooks', 'answer_row_actions' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-question_columns', [ 'AnsPress_Post_Table_Hooks', 'cpt_question_columns' ] ) );
+		$this->assertEquals( 10, has_action( 'manage_posts_custom_column', [ 'AnsPress_Post_Table_Hooks', 'custom_columns_value' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-answer_columns', [ 'AnsPress_Post_Table_Hooks', 'cpt_answer_columns' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-question_sortable_columns', [ 'AnsPress_Post_Table_Hooks', 'admin_column_sort_flag' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-answer_sortable_columns', [ 'AnsPress_Post_Table_Hooks', 'admin_column_sort_flag' ] ) );
+		$this->assertEquals( 10, has_action( 'edit_form_after_title', [ 'AnsPress_Post_Table_Hooks', 'edit_form_after_title' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-comments_columns', [ 'AnsPress_Post_Table_Hooks', 'comment_flag_column' ] ) );
+		$this->assertEquals( 10, has_filter( 'comment_status_links', [ 'AnsPress_Post_Table_Hooks', 'comment_flag_view' ] ) );
+		$this->assertEquals( 10, has_action( 'current_screen', [ 'AnsPress_Post_Table_Hooks', 'comments_flag_query' ] ) );
+		$this->assertEquals( 10, has_filter( 'post_updated_messages', [ 'AnsPress_Post_Table_Hooks', 'post_custom_message' ] ) );
+		// $this->assertEquals( 10, has_filter( 'manage_comments_custom_column', [ 'AnsPress_Post_Table_Hooks', 'comment_flag_column_data' ] ) );
+		// $this->assertEquals( 10, has_filter( 'post_row_actions', [ 'AnsPress_Post_Table_Hooks', 'add_question_flag_link' ] ) );
+	}
+
+	/**
 	 * @covers AnsPress_Post_Table_Hooks::ans_notice
 	 */
 	public function testAnsNotice() {
