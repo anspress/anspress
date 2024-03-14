@@ -38,6 +38,19 @@ class TestAddonCaptcha extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Captcha::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_form_options_features_recaptcha', [ $instance, 'options' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_enqueue_scripts', [ $instance, 'enqueue_scripts' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_question_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_answer_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_comment_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Captcha::enqueue_scripts
 	 */

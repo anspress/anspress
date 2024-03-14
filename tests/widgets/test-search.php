@@ -133,4 +133,17 @@ class TestWidgetSearch extends TestCase {
 		$updated_notitle = $instance->update( $new_notitle, $old_notitle );
 		$this->assertEquals( '', $updated_notitle['title'] );
 	}
+
+	public function testFormDefaultTitle() {
+		$instance = new \AP_Search_Widget();
+
+		// Test begins.
+		// Test 1.
+		$instance_title = [];
+		ob_start();
+		$instance->form( $instance_title );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Search questions"', $result );
+	}
 }

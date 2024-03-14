@@ -63,6 +63,12 @@ class Test_Shortcode extends TestCase {
 		$this->go_to( home_url() );
 		global $ap_shortcode_loaded;
 		$this->assertNotEquals( true, $ap_shortcode_loaded );
+		ob_start();
+		do_action( 'wp_enqueue_scripts' );
+		ob_end_clean();
+		$this->assertTrue( wp_script_is( 'anspress-theme' ) );
+		$this->assertTrue( wp_style_is( 'anspress-main' ) );
+		$this->assertTrue( wp_style_is( 'anspress-fonts' ) );
 
 		// Make sure shortcode does not echo anything.
 		ob_start();

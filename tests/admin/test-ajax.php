@@ -1044,7 +1044,7 @@ class TestAdminAjax extends TestCaseAjax {
 	public function test_ap_uninstall_data_userdata() {
 		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
 
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 
 		$this->_set_post_data( 'action=ap_uninstall_data&data_type=userdata&__nonce=' . wp_create_nonce( 'ap_uninstall_data' ) );
 
@@ -1056,7 +1056,7 @@ class TestAdminAjax extends TestCaseAjax {
 	public function test_ap_uninstall_data_userdata_delete_avatar_dir() {
 		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
 
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 
 		// Create avatar directory.
 		$upload_dir = wp_upload_dir();
@@ -1077,7 +1077,7 @@ class TestAdminAjax extends TestCaseAjax {
 	public function test_ap_uninstall_data_userdata_delete_user_meta() {
 		add_action( 'wp_ajax_ap_uninstall_data', array( 'AnsPress_Admin_Ajax', 'ap_uninstall_data' ) );
 
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
@@ -1106,7 +1106,7 @@ class TestAdminAjax extends TestCaseAjax {
 
 		(new \AP_Roles())->add_roles();
 
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 
 		// Check role exists.
 		$this->assertTrue( $wp_roles->is_role( 'ap_participant' ) );
@@ -2005,5 +2005,14 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 111, $test_views_2->views );
 		$test_views_3 = ap_get_qameta( $question_ids_set_1[4] );
 		$this->assertEquals( 1111, $test_views_3->views );
+	}
+
+	public function testUserRoleRestore() {
+		$this->assertTrue( true );
+
+		// Restore the user roles.
+		add_role( 'ap_moderator', 'AnsPress Moderator', ap_role_caps( 'moderator' ) );
+		add_role( 'ap_participant', 'AnsPress Participants', ap_role_caps( 'participant' ) );
+		add_role( 'ap_banned', 'AnsPress Banned', [ 'read' => true ] );
 	}
 }

@@ -43,6 +43,17 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'wp_enqueue_scripts', [ $instance, 'scripts' ] ) );
+		$this->assertEquals( 10, has_filter( 'tiny_mce_before_init', [ $instance, 'mce_before_init' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_editor_buttons', [ $instance, 'editor_buttons' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_allowed_shortcodes', [ $instance, 'allowed_shortcodes' ] ) );
+	}
+
 	/**
 	 * Return the available brushes lists.
 	 *

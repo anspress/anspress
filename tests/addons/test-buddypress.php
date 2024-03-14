@@ -54,4 +54,29 @@ class TestAddonBuddyPress extends TestCase {
 		$instance2 = \Anspress\Addons\BuddyPress::init();
 		$this->assertSame( $instance1, $instance2 );
 	}
+
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\BuddyPress::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_action( 'bp_init', [ $instance, 'bp_init' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_enqueue', [ $instance, 'ap_assets_js' ] ) );
+		$this->assertEquals( 10, has_action( 'bp_setup_nav', [ $instance, 'content_setup_nav' ] ) );
+		$this->assertEquals( 10, has_action( 'bp_init', [ $instance, 'question_answer_tracking' ] ) );
+		$this->assertEquals( 10, has_action( 'bp_activity_entry_meta', [ $instance, 'activity_buttons' ] ) );
+		$this->assertEquals( 10, has_filter( 'bp_activity_custom_post_type_post_action', [ $instance, 'activity_action' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_the_question_content', [ $instance, 'ap_the_question_content' ] ) );
+		$this->assertEquals( 10, has_action( 'bp_notifications_get_registered_components', [ $instance, 'registered_components' ] ) );
+		$this->assertEquals( 10, has_action( 'bp_notifications_get_notifications_for_user', [ $instance, 'notifications_for_user' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ $instance, 'new_answer_notification' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ $instance, 'new_comment_notification' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_question', [ $instance, 'remove_answer_notify' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_answer', [ $instance, 'remove_answer_notify' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_answer', [ $instance, 'remove_comment_notify' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_unpublish_comment', [ $instance, 'remove_comment_notify' ] ) );
+		$this->assertEquals( 10, has_action( 'before_delete_post', [ $instance, 'remove_answer_notify' ] ) );
+		$this->assertEquals( 10, has_action( 'the_post', [ $instance, 'mark_bp_notify_as_read' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_bp_loadmore', [ $instance, 'bp_loadmore' ] ) );
+	}
 }

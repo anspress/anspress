@@ -37,6 +37,17 @@ class TestPostTypes extends TestCase {
 	/**
 	 * @covers AnsPress_PostTypes::register_question_cpt
 	 */
+	public function testQuestionPostTypeByMethod() {
+		global $wp_post_types;
+		unregister_post_type( 'question' );
+		$this->assertArrayNotHasKey( 'question', $wp_post_types );
+		\AnsPress_PostTypes::register_question_cpt();
+		$this->assertArrayHasKey( 'question', $wp_post_types );
+	}
+
+	/**
+	 * @covers AnsPress_PostTypes::register_question_cpt
+	 */
 	public function testQuestionPostTypeLabels() {
 		global $wp_post_types;
 		$this->assertEquals( 'Questions', $wp_post_types['question']->labels->name );
@@ -74,6 +85,17 @@ class TestPostTypes extends TestCase {
 	 */
 	public function testAnswerPostType() {
 		global $wp_post_types;
+		$this->assertArrayHasKey( 'answer', $wp_post_types );
+	}
+
+	/**
+	 * @covers AnsPress_PostTypes::register_answer_cpt
+	 */
+	public function testAnswerPostTypeByMethod() {
+		global $wp_post_types;
+		unregister_post_type( 'answer' );
+		$this->assertArrayNotHasKey( 'answer', $wp_post_types );
+		\AnsPress_PostTypes::register_answer_cpt();
 		$this->assertArrayHasKey( 'answer', $wp_post_types );
 	}
 

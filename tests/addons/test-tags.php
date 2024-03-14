@@ -60,6 +60,40 @@ class TestAddonTags extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Tags::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_form_options_features_tag', [ $instance, 'option_fields' ] ) );
+		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget_positions' ] ) );
+		$this->assertEquals( 1, has_action( 'init', [ $instance, 'register_question_tag' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_admin_menu', [ $instance, 'admin_tags_menu' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_display_question_metas', [ $instance, 'ap_display_question_metas' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_question_info', [ $instance, 'ap_question_info' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_enqueue', [ $instance, 'ap_assets_js' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_enqueue', [ $instance, 'ap_localize_scripts' ] ) );
+		$this->assertEquals( 10, has_filter( 'term_link', [ $instance, 'term_link_filter' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_question_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
+		$this->assertEquals( 0, has_action( 'ap_processed_new_question', [ $instance, 'after_new_question' ] ) );
+		$this->assertEquals( 0, has_action( 'ap_processed_update_question', [ $instance, 'after_new_question' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_page_title', [ $instance, 'page_title' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_breadcrumbs', [ $instance, 'ap_breadcrumbs' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_tags_suggestion', [ $instance, 'ap_tags_suggestion' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_ap_tags_suggestion', [ $instance, 'ap_tags_suggestion' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_rewrites', [ $instance, 'rewrite_rules' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_main_questions_args', [ $instance, 'ap_main_questions_args' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_category_questions_args', [ $instance, 'ap_main_questions_args' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_current_page', [ $instance, 'ap_current_page' ] ) );
+		$this->assertEquals( 9999, has_action( 'posts_pre_query', [ $instance, 'modify_query_archive' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filters', [ $instance, 'ap_list_filters' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_qtag', [ $instance, 'load_filter_tag' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_tags_order', [ $instance, 'load_filter_tags_order' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filter_active_qtag', [ $instance, 'filter_active_tag' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filter_active_tags_order', [ $instance, 'filter_active_tags_order' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Tags::add_to_settings_page
 	 */

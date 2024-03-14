@@ -25,8 +25,8 @@ class Categories extends \WP_Widget {
 		// Instantiate the parent object.
 		parent::__construct(
 			'AnsPress_Category_Widget',
-			'(AnsPress) Categories',
-			array( 'description', __( 'Display AnsPress categories', 'anspress-question-answer' ) )
+			__( '(AnsPress) Categories', 'anspress-question-answer' ),
+			array( 'description' => __( 'Display AnsPress categories', 'anspress-question-answer' ) )
 		);
 	}
 

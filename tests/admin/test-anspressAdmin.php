@@ -1397,4 +1397,49 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertArrayHasKey( 'join', $result );
 		$this->assertEquals( " JOIN $wpdb->users users ON users.ID = $wpdb->posts.post_author AND users.user_login IN ('author_1','author_2','author_3')", $result['join'] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::init
+	 */
+	public function testInit() {
+		\AnsPress_Admin::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_action( 'save_post', [ 'AnsPress_Admin', 'ans_parent_post' ] ) );
+		$this->assertEquals( 10, has_action( 'trashed_post', [ 'AnsPress_Admin', 'trashed_post' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_enqueue_scripts', [ 'AnsPress_Admin', 'enqueue_admin_styles' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_enqueue_scripts', [ 'AnsPress_Admin', 'enqueue_admin_scripts' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_menu', [ 'AnsPress_Admin', 'add_plugin_admin_menu' ] ) );
+		$this->assertEquals( 1000, has_action( 'parent_file', [ 'AnsPress_Admin', 'fix_active_admin_menu' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_init', [ 'AnsPress_Admin', 'init_actions' ] ) );
+		$this->assertEquals( 10, has_action( 'parent_file', [ 'AnsPress_Admin', 'tax_menu_correction' ] ) );
+		$this->assertEquals( 10, has_action( 'load-post.php', [ 'AnsPress_Admin', 'question_meta_box_class' ] ) );
+		$this->assertEquals( 10, has_action( 'load-post-new.php', [ 'AnsPress_Admin', 'question_meta_box_class' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_menu', [ 'AnsPress_Admin', 'change_post_menu_label' ] ) );
+		$this->assertEquals( 99, has_filter( 'wp_insert_post_data', [ 'AnsPress_Admin', 'post_data_check' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_head-nav-menus.php', [ 'AnsPress_Admin', 'ap_menu_metaboxes' ] ) );
+		$this->assertEquals( 10, has_filter( 'posts_clauses', [ 'AnsPress_Admin', 'join_by_author_name' ] ) );
+		$this->assertEquals( 10, has_action( 'get_pages', [ 'AnsPress_Admin', 'get_pages' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_insert_post_data', [ 'AnsPress_Admin', 'modify_answer_title' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_footer-edit.php', [ 'AnsPress_Admin', 'append_post_status_list_edit' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_footer-post.php', [ 'AnsPress_Admin', 'append_post_status_list' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_footer-post-new.php', [ 'AnsPress_Admin', 'append_post_status_list' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_post_anspress_update_db', [ 'AnsPress_Admin', 'update_db' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_post_anspress_create_base_page', [ 'AnsPress_Admin', 'anspress_create_base_page' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_notices', [ 'AnsPress_Admin', 'anspress_notice' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_register_options', [ 'AnsPress_Admin', 'register_options' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_field_markup', [ 'AnsPress_Admin', 'page_select_field_opt' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_action_ap_addon_options', [ 'AnsPress_Admin', 'ap_addon_options' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_action_ap_save_addon_options', [ 'AnsPress_Admin', 'save_addon_options' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_footer', [ 'AnsPress_Admin', 'admin_footer' ] ) );
+		// $this->assertEquals( 10, has_filter( 'plugin_action_links_anspress-question-answer/anspress-question-answer.php', [ 'AnsPress_Admin', 'add_action_links' ] ) );
+
+		// Include method call tests.
+		$this->assertTrue( function_exists( 'ap_flagged_posts_count' ) );
+		$this->assertTrue( function_exists( 'ap_update_caps_for_role' ) );
+		$this->assertTrue( function_exists( 'ap_load_admin_assets' ) );
+		$this->assertTrue( class_exists( 'AP_license' ) );
+		$this->assertInstanceOf('AP_license', new \AP_license() );
+	}
 }

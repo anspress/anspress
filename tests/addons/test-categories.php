@@ -66,6 +66,43 @@ class TestAddonCategories extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Categories::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 1, has_action( 'init', [ $instance, 'register_question_categories' ], 1 ) );
+		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'load_options' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_form_options_features_category', [ $instance, 'register_general_settings_form' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_enqueue_scripts', [ $instance, 'admin_enqueue_scripts' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_load_admin_assets', [ $instance, 'ap_load_admin_assets' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_admin_menu', [ $instance, 'admin_category_menu' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_display_question_metas', [ $instance, 'ap_display_question_metas' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_enqueue', [ $instance, 'ap_assets_js' ] ) );
+		$this->assertEquals( 10, has_filter( 'term_link', [ $instance, 'term_link_filter' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_question_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
+		$this->assertEquals( 0, has_action( 'save_post_question', [ $instance, 'after_new_question' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_breadcrumbs', [ $instance, 'ap_breadcrumbs' ] ) );
+		$this->assertEquals( 10, has_action( 'terms_clauses', [ $instance, 'terms_clauses' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filters', [ $instance, 'ap_list_filters' ] ) );
+		$this->assertEquals( 10, has_action( 'question_category_add_form_fields', [ $instance, 'image_field_new' ] ) );
+		$this->assertEquals( 10, has_action( 'question_category_edit_form_fields', [ $instance, 'image_field_edit' ] ) );
+		$this->assertEquals( 10, has_action( 'create_question_category', [ $instance, 'save_image_field' ] ) );
+		$this->assertEquals( 10, has_action( 'edited_question_category', [ $instance, 'save_image_field' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_rewrites', [ $instance, 'rewrite_rules' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_main_questions_args', [ $instance, 'ap_main_questions_args' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_question_subscribers_action_id', [ $instance, 'subscribers_action_id' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_ask_btn_link', [ $instance, 'ap_ask_btn_link' ] ) );
+		$this->assertEquals( 10, has_filter( 'wp_head', [ $instance, 'category_feed' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-question_category_columns', [ $instance, 'column_header' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_question_category_custom_column', [ $instance, 'column_content' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_current_page', [ $instance, 'ap_current_page' ] ) );
+		$this->assertEquals( 9999, has_action( 'posts_pre_query', [ $instance, 'modify_query_category_archive' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_category', [ $instance, 'load_filter_category' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filter_active_category', [ $instance, 'filter_active_category' ] ) );
+		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Categories::load_options
 	 */
