@@ -7,10 +7,11 @@
  * @author Rahul Aryan <rah12@live.com>
  */
 
-// If this file is called directly, abort.
+// @codeCoverageIgnoreStart
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Return number of flagged posts.
