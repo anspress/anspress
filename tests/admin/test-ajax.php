@@ -2006,4 +2006,13 @@ class TestAdminAjax extends TestCaseAjax {
 		$test_views_3 = ap_get_qameta( $question_ids_set_1[4] );
 		$this->assertEquals( 1111, $test_views_3->views );
 	}
+
+	public function testUserRoleRestore() {
+		$this->assertTrue( true );
+
+		// Restore the user roles.
+		add_role( 'ap_moderator', 'AnsPress Moderator', ap_role_caps( 'moderator' ) );
+		add_role( 'ap_participant', 'AnsPress Participants', ap_role_caps( 'participant' ) );
+		add_role( 'ap_banned', 'AnsPress Banned', [ 'read' => true ] );
+	}
 }
