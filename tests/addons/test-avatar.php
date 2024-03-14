@@ -100,6 +100,10 @@ class TestAddonAvatar extends TestCase {
 		// Test for clear_avatar_cache.
 		$this->assertArrayHasKey( 'label', $form['fields']['clear_avatar_cache'] );
 		$this->assertArrayHasKey( 'html', $form['fields']['clear_avatar_cache'] );
+		$this->assertStringContainsString( 'jQuery( document ).ready', $form['fields']['clear_avatar_cache']['html'] );
+		$this->assertStringContainsString( '$( \'#ap-clear-avatar\' )', $form['fields']['clear_avatar_cache']['html'] );
+		$this->assertStringContainsString( 'confirm( \'Do you wish to proceed? All previously generated Avatar cache will get deleted.\'', $form['fields']['clear_avatar_cache']['html'] );
+		$this->assertStringContainsString( '$.ajax', $form['fields']['clear_avatar_cache']['html'] );
 		$this->assertEquals( 'Clear Cache', $form['fields']['clear_avatar_cache']['label'] );
 
 		// Test for avatar_font.
