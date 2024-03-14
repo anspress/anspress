@@ -4,10 +4,6 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-// Since this file is required on widget_init hook,
-// we include the file here directly for testing purpose.
-require_once ANSPRESS_ADDONS_DIR . '/categories/widget.php';
-
 class TestAddonCategoriesWidget extends TestCase {
 
 	public function testWidgetsInit() {
@@ -23,5 +19,15 @@ class TestAddonCategoriesWidget extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Widgets\Categories', 'widget' ) );
 		$this->assertTrue( method_exists( 'Anspress\Widgets\Categories', 'form' ) );
 		$this->assertTrue( method_exists( 'Anspress\Widgets\Categories', 'update' ) );
+	}
+
+	/**
+	 * @covers Anspress\Widgets\Categories::__construct
+	 */
+	public function testConstruct() {
+		$instance = new \Anspress\Widgets\Categories();
+		$this->assertEquals( strtolower( 'AnsPress_Category_Widget' ), $instance->id_base );
+		$this->assertEquals( '(AnsPress) Categories', $instance->name );
+		$this->assertEquals( 'Display AnsPress categories', $instance->widget_options['description'] );
 	}
 }
