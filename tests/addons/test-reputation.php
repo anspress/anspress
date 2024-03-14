@@ -64,6 +64,43 @@ class TestAddonReputation extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Reputation::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );
+		$this->assertEquals( 20, has_action( 'ap_form_options_features_reputation', [ $instance, 'load_options' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_save_events', [ $instance, 'ap_save_events' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ $instance, 'new_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ $instance, 'new_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_untrash_question', [ $instance, 'new_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_question', [ $instance, 'trash_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ $instance, 'trash_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_untrash_answer', [ $instance, 'new_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_answer', [ $instance, 'trash_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_before_delete_answer', [ $instance, 'trash_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_select_answer', [ $instance, 'select_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_vote_up', [ $instance, 'vote_up' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_vote_down', [ $instance, 'vote_down' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ $instance, 'new_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] ) );
+		$this->assertEquals( 10, has_filter( 'user_register', [ $instance, 'user_register' ] ) );
+		$this->assertEquals( 10, has_action( 'delete_user', [ $instance, 'delete_user' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_user_display_name', [ $instance, 'display_name' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_pre_fetch_question_data', [ $instance, 'pre_fetch_post' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_pre_fetch_answer_data', [ $instance, 'pre_fetch_post' ] ) );
+		$this->assertEquals( 10, has_filter( 'bp_before_member_header_meta', [ $instance, 'bp_profile_header_meta' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_user_pages', [ $instance, 'ap_user_pages' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_ajax_load_more_reputation', [ $instance, 'load_more_reputation' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_bp_nav', [ $instance, 'ap_bp_nav' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_bp_page', [ $instance, 'ap_bp_page' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_all_options', [ $instance, 'ap_all_options' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Reputation::add_to_settings_page
 	 */

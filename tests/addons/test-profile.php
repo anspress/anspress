@@ -51,6 +51,22 @@ class TestAddonProfile extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Profile::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_form_options_features_profile', [ $instance, 'options' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_rewrites', [ $instance, 'rewrite_rules' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_user_more_answers', [ $instance, 'load_more_answers' ] ) );
+		$this->assertEquals( 10, has_filter( 'wp_title', [ $instance, 'page_title' ] ) );
+		$this->assertEquals( 10, has_action( 'the_post', [ $instance, 'filter_page_title' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_breadcrumbs', [ $instance, 'ap_breadcrumbs' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_current_page', [ $instance, 'ap_current_page' ] ) );
+		$this->assertEquals( 999, has_filter( 'posts_pre_query', [ $instance, 'modify_query_archive' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Profile::add_to_settings_page
 	 */

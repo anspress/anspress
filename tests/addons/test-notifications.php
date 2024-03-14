@@ -54,6 +54,37 @@ class TestAddonNotifications extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Notifications::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_form_options_features_notification', [ $instance, 'load_options' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_menu_object', [ $instance, 'ap_menu_object' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_notification_verbs', [ $instance, 'register_verbs' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_user_pages', [ $instance, 'ap_user_pages' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ $instance, 'new_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_question', [ $instance, 'trash_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ $instance, 'trash_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_answer', [ $instance, 'trash_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_before_delete_answer', [ $instance, 'trash_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_untrash_answer', [ $instance, 'new_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_select_answer', [ $instance, 'select_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ $instance, 'new_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_vote_up', [ $instance, 'vote_up' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_vote_down', [ $instance, 'vote_down' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_insert_reputation', [ $instance, 'insert_reputation' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_delete_reputation', [ $instance, 'delete_reputation' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_mark_notifications_seen', [ $instance, 'mark_notifications_seen' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_more_notifications', [ $instance, 'load_more_notifications' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_get_notifications', [ $instance, 'get_notifications' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Notifications::add_to_settings_page
 	 */

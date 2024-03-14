@@ -69,6 +69,37 @@ class TestAddonEmail extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		$instance = \Anspress\Addons\Email::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'load_options' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_form_options_features_email', [ $instance, 'register_option' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_form_email_template', [ $instance, 'register_email_template' ] ) );
+		$this->assertEquals( 3, has_filter( 'ap_all_options', [ $instance, 'ap_all_options' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_email_template', [ $instance, 'ap_email_template' ] ) );
+		$this->assertEquals( 11, has_action( 'ap_ajax_form_email_template', [ $instance, 'save_email_template_form' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_new_question', [ $instance, 'template_new_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_new_answer', [ $instance, 'template_new_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_select_answer', [ $instance, 'template_select_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_new_comment', [ $instance, 'template_new_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_edit_question', [ $instance, 'template_edit_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_edit_answer', [ $instance, 'template_edit_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_trash_question', [ $instance, 'template_trash_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_default_template_trash_answer', [ $instance, 'template_trash_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_email_form_allowed_tags', [ $instance, 'form_allowed_tags' ] ) );
+		$this->assertEquals( 10, has_filter( 'comment_notification_recipients', [ $instance, 'default_recipients' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ $instance, 'ap_after_new_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ $instance, 'ap_after_new_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_select_answer', [ $instance, 'select_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ $instance, 'new_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_processed_update_question', [ $instance, 'ap_after_update_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_processed_update_answer', [ $instance, 'ap_after_update_answer' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_question', [ $instance, 'ap_trash_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_trash_answer', [ $instance, 'ap_trash_answer' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Email::ap_default_options
 	 */

@@ -36,6 +36,17 @@ class TestAddonAvatar extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	public function testHooksFilters() {
+		\Anspress\Addons\Avatar::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ 'Anspress\Addons\Avatar', 'add_to_settings_page' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_form_options_features_avatar', [ 'Anspress\Addons\Avatar', 'option_form' ] ) );
+		$this->assertEquals( 1000, has_filter( 'pre_get_avatar_data', [ 'Anspress\Addons\Avatar', 'get_avatar' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_clear_avatar_cache', [ 'Anspress\Addons\Avatar', 'clear_avatar_cache' ] ) );
+	}
+
 	/**
 	 * @covers Anspress\Addons\Avatar::add_to_settings_page
 	 */
