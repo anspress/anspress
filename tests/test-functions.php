@@ -2664,4 +2664,38 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( '', $result );
 		ap_opt( 'keep_stop_words', true );
 	}
+
+	/**
+	 * @covers ::ap_parse_args
+	 */
+	public function testAPParseArgsEmptyDefaults() {
+		$args = [ 'key1' => 'value1', 'key2' => 'value2' ];
+		$defaults = [];
+		$result = ap_parse_args( $args, $defaults );
+		$this->assertEquals( $args, $result );
+	}
+
+	/**
+	 * @covers ::ap_parse_args
+	 */
+	public function testAPParseArgsMergeArguments() {
+		// Test for merging arguments.
+		$args = [ 'key1' => 'value1', 'key2' => 'value2' ];
+		$defaults = [ 'key2' => 'default_value2', 'key3' => 'default_value3' ];
+		$expected = [ 'key1' => 'value1', 'key2' => 'value2', 'key3' => 'default_value3' ];
+		$result = ap_parse_args( $args, $defaults );
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers ::ap_parse_args
+	 */
+	public function testAPParseArgsMergeNestedArguments() {
+		// Test for merging nested arguments.
+		$args = [ 'key1' => 'value1', 'key2' => [ 'nested_key1' => 'nested_value1', 'nested_key2' => 'nested_value2' ] ];
+		$defaults = [ 'key2' => [ 'nested_key2' => 'default_nested_value2', 'nested_key3' => 'default_nested_value3' ], 'key3' => 'default_value3' ];
+		$expected = [ 'key1' => 'value1', 'key2' => [ 'nested_key1' => 'nested_value1', 'nested_key2' => 'nested_value2', 'nested_key3' => 'default_nested_value3' ], 'key3' => 'default_value3' ];
+		$result = ap_parse_args( $args, $defaults );
+		$this->assertEquals( $expected, $result );
+	}
 }
