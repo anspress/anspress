@@ -18,6 +18,7 @@ class TestPostTypes extends TestCase {
 	}
 
 	public function testInit() {
+		\AnsPress_PostTypes::init();
 		$this->assertEquals( 0, has_action( 'init', [ 'AnsPress_PostTypes', 'register_question_cpt' ] ) );
 		$this->assertEquals( 0, has_action( 'init', [ 'AnsPress_PostTypes', 'register_answer_cpt' ] ) );
 		$this->assertEquals( 10, has_action( 'post_type_link', [ 'AnsPress_PostTypes', 'post_type_link' ] ) );
