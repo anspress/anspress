@@ -460,4 +460,19 @@ class TestPostTypes extends TestCase {
 		$this->assertEquals( $messages['question'], $result['question'] );
 		$this->assertEquals( $messages['answer'], $result['answer'] );
 	}
+
+	/**
+	 * @covers AnsPress_PostTypes::post_type_link
+	 */
+	public function testPostTypeLinkReturnDefaultLink() {
+		// Test 1.
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post' ] );
+		$result = \AnsPress_PostTypes::post_type_link( get_permalink( $post_id ), get_post( $post_id ), true, true );
+		$this->assertEquals( get_permalink( $post_id ), $result );
+
+		// Test 2.
+		$page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
+		$result = \AnsPress_PostTypes::post_type_link( get_permalink( $page_id ), get_post( $page_id ), true, true );
+		$this->assertEquals( get_permalink( $page_id ), $result );
+	}
 }
