@@ -197,4 +197,52 @@ class TestViews extends TestCase {
 		// Add filter.
 		add_filter( 'ap_insert_view_to_db', '__return_false' );
 	}
+
+	/**
+	 * @covers ::ap_insert_views
+	 */
+	public function testAPInsertViewsEmptyRefID() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_views}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$result = ap_insert_views( '' );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers ::ap_is_viewed
+	 */
+	public function testAPIsViewedEmptyRefID() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_views}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$result = ap_is_viewed( '', get_current_user_id() );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers ::ap_is_viewed
+	 */
+	public function testAPIsViewedIPSetOtherThanFalse() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_views}" );
+
+		// Test 1.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		ap_insert_views( $id, 'question', get_current_user_id(), '127.0.0.1' );
+		$result = ap_is_viewed( $id, get_current_user_id(), 'question', '127.0.0.1' );
+		$this->assertTrue( $result );
+
+		// Test 2.
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$id = $this->insert_question();
+		ap_insert_views( $id, 'question', $user_id, '127.0.0.1' );
+		$result = ap_is_viewed( $id, $user_id, 'question', 'localhost' );
+		$this->assertFalse( $result );
+	}
 }
