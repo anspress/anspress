@@ -669,4 +669,60 @@ class TestAnswerLoop extends TestCase {
 		$this->assertEquals( $answer_id_3, $result->post->ID );
 		$this->assertEquals( $answer_id_3, $result->posts[0]->ID );
 	}
+
+	/**
+	 * @covers ::ap_get_best_answer
+	 */
+	public function testAPGetBestAnswerNoOrFalseArgumentPassed() {
+		// Test 1.
+		$question_id = $this->insert_question();
+		$answer_id   = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_get_best_answer();
+		$this->assertInstanceof( 'Answers_Query', $result );
+		$this->assertEquals( 1, $result->found_posts );
+		$this->assertEquals( $answer_id, $result->post->ID );
+		$this->assertEquals( $answer_id, $result->posts[0]->ID );
+
+		// Test 2.
+		$question_id = $this->insert_question();
+		$answer_id_1  = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title 1',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$answer_id_2  = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title 2',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$answer_id_3  = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title 3',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		ap_set_selected_answer( $question_id, $answer_id_3 );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_get_best_answer();
+		$this->assertInstanceof( 'Answers_Query', $result );
+		$this->assertEquals( 3, $result->found_posts );
+		$this->assertEquals( $answer_id_3, $result->post->ID );
+		$this->assertEquals( $answer_id_3, $result->posts[0]->ID );
+	}
 }
