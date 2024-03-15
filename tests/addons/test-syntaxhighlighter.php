@@ -349,4 +349,45 @@ class TestAddonSyntaxHighlighter extends TestCase {
 		$this->assertIsArray( $allowed_shortcodes );
 		$this->assertContains( 'apcode', $allowed_shortcodes );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::editor_buttons
+	 */
+	public function testEditorButtons() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Test begins.
+		$field = new \AnsPress\Form\Field\Editor( 'Sample Form', 'sample-form', [] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$instance->editor_buttons( '', $field );
+		$this->assertNotEmpty( $property->getValue( $field ) );
+		$this->assertEquals( '<button type="button" class="ap-btn-insertcode ap-btn-small ap-btn mb-10 ap-mr-5" apinsertcode><i class="apicon-code ap-mr-3"></i>Insert Code</button>', $property->getValue( $field ) );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::editor_buttons
+	 */
+	public function testEditorButtonsWithFields() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Test begins.
+		$field = new \AnsPress\Form\Field\Editor( 'Editor Form', 'editor-form', [
+			'fields' => [
+				'editor' => [
+					'type'  => 'editor',
+					'label' => 'Editor',
+				]
+			]
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$instance->editor_buttons( '', $field );
+		$this->assertNotEmpty( $property->getValue( $field ) );
+		$this->assertEquals( '<button type="button" class="ap-btn-insertcode ap-btn-small ap-btn mb-10 ap-mr-5" apinsertcode><i class="apicon-code ap-mr-3"></i>Insert Code</button>', $property->getValue( $field ) );
+	}
 }
