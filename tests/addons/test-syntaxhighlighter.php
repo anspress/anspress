@@ -150,13 +150,45 @@ class TestAddonSyntaxHighlighter extends TestCase {
 	/**
 	 * @covers Anspress\Addons\Syntax_Highlighter::mce_before_init
 	 */
-	public function testmce_before_init() {
+	public function testMCEBeforeInit() {
 		$instance = \Anspress\Addons\Syntax_Highlighter::init();
 
 		// Call the method.
 		$mce_before_init = $instance->mce_before_init( [] );
 
 		// Test begins.
+		$this->assertNotEmpty( $mce_before_init );
+		$this->assertArrayHasKey( 'extended_valid_elements', $mce_before_init );
+		$this->assertStringContainsString( 'pre', $mce_before_init['extended_valid_elements'] );
+		$this->assertStringContainsString( 'code', $mce_before_init['extended_valid_elements'] );
+		$this->assertEquals( 'pre,code', $mce_before_init['extended_valid_elements'] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::mce_before_init
+	 */
+	public function testMCEBeforeInitExtendedValidElementsSet() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Test begins.
+		$mce_before_init = $instance->mce_before_init( [ 'extended_valid_elements' => 'code,pre,kbd,em,strong' ] );
+		$this->assertNotEmpty( $mce_before_init );
+		$this->assertArrayHasKey( 'extended_valid_elements', $mce_before_init );
+		$this->assertStringContainsString( 'pre', $mce_before_init['extended_valid_elements'] );
+		$this->assertStringContainsString( 'code', $mce_before_init['extended_valid_elements'] );
+		$this->assertStringNotContainsString( 'kbd', $mce_before_init['extended_valid_elements'] );
+		$this->assertStringNotContainsString( 'strong', $mce_before_init['extended_valid_elements'] );
+		$this->assertEquals( 'pre,code', $mce_before_init['extended_valid_elements'] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Syntax_Highlighter::mce_before_init
+	 */
+	public function testMCEBeforeInitExtendedValidElementsSetAsEmpty() {
+		$instance = \Anspress\Addons\Syntax_Highlighter::init();
+
+		// Test begins.
+		$mce_before_init = $instance->mce_before_init( [ 'extended_valid_elements' => '' ] );
 		$this->assertNotEmpty( $mce_before_init );
 		$this->assertArrayHasKey( 'extended_valid_elements', $mce_before_init );
 		$this->assertStringContainsString( 'pre', $mce_before_init['extended_valid_elements'] );
