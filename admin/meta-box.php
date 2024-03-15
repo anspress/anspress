@@ -9,10 +9,11 @@
  * @copyright 2014 Rahul Aryan
  */
 
-// Exit if accessed directly.
+// @codeCoverageIgnoreStart
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Meta box class.
