@@ -2654,4 +2654,14 @@ class TestFunctions extends TestCase {
 		$this->assertStringContainsString( 'tinymce', $output );
 		$this->assertStringContainsString( 'quicktags', $output );
 	}
+
+	/**
+	 * @covers ::ap_remove_stop_words_post_name
+	 */
+	public function testAPRemoveStopWordsPostNameEmptyArgument() {
+		ap_opt( 'keep_stop_words', false );
+		$result = ap_remove_stop_words_post_name( '' );
+		$this->assertEquals( '', $result );
+		ap_opt( 'keep_stop_words', true );
+	}
 }
