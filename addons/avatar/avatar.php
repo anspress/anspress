@@ -27,7 +27,9 @@ namespace Anspress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
+	// @codeCoverageIgnoreStart
 	die;
+	// @codeCoverageIgnoreEnd
 }
 
 require_once 'class-generator.php';

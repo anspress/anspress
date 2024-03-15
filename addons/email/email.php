@@ -21,7 +21,9 @@ namespace Anspress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
+	// @codeCoverageIgnoreStart
 	die;
+	// @codeCoverageIgnoreEnd
 }
 
 use Anspress\Addons\Email\Helper as EmailHelper;

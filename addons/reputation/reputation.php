@@ -12,10 +12,11 @@
 
 namespace Anspress\Addons;
 
-// If this file is called directly, abort.
+// @codeCoverageIgnoreStart
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Reputation hooks.
