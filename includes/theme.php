@@ -717,7 +717,7 @@ function ap_localize_script() {
 
 	echo '<script type="text/javascript">';
 	echo 'var ajaxurl = "' . esc_url( admin_url( 'admin-ajax.php' ) ) . '",';
-	echo 'ap_nonce 	= "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
+	echo 'ap_nonce = "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
 	echo 'apTemplateUrl = "' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '";';
 	echo 'apQuestionID = "' . (int) get_question_id() . '";';
 	echo 'aplang = ' . wp_json_encode( $aplang ) . ';';

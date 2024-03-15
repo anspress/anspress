@@ -1293,4 +1293,48 @@ class TestThemeFunctions extends TestCase {
 		);
 		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn  active" ap="select_answer" apquery="' . esc_js( $args ) . '" title="Unselect this answer">Unselect</a>', $result );
 	}
+
+	/**
+	 * @covers ::ap_localize_script
+	 */
+	public function testAPLocalizeScript() {
+		ob_start();
+		ap_localize_script();
+		$output = ob_get_clean();
+
+		// Test begins.
+		$aplang = [
+			'loading'                => 'Loading..',
+			'sending'                => 'Sending request',
+			'file_size_error'        => esc_attr( sprintf( 'File size is bigger than %s MB', round( ap_opt( 'max_upload_size' ) / ( 1024 * 1024 ), 2 ) ) ),
+			'attached_max'           => 'You have already attached maximum numbers of allowed attachments',
+			'commented'              => 'commented',
+			'comment'                => 'Comment',
+			'cancel'                 => 'Cancel',
+			'update'                 => 'Update',
+			'your_comment'           => 'Write your comment...',
+			'notifications'          => 'Notifications',
+			'mark_all_seen'          => 'Mark all as seen',
+			'search'                 => 'Search',
+			'no_permission_comments' => 'Sorry, you don\'t have permission to read comments.',
+			'ajax_events'            => 'Are you sure you want to %s?',
+			'ajax_error'             => [
+				'snackbar' => [
+					'success' => false,
+					'message' => 'Something went wrong. Please try again.',
+				],
+				'modal'    => [
+					'imageUpload',
+				],
+			],
+		];
+		$this->assertStringContainsString( '<script type="text/javascript">', $output );
+		$this->assertStringContainsString( 'var ajaxurl = "' . esc_url( admin_url( 'admin-ajax.php' ) ) . '",', $output );
+		$this->assertStringContainsString( 'ap_nonce = "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",', $output );
+		$this->assertStringContainsString( 'apTemplateUrl = "' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '";', $output );
+		$this->assertStringContainsString( 'apQuestionID = "' . (int) get_question_id() . '";', $output );
+		$this->assertStringContainsString( 'aplang = ' . wp_json_encode( $aplang ) . ';', $output );
+		$this->assertStringContainsString( 'disable_q_suggestion = "' . (bool) ap_opt( 'disable_q_suggestion' ) . '";', $output );
+		$this->assertStringContainsString( '</script>', $output );
+	}
 }
