@@ -12,6 +12,8 @@ class TestHooks extends TestCase {
 	 * @covers AnsPress_Hooks::init
 	 */
 	public function testInit() {
+		\AnsPress_Hooks::init();
+
 		// Action hooks.
 		$this->assertEquals( 10, has_action( 'wp_loaded', [ 'AnsPress_Hooks', 'flush_rules' ] ) );
 		$this->assertEquals( 10, has_action( 'registered_taxonomy', [ 'AnsPress_Hooks', 'add_ap_tables' ] ) );
