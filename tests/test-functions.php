@@ -36,6 +36,13 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_base_page_slug
 	 */
 	public function testApBasePageSlug() {
+		$this->assertEquals( 'questions', ap_base_page_slug() );
+	}
+
+	/**
+	 * @covers ::ap_base_page_slug
+	 */
+	public function testApBasePageSlugBasePage() {
 		$id = $this->factory->post->create(
 			[
 				'post_type' => 'page',
@@ -44,6 +51,41 @@ class TestFunctions extends TestCase {
 		);
 		ap_opt( 'base_page', $id );
 		$this->assertEquals( 'qqqqslug', ap_base_page_slug() );
+	}
+
+	/**
+	 * @covers ::ap_base_page_slug
+	 */
+	public function testApBasePageSlugBasePageAsChildPage() {
+		$id = $this->factory->post->create(
+			[
+				'post_type' => 'page',
+				'post_name' => 'parent-slug',
+			]
+		);
+		$id2 = $this->factory->post->create(
+			[
+				'post_type'   => 'page',
+				'post_name'   => 'child-slug',
+				'post_parent' => $id,
+			]
+		);
+		ap_opt( 'base_page', $id2 );
+		$this->assertEquals( 'parent-slug/child-slug', ap_base_page_slug() );
+	}
+
+	public function APBasePageSlug() {
+		return 'filtered-slug';
+	}
+
+	/**
+	 * @covers ::ap_base_page_slug
+	 */
+	public function testApBasePageSlugSetFromFilterHook() {
+		$this->assertEquals( 'questions', ap_base_page_slug() );
+		add_filter( 'ap_base_page_slug', [ $this, 'APBasePageSlug' ] );
+		$this->assertEquals( 'filtered-slug', ap_base_page_slug() );
+		remove_filter( 'ap_base_page_slug', [ $this, 'APBasePageSlug' ] );
 	}
 
 	/**
