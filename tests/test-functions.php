@@ -143,6 +143,27 @@ class TestFunctions extends TestCase {
 	}
 
 	/**
+	 * @covers ::get_question_id
+	 */
+	public function testGetQuestionIDWithQuestionIDQueryVar() {
+		$this->assertEquals( 0, get_question_id() );
+		$id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $id );
+		set_query_var( 'question_id', $id );
+		$this->assertEquals( $id, get_question_id() );
+	}
+
+	/**
+	 * @covers ::get_question_id
+	 */
+	public function testGetQuestionIDWithEditQQueryVar() {
+		$this->assertEquals( 0, get_question_id() );
+		$id = $this->insert_question();
+		set_query_var( 'edit_q', $id );
+		$this->assertEquals( $id, get_question_id() );
+	}
+
+	/**
 	 * @covers ::ap_human_time
 	 */
 	public function testApHumanTime() {
