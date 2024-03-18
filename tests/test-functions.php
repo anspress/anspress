@@ -2778,4 +2778,17 @@ class TestFunctions extends TestCase {
 		$result = ap_short_num( 999 );
 		$this->assertEquals( 999, $result );
 	}
+
+	/**
+	 * @covers ::ap_response_message
+	 */
+	public function testAPResponseMessageShouldReturnFalse() {
+		// Test 1.
+		$result = ap_response_message( 'invalid_id' );
+		$this->assertFalse( $result );
+
+		// Test 2.
+		$result = ap_response_message( 'invalid_message_id' );
+		$this->assertFalse( $result );
+	}
 }
