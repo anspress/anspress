@@ -40,6 +40,14 @@ class TestActivity extends TestCase {
 	 * @covers AnsPress\Activity_Helper::hooks
 	 */
 	public function testAnsPressActivityHelperHooks() {
+		$instance = \AnsPress\Activity_Helper::get_instance();
+		$reflection = new \ReflectionClass( $instance );
+		$hooks = $reflection->getMethod( 'hooks' );
+		$hooks->setAccessible( true );
+		$hooks->invoke( $instance );
+		anspress()->setup_hooks();
+
+		// Tests.
 		$this->assertEquals( 10, has_action( 'before_delete_post', [ 'AnsPress\Activity_Helper', '_before_delete' ] ) );
 		$this->assertEquals( 10, has_action( 'delete_comment', [ 'AnsPress\Activity_Helper', '_delete_comment' ] ) );
 		$this->assertEquals( 10, has_action( 'delete_user', [ 'AnsPress\Activity_Helper', '_delete_user' ] ) );
