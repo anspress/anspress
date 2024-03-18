@@ -894,4 +894,68 @@ class TestAddonNotificationsFunctions extends TestCase {
 		$get_notification = ap_get_notifications( [] );
 		$this->assertEquals( 1, $get_notification[0]->noti_seen );
 	}
+
+	/**
+	 * @covers ::ap_set_notifications_as_seen
+	 */
+	public function testAPSetNotificationsAsSeen() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		ap_insert_notification( [ 'seen' => 0, 'parent' => 1 ] );
+		ap_insert_notification( [ 'seen' => 0, 'parent' => 2 ] );
+		ap_insert_notification( [ 'seen' => 0, 'parent' => 3 ] );
+		ap_insert_notification( [ 'seen' => 1, 'parent' => 4 ] );
+		ap_insert_notification( [ 'seen' => 1, 'parent' => 5 ] );
+
+		// Test.
+		// Before function call.
+		$get_notification = ap_get_notifications( [] );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+		$this->assertEquals( 0, $get_notification[1]->noti_seen );
+		$this->assertEquals( 0, $get_notification[2]->noti_seen );
+		$this->assertEquals( 1, $get_notification[3]->noti_seen );
+		$this->assertEquals( 1, $get_notification[4]->noti_seen );
+
+		// After function call.
+		ap_set_notifications_as_seen( get_current_user_id() );
+		$get_notification = ap_get_notifications( [ 'user_id' => get_current_user_id() ] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+		$this->assertEquals( 1, $get_notification[1]->noti_seen );
+		$this->assertEquals( 1, $get_notification[2]->noti_seen );
+		$this->assertEquals( 1, $get_notification[3]->noti_seen );
+		$this->assertEquals( 1, $get_notification[4]->noti_seen );
+	}
+
+	/**
+	 * @covers ::ap_set_notifications_as_seen
+	 */
+	public function testAPSetNotificationsAsSeenUserIDArg() {
+		$user_id = $this->factory->user->create();
+
+		// Insert notifications.
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'ref_type' => 'question' ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'ref_type' => 'answer' ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'verb' => 'best_answer' ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 1, 'actor' => 11 ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 1, 'parent' => 11 ] );
+
+		// Test.
+		// Before function call.
+		$get_notification = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+		$this->assertEquals( 0, $get_notification[1]->noti_seen );
+		$this->assertEquals( 0, $get_notification[2]->noti_seen );
+		$this->assertEquals( 1, $get_notification[3]->noti_seen );
+		$this->assertEquals( 1, $get_notification[4]->noti_seen );
+
+		// After function call.
+		ap_set_notifications_as_seen( $user_id );
+		$get_notification = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+		$this->assertEquals( 1, $get_notification[1]->noti_seen );
+		$this->assertEquals( 1, $get_notification[2]->noti_seen );
+		$this->assertEquals( 1, $get_notification[3]->noti_seen );
+		$this->assertEquals( 1, $get_notification[4]->noti_seen );
+	}
 }
