@@ -759,4 +759,69 @@ class TestAnswerLoop extends TestCase {
 		$result = ap_answer_user_can_view( $post_id );
 		$this->assertFalse( $result );
 	}
+
+	/**
+	 * @covers ::ap_count_other_answer
+	 */
+	public function testAPCountOtherAnswerNoOrFalseArg() {
+		// Test 1.
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 0, ap_count_other_answer() );
+
+		// Test 2.
+		$id = $this->insert_answer();
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$this->assertEquals( 1, ap_count_other_answer() );
+
+		// Test 3.
+		$ids = $this->insert_answers( [], [], 5 );
+		$this->go_to( '?post_type=question&p=' . $ids['question'] );
+		$this->assertEquals( 5, ap_count_other_answer( false ) );
+	}
+
+	/**
+	 * @covers ::ap_count_other_answer
+	 */
+	public function testAPCountOtherAnswerNoOrFalseArgForSelectedAnswerSet() {
+		// Before setting answer as selected.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$answer_id_1  = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title 1',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$answer_id_2  = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title 2',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$answer_id_3  = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title 3',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 3, ap_count_other_answer() );
+
+		// After setting answer as selected.
+		ap_set_selected_answer( $question_id, $answer_id_3 );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 2, ap_count_other_answer() );
+	}
 }
