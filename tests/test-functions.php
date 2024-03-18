@@ -2791,4 +2791,22 @@ class TestFunctions extends TestCase {
 		$result = ap_response_message( 'invalid_message_id' );
 		$this->assertFalse( $result );
 	}
+
+	/**
+	 * @covers ::ap_answers_link
+	 */
+	public function testAPAnswersLinkNoArgs() {
+		$question_id = $this->insert_question();
+		$this->assertEquals( '#answers', ap_answers_link() );
+	}
+
+	/**
+	 * @covers ::ap_answers_link
+	 */
+	public function testAPAnswersLinkWithFalseArg() {
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$expected = get_permalink( $question_id ) . '#answers';
+		$this->assertEquals( $expected, ap_answers_link( false ) );
+	}
 }
