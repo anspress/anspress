@@ -537,4 +537,319 @@ class TestAddonNotificationsFunctions extends TestCase {
 		$get_notification = ap_get_notifications( [ 'verb' => 'new_question', 'ref_type' => 'question' ] );
 		$this->assertEmpty( $get_notification );
 	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsEmptyArgs() {
+		// Insert notification.
+		$args = [ 'user_id' => 1 ];
+		ap_insert_notification( $args );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertNull( ap_delete_notifications( [] ) );
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsUserIDArg() {
+		$user_id = $this->factory->user->create();
+
+		// Insert notification.
+		$args = [ 'user_id' => $user_id ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( [ 'user_id' => $user_id ] ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsActorArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'actor' => 11 ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( $args ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsParentArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'parent' => 5 ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( $args ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsRefIDArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'ref_id' => 3 ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( $args ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsRefTypeArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'ref_type' => 'question' ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( $args ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsVerbArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'verb' => 'best_answer' ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( $args ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsSeenArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'seen' => 1 ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( $args ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsRefTypeArrayArgsQuestion() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		$args = [ 'ref_type' => 'question' ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( [ 'ref_type' => [ 'question', 'answer' ] ] ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsRefTypeArrayArgsAnswer() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		$args = [ 'ref_type' => 'answer' ];
+		ap_insert_notification( $args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$this->assertNotEmpty( ap_get_notifications( $args ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( [ 'ref_type' => [ 'question', 'answer' ] ] ) );
+		$this->assertEmpty( ap_get_notifications( $args ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
+
+	/**
+	 * @covers ::ap_delete_notifications
+	 */
+	public function testAPDeleteNotificationsManyArgs() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		$notification_1_args = [
+			'actor'  => 11,
+			'parent' => 5,
+			'ref_id' => 3,
+			'verb' => 'new_question',
+		];
+		ap_insert_notification( $notification_1_args );
+		$notification_2_args = [
+			'actor'    => 11,
+			'ref_id'   => 3,
+			'parent'   => 5,
+			'ref_type' => 'question',
+		];
+		ap_insert_notification( $notification_2_args );
+		$notification_3_args = [
+			'seen' => 1,
+		];
+		ap_insert_notification( $notification_3_args );
+
+		// Callback trigger check.
+		$callback_triggered = false;
+		add_action( 'ap_deleted_notifications', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		// Before delete.
+		$get_notification = ap_get_notifications( [ 'actor' => 11, 'ref_id' => 3 ] );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 2, count( $get_notification ) );
+
+		// After Delete.
+		$this->assertFalse( $callback_triggered );
+		$this->assertIsInt( ap_delete_notifications( [ 'actor' => 11, 'ref_id' => 3 ] ) );
+		$this->assertEmpty( ap_get_notifications( [ 'actor' => 11, 'ref_id' => 3 ] ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
+	}
 }
