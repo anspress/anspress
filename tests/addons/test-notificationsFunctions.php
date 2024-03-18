@@ -958,4 +958,48 @@ class TestAddonNotificationsFunctions extends TestCase {
 		$this->assertEquals( 1, $get_notification[3]->noti_seen );
 		$this->assertEquals( 1, $get_notification[4]->noti_seen );
 	}
+
+	/**
+	 * @covers ::ap_count_unseen_notifications
+	 */
+	public function testAPCountUnseenNotificationsEmpty() {
+		$this->setRole( 'subscriber' );
+
+		// Test.
+		$this->assertEquals( 0, ap_count_unseen_notifications() );
+	}
+
+	/**
+	 * @covers ::ap_count_unseen_notifications
+	 */
+	public function testAPCountUnseenNotifications() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		ap_insert_notification( [ 'seen' => 0, 'parent' => 1 ] );
+		ap_insert_notification( [ 'seen' => 0, 'parent' => 2 ] );
+		ap_insert_notification( [ 'seen' => 0, 'parent' => 3 ] );
+		ap_insert_notification( [ 'seen' => 1, 'parent' => 4 ] );
+		ap_insert_notification( [ 'seen' => 1, 'parent' => 5 ] );
+
+		// Test.
+		$this->assertEquals( 3, ap_count_unseen_notifications() );
+	}
+
+	/**
+	 * @covers ::ap_count_unseen_notifications
+	 */
+	public function testAPCountUnseenNotificationsUserIdArg() {
+		$user_id = $this->factory->user->create();
+
+		// Insert notifications.
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'ref_type' => 'question' ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'ref_type' => 'answer' ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'verb' => 'best_answer' ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 1, 'actor' => 11 ] );
+		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 1, 'parent' => 11 ] );
+
+		// Test.
+		$this->assertEquals( 3, ap_count_unseen_notifications( $user_id ) );
+	}
 }
