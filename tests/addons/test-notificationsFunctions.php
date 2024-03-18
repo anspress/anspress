@@ -334,4 +334,207 @@ class TestAddonNotificationsFunctions extends TestCase {
 		$get_notification = ap_get_notifications( [ 'user_id' => 2 ] );
 		$this->assertEquals( 0, $get_notification[0]->noti_seen );
 	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsEmptyUserID() {
+		// Insert notification.
+		$args = [ 'user_id' => 1 ];
+		ap_insert_notification( $args );
+
+		// Test 1.
+		$get_notification = ap_get_notifications( [ 'user_id' => 0 ] );
+		$this->assertEmpty( $get_notification );
+
+		// Test 2.
+		$get_notification = ap_get_notifications( [ 'user_id' => '' ] );
+		$this->assertEmpty( $get_notification );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsEmptyArgs() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		ap_insert_notification();
+
+		// Test.
+		$get_notification = ap_get_notifications( [] );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( get_current_user_id(), $get_notification[0]->noti_user_id );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsUserIDArg() {
+		$user_id = $this->factory->user->create();
+
+		// Insert notification.
+		$args = [ 'user_id' => $user_id ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( $user_id, $get_notification[0]->noti_user_id );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsActorArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'actor' => 11 ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( 11, $get_notification[0]->noti_actor );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsParentArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'parent' => 5 ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( 5, $get_notification[0]->noti_parent );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsRefIDArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'ref_id' => 3 ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( 3, $get_notification[0]->noti_ref_id );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsRefTypeArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'ref_type' => 'question' ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( 'question', $get_notification[0]->noti_ref_type );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsVerbArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'verb' => 'best_answer' ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( 'best_answer', $get_notification[0]->noti_verb );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsSeenArg() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'seen' => 1 ];
+		ap_insert_notification( $args );
+
+		// Test.
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, count( $get_notification ) );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+	}
+
+	/**
+	 * @covers ::ap_get_notifications
+	 */
+	public function testAPGetNotificationsManyArgs() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		$notification_1_args = [
+			'actor'  => 11,
+			'parent' => 5,
+			'ref_id' => 3,
+			'verb' => 'new_question',
+		];
+		ap_insert_notification( $notification_1_args );
+		$notification_2_args = [
+			'actor'    => 11,
+			'ref_id'   => 3,
+			'parent'   => 5,
+			'ref_type' => 'question',
+		];
+		ap_insert_notification( $notification_2_args );
+		$notification_3_args = [
+			'seen' => 1,
+		];
+		ap_insert_notification( $notification_3_args );
+
+		// Tests.
+		// Test 1.
+		$get_notification = ap_get_notifications( [ 'user_id' => get_current_user_id() ] );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 3, count( $get_notification ) );
+
+		// Test 2.
+		$get_notification = ap_get_notifications( [ 'actor' => 11 ] );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 2, count( $get_notification ) );
+
+		// Test 3.
+		$get_notification = ap_get_notifications( [ 'actor' => 11, 'ref_id' => 3 ] );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 2, count( $get_notification ) );
+
+		// Test 4.
+		$get_notification = ap_get_notifications( [ 'parent' => 5, 'seen' => 1 ] );
+		$this->assertEmpty( $get_notification );
+
+		// Test 5.
+		$get_notification = ap_get_notifications( [ 'verb' => 'new_question', 'ref_type' => 'question' ] );
+		$this->assertEmpty( $get_notification );
+	}
 }
