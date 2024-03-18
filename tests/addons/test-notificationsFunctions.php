@@ -852,4 +852,46 @@ class TestAddonNotificationsFunctions extends TestCase {
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_deleted_notifications' ) > 0 );
 	}
+
+	/**
+	 * @covers ::ap_set_notification_as_seen
+	 */
+	public function testAPSetNotificationAsSeen() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'seen' => 0 ];
+		$notification_id = ap_insert_notification( $args );
+
+		// Test.
+		// Before function call.
+		$get_notification = ap_get_notifications( [] );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+
+		// After function call.
+		ap_set_notification_as_seen( $notification_id );
+		$get_notification = ap_get_notifications( [] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+	}
+
+	/**
+	 * @covers ::ap_set_notification_as_seen
+	 */
+	public function testAPSetNotificationAsSeenAlreadySeenSet() {
+		$this->setRole( 'subscriber' );
+
+		// Insert notification.
+		$args = [ 'seen' => 1 ];
+		$notification_id = ap_insert_notification( $args );
+
+		// Test.
+		// Before function call.
+		$get_notification = ap_get_notifications( [] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+
+		// After function call.
+		ap_set_notification_as_seen( $notification_id );
+		$get_notification = ap_get_notifications( [] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+	}
 }
