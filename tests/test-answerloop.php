@@ -725,4 +725,38 @@ class TestAnswerLoop extends TestCase {
 		$this->assertEquals( $answer_id_3, $result->post->ID );
 		$this->assertEquals( $answer_id_3, $result->posts[0]->ID );
 	}
+
+	/**
+	 * @covers ::ap_answer_user_can_view
+	 */
+	public function testAPAnswerUserCanView() {
+		$question_id = $this->insert_question();
+		$answer_id   = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_answer_user_can_view( $answer_id );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers ::ap_answer_user_can_view
+	 */
+	public function testAPAnswerUserCanViewShouldReturnFalse() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->go_to( '?p=' . $post_id );
+		$result = ap_answer_user_can_view( $post_id );
+		$this->assertFalse( $result );
+	}
 }
