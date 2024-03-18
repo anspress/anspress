@@ -37,6 +37,51 @@ class TestAjaxHooks extends TestCaseAjax {
 	}
 
 	/**
+	 * @covers AnsPress_Ajax::init
+	 */
+	public function testInit() {
+		$instance = \AnsPress_Ajax::init();
+		anspress()->setup_hooks();
+
+		// Tests.
+		$this->assertEquals( 10, has_action( 'ap_ajax_suggest_similar_questions', [ 'AnsPress_Ajax', 'suggest_similar_questions' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_tinymce', [ 'AnsPress_Ajax', 'load_tinymce' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_comments', [ 'AnsPress_Comment_Hooks', 'load_comments' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_edit_comment_form', [ 'AnsPress_Comment_Hooks', 'edit_comment_form' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_edit_comment', [ 'AnsPress_Comment_Hooks', 'edit_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_approve_comment', [ 'AnsPress_Comment_Hooks', 'approve_comment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_vote', [ 'AnsPress_Vote', 'vote' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_delete_comment', [ 'AnsPress\Ajax\Comment_Delete', 'init' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_toggle_best_answer', [ 'AnsPress\Ajax\Toggle_Best_Answer', 'init' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_post_actions', [ 'AnsPress_Theme', 'post_actions' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_toggle_featured', [ 'AnsPress_Ajax', 'toggle_featured' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_close', [ 'AnsPress_Ajax', 'close_question' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_toggle_delete_post', [ 'AnsPress_Ajax', 'toggle_delete_post' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_delete_permanently', [ 'AnsPress_Ajax', 'permanent_delete_post' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_status', [ 'AnsPress_Post_Status', 'change_post_status' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_convert_to_post', [ 'AnsPress_Ajax', 'convert_to_post' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_action_flag', [ 'AnsPress_Flag', 'action_flag' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_delete_attachment', [ 'AnsPress_Uploader', 'delete_attachment' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_order_by', [ 'AnsPress_Ajax', 'load_filter_order_by' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_subscribe', [ 'AnsPress_Ajax', 'subscribe_to_question' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_repeatable_field', [ 'AnsPress\Ajax\Repeatable_Field', 'init' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_ap_repeatable_field', [ 'AnsPress\Ajax\Repeatable_Field', 'init' ] ) );
+		$this->assertEquals( 11, has_action( 'wp_ajax_ap_form_question', [ 'AP_Form_Hooks', 'submit_question_form' ] ) );
+		$this->assertEquals( 11, has_action( 'wp_ajax_nopriv_ap_form_question', [ 'AP_Form_Hooks', 'submit_question_form' ] ) );
+		$this->assertEquals( 11, has_action( 'wp_ajax_ap_form_answer', [ 'AP_Form_Hooks', 'submit_answer_form' ] ) );
+		$this->assertEquals( 11, has_action( 'wp_ajax_nopriv_ap_form_answer', [ 'AP_Form_Hooks', 'submit_answer_form' ] ) );
+		$this->assertEquals( 11, has_action( 'wp_ajax_ap_form_comment', [ 'AP_Form_Hooks', 'submit_comment_form' ] ) );
+		$this->assertEquals( 11, has_action( 'wp_ajax_nopriv_ap_form_comment', [ 'AP_Form_Hooks', 'submit_comment_form' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_search_tags', [ 'AnsPress_Ajax', 'search_tags' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_ap_search_tags', [ 'AnsPress_Ajax', 'search_tags' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_image_upload', [ 'AnsPress_Uploader', 'image_upload' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_ap_upload_modal', [ 'AnsPress_Uploader', 'upload_modal' ] ) );
+		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_ap_upload_modal', [ 'AnsPress_Uploader', 'upload_modal' ] ) );
+	}
+
+	/**
 	 * @covers AnsPress_Ajax::send
 	 */
 	public function testSend() {
