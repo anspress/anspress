@@ -6,6 +6,18 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonNotificationsFunctions extends TestCase {
 
+	use Testcases\Common;
+
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'notifications.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		ap_deactivate_addon( 'notifications.php' );
+	}
+
 	/**
 	 * @covers ::ap_register_notification_verb
 	 */
@@ -216,5 +228,110 @@ class TestAddonNotificationsFunctions extends TestCase {
 
 		// Reset global variable.
 		$ap_notification_verbs = [];
+	}
+
+	/**
+	 * @covers ::ap_insert_notification
+	 */
+	public function testAPInsertNotificationEmptyUserId() {
+		// Test 1.
+		$args = [ 'user_id' => 0 ];
+		$this->assertFalse( ap_insert_notification( $args ) );
+
+		// Test 2.
+		$args = [ 'user_id' => '' ];
+		$this->assertFalse( ap_insert_notification( $args ) );
+
+		// Test 3.
+		$args = [];
+		$this->assertFalse( ap_insert_notification( $args ) );
+	}
+
+	/**
+	 * @covers ::ap_insert_notification
+	 */
+	public function testAPInsertNotificationNewNotification() {
+		// Test 1.
+		$args = [ 'user_id' => 1 ];
+		$this->assertIsInt( ap_insert_notification( $args ) );
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 1, $get_notification[0]->noti_user_id );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+
+		// Test 2.
+		$this->setRole( 'subscriber' );
+		$args = [];
+		$this->assertIsInt( ap_insert_notification( $args ) );
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( get_current_user_id(), $get_notification[0]->noti_user_id );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+
+		// Test 3.
+		$args = [
+			'user_id'  => 2,
+			'actor'    => 11,
+			'parent'   => 5,
+			'ref_id'   => 3,
+			'ref_type' => 'question',
+			'verb'     => 'best_answer',
+			'seen'     => 0,
+			'date'     => current_time( 'mysql' ),
+		];
+		$this->assertIsInt( ap_insert_notification( $args ) );
+		$get_notification = ap_get_notifications( $args );
+		$this->assertNotEmpty( $get_notification );
+		$this->assertEquals( 2, $get_notification[0]->noti_user_id );
+		$this->assertEquals( 11, $get_notification[0]->noti_actor );
+		$this->assertEquals( 5, $get_notification[0]->noti_parent );
+		$this->assertEquals( 3, $get_notification[0]->noti_ref_id );
+		$this->assertEquals( 'question', $get_notification[0]->noti_ref_type );
+		$this->assertEquals( 'best_answer', $get_notification[0]->noti_verb );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+		$this->assertEquals( current_time( 'mysql' ), $get_notification[0]->noti_date );
+
+		// Test 4.
+		$this->setRole( 'subscriber' );
+		$args = [ 'seen' => 1 ];
+		$this->assertIsInt( ap_insert_notification( $args ) );
+		$get_notification = ap_get_notifications( $args );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+	}
+
+	/**
+	 * @covers ::ap_insert_notification
+	 */
+	public function testAPInsertNotificationUpdateNotification() {
+		// Test 1.
+		$args = [ 'user_id' => 1, 'seen' => 1 ];
+		$insert = ap_insert_notification( $args );
+		$this->assertIsInt( $insert );
+		$get_notification = ap_get_notifications( [ 'user_id' => 1 ] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+		$insert = ap_insert_notification( $args );
+		$this->assertIsInt( $insert );
+		$get_notification = ap_get_notifications( [ 'user_id' => 1 ] );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
+
+		// Test 2.
+		$args = [
+			'user_id'  => 2,
+			'actor'    => 11,
+			'parent'   => 5,
+			'ref_id'   => 3,
+			'ref_type' => 'question',
+			'verb'     => 'best_answer',
+			'seen'     => 1,
+			'date'     => current_time( 'mysql' ),
+		];
+		$insert = ap_insert_notification( $args );
+		$this->assertIsInt( $insert );
+		$get_notification = ap_get_notifications( [ 'user_id' => 2 ] );
+		$this->assertEquals( 1, $get_notification[0]->noti_seen );
+		$insert = ap_insert_notification( $args );
+		$this->assertIsInt( $insert );
+		$get_notification = ap_get_notifications( [ 'user_id' => 2 ] );
+		$this->assertEquals( 0, $get_notification[0]->noti_seen );
 	}
 }
