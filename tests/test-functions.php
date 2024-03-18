@@ -620,7 +620,7 @@ class TestFunctions extends TestCase {
 	/**
 	 * @covers ::ap_short_num
 	 */
-	public function testAPIsShortNum() {
+	public function testAPShortNum() {
 		$this->assertEquals( '5.00K', ap_short_num( '5000' ) );
 		$this->assertEquals( '5.05K', ap_short_num( '5050' ) );
 		$this->assertEquals( '5.005K', ap_short_num( '5005', 3 ) );
@@ -2760,5 +2760,22 @@ class TestFunctions extends TestCase {
 		$expected = [ 'key1' => 'value1', 'key2' => [ 'nested_key1' => 'nested_value1', 'nested_key2' => 'nested_value2', 'nested_key3' => 'default_nested_value3' ], 'key3' => 'default_value3' ];
 		$result = ap_parse_args( $args, $defaults );
 		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers ::ap_short_num
+	 */
+	public function testAPShortNumShouldReturnSameNum() {
+		// Test 1.
+		$result = ap_short_num( 0 );
+		$this->assertEquals( 0, $result );
+
+		// Test 2.
+		$result = ap_short_num( 100 );
+		$this->assertEquals( 100, $result );
+
+		// Test 3.
+		$result = ap_short_num( 999 );
+		$this->assertEquals( 999, $result );
 	}
 }
