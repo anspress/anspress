@@ -199,7 +199,7 @@ function ap_delete_notifications( $args = array() ) {
 	}
 
 	if ( isset( $args['seen'] ) ) {
-		$where['noti_seen'] = 'AND noti_verb = "' . esc_sql( sanitize_text_field( $args['seen'] ) ) . '"';
+		$where['noti_seen'] = 'AND noti_seen = "' . esc_sql( sanitize_text_field( $args['seen'] ) ) . '"';
 	}
 
 	if ( empty( $where ) ) {
