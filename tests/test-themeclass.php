@@ -30,6 +30,14 @@ class TestThemeClass extends TestCase {
 	 * @covers AnsPress_Theme::init_actions
 	 */
 	public function testAnsPressThemeInitActions() {
+		// Delete the shortcodes.
+		remove_shortcode( 'anspress' );
+		remove_shortcode( 'question' );
+		$this->assertFalse( shortcode_exists( 'anspress' ) );
+		$this->assertFalse( shortcode_exists( 'question' ) );
+
+		// After calling the method, the shortcodes should be registered.
+		\AnsPress_Theme::init_actions();
 		$this->assertTrue( shortcode_exists( 'anspress' ) );
 		$this->assertTrue( shortcode_exists( 'question' ) );
 	}
