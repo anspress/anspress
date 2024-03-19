@@ -1325,7 +1325,7 @@ class TestFunctions extends TestCase {
 	/**
 	 * @covers ::ap_find_duplicate_post
 	 */
-	public function testAPFindSuplicatePost() {
+	public function testAPFindDuplicatePost() {
 		// Test for question post type.
 		$question = $this->factory->post->create(
 			array(
@@ -2808,5 +2808,20 @@ class TestFunctions extends TestCase {
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$expected = get_permalink( $question_id ) . '#answers';
 		$this->assertEquals( $expected, ap_answers_link( false ) );
+	}
+
+	/**
+	 * @covers ::ap_find_duplicate_post
+	 */
+	public function testAPFindDuplicatePostShouldReturnFalseForEmptyContent() {
+		// Question post type.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_content' => 'Question content' ] );
+		$result = ap_find_duplicate_post( '', 'question', $question_id );
+		$this->assertFalse( $result );
+
+		// Answer post type.
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_content' => 'Answer content', 'post_parent' => $question_id ] );
+		$result = ap_find_duplicate_post( '', 'answer', $answer_id );
+		$this->assertFalse( $result );
 	}
 }
