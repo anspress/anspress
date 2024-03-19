@@ -1455,4 +1455,157 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEmpty( $notifications );
 		remove_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::insert_reputation
+	 */
+	public function testInsertReputationByCallingMethodWithVerbAsNewPoints() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->insert_reputation( 11, get_current_user_id(), 'ask', '' );
+		$notifications = ap_get_notifications( [] );
+		$notification = $notifications[0];
+		$this->assertEquals( get_current_user_id(), $notification->noti_user_id );
+		$this->assertEquals( 11, $notification->noti_ref_id );
+		$this->assertEquals( 'reputation', $notification->noti_ref_type );
+		$this->assertEquals( 'new_points', $notification->noti_verb );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::insert_reputation
+	 */
+	public function testInsertReputationByCallingMethodWithVerbAsLostPoints() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->insert_reputation( 11, get_current_user_id(), 'given_vote_up', '' );
+		$notifications = ap_get_notifications( [] );
+		$notification = $notifications[0];
+		$this->assertEquals( get_current_user_id(), $notification->noti_user_id );
+		$this->assertEquals( 11, $notification->noti_ref_id );
+		$this->assertEquals( 'reputation', $notification->noti_ref_type );
+		$this->assertEquals( 'lost_points', $notification->noti_verb );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::insert_reputation
+	 */
+	public function testInsertReputationByApInsertReputationHookForNewPointsAsVerb() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_insert_reputation', [ $instance, 'insert_reputation' ], 10, 4 );
+		$ref_id = ap_insert_reputation( 'ask', 11, get_current_user_id() );
+		$notifications = ap_get_notifications( [] );
+		$notification = $notifications[0];
+		$this->assertEquals( get_current_user_id(), $notification->noti_user_id );
+		$this->assertEquals( $ref_id, $notification->noti_ref_id );
+		$this->assertEquals( 'reputation', $notification->noti_ref_type );
+		$this->assertEquals( 'new_points', $notification->noti_verb );
+		remove_action( 'ap_insert_reputation', [ $instance, 'insert_reputation' ], 10, 4 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::insert_reputation
+	 */
+	public function testInsertReputationByApInsertReputationHookForLostPointsAsVerb() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_insert_reputation', [ $instance, 'insert_reputation' ], 10, 4 );
+		$ref_id = ap_insert_reputation( 'given_vote_up', 11, get_current_user_id() );
+		$notifications = ap_get_notifications( [] );
+		$notification = $notifications[0];
+		$this->assertEquals( get_current_user_id(), $notification->noti_user_id );
+		$this->assertEquals( $ref_id, $notification->noti_ref_id );
+		$this->assertEquals( 'reputation', $notification->noti_ref_type );
+		$this->assertEquals( 'lost_points', $notification->noti_verb );
+		remove_action( 'ap_insert_reputation', [ $instance, 'insert_reputation' ], 10, 4 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::delete_reputation
+	 */
+	public function testDeleteReputationByCallingMethod() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		$reputation_noti_id = ap_insert_notification(
+			[
+				'user_id'  => get_current_user_id(),
+				'ref_type' => 'reputation',
+			]
+		);
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertCount( 1, $notifications );
+
+		// After calling the method.
+		$instance->delete_reputation( '', get_current_user_id(), '' );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::delete_reputation
+	 */
+	public function testDeleteReputationByApDeleteReputationHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+
+		// Insert notifications.
+		$reputation_noti_id = ap_insert_notification(
+			[
+				'user_id'  => get_current_user_id(),
+				'ref_type' => 'reputation',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertCount( 1, $notifications );
+
+		// After the action hook is introduced.
+		ap_insert_reputation( 'ask', 11, get_current_user_id() );
+		add_action( 'ap_delete_reputation', [ $instance, 'delete_reputation' ], 10, 3 );
+		ap_delete_reputation( 'ask', 11, get_current_user_id() );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_delete_reputation', [ $instance, 'delete_reputation' ], 10, 3 );
+	}
 }
