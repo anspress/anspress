@@ -595,4 +595,17 @@ class TestComments extends TestCase {
 		// Reset disable_delete_after option.
 		ap_opt( 'disable_delete_after', 86400 );
 	}
+
+	/**
+	 * @covers ::ap_comment_btn_html
+	 */
+	public function testAPCommentBtnHTMLShouldReturnNullForUsersWhoCantReadComment() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_parent' => $question_id ] );
+
+		// Tests.
+		$this->setRole( 'subscriber' );
+		$this->assertNull( ap_comment_btn_html( $question_id ) );
+		$this->assertNull( ap_comment_btn_html( $answer_id ) );
+	}
 }
