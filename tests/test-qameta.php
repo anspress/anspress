@@ -1067,4 +1067,34 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 3, get_user_meta( $user_id, '__ap_unpublished_questions', true ) );
 		$this->assertEquals( 3, get_user_meta( $user_id, '__ap_unpublished_answers', true ) );
 	}
+
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
+	public function testAPInsertQametaShouldReturnFalseOnEmptyPostIdArg() {
+		// Test 1.
+		$result = ap_insert_qameta( '', [] );
+		$this->assertFalse( $result );
+
+		// Test 2.
+		$result = ap_insert_qameta( 0, [] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
+	public function testAPInsertQametaShouldReturnWPErrorMessageOnEmptyPostIdAndWPErrorArgs() {
+		// Test 1.
+		$result = ap_insert_qameta( '', [], true );
+		$this->assertInstanceOf( 'WP_Error', $result );
+		$this->assertEquals( 'empty_post_id', $result->get_error_code() );
+		$this->assertEquals( 'Post ID is required', $result->get_error_message() );
+
+		// Test 2.
+		$result = ap_insert_qameta( 0, [], true );
+		$this->assertInstanceOf( 'WP_Error', $result );
+		$this->assertEquals( 'empty_post_id', $result->get_error_code() );
+		$this->assertEquals( 'Post ID is required', $result->get_error_message() );
+	}
 }
