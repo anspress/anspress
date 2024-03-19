@@ -2824,4 +2824,12 @@ class TestFunctions extends TestCase {
 		$result = ap_find_duplicate_post( '', 'answer', $answer_id );
 		$this->assertFalse( $result );
 	}
+
+	/**
+	 * @covers ::ap_activity_short_title
+	 */
+	public function testAPActivityShortTitleShouldReturnArgTypePassed() {
+		$this->assertEquals( 'custom_type', ap_activity_short_title( 'custom_type' ) );
+		$this->assertEquals( 'type_not_available', ap_activity_short_title( 'type_not_available' ) );
+	}
 }
