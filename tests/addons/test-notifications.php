@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonNotifications extends TestCase {
 
+	use Testcases\Common;
+
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'notifications.php' );
@@ -331,5 +333,147 @@ class TestAddonNotifications extends TestCase {
 			]
 		];
 		$this->assertEquals( $expected, $user_pages );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::trash_question
+	 */
+	public function testTrashQuestionByCallingMethod() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Insert notifications.
+		$answer_noti_id    = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'answer',
+			]
+		);
+		$vote_up_noti_id   = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'vote_up',
+			]
+		);
+		$vote_down_noti_id = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'vote_down',
+			]
+		);
+		$post_noti_id      = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'post',
+			]
+		);
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [ 'parent' => $question_id ] );
+		$this->assertCount( 4, $notifications );
+
+		// After calling the method.
+		$instance->trash_question( $question_id, get_post( $question_id ) );
+		$notifications = ap_get_notifications( [ 'parent' => $question_id ] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::trash_question
+	 */
+	public function testTrashQuestionByAPTrashQuestionHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Insert notifications.
+		$answer_noti_id    = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'answer',
+			]
+		);
+		$vote_up_noti_id   = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'vote_up',
+			]
+		);
+		$vote_down_noti_id = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'vote_down',
+			]
+		);
+		$post_noti_id      = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'post',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'parent' => $question_id ] );
+		$this->assertCount( 4, $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_trash_question', [ $instance, 'trash_question' ], 10, 2 );
+		wp_trash_post( $question_id );
+		$notifications = ap_get_notifications( [ 'parent' => $question_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_trash_question', [ $instance, 'trash_question' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::trash_question
+	 */
+	public function testTrashQuestionByAPBeforeDeleteQuestionHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Insert notifications.
+		$answer_noti_id    = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'answer',
+			]
+		);
+		$vote_up_noti_id   = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'vote_up',
+			]
+		);
+		$vote_down_noti_id = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'vote_down',
+			]
+		);
+		$post_noti_id      = ap_insert_notification(
+			[
+				'parent'   => $question_id,
+				'ref_type' => 'post',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'parent' => $question_id ] );
+		$this->assertCount( 4, $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_before_delete_question', [ $instance, 'trash_question' ], 10, 2 );
+		wp_delete_post( $question_id, true );
+		$notifications = ap_get_notifications( [ 'parent' => $question_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_before_delete_question', [ $instance, 'trash_question' ], 10, 2 );
 	}
 }
