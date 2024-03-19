@@ -476,4 +476,162 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEmpty( $notifications );
 		remove_action( 'ap_before_delete_question', [ $instance, 'trash_question' ], 10, 2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_answer
+	 */
+	public function testNewAnswerByCallingMethodShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$result = $instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$this->assertNull( $result );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_answer
+	 */
+	public function testNewAnswerByCallingMethodShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->new_answer( $answer_id, get_post( $answer_id ) );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $answer_id, $notification->noti_ref_id );
+		$this->assertEquals( 'answer', $notification->noti_ref_type );
+		$this->assertEquals( 'new_answer', $notification->noti_verb );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_answer
+	 */
+	public function testNewAnswerByAPAfterNewAnswerHookShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_answer
+	 */
+	public function testNewAnswerByAPAfterNewAnswerHookShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $answer_id, $notification->noti_ref_id );
+		$this->assertEquals( 'answer', $notification->noti_ref_type );
+		$this->assertEquals( 'new_answer', $notification->noti_verb );
+		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_answer
+	 */
+	public function testNewAnswerByAPUntrashAnswerHookShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		wp_untrash_post( $answer_id );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_answer
+	 */
+	public function testNewAnswerByAPUntrashAnswerHookShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		wp_trash_post( $answer_id );
+		wp_untrash_post( $answer_id );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $answer_id, $notification->noti_ref_id );
+		$this->assertEquals( 'answer', $notification->noti_ref_type );
+		$this->assertEquals( 'new_answer', $notification->noti_verb );
+		remove_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
+	}
 }
