@@ -228,11 +228,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				self::$instance->ajax_hooks();
 				AnsPress_PostTypes::init();
 
-				// Add roles.
-				$ap_roles = new AP_Roles();
-				$ap_roles->add_roles();
-				$ap_roles->add_capabilities();
-
 				/*
 				* Dashboard and Administrative Functionality
 				*/
