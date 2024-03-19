@@ -949,4 +949,174 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEmpty( $notifications );
 		remove_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_comment
+	 */
+	public function testNewCommentByCallingMethodShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->new_comment( get_comment( $comment_id ) );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_comment
+	 */
+	public function testNewCommentByCallingMethodShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$comment_id  = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->new_comment( get_comment( $comment_id ) );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $comment_id, $notification->noti_ref_id );
+		$this->assertEquals( 'comment', $notification->noti_ref_type );
+		$this->assertEquals( 'new_comment', $notification->noti_verb );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_comment
+	 */
+	public function testNewCommentByAPPublishCommentHookShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::new_comment
+	 */
+	public function testNewCommentByAPPublishCommentHookShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $comment_id, $notification->noti_ref_id );
+		$this->assertEquals( 'comment', $notification->noti_ref_type );
+		$this->assertEquals( 'new_comment', $notification->noti_verb );
+		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::delete_comment
+	 */
+	public function testDeleteCommentByCallingMethod() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+
+		// Insert notifications.
+		$comment_noti_id = ap_insert_notification(
+			[
+				'actor'    => get_current_user_id(),
+				'parent'   => $question_id,
+				'ref_id'   => $comment_id,
+				'ref_type' => 'comment',
+			]
+		);
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertCount( 1, $notifications );
+
+		// After calling the method.
+		$instance->delete_comment( get_comment( $comment_id ) );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::delete_comment
+	 */
+	public function testDeleteCommentByAPUnpublishCommentHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+
+		// Insert notifications.
+		$comment_noti_id = ap_insert_notification(
+			[
+				'user_id'  => $user_id,
+				'actor'    => get_current_user_id(),
+				'parent'   => $question_id,
+				'ref_id'   => $comment_id,
+				'ref_type' => 'comment',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+		wp_delete_comment( $comment_id );
+		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
+	}
 }
