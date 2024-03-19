@@ -634,4 +634,146 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEquals( 'new_answer', $notification->noti_verb );
 		remove_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::trash_answer
+	 */
+	public function testTrashAnswerByCallingMethod() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+
+		// Insert notifications.
+		$answer_noti_id    = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'answer',
+			]
+		);
+		$vote_up_noti_id   = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'vote_up',
+			]
+		);
+		$vote_down_noti_id = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'vote_down',
+			]
+		);
+		$post_noti_id      = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'post',
+			]
+		);
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [ 'ref_id' => $answer_id ] );
+		$this->assertCount( 4, $notifications );
+
+		// After calling the method.
+		$instance->trash_answer( $answer_id, get_post( $answer_id ) );
+		$notifications = ap_get_notifications( [ 'ref_id' => $answer_id ] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::trash_answer
+	 */
+	public function testTrashAnswerByAPTrashAnswerHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+
+		// Insert notifications.
+		$answer_noti_id    = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'answer',
+			]
+		);
+		$vote_up_noti_id   = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'vote_up',
+			]
+		);
+		$vote_down_noti_id = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'vote_down',
+			]
+		);
+		$post_noti_id      = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'post',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'ref_id' => $answer_id ] );
+		$this->assertCount( 4, $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
+		wp_trash_post( $answer_id );
+		$notifications = ap_get_notifications( [ 'ref_id' => $answer_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::trash_answer
+	 */
+	public function testTrashAnswerByAPBeforeDeleteAnswerHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+
+		// Insert notifications.
+		$answer_noti_id    = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'answer',
+			]
+		);
+		$vote_up_noti_id   = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'vote_up',
+			]
+		);
+		$vote_down_noti_id = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'vote_down',
+			]
+		);
+		$post_noti_id      = ap_insert_notification(
+			[
+				'ref_id'   => $answer_id,
+				'ref_type' => 'post',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'ref_id' => $answer_id ] );
+		$this->assertCount( 4, $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_before_delete_answer', [ $instance, 'trash_answer' ], 10, 2 );
+		wp_delete_post( $answer_id, true );
+		$notifications = ap_get_notifications( [ 'ref_id' => $answer_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_before_delete_answer', [ $instance, 'trash_answer' ], 10, 2 );
+	}
 }
