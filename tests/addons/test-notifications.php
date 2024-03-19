@@ -880,4 +880,73 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEquals( 'best_answer', $notification->noti_verb );
 		remove_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::unselect_answer
+	 */
+	public function testUnselectAnswerByCallingMethod() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+
+		// Insert notifications.
+		$answer_noti_id = ap_insert_notification(
+			[
+				'user_id'   => $user_id,
+				'parent'    => $question_id,
+				'ref_id'    => $answer_id,
+				'ref_type'  => 'answer',
+				'verb'      => 'best_answer',
+			]
+		);
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+
+		// After calling the method.
+		$instance->unselect_answer( get_post( $answer_id ) );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::unselect_answer
+	 */
+	public function testUnselectAnswerByAPUnselectAnswerHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+
+		// Insert notifications.
+		$answer_noti_id = ap_insert_notification(
+			[
+				'user_id'   => $user_id,
+				'parent'    => $question_id,
+				'ref_id'    => $answer_id,
+				'ref_type'  => 'answer',
+				'verb'      => 'best_answer',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+
+		// After the action hook is introduced.
+		ap_set_selected_answer( $question_id, $answer_id );
+		add_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
+		ap_unset_selected_answer( $question_id );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
+	}
 }
