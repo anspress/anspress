@@ -51,7 +51,7 @@ function ap_qameta_fields() {
  */
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	if ( empty( $post_id ) ) {
-		return $wp_error ? new WP_Error( 'Post ID is required' ) : false;
+		return $wp_error ? new WP_Error( 'empty_post_id', __( 'Post ID is required', 'anspress-question-answer' ) ) : false;
 	}
 
 	$_post  = get_post( $post_id );
@@ -107,7 +107,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 	// Don't insert or update if not AnsPress CPT.
 	// This check will also prevent inserting qameta for deleted post.
 	if ( ! isset( $exists->ptype ) || ! in_array( $exists->ptype, array( 'question', 'answer' ), true ) ) {
-		return $wp_error ? new WP_Error( 'Not question or answer CPT' ) : false;
+		return $wp_error ? new WP_Error( 'invalid_post_type', __( 'Not question or answer CPT', 'anspress-question-answer' ) ) : false;
 	}
 
 	if ( $exists->is_new ) {
@@ -126,7 +126,7 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
 		return $post_id;
 	}
 
-	return $wp_error ? new WP_Error( __( 'Unable to insert AnsPress qameta', 'anspress-question-answer' ) ) : false;
+	return $wp_error ? new WP_Error( 'qameta_insert_failed', __( 'Unable to insert AnsPress qameta', 'anspress-question-answer' ) ) : false;
 }
 
 /**
