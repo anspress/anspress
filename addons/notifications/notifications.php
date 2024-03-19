@@ -317,7 +317,7 @@ class Notifications extends \AnsPress\Singleton {
 	 */
 	public function select_answer( $_post ) {
 		// Award select answer points to question author only.
-		if ( get_current_user_id() !== $_post->post_author ) {
+		if ( get_current_user_id() !== (int) $_post->post_author ) {
 			ap_insert_notification(
 				array(
 					'user_id'  => $_post->post_author,
@@ -354,7 +354,7 @@ class Notifications extends \AnsPress\Singleton {
 	public function new_comment( $comment ) {
 		$_post = get_post( $comment->comment_post_ID );
 
-		if ( get_current_user_id() !== $_post->post_author ) {
+		if ( get_current_user_id() !== (int) $_post->post_author ) {
 			ap_insert_notification(
 				array(
 					'user_id'  => $_post->post_author,
@@ -391,7 +391,7 @@ class Notifications extends \AnsPress\Singleton {
 	public function vote_up( $post_id ) {
 		$_post = get_post( $post_id );
 
-		if ( get_current_user_id() !== $_post->post_author ) {
+		if ( get_current_user_id() !== (int) $_post->post_author ) {
 			ap_insert_notification(
 				array(
 					'user_id'  => $_post->post_author,
@@ -413,7 +413,7 @@ class Notifications extends \AnsPress\Singleton {
 	public function vote_down( $post_id ) {
 		$_post = get_post( $post_id );
 
-		if ( get_current_user_id() !== $_post->post_author ) {
+		if ( get_current_user_id() !== (int) $_post->post_author ) {
 			ap_insert_notification(
 				array(
 					'user_id'  => $_post->post_author,
