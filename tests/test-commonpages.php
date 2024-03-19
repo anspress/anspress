@@ -24,6 +24,19 @@ class TestCommonPages extends TestCase {
 	 * @covers AnsPress_Common_Pages::register_common_pages
 	 */
 	public function testRegisterCommonPages() {
+		// Remove all pages.
+		anspress()->pages = [];
+		$this->assertTrue( empty( anspress()->pages ) );
+		$this->assertTrue( empty( anspress()->pages['base'] ) );
+		$this->assertTrue( empty( anspress()->pages['question'] ) );
+		$this->assertTrue( empty( anspress()->pages['ask'] ) );
+		$this->assertTrue( empty( anspress()->pages['search'] ) );
+		$this->assertTrue( empty( anspress()->pages['edit'] ) );
+		$this->assertTrue( empty( anspress()->pages['activities'] ) );
+
+		// Register common pages.
+		\AnsPress_Common_Pages::register_common_pages();
+
 		// Test for base page.
 		$base = anspress()->pages['base'];
 		$this->assertIsArray( $base );
