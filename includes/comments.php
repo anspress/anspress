@@ -215,7 +215,7 @@ class AnsPress_Comment_Hooks {
 /**
  * Load comment form button.
  *
- * @param   mixed $_post Echo html.
+ * @param   mixed $_post Post ID or object.
  * @return  string
  * @since   0.1
  * @since   4.1.0 Added @see ap_user_can_read_comments() check.
