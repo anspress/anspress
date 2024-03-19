@@ -1337,4 +1337,50 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( 'disable_q_suggestion = "' . (bool) ap_opt( 'disable_q_suggestion' ) . '";', $output );
 		$this->assertStringContainsString( '</script>', $output );
 	}
+
+	/**
+	 * @covers ::ap_post_status
+	 */
+	public function testAPPostStatusPassingNoArgPassed() {
+		// Test 1.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_post_status();
+		$this->assertEquals( 'moderate', $result );
+
+		// Test 2.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_post_status();
+		$this->assertEquals( 'private_post', $result );
+
+		// Test 3.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_post_status();
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_post_status
+	 */
+	public function testAPPostStatusFalseArgPassed() {
+		// Test 1.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_post_status( false );
+		$this->assertEquals( 'moderate', $result );
+
+		// Test 2.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_post_status( false );
+		$this->assertEquals( 'private_post', $result );
+
+		// Test 3.
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$result = ap_post_status( false );
+		$this->assertEquals( 'publish', $result );
+	}
 }
