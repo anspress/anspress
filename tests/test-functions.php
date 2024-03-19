@@ -642,7 +642,6 @@ class TestFunctions extends TestCase {
 
 	/**
 	 * @covers ::ap_trim_traling_space
-	 * @covers ::ap_replace_square_bracket
 	 */
 	public function testAPTrimTralingSpace() {
 		$this->assertEquals( 'Question title', ap_trim_traling_space( '   Question title    ' ) );
@@ -2831,5 +2830,46 @@ class TestFunctions extends TestCase {
 	public function testAPActivityShortTitleShouldReturnArgTypePassed() {
 		$this->assertEquals( 'custom_type', ap_activity_short_title( 'custom_type' ) );
 		$this->assertEquals( 'type_not_available', ap_activity_short_title( 'type_not_available' ) );
+	}
+
+	/**
+	 * @covers ::ap_replace_square_bracket
+	 */
+	public function testAPReplaceSquareBracket() {
+		// Test 1.
+		$result = ap_replace_square_bracket( '[example]' );
+		$this->assertEquals( '&#91;example&#93;', $result );
+
+		// Test 2.
+		$result = ap_replace_square_bracket( 'This is [test] string' );
+		$this->assertEquals( 'This is &#91;test&#93; string', $result );
+
+		// Test 3.
+		$result = ap_replace_square_bracket( '[test] [string]' );
+		$this->assertEquals( '&#91;test&#93; &#91;string&#93;', $result );
+
+		// Test 4.
+		$result = ap_replace_square_bracket( '' );
+		$this->assertEquals( '', $result );
+
+		// Test 5.
+		$result = ap_replace_square_bracket( 'This string has no brackets' );
+		$this->assertEquals( 'This string has no brackets', $result );
+
+		// Test 6.
+		$result = ap_replace_square_bracket( '[missing closing bracket' );
+		$this->assertEquals( '&#91;missing closing bracket', $result );
+
+		// Test 7.
+		$result = ap_replace_square_bracket( 'missing opening bracket]' );
+		$this->assertEquals( 'missing opening bracket&#93;', $result );
+
+		// Test 8.
+		$result = ap_replace_square_bracket( '[]' );
+		$this->assertEquals( '&#91;&#93;', $result );
+
+		// Test 9.
+		$result = ap_replace_square_bracket( '[[]]' );
+		$this->assertEquals( '&#91;&#91;&#93;&#93;', $result );
 	}
 }
