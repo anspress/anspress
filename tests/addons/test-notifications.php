@@ -1119,4 +1119,172 @@ class TestAddonNotifications extends TestCase {
 		$this->assertEmpty( $notifications );
 		remove_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::vote_up
+	 */
+	public function testVoteUpByCallingMethodShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->vote_up( $question_id );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::vote_up
+	 */
+	public function testVoteUpByCallingMethodShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+
+		// After calling the method.
+		$instance->vote_up( $question_id );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $question_id, $notification->noti_ref_id );
+		$this->assertEquals( 'question', $notification->noti_ref_type );
+		$this->assertEquals( 'vote_up', $notification->noti_verb );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::vote_up
+	 */
+	public function testVoteUpByAPVoteUpHookShouldNotInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
+		ap_add_post_vote( $question_id );
+		$notifications = ap_get_notifications( [] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::vote_up
+	 */
+	public function testVoteUpByAPVoteUpHookShouldInsertNotification() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
+		ap_add_post_vote( $question_id );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+		$notification = $notifications[0];
+		$this->assertEquals( $user_id, $notification->noti_user_id );
+		$this->assertEquals( get_current_user_id(), $notification->noti_actor );
+		$this->assertEquals( $question_id, $notification->noti_parent );
+		$this->assertEquals( $question_id, $notification->noti_ref_id );
+		$this->assertEquals( 'question', $notification->noti_ref_type );
+		$this->assertEquals( 'vote_up', $notification->noti_verb );
+		remove_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::undo_vote_up
+	 */
+	public function testUndoVoteUpByCallingMethod() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Insert notifications.
+		$vote_up_noti_id = ap_insert_notification(
+			[
+				'user_id'   => $user_id,
+				'actor'     => get_current_user_id(),
+				'parent'    => $question_id,
+				'ref_id'    => $question_id,
+				'ref_type'  => 'question',
+				'verb'      => 'vote_up',
+			]
+		);
+
+		// Before calling the method.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+
+		// After calling the method.
+		$instance->undo_vote_up( $question_id );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Notifications::undo_vote_up
+	 */
+	public function testUndoVoteUpByAPUndoVoteUpHook() {
+		$instance = \Anspress\Addons\Notifications::init();
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+
+		// Insert notifications.
+		$vote_up_noti_id = ap_insert_notification(
+			[
+				'user_id'   => $user_id,
+				'actor'     => get_current_user_id(),
+				'parent'    => $question_id,
+				'ref_id'    => $question_id,
+				'ref_type'  => 'question',
+				'verb'      => 'vote_up',
+			]
+		);
+
+		// Before the action hook is introduced.
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertCount( 1, $notifications );
+
+		// After the action hook is introduced.
+		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+		ap_delete_post_vote( $question_id, false, 'vote_up' );
+		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
+		$this->assertEmpty( $notifications );
+		remove_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
+	}
 }
