@@ -74,4 +74,39 @@ class TestWidgetBreadcrumbs extends TestCase {
 			]
 		], $breadcrumbs);
 	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::get_breadcrumbs
+	 */
+	public function testGetBreadcrumbsAskPage() {
+		$ask_page = $this->factory()->post->create_and_get( [
+			'post_type'    => 'page',
+			'post_title'   => 'Ask',
+			'post_content' => 'Ask page content',
+		] );
+		ap_opt( 'ask_page', $ask_page->ID );
+		$this->go_to( ap_get_link_to( 'ask' ) );
+
+		// Get breadcrumbs.
+		$breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
+
+		// Tests.
+		$this->assertIsArray( $breadcrumbs );
+		$this->assertArrayHasKey( 'base', $breadcrumbs );
+		$this->assertEquals(
+			[
+				'base' => [
+					'title' => 'Questions',
+					'link'  => ap_base_page_link(),
+					'order' => 0
+				],
+				'page' => [
+					'title' => get_the_title(),
+					'link'  => ap_get_link_to( 'ask' ),
+					'order' => 10
+				]
+			],
+			$breadcrumbs
+		);
+	}
 }
