@@ -258,4 +258,47 @@ class TestWidgetBreadcrumbs extends TestCase {
 		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_get_link_to( 'ask' ) ) . '">Ask</a></li>', $output );
 		$this->assertStringNotContainsString( '<li><a href="' . esc_url( ap_get_link_to( 'ask' ) ) . '">Ask</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::widget
+	 */
+	public function testWidgetBasePage() {
+		$instance = new \AnsPress_Breadcrumbs_Widget();
+		$args     = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+		];
+		$this->go_to( ap_base_page_link() );
+		ob_start();
+		$instance->widget( $args, [] );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<section class="widget">', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li>', $output );
+		$this->assertStringNotContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::widget
+	 */
+	public function testWidgetQuestion() {
+		$instance = new \AnsPress_Breadcrumbs_Widget();
+		$args     = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+		];
+		$question = $this->factory()->post->create_and_get( [
+			'post_type'    => 'question',
+			'post_title'   => 'Test question',
+			'post_content' => 'Test question content',
+		] );
+		$this->go_to( '?post_type=question&p=' . $question->ID );
+		ob_start();
+		$instance->widget( $args, [] );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<section class="widget">', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_permalink( get_question_id() ) ) . '">Test question</a></li>', $output );
+		$this->assertStringNotContainsString( '<li><a href="' . esc_url( get_permalink( get_question_id() ) ) . '">Test question</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+	}
 }
