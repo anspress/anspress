@@ -20,4 +20,14 @@ class TestWidgetLeaderboard extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Leaderboard_Widget', 'form' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Leaderboard_Widget', 'update' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::__construct
+	 */
+	public function testConstruct() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+		$this->assertEquals( strtolower( 'ap_leaderboard_widget' ), $instance->id_base );
+		$this->assertEquals( '(AnsPress) User Leaderboard', $instance->name );
+		$this->assertEquals( 'Shows users leaderboard.', $instance->widget_options['description'] );
+	}
 }

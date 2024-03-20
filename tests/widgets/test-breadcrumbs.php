@@ -22,6 +22,16 @@ class TestWidgetBreadcrumbs extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Breadcrumbs_Widget', 'update' ) );
 	}
 
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::__construct
+	 */
+	public function testConstruct() {
+		$instance = new \AnsPress_Breadcrumbs_Widget();
+		$this->assertEquals( strtolower( 'ap_breadcrumbs_widget' ), $instance->id_base );
+		$this->assertEquals( '(AnsPress) Breadcrumbs', $instance->name );
+		$this->assertEquals( 'Show current anspress page navigation', $instance->widget_options['description'] );
+	}
+
 	public function test_get_breadcrumbs_base_page() {
 		$this->go_to(ap_base_page_link());
 

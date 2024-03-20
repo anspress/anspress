@@ -20,4 +20,14 @@ class TestWidgetQuestions extends TestCase {
 		$this->assertTrue( method_exists( 'AP_Questions_Widget', 'form' ) );
 		$this->assertTrue( method_exists( 'AP_Questions_Widget', 'update' ) );
 	}
+
+	/**
+	 * @covers AP_Questions_Widget::__construct
+	 */
+	public function testConstruct() {
+		$instance = new \AP_Questions_Widget();
+		$this->assertEquals( strtolower( 'ap_questions_widget' ), $instance->id_base );
+		$this->assertEquals( '(AnsPress) Questions', $instance->name );
+		$this->assertEquals( 'Shows list of question shorted by option.', $instance->widget_options['description'] );
+	}
 }

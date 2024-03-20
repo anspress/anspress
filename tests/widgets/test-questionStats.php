@@ -20,4 +20,14 @@ class TestWidgetQuestionStats extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Stats_Widget', 'form' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Stats_Widget', 'update' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::__construct
+	 */
+	public function testConstruct() {
+		$instance = new \AnsPress_Stats_Widget();
+		$this->assertEquals( strtolower( 'ap_stats_widget' ), $instance->id_base );
+		$this->assertEquals( '(AnsPress) Question Stats', $instance->name );
+		$this->assertEquals( 'Shows question stats in single question page.', $instance->widget_options['description'] );
+	}
 }
