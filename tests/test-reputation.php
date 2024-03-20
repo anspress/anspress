@@ -864,4 +864,77 @@ class TestReputation extends TestCase {
 			$this->assertObjectHasProperty( 'points', $reputation_event );
 		}
 	}
+
+	/**
+	 * @covers ::ap_update_user_reputation_meta
+	 */
+	public function testAPUpdateUserReputationMeta() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Test begins.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		// Before calling the function.
+		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
+		$this->assertEmpty( $reputation );
+
+		// After calling the function.
+		ap_update_user_reputation_meta( $user_id );
+		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
+		$this->assertEquals( ap_get_user_reputation( $user_id ), $reputation );
+	}
+
+	/**
+	 * @covers ::ap_update_user_reputation_meta
+	 */
+	public function testAPUpdateUserReputationWithNoArgs() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Test begins.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$user_page = $this->factory()->post->create( array( 'post_type' => 'page' ) );
+		ap_opt( 'user_page', $user_page );
+		$this->go_to( '?post_type=page&p=' . $user_page );
+		set_query_var( 'user_page', 'reputations' );
+
+		// Before calling the function.
+		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
+		$this->assertEmpty( $reputation );
+
+		// After calling the function.
+		ap_update_user_reputation_meta();
+		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
+		$this->assertEquals( ap_get_user_reputation( $user_id ), $reputation );
+	}
+
+	/**
+	 * @covers ::ap_update_user_reputation_meta
+	 */
+	public function testAPUpdateUserReputationWithFalseArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Test begins.
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+		$user_page = $this->factory()->post->create( array( 'post_type' => 'page' ) );
+		ap_opt( 'user_page', $user_page );
+		$this->go_to( '?post_type=page&p=' . $user_page );
+		set_query_var( 'user_page', 'reputations' );
+
+		// Before calling the function.
+		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
+		$this->assertEmpty( $reputation );
+
+		// After calling the function.
+		ap_update_user_reputation_meta( false );
+		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
+		$this->assertEmpty( $reputation );
+	}
 }
