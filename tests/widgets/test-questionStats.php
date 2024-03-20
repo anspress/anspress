@@ -106,4 +106,53 @@ class TestWidgetQuestionStats extends TestCase {
 		];
 		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
 	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::form
+	 */
+	public function testForm() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$instance_args = [
+			'title' => 'Question Stats Form Title',
+		];
+		ob_start();
+		$instance->form( $instance_args );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Question Stats Form Title"', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::form
+	 */
+	public function testFormWithEmptyTitle() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$instance_args = [
+			'title' => '',
+		];
+		ob_start();
+		$instance->form( $instance_args );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value=""', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::form
+	 */
+	public function testFormWithDefaultTitle() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$instance_args = [];
+		ob_start();
+		$instance->form( $instance_args );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Question stats"', $result );
+	}
 }
