@@ -17,6 +17,15 @@
 /tests/ui.suite.dist.yml
 /tests/activator.suite.yml
 /build
+/templates/css/fonts.css
+/templates/css/fonts.css
+/templates/css/main.css
+/templates/css/rtl.css
+/templates/css/min/fonts.css
+/templates/js/min/theme.min.js
+/templates/js/min/theme.min.js.map
+/templates/min/theme.min.js
+/templates/prod/ap.min.js
 
 __MACOSX
 .DS_Store
