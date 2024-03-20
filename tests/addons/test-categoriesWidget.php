@@ -30,4 +30,164 @@ class TestAddonCategoriesWidget extends TestCase {
 		$this->assertEquals( '(AnsPress) Categories', $instance->name );
 		$this->assertEquals( 'Display AnsPress categories', $instance->widget_options['description'] );
 	}
+
+	/**
+	 * @covers Anspress\Widgets\Categories::update
+	 */
+	public function testupdate() {
+		$instance = new \Anspress\Widgets\Categories();
+
+		// Test.
+		$new_instance = [
+			'title'       => 'Test title',
+			'hide_empty'  => true,
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'none',
+			'order'       => 'DESC',
+			'icon_width'  => 48,
+			'icon_height' => 48,
+		];
+		$old_instance = [
+			'title'       => 'Old title',
+			'hide_empty'  => false,
+			'parent'      => '',
+			'number'      => '10',
+			'orderby'     => 'id',
+			'order'       => 'ASC',
+			'icon_width'  => 30,
+			'icon_height' => 30,
+		];
+		$expected = [
+			'title'       => 'Test title',
+			'hide_empty'  => true,
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'none',
+			'order'       => 'DESC',
+			'icon_width'  => 48,
+			'icon_height' => 48,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers Anspress\Widgets\Categories::update
+	 */
+	public function testUpdateHTMLTagsOnTitle() {
+		$instance = new \Anspress\Widgets\Categories();
+
+		// Test.
+		$new_instance = [
+			'title'       => '<h1 class="widget-title">Test title</h1>',
+			'hide_empty'  => true,
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'name',
+			'order'       => 'ASC',
+			'icon_width'  => 64,
+			'icon_height' => 64,
+		];
+		$old_instance = [
+			'title'       => 'Old title',
+			'hide_empty'  => false,
+			'parent'      => '',
+			'number'      => '10',
+			'orderby'     => 'slug',
+			'order'       => 'ASC',
+			'icon_width'  => 30,
+			'icon_height' => 30,
+		];
+		$expected = [
+			'title'       => 'Test title',
+			'hide_empty'  => '1',
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'name',
+			'order'       => 'ASC',
+			'icon_width'  => 64,
+			'icon_height' => 64,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers Anspress\Widgets\Categories::update
+	 */
+	public function testUpdateWithEmptyOptions() {
+		$instance = new \Anspress\Widgets\Categories();
+
+		// Test.
+		$new_instance = [
+			'title'       => '',
+			'hide_empty'  => '',
+			'parent'      => '',
+			'number'      => '',
+			'orderby'     => '',
+			'order'       => '',
+			'icon_width'  => '',
+			'icon_height' => '',
+		];
+		$old_instance = [
+			'title'       => 'Old title',
+			'hide_empty'  => true,
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'name',
+			'order'       => 'ASC',
+			'icon_width'  => 64,
+			'icon_height' => 64,
+		];
+		$expected = [
+			'title'       => '',
+			'hide_empty'  => false,
+			'parent'      => '0',
+			'number'      => '5',
+			'orderby'     => 'count',
+			'order'       => 'DESC',
+			'icon_width'  => 32,
+			'icon_height' => 32,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers Anspress\Widgets\Categories::update
+	 */
+	public function testUpdateHTMLTagsOnTitleWithEmptyTitle() {
+		$instance = new \Anspress\Widgets\Categories();
+
+		// Test.
+		$new_instance = [
+			'title'       => '<strong></strong>',
+			'hide_empty'  => true,
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'name',
+			'order'       => 'ASC',
+			'icon_width'  => 64,
+			'icon_height' => 64,
+		];
+		$old_instance = [
+			'title'       => 'Old title',
+			'hide_empty'  => false,
+			'parent'      => '',
+			'number'      => '10',
+			'orderby'     => 'slug',
+			'order'       => 'ASC',
+			'icon_width'  => 30,
+			'icon_height' => 30,
+		];
+		$expected = [
+			'title'       => '',
+			'hide_empty'  => '1',
+			'parent'      => '3',
+			'number'      => '10',
+			'orderby'     => 'name',
+			'order'       => 'ASC',
+			'icon_width'  => 64,
+			'icon_height' => 64,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
 }
