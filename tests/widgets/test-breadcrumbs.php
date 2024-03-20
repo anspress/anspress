@@ -35,10 +35,10 @@ class TestWidgetBreadcrumbs extends TestCase {
 	public function test_get_breadcrumbs_base_page() {
 		$this->go_to(ap_base_page_link());
 
-        $breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
-        $this->assertIsArray($breadcrumbs);
+		$breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
+		$this->assertIsArray($breadcrumbs);
 
-        $this->assertArrayHasKey('base', $breadcrumbs);
+		$this->assertArrayHasKey('base', $breadcrumbs);
 		$this->assertEquals([
 			'base' => [
 				'title' => 'Questions',
@@ -46,7 +46,7 @@ class TestWidgetBreadcrumbs extends TestCase {
 				'order' => 0
 			]
 		], $breadcrumbs);
-    }
+	}
 
 	public function test_get_breadcrumbs_question() {
 		$question = $this->factory()->post->create_and_get([
@@ -57,10 +57,10 @@ class TestWidgetBreadcrumbs extends TestCase {
 
 		$this->go_to("?post_type=question&p={$question->ID}");
 
-        $breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
-        $this->assertIsArray($breadcrumbs);
+		$breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
+		$this->assertIsArray($breadcrumbs);
 
-        $this->assertArrayHasKey('base', $breadcrumbs);
+		$this->assertArrayHasKey('base', $breadcrumbs);
 		$this->assertEquals([
 			'base' => [
 				'title' => 'Questions',
@@ -73,5 +73,5 @@ class TestWidgetBreadcrumbs extends TestCase {
 				'order' => 10
 			]
 		], $breadcrumbs);
-    }
+	}
 }
