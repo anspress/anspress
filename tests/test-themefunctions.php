@@ -1383,4 +1383,42 @@ class TestThemeFunctions extends TestCase {
 		$result = ap_post_status( false );
 		$this->assertEquals( 'publish', $result );
 	}
+
+	/**
+	 * @covers ::ap_have_parent_post
+	 */
+	public function testAPHaveParentPostWithNoArgsShouldReturnFalse() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertFalse( ap_have_parent_post() );
+	}
+
+	/**
+	 * @covers ::ap_have_parent_post
+	 */
+	public function testAPHaveParentPostWithNoArgsShouldReturnTrue() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_child_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_parent' => $question_id ] );
+		$this->go_to( '?post_type=question&p=' . $question_child_id );
+		$this->assertTrue( ap_have_parent_post() );
+	}
+
+	/**
+	 * @covers ::ap_have_parent_post
+	 */
+	public function testAPHaveParentPostWithFalseArgShouldReturnFalse() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertFalse( ap_have_parent_post( false ) );
+	}
+
+	/**
+	 * @covers ::ap_have_parent_post
+	 */
+	public function testAPHaveParentPostWithFalseArgShouldReturnTrue() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_child_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_parent' => $question_id ] );
+		$this->go_to( '?post_type=question&p=' . $question_child_id );
+		$this->assertTrue( ap_have_parent_post( false ) );
+	}
 }
