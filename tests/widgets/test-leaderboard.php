@@ -30,4 +30,128 @@ class TestWidgetLeaderboard extends TestCase {
 		$this->assertEquals( '(AnsPress) User Leaderboard', $instance->name );
 		$this->assertEquals( 'Shows users leaderboard.', $instance->widget_options['description'] );
 	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::update
+	 */
+	public function testUpdate() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$new_instance = [
+			'title'         => 'Test title',
+			'avatar_size'   => 50,
+			'show_users'    => 10,
+			'users_per_row' => 5,
+			'interval'      => 12,
+		];
+		$old_instance = [
+			'title'         => 'Old title',
+			'avatar_size'   => 48,
+			'show_users'    => 5,
+			'users_per_row' => 4,
+			'interval'      => 30,
+		];
+		$expected = [
+			'title'         => 'Test title',
+			'avatar_size'   => 50,
+			'show_users'    => 10,
+			'users_per_row' => 5,
+			'interval'      => 12,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::update
+	 */
+	public function testUpdateHTMLTagsOnTitle() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$new_instance = [
+			'title'         => '<h1 class="widget-title">Test title</h1>',
+			'avatar_size'   => 0,
+			'show_users'    => 7,
+			'users_per_row' => 3,
+			'interval'      => 10,
+		];
+		$old_instance = [
+			'title'         => 'Old title',
+			'avatar_size'   => 48,
+			'show_users'    => 5,
+			'users_per_row' => 4,
+			'interval'      => 30,
+		];
+		$expected = [
+			'title'         => 'Test title',
+			'avatar_size'   => 40,
+			'show_users'    => 7,
+			'users_per_row' => 3,
+			'interval'      => 10,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::update
+	 */
+	public function testUpdateHTMLTagsOnTitleWithEmptyTitleAndNegativeValuesOnOtherOptions() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$new_instance = [
+			'title'         => '<strong></strong>',
+			'avatar_size'   => -64,
+			'show_users'    => -10,
+			'users_per_row' => -5,
+			'interval'      => -20,
+		];
+		$old_instance = [
+			'title'         => 'Old title',
+			'avatar_size'   => 48,
+			'show_users'    => 5,
+			'users_per_row' => 4,
+			'interval'      => 30,
+		];
+		$expected = [
+			'title'         => '',
+			'avatar_size'   => 64,
+			'show_users'    => 10,
+			'users_per_row' => 5,
+			'interval'      => 20,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::update
+	 */
+	public function testUpdateWithEmptyValuesOnAllOptions() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$new_instance = [
+			'title'         => '',
+			'avatar_size'   => '',
+			'show_users'    => '',
+			'users_per_row' => '',
+			'interval'      => '',
+		];
+		$old_instance = [
+			'title'         => 'Old title',
+			'avatar_size'   => 48,
+			'show_users'    => 5,
+			'users_per_row' => 4,
+			'interval'      => 30,
+		];
+		$expected = [
+			'title'         => '',
+			'avatar_size'   => 40,
+			'show_users'    => 12,
+			'users_per_row' => 4,
+			'interval'      => 30,
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
 }

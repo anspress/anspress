@@ -30,4 +30,80 @@ class TestWidgetQuestionStats extends TestCase {
 		$this->assertEquals( '(AnsPress) Question Stats', $instance->name );
 		$this->assertEquals( 'Shows question stats in single question page.', $instance->widget_options['description'] );
 	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::update
+	 */
+	public function testUpdate() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$new_instance = [
+			'title' => 'Test title',
+		];
+		$old_instance = [
+			'title' => 'Old title',
+		];
+		$expected = [
+			'title' => 'Test title',
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::update
+	 */
+	public function testUpdateHTMLTagsOnTitle() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$new_instance = [
+			'title' => '<h1 class="widget-title">Test title</h1>',
+		];
+		$old_instance = [
+			'title' => 'Old title',
+		];
+		$expected = [
+			'title' => 'Test title',
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::update
+	 */
+	public function testUpdateHTMLTagsOnTitleWithEmptyTitle() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$new_instance = [
+			'title' => '<strong></strong>',
+		];
+		$old_instance = [
+			'title' => 'Old title',
+		];
+		$expected = [
+			'title' => '',
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
+
+	/**
+	 * @covers AnsPress_Stats_Widget::update
+	 */
+	public function testUpdateEmptyTitle() {
+		$instance = new \AnsPress_Stats_Widget();
+
+		// Test.
+		$new_instance = [
+			'title' => '',
+		];
+		$old_instance = [
+			'title' => 'Old title',
+		];
+		$expected = [
+			'title' => '',
+		];
+		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
+	}
 }
