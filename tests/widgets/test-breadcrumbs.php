@@ -186,4 +186,76 @@ class TestWidgetBreadcrumbs extends TestCase {
 		);
 		remove_filter( 'ap_page_title', [ $this, 'APPageTitle' ] );
 	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::breadcrumbs
+	 */
+	public function testBreadcrumbsBasePage() {
+		$this->go_to( ap_base_page_link() );
+
+		// Get breadcrumbs.
+		ob_start();
+		AnsPress_Breadcrumbs_Widget::breadcrumbs();
+		$output = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<ul class="ap-breadcrumbs clearfix">', $output );
+		$this->assertStringContainsString( '<li class="ap-breadcrumbs-home"><a href="' . esc_url( home_url( '/' ) ) . '" class="apicon-home"></a></li>', $output );
+		$this->assertStringContainsString( '<li><i class="apicon-chevron-right"></i></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li>', $output );
+		$this->assertStringNotContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::breadcrumbs
+	 */
+	public function testBreadcrumbsQuestion() {
+		$question = $this->factory()->post->create_and_get( [
+			'post_type'    => 'question',
+			'post_title'   => 'Test question',
+			'post_content' => 'Test question content',
+		] );
+		$this->go_to( '?post_type=question&p=' . $question->ID );
+
+		// Get breadcrumbs.
+		ob_start();
+		AnsPress_Breadcrumbs_Widget::breadcrumbs();
+		$output = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<ul class="ap-breadcrumbs clearfix">', $output );
+		$this->assertStringContainsString( '<li class="ap-breadcrumbs-home"><a href="' . esc_url( home_url( '/' ) ) . '" class="apicon-home"></a></li>', $output );
+		$this->assertStringContainsString( '<li><i class="apicon-chevron-right"></i></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( get_permalink( get_question_id() ) ) . '">Test question</a></li>', $output );
+		$this->assertStringNotContainsString( '<li><a href="' . esc_url( get_permalink( get_question_id() ) ) . '">Test question</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::breadcrumbs
+	 */
+	public function testBreadcrumbsAskPage() {
+		$ask_page = $this->factory()->post->create_and_get( [
+			'post_type'    => 'page',
+			'post_title'   => 'Ask',
+			'post_content' => 'Ask page content',
+		] );
+		ap_opt( 'ask_page', $ask_page->ID );
+		$this->go_to( ap_get_link_to( 'ask' ) );
+
+		// Get breadcrumbs.
+		ob_start();
+		AnsPress_Breadcrumbs_Widget::breadcrumbs();
+		$output = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<ul class="ap-breadcrumbs clearfix">', $output );
+		$this->assertStringContainsString( '<li class="ap-breadcrumbs-home"><a href="' . esc_url( home_url( '/' ) ) . '" class="apicon-home"></a></li>', $output );
+		$this->assertStringContainsString( '<li><i class="apicon-chevron-right"></i></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_base_page_link() ) . '">Questions</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( ap_get_link_to( 'ask' ) ) . '">Ask</a></li>', $output );
+		$this->assertStringNotContainsString( '<li><a href="' . esc_url( ap_get_link_to( 'ask' ) ) . '">Ask</a></li><li><i class="apicon-chevron-right"></i></li>', $output );
+	}
 }
