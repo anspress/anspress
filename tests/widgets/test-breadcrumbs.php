@@ -109,4 +109,81 @@ class TestWidgetBreadcrumbs extends TestCase {
 			$breadcrumbs
 		);
 	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::get_breadcrumbs
+	 */
+	public function testGetBreadcrumbsActivitiesPage() {
+		$activities_page = $this->factory()->post->create_and_get( [
+			'post_type'    => 'page',
+			'post_title'   => 'Activities',
+			'post_content' => 'Activities page content',
+		] );
+		ap_opt( 'activities_page', $activities_page->ID );
+		$this->go_to( ap_get_link_to( 'activities' ) );
+		set_query_var( 'ap_page', 'activities' );
+
+		// Get breadcrumbs.
+		$breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
+
+		// Tests.
+		$this->assertIsArray( $breadcrumbs );
+		$this->assertArrayHasKey( 'base', $breadcrumbs );
+		$this->assertEquals(
+			[
+				'base' => [
+					'title' => 'Questions',
+					'link'  => ap_base_page_link(),
+					'order' => 0
+				],
+				'page' => [
+					'title' => get_the_title(),
+					'link'  => ap_get_link_to( 'activities' ),
+					'order' => 10
+				]
+			],
+			$breadcrumbs
+		);
+	}
+
+	public static function APPageTitle( $title ) {
+		return 'Test page';
+	}
+
+	/**
+	 * @covers AnsPress_Breadcrumbs_Widget::get_breadcrumbs
+	 */
+	public function testGetBreadcrumbsPage() {
+		$page = $this->factory()->post->create_and_get( [
+			'post_type'    => 'page',
+			'post_title'   => 'Test page',
+			'post_content' => 'Test page content',
+		] );
+		$this->go_to( get_permalink( $page->ID ) );
+		set_query_var( 'ap_page', 'https://example.com' );
+
+		// Get breadcrumbs.
+		add_filter( 'ap_page_title', [ $this, 'APPageTitle' ] );
+		$breadcrumbs = AnsPress_Breadcrumbs_Widget::get_breadcrumbs();
+
+		// Tests.
+		$this->assertIsArray( $breadcrumbs );
+		$this->assertArrayHasKey( 'base', $breadcrumbs );
+		$this->assertEquals(
+			[
+				'base' => [
+					'title' => 'Questions',
+					'link'  => ap_base_page_link(),
+					'order' => 0
+				],
+				'page' => [
+					'title' => 'Test page',
+					'link'  => 'https://example.com',
+					'order' => 10
+				]
+			],
+			$breadcrumbs
+		);
+		remove_filter( 'ap_page_title', [ $this, 'APPageTitle' ] );
+	}
 }
