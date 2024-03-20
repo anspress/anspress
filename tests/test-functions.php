@@ -2809,4 +2809,12 @@ class TestFunctions extends TestCase {
 		$result = ap_replace_square_bracket( '[[]]' );
 		$this->assertEquals( '&#91;&#91;&#93;&#93;', $result );
 	}
+
+	/**
+	 * @covers ::ap_activate_addon
+	 */
+	public function testAPActivateAddonShouldReturnFalseForAlreadyActivatedAddon() {
+		ap_activate_addon( 'categories.php' );
+		$this->assertFalse( ap_activate_addon( 'categories.php' ) );
+	}
 }
