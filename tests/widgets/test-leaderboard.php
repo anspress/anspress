@@ -324,4 +324,152 @@ class TestWidgetLeaderboard extends TestCase {
 		$this->assertStringContainsString( '[][users_per_row]', $result );
 		$this->assertStringContainsString( 'value="4"', $result );
 	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::widget
+	 */
+	public function testWidgetReputationAddonNotEnabled() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'         => 'Test title',
+			'avatar_size'   => 48,
+			'show_users'    => 15,
+			'users_per_row' => 3,
+			'interval'      => 60,
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Test title', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( 'Reputation add-on is not active.', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::widget
+	 */
+	public function testWidgetReputationAddonNotEnabledAndEmptyTitle() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'         => '',
+			'avatar_size'   => 48,
+			'show_users'    => 15,
+			'users_per_row' => 3,
+			'interval'      => 60,
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringNotContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( 'Reputation add-on is not active.', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::widget
+	 */
+	public function testWidgetReputationAddonEnabledButNoneHasAnyReputations() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Activate reputation addon.
+		ap_activate_addon( 'reputation.php' );
+
+		// Create some users.
+		$user_id_1 = $this->factory->user->create( [ 'display_name' => 'User 1', 'role' => 'subscriber' ] );
+		$user_id_2 = $this->factory->user->create( [ 'display_name' => 'User 2', 'role' => 'subscriber' ] );
+		$user_id_3 = $this->factory->user->create( [ 'display_name' => 'User 3', 'role' => 'subscriber' ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'         => 'Test title',
+			'avatar_size'   => 48,
+			'show_users'    => 15,
+			'users_per_row' => 3,
+			'interval'      => 60,
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Test title', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( 'No users found with reputation.', $result );
+
+		// Deactivate reputation addon.
+		ap_deactivate_addon( 'reputation.php' );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::widget
+	 */
+	public function testWidgetReputationAddonEnabledAndEmptyTitleButNoneHasAnyReputations() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Activate reputation addon.
+		ap_activate_addon( 'reputation.php' );
+
+		// Create some users.
+		$user_id_1 = $this->factory->user->create( [ 'display_name' => 'User 1', 'role' => 'subscriber' ] );
+		$user_id_2 = $this->factory->user->create( [ 'display_name' => 'User 2', 'role' => 'subscriber' ] );
+		$user_id_3 = $this->factory->user->create( [ 'display_name' => 'User 3', 'role' => 'subscriber' ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'         => '',
+			'avatar_size'   => 48,
+			'show_users'    => 15,
+			'users_per_row' => 3,
+			'interval'      => 60,
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringNotContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( 'No users found with reputation.', $result );
+
+		// Deactivate reputation addon.
+		ap_deactivate_addon( 'reputation.php' );
+	}
 }
