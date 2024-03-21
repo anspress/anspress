@@ -520,13 +520,13 @@ class TestWidgetQuestions extends TestCase {
 		register_taxonomy( 'question_category', 'question' );
 
 		// Create some question and assign them to categories.
-		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1' ] );
-		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2' ] );
-		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
-		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 4' ] );
-		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 5' ] );
-		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 6', 'post_date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ) ] );
-		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 7', 'post_date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ) ] );
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1', 'post_date' => '2024-01-07 00:00:00' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2', 'post_date' => '2024-01-06 00:00:00' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3', 'post_date' => '2024-01-05 00:00:00' ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 4', 'post_date' => '2024-01-04 00:00:00' ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 5', 'post_date' => '2024-01-03 00:00:00' ] );
+		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 6', 'post_date' => '2024-01-02 00:00:00' ] );
+		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 7', 'post_date' => '2024-01-01 00:00:00' ] );
 		$category_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 1' ] );
 		$category_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 2' ] );
 		$category_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 3' ] );
