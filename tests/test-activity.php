@@ -927,7 +927,17 @@ class TestActivity extends TestCase {
 	 * @covers ::ap_activity_object
 	 */
 	public function testapActivityObject() {
-		$this->assertContainsOnlyInstancesOf( '\AnsPress\Activity_Helper', [ ap_activity_object() ] );
+		$activity_object = ap_activity_object();
+		$this->assertInstanceOf( 'AnsPress\Activity_Helper', $activity_object );
+	}
+
+	/**
+	 * @covers ::ap_activity_object
+	 */
+	public function testapActivityObjectWhenActivityObjectSetToNull() {
+		anspress()->activity = null;
+		$activity_object = ap_activity_object();
+		$this->assertInstanceOf( 'AnsPress\Activity_Helper', $activity_object );
 	}
 
 	/**
