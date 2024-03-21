@@ -154,4 +154,140 @@ class TestWidgetQuestions extends TestCase {
 		];
 		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
 	}
+
+	/**
+	 * @covers AP_Questions_Widget::form
+	 */
+	public function testForm() {
+		$instance = new \AP_Questions_Widget();
+
+		// Register taxonomy.
+		register_taxonomy( 'question_category', 'question' );
+
+		// Test.
+		$instance_data = [
+			'title'        => 'Test title',
+			'order_by'     => 'newest',
+			'limit'        => 10,
+			'category_ids' => '1,2,3',
+		];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Test title"', $result );
+
+		// For order_by.
+		$this->assertStringContainsString( 'Order by:', $result );
+		$this->assertStringContainsString( '[][order_by]', $result );
+		$this->assertStringContainsString( 'selected=\'selected\' value="newest"', $result );
+		$this->assertStringContainsString( 'value="active"', $result );
+		$this->assertStringContainsString( 'value="voted"', $result );
+		$this->assertStringContainsString( 'value="answers"', $result );
+		$this->assertStringContainsString( 'value="unanswered"', $result );
+
+		// For category_ids.
+		$this->assertStringContainsString( 'Category IDs:', $result );
+		$this->assertStringContainsString( '[][category_ids]', $result );
+		$this->assertStringContainsString( 'value="1,2,3"', $result );
+		$this->assertStringContainsString( 'Comma separated AnsPress category ids', $result );
+
+		// For limit.
+		$this->assertStringContainsString( 'Limit:', $result );
+		$this->assertStringContainsString( '[][limit]', $result );
+		$this->assertStringContainsString( 'value="10"', $result );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_category' );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::form
+	 */
+	public function testFormWithoutCategory() {
+		$instance = new \AP_Questions_Widget();
+
+		// Test.
+		$instance_data = [
+			'title'        => 'Category title',
+			'order_by'     => 'voted',
+			'limit'        => 3,
+			'category_ids' => '1,2,3',
+		];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Category title"', $result );
+
+		// For order_by.
+		$this->assertStringContainsString( 'Order by:', $result );
+		$this->assertStringContainsString( '[][order_by]', $result );
+		$this->assertStringContainsString( 'selected=\'selected\' value="voted"', $result );
+		$this->assertStringContainsString( 'value="active"', $result );
+		$this->assertStringContainsString( 'value="newest"', $result );
+		$this->assertStringContainsString( 'value="answers"', $result );
+		$this->assertStringContainsString( 'value="unanswered"', $result );
+
+		// For limit.
+		$this->assertStringContainsString( 'Limit:', $result );
+		$this->assertStringContainsString( '[][limit]', $result );
+		$this->assertStringContainsString( 'value="3"', $result );
+
+		// For category_ids.
+		$this->assertStringNotContainsString( 'Category IDs:', $result );
+		$this->assertStringNotContainsString( '[][category_ids]', $result );
+		$this->assertStringNotContainsString( 'value="1,2,3"', $result );
+		$this->assertStringNotContainsString( 'Comma separated AnsPress category ids', $result );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::form
+	 */
+	public function testFormWithDefaultValues() {
+		$instance = new \AP_Questions_Widget();
+
+		// Register taxonomy.
+		register_taxonomy( 'question_category', 'question' );
+
+		// Test.
+		$instance_data = [];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Questions"', $result );
+
+		// For order_by.
+		$this->assertStringContainsString( 'Order by:', $result );
+		$this->assertStringContainsString( '[][order_by]', $result );
+		$this->assertStringContainsString( 'selected=\'selected\' value="active"', $result );
+		$this->assertStringContainsString( 'value="newest"', $result );
+		$this->assertStringContainsString( 'value="voted"', $result );
+		$this->assertStringContainsString( 'value="answers"', $result );
+		$this->assertStringContainsString( 'value="unanswered"', $result );
+
+		// For category_ids.
+		$this->assertStringContainsString( 'Category IDs:', $result );
+		$this->assertStringContainsString( '[][category_ids]', $result );
+		$this->assertStringContainsString( 'value=""', $result );
+		$this->assertStringContainsString( 'Comma separated AnsPress category ids', $result );
+
+		// For limit.
+		$this->assertStringContainsString( 'Limit:', $result );
+		$this->assertStringContainsString( '[][limit]', $result );
+		$this->assertStringContainsString( 'value="5"', $result );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_category' );
+	}
 }
