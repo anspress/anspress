@@ -290,4 +290,278 @@ class TestWidgetQuestions extends TestCase {
 		// Unregister taxonomy.
 		unregister_taxonomy( 'question_category' );
 	}
+
+	/**
+	 * @covers AP_Questions_Widget::widget
+	 */
+	public function testWidget() {
+		$instance = new \AP_Questions_Widget();
+
+		// Register taxonomy.
+		register_taxonomy( 'question_category', 'question' );
+
+		// Create some question and assign them to categories.
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
+		$category_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 1' ] );
+		$category_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 2' ] );
+		$category_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 3' ] );
+		wp_set_post_terms( $question_id_1, [ $category_id_1, $category_id_2 ], 'question_category' );
+		wp_set_post_terms( $question_id_2, [ $category_id_2 ], 'question_category' );
+		wp_set_post_terms( $question_id_3, [ $category_id_3 ], 'question_category' );
+		$category_ids = implode( ',', [ $category_id_1, $category_id_2 ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'        => 'Test title',
+			'order_by'     => 'voted',
+			'limit'        => 3,
+			'category_ids' => $category_ids,
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Test title', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( '<div class="ap-questions-widget clearfix">', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_1 ) ) . '">Question title 1</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_2 ) ) . '">Question title 2</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_3 ) ) . '">Question title 3</a>', $result );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_category' );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::widget
+	 */
+	public function testWidgetWithoutCategory() {
+		$instance = new \AP_Questions_Widget();
+
+		// Create some questions.
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 4' ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 5' ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'        => 'Test title',
+			'order_by'     => 'voted',
+			'limit'        => 5,
+			'category_ids' => '',
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Test title', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( '<div class="ap-questions-widget clearfix">', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_1 ) ) . '">Question title 1</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_2 ) ) . '">Question title 2</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_3 ) ) . '">Question title 3</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_4 ) ) . '">Question title 4</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_5 ) ) . '">Question title 5</a>', $result );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::widget
+	 */
+	public function testWidgetWithoutCategoryButCategoryPassed() {
+		$instance = new \AP_Questions_Widget();
+
+		// Create some questions.
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'        => 'Test title',
+			'order_by'     => 'voted',
+			'limit'        => 3,
+			'category_ids' => '1,2,3',
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Test title', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( '<div class="ap-questions-widget clearfix">', $result );
+		$this->assertStringContainsString( 'No questions found.', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_1 ) ) . '">Question title 1</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_2 ) ) . '">Question title 2</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_3 ) ) . '">Question title 3</a>', $result );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::widget
+	 */
+	public function testWidgetWithLimitSetToOnlyOneAndAnswersAsOrderBy() {
+		$instance = new \AP_Questions_Widget();
+
+		// Register taxonomy.
+		register_taxonomy( 'question_category', 'question' );
+
+		// Create some question and assign them to categories.
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
+		$category_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 1' ] );
+		$category_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 2' ] );
+		$category_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 3' ] );
+		wp_set_post_terms( $question_id_1, [ $category_id_1, $category_id_2 ], 'question_category' );
+		wp_set_post_terms( $question_id_2, [ $category_id_2 ], 'question_category' );
+		wp_set_post_terms( $question_id_3, [ $category_id_3 ], 'question_category' );
+		$category_ids = implode( ',', [ $category_id_1, $category_id_2, $category_id_3 ] );
+		$answer_id_1 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_title' => 'Answer title 3', 'post_parent' => $question_id_3 ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'        => 'Test title',
+			'order_by'     => 'answers',
+			'limit'        => 1,
+			'category_ids' => $category_ids,
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Test title', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( '<div class="ap-questions-widget clearfix">', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_3 ) ) . '">Question title 3</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_2 ) ) . '">Question title 2</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_1 ) ) . '">Question title 1</a>', $result );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_category', 'question' );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::widget
+	 */
+	public function testWidgetWithEmptyTitleAndNoQuestions() {
+		$instance = new \AP_Questions_Widget();
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [
+			'title'        => '',
+			'order_by'     => 'answers',
+			'limit'        => 10,
+			'category_ids' => '',
+		];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringNotContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( '<div class="ap-questions-widget clearfix">', $result );
+		$this->assertStringContainsString( 'No questions found.', $result );
+	}
+
+	/**
+	 * @covers AP_Questions_Widget::widget
+	 */
+	public function testWidgetWithDefaultValues() {
+		$instance = new \AP_Questions_Widget();
+
+		// Register taxonomy.
+		register_taxonomy( 'question_category', 'question' );
+
+		// Create some question and assign them to categories.
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 1' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 2' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 4' ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 5' ] );
+		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 6' ] );
+		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 7' ] );
+		$category_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 1' ] );
+		$category_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 2' ] );
+		$category_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 3' ] );
+		wp_set_post_terms( $question_id_1, [ $category_id_1, $category_id_2 ], 'question_category' );
+		wp_set_post_terms( $question_id_2, [ $category_id_2 ], 'question_category' );
+		wp_set_post_terms( $question_id_3, [ $category_id_3 ], 'question_category' );
+		$category_ids = implode( ',', [ $category_id_1, $category_id_2, $category_id_3 ] );
+
+		// Test.
+		$args = [
+			'before_widget' => '<section class="widget">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		];
+		$instance_data = [];
+		ob_start();
+		$instance->widget( $args, $instance_data );
+		$result = ob_get_clean();
+
+		// Tests.
+		$this->assertStringContainsString( '<section class="widget">', $result );
+		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
+		$this->assertStringContainsString( 'Questions', $result );
+		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
+		$this->assertStringContainsString( '<div class="ap-questions-widget clearfix">', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_1 ) ) . '">Question title 1</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_2 ) ) . '">Question title 2</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_3 ) ) . '">Question title 3</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_4 ) ) . '">Question title 4</a>', $result );
+		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_5 ) ) . '">Question title 5</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_6 ) ) . '">Question title 6</a>', $result );
+		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_7 ) ) . '">Question title 7</a>', $result );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_category', 'question' );
+	}
 }
