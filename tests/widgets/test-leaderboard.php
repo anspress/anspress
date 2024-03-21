@@ -154,4 +154,174 @@ class TestWidgetLeaderboard extends TestCase {
 		];
 		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
 	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::form
+	 */
+	public function testForm() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$instance_data = [
+			'title'         => 'Test title',
+			'avatar_size'   => 48,
+			'show_users'    => 15,
+			'users_per_row' => 3,
+			'interval'      => 60,
+		];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="Test title"', $result );
+
+		// For interval.
+		$this->assertStringContainsString( 'Interval (in days):', $result );
+		$this->assertStringContainsString( '[][interval]', $result );
+		$this->assertStringContainsString( 'value="60"', $result );
+
+		// For avatar size.
+		$this->assertStringContainsString( 'Avatar size:', $result );
+		$this->assertStringContainsString( '[][avatar_size]', $result );
+		$this->assertStringContainsString( 'value="48"', $result );
+
+		// For show users.
+		$this->assertStringContainsString( 'Show users:', $result );
+		$this->assertStringContainsString( '[][show_users]', $result );
+		$this->assertStringContainsString( 'value="15"', $result );
+
+		// For users per row.
+		$this->assertStringContainsString( 'Users per row:', $result );
+		$this->assertStringContainsString( '[][users_per_row]', $result );
+		$this->assertStringContainsString( 'value="3"', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::form
+	 */
+	public function testFormWithEmptyTitle() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$instance_data = [
+			'title'         => '',
+			'avatar_size'   => 64,
+			'show_users'    => 24,
+			'users_per_row' => 2,
+			'interval'      => 10,
+		];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value=""', $result );
+
+		// For interval.
+		$this->assertStringContainsString( 'Interval (in days):', $result );
+		$this->assertStringContainsString( '[][interval]', $result );
+		$this->assertStringContainsString( 'value="64"', $result );
+
+		// For avatar size.
+		$this->assertStringContainsString( 'Avatar size:', $result );
+		$this->assertStringContainsString( '[][avatar_size]', $result );
+		$this->assertStringContainsString( 'value="24"', $result );
+
+		// For show users.
+		$this->assertStringContainsString( 'Show users:', $result );
+		$this->assertStringContainsString( '[][show_users]', $result );
+		$this->assertStringContainsString( 'value="2"', $result );
+
+		// For users per row.
+		$this->assertStringContainsString( 'Users per row:', $result );
+		$this->assertStringContainsString( '[][users_per_row]', $result );
+		$this->assertStringContainsString( 'value="10"', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::form
+	 */
+	public function testFormWithEmptyValues() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$instance_data = [
+			'title'         => '',
+			'avatar_size'   => '',
+			'show_users'    => '',
+			'users_per_row' => '',
+			'interval'      => '',
+		];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value=""', $result );
+
+		// For interval.
+		$this->assertStringContainsString( 'Interval (in days):', $result );
+		$this->assertStringContainsString( '[][interval]', $result );
+		$this->assertStringContainsString( 'value="30"', $result );
+
+		// For avatar size.
+		$this->assertStringContainsString( 'Avatar size:', $result );
+		$this->assertStringContainsString( '[][avatar_size]', $result );
+		$this->assertStringContainsString( 'value="40"', $result );
+
+		// For show users.
+		$this->assertStringContainsString( 'Show users:', $result );
+		$this->assertStringContainsString( '[][show_users]', $result );
+		$this->assertStringContainsString( 'value="12"', $result );
+
+		// For users per row.
+		$this->assertStringContainsString( 'Users per row:', $result );
+		$this->assertStringContainsString( '[][users_per_row]', $result );
+		$this->assertStringContainsString( 'value="4"', $result );
+	}
+
+	/**
+	 * @covers AnsPress_Leaderboard_Widget::form
+	 */
+	public function testFormWithDefaultValues() {
+		$instance = new \AnsPress_Leaderboard_Widget();
+
+		// Test.
+		$instance_data = [];
+		ob_start();
+		$instance->form( $instance_data );
+		$result = ob_get_clean();
+
+		// For title.
+		$this->assertStringContainsString( 'Title:', $result );
+		$this->assertStringContainsString( '[][title]', $result );
+		$this->assertStringContainsString( 'value="AnsPress Leader board"', $result );
+
+		// For interval.
+		$this->assertStringContainsString( 'Interval (in days):', $result );
+		$this->assertStringContainsString( '[][interval]', $result );
+		$this->assertStringContainsString( 'value="30"', $result );
+
+		// For avatar size.
+		$this->assertStringContainsString( 'Avatar size:', $result );
+		$this->assertStringContainsString( '[][avatar_size]', $result );
+		$this->assertStringContainsString( 'value="40"', $result );
+
+		// For show users.
+		$this->assertStringContainsString( 'Show users:', $result );
+		$this->assertStringContainsString( '[][show_users]', $result );
+		$this->assertStringContainsString( 'value="12"', $result );
+
+		// For users per row.
+		$this->assertStringContainsString( 'Users per row:', $result );
+		$this->assertStringContainsString( '[][users_per_row]', $result );
+		$this->assertStringContainsString( 'value="4"', $result );
+	}
 }
