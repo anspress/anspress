@@ -525,8 +525,8 @@ class TestWidgetQuestions extends TestCase {
 		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3' ] );
 		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 4' ] );
 		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 5' ] );
-		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 6' ] );
-		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 7' ] );
+		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 6', 'post_date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ) ] );
+		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 7', 'post_date' => date( 'Y-m-d H:i:s', strtotime( '-1 day' ) ) ] );
 		$category_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 1' ] );
 		$category_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 2' ] );
 		$category_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 3' ] );
