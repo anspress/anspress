@@ -1442,4 +1442,82 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( class_exists( 'AP_license' ) );
 		$this->assertInstanceOf('AP_license', new \AP_license() );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::post_data_check
+	 */
+	public function testPostDataCheck() {
+		global $pagenow;
+		$pagenow = 'post.php';
+		$_REQUEST['ap_q'] = 11;
+		$data = [
+			'post_type'   => 'answer',
+			'post_parent' => 22,
+		];
+		\AnsPress_Admin::post_data_check( $data );
+		$this->assertEquals( 99, has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
+		unset( $_REQUEST['ap_q'] );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::post_data_check
+	 */
+	public function testPostDataCheckAPQRequestIsEmpty() {
+		global $pagenow;
+		$pagenow = 'post.php';
+		$data = [
+			'post_type'   => 'answer',
+			'post_parent' => 22,
+		];
+		\AnsPress_Admin::post_data_check( $data );
+		$this->assertEquals( 99, has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::post_data_check
+	 */
+	public function testPostDataCheckPostTypeNotAnswer() {
+		global $pagenow;
+		$pagenow = 'post.php';
+		$_REQUEST['ap_q'] = 11;
+		$data = [
+			'post_type'   => 'question',
+			'post_parent' => 22,
+		];
+		\AnsPress_Admin::post_data_check( $data );
+		$this->assertFalse( has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
+		unset( $_REQUEST['ap_q'] );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::post_data_check
+	 */
+	public function testPostDataCheckDifferentPageNow() {
+		global $pagenow;
+		$pagenow = 'post-new.php';
+		$_REQUEST['ap_q'] = 11;
+		$data = [
+			'post_type'   => 'answer',
+			'post_parent' => 22,
+		];
+		$result = \AnsPress_Admin::post_data_check( $data );
+		$this->assertFalse( has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
+		$this->assertEquals( $data, $result );
+		unset( $_REQUEST['ap_q'] );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::post_data_check
+	 */
+	public function testPostDataCheckWithEMptyPostParent() {
+		global $pagenow;
+		$pagenow = 'post.php';
+		$data = [
+			'post_type'   => 'answer',
+			'post_parent' => '',
+		];
+		$result = \AnsPress_Admin::post_data_check( $data );
+		$this->assertFalse( has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
+		$this->assertEquals( $data, $result );
+	}
 }
