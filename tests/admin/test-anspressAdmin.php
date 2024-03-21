@@ -1520,4 +1520,50 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertFalse( has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
 		$this->assertEquals( $data, $result );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::check_pages_exists
+	 */
+	public function testCheckPagesExistsShouldReturnTrueIfTransientAlreadyExists() {
+		$instance = new \AnsPress_Admin();
+		$reflection = new \ReflectionClass( $instance );
+		$method = $reflection->getMethod( 'check_pages_exists' );
+		$method->setAccessible( true );
+
+		// Test.
+		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
+		$result = $method->invoke( $instance );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::check_pages_exists
+	 */
+	public function testCheckPagesExistsWithNoPagesCreated() {
+		$instance = new \AnsPress_Admin();
+		$reflection = new \ReflectionClass( $instance );
+		$method = $reflection->getMethod( 'check_pages_exists' );
+		$method->setAccessible( true );
+
+		// Test.
+		$result = $method->invoke( $instance );
+		$this->assertEquals( '0', get_transient( 'ap_pages_check' ) );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::check_pages_exists
+	 */
+	public function testCheckPagesExistsWithAllPagesCreated() {
+		$instance = new \AnsPress_Admin();
+		$reflection = new \ReflectionClass( $instance );
+		$method = $reflection->getMethod( 'check_pages_exists' );
+		$method->setAccessible( true );
+
+		// Test.
+		ap_create_base_page();
+		$result = $method->invoke( $instance );
+		$this->assertEquals( '1', get_transient( 'ap_pages_check' ) );
+		$this->assertTrue( $result );
+	}
 }
