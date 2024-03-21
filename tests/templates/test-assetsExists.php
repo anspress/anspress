@@ -22,7 +22,6 @@ class TestTemplatesAssetsExists extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts/anspress.svg' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts/anspress.ttf' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts/anspress.woff' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/min/fonts.css' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/editor.css' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts.css' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/main.css' );
@@ -40,12 +39,8 @@ class TestTemplatesAssetsExists extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/images/small_cover.jpg' );
 
 		// JS files.
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/js/min/theme.min.js' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/js/min/theme.min.js.map' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/js/jquery.peity.min.js' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/js/theme.js' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/min/theme.min.js' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/prod/ap.min.js' );
 
 		// SCSS files.
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/activity.scss' );
