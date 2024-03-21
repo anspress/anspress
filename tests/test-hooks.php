@@ -447,4 +447,51 @@ class TestHooks extends TestCase {
 		// Reset the option.
 		ap_opt( 'show_admin_bar', true );
 	}
+
+	/**
+	 * @covers AnsPress_Hooks::fix_nav_current_class
+	 */
+	public function testFixNavCurrentClass() {
+		$class = [ 'menu-item' ];
+		$item = null;
+		$result = \AnsPress_Hooks::fix_nav_current_class( $class, $item );
+		$this->assertFalse( in_array( 'current-menu-item', $result ) );
+		$this->assertEquals( $class, $result );
+	}
+
+	/**
+	 * @covers AnsPress_Hooks::fix_nav_current_class
+	 */
+	public function testFixNavCurrentClassWithNotValidItem() {
+		$class = [ 'menu-item' ];
+		$item = 'invalid_object';
+		$result = \AnsPress_Hooks::fix_nav_current_class( $class, $item );
+		$this->assertFalse( in_array( 'current-menu-item', $result ) );
+		$this->assertEquals( $class, $result );
+	}
+
+	/**
+	 * @covers AnsPress_Hooks::fix_nav_current_class
+	 */
+	public function testFixNavCurrentClassWithValidItem() {
+		$class = [ 'menu-item' ];
+		$item = (object) [ 'object' => 'user' ];
+		set_query_var( 'ap_page', 'user' );
+		$result = \AnsPress_Hooks::fix_nav_current_class( $class, $item );
+		$this->assertTrue( in_array( 'current-menu-item', $result ) );
+		$expected = [ 'menu-item', 'current-menu-item' ];
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress_Hooks::fix_nav_current_class
+	 */
+	public function testFixNavCurrentClassWithValidItemAndNotMatchingPage() {
+		$class = [ 'menu-item' ];
+		$item = (object) [ 'object' => 'user' ];
+		set_query_var( 'ap_page', 'question' );
+		$result = \AnsPress_Hooks::fix_nav_current_class( $class, $item );
+		$this->assertFalse( in_array( 'current-menu-item', $result ) );
+		$this->assertEquals( $class, $result );
+	}
 }
