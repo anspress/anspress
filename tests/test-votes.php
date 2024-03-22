@@ -833,4 +833,27 @@ class TestVotes extends TestCase {
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_insert_vote' ) > 0 );
 	}
+
+	/**
+	 * @covers ::ap_get_votes
+	 */
+	public function testAPGetVotesWithEmptyArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$vote_id = ap_vote_insert( $question_id, get_current_user_id() );
+		ap_update_votes_count( $question_id );
+		$get_votes = ap_get_votes( $question_id );
+		$this->assertNotEmpty( $get_votes );
+		$this->assertEquals( $vote_id, $get_votes[0]->vote_id );
+		$this->assertEquals( $question_id, $get_votes[0]->vote_post_id );
+		$this->assertEquals( get_current_user_id(), $get_votes[0]->vote_user_id );
+		$this->assertEquals( 0, $get_votes[0]->vote_rec_user );
+		$this->assertEquals( 'vote', $get_votes[0]->vote_type );
+		$this->assertEquals( '', $get_votes[0]->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_votes[0]->vote_date );
+	}
 }
