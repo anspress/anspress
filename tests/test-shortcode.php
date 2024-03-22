@@ -235,4 +235,34 @@ class Test_Shortcode extends TestCase {
 		$this->assertFalse( $callback_triggered );
 		$ap_shortcode_loaded = false;
 	}
+
+	/**
+	 * @covers AnsPress_Question_Shortcode::get_instance
+	 */
+	public function testAnsPressQuestionShortcodeGetInstanceOfSingletonWhenNull() {
+		$reflectionClass = new \ReflectionClass( 'AnsPress_Question_Shortcode' );
+		$property = $reflectionClass->getProperty( 'instance' );
+		$property->setAccessible( true );
+		$property->setValue( null );
+
+		// Test.
+		$instance = \AnsPress_Question_Shortcode::get_instance();
+		$this->assertNotNull( $instance );
+		$this->assertInstanceOf( 'AnsPress_Question_Shortcode', $instance );
+	}
+
+	/**
+	 * @covers AnsPress_BasePage_Shortcode::get_instance
+	 */
+	public function testAnsPressBasePageShortcodeGetInstanceOfSingletonWhenNull() {
+		$reflectionClass = new \ReflectionClass( 'AnsPress_BasePage_Shortcode' );
+		$property = $reflectionClass->getProperty( 'instance' );
+		$property->setAccessible( true );
+		$property->setValue( null );
+
+		// Test.
+		$instance = \AnsPress_BasePage_Shortcode::get_instance();
+		$this->assertNotNull( $instance );
+		$this->assertInstanceOf( 'AnsPress_BasePage_Shortcode', $instance );
+	}
 }
