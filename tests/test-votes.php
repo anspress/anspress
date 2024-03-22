@@ -952,4 +952,22 @@ class TestVotes extends TestCase {
 		);
 		$this->assertEquals( 1, $count_votes[0]->count );
 	}
+
+	/**
+	 * @covers ::ap_count_post_votes_by
+	 */
+	public function testAPCountPostVotesByShouldReturnFalseIfByArgIsNotInArray() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id() );
+		ap_update_votes_count( $question_id );
+		$count_votes = ap_count_post_votes_by( 'question_id', $question_id );
+		$this->assertFalse( $count_votes );
+		$count_votes = ap_count_post_votes_by( 'invalid_user_id', 11 );
+		$this->assertFalse( $count_votes );
+	}
 }
