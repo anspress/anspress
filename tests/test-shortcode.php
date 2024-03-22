@@ -213,4 +213,26 @@ class Test_Shortcode extends TestCase {
 		$this->assertStringContainsString( 'Invalid or non existing question id.', $content );
 		$this->assertTrue( did_action( 'ap_before_question_shortcode' ) > 0 );
 	}
+
+	/**
+	 * @covers AnsPress_BasePage_Shortcode::anspress_sc
+	 */
+	public function testAnsPressScShouldReturnMessageThatShortcodeCantBeNested() {
+		global $ap_shortcode_loaded;
+		$ap_shortcode_loaded = true;
+
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_before', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		$content = do_shortcode( '[anspress]' );
+		$this->assertEquals( 'AnsPress shortcode cannot be nested.', $content );
+		$this->assertStringNotContainsString( '<div id="anspress" class="anspress">', $content );
+		$this->assertTrue( $ap_shortcode_loaded );
+		$this->assertFalse( $callback_triggered );
+		$ap_shortcode_loaded = false;
+	}
 }
