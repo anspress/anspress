@@ -142,4 +142,19 @@ class Test_Session extends TestCase {
 		$this->assertEquals( 32, strlen( $result ) );
 		$this->assertMatchesRegularExpression( '/^[0-9a-f]+$/', $result );
 	}
+
+	/**
+	 * @covers AnsPress\Session::init
+	 */
+	public function testAnsPressSessionInitOfSingletonWhenNull() {
+		$reflectionClass = new \ReflectionClass( 'AnsPress\Session' );
+		$property = $reflectionClass->getProperty( 'instance' );
+		$property->setAccessible( true );
+		$property->setValue( null );
+
+		// Test.
+		$instance = \AnsPress\Session::init();
+		$this->assertNotNull( $instance );
+		$this->assertInstanceOf( 'AnsPress\Session', $instance );
+	}
 }
