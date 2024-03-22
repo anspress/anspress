@@ -970,4 +970,50 @@ class TestVotes extends TestCase {
 		$count_votes = ap_count_post_votes_by( 'invalid_user_id', 11 );
 		$this->assertFalse( $count_votes );
 	}
+
+	/**
+	 * @covers ::ap_get_vote
+	 */
+	public function testAPGetVoteByValueArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1 );
+		$vote_id_2 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1 );
+		ap_update_votes_count( $question_id );
+		$get_vote = ap_get_vote( $question_id, get_current_user_id(), 'vote', -1 );
+		$this->assertEquals( $vote_id_1, $get_vote->vote_id );
+		$this->assertEquals( $question_id, $get_vote->vote_post_id );
+		$this->assertEquals( get_current_user_id(), $get_vote->vote_user_id );
+		$this->assertEquals( 0, $get_vote->vote_rec_user );
+		$this->assertEquals( 'vote', $get_vote->vote_type );
+		$this->assertEquals( -1, $get_vote->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+	}
+
+	/**
+	 * @covers ::ap_get_vote
+	 */
+	public function testAPGetVoteByValueAsArrayArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1 );
+		$vote_id_2 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1 );
+		ap_update_votes_count( $question_id );
+		$get_vote = ap_get_vote( $question_id, get_current_user_id(), 'flag', array( 1, -1 ) );
+		$this->assertEquals( $vote_id_1, $get_vote->vote_id );
+		$this->assertEquals( $question_id, $get_vote->vote_post_id );
+		$this->assertEquals( get_current_user_id(), $get_vote->vote_user_id );
+		$this->assertEquals( 0, $get_vote->vote_rec_user );
+		$this->assertEquals( 'flag', $get_vote->vote_type );
+		$this->assertEquals( 1, $get_vote->vote_value );
+		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+	}
 }
