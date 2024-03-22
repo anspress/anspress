@@ -856,4 +856,100 @@ class TestVotes extends TestCase {
 		$this->assertEquals( '', $get_votes[0]->vote_value );
 		$this->assertEquals( current_time( 'mysql' ), $get_votes[0]->vote_date );
 	}
+
+	/**
+	 * @covers ::ap_count_votes
+	 */
+	public function testAPCountVotesForVoteUserIDs() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id() );
+		ap_vote_insert( $question_id, $user_id, 'vote' );
+		ap_update_votes_count( $question_id );
+		$count_votes = ap_count_votes( array( 'vote_user_id' => array( get_current_user_id(), $user_id ) ) );
+		$this->assertEquals( 2, $count_votes[0]->count );
+	}
+
+	/**
+	 * @covers ::ap_count_votes
+	 */
+	public function testAPCountVotesForVoteTypes() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id() );
+		ap_vote_insert( $question_id, get_current_user_id(), 'flag' );
+		ap_vote_insert( $question_id, get_current_user_id(), 'flag' );
+		ap_update_votes_count( $question_id );
+		ap_update_flags_count( $question_id );
+		$count_votes = ap_count_votes( array( 'vote_type' => array( 'vote', 'flag' ) ) );
+		$this->assertEquals( 3, $count_votes[0]->count );
+	}
+
+	/**
+	 * @covers ::ap_count_votes
+	 */
+	public function testAPCountVotesForVoteValues() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1 );
+		ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1 );
+		ap_update_votes_count( $question_id );
+		ap_update_flags_count( $question_id );
+		$count_votes = ap_count_votes( array( 'vote_value' => array( -1, 1 ) ) );
+		$this->assertEquals( 2, $count_votes[0]->count );
+	}
+
+	/**
+	 * @covers ::ap_count_votes
+	 */
+	public function testAPCountVotesForManyCasesAtOnce() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory()->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		ap_vote_insert( $question_id, get_current_user_id() );
+		ap_vote_insert( $question_id, get_current_user_id(), 'flag' );
+		ap_vote_insert( $question_id, get_current_user_id(), 'vote', $user_id, -1 );
+		ap_vote_insert( $answer_id, $user_id, 'flag' );
+		ap_vote_insert( $answer_id, $user_id, 'vote', get_current_user_id(), 1 );
+		ap_update_votes_count( $question_id );
+		ap_update_flags_count( $question_id );
+		ap_update_votes_count( $answer_id );
+		ap_update_flags_count( $answer_id );
+
+		// Test 1.
+		$count_votes = ap_count_votes(
+			array(
+				'vote_post_id' => $question_id,
+				'vote_type'    => array( 'vote' ),
+			)
+		);
+		$this->assertEquals( 2, $count_votes[0]->count );
+
+		// Test 2.
+		$count_votes = ap_count_votes(
+			array(
+				'vote_post_id' => $question_id,
+				'vote_type'    => 'flag',
+			)
+		);
+		$this->assertEquals( 1, $count_votes[0]->count );
+	}
 }
