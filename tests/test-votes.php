@@ -1016,4 +1016,32 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 1, $get_vote->vote_value );
 		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
 	}
+
+	/**
+	 * @covers ::ap_delete_vote
+	 */
+	public function testAPDeleteVoteWithVoteValueArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_delete_vote', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1, '2020:01:01 00:00:00' );
+		ap_update_votes_count( $question_id );
+		$this->assertNotEmpty( ap_get_vote( $question_id, get_current_user_id(), 'vote', -1 ) );
+
+		// After deleting the vote.
+		$delete_vote = ap_delete_vote( $question_id, get_current_user_id(), 'vote', -1 );
+		$this->assertEquals( 1, $delete_vote );
+		$this->assertFalse( ap_get_vote( $question_id, get_current_user_id(), 'vote', -1 ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_delete_vote' ) > 0 );
+	}
 }
