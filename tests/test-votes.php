@@ -1044,4 +1044,28 @@ class TestVotes extends TestCase {
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_delete_vote' ) > 0 );
 	}
+
+	/**
+	 * @covers ::ap_add_post_vote
+	 */
+	public function testAPAddPostVoteWithFalseUserIDArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_vote_up', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->assertEmpty( ap_get_vote( $question_id, get_current_user_id(), 'vote' )  );
+		$add_post_vote = ap_add_post_vote( $question_id, false );
+		$this->assertEquals( ap_update_votes_count( $question_id ), $add_post_vote );
+		$this->assertIsObject( ap_get_vote( $question_id, get_current_user_id(), 'vote' )  );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_vote_up' ) > 0 );
+	}
 }
