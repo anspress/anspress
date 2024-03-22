@@ -193,4 +193,14 @@ class TestOptions extends TestCase {
 		$this->assertEquals( 110, $default_cache['answer_id'] );
 		$this->assertEquals( 120, $default_cache['comment_id'] );
 	}
+
+	/**
+	 * @covers ::ap_opt
+	 */
+	public function testAPOptWithOptionsDeleted() {
+		// Delete all options.
+		delete_option( 'anspress_opt' );
+		$this->assertEquals( ap_default_options(), ap_opt() );
+		$this->assertEquals( [], wp_cache_get( 'anspress_opt', 'ap' ) );
+	}
 }
