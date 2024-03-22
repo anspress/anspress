@@ -12,20 +12,6 @@ class TestAnsPressAdmin extends TestCase {
 
 	use Testcases\Common;
 
-	public function set_up() {
-		parent::set_up();
-		register_taxonomy( 'question_label', array( 'question' ) );
-		register_taxonomy( 'rank', array( 'question' ) );
-		register_taxonomy( 'badge', array( 'question' ) );
-	}
-
-	public function tear_down() {
-		unregister_taxonomy( 'question_label' );
-		unregister_taxonomy( 'rank' );
-		unregister_taxonomy( 'badge' );
-		parent::tear_down();
-	}
-
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AnsPress_Admin' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
@@ -1199,6 +1185,11 @@ class TestAnsPressAdmin extends TestCase {
 	 * @covers AnsPress_Admin::tax_menu_correction
 	 */
 	public function testTaxMenuCorrection() {
+		// Register required taxonomies.
+		register_taxonomy( 'question_label', array( 'question' ) );
+		register_taxonomy( 'rank', array( 'question' ) );
+		register_taxonomy( 'badge', array( 'question' ) );
+
 		// Test 1.
 		set_current_screen( 'edit-question_category' );
 		$result = \AnsPress_Admin::tax_menu_correction( '' );
@@ -1228,6 +1219,11 @@ class TestAnsPressAdmin extends TestCase {
 		set_current_screen( 'edit-test-tag' );
 		$result = \AnsPress_Admin::tax_menu_correction( 'test-screen' );
 		$this->assertEquals( 'test-screen', $result );
+
+		// Unregister the taxonomies.
+		unregister_taxonomy( 'question_label' );
+		unregister_taxonomy( 'rank' );
+		unregister_taxonomy( 'badge' );
 	}
 
 	/**
