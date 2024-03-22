@@ -1291,4 +1291,12 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( '<div id="answers">', $result );
 		$this->assertStringContainsString( '<apanswers>', $result );
 	}
+
+	/**
+	 * @covers ::ap_get_last_active
+	 */
+	public function testAPGetLastActiveWithInvalidPostID() {
+		$result = ap_get_last_active( 0 );
+		$this->assertEquals( 'Invalid post', $result );
+	}
 }
