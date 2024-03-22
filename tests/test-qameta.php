@@ -1072,6 +1072,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_insert_qameta
 	 */
 	public function testAPInsertQametaShouldReturnFalseOnEmptyPostIdArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		// Test 1.
 		$result = ap_insert_qameta( '', [] );
 		$this->assertFalse( $result );
@@ -1085,6 +1088,9 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_insert_qameta
 	 */
 	public function testAPInsertQametaShouldReturnWPErrorMessageOnEmptyPostIdAndWPErrorArgs() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
 		// Test 1.
 		$result = ap_insert_qameta( '', [], true );
 		$this->assertInstanceOf( 'WP_Error', $result );
