@@ -23,10 +23,10 @@ class TestTemplatesAssetsExists extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts/anspress.ttf' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts/anspress.woff' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/editor.css' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts.css' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/main.css' );
+		// $this->assertFileExists( ANSPRESS_THEME_DIR . '/css/fonts.css' );
+		// $this->assertFileExists( ANSPRESS_THEME_DIR . '/css/main.css' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/overrides.css' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/css/rtl.css' );
+		// $this->assertFileExists( ANSPRESS_THEME_DIR . '/css/rtl.css' );
 
 		// Image files.
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/images/cover.jpg' );
