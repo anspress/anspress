@@ -811,4 +811,26 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_qameta->votes_net );
 		$this->assertEquals( 0, $get_qameta->flags );
 	}
+
+	/**
+	 * @covers ::ap_vote_insert
+	 */
+	public function testAPVoteInsertWithUserIdAsFalseArg() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_insert_vote', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$insert_vote = ap_vote_insert( $question_id, false );
+		$this->assertTrue( $insert_vote );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_insert_vote' ) > 0 );
+	}
 }
