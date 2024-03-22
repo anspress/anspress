@@ -1103,4 +1103,118 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 'empty_post_id', $result->get_error_code() );
 		$this->assertEquals( 'Post ID is required', $result->get_error_message() );
 	}
+
+	/**
+	 * @covers ::ap_update_qameta_terms
+	 */
+	public function testAPUpdateQametaTermsForQuestionLabelTaxonomy() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
+		// Register required taxonomy.
+		register_taxonomy( 'question_label', array( 'question' ) );
+
+		// Test.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$term_id = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_label',
+				'name'     => 'Label 1',
+			)
+		);
+		wp_set_object_terms( $question_id, $term_id, 'question_label' );
+		ap_update_qameta_terms( $question_id );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( $term_id, $get_qameta->terms );
+
+		// Unregister the taxonomy.
+		unregister_taxonomy( 'question_label' );
+	}
+
+	/**
+	 * @covers ::ap_update_qameta_terms
+	 */
+	public function testAPUpdateQametaTermsForQuestionLabelTaxonomyMoreThanOne() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
+		// Register required taxonomy.
+		register_taxonomy( 'question_label', array( 'question' ) );
+
+		// Test.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$term_id_1 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_label',
+				'name'     => 'Label 1',
+			)
+		);
+		$term_id_2 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_label',
+				'name'     => 'Label 2',
+			)
+		);
+		wp_set_object_terms( $question_id, array( $term_id_1, $term_id_2 ), 'question_label' );
+		ap_update_qameta_terms( $question_id );
+		$get_qameta = ap_get_qameta( $question_id );
+		$expected = implode( ',', array( $term_id_1, $term_id_2 ) );
+		$this->assertEquals( $expected, $get_qameta->terms );
+
+		// Unregister the taxonomy.
+		unregister_taxonomy( 'question_label' );
+	}
+
+	/**
+	 * @covers ::ap_update_qameta_terms
+	 */
+	public function testAPUpdateQametaTermsForQuestionLabelAndCategoryTaxonomy() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+
+		// Register required taxonomies.
+		register_taxonomy( 'question_category', array( 'question' ) );
+		register_taxonomy( 'question_label', array( 'question' ) );
+
+		// Test.
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+		$term_id_1 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_label',
+				'name'     => 'Label 1',
+			)
+		);
+		$term_id_2 = $this->factory->term->create(
+			array(
+				'taxonomy' => 'question_category',
+				'name'     => 'Category 1',
+			)
+		);
+		wp_set_object_terms( $question_id, array( $term_id_1, $term_id_2 ), 'question_label' );
+		ap_update_qameta_terms( $question_id );
+		$get_qameta = ap_get_qameta( $question_id );
+		$this->assertEquals( $term_id_1, $get_qameta->terms );
+
+		// Unregister the taxonomies.
+		unregister_taxonomy( 'question_category' );
+		unregister_taxonomy( 'question_label' );
+	}
 }
