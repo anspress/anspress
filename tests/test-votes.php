@@ -1130,4 +1130,228 @@ class TestVotes extends TestCase {
 		$this->assertTrue( $undo_vote_callback_triggered );
 		$this->assertTrue( did_action( 'ap_undo_vote' ) > 0 );
 	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForNotValidPost() {
+		// Test.
+		$this->assertNull( ap_vote_btn( 0 ) );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForDisableVotingOnAnswerEnabled() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		ap_opt( 'disable_voting_on_answer', true );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory()->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		$this->assertNull( ap_vote_btn( $answer_id ) );
+		ap_opt( 'disable_voting_on_answer', false );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForDisableVotingOnQuestionEnabled() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		ap_opt( 'disable_voting_on_question', true );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->assertNull( ap_vote_btn( $question_id ) );
+		ap_opt( 'disable_voting_on_question', false );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForTypeSetAsEmptyAndReturnValue() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$vote_btn = ap_vote_btn( $question_id, false );
+		$data = array(
+			'post_id' => $question_id,
+			'active'  => '',
+			'net'     => ap_get_votes_net(),
+			'__nonce' => wp_create_nonce( 'vote_' . $question_id ),
+		);
+		$this->assertStringContainsString( '<div id="vote_' . $question_id . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">', $vote_btn );
+		$this->assertStringContainsString( '<a class="apicon-thumb-up ap-tip vote-up" href="#" title="Up vote this question" ap="vote_up"></a>', $vote_btn );
+		$this->assertStringContainsString( '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>', $vote_btn );
+		$this->assertStringContainsString( '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down" href="#" title="Down vote this question" ap="vote_down"></a>', $vote_btn );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForTypeSetAsEmptyAndEchoValue() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_vote_btn( $question_id, true );
+		$vote_btn = ob_get_clean();
+		$data = array(
+			'post_id' => $question_id,
+			'active'  => '',
+			'net'     => ap_get_votes_net(),
+			'__nonce' => wp_create_nonce( 'vote_' . $question_id ),
+		);
+		$this->assertStringContainsString( '<div id="vote_' . $question_id . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">', $vote_btn );
+		$this->assertStringContainsString( '<a class="apicon-thumb-up ap-tip vote-up" href="#" title="Up vote this question" ap="vote_up"></a>', $vote_btn );
+		$this->assertStringContainsString( '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>', $vote_btn );
+		$this->assertStringContainsString( '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down" href="#" title="Down vote this question" ap="vote_down"></a>', $vote_btn );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForTypeQuestionPostTypeDisableDownvote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		ap_opt( 'disable_down_vote_on_question', true );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_vote_btn( $question_id );
+		$vote_btn = ob_get_clean();
+		$data = array(
+			'post_id' => $question_id,
+			'active'  => '',
+			'net'     => ap_get_votes_net(),
+			'__nonce' => wp_create_nonce( 'vote_' . $question_id ),
+		);
+		$this->assertStringContainsString( '<div id="vote_' . $question_id . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">', $vote_btn );
+		$this->assertStringContainsString( '<a class="apicon-thumb-up ap-tip vote-up" href="#" title="Up vote this question" ap="vote_up"></a>', $vote_btn );
+		$this->assertStringContainsString( '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>', $vote_btn );
+		$this->assertStringNotContainsString( '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down" href="#" title="Down vote this question" ap="vote_down"></a>', $vote_btn );
+		ap_opt( 'disable_down_vote_on_question', false );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForTypeAnswerPostTypeDisableDownvote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		ap_opt( 'disable_down_vote_on_answer', true );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory()->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		$this->go_to( '?post_type=answer&p=' . $answer_id );
+		ob_start();
+		ap_vote_btn( $answer_id );
+		$vote_btn = ob_get_clean();
+		$data = array(
+			'post_id' => $answer_id,
+			'active'  => '',
+			'net'     => ap_get_votes_net(),
+			'__nonce' => wp_create_nonce( 'vote_' . $answer_id ),
+		);
+		$this->assertStringContainsString( '<div id="vote_' . $answer_id . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">', $vote_btn );
+		$this->assertStringContainsString( '<a class="apicon-thumb-up ap-tip vote-up" href="#" title="Up vote this answer" ap="vote_up"></a>', $vote_btn );
+		$this->assertStringContainsString( '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>', $vote_btn );
+		$this->assertStringNotContainsString( '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down" href="#" title="Down vote this answer" ap="vote_down"></a>', $vote_btn );
+		ap_opt( 'disable_down_vote_on_answer', false );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForUserWhoAlreadyHaveDownVote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', '-1' );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_vote_btn( $question_id );
+		$vote_btn = ob_get_clean();
+		$data = array(
+			'post_id' => $question_id,
+			'active'  => 'vote_down',
+			'net'     => ap_get_votes_net(),
+			'__nonce' => wp_create_nonce( 'vote_' . $question_id ),
+		);
+		$this->assertStringContainsString( '<div id="vote_' . $question_id . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">', $vote_btn );
+		$this->assertStringContainsString( '<a class="apicon-thumb-up ap-tip vote-up voted disable" href="#" title="You have already voted" ap="vote_up"></a>', $vote_btn );
+		$this->assertStringContainsString( '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>', $vote_btn );
+		$this->assertStringContainsString( '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down voted" href="#" title="Withdraw your vote" ap="vote_down"></a>', $vote_btn );
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForUserWhoAlreadyHaveUpVote() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', '1' );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_vote_btn( $question_id );
+		$vote_btn = ob_get_clean();
+		$data = array(
+			'post_id' => $question_id,
+			'active'  => 'vote_up',
+			'net'     => ap_get_votes_net(),
+			'__nonce' => wp_create_nonce( 'vote_' . $question_id ),
+		);
+		$this->assertStringContainsString( '<div id="vote_' . $question_id . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">', $vote_btn );
+		$this->assertStringContainsString( '<a class="apicon-thumb-up ap-tip vote-up voted" href="#" title="Withdraw your vote" ap="vote_up"></a>', $vote_btn );
+		$this->assertStringContainsString( '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>', $vote_btn );
+		$this->assertStringContainsString( '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down voted disable" href="#" title="You have already voted" ap="vote_down"></a>', $vote_btn );
+	}
+
+	public static function APVoteBtnHTML( $html ) {
+		$html = '<div class="ap-vote net-vote" ap-vote="{}"></div>';
+		return $html;
+	}
+
+	/**
+	 * @covers ::ap_vote_btn
+	 */
+	public function testAPVoteBtnForAPVoteBtnHTML() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+
+		// Test.
+		add_filter( 'ap_vote_btn_html', [ $this, 'APVoteBtnHTML' ] );
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_vote_btn( $question_id );
+		$vote_btn = ob_get_clean();
+		$this->assertStringContainsString( '<div class="ap-vote net-vote" ap-vote="{}"></div>', $vote_btn );
+		remove_filter( 'ap_vote_btn_html', [ $this, 'APVoteBtnHTML' ] );
+	}
 }
