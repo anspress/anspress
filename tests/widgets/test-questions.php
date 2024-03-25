@@ -541,6 +541,7 @@ class TestWidgetQuestions extends TestCase {
 			'after_widget'  => '</section>',
 			'before_title'  => '<h2 class="widget-title">',
 			'after_title'   => '</h2>',
+			'limit'         => 10,
 		];
 		$instance_data = [];
 		ob_start();

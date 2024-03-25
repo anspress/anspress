@@ -39,11 +39,12 @@ trait Common {
 
 		return $this->factory()->post->create(
 			array(
-				'post_title'   => $title,
-				'post_type'    => 'question',
-				'post_status'  => 'publish',
-				'post_content' => $content,
-				'post_author'  => $author,
+				'post_title'    => $title,
+				'post_type'     => 'question',
+				'post_status'   => 'publish',
+				'post_content'  => $content,
+				'post_author'   => $author,
+				'post_date_gmt' => '2024-03-25 10:08:11',
 			)
 		);
 	}
