@@ -1505,4 +1505,488 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'newest' ), get_permalink() ) . '#answers-order' ) . '">Newest</a></li>', $result );
 		ap_opt( 'disable_voting_on_answer', false );
 	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForInvalidPostType() {
+		$this->setRole( 'administrator' );
+		$post_id = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		$post_actions = ap_post_actions( $post_id );
+		$this->assertEmpty( $post_actions );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForFeaturedLink() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'     => 'toggle_featured',
+			'active' => false,
+			'query'  => array(
+				'__nonce' => wp_create_nonce( 'set_featured_' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'title'  => 'Mark this question as featured',
+			'label'  => 'Feature',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserCanCloseQuestion() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'     => 'close',
+			'icon'  => 'apicon-check',
+			'query'  => array(
+				'nonce' => wp_create_nonce( 'close_' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Close',
+			'title'  => 'Close this question for new answer.',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserCanCloseQuestionButQuestionIsClosed() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		ap_toggle_close_question( $question_id );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'     => 'close',
+			'icon'  => 'apicon-check',
+			'query'  => array(
+				'nonce' => wp_create_nonce( 'close_' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Open',
+			'title'  => 'Open this question for new answers',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserCantCloseQuestion() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'     => 'close',
+			'icon'  => 'apicon-check',
+			'query'  => array(
+				'nonce' => wp_create_nonce( 'close_' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Close',
+			'title'  => 'Close this question for new answer.',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserCanEditQuestion() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'edit',
+			'label' => 'Edit',
+			'href'  => ap_post_edit_link( $question_id ),
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserCantEditQuestion() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => 0 ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'    => 'edit',
+			'label' => 'Edit',
+			'href'  => ap_post_edit_link( $question_id ),
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForFlagBtnArgs() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'     => 'flag',
+			'icon'   => 'apicon-check',
+			'query'  => array(
+				'__nonce' => wp_create_nonce( 'flag_' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Flag',
+			'title'  => 'Flag this question',
+			'count'  => ap_get_post( $question_id )->flags,
+			'active' => false,
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForAPPostStatusBtnArgs() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected_header_before = [
+			'label'  => 'Status',
+			'header' => true,
+		];
+		$this->assertTrue( in_array( $expected_header_before, $post_actions ) );
+		$expected_publish = [
+			'cb'     => 'status',
+			'active' => false,
+			'query'  => array(
+				'status'  => 'publish',
+				'__nonce' => wp_create_nonce( 'change-status-publish-' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Published',
+		];
+		$this->assertTrue( in_array( $expected_publish, $post_actions ) );
+		$expected_private = [
+			'cb'     => 'status',
+			'active' => false,
+			'query'  => array(
+				'status'  => 'private_post',
+				'__nonce' => wp_create_nonce( 'change-status-private_post-' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Private',
+		];
+		$this->assertTrue( in_array( $expected_private, $post_actions ) );
+		$expected_moderate = [
+			'cb'     => 'status',
+			'active' => true,
+			'query'  => array(
+				'status'  => 'moderate',
+				'__nonce' => wp_create_nonce( 'change-status-moderate-' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Moderate',
+		];
+		$this->assertTrue( in_array( $expected_moderate, $post_actions ) );
+		$expected_header_after = [
+			'header' => true,
+		];
+		$this->assertTrue( in_array( $expected_header_after, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForAPPostStatusBtnArgsWhoCantUpdateStatus() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => 0 ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected_header_before = [
+			'label'  => 'Status',
+			'header' => true,
+		];
+		$this->assertFalse( in_array( $not_expected_header_before, $post_actions ) );
+		$not_expected_publish = [
+			'cb'     => 'status',
+			'active' => false,
+			'query'  => array(
+				'status'  => 'publish',
+				'__nonce' => wp_create_nonce( 'change-status-publish-' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Published',
+		];
+		$this->assertFalse( in_array( $not_expected_publish, $post_actions ) );
+		$not_expected_private = [
+			'cb'     => 'status',
+			'active' => false,
+			'query'  => array(
+				'status'  => 'private_post',
+				'__nonce' => wp_create_nonce( 'change-status-private_post-' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Private',
+		];
+		$this->assertFalse( in_array( $not_expected_private, $post_actions ) );
+		$not_expected_moderate = [
+			'cb'     => 'status',
+			'active' => true,
+			'query'  => array(
+				'status'  => 'moderate',
+				'__nonce' => wp_create_nonce( 'change-status-moderate-' . $question_id ),
+				'post_id' => $question_id,
+			),
+			'label'  => 'Moderate',
+		];
+		$this->assertFalse( in_array( $not_expected_moderate, $post_actions ) );
+		$not_expected_header_after = [
+			'header' => true,
+		];
+		$this->assertFalse( in_array( $not_expected_header_after, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCanDeleteQuestion() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'toggle_delete_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'trash_post_' . $question_id ),
+			),
+			'label' => 'Delete',
+			'title' => 'Delete this question (can be restored again)',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCantDeleteQuestionButQuestionStatusIsTrash() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'trash' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'toggle_delete_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'trash_post_' . $question_id ),
+			),
+			'label' => 'Undelete',
+			'title' => 'Restore this question',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCantDeleteQuestion() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'    => 'toggle_delete_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'trash_post_' . $question_id ),
+			),
+			'label' => 'Delete',
+			'title' => 'Delete this %s (can be restored again)',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCanDeleteQuestionButHaveAnswersAndTrashingQuestionWithAnswerEnabled() {
+		ap_opt( 'trashing_question_with_answer', true );
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'    => 'toggle_delete_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'trash_post_' . $question_id ),
+			),
+			'label' => 'Delete',
+			'title' => 'Delete this question (can be restored again)',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+		ap_opt( 'trashing_question_with_answer', false );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCanDeleteQuestionButHaveAnswersAndTrashingQuestionWithAnswerDisabled() {
+		ap_opt( 'trashing_question_with_answer', false );
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'toggle_delete_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'trash_post_' . $question_id ),
+			),
+			'label' => 'Delete',
+			'title' => 'Delete this question (can be restored again)',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCanPermanentDeleteQuestion() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'delete_permanently',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'delete_post_' . $question_id ),
+			),
+			'label' => 'Delete Permanently',
+			'title' => 'Delete question permanently (cannot be restored again)',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCantPermanentDeleteQuestion() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'    => 'delete_permanently',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'delete_post_' . $question_id ),
+			),
+			'label' => 'Delete Permanently',
+			'title' => 'Delete question permanently (cannot be restored again)',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCantPermanentDeleteQuestionAndDeletingQuestionWithAnswerEnabled() {
+		ap_opt( 'deleting_question_with_answer', true );
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'    => 'delete_permanently',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'delete_post_' . $question_id ),
+			),
+			'label' => 'Delete Permanently',
+			'title' => 'Delete question permanently (cannot be restored again)',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+		ap_opt( 'deleting_question_with_answer', false );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCantPermanentDeleteQuestionAndDeletingQuestionWithAnswerDisabled() {
+		ap_opt( 'deleting_question_with_answer', false );
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'delete_permanently',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'delete_post_' . $question_id ),
+			),
+			'label' => 'Delete Permanently',
+			'title' => 'Delete question permanently (cannot be restored again)',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCanConvertQuestionToPost() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$expected = [
+			'cb'    => 'convert_to_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'convert-post-' . $question_id ),
+			),
+			'label' => 'Convert to post',
+			'title' => 'Convert this question to blog post',
+		];
+		$this->assertTrue( in_array( $expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCantConvertQuestionToPost() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$post_actions = ap_post_actions( $question_id );
+		$not_expected = [
+			'cb'    => 'convert_to_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'convert-post-' . $question_id ),
+			),
+			'label' => 'Convert to post',
+			'title' => 'Convert this question to blog post',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+	}
+
+	/**
+	 * @covers ::ap_post_actions
+	 */
+	public function testAPPostActionsForUserWhoCanConvertQuestionToPostButPostTypeIsInvalid() {
+		$this->setRole( 'administrator' );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post_actions = ap_post_actions( $answer_id );
+		$not_expected = [
+			'cb'    => 'convert_to_post',
+			'query' => array(
+				'post_id' => $question_id,
+				'__nonce' => wp_create_nonce( 'convert-post-' . $question_id ),
+			),
+			'label' => 'Convert to post',
+			'title' => 'Convert this question to blog post',
+		];
+		$this->assertFalse( in_array( $not_expected, $post_actions ) );
+	}
 }
