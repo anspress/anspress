@@ -1653,7 +1653,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_post_actions
 	 */
 	public function testAPPostActionsForAPPostStatusBtnArgs() {
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected_header_before = [
