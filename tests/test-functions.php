@@ -2932,4 +2932,141 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'moderate', $result );
 		ap_opt( 'edit_answer_status', 'publish' );
 	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingOnlyUserID() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$this->assertEquals( 'Test User', ap_user_display_name( $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForInstanceOfWPComment() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$comment_id = $this->factory->comment->create( [ 'user_id' => $user_id ] );
+		$comment = get_comment( $comment_id );
+		$this->assertEquals( 'Test User', ap_user_display_name( $comment ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserArgs() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user = get_user_by( 'id', $user_id );
+		$this->assertEquals( 'Test User', ap_user_display_name( [ 'user_id' => $user->ID ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserEchoArg() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		ob_start();
+		ap_user_display_name( [ 'user_id' => $user_id, 'echo' => true ] );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Test User', $output );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserEchoHTMLArg() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		ob_start();
+		ap_user_display_name( [ 'user_id' => $user_id, 'echo' => true, 'html' => true ] );
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '" itemprop="url"><span itemprop="name">Test User</span></a>', $output );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserReturnHTMLArg() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user = get_user_by( 'id', $user_id );
+		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '" itemprop="url"><span itemprop="name">Test User</span></a>', ap_user_display_name( [ 'user_id' => $user->ID, 'html' => true ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithEmptyArgsForAnomymousUser() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Anonymous', ap_user_display_name() );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithArgsForAnomymousUser() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Anonymous', ap_user_display_name( [ 'user_id' => 0 ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithCustomAnonymousLabelArg() {
+		$this->assertEquals( 'Guest', ap_user_display_name( [ 'user_id' => 0, 'anonymous_label' => 'Guest' ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithCustomAnonymousLabelAndHTMLArg() {
+		$this->assertEquals( 'Guest', ap_user_display_name( [ 'user_id' => 0, 'anonymous_label' => 'Guest', 'html' => true ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithCustomAnonymousLabelAndHTMLTrueArgs() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Guest', ap_user_display_name( [ 'anonymous_label' => 'Guest', 'html' => true ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithVisitingQuestionPageAndCustomAnonymousNameSet() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		ap_insert_qameta( $question_id, [ 'fields' => [ 'anonymous_name' => 'Guest' ] ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Guest', ap_user_display_name() );
+		$this->assertNotEquals( 'Anonymous', ap_user_display_name() );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithVisitingQuestionPageAndCustomAnonymousNameSetAndHTMLArg() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		ap_insert_qameta( $question_id, [ 'fields' => [ 'anonymous_name' => 'Guest' ] ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Guest (anonymous)', ap_user_display_name( [ 'html' => true ] ) );
+		$this->assertNotEquals( 'Anonymous (anonymous)', ap_user_display_name( [ 'html' => true ] ) );
+	}
+
+	public function APUserDisplayName() {
+		return 'Custom User Name';
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithAPUserDisplayNameFilter() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		add_filter( 'ap_user_display_name', [ $this, 'APUserDisplayName' ] );
+		$this->assertEquals( 'Custom User Name', ap_user_display_name( $user_id ) );
+		$this->assertEquals( 'Custom User Name', ap_user_display_name( [ 'user_id' => $user_id ] ) );
+		$this->assertEquals( 'Custom User Name', ap_user_display_name( [ 'user_id' => $user_id, 'html' => true ] ) );
+		remove_filter( 'ap_user_display_name', [ $this, 'APUserDisplayName' ] );
+	}
 }
