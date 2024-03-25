@@ -1421,4 +1421,88 @@ class TestThemeFunctions extends TestCase {
 		$this->go_to( '?post_type=question&p=' . $question_child_id );
 		$this->assertTrue( ap_have_parent_post( false ) );
 	}
+
+	/**
+	 * @covers ::ap_answers_tab
+	 */
+	public function testAPAnswersTab() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_answers_tab();
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<li class="active"><a href="' . esc_url( add_query_arg( array( 'order_by' => 'active' ), get_permalink() ) . '#answers-order' ) . '">Active</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'oldest' ), get_permalink() ) . '#answers-order' ) . '">Oldest</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'voted' ), get_permalink() ) . '#answers-order' ) . '">Voted</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'newest' ), get_permalink() ) . '#answers-order' ) . '">Newest</a></li>', $result );
+	}
+
+	/**
+	 * @covers ::ap_answers_tab
+	 */
+	public function testAPAnswersTabWithCustomBase() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_answers_tab( 'https://example.com' );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<li class="active"><a href="' . esc_url( add_query_arg( array( 'order_by' => 'active' ), 'https://example.com' ) . '#answers-order' ) . '">Active</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'oldest' ), 'https://example.com' ) . '#answers-order' ) . '">Oldest</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'voted' ), 'https://example.com' ) . '#answers-order' ) . '">Voted</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'newest' ), 'https://example.com' ) . '#answers-order' ) . '">Newest</a></li>', $result );
+	}
+
+	/**
+	 * @covers ::ap_answers_tab
+	 */
+	public function testAPAnswersTabWithCustomOrder() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$_REQUEST['order_by'] = 'newest';
+		ob_start();
+		ap_answers_tab();
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'active' ), get_permalink() ) . '#answers-order' ) . '">Active</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'oldest' ), get_permalink() ) . '#answers-order' ) . '">Oldest</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'voted' ), get_permalink() ) . '#answers-order' ) . '">Voted</a></li>', $result );
+		$this->assertStringContainsString( '<li class="active"><a href="' . esc_url( add_query_arg( array( 'order_by' => 'newest' ), get_permalink() ) . '#answers-order' ) . '">Newest</a></li>', $result );
+	}
+
+	/**
+	 * @covers ::ap_answers_tab
+	 */
+	public function testAPAnswersTabWithCustomOrderAndCustomBase() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$_REQUEST['order_by'] = 'voted';
+		ob_start();
+		ap_answers_tab( 'https://example.com' );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'active' ), 'https://example.com' ) . '#answers-order' ) . '">Active</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'oldest' ), 'https://example.com' ) . '#answers-order' ) . '">Oldest</a></li>', $result );
+		$this->assertStringContainsString( '<li class="active"><a href="' . esc_url( add_query_arg( array( 'order_by' => 'voted' ), 'https://example.com' ) . '#answers-order' ) . '">Voted</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'newest' ), 'https://example.com' ) . '#answers-order' ) . '">Newest</a></li>', $result );
+	}
+
+	/**
+	 * @covers ::ap_answers_tab
+	 */
+	public function testAPAnswersTabWithDisableVotingOnAnswerEnabled() {
+		ap_opt( 'disable_voting_on_answer', true );
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		ob_start();
+		ap_answers_tab();
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<ul id="answers-order" class="ap-answers-tab ap-ul-inline clearfix">', $result );
+		$this->assertStringContainsString( '<li class="active"><a href="' . esc_url( add_query_arg( array( 'order_by' => 'active' ), get_permalink() ) . '#answers-order' ) . '">Active</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'oldest' ), get_permalink() ) . '#answers-order' ) . '">Oldest</a></li>', $result );
+		$this->assertStringNotContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'voted' ), get_permalink() ) . '#answers-order' ) . '">Voted</a></li>', $result );
+		$this->assertStringContainsString( '<li><a href="' . esc_url( add_query_arg( array( 'order_by' => 'newest' ), get_permalink() ) . '#answers-order' ) . '">Newest</a></li>', $result );
+		ap_opt( 'disable_voting_on_answer', false );
+	}
 }
