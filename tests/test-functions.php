@@ -2834,4 +2834,102 @@ class TestFunctions extends TestCase {
 		set_query_var( 'latest_test', '     This is latest test contents.     ' );
 		$this->assertEquals( 'This is latest test contents.', ap_sanitize_unslash( 'latest_test', 'query_var' ) );
 	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionForUserHavingAPNoModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status();
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewAnswerForUserHavingAPModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status( false, 'answer' );
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditQuestionForUserHavingAPNoModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status( false, 'question', true );
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditAnswerForUserHavingAPModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status( false, 'answer', true );
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionForEmptyUserID() {
+		$result = ap_new_edit_post_status( '', 'question' );
+		$this->assertEquals( 'moderate', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionForEmptyUserIDButAnonymousPostStatusSetToOtherStatus() {
+		ap_opt( 'anonymous_post_status', 'private_post' );
+		$result = ap_new_edit_post_status( 0, 'question' );
+		$this->assertEquals( 'publish', $result );
+		ap_opt( 'anonymous_post_status', 'moderate' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionWithNewQuestionStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'new_question_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id() );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'new_question_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditQuestionWithEditQuestionStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'edit_question_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id(), 'question', true );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'edit_question_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewAnswerWithNewAnswerStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'new_answer_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id(), 'answer' );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'new_answer_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditAnswerWithEditAnswerStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'edit_answer_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id(), 'answer', true );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'edit_answer_status', 'publish' );
+	}
 }
