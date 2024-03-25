@@ -2817,4 +2817,21 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'categories.php' );
 		$this->assertFalse( ap_activate_addon( 'categories.php' ) );
 	}
+
+	/**
+	 * @covers ::ap_sanitize_unslash
+	 */
+	public function testAPSanitizeUnslashForQueryVar() {
+		// Test 1.
+		set_query_var( 'test', '//This is test contents.//' );
+		$this->assertEquals( '//This is test contents.//', ap_sanitize_unslash( 'test', 'query_var' ) );
+
+		// Test 2.
+		set_query_var( 'another_test', '<script>alert(0);</script>' );
+		$this->assertEquals( '', ap_sanitize_unslash( 'another_test', 'query_var' ) );
+
+		// Test 3.
+		set_query_var( 'latest_test', '     This is latest test contents.     ' );
+		$this->assertEquals( 'This is latest test contents.', ap_sanitize_unslash( 'latest_test', 'query_var' ) );
+	}
 }
