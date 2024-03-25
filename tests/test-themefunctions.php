@@ -1989,4 +1989,68 @@ class TestThemeFunctions extends TestCase {
 		];
 		$this->assertFalse( in_array( $not_expected, $post_actions ) );
 	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPageForEditPage() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( ap_post_edit_link( $question_id ) );
+		set_query_var( 'ap_page', 'edit' );
+		$this->assertEquals( 'edit', ap_current_page() );
+	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPageFor404Page() {
+		$this->go_to( '/404-error-page' );
+		global $wp_query;
+		$wp_query->is_404 = true;
+		$this->assertEquals( '', ap_current_page() );
+	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPageForLookingForArg() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertTrue( ap_current_page( 'question' ) );
+	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPageForLookingForArgShouldReturnFalse() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertFalse( ap_current_page( 'answer' ) );
+	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPageForMainPages() {
+		$user_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		ap_opt( 'user_page', $user_page );
+		$this->go_to( '?post_type=page&p=' . $user_page );
+		set_query_var( 'ap_page', 'user' );
+		$this->assertEquals( 'user', ap_current_page() );
+	}
+
+	public static function APCurrentPage() {
+		return 'test_query_var';
+	}
+
+	/**
+	 * @covers ::ap_current_page
+	 */
+	public function testAPCurrentPageForAPCurrentPageFilter() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		add_filter( 'ap_current_page', [ $this, 'APCurrentPage' ] );
+		$this->assertEquals( 'test_query_var', ap_current_page() );
+		remove_filter( 'ap_current_page', [ $this, 'APCurrentPage' ] );
+	}
 }
