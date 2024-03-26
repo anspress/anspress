@@ -3903,4 +3903,107 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_read_post( $post_id ) );
 		remove_filter( 'ap_user_can_read_post', [ $this, 'ReturnFalse' ] );
 	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_vote_on_post( $post_id, 'vote_up' ) );
+		remove_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up' ) );
+		remove_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoTriesToVoteOnOwnPost() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoTriesToVoteOnOwnPostButReturnWPError() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$result = ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id, true );
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertEquals( 'cannot_vote_own_post', $result->get_error_code() );
+		$this->assertEquals( 'Voting on own post is not allowed', $result->get_error_message() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoCantReadPostButReturnWPError() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$result = ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id, true );
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertEquals( 'you_cannot_vote_on_restricted', $result->get_error_code() );
+		$this->assertEquals( 'Voting on restricted posts are not allowed.', $result->get_error_message() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForReturnFalse() {
+		$this->setRole( 'ap_banned' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up', get_current_user_id() ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForReturnWPError() {
+		$this->setRole( 'ap_banned' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$result = ap_user_can_vote_on_post( $post_id, 'vote_up', get_current_user_id(), true );
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertEquals( 'no_permission', $result->get_error_code() );
+		$this->assertEquals( 'You do not have permission to vote.', $result->get_error_message() );
+	}
 }
