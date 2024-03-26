@@ -278,4 +278,72 @@ class Test_Session extends TestCase {
 		$session->delete( 'key' );
 		$this->assertNull( $session->get( 'key' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionNotSet() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'questions', [] );
+		anspress()->session->set( 'answers', [] );
+		$this->assertFalse( $session->post_in_session( $post_id ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionSet() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'questions', [ $post_id ] );
+		$this->assertTrue( $session->post_in_session( $post_id ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionSetAndPostTypeIsAnswer() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'answer',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'answers', [ $post_id ] );
+		$this->assertTrue( $session->post_in_session( $post_id ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionSetAndUserIsLoggedIn() {
+		$user_id = $this->factory->user->create();
+		wp_set_current_user( $user_id );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'questions', [ $post_id ] );
+		anspress()->session->set( 'answers', [ $post_id ] );
+		$this->assertFalse( $session->post_in_session( $post_id ) );
+	}
 }
