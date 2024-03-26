@@ -3873,4 +3873,34 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_show_captcha_to_user() );
 		remove_filter( 'ap_show_captcha', [ $this, 'ReturnTrue' ] );
 	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPostForNotValidPost() {
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_read_post( 0 ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_read_post( $post_id ) );
+		remove_filter( 'ap_user_can_read_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_read_post( $post_id ) );
+		remove_filter( 'ap_user_can_read_post', [ $this, 'ReturnFalse' ] );
+	}
 }
