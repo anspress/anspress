@@ -3185,4 +3185,105 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_comments( $id->q ) );
 		$this->assertTrue( ap_user_can_read_comments( $id->a ) );
 	}
+
+	public static function ReturnTrue() {
+		return true;
+	}
+
+	public static function ReturnFalse() {
+		return false;
+	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testAPUserCanAskForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$this->assertTrue( ap_user_can_ask() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testAPUserCanAskWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_ask', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_ask() );
+		remove_filter( 'ap_user_can_ask', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testAPUserCanAskWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_ask', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_ask() );
+		remove_filter( 'ap_user_can_ask', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$question_id = $this->insert_question();
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_answer', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+		remove_filter( 'ap_user_can_answer', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_answer', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_answer( $question_id ) );
+		remove_filter( 'ap_user_can_answer', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerForUserWhoCantReadQuestion() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_answer( $question_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerForClosedQuestion() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'publish',
+				'post_type'    => 'question',
+			)
+		);
+		ap_toggle_close_question( $question_id );
+		$this->assertFalse( ap_user_can_answer( $question_id ) );
+	}
 }
