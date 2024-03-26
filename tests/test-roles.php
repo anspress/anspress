@@ -3286,4 +3286,44 @@ class Test_Roles extends TestCase {
 		ap_toggle_close_question( $question_id );
 		$this->assertFalse( ap_user_can_answer( $question_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$id = $this->insert_answer();
+		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		add_filter( 'ap_user_can_select_answer', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
+		remove_filter( 'ap_user_can_select_answer', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		add_filter( 'ap_user_can_select_answer', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_select_answer( $id->a ) );
+		remove_filter( 'ap_user_can_select_answer', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerForPostTypeNotAsAnAnswer() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$this->assertFalse( ap_user_can_select_answer( $id ) );
+	}
 }
