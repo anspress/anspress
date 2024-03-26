@@ -2275,4 +2275,24 @@ class TestActivity extends TestCase {
 		$this->assertNotNull( $instance );
 		$this->assertInstanceOf( 'AnsPress\Activity_Helper', $activity );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::__construct
+	 */
+	public function testConstruct() {
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$reflectionClass = new \ReflectionClass( $activity );
+		$table = $reflectionClass->getProperty( 'table' );
+		$table->setAccessible( true );
+		$actions = $reflectionClass->getProperty( 'actions' );
+		$actions->setAccessible( true );
+		$method = $reflectionClass->getMethod( '__construct' );
+		$method->setAccessible( true );
+
+		// Test.
+		$method->invoke( $activity );
+		global $wpdb;
+		$this->assertEquals( $wpdb->prefix . 'ap_activity', $table->getValue( $activity ) );
+		$this->assertNotEmpty( $actions->getValue( $activity ) );
+	}
 }
