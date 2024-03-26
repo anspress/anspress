@@ -3799,4 +3799,78 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_restore( $post_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_view_post
+	 */
+	public function testAPUserCanViewPostForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_author'  => 0,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatusForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertTrue( ap_user_can_change_status( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatusWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_change_status', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_change_status( $post_id ) );
+		remove_filter( 'ap_user_can_change_status', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatusWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_change_status', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_change_status( $post_id ) );
+		remove_filter( 'ap_user_can_change_status', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_show_captcha_to_user
+	 */
+	public function testAPShowCaptchaToUserWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_show_captcha', [ $this, 'ReturnTrue' ] );
+		$this->assertFalse( ap_show_captcha_to_user() );
+		remove_filter( 'ap_show_captcha', [ $this, 'ReturnTrue' ] );
+	}
 }
