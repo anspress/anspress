@@ -63,6 +63,10 @@ class TestAddonReputation extends TestCase {
 	}
 
 	public function testHooksFilters() {
+		$reflectionClass = new \ReflectionClass( 'Anspress\Addons\Reputation' );
+		$property = $reflectionClass->getProperty( 'instance' );
+		$property->setAccessible( true );
+		$property->setValue( null );
 		$instance = \Anspress\Addons\Reputation::init();
 		anspress()->setup_hooks();
 
