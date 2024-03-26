@@ -2260,4 +2260,19 @@ class TestActivity extends TestCase {
 		$this->assertEmpty( $cactivity );
 		$this->assertNull( $cactivity );
 	}
+
+	/**
+	 * @covers AnsPress\Activity_Helper::get_instance
+	 */
+	public function testGetinstanceWhenNull() {
+		$reflectionClass = new \ReflectionClass( 'AnsPress\Activity_Helper' );
+		$instance = $reflectionClass->getProperty( 'instance' );
+		$instance->setAccessible( true );
+		$instance->setValue( null );
+
+		// Test.
+		$activity = \AnsPress\Activity_Helper::get_instance();
+		$this->assertNotNull( $instance );
+		$this->assertInstanceOf( 'AnsPress\Activity_Helper', $activity );
+	}
 }
