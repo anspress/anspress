@@ -79,4 +79,14 @@ class TestAddonBuddyPress extends TestCase {
 		$this->assertEquals( 10, has_action( 'the_post', [ $instance, 'mark_bp_notify_as_read' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_bp_loadmore', [ $instance, 'bp_loadmore' ] ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\BuddyPress::bp_init
+	 */
+	public function testBpInit() {
+		$instance = \Anspress\Addons\BuddyPress::init();
+		$instance->bp_init();
+		anspress()->setup_hooks();
+		$this->assertEquals( 10, has_filter( 'the_content', [ $instance, 'ap_the_answer_content' ] ) );
+	}
 }
