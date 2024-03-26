@@ -3704,4 +3704,99 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertFalse( ap_user_can_edit_comment( $comment_id, $user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostForInvalidPostType() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_post( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_delete_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_delete_post( $post_id ) );
+		remove_filter( 'ap_user_can_delete_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_delete_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_delete_post( $post_id ) );
+		remove_filter( 'ap_user_can_delete_post', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_post( $post_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_permanent_delete
+	 */
+	public function testAPUserCanPermanentDeleteForInvalidPostType() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_user_can_permanent_delete( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_restore
+	 */
+	public function testAPUserCanRestoreForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		$this->assertTrue( ap_user_can_restore( $post_id ) );
+	}
 }
