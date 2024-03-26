@@ -1195,12 +1195,15 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 		$user_id = get_current_user_id();
 	}
 
-	$post_o    = ap_get_post( $_post );
-	$post_type = $post_o->post_type;
+	$post_o = ap_get_post( $_post );
 
+	// Return false if post is not found.
 	if ( ! $post_o ) {
 		return false;
 	}
+
+	// Get post type.
+	$post_type = $post_o->post_type;
 
 	// If not question or answer then return true.
 	if ( ! in_array( $post_type, array( 'question', 'answer' ), true ) ) {
