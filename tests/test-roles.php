@@ -3545,4 +3545,163 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertFalse( ap_user_can_edit_question( $id, $user_id ) );
 	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForNotPassingAnyArgs() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertTrue( ap_user_can_comment() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForNotPassingAnyArgsAndVisitingAnswerPage() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->go_to( '?post_type=answer&p=' . $answer_id );
+		$this->assertTrue( ap_user_can_comment() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$question_id = $this->insert_question();
+		$this->assertTrue( ap_user_can_comment( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_comment( $question_id ) );
+		remove_filter( 'ap_user_can_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_comment( $question_id ) );
+		remove_filter( 'ap_user_can_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForPostStatusSetAsModerate() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		wp_update_post(
+			array(
+				'ID'          => $question_id,
+				'post_status' => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_comment( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForUserWhoCantReadQuestion() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_comment( $question_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+			)
+		);
+		add_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_edit_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+			)
+		);
+		add_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentForUnapprovedComment() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_answer();
+		wp_update_post(
+			array(
+				'ID'          => $id->q,
+				'post_status' => 'private_post',
+			)
+		);
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id, $user_id ) );
+	}
 }
