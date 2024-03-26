@@ -4006,4 +4006,120 @@ class Test_Roles extends TestCase {
 		$this->assertEquals( 'no_permission', $result->get_error_code() );
 		$this->assertEquals( 'You do not have permission to vote.', $result->get_error_message() );
 	}
+
+	/**
+	 * @covers ::ap_user_can_approve_comment
+	 */
+	public function testAPUserCanApproveCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_approve_comment( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_approve_comment
+	 */
+	public function testAPUserCanApproveCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_approve_comment( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_toggle_featured
+	 */
+	public function testAPUserCanToggleFeaturedWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_toggle_featured( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_toggle_featured
+	 */
+	public function testAPUserCanToggleFeaturedWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_toggle_featured( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comment
+	 */
+	public function testAPUserCanReadCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+			)
+		);
+		add_filter( 'ap_user_can_read_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_read_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_read_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comment
+	 */
+	public function testAPUserCanReadCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+			)
+		);
+		add_filter( 'ap_user_can_read_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_read_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_read_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comment
+	 */
+	public function testAPUserCanReadCommentForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_read_comment( $comment_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comments
+	 */
+	public function testAPUserCanReadCommentsWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_comments', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		remove_filter( 'ap_user_can_read_comments', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comments
+	 */
+	public function testAPUserCanReadCommentsWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_comments', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
+		remove_filter( 'ap_user_can_read_comments', [ $this, 'ReturnFalse' ] );
+	}
 }
