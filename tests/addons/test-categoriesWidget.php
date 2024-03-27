@@ -6,10 +6,18 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonCategoriesWidget extends TestCase {
 
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'categories.php' );
+		$this->assertTrue(ap_is_addon_active('categories.php'));
+	}
+
 	public function testWidgetsInit() {
 		$instance = \Anspress\Addons\Categories::init();
 		anspress()->setup_hooks();
 		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget' ] ) );
+		do_action('widgets_init');
+
 		$this->assertTrue( class_exists( 'Anspress\Widgets\Categories' ) );
 		$this->assertTrue( array_key_exists( 'Anspress\Widgets\Categories', $GLOBALS['wp_widget_factory']->widgets ) );
 	}
@@ -25,16 +33,24 @@ class TestAddonCategoriesWidget extends TestCase {
 	 * @covers Anspress\Widgets\Categories::__construct
 	 */
 	public function testConstruct() {
+		\Anspress\Addons\Categories::init();
+		anspress()->setup_hooks();
+
+		do_action('widgets_init');
+
 		$instance = new \Anspress\Widgets\Categories();
+
 		$this->assertEquals( strtolower( 'AnsPress_Category_Widget' ), $instance->id_base );
 		$this->assertEquals( '(AnsPress) Categories', $instance->name );
 		$this->assertEquals( 'Display AnsPress categories', $instance->widget_options['description'] );
 	}
 
-	/**
-	 * @covers Anspress\Widgets\Categories::update
-	 */
 	public function testupdate() {
+		\Anspress\Addons\Categories::init();
+		anspress()->setup_hooks();
+
+		do_action('widgets_init');
+
 		$instance = new \Anspress\Widgets\Categories();
 
 		// Test.
@@ -71,10 +87,12 @@ class TestAddonCategoriesWidget extends TestCase {
 		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
 	}
 
-	/**
-	 * @covers Anspress\Widgets\Categories::update
-	 */
 	public function testUpdateHTMLTagsOnTitle() {
+		\Anspress\Addons\Categories::init();
+		anspress()->setup_hooks();
+
+		do_action('widgets_init');
+
 		$instance = new \Anspress\Widgets\Categories();
 
 		// Test.
@@ -111,10 +129,12 @@ class TestAddonCategoriesWidget extends TestCase {
 		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
 	}
 
-	/**
-	 * @covers Anspress\Widgets\Categories::update
-	 */
 	public function testUpdateWithEmptyOptions() {
+		\Anspress\Addons\Categories::init();
+		anspress()->setup_hooks();
+
+		do_action('widgets_init');
+
 		$instance = new \Anspress\Widgets\Categories();
 
 		// Test.
@@ -151,9 +171,6 @@ class TestAddonCategoriesWidget extends TestCase {
 		$this->assertEquals( $expected, $instance->update( $new_instance, $old_instance ) );
 	}
 
-	/**
-	 * @covers Anspress\Widgets\Categories::update
-	 */
 	public function testUpdateHTMLTagsOnTitleWithEmptyTitle() {
 		$instance = new \Anspress\Widgets\Categories();
 

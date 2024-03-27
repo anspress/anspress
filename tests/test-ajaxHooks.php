@@ -582,7 +582,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );

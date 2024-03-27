@@ -160,7 +160,8 @@ class Categories extends \WP_Widget {
 				<?php
 				if ( $categories ) {
 					foreach ( $categories as $c ) {
-						echo '<option value="' . (int) $c->term_id . '" ' . selected( $parent, $c->term_id ) . '>' . esc_html( $c->name ) . '</option>'; }
+						echo '<option value="' . (int) $c->term_id . '" ' . selected( $parent, $c->term_id ) . '>' . esc_html( $c->name ) . '</option>';
+					}
 				}
 
 				?>

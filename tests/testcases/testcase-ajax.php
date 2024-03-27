@@ -28,6 +28,8 @@ abstract class TestCaseAjax extends TestCase {
 		add_action( 'clear_auth_cookie', array( $this, 'logout' ) );
 		$this->_error_level = error_reporting();
 		error_reporting( $this->_error_level & ~E_WARNING );
+
+		ap_add_default_options(ap_default_options());
 	}
 
 	public function tear_down() {

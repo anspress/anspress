@@ -1528,6 +1528,7 @@ class TestActivity extends TestCase {
 			array(
 				'action' => 'new_q',
 				'q_id'   => $id->q,
+				'date' => '2024-03-27 10:11:15'
 			)
 		);
 		$get_recent_activity = ap_get_recent_activity( $id->q );
@@ -1540,7 +1541,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $get_recent_activity->a_id );
 		$this->assertEquals( 0, $get_recent_activity->c_id );
 		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
-		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+		$this->assertEquals( '2024-03-27 10:11:15', $get_recent_activity->date );
 
 		// For new answer.
 		$id = $this->insert_answer();
@@ -1549,6 +1550,7 @@ class TestActivity extends TestCase {
 				'action' => 'new_a',
 				'q_id'   => $id->q,
 				'a_id'   => $id->a,
+				'date' => '2024-03-27 10:11:15'
 			)
 		);
 		$get_recent_activity = ap_get_recent_activity( $id->a );
@@ -1561,7 +1563,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $get_recent_activity->a_id );
 		$this->assertEquals( 0, $get_recent_activity->c_id );
 		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
-		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+		$this->assertEquals( '2024-03-27 10:11:15', $get_recent_activity->date );
 
 		// For new comment on question.
 		$id = $this->insert_answer();
@@ -1578,6 +1580,7 @@ class TestActivity extends TestCase {
 				'action' => 'new_c',
 				'q_id'   => $id->q,
 				'c_id'   => $c_id,
+				'date' => '2024-03-27 10:11:15'
 			)
 		);
 		$get_recent_activity = ap_get_recent_activity( $id->q );
@@ -1590,7 +1593,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $get_recent_activity->a_id );
 		$this->assertEquals( $c_id, $get_recent_activity->c_id );
 		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
-		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+		$this->assertEquals( '2024-03-27 10:11:15', $get_recent_activity->date );
 
 		// For new comment on answer.
 		$id = $this->insert_answer();
@@ -1608,6 +1611,7 @@ class TestActivity extends TestCase {
 				'q_id'   => $id->q,
 				'a_id'   => $id->a,
 				'c_id'   => $c_id,
+				'date' => '2024-03-27 10:11:15'
 			)
 		);
 		$get_recent_activity = ap_get_recent_activity( $id->a );
@@ -1620,7 +1624,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $get_recent_activity->a_id );
 		$this->assertEquals( $c_id, $get_recent_activity->c_id );
 		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
-		$this->assertEquals( current_time( 'mysql' ), $get_recent_activity->date );
+		$this->assertEquals( '2024-03-27 10:11:15', $get_recent_activity->date );
 	}
 
 	/**

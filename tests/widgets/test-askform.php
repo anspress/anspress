@@ -9,6 +9,7 @@ class TestWidgetAskForm extends TestCase {
 	public function testWidgetsInit() {
 		$this->assertEquals( 10, has_action( 'widgets_init', 'ap_quickask_register_widgets' ) );
 		$this->assertTrue( class_exists( 'AP_Askform_Widget' ) );
+		ap_quickask_register_widgets();
 		$this->assertTrue( array_key_exists( 'AP_Askform_Widget', $GLOBALS['wp_widget_factory']->widgets ) );
 	}
 
