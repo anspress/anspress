@@ -2053,4 +2053,79 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'test_query_var', ap_current_page() );
 		remove_filter( 'ap_current_page', [ $this, 'APCurrentPage' ] );
 	}
+
+	/**
+	 * @covers ::ap_pagination
+	 */
+	public function testAPPaginationShouldReturnEmptyWithTotalPagesSetAsOne() {
+		global $ap_max_num_pages, $ap_current;
+		$ap_max_num_pages = 1;
+		ob_start();
+		ap_pagination();
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers ::ap_pagination
+	 */
+	public function testAPPaginationWithGlobalVariables() {
+		global $ap_max_num_pages, $ap_current;
+		$ap_max_num_pages = 5;
+		$ap_current = 2;
+		ob_start();
+		ap_pagination( true );
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $result );
+		$this->assertStringContainsString( '<span aria-current="page" class="page-numbers current">2</span>', $result );
+		$this->assertStringContainsString( '&#038;paged=1', $result );
+		$this->assertStringContainsString( '&#038;paged=3', $result );
+		$this->assertStringContainsString( '&#038;paged=4', $result );
+		$this->assertStringContainsString( '&#038;paged=5', $result );
+		$this->assertStringContainsString( '<a class="next page-numbers" rel="next"', $result );
+		$this->assertStringContainsString( '<a class="prev page-numbers" rel="prev"', $result );
+	}
+
+	/**
+	 * @covers ::ap_pagination
+	 */
+	public function testAPPaginationWithCustomCurrentAndTotalPages() {
+		global $ap_max_num_pages, $ap_current;
+		$ap_max_num_pages = null;
+		set_query_var( 'paged', 2 );
+		anspress()->questions->max_num_pages = 5;
+		ob_start();
+		ap_pagination();
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $result );
+		$this->assertStringContainsString( '<span aria-current="page" class="page-numbers current">2</span>', $result );
+		$this->assertStringContainsString( '&#038;paged=1', $result );
+		$this->assertStringContainsString( '&#038;paged=3', $result );
+		$this->assertStringContainsString( '&#038;paged=4', $result );
+		$this->assertStringContainsString( '&#038;paged=5', $result );
+		$this->assertStringContainsString( '<a class="next page-numbers" rel="next"', $result );
+		$this->assertStringContainsString( '<a class="prev page-numbers" rel="prev"', $result );
+	}
+
+	/**
+	 * @covers ::ap_pagination
+	 */
+	public function testAPPaginationForFrontPage() {
+		global $ap_max_num_pages, $ap_current;
+		$ap_max_num_pages = 5;
+		$this->go_to( home_url() );
+		$_REQUEST['ap_paged'] = 2;
+		ob_start();
+		ap_pagination();
+		$result = ob_get_clean();
+		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $result );
+		$this->assertStringContainsString( '<span aria-current="page" class="page-numbers current">2</span>', $result );
+		$this->assertStringContainsString( '?paged=1', $result );
+		$this->assertStringContainsString( '?paged=3', $result );
+		$this->assertStringContainsString( '?paged=4', $result );
+		$this->assertStringContainsString( '?paged=5', $result );
+		$this->assertStringContainsString( '<a class="next page-numbers" rel="next"', $result );
+		$this->assertStringContainsString( '<a class="prev page-numbers" rel="prev"', $result );
+		unset( $_REQUEST['ap_paged'] );
+	}
 }
