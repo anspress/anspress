@@ -1056,4 +1056,25 @@ class TestAddonCategories extends TestCase {
 		$this->assertNotEmpty( $result );
 		$this->assertEqualSets( $filter_args, $result );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::save_image_field
+	 */
+	public function testSaveImageFieldForImageNotAsAnArray() {
+		$instance = \Anspress\Addons\Categories::init();
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+
+		// Test.
+		$this->setRole( 'administrator' );
+		$_REQUEST['ap_category_image_url'] = 'http://example.com/image.jpg';
+		$_REQUEST['ap_category_image_id'] = 1;
+		$_REQUEST['ap_icon'] = 'apicon-star';
+		$_REQUEST['ap_color'] = '#000000';
+		update_term_meta( $term_id, 'ap_category', [ 'image' => '' ] );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertIsString( $term_meta['image'] );
+		$instance->save_image_field( $term_id );
+		$term_meta = get_term_meta( $term_id, 'ap_category', true );
+		$this->assertIsArray( $term_meta['image'] );
+	}
 }
