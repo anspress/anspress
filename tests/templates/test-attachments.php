@@ -19,7 +19,7 @@ class TestTemplatesAttachments extends TestCase {
 			'application/pdf'          => 'file-pdf-o',
 		);
 		$question_id   = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/anspress-hero.png', $question_id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/anspress-hero.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 
@@ -37,9 +37,9 @@ class TestTemplatesAttachments extends TestCase {
 		// Test 2.
 		$question_id = $this->insert_question();
 		$attachment_ids = [
-			$this->factory->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/files/anspress.pdf', $question_id ),
-			$this->factory->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/question.png', $question_id ),
-			$this->factory->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/answer.png', $question_id ),
+			$this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/files/anspress.pdf', $question_id ),
+			$this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/question.png', $question_id ),
+			$this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/answer.png', $question_id ),
 		];
 		ap_update_post_attach_ids( $question_id );
 		$this->go_to( '/?post_type=question&p=' . $question_id );

@@ -817,7 +817,7 @@ class TestAnsPressFormValidate extends TestCase {
 
 		// Test on passing values.
 		// Test for single category.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'Question category',
@@ -833,7 +833,7 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for single tag.
-		$tid = $this->factory->term->create(
+		$tid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 				'name'     => 'Question tag',
@@ -849,19 +849,19 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for multiple categories values passed.
-		$cid1 = $this->factory->term->create(
+		$cid1 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'Question category 1',
 			)
 		);
-		$cid2 = $this->factory->term->create(
+		$cid2 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'Question category 2',
 			)
 		);
-		$cid3 = $this->factory->term->create(
+		$cid3 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'Question category 3',
@@ -877,19 +877,19 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for multiple tags values passed.
-		$tid1 = $this->factory->term->create(
+		$tid1 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 				'name'     => 'Question tag 1',
 			)
 		);
-		$tid2 = $this->factory->term->create(
+		$tid2 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 				'name'     => 'Question tag 2',
 			)
 		);
-		$tid3 = $this->factory->term->create(
+		$tid3 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 				'name'     => 'Question tag 3',
@@ -929,7 +929,7 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for existing and new question category creation.
-		$new_cid = $this->factory->term->create(
+		$new_cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'New question category',
@@ -941,7 +941,7 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for existing and new question tag creation.
-		$new_cid = $this->factory->term->create(
+		$new_cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 				'name'     => 'New question tag',
@@ -965,7 +965,7 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for existing and no new question category creation.
-		$new_cid = $this->factory->term->create(
+		$new_cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'New new question category',
@@ -977,7 +977,7 @@ class TestAnsPressFormValidate extends TestCase {
 		);
 
 		// Test for existing and no new question tag creation.
-		$new_cid = $this->factory->term->create(
+		$new_cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 				'name'     => 'New new question tag',

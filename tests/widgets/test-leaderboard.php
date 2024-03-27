@@ -398,9 +398,9 @@ class TestWidgetLeaderboard extends TestCase {
 		ap_activate_addon( 'reputation.php' );
 
 		// Create some users.
-		$user_id_1 = $this->factory->user->create( [ 'display_name' => 'User 1', 'role' => 'subscriber' ] );
-		$user_id_2 = $this->factory->user->create( [ 'display_name' => 'User 2', 'role' => 'subscriber' ] );
-		$user_id_3 = $this->factory->user->create( [ 'display_name' => 'User 3', 'role' => 'subscriber' ] );
+		$user_id_1 = $this->factory()->user->create( [ 'display_name' => 'User 1', 'role' => 'subscriber' ] );
+		$user_id_2 = $this->factory()->user->create( [ 'display_name' => 'User 2', 'role' => 'subscriber' ] );
+		$user_id_3 = $this->factory()->user->create( [ 'display_name' => 'User 3', 'role' => 'subscriber' ] );
 
 		// Test.
 		$args = [
@@ -441,9 +441,9 @@ class TestWidgetLeaderboard extends TestCase {
 		ap_activate_addon( 'reputation.php' );
 
 		// Create some users.
-		$user_id_1 = $this->factory->user->create( [ 'display_name' => 'User 1', 'role' => 'subscriber' ] );
-		$user_id_2 = $this->factory->user->create( [ 'display_name' => 'User 2', 'role' => 'subscriber' ] );
-		$user_id_3 = $this->factory->user->create( [ 'display_name' => 'User 3', 'role' => 'subscriber' ] );
+		$user_id_1 = $this->factory()->user->create( [ 'display_name' => 'User 1', 'role' => 'subscriber' ] );
+		$user_id_2 = $this->factory()->user->create( [ 'display_name' => 'User 2', 'role' => 'subscriber' ] );
+		$user_id_3 = $this->factory()->user->create( [ 'display_name' => 'User 3', 'role' => 'subscriber' ] );
 
 		// Test.
 		$args = [

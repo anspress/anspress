@@ -209,9 +209,9 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		$this->assertEmpty( $result );
 
 		// Test 3.
-		$category_1 = $this->factory->term->create( [ 'name' => 'Category 1', 'taxonomy' => 'question_category' ] );
-		$category_2 = $this->factory->term->create( [ 'name' => 'Category 2', 'taxonomy' => 'question_category' ] );
-		$category_3 = $this->factory->term->create( [ 'name' => 'Category 3', 'taxonomy' => 'question_category' ] );
+		$category_1 = $this->factory()->term->create( [ 'name' => 'Category 1', 'taxonomy' => 'question_category' ] );
+		$category_2 = $this->factory()->term->create( [ 'name' => 'Category 2', 'taxonomy' => 'question_category' ] );
+		$category_3 = $this->factory()->term->create( [ 'name' => 'Category 3', 'taxonomy' => 'question_category' ] );
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
 			'options' => 'terms',
 		] );
@@ -228,9 +228,9 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		$this->assertEquals( $expected, $result );
 
 		// Test 4.
-		$tag_1 = $this->factory->term->create( [ 'name' => 'Tag 1', 'taxonomy' => 'question_tag' ] );
-		$tag_2 = $this->factory->term->create( [ 'name' => 'Tag 2', 'taxonomy' => 'question_tag' ] );
-		$tag_3 = $this->factory->term->create( [ 'name' => 'Tag 3', 'taxonomy' => 'question_tag' ] );
+		$tag_1 = $this->factory()->term->create( [ 'name' => 'Tag 1', 'taxonomy' => 'question_tag' ] );
+		$tag_2 = $this->factory()->term->create( [ 'name' => 'Tag 2', 'taxonomy' => 'question_tag' ] );
+		$tag_3 = $this->factory()->term->create( [ 'name' => 'Tag 3', 'taxonomy' => 'question_tag' ] );
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
 			'options'    => 'terms',
 			'terms_args' => [
@@ -267,9 +267,9 @@ class TestAnsPressFormFieldSelect extends TestCase {
 		$this->assertEmpty( $result );
 
 		// Test 6.
-		$page1 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 1' ] );
-		$page2 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 2' ] );
-		$page3 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 3' ] );
+		$page1 = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 1' ] );
+		$page2 = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 2' ] );
+		$page3 = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 3' ] );
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
 			'options' => 'posts',
 			'posts_args' => [
@@ -359,9 +359,9 @@ class TestAnsPressFormFieldSelect extends TestCase {
 
 		// Test 3.
 		$callback_triggered = false;
-		$category_1 = $this->factory->term->create( [ 'name' => 'Category 1', 'taxonomy' => 'question_category' ] );
-		$category_2 = $this->factory->term->create( [ 'name' => 'Category 2', 'taxonomy' => 'question_category' ] );
-		$category_3 = $this->factory->term->create( [ 'name' => 'Category 3', 'taxonomy' => 'question_category' ] );
+		$category_1 = $this->factory()->term->create( [ 'name' => 'Category 1', 'taxonomy' => 'question_category' ] );
+		$category_2 = $this->factory()->term->create( [ 'name' => 'Category 2', 'taxonomy' => 'question_category' ] );
+		$category_3 = $this->factory()->term->create( [ 'name' => 'Category 3', 'taxonomy' => 'question_category' ] );
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
 			'options' => 'terms',
 		] );
@@ -377,9 +377,9 @@ class TestAnsPressFormFieldSelect extends TestCase {
 
 		// Test 4.
 		$callback_triggered = false;
-		$page1 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 1' ] );
-		$page2 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 2' ] );
-		$page3 = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 3' ] );
+		$page1 = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 1' ] );
+		$page2 = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 2' ] );
+		$page3 = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Page 3' ] );
 		$field = new \AnsPress\Form\Field\Select( 'Sample Form', 'sample-form', [
 			'options' => 'posts',
 			'posts_args' => [

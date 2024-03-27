@@ -168,7 +168,7 @@ class TestAddonCaptcha extends TestCase {
 		ap_opt( 'recaptcha_site_key', 'anspressSamplereCaptchaSiteKey' );
 
 		// Create and assign ask page.
-		$ask_page = $this->factory->post->create( array( 'post_type' => 'page' ) );
+		$ask_page = $this->factory()->post->create( array( 'post_type' => 'page' ) );
 		ap_opt( 'ask_page', $ask_page );
 
 		// Test for showing captcha in form for non logged in users.
@@ -239,7 +239,7 @@ class TestAddonCaptcha extends TestCase {
 			$this->assertEquals( 100, $form['fields']['captcha']['order'] );
 
 			// Test for super admin user role.
-			$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 			wp_set_current_user( $user_id );
 			$this->go_to( '/?post_type=page&p=' . $ask_page );
 			$form = $instance->ap_question_form_fields( [] );

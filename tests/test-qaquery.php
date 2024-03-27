@@ -49,7 +49,7 @@ class TestQAQuery extends TestCase {
 
 		// Test on other post statuses.
 		// Moderate post status.
-		$q1_id = $this->factory->post->create(
+		$q1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -63,7 +63,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( '<span class="ap-post-status moderate">Moderate</span>', $moderate_post_status );
 
 		// Private post post status.
-		$q2_id = $this->factory->post->create(
+		$q2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -77,7 +77,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( '<span class="ap-post-status private_post">Private</span>', $private_post_status );
 
 		// Future post status.
-		$q3_id = $this->factory->post->create(
+		$q3_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -92,7 +92,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( '<span class="ap-post-status future">Scheduled</span>', $future_status );
 
 		// Draft post status.
-		$q4_id = $this->factory->post->create(
+		$q4_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -106,7 +106,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( '<span class="ap-post-status draft">Draft</span>', $draft_status );
 
 		// Pending review post status.
-		$q5_id = $this->factory->post->create(
+		$q5_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -150,7 +150,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( 10, $answers_count );
 
 		// Test on additional answers to a question.
-		$a1_id = $this->factory->post->create(
+		$a1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -163,7 +163,7 @@ class TestQAQuery extends TestCase {
 		ap_answers_count( $id['question'] );
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 11, $answers_count );
-		$a2_id = $this->factory->post->create(
+		$a2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -184,7 +184,7 @@ class TestQAQuery extends TestCase {
 		ap_answers_count( $q_id );
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 0, $answers_count );
-		$a1_id = $this->factory->post->create(
+		$a1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -197,7 +197,7 @@ class TestQAQuery extends TestCase {
 		ap_answers_count( $q_id );
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 1, $answers_count );
-		$a2_id = $this->factory->post->create(
+		$a2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -211,7 +211,7 @@ class TestQAQuery extends TestCase {
 		ap_answers_count( $q_id );
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 1, $answers_count );
-		$a3_id = $this->factory->post->create(
+		$a3_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -225,7 +225,7 @@ class TestQAQuery extends TestCase {
 		ap_answers_count( $q_id );
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 1, $answers_count );
-		$a4_id = $this->factory->post->create(
+		$a4_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -247,7 +247,7 @@ class TestQAQuery extends TestCase {
 		ap_answers_count( $id->q );
 		$answers_count = ob_get_clean();
 		$this->assertEquals( 1, $answers_count );
-		$a1_id = $this->factory->post->create(
+		$a1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -255,7 +255,7 @@ class TestQAQuery extends TestCase {
 				'post_parent'  => $id->q,
 			)
 		);
-		$a2_id = $this->factory->post->create(
+		$a2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -334,7 +334,7 @@ class TestQAQuery extends TestCase {
 
 		// Adding additional votes.
 		$id = $this->insert_answer();
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
 		// On question.
 		ap_add_post_vote( $id->q );
@@ -356,9 +356,9 @@ class TestQAQuery extends TestCase {
 
 		// Adding more additional votes for testing.
 		$id = $this->insert_answer();
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$new_user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$latest_user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$latest_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
 		// On question.
 		ap_add_post_vote( $id->q, get_current_user_id() );
@@ -411,7 +411,7 @@ class TestQAQuery extends TestCase {
 		$timestamp = strtotime( $now );
 		$time = $timestamp - (5 * 60);
 		$datetime = date( 'Y-m-d H:i:s', $time );
-		$q_id = $this->factory->post->create(
+		$q_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
@@ -444,7 +444,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( '1 second ago', $last_active );
 
 		// Test for answer.
-		$a_id = $this->factory->post->create(
+		$a_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -483,7 +483,7 @@ class TestQAQuery extends TestCase {
 		$timestamp = strtotime( $now );
 		$time = $timestamp - (3 * 60 * 60);
 		$datetime = date( 'Y-m-d H:i:s', $time );
-		$q_id = $this->factory->post->create(
+		$q_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
@@ -516,7 +516,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEquals( '1 second ago', $last_active );
 
 		// Test for answer.
-		$a_id = $this->factory->post->create(
+		$a_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -565,14 +565,14 @@ class TestQAQuery extends TestCase {
 		$this->assertTrue( ap_have_answer_selected( $id->q ) );
 
 		// Additional tests.
-		$q_id = $this->factory->post->create(
+		$q_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
 				'post_type'     => 'question',
 			)
 		);
-		$a_id = $this->factory->post->create(
+		$a_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -606,14 +606,14 @@ class TestQAQuery extends TestCase {
 		$this->assertNotEquals( $id->a, ap_selected_answer( $id->q ) );
 
 		// Additional tests.
-		$q_id = $this->factory->post->create(
+		$q_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
 				'post_type'     => 'question',
 			)
 		);
-		$a_id = $this->factory->post->create(
+		$a_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -649,14 +649,14 @@ class TestQAQuery extends TestCase {
 		$this->assertFalse( ap_is_selected( $id->a ) );
 
 		// Additional tests.
-		$q_id = $this->factory->post->create(
+		$q_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
 				'post_type'     => 'question',
 			)
 		);
-		$a_id = $this->factory->post->create(
+		$a_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -671,7 +671,7 @@ class TestQAQuery extends TestCase {
 		$this->assertFalse( ap_is_selected( $a_id ) );
 
 		// Test on new answer select.
-		$na_id = $this->factory->post->create(
+		$na_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -684,7 +684,7 @@ class TestQAQuery extends TestCase {
 		$this->assertTrue( ap_is_selected( $na_id ) );
 
 		// Test on additional new answer select.
-		$lna_id = $this->factory->post->create(
+		$lna_id = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Answer title',
 				'post_content'  => 'Answer content',
@@ -748,13 +748,13 @@ class TestQAQuery extends TestCase {
 		$this->assertFalse( ap_post_have_terms( $id, 'question_tag' ) );
 
 		// Test for terms availability.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
 			)
 		);
-		$tid = $this->factory->term->create(
+		$tid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question tag',
 				'taxonomy' => 'question_tag',
@@ -797,7 +797,7 @@ class TestQAQuery extends TestCase {
 
 		// Test for terms availability.
 		// For category.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
@@ -814,7 +814,7 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( $cid, ap_get_terms( false, $id ) );
 
 		// For tag.
-		$tid = $this->factory->term->create(
+		$tid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question tag',
 				'taxonomy' => 'question_tag',
@@ -853,7 +853,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_have_attach( $id ) );
 
 		// Test after adding the attachments.
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
 		ap_update_post_attach_ids( $id );
 		$this->assertTrue( ap_have_attach( $id ) );
 		$this->assertNotEmpty( ap_have_attach( $id ) );
@@ -882,7 +882,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_get_attach( $qid_1 ) );
 
 		// Test after adding the attachments.
-		$attachment_id_1 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $qid_1 );
+		$attachment_id_1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $qid_1 );
 		ap_update_post_attach_ids( $qid_1 );
 		$this->assertIsArray( ap_get_attach( $qid_1 ) );
 		$this->assertNotEmpty( ap_get_attach( $qid_1 ) );
@@ -894,7 +894,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_get_attach( $qid_2 ) );
 
 		// Test after adding the attachments.
-		$attachment_id_2 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $qid_2 );
+		$attachment_id_2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $qid_2 );
 		ap_update_post_attach_ids( $qid_2 );
 		$this->assertIsArray( ap_get_attach( $qid_2 ) );
 		$this->assertNotEmpty( ap_get_attach( $qid_2 ) );
@@ -902,9 +902,9 @@ class TestQAQuery extends TestCase {
 
 		// Test for array values on adding the attachments.
 		$q_id    = $this->insert_question();
-		$pdf_id  = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $q_id );
-		$png1_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $q_id );
-		$png2_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $q_id );
+		$pdf_id  = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $q_id );
+		$png1_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $q_id );
+		$png2_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $q_id );
 		ap_update_post_attach_ids( $q_id );
 		$this->assertEquals( [ $pdf_id, $png1_id, $png2_id ], ap_get_attach( $q_id ) );
 	}

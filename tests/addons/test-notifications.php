@@ -343,7 +343,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Insert notifications.
 		$answer_noti_id    = ap_insert_notification(
@@ -389,7 +389,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Insert notifications.
 		$answer_noti_id    = ap_insert_notification(
@@ -437,7 +437,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Insert notifications.
 		$answer_noti_id    = ap_insert_notification(
@@ -485,8 +485,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [] );
@@ -507,9 +507,9 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
-		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [] );
@@ -536,7 +536,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -544,7 +544,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
 		$notifications = ap_get_notifications( [] );
 		$this->assertEmpty( $notifications );
 		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
@@ -558,8 +558,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -567,7 +567,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
 		$this->assertCount( 1, $notifications );
 		$notification = $notifications[0];
@@ -588,7 +588,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -596,7 +596,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
 		wp_untrash_post( $answer_id );
 		$notifications = ap_get_notifications( [] );
 		$this->assertEmpty( $notifications );
@@ -611,8 +611,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -620,7 +620,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_untrash_answer', [ $instance, 'new_answer' ], 10, 2 );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		wp_trash_post( $answer_id );
 		wp_untrash_post( $answer_id );
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -643,7 +643,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
 
 		// Insert notifications.
 		$answer_noti_id    = ap_insert_notification(
@@ -689,7 +689,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
 
 		// Insert notifications.
 		$answer_noti_id    = ap_insert_notification(
@@ -737,7 +737,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer' ] );
 
 		// Insert notifications.
 		$answer_noti_id    = ap_insert_notification(
@@ -785,8 +785,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [] );
@@ -806,9 +806,9 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -835,8 +835,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -858,8 +858,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -867,7 +867,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
 		$this->assertCount( 1, $notifications );
@@ -889,9 +889,9 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
-		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 
 		// Insert notifications.
 		$answer_noti_id = ap_insert_notification(
@@ -922,9 +922,9 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
-		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 
 		// Insert notifications.
 		$answer_noti_id = ap_insert_notification(
@@ -958,8 +958,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [] );
@@ -979,9 +979,9 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
-		$comment_id  = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$comment_id  = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -1008,7 +1008,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -1016,7 +1016,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
 		$notifications = ap_get_notifications( [] );
 		$this->assertEmpty( $notifications );
 		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
@@ -1030,8 +1030,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -1039,7 +1039,7 @@ class TestAddonNotifications extends TestCase {
 
 		// After the action hook is introduced.
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
 		$this->assertCount( 1, $notifications );
@@ -1061,8 +1061,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
 
 		// Insert notifications.
 		$comment_noti_id = ap_insert_notification(
@@ -1092,9 +1092,9 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id() ] );
 
 		// Insert notifications.
 		$comment_noti_id = ap_insert_notification(
@@ -1128,7 +1128,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [] );
@@ -1148,8 +1148,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -1176,7 +1176,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -1198,8 +1198,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -1228,8 +1228,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Insert notifications.
 		$vote_up_noti_id = ap_insert_notification(
@@ -1261,8 +1261,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Insert notifications.
 		$vote_up_noti_id = ap_insert_notification(
@@ -1296,7 +1296,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [] );
@@ -1316,8 +1316,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before calling the method.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -1344,7 +1344,7 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [] );
@@ -1366,8 +1366,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Before the action hook is introduced.
 		$notifications = ap_get_notifications( [ 'user_id' => $user_id ] );
@@ -1396,8 +1396,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Insert notifications.
 		$vote_down_noti_id = ap_insert_notification(
@@ -1429,8 +1429,8 @@ class TestAddonNotifications extends TestCase {
 
 		// Test begins.
 		$this->setRole( 'subscriber' );
-		$user_id     = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$user_id     = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
 
 		// Insert notifications.
 		$vote_down_noti_id = ap_insert_notification(

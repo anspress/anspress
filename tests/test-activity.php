@@ -338,7 +338,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( current_time( 'mysql' ), $new_a_activity->activity_date );
 
 		// Inserting new comment on question.
-		$q_c_id  = $this->factory->comment->create_object(
+		$q_c_id  = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -361,7 +361,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( current_time( 'mysql' ), $new_c_activity->activity_date );
 
 		// Inserting new comment on answer.
-		$a_c_id  = $this->factory->comment->create_object(
+		$a_c_id  = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -567,7 +567,7 @@ class TestActivity extends TestCase {
 
 		// Test begins.
 		// For invalid post type delete directly from function.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -587,7 +587,7 @@ class TestActivity extends TestCase {
 		$this->assertIsObject( $q_activity );
 
 		// For invalid post type delete from deleting WordPress posts function.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -670,14 +670,14 @@ class TestActivity extends TestCase {
 
 		// Test begins.
 		// For invalid comment type delete directly from function.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 			)
 		);
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id,
@@ -696,14 +696,14 @@ class TestActivity extends TestCase {
 		$this->assertIsObject( $c_activity );
 
 		// // For invalid comment type delete from deleting WordPress posts function.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 			)
 		);
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id,
@@ -723,7 +723,7 @@ class TestActivity extends TestCase {
 
 		// New comment for question and delete directly from function.
 		$id = $this->insert_answer();
-		$q_c_id = $this->factory->comment->create_object(
+		$q_c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -744,7 +744,7 @@ class TestActivity extends TestCase {
 
 		// New comment for answer and delete directly from function.
 		$id = $this->insert_answer();
-		$a_c_id = $this->factory->comment->create_object(
+		$a_c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -765,7 +765,7 @@ class TestActivity extends TestCase {
 
 		// New comment for question and delete from WordPress function.
 		$id = $this->insert_answer();
-		$q_c_id = $this->factory->comment->create_object(
+		$q_c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -786,7 +786,7 @@ class TestActivity extends TestCase {
 
 		// New comment for answer and delete from WordPress function.
 		$id = $this->insert_answer();
-		$a_c_id = $this->factory->comment->create_object(
+		$a_c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1020,7 +1020,7 @@ class TestActivity extends TestCase {
 
 		// For new and edit comment activity add.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1059,7 +1059,7 @@ class TestActivity extends TestCase {
 
 		// Test begins.
 		// Test for un-supported post types.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1073,7 +1073,7 @@ class TestActivity extends TestCase {
 			)
 		);
 		$this->assertTrue( is_wp_error( ap_delete_post_activity( $post_id ) ) );
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1087,7 +1087,7 @@ class TestActivity extends TestCase {
 			)
 		);
 		$this->assertTrue( is_wp_error( ap_delete_post_activity( $page_id ) ) );
-		$testimonial_id = $this->factory->post->create(
+		$testimonial_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Testimonial title',
 				'post_content' => 'Testimonial content',
@@ -1149,13 +1149,13 @@ class TestActivity extends TestCase {
 
 		// Test begins.
 		// Test for un-supported comment type.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 			)
 		);
-		$comment_id = $this->factory->comment->create_object(
+		$comment_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $post_id,
@@ -1170,14 +1170,14 @@ class TestActivity extends TestCase {
 			)
 		);
 		$this->assertNull( ap_delete_comment_activity( $comment_id ) );
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'page',
 			)
 		);
-		$comment_id = $this->factory->comment->create_object(
+		$comment_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $page_id,
@@ -1196,7 +1196,7 @@ class TestActivity extends TestCase {
 		// Test for supported comment type.
 		$id = $this->insert_answer();
 		// For question.
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id->q,
@@ -1220,7 +1220,7 @@ class TestActivity extends TestCase {
 		$this->assertEmpty( $q_activity );
 
 		// For answer.
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id->a,
@@ -1329,7 +1329,7 @@ class TestActivity extends TestCase {
 		$this->assertIsObject( $a_activity );
 
 		// Adding activity on comment create.
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $id->q,
@@ -1436,7 +1436,7 @@ class TestActivity extends TestCase {
 
 		// For new comment.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1459,7 +1459,7 @@ class TestActivity extends TestCase {
 
 		// For edit comment.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1493,7 +1493,7 @@ class TestActivity extends TestCase {
 
 		// Test begins.
 		// For invalid post types.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1506,7 +1506,7 @@ class TestActivity extends TestCase {
 			)
 		);
 		$this->assertNull( ap_get_recent_activity( $post_id ) );
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1567,7 +1567,7 @@ class TestActivity extends TestCase {
 
 		// For new comment on question.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1597,7 +1597,7 @@ class TestActivity extends TestCase {
 
 		// For new comment on answer.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1709,7 +1709,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
 
 		// Inserting the comment activity on question.
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1758,7 +1758,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[2]->activity_date );
 
 		// Inserting the comment activity on answer.
-		$nc_id = $this->factory->comment->create_object(
+		$nc_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -1987,7 +1987,7 @@ class TestActivity extends TestCase {
 		$activity = \AnsPress\Activity_Helper::get_instance();
 
 		// Test for other post types.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1995,7 +1995,7 @@ class TestActivity extends TestCase {
 		);
 		$result = $activity::_before_delete( $post_id );
 		$this->assertNull( $result );
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -2054,13 +2054,13 @@ class TestActivity extends TestCase {
 		$this->setRole( 'subscriber' );
 
 		// Test for un-supported comment type.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 			)
 		);
-		$comment_id = $this->factory->comment->create_object(
+		$comment_id = $this->factory()->comment->create_object(
 			array(
 				'post_status'     => 'publish',
 				'comment_post_ID' => $post_id,
@@ -2086,7 +2086,7 @@ class TestActivity extends TestCase {
 		// Test for supported comment type.
 		// For question.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -2111,7 +2111,7 @@ class TestActivity extends TestCase {
 		$this->assertNull( $c_activity );
 
 		// For answer.
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -2186,7 +2186,7 @@ class TestActivity extends TestCase {
 		$this->assertNull( $aactivity );
 
 		// New comment activity.
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -2211,7 +2211,7 @@ class TestActivity extends TestCase {
 
 		// For multiple user activity.
 		$id = $this->insert_answer();
-		$c_id = $this->factory->comment->create_object(
+		$c_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',

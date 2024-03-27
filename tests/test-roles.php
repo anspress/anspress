@@ -249,14 +249,14 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanAnswer() {
 		$question_id = $this->insert_question();
-		$post_id     = $this->factory->post->create(
+		$post_id     = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 			)
 		);
-		$page_id     = $this->factory->post->create(
+		$page_id     = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -273,14 +273,14 @@ class Test_Roles extends TestCase {
 		// Check for the answer selected option.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
 				'post_type'    => 'question',
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -296,7 +296,7 @@ class Test_Roles extends TestCase {
 		// Check for the original poster can answer.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -320,7 +320,7 @@ class Test_Roles extends TestCase {
 		// Check for multiple answer posted by the author can answer again.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -328,7 +328,7 @@ class Test_Roles extends TestCase {
 			)
 		);
 		$this->assertTrue( ap_user_can_answer( $qid, $user_id ) );
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -411,7 +411,7 @@ class Test_Roles extends TestCase {
 		// Test for the question and answer edit capability for the same user.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -419,7 +419,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -434,7 +434,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_edit_answer( $aid ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -442,7 +442,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -562,7 +562,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditComment() {
 		$id   = $this->insert_answer();
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -570,7 +570,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => get_current_user_id(),
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -599,7 +599,7 @@ class Test_Roles extends TestCase {
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -607,7 +607,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => $user_id,
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -619,7 +619,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_edit_comment( $caid, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -627,7 +627,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => $user_id,
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -644,7 +644,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanDeleteComment() {
 		$id   = $this->insert_answer();
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -652,7 +652,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => get_current_user_id(),
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -681,7 +681,7 @@ class Test_Roles extends TestCase {
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -689,7 +689,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => $user_id,
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -701,7 +701,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_delete_comment( $caid, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -709,7 +709,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => $user_id,
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -770,7 +770,7 @@ class Test_Roles extends TestCase {
 		// Test for same user delete permission.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -778,7 +778,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -793,7 +793,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_delete_answer( $aid ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -801,7 +801,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -853,7 +853,7 @@ class Test_Roles extends TestCase {
 		// Test for same user permanently delete permission.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -861,7 +861,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -874,7 +874,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_permanent_delete( $aid, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -882,7 +882,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -900,7 +900,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanRestore() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -908,7 +908,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'trash',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -923,7 +923,7 @@ class Test_Roles extends TestCase {
 		// For the same user test.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -932,7 +932,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -946,7 +946,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_restore( $aid, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -955,7 +955,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$aid = $this->factory->post->create(
+		$aid = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -980,7 +980,7 @@ class Test_Roles extends TestCase {
 
 		// For other post types checks.
 		$this->setRole( 'subscriber' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -988,7 +988,7 @@ class Test_Roles extends TestCase {
 				'post_type'    => 'post',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1020,7 +1020,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanViewPost() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1028,7 +1028,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'trash',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1039,7 +1039,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertFalse( ap_user_can_view_post( $question_id ) );
 		$this->assertFalse( ap_user_can_view_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1047,7 +1047,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1058,7 +1058,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1066,7 +1066,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1077,7 +1077,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1086,7 +1086,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1098,7 +1098,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1106,7 +1106,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'publish',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1117,14 +1117,14 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1136,7 +1136,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_view_post( $answer_id ) );
 
 		// For other post types checks.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1144,7 +1144,7 @@ class Test_Roles extends TestCase {
 				'post_type'    => 'post',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1154,7 +1154,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertFalse( ap_user_can_view_post( $post_id ) );
 		$this->assertFalse( ap_user_can_view_post( $page_id ) );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1163,7 +1163,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1184,7 +1184,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanViewPrivateModerateFuturePost() {
 		$this->setRole( 'subscriber' );
 		// Test other post types for private_post post status.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1192,7 +1192,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1203,7 +1203,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_view_private_post( $post_id ) );
 		$this->assertFalse( ap_user_can_view_private_post( $page_id ) );
 		// Test other post types for moderate post status.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1211,7 +1211,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1222,7 +1222,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_view_moderate_post( $post_id ) );
 		$this->assertFalse( ap_user_can_view_moderate_post( $page_id ) );
 		// Test other post types for future post status.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -1231,7 +1231,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1245,7 +1245,7 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for the ap_user_can_view_private_post function.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1253,7 +1253,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1285,7 +1285,7 @@ class Test_Roles extends TestCase {
 
 		// Test for the question/answer creator.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1293,7 +1293,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1304,7 +1304,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_private_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1312,7 +1312,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1327,7 +1327,7 @@ class Test_Roles extends TestCase {
 		// Test for private_post answer viewable or not by the question author.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1336,7 +1336,7 @@ class Test_Roles extends TestCase {
 		);
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1351,7 +1351,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_view_private_post( $answer_id ) );
 		$other_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $other_user_id );
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1371,7 +1371,7 @@ class Test_Roles extends TestCase {
 		wp_set_current_user( $user_id );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1386,7 +1386,7 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for the ap_user_can_view_moderate_post function.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1394,7 +1394,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1426,7 +1426,7 @@ class Test_Roles extends TestCase {
 
 		// Test for the question/answer creator.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1434,7 +1434,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1445,7 +1445,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_moderate_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1454,7 +1454,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1469,7 +1469,7 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for session starage.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1477,7 +1477,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1493,7 +1493,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_view_moderate_post( $answer_id ) );
 
 		// Test for the ap_user_can_view_future_post function.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1502,7 +1502,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1535,7 +1535,7 @@ class Test_Roles extends TestCase {
 
 		// Test for the question/answer creator.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1544,7 +1544,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1556,7 +1556,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_view_future_post( $question_id ) );
 		$this->assertTrue( ap_user_can_view_future_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1564,7 +1564,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1578,7 +1578,7 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for session starage.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1587,7 +1587,7 @@ class Test_Roles extends TestCase {
 				'post_date'    => '9999-12-31 23:59:59',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1610,14 +1610,14 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanChangeStatus() {
 		$this->setRole( 'subscriber' );
 		// Test other post types.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -1628,7 +1628,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_change_status( $page_id ) );
 
 		// Test for the question and answer post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1636,7 +1636,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1649,7 +1649,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_change_status( $answer_id ) );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1658,7 +1658,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1672,7 +1672,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_change_status( $answer_id, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1681,7 +1681,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $new_user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1698,7 +1698,7 @@ class Test_Roles extends TestCase {
 
 		// Test for moderate post status.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -1706,7 +1706,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -1803,8 +1803,8 @@ class Test_Roles extends TestCase {
 
 		// Test for user roles.
 		$this->setRole( 'subscriber' );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for ap_moderator user.
 		$this->setRole( 'ap_moderator' );
@@ -1826,8 +1826,8 @@ class Test_Roles extends TestCase {
 		}
 
 		$this->setRole( 'subscriber' );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for ap_moderator user.
 		$this->setRole( 'ap_moderator' );
@@ -1849,8 +1849,8 @@ class Test_Roles extends TestCase {
 		}
 
 		$this->setRole( 'subscriber' );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id ) );
 		// Test for ap_moderator user.
 		$this->setRole( 'ap_moderator' );
@@ -1874,8 +1874,8 @@ class Test_Roles extends TestCase {
 		// Test other user can't delete the attachment of other user.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $post->ID );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
 		wp_set_current_user( $new_user_id );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
@@ -1906,8 +1906,8 @@ class Test_Roles extends TestCase {
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
 		wp_set_current_user( $new_user_id );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
@@ -1938,8 +1938,8 @@ class Test_Roles extends TestCase {
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'ap_moderator' ) );
 		wp_set_current_user( $new_user_id );
 		$this->assertTrue( ap_user_can_delete_attachment( $attachment_id, $user_id ) );
@@ -2030,21 +2030,21 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanReadPost() {
 		$this->setRole( 'subscriber' );
 		// Test other post types.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
 				'post_type'    => 'page',
 			)
 		);
-		$testimonial_id = $this->factory->post->create(
+		$testimonial_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Testimonial title',
 				'post_content' => 'Testimonial content',
@@ -2057,14 +2057,14 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for session storage.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2081,7 +2081,7 @@ class Test_Roles extends TestCase {
 		// Test for viewing others question.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2089,7 +2089,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2102,7 +2102,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2110,7 +2110,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $new_user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2135,14 +2135,14 @@ class Test_Roles extends TestCase {
 			]
 		);
 		$this->setRole( 'ap_test_can_read_post' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2158,7 +2158,7 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Test for trash post status.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2166,7 +2166,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'trash',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2204,7 +2204,7 @@ class Test_Roles extends TestCase {
 		// Check for answer post type with private_post and moderate post status.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2212,7 +2212,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2224,7 +2224,7 @@ class Test_Roles extends TestCase {
 		);
 		$this->assertTrue( ap_user_can_read_post( $question_id, $user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2232,7 +2232,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2246,7 +2246,7 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_post( $answer_id, $user_id ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $new_user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2254,7 +2254,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $new_user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2268,7 +2268,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2277,7 +2277,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2291,7 +2291,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2299,7 +2299,7 @@ class Test_Roles extends TestCase {
 				'post_author'  => $new_user_id,
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2313,7 +2313,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_read_post( $answer_id, $user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $question_id, $new_user_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id, $new_user_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2322,7 +2322,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2339,7 +2339,7 @@ class Test_Roles extends TestCase {
 		$this->logout();
 
 		// Check for private and moderate post status.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2347,7 +2347,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2380,7 +2380,7 @@ class Test_Roles extends TestCase {
 		$this->setRole( 'administrator' );
 		$this->assertTrue( ap_user_can_read_post( $question_id ) );
 		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2388,7 +2388,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2423,14 +2423,14 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_post( $answer_id ) );
 
 		// Check user having ap_read_question and ap_read_answer can read the question.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2516,14 +2516,14 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanReadQuestionAnswer() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2535,14 +2535,14 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_answer( $answer_id ) );
 
 		// Test other post types.
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
 				'post_type'    => 'post',
 			)
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Page title',
 				'post_content' => 'Page content',
@@ -2560,14 +2560,14 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanVoteOnPost() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2588,14 +2588,14 @@ class Test_Roles extends TestCase {
 		// Test for super admin.
 		if ( \is_multisite() ) {
 			$this->setRole( 'administrator' );
-			$question_id = $this->factory->post->create(
+			$question_id = $this->factory()->post->create(
 				array(
 					'post_title'   => 'Question title',
 					'post_content' => 'Question content',
 					'post_type'    => 'question',
 				)
 			);
-			$answer_id = $this->factory->post->create(
+			$answer_id = $this->factory()->post->create(
 				array(
 					'post_title'   => 'Answer title',
 					'post_content' => 'Answer content',
@@ -2612,14 +2612,14 @@ class Test_Roles extends TestCase {
 			// Test for super admin user.
 			$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 			wp_set_current_user( $user_id );
-			$question_id = $this->factory->post->create(
+			$question_id = $this->factory()->post->create(
 				array(
 					'post_title'   => 'Question title',
 					'post_content' => 'Question content',
 					'post_type'    => 'question',
 				)
 			);
-			$answer_id = $this->factory->post->create(
+			$answer_id = $this->factory()->post->create(
 				array(
 					'post_title'   => 'Answer title',
 					'post_content' => 'Answer content',
@@ -2639,14 +2639,14 @@ class Test_Roles extends TestCase {
 			$this->logout();
 		} else {
 			$this->setRole( 'administrator' );
-			$question_id = $this->factory->post->create(
+			$question_id = $this->factory()->post->create(
 				array(
 					'post_title'   => 'Question title',
 					'post_content' => 'Question content',
 					'post_type'    => 'question',
 				)
 			);
-			$answer_id = $this->factory->post->create(
+			$answer_id = $this->factory()->post->create(
 				array(
 					'post_title'   => 'Answer title',
 					'post_content' => 'Answer content',
@@ -2662,14 +2662,14 @@ class Test_Roles extends TestCase {
 		}
 
 		// Test for new role.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2752,7 +2752,7 @@ class Test_Roles extends TestCase {
 
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2761,7 +2761,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2777,7 +2777,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
 		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
 		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2786,7 +2786,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2800,7 +2800,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_up' ) );
 		$this->assertFalse( ap_user_can_vote_on_post( $question_id, 'vote_down' ) );
 		$this->assertFalse( ap_user_can_vote_on_post( $answer_id, 'vote_down' ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -2809,7 +2809,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'public',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -2953,7 +2953,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanReadComment() {
 		$this->setRole( 'subscriber' );
 		$id   = $this->insert_answer();
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -2961,7 +2961,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => get_current_user_id(),
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -2980,7 +2980,7 @@ class Test_Roles extends TestCase {
 
 		$this->setRole( 'subscriber' );
 		$id   = $this->insert_answer();
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -2989,7 +2989,7 @@ class Test_Roles extends TestCase {
 			)
 		);
 		wp_set_comment_status( $cqid, 'hold' );
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -3015,7 +3015,7 @@ class Test_Roles extends TestCase {
 
 		// Check user having ap_read_comment can read the comment.
 		$id   = $this->insert_answer();
-		$cqid = $this->factory->comment->create_object(
+		$cqid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -3023,7 +3023,7 @@ class Test_Roles extends TestCase {
 				'user_id'         => get_current_user_id(),
 			)
 		);
-		$caid = $this->factory->comment->create_object(
+		$caid = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -3067,14 +3067,14 @@ class Test_Roles extends TestCase {
 	 * @covers ::ap_user_can_read_comments
 	 */
 	public function testAPUserCanReadComments() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -3087,7 +3087,7 @@ class Test_Roles extends TestCase {
 
 		// Test for private_post and moderate post status.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -3095,7 +3095,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'private_post',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -3119,7 +3119,7 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
 		$this->assertFalse( ap_user_can_read_comments( $answer_id ) );
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -3127,7 +3127,7 @@ class Test_Roles extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -3259,7 +3259,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanAnswerForUserWhoCantReadQuestion() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -3275,7 +3275,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanAnswerForClosedQuestion() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -3332,7 +3332,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditPostForInvalidPostType() {
 		$this->setRole( 'subscriber' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3347,7 +3347,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditPostWithFilterSetAsTrue() {
 		$this->setRole( 'ap_banned' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3364,7 +3364,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditPostWithFilterSetAsFalse() {
 		$this->setRole( 'ap_banned' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3381,7 +3381,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditPostForPostStatusSetAsModerate() {
 		$this->setRole( 'subscriber' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3398,7 +3398,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanEditPostForUserWhoCantReadPost() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3467,7 +3467,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditQuestionForNotPassingQuestionID() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -3483,7 +3483,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanEditQuestionForInvalidPostType() {
 		$this->setRole( 'subscriber' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3562,7 +3562,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanCommentForNotPassingAnyArgsAndVisitingAnswerPage() {
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -3626,7 +3626,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanCommentForUserWhoCantReadQuestion() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -3643,7 +3643,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanEditCommentWithFilterSetAsTrue() {
 		$this->setRole( 'ap_banned' );
 		$id = $this->insert_answer();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $id->q,
 			)
@@ -3659,7 +3659,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanEditCommentWithFilterSetAsFalse() {
 		$this->setRole( 'ap_banned' );
 		$id = $this->insert_answer();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $id->q,
 			)
@@ -3675,7 +3675,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanEditCommentForUnapprovedComment() {
 		$this->setRole( 'subscriber' );
 		$id = $this->insert_answer();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $id->q,
 				'comment_approved' => 0,
@@ -3697,7 +3697,7 @@ class Test_Roles extends TestCase {
 				'post_status' => 'private_post',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $id->q,
 			)
@@ -3710,7 +3710,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanDeletePostForInvalidPostType() {
 		$this->setRole( 'subscriber' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3725,7 +3725,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanDeletePostWithFilterSetAsTrue() {
 		$this->setRole( 'ap_banned' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3742,7 +3742,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanDeletePostWithFilterSetAsFalse() {
 		$this->setRole( 'ap_banned' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3760,7 +3760,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanDeletePostForUserWhoCantReadPost() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3776,7 +3776,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanPermanentDeleteForInvalidPostType() {
 		$this->setRole( 'subscriber' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3791,7 +3791,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanRestoreForSuperAdmin() {
 		$this->setRole( 'administrator', true );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3805,7 +3805,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanViewPostForSuperAdmin() {
 		$this->setRole( 'administrator', true );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3820,7 +3820,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanChangeStatusForSuperAdmin() {
 		$this->setRole( 'administrator', true );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3835,7 +3835,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanChangeStatusWithFilterSetAsTrue() {
 		$this->setRole( 'ap_banned' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3852,7 +3852,7 @@ class Test_Roles extends TestCase {
 	 */
 	public function testAPUserCanChangeStatusWithFilterSetAsFalse() {
 		$this->setRole( 'ap_banned' );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3953,7 +3953,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanVoteOnPostForUserWhoCantReadPost() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -3970,7 +3970,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanVoteOnPostForUserWhoCantReadPostButReturnWPError() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -4053,7 +4053,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanReadCommentWithFilterSetAsTrue() {
 		$this->setRole( 'ap_banned' );
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 			)
@@ -4069,7 +4069,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanReadCommentWithFilterSetAsFalse() {
 		$this->setRole( 'ap_banned' );
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 			)
@@ -4085,7 +4085,7 @@ class Test_Roles extends TestCase {
 	public function testAPUserCanReadCommentForUserWhoCantReadPost() {
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -4093,7 +4093,7 @@ class Test_Roles extends TestCase {
 				'post_type'    => 'question',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 			)

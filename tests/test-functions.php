@@ -43,7 +43,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_base_page_slug
 	 */
 	public function testApBasePageSlugBasePage() {
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_type' => 'page',
 				'post_name' => 'qqqqslug',
@@ -57,13 +57,13 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_base_page_slug
 	 */
 	public function testApBasePageSlugBasePageAsChildPage() {
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_type' => 'page',
 				'post_name' => 'parent-slug',
 			]
 		);
-		$id2 = $this->factory->post->create(
+		$id2 = $this->factory()->post->create(
 			[
 				'post_type'   => 'page',
 				'post_name'   => 'child-slug',
@@ -94,7 +94,7 @@ class TestFunctions extends TestCase {
 	public function testApBasePageLink() {
 		ap_opt( 'base_page', '' );
 		$this->assertEquals( home_url( '/questions/' ), ap_base_page_link() );
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_type' => 'page',
 				'post_name' => 'qqqqslugqq',
@@ -161,7 +161,7 @@ class TestFunctions extends TestCase {
 	 */
 	public function testIsAsk() {
 		$this->assertFalse( is_ask() );
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_type'  => 'page',
 				'post_name'  => 'asksssd3432s',
@@ -1326,7 +1326,7 @@ class TestFunctions extends TestCase {
 	 */
 	public function testAPFindDuplicatePost() {
 		// Test for question post type.
-		$question = $this->factory->post->create(
+		$question = $this->factory()->post->create(
 			array(
 				'post_type'    => 'question',
 				'post_title'   => 'Question title',
@@ -1341,7 +1341,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_find_duplicate_post( 'Question title' ) );
 
 		// Test for answer post type.
-		$answer = $this->factory->post->create(
+		$answer = $this->factory()->post->create(
 			array(
 				'post_type'    => 'answer',
 				'post_title'   => 'Answer title',
@@ -1556,7 +1556,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// For the base page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Base Page',
 				'post_type'  => 'page',
@@ -1571,7 +1571,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// For the ask page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Ask Page',
 				'post_type'  => 'page',
@@ -1586,7 +1586,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// For the user page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'User Page',
 				'post_type'  => 'page',
@@ -1601,7 +1601,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// For the categories page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Categories Page',
 				'post_type'  => 'page',
@@ -1616,7 +1616,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// For the tags page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Tags Page',
 				'post_type'  => 'page',
@@ -1631,7 +1631,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// For the activities page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Activities Page',
 				'post_type'  => 'page',
@@ -1646,7 +1646,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// Test for the single category archive page.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
@@ -1660,7 +1660,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// Test for the single tag archive page.
-		$tid = $this->factory->term->create(
+		$tid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question tag',
 				'taxonomy' => 'question_tag',
@@ -1674,7 +1674,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// Test for the search page.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Base Page',
 				'post_type'  => 'page',
@@ -1694,7 +1694,7 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( is_anspress() );
 
 		// Test for the static front page question page.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Base Page',
 				'post_type'  => 'page',
@@ -1738,7 +1738,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( esc_url( get_permalink( $id->q ) ), ap_canonical_url() );
 
 		// For the base page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Base Page',
 				'post_type'  => 'page',
@@ -1885,7 +1885,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'about', ap_active_user_page() );
 
 		// Create a page and set it to user page.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'User Page',
 				'post_type'  => 'page',
@@ -1920,7 +1920,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 0, ap_current_user_id() );
 
 		// Create a page and set it to user page.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'User Page',
 				'post_type'  => 'page',
@@ -1930,7 +1930,7 @@ class TestFunctions extends TestCase {
 
 		// Test for visiting the user page.
 		// By not setting any query vars.
-		$user = $this->factory->user->create_and_get();
+		$user = $this->factory()->user->create_and_get();
 		wp_set_current_user( $user->ID );
 		$this->go_to( '?post_type=page&p=' . $id );
 		$this->assertEquals( 0, ap_current_user_id() );
@@ -1938,7 +1938,7 @@ class TestFunctions extends TestCase {
 
 		// By setting the query vars.
 		// Test 1.
-		$user = $this->factory->user->create_and_get();
+		$user = $this->factory()->user->create_and_get();
 		wp_set_current_user( $user->ID );
 		$this->go_to( '?post_type=page&p=' . $id );
 		set_query_var( 'user_page', 'profile' );
@@ -1948,7 +1948,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $user->ID, ap_current_user_id() );
 
 		// Test 2.
-		$user = $this->factory->user->create_and_get();
+		$user = $this->factory()->user->create_and_get();
 		wp_set_current_user( $user->ID );
 		$this->go_to( '?post_type=page&p=' . $id );
 		set_query_var( 'user_page', 'notifications' );
@@ -1958,7 +1958,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $user->ID, ap_current_user_id() );
 
 		// Test 3.
-		$user = $this->factory->user->create_and_get();
+		$user = $this->factory()->user->create_and_get();
 		wp_set_current_user( $user->ID );
 		$this->go_to( '?post_type=page&p=' . $id );
 		set_query_var( 'user_page', 'edit' );
@@ -1968,7 +1968,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $user->ID, ap_current_user_id() );
 
 		// Test 4.
-		$user = $this->factory->user->create_and_get();
+		$user = $this->factory()->user->create_and_get();
 		wp_set_current_user( $user->ID );
 		$this->go_to( '?post_type=page&p=' . $id );
 		set_query_var( 'user_page', '' );
@@ -1978,7 +1978,7 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $user->ID, ap_current_user_id() );
 
 		// Test 5.
-		$user = $this->factory->user->create_and_get();
+		$user = $this->factory()->user->create_and_get();
 		wp_set_current_user( $user->ID );
 		$this->go_to( '?post_type=page&p=' . $id );
 		set_query_var( 'user_page', 'about' );
@@ -2520,9 +2520,9 @@ class TestFunctions extends TestCase {
 	 */
 	public function testAPPostAuthorPreFetch() {
 		// Create some users.
-		$user_1 = $this->factory->user->create( [ 'user_login' => 'anspress' ] );
-		$user_2 = $this->factory->user->create( [ 'user_login' => 'question' ] );
-		$user_3 = $this->factory->user->create( [ 'user_login' => 'webmaster' ] );
+		$user_1 = $this->factory()->user->create( [ 'user_login' => 'anspress' ] );
+		$user_2 = $this->factory()->user->create( [ 'user_login' => 'question' ] );
+		$user_3 = $this->factory()->user->create( [ 'user_login' => 'webmaster' ] );
 
 		// Call the required function.
 		ap_post_author_pre_fetch( [ $user_1, $user_2, $user_3 ] );
@@ -2623,7 +2623,7 @@ class TestFunctions extends TestCase {
 	 */
 	public function testAPTriggerQAUpdateHook() {
 		// Test on other than the question and answer post type.
-		$post_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_trigger_qa_update_hook( get_post( $post_id ), 'update' );
 		$this->assertFalse( did_action( 'ap_after_update_question' ) > 0 );
 
@@ -2751,12 +2751,12 @@ class TestFunctions extends TestCase {
 	 */
 	public function testAPFindDuplicatePostShouldReturnFalseForEmptyContent() {
 		// Question post type.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_content' => 'Question content' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_content' => 'Question content' ] );
 		$result = ap_find_duplicate_post( '', 'question', $question_id );
 		$this->assertFalse( $result );
 
 		// Answer post type.
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_content' => 'Answer content', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_content' => 'Answer content', 'post_parent' => $question_id ] );
 		$result = ap_find_duplicate_post( '', 'answer', $answer_id );
 		$this->assertFalse( $result );
 	}
@@ -2945,7 +2945,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameForPassingOnlyUserID() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$this->assertEquals( 'Test User', ap_user_display_name( $user_id ) );
 	}
 
@@ -2953,8 +2953,8 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameForInstanceOfWPComment() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
-		$comment_id = $this->factory->comment->create( [ 'user_id' => $user_id ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$comment_id = $this->factory()->comment->create( [ 'user_id' => $user_id ] );
 		$comment = get_comment( $comment_id );
 		$this->assertEquals( 'Test User', ap_user_display_name( $comment ) );
 	}
@@ -2963,7 +2963,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameForPassingUserArgs() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$user = get_user_by( 'id', $user_id );
 		$this->assertEquals( 'Test User', ap_user_display_name( [ 'user_id' => $user->ID ] ) );
 	}
@@ -2972,7 +2972,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameForPassingUserEchoArg() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		ob_start();
 		ap_user_display_name( [ 'user_id' => $user_id, 'echo' => true ] );
 		$output = ob_get_clean();
@@ -2983,7 +2983,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameForPassingUserEchoHTMLArg() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		ob_start();
 		ap_user_display_name( [ 'user_id' => $user_id, 'echo' => true, 'html' => true ] );
 		$output = ob_get_clean();
@@ -2994,7 +2994,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameForPassingUserReturnHTMLArg() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$user = get_user_by( 'id', $user_id );
 		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '" itemprop="url"><span itemprop="name">Test User</span></a>', ap_user_display_name( [ 'user_id' => $user->ID, 'html' => true ] ) );
 	}
@@ -3003,7 +3003,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameWithEmptyArgsForAnomymousUser() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertEquals( 'Anonymous', ap_user_display_name() );
 	}
@@ -3012,7 +3012,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameWithArgsForAnomymousUser() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertEquals( 'Anonymous', ap_user_display_name( [ 'user_id' => 0 ] ) );
 	}
@@ -3035,7 +3035,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameWithCustomAnonymousLabelAndHTMLTrueArgs() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertEquals( 'Guest', ap_user_display_name( [ 'anonymous_label' => 'Guest', 'html' => true ] ) );
 	}
@@ -3044,7 +3044,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameWithVisitingQuestionPageAndCustomAnonymousNameSet() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		ap_insert_qameta( $question_id, [ 'fields' => [ 'anonymous_name' => 'Guest' ] ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertEquals( 'Guest', ap_user_display_name() );
@@ -3055,7 +3055,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameWithVisitingQuestionPageAndCustomAnonymousNameSetAndHTMLArg() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		ap_insert_qameta( $question_id, [ 'fields' => [ 'anonymous_name' => 'Guest' ] ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertEquals( 'Guest (anonymous)', ap_user_display_name( [ 'html' => true ] ) );
@@ -3070,7 +3070,7 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_user_display_name
 	 */
 	public function testAPUserDisplayNameWithAPUserDisplayNameFilter() {
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		add_filter( 'ap_user_display_name', [ $this, 'APUserDisplayName' ] );
 		$this->assertEquals( 'Custom User Name', ap_user_display_name( $user_id ) );
 		$this->assertEquals( 'Custom User Name', ap_user_display_name( [ 'user_id' => $user_id ] ) );

@@ -289,7 +289,7 @@ class TestAddonTags extends TestCase {
 		$this->assertEquals( 'other_query_var', $method );
 
 		// Test on the single tag page.
-		$tag_id = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$tag_id = $this->factory()->term->create( [ 'taxonomy' => 'question_tag' ] );
 		$term = get_term_by( 'id', $tag_id, 'question_tag' );
 		$this->go_to( '/?ap_page=tag&question_tag=' . $term->slug );
 		// Test for passing invalid query var.
@@ -365,7 +365,7 @@ class TestAddonTags extends TestCase {
 		$instance = \Anspress\Addons\Tags::init();
 
 		// Test begins.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_tag' ] );
 		$term    = get_term_by( 'id', $term_id, 'question_tag' );
 
 		// Test 1.
@@ -405,9 +405,9 @@ class TestAddonTags extends TestCase {
 		$instance = \Anspress\Addons\Tags::init();
 
 		// Create some question tags assign them to a question.
-		$term_id_1 = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
-		$term_id_2 = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
-		$term_id_3 = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag' ] );
 		$question_id = $this->insert_question();
 		wp_set_object_terms( $question_id, [ $term_id_2, $term_id_3 ], 'question_tag' );
 
@@ -484,7 +484,7 @@ class TestAddonTags extends TestCase {
 	public function testAPListFilters() {
 		global $wp;
 		$instance = \Anspress\Addons\Tags::init();
-		$tag_id = $this->factory->term->create( [ 'taxonomy' => 'question_tag' ] );
+		$tag_id = $this->factory()->term->create( [ 'taxonomy' => 'question_tag' ] );
 		$term = get_term_by( 'id', $tag_id, 'question_tag' );
 		$tags_page = $this->factory()->post->create(
 			[

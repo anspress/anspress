@@ -65,7 +65,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'publish', ap_post_status( $id ) );
 
 		// Check for private_post post status.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -77,7 +77,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'private_post', ap_post_status( $id ) );
 
 		// Check for moderate post status.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -97,7 +97,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertFalse( is_private_post( $id ) );
 
 		// Check for private_post post status.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -117,7 +117,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertFalse( is_post_waiting_moderation( $id ) );
 
 		// Check for moderate post status.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -165,7 +165,7 @@ class TestThemeFunctions extends TestCase {
 	public function testAPHaveParentPost() {
 		$id = $this->insert_question();
 		$this->assertFalse( ap_have_parent_post( $id ) );
-		$child_id = $this->factory->post->create(
+		$child_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -174,7 +174,7 @@ class TestThemeFunctions extends TestCase {
 			)
 		);
 		$this->assertTrue( ap_have_parent_post( $child_id ) );
-		$child_post_id = $this->factory->post->create(
+		$child_post_id = $this->factory()->post->create(
 			array(
 				'post_parent'  => $id,
 			)
@@ -337,7 +337,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertFalse( is_ap_search() );
 
 		// Real ap search page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Base Page',
 				'post_type'  => 'page',
@@ -373,7 +373,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'shortlink', ap_current_page() );
 
 		// For the base page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Base Page',
 				'post_type'  => 'page',
@@ -384,7 +384,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'base', ap_current_page() );
 
 		// For the ask page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Ask Page',
 				'post_type'  => 'page',
@@ -395,7 +395,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'ask', ap_current_page() );
 
 		// For the user page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'User Page',
 				'post_type'  => 'page',
@@ -406,7 +406,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'user', ap_current_page() );
 
 		// For the categories page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Categories Page',
 				'post_type'  => 'page',
@@ -417,7 +417,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'categories', ap_current_page() );
 
 		// For the tags page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Tags Page',
 				'post_type'  => 'page',
@@ -428,7 +428,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'tags', ap_current_page() );
 
 		// For the activities page test.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			[
 				'post_title' => 'Activities Page',
 				'post_type'  => 'page',
@@ -439,7 +439,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'activities', ap_current_page() );
 
 		// Test for the single category archive page.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
@@ -450,7 +450,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( 'category', ap_current_page() );
 
 		// Test for the single tag archive page.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question tag',
 				'taxonomy' => 'question_tag',
@@ -579,7 +579,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( 'There are no questions matching your query or you do not have permission to read them.', $output );
 
 		// Test for not adding any page value but question exists.
-		$this->factory->post->create( [
+		$this->factory()->post->create( [
 			'post_title'   => 'Question title',
 			'post_content' => 'Question content',
 			'post_type'    => 'question',
@@ -814,7 +814,7 @@ class TestThemeFunctions extends TestCase {
 
 		// Test with setting post.
 		anspress()->theme_compat->active = false;
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create();
 		$post = get_post( $post_id );
 		global $wp_query;
 		$this->assertNotNull( $wp_query->post );
@@ -887,9 +887,9 @@ class TestThemeFunctions extends TestCase {
 				'id'      => $id,
 			)
 		);
-		$user_id1 = $this->factory->user->create();
-		$user_id2 = $this->factory->user->create();
-		$user_id3 = $this->factory->user->create();
+		$user_id1 = $this->factory()->user->create();
+		$user_id2 = $this->factory()->user->create();
+		$user_id3 = $this->factory()->user->create();
 		ap_new_subscriber( $user_id1, 'question', $id );
 		ap_new_subscriber( $user_id2, 'question', $id );
 		ap_new_subscriber( $user_id3, 'question', $id );
@@ -1019,7 +1019,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostStatusBtnArgs() {
 		// Test 1.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'trash' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'trash' ] );
 		$result = ap_post_status_btn_args( $question_id );
 		$this->assertEmpty( $result );
 		$this->assertIsArray( $result );
@@ -1032,7 +1032,7 @@ class TestThemeFunctions extends TestCase {
 
 		// Test 3.
 		$this->logout();
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
 		$result = ap_post_status_btn_args( $question_id );
 		$this->assertNull( $result );
 
@@ -1084,7 +1084,7 @@ class TestThemeFunctions extends TestCase {
 		}
 
 		// Test 6.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
 		$result = ap_post_status_btn_args( $question_id );
 		$this->assertNotEmpty( $result );
 		$this->assertIsArray( $result );
@@ -1127,9 +1127,9 @@ class TestThemeFunctions extends TestCase {
 
 		// Test 7.
 		if ( \is_multisite() ) {
-			$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+			$user_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 			wp_set_current_user( $user_id );
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 			$result = ap_post_status_btn_args( $question_id );
 			$this->assertNull( $result );
 
@@ -1175,9 +1175,9 @@ class TestThemeFunctions extends TestCase {
 				$this->assertEquals( $value, $result[ $key ] );
 			}
 		} else {
-			$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+			$user_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 			wp_set_current_user( $user_id );
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 			$result = ap_post_status_btn_args( $question_id );
 			$this->assertNotEmpty( $result );
 			$this->assertIsArray( $result );
@@ -1259,7 +1259,7 @@ class TestThemeFunctions extends TestCase {
 		$this->assertEquals( '<a href="#" class="ap-btn-select ap-btn  active" ap="select_answer" apquery="' . esc_js( $args ) . '" title="Unselect this answer">Unselect</a>', $result );
 
 		// Test 5.
-		$ids = $this->factory->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $id->q ] );
+		$ids = $this->factory()->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $id->q ] );
 		ap_set_selected_answer( $id->q, $ids[2] );
 		$result = ap_select_answer_btn_html( $ids[0] );
 		$this->assertNotEmpty( $result );
@@ -1343,19 +1343,19 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostStatusPassingNoArgPassed() {
 		// Test 1.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$result = ap_post_status();
 		$this->assertEquals( 'moderate', $result );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$result = ap_post_status();
 		$this->assertEquals( 'private_post', $result );
 
 		// Test 3.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$result = ap_post_status();
 		$this->assertEquals( 'publish', $result );
@@ -1366,19 +1366,19 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostStatusFalseArgPassed() {
 		// Test 1.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$result = ap_post_status( false );
 		$this->assertEquals( 'moderate', $result );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$result = ap_post_status( false );
 		$this->assertEquals( 'private_post', $result );
 
 		// Test 3.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$result = ap_post_status( false );
 		$this->assertEquals( 'publish', $result );
@@ -1388,7 +1388,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_have_parent_post
 	 */
 	public function testAPHaveParentPostWithNoArgsShouldReturnFalse() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertFalse( ap_have_parent_post() );
 	}
@@ -1397,8 +1397,8 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_have_parent_post
 	 */
 	public function testAPHaveParentPostWithNoArgsShouldReturnTrue() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$question_child_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$question_child_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_parent' => $question_id ] );
 		$this->go_to( '?post_type=question&p=' . $question_child_id );
 		$this->assertTrue( ap_have_parent_post() );
 	}
@@ -1407,7 +1407,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_have_parent_post
 	 */
 	public function testAPHaveParentPostWithFalseArgShouldReturnFalse() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertFalse( ap_have_parent_post( false ) );
 	}
@@ -1416,8 +1416,8 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_have_parent_post
 	 */
 	public function testAPHaveParentPostWithFalseArgShouldReturnTrue() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$question_child_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$question_child_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_parent' => $question_id ] );
 		$this->go_to( '?post_type=question&p=' . $question_child_id );
 		$this->assertTrue( ap_have_parent_post( false ) );
 	}
@@ -1426,7 +1426,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_answers_tab
 	 */
 	public function testAPAnswersTab() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		ob_start();
 		ap_answers_tab();
@@ -1442,7 +1442,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_answers_tab
 	 */
 	public function testAPAnswersTabWithCustomBase() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		ob_start();
 		ap_answers_tab( 'https://example.com' );
@@ -1458,7 +1458,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_answers_tab
 	 */
 	public function testAPAnswersTabWithCustomOrder() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$_REQUEST['order_by'] = 'newest';
 		ob_start();
@@ -1475,7 +1475,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_answers_tab
 	 */
 	public function testAPAnswersTabWithCustomOrderAndCustomBase() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$_REQUEST['order_by'] = 'voted';
 		ob_start();
@@ -1493,7 +1493,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPAnswersTabWithDisableVotingOnAnswerEnabled() {
 		ap_opt( 'disable_voting_on_answer', true );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		ob_start();
 		ap_answers_tab();
@@ -1511,7 +1511,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForInvalidPostType() {
 		$this->setRole( 'administrator' );
-		$post_id = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post' ] );
 		$post_actions = ap_post_actions( $post_id );
 		$this->assertEmpty( $post_actions );
 	}
@@ -1521,7 +1521,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForFeaturedLink() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'     => 'toggle_featured',
@@ -1541,7 +1541,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserCanCloseQuestion() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'     => 'close',
@@ -1561,7 +1561,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserCanCloseQuestionButQuestionIsClosed() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		ap_toggle_close_question( $question_id );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
@@ -1582,7 +1582,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserCantCloseQuestion() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'     => 'close',
@@ -1602,7 +1602,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserCanEditQuestion() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'edit',
@@ -1617,7 +1617,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserCantEditQuestion() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_author' => 0 ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => 0 ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'    => 'edit',
@@ -1632,7 +1632,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForFlagBtnArgs() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'     => 'flag',
@@ -1654,7 +1654,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForAPPostStatusBtnArgs() {
 		$this->setRole( 'administrator', true );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected_header_before = [
 			'label'  => 'Status',
@@ -1705,7 +1705,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForAPPostStatusBtnArgsWhoCantUpdateStatus() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => 0 ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => 0 ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected_header_before = [
 			'label'  => 'Status',
@@ -1756,7 +1756,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCanDeleteQuestion() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'toggle_delete_post',
@@ -1775,7 +1775,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCantDeleteQuestionButQuestionStatusIsTrash() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'trash' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'trash' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'toggle_delete_post',
@@ -1794,7 +1794,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCantDeleteQuestion() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'    => 'toggle_delete_post',
@@ -1814,8 +1814,8 @@ class TestThemeFunctions extends TestCase {
 	public function testAPPostActionsForUserWhoCanDeleteQuestionButHaveAnswersAndTrashingQuestionWithAnswerEnabled() {
 		ap_opt( 'trashing_question_with_answer', true );
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'    => 'toggle_delete_post',
@@ -1836,8 +1836,8 @@ class TestThemeFunctions extends TestCase {
 	public function testAPPostActionsForUserWhoCanDeleteQuestionButHaveAnswersAndTrashingQuestionWithAnswerDisabled() {
 		ap_opt( 'trashing_question_with_answer', false );
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'toggle_delete_post',
@@ -1856,7 +1856,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCanPermanentDeleteQuestion() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'delete_permanently',
@@ -1875,7 +1875,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCantPermanentDeleteQuestion() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'    => 'delete_permanently',
@@ -1895,8 +1895,8 @@ class TestThemeFunctions extends TestCase {
 	public function testAPPostActionsForUserWhoCantPermanentDeleteQuestionAndDeletingQuestionWithAnswerEnabled() {
 		ap_opt( 'deleting_question_with_answer', true );
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'    => 'delete_permanently',
@@ -1917,8 +1917,8 @@ class TestThemeFunctions extends TestCase {
 	public function testAPPostActionsForUserWhoCantPermanentDeleteQuestionAndDeletingQuestionWithAnswerDisabled() {
 		ap_opt( 'deleting_question_with_answer', false );
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'delete_permanently',
@@ -1937,7 +1937,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCanConvertQuestionToPost() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$expected = [
 			'cb'    => 'convert_to_post',
@@ -1956,7 +1956,7 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCantConvertQuestionToPost() {
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post_actions = ap_post_actions( $question_id );
 		$not_expected = [
 			'cb'    => 'convert_to_post',
@@ -1975,8 +1975,8 @@ class TestThemeFunctions extends TestCase {
 	 */
 	public function testAPPostActionsForUserWhoCanConvertQuestionToPostButPostTypeIsInvalid() {
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'post' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'post' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$post_actions = ap_post_actions( $answer_id );
 		$not_expected = [
 			'cb'    => 'convert_to_post',
@@ -1994,7 +1994,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_current_page
 	 */
 	public function testAPCurrentPageForEditPage() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( ap_post_edit_link( $question_id ) );
 		set_query_var( 'ap_page', 'edit' );
 		$this->assertEquals( 'edit', ap_current_page() );
@@ -2014,7 +2014,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_current_page
 	 */
 	public function testAPCurrentPageForLookingForArg() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertTrue( ap_current_page( 'question' ) );
 	}
@@ -2023,7 +2023,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_current_page
 	 */
 	public function testAPCurrentPageForLookingForArgShouldReturnFalse() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$this->assertFalse( ap_current_page( 'answer' ) );
 	}
@@ -2032,7 +2032,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_current_page
 	 */
 	public function testAPCurrentPageForMainPages() {
-		$user_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$user_page = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_opt( 'user_page', $user_page );
 		$this->go_to( '?post_type=page&p=' . $user_page );
 		set_query_var( 'ap_page', 'user' );
@@ -2047,7 +2047,7 @@ class TestThemeFunctions extends TestCase {
 	 * @covers ::ap_current_page
 	 */
 	public function testAPCurrentPageForAPCurrentPageFilter() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		add_filter( 'ap_current_page', [ $this, 'APCurrentPage' ] );
 		$this->assertEquals( 'test_query_var', ap_current_page() );

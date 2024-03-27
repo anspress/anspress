@@ -292,14 +292,14 @@ class TestAddonReputation extends TestCase {
 		$instance = \Anspress\Addons\Reputation::init();
 
 		// Test by directly calling the method.
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$instance->user_register( $user_id );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
 
 		// Test by creating a new user.
 		add_filter( 'user_register', [ $instance, 'user_register' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
 		remove_filter( 'user_register', [ $instance, 'user_register' ] );
 	}
@@ -312,7 +312,7 @@ class TestAddonReputation extends TestCase {
 
 		// Test by directly calling the method.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_question( $question_id, get_post( $question_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
@@ -320,7 +320,7 @@ class TestAddonReputation extends TestCase {
 		// Test by creating a new question.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_after_new_question', [ $instance, 'new_question' ], 10, 2 );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_after_new_question', [ $instance, 'new_question' ], 10, 2 );
 	}
@@ -334,7 +334,7 @@ class TestAddonReputation extends TestCase {
 		// Test by directly calling the method.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
 		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
@@ -343,7 +343,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
 	}
@@ -384,7 +384,7 @@ class TestAddonReputation extends TestCase {
 		// Test by directly calling the method.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
 		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
@@ -395,7 +395,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
 		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
@@ -414,7 +414,7 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->select_answer( get_post( $answer_id ) );
 		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
@@ -422,8 +422,8 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$user_id = $this->factory->user->create();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$user_id = $this->factory()->user->create();
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->select_answer( get_post( $answer_id ) );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
@@ -434,7 +434,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
 		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
@@ -443,8 +443,8 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$user_id = $this->factory->user->create();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$user_id = $this->factory()->user->create();
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
@@ -461,7 +461,7 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$instance->select_answer( get_post( $answer_id ) );
 		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->unselect_answer( get_post( $answer_id ) );
@@ -470,8 +470,8 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$user_id = $this->factory->user->create();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$user_id = $this->factory()->user->create();
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$instance->select_answer( get_post( $answer_id ) );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
@@ -484,7 +484,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
 		$instance->select_answer( get_post( $answer_id ) );
 		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
@@ -496,8 +496,8 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_unselect_answer', [ $instance, 'unselect_answer' ] );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$user_id = $this->factory->user->create();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$user_id = $this->factory()->user->create();
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
 		$instance->select_answer( get_post( $answer_id ) );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
@@ -525,7 +525,7 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
@@ -537,16 +537,16 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->vote_up( $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->vote_up( $answer_id );
@@ -567,7 +567,7 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
@@ -581,7 +581,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		ap_add_post_vote( $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
@@ -590,9 +590,9 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_vote_up', [ $instance, 'vote_up' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		ap_add_post_vote( $answer_id );
@@ -618,7 +618,7 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
@@ -630,16 +630,16 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->vote_down( $answer_id );
 		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->vote_down( $answer_id );
@@ -660,7 +660,7 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_vote_down', [ $instance, 'vote_down' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
@@ -674,7 +674,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_vote_down', [ $instance, 'vote_down' ] );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
@@ -683,9 +683,9 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_vote_down', [ $instance, 'vote_down' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
@@ -713,7 +713,7 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		ap_add_post_vote( $question_id, get_current_user_id(), false );
 		$instance->vote_up( $question_id );
@@ -727,7 +727,7 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_up( $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
@@ -736,9 +736,9 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_up( $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
@@ -763,7 +763,7 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		ap_add_post_vote( $question_id, get_current_user_id(), false );
 		$instance->vote_up( $question_id );
@@ -779,7 +779,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_up( $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
@@ -790,9 +790,9 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_undo_vote_up', [ $instance, 'undo_vote_up' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_up( $answer_id );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
@@ -822,7 +822,7 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		ap_add_post_vote( $question_id, get_current_user_id(), false );
 		$instance->vote_down( $question_id );
@@ -836,7 +836,7 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_down( $answer_id );
 		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
@@ -845,9 +845,9 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_down( $answer_id );
 		$this->assertEquals( -2, ap_get_user_reputation( $user_id ) );
@@ -872,7 +872,7 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question( '', '', $user_id );
 		ap_add_post_vote( $question_id, get_current_user_id(), false );
 		$instance->vote_down( $question_id );
@@ -888,7 +888,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_down( $answer_id );
 		$this->assertEquals( -2, ap_get_user_reputation( get_current_user_id() ) );
@@ -899,9 +899,9 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_undo_vote_down', [ $instance, 'undo_vote_down' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_add_post_vote( $answer_id, get_current_user_id(), false );
 		$instance->vote_down( $answer_id );
 		$this->assertEquals( -2, ap_get_user_reputation( $user_id ) );
@@ -923,16 +923,16 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
@@ -941,18 +941,18 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
@@ -963,7 +963,7 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
@@ -971,9 +971,9 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
 		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
@@ -983,8 +983,8 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
@@ -992,10 +992,10 @@ class TestAddonReputation extends TestCase {
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
 		remove_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
@@ -1012,7 +1012,7 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->delete_comment( get_comment( $comment_id ) );
@@ -1020,9 +1020,9 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
 		$instance->delete_comment( get_comment( $comment_id ) );
@@ -1032,8 +1032,8 @@ class TestAddonReputation extends TestCase {
 		// Test 1.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->delete_comment( get_comment( $comment_id ) );
@@ -1041,10 +1041,10 @@ class TestAddonReputation extends TestCase {
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		$instance->new_comment( get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
 		$instance->delete_comment( get_comment( $comment_id ) );
@@ -1057,7 +1057,7 @@ class TestAddonReputation extends TestCase {
 		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
@@ -1069,9 +1069,9 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
 		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
@@ -1085,8 +1085,8 @@ class TestAddonReputation extends TestCase {
 		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => get_current_user_id(), 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
 		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
@@ -1098,10 +1098,10 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] );
 		add_action( 'ap_publish_comment', [ $instance, 'new_comment' ] );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$question_id = $this->insert_question();
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $answer_id, 'user_id' => $user_id, 'comment_type' => 'anspress' ] );
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
 		do_action( 'ap_unpublish_comment', get_comment( $comment_id ) );
@@ -1119,7 +1119,7 @@ class TestAddonReputation extends TestCase {
 		// Test by directly calling the method.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => get_current_user_id() ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => get_current_user_id() ] );
 		$instance->new_question( $question_id, get_post( $question_id ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
 		$this->assertEquals( 7, ap_get_user_reputation( get_current_user_id() ) );
@@ -1130,7 +1130,7 @@ class TestAddonReputation extends TestCase {
 		add_action( 'delete_user', [ $instance, 'delete_user' ] );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => get_current_user_id() ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => get_current_user_id() ] );
 		$instance->new_question( $question_id, get_post( $question_id ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
 		$this->assertEquals( 7, ap_get_user_reputation( get_current_user_id() ) );
@@ -1146,28 +1146,28 @@ class TestAddonReputation extends TestCase {
 		$instance = \Anspress\Addons\Reputation::init();
 
 		// Test 1.
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$result = $instance->display_name( 'User Testing', [ 'user_id' => 0 ] );
 		$this->assertEquals( 'User Testing', $result );
 
 		// Test 2.
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$question_id = $this->insert_question( '', '', $user_id );
 		$instance->new_question( $question_id, get_post( $question_id ) );
 		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => false ] );
 		$this->assertEquals( 'User Testing', $result );
 
 		// Test 3.
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$question_id = $this->insert_question( '', '', $user_id );
 		$instance->new_question( $question_id, get_post( $question_id ) );
 		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
 		$this->assertEquals( 'User Testing<span class="ap-user-reputation" title="Reputation">2</span>', $result );
 
 		// Test 4.
-		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$question_id = $this->insert_question( '', '', $user_id );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		$instance->new_question( $question_id, get_post( $question_id ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
 		ap_activate_addon( 'profile.php' );

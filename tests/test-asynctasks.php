@@ -63,7 +63,7 @@ class TestAsyncTasks extends TestCase {
 	 * @covers AnsPress\AsyncTasks\NewQuestion::run_action
 	 */
 	public function testNewQuestion() {
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
 
 		// Initialize class.
 		$tasks = new \AnsPress\AsyncTasks\NewQuestion();
@@ -109,8 +109,8 @@ class TestAsyncTasks extends TestCase {
 	 * @covers AnsPress\AsyncTasks\NewAnswer::run_action
 	 */
 	public function testNewAnswer() {
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$answer_id = $this->factory->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$answer_id = $this->factory()->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
 
 		// Initialize class.
 		$tasks = new \AnsPress\AsyncTasks\NewAnswer();
@@ -156,7 +156,7 @@ class TestAsyncTasks extends TestCase {
 	 * @covers AnsPress\AsyncTasks\UpdateQuestion::run_action
 	 */
 	public function testUpdateQuestion() {
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
 
 		// Initialize class.
 		$tasks = new \AnsPress\AsyncTasks\UpdateQuestion();
@@ -202,8 +202,8 @@ class TestAsyncTasks extends TestCase {
 	 * @covers AnsPress\AsyncTasks\UpdateAnswer::run_action
 	 */
 	public function testUpdateAnswer() {
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$answer_id = $this->factory->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$answer_id = $this->factory()->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
 
 		// Initialize class.
 		$tasks = new \AnsPress\AsyncTasks\UpdateAnswer();
@@ -249,8 +249,8 @@ class TestAsyncTasks extends TestCase {
 	 * @covers AnsPress\AsyncTasks\SelectAnswer::run_action
 	 */
 	public function testSelectAnswer() {
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$answer_id = $this->factory->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$answer_id = $this->factory()->post->create( array( 'post_type' => 'answer', 'post_parent' => $question_id ) );
 		ap_set_selected_answer( $question_id, $answer_id );
 
 		// Initialize class.
@@ -296,8 +296,8 @@ class TestAsyncTasks extends TestCase {
 	 * @covers AnsPress\AsyncTasks\PublishComment::run_action
 	 */
 	public function testPublishComment() {
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$comment_id = $this->factory->comment->create( array( 'comment_post_ID' => $question_id, 'comment_type' => 'anspress' ) );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$comment_id = $this->factory()->comment->create( array( 'comment_post_ID' => $question_id, 'comment_type' => 'anspress' ) );
 
 		// Initialize class.
 		$tasks = new \AnsPress\AsyncTasks\PublishComment();

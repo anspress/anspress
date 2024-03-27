@@ -463,7 +463,7 @@ class TestReputation extends TestCase {
 		// Test for manually adding the user reputation.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -473,7 +473,7 @@ class TestReputation extends TestCase {
 		$post = get_post( $question_id );
 		ap_insert_reputation( 'ask', $question_id, $post->post_author );
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -484,7 +484,7 @@ class TestReputation extends TestCase {
 		$post = get_post( $answer_id );
 		ap_insert_reputation( 'answer', $answer_id, $post->post_author );
 		$this->assertEquals( 7, ap_get_user_reputation( $user_id ) );
-		$new_question_id = $this->factory->post->create(
+		$new_question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -529,7 +529,7 @@ class TestReputation extends TestCase {
 		$this->assertEquals( '', ap_get_user_reputation_meta() );
 
 		// Test after inserting reputations.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -539,7 +539,7 @@ class TestReputation extends TestCase {
 		$post = get_post( $question_id );
 		ap_insert_reputation( 'ask', $question_id, $post->post_author );
 		$this->assertEquals( 2, ap_get_user_reputation_meta() );
-		$new_question_id = $this->factory->post->create(
+		$new_question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -549,7 +549,7 @@ class TestReputation extends TestCase {
 		$post = get_post( $new_question_id );
 		ap_insert_reputation( 'ask', $new_question_id, $post->post_author );
 		$this->assertEquals( 4, ap_get_user_reputation_meta() );
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -560,7 +560,7 @@ class TestReputation extends TestCase {
 		$post = get_post( $answer_id );
 		ap_insert_reputation( 'answer', $new_question_id, $post->post_author );
 		$this->assertEquals( 9, ap_get_user_reputation_meta() );
-		$new_answer_id = $this->factory->post->create(
+		$new_answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -590,7 +590,7 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 1014, ap_get_user_reputation_meta( get_current_user_id(), false ) );
 
 		// Test for a specific user id.
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$this->assertEquals( '', ap_get_user_reputation_meta( $user_id ) );
 	}
 
@@ -603,7 +603,7 @@ class TestReputation extends TestCase {
 		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
 
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 
 		// Test before adding any reputation.
 		$get_users_reputations = ap_get_users_reputation( [ get_current_user_id(), $user_id ] );

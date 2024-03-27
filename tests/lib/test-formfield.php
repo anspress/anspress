@@ -192,7 +192,7 @@ class TestAnsPressFormField extends TestCase {
 		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [] );
 
 		// Test 1.
-		$args = [ 'post_id' => $this->factory->post->create( [ 'post_type' => 'question' ] ) ];
+		$args = [ 'post_id' => $this->factory()->post->create( [ 'post_type' => 'question' ] ) ];
 		$result = $field->after_save( $args );
 		$this->assertNull( $result );
 

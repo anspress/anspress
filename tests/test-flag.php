@@ -125,7 +125,7 @@ class TestFlag extends TestCase {
 		// Test for answers.
 		$this->assertEquals( 1, $total_flagged_answers->publish );
 		$this->assertEquals( 1, $total_flagged_answers->total );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -133,7 +133,7 @@ class TestFlag extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -157,7 +157,7 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 1, $total_flagged_answers->publish );
 		$this->assertEquals( 1, $total_flagged_answers->moderate );
 		$this->assertEquals( 2, $total_flagged_answers->total );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -165,7 +165,7 @@ class TestFlag extends TestCase {
 				'post_status'  => 'private',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -191,14 +191,14 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 1, $total_flagged_answers->moderate );
 		$this->assertEquals( 1, $total_flagged_answers->private );
 		$this->assertEquals( 3, $total_flagged_answers->total );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -307,7 +307,7 @@ class TestFlag extends TestCase {
 		$this->assertEquals( 1, $anspress_global_option['flagged_answers']->total );
 
 		// Text with different post status.
-		$q_id1 = $this->factory->post->create(
+		$q_id1 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -315,7 +315,7 @@ class TestFlag extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$q_id2 = $this->factory->post->create(
+		$q_id2 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -323,14 +323,14 @@ class TestFlag extends TestCase {
 				'post_status'  => 'private',
 			)
 		);
-		$q_id3 = $this->factory->post->create(
+		$q_id3 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$a_id1 = $this->factory->post->create(
+		$a_id1 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -339,7 +339,7 @@ class TestFlag extends TestCase {
 				'post_status'  => 'moderate',
 			)
 		);
-		$a_id2 = $this->factory->post->create(
+		$a_id2 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -348,7 +348,7 @@ class TestFlag extends TestCase {
 				'post_status'  => 'private',
 			)
 		);
-		$a_id3 = $this->factory->post->create(
+		$a_id3 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',

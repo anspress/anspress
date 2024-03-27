@@ -193,14 +193,14 @@ class TestAnsPressAdmin extends TestCase {
 	 * @covers AnsPress_Admin::modify_answer_title
 	 */
 	public function testModifyAnswerTitle() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_type'    => 'question',
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content'
 			]
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			[
 				'post_type'    => 'answer',
 				'post_title'   => 'Answer title',
@@ -208,14 +208,14 @@ class TestAnsPressAdmin extends TestCase {
 				'post_parent'  => $question_id
 			]
 		);
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			[
 				'post_type'    => 'post',
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content'
 			]
 		);
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			[
 				'post_type'    => 'page',
 				'post_title'   => 'Page title',
@@ -246,14 +246,14 @@ class TestAnsPressAdmin extends TestCase {
 	 */
 	public function testSaveUserRolesFields() {
 		// Test 1.
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$_REQUEST['ap_role'] = 'administrator';
 		\AnsPress_Admin::save_user_roles_fields( $user_id );
 		$saved_role = get_user_meta( $user_id, 'ap_role', true );
 		$this->assertEquals( ap_sanitize_unslash( 'ap_role', 'p' ), $saved_role );
 
 		// Test 2.
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$_REQUEST['ap_role'] = [ 'moderator', 'editor' ];
 		\AnsPress_Admin::save_user_roles_fields( $user_id );
 		$saved_role = get_user_meta( $user_id, 'ap_role', true );
@@ -931,7 +931,7 @@ class TestAnsPressAdmin extends TestCase {
 		global $post;
 
 		// Test 1.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$post = get_post( $question_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list_edit();
@@ -942,7 +942,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>Private Post</option>" );', $output );
 
 		// Test 2.
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$post = get_post( $answer_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list_edit();
@@ -953,7 +953,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( 'jQuery( ".inline-edit-group select[name=\'_status\']" ).append( "<option value=\'private_post\'>Private Post</option>" );', $output );
 
 		// Test 3.
-		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		$post = get_post( $page_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list_edit();
@@ -969,7 +969,7 @@ class TestAnsPressAdmin extends TestCase {
 
 		// Test for question post type.
 		// Test 1.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$post = get_post( $question_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list();
@@ -983,7 +983,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( '.html( "Moderate" );', $output );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
 		$post = get_post( $question_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list();
@@ -998,7 +998,7 @@ class TestAnsPressAdmin extends TestCase {
 
 		// Test for answer post type.
 		// Test 1.
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate' ] );
 		$post = get_post( $answer_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list();
@@ -1012,7 +1012,7 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertStringContainsString( '.html( "Moderate" );', $output );
 
 		// Test 2.
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'private_post' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'private_post' ] );
 		$post = get_post( $answer_id );
 		ob_start();
 		\AnsPress_Admin::append_post_status_list();
@@ -1033,13 +1033,13 @@ class TestAnsPressAdmin extends TestCase {
 		// Test if base page is set.
 		// Create some pages and a base page.
 		$pages = [
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
 		];
-		$base_page = ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) );
+		$base_page = ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) );
 		$pages[] = $base_page;
 
 		// Set the AnsPress base page.
@@ -1060,11 +1060,11 @@ class TestAnsPressAdmin extends TestCase {
 		// Test if base page is not set.
 		// Create some pages.
 		$pages = [
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
-			ap_get_post( $this->factory->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
+			ap_get_post( $this->factory()->post->create( [ 'post_type' => 'page' ] ) ),
 		];
 
 		// Call the method.
@@ -1102,27 +1102,27 @@ class TestAnsPressAdmin extends TestCase {
 	 */
 	public function testTrashedPost() {
 		// Test 1.
-		$base_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$base_page = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_opt( 'base_page', $base_page );
 		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 		\AnsPress_Admin::trashed_post( $base_page );
 		$this->assertFalse( get_transient( 'ap_pages_check' ) );
 
 		// Test 2.
-		$ask_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$ask_page = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_opt( 'ask_page', $ask_page );
 		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 		\AnsPress_Admin::trashed_post( $ask_page );
 		$this->assertFalse( get_transient( 'ap_pages_check' ) );
 
 		// Test 3.
-		$other_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$other_page = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 		\AnsPress_Admin::trashed_post( $other_page );
 		$this->assertNotEmpty( get_transient( 'ap_pages_check' ) );
 
 		// Test 4.
-		$other_post = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		$other_post = $this->factory()->post->create( [ 'post_type' => 'post' ] );
 		set_transient( 'ap_pages_check', '1', HOUR_IN_SECONDS );
 		\AnsPress_Admin::trashed_post( $other_post );
 		$this->assertNotEmpty( get_transient( 'ap_pages_check' ) );
@@ -1135,12 +1135,12 @@ class TestAnsPressAdmin extends TestCase {
 		$this->setRole( 'subscriber' );
 
 		// Create some questions and answers.
-		$q_id1 = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
-		$q_id2 = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
-		$q_id3 = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
-		$a_id1 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id1 ] );
-		$a_id2 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id2 ] );
-		$a_id3 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id3 ] );
+		$q_id1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$q_id2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$q_id3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$a_id1 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id1 ] );
+		$a_id2 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id2 ] );
+		$a_id3 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $q_id3 ] );
 
 		// Add some flags to question and answer.
 		ap_add_flag( $q_id1 );

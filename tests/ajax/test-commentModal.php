@@ -31,7 +31,7 @@ class TestCommentModal extends TestCaseAjax {
 		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 
 		// Test 1.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -47,7 +47,7 @@ class TestCommentModal extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -66,7 +66,7 @@ class TestCommentModal extends TestCaseAjax {
 
 		// Test 3.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -75,7 +75,7 @@ class TestCommentModal extends TestCaseAjax {
 			)
 		);
 		$this->setRole( 'subscriber' );
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_type'    => 'anspress',
@@ -92,7 +92,7 @@ class TestCommentModal extends TestCaseAjax {
 
 		// Test 4.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -101,8 +101,8 @@ class TestCommentModal extends TestCaseAjax {
 			)
 		);
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$comment_id = $this->factory->comment->create(
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_type'    => 'anspress',
@@ -117,7 +117,7 @@ class TestCommentModal extends TestCaseAjax {
 
 		// Test 5.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -134,7 +134,7 @@ class TestCommentModal extends TestCaseAjax {
 	}
 
 	public function testShouldNotAllowNonLoggedInToDelete() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -143,7 +143,7 @@ class TestCommentModal extends TestCaseAjax {
 			)
 		);
 
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_type'    => 'anspress',
