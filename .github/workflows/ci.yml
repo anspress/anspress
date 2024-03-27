@@ -87,3 +87,26 @@ jobs:
       - name: Run PHP CodeSniffer
         run: |
           composer run phpcs
+
+      # Install Node.js 12.x
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.x
+
+      # Build with Node.js (assuming you have the necessary build scripts)
+      - name: Install Node.js dependencies and Build
+        run: |
+          npm install
+          npm run build
+
+      # Create the artifact zip
+      - name: Create build artifact
+        run: git archive -o anspress-question-answer.zip HEAD --prefix=anspress-question-answer/
+
+      # Upload the artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: anspress-question-answer
+          path: anspress-question-answer.zip
