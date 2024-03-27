@@ -3092,4 +3092,90 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( date_i18n( 'M Y', current_time( 'U' ) ), ap_human_time( current_time( 'U' ), true, 0, 'M Y' ) );
 		ap_opt( 'default_date_format', false );
 	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithoutPriorities() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Add some filters to a hook.
+		add_filter( 'test_hook', function() { return 'Filter 1'; }, 10 );
+		add_filter( 'test_hook', function() { return 'Filter 1'; }, 11 );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+
+		// Test.
+		ap_remove_all_filters( 'test_hook' );
+		$this->assertArrayNotHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertCount( 2, $ap->new_filters->wp_filter['test_hook'] );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithPriorities() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Add some filters to a hook.
+		add_filter( 'test_hook', function() { return 'Filter 1'; }, 10 );
+		add_filter( 'test_hook', function() { return 'Filter 2'; }, 11 );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+
+		// Test.
+		ap_remove_all_filters( 'test_hook', 11 );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertCount( 2, $ap->new_filters->wp_filter['test_hook'] );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithHookNotExists() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Test.
+		ap_remove_all_filters( 'test_hook' );
+		$this->assertArrayNotHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithMergedFilters() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Add some filters to a hook.
+		add_filter( 'test_hook', function() { return 'Filter 1'; } );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+
+		// Test.
+		$merged_filters['test_hook'] = true;
+		ap_remove_all_filters( 'test_hook' );
+		$this->assertArrayNotHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertCount( 1, $ap->new_filters->wp_filter['test_hook'] );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
 }
