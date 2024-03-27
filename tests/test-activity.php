@@ -323,7 +323,12 @@ class TestActivity extends TestCase {
 		$this->assertEquals( current_time( 'mysql' ), $new_q_activity->activity_date );
 
 		// Inserting new answer.
-		$new_a_id = $activity->insert( [ 'action' => 'new_a', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$new_a_id = $activity->insert( [
+			'action' => 'new_a',
+			'q_id' => $id->q,
+			'a_id' => $id->a,
+			'date' => '2024-03-27 13:29:15'
+		] );
 		$this->assertNotEmpty( $new_a_id );
 		$this->assertIsInt( $new_a_id );
 		$new_a_activity = $activity->get_activity( $new_a_id );
@@ -335,7 +340,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $new_a_activity->activity_a_id );
 		$this->assertEquals( 0, $new_a_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $new_a_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $new_a_activity->activity_date );
+		$this->assertEquals( '2024-03-27 13:29:15', $new_a_activity->activity_date );
 
 		// Inserting new comment on question.
 		$q_c_id  = $this->factory()->comment->create_object(
