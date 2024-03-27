@@ -108,5 +108,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: anspress-question-answer
           path: anspress-question-answer.zip
+          retention-days: 5
