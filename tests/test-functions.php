@@ -2819,6 +2819,14 @@ class TestFunctions extends TestCase {
 	}
 
 	/**
+	 * @covers ::ap_deactivate_addon
+	 */
+	public function testAPDeactivateAddonShouldReturnFalseForAlreadyDeactivatedAddon() {
+		ap_deactivate_addon( 'categories.php' );
+		$this->assertFalse( ap_deactivate_addon( 'categories.php' ) );
+	}
+
+	/**
 	 * @covers ::ap_sanitize_unslash
 	 */
 	public function testAPSanitizeUnslashForQueryVar() {
