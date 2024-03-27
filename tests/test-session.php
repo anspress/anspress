@@ -157,4 +157,193 @@ class Test_Session extends TestCase {
 		$this->assertNotNull( $instance );
 		$this->assertInstanceOf( 'AnsPress\Session', $instance );
 	}
+
+	/**
+	 * @covers AnsPress\Session::get
+	 */
+	public function testGetWhenNoTransientSet() {
+		$session = \AnsPress\Session::init();
+		$this->assertNull( $session->get( 'invalid_key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::get
+	 */
+	public function testGetWhenTransientSet() {
+		$session = \AnsPress\Session::init();
+		$reflectionClass = new \ReflectionClass( $session );
+		$property = $reflectionClass->getProperty( 'id' );
+		$property->setAccessible( true );
+		$property->setValue( $session, 'test-session' );
+		set_transient( 'anspress_session_test-session', [ 'key' => 'value' ], DAY_IN_SECONDS );
+		$session->get( 'key' );
+		$this->assertEquals( 'value', $session->get( 'key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::set
+	 */
+	public function testSetWhenNoTransientSet() {
+		$session = \AnsPress\Session::init();
+		$session->set( 'some_key', 'some_value' );
+		$this->assertEquals( 'some_value', $session->get( 'some_key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::set
+	 */
+	public function testSetWhenTransientSet() {
+		$session = \AnsPress\Session::init();
+		$reflectionClass = new \ReflectionClass( $session );
+		$property = $reflectionClass->getProperty( 'id' );
+		$property->setAccessible( true );
+		$property->setValue( $session, 'test-session' );
+		set_transient( 'anspress_session_test-session', [ 'key' => 'value' ], DAY_IN_SECONDS );
+		$session->set( 'key', 'new_value' );
+		$this->assertEquals( 'new_value', $session->get( 'key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::set
+	 */
+	public function testsETWhenValueIsNull() {
+		$session = \AnsPress\Session::init();
+		$session->set( 'some_key' );
+		$this->assertNull( $session->get( 'some_key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::delete
+	 */
+	public function testDeleteWhenTransientSet() {
+		$session = \AnsPress\Session::init();
+		$reflectionClass = new \ReflectionClass( $session );
+		$property = $reflectionClass->getProperty( 'id' );
+		$property->setAccessible( true );
+		$property->setValue( $session, 'test-session' );
+		set_transient( 'anspress_session_test-session', [ 'key' => 'value' ], DAY_IN_SECONDS );
+		$session->delete( 'key' );
+		$this->assertNull( $session->get( 'key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::delete
+	 */
+	public function testDeleteWhenTransientSetButHaveManyValues() {
+		$session = \AnsPress\Session::init();
+		$reflectionClass = new \ReflectionClass( $session );
+		$property = $reflectionClass->getProperty( 'id' );
+		$property->setAccessible( true );
+		$property->setValue( $session, 'test-session' );
+		set_transient( 'anspress_session_test-session', [ 'key' => 'value', 'key2' => 'value2' ], DAY_IN_SECONDS );
+		$session->delete( 'key' );
+		$this->assertNull( $session->get( 'key' ) );
+		$this->assertEquals( 'value2', $session->get( 'key2' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::delete
+	 */
+	public function testDeleteWhenKeyIsNull() {
+		$session = \AnsPress\Session::init();
+		$reflectionClass = new \ReflectionClass( $session );
+		$property = $reflectionClass->getProperty( 'id' );
+		$property->setAccessible( true );
+		$property->setValue( $session, 'test-session' );
+		set_transient( 'anspress_session_test-session', [ 'key' => 'value' ], DAY_IN_SECONDS );
+		$session->delete();
+		$this->assertNull( $session->get( 'key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::delete
+	 */
+	public function testDeleteWhenKeyIsNullAndHaveManayValuesSetInTransient() {
+		$session = \AnsPress\Session::init();
+		$reflectionClass = new \ReflectionClass( $session );
+		$property = $reflectionClass->getProperty( 'id' );
+		$property->setAccessible( true );
+		$property->setValue( $session, 'test-session' );
+		set_transient( 'anspress_session_test-session', [ 'key' => 'value', 'key2' => 'value2' ], DAY_IN_SECONDS );
+		$session->delete();
+		$this->assertNull( $session->get( 'key' ) );
+		$this->assertNull( $session->get( 'key2' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::delete
+	 */
+	public function testDeleteWhenTransientNotSet() {
+		$session = \AnsPress\Session::init();
+		$session->delete( 'key' );
+		$this->assertNull( $session->get( 'key' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionNotSet() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'questions', [] );
+		anspress()->session->set( 'answers', [] );
+		$this->assertFalse( $session->post_in_session( $post_id ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionSet() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'questions', [ $post_id ] );
+		$this->assertTrue( $session->post_in_session( $post_id ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionSetAndPostTypeIsAnswer() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'answer',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'answers', [ $post_id ] );
+		$this->assertTrue( $session->post_in_session( $post_id ) );
+	}
+
+	/**
+	 * @covers AnsPress\Session::post_in_session
+	 */
+	public function testPostInSessionWhenSessionSetAndUserIsLoggedIn() {
+		$user_id = $this->factory->user->create();
+		wp_set_current_user( $user_id );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Mauris a velit id neque dignissim congue',
+				'post_type'    => 'question',
+				'post_content' => 'Sed cursus, diam sit amet',
+			)
+		);
+		$session = \AnsPress\Session::init();
+		anspress()->session->set( 'questions', [ $post_id ] );
+		anspress()->session->set( 'answers', [ $post_id ] );
+		$this->assertFalse( $session->post_in_session( $post_id ) );
+	}
 }

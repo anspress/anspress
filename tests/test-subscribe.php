@@ -367,4 +367,75 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( wp_cache_get( '_01234', 'ap_subscribers_count' ) );
 		$this->assertFalse( wp_cache_get( '_', 'ap_subscribers_count' ) );
 	}
+
+	/**
+	 * @covers ::ap_new_subscriber
+	 */
+	public function testAPNewSubscriberWithoutPassingUserID() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( false, 'question', $id );
+		$this->assertTrue( ap_is_user_subscriber( 'question', $id ) );
+	}
+
+	/**
+	 * @covers ::ap_get_subscriber
+	 */
+	public function testAPGetSubscriberWithoutPassingUserID() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( false, 'question', $id );
+		$subscriber = ap_get_subscriber( false, 'question', $id );
+		$this->assertEquals( get_current_user_id(), $subscriber->subs_user_id );
+	}
+
+	/**
+	 * @covers ::ap_get_subscriber
+	 */
+	public function testAPGetSubscriberWithoutPassingAnEvent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( false, 'question', $id );
+		$subscriber = ap_get_subscriber( false, '', $id );
+		$this->assertFalse( $subscriber );
+	}
+
+	/**
+	 * @covers ::ap_get_subscriber
+	 */
+	public function testAPGetSubscriberWithoutPassingARefID() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( false, 'question', $id );
+		$subscriber = ap_get_subscriber( false, 'question', '' );
+		$this->assertFalse( $subscriber );
+	}
+
+	/**
+	 * @covers ::ap_get_subscribers
+	 */
+	public function testAPGetSubscribersForPassingSubsUserID() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( get_current_user_id(), 'question', $id );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		ap_new_subscriber( $user_id, 'question', $id );
+		$subscriber = ap_get_subscribers( [ 'subs_user_id' => get_current_user_id() ] );
+		$this->assertEquals( 1, count( $subscriber ) );
+	}
 }

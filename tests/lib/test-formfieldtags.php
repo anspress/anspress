@@ -305,4 +305,360 @@ class TestAnsPressFormFieldTags extends TestCase {
 		$this->assertIsArray( $result );
 		$this->assertEquals( [ '0', 'test value', 'valid tag id', 'valid tag name' ], $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::get_options
+	 */
+	public function testGetOptionsShouldReturnEmptyArrayIfOptionsIsSetToAnArray() {
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+				'option3' => 'Option 3',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertIsArray( $result );
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::get_options
+	 */
+	public function testGetOptionsShouldReturnArrayListOfPostsIfPostsIsSetAsOption() {
+		// Create some posts.
+		$post_id_1 = $this->factory()->post->create( [ 'post_title' => 'Post Title 1' ] );
+		$post_id_2 = $this->factory()->post->create( [ 'post_title' => 'Post Title 2' ] );
+		$post_id_3 = $this->factory()->post->create( [ 'post_title' => 'Post Title 3' ] );
+		$post_id_4 = $this->factory()->post->create( [ 'post_title' => 'Post Title 4' ] );
+		$post_id_5 = $this->factory()->post->create( [ 'post_title' => 'Post Title 5' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options'    => 'posts',
+			'posts_args' => [
+				'post_type' => 'post',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$expected = [
+			$post_id_1 => 'Post Title 1',
+			$post_id_2 => 'Post Title 2',
+			$post_id_3 => 'Post Title 3',
+			$post_id_4 => 'Post Title 4',
+			$post_id_5 => 'Post Title 5',
+		];
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::get_options
+	 */
+	public function testGetOptionsShouldReturnArrayListOfPostsIfPostsIsSetAsOptionWithCustomPostsArgs() {
+		// Create some posts.
+		$post_id_1 = $this->factory()->post->create( [ 'post_title' => 'Post Title 1', 'post_type' => 'page' ] );
+		$post_id_2 = $this->factory()->post->create( [ 'post_title' => 'Post Title 2', 'post_type' => 'page' ] );
+		$post_id_3 = $this->factory()->post->create( [ 'post_title' => 'Post Title 3', 'post_type' => 'page' ] );
+		$post_id_4 = $this->factory()->post->create( [ 'post_title' => 'Post Title 4', 'post_type' => 'page' ] );
+		$post_id_5 = $this->factory()->post->create( [ 'post_title' => 'Post Title 5', 'post_type' => 'page' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options'    => 'posts',
+			'posts_args' => [
+				'post_type'      => 'page',
+				'posts_per_page' => 3,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$expected = [
+			$post_id_5 => 'Post Title 5',
+			$post_id_4 => 'Post Title 4',
+			$post_id_3 => 'Post Title 3',
+		];
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::get_options
+	 */
+	public function testGetOptionsShouldReturnEmptyArrayIfValuesNotSet() {
+		// Create some terms.
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 1' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 2' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 3' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options' => 'terms',
+			'value'   => '',
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::get_options
+	 */
+	public function testGetOptionsShouldReturnArrayListOfTermsIfValueIsSet() {
+		// Create some terms.
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 1', 'description' => 'Question Tag Description 1' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 2', 'description' => 'Question Tag Description 2' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 3', 'description' => 'Question Tag Description 3' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options' => 'terms',
+			'value'   => [ $term_id_1, $term_id_2 ],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$expected = [
+			[
+				'term_id'     => $term_id_1,
+				'name'        => 'Question Tag 1',
+				'description' => 'Question Tag Description 1',
+				'count'       => 0,
+			],
+			[
+				'term_id'     => $term_id_2,
+				'name'        => 'Question Tag 2',
+				'description' => 'Question Tag Description 2',
+				'count'       => 0,
+			],
+		];
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::get_options
+	 */
+	public function testGetOptionsShouldReturnArrayListOfTermsIfValueIsSetForOtherCustomTaxonomyAsWell() {
+		// Create some terms.
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Question Category 1', 'description' => 'Question Tag Description 1' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Question Category 2', 'description' => 'Question Tag Description 2' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Question Category 3', 'description' => 'Question Tag Description 3' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options' => 'terms',
+			'value'   => [ $term_id_1 ],
+			'terms_args' => [
+				'taxonomy' => 'question_category',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $field );
+		$expected = [
+			[
+				'term_id'     => $term_id_1,
+				'name'        => 'Question Category 1',
+				'description' => 'Question Tag Description 1',
+				'count'       => 0,
+			],
+		];
+		$this->assertEquals( $expected, $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::field_markup
+	 */
+	public function testFieldMarkupForOptionsAsAnArray() {
+		// Set up the action hook callback.
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Tags', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options' => [
+				'option1' => 'Option 1',
+				'option2' => 'Option 2',
+				'option3' => 'Option 3',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<input type="text" id="SampleForm-sample-form" data-type="tags" data-options="' . esc_js( wp_json_encode( $field->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" aptagfield name="Sample Form[sample-form]" value="" />', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<script id="SampleForm-sample-form-options" type="application/json">[]</script>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::field_markup
+	 */
+	public function testFieldMarkupForOptionsAsTerms() {
+		// Set up the action hook callback.
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Tags', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Create some terms.
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 1', 'description' => 'Question Tag Description 1' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 2', 'description' => 'Question Tag Description 2' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question Tag 3', 'description' => 'Question Tag Description 3' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options' => 'terms',
+			'value'   => [ $term_id_1, $term_id_2 ],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<input type="text" id="SampleForm-sample-form" data-type="tags" data-options="' . esc_js( wp_json_encode( $field->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" aptagfield name="Sample Form[sample-form]" value="' . implode( ',', [ $term_id_1, $term_id_2 ] ) . '" />', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<script id="SampleForm-sample-form-options" type="application/json">' . wp_json_encode( $method->invoke( $field ) ) . '</script>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::field_markup
+	 */
+	public function testFieldMarkupForOptionsAsTermsForQuestionCategoryTaxonomy() {
+		// Set up the action hook callback.
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Tags', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Create some terms.
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Question Category 1', 'description' => 'Question Tag Description 1' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Question Category 2', 'description' => 'Question Tag Description 2' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Question Category 3', 'description' => 'Question Tag Description 3' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options'    => 'terms',
+			'value'      => [ $term_id_3 ],
+			'terms_args' => [
+				'taxonomy' => 'question_category',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<input type="text" id="SampleForm-sample-form" data-type="tags" data-options="' . esc_js( wp_json_encode( $field->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" aptagfield name="Sample Form[sample-form]" value="' . implode( ',', [ $term_id_3 ] ) . '" />', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<script id="SampleForm-sample-form-options" type="application/json">' . wp_json_encode( $method->invoke( $field ) ) . '</script>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::field_markup
+	 */
+	public function testFieldMarkupForOptionsAsPosts() {
+		// Set up the action hook callback.
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Tags', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Create some posts.
+		$post_id_1 = $this->factory()->post->create( [ 'post_title' => 'Post Title 1' ] );
+		$post_id_2 = $this->factory()->post->create( [ 'post_title' => 'Post Title 2' ] );
+		$post_id_3 = $this->factory()->post->create( [ 'post_title' => 'Post Title 3' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options'    => 'posts',
+			'value'      => [ $post_id_1, $post_id_2 ],
+			'posts_args' => [
+				'post_type' => 'post',
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<input type="text" id="SampleForm-sample-form" data-type="tags" data-options="' . esc_js( wp_json_encode( $field->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" aptagfield name="Sample Form[sample-form]" value="' . implode( ',', [ $post_id_1, $post_id_2 ] ) . '" />', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<script id="SampleForm-sample-form-options" type="application/json">' . wp_json_encode( $method->invoke( $field ) ) . '</script>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Tags::field_markup
+	 */
+	public function testFieldMarkupForOptionsAsPostsForPagePostType() {
+		// Set up the action hook callback.
+		$callback_triggered = false;
+		add_action( 'ap_after_field_markup', function( $field ) use ( &$callback_triggered ) {
+			$this->assertInstanceOf( 'AnsPress\Form\Field\Tags', $field );
+			$this->assertInstanceOf( 'AnsPress\Form\Field', $field );
+			$callback_triggered = true;
+		} );
+
+		// Create some posts.
+		$post_id_1 = $this->factory()->post->create( [ 'post_title' => 'Post Title 1', 'post_type' => 'page' ] );
+		$post_id_2 = $this->factory()->post->create( [ 'post_title' => 'Post Title 2', 'post_type' => 'page' ] );
+		$post_id_3 = $this->factory()->post->create( [ 'post_title' => 'Post Title 3', 'post_type' => 'page' ] );
+
+		// Test.
+		$field = new \AnsPress\Form\Field\Tags( 'Sample Form', 'sample-form', [
+			'options'    => 'posts',
+			'value'      => [ $post_id_3 ],
+			'posts_args' => [
+				'post_type'      => 'page',
+				'posts_per_page' => 3,
+			],
+		] );
+		$reflection = new \ReflectionClass( $field );
+		$property = $reflection->getProperty( 'html' );
+		$property->setAccessible( true );
+		$method = $reflection->getMethod( 'get_options' );
+		$method->setAccessible( true );
+		$this->assertFalse( $callback_triggered );
+		$this->assertEmpty( $property->getValue( $field ) );
+		$field->field_markup();
+		$this->assertStringContainsString( '<input type="text" id="SampleForm-sample-form" data-type="tags" data-options="' . esc_js( wp_json_encode( $field->get( 'js_options' ) ) ) . '" class="ap-tags-input" autocomplete="off" aptagfield name="Sample Form[sample-form]" value="' . implode( ',', [ $post_id_3 ] ) . '" />', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<script id="SampleForm-sample-form-options" type="application/json">' . wp_json_encode( $method->invoke( $field ) ) . '</script>', $property->getValue( $field ) );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
+	}
 }

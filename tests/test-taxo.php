@@ -786,4 +786,136 @@ class TestTaxo extends TestCase {
 		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2</a>', $result );
 		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_3 ) ) . '" title="' . $tag_3->description . '">Question tag 3</a>', $result );
 	}
+
+	/**
+	 * @covers ::ap_question_categories_html
+	 */
+	public function testAPQuestionCategoriesHTMLByPassingQuestionCategoryIdInsteadOfArray() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			]
+		);
+		$category_id_1 = $this->factory->term->create(
+			[
+				'name'     => 'Question category 1',
+				'taxonomy' => 'question_category',
+			]
+		);
+		$category_id_2 = $this->factory->term->create(
+			[
+				'name'     => 'Question category 2',
+				'taxonomy' => 'question_category',
+			]
+		);
+		wp_set_object_terms( $question_id, [ $category_id_1, $category_id_2 ], 'question_category' );
+		$cat_1 = get_term_by( 'id', $category_id_1, 'question_category' );
+		$cat_2 = get_term_by( 'id', $category_id_2, 'question_category' );
+
+		// Test.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_categories_html( $question_id );
+		$this->assertStringContainsString( 'Categories', $result );
+		$this->assertStringContainsString( '<span class="question-categories">', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_1->term_id . '" href="' . esc_url( get_term_link( $category_id_1 ) ) . '" title="' . $cat_1->description . '">Question category 1</a>', $result );
+		$this->assertStringContainsString( '<a data-catid="' . $cat_2->term_id . '" href="' . esc_url( get_term_link( $category_id_2 ) ) . '" title="' . $cat_2->description . '">Question category 2</a>', $result );
+	}
+
+	/**
+	 * @covers ::ap_question_tags_html
+	 */
+	public function testAPQuestionTagsHTMLByPassingQuestionTagIdInsteadOfArray() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			]
+		);
+		$tag_id_1 = $this->factory->term->create(
+			[
+				'name'     => 'Question tag 1',
+				'taxonomy' => 'question_tag',
+			]
+		);
+		$tag_id_2 = $this->factory->term->create(
+			[
+				'name'     => 'Question tag 2',
+				'taxonomy' => 'question_tag',
+			]
+		);
+		wp_set_object_terms( $question_id, [ $tag_id_1, $tag_id_2 ], 'question_tag' );
+		$tag_1 = get_term_by( 'id', $tag_id_1, 'question_tag' );
+		$tag_2 = get_term_by( 'id', $tag_id_2, 'question_tag' );
+
+		// Test.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_tags_html( $question_id );
+		$this->assertStringContainsString( 'Tagged', $result );
+		$this->assertStringContainsString( '<span class="question-tags" itemprop="keywords">', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_1 ) ) . '" title="' . $tag_1->description . '">Question tag 1</a>', $result );
+		$this->assertStringContainsString( '<a href="' . esc_url( get_term_link( $tag_id_2 ) ) . '" title="' . $tag_2->description . '">Question tag 2</a>', $result );
+	}
+
+	/**
+	 * @covers ::ap_question_have_category
+	 */
+	public function testAPQuestionHaveCategoryWithoutPassingPostID() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			]
+		);
+		$category_id_1 = $this->factory->term->create(
+			[
+				'name'     => 'Question category 1',
+				'taxonomy' => 'question_category',
+			]
+		);
+
+		// Before assigning category.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_have_category();
+		$this->assertFalse( $result );
+
+		// After assigning category.
+		wp_set_object_terms( $question_id, [ $category_id_1 ], 'question_category' );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_have_category();
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers ::ap_question_have_tags
+	 */
+	public function testAPQuestionHaveTagsWithoutPassingPostID() {
+		$question_id = $this->factory->post->create(
+			[
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			]
+		);
+		$tag_id_1 = $this->factory->term->create(
+			[
+				'name'     => 'Question tag 1',
+				'taxonomy' => 'question_tag',
+			]
+		);
+
+		// Before assigning tag.
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_have_tags();
+		$this->assertFalse( $result );
+
+		// After assigning tag.
+		wp_set_object_terms( $question_id, [ $tag_id_1 ], 'question_tag' );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$result = ap_question_have_tags();
+		$this->assertTrue( $result );
+	}
 }

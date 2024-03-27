@@ -3185,4 +3185,941 @@ class Test_Roles extends TestCase {
 		$this->assertTrue( ap_user_can_read_comments( $id->q ) );
 		$this->assertTrue( ap_user_can_read_comments( $id->a ) );
 	}
+
+	public static function ReturnTrue() {
+		return true;
+	}
+
+	public static function ReturnFalse() {
+		return false;
+	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testAPUserCanAskForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$this->assertTrue( ap_user_can_ask() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testAPUserCanAskWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_ask', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_ask() );
+		remove_filter( 'ap_user_can_ask', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_ask
+	 */
+	public function testAPUserCanAskWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_ask', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_ask() );
+		remove_filter( 'ap_user_can_ask', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$question_id = $this->insert_question();
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_answer', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_answer( $question_id ) );
+		remove_filter( 'ap_user_can_answer', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_answer', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_answer( $question_id ) );
+		remove_filter( 'ap_user_can_answer', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerForUserWhoCantReadQuestion() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_answer( $question_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_answer
+	 */
+	public function testAPUserCanAnswerForClosedQuestion() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'publish',
+				'post_type'    => 'question',
+			)
+		);
+		ap_toggle_close_question( $question_id );
+		$this->assertFalse( ap_user_can_answer( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$id = $this->insert_answer();
+		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		add_filter( 'ap_user_can_select_answer', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_select_answer( $id->a ) );
+		remove_filter( 'ap_user_can_select_answer', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		add_filter( 'ap_user_can_select_answer', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_select_answer( $id->a ) );
+		remove_filter( 'ap_user_can_select_answer', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_select_answer
+	 */
+	public function testAPUserCanSelectAnswerForPostTypeNotAsAnAnswer() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$this->assertFalse( ap_user_can_select_answer( $id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_post
+	 */
+	public function testAPUserCanEditPostForInvalidPostType() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_post( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_post
+	 */
+	public function testAPUserCanEditPostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_edit_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_edit_post( $post_id ) );
+		remove_filter( 'ap_user_can_edit_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_post
+	 */
+	public function testAPUserCanEditPostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_edit_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_edit_post( $post_id ) );
+		remove_filter( 'ap_user_can_edit_post', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_post
+	 */
+	public function testAPUserCanEditPostForPostStatusSetAsModerate() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+				'post_status'  => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_post( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_post
+	 */
+	public function testAPUserCanEditPostForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_post( $post_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_answer
+	 */
+	public function testAPUserCanEditAnswerWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		add_filter( 'ap_user_can_edit_answer', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_edit_answer( $id->a ) );
+		remove_filter( 'ap_user_can_edit_answer', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_answer
+	 */
+	public function testAPUserCanEditAnswerWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		add_filter( 'ap_user_can_edit_answer', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_edit_answer( $id->a ) );
+		remove_filter( 'ap_user_can_edit_answer', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_answer
+	 */
+	public function testAPUserCanEditAnswerForPostStatusSetAsModerate() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		wp_update_post(
+			array(
+				'ID'          => $id->a,
+				'post_status' => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_answer( $id->a ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_answer
+	 */
+	public function testAPUserCanEditAnswerForUserWhoCantReadAnswer() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_answer();
+		wp_update_post(
+			array(
+				'ID'          => $id->a,
+				'post_status' => 'private_post',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_answer( $id->a, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_question
+	 */
+	public function testAPUserCanEditQuestionForNotPassingQuestionID() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_type'    => 'question',
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertTrue( ap_user_can_edit_question() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_question
+	 */
+	public function testAPUserCanEditQuestionForInvalidPostType() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_question( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_question
+	 */
+	public function testAPUserCanEditQuestionWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_question();
+		add_filter( 'ap_user_can_edit_question', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_edit_question( $id ) );
+		remove_filter( 'ap_user_can_edit_question', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_question
+	 */
+	public function testAPUserCanEditQuestionWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_question();
+		add_filter( 'ap_user_can_edit_question', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_edit_question( $id ) );
+		remove_filter( 'ap_user_can_edit_question', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_question
+	 */
+	public function testAPUserCanEditQuestionForPostStatusSetAsModerate() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		wp_update_post(
+			array(
+				'ID'          => $id,
+				'post_status' => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_question( $id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_question
+	 */
+	public function testAPUserCanEditQuestionForUserWhoCantReadQuestion() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_question();
+		wp_update_post(
+			array(
+				'ID'          => $id,
+				'post_status' => 'private_post',
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_question( $id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForNotPassingAnyArgs() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertTrue( ap_user_can_comment() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForNotPassingAnyArgsAndVisitingAnswerPage() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+		$this->go_to( '?post_type=answer&p=' . $answer_id );
+		$this->assertTrue( ap_user_can_comment() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$question_id = $this->insert_question();
+		$this->assertTrue( ap_user_can_comment( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_comment( $question_id ) );
+		remove_filter( 'ap_user_can_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_comment( $question_id ) );
+		remove_filter( 'ap_user_can_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForPostStatusSetAsModerate() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		wp_update_post(
+			array(
+				'ID'          => $question_id,
+				'post_status' => 'moderate',
+			)
+		);
+		$this->assertFalse( ap_user_can_comment( $question_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_comment
+	 */
+	public function testAPUserCanCommentForUserWhoCantReadQuestion() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_comment( $question_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+			)
+		);
+		add_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_edit_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$id = $this->insert_answer();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+			)
+		);
+		add_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_edit_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentForUnapprovedComment() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+				'comment_approved' => 0,
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_edit_comment
+	 */
+	public function testAPUserCanEditCommentForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$id = $this->insert_answer();
+		wp_update_post(
+			array(
+				'ID'          => $id->q,
+				'post_status' => 'private_post',
+			)
+		);
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $id->q,
+			)
+		);
+		$this->assertFalse( ap_user_can_edit_comment( $comment_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostForInvalidPostType() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_post( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_delete_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_delete_post( $post_id ) );
+		remove_filter( 'ap_user_can_delete_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_delete_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_delete_post( $post_id ) );
+		remove_filter( 'ap_user_can_delete_post', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_delete_post
+	 */
+	public function testAPUserCanDeletePostForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_delete_post( $post_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_permanent_delete
+	 */
+	public function testAPUserCanPermanentDeleteForInvalidPostType() {
+		$this->setRole( 'subscriber' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_user_can_permanent_delete( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_restore
+	 */
+	public function testAPUserCanRestoreForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+			)
+		);
+		$this->assertTrue( ap_user_can_restore( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_view_post
+	 */
+	public function testAPUserCanViewPostForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_author'  => 0,
+			)
+		);
+		$this->assertTrue( ap_user_can_view_post( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatusForSuperAdmin() {
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertTrue( ap_user_can_change_status( $post_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatusWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_change_status', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_change_status( $post_id ) );
+		remove_filter( 'ap_user_can_change_status', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_change_status
+	 */
+	public function testAPUserCanChangeStatusWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_type'    => 'question',
+			)
+		);
+		add_filter( 'ap_user_can_change_status', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_change_status( $post_id ) );
+		remove_filter( 'ap_user_can_change_status', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_show_captcha_to_user
+	 */
+	public function testAPShowCaptchaToUserWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_show_captcha', [ $this, 'ReturnTrue' ] );
+		$this->assertFalse( ap_show_captcha_to_user() );
+		remove_filter( 'ap_show_captcha', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPostForNotValidPost() {
+		$this->setRole( 'subscriber' );
+		$this->assertFalse( ap_user_can_read_post( 0 ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_read_post( $post_id ) );
+		remove_filter( 'ap_user_can_read_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_post
+	 */
+	public function testAPUserCanReadPostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_read_post( $post_id ) );
+		remove_filter( 'ap_user_can_read_post', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_vote_on_post( $post_id, 'vote_up' ) );
+		remove_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$post_id = $this->insert_question();
+		add_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up' ) );
+		remove_filter( 'ap_user_can_vote_on_post', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoTriesToVoteOnOwnPost() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoTriesToVoteOnOwnPostButReturnWPError() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$result = ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id, true );
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertEquals( 'cannot_vote_own_post', $result->get_error_code() );
+		$this->assertEquals( 'Voting on own post is not allowed', $result->get_error_message() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForUserWhoCantReadPostButReturnWPError() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Post title',
+				'post_content' => 'Post content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$result = ap_user_can_vote_on_post( $post_id, 'vote_up', $user_id, true );
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertEquals( 'you_cannot_vote_on_restricted', $result->get_error_code() );
+		$this->assertEquals( 'Voting on restricted posts are not allowed.', $result->get_error_message() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForReturnFalse() {
+		$this->setRole( 'ap_banned' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$this->assertFalse( ap_user_can_vote_on_post( $post_id, 'vote_up', get_current_user_id() ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_vote_on_post
+	 */
+	public function testAPUserCanVoteOnPostForReturnWPError() {
+		$this->setRole( 'ap_banned' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$post_id = $this->insert_question( '', '', $user_id );
+		$result = ap_user_can_vote_on_post( $post_id, 'vote_up', get_current_user_id(), true );
+		$this->assertTrue( is_wp_error( $result ) );
+		$this->assertEquals( 'no_permission', $result->get_error_code() );
+		$this->assertEquals( 'You do not have permission to vote.', $result->get_error_message() );
+	}
+
+	/**
+	 * @covers ::ap_user_can_approve_comment
+	 */
+	public function testAPUserCanApproveCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_approve_comment( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_approve_comment
+	 */
+	public function testAPUserCanApproveCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_approve_comment( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_approve_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_toggle_featured
+	 */
+	public function testAPUserCanToggleFeaturedWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_toggle_featured( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_toggle_featured
+	 */
+	public function testAPUserCanToggleFeaturedWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		add_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_toggle_featured( get_current_user_id() ) );
+		remove_filter( 'ap_user_can_toggle_featured', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comment
+	 */
+	public function testAPUserCanReadCommentWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+			)
+		);
+		add_filter( 'ap_user_can_read_comment', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_read_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_read_comment', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comment
+	 */
+	public function testAPUserCanReadCommentWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+			)
+		);
+		add_filter( 'ap_user_can_read_comment', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_read_comment( $comment_id ) );
+		remove_filter( 'ap_user_can_read_comment', [ $this, 'ReturnFalse' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comment
+	 */
+	public function testAPUserCanReadCommentForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question content',
+				'post_status'  => 'private_post',
+				'post_type'    => 'question',
+			)
+		);
+		$comment_id = $this->factory->comment->create(
+			array(
+				'comment_post_ID' => $question_id,
+			)
+		);
+		$this->assertFalse( ap_user_can_read_comment( $comment_id, $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comments
+	 */
+	public function testAPUserCanReadCommentsWithFilterSetAsTrue() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_comments', [ $this, 'ReturnTrue' ] );
+		$this->assertTrue( ap_user_can_read_comments( $question_id ) );
+		remove_filter( 'ap_user_can_read_comments', [ $this, 'ReturnTrue' ] );
+	}
+
+	/**
+	 * @covers ::ap_user_can_read_comments
+	 */
+	public function testAPUserCanReadCommentsWithFilterSetAsFalse() {
+		$this->setRole( 'ap_banned' );
+		$question_id = $this->insert_question();
+		add_filter( 'ap_user_can_read_comments', [ $this, 'ReturnFalse' ] );
+		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
+		remove_filter( 'ap_user_can_read_comments', [ $this, 'ReturnFalse' ] );
+	}
 }

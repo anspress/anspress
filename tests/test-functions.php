@@ -2817,4 +2817,373 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'categories.php' );
 		$this->assertFalse( ap_activate_addon( 'categories.php' ) );
 	}
+
+	/**
+	 * @covers ::ap_deactivate_addon
+	 */
+	public function testAPDeactivateAddonShouldReturnFalseForAlreadyDeactivatedAddon() {
+		ap_deactivate_addon( 'categories.php' );
+		$this->assertFalse( ap_deactivate_addon( 'categories.php' ) );
+	}
+
+	/**
+	 * @covers ::ap_sanitize_unslash
+	 */
+	public function testAPSanitizeUnslashForQueryVar() {
+		// Test 1.
+		set_query_var( 'test', '//This is test contents.//' );
+		$this->assertEquals( '//This is test contents.//', ap_sanitize_unslash( 'test', 'query_var' ) );
+
+		// Test 2.
+		set_query_var( 'another_test', '<script>alert(0);</script>' );
+		$this->assertEquals( '', ap_sanitize_unslash( 'another_test', 'query_var' ) );
+
+		// Test 3.
+		set_query_var( 'latest_test', '     This is latest test contents.     ' );
+		$this->assertEquals( 'This is latest test contents.', ap_sanitize_unslash( 'latest_test', 'query_var' ) );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionForUserHavingAPNoModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status();
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewAnswerForUserHavingAPModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status( false, 'answer' );
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditQuestionForUserHavingAPNoModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status( false, 'question', true );
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditAnswerForUserHavingAPModerationCapability() {
+		$this->setRole( 'administrator' );
+		$result = ap_new_edit_post_status( false, 'answer', true );
+		$this->assertEquals( 'publish', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionForEmptyUserID() {
+		$result = ap_new_edit_post_status( '', 'question' );
+		$this->assertEquals( 'moderate', $result );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionForEmptyUserIDButAnonymousPostStatusSetToOtherStatus() {
+		ap_opt( 'anonymous_post_status', 'private_post' );
+		$result = ap_new_edit_post_status( 0, 'question' );
+		$this->assertEquals( 'publish', $result );
+		ap_opt( 'anonymous_post_status', 'moderate' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewQuestionWithNewQuestionStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'new_question_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id() );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'new_question_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditQuestionWithEditQuestionStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'edit_question_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id(), 'question', true );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'edit_question_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForNewAnswerWithNewAnswerStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'new_answer_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id(), 'answer' );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'new_answer_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_new_edit_post_status
+	 */
+	public function testAPNewEditPostStatusForEditAnswerWithEditAnswerStatusSetToModerate() {
+		$this->setRole( 'subscriber' );
+		ap_opt( 'edit_answer_status', 'moderate' );
+		$result = ap_new_edit_post_status( get_current_user_id(), 'answer', true );
+		$this->assertEquals( 'moderate', $result );
+		ap_opt( 'edit_answer_status', 'publish' );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingOnlyUserID() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$this->assertEquals( 'Test User', ap_user_display_name( $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForInstanceOfWPComment() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$comment_id = $this->factory->comment->create( [ 'user_id' => $user_id ] );
+		$comment = get_comment( $comment_id );
+		$this->assertEquals( 'Test User', ap_user_display_name( $comment ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserArgs() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user = get_user_by( 'id', $user_id );
+		$this->assertEquals( 'Test User', ap_user_display_name( [ 'user_id' => $user->ID ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserEchoArg() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		ob_start();
+		ap_user_display_name( [ 'user_id' => $user_id, 'echo' => true ] );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Test User', $output );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserEchoHTMLArg() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		ob_start();
+		ap_user_display_name( [ 'user_id' => $user_id, 'echo' => true, 'html' => true ] );
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '" itemprop="url"><span itemprop="name">Test User</span></a>', $output );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameForPassingUserReturnHTMLArg() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		$user = get_user_by( 'id', $user_id );
+		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '" itemprop="url"><span itemprop="name">Test User</span></a>', ap_user_display_name( [ 'user_id' => $user->ID, 'html' => true ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithEmptyArgsForAnomymousUser() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Anonymous', ap_user_display_name() );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithArgsForAnomymousUser() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Anonymous', ap_user_display_name( [ 'user_id' => 0 ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithCustomAnonymousLabelArg() {
+		$this->assertEquals( 'Guest', ap_user_display_name( [ 'user_id' => 0, 'anonymous_label' => 'Guest' ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithCustomAnonymousLabelAndHTMLArg() {
+		$this->assertEquals( 'Guest', ap_user_display_name( [ 'user_id' => 0, 'anonymous_label' => 'Guest', 'html' => true ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithCustomAnonymousLabelAndHTMLTrueArgs() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Guest', ap_user_display_name( [ 'anonymous_label' => 'Guest', 'html' => true ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithVisitingQuestionPageAndCustomAnonymousNameSet() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		ap_insert_qameta( $question_id, [ 'fields' => [ 'anonymous_name' => 'Guest' ] ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Guest', ap_user_display_name() );
+		$this->assertNotEquals( 'Anonymous', ap_user_display_name() );
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithVisitingQuestionPageAndCustomAnonymousNameSetAndHTMLArg() {
+		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		ap_insert_qameta( $question_id, [ 'fields' => [ 'anonymous_name' => 'Guest' ] ] );
+		$this->go_to( '?post_type=question&p=' . $question_id );
+		$this->assertEquals( 'Guest (anonymous)', ap_user_display_name( [ 'html' => true ] ) );
+		$this->assertNotEquals( 'Anonymous (anonymous)', ap_user_display_name( [ 'html' => true ] ) );
+	}
+
+	public function APUserDisplayName() {
+		return 'Custom User Name';
+	}
+
+	/**
+	 * @covers ::ap_user_display_name
+	 */
+	public function testAPUserDisplayNameWithAPUserDisplayNameFilter() {
+		$user_id = $this->factory->user->create( [ 'display_name' => 'Test User' ] );
+		add_filter( 'ap_user_display_name', [ $this, 'APUserDisplayName' ] );
+		$this->assertEquals( 'Custom User Name', ap_user_display_name( $user_id ) );
+		$this->assertEquals( 'Custom User Name', ap_user_display_name( [ 'user_id' => $user_id ] ) );
+		$this->assertEquals( 'Custom User Name', ap_user_display_name( [ 'user_id' => $user_id, 'html' => true ] ) );
+		remove_filter( 'ap_user_display_name', [ $this, 'APUserDisplayName' ] );
+	}
+
+	/**
+	 * @covers ::is_anspress
+	 */
+	public function testIsAnsPressForSearchPage() {
+		$this->go_to( '/?ap_s=Test' );
+		global $wp_query;
+		$wp_query->is_search = true;
+		$wp_query->set( 'post_type', 'question' );
+		$this->assertTrue( is_anspress() );
+	}
+
+	/**
+	 * @covers ::ap_human_time
+	 */
+	public function testAPHumanTimeForDefaultDateFormatOptionEnabled() {
+		ap_opt( 'default_date_format', true );
+		$this->assertEquals( date_i18n( get_option( 'date_format' ), current_time( 'U' ) ), ap_human_time( current_time( 'U' ) ) );
+		$this->assertEquals( date_i18n( get_option( 'date_format' ), current_time( 'U' ) ), ap_human_time( current_time( 'mysql' ), false ) );
+		$this->assertEquals( date_i18n( get_option( 'date_format' ), current_time( 'U' ) ), ap_human_time( current_time( 'U' ), true, 0 ) );
+		$this->assertEquals( date_i18n( 'M Y', current_time( 'U' ) ), ap_human_time( current_time( 'U' ), true, 0, 'M Y' ) );
+		ap_opt( 'default_date_format', false );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithoutPriorities() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Add some filters to a hook.
+		add_filter( 'test_hook', function() { return 'Filter 1'; }, 10 );
+		add_filter( 'test_hook', function() { return 'Filter 1'; }, 11 );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+
+		// Test.
+		ap_remove_all_filters( 'test_hook' );
+		$this->assertArrayNotHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertCount( 2, $ap->new_filters->wp_filter['test_hook'] );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithPriorities() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Add some filters to a hook.
+		add_filter( 'test_hook', function() { return 'Filter 1'; }, 10 );
+		add_filter( 'test_hook', function() { return 'Filter 2'; }, 11 );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+
+		// Test.
+		ap_remove_all_filters( 'test_hook', 11 );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertCount( 2, $ap->new_filters->wp_filter['test_hook'] );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithHookNotExists() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Test.
+		ap_remove_all_filters( 'test_hook' );
+		$this->assertArrayNotHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
+
+	/**
+	 * @covers ::ap_remove_all_filters
+	 */
+	public function testRemoveAllFiltersWithMergedFilters() {
+		global $wp_filter, $merged_filters;
+		$wp_filter = [];
+		$merged_filters = [];
+
+		// Add some filters to a hook.
+		add_filter( 'test_hook', function() { return 'Filter 1'; } );
+		$this->assertArrayHasKey( 'test_hook', $wp_filter );
+
+		// Test.
+		$merged_filters['test_hook'] = true;
+		ap_remove_all_filters( 'test_hook' );
+		$this->assertArrayNotHasKey( 'test_hook', $wp_filter );
+		$ap = anspress();
+		$this->assertObjectHasProperty( 'new_filters', $ap );
+		$this->assertArrayHasKey( 'test_hook', $ap->new_filters->wp_filter );
+		$this->assertCount( 1, $ap->new_filters->wp_filter['test_hook'] );
+		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
+	}
 }

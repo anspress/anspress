@@ -16,7 +16,6 @@ class TestAddonReputation extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 		ap_deactivate_addon( 'reputation.php' );
-		ap_deactivate_addon( 'profile.php' );
 	}
 
 	public function testInstance() {
@@ -64,6 +63,10 @@ class TestAddonReputation extends TestCase {
 	}
 
 	public function testHooksFilters() {
+		$reflectionClass = new \ReflectionClass( 'Anspress\Addons\Reputation' );
+		$property = $reflectionClass->getProperty( 'instance' );
+		$property->setAccessible( true );
+		$property->setValue( null );
 		$instance = \Anspress\Addons\Reputation::init();
 		anspress()->setup_hooks();
 
@@ -1170,6 +1173,7 @@ class TestAddonReputation extends TestCase {
 		ap_activate_addon( 'profile.php' );
 		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
 		$this->assertEquals( 'User Testing<a href="' . ap_user_link( $user_id ) . 'reputations/" class="ap-user-reputation" title="Reputation">7</a>', $result );
+		ap_deactivate_addon( 'profile.php' );
 	}
 
 	/**
