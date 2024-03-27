@@ -599,7 +599,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 3.
 		$this->_last_response = '';
-		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'trash' ] );
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
@@ -616,7 +620,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 1.
 		$this->_last_response = '';
-		$question_id = $this->insert_question();
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
@@ -624,9 +632,14 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->insert_question();
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
+
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
 		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Undelete' );
@@ -637,7 +650,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 3.
 		$this->_last_response = '';
-		$question_id = $this->insert_question();
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'trash' ] );
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
@@ -666,7 +683,7 @@ class TestAjaxHooks extends TestCaseAjax {
 			// Tests.
 			// Before granting super admin role.
 			$this->_last_response = '';
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 			$this->handle( 'ap_ajax' );
 			$this->assertFalse( $this->ap_ajax_success( 'success' ) );
@@ -675,7 +692,7 @@ class TestAjaxHooks extends TestCaseAjax {
 			// After granting super admin role.
 			grant_super_admin( get_current_user_id() );
 			$this->_last_response = '';
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 			$this->handle( 'ap_ajax' );
 			$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
@@ -689,7 +706,7 @@ class TestAjaxHooks extends TestCaseAjax {
 
 			// Tests.
 			$this->_last_response = '';
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 			$this->handle( 'ap_ajax' );
 			$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
