@@ -590,4 +590,38 @@ class TestThemeClass extends TestCase {
 		$this->assertStringNotContainsString( '<div id="ap-single" class="ap-q clearfix" itemscope itemtype="https://schema.org/QAPage">', $post->post_content );
 		$this->assertStringNotContainsString( '<div class="ap-question-lr ap-row" itemscope itemtype="https://schema.org/Question" itemprop="mainEntity">', $post->post_content );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::ap_title_parts
+	 */
+	public function testAPTitlePartsForNonAnsPressPage() {
+		$this->go_to( '/' );
+		$args = [ 'title' => 'Document Title' ];
+		$result = \AnsPress_Theme::ap_title_parts( $args );
+		$this->assertEquals( $args, $result );
+	}
+
+	/**
+	 * @covers AnsPress_Theme::ap_title_parts
+	 */
+	public function testAPTitlePartsForAnsPressPageButNotQuestionPage() {
+		$base_page_id = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Base Page Title' ] );
+		ap_opt( 'base_page', $base_page_id );
+		$this->go_to( '/?page_id=' . $base_page_id );
+		$args = [ 'title' => 'Document Title' ];
+		$result = \AnsPress_Theme::ap_title_parts( $args );
+		$this->assertEquals( $args, $result );
+	}
+
+	/**
+	 * @covers AnsPress_Theme::ap_title_parts
+	 */
+	public function testAPTitlePartsForQuestionPage() {
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title' ] );
+		$this->go_to( '/?post_type=question&p=' . $question_id );
+		$args = [ 'title' => 'Document Title' ];
+		$result = \AnsPress_Theme::ap_title_parts( $args );
+		$this->assertNotEquals( $args, $result );
+		$this->assertStringContainsString( 'Question Title', $result['title'] );
+	}
 }
