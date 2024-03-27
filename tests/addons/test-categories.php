@@ -840,6 +840,7 @@ class TestAddonCategories extends TestCase {
 		$question_category = $term;
 		$result = $instance->ap_canonical_url( 'http://example.com' );
 		$this->assertEquals( get_term_link( $term_id ), $result );
+		$question_category = null;
 	}
 
 	/**
@@ -1076,5 +1077,21 @@ class TestAddonCategories extends TestCase {
 		$instance->save_image_field( $term_id );
 		$term_meta = get_term_meta( $term_id, 'ap_category', true );
 		$this->assertIsArray( $term_meta['image'] );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Categories::ap_canonical_url
+	 */
+	public function testAPCanonicalUrlForNotSettingGlobalQuestionCategoryVariable() {
+		$instance = \Anspress\Addons\Categories::init();
+
+		// Test.
+		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term = get_term_by( 'id', $term_id, 'question_category' );
+		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
+		global $question_category;
+		$question_category = null;
+		$result = $instance->ap_canonical_url( '' );
+		$this->assertEquals( get_term_link( $term_id ), $result );
 	}
 }
