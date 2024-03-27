@@ -3069,4 +3069,15 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( 'Custom User Name', ap_user_display_name( [ 'user_id' => $user_id, 'html' => true ] ) );
 		remove_filter( 'ap_user_display_name', [ $this, 'APUserDisplayName' ] );
 	}
+
+	/**
+	 * @covers ::is_anspress
+	 */
+	public function testIsAnsPressForSearchPage() {
+		$this->go_to( '/?ap_s=Test' );
+		global $wp_query;
+		$wp_query->is_search = true;
+		$wp_query->set( 'post_type', 'question' );
+		$this->assertTrue( is_anspress() );
+	}
 }
