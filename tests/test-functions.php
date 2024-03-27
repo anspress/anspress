@@ -3080,4 +3080,16 @@ class TestFunctions extends TestCase {
 		$wp_query->set( 'post_type', 'question' );
 		$this->assertTrue( is_anspress() );
 	}
+
+	/**
+	 * @covers ::ap_human_time
+	 */
+	public function testAPHumanTimeForDefaultDateFormatOptionEnabled() {
+		ap_opt( 'default_date_format', true );
+		$this->assertEquals( date_i18n( get_option( 'date_format' ), current_time( 'U' ) ), ap_human_time( current_time( 'U' ) ) );
+		$this->assertEquals( date_i18n( get_option( 'date_format' ), current_time( 'U' ) ), ap_human_time( current_time( 'mysql' ), false ) );
+		$this->assertEquals( date_i18n( get_option( 'date_format' ), current_time( 'U' ) ), ap_human_time( current_time( 'U' ), true, 0 ) );
+		$this->assertEquals( date_i18n( 'M Y', current_time( 'U' ) ), ap_human_time( current_time( 'U' ), true, 0, 'M Y' ) );
+		ap_opt( 'default_date_format', false );
+	}
 }
