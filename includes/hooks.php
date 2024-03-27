@@ -242,6 +242,17 @@ class AnsPress_Hooks {
 
 			$answers = get_posts( [ 'post_parent' => $post->ID, 'post_type' => 'answer', 'post_status' => get_post_stati() ] ); // @codingStandardsIgnoreLine
 
+			if ( ap_opt( 'deleting_question_with_answer' ) && $answers ) {
+				ap_send_json(
+					array(
+						'success'  => false,
+						'snackbar' => array(
+							'message' => esc_html__( 'Sorry, you are not allowed to delete the question permanently if there are answers available.', 'anspress-question-answer' ),
+						),
+					)
+				);
+			}
+
 			foreach ( (array) $answers as $a ) {
 				self::delete_answer( $a->ID, $a );
 				wp_delete_post( $a->ID, true );
@@ -298,6 +309,17 @@ class AnsPress_Hooks {
 				'showposts'   => -1,
 			));
 			//@codingStandardsIgnoreEnd
+
+			if ( ap_opt( 'trashing_question_with_answer' ) && $ans ) {
+				ap_send_json(
+					array(
+						'success'  => false,
+						'snackbar' => array(
+							'message' => esc_html__( 'Sorry, you are not allowed to trash the question if there are answers available.', 'anspress-question-answer' ),
+						),
+					)
+				);
+			}
 
 			foreach ( (array) $ans as $p ) {
 				$selcted_answer = ap_selected_answer();
