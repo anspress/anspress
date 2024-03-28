@@ -88,11 +88,11 @@ jobs:
         run: |
           composer run phpcs
 
-      # Install Node.js 12.x
+      # Install Node.js 16.x
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: 16.x
 
       # Build with Node.js (assuming you have the necessary build scripts)
       - name: Install Node.js dependencies and Build
