@@ -2513,4 +2513,82 @@ class TestAnsPressFormValidate extends TestCase {
 		// Remove added badwords.
 		ap_opt( 'bad_words', '' );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::code_content
+	 */
+	public function testCodeContentWithContents() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [] );
+		$arr = [ '<code>echo "Hello World!";</code>', 'echo "Hello World!";' ];
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'code_content' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $arr ] );
+		$this->assertEquals( '<code>' . esc_html( 'echo "Hello World!";' ) . '</code>', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::code_content
+	 */
+	public function testCodeContentWithoutContents() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [] );
+		$arr = [ '<code></code>', '' ];
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'code_content' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $arr ] );
+		$this->assertEquals( '<code></code>', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::pre_content
+	 */
+	public function testPreContentWithContents() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [] );
+		$arr = [ '<pre aplang="php">echo "Hello World!";</pre>', 'php', 'echo "Hello World!";' ];
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'pre_content' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $arr ] );
+		$this->assertEquals( '<pre>' . esc_html( 'echo "Hello World!";' ) . '</pre>', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::pre_content
+	 */
+	public function testPreContentWithoutContents() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [] );
+		$arr = [ '<pre aplang="php"></pre>', 'php', '' ];
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'pre_content' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $arr ] );
+		$this->assertEquals( '<pre></pre>', $result );
+	}
+
+	public static function WhitelistShortcodes() {
+		return [ 'shortcode' ];
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::whitelist_shortcodes
+	 */
+	public function testWhitelistShortcodesForAllowedShortcode() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [] );
+		$arr = [ '[shortcode]', '', 'shortcode' ];
+		add_filter( 'ap_allowed_shortcodes', [ $this, 'WhitelistShortcodes' ] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'whitelist_shortcodes' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $arr ] );
+		$this->assertEquals( '[shortcode]', $result );
+		remove_filter( 'ap_allowed_shortcodes', [ $this, 'WhitelistShortcodes' ] );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::whitelist_shortcodes
+	 */
+	public function testWhitelistShortcodesForNotAllowedShortcode() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [] );
+		$arr = [ '[test_shortcode]', '', 'test_shortcode' ];
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'whitelist_shortcodes' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $arr ] );
+		$this->assertEquals( '&#91;test_shortcode&#93;', $result );
+	}
 }
