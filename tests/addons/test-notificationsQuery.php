@@ -6,6 +6,18 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonNotificationsQuery extends TestCase {
 
+	use Testcases\Common;
+
+	public function set_up() {
+		parent::set_up();
+		ap_activate_addon( 'notifications.php' );
+	}
+
+	public function tear_down() {
+		parent::tear_down();
+		ap_deactivate_addon( 'notifications.php' );
+	}
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Anspress\Notifications' );
 		$this->assertTrue( $class->hasProperty( 'verbs' ) && $class->getProperty( 'verbs' )->isPublic() );
@@ -41,5 +53,64 @@ class TestAddonNotificationsQuery extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Notifications', 'hide_actor' ) );
 		$this->assertTrue( method_exists( 'Anspress\Notifications', 'get_icon' ) );
 		$this->assertTrue( method_exists( 'Anspress\Notifications', 'the_icon' ) );
+	}
+
+	/**
+	 * @covers Anspress\Notifications::__construct
+	 */
+	public function testConstructor() {
+		$notifications = new \Anspress\Notifications();
+		$this->assertInstanceOf( 'Anspress\Notifications', $notifications );
+	}
+
+	/**
+	 * @covers Anspress\Notifications::__construct
+	 */
+	public function testConstructorWithoutArgs() {
+		$this->setRole( 'subscriber' );
+		$notifications = new \Anspress\Notifications();
+		$this->assertInstanceOf( 'Anspress\Notifications', $notifications );
+
+		// Tests.
+		$this->assertArrayHasKey( 'reputation', $notifications->ids );
+		$this->assertArrayHasKey( 'reputation', $notifications->pos );
+		$this->assertEquals( ap_notification_verbs(), $notifications->verbs );
+		$this->assertEquals( 1, $notifications->paged );
+		$this->assertEquals( 0, $notifications->offset );
+		$this->assertEquals( get_current_user_id(), $notifications->args['user_id'] );
+		$this->assertEquals( 20, $notifications->args['number'] );
+		$this->assertEquals( 0, $notifications->args['offset'] );
+		$this->assertEquals( 'DESC', $notifications->args['order'] );
+		$this->assertEquals( 20, $notifications->per_page );
+	}
+
+	/**
+	 * @covers Anspress\Notifications::__construct
+	 */
+	public function testConstructorWithArgs() {
+		$user_id = $this->factory()->user->create();
+		$notifications = new \Anspress\Notifications( [
+			'user_id' => $user_id,
+			'number'  => 10,
+			'offset'  => 2,
+			'order'   => 'ASC',
+			'seen'    => 'all',
+			'paged'   => 2,
+		] );
+		$this->assertInstanceOf( 'Anspress\Notifications', $notifications );
+
+		// Tests.
+		$this->assertArrayHasKey( 'reputation', $notifications->ids );
+		$this->assertArrayHasKey( 'reputation', $notifications->pos );
+		$this->assertEquals( ap_notification_verbs(), $notifications->verbs );
+		$this->assertEquals( 2, $notifications->paged );
+		$this->assertEquals( 20, $notifications->offset );
+		$this->assertEquals( $user_id, $notifications->args['user_id'] );
+		$this->assertEquals( 10, $notifications->args['number'] );
+		$this->assertEquals( 2, $notifications->args['offset'] );
+		$this->assertEquals( 'ASC', $notifications->args['order'] );
+		$this->assertEquals( 'all', $notifications->args['seen'] );
+		$this->assertEquals( 2, $notifications->args['paged'] );
+		$this->assertEquals( 10, $notifications->per_page );
 	}
 }
