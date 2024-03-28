@@ -39,4 +39,68 @@ class TestActivityClass extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress\Activity', 'get_q_id' ) );
 		$this->assertTrue( method_exists( 'AnsPress\Activity', 'more_button' ) );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::__construct
+	 */
+	public function testConstructor() {
+		$activity = new \AnsPress\Activity();
+		$this->assertInstanceOf( 'AnsPress\Activity', $activity );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::__construct
+	 */
+	public function testConstructorWithoutArgs() {
+		$activity = new \AnsPress\Activity();
+		$this->assertInstanceOf( 'AnsPress\Activity', $activity );
+
+		// Tests.
+		$this->assertEquals( 1, $activity->paged );
+		$this->assertEquals( 0, $activity->offset );
+		$this->assertEquals( 30, $activity->args['number'] );
+		$this->assertEquals( 0, $activity->args['offset'] );
+		$this->assertEquals( 'activity_date', $activity->args['orderby'] );
+		$this->assertEquals( 'DESC', $activity->args['order'] );
+		$this->assertEquals( [ 'administrator' ], $activity->args['exclude_roles'] );
+		$this->assertEquals( 30, $activity->per_page );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::__construct
+	 */
+	public function testConstructorWithArgs() {
+		$user_id = $this->factory()->user->create();
+		$activity = new \AnsPress\Activity( [
+			'number'        => 12,
+			'offset'        => 2,
+			'orderby'       => 'activity_q_id',
+			'order'         => 'ASC',
+			'exclude_roles' => [],
+			'paged'         => 2,
+			'user_id'       => $user_id,
+		] );
+		$this->assertInstanceOf( 'AnsPress\Activity', $activity );
+
+		// Tests.
+		$this->assertEquals( 2, $activity->paged );
+		$this->assertEquals( 30, $activity->offset );
+		$this->assertEquals( 12, $activity->args['number'] );
+		$this->assertEquals( 2, $activity->args['offset'] );
+		$this->assertEquals( 'activity_q_id', $activity->args['orderby'] );
+		$this->assertEquals( 'ASC', $activity->args['order'] );
+		$this->assertEquals( [], $activity->args['exclude_roles'] );
+		$this->assertEquals( 2, $activity->args['paged'] );
+		$this->assertEquals( $user_id, $activity->args['user_id'] );
+		$this->assertEquals( 12, $activity->per_page );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::__construct
+	 */
+	public function testConstructorWithOrderByArgAsInvalid() {
+		$activity = new \AnsPress\Activity( [ 'orderby' => 'invalid_order_by' ] );
+		$this->assertInstanceOf( 'AnsPress\Activity', $activity );
+		$this->assertEquals( 'activity_date', $activity->args['orderby'] );
+	}
 }
