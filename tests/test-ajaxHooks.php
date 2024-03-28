@@ -612,7 +612,7 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === '' );
 
 		// For administrator.
-		$this->setRole( 'administrator' );
+		$this->setRole( 'administrator', true );
 
 		// Test 1.
 		$this->_last_response = '';
