@@ -26,6 +26,8 @@ templates/js/min/theme.min.js.map
 templates/min/theme.min.js
 templates/prod/ap.min.js
 assets/ap-admin.css
+assets/ap-admin.css.map
+assets/ap-admin.min.css
 
 __MACOSX
 .DS_Store

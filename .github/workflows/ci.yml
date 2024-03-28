@@ -105,7 +105,11 @@ jobs:
         run: git archive -o anspress-question-answer.zip HEAD --prefix=anspress-question-answer/
 
       - name: Unzip nested zip
-        run: unzip -o anspress-question-answer.zip -d anspress-question-answer
+        run: |
+          unzip -o anspress-question-answer.zip -d anspress-question-answer
+          cp -r templates/css anspress-question-answer/templates/css
+          cp -r templates/js anspress-question-answer/templates/js
+          cp -r assets anspress-question-answer/assets
 
       # Upload the artifact
       - name: Upload build artifact
