@@ -308,7 +308,7 @@ class TestActivity extends TestCase {
 		// Test begins.
 		$this->setRole( 'subscriber' );
 		// Inserting new question.
-		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q ] );
+		$new_q_id = $activity->insert( [ 'action' => 'new_q', 'q_id' => $id->q, 'date' => '2024-02-02 00:00:00' ] );
 		$this->assertNotEmpty( $new_q_id );
 		$this->assertIsInt( $new_q_id );
 		$new_q_activity = $activity->get_activity( $new_q_id );
@@ -320,10 +320,10 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $new_q_activity->activity_a_id );
 		$this->assertEquals( 0, $new_q_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $new_q_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $new_q_activity->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $new_q_activity->activity_date );
 
 		// Inserting new answer.
-		$new_a_id = $activity->insert( [ 'action' => 'new_a', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$new_a_id = $activity->insert( [ 'action' => 'new_a', 'q_id' => $id->q, 'a_id' => $id->a, 'date' => '2024-02-02 00:00:00' ] );
 		$this->assertNotEmpty( $new_a_id );
 		$this->assertIsInt( $new_a_id );
 		$new_a_activity = $activity->get_activity( $new_a_id );
@@ -335,7 +335,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $new_a_activity->activity_a_id );
 		$this->assertEquals( 0, $new_a_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $new_a_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $new_a_activity->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $new_a_activity->activity_date );
 
 		// Inserting new comment on question.
 		$q_c_id  = $this->factory->comment->create_object(
@@ -346,7 +346,7 @@ class TestActivity extends TestCase {
 				'user_id'         => get_current_user_id(),
 			)
 		);
-		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'c_id' => $q_c_id ] );
+		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'c_id' => $q_c_id, 'date' => '2024-02-02 00:00:00' ] );
 		$this->assertNotEmpty( $new_c_id );
 		$this->assertIsInt( $new_c_id );
 		$new_c_activity = $activity->get_activity( $new_c_id );
@@ -358,7 +358,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $new_c_activity->activity_a_id );
 		$this->assertEquals( $q_c_id, $new_c_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $new_c_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $new_c_activity->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $new_c_activity->activity_date );
 
 		// Inserting new comment on answer.
 		$a_c_id  = $this->factory->comment->create_object(
@@ -369,7 +369,7 @@ class TestActivity extends TestCase {
 				'user_id'         => get_current_user_id(),
 			)
 		);
-		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'a_id' => $id->a, 'c_id' => $a_c_id ] );
+		$new_c_id = $activity->insert( [ 'action' => 'new_c', 'q_id' => $id->q, 'a_id' => $id->a, 'c_id' => $a_c_id, 'date' => '2024-02-02 00:00:00' ] );
 		$this->assertNotEmpty( $new_c_id );
 		$this->assertIsInt( $new_c_id );
 		$new_c_activity = $activity->get_activity( $new_c_id );
@@ -381,11 +381,11 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $new_c_activity->activity_a_id );
 		$this->assertEquals( $a_c_id, $new_c_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $new_c_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $new_c_activity->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $new_c_activity->activity_date );
 
 		// Setting question as featured.
 		$id = $this->insert_answer();
-		$featured_q_id = $activity->insert( [ 'action' => 'featured', 'q_id' => $id->q ] );
+		$featured_q_id = $activity->insert( [ 'action' => 'featured', 'q_id' => $id->q, 'date' => '2024-02-02 00:00:00' ] );
 		$this->assertNotEmpty( $featured_q_id );
 		$this->assertIsInt( $featured_q_id );
 		$featured_activity = $activity->get_activity( $featured_q_id );
@@ -397,11 +397,11 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $featured_activity->activity_a_id );
 		$this->assertEquals( 0, $featured_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $featured_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $featured_activity->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $featured_activity->activity_date );
 
 		// Setting answer as selected.
 		$id = $this->insert_answer();
-		$selected_a_id = $activity->insert( [ 'action' => 'selected', 'q_id' => $id->q, 'a_id' => $id->a ] );
+		$selected_a_id = $activity->insert( [ 'action' => 'selected', 'q_id' => $id->q, 'a_id' => $id->a, 'date' => '2024-02-02 00:00:00' ] );
 		$this->assertNotEmpty( $selected_a_id );
 		$this->assertIsInt( $selected_a_id );
 		$selected_activity = $activity->get_activity( $selected_a_id );
@@ -413,7 +413,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $selected_activity->activity_a_id );
 		$this->assertEquals( 0, $selected_activity->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $selected_activity->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $selected_activity->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $selected_activity->activity_date );
 
 		// Test for invalids.
 		$id = $this->insert_answer();
@@ -1659,6 +1659,7 @@ class TestActivity extends TestCase {
 			array(
 				'action' => 'new_q',
 				'q_id'   => $id->q,
+				'date'   => '2024-02-02 00:00:00'
 			)
 		);
 		$input_id = $id->q;
@@ -1674,7 +1675,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[0]->activity_date );
 
 		// Inserting the answer activity.
 		$aa_id = ap_activity_add(
@@ -1682,6 +1683,7 @@ class TestActivity extends TestCase {
 				'action' => 'new_a',
 				'q_id'   => $id->q,
 				'a_id'   => $id->a,
+				'date'   => '2024-02-02 00:00:00'
 			)
 		);
 		$input_ids = array( $id->q, $id->a );
@@ -1698,7 +1700,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[0]->activity_date );
 		// Second set.
 		$this->assertEquals( $aa_id, $prefetch_recent_activities[1]->activity_id );
 		$this->assertEquals( 'new_a', $prefetch_recent_activities[1]->activity_action );
@@ -1706,7 +1708,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $prefetch_recent_activities[1]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[1]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[1]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[1]->activity_date );
 
 		// Inserting the comment activity on question.
 		$c_id = $this->factory->comment->create_object(
@@ -1723,6 +1725,7 @@ class TestActivity extends TestCase {
 				'q_id'   => $id->q,
 				'a_id'   => $id->a,
 				'c_id'   => $c_id,
+				'date'   => '2024-02-02 00:00:00'
 			)
 		);
 		$input_ids = array( $id->q, $id->a );
@@ -1739,7 +1742,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[0]->activity_date );
 		// Second set.
 		$this->assertEquals( $aa_id, $prefetch_recent_activities[1]->activity_id );
 		$this->assertEquals( 'new_a', $prefetch_recent_activities[1]->activity_action );
@@ -1747,7 +1750,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $prefetch_recent_activities[1]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[1]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[1]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[1]->activity_date );
 		// Third set.
 		$this->assertEquals( $qca_id, $prefetch_recent_activities[2]->activity_id );
 		$this->assertEquals( 'new_c', $prefetch_recent_activities[2]->activity_action );
@@ -1755,7 +1758,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $prefetch_recent_activities[2]->activity_a_id );
 		$this->assertEquals( $c_id, $prefetch_recent_activities[2]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[2]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[2]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[2]->activity_date );
 
 		// Inserting the comment activity on answer.
 		$nc_id = $this->factory->comment->create_object(
@@ -1772,6 +1775,7 @@ class TestActivity extends TestCase {
 				'q_id'   => $id->q,
 				'a_id'   => $id->a,
 				'c_id'   => $nc_id,
+				'date'   => '2024-02-02 00:00:00'
 			)
 		);
 		$input_ids = array( $id->q, $id->a );
@@ -1788,7 +1792,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[0]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[0]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[0]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[0]->activity_date );
 		// Second set.
 		$this->assertEquals( $aa_id, $prefetch_recent_activities[1]->activity_id );
 		$this->assertEquals( 'new_a', $prefetch_recent_activities[1]->activity_action );
@@ -1796,7 +1800,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $prefetch_recent_activities[1]->activity_a_id );
 		$this->assertEquals( 0, $prefetch_recent_activities[1]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[1]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[1]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[1]->activity_date );
 		// Third set.
 		$this->assertEquals( $qca_id, $prefetch_recent_activities[2]->activity_id );
 		$this->assertEquals( 'new_c', $prefetch_recent_activities[2]->activity_action );
@@ -1804,7 +1808,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $prefetch_recent_activities[2]->activity_a_id );
 		$this->assertEquals( $c_id, $prefetch_recent_activities[2]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[2]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[2]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[2]->activity_date );
 		// Fourth set.
 		$this->assertEquals( $aca_id, $prefetch_recent_activities[3]->activity_id );
 		$this->assertEquals( 'new_c', $prefetch_recent_activities[3]->activity_action );
@@ -1812,7 +1816,7 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $id->a, $prefetch_recent_activities[3]->activity_a_id );
 		$this->assertEquals( $nc_id, $prefetch_recent_activities[3]->activity_c_id );
 		$this->assertEquals( get_current_user_id(), $prefetch_recent_activities[3]->activity_user_id );
-		$this->assertEquals( current_time( 'mysql' ), $prefetch_recent_activities[3]->activity_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $prefetch_recent_activities[3]->activity_date );
 	}
 
 	/**

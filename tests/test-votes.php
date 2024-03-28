@@ -54,20 +54,20 @@ class TestVotes extends TestCase {
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_vote_insert( $id, $user_id, 'vote', $new_user_id, 101, current_time( 'mysql' ) );
+		ap_vote_insert( $id, $user_id, 'vote', $new_user_id, 101, '2024-02-02 00:00:00' );
 		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
 		$this->assertEquals( 'vote', $get_vote->vote_type );
 		$this->assertEquals( $id, $get_vote->vote_post_id );
 		$this->assertEquals( $user_id, $get_vote->vote_user_id );
 		$this->assertEquals( $new_user_id, $get_vote->vote_rec_user );
 		$this->assertEquals( 101, $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_vote->vote_date );
 
 		// Test on new question.
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_vote_insert( $id, $user_id, 'flag', $new_user_id, 10 );
+		ap_vote_insert( $id, $user_id, 'flag', $new_user_id, 10, '2024-02-02 00:00:00' );
 		$get_vote = ap_get_vote( $id, $user_id, 'flag' );
 		$this->assertEquals( 'flag', $get_vote->vote_type );
 		$this->assertNotEquals( 'vote', $get_vote->vote_type );
@@ -76,7 +76,7 @@ class TestVotes extends TestCase {
 		$this->assertEquals( $new_user_id, $get_vote->vote_rec_user );
 		$this->assertEquals( 10, $get_vote->vote_value );
 		$this->assertNotEquals( 101, $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_vote->vote_date );
 	}
 
 	/**
@@ -676,7 +676,7 @@ class TestVotes extends TestCase {
 
 		// Test adding a vote or flag.
 		// Adding vote.
-		ap_vote_insert( $id, get_current_user_id() );
+		ap_vote_insert( $id, get_current_user_id(), 'vote', 0, '', '2024-02-02 00:00:00' );
 		ap_update_votes_count( $id );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'vote' );
 		$this->assertNotEmpty( $get_vote );
@@ -685,10 +685,10 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_vote->vote_rec_user );
 		$this->assertEquals( 'vote', $get_vote->vote_type );
 		$this->assertEquals( '', $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_vote->vote_date );
 
 		// Adding flag.
-		ap_vote_insert( $id, get_current_user_id(), 'flag' );
+		ap_vote_insert( $id, get_current_user_id(), 'flag', 0, '', '2024-02-02 00:00:00' );
 		ap_update_flags_count( $id );
 		$get_vote = ap_get_vote( $id, get_current_user_id(), 'flag' );
 		$this->assertNotEmpty( $get_vote );
@@ -697,7 +697,7 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_vote->vote_rec_user );
 		$this->assertEquals( 'flag', $get_vote->vote_type );
 		$this->assertEquals( '', $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_vote->vote_date );
 
 		// Testing for both type.
 		$get_vote = ap_get_vote( $id, get_current_user_id(), array( 'vote', 'flag' ) );
@@ -844,7 +844,7 @@ class TestVotes extends TestCase {
 		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$vote_id = ap_vote_insert( $question_id, get_current_user_id() );
+		$vote_id = ap_vote_insert( $question_id, get_current_user_id(), 'vote', 0, '', '2024-02-02 00:00:00' );
 		ap_update_votes_count( $question_id );
 		$get_votes = ap_get_votes( $question_id );
 		$this->assertNotEmpty( $get_votes );
@@ -854,7 +854,7 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_votes[0]->vote_rec_user );
 		$this->assertEquals( 'vote', $get_votes[0]->vote_type );
 		$this->assertEquals( '', $get_votes[0]->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_votes[0]->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_votes[0]->vote_date );
 	}
 
 	/**
@@ -981,8 +981,8 @@ class TestVotes extends TestCase {
 		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1 );
-		$vote_id_2 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1 );
+		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1, '2024-02-02 00:00:00' );
+		$vote_id_2 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1, '2024-02-02 00:00:00' );
 		ap_update_votes_count( $question_id );
 		$get_vote = ap_get_vote( $question_id, get_current_user_id(), 'vote', -1 );
 		$this->assertEquals( $vote_id_1, $get_vote->vote_id );
@@ -991,7 +991,7 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_vote->vote_rec_user );
 		$this->assertEquals( 'vote', $get_vote->vote_type );
 		$this->assertEquals( -1, $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_vote->vote_date );
 	}
 
 	/**
@@ -1004,8 +1004,8 @@ class TestVotes extends TestCase {
 		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1 );
-		$vote_id_2 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1 );
+		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1, '2024-02-02 00:00:00' );
+		$vote_id_2 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1, '2024-02-02 00:00:00' );
 		ap_update_votes_count( $question_id );
 		$get_vote = ap_get_vote( $question_id, get_current_user_id(), 'flag', array( 1, -1 ) );
 		$this->assertEquals( $vote_id_1, $get_vote->vote_id );
@@ -1014,7 +1014,7 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_vote->vote_rec_user );
 		$this->assertEquals( 'flag', $get_vote->vote_type );
 		$this->assertEquals( 1, $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_vote->vote_date );
 	}
 
 	/**

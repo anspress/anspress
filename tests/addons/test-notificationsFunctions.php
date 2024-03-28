@@ -277,7 +277,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 			'ref_type' => 'question',
 			'verb'     => 'best_answer',
 			'seen'     => 0,
-			'date'     => current_time( 'mysql' ),
+			'date'     => '2024-02-02 00:00:00',
 		];
 		$this->assertIsInt( ap_insert_notification( $args ) );
 		$get_notification = ap_get_notifications( $args );
@@ -289,7 +289,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 		$this->assertEquals( 'question', $get_notification[0]->noti_ref_type );
 		$this->assertEquals( 'best_answer', $get_notification[0]->noti_verb );
 		$this->assertEquals( 0, $get_notification[0]->noti_seen );
-		$this->assertEquals( current_time( 'mysql' ), $get_notification[0]->noti_date );
+		$this->assertEquals( '2024-02-02 00:00:00', $get_notification[0]->noti_date );
 
 		// Test 4.
 		$this->setRole( 'subscriber' );

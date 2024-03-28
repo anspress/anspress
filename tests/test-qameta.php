@@ -968,7 +968,7 @@ class TestQAMeta extends TestCase {
 
 		// Test by passing the question id.
 		$id = $this->insert_question();
-		$output = ap_update_post_activity_meta( $id, 'new_q', $user_id );
+		$output = ap_update_post_activity_meta( $id, 'new_q', $user_id, false, '2024-02-02 00:00:00' );
 		$this->assertNotEmpty( $output );
 		$this->assertIsInt( $output );
 
@@ -981,7 +981,7 @@ class TestQAMeta extends TestCase {
 		$this->assertArrayHasKey( 'date', $qameta->activities );
 		$this->assertEquals( 'new_q', $qameta->activities['type'] );
 		$this->assertEquals( $user_id, $qameta->activities['user_id'] );
-		$this->assertEquals( current_time( 'mysql' ), $qameta->activities['date'] );
+		$this->assertEquals( '2024-02-02 00:00:00', $qameta->activities['date'] );
 		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
 
 		// Test by passing the question id with different date.
