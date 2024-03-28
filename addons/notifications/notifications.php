@@ -56,8 +56,8 @@ class Notifications extends \AnsPress\Singleton {
 			)
 		);
 
-		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
-		anspress()->add_filter( 'ap_form_options_features_notification', $this, 'load_options' );
+		add_filter( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
+		add_filter( 'ap_form_options_notification', array( $this, 'load_options' ) );
 
 		// Activate AnsPress notifications only if buddypress not active.
 		if ( ap_is_addon_active( 'buddypress.php' ) ) {
@@ -65,28 +65,28 @@ class Notifications extends \AnsPress\Singleton {
 		}
 
 		ap_register_page( 'notifications', __( 'Notifications', 'anspress-question-answer' ), '', true, true );
-		anspress()->add_filter( 'ap_menu_object', $this, 'ap_menu_object' );
-		anspress()->add_action( 'ap_notification_verbs', $this, 'register_verbs' );
-		anspress()->add_action( 'ap_user_pages', $this, 'ap_user_pages' );
-		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', $this, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_question', $this, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_trash_answer', $this, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_answer', $this, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_untrash_answer', $this, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
-		anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer' );
-		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
-		anspress()->add_action( 'ap_unpublish_comment', $this, 'delete_comment' );
-		anspress()->add_action( 'ap_vote_up', $this, 'vote_up' );
-		anspress()->add_action( 'ap_vote_down', $this, 'vote_down' );
-		anspress()->add_action( 'ap_undo_vote_up', $this, 'undo_vote_up' );
-		anspress()->add_action( 'ap_undo_vote_down', $this, 'undo_vote_down' );
-		anspress()->add_action( 'ap_insert_reputation', $this, 'insert_reputation', 10, 4 );
-		anspress()->add_action( 'ap_delete_reputation', $this, 'delete_reputation', 10, 3 );
-		anspress()->add_action( 'ap_ajax_mark_notifications_seen', $this, 'mark_notifications_seen' );
-		anspress()->add_action( 'ap_ajax_load_more_notifications', $this, 'load_more_notifications' );
-		anspress()->add_action( 'ap_ajax_get_notifications', $this, 'get_notifications' );
+		add_filter( 'ap_menu_object', array( $this, 'ap_menu_object' ) );
+		add_action( 'ap_notification_verbs', array( $this, 'register_verbs' ) );
+		add_action( 'ap_user_pages', array( $this, 'ap_user_pages' ) );
+		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ), 10, 2 );
+		add_action( 'ap_trash_question', array( $this, 'trash_question' ), 10, 2 );
+		add_action( 'ap_before_delete_question', array( $this, 'trash_question' ), 10, 2 );
+		add_action( 'ap_trash_answer', array( $this, 'trash_answer' ), 10, 2 );
+		add_action( 'ap_before_delete_answer', array( $this, 'trash_answer' ), 10, 2 );
+		add_action( 'ap_untrash_answer', array( $this, 'new_answer' ), 10, 2 );
+		add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
+		add_action( 'ap_unselect_answer', array( $this, 'unselect_answer' ) );
+		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
+		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
+		add_action( 'ap_vote_up', array( $this, 'vote_up' ) );
+		add_action( 'ap_vote_down', array( $this, 'vote_down' ) );
+		add_action( 'ap_undo_vote_up', array( $this, 'undo_vote_up' ) );
+		add_action( 'ap_undo_vote_down', array( $this, 'undo_vote_down' ) );
+		add_action( 'ap_insert_reputation', array( $this, 'insert_reputation' ), 10, 4 );
+		add_action( 'ap_delete_reputation', array( $this, 'delete_reputation' ), 10, 3 );
+		add_action( 'ap_ajax_mark_notifications_seen', array( $this, 'mark_notifications_seen' ) );
+		add_action( 'ap_ajax_load_more_notifications', array( $this, 'load_more_notifications' ) );
+		add_action( 'ap_ajax_get_notifications', array( $this, 'get_notifications' ) );
 	}
 
 	/**

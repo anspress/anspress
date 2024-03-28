@@ -1599,8 +1599,7 @@ function ap_search_array( $arr, $key, $value ) {
  * @since 4.1.8 Do not fetch addon meta data from files, instead defined it in array.
  */
 function ap_get_addons() {
-	$cache  = wp_cache_get( 'addons', 'anspress' );
-	$option = get_option( 'anspress_addons', array() );
+	$cache = wp_cache_get( 'addons', 'anspress' );
 
 	if ( false !== $cache ) {
 		return $cache;
@@ -1693,7 +1692,7 @@ function ap_get_addons() {
 		}
 
 		$addons[ $k ]['pro']    = isset( $addon['pro'] ) ? $addon['pro'] : false;
-		$addons[ $k ]['active'] = isset( $option[ $k ] ) ? true : false;
+		$addons[ $k ]['active'] = true;
 		$addons[ $k ]['id']     = $k;
 		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( array( '/', '.php' ), array( '-', '' ), 'addon-' . $k ) ) );
 

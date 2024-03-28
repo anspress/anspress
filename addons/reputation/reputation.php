@@ -37,6 +37,7 @@ class Reputation extends \AnsPress\Singleton {
 	 * @since unknown
 	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
 	 * @since 4.2.0 Renamed hook `ap_form_addon-reputation` to `ap_form_options_features_tag`.
+	 * @since 5.0.0 Added hook `ap_all_options` and removed `anspress()`.
 	 */
 	protected function __construct() {
 		$this->register_default_events();
@@ -48,36 +49,36 @@ class Reputation extends \AnsPress\Singleton {
 			)
 		);
 
-		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
-		anspress()->add_action( 'ap_form_options_features_reputation', $this, 'load_options', 20 );
-		anspress()->add_action( 'wp_ajax_ap_save_events', $this, 'ap_save_events' );
-		anspress()->add_action( 'ap_after_new_question', $this, 'new_question', 10, 2 );
-		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_untrash_question', $this, 'new_question', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', $this, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_question', $this, 'trash_question', 10, 2 );
-		anspress()->add_action( 'ap_untrash_answer', $this, 'new_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_answer', $this, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_before_delete_answer', $this, 'trash_answer', 10, 2 );
-		anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
-		anspress()->add_action( 'ap_unselect_answer', $this, 'unselect_answer' );
-		anspress()->add_action( 'ap_vote_up', $this, 'vote_up' );
-		anspress()->add_action( 'ap_vote_down', $this, 'vote_down' );
-		anspress()->add_action( 'ap_undo_vote_up', $this, 'undo_vote_up' );
-		anspress()->add_action( 'ap_undo_vote_down', $this, 'undo_vote_down' );
-		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
-		anspress()->add_action( 'ap_unpublish_comment', $this, 'delete_comment' );
-		anspress()->add_filter( 'user_register', $this, 'user_register' );
-		anspress()->add_action( 'delete_user', $this, 'delete_user' );
-		anspress()->add_filter( 'ap_user_display_name', $this, 'display_name', 10, 2 );
-		anspress()->add_filter( 'ap_pre_fetch_question_data', $this, 'pre_fetch_post' );
-		anspress()->add_filter( 'ap_pre_fetch_answer_data', $this, 'pre_fetch_post' );
-		anspress()->add_filter( 'bp_before_member_header_meta', $this, 'bp_profile_header_meta' );
-		anspress()->add_filter( 'ap_user_pages', $this, 'ap_user_pages' );
-		anspress()->add_filter( 'ap_ajax_load_more_reputation', $this, 'load_more_reputation' );
-		anspress()->add_filter( 'ap_bp_nav', $this, 'ap_bp_nav' );
-		anspress()->add_filter( 'ap_bp_page', $this, 'ap_bp_page', 10, 2 );
-		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 10, 2 );
+		add_action( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_reputation', array( $this, 'load_options' ), 20 );
+		add_action( 'wp_ajax_ap_save_events', array( $this, 'ap_save_events' ) );
+		add_action( 'ap_after_new_question', array( $this, 'new_question' ), 10, 2 );
+		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ), 10, 2 );
+		add_action( 'ap_untrash_question', array( $this, 'new_question' ), 10, 2 );
+		add_action( 'ap_trash_question', array( $this, 'trash_question' ), 10, 2 );
+		add_action( 'ap_before_delete_question', array( $this, 'trash_question' ), 10, 2 );
+		add_action( 'ap_untrash_answer', array( $this, 'new_answer' ), 10, 2 );
+		add_action( 'ap_trash_answer', array( $this, 'trash_answer' ), 10, 2 );
+		add_action( 'ap_before_delete_answer', array( $this, 'trash_answer' ), 10, 2 );
+		add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
+		add_action( 'ap_unselect_answer', array( $this, 'unselect_answer' ) );
+		add_action( 'ap_vote_up', array( $this, 'vote_up' ) );
+		add_action( 'ap_vote_down', array( $this, 'vote_down' ) );
+		add_action( 'ap_undo_vote_up', array( $this, 'undo_vote_up' ) );
+		add_action( 'ap_undo_vote_down', array( $this, 'undo_vote_down' ) );
+		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
+		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
+		add_filter( 'user_register', array( $this, 'user_register' ) );
+		add_action( 'delete_user', array( $this, 'delete_user' ) );
+		add_filter( 'ap_user_display_name', array( $this, 'display_name' ), 10, 2 );
+		add_filter( 'ap_pre_fetch_question_data', array( $this, 'pre_fetch_post' ) );
+		add_filter( 'ap_pre_fetch_answer_data', array( $this, 'pre_fetch_post' ) );
+		add_filter( 'bp_before_member_header_meta', array( $this, 'bp_profile_header_meta' ) );
+		add_filter( 'ap_user_pages', array( $this, 'ap_user_pages' ) );
+		add_filter( 'ap_ajax_load_more_reputation', array( $this, 'load_more_reputation' ) );
+		add_filter( 'ap_bp_nav', array( $this, 'ap_bp_nav' ) );
+		add_filter( 'ap_bp_page', array( $this, 'ap_bp_page' ), 10, 2 );
+		add_filter( 'ap_all_options', array( $this, 'ap_all_options' ), 10, 2 );
 	}
 
 	/**

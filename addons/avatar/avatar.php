@@ -63,10 +63,10 @@ class Avatar extends \AnsPress\Singleton {
 			)
 		);
 
-		anspress()->add_filter( 'ap_settings_menu_features_groups', __CLASS__, 'add_to_settings_page' );
-		anspress()->add_action( 'ap_form_options_features_avatar', __CLASS__, 'option_form' );
-		anspress()->add_filter( 'pre_get_avatar_data', __CLASS__, 'get_avatar', 1000, 3 );
-		anspress()->add_action( 'wp_ajax_ap_clear_avatar_cache', __CLASS__, 'clear_avatar_cache' );
+		add_filter( 'ap_all_options', array( __CLASS__, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_avatar', array( __CLASS__, 'option_form' ) );
+		add_filter( 'pre_get_avatar_data', array( __CLASS__, 'get_avatar' ), 1000, 3 );
+		add_action( 'wp_ajax_ap_clear_avatar_cache', array( __CLASS__, 'clear_avatar_cache' ) );
 	}
 
 	/**

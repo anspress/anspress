@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   wordpress:
     build: ./
@@ -12,8 +12,8 @@ services:
       WORDPRESS_DB_PASSWORD: wp_pass
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DEBUG: true
-      WORDPRESS_CONFIG_EXTRA: |
-        define('WP_DEBUG_LOG', true);
+      XDEBUG_MODE: coverage
+      XDEBUG_CONFIG: "client_host=host.docker.internal"
     links:
       - db
     volumes:

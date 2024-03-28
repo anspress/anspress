@@ -411,8 +411,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string            $callback      The name of the function definition on the $component.
 		 * @param int      Optional $priority      The priority at which the function should be fired.
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
+		 * @deprecated 5.0.0
 		 */
 		public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+			_deprecated_function( __METHOD__, '5.0.0', '' );
 			$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
 		}
 
@@ -427,8 +429,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string            $callback      The name of the function definition on the $component.
 		 * @param int      Optional $priority      The priority at which the function should be fired.
 		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
+		 * @deprecated 5.0.0
 		 */
 		public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+			_deprecated_function( __METHOD__, '5.0.0', '' );
 			$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
 		}
 
@@ -447,8 +451,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param int    $accepted_args The number of arguments that should be passed to the $callback.
 		 *
 		 * @return type The collection of actions and filters registered with WordPress.
+		 * @deprecated 5.0.0
 		 */
 		private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
+			_deprecated_function( __METHOD__, '5.0.0', '' );
 			$hooks[] = array(
 				'hook'          => $hook,
 				'component'     => $component,
@@ -464,6 +470,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * Register the filters and actions with WordPress.
 		 *
 		 * @access public
+		 * @deprecated 5.0.0
 		 */
 		public function setup_hooks() {
 			foreach ( $this->filters as $hook ) {

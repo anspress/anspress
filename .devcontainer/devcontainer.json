@@ -94,7 +94,8 @@
         "Chouzz.vscode-better-align",
         "emallin.phpunit",
         "ValeryanM.vscode-phpsab",
-        "ryanluker.vscode-coverage-gutters"
+        "ryanluker.vscode-coverage-gutters",
+        "xdebug.php-debug"
       ]
     }
   },

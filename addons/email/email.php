@@ -76,32 +76,32 @@ class Email extends \AnsPress\Singleton {
 	 */
 	protected function __construct() {
 		$this->ap_default_options();
-		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'load_options' );
-		anspress()->add_filter( 'ap_form_options_features_email', $this, 'register_option' );
-		anspress()->add_filter( 'ap_form_email_template', $this, 'register_email_template' );
-		anspress()->add_filter( 'ap_all_options', $this, 'ap_all_options', 3, 2 );
-		anspress()->add_action( 'wp_ajax_ap_email_template', $this, 'ap_email_template' );
-		anspress()->add_action( 'ap_ajax_form_email_template', $this, 'save_email_template_form', 11 );
-		anspress()->add_action( 'ap_email_default_template_new_question', $this, 'template_new_question' );
-		anspress()->add_action( 'ap_email_default_template_new_answer', $this, 'template_new_answer' );
-		anspress()->add_action( 'ap_email_default_template_select_answer', $this, 'template_select_answer' );
-		anspress()->add_action( 'ap_email_default_template_new_comment', $this, 'template_new_comment' );
-		anspress()->add_action( 'ap_email_default_template_edit_question', $this, 'template_edit_question' );
-		anspress()->add_action( 'ap_email_default_template_edit_answer', $this, 'template_edit_answer' );
-		anspress()->add_action( 'ap_email_default_template_trash_question', $this, 'template_trash_question' );
-		anspress()->add_action( 'ap_email_default_template_trash_answer', $this, 'template_trash_answer' );
-		anspress()->add_action( 'ap_email_form_allowed_tags', $this, 'form_allowed_tags' );
+		add_filter( 'ap_all_options', array( $this, 'load_options' ) );
+		add_filter( 'ap_form_options_email', array( $this, 'register_option' ) );
+		add_filter( 'ap_form_email_template', array( $this, 'register_email_template' ) );
+		add_filter( 'ap_all_options', array( $this, 'ap_all_options' ), 3, 2 );
+		add_action( 'wp_ajax_ap_email_template', array( $this, 'ap_email_template' ) );
+		add_action( 'ap_ajax_form_email_template', array( $this, 'save_email_template_form' ), 11 );
+		add_action( 'ap_email_default_template_new_question', array( $this, 'template_new_question' ) );
+		add_action( 'ap_email_default_template_new_answer', array( $this, 'template_new_answer' ) );
+		add_action( 'ap_email_default_template_select_answer', array( $this, 'template_select_answer' ) );
+		add_action( 'ap_email_default_template_new_comment', array( $this, 'template_new_comment' ) );
+		add_action( 'ap_email_default_template_edit_question', array( $this, 'template_edit_question' ) );
+		add_action( 'ap_email_default_template_edit_answer', array( $this, 'template_edit_answer' ) );
+		add_action( 'ap_email_default_template_trash_question', array( $this, 'template_trash_question' ) );
+		add_action( 'ap_email_default_template_trash_answer', array( $this, 'template_trash_answer' ) );
+		add_action( 'ap_email_form_allowed_tags', array( $this, 'form_allowed_tags' ) );
 
-		anspress()->add_filter( 'comment_notification_recipients', $this, 'default_recipients', 10, 2 );
+		add_filter( 'comment_notification_recipients', array( $this, 'default_recipients' ), 10, 2 );
 
-		anspress()->add_action( 'ap_after_new_question', $this, 'ap_after_new_question' );
-		anspress()->add_action( 'ap_after_new_answer', $this, 'ap_after_new_answer' );
-		anspress()->add_action( 'ap_select_answer', $this, 'select_answer' );
-		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment' );
-		anspress()->add_action( 'ap_processed_update_question', $this, 'ap_after_update_question', 10, 2 );
-		anspress()->add_action( 'ap_processed_update_answer', $this, 'ap_after_update_answer', 10, 2 );
-		anspress()->add_action( 'ap_trash_question', $this, 'ap_trash_question', 10, 2 );
-		anspress()->add_action( 'ap_trash_answer', $this, 'ap_trash_answer', 10, 2 );
+		add_action( 'ap_after_new_question', array( $this, 'ap_after_new_question' ) );
+		add_action( 'ap_after_new_answer', array( $this, 'ap_after_new_answer' ) );
+		add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
+		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
+		add_action( 'ap_processed_update_question', array( $this, 'ap_after_update_question' ), 10, 2 );
+		add_action( 'ap_processed_update_answer', array( $this, 'ap_after_update_answer' ), 10, 2 );
+		add_action( 'ap_trash_question', array( $this, 'ap_trash_question' ), 10, 2 );
+		add_action( 'ap_trash_answer', array( $this, 'ap_trash_answer' ), 10, 2 );
 	}
 
 	/**

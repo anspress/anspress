@@ -52,33 +52,33 @@ class BuddyPress extends \AnsPress\Singleton {
 		add_post_type_support( 'question', 'buddypress-activity' );
 		add_post_type_support( 'answer', 'buddypress-activity' );
 
-		anspress()->add_action( 'bp_init', $this, 'bp_init' );
-		anspress()->add_action( 'ap_enqueue', $this, 'ap_assets_js' );
-		anspress()->add_action( 'bp_setup_nav', $this, 'content_setup_nav' );
-		anspress()->add_action( 'bp_init', $this, 'question_answer_tracking' );
-		anspress()->add_action( 'bp_activity_entry_meta', $this, 'activity_buttons' );
-		anspress()->add_filter( 'bp_activity_custom_post_type_post_action', $this, 'activity_action', 10, 2 );
+		add_action( 'bp_init', array( $this, 'bp_init' ) );
+		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
+		add_action( 'bp_setup_nav', array( $this, 'content_setup_nav' ) );
+		add_action( 'bp_init', array( $this, 'question_answer_tracking' ) );
+		add_action( 'bp_activity_entry_meta', array( $this, 'activity_buttons' ) );
+		add_filter( 'bp_activity_custom_post_type_post_action', array( $this, 'activity_action' ), 10, 2 );
 
-		anspress()->add_filter( 'ap_the_question_content', $this, 'ap_the_question_content' );
-		anspress()->add_action( 'bp_notifications_get_registered_components', $this, 'registered_components' );
-		anspress()->add_action( 'bp_notifications_get_notifications_for_user', $this, 'notifications_for_user', 10, 8 );
+		add_filter( 'ap_the_question_content', array( $this, 'ap_the_question_content' ) );
+		add_action( 'bp_notifications_get_registered_components', array( $this, 'registered_components' ) );
+		add_action( 'bp_notifications_get_notifications_for_user', array( $this, 'notifications_for_user' ), 10, 8 );
 
-		anspress()->add_action( 'ap_after_new_answer', $this, 'new_answer_notification' );
-		anspress()->add_action( 'ap_publish_comment', $this, 'new_comment_notification' );
-		anspress()->add_action( 'ap_trash_question', $this, 'remove_answer_notify' );
-		anspress()->add_action( 'ap_trash_answer', $this, 'remove_answer_notify' );
-		anspress()->add_action( 'ap_trash_answer', $this, 'remove_comment_notify' );
-		anspress()->add_action( 'ap_unpublish_comment', $this, 'remove_comment_notify' );
-		anspress()->add_action( 'before_delete_post', $this, 'remove_answer_notify' );
-		anspress()->add_action( 'the_post', $this, 'mark_bp_notify_as_read' );
-		anspress()->add_action( 'ap_ajax_bp_loadmore', $this, 'bp_loadmore' );
+		add_action( 'ap_after_new_answer', array( $this, 'new_answer_notification' ) );
+		add_action( 'ap_publish_comment', array( $this, 'new_comment_notification' ) );
+		add_action( 'ap_trash_question', array( $this, 'remove_answer_notify' ) );
+		add_action( 'ap_trash_answer', array( $this, 'remove_answer_notify' ) );
+		add_action( 'ap_trash_answer', array( $this, 'remove_comment_notify' ) );
+		add_action( 'ap_unpublish_comment', array( $this, 'remove_comment_notify' ) );
+		add_action( 'before_delete_post', array( $this, 'remove_answer_notify' ) );
+		add_action( 'the_post', array( $this, 'mark_bp_notify_as_read' ) );
+		add_action( 'ap_ajax_bp_loadmore', array( $this, 'bp_loadmore' ) );
 	}
 
 	/**
 	 * Hook on BuddyPress init.
 	 */
 	public function bp_init() {
-		anspress()->add_filter( 'the_content', $this, 'ap_the_answer_content' );
+		add_filter( 'the_content', $this, 'ap_the_answer_content' );
 	}
 
 	/**

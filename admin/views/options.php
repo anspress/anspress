@@ -28,21 +28,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
  */
 do_action( 'ap_before_options_page' );
 
-$features_groups = array(
-	'toggle_features' => array(
-		'label'    => __( 'Toggle Features', 'anspress-question-answer' ),
-		'template' => 'toggle-features.php',
-		'info'     => __( 'Some features have additional settings which will be visible in the settings sidebar after they are enabled.', 'anspress-question-answer' ),
-	),
-);
-
-$features_groups = apply_filters( 'ap_settings_menu_features_groups', $features_groups );
-
 $all_options = array(
-	'features'      => array(
-		'label'  => __( '⭐ Features', 'anspress-question-answer' ),
-		'groups' => $features_groups,
-	),
 	'general'       => array(
 		'label'  => __( '⚙ General', 'anspress-question-answer' ),
 		'groups' => array(
@@ -291,19 +277,6 @@ if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted()
 							do_action( 'ap_option_page_content' );
 						?>
 					</div>
-				</div>
-				<div class="anspress-options-right">
-					<?php if ( 'features' !== $active_tab ) : ?>
-						<div class="ap-features-info">
-							<div>
-								💡
-								<p><?php esc_attr_e( 'Functions such as email notifications, categories, tags and many more are disabled by default. Please carefully check and enable them if needed.', 'anspress-question-answer' ); ?></p>
-							</div>
-							<div>
-								<a href="<?php echo esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=features' ) ); ?>" class="button"><?php esc_attr_e( 'Enable features', 'anspress-question-answer' ); ?></a>
-							</div>
-						</div>
-					<?php endif; ?>
 				</div>
 			</div>
 		</div>

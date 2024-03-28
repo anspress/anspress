@@ -54,17 +54,23 @@ class Profile extends \AnsPress\Singleton {
 			)
 		);
 
-		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
-		anspress()->add_action( 'ap_form_options_features_profile', $this, 'options' );
-		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), array( $this, 'user_page' ), true, true );
+		add_filter( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_profile', array( $this, 'options' ) );
+		ap_register_page(
+			'user',
+			__( 'User profile', 'anspress-question-answer' ),
+			array( $this, 'user_page' ),
+			true,
+			true
+		);
 
-		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
-		anspress()->add_action( 'ap_ajax_user_more_answers', $this, 'load_more_answers', 10, 2 );
-		anspress()->add_filter( 'wp_title', $this, 'page_title' );
-		anspress()->add_action( 'the_post', $this, 'filter_page_title' );
-		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
-		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
-		anspress()->add_filter( 'posts_pre_query', $this, 'modify_query_archive', 999, 2 );
+		add_action( 'ap_rewrites', array( $this, 'rewrite_rules' ), 10, 3 );
+		add_action( 'ap_ajax_user_more_answers', array( $this, 'load_more_answers' ), 10, 2 );
+		add_filter( 'wp_title', array( $this, 'page_title' ) );
+		add_action( 'the_post', array( $this, 'filter_page_title' ) );
+		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
+		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
+		add_filter( 'posts_pre_query', array( $this, 'modify_query_archive' ), 999, 2 );
 	}
 
 	/**

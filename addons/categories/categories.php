@@ -46,39 +46,39 @@ class Categories extends \AnsPress\Singleton {
 		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( $this, 'category_page' ), false );
 		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categories_page' ) );
 
-		anspress()->add_action( 'init', $this, 'register_question_categories', 1 );
-		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'load_options' );
-		anspress()->add_filter( 'ap_form_options_features_category', $this, 'register_general_settings_form' );
-		anspress()->add_action( 'admin_enqueue_scripts', $this, 'admin_enqueue_scripts' );
-		anspress()->add_action( 'ap_load_admin_assets', $this, 'ap_load_admin_assets' );
-		anspress()->add_action( 'ap_admin_menu', $this, 'admin_category_menu' );
-		anspress()->add_action( 'ap_display_question_metas', $this, 'ap_display_question_metas', 10, 2 );
-		anspress()->add_action( 'ap_enqueue', $this, 'ap_assets_js' );
-		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
-		anspress()->add_action( 'save_post_question', $this, 'after_new_question', 0, 2 );
-		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
-		anspress()->add_action( 'terms_clauses', $this, 'terms_clauses', 10, 3 );
-		anspress()->add_filter( 'ap_list_filters', $this, 'ap_list_filters' );
-		anspress()->add_action( 'question_category_add_form_fields', $this, 'image_field_new' );
-		anspress()->add_action( 'question_category_edit_form_fields', $this, 'image_field_edit' );
-		anspress()->add_action( 'create_question_category', $this, 'save_image_field' );
-		anspress()->add_action( 'edited_question_category', $this, 'save_image_field' );
-		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_main_questions_args', $this, 'ap_main_questions_args' );
-		anspress()->add_filter( 'ap_question_subscribers_action_id', $this, 'subscribers_action_id' );
-		anspress()->add_filter( 'ap_ask_btn_link', $this, 'ap_ask_btn_link' );
-		anspress()->add_filter( 'wp_head', $this, 'category_feed' );
-		anspress()->add_filter( 'manage_edit-question_category_columns', $this, 'column_header' );
-		anspress()->add_filter( 'manage_question_category_custom_column', $this, 'column_content', 10, 3 );
-		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
-		anspress()->add_action( 'posts_pre_query', $this, 'modify_query_category_archive', 9999, 2 );
+		add_action( 'init', array( $this, 'register_question_categories' ), 1 );
+		add_action( 'ap_all_options', array( $this, 'load_options' ) );
+		add_filter( 'ap_form_options_category', array( $this, 'register_general_settings_form' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'ap_load_admin_assets', array( $this, 'ap_load_admin_assets' ) );
+		add_action( 'ap_admin_menu', array( $this, 'admin_category_menu' ) );
+		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
+		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
+		add_filter( 'term_link', array( $this, 'term_link_filter' ), 10, 3 );
+		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ) );
+		add_action( 'save_post_question', array( $this, 'after_new_question' ), 0, 2 );
+		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
+		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
+		add_filter( 'ap_list_filters', array( $this, 'ap_list_filters' ) );
+		add_action( 'question_category_add_form_fields', array( $this, 'image_field_new' ) );
+		add_action( 'question_category_edit_form_fields', array( $this, 'image_field_edit' ) );
+		add_action( 'create_question_category', array( $this, 'save_image_field' ) );
+		add_action( 'edited_question_category', array( $this, 'save_image_field' ) );
+		add_action( 'ap_rewrites', array( $this, 'rewrite_rules' ), 10, 3 );
+		add_filter( 'ap_main_questions_args', array( $this, 'ap_main_questions_args' ) );
+		add_filter( 'ap_question_subscribers_action_id', array( $this, 'subscribers_action_id' ) );
+		add_filter( 'ap_ask_btn_link', array( $this, 'ap_ask_btn_link' ) );
+		add_filter( 'wp_head', array( $this, 'category_feed' ) );
+		add_filter( 'manage_edit-question_category_columns', array( $this, 'column_header' ) );
+		add_filter( 'manage_question_category_custom_column', array( $this, 'column_content' ), 10, 3 );
+		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
+		add_action( 'posts_pre_query', array( $this, 'modify_query_category_archive' ), 9999, 2 );
 
 		// List filtering.
-		anspress()->add_action( 'ap_ajax_load_filter_category', $this, 'load_filter_category' );
-		anspress()->add_filter( 'ap_list_filter_active_category', $this, 'filter_active_category', 10, 2 );
+		add_action( 'ap_ajax_load_filter_category', array( $this, 'load_filter_category' ) );
+		add_filter( 'ap_list_filter_active_category', array( $this, 'filter_active_category' ), 10, 2 );
 
-		anspress()->add_action( 'widgets_init', $this, 'widget' );
+		add_action( 'widgets_init', array( $this, 'widget' ) );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Categories extends \AnsPress\Singleton {
 			 */
 			$question_args = apply_filters( 'ap_category_questions_args', $question_args );
 
-			anspress()->questions = ap_get_questions( $question_args );
+			$questions = ap_get_questions( $question_args );
 
 			/**
 			 * This action can be used to show custom message before category page.
@@ -463,7 +463,7 @@ class Categories extends \AnsPress\Singleton {
 	 * @since   1.0
 	 */
 	public function after_new_question( $post_id, $post ) {
-		$values = anspress()->get_form( 'question' )->get_values();
+		$values = get_form( 'question' )->get_values();
 
 		if ( isset( $values['category']['value'] ) ) {
 			wp_set_post_terms( $post_id, $values['category']['value'], 'question_category' );

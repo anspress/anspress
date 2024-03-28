@@ -54,12 +54,12 @@ class Captcha extends \AnsPress\Singleton {
 			)
 		);
 
-		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
-		anspress()->add_action( 'ap_form_options_features_recaptcha', $this, 'options' );
-		anspress()->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts' );
-		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields', 10, 2 );
-		anspress()->add_action( 'ap_answer_form_fields', $this, 'ap_question_form_fields', 10, 2 );
-		anspress()->add_action( 'ap_comment_form_fields', $this, 'ap_question_form_fields', 10, 2 );
+		add_filter( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_recaptcha', array( $this, 'options' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ), 10, 2 );
+		add_action( 'ap_answer_form_fields', array( $this, 'ap_question_form_fields' ), 10, 2 );
+		add_action( 'ap_comment_form_fields', array( $this, 'ap_question_form_fields' ), 10, 2 );
 	}
 
 	/**

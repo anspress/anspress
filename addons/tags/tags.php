@@ -36,40 +36,41 @@ class Tags extends \AnsPress\Singleton {
 	 *
 	 * @since 4.1.8 Added filter `ap_category_questions_args`.
 	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
+	 * @since 5.0.0 Added ap_all_options hook and removed `anspress()->`.
 	 */
 	protected function __construct() {
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), array( $this, 'tag_page' ), false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), array( $this, 'tags_page' ) );
 
-		anspress()->add_action( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
-		anspress()->add_action( 'ap_form_options_features_tag', $this, 'option_fields' );
-		anspress()->add_action( 'widgets_init', $this, 'widget_positions' );
-		anspress()->add_action( 'init', $this, 'register_question_tag', 1 );
-		anspress()->add_action( 'ap_admin_menu', $this, 'admin_tags_menu' );
-		anspress()->add_action( 'ap_display_question_metas', $this, 'ap_display_question_metas', 10, 2 );
-		anspress()->add_action( 'ap_question_info', $this, 'ap_question_info' );
-		anspress()->add_action( 'ap_enqueue', $this, 'ap_assets_js' );
-		anspress()->add_action( 'ap_enqueue', $this, 'ap_localize_scripts' );
-		anspress()->add_filter( 'term_link', $this, 'term_link_filter', 10, 3 );
-		anspress()->add_action( 'ap_question_form_fields', $this, 'ap_question_form_fields' );
-		anspress()->add_action( 'ap_processed_new_question', $this, 'after_new_question', 0, 2 );
-		anspress()->add_action( 'ap_processed_update_question', $this, 'after_new_question', 0, 2 );
-		anspress()->add_filter( 'ap_page_title', $this, 'page_title' );
-		anspress()->add_filter( 'ap_breadcrumbs', $this, 'ap_breadcrumbs' );
-		anspress()->add_action( 'wp_ajax_ap_tags_suggestion', $this, 'ap_tags_suggestion' );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_tags_suggestion', $this, 'ap_tags_suggestion' );
-		anspress()->add_action( 'ap_rewrites', $this, 'rewrite_rules', 10, 3 );
-		anspress()->add_filter( 'ap_main_questions_args', $this, 'ap_main_questions_args' );
-		anspress()->add_filter( 'ap_category_questions_args', $this, 'ap_main_questions_args' );
-		anspress()->add_filter( 'ap_current_page', $this, 'ap_current_page' );
-		anspress()->add_action( 'posts_pre_query', $this, 'modify_query_archive', 9999, 2 );
+		add_action( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_tag', array( $this, 'option_fields' ) );
+		add_action( 'widgets_init', array( $this, 'widget_positions' ) );
+		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
+		add_action( 'ap_admin_menu', array( $this, 'admin_tags_menu' ) );
+		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
+		add_action( 'ap_question_info', array( $this, 'ap_question_info' ) );
+		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
+		add_action( 'ap_enqueue', array( $this, 'ap_localize_scripts' ) );
+		add_filter( 'term_link', array( $this, 'term_link_filter' ), 10, 3 );
+		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ) );
+		add_action( 'ap_processed_new_question', array( $this, 'after_new_question' ), 0, 2 );
+		add_action( 'ap_processed_update_question', array( $this, 'after_new_question' ), 0, 2 );
+		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
+		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
+		add_action( 'wp_ajax_ap_tags_suggestion', array( $this, 'ap_tags_suggestion' ) );
+		add_action( 'wp_ajax_nopriv_ap_tags_suggestion', array( $this, 'ap_tags_suggestion' ) );
+		add_action( 'ap_rewrites', array( $this, 'rewrite_rules' ), 10, 3 );
+		add_filter( 'ap_main_questions_args', array( $this, 'ap_main_questions_args' ) );
+		add_filter( 'ap_category_questions_args', array( $this, 'ap_main_questions_args' ) );
+		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
+		add_action( 'posts_pre_query', array( $this, 'modify_query_archive' ), 9999, 2 );
 
 		// List filtering.
-		anspress()->add_filter( 'ap_list_filters', $this, 'ap_list_filters' );
-		anspress()->add_action( 'ap_ajax_load_filter_qtag', $this, 'load_filter_tag' );
-		anspress()->add_action( 'ap_ajax_load_filter_tags_order', $this, 'load_filter_tags_order' );
-		anspress()->add_filter( 'ap_list_filter_active_qtag', $this, 'filter_active_tag', 10, 2 );
-		anspress()->add_filter( 'ap_list_filter_active_tags_order', $this, 'filter_active_tags_order', 10, 2 );
+		add_filter( 'ap_list_filters', array( $this, 'ap_list_filters' ) );
+		add_action( 'ap_ajax_load_filter_qtag', array( $this, 'load_filter_tag' ) );
+		add_action( 'ap_ajax_load_filter_tags_order', array( $this, 'load_filter_tags_order' ) );
+		add_filter( 'ap_list_filter_active_qtag', array( $this, 'filter_active_tag' ), 10, 2 );
+		add_filter( 'ap_list_filter_active_tags_order', array( $this, 'filter_active_tags_order' ), 10, 2 );
 	}
 
 	/**
