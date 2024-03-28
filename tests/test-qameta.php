@@ -1217,4 +1217,15 @@ class TestQAMeta extends TestCase {
 		unregister_taxonomy( 'question_category' );
 		unregister_taxonomy( 'question_label' );
 	}
+
+	/**
+	 * @covers ::ap_update_post_activity_meta
+	 */
+	public function testAPUpdatePostActivityMetaForNotPassingDateArg() {
+		$id = $this->insert_question();
+		$output = ap_update_post_activity_meta( $id, 'new_q', get_current_user_id() );
+		$this->assertNotEmpty( $output );
+		$this->assertIsInt( $output );
+		$this->assertEquals( current_time( 'mysql' ), ap_get_qameta( $id )->last_updated );
+	}
 }
