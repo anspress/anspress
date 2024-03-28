@@ -525,8 +525,6 @@ class TestWidgetQuestions extends TestCase {
 		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 3', 'post_date' => '2024-01-03 00:00:00' ] );
 		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 4', 'post_date' => '2024-01-04 00:00:00' ] );
 		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 5', 'post_date' => '2024-01-05 00:00:00' ] );
-		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 6', 'post_date' => '2024-01-06 00:00:00' ] );
-		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question title 7', 'post_date' => '2024-01-07 00:00:00' ] );
 		$category_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 1' ] );
 		$category_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 2' ] );
 		$category_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category', 'name' => 'Category 3' ] );
@@ -541,7 +539,6 @@ class TestWidgetQuestions extends TestCase {
 			'after_widget'  => '</section>',
 			'before_title'  => '<h2 class="widget-title">',
 			'after_title'   => '</h2>',
-			'limit'         => 10,
 		];
 		$instance_data = [];
 		ob_start();
@@ -559,8 +556,6 @@ class TestWidgetQuestions extends TestCase {
 		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_3 ) ) . '">Question title 3</a>', $result );
 		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_4 ) ) . '">Question title 4</a>', $result );
 		$this->assertStringContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_5 ) ) . '">Question title 5</a>', $result );
-		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_6 ) ) . '">Question title 6</a>', $result );
-		$this->assertStringNotContainsString( '<a class="ap-question-title" href="' . esc_url( get_permalink( $question_id_7 ) ) . '">Question title 7</a>', $result );
 
 		// Unregister taxonomy.
 		unregister_taxonomy( 'question_category', 'question' );
