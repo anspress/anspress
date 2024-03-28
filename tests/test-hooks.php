@@ -170,7 +170,7 @@ class TestHooks extends TestCase {
 		$this->setRole( 'subscriber' );
 
 		$question_id = $this->insert_question();
-		$comment_id  = $this->factory->comment->create_object(
+		$comment_id  = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -195,7 +195,7 @@ class TestHooks extends TestCase {
 
 		$this->setRole( 'subscriber' );
 		$ids        = $this->insert_answer();
-		$comment_id = $this->factory->comment->create_object(
+		$comment_id = $this->factory()->comment->create_object(
 			array(
 				'comment_type'    => 'anspress',
 				'post_status'     => 'publish',
@@ -272,7 +272,7 @@ class TestHooks extends TestCase {
 		}, 10, 2 );
 
 		// Test by creating a new question.
-		$question = $this->factory->post->create_and_get(
+		$question = $this->factory()->post->create_and_get(
 			array(
 				'post_title'   => 'Test question',
 				'post_content' => 'Test question content',
@@ -301,7 +301,7 @@ class TestHooks extends TestCase {
 
 		// Test by creating a new answer.
 		$question_id = $this->insert_question();
-		$answer = $this->factory->post->create_and_get(
+		$answer = $this->factory()->post->create_and_get(
 			array(
 				'post_title'   => 'Test answer',
 				'post_content' => 'Test answer content',

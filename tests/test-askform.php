@@ -84,7 +84,7 @@ class TestAskForm extends TestCase {
 
 		ap_opt( 'allow_private_posts', true );
 
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',
 				'post_type'    => 'question',
@@ -124,7 +124,7 @@ class TestAskForm extends TestCase {
 
 		ap_opt( 'post_question_per', 'have_cap' );
 		$this->setRole( 'ap_banned' );
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Suspendisse aliqua',
 				'post_type'    => 'question',

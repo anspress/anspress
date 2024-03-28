@@ -68,7 +68,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->setRole( 'subscriber' );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -94,7 +94,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 1, $flag_count );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -129,7 +129,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->setRole( 'administrator' );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -155,7 +155,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 0, $flag_count );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -192,11 +192,11 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// For user who do not have access to clear flag.
 		$this->setRole( 'subscriber' );
-		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_1 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -224,7 +224,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 3, $flag_count );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -259,11 +259,11 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// For user having access to clear flag.
 		$this->setRole( 'administrator' );
-		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_1 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -291,7 +291,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 0, $flag_count );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -332,7 +332,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->setRole( 'subscriber' );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -366,7 +366,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEmpty( $vote_count );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -409,7 +409,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->setRole( 'administrator' );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -460,7 +460,7 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->assertEquals( 1, $vote_count );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -519,9 +519,9 @@ class TestAdminAjax extends TestCaseAjax {
 		add_action( 'ap_ajax_ap_get_all_answers', array( 'AnsPress_Admin_Ajax', 'get_all_answers' ) );
 
 		// For tests.
-		$user_id_1   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 1' ) );
-		$user_id_2   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 2' ) );
-		$question_id = $this->factory->post->create(
+		$user_id_1   = $this->factory()->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 1' ) );
+		$user_id_2   = $this->factory()->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 2' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -529,7 +529,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id_1 = $this->factory->post->create(
+		$answer_id_1 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -540,7 +540,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_date'    => '2024-01-02 00:00:00',
 			)
 		);
-		$answer_id_2 = $this->factory->post->create(
+		$answer_id_2 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -596,10 +596,10 @@ class TestAdminAjax extends TestCaseAjax {
 		// Test 2.
 		$this->_last_response = '';
 		$this->setRole( 'administrator' );
-		$user_id_1   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 1' ) );
-		$user_id_2   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 2' ) );
-		$user_id_3   = $this->factory->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 3' ) );
-		$question_id = $this->factory->post->create(
+		$user_id_1   = $this->factory()->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 1' ) );
+		$user_id_2   = $this->factory()->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 2' ) );
+		$user_id_3   = $this->factory()->user->create( array( 'role' => 'subscriber', 'display_name' => 'User 3' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -607,7 +607,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id_1 = $this->factory->post->create(
+		$answer_id_1 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -618,7 +618,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_date'    => '2024-01-03 00:00:00',
 			)
 		);
-		$answer_id_2 = $this->factory->post->create(
+		$answer_id_2 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -629,7 +629,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_date'    => '2024-01-02 00:00:00',
 			)
 		);
-		$answer_id_3 = $this->factory->post->create(
+		$answer_id_3 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -730,7 +730,7 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// Deleting questions and answers.
 		$this->_last_response = '';
-		$question_id_1 = $this->factory->post->create(
+		$question_id_1 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -738,7 +738,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id_1   = $this->factory->post->create(
+		$answer_id_1   = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -747,7 +747,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_parent'  => $question_id_1,
 			)
 		);
-		$question_id_2 = $this->factory->post->create(
+		$question_id_2 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -755,7 +755,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id_2   = $this->factory->post->create(
+		$answer_id_2   = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -825,7 +825,7 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// Deleting answers.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -833,7 +833,7 @@ class TestAdminAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_ids = $this->factory->post->create_many(
+		$answer_ids = $this->factory()->post->create_many(
 			3,
 			array(
 				'post_title'   => 'Answer post',
@@ -939,10 +939,10 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// Deleting terms.
 		$this->_last_response = '';
-		$category_1 = $this->factory->term->create( array( 'taxonomy' => 'question_category' ) );
-		$category_2 = $this->factory->term->create( array( 'taxonomy' => 'question_category' ) );
-		$tag_1      = $this->factory->term->create( array( 'taxonomy' => 'question_tag' ) );
-		$tag_2      = $this->factory->term->create( array( 'taxonomy' => 'question_tag' ) );
+		$category_1 = $this->factory()->term->create( array( 'taxonomy' => 'question_category' ) );
+		$category_2 = $this->factory()->term->create( array( 'taxonomy' => 'question_category' ) );
+		$tag_1      = $this->factory()->term->create( array( 'taxonomy' => 'question_tag' ) );
+		$tag_2      = $this->factory()->term->create( array( 'taxonomy' => 'question_tag' ) );
 		if ( is_multisite() ) {
 			$this->setRole( 'administrator' );
 
@@ -1236,7 +1236,7 @@ class TestAdminAjax extends TestCaseAjax {
 		// Test 1.
 		$this->_last_response = '';
 		$ids = $this->insert_answers( [], [], 5 );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_vote_insert( $ids['question'], $user_id, 'vote', get_current_user_id(), '1' );
 		ap_vote_insert( $ids['answers'][0], $user_id, 'vote', get_current_user_id(), '1' );
 		ap_vote_insert( $ids['answers'][1], $user_id, 'vote', get_current_user_id(), '1' );
@@ -1278,18 +1278,18 @@ class TestAdminAjax extends TestCaseAjax {
 		wp_delete_post( $ids['answers'][4] );
 
 		// Test 2.
-		$question_ids = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[0] ] );
-		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[1] ] );
-		$answer_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[2] ] );
-		$answer_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[3] ] );
-		$answer_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[4] ] );
-		$answer_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[5] ] );
-		$answer_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[6] ] );
-		$answer_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[7] ] );
-		$answer_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[8] ] );
-		$answer_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[9] ] );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$question_ids = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[0] ] );
+		$answer_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[1] ] );
+		$answer_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[2] ] );
+		$answer_ids_set_4 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[3] ] );
+		$answer_ids_set_5 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[4] ] );
+		$answer_ids_set_6 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[5] ] );
+		$answer_ids_set_7 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[6] ] );
+		$answer_ids_set_8 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[7] ] );
+		$answer_ids_set_9 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[8] ] );
+		$answer_ids_set_10 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[9] ] );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_vote_insert( $question_ids[0], $user_id, 'vote', get_current_user_id(), '1' );
 		ap_vote_insert( $question_ids[5], $user_id, 'vote', get_current_user_id(), '-1' );
 		ap_vote_insert( $answer_ids_set_1[0], $user_id, 'vote', get_current_user_id(), '1' );
@@ -1399,20 +1399,20 @@ class TestAdminAjax extends TestCaseAjax {
 		wp_delete_post( $ids['answers'][4] );
 
 		// Test 2.
-		$question_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_11 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
-		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
-		$answer_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
+		$question_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_4 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_5 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_6 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_7 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_8 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_9 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_10 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_11 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
+		$answer_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
+		$answer_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
 		ap_insert_qameta( $question_ids_set_1[0], [ 'answers' => 0 ] );
 		ap_insert_qameta( $question_ids_set_1[2], [ 'answers' => 0 ] );
 		ap_insert_qameta( $question_ids_set_1[4], [ 'answers' => 0 ] );
@@ -1522,17 +1522,17 @@ class TestAdminAjax extends TestCaseAjax {
 		wp_delete_post( $ids['answers'][4] );
 
 		// Test 2.
-		$question_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
-		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
-		$answer_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
-		$answer_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_2[0] ] );
-		$answer_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_2[2] ] );
-		$answer_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_2[4] ] );
+		$question_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_4 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_5 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
+		$answer_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
+		$answer_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
+		$answer_ids_set_4 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_2[0] ] );
+		$answer_ids_set_5 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_2[2] ] );
+		$answer_ids_set_6 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_2[4] ] );
 		ap_add_flag( $question_ids_set_1[0] );
 		ap_add_flag( $question_ids_set_1[2] );
 		ap_add_flag( $question_ids_set_1[4] );
@@ -1616,8 +1616,8 @@ class TestAdminAjax extends TestCaseAjax {
 		// Test 1.
 		$this->_last_response = '';
 		$ids = $this->insert_answers( [], [], 5 );
-		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_1 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_new_subscriber( $user_id_1, 'question', $ids['question'] );
 		ap_new_subscriber( $user_id_2, 'question', $ids['question'] );
 
@@ -1644,20 +1644,20 @@ class TestAdminAjax extends TestCaseAjax {
 		wp_delete_post( $ids['answers'][3] );
 
 		// Test 2.
-		$question_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_11 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
-		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$question_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_4 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_5 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_6 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_7 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_8 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_9 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_10 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_11 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
+		$user_id_1 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_new_subscriber( $user_id_1, 'question', $question_ids_set_1[0] );
 		ap_new_subscriber( $user_id_2, 'question', $question_ids_set_1[0] );
 
@@ -1750,17 +1750,17 @@ class TestAdminAjax extends TestCaseAjax {
 
 		// Test 2.
 		$ids = $this->insert_answers( [], [], 5 );
-		$user_ids_set_1 = $this->factory->user->create_many( 10 );
-		$user_ids_set_2 = $this->factory->user->create_many( 10 );
-		$user_ids_set_3 = $this->factory->user->create_many( 10 );
-		$user_ids_set_4 = $this->factory->user->create_many( 10 );
-		$user_ids_set_5 = $this->factory->user->create_many( 10 );
-		$user_ids_set_6 = $this->factory->user->create_many( 10 );
-		$user_ids_set_7 = $this->factory->user->create_many( 10 );
-		$user_ids_set_8 = $this->factory->user->create_many( 10 );
-		$user_ids_set_9 = $this->factory->user->create_many( 10 );
-		$user_ids_set_10 = $this->factory->user->create_many( 10 );
-		$user_ids_set_11 = $this->factory->user->create_many( 10 );
+		$user_ids_set_1 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_2 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_3 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_4 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_5 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_6 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_7 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_8 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_9 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_10 = $this->factory()->user->create_many( 10 );
+		$user_ids_set_11 = $this->factory()->user->create_many( 10 );
 		ap_insert_reputation( 'ask', $ids['question'], $user_ids_set_1[0] );
 		ap_insert_reputation( 'ask', $ids['question'], $user_ids_set_2[0] );
 		ap_insert_reputation( 'ask', $ids['question'], $user_ids_set_3[0] );
@@ -1947,20 +1947,20 @@ class TestAdminAjax extends TestCaseAjax {
 		unset( $_POST );
 
 		// Test 4.
-		$question_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_4 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_5 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_6 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_7 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_8 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_9 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_10 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$question_ids_set_11 = $this->factory->post->create_many( 10, [ 'post_type' => 'question' ] );
-		$answer_ids_set_1 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
-		$answer_ids_set_2 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
-		$answer_ids_set_3 = $this->factory->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
+		$question_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_4 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_5 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_6 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_7 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_8 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_9 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_10 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$question_ids_set_11 = $this->factory()->post->create_many( 10, [ 'post_type' => 'question' ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[0] ] );
+		$answer_ids_set_2 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[2] ] );
+		$answer_ids_set_3 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids_set_1[4] ] );
 		ap_insert_qameta( $question_ids_set_1[0], [ 'views' => 11 ] );
 		ap_insert_qameta( $question_ids_set_1[2], [ 'views' => 111 ] );
 		ap_insert_qameta( $question_ids_set_1[4], [ 'views' => 1111 ] );

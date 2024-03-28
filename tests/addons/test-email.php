@@ -738,14 +738,14 @@ class TestAddonEmail extends TestCase {
 		$original_recipients = [ 'admin@example.com', 'webmaster@example.com', 'info@example.com' ];
 
 		// For non AnsPress comment type.
-		$comment_id = $this->factory->comment->create();
+		$comment_id = $this->factory()->comment->create();
 		$recipients = $instance->default_recipients( $original_recipients, $comment_id );
 		$this->assertNotEmpty( $recipients );
 		$this->assertIsArray( $recipients );
 		$this->assertEquals( $original_recipients, $recipients );
 
 		// For anspress comment type.
-		$comment_id = $this->factory->comment->create( [ 'comment_type' => 'anspress' ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_type' => 'anspress' ] );
 		$recipients = $instance->default_recipients( $original_recipients, $comment_id );
 		$this->assertEmpty( $recipients );
 		$this->assertIsArray( $recipients );
@@ -766,7 +766,7 @@ class TestAddonEmail extends TestCase {
 		// Admin email and current user email does not match on test,
 		// so we create a new user and set it as admin on the test.
 		ap_opt( 'email_admin_emails', 'admin@example.com' );
-		$user_id = $this->factory->user->create( [ 'role' => 'administrator', 'user_email' => 'admin@example.com' ] );
+		$user_id = $this->factory()->user->create( [ 'role' => 'administrator', 'user_email' => 'admin@example.com' ] );
 		wp_set_current_user( $user_id );
 		$emails = $instance->get_admin_emails( 'email_admin_new_question' );
 		$this->assertFalse( $emails );

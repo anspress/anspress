@@ -24,12 +24,12 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_have_category
 	 */
 	public function testAPQuestionHaveCategory() {
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 			)
 		);
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
@@ -38,7 +38,7 @@ class TestTaxo extends TestCase {
 		);
 		wp_set_object_terms( $qid, array( $cid ), 'question_category' );
 		$this->assertTrue( ap_question_have_category( $qid ) );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
@@ -52,12 +52,12 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_have_tags
 	 */
 	public function testAPQuestionHaveTags() {
-		$tid = $this->factory->term->create(
+		$tid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 			)
 		);
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
@@ -66,7 +66,7 @@ class TestTaxo extends TestCase {
 		);
 		wp_set_object_terms( $qid, array( $tid ), 'question_tag' );
 		$this->assertTrue( ap_question_have_tags( $qid ) );
-		$qid = $this->factory->post->create(
+		$qid = $this->factory()->post->create(
 			array(
 				'post_title'    => 'Question title',
 				'post_content'  => 'Question content',
@@ -81,7 +81,7 @@ class TestTaxo extends TestCase {
 	 */
 	public function testISQuestionCategories() {
 		$this->assertFalse( is_question_categories() );
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Categories page',
 				'post_content' => 'Categories page',
@@ -98,7 +98,7 @@ class TestTaxo extends TestCase {
 	 */
 	public function testISQuestionTags() {
 		$this->assertFalse( is_question_tags() );
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Tags page',
 				'post_content' => 'Tags page',
@@ -115,7 +115,7 @@ class TestTaxo extends TestCase {
 	 */
 	public function testISQuestionCategory() {
 		$this->assertFalse( is_question_category() );
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
@@ -126,7 +126,7 @@ class TestTaxo extends TestCase {
 		$this->assertTrue( is_question_category() );
 
 		// Test without passing the name.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 			)
@@ -145,7 +145,7 @@ class TestTaxo extends TestCase {
 	 */
 	public function testISQuestionTag() {
 		$this->assertFalse( is_question_tag() );
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question tag',
 				'taxonomy' => 'question_tag',
@@ -156,7 +156,7 @@ class TestTaxo extends TestCase {
 		$this->assertTrue( is_question_tag() );
 
 		// Test without passing the name.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 			)
@@ -175,7 +175,7 @@ class TestTaxo extends TestCase {
 	 */
 	public function testAPGetCategoriesSlug() {
 		$this->assertEquals( 'categories', ap_get_categories_slug() );
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Categories page',
 				'post_content' => 'Categories content',
@@ -219,14 +219,14 @@ class TestTaxo extends TestCase {
 	 */
 	public function testAPCategoryHaveImage() {
 		// Test for image.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
 			)
 		);
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $post->ID );
 		$this->assertFalse( ap_category_have_image( $cid ) );
 		update_term_meta(
 			$cid,
@@ -248,14 +248,14 @@ class TestTaxo extends TestCase {
 		$this->assertFalse( ap_category_have_image( $cid ) );
 
 		// Test for image.
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'name'     => 'New Question category',
 				'taxonomy' => 'question_category',
 			)
 		);
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $post->ID );
 		$this->assertFalse( ap_category_have_image( $cid ) );
 		update_term_meta(
 			$cid,
@@ -336,7 +336,7 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_category_icon
 	 */
 	public function testCategoryIcon() {
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			[
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
@@ -438,14 +438,14 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_category_image
 	 */
 	public function testCategoryImage() {
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			[
 				'name'     => 'Question category',
 				'taxonomy' => 'question_category',
 			]
 		);
-		$post = $this->factory->post->create_and_get();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $post->ID );
+		$post = $this->factory()->post->create_and_get();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $post->ID );
 		$term_meta = [
 			'image' => [
 				'id'  => $attachment_id,
@@ -557,7 +557,7 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_categories_html
 	 */
 	public function testAPQuestionCategoriesHTML() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -578,19 +578,19 @@ class TestTaxo extends TestCase {
 		$this->assertEmpty( $result );
 
 		// Test after assigning categories.
-		$category_id_1 = $this->factory->term->create(
+		$category_id_1 = $this->factory()->term->create(
 			[
 				'name'     => 'Question category 1',
 				'taxonomy' => 'question_category',
 			]
 		);
-		$category_id_2 = $this->factory->term->create(
+		$category_id_2 = $this->factory()->term->create(
 			[
 				'name'     => 'Question category 2',
 				'taxonomy' => 'question_category',
 			]
 		);
-		$category_id_3 = $this->factory->term->create(
+		$category_id_3 = $this->factory()->term->create(
 			[
 				'name'     => 'Question category 3',
 				'taxonomy' => 'question_category',
@@ -674,7 +674,7 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_tags_html
 	 */
 	public function testAPQuestionTagsHTML() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -695,19 +695,19 @@ class TestTaxo extends TestCase {
 		$this->assertEmpty( $result );
 
 		// Test after assigning tags.
-		$tag_id_1 = $this->factory->term->create(
+		$tag_id_1 = $this->factory()->term->create(
 			[
 				'name'     => 'Question tag 1',
 				'taxonomy' => 'question_tag',
 			]
 		);
-		$tag_id_2 = $this->factory->term->create(
+		$tag_id_2 = $this->factory()->term->create(
 			[
 				'name'     => 'Question tag 2',
 				'taxonomy' => 'question_tag',
 			]
 		);
-		$tag_id_3 = $this->factory->term->create(
+		$tag_id_3 = $this->factory()->term->create(
 			[
 				'name'     => 'Question tag 3',
 				'taxonomy' => 'question_tag',
@@ -791,20 +791,20 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_categories_html
 	 */
 	public function testAPQuestionCategoriesHTMLByPassingQuestionCategoryIdInsteadOfArray() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			]
 		);
-		$category_id_1 = $this->factory->term->create(
+		$category_id_1 = $this->factory()->term->create(
 			[
 				'name'     => 'Question category 1',
 				'taxonomy' => 'question_category',
 			]
 		);
-		$category_id_2 = $this->factory->term->create(
+		$category_id_2 = $this->factory()->term->create(
 			[
 				'name'     => 'Question category 2',
 				'taxonomy' => 'question_category',
@@ -827,20 +827,20 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_tags_html
 	 */
 	public function testAPQuestionTagsHTMLByPassingQuestionTagIdInsteadOfArray() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			]
 		);
-		$tag_id_1 = $this->factory->term->create(
+		$tag_id_1 = $this->factory()->term->create(
 			[
 				'name'     => 'Question tag 1',
 				'taxonomy' => 'question_tag',
 			]
 		);
-		$tag_id_2 = $this->factory->term->create(
+		$tag_id_2 = $this->factory()->term->create(
 			[
 				'name'     => 'Question tag 2',
 				'taxonomy' => 'question_tag',
@@ -863,14 +863,14 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_have_category
 	 */
 	public function testAPQuestionHaveCategoryWithoutPassingPostID() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			]
 		);
-		$category_id_1 = $this->factory->term->create(
+		$category_id_1 = $this->factory()->term->create(
 			[
 				'name'     => 'Question category 1',
 				'taxonomy' => 'question_category',
@@ -893,14 +893,14 @@ class TestTaxo extends TestCase {
 	 * @covers ::ap_question_have_tags
 	 */
 	public function testAPQuestionHaveTagsWithoutPassingPostID() {
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			[
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			]
 		);
-		$tag_id_1 = $this->factory->term->create(
+		$tag_id_1 = $this->factory()->term->create(
 			[
 				'name'     => 'Question tag 1',
 				'taxonomy' => 'question_tag',

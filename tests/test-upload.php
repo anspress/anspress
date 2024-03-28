@@ -220,7 +220,7 @@ class TestUpload extends TestCase {
 	public function testAPClearUnattachedMedia() {
 		// Test for not passing user id.
 		$this->setRole( 'subscriber' );
-		$attachment_ids = $this->factory->attachment->create_many( 3, array(
+		$attachment_ids = $this->factory()->attachment->create_many( 3, array(
 			'post_author' => get_current_user_id(),
 			'post_title' => '_ap_temp_media',
 		) );
@@ -240,8 +240,8 @@ class TestUpload extends TestCase {
 		$this->logout();
 
 		// Test for passing user id.
-		$user_id = $this->factory->user->create();
-		$attachment_ids = $this->factory->attachment->create_many( 3, array(
+		$user_id = $this->factory()->user->create();
+		$attachment_ids = $this->factory()->attachment->create_many( 3, array(
 			'post_author' => $user_id,
 			'post_title' => '_ap_temp_media',
 		) );
@@ -346,19 +346,19 @@ class TestUpload extends TestCase {
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$attachment_ids = [
-			$this->factory->post->create( [
+			$this->factory()->post->create( [
 				'post_type' => 'attachment',
 				'post_title' => '_ap_temp_media',
 				'post_parent' => $question_id,
 				'post_date' => date( 'Y-m-d H:i:s', strtotime( '-2 days' ) )
 			] ),
-			$this->factory->post->create( [
+			$this->factory()->post->create( [
 				'post_type' => 'attachment',
 				'post_title' => '_ap_temp_media',
 				'post_parent' => $question_id,
 				'post_date' => date( 'Y-m-d H:i:s', strtotime( '-2 days' ) )
 			] ),
-			$this->factory->post->create( [
+			$this->factory()->post->create( [
 				'post_type' => 'attachment',
 				'post_title' => '_ap_temp_media',
 				'post_parent' => $question_id,
@@ -411,7 +411,7 @@ class TestUpload extends TestCase {
 		$this->assertEquals( 10, has_action( 'deleted_post', [ 'AnsPress_Uploader', 'deleted_attachment' ] ) );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
-		$attachment_id = $this->factory->post->create( [ 'post_type' => 'attachment', 'post_title' => '_ap_temp_media', 'post_parent' => $question_id ] );
+		$attachment_id = $this->factory()->post->create( [ 'post_type' => 'attachment', 'post_title' => '_ap_temp_media', 'post_parent' => $question_id ] );
 
 		// Test before the method is called.
 		// Test for attachment available.

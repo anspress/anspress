@@ -20,7 +20,7 @@ class TestAPI extends TestCase {
 	public function testAvatar() {
 		// Test 1.
 		$request = new \WP_REST_Request();
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$request->set_query_params( array(
 			'id'   => $user_id,
 			'size' => 50,

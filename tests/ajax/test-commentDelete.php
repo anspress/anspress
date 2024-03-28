@@ -29,7 +29,7 @@ class TestCommentDelete extends TestCaseAjax {
 		} );
 
 		// Test 1.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -37,7 +37,7 @@ class TestCommentDelete extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -52,7 +52,7 @@ class TestCommentDelete extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -60,7 +60,7 @@ class TestCommentDelete extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -81,7 +81,7 @@ class TestCommentDelete extends TestCaseAjax {
 		$ap_after_deleting_comment_triggered = false;
 		$this->assertFalse( $ap_unpublish_comment_triggered );
 		$this->assertFalse( $ap_after_deleting_comment_triggered );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -89,7 +89,7 @@ class TestCommentDelete extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -114,7 +114,7 @@ class TestCommentDelete extends TestCaseAjax {
 		$ap_after_deleting_comment_triggered = false;
 		$this->assertFalse( $ap_unpublish_comment_triggered );
 		$this->assertFalse( $ap_after_deleting_comment_triggered );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -122,7 +122,7 @@ class TestCommentDelete extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -151,7 +151,7 @@ class TestCommentDelete extends TestCaseAjax {
 		$ap_after_deleting_comment_triggered = false;
 		$this->assertFalse( $ap_unpublish_comment_triggered );
 		$this->assertFalse( $ap_after_deleting_comment_triggered );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -159,7 +159,7 @@ class TestCommentDelete extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -227,7 +227,7 @@ class TestCommentDelete extends TestCaseAjax {
 		$ap_after_deleting_comment_triggered = false;
 		$this->assertFalse( $ap_unpublish_comment_triggered );
 		$this->assertFalse( $ap_after_deleting_comment_triggered );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -235,7 +235,7 @@ class TestCommentDelete extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -269,7 +269,7 @@ class TestCommentDelete extends TestCaseAjax {
 			$ap_after_deleting_comment_triggered = true;
 		} );
 
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -280,7 +280,7 @@ class TestCommentDelete extends TestCaseAjax {
 
 		$this->setRole( 'subscriber' );
 
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',
@@ -319,7 +319,7 @@ class TestCommentDelete extends TestCaseAjax {
 			$ap_after_deleting_comment_triggered = true;
 		} );
 
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -330,7 +330,7 @@ class TestCommentDelete extends TestCaseAjax {
 
 		$this->setRole( 'administrator', true );
 
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $question_id,
 				'comment_content' => 'Donec nec nunc purus',

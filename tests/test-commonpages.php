@@ -193,7 +193,7 @@ class TestCommonPages extends TestCase {
 		// Test begins.
 		// Test 1.
 		$this->assertFalse( $question_rendered );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$question = get_post( $question_id );
 		ob_start();
@@ -210,7 +210,7 @@ class TestCommonPages extends TestCase {
 		// Test 2.
 		$question_rendered = false;
 		$this->assertFalse( $question_rendered );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'future', 'post_date' => '9999-12-31 23:59:59' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'future', 'post_date' => '9999-12-31 23:59:59' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$question = get_post( $question_id );
 		$time_to_publish = human_time_diff( strtotime( $question->post_date ), ap_get_current_timestamp() );
@@ -267,7 +267,7 @@ class TestCommonPages extends TestCase {
 		// Test 4.
 		$question_rendered = false;
 		$this->assertFalse( $question_rendered );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$question = get_post( $question_id );
 		ob_start();

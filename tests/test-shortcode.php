@@ -83,7 +83,7 @@ class Test_Shortcode extends TestCase {
 	 */
 	public function testBasePage() {
 		$this->go_to( home_url() );
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Sample question',
 				'post_type'    => 'question',
@@ -153,7 +153,7 @@ class Test_Shortcode extends TestCase {
 		$instance = \AnsPress_Question_Shortcode::get_instance();
 		add_action( 'ap_before_question_shortcode', function() {} );
 
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Sample question',
 				'post_type'    => 'question',

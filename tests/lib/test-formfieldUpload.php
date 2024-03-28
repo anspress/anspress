@@ -470,7 +470,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 
 		// Test 2.
 		$question_id = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/files/anspress.pdf', $question_id, [
+		$attachment_id = $this->factory()->attachment->create_object( dirname( __DIR__ ) . '/assets/files/anspress.pdf', $question_id, [
 			'post_title' => '_ap_temp_media',
 		] );
 		$field = new \AnsPress\Form\Field\Upload( 'Sample Form', 'sample-form', [] );
@@ -485,13 +485,13 @@ class TestAnsPressFormFieldUpload extends TestCase {
 
 		// Test 3.
 		$id = $this->insert_answer();
-		$attachment_id_1 = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/img/question.png', $id->q, [
+		$attachment_id_1 = $this->factory()->attachment->create_object( dirname( __DIR__ ) . '/assets/img/question.png', $id->q, [
 			'post_title' => '_ap_temp_media',
 		] );
-		$attachment_id_2 = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/img/answer.png', $id->a, [
+		$attachment_id_2 = $this->factory()->attachment->create_object( dirname( __DIR__ ) . '/assets/img/answer.png', $id->a, [
 			'post_title' => '_ap_temp_media',
 		] );
-		$attachment_id_3 = $this->factory->attachment->create_object( dirname( __DIR__ ) . '/assets/img/anspress-hero.png', $id->a, [
+		$attachment_id_3 = $this->factory()->attachment->create_object( dirname( __DIR__ ) . '/assets/img/anspress-hero.png', $id->a, [
 			'post_title' => '_ap_temp_media',
 		] );
 		$field = new \AnsPress\Form\Field\Upload( 'Test Form', 'test-form', [] );

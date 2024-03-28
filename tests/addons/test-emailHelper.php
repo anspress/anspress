@@ -71,7 +71,7 @@ class TestAddonEmailHelper extends TestCase {
 		$this->assertEmpty( $instance->args['users'] );
 
 		// Test 2.
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		$instance->add_user( $user_id );
 		$this->assertIsArray( $instance->args['users'] );
 		$this->assertNotEmpty( $instance->args['users'] );
@@ -87,7 +87,7 @@ class TestAddonEmailHelper extends TestCase {
 		$this->assertEquals( 2, count( $instance->args['users'] ) );
 
 		// Test 4.
-		$new_user_id = $this->factory->user->create();
+		$new_user_id = $this->factory()->user->create();
 		$new_user_email = 'user2@example.com';
 		$instance->add_user( $new_user_id );
 		$instance->add_user( $new_user_email );
