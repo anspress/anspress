@@ -50,4 +50,78 @@ class TestReputationQuery extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_activity' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Reputation_Query', 'the_ref_content' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::__construct
+	 */
+	public function testConstructor() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		$reputation = new \AnsPress_Reputation_Query();
+		$this->assertInstanceOf( 'AnsPress_Reputation_Query', $reputation );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::__construct
+	 */
+	public function testConstructorWithoutArgs() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		$reputation = new \AnsPress_Reputation_Query();
+		$this->assertInstanceOf( 'AnsPress_Reputation_Query', $reputation );
+
+		// Tests.
+		$this->assertEquals( ap_get_reputation_events(), $reputation->events );
+		foreach ( ap_get_reputation_events() as $slug => $args ) {
+			if ( 0 === $args['points'] ) {
+				$this->assertTrue( in_array( $slug, $reputation->with_zero_points ) );
+			}
+		}
+		$this->assertEquals( 1, $reputation->paged );
+		$this->assertEquals( 0, $reputation->offset );
+		$this->assertEquals( 0, $reputation->args['user_id'] );
+		$this->assertEquals( 20, $reputation->args['number'] );
+		$this->assertEquals( 0, $reputation->args['offset'] );
+		$this->assertEquals( 'DESC', $reputation->args['order'] );
+		$this->assertEquals( 20, $reputation->per_page );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::__construct
+	 */
+	public function testConstructorWithArgs() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		$user_id = $this->factory()->user->create();
+		$reputation = new \AnsPress_Reputation_Query( [
+			'user_id'       => $user_id,
+			'number'        => 12,
+			'offset'        => 2,
+			'order'         => 'ASC',
+			'paged'         => 2,
+		] );
+		$this->assertInstanceOf( 'AnsPress_Reputation_Query', $reputation );
+
+		// Tests.
+		$this->assertEquals( ap_get_reputation_events(), $reputation->events );
+		foreach ( ap_get_reputation_events() as $slug => $args ) {
+			if ( 0 === $args['points'] ) {
+				$this->assertTrue( in_array( $slug, $reputation->with_zero_points ) );
+			}
+		}
+		$this->assertEquals( 2, $reputation->paged );
+		$this->assertEquals( 20, $reputation->offset );
+		$this->assertEquals( $user_id, $reputation->args['user_id'] );
+		$this->assertEquals( 12, $reputation->args['number'] );
+		$this->assertEquals( 2, $reputation->args['offset'] );
+		$this->assertEquals( 'ASC', $reputation->args['order'] );
+		$this->assertEquals( 2, $reputation->args['paged'] );
+		$this->assertEquals( 12, $reputation->per_page );
+	}
 }
