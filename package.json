@@ -8,7 +8,6 @@
         "grunt": "^1.6.1",
         "grunt-contrib-compress": "^2.0.0",
         "grunt-contrib-watch": "^1.1.0",
-        "grunt-csscomb": "^4.2.0",
         "grunt-sass": "^3.1.0",
         "grunt-version": "^3.0.0",
         "grunt-wp-i18n": "^1.0.3",
@@ -20,8 +19,7 @@
         "test": "php ./vendor/bin/phpunit",
         "phpcs": "php ./vendor/bin/phpcs",
         "build": "grunt build",
-        "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80",
-        "setup:phpunit": "./bin/install-wp-tests.sh test_wordpress root root db"
+        "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80"
     },
     "author": "Rahul Aryan",
     "license": "GPL 3+"

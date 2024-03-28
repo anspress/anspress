@@ -553,7 +553,7 @@ function ap_user_can_edit_comment( $comment_id, $user_id = false ) {
 		$user_id = get_current_user_id();
 	}
 
-	if ( is_super_admin() || current_user_can( 'ap_mod_comment' ) ) {
+	if ( is_super_admin() || current_user_can( 'ap_edit_others_comment' ) ) {
 		return true;
 	}
 
@@ -745,6 +745,11 @@ function ap_user_can_restore( $_post = null, $user_id = false ) {
 
 	$_post = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
+	// Return false if not question or answer.
+	if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
+		return false;
+	}
+
 	if ( user_can( $user_id, 'ap_restore_posts' ) || (int) $_post->post_author === $user_id ) {
 		return true;
 	}
@@ -771,7 +776,12 @@ function ap_user_can_view_private_post( $_post = null, $user_id = false ) {
 
 	$post_o = is_object( $_post ) ? $_post : ap_get_post( $_post );
 
-	if ( ! $post_o || 0 == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+	if ( ! $post_o || 0 == $user_id || ! ap_is_cpt( $post_o ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+		return false;
+	}
+
+	// Return false if the post status is not set to private_post.
+	if ( 'private_post' !== $post_o->post_status ) {
 		return false;
 	}
 
@@ -816,6 +826,11 @@ function ap_user_can_view_moderate_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
+	// Return false if the post status is not set to moderate.
+	if ( 'moderate' !== $post_o->post_status ) {
+		return false;
+	}
+
 	if ( is_user_logged_in() && $post_o->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
@@ -853,6 +868,11 @@ function ap_user_can_view_future_post( $post_id = null, $user_id = false ) {
 		return false;
 	}
 
+	// Return false if the post status is not set to future.
+	if ( 'future' !== $_post->post_status ) {
+		return false;
+	}
+
 	if ( is_user_logged_in() && $_post && $_post->post_author == $user_id ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
 		return true;
 	}
@@ -884,6 +904,11 @@ function ap_user_can_view_post( $post_id = false, $user_id = false ) {
 	}
 
 	$post_o = is_object( $post_id ) ? $post_id : ap_get_post( $post_id );
+
+	// Return false if not question or answer.
+	if ( ! in_array( $post_o->post_type, array( 'question', 'answer' ), true ) ) {
+		return false;
+	}
 
 	if ( 'private_post' === $post_o->post_status && ap_user_can_view_private_post( $post_o->ID, $user_id ) ) {
 		return true;
@@ -1081,7 +1106,8 @@ function ap_show_captcha_to_user( $user_id = false ) {
 	}
 
 	$current_user = wp_get_current_user();
-	$opt          = array_keys( ap_opt( 'recaptcha_exclude_roles' ) );
+	$opt          = ! empty( ap_opt( 'recaptcha_exclude_roles' ) ) ? ap_opt( 'recaptcha_exclude_roles' ) : array();
+	$opt          = array_keys( $opt );
 	$intersect    = array_intersect( $current_user->roles, $opt );
 
 	if ( ! empty( $intersect ) && count( $intersect ) > 0 ) {
@@ -1134,12 +1160,14 @@ function ap_role_caps( $role ) {
 			'ap_delete_post_permanent'  => true,
 			'ap_view_private'           => true,
 			'ap_view_moderate'          => true,
+			'ap_view_future'            => true,
 			'ap_change_status_other'    => true,
 			'ap_approve_comment'        => true,
 			'ap_no_moderation'          => true,
 			'ap_restore_posts'          => true,
 			'ap_toggle_featured'        => true,
 			'ap_toggle_best_answer'     => true,
+			'ap_close_question'         => true,
 		),
 	);
 
@@ -1167,12 +1195,15 @@ function ap_user_can_read_post( $_post = null, $user_id = false, $post_type = fa
 		$user_id = get_current_user_id();
 	}
 
-	$post_o    = ap_get_post( $_post );
-	$post_type = $post_o->post_type;
+	$post_o = ap_get_post( $_post );
 
+	// Return false if post is not found.
 	if ( ! $post_o ) {
 		return false;
 	}
+
+	// Get post type.
+	$post_type = $post_o->post_type;
 
 	// If not question or answer then return true.
 	if ( ! in_array( $post_type, array( 'question', 'answer' ), true ) ) {

@@ -442,7 +442,7 @@ class AnsPress_Admin {
 		if ( 'post.php' === $pagenow && 'answer' === $data['post_type'] ) {
 			$parent_q = ap_sanitize_unslash( 'ap_q', 'p' );
 
-			$parent_q = ! empty( 'parent_q' ) ? $parent_q : $data['post_parent'];
+			$parent_q = ! empty( $parent_q ) ? $parent_q : $data['post_parent'];
 
 			if ( ! empty( $parent_q ) ) {
 				add_filter( 'redirect_post_location', array( __CLASS__, 'custom_post_location' ), 99 );
@@ -542,7 +542,7 @@ class AnsPress_Admin {
 		$screen = get_current_screen();
 
 		if ( isset( $query->query_vars['s'], $screen->id, $screen->post_type ) &&
-			( 'edit-question' === $screen->id && 'question' === $screen->post_type || 'edit-answer' === $screen->id && 'answer' === $screen->post_type ) &&
+			( ( 'edit-question' === $screen->id && 'question' === $screen->post_type ) || ( 'edit-answer' === $screen->id && 'answer' === $screen->post_type ) ) &&
 			$query->is_main_query() ) {
 			$search_q = ap_parse_search_string( get_search_query() );
 
@@ -1175,33 +1175,45 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'show_admin_bar'      => array(
+				'show_admin_bar'                => array(
 					'label' => __( 'Show admin bar', 'anspress-question-answer' ),
 					'desc'  => __( 'Show admin bar for non administrator users.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['show_admin_bar'],
 				),
-				'allow_upload'        => array(
+				'allow_upload'                  => array(
 					'label' => __( 'Allow image upload', 'anspress-question-answer' ),
 					'desc'  => __( 'Allow logged-in users to upload image.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['allow_upload'],
 				),
-				'uploads_per_post'    => array(
+				'uploads_per_post'              => array(
 					'label' => __( 'Max uploads per post', 'anspress-question-answer' ),
 					'desc'  => __( 'Set numbers of media user can upload for each post.', 'anspress-question-answer' ),
 					'value' => $opt['uploads_per_post'],
 				),
-				'max_upload_size'     => array(
+				'max_upload_size'               => array(
 					'label' => __( 'Max upload size', 'anspress-question-answer' ),
 					'desc'  => __( 'Set maximum upload size in bytes.', 'anspress-question-answer' ),
 					'value' => $opt['max_upload_size'],
 				),
-				'allow_private_posts' => array(
+				'allow_private_posts'           => array(
 					'label' => __( 'Allow private posts', 'anspress-question-answer' ),
 					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['allow_private_posts'],
+				),
+				'trashing_question_with_answer' => array(
+					'label' => __( 'Trashing Question', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable trashing the question if there are answers already available to the question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['trashing_question_with_answer'],
+				),
+				'deleting_question_with_answer' => array(
+					'label' => __( 'Deleting Question', 'anspress-question-answer' ),
+					'desc'  => __( 'Disable deleting the question permanently if there are answers already available to the question.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['deleting_question_with_answer'],
 				),
 			),
 		);

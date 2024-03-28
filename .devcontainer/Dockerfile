@@ -1,4 +1,4 @@
-FROM php:7.4-apache-bullseye
+FROM php:8.0-apache-bullseye
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 # Enable .htaccess files & mod_rewrite

@@ -11,7 +11,25 @@
 		<testsuite name="AnsPress-Core">
 			<directory prefix="test-" suffix=".php">./tests/</directory>
 		</testsuite>
+
+
 	</testsuites>
+
+	<coverage>
+		<include>
+			<directory suffix=".php">./includes/</directory>
+			<directory suffix=".php">./addons/</directory>
+			<directory suffix=".php">./admin/</directory>
+			<directory suffix=".php">./ajax/</directory>
+			<directory suffix=".php">./classes/</directory>
+			<directory suffix=".php">./includes/</directory>
+			<directory suffix=".php">./lib/</directory>
+			<directory suffix=".php">./widgets/</directory>
+		</include>
+		<exclude>
+			<directory suffix=".php">./addons/recaptcha/recaptcha/</directory>
+		</exclude>
+	</coverage>
 
 	<php>
 		<server name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="./vendor/yoast/phpunit-polyfills"/>

@@ -15,7 +15,9 @@ namespace AnsPress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
+	// @codeCoverageIgnoreStart
 	die;
+	// @codeCoverageIgnoreEnd
 }
 
 /**

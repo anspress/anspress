@@ -143,6 +143,8 @@ function ap_default_options() {
 		'activity_exclude_roles'        => array(),
 		'create_account'                => true,
 		'allow_private_posts'           => true,
+		'trashing_question_with_answer' => false,
+		'deleting_question_with_answer' => false,
 	);
 
 	/**

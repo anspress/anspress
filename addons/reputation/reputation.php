@@ -12,10 +12,11 @@
 
 namespace Anspress\Addons;
 
-// If this file is called directly, abort.
+// @codeCoverageIgnoreStart
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Reputation hooks.
@@ -137,7 +138,6 @@ class Reputation extends \AnsPress\Singleton {
 					'description' => __( 'Points awarded when user account is created', 'anspress-question-answer' ),
 					'icon'        => 'apicon-question',
 					'activity'    => __( 'Registered', 'anspress-question-answer' ),
-					'parent'      => 'question',
 					'points'      => 10,
 				),
 				array(
@@ -230,7 +230,8 @@ class Reputation extends \AnsPress\Singleton {
 					$event['description'],
 					$points,
 					! empty( $event['activity'] ) ? $event['activity'] : '',
-					! empty( $event['parent'] ) ? $event['parent'] : ''
+					! empty( $event['parent'] ) ? $event['parent'] : '',
+					$event['icon']
 				);
 			}
 
@@ -331,7 +332,7 @@ class Reputation extends \AnsPress\Singleton {
 		$question = get_post( $_post->post_parent );
 
 		// Award select answer points to question author only.
-		if ( get_current_user_id() === (int) $_post->post_author ) {
+		if ( get_current_user_id() === (int) $question->post_author ) {
 			ap_insert_reputation( 'select_answer', $_post->ID );
 		}
 	}
@@ -425,7 +426,7 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function delete_user( $user_id ) {
 		global $wpdb;
-		$delete = $wpdb->delete( $wpdb->ap_reputations, array( 'repu_user_id' => $user_id ), array( '%d' ) ); // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$delete = $wpdb->delete( $wpdb->ap_reputations, array( 'rep_user_id' => $user_id ), array( '%d' ) ); // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		if ( false !== $delete ) {
 			do_action( 'ap_bulk_delete_reputations_of_user', $user_id );

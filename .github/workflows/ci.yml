@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         php_version:
+          - '8.2'
           - '8.1'
           - '8.0'
-          - '7.4'
     services:
       mysql:
         image: mysql:8.0
@@ -56,20 +56,57 @@ jobs:
       - name: Cache Composer dependencies
         run: composer install
 
-      - name: Run PHPUnit tests
+      - name: Setup PhpUnit
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_NAME: wordpress_test
           DB_USER: root
           DB_PASS: root
-        run: |
-          if [[ ! -z "$WP_VERSION" ]]; then
-            bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 $WP_VERSION
-            php ./vendor/bin/phpunit
-            WP_MULTISITE=1 php ./vendor/bin/phpunit
-          fi
+        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 $WP_VERSION
+
+      - name: Run single site tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: wordpress_test
+          DB_USER: root
+          DB_PASS: root
+        run: composer run test:coverage-text
+
+      - name: Run multi-site tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: wordpress_test
+          DB_USER: root
+          DB_PASS: root
+          WP_MULTISITE: true
+        run: composer run test:coverage-text
 
       - name: Run PHP CodeSniffer
         run: |
           composer run phpcs
+
+      # Install Node.js 12.x
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.x
+
+      # Build with Node.js (assuming you have the necessary build scripts)
+      - name: Install Node.js dependencies and Build
+        run: |
+          npm install
+          npm run build
+
+      # Create the artifact zip
+      - name: Create build artifact
+        run: git archive -o anspress-question-answer.zip HEAD --prefix=anspress-question-answer/
+
+      # Upload the artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: anspress-question-answer.zip
+          retention-days: 5

@@ -169,7 +169,7 @@ class Upload extends \AnsPress\Form\Field {
 
 		return array_filter(
 			$file_ary,
-			function( $a ) {
+			function ( $a ) {
 				return ! empty( $a['name'] );
 			}
 		);

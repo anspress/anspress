@@ -27,7 +27,9 @@ namespace Anspress\Addons;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
+	// @codeCoverageIgnoreStart
 	die;
+	// @codeCoverageIgnoreEnd
 }
 
 require_once 'class-generator.php';
@@ -199,7 +201,7 @@ class Avatar extends \AnsPress\Singleton {
 function ap_is_avatar_exists( $user_id ) {
 	$filename   = md5( $user_id );
 	$upload_dir = wp_upload_dir();
-	$avatar_dir = $upload_dir['basedir'] . '/ap_avatars';
+	$avatar_dir = $upload_dir['basedir'] . '/ap_avatars/';
 
 	return file_exists( $avatar_dir . $filename . '.jpg' );
 }

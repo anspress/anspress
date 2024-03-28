@@ -45,7 +45,7 @@ class Select extends \AnsPress\Form\Field {
 					'taxonomy'   => 'question_category',
 					'hide_empty' => false,
 					'fields'     => 'id=>name',
-					'orderby'    => ap_opt( 'form_category_orderby' ),
+					'orderby'    => ap_opt( 'form_category_orderby' ) ? ap_opt( 'form_category_orderby' ) : 'count',
 				),
 			)
 		);

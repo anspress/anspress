@@ -47,7 +47,7 @@ tests_add_filter(
 
 WPIntegration\bootstrap_it();
 
-activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
+// activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
 
 echo "Setting up AnsPress...\n";
 
@@ -58,9 +58,12 @@ anspress_activation();
 function _disable_reqs( $status = false, $args = array(), $url = '') {
 }
 add_filter( 'pre_http_request', function( $status = false, $args = array(), $url = '' ) {
-	return new \WP_Error( 'no_reqs_in_unit_tests', __( 'HTTP Requests disabled for unit tests', 'easy-digital-downloads' ) );
+	return new \WP_Error( 'no_reqs_in_unit_tests','HTTP Requests disabled for unit tests' );
 } );
 
 require_once 'helpers/shims.php';
+
+// Require the includes.php file.
+require_once 'testcases/includes.php';
 
 remove_all_actions( 'send_headers' );

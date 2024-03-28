@@ -25,8 +25,8 @@ class Categories extends \WP_Widget {
 		// Instantiate the parent object.
 		parent::__construct(
 			'AnsPress_Category_Widget',
-			'(AnsPress) Categories',
-			array( 'description', __( 'Display AnsPress categories', 'anspress-question-answer' ) )
+			__( '(AnsPress) Categories', 'anspress-question-answer' ),
+			array( 'description' => __( 'Display AnsPress categories', 'anspress-question-answer' ) )
 		);
 	}
 
@@ -160,7 +160,8 @@ class Categories extends \WP_Widget {
 				<?php
 				if ( $categories ) {
 					foreach ( $categories as $c ) {
-						echo '<option value="' . (int) $c->term_id . '" ' . selected( $parent, $c->term_id ) . '>' . esc_html( $c->name ) . '</option>'; }
+						echo '<option value="' . (int) $c->term_id . '" ' . selected( $parent, $c->term_id ) . '>' . esc_html( $c->name ) . '</option>';
+					}
 				}
 
 				?>

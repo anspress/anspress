@@ -85,7 +85,7 @@ class AnsPress_Uploader {
 	public static function cron_delete_temp_attachments() {
 		global $wpdb;
 
-		$posts = $wpdb->get_results( "SELECT ID, post_author FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date >= CURDATE()" ); // phpcs:ignore WordPress.DB
+		$posts = $wpdb->get_results( "SELECT ID, post_author, post_parent FROM $wpdb->posts WHERE post_type = 'attachment' AND post_title='_ap_temp_media' AND post_date <= CURDATE()" ); // phpcs:ignore WordPress.DB
 
 		$authors = array();
 
@@ -138,7 +138,7 @@ class AnsPress_Uploader {
 	public static function upload_modal() {
 		// Check nonce.
 		if ( ! anspress_verify_nonce( 'ap_upload_image' ) ) {
-			ap_send_json( 'something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		// Check if user have permission to upload tem image.
@@ -206,7 +206,7 @@ class AnsPress_Uploader {
 
 		// Nonce check.
 		if ( ! $form->is_submitted() ) {
-			ap_send_json( 'something_wrong' );
+			ap_ajax_json( 'something_wrong' );
 		}
 
 		$image_for = ap_sanitize_unslash( 'image_for', 'r' );
@@ -244,7 +244,7 @@ class AnsPress_Uploader {
 			ap_send_json( $res );
 		}
 
-		ap_send_json( 'something_wrong' );
+		ap_ajax_json( 'something_wrong' );
 	}
 
 	/**

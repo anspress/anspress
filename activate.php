@@ -84,6 +84,9 @@ class AP_Activate {
 		// Enable/Disable addon.
 		$this->enable_addons();
 		$this->reactivate_addons();
+
+		// Migrate old datas.
+		$this->migrate();
 	}
 
 	/**
@@ -411,6 +414,65 @@ class AP_Activate {
 
 				ap_activate_addon( $new_addon_name );
 			}
+		}
+	}
+
+	/**
+	 * Migrate old datas.
+	 *
+	 * @since 4.4.0
+	 */
+	public function migrate() {
+		if ( 38 === AP_DB_VERSION ) {
+			$this->set_reputation_events_icon();
+			$this->update_disallow_op_to_answer();
+		}
+	}
+
+	/**
+	 * Set the reputation events icon.
+	 *
+	 * @since 4.4.0
+	 */
+	public function set_reputation_events_icon() {
+		$events = array(
+			'register'           => 'apicon-question',
+			'ask'                => 'apicon-question',
+			'answer'             => 'apicon-answer',
+			'comment'            => 'apicon-comments',
+			'select_answer'      => 'apicon-check',
+			'best_answer'        => 'apicon-check',
+			'received_vote_up'   => 'apicon-thumb-up',
+			'received_vote_down' => 'apicon-thumb-down',
+			'given_vote_up'      => 'apicon-thumb-up',
+			'given_vote_down'    => 'apicon-thumb-down',
+		);
+
+		// Modify reputation events icon.
+		global $wpdb;
+		foreach ( $events as $slug => $icon ) {
+			$wpdb->update( // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->prefix . 'ap_reputation_events',
+				array( 'icon' => $icon ),
+				array( 'slug' => $slug )
+			);
+		}
+	}
+
+	/**
+	 * Update disallow_op_to_answer option.
+	 *
+	 * @since 4.4.0
+	 */
+	public function update_disallow_op_to_answer() {
+		// Get the old disallow_op_to_answer option value.
+		$op_can_answer = ap_opt( 'disallow_op_to_answer' );
+
+		// Update the disallow_op_to_answer option value.
+		if ( false === $op_can_answer ) {
+			ap_opt( 'disallow_op_to_answer', true );
+		} else {
+			ap_opt( 'disallow_op_to_answer', false );
 		}
 	}
 }

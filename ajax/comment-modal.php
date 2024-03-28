@@ -13,7 +13,9 @@ namespace AnsPress\Ajax;
 
 // Die if called directly.
 if ( ! defined( 'ABSPATH' ) ) {
+	// @codeCoverageIgnoreStart
 	exit;
+	// @codeCoverageIgnoreEnd
 }
 
 /**
@@ -91,14 +93,5 @@ class Comment_Modal extends \AnsPress\Classes\Ajax {
 				'content' => $html,
 			)
 		);
-	}
-
-	/**
-	 * Handle ajax for non logged in users.
-	 *
-	 * @return void
-	 */
-	public function nopriv() {
-		$this->logged_in();
 	}
 }

@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
 
 // Define database version.
-define( 'AP_DB_VERSION', 37 );
+define( 'AP_DB_VERSION', 38 );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
@@ -200,6 +200,13 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $new_filters;
 
 		/**
+		 * Used for property assignment.
+		 *
+		 * @var object
+		 */
+		public $theme_compat;
+
+		/**
 		 * Initializes the plugin by setting localization, hooks, filters, and administrative functions.
 		 *
 		 * @access public
@@ -220,6 +227,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 				self::$instance->site_include();
 				self::$instance->ajax_hooks();
 				AnsPress_PostTypes::init();
+
+				// Add roles.
+				$ap_roles = new AP_Roles();
+				$ap_roles->add_roles();
+				$ap_roles->add_capabilities();
 
 				/*
 				* Dashboard and Administrative Functionality

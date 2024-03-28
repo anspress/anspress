@@ -16,6 +16,10 @@ block_comment_start = /*
 block_comment = *
 block_comment_end = */
 
+[{*.php}]
+indent_size = 4
+indent_style = tab
+
 [{*.yml,*.neon}]
 indent_style = space
 indent_size = 2

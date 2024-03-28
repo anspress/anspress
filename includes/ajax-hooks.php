@@ -10,10 +10,11 @@
  * @subpackage   Ajax Hooks
  */
 
-// If this file is called directly, abort.
+// @codeCoverageIgnoreStart
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Register all ajax callback

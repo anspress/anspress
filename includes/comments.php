@@ -215,7 +215,7 @@ class AnsPress_Comment_Hooks {
 /**
  * Load comment form button.
  *
- * @param   mixed $_post Echo html.
+ * @param   mixed $_post Post ID or object.
  * @return  string
  * @since   0.1
  * @since   4.1.0 Added @see ap_user_can_read_comments() check.
@@ -445,13 +445,13 @@ function ap_post_comments() {
  * Return or print new comment button.
  *
  * @param integer $post_id Post id.
- * @param boolean $output    Return or echo. Default is echo.
+ * @param boolean $output  Return or echo. Default is echo.
  * @return string|void
  * @since 4.1.8
  */
 function ap_new_comment_btn( $post_id, $output = true ) {
 	if ( ap_user_can_comment( $post_id ) ) {
-		$output = '';
+		$html = '';
 
 		$btn_args = wp_json_encode(
 			array(
@@ -461,14 +461,14 @@ function ap_new_comment_btn( $post_id, $output = true ) {
 			)
 		);
 
-		$output .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
-		$output .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
-		$output .= '</a>';
+		$html .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
+		$html .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
+		$html .= '</a>';
 
 		if ( false === $output ) {
-			return $output;
+			return $html;
 		}
 
-		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

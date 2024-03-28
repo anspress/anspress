@@ -242,7 +242,7 @@ function ap_get_votes( $args = array() ) {
 		if ( is_array( $args['vote_type'] ) ) {
 			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
 		} else {
-			$where .= ' AND vote_type = ' . sanitize_text_field( $args['vote_type'] );
+			$where .= ' AND vote_type = "' . sanitize_text_field( $args['vote_type'] ) . '"';
 		}
 	}
 
@@ -373,7 +373,6 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	return $new_counts;
 }
-
 
 /**
  * Get a single vote from database.
@@ -551,7 +550,7 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
  */
 function ap_vote_btn( $post = null, $output = true ) {
 	$post = ap_get_post( $post );
-	if ( ! $post || 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) {
+	if ( ! $post || ( 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) ) {
 		return;
 	}
 
@@ -577,14 +576,39 @@ function ap_vote_btn( $post = null, $output = true ) {
 		'__nonce' => wp_create_nonce( 'vote_' . $post->ID ),
 	);
 
-	$html  = '';
-	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote="' . esc_js( wp_json_encode( $data ) ) . '">';
-	$html .= '<a class="apicon-thumb-up ap-tip vote-up' . ( $voted ? ' voted' : '' ) . ( $vote && 'vote_down' === $type ? ' disable' : '' ) . '" href="#" title="' . ( $vote && 'vote_down' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : __( 'Up vote this post', 'anspress-question-answer' ) ) ) . '" ap="vote_up"></a>';
-	$html .= '<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' . ap_get_votes_net() . '</span>';
+	$upvote_message = sprintf(
+		/* Translators: %s Question or Answer post type label for up voting the question or answer. */
+		__( 'Up vote this %s', 'anspress-question-answer' ),
+		( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+	);
+	$downvote_message = sprintf(
+		/* Translators: %s Question or Answer post type label for down voting the question or answer. */
+		__( 'Down vote this %s', 'anspress-question-answer' ),
+		( 'question' === $post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+	);
+
+	$html = '';
+
+	$html .= '<div id="vote_' . $post->ID . '" class="ap-vote net-vote" ap-vote="' .
+		esc_js( wp_json_encode( $data ) ) . '">' .
+		'<a class="apicon-thumb-up ap-tip vote-up' . ( $voted ? ' voted' : '' ) .
+		( $vote && 'vote_down' === $type ? ' disable' : '' ) . '" href="#" title="' .
+		( $vote && 'vote_down' === $type ?
+			__( 'You have already voted', 'anspress-question-answer' ) :
+			( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : $upvote_message ) ) .
+		'" ap="vote_up"></a>' .
+		'<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' .
+		ap_get_votes_net() . '</span>';
 
 	if ( ( 'question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' ) ) ||
-		( 'answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' ) ) ) {
-		$html .= '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down' . ( $voted ? ' voted' : '' ) . ( $vote && 'vote_up' === $type ? ' disable' : '' ) . '" href="#" title="' . ( $vote && 'vote_up' === $type ? __( 'You have already voted', 'anspress-question-answer' ) : ( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : __( 'Down vote this post', 'anspress-question-answer' ) ) ) . '" ap="vote_down"></a>';
+	( 'answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' ) ) ) {
+		$html .= '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down' .
+			( $voted ? ' voted' : '' ) .
+			( $vote && 'vote_up' === $type ? ' disable' : '' ) .
+			'" href="#" title="' .
+			( $vote && 'vote_up' === $type ? __( 'You have already voted', 'anspress-question-answer' ) :
+			( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : $downvote_message ) ) .
+			'" ap="vote_down"></a>';
 	}
 
 	$html .= '</div>';

@@ -14,9 +14,13 @@
 
 namespace AnsPress\Addons;
 
+use WP_Post;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
+	// @codeCoverageIgnoreStart
 	die;
+	// @codeCoverageIgnoreEnd
 }
 
 /**
@@ -477,7 +481,11 @@ class Categories extends \AnsPress\Singleton {
 			$cats = get_the_terms( get_question_id(), 'question_category' );
 
 			if ( $cats ) {
-				$navs['category'] = array( 'title' => $cats[0]->name, 'link' => get_term_link( $cats[0], 'question_category' ), 'order' => 2 ); //@codingStandardsIgnoreLine
+				$navs['category'] = array(
+					'title' => $cats[0]->name,
+					'link'  => get_term_link( $cats[0], 'question_category' ),
+					'order' => 2,
+				);
 			}
 		} elseif ( is_question_category() ) {
 			$category     = get_queried_object();
@@ -856,7 +864,7 @@ class Categories extends \AnsPress\Singleton {
 	public function category_feed() {
 		if ( is_question_category() ) {
 			$question_category = get_queried_object();
-			echo '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_url( $question_category->slug ) . '" title="' . esc_attr__( 'Question category feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
+			echo '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_attr( $question_category->slug ) . '" title="' . esc_attr__( 'Question category feed', 'anspress-question-answer' ) . '" type="application/rss+xml" rel="alternate">';
 		}
 	}
 
@@ -969,8 +977,13 @@ class Categories extends \AnsPress\Singleton {
 			$query->found_posts   = 1;
 			$query->max_num_pages = 1;
 			$page                 = get_page( ap_opt( 'categories_page' ) );
-			$page->post_title     = get_queried_object()->name;
-			$posts                = array( $page );
+
+			if ( ! $page ) {
+				return $posts;
+			}
+
+			$page->post_title = get_queried_object()->name;
+			$posts            = array( $page );
 		}
 
 		return $posts;

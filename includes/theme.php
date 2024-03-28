@@ -174,9 +174,11 @@ function ap_pagination( $current = false, $total = false, $format = '?paged=%#%'
 			'mid_size' => 2,
 		)
 	);
-	$links = str_replace( '<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links );
-	$links = str_replace( '<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links );
-	echo wp_kses_post( $links );
+	if ( $links ) {
+		$links = str_replace( '<a class="next page-numbers"', '<a class="next page-numbers" rel="next"', $links );
+		$links = str_replace( '<a class="prev page-numbers"', '<a class="prev page-numbers" rel="prev"', $links );
+		echo wp_kses_post( $links );
+	}
 	echo '</div>';
 }
 
@@ -289,7 +291,9 @@ function ap_post_actions( $_post = null ) {
 		$actions[] = array( 'header' => true );
 	}
 
-	if ( ap_user_can_delete_post( $_post->ID ) ) {
+	$answers = ap_count_published_answers( $_post->ID );
+
+	if ( ap_user_can_delete_post( $_post->ID ) && ( ! ap_opt( 'trashing_question_with_answer' ) || empty( $answers ) ) ) {
 		if ( 'trash' === $_post->post_status ) {
 			$label = __( 'Undelete', 'anspress-question-answer' );
 			$title = sprintf(
@@ -318,7 +322,7 @@ function ap_post_actions( $_post = null ) {
 	}
 
 	// Permanent delete link.
-	if ( ap_user_can_permanent_delete( $_post->ID ) ) {
+	if ( ap_user_can_permanent_delete( $_post->ID ) && ( ! ap_opt( 'deleting_question_with_answer' ) || empty( $answers ) ) ) {
 		$actions[] = array(
 			'cb'    => 'delete_permanently',
 			'query' => array(
@@ -455,7 +459,6 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
 	 */
 	return apply_filters( 'ap_questions_order_by', $navs );
 }
-
 
 /**
  * Output answers tab.
@@ -714,7 +717,7 @@ function ap_localize_script() {
 
 	echo '<script type="text/javascript">';
 	echo 'var ajaxurl = "' . esc_url( admin_url( 'admin-ajax.php' ) ) . '",';
-	echo 'ap_nonce 	= "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
+	echo 'ap_nonce = "' . esc_attr( wp_create_nonce( 'ap_ajax_nonce' ) ) . '",';
 	echo 'apTemplateUrl = "' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '";';
 	echo 'apQuestionID = "' . (int) get_question_id() . '";';
 	echo 'aplang = ' . wp_json_encode( $aplang ) . ';';

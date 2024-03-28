@@ -5,6 +5,7 @@ Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.7
 Tested up to: 6.2.2
 Stable tag: 4.3.2
+Requires PHP: 8.0
 License: GPLv2 or later
 Demo: https://anspress.net/demo/?product=anspress
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
