@@ -124,4 +124,50 @@ class TestReputationQuery extends TestCase {
 		$this->assertEquals( 2, $reputation->args['paged'] );
 		$this->assertEquals( 12, $reputation->per_page );
 	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_events_with_zero_points
+	 */
+	public function testGetEventsWithZeroPoints() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		$reputation = new \AnsPress_Reputation_Query();
+		$reputation->with_zero_points = [];
+		$reputation->get_events_with_zero_points();
+		$with_zero_points = $reputation->with_zero_points;
+		$this->assertCount( 2, $with_zero_points );
+		$this->assertTrue( in_array( 'given_vote_up', $with_zero_points ) );
+		$this->assertTrue( in_array( 'given_vote_down', $with_zero_points ) );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_events_with_zero_points
+	 */
+	public function testGetEventsWithZeroPointsWithSomeNewEventsAdded() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Add new event.
+		$args = [
+			'label'         => 'Custom Test Event',
+			'description'   => 'Custom event description',
+			'icon'          => 'apicon-test',
+			'activity'      => 'Test Activity',
+			'parent'        => '',
+			'points'        => 0,
+			'rep_events_id' => 11,
+		];
+		ap_register_reputation_event( 'custom_test_event', $args );
+		$reputation = new \AnsPress_Reputation_Query();
+		$reputation->with_zero_points = [];
+		$reputation->get_events_with_zero_points();
+		$with_zero_points = $reputation->with_zero_points;
+		$this->assertCount( 3, $with_zero_points );
+		$this->assertTrue( in_array( 'given_vote_up', $with_zero_points ) );
+		$this->assertTrue( in_array( 'given_vote_down', $with_zero_points ) );
+		$this->assertTrue( in_array( 'custom_test_event', $with_zero_points ) );
+	}
 }
