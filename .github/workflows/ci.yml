@@ -104,9 +104,13 @@ jobs:
       - name: Create build artifact
         run: git archive -o anspress-question-answer.zip HEAD --prefix=anspress-question-answer/
 
+      - name: Unzip nested zip
+        run: unzip -o anspress-question-answer.zip
+
       # Upload the artifact
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          path: anspress-question-answer.zip
+          name: anspress-question-answer
+          path: anspress-question-answer
           retention-days: 5
