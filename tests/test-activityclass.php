@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestActivityClass extends TestCase {
 
+	use Testcases\Common;
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Activity' );
 		$this->assertTrue( $class->hasProperty( 'verbs' ) && $class->getProperty( 'verbs' )->isPublic() );
@@ -102,5 +104,68 @@ class TestActivityClass extends TestCase {
 		$activity = new \AnsPress\Activity( [ 'orderby' => 'invalid_order_by' ] );
 		$this->assertInstanceOf( 'AnsPress\Activity', $activity );
 		$this->assertEquals( 'activity_date', $activity->args['orderby'] );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::total_count
+	 */
+	public function testTotalCountWithUserIDArg() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activity = new \AnsPress\Activity( [ 'user_id' => get_current_user_id() ] );
+		$this->assertEquals( 2, $activity->total_count );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::total_count
+	 */
+	public function testTotalCountWithAIDArg() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create();
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action'  => 'new_a',
+				'q_id'    => $id->q,
+				'a_id'    => $id->a,
+				'user_id' => $user_id,
+			]
+		);
+
+		// Test.
+		$activity = new \AnsPress\Activity( [ 'a_id' => $id->a ] );
+		$this->assertEquals( 2, $activity->total_count );
 	}
 }
