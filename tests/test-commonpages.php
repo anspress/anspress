@@ -373,4 +373,83 @@ class TestCommonPages extends TestCase {
 		unset( $_REQUEST['id'] );
 		unset( $_REQUEST['__nonce'] );
 	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::edit_page
+	 */
+	public function testEditPage() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$_REQUEST['id'] = $answer_id;
+		$_REQUEST['__nonce'] = wp_create_nonce( 'edit-post-' . $answer_id );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::edit_page();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'name="form_answer[post_content]"', $output );
+		$this->assertStringContainsString( 'form_answer[post_id]', $output );
+		$this->assertStringContainsString( 'name="question_id" value="' . $question_id . '"', $output );
+		$this->assertStringContainsString( 'name="post_id" value="' . $answer_id . '"', $output );
+		$this->assertStringContainsString( 'name="form_answer[post_id]"', $output );
+		unset( $_REQUEST['id'] );
+		unset( $_REQUEST['__nonce'] );
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::edit_page
+	 */
+	public function testEditPageForNotPostID() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$_REQUEST['__nonce'] = wp_create_nonce( 'edit-post-' . $answer_id );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::edit_page();
+		$output = ob_get_clean();
+		$this->assertEquals( '<p>Sorry, you cannot edit this answer.</p>', $output );
+		unset( $_REQUEST['__nonce'] );
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::edit_page
+	 */
+	public function testEditPageForInvalidNonce() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$_REQUEST['id'] = $answer_id;
+		$_REQUEST['__nonce'] = wp_create_nonce( 'invalid_nonce' );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::edit_page();
+		$output = ob_get_clean();
+		$this->assertEquals( '<p>Sorry, you cannot edit this answer.</p>', $output );
+		unset( $_REQUEST['id'] );
+		unset( $_REQUEST['__nonce'] );
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::edit_page
+	 */
+	public function testEditPageForUserWhoDoNotHaveAccessToEditAnswer() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id, 'post_status' => 'private_post' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$_REQUEST['id'] = $answer_id;
+		$_REQUEST['__nonce'] = wp_create_nonce( 'edit-post-' . $answer_id );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::edit_page();
+		$output = ob_get_clean();
+		$this->assertEquals( '<p>Sorry, you cannot edit this answer.</p>', $output );
+		unset( $_REQUEST['id'] );
+		unset( $_REQUEST['__nonce'] );
+	}
 }
