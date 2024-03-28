@@ -70,7 +70,7 @@ class TestComments extends TestCase {
 	 */
 	public function testAPCommentActions() {
 		$id = $this->insert_question();
-		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress' ) );
+		$comment = $this->factory()->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress' ) );
 
 		// Test begins.
 		// Test 1.
@@ -117,7 +117,7 @@ class TestComments extends TestCase {
 		}
 
 		// Test 4.
-		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'comment_approved' => 0 ) );
+		$comment = $this->factory()->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'comment_approved' => 0 ) );
 		$result = ap_comment_actions( $comment );
 		$this->assertNotEmpty( $result );
 		$this->assertIsArray( $result );
@@ -201,7 +201,7 @@ class TestComments extends TestCase {
 		}
 
 		// Test 6.
-		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress' ) );
+		$comment = $this->factory()->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress' ) );
 		add_role( 'user_can_edit_comment', 'Test Role', array( 'ap_edit_others_comment' => true ) );
 		$this->setRole( 'user_can_edit_comment' );
 		$result = ap_comment_actions( $comment );
@@ -288,7 +288,7 @@ class TestComments extends TestCase {
 		$this->assertNotContains( $not_expected, $result );
 
 		// Test 8.
-		$comment = $this->factory->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'comment_approved' => 0 ) );
+		$comment = $this->factory()->comment->create_and_get( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'comment_approved' => 0 ) );
 		add_role( 'user_can_approve_comment', 'Test Role', array( 'ap_approve_comment' => true ) );
 		$this->setRole( 'user_can_approve_comment' );
 		$result = ap_comment_actions( $comment );
@@ -478,22 +478,22 @@ class TestComments extends TestCase {
 	 */
 	public function testCommentLink() {
 		// Test 1.
-		$post_id = $this->factory->post->create();
-		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $post_id ] );
+		$post_id = $this->factory()->post->create();
+		$comment = $this->factory()->comment->create_and_get( [ 'comment_post_ID' => $post_id ] );
 		$result = \AnsPress_Comment_Hooks::comment_link( 'http://example.com', $comment, [] );
 		$this->assertEquals( 'http://example.com', $result );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
-		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$comment = $this->factory()->comment->create_and_get( [ 'comment_post_ID' => $question_id ] );
 		$result = \AnsPress_Comment_Hooks::comment_link( 'http://example.com', $comment, [] );
 		$this->assertStringContainsString( '#/comment/' . $comment->comment_ID, $result );
 		$this->assertStringNotContainsString( 'http://example.com', $result );
 		$this->assertEquals( get_permalink( $question_id ) . '#/comment/' . $comment->comment_ID, $result );
 
 		// Test 3.
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $answer_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment = $this->factory()->comment->create_and_get( [ 'comment_post_ID' => $answer_id ] );
 		$result = \AnsPress_Comment_Hooks::comment_link( 'http://example.com', $comment, [] );
 		$this->assertStringContainsString( '#/comment/' . $comment->comment_ID, $result );
 		$this->assertStringNotContainsString( 'http://example.com', $result );
@@ -505,20 +505,20 @@ class TestComments extends TestCase {
 	 */
 	public function testPreprocessComment() {
 		// Test 1.
-		$post_id = $this->factory->post->create();
-		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $post_id ] );
+		$post_id = $this->factory()->post->create();
+		$comment = $this->factory()->comment->create_and_get( [ 'comment_post_ID' => $post_id ] );
 		$result = \AnsPress_Comment_Hooks::preprocess_comment( (array) $comment );
 		$this->assertEquals( 'comment', $result['comment_type'] );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 		$comment_data = [ 'comment_post_ID' => $question_id ];
 		$result = \AnsPress_Comment_Hooks::preprocess_comment( $comment_data );
 		$this->assertEquals( 'anspress', $result['comment_type'] );
 
 		// Test 3.
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$comment = $this->factory->comment->create_and_get( [ 'comment_post_ID' => $answer_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment = $this->factory()->comment->create_and_get( [ 'comment_post_ID' => $answer_id ] );
 		$result = \AnsPress_Comment_Hooks::preprocess_comment( (array) $comment );
 		$this->assertEquals( 'anspress', $result['comment_type'] );
 	}
@@ -545,14 +545,14 @@ class TestComments extends TestCase {
 		$this->assertEquals( 'test-template.php', $result );
 
 		// Test 4.
-		$base_page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$base_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_opt( 'base_page', $base_page_id );
 		$this->go_to( '?page_id=' . $base_page_id );
 		$result = \AnsPress_Comment_Hooks::comments_template( '' );
 		$this->assertEquals( ap_get_theme_location( 'post-comments.php' ), $result );
 
 		// Test 5.
-		$categories_page = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$categories_page = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_opt( 'categories_page', $categories_page );
 		$this->go_to( '?page_id=' . $categories_page );
 		$result = \AnsPress_Comment_Hooks::comments_template( 'test-template.php' );
@@ -561,7 +561,7 @@ class TestComments extends TestCase {
 
 	public function testAPCommentDeleteLocked() {
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create( [ 'comment_post_ID' => $question_id ] );
+		$comment_id = $this->factory()->comment->create( [ 'comment_post_ID' => $question_id ] );
 
 		// Test 1.
 		$result = ap_comment_delete_locked( $comment_id );
@@ -600,8 +600,8 @@ class TestComments extends TestCase {
 	 * @covers ::ap_comment_btn_html
 	 */
 	public function testAPCommentBtnHTMLShouldReturnNullForUsersWhoCantReadComment() {
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
-		$answer_id   = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_parent' => $question_id ] );
 
 		// Tests.
 		$this->setRole( 'subscriber' );

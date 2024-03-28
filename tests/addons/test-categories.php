@@ -464,7 +464,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( '', $result );
 
 		// Test with viewing the category page.
-		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$category_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		ob_start();
@@ -497,7 +497,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'http://example.com', $result );
 
 		// Test with viewing the category page.
-		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$category_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category_id, 'question_category' );
 
 		// Test 1.
@@ -534,7 +534,7 @@ class TestAddonCategories extends TestCase {
 		$instance = \Anspress\Addons\Categories::init();
 
 		// Test begins.
-		$category = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$category = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category, 'question_category' );
 
 		// Test without any term meta values.
@@ -595,7 +595,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'other_query_var', $method );
 
 		// Test on the single category page.
-		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$category_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		// Test for passing invalid query var.
@@ -628,7 +628,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertFalse( wp_script_is( 'anspress-theme' ) );
 
 		// With visting the category page.
-		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$category_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		$instance->ap_assets_js( [] );
@@ -661,7 +661,7 @@ class TestAddonCategories extends TestCase {
 
 		// Test begins.
 		// Test 1.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		ob_start();
 		$instance->image_field_edit( get_term( $term_id, 'question_category' ) );
 		$result = ob_get_clean();
@@ -676,7 +676,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertStringNotContainsString( '<img id="ap_category_media_preview" data-action="ap_media_value" src="" />', $result );
 
 		// Test 2.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$meta = [
 			'image' => [
 				'id'  => 1,
@@ -710,7 +710,7 @@ class TestAddonCategories extends TestCase {
 	 */
 	public function testSaveImageField() {
 		$instance = \Anspress\Addons\Categories::init();
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 
 		// Test begins.
 		// Test without any input.
@@ -788,7 +788,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( '123', $result );
 
 		// Test 3.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		global $question_category;
@@ -797,7 +797,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( $term_id, $result );
 
 		// Test 4.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		global $question_category;
@@ -824,7 +824,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'http://example.com', $result );
 
 		// Test 3.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		global $question_category;
@@ -833,7 +833,7 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( get_term_link( $term_id ), $result );
 
 		// Test 4.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		global $question_category;
@@ -912,7 +912,7 @@ class TestAddonCategories extends TestCase {
 		$instance = \Anspress\Addons\Categories::init();
 
 		// Test begins.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 
 		// Test 1.
@@ -956,9 +956,9 @@ class TestAddonCategories extends TestCase {
 		$this->assertEmpty( $form );
 
 		// Test with question categories.
-		$term_id_1 = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
-		$term_id_2 = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
-		$term_id_3 = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$question_id = $this->insert_question();
 		wp_set_object_terms( $question_id, [ $term_id_2, $term_id_3 ], 'question_category' );
 
@@ -1016,7 +1016,7 @@ class TestAddonCategories extends TestCase {
 	public function testAPListFilters() {
 		global $wp;
 		$instance = \Anspress\Addons\Categories::init();
-		$category_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$category_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category_id, 'question_category' );
 
 		// Test begins.
@@ -1063,7 +1063,7 @@ class TestAddonCategories extends TestCase {
 	 */
 	public function testSaveImageFieldForImageNotAsAnArray() {
 		$instance = \Anspress\Addons\Categories::init();
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 
 		// Test.
 		$this->setRole( 'administrator' );
@@ -1086,7 +1086,7 @@ class TestAddonCategories extends TestCase {
 		$instance = \Anspress\Addons\Categories::init();
 
 		// Test.
-		$term_id = $this->factory->term->create( [ 'taxonomy' => 'question_category' ] );
+		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 		$this->go_to( '/?ap_page=category&question_category=' . $term->slug );
 		global $question_category;

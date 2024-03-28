@@ -212,12 +212,12 @@ class TestAjax extends TestCaseAjax {
 
 		// Test on disabling down vote.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		ap_opt( 'disable_down_vote_on_question', true );
 		ap_opt( 'disable_down_vote_on_answer', true );
 
 		// For question post type.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -234,7 +234,7 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting down is disabled.' );
 
 		// For answer post type.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -259,7 +259,7 @@ class TestAjax extends TestCaseAjax {
 		$this->setRole( 'subscriber' );
 
 		// For question.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -285,7 +285,7 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on own post is not allowed' );
 
 		// For answer.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -330,10 +330,10 @@ class TestAjax extends TestCaseAjax {
 
 		// Test for voting on restricted question and answer.
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
 		// For question.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -360,7 +360,7 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting on restricted posts are not allowed.' );
 
 		// For answer.
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -404,7 +404,7 @@ class TestAjax extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$page_id = $this->factory->post->create(
+		$page_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Comment form loading',
 				'post_type'    => 'page',
@@ -412,7 +412,7 @@ class TestAjax extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID' => $page_id,
 				'comment_type'    => 'anspress',
@@ -426,8 +426,8 @@ class TestAjax extends TestCaseAjax {
 
 		// Test 3.
 		$this->setRole( 'ap_banned' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -436,7 +436,7 @@ class TestAjax extends TestCaseAjax {
 				'post_author'  => $user_id,
 			)
 		);
-		$comment_ids = $this->factory->comment->create_many(
+		$comment_ids = $this->factory()->comment->create_many(
 			5,
 			array(
 				'comment_type'    => 'anspress',
@@ -453,7 +453,7 @@ class TestAjax extends TestCaseAjax {
 
 		// Test 4.
 		$this->_last_response = '';
-		$comment_ids = $this->factory->comment->create_many(
+		$comment_ids = $this->factory()->comment->create_many(
 			5,
 			array(
 				'comment_type'    => 'anspress',
@@ -474,8 +474,8 @@ class TestAjax extends TestCaseAjax {
 
 		// Test 1.
 		$this->setRole( 'administrator' );
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->assertTrue( ap_have_attach( $question_id ) );
 		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
@@ -485,8 +485,8 @@ class TestAjax extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->assertTrue( ap_have_attach( $question_id ) );
 		$this->setRole( 'subscriber' );
@@ -498,8 +498,8 @@ class TestAjax extends TestCaseAjax {
 		// Test 3.
 		$this->_last_response = '';
 		$this->setRole( 'subsciber' );
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->assertTrue( ap_have_attach( $question_id ) );
 		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id ) );
@@ -512,11 +512,11 @@ class TestAjax extends TestCaseAjax {
 		// Test 4.
 		$this->_last_response = '';
 		$this->setRole( 'subsciber' );
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$attachment_id_1 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
-		$attachment_id_2 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $question_id );
-		$attachment_id_3 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $question_id );
-		$attachment_id_4 = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $question_id );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id_1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$attachment_id_2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $question_id );
+		$attachment_id_3 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $question_id );
+		$attachment_id_4 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->assertTrue( ap_have_attach( $question_id ) );
 		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $attachment_id_1 . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $attachment_id_1 ) );
@@ -533,8 +533,8 @@ class TestAjax extends TestCaseAjax {
 		$this->assertNotNull( $attachment_4 );
 
 		// Test 5.
-		$question_id = $this->factory->post->create( array( 'post_type' => 'question' ) );
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->assertTrue( ap_have_attach( $question_id ) );
 		if ( \is_multisite() ) {
@@ -729,7 +729,7 @@ class TestAjax extends TestCaseAjax {
 
 		// Test 1.
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
@@ -746,7 +746,7 @@ class TestAjax extends TestCaseAjax {
 		// Test 2.
 		$this->_last_response = '';
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
@@ -764,7 +764,7 @@ class TestAjax extends TestCaseAjax {
 		// Test 3.
 		$this->_last_response = '';
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
@@ -782,7 +782,7 @@ class TestAjax extends TestCaseAjax {
 		// Test 4.
 		$this->_last_response = '';
 		$question_id = $this->insert_question();
-		$comment_id = $this->factory->comment->create(
+		$comment_id = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
@@ -806,35 +806,35 @@ class TestAjax extends TestCaseAjax {
 		// Test 5.
 		$this->_last_response = '';
 		$question_id = $this->insert_question();
-		$comment_id_1 = $this->factory->comment->create(
+		$comment_id_1 = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
 				'comment_approved' => 0,
 			)
 		);
-		$comment_id_2 = $this->factory->comment->create(
+		$comment_id_2 = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
 				'comment_approved' => 0,
 			)
 		);
-		$comment_id_3 = $this->factory->comment->create(
+		$comment_id_3 = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
 				'comment_approved' => 1,
 			)
 		);
-		$comment_id_4 = $this->factory->comment->create(
+		$comment_id_4 = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',
 				'comment_approved' => 0,
 			)
 		);
-		$comment_id_5 = $this->factory->comment->create(
+		$comment_id_5 = $this->factory()->comment->create(
 			array(
 				'comment_post_ID'  => $question_id,
 				'comment_type'     => 'anspress',

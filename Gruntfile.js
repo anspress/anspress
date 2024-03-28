@@ -24,10 +24,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		csscomb: {
-			files: ['**/*.css', '!**/node_modules/**', '!**/vendor/**'],
-			tasks: ['csscomb'],
-		},
 		version: {
 			options: {
 				release: 'patch'

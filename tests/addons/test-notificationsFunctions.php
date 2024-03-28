@@ -372,7 +372,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 	 * @covers ::ap_get_notifications
 	 */
 	public function testAPGetNotificationsUserIDArg() {
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 
 		// Insert notification.
 		$args = [ 'user_id' => $user_id ];
@@ -559,7 +559,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 	 * @covers ::ap_delete_notifications
 	 */
 	public function testAPDeleteNotificationsUserIDArg() {
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 
 		// Insert notification.
 		$args = [ 'user_id' => $user_id ];
@@ -931,7 +931,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 	 * @covers ::ap_set_notifications_as_seen
 	 */
 	public function testAPSetNotificationsAsSeenUserIDArg() {
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 
 		// Insert notifications.
 		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'ref_type' => 'question' ] );
@@ -990,7 +990,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 	 * @covers ::ap_count_unseen_notifications
 	 */
 	public function testAPCountUnseenNotificationsUserIdArg() {
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 
 		// Insert notifications.
 		ap_insert_notification( [ 'user_id' => $user_id, 'seen' => 0, 'ref_type' => 'question' ] );

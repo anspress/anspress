@@ -86,14 +86,14 @@ class TestQAMeta extends TestCase {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer1_id = $this->factory->post->create(
+		$answer1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -101,7 +101,7 @@ class TestQAMeta extends TestCase {
 				'post_parent'  => $question_id,
 			)
 		);
-		$answer2_id = $this->factory->post->create(
+		$answer2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -157,7 +157,7 @@ class TestQAMeta extends TestCase {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -166,7 +166,7 @@ class TestQAMeta extends TestCase {
 		);
 		$get_qameta = ap_get_qameta( $question_id );
 		$this->assertEquals( 0, $get_qameta->answers );
-		$answer1_id = $this->factory->post->create(
+		$answer1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -176,7 +176,7 @@ class TestQAMeta extends TestCase {
 		);
 		$get_qameta = ap_get_qameta( $question_id );
 		$this->assertEquals( 1, $get_qameta->answers );
-		$answer2_id = $this->factory->post->create(
+		$answer2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -268,14 +268,14 @@ class TestQAMeta extends TestCase {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
 				'post_type'    => 'question',
 			)
 		);
-		$answer1_id = $this->factory->post->create(
+		$answer1_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -284,7 +284,7 @@ class TestQAMeta extends TestCase {
 			)
 		);
 		$this->assertEquals( 0, ap_is_selected( $answer1_id ) );
-		$answer2_id = $this->factory->post->create(
+		$answer2_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer Content',
@@ -365,21 +365,21 @@ class TestQAMeta extends TestCase {
 		// Test for user roles.
 		$this->setRole( 'subscriber' );
 		$id = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
 		$result = ap_update_post_attach_ids( $id );
 		$this->assertEquals( [ $attachment_id ], $result );
 		$qameta = ap_get_qameta( $id );
 		$this->assertEquals( $attachment_id, $qameta->attach );
 
 		$id = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $id );
 		$result = ap_update_post_attach_ids( $id );
 		$this->assertEquals( [ $attachment_id ], $result );
 		$qameta = ap_get_qameta( $id );
 		$this->assertEquals( $attachment_id, $qameta->attach );
 
 		$id = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $id );
 		$result = ap_update_post_attach_ids( $id );
 		$this->assertEquals( [ $attachment_id ], $result );
 		$qameta = ap_get_qameta( $id );
@@ -722,7 +722,7 @@ class TestQAMeta extends TestCase {
 		$qafields = [ 'post_id', 'selected', 'selected_id', 'comments', 'answers', 'ptype', 'featured', 'closed', 'views', 'votes_up', 'votes_down', 'subscribers', 'flags', 'terms', 'attach', 'activities', 'fields', 'roles', 'last_updated', 'is_new' ];
 
 		// Test for normal post type.
-		$post = $this->factory->post->create_and_get(
+		$post = $this->factory()->post->create_and_get(
 			array(
 				'post_title'   => 'Post title',
 				'post_content' => 'Post content',
@@ -734,7 +734,7 @@ class TestQAMeta extends TestCase {
 		}
 
 		// Test for question post type.
-		$question = $this->factory->post->create_and_get(
+		$question = $this->factory()->post->create_and_get(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question content',
@@ -747,7 +747,7 @@ class TestQAMeta extends TestCase {
 		}
 
 		// Test for answer post type.
-		$answer = $this->factory->post->create_and_get(
+		$answer = $this->factory()->post->create_and_get(
 			array(
 				'post_title'   => 'Answer title',
 				'post_content' => 'Answer content',
@@ -801,12 +801,12 @@ class TestQAMeta extends TestCase {
 		// Test begins.
 		$question_get_qameta = ap_get_qameta( $id );
 		$this->assertEmpty( $question_get_qameta->terms );
-		$cid = $this->factory->term->create(
+		$cid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 			)
 		);
-		$ncid = $this->factory->term->create(
+		$ncid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 			)
@@ -815,12 +815,12 @@ class TestQAMeta extends TestCase {
 		do_action( 'save_post_question', $id, get_post( $id ), true );
 		$question_get_qameta = ap_get_qameta( $id );
 		$this->assertNotEmpty( $question_get_qameta->terms );
-		$tid = $this->factory->term->create(
+		$tid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 			)
 		);
-		$ntid = $this->factory->term->create(
+		$ntid = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_tag',
 			)
@@ -840,7 +840,7 @@ class TestQAMeta extends TestCase {
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
 		// Add question.
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
@@ -1032,12 +1032,12 @@ class TestQAMeta extends TestCase {
 
 		// Test for not adding any user id.
 		$this->setRole( 'subscriber' );
-		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'draft' ] );
-		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
-		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
-		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'draft' ] );
-		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate' ] );
-		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish' ] );
+		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'draft' ] );
+		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'draft' ] );
+		$this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate' ] );
+		$this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish' ] );
 
 		// Call the function.
 		ap_update_user_unpublished_count();
@@ -1051,14 +1051,14 @@ class TestQAMeta extends TestCase {
 		// Test for adding user id.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
-		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'draft', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'trash', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'draft', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'trash', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'post', 'post_status' => 'trash', 'post_author' => $user_id ] );
-		$this->factory->post->create( [ 'post_type' => 'page', 'post_status' => 'draft', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'draft', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'trash', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'draft', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'trash', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'post', 'post_status' => 'trash', 'post_author' => $user_id ] );
+		$this->factory()->post->create( [ 'post_type' => 'page', 'post_status' => 'draft', 'post_author' => $user_id ] );
 
 		// Call the function.
 		ap_update_user_unpublished_count( $user_id );
@@ -1115,14 +1115,14 @@ class TestQAMeta extends TestCase {
 		register_taxonomy( 'question_label', array( 'question' ) );
 
 		// Test.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
 				'post_type'    => 'question',
 			)
 		);
-		$term_id = $this->factory->term->create(
+		$term_id = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_label',
 				'name'     => 'Label 1',
@@ -1148,20 +1148,20 @@ class TestQAMeta extends TestCase {
 		register_taxonomy( 'question_label', array( 'question' ) );
 
 		// Test.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
 				'post_type'    => 'question',
 			)
 		);
-		$term_id_1 = $this->factory->term->create(
+		$term_id_1 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_label',
 				'name'     => 'Label 1',
 			)
 		);
-		$term_id_2 = $this->factory->term->create(
+		$term_id_2 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_label',
 				'name'     => 'Label 2',
@@ -1189,20 +1189,20 @@ class TestQAMeta extends TestCase {
 		register_taxonomy( 'question_label', array( 'question' ) );
 
 		// Test.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
 				'post_content' => 'Question Content',
 				'post_type'    => 'question',
 			)
 		);
-		$term_id_1 = $this->factory->term->create(
+		$term_id_1 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_label',
 				'name'     => 'Label 1',
 			)
 		);
-		$term_id_2 = $this->factory->term->create(
+		$term_id_2 = $this->factory()->term->create(
 			array(
 				'taxonomy' => 'question_category',
 				'name'     => 'Category 1',

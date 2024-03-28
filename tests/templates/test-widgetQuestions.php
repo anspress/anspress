@@ -36,11 +36,11 @@ class TestTemplatesWidgetQuestions extends TestCase {
 		wp_delete_post( $question_id, true );
 
 		// Test 3.
-		$question_id_1 = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title' ] );
-		$question_id_2 = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?' ] );
-		$question_id_3 = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'AnsPress Question Answer Plugin' ] );
-		$question_id_4 = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'Test Question' ] );
-		$question_id_5 = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'How to create a WordPress theme and plugin?' ] );
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'AnsPress Question Answer Plugin' ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Test Question' ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'How to create a WordPress theme and plugin?' ] );
 		anspress()->questions = new \Question_Query();
 		ob_start();
 		ap_get_template_part( 'widgets/widget-questions' );
@@ -68,7 +68,7 @@ class TestTemplatesWidgetQuestions extends TestCase {
 		// Test 4.
 		$ids = $this->insert_answers( [ 'post_title' => 'How to use AnsPress Question Answer plugin?' ], [], 3 );
 		ap_add_post_vote( $ids['question'] );
-		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
 		ap_add_post_vote( $ids['question'], $user_id );
 		anspress()->questions = new \Question_Query();
 		ob_start();
@@ -88,7 +88,7 @@ class TestTemplatesWidgetQuestions extends TestCase {
 
 		// Test 5.
 		$id = $this->insert_answer();
-		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
 		ap_add_post_vote( $id->q, $user_id, false );
 		anspress()->questions = new \Question_Query();
 		ob_start();

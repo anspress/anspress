@@ -13,7 +13,7 @@ class TestQustionLoop extends TestCase {
 	 */
 	public function testAPQuestionsThePagination() {
 		// Test for front page.
-		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		update_option( 'page_on_front', $page_id );
 		update_option( 'show_on_front', 'page' );
 
@@ -61,7 +61,7 @@ class TestQustionLoop extends TestCase {
 		update_option( 'show_on_front', 'posts' );
 
 		// Test for other pages.
-		$base_page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$base_page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		ap_opt( 'categories_page', $base_page_id );
 
 		// Test on ap_paged query var.
@@ -150,7 +150,7 @@ class TestQustionLoop extends TestCase {
 	 */
 	public function testAPGetQuestion() {
 		// Test for publish question.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
 
 		// Test 1.
 		$question = ap_get_question( $question_id );
@@ -159,7 +159,7 @@ class TestQustionLoop extends TestCase {
 		$this->assertEquals( $question_id, $question->post->ID );
 
 		// Test for future question.
-		$future_question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'future', 'post_date' => '9999-12-31 23:59:59', ] );
+		$future_question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'future', 'post_date' => '9999-12-31 23:59:59', ] );
 
 		// Test 1.
 		$question = ap_get_question( $future_question_id );
@@ -181,7 +181,7 @@ class TestQustionLoop extends TestCase {
 
 		// Test for private question.
 		$this->logout();
-		$private_question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$private_question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
 
 		// Test 1.
 		$question = ap_get_question( $private_question_id );
@@ -202,7 +202,7 @@ class TestQustionLoop extends TestCase {
 
 		// Test 4.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
 		$question = ap_get_question( $question_id );
 		$this->assertInstanceOf( 'Question_Query', $question );
 		$this->assertNotNull( $question->post );
@@ -210,7 +210,7 @@ class TestQustionLoop extends TestCase {
 
 		// Test for moderate question.
 		$this->logout();
-		$moderate_question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$moderate_question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 
 		// Test 1.
 		$question = ap_get_question( $moderate_question_id );
@@ -231,7 +231,7 @@ class TestQustionLoop extends TestCase {
 
 		// Test 4.
 		$this->setRole( 'subscriber' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$question = ap_get_question( $question_id );
 		$this->assertInstanceOf( 'Question_Query', $question );
 		$this->assertNotNull( $question->post );
@@ -253,7 +253,7 @@ class TestQustionLoop extends TestCase {
 		$this->assertEmpty( $questions->query_vars['post_parent'] );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		set_query_var( 'paged', 3 );
 		$questions = ap_get_questions();
@@ -281,7 +281,7 @@ class TestQustionLoop extends TestCase {
 
 		// Test 4.
 		$this->go_to( '?post_type=question&p=' . $question_id );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id ] );
 		ap_opt( 'question_per_page', 3 );
 		set_query_var( 'paged', 5 );
 		$args = [
@@ -300,10 +300,10 @@ class TestQustionLoop extends TestCase {
 		$this->assertEquals( $answer_id, $questions->query_vars['p'] );
 
 		// Test for front page.
-		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		update_option( 'page_on_front', $page_id );
 		update_option( 'show_on_front', 'page' );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
 
 		// Test 1.
 		$this->go_to( home_url() );
@@ -344,7 +344,7 @@ class TestQustionLoop extends TestCase {
 
 		// Test 4.
 		$this->go_to( home_url() );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id ] );
 		$_REQUEST['ap_paged'] = 3;
 		$args = [
 			'ap_query'    => 'single_question',

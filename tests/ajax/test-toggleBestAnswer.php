@@ -24,7 +24,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 		add_action( 'wp_ajax_toggle_best_answer', array( 'AnsPress\Ajax\Toggle_Best_Answer', 'init' ) );
 
 		// Test 1.
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -32,7 +32,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -49,7 +49,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create(
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -57,7 +57,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -76,8 +76,8 @@ class TestToggleBestAnswer extends TestCaseAjax {
 		// Test 3.
 		$this->_last_response = '';
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -85,7 +85,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -108,9 +108,9 @@ class TestToggleBestAnswer extends TestCaseAjax {
 		// Test 4.
 		$this->_last_response = '';
 		$this->setRole( 'subscriber' );
-		$user_id_1 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$user_id_2 = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$user_id_1 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$user_id_2 = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -118,7 +118,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id_1 = $this->factory->post->create(
+		$answer_id_1 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -128,7 +128,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_author'  => $user_id_1,
 			)
 		);
-		$answer_id_2 = $this->factory->post->create(
+		$answer_id_2 = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -152,8 +152,8 @@ class TestToggleBestAnswer extends TestCaseAjax {
 		// Test 5.
 		$this->_last_response = '';
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -161,7 +161,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -182,8 +182,8 @@ class TestToggleBestAnswer extends TestCaseAjax {
 		// Test 6.
 		$this->_last_response = '';
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -191,7 +191,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',
@@ -213,8 +213,8 @@ class TestToggleBestAnswer extends TestCaseAjax {
 		// Test 7.
 		$this->_last_response = '';
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		$question_id = $this->factory->post->create(
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question post',
 				'post_type'    => 'question',
@@ -222,7 +222,7 @@ class TestToggleBestAnswer extends TestCaseAjax {
 				'post_content' => 'Donec nec nunc purus',
 			)
 		);
-		$answer_id = $this->factory->post->create(
+		$answer_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Answer post',
 				'post_type'    => 'answer',

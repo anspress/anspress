@@ -211,7 +211,7 @@ class TestRewrite extends TestCase {
 	 */
 	public function testAddQueryVarUserFound() {
 		$user_login = 'test_user';
-		$user_id = $this->factory->user->create( [ 'user_login' => $user_login ] );
+		$user_id = $this->factory()->user->create( [ 'user_login' => $user_login ] );
 		global $wp;
 		$wp->query_vars['ap_user'] = urldecode( $user_login );
 		\AnsPress_Rewrite::add_query_var( $wp );

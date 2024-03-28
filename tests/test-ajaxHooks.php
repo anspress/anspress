@@ -218,7 +218,7 @@ class TestAjaxHooks extends TestCaseAjax {
 	 */
 	public function testLoadTinyMCE() {
 		add_action( 'ap_ajax_load_tinymce', [ 'AnsPress_Ajax', 'load_tinymce' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		// Test 1.
 		$this->_set_post_data( 'ap_ajax_action=load_tinymce&question_id=' . $question_id );
@@ -278,8 +278,8 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 3.
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?' ] );
-		$answer_ids = $this->factory->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?' ] );
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$answer_id_1 = get_post( $answer_ids[0] );
 		$this->assertTrue( $answer_id_1->post_status === 'publish' );
 		$answer_id_2 = get_post( $answer_ids[1] );
@@ -324,7 +324,7 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$post_id = $this->factory->post->create( [ 'post_type' => 'post', 'post_title' => 'Post Title' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post', 'post_title' => 'Post Title' ] );
 		$this->_set_post_data( 'ap_ajax_action=subscribe&id=' . $post_id . '&__nonce=' . wp_create_nonce( 'subscribe_' . $post_id ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
@@ -333,8 +333,8 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'label' ) === 'Unsubscribe' );
 
 		// Test 3.
-		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title', 'post_author' => $user_id ] );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title', 'post_author' => $user_id ] );
 
 		// Before Ajax call.
 		$this->assertEquals( 1, ap_subscribers_count( 'question', $question_id ) );
@@ -350,8 +350,8 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertEquals( 2, ap_subscribers_count( 'question', $question_id ) );
 
 		// Test 4.
-		$user_id = $this->factory->user->create( [ 'role' => 'subscriber' ] );
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?', 'post_author' => $user_id ] );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'What is Lorem Ipsum?', 'post_author' => $user_id ] );
 		ap_new_subscriber( get_current_user_id(), 'question', $question_id );
 
 		// Before Ajax call.
@@ -462,11 +462,11 @@ class TestAjaxHooks extends TestCaseAjax {
 		$question_id_3 = $this->insert_question( 'What is Lorem Ipsum?' );
 		$question_id_4 = $this->insert_question( 'This is another Test' );
 		$question_id_5 = $this->insert_question( 'This is another Question' );
-		$answer_ids_set_1 = $this->factory->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id_1 ] );
-		$answer_ids_set_2 = $this->factory->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ] );
-		$answer_ids_set_3 = $this->factory->post->create_many( 2, [ 'post_type' => 'answer', 'post_parent' => $question_id_3 ] );
-		$answer_ids_set_4 = $this->factory->post->create_many( 4, [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ] );
-		$answer_ids_set_5 = $this->factory->post->create_many( 1, [ 'post_type' => 'answer', 'post_parent' => $question_id_5 ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id_1 ] );
+		$answer_ids_set_2 = $this->factory()->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ] );
+		$answer_ids_set_3 = $this->factory()->post->create_many( 2, [ 'post_type' => 'answer', 'post_parent' => $question_id_3 ] );
+		$answer_ids_set_4 = $this->factory()->post->create_many( 4, [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ] );
+		$answer_ids_set_5 = $this->factory()->post->create_many( 1, [ 'post_type' => 'answer', 'post_parent' => $question_id_5 ] );
 		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
@@ -520,11 +520,11 @@ class TestAjaxHooks extends TestCaseAjax {
 		$question_id_3 = $this->insert_question( 'What is Lorem Ipsum?' );
 		$question_id_4 = $this->insert_question( 'This is another Test' );
 		$question_id_5 = $this->insert_question( 'This is another Question' );
-		$answer_ids_set_1 = $this->factory->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id_1 ] );
-		$answer_ids_set_2 = $this->factory->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ] );
-		$answer_ids_set_3 = $this->factory->post->create_many( 2, [ 'post_type' => 'answer', 'post_parent' => $question_id_3 ] );
-		$answer_ids_set_4 = $this->factory->post->create_many( 4, [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ] );
-		$answer_ids_set_5 = $this->factory->post->create_many( 1, [ 'post_type' => 'answer', 'post_parent' => $question_id_5 ] );
+		$answer_ids_set_1 = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id_1 ] );
+		$answer_ids_set_2 = $this->factory()->post->create_many( 5, [ 'post_type' => 'answer', 'post_parent' => $question_id_2 ] );
+		$answer_ids_set_3 = $this->factory()->post->create_many( 2, [ 'post_type' => 'answer', 'post_parent' => $question_id_3 ] );
+		$answer_ids_set_4 = $this->factory()->post->create_many( 4, [ 'post_type' => 'answer', 'post_parent' => $question_id_4 ] );
+		$answer_ids_set_5 = $this->factory()->post->create_many( 1, [ 'post_type' => 'answer', 'post_parent' => $question_id_5 ] );
 		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=Test Question&is_admin=true&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'status' ) );
@@ -599,7 +599,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 3.
 		$this->_last_response = '';
-		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'trash' ] );
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
@@ -616,7 +620,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 1.
 		$this->_last_response = '';
-		$question_id = $this->insert_question();
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'invalid_nonce' ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
@@ -624,9 +632,14 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 2.
 		$this->_last_response = '';
-		$question_id = $this->insert_question();
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
+
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
 		$this->assertTrue( $this->ap_ajax_success( 'action' )->label === 'Undelete' );
@@ -637,7 +650,11 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test 3.
 		$this->_last_response = '';
-		$question_id = $this->insert_question();
+		$question_id = $this->factory()->post->create_and_get([
+			'post_type' => 'question',
+			'post_title' => 'Question title',
+			'post_author' => get_current_user_id(),
+		])->ID;
 		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'trash' ] );
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
@@ -653,7 +670,7 @@ class TestAjaxHooks extends TestCaseAjax {
 		// Test 1.
 		$this->setRole( 'ap_moderator' );
 		$this->_last_response = '';
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 		$this->handle( 'ap_ajax' );
 		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
@@ -666,7 +683,7 @@ class TestAjaxHooks extends TestCaseAjax {
 			// Tests.
 			// Before granting super admin role.
 			$this->_last_response = '';
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 			$this->handle( 'ap_ajax' );
 			$this->assertFalse( $this->ap_ajax_success( 'success' ) );
@@ -675,7 +692,7 @@ class TestAjaxHooks extends TestCaseAjax {
 			// After granting super admin role.
 			grant_super_admin( get_current_user_id() );
 			$this->_last_response = '';
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 			$this->handle( 'ap_ajax' );
 			$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
@@ -689,7 +706,7 @@ class TestAjaxHooks extends TestCaseAjax {
 
 			// Tests.
 			$this->_last_response = '';
-			$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
+			$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_date' => '2020:01:01 00:00:00' ] );
 			$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
 			$this->handle( 'ap_ajax' );
 			$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
@@ -708,7 +725,7 @@ class TestAjaxHooks extends TestCaseAjax {
 		add_action( 'ap_ajax_action_delete_permanently', [ 'AnsPress_Ajax', 'permanent_delete_post' ] );
 
 		// Create base page.
-		$base_page = $this->factory->post->create( [ 'post_type' => 'page', 'post_title' => 'Base Page' ] );
+		$base_page = $this->factory()->post->create( [ 'post_type' => 'page', 'post_title' => 'Base Page' ] );
 		ap_opt( 'base_page', $base_page );
 
 		// For testing the actions.
@@ -831,7 +848,7 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Sorry, you cannot toggle a featured question' );
 
 		// Test 2.
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create();
 		$this->_last_response = '';
 		$this->_set_post_data( 'ap_ajax_action=action_toggle_featured&post_id=' . $post_id . '&__nonce=' . wp_create_nonce( 'set_featured_' . $post_id ) );
 		$this->handle( 'ap_ajax' );
@@ -956,16 +973,16 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test for tags.
 		// Create some tags for testing.
-		$tag_id_1 = $this->factory->term->create( [ 'name' => 'Tag 1', 'description' => 'Description for Tag 1', 'taxonomy' => 'question_tag' ] );
-		$tag_id_2 = $this->factory->term->create( [ 'name' => 'Tag 2', 'description' => 'Description for Tag 2', 'taxonomy' => 'question_tag' ] );
-		$tag_id_3 = $this->factory->term->create( [ 'name' => 'Test Tag', 'description' => 'Description for Test Tag', 'taxonomy' => 'question_tag' ] );
-		$tag_id_4 = $this->factory->term->create( [ 'name' => 'Another Tag', 'description' => 'Description for Another Tag', 'taxonomy' => 'question_tag' ] );
-		$tag_id_5 = $this->factory->term->create( [ 'name' => 'AnsPress', 'description' => 'Description for AnsPress', 'taxonomy' => 'question_tag' ] );
-		$tag_id_6 = $this->factory->term->create( [ 'name' => 'Question', 'description' => 'Description for Question', 'taxonomy' => 'question_tag' ] );
-		$tag_id_7 = $this->factory->term->create( [ 'name' => 'Answer', 'description' => 'Description for Answer', 'taxonomy' => 'question_tag' ] );
-		$tag_id_8 = $this->factory->term->create( [ 'name' => 'WordPress', 'description' => 'Description for WordPress', 'taxonomy' => 'question_tag' ] );
-		$tag_id_9 = $this->factory->term->create( [ 'name' => 'Themes', 'description' => 'Description for Themes', 'taxonomy' => 'question_tag' ] );
-		$tag_id_10 = $this->factory->term->create( [ 'name' => 'Plugins', 'description' => 'Description for Plugins', 'taxonomy' => 'question_tag' ] );
+		$tag_id_1 = $this->factory()->term->create( [ 'name' => 'Tag 1', 'description' => 'Description for Tag 1', 'taxonomy' => 'question_tag' ] );
+		$tag_id_2 = $this->factory()->term->create( [ 'name' => 'Tag 2', 'description' => 'Description for Tag 2', 'taxonomy' => 'question_tag' ] );
+		$tag_id_3 = $this->factory()->term->create( [ 'name' => 'Test Tag', 'description' => 'Description for Test Tag', 'taxonomy' => 'question_tag' ] );
+		$tag_id_4 = $this->factory()->term->create( [ 'name' => 'Another Tag', 'description' => 'Description for Another Tag', 'taxonomy' => 'question_tag' ] );
+		$tag_id_5 = $this->factory()->term->create( [ 'name' => 'AnsPress', 'description' => 'Description for AnsPress', 'taxonomy' => 'question_tag' ] );
+		$tag_id_6 = $this->factory()->term->create( [ 'name' => 'Question', 'description' => 'Description for Question', 'taxonomy' => 'question_tag' ] );
+		$tag_id_7 = $this->factory()->term->create( [ 'name' => 'Answer', 'description' => 'Description for Answer', 'taxonomy' => 'question_tag' ] );
+		$tag_id_8 = $this->factory()->term->create( [ 'name' => 'WordPress', 'description' => 'Description for WordPress', 'taxonomy' => 'question_tag' ] );
+		$tag_id_9 = $this->factory()->term->create( [ 'name' => 'Themes', 'description' => 'Description for Themes', 'taxonomy' => 'question_tag' ] );
+		$tag_id_10 = $this->factory()->term->create( [ 'name' => 'Plugins', 'description' => 'Description for Plugins', 'taxonomy' => 'question_tag' ] );
 
 		// Create a valid form for testing.
 		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [
@@ -1067,16 +1084,16 @@ class TestAjaxHooks extends TestCaseAjax {
 
 		// Test for categories.
 		// Create some categories for testing.
-		$cat_id_1 = $this->factory->term->create( [ 'name' => 'Category 1', 'description' => 'Description for Category 1', 'taxonomy' => 'question_category' ] );
-		$cat_id_2 = $this->factory->term->create( [ 'name' => 'Category 2', 'description' => 'Description for Category 2', 'taxonomy' => 'question_category' ] );
-		$cat_id_3 = $this->factory->term->create( [ 'name' => 'Test Category', 'description' => 'Description for Test Category', 'taxonomy' => 'question_category' ] );
-		$cat_id_4 = $this->factory->term->create( [ 'name' => 'Another Category', 'description' => 'Description for Another Category', 'taxonomy' => 'question_category' ] );
-		$cat_id_5 = $this->factory->term->create( [ 'name' => 'AnsPress', 'description' => 'Description for AnsPress', 'taxonomy' => 'question_category' ] );
-		$cat_id_6 = $this->factory->term->create( [ 'name' => 'Question', 'description' => 'Description for Question', 'taxonomy' => 'question_category' ] );
-		$cat_id_7 = $this->factory->term->create( [ 'name' => 'Answer', 'description' => 'Description for Answer', 'taxonomy' => 'question_category' ] );
-		$cat_id_8 = $this->factory->term->create( [ 'name' => 'WordPress', 'description' => 'Description for WordPress', 'taxonomy' => 'question_category' ] );
-		$cat_id_9 = $this->factory->term->create( [ 'name' => 'Themes', 'description' => 'Description for Themes', 'taxonomy' => 'question_category' ] );
-		$cat_id_10 = $this->factory->term->create( [ 'name' => 'Plugins', 'description' => 'Description for Plugins', 'taxonomy' => 'question_category' ] );
+		$cat_id_1 = $this->factory()->term->create( [ 'name' => 'Category 1', 'description' => 'Description for Category 1', 'taxonomy' => 'question_category' ] );
+		$cat_id_2 = $this->factory()->term->create( [ 'name' => 'Category 2', 'description' => 'Description for Category 2', 'taxonomy' => 'question_category' ] );
+		$cat_id_3 = $this->factory()->term->create( [ 'name' => 'Test Category', 'description' => 'Description for Test Category', 'taxonomy' => 'question_category' ] );
+		$cat_id_4 = $this->factory()->term->create( [ 'name' => 'Another Category', 'description' => 'Description for Another Category', 'taxonomy' => 'question_category' ] );
+		$cat_id_5 = $this->factory()->term->create( [ 'name' => 'AnsPress', 'description' => 'Description for AnsPress', 'taxonomy' => 'question_category' ] );
+		$cat_id_6 = $this->factory()->term->create( [ 'name' => 'Question', 'description' => 'Description for Question', 'taxonomy' => 'question_category' ] );
+		$cat_id_7 = $this->factory()->term->create( [ 'name' => 'Answer', 'description' => 'Description for Answer', 'taxonomy' => 'question_category' ] );
+		$cat_id_8 = $this->factory()->term->create( [ 'name' => 'WordPress', 'description' => 'Description for WordPress', 'taxonomy' => 'question_category' ] );
+		$cat_id_9 = $this->factory()->term->create( [ 'name' => 'Themes', 'description' => 'Description for Themes', 'taxonomy' => 'question_category' ] );
+		$cat_id_10 = $this->factory()->term->create( [ 'name' => 'Plugins', 'description' => 'Description for Plugins', 'taxonomy' => 'question_category' ] );
 
 		// Create a valid form for testing.
 		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [

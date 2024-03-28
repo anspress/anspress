@@ -74,7 +74,7 @@ class Test_Session extends TestCase {
 	 * @covers AnsPress\Session::set_answer
 	 */
 	public function testSetQuestionAnswer() {
-		$id = $this->factory->post->create(
+		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',
 				'post_type'    => 'question',
@@ -283,7 +283,7 @@ class Test_Session extends TestCase {
 	 * @covers AnsPress\Session::post_in_session
 	 */
 	public function testPostInSessionWhenSessionNotSet() {
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',
 				'post_type'    => 'question',
@@ -300,7 +300,7 @@ class Test_Session extends TestCase {
 	 * @covers AnsPress\Session::post_in_session
 	 */
 	public function testPostInSessionWhenSessionSet() {
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',
 				'post_type'    => 'question',
@@ -316,7 +316,7 @@ class Test_Session extends TestCase {
 	 * @covers AnsPress\Session::post_in_session
 	 */
 	public function testPostInSessionWhenSessionSetAndPostTypeIsAnswer() {
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',
 				'post_type'    => 'answer',
@@ -332,9 +332,9 @@ class Test_Session extends TestCase {
 	 * @covers AnsPress\Session::post_in_session
 	 */
 	public function testPostInSessionWhenSessionSetAndUserIsLoggedIn() {
-		$user_id = $this->factory->user->create();
+		$user_id = $this->factory()->user->create();
 		wp_set_current_user( $user_id );
-		$post_id = $this->factory->post->create(
+		$post_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Mauris a velit id neque dignissim congue',
 				'post_type'    => 'question',

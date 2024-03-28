@@ -132,10 +132,10 @@ class TestAddonAkismet extends TestCase {
 
 		// Test begins.
 		// Test for invalid post type.
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create();
 		$result = $instance->row_actions( [], ap_get_post( $post_id ) );
 		$this->assertEmpty( $result );
-		$page_id = $this->factory->post->create( [ 'post_type' => 'page' ] );
+		$page_id = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 		$result = $instance->row_actions( [], ap_get_post( $page_id ) );
 		$this->assertEmpty( $result );
 

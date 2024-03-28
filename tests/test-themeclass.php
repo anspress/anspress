@@ -214,11 +214,11 @@ class TestThemeClass extends TestCase {
 		$this->assertContains( 'answer-count-0', $result );
 
 		// For question with answer.
-		$a_id1 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$a_id1 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		$result = \AnsPress_Theme::question_answer_post_class( [] );
 		$this->assertContains( 'answer-count-1', $result );
-		$a_id2 = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$a_id2 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		$result = \AnsPress_Theme::question_answer_post_class( [] );
 		$this->assertContains( 'answer-count-2', $result );
@@ -372,7 +372,7 @@ class TestThemeClass extends TestCase {
 		// Test with attachments.
 		// Test 1.
 		$question_id = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		ob_start();
@@ -389,7 +389,7 @@ class TestThemeClass extends TestCase {
 
 		// Test 2.
 		$question_id = $this->insert_question();
-		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $question_id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $question_id );
 		ap_update_post_attach_ids( $question_id );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		ob_start();
@@ -422,7 +422,7 @@ class TestThemeClass extends TestCase {
 	 */
 	public function testGetTheExcerpt() {
 		// Test 1.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_content' => 'This is question content', 'post_excerpt' => '' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_content' => 'This is question content', 'post_excerpt' => '' ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
 		$this->assertNotEquals( 'This is excerpt', $result );
@@ -432,7 +432,7 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is question content', $result );
 
 		// Test 2.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_excerpt' => 'This is question excerpt' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_excerpt' => 'This is question excerpt' ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
 		$this->assertEquals( 'This is question excerpt', $result );
@@ -440,7 +440,7 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is question excerpt', $result );
 
 		// Test 3.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_excerpt' => '', 'post_content' => '' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_excerpt' => '', 'post_content' => '' ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		$result = \AnsPress_Theme::get_the_excerpt( '' );
 		$this->assertEquals( '', $result );
@@ -448,8 +448,8 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( '', $result );
 
 		// Test 4.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_content' => 'This is question content', 'post_excerpt' => '' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_content' => 'This is answer content', 'post_excerpt' => '' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_content' => 'This is question content', 'post_excerpt' => '' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_content' => 'This is answer content', 'post_excerpt' => '' ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		set_query_var( 'answer_id', $answer_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
@@ -462,8 +462,8 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is answer content', $result );
 
 		// Test 5.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_excerpt' => 'This is question excerpt' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_excerpt' => 'This is answer excerpt' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_excerpt' => 'This is question excerpt' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_excerpt' => 'This is answer excerpt' ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		set_query_var( 'answer_id', $answer_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
@@ -476,8 +476,8 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is answer excerpt', $result );
 
 		// Test 6.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_excerpt' => '', 'post_content' => '' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_excerpt' => '', 'post_content' => '' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_excerpt' => '', 'post_content' => '' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_excerpt' => '', 'post_content' => '' ] );
 		$this->go_to( '/?post_type=question&p=' . $question_id );
 		set_query_var( 'answer_id', $answer_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
@@ -488,8 +488,8 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( '', $result );
 
 		// Test 7.
-		$question_id = $this->factory->post->create( [ 'post_type' => 'question', 'post_content' => 'This is question content', 'post_excerpt' => '' ] );
-		$answer_id = $this->factory->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_content' => 'This is answer content', 'post_excerpt' => '' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_content' => 'This is question content', 'post_excerpt' => '' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_content' => 'This is answer content', 'post_excerpt' => '' ] );
 		$this->go_to( '/?post_type=answer&p=' . $answer_id );
 		set_query_var( 'answer_id', $answer_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
@@ -502,7 +502,7 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is excerpt', $result );
 
 		// Test 8.
-		$post_id = $this->factory->post->create( [ 'post_type' => 'post', 'post_content' => 'This is post content', 'post_excerpt' => '' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post', 'post_content' => 'This is post content', 'post_excerpt' => '' ] );
 		$this->go_to( '/?post_type=post&p=' . $post_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
 		$this->assertEquals( 'This is excerpt', $result );
@@ -510,7 +510,7 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is excerpt', $result );
 
 		// Test 9.
-		$post_id = $this->factory->post->create( [ 'post_type' => 'post', 'post_excerpt' => 'This is post excerpt' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post', 'post_excerpt' => 'This is post excerpt' ] );
 		$this->go_to( '/?post_type=post&p=' . $post_id );
 		$result = \AnsPress_Theme::get_the_excerpt( 'This is excerpt' );
 		$this->assertEquals( 'This is excerpt', $result );
@@ -518,7 +518,7 @@ class TestThemeClass extends TestCase {
 		$this->assertEquals( 'This is excerpt', $result );
 
 		// Test 10.
-		$post_id = $this->factory->post->create( [ 'post_type' => 'post', 'post_excerpt' => 'This is post content', 'post_content' => 'This is post excerpt' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post', 'post_excerpt' => 'This is post content', 'post_content' => 'This is post excerpt' ] );
 		$this->go_to( '/?post_type=post&p=' . $post_id );
 		$result = \AnsPress_Theme::get_the_excerpt( '' );
 		$this->assertEquals( '', $result );
@@ -544,7 +544,7 @@ class TestThemeClass extends TestCase {
 	 */
 	public function testTemplateIncludeThemeCompat() {
 		// Test 1.
-		$post_id = $this->factory->post->create( [ 'post_type' => 'post' ] );
+		$post_id = $this->factory()->post->create( [ 'post_type' => 'post' ] );
 		$this->go_to( '/?post_type=post&p=' . $post_id );
 		$this->assertEquals( false, anspress()->theme_compat->active );
 		$result = \AnsPress_Theme::template_include_theme_compat( 'some-template.php' );
