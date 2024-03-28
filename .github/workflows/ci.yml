@@ -107,9 +107,9 @@ jobs:
       - name: Unzip nested zip
         run: |
           unzip -o anspress-question-answer.zip -d anspress-question-answer
-          cp -r templates/css anspress-question-answer/anspress-question-answer/templates/css
-          cp -r templates/js anspress-question-answer/anspress-question-answer/templates/js
-          cp -r assets anspress-question-answer/anspress-question-answer/assets
+          cp -r templates/css/* anspress-question-answer/anspress-question-answer/templates/css
+          cp -r templates/js/* anspress-question-answer/anspress-question-answer/templates/js
+          cp -r assets/* anspress-question-answer/anspress-question-answer/assets
 
       # Upload the artifact
       - name: Upload build artifact
