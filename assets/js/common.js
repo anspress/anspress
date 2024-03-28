@@ -258,15 +258,16 @@ _.templateSettings = {
 	escape: /\{\{([^\}]+?)\}\}(?!\})/g,
 };
 
-(function ($) {
-	//pass in just the context as a $(obj) or a settings JS object
+(function ($) {//pass in just the context as a $(obj) or a settings JS object
 	$.fn.autogrow = function (opts) {
 		var that = $(this).css({
 			overflow: 'hidden',
 			resize: 'none'
 		}) //prevent scrollies
 			,
-			selector = that.selector,
+			selector = '',
+			selectorID = that.attr('id'),
+			selectorClass = that.attr('class'),
 			defaults = {
 				context: $(document) //what to wire events to
 				,
@@ -284,6 +285,12 @@ _.templateSettings = {
 			context: opts ? opts : $(document)
 		};
 		opts = $.extend({}, defaults, opts);
+		// Setup the selector.
+		if (selectorID !== undefined) {
+			selector = '#' + selectorID;
+		} else if (selectorClass !== undefined) {
+			selector = '.' + selectorClass;
+		}
 		that.each(function (i, elem) {
 			var min, clone;
 			elem = $(elem);
@@ -602,20 +609,22 @@ jQuery(document).ready(function ($) {
 			return;
 
 		var self = $(this);
-		const string = aplang.ajax_events.replace( '%s', self.attr( 'title' ) );
-		const apAjaxEventClass = [
-			'comment-delete',
-		];
-		let eventTrigger = true;
-		$.each( apAjaxEventClass, function( i, eventClassName ) {
-			if ( self.hasClass( eventClassName ) ) {
-				if ( ! confirm( string ) ) {
-					eventTrigger = false;
+		if ( typeof aplang.ajax_events !== 'undefined' ) {
+			const string = aplang.ajax_events.replace( '%s', self.attr( 'title' ) );
+			const apAjaxEventClass = [
+				'comment-delete',
+			];
+			let eventTrigger = true;
+			$.each( apAjaxEventClass, function( i, eventClassName ) {
+				if ( self.hasClass( eventClassName ) ) {
+					if ( ! confirm( string ) ) {
+						eventTrigger = false;
+					}
 				}
+			} );
+			if ( ! eventTrigger ) {
+				return;
 			}
-		} );
-		if ( ! eventTrigger ) {
-			return;
 		}
 
 		var query = JSON.parse(self.attr('apquery'));
