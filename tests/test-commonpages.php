@@ -302,4 +302,75 @@ class TestCommonPages extends TestCase {
 		$question_rendered = false;
 		$answers = '';
 	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::ask_page
+	 */
+	public function testAskPage() {
+		$this->setRole( 'subscriber' );
+		ob_start();
+		\AnsPress_Common_Pages::ask_page();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<div id="ap-ask-page" class="clearfix">', $output );
+		$this->assertStringContainsString( 'name="form_question[post_title]"', $output );
+		$this->assertStringContainsString( 'name="form_question[post_content]"', $output );
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::ask_page
+	 */
+	public function testAskPageForPostIDAndValidNonce() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$_REQUEST['id'] = $question_id;
+		$_REQUEST['__nonce'] = wp_create_nonce( 'edit-post-' . $question_id );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::ask_page();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<div id="ap-ask-page" class="clearfix">', $output );
+		$this->assertStringContainsString( 'name="form_question[post_title]"', $output );
+		$this->assertStringContainsString( 'name="form_question[post_content]"', $output );
+		unset( $_REQUEST['id'] );
+		unset( $_REQUEST['__nonce'] );
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::ask_page
+	 */
+	public function testAskPageForHookTriggerTest() {
+		$this->setRole( 'subscriber' );
+
+		// Action hook triggered.
+		$callback_triggered = false;
+		add_action( 'ap_after_ask_page', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::ask_page();
+		ob_end_clean();
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_ask_page' ) > 0 );
+	}
+
+	/**
+	 * @covers AnsPress_Common_Pages::ask_page
+	 */
+	public function testAskPageIfPostIDAndInvalidNonce() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$_REQUEST['id'] = $question_id;
+		$_REQUEST['__nonce'] = wp_create_nonce( 'invalid_nonce' );
+
+		// Test.
+		ob_start();
+		\AnsPress_Common_Pages::ask_page();
+		$output = ob_get_clean();
+		$this->assertEquals( 'Something went wrong, please try again', $output );
+		unset( $_REQUEST['id'] );
+		unset( $_REQUEST['__nonce'] );
+	}
 }
