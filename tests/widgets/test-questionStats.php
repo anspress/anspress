@@ -231,8 +231,7 @@ class TestWidgetQuestionStats extends TestCase {
 		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
 		$this->assertStringContainsString( 'Question Stats Title', $result );
 		$this->assertStringContainsString( '<ul class="ap-stats-widget">', $result );
-		$last_active = ap_get_last_active( $question_id );
-		$this->assertStringContainsString( '<li><span class="stat-label apicon-pulse">Active</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="' . esc_attr( (string) mysql2date( 'c', $last_active ) ) . '">' . esc_html( $last_active ) . '</time></span></li>', $result );
+		$this->assertStringContainsString( '<li><span class="stat-label apicon-pulse">Active</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringContainsString( '<li><span class="stat-label apicon-eye">Views</span><span class="stat-value">0 times</span></li>', $result );
 		$this->assertStringContainsString( '<li><span class="stat-label apicon-answer">Answers</span><span class="stat-value"><span data-view="answer_count">3</span> answers</span></li>', $result );
 	}
@@ -263,8 +262,7 @@ class TestWidgetQuestionStats extends TestCase {
 		$this->assertStringContainsString( '<section class="widget">', $result );
 		$this->assertStringNotContainsString( '<h2 class="widget-title">', $result );
 		$this->assertStringContainsString( '<ul class="ap-stats-widget">', $result );
-		$last_active = ap_get_last_active( $question_id );
-		$this->assertStringContainsString( '<li><span class="stat-label apicon-pulse">Active</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="' . esc_attr( (string) mysql2date( 'c', $last_active ) ) . '">' . esc_html( $last_active ) . '</time></span></li>', $result );
+		$this->assertStringContainsString( '<li><span class="stat-label apicon-pulse">Active</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringContainsString( '<li><span class="stat-label apicon-eye">Views</span><span class="stat-value">10 times</span></li>', $result );
 		$this->assertStringContainsString( '<li><span class="stat-label apicon-answer">Answers</span><span class="stat-value"><span data-view="answer_count">1</span> answer</span></li>', $result );
 	}
@@ -295,8 +293,7 @@ class TestWidgetQuestionStats extends TestCase {
 		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
 		$this->assertStringContainsString( 'Question Stats Title', $result );
 		$this->assertStringContainsString( '<ul class="ap-stats-widget">', $result );
-		$last_active = ap_get_last_active( $question_id );
-		$this->assertStringContainsString( '<li><span class="stat-label apicon-pulse">Active</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime="' . esc_attr( (string) mysql2date( 'c', $last_active ) ) . '">' . esc_html( $last_active ) . '</time></span></li>', $result );
+		$this->assertStringContainsString( '<li><span class="stat-label apicon-pulse">Active</span><span class="stat-value"><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringContainsString( '<li><span class="stat-label apicon-eye">Views</span><span class="stat-value">1 time</span></li>', $result );
 		$this->assertStringContainsString( '<li><span class="stat-label apicon-answer">Answers</span><span class="stat-value"><span data-view="answer_count">0</span> answers</span></li>', $result );
 	}

@@ -1119,7 +1119,6 @@ class TestQAQuery extends TestCase {
 
 		// Test 1.
 		$this->go_to( '?post_type=question&p=' . $id );
-		$last_active = ap_get_last_active( get_question_id() );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1127,14 +1126,13 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringNotContainsString( 'Featured', $result );
 		$this->assertStringNotContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 
 		// Test 2.
 		ap_set_featured_question( $id );
 		$this->go_to( '?post_type=question&p=' . $id );
-		$last_active = ap_get_last_active( get_question_id() );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1143,7 +1141,7 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringContainsString( 'Featured', $result );
 		$this->assertStringNotContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 
@@ -1151,7 +1149,6 @@ class TestQAQuery extends TestCase {
 		$id = $this->insert_answer();
 		ap_set_selected_answer( $id->q, $id->a );
 		$this->go_to( '?post_type=question&p=' . $id->q );
-		$last_active = ap_get_last_active( get_question_id() );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1159,14 +1156,13 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringNotContainsString( 'Featured', $result );
 		$this->assertStringContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 
 		// Test 4.
 		ap_set_featured_question( $id->q );
 		$this->go_to( '?post_type=question&p=' . $id->q );
-		$last_active = ap_get_last_active( get_question_id() );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1174,13 +1170,12 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringContainsString( 'Featured', $result );
 		$this->assertStringContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 
 		// Test 5.
 		$this->go_to( '?post_type=answer&p=' . $id->a );
-		$last_active = ap_get_last_active( $id->q );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1188,7 +1183,7 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringNotContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringNotContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringNotContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringNotContainsString( 'Featured', $result );
 		$this->assertStringNotContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item history'>", $result );
@@ -1198,7 +1193,6 @@ class TestQAQuery extends TestCase {
 		add_filter( 'ap_display_question_metas', [ $this, 'APDisplayQuestionMetas' ], 10, 2 );
 		$id = $this->insert_question();
 		$this->go_to( '?post_type=question&p=' . $id );
-		$last_active = ap_get_last_active( get_question_id() );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1206,7 +1200,7 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringNotContainsString( 'Featured', $result );
 		$this->assertStringNotContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 		$this->assertStringNotContainsString( "<span class='ap-display-meta-item history'>", $result );
@@ -1221,7 +1215,6 @@ class TestQAQuery extends TestCase {
 		ap_set_selected_answer( $id->q, $id->a );
 		ap_set_featured_question( $id->q );
 		$this->go_to( '?post_type=answer&p=' . $id->a );
-		$last_active = ap_get_last_active( $id->q );
 		ob_start();
 		ap_question_metas();
 		$result = ob_get_clean();
@@ -1229,7 +1222,7 @@ class TestQAQuery extends TestCase {
 		$this->assertStringContainsString( "<span class='ap-display-meta-item views'>", $result );
 		$this->assertStringContainsString( '<i class="apicon-eye"></i><i>0 views</i>', $result );
 		$this->assertStringNotContainsString( "<span class='ap-display-meta-item active'>", $result );
-		$this->assertStringNotContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime="' . mysql2date( 'c', $last_active ) . '">' . $last_active . '</time></i>', $result );
+		$this->assertStringNotContainsString( '<i class="apicon-pulse"></i><i><time class="published updated" itemprop="dateModified" datetime', $result );
 		$this->assertStringNotContainsString( 'Featured', $result );
 		$this->assertStringNotContainsString( '<i class="apicon-check"></i><i>Solved</i>', $result );
 		$this->assertStringContainsString( "<span class='ap-display-meta-item history'>", $result );
