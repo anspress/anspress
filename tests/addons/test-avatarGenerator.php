@@ -259,4 +259,57 @@ class TestAddonAvatarGenerator extends TestCase {
 		$hex = '#0000';
 		$this->assertFalse( $method->invoke( $generator, $hex ) );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::__construct
+	 */
+	public function testConstructorForEmptyArg() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+
+		// Test.
+		$this->assertEquals( 'anonymous', $generator->name );
+		$this->assertEquals( 'anonymous', $generator->user_id );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::__construct
+	 */
+	public function testConstructorForUserAsInteger() {
+		$user_id = $this->factory()->user->create();
+		$generator = new \Anspress\Addons\Avatar\Generator( $user_id );
+
+		// Test.
+		$this->assertEquals( get_userdata( $user_id )->display_name, $generator->name );
+		$this->assertEquals( $user_id, $generator->user_id );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::__construct
+	 */
+	public function testConstructorForUserAsInstanceOfWPComment() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test Comment User' ] );
+		$id = $this->insert_question();
+		$comment_id = $this->factory()->comment->create( array( 'comment_post_ID' => $id, 'comment_type' => 'anspress', 'user_id' => $user_id ) );
+		$comment = get_comment( $comment_id );
+		$this->assertInstanceof( 'WP_Comment', $comment );
+		$generator = new \Anspress\Addons\Avatar\Generator( $comment );
+
+		// Test.
+		$this->assertEquals( 'Test Comment User', $generator->name );
+		$this->assertEquals( $comment->user_id, $generator->user_id );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::__construct
+	 */
+	public function testConstructorForUserAsInstanceOfWPUser() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$user = get_userdata( $user_id );
+		$this->assertInstanceof( 'WP_User', $user );
+		$generator = new \Anspress\Addons\Avatar\Generator( $user );
+
+		// Test.
+		$this->assertEquals( 'Test User', $generator->name );
+		$this->assertEquals( $user->ID, $generator->user_id );
+	}
 }
