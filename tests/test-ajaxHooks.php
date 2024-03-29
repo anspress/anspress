@@ -1167,4 +1167,59 @@ class TestAjaxHooks extends TestCaseAjax {
 			$this->assertTrue( in_array( (array) $result, $expected, true ) );
 		}
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::suggest_similar_questions
+	 */
+	public function testSuggestSimilarQuestionsForNoRelatedQuestionsFound() {
+		add_action( 'ap_ajax_suggest_similar_questions', [ 'AnsPress_Ajax', 'suggest_similar_questions' ] );
+		$this->setRole( 'administrator' );
+
+		// Test.
+		$question_id_1 = $this->insert_question();
+		$question_id_2 = $this->insert_question( 'Test Question' );
+		$this->_set_post_data( 'ap_ajax_action=suggest_similar_questions&value=NoTitle&__nonce=' . wp_create_nonce( 'suggest_similar_questions' ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) === false );
+		$this->assertTrue( $this->ap_ajax_success( 'message' ) === 'No related questions found.' );
+	}
+
+	/**
+	 * @covers AnsPress_Ajax::toggle_delete_post
+	 */
+	public function testToggleDeletePostForUserWhoCantRestoreTrashedPosts() {
+		add_action( 'ap_ajax_action_toggle_delete_post', [ 'AnsPress_Ajax', 'toggle_delete_post' ] );
+		$this->setRole( 'subscriber' );
+
+		// Test.
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'trash', 'post_author' => 0 ] );
+		$this->_set_post_data( 'ap_ajax_action=action_toggle_delete_post&post_id=' . $question_id . '&__nonce=' . wp_create_nonce( 'trash_post_' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to trash this post' );
+	}
+
+	/**
+	 * @covers AnsPress_Ajax::search_tags
+	 */
+	public function testSearchTagsForNoTagsExists() {
+		add_action( 'wp_ajax_ap_search_tags', [ 'AnsPress_Ajax', 'search_tags' ] );
+
+		// Create a valid form for testing.
+		anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'tags' => [
+					'type'       => 'tags',
+					'terms_args' => [
+						'taxonomy'   => 'question_tag',
+						'hide_empty' => false,
+						'fields'     => 'id=>name',
+					],
+				],
+			],
+		] );
+		$this->_set_post_data( 'action=ap_search_tags&q=Tag&form=Sample Form&field=tags&__nonce=' . wp_create_nonce( 'tags_Sample Formtags' ) );
+		$this->handle( 'ap_search_tags' );
+		$this->assertEquals( '[]', $this->_last_response );
+	}
 }
