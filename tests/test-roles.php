@@ -4135,11 +4135,13 @@ class Test_Roles extends TestCase {
 		// After calling the method.
 		$role = new \AP_Roles();
 		global $wp_roles;
+		$original_wp_roles = $wp_roles;
 		$wp_roles = null;
 		$role->remove_roles();
 		$this->assertFalse( isset( $wp_roles->roles['ap_participant'] ) );
 		$this->assertFalse( isset( $wp_roles->roles['ap_moderator'] ) );
 		$this->assertFalse( isset( $wp_roles->roles['ap_banned'] ) );
+		$wp_roles = $original_wp_roles;
 	}
 
 	/**
@@ -4151,8 +4153,10 @@ class Test_Roles extends TestCase {
 
 		// Test.
 		global $wp_roles;
+		$original_wp_roles = $wp_roles;
 		$wp_roles = null;
 		$role->add_capabilities();
+		$wp_roles = $original_wp_roles;
 
 		// Check moderator caps.
 		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
