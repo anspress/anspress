@@ -312,4 +312,59 @@ class TestAddonAvatarGenerator extends TestCase {
 		$this->assertEquals( 'Test User', $generator->name );
 		$this->assertEquals( $user->ID, $generator->user_id );
 	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::color_luminance
+	 */
+	public function testColorLuminanceLighten() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+		$method = new \ReflectionMethod( 'Anspress\Addons\Avatar\Generator', 'color_luminance' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $generator, '#AAAAAA', 0.2 );
+		$this->assertEquals( '#cccccc', $result );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::color_luminance
+	 */
+	public function testColorLuminanceDarken() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+		$method = new \ReflectionMethod( 'Anspress\Addons\Avatar\Generator', 'color_luminance' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $generator, '#AAAAAA', -0.2 );
+		$this->assertEquals( '#888888', $result );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::color_luminance
+	 */
+	public function testColorLuminanceLightenWithLessHex() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+		$method = new \ReflectionMethod( 'Anspress\Addons\Avatar\Generator', 'color_luminance' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $generator, '#007', 0.2 );
+		$this->assertEquals( '#180000', $result );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::color_luminance
+	 */
+	public function testColorLuminanceDarkenWithLessHex() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+		$method = new \ReflectionMethod( 'Anspress\Addons\Avatar\Generator', 'color_luminance' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $generator, '#007', -0.2 );
+		$this->assertEquals( '#100000', $result );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Avatar\Generator::color_luminance
+	 */
+	public function testColorLuminanceWithNoLightenOrDarken() {
+		$generator = new \Anspress\Addons\Avatar\Generator( '' );
+		$method = new \ReflectionMethod( 'Anspress\Addons\Avatar\Generator', 'color_luminance' );
+		$method->setAccessible( true );
+		$result = $method->invoke( $generator, '#EEEEEE', 0 );
+		$this->assertEquals( '#eeeeee', $result );
+	}
 }
