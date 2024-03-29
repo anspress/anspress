@@ -132,4 +132,38 @@ class TestAddonNotificationsQuery extends TestCase {
 		$notifications->count = 2;
 		$this->assertTrue( $notifications->has() );
 	}
+
+	/**
+	 * @covers Anspress\Notifications::verb_args
+	 */
+	public function testVerbArgs() {
+		$instance = \AnsPress\Addons\Notifications::init();
+		add_action( 'ap_notification_verbs', [ $instance, 'register_verbs' ] );
+		$notifications = new \Anspress\Notifications();
+		$this->assertInstanceOf( 'Anspress\Notifications', $notifications );
+
+		// Tests.
+		$this->assertEquals( ap_notification_verbs(), $notifications->verbs );
+		$new_answer_verb = [
+			'ref_type'   => 'post',
+			'label'      => 'posted an answer on your question',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $new_answer_verb, $notifications->verb_args( 'new_answer' ) );
+		$new_comment_verb = [
+			'ref_type'   => 'comment',
+			'label'      => 'commented on your %cpt%',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $new_comment_verb, $notifications->verb_args( 'new_comment' ) );
+		$best_answer_verb = [
+			'ref_type'   => 'post',
+			'label'      => 'selected your answer',
+			'hide_actor' => false,
+			'icon'       => '',
+		];
+		$this->assertEquals( $best_answer_verb, $notifications->verb_args( 'best_answer' ) );
+	}
 }
