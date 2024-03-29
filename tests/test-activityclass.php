@@ -180,4 +180,23 @@ class TestActivityClass extends TestCase {
 		$activity->group_end();
 		$this->assertFalse( $activity->in_group );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::has
+	 */
+	public function testHas() {
+		$activity = new \AnsPress\Activity();
+
+		// Test 1.
+		$activity->count = 0;
+		$this->assertFalse( $activity->has() );
+
+		// Test 2.
+		$activity->count = 1;
+		$this->assertTrue( $activity->has() );
+
+		// Test 3.
+		$activity->count = 2;
+		$this->assertTrue( $activity->has() );
+	}
 }

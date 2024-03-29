@@ -113,4 +113,23 @@ class TestAddonNotificationsQuery extends TestCase {
 		$this->assertEquals( 2, $notifications->args['paged'] );
 		$this->assertEquals( 10, $notifications->per_page );
 	}
+
+	/**
+	 * @covers Anspress\Notifications::has
+	 */
+	public function testHas() {
+		$notifications = new \Anspress\Notifications();
+
+		// Test 1.
+		$notifications->count = 0;
+		$this->assertFalse( $notifications->has() );
+
+		// Test 2.
+		$notifications->count = 1;
+		$this->assertTrue( $notifications->has() );
+
+		// Test 3.
+		$notifications->count = 2;
+		$this->assertTrue( $notifications->has() );
+	}
 }
