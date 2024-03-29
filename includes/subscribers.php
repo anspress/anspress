@@ -34,6 +34,16 @@ function ap_new_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
 		$user_id = get_current_user_id();
 	}
 
+	if ( empty( $user_id ) ) {
+		return false;
+	}
+
+	$user = get_user_by( 'id', $user_id );
+
+	if ( ! $user ) {
+		return false;
+	}
+
 	$exists = ap_get_subscriber( $user_id, $event, $ref_id );
 
 	if ( ! $exists ) {
@@ -73,7 +83,7 @@ function ap_new_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
  * @param  integer|false $user_id User ID.
  * @param  string        $event   Event type.
  * @param  integer       $ref_id Reference identifier id.
- * @return null|array
+ * @return false|object
  *
  * @category haveTest
  *
@@ -92,7 +102,13 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = '' ) {
 		return false;
 	}
 
-	$results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event ) ); // phpcs:ignore WordPress.DB
+	$results = $wpdb->get_row( // phpcs:ignore WordPress.DB
+		$wpdb->prepare( "SELECT * FROM $wpdb->ap_subscribers WHERE subs_user_id = %d AND subs_ref_id = %d AND subs_event = %s LIMIT 1", $user_id, $ref_id, $event )
+	);
+
+	if ( empty( $results ) ) {
+		return false;
+	}
 
 	return $results;
 }
@@ -102,7 +118,7 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = '' ) {
  *
  * @param  string  $event   Event type.
  * @param  integer $ref_id  Reference identifier id.
- * @return null|array
+ * @return int
  *
  * @category haveTest
  *
@@ -124,9 +140,15 @@ function ap_subscribers_count( $event = '', $ref_id = 0 ) {
 		$event_query = $wpdb->prepare( ' AND subs_event = %s', $event );
 	}
 
-	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); //phpcs:ignore WordPress.DB
+	$results = $wpdb->get_var( //phpcs:ignore WordPress.DB
+		"SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}"
+	);
 
-	return $results;
+	if ( empty( $results ) ) {
+		return 0;
+	}
+
+	return (int) $results;
 }
 
 /**

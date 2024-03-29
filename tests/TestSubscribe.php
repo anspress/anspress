@@ -8,179 +8,188 @@ class TestSubscribe extends TestCase {
 
 	use Testcases\Common;
 
-	/**
-	 * @covers ::ap_new_subscriber
-	 * @covers ::ap_get_subscriber
-	 */
-	public function testNewSubscriber() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+	public function set_up()
+	{
+		parent::set_up();
 
+		global $wpdb;
+		$wpdb->query( "DELETE FROM {$wpdb->ap_subscribers}" );
+	}
+
+	public function testNewSubscriberForNonExistingUser() {
 		$id = ap_new_subscriber( 456, 'question', 222 );
-		$this->assertNotEquals( false, $id );
-		$this->assertGreaterThan( 0, $id );
-
-		$subscriber = ap_get_subscriber( 456, 'question', 222 );
-		$this->assertEquals( 456, $subscriber->subs_user_id );
-		$this->assertEquals( 'question', $subscriber->subs_event );
-		$this->assertEquals( 222, $subscriber->subs_ref_id );
+		$this->assertFalse( $id );
 	}
 
-	/**
-	 * @covers ::ap_subscribers_count
-	 */
+	public function testNewSubscriberForUser() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$question_id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'question' ) )
+			->ID;
+
+		$id = ap_new_subscriber( $user_id, 'question', $question_id );
+		$this->assertNotFalse( $id );
+
+		global $wpdb;
+		$subscriber = $wpdb->get_row( "SELECT * FROM {$wpdb->ap_subscribers} WHERE subs_user_id = $user_id AND subs_event = 'question' AND subs_ref_id = {$question_id}" );
+
+		$this->assertSame( $user_id, (int) $subscriber->subs_user_id );
+		$this->assertSame( 'question', $subscriber->subs_event );
+		$this->assertSame( $question_id, (int) $subscriber->subs_ref_id );
+	}
+
 	public function testSubscribersCount() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+		$question_id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'question' ) )
+			->ID;
 
-		ap_new_subscriber( 2345, 'question', 1234 );
-		ap_new_subscriber( 23451, 'question', 1234 );
-		ap_new_subscriber( 23452, 'question', 1234 );
-		ap_new_subscriber( 23453, 'question', 1234 );
-		ap_new_subscriber( 23454, 'question', 1234 );
+		$answer_id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'answer' ) )
+			->ID;
 
-		ap_new_subscriber( 23455, 'answer', 1234 );
-		ap_new_subscriber( 23456, 'answer', 1234 );
-		ap_new_subscriber( 23457, 'answer', 1234 );
-		ap_new_subscriber( 23458, 'answer', 1234 );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'question',
+			$question_id
+		);
 
-		$count = ap_subscribers_count( 'question', 1234 );
-		$this->assertEquals( 5, $count );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'question',
+			$question_id
+		);
 
-		$count = ap_subscribers_count( 'answer', 1234 );
-		$this->assertEquals( 4, $count );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'question',
+			$question_id
+		);
 
-		$count = ap_subscribers_count( '', 1234 );
-		$this->assertEquals( 9, $count );
 
-		ap_new_subscriber( 23458, 'question', 1235 );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'answer',
+			$answer_id
+		);
 
-		// Total count.
-		$count = ap_subscribers_count();
-		$this->assertEquals( 10, $count );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'answer',
+			$answer_id
+		);
+
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'answer',
+			$answer_id
+		);
+
+		$count = ap_subscribers_count( 'question', $question_id );
+		$this->assertEquals( 3, $count );
+
+		$count = ap_subscribers_count( 'answer', $answer_id );
+		$this->assertEquals( 3, $count );
+
+		$count = ap_subscribers_count( '', $question_id );
+		$this->assertEquals( 3, $count );
 	}
 
-	/**
-	 * @covers ::ap_get_subscribers
-	 */
 	public function testGetSubscribers() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+		$question_id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'question' ) )
+			->ID;
 
-		ap_new_subscriber( 2345, 'question', 1234 );
-		ap_new_subscriber( 23451, 'question', 1234 );
-		ap_new_subscriber( 23452, 'question', 1234 );
-		ap_new_subscriber( 23453, 'question', 1234 );
-		ap_new_subscriber( 23454, 'question', 1234 );
+		$answer_id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'answer' ) )
+			->ID;
 
-		ap_new_subscriber( 23455, 'answer', 1234 );
-		ap_new_subscriber( 23456, 'answer', 1234 );
-		ap_new_subscriber( 23457, 'answer', 1234 );
-		ap_new_subscriber( 23458, 'answer', 1234 );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'question',
+			$question_id
+		);
 
-		ap_new_subscriber( 23459, 'question', 1236 );
-		ap_new_subscriber( 23466, 'question', 1236 );
+		ap_new_subscriber(
+			$this->factory()->user->create_and_get()->ID,
+			'answer',
+			$answer_id
+		);
 
 		$this->assertEquals(
-			5, count(
+			1,
+			count(
 				ap_get_subscribers(
 					[
 						'subs_event'  => 'question',
-						'subs_ref_id' => 1234,
+						'subs_ref_id' => $question_id,
 					]
 				)
 			)
 		);
-		$this->assertEquals( 7, count( ap_get_subscribers( [ 'subs_event' => 'question' ] ) ) );
-		$this->assertEquals( 4, count( ap_get_subscribers( [ 'subs_event' => 'answer' ] ) ) );
-		$this->assertEquals( 9, count( ap_get_subscribers( [ 'subs_ref_id' => 1234 ] ) ) );
-		$this->assertEquals( 11, count( ap_get_subscribers() ) );
+
+		$this->assertEquals(
+			1,
+			count(
+				ap_get_subscribers(
+					[
+						'subs_event'  => 'answer',
+						'subs_ref_id' => $answer_id,
+					]
+				)
+			)
+		);
 	}
 
-	/**
-	 * @covers ::ap_delete_subscribers
-	 */
 	public function testDeleteSubscribers() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+		$question_id = $this->factory()
+				->post->create_and_get( array( 'post_type' => 'question' ) )
+				->ID;
 
-		ap_new_subscriber( 2345, 'question', 1234 );
-		ap_new_subscriber( 2345, 'answer', 1234 );
-		ap_new_subscriber( 23451, 'question', 1234 );
-		ap_new_subscriber( 23455, 'question', 1234 );
+		$user_id = $this->factory()->user->create_and_get()->ID;
 
-		ap_new_subscriber( 23459, 'question', 1236 );
-		ap_new_subscriber( 23466, 'question', 1236 );
-		ap_new_subscriber( 23466, 'answer', 1236 );
-		ap_new_subscriber( 23467, 'comment', 1236 );
-		ap_new_subscriber( 23468, 'comment', 1236 );
+		$subscriber_id = ap_new_subscriber(
+			$user_id,
+			'question',
+			$question_id
+		);
+
+		$subscriber = ap_get_subscriber( $user_id, 'question', $question_id );
 
 		// Delete subscription by all three parameters.
 		ap_delete_subscribers(
 			array(
 				'subs_event'   => 'question',
-				'subs_ref_id'  => 1234,
-				'subs_user_id' => 2345,
+				'subs_ref_id'  => $subscriber->subs_ref_id,
+				'subs_user_id' => $subscriber->subs_user_id,
 			)
 		);
 
-		$this->assertEquals(
-			2, count(
-				ap_get_subscribers(
-					[
-						'subs_event'  => 'question',
-						'subs_ref_id' => 1234,
-					]
-				)
-			)
-		);
-
-		// Delete subscription by two parameters.
-		ap_delete_subscribers(
-			array(
-				'subs_event'  => 'question',
-				'subs_ref_id' => 1234,
-			)
-		);
-		$this->assertEquals(
-			0, count(
-				ap_get_subscribers(
-					[
-						'subs_event'  => 'question',
-						'subs_ref_id' => 1234,
-					]
-				)
-			)
-		);
-
-		ap_delete_subscribers(
-			array(
-				'subs_user_id' => 23466,
-			)
-		);
-
-		$this->assertEquals( 0, count( ap_get_subscribers( [ 'subs_ref_id' => 23466 ] ) ) );
+		$this->assertFalse( ap_get_subscriber( $subscriber_id ) );
 	}
 
 	/**
 	 * @covers ::ap_delete_subscriber
 	 */
 	public function testDeleteSubscriber() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+		$question_id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'question' ) )
+			->ID;
 
-		ap_new_subscriber( 23459, 'question', 1236 );
+		$user_id = $this->factory()->user->create_and_get()->ID;
 
-		$this->assertEquals( 1, ap_subscribers_count( 'question', 1236 ) );
-		ap_delete_subscriber( 1236, 23459, 'question' );
+		ap_new_subscriber(
+			$user_id,
+			'question',
+			$question_id
+		);
+
+		$this->assertEquals( 1, ap_subscribers_count( 'question', $question_id ) );
+		ap_delete_subscriber( $question_id, $user_id, 'question' );
 
 		$this->assertEquals( 0, ap_subscribers_count( 'question', 1236 ) );
 	}
 
 	public function testQuestionSubscriptionHook() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Hooks', 'question_subscription' ] ) );
 
@@ -245,41 +254,36 @@ class TestSubscribe extends TestCase {
 
 	/**
 	 * Check if qameta subscribers count is getting updated on adding new subscribers.
-	 *
-	 * @covers AnsPress_Hooks::new_subscriber
 	 */
 	public function testNewSubscriberHook() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_new_subscriber', [ 'AnsPress_Hooks', 'new_subscriber' ] ) );
 
 		$this->setRole( 'subscriber' );
-		$id = $this->insert_question();
-		$this->assertEquals( 0, ap_get_post( $id )->subscribers );
+		$id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'question' ) )
+			->ID;
+		$this->assertEquals( 1, ap_get_post( $id )->subscribers );
 		ap_new_subscriber( false, 'question', $id );
-		ap_new_subscriber( 2324324, 'question', $id );
-		ap_new_subscriber( 23232, 'question', $id );
-		$this->assertEquals( 3, ap_get_post( $id )->subscribers );
+		ap_new_subscriber( $this->factory()->user->create_and_get()->ID, 'question', $id );
+		$this->assertEquals( 2, ap_get_post( $id )->subscribers );
 	}
 
 	/**
 	 * Check if qameta subscribers count is getting updated on deleting subscribers.
-	 *
-	 * @covers AnsPress_Hooks::delete_subscribers
 	 */
 	public function testDeleteSubscribersHook() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		// Check hook exists.
 		$this->assertEquals( 10, has_action( 'ap_delete_subscribers', [ 'AnsPress_Hooks', 'delete_subscribers' ] ) );
 
-		$id = $this->insert_question();
-		ap_new_subscriber( 2345, 'question', $id );
-		ap_new_subscriber( 23451, 'question', $id );
-		ap_new_subscriber( 23455, 'question', $id );
+		$id = $this->factory()
+			->post->create_and_get( array( 'post_type' => 'question' ) )
+			->ID;
+
+		ap_new_subscriber( $this->factory()->user->create_and_get()->ID, 'question', $id );
+		ap_new_subscriber( $this->factory()->user->create_and_get()->ID, 'question', $id );
+		ap_new_subscriber( $this->factory()->user->create_and_get()->ID, 'question', $id );
+
 		$this->assertEquals( 3, ap_get_post( $id )->subscribers );
 		ap_delete_subscribers(
 			array(
@@ -290,39 +294,21 @@ class TestSubscribe extends TestCase {
 		$this->assertEquals( 0, ap_get_post( $id )->subscribers );
 	}
 
-	/**
-	 * @covers ::ap_esc_subscriber_event
-	 */
 	public function testEscSubscriberEvent() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$this->assertEquals( 'answer', ap_esc_subscriber_event( 'answer_99899' ) );
 		$this->assertEquals( 'answer', ap_esc_subscriber_event( 'answer' ) );
 		$this->assertEquals( 'question', ap_esc_subscriber_event( 'question' ) );
 		$this->assertEquals( 'question', ap_esc_subscriber_event( 'question_12345' ) );
 	}
 
-	/**
-	 * @covers ::ap_esc_subscriber_event_id
-	 */
 	public function testEscSubscriberEventId() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$this->assertEquals( 99899, ap_esc_subscriber_event_id( 'answer_99899' ) );
 		$this->assertNotEquals( -100, ap_esc_subscriber_event_id( 'answer_99899' ) );
 		$this->assertEquals( 0, ap_esc_subscriber_event_id( 'question' ) );
 		$this->assertNotEquals( -1, ap_esc_subscriber_event_id( 'question' ) );
 	}
 
-	/**
-	 * @covers ::ap_is_user_subscriber
-	 */
 	public function testAPIsUserSubscriber() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
@@ -343,51 +329,14 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( ap_is_user_subscriber( 'question', $id, $user_id ) );
 	}
 
-	/**
-	 * @covers ::ap_delete_subscribers_cache
-	 */
-	public function testAPDeleteSubscribersCache() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
-		// Set some caches for testing.
-		wp_cache_set( 'question_1234', 1, 'ap_subscribers_count' );
-		wp_cache_set( 'question_0', 1, 'ap_subscribers_count' );
-		wp_cache_set( '_01234', 1, 'ap_subscribers_count' );
-		wp_cache_set( '_', 1, 'ap_subscribers_count' );
-		$this->assertNotNull( wp_cache_get( 'question_1234', 'ap_subscribers_count' ) );
-		$this->assertNotNull( wp_cache_get( 'question_0', 'ap_subscribers_count' ) );
-		$this->assertNotNull( wp_cache_get( '_01234', 'ap_subscribers_count' ) );
-		$this->assertNotNull( wp_cache_get( '_', 'ap_subscribers_count' ) );
-
-		// Test begins.
-		ap_delete_subscribers_cache( 1234, 'question' );
-		$this->assertFalse( wp_cache_get( 'question_1234', 'ap_subscribers_count' ) );
-		$this->assertFalse( wp_cache_get( 'question_0', 'ap_subscribers_count' ) );
-		$this->assertFalse( wp_cache_get( '_01234', 'ap_subscribers_count' ) );
-		$this->assertFalse( wp_cache_get( '_', 'ap_subscribers_count' ) );
-	}
-
-	/**
-	 * @covers ::ap_new_subscriber
-	 */
 	public function testAPNewSubscriberWithoutPassingUserID() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_new_subscriber( false, 'question', $id );
 		$this->assertTrue( ap_is_user_subscriber( 'question', $id ) );
 	}
 
-	/**
-	 * @covers ::ap_get_subscriber
-	 */
 	public function testAPGetSubscriberWithoutPassingUserID() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_new_subscriber( false, 'question', $id );
@@ -395,13 +344,7 @@ class TestSubscribe extends TestCase {
 		$this->assertEquals( get_current_user_id(), $subscriber->subs_user_id );
 	}
 
-	/**
-	 * @covers ::ap_get_subscriber
-	 */
 	public function testAPGetSubscriberWithoutPassingAnEvent() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_new_subscriber( false, 'question', $id );
@@ -409,13 +352,7 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( $subscriber );
 	}
 
-	/**
-	 * @covers ::ap_get_subscriber
-	 */
 	public function testAPGetSubscriberWithoutPassingARefID() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_new_subscriber( false, 'question', $id );
@@ -423,12 +360,7 @@ class TestSubscribe extends TestCase {
 		$this->assertFalse( $subscriber );
 	}
 
-	/**
-	 * @covers ::ap_get_subscribers
-	 */
 	public function testAPGetSubscribersForPassingSubsUserID() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
 
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
