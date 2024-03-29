@@ -4122,4 +4122,103 @@ class Test_Roles extends TestCase {
 		$this->assertFalse( ap_user_can_read_comments( $question_id ) );
 		remove_filter( 'ap_user_can_read_comments', [ $this, 'ReturnFalse' ] );
 	}
+
+	/**
+	 * @covers AP_Roles::remove_roles
+	 */
+	public function testRemoveRolesForInstantiatingWPRolesClass() {
+		// Before calling the method.
+		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_participant' ) );
+		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_moderator' ) );
+		$this->assertInstanceOf( 'WP_Role', get_role( 'ap_banned' ) );
+
+		// After calling the method.
+		$role = new \AP_Roles();
+		global $wp_roles;
+		$wp_roles = null;
+		$role->remove_roles();
+		$this->assertFalse( isset( $wp_roles->roles['ap_participant'] ) );
+		$this->assertFalse( isset( $wp_roles->roles['ap_moderator'] ) );
+		$this->assertFalse( isset( $wp_roles->roles['ap_banned'] ) );
+	}
+
+	/**
+	 * @covers AP_Roles::add_capabilities
+	 */
+	public function testAddCapabilitiesForInstantiatingWPRolesClass() {
+		$role = new \AP_Roles();
+		$role->add_roles();
+
+		// Test.
+		global $wp_roles;
+		$wp_roles = null;
+		$role->add_capabilities();
+
+		// Check moderator caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['ap_moderator']['capabilities'] );
+		}
+
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['ap_moderator']['capabilities'] );
+		}
+
+		// Check participants caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['ap_participant']['capabilities'] );
+		}
+
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['ap_participant']['capabilities'] );
+		}
+
+		// Check banned caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['ap_banned']['capabilities'] );
+		}
+
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['ap_banned']['capabilities'] );
+		}
+
+		// Test administrator caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['administrator']['capabilities'] );
+		}
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['administrator']['capabilities'] );
+		}
+
+		// Test editor caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['editor']['capabilities'] );
+		}
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['editor']['capabilities'] );
+		}
+
+		// Test contributor caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['contributor']['capabilities'] );
+		}
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['contributor']['capabilities'] );
+		}
+
+		// Test author caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['author']['capabilities'] );
+		}
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['author']['capabilities'] );
+		}
+
+		// Test subscriber caps.
+		foreach ( ap_role_caps( 'moderator' ) as $c => $val ) {
+			$this->assertArrayNotHasKey( $c, $wp_roles->roles['subscriber']['capabilities'] );
+		}
+		foreach ( ap_role_caps( 'participant' ) as $c => $val ) {
+			$this->assertArrayHasKey( $c, $wp_roles->roles['subscriber']['capabilities'] );
+		}
+	}
 }
