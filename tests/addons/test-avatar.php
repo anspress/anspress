@@ -160,4 +160,21 @@ class TestAddonAvatar extends TestCase {
 		unlink( $avatar_file );
 		rmdir( $avatar_dir );
 	}
+
+	/**
+	 * @covers Anspress\Addons\ap_generate_avatar
+	 */
+	public function testAPGenerateAvatar() {
+		$user_id = $this->factory()->user->create();
+		$upload_dir = wp_upload_dir();
+		$avatar_dir = $upload_dir['basedir'] . '/ap_avatars/';
+		wp_mkdir_p( $avatar_dir );
+		$filename = md5( $user_id );
+		$avatar_file = $avatar_dir . $filename . '.jpg';
+		touch( $avatar_file );
+		$result = \Anspress\Addons\ap_generate_avatar( $user_id );
+		$this->assertStringContainsString( $filename, $result );
+		$this->assertEquals( $upload_dir['baseurl'] . '/ap_avatars/' . $filename . '.jpg', $result );
+		unlink( $avatar_file );
+	}
 }
