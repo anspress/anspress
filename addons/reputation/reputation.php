@@ -44,8 +44,9 @@ class Reputation extends \AnsPress\Singleton {
 
 		ap_add_default_options(
 			array(
-				'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
-				'user_page_slug_reputations'  => 'reputations',
+				'user_page_title_reputations'    => __( 'Reputations', 'anspress-question-answer' ),
+				'user_page_slug_reputations'     => 'reputations',
+				'show_reputation_in_author_link' => false,
 			)
 		);
 
@@ -70,7 +71,6 @@ class Reputation extends \AnsPress\Singleton {
 		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
 		add_filter( 'user_register', array( $this, 'user_register' ) );
 		add_action( 'delete_user', array( $this, 'delete_user' ) );
-		add_filter( 'ap_user_display_name', array( $this, 'display_name' ), 10, 2 );
 		add_filter( 'ap_pre_fetch_question_data', array( $this, 'pre_fetch_post' ) );
 		add_filter( 'ap_pre_fetch_answer_data', array( $this, 'pre_fetch_post' ) );
 		add_filter( 'bp_before_member_header_meta', array( $this, 'bp_profile_header_meta' ) );
@@ -79,6 +79,10 @@ class Reputation extends \AnsPress\Singleton {
 		add_filter( 'ap_bp_nav', array( $this, 'ap_bp_nav' ) );
 		add_filter( 'ap_bp_page', array( $this, 'ap_bp_page' ), 10, 2 );
 		add_filter( 'ap_all_options', array( $this, 'ap_all_options' ), 10, 2 );
+
+		if ( ap_opt( 'show_reputation_in_author_link' ) ) {
+			add_filter( 'ap_user_display_name', array( $this, 'display_name' ), 10, 2 );
+		}
 	}
 
 	/**
@@ -104,15 +108,21 @@ class Reputation extends \AnsPress\Singleton {
 		$opt  = ap_opt();
 		$form = array(
 			'fields' => array(
-				'user_page_title_reputations' => array(
+				'user_page_title_reputations'    => array(
 					'label' => __( 'Reputations page title', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom title for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_title_reputations'],
 				),
-				'user_page_slug_reputations'  => array(
+				'user_page_slug_reputations'     => array(
 					'label' => __( 'Reputations page slug', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom slug for user profile reputations page', 'anspress-question-answer' ),
 					'value' => $opt['user_page_slug_reputations'],
+				),
+				'show_reputation_in_author_link' => array(
+					'label' => __( 'Show reputation in author link', 'anspress-question-answer' ),
+					'desc'  => __( 'Show reputation points in author link', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['show_reputation_in_author_link'],
 				),
 			),
 		);

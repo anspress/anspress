@@ -199,11 +199,12 @@ class Generator {
 	 * Function to generate letter avatar
 	 */
 	public function generate() {
-		if ( ! function_exists( 'imagecreatetruecolor' ) || $this->avatar_exists() ) {
+		if ( empty( ap_opt( 'avatar_font' ) ) || ! function_exists( 'imagecreatetruecolor' ) || $this->avatar_exists() ) {
 			return;
 		}
 
-		$font  = ap_get_theme_location( 'avatar-fonts/' . ap_opt( 'avatar_font' ) . '.ttf' );
+		$font = ap_get_theme_location( 'avatar-fonts/' . ap_opt( 'avatar_font' ) . '.ttf' );
+
 		$words = explode( ' ', $this->name );
 		$text  = '';
 
@@ -273,8 +274,9 @@ class Generator {
 	 * @return array
 	 */
 	protected function image_center( $image, $text, $font, $size, $angle = 8 ) {
-		$xi  = imagesx( $image );
-		$yi  = imagesy( $image );
+		$xi = imagesx( $image );
+		$yi = imagesy( $image );
+
 		$box = imagettfbbox( $size, $angle, $font, $text );
 		$xr  = abs( max( $box[2], $box[4] ) );
 		$yr  = abs( max( $box[5], $box[7] ) );

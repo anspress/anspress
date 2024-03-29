@@ -24,12 +24,12 @@ class AnsPress_PostTypes {
 	 */
 	public static function init() {
 		// Register Custom Post types and taxonomy.
-		anspress()->add_action( 'init', __CLASS__, 'register_question_cpt', 0 );
-		anspress()->add_action( 'init', __CLASS__, 'register_answer_cpt', 0 );
-		anspress()->add_action( 'post_type_link', __CLASS__, 'post_type_link', 10, 4 );
-		anspress()->add_filter( 'post_type_archive_link', __CLASS__, 'post_type_archive_link', 10, 2 );
-		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_updated_messages', 10 );
-		anspress()->add_filter( 'bulk_post_updated_messages', __CLASS__, 'bulk_post_updated_messages', 10, 2 );
+		add_action( 'init', array( __CLASS__, 'register_question_cpt' ), 0 );
+		add_action( 'init', array( __CLASS__, 'register_answer_cpt' ), 0 );
+		add_action( 'post_type_link', array( __CLASS__, 'post_type_link' ), 10, 4 );
+		add_filter( 'post_type_archive_link', array( __CLASS__, 'post_type_archive_link' ), 10, 2 );
+		add_filter( 'post_updated_messages', array( __CLASS__, 'post_updated_messages' ), 10 );
+		add_filter( 'bulk_post_updated_messages', array( __CLASS__, 'bulk_post_updated_messages' ), 10, 2 );
 	}
 
 	/**

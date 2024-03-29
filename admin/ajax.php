@@ -27,18 +27,18 @@ class AnsPress_Admin_Ajax {
 	 * Initialize admin ajax
 	 */
 	public static function init() {
-		anspress()->add_action( 'wp_ajax_ap_delete_flag', __CLASS__, 'ap_delete_flag' );
-		anspress()->add_action( 'ap_ajax_ap_clear_flag', __CLASS__, 'clear_flag' );
-		anspress()->add_action( 'ap_ajax_ap_admin_vote', __CLASS__, 'ap_admin_vote' );
-		anspress()->add_action( 'ap_ajax_get_all_answers', __CLASS__, 'get_all_answers' );
-		anspress()->add_action( 'wp_ajax_ap_uninstall_data', __CLASS__, 'ap_uninstall_data' );
-		anspress()->add_action( 'wp_ajax_ap_toggle_addon', __CLASS__, 'ap_toggle_addon' );
-		anspress()->add_action( 'wp_ajax_ap_recount_votes', __CLASS__, 'recount_votes' );
-		anspress()->add_action( 'wp_ajax_ap_recount_answers', __CLASS__, 'recount_answers' );
-		anspress()->add_action( 'wp_ajax_ap_recount_flagged', __CLASS__, 'recount_flagged' );
-		anspress()->add_action( 'wp_ajax_ap_recount_subscribers', __CLASS__, 'recount_subscribers' );
-		anspress()->add_action( 'wp_ajax_ap_recount_reputation', __CLASS__, 'recount_reputation' );
-		anspress()->add_action( 'wp_ajax_ap_recount_views', __CLASS__, 'recount_views' );
+		add_action( 'wp_ajax_ap_delete_flag', array( __CLASS__, 'ap_delete_flag' ) );
+		add_action( 'ap_ajax_ap_clear_flag', array( __CLASS__, 'clear_flag' ) );
+		add_action( 'ap_ajax_ap_admin_vote', array( __CLASS__, 'ap_admin_vote' ) );
+		add_action( 'ap_ajax_get_all_answers', array( __CLASS__, 'get_all_answers' ) );
+		add_action( 'wp_ajax_ap_uninstall_data', array( __CLASS__, 'ap_uninstall_data' ) );
+		add_action( 'wp_ajax_ap_toggle_addon', array( __CLASS__, 'ap_toggle_addon' ) );
+		add_action( 'wp_ajax_ap_recount_votes', array( __CLASS__, 'recount_votes' ) );
+		add_action( 'wp_ajax_ap_recount_answers', array( __CLASS__, 'recount_answers' ) );
+		add_action( 'wp_ajax_ap_recount_flagged', array( __CLASS__, 'recount_flagged' ) );
+		add_action( 'wp_ajax_ap_recount_subscribers', array( __CLASS__, 'recount_subscribers' ) );
+		add_action( 'wp_ajax_ap_recount_reputation', array( __CLASS__, 'recount_reputation' ) );
+		add_action( 'wp_ajax_ap_recount_views', array( __CLASS__, 'recount_views' ) );
 	}
 
 	/**

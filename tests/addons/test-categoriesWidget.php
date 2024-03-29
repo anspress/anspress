@@ -14,7 +14,6 @@ class TestAddonCategoriesWidget extends TestCase {
 
 	public function testWidgetsInit() {
 		$instance = \Anspress\Addons\Categories::init();
-		anspress()->setup_hooks();
 		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget' ] ) );
 		do_action('widgets_init');
 
@@ -34,7 +33,6 @@ class TestAddonCategoriesWidget extends TestCase {
 	 */
 	public function testConstruct() {
 		\Anspress\Addons\Categories::init();
-		anspress()->setup_hooks();
 
 		do_action('widgets_init');
 
@@ -47,7 +45,6 @@ class TestAddonCategoriesWidget extends TestCase {
 
 	public function testupdate() {
 		\Anspress\Addons\Categories::init();
-		anspress()->setup_hooks();
 
 		do_action('widgets_init');
 
@@ -89,7 +86,6 @@ class TestAddonCategoriesWidget extends TestCase {
 
 	public function testUpdateHTMLTagsOnTitle() {
 		\Anspress\Addons\Categories::init();
-		anspress()->setup_hooks();
 
 		do_action('widgets_init');
 
@@ -131,7 +127,6 @@ class TestAddonCategoriesWidget extends TestCase {
 
 	public function testUpdateWithEmptyOptions() {
 		\Anspress\Addons\Categories::init();
-		anspress()->setup_hooks();
 
 		do_action('widgets_init');
 

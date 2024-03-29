@@ -58,7 +58,6 @@ class TestAddonNotifications extends TestCase {
 
 	public function testHooksFilters() {
 		$instance = \Anspress\Addons\Notifications::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );

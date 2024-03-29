@@ -75,14 +75,11 @@ class TestAddonCategories extends TestCase {
 
 	public function test_after_new_question()
 	{
-		anspress()->setup_hooks();
 		$this->assertEquals( 0, has_action( 'save_post_question', [ \Anspress\Addons\Categories::init(), 'after_new_question' ] ) );
 	}
 
 	public function test_ap_breadcrumbs_single_question()
 	{
-		anspress()->setup_hooks();
-
 		$question = $this->factory()->post->create_and_get([
 			'post_type'  => 'question',
 			'post_title' => 'Question Title',
@@ -117,8 +114,6 @@ class TestAddonCategories extends TestCase {
 
 	public function test_ap_breadcrumbs_single_category()
 	{
-		anspress()->setup_hooks();
-
 		$categories_page = $this->factory()->post->create_and_get([
 			'post_type'  => 'page',
 			'post_title' => 'Categories',
@@ -176,7 +171,6 @@ class TestAddonCategories extends TestCase {
 
 	public function testHooksFilters() {
 		$instance = \Anspress\Addons\Categories::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 1, has_action( 'init', [ $instance, 'register_question_categories' ], 1 ) );

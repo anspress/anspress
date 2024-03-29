@@ -1399,7 +1399,6 @@ class TestAnsPressAdmin extends TestCase {
 	 */
 	public function testInit() {
 		\AnsPress_Admin::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_action( 'save_post', [ 'AnsPress_Admin', 'ans_parent_post' ] ) );

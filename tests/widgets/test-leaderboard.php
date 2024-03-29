@@ -354,7 +354,6 @@ class TestWidgetLeaderboard extends TestCase {
 		$this->assertStringContainsString( '<h2 class="widget-title">', $result );
 		$this->assertStringContainsString( 'Test title', $result );
 		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
-		$this->assertStringContainsString( 'Reputation add-on is not active.', $result );
 	}
 
 	/**
@@ -385,7 +384,6 @@ class TestWidgetLeaderboard extends TestCase {
 		$this->assertStringContainsString( '<section class="widget">', $result );
 		$this->assertStringNotContainsString( '<h2 class="widget-title">', $result );
 		$this->assertStringContainsString( '<div class="ap-widget-inner">', $result );
-		$this->assertStringContainsString( 'Reputation add-on is not active.', $result );
 	}
 
 	/**

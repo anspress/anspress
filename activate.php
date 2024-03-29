@@ -69,7 +69,6 @@ class AP_Activate {
 	public function __construct() {
 		global $network_wide;
 		$this->network_wide = $network_wide;
-		$this->disable_ext();
 		$this->delete_options();
 
 		// Append table names in $wpdb.
@@ -81,10 +80,6 @@ class AP_Activate {
 			$this->activate();
 		}
 
-		// Enable/Disable addon.
-		$this->enable_addons();
-		$this->reactivate_addons();
-
 		// Migrate old datas.
 		$this->migrate();
 	}
@@ -93,15 +88,7 @@ class AP_Activate {
 	 * Disable old AnsPress extensions.
 	 */
 	public function disable_ext() {
-		deactivate_plugins(
-			array(
-				'categories-for-anspress/categories-for-anspress.php',
-				'tags-for-anspress/tags-for-anspress.php',
-				'anspress-email/anspress-email.php',
-				'question-labels/question-labels.php',
-				'anspress-paid-membership/anspress-paid-membership.php',
-			)
-		);
+		_deprecated_function( __METHOD__, '5.0.0', 'AP_Activate::delete_options' );
 	}
 
 	/**
@@ -355,6 +342,13 @@ class AP_Activate {
 		$this->insert_tables();
 		update_option( 'anspress_db_version', AP_DB_VERSION );
 		update_option( 'anspress_opt', get_option( 'anspress_opt' ) + ap_default_options() );
+
+		/**
+		 * An action to to let other plugins to run their activation code.
+		 *
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress_run_db_activation' );
 
 		// Create main pages.
 		ap_create_base_page();

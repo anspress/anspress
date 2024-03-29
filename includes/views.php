@@ -27,8 +27,8 @@ class AnsPress_Views {
 	 * @since 2.4.8 Removed `$ap` args.
 	 */
 	public static function init() {
-		anspress()->add_action( 'shutdown', __CLASS__, 'insert_views' );
-		anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
+		add_action( 'shutdown', array( __CLASS__, 'insert_views' ) );
+		add_action( 'ap_before_delete_question', array( 'AnsPress_Vote', 'delete_votes' ) );
 	}
 
 	/**

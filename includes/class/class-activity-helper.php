@@ -80,10 +80,10 @@ class Activity_Helper {
 	 * @since 4.1.2
 	 */
 	private static function hooks() {
-		anspress()->add_action( 'before_delete_post', __CLASS__, '_before_delete' );
-		anspress()->add_action( 'delete_comment', __CLASS__, '_delete_comment' );
-		anspress()->add_action( 'delete_user', __CLASS__, '_delete_user' );
-		anspress()->add_action( 'ap_ajax_more_activities', __CLASS__, '_ajax_more_activities' );
+		add_action( 'before_delete_post', array( __CLASS__, '_before_delete' ) );
+		add_action( 'delete_comment', array( __CLASS__, '_delete_comment' ) );
+		add_action( 'delete_user', array( __CLASS__, '_delete_user' ) );
+		add_action( 'ap_ajax_more_activities', array( __CLASS__, '_ajax_more_activities' ) );
 	}
 
 	/**

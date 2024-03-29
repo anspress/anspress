@@ -32,106 +32,106 @@ class AnsPress_Hooks {
 	 * @since 2.4.8 Removed `$ap` argument.
 	 */
 	public static function init() {
-			anspress()->add_action( 'registered_taxonomy', __CLASS__, 'add_ap_tables' );
-			anspress()->add_action( 'ap_processed_new_question', __CLASS__, 'after_new_question', 1, 2 );
-			anspress()->add_action( 'ap_processed_new_answer', __CLASS__, 'after_new_answer', 1, 2 );
-			anspress()->add_action( 'before_delete_post', __CLASS__, 'before_delete' );
-			anspress()->add_action( 'wp_trash_post', __CLASS__, 'trash_post_action' );
-			anspress()->add_action( 'untrash_post', __CLASS__, 'untrash_posts' );
-			anspress()->add_action( 'comment_post', __CLASS__, 'new_comment_approve', 10, 2 );
-			anspress()->add_action( 'comment_unapproved_to_approved', __CLASS__, 'comment_approve' );
-			anspress()->add_action( 'comment_approved_to_unapproved', __CLASS__, 'comment_unapprove' );
-			anspress()->add_action( 'trashed_comment', __CLASS__, 'comment_trash' );
-			anspress()->add_action( 'delete_comment', __CLASS__, 'comment_trash' );
-			anspress()->add_action( 'edit_comment', __CLASS__, 'edit_comment' );
-			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'publish_comment' );
-			anspress()->add_action( 'ap_unpublish_comment', __CLASS__, 'unpublish_comment' );
-			anspress()->add_action( 'wp_loaded', __CLASS__, 'flush_rules' );
-			anspress()->add_action( 'safe_style_css', __CLASS__, 'safe_style_css', 11 );
-			anspress()->add_action( 'save_post', __CLASS__, 'base_page_update', 10, 2 );
-			anspress()->add_action( 'save_post_question', __CLASS__, 'save_question_hooks', 1, 3 );
-			anspress()->add_action( 'save_post_answer', __CLASS__, 'save_answer_hooks', 1, 3 );
-			anspress()->add_action( 'transition_post_status', __CLASS__, 'transition_post_status', 10, 3 );
-			anspress()->add_action( 'ap_vote_casted', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
-			anspress()->add_action( 'ap_vote_removed', __CLASS__, 'update_user_vote_casted_count', 10, 4 );
-			anspress()->add_action( 'ap_display_question_metas', __CLASS__, 'display_question_metas', 100, 2 );
-			anspress()->add_action( 'widget_comments_args', __CLASS__, 'widget_comments_args' );
-			anspress()->add_filter( 'show_admin_bar', __CLASS__, 'show_admin_bar' );
+			add_action( 'registered_taxonomy', array( __CLASS__, 'add_ap_tables' ) );
+			add_action( 'ap_processed_new_question', array( __CLASS__, 'after_new_question' ), 1, 2 );
+			add_action( 'ap_processed_new_answer', array( __CLASS__, 'after_new_answer' ), 1, 2 );
+			add_action( 'before_delete_post', array( __CLASS__, 'before_delete' ) );
+			add_action( 'wp_trash_post', array( __CLASS__, 'trash_post_action' ) );
+			add_action( 'untrash_post', array( __CLASS__, 'untrash_posts' ) );
+			add_action( 'comment_post', array( __CLASS__, 'new_comment_approve' ), 10, 2 );
+			add_action( 'comment_unapproved_to_approved', array( __CLASS__, 'comment_approve' ) );
+			add_action( 'comment_approved_to_unapproved', array( __CLASS__, 'comment_unapprove' ) );
+			add_action( 'trashed_comment', array( __CLASS__, 'comment_trash' ) );
+			add_action( 'delete_comment', array( __CLASS__, 'comment_trash' ) );
+			add_action( 'edit_comment', array( __CLASS__, 'edit_comment' ) );
+			add_action( 'ap_publish_comment', array( __CLASS__, 'publish_comment' ) );
+			add_action( 'ap_unpublish_comment', array( __CLASS__, 'unpublish_comment' ) );
+			add_action( 'wp_loaded', array( __CLASS__, 'flush_rules' ) );
+			add_action( 'safe_style_css', array( __CLASS__, 'safe_style_css' ), 11 );
+			add_action( 'save_post', array( __CLASS__, 'base_page_update' ), 10, 2 );
+			add_action( 'save_post_question', array( __CLASS__, 'save_question_hooks' ), 1, 3 );
+			add_action( 'save_post_answer', array( __CLASS__, 'save_answer_hooks' ), 1, 3 );
+			add_action( 'transition_post_status', array( __CLASS__, 'transition_post_status' ), 10, 3 );
+			add_action( 'ap_vote_casted', array( __CLASS__, 'update_user_vote_casted_count' ), 10, 4 );
+			add_action( 'ap_vote_removed', array( __CLASS__, 'update_user_vote_casted_count' ), 10, 4 );
+			add_action( 'ap_display_question_metas', array( __CLASS__, 'display_question_metas' ), 100, 2 );
+			add_action( 'widget_comments_args', array( __CLASS__, 'widget_comments_args' ) );
+			add_filter( 'show_admin_bar', array( __CLASS__, 'show_admin_bar' ) );
 
-			anspress()->add_filter( 'posts_clauses', 'AP_QA_Query_Hooks', 'sql_filter', 1, 2 );
-			anspress()->add_filter( 'posts_results', 'AP_QA_Query_Hooks', 'posts_results', 1, 2 );
-			anspress()->add_filter( 'posts_pre_query', 'AP_QA_Query_Hooks', 'modify_main_posts', 999999, 2 );
-			anspress()->add_filter( 'pre_get_posts', 'AP_QA_Query_Hooks', 'pre_get_posts' );
+			add_filter( 'posts_clauses', array( 'AP_QA_Query_Hooks', 'sql_filter' ), 1, 2 );
+			add_filter( 'posts_results', array( 'AP_QA_Query_Hooks', 'posts_results' ), 1, 2 );
+			add_filter( 'posts_pre_query', array( 'AP_QA_Query_Hooks', 'modify_main_posts' ), 999999, 2 );
+			add_filter( 'pre_get_posts', array( 'AP_QA_Query_Hooks', 'pre_get_posts' ) );
 
 			// Theme hooks.
-			anspress()->add_action( 'init', 'AnsPress_Theme', 'init_actions' );
-			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'template_include' );
-			anspress()->add_filter( 'ap_template_include', 'AnsPress_Theme', 'template_include_theme_compat' );
-			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'question_answer_post_class' );
-			anspress()->add_filter( 'body_class', 'AnsPress_Theme', 'body_class' );
-			anspress()->add_action( 'after_setup_theme', 'AnsPress_Theme', 'includes_theme' );
-			anspress()->add_filter( 'wp_title', 'AnsPress_Theme', 'ap_title', 0 );
-			anspress()->add_filter( 'document_title_parts', 'AnsPress_Theme', 'ap_title_parts', 0 );
-			anspress()->add_action( 'ap_before', 'AnsPress_Theme', 'ap_before_html_body' );
-			anspress()->add_action( 'wp_head', 'AnsPress_Theme', 'wp_head', 11 );
-			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'question_attachments', 11 );
-			anspress()->add_action( 'ap_after_answer_content', 'AnsPress_Theme', 'question_attachments', 11 );
-			anspress()->add_filter( 'nav_menu_css_class', __CLASS__, 'fix_nav_current_class', 10, 2 );
-			anspress()->add_filter( 'wp_insert_post_data', __CLASS__, 'wp_insert_post_data', 1000, 2 );
-			anspress()->add_filter( 'ap_form_contents_filter', __CLASS__, 'sanitize_description' );
+			add_action( 'init', array( 'AnsPress_Theme', 'init_actions' ) );
+			add_filter( 'template_include', array( 'AnsPress_Theme', 'template_include' ) );
+			add_filter( 'ap_template_include', array( 'AnsPress_Theme', 'template_include_theme_compat' ) );
+			add_filter( 'post_class', array( 'AnsPress_Theme', 'question_answer_post_class' ) );
+			add_filter( 'body_class', array( 'AnsPress_Theme', 'body_class' ) );
+			add_action( 'after_setup_theme', array( 'AnsPress_Theme', 'includes_theme' ) );
+			add_filter( 'wp_title', array( 'AnsPress_Theme', 'ap_title' ), 0 );
+			add_filter( 'document_title_parts', array( 'AnsPress_Theme', 'ap_title_parts' ), 0 );
+			add_action( 'ap_before', array( 'AnsPress_Theme', 'ap_before_html_body' ) );
+			add_action( 'wp_head', array( 'AnsPress_Theme', 'wp_head' ), 11 );
+			add_action( 'ap_after_question_content', array( 'AnsPress_Theme', 'question_attachments' ), 11 );
+			add_action( 'ap_after_answer_content', array( 'AnsPress_Theme', 'question_attachments' ), 11 );
+			add_filter( 'nav_menu_css_class', array( __CLASS__, 'fix_nav_current_class' ), 10, 2 );
+			add_filter( 'wp_insert_post_data', array( __CLASS__, 'wp_insert_post_data' ), 1000, 2 );
+			add_filter( 'ap_form_contents_filter', array( __CLASS__, 'sanitize_description' ) );
 
-			anspress()->add_filter( 'template_include', 'AnsPress_Theme', 'anspress_basepage_template', 9999 );
-			anspress()->add_filter( 'get_the_excerpt', 'AnsPress_Theme', 'get_the_excerpt', 9999, 2 );
-			anspress()->add_filter( 'post_class', 'AnsPress_Theme', 'remove_hentry_class', 10, 3 );
-			anspress()->add_action( 'ap_after_question_content', 'AnsPress_Theme', 'after_question_content' );
-			anspress()->add_filter( 'ap_after_answer_content', 'AnsPress_Theme', 'after_question_content' );
+			add_filter( 'template_include', array( 'AnsPress_Theme', 'anspress_basepage_template' ), 9999 );
+			add_filter( 'get_the_excerpt', array( 'AnsPress_Theme', 'get_the_excerpt' ), 9999, 2 );
+			add_filter( 'post_class', array( 'AnsPress_Theme', 'remove_hentry_class' ), 10, 3 );
+			add_action( 'ap_after_question_content', array( 'AnsPress_Theme', 'after_question_content' ) );
+			add_filter( 'ap_after_answer_content', array( 'AnsPress_Theme', 'after_question_content' ) );
 
-			anspress()->add_filter( 'the_comments', 'AnsPress_Comment_Hooks', 'the_comments' );
-			anspress()->add_filter( 'get_comment_link', 'AnsPress_Comment_Hooks', 'comment_link', 10, 3 );
-			anspress()->add_filter( 'preprocess_comment', 'AnsPress_Comment_Hooks', 'preprocess_comment' );
-			anspress()->add_filter( 'comments_template', 'AnsPress_Comment_Hooks', 'comments_template' );
+			add_filter( 'the_comments', array( 'AnsPress_Comment_Hooks', 'the_comments' ) );
+			add_filter( 'get_comment_link', array( 'AnsPress_Comment_Hooks', 'comment_link' ), 10, 3 );
+			add_filter( 'preprocess_comment', array( 'AnsPress_Comment_Hooks', 'preprocess_comment' ) );
+			add_filter( 'comments_template', array( 'AnsPress_Comment_Hooks', 'comments_template' ) );
 
 			// Common pages hooks.
-			anspress()->add_action( 'init', 'AnsPress_Common_Pages', 'register_common_pages' );
+			add_action( 'init', array( 'AnsPress_Common_Pages', 'register_common_pages' ) );
 
 			// Register post status.
-			anspress()->add_action( 'init', 'AnsPress_Post_Status', 'register_post_status' );
+			add_action( 'init', array( 'AnsPress_Post_Status', 'register_post_status' ) );
 
 			// Rewrite rules hooks.
-			anspress()->add_filter( 'request', 'AnsPress_Rewrite', 'alter_the_query' );
-			anspress()->add_filter( 'query_vars', 'AnsPress_Rewrite', 'query_var' );
-			anspress()->add_action( 'generate_rewrite_rules', 'AnsPress_Rewrite', 'rewrites', 1 );
-			anspress()->add_filter( 'paginate_links', 'AnsPress_Rewrite', 'pagination_fix' );
-			anspress()->add_filter( 'parse_request', 'AnsPress_Rewrite', 'add_query_var' );
-			anspress()->add_action( 'template_redirect', 'AnsPress_Rewrite', 'shortlink' );
+			add_filter( 'request', array( 'AnsPress_Rewrite', 'alter_the_query' ) );
+			add_filter( 'query_vars', array( 'AnsPress_Rewrite', 'query_var' ) );
+			add_action( 'generate_rewrite_rules', array( 'AnsPress_Rewrite', 'rewrites' ), 1 );
+			add_filter( 'paginate_links', array( 'AnsPress_Rewrite', 'pagination_fix' ) );
+			add_filter( 'parse_request', array( 'AnsPress_Rewrite', 'add_query_var' ) );
+			add_action( 'template_redirect', array( 'AnsPress_Rewrite', 'shortlink' ) );
 
 			// Upload hooks.
-			anspress()->add_action( 'deleted_post', 'AnsPress_Uploader', 'deleted_attachment' );
-			anspress()->add_action( 'init', 'AnsPress_Uploader', 'create_single_schedule' );
-			anspress()->add_action( 'ap_delete_temp_attachments', 'AnsPress_Uploader', 'cron_delete_temp_attachments' );
-			anspress()->add_action( 'intermediate_image_sizes_advanced', 'AnsPress_Uploader', 'image_sizes_advanced' );
+			add_action( 'deleted_post', array( 'AnsPress_Uploader', 'deleted_attachment' ) );
+			add_action( 'init', array( 'AnsPress_Uploader', 'create_single_schedule' ) );
+			add_action( 'ap_delete_temp_attachments', array( 'AnsPress_Uploader', 'cron_delete_temp_attachments' ) );
+			add_action( 'intermediate_image_sizes_advanced', array( 'AnsPress_Uploader', 'image_sizes_advanced' ) );
 
 			// Vote hooks.
-			anspress()->add_action( 'ap_before_delete_question', 'AnsPress_Vote', 'delete_votes' );
-			anspress()->add_action( 'ap_before_delete_answer', 'AnsPress_Vote', 'delete_votes' );
-			anspress()->add_action( 'ap_deleted_votes', 'AnsPress_Vote', 'ap_deleted_votes', 10, 2 );
+			add_action( 'ap_before_delete_question', array( 'AnsPress_Vote', 'delete_votes' ) );
+			add_action( 'ap_before_delete_answer', array( 'AnsPress_Vote', 'delete_votes' ) );
+			add_action( 'ap_deleted_votes', array( 'AnsPress_Vote', 'ap_deleted_votes' ), 10, 2 );
 
 			// Form hooks.
-			anspress()->add_action( 'ap_form_question', 'AP_Form_Hooks', 'question_form', 11 );
-			anspress()->add_action( 'ap_form_answer', 'AP_Form_Hooks', 'answer_form', 11 );
-			anspress()->add_action( 'ap_form_comment', 'AP_Form_Hooks', 'comment_form', 11 );
-			anspress()->add_action( 'ap_form_image_upload', 'AP_Form_Hooks', 'image_upload_form', 11 );
+			add_action( 'ap_form_question', array( 'AP_Form_Hooks', 'question_form' ), 11 );
+			add_action( 'ap_form_answer', array( 'AP_Form_Hooks', 'answer_form' ), 11 );
+			add_action( 'ap_form_comment', array( 'AP_Form_Hooks', 'comment_form' ), 11 );
+			add_action( 'ap_form_image_upload', array( 'AP_Form_Hooks', 'image_upload_form' ), 11 );
 
 			// Subscriptions.
-			anspress()->add_action( 'ap_after_new_question', __CLASS__, 'question_subscription', 10, 2 );
-			anspress()->add_action( 'ap_after_new_answer', __CLASS__, 'answer_subscription', 10, 2 );
-			anspress()->add_action( 'ap_new_subscriber', __CLASS__, 'new_subscriber', 10, 4 );
-			anspress()->add_action( 'ap_delete_subscribers', __CLASS__, 'delete_subscribers', 10, 2 );
-			anspress()->add_action( 'ap_delete_subscriber', __CLASS__, 'delete_subscriber', 10, 3 );
-			anspress()->add_action( 'before_delete_post', __CLASS__, 'delete_subscriptions' );
-			anspress()->add_action( 'ap_publish_comment', __CLASS__, 'comment_subscription' );
-			anspress()->add_action( 'deleted_comment', __CLASS__, 'delete_comment_subscriptions', 10, 2 );
-			anspress()->add_action( 'get_comments_number', __CLASS__, 'get_comments_number', 11, 2 );
+			add_action( 'ap_after_new_question', array( __CLASS__, 'question_subscription' ), 10, 2 );
+			add_action( 'ap_after_new_answer', array( __CLASS__, 'answer_subscription' ), 10, 2 );
+			add_action( 'ap_new_subscriber', array( __CLASS__, 'new_subscriber' ), 10, 4 );
+			add_action( 'ap_delete_subscribers', array( __CLASS__, 'delete_subscribers' ), 10, 2 );
+			add_action( 'ap_delete_subscriber', array( __CLASS__, 'delete_subscriber' ), 10, 3 );
+			add_action( 'before_delete_post', array( __CLASS__, 'delete_subscriptions' ) );
+			add_action( 'ap_publish_comment', array( __CLASS__, 'comment_subscription' ) );
+			add_action( 'deleted_comment', array( __CLASS__, 'delete_comment_subscriptions' ), 10, 2 );
+			add_action( 'get_comments_number', array( __CLASS__, 'get_comments_number' ), 11, 2 );
 	}
 
 	/**

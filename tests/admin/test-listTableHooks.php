@@ -34,7 +34,6 @@ class TestListTableHooks extends TestCase {
 	 */
 	public function testInit() {
 		\AnsPress_Post_Table_Hooks::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_filter( 'views_edit-question', [ 'AnsPress_Post_Table_Hooks', 'flag_view' ] ) );

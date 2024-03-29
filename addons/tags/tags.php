@@ -752,10 +752,10 @@ class Tags extends \AnsPress\Singleton {
 	public function modify_query_archive( $posts, $query ) {
 		if ( $query->is_main_query() &&
 			$query->is_tax( 'question_tag' ) &&
-			'tag' === get_query_var( 'ap_page' ) ) {
+			'tag' === get_query_var( 'ap_page' ) && ! empty( ap_opt( 'tags_page' ) ) ) {
 			$query->found_posts   = 1;
 			$query->max_num_pages = 1;
-			$page                 = get_page( ap_opt( 'tags_page' ) );
+			$page                 = get_post( ap_opt( 'tags_page' ) );
 			$page->post_title     = get_queried_object()->name;
 			$posts                = array( $page );
 		}

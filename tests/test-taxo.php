@@ -170,9 +170,6 @@ class TestTaxo extends TestCase {
 		$this->assertFalse( is_question_tag() );
 	}
 
-	/**
-	 * @covers ::ap_get_categories_slug
-	 */
 	public function testAPGetCategoriesSlug() {
 		$this->assertEquals( 'categories', ap_get_categories_slug() );
 		$id = $this->factory()->post->create(

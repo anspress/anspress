@@ -57,7 +57,6 @@ class TestAddonBuddyPress extends TestCase {
 
 	public function testHooksFilters() {
 		$instance = \Anspress\Addons\BuddyPress::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_action( 'bp_init', [ $instance, 'bp_init' ] ) );
@@ -86,7 +85,7 @@ class TestAddonBuddyPress extends TestCase {
 	public function testBpInit() {
 		$instance = \Anspress\Addons\BuddyPress::init();
 		$instance->bp_init();
-		anspress()->setup_hooks();
+
 		$this->assertEquals( 10, has_filter( 'the_content', [ $instance, 'ap_the_answer_content' ] ) );
 	}
 }

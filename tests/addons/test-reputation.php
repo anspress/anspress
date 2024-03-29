@@ -68,7 +68,6 @@ class TestAddonReputation extends TestCase {
 		$property->setAccessible( true );
 		$property->setValue( null );
 		$instance = \Anspress\Addons\Reputation::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );

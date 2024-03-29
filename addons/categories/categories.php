@@ -463,7 +463,7 @@ class Categories extends \AnsPress\Singleton {
 	 * @since   1.0
 	 */
 	public function after_new_question( $post_id, $post ) {
-		$values = get_form( 'question' )->get_values();
+		$values = anspress()->get_form( 'question' )->get_values();
 
 		if ( isset( $values['category']['value'] ) ) {
 			wp_set_post_terms( $post_id, $values['category']['value'], 'question_category' );

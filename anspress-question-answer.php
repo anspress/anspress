@@ -473,6 +473,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @deprecated 5.0.0
 		 */
 		public function setup_hooks() {
+			_deprecated_function( __METHOD__, '5.0.0', '' );
+
 			foreach ( $this->filters as $hook ) {
 				add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 			}
@@ -581,7 +583,10 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 			 * @since 2.4.7
 			 */
 			do_action( 'before_loading_anspress' );
-			anspress()->setup_hooks();
+
+			self::load_textdomain();
+
+			anspress();
 		}
 
 		/**
@@ -646,13 +651,14 @@ if ( ! class_exists( 'AnsPress_Init' ) ) {
 	}
 }
 
-add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_anspress' ), 1 );
-add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_textdomain' ), 0 );
 add_action( 'wpmu_new_blog', array( 'AnsPress_Init', 'create_blog' ), 10, 6 );
 add_filter( 'wpmu_drop_tables', array( 'AnsPress_Init', 'drop_blog_tables' ), 10, 2 );
 
 require_once __DIR__ . '/includes/class/roles-cap.php';
 require_once __DIR__ . '/includes/class/class-singleton.php';
+
+// Load AnsPress.
+add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_anspress' ) );
 
 /**
  * Register hooks that are fired when the plugin is activated or deactivated.

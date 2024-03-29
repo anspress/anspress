@@ -25,53 +25,51 @@ class AnsPress_Ajax {
 	 * and styles.
 	 */
 	public static function init() {
-		anspress()->add_action( 'ap_ajax_suggest_similar_questions', __CLASS__, 'suggest_similar_questions' );
-		anspress()->add_action( 'ap_ajax_load_tinymce', __CLASS__, 'load_tinymce' );
-		anspress()->add_action( 'ap_ajax_load_comments', 'AnsPress_Comment_Hooks', 'load_comments' );
-		anspress()->add_action( 'ap_ajax_edit_comment_form', 'AnsPress_Comment_Hooks', 'edit_comment_form' );
-		anspress()->add_action( 'ap_ajax_edit_comment', 'AnsPress_Comment_Hooks', 'edit_comment' );
-		anspress()->add_action( 'ap_ajax_approve_comment', 'AnsPress_Comment_Hooks', 'approve_comment' );
-		anspress()->add_action( 'ap_ajax_vote', 'AnsPress_Vote', 'vote' );
-
-		anspress()->add_action( 'ap_ajax_delete_comment', 'AnsPress\Ajax\Comment_Delete', 'init' );
-		anspress()->add_action( 'wp_ajax_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
-		anspress()->add_action( 'wp_ajax_nopriv_comment_modal', 'AnsPress\Ajax\Comment_Modal', 'init' );
-		anspress()->add_action( 'wp_ajax_ap_toggle_best_answer', 'AnsPress\Ajax\Toggle_Best_Answer', 'init' );
+		add_action( 'ap_ajax_suggest_similar_questions', array( __CLASS__, 'suggest_similar_questions' ) );
+		add_action( 'ap_ajax_load_tinymce', array( __CLASS__, 'load_tinymce' ) );
+		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
+		add_action( 'ap_ajax_edit_comment_form', array( 'AnsPress_Comment_Hooks', 'edit_comment_form' ) );
+		add_action( 'ap_ajax_edit_comment', array( 'AnsPress_Comment_Hooks', 'edit_comment' ) );
+		add_action( 'ap_ajax_approve_comment', array( 'AnsPress_Comment_Hooks', 'approve_comment' ) );
+		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
+		add_action( 'ap_ajax_delete_comment', array( 'AnsPress\Ajax\Comment_Delete', 'init' ) );
+		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
+		add_action( 'wp_ajax_nopriv_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
+		add_action( 'wp_ajax_ap_toggle_best_answer', array( 'AnsPress\Ajax\Toggle_Best_Answer', 'init' ) );
 
 		// Post actions.
-		anspress()->add_action( 'ap_ajax_post_actions', 'AnsPress_Theme', 'post_actions' );
-		anspress()->add_action( 'ap_ajax_action_toggle_featured', __CLASS__, 'toggle_featured' );
-		anspress()->add_action( 'ap_ajax_action_close', __CLASS__, 'close_question' );
-		anspress()->add_action( 'ap_ajax_action_toggle_delete_post', __CLASS__, 'toggle_delete_post' );
-		anspress()->add_action( 'ap_ajax_action_delete_permanently', __CLASS__, 'permanent_delete_post' );
-		anspress()->add_action( 'ap_ajax_action_status', 'AnsPress_Post_Status', 'change_post_status' );
-		anspress()->add_action( 'ap_ajax_action_convert_to_post', __CLASS__, 'convert_to_post' );
+		add_action( 'ap_ajax_post_actions', array( 'AnsPress_Theme', 'post_actions' ) );
+		add_action( 'ap_ajax_action_toggle_featured', array( __CLASS__, 'toggle_featured' ) );
+		add_action( 'ap_ajax_action_close', array( __CLASS__, 'close_question' ) );
+		add_action( 'ap_ajax_action_toggle_delete_post', array( __CLASS__, 'toggle_delete_post' ) );
+		add_action( 'ap_ajax_action_delete_permanently', array( __CLASS__, 'permanent_delete_post' ) );
+		add_action( 'ap_ajax_action_status', array( 'AnsPress_Post_Status', 'change_post_status' ) );
+		add_action( 'ap_ajax_action_convert_to_post', array( __CLASS__, 'convert_to_post' ) );
 
 		// Flag ajax callbacks.
-		anspress()->add_action( 'ap_ajax_action_flag', 'AnsPress_Flag', 'action_flag' );
+		add_action( 'ap_ajax_action_flag', array( 'AnsPress_Flag', 'action_flag' ) );
 
 		// Uploader hooks.
-		anspress()->add_action( 'ap_ajax_delete_attachment', 'AnsPress_Uploader', 'delete_attachment' );
+		add_action( 'ap_ajax_delete_attachment', array( 'AnsPress_Uploader', 'delete_attachment' ) );
 
 		// List filtering.
-		anspress()->add_action( 'ap_ajax_load_filter_order_by', __CLASS__, 'load_filter_order_by' );
+		add_action( 'ap_ajax_load_filter_order_by', array( __CLASS__, 'load_filter_order_by' ) );
 
 		// Subscribe.
-		anspress()->add_action( 'ap_ajax_subscribe', __CLASS__, 'subscribe_to_question' );
-		anspress()->add_action( 'wp_ajax_ap_repeatable_field', 'AnsPress\Ajax\Repeatable_Field', 'init' );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_repeatable_field', 'AnsPress\Ajax\Repeatable_Field', 'init' );
-
-		anspress()->add_action( 'wp_ajax_ap_form_question', 'AP_Form_Hooks', 'submit_question_form', 11, 0 );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_form_question', 'AP_Form_Hooks', 'submit_question_form', 11, 0 );
-		anspress()->add_action( 'wp_ajax_ap_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11, 0 );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_form_answer', 'AP_Form_Hooks', 'submit_answer_form', 11, 0 );
-		anspress()->add_action( 'wp_ajax_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_form_comment', 'AP_Form_Hooks', 'submit_comment_form', 11, 0 );
-		anspress()->add_action( 'wp_ajax_ap_search_tags', __CLASS__, 'search_tags' );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_search_tags', __CLASS__, 'search_tags' );
-		anspress()->add_action( 'wp_ajax_ap_image_upload', 'AnsPress_Uploader', 'image_upload' );
-		anspress()->add_action( 'wp_ajax_ap_upload_modal', 'AnsPress_Uploader', 'upload_modal' );
-		anspress()->add_action( 'wp_ajax_nopriv_ap_upload_modal', 'AnsPress_Uploader', 'upload_modal' );
+		add_action( 'ap_ajax_subscribe', array( __CLASS__, 'subscribe_to_question' ) );
+		add_action( 'wp_ajax_ap_repeatable_field', array( 'AnsPress\Ajax\Repeatable_Field', 'init' ) );
+		add_action( 'wp_ajax_nopriv_ap_repeatable_field', array( 'AnsPress\Ajax\Repeatable_Field', 'init' ) );
+		add_action( 'wp_ajax_ap_form_question', array( 'AP_Form_Hooks', 'submit_question_form' ), 11, 0 );
+		add_action( 'wp_ajax_nopriv_ap_form_question', array( 'AP_Form_Hooks', 'submit_question_form' ), 11, 0 );
+		add_action( 'wp_ajax_ap_form_answer', array( 'AP_Form_Hooks', 'submit_answer_form' ), 11, 0 );
+		add_action( 'wp_ajax_nopriv_ap_form_answer', array( 'AP_Form_Hooks', 'submit_answer_form' ), 11, 0 );
+		add_action( 'wp_ajax_ap_form_comment', array( 'AP_Form_Hooks', 'submit_comment_form' ), 11, 0 );
+		add_action( 'wp_ajax_nopriv_ap_form_comment', array( 'AP_Form_Hooks', 'submit_comment_form' ), 11, 0 );
+		add_action( 'wp_ajax_ap_search_tags', array( __CLASS__, 'search_tags' ) );
+		add_action( 'wp_ajax_nopriv_ap_search_tags', array( __CLASS__, 'search_tags' ) );
+		add_action( 'wp_ajax_ap_image_upload', array( 'AnsPress_Uploader', 'image_upload' ) );
+		add_action( 'wp_ajax_ap_upload_modal', array( 'AnsPress_Uploader', 'upload_modal' ) );
+		add_action( 'wp_ajax_nopriv_ap_upload_modal', array( 'AnsPress_Uploader', 'upload_modal' ) );
 	}
 
 	/**

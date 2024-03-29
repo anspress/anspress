@@ -42,17 +42,14 @@ tests_add_filter(
 	'muplugins_loaded',
 	function() use ( $plugin_dir ) {
 		require $plugin_dir . '/anspress-question-answer.php';
+
 	}
 );
 
 WPIntegration\bootstrap_it();
 
-// activate_plugin( 'anspress-question-answer/anspress-question-answer.php' );
-
 echo "Setting up AnsPress...\n";
 
-anspress();
-ap_append_table_names();
 anspress_activation();
 
 function _disable_reqs( $status = false, $args = array(), $url = '') {

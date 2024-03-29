@@ -921,7 +921,7 @@ function ap_create_base_page() {
 
 	foreach ( $pages as $slug => $page ) {
 		// Check if page already exists.
-		$_post = get_page( ap_opt( $slug ) );
+		$_post = get_post( ap_opt( $slug ) );
 
 		if ( ! $_post || 'trash' === $_post->post_status ) {
 			$args = wp_parse_args(
@@ -942,7 +942,7 @@ function ap_create_base_page() {
 			$new_page_id = wp_insert_post( $args );
 
 			if ( $new_page_id ) {
-				$page = get_page( $new_page_id );
+				$page = get_post( $new_page_id );
 
 				ap_opt( $slug, $page->ID );
 				ap_opt( $slug . '_id', $page->post_name );
@@ -1948,8 +1948,10 @@ function ap_get_short_link( $args ) {
  * @param string       $addon Name of addon.
  * @param string|array $cb    Callback function name.
  * @since 4.0.0
+ * @deprecated 5.0.0
  */
 function ap_addon_activation_hook( $addon, $cb ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	global $ap_addons_activation;
 	$addon = wp_normalize_path( $addon );
 

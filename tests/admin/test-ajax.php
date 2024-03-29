@@ -12,8 +12,6 @@ class TestAdminAjax extends TestCaseAjax {
 	public function test_init() {
 		\AnsPress_Admin_Ajax::init();
 
-		anspress()->setup_hooks();
-
 		// Check that the actions were added
 		$this->assertEquals( 10, has_action( 'wp_ajax_ap_delete_flag', [ \AnsPress_Admin_Ajax::class, 'ap_delete_flag' ] ) );
 

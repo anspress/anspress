@@ -49,6 +49,8 @@ class Notifications extends \AnsPress\Singleton {
 	 * @since 4.1.8
 	 */
 	protected function __construct() {
+		add_action( 'anspress_run_db_activation', array( $this, 'ap_notification_addon_activation' ) );
+
 		ap_add_default_options(
 			array(
 				'user_page_title_notifications' => __( 'Notifications', 'anspress-question-answer' ),
@@ -87,6 +89,30 @@ class Notifications extends \AnsPress\Singleton {
 		add_action( 'ap_ajax_mark_notifications_seen', array( $this, 'mark_notifications_seen' ) );
 		add_action( 'ap_ajax_load_more_notifications', array( $this, 'load_more_notifications' ) );
 		add_action( 'ap_ajax_get_notifications', array( $this, 'get_notifications' ) );
+	}
+
+	/**
+	 * Insert table when addon is activated.
+	 */
+	public function ap_notification_addon_activation() {
+		global $wpdb;
+		$charset_collate = ! empty( $wpdb->charset ) ? 'DEFAULT CHARACTER SET ' . $wpdb->charset : '';
+
+		$table = 'CREATE TABLE `' . $wpdb->prefix . 'ap_notifications` (
+			`noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
+			`noti_user_id` bigint(20) NOT NULL,
+			`noti_actor` bigint(20) NOT NULL,
+			`noti_parent` bigint(20) NOT NULL,
+			`noti_ref_id` bigint(20) NOT NULL,
+			`noti_ref_type` varchar(100) NOT NULL,
+			`noti_verb` varchar(100) NOT NULL,
+			`noti_date` timestamp NULL DEFAULT NULL,
+			`noti_seen` tinyint(1) NOT NULL DEFAULT 0,
+			PRIMARY KEY (`noti_id`)
+		)' . $charset_collate . ';';
+
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $table );
 	}
 
 	/**
@@ -606,31 +632,6 @@ class Notifications extends \AnsPress\Singleton {
 		);
 	}
 }
-
-/**
- * Insert table when addon is activated.
- */
-function ap_notification_addon_activation() {
-	global $wpdb;
-	$charset_collate = ! empty( $wpdb->charset ) ? 'DEFAULT CHARACTER SET ' . $wpdb->charset : '';
-
-	$table = 'CREATE TABLE `' . $wpdb->prefix . 'ap_notifications` (
-			`noti_id` bigint(20) NOT NULL AUTO_INCREMENT,
-			`noti_user_id` bigint(20) NOT NULL,
-			`noti_actor` bigint(20) NOT NULL,
-			`noti_parent` bigint(20) NOT NULL,
-			`noti_ref_id` bigint(20) NOT NULL,
-			`noti_ref_type` varchar(100) NOT NULL,
-			`noti_verb` varchar(100) NOT NULL,
-			`noti_date` timestamp NULL DEFAULT NULL,
-			`noti_seen` tinyint(1) NOT NULL DEFAULT 0,
-			PRIMARY KEY (`noti_id`)
-		)' . $charset_collate . ';';
-
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-	dbDelta( $table );
-}
-ap_addon_activation_hook( basename( __FILE__ ), __NAMESPACE__ . '\ap_notification_addon_activation' );
 
 // Init class.
 Notifications::init();
