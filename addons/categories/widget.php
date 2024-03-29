@@ -160,7 +160,7 @@ class Categories extends \WP_Widget {
 				<?php
 				if ( $categories ) {
 					foreach ( $categories as $c ) {
-						echo '<option value="' . (int) $c->term_id . '" ' . selected( $parent, $c->term_id ) . '>' . esc_html( $c->name ) . '</option>';
+						echo '<option value="' . (int) $c->term_id . '" ' . selected( $parent, $c->term_id, false ) . '>' . esc_html( $c->name ) . '</option>';
 					}
 				}
 
@@ -174,19 +174,19 @@ class Categories extends \WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'orderby' ) ); ?>"><?php esc_attr_e( 'Order By:', 'anspress-question-answer' ); ?></label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'orderby' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'orderby' ) ); ?>">
-				<option value="none" <?php echo selected( $orderby, 'none' ); ?>><?php esc_attr_e( 'None', 'anspress-question-answer' ); ?></option>
-				<option value="count" <?php echo selected( $orderby, 'count' ); ?>><?php esc_attr_e( 'Count', 'anspress-question-answer' ); ?></option>
-				<option value="id" <?php echo selected( $orderby, 'id' ); ?>><?php esc_attr_e( 'ID', 'anspress-question-answer' ); ?></option>
-				<option value="name" <?php echo selected( $orderby, 'name' ); ?>><?php esc_attr_e( 'Name', 'anspress-question-answer' ); ?></option>
-				<option value="slug" <?php echo selected( $orderby, 'slug' ); ?>><?php esc_attr_e( 'Slug', 'anspress-question-answer' ); ?></option>
-				<option value="term_group" <?php echo selected( $orderby, 'term_group' ); ?>><?php esc_attr_e( 'Term group', 'anspress-question-answer' ); ?></option>
+				<option value="none" <?php selected( $orderby, 'none' ); ?>><?php esc_attr_e( 'None', 'anspress-question-answer' ); ?></option>
+				<option value="count" <?php selected( $orderby, 'count' ); ?>><?php esc_attr_e( 'Count', 'anspress-question-answer' ); ?></option>
+				<option value="id" <?php selected( $orderby, 'id' ); ?>><?php esc_attr_e( 'ID', 'anspress-question-answer' ); ?></option>
+				<option value="name" <?php selected( $orderby, 'name' ); ?>><?php esc_attr_e( 'Name', 'anspress-question-answer' ); ?></option>
+				<option value="slug" <?php selected( $orderby, 'slug' ); ?>><?php esc_attr_e( 'Slug', 'anspress-question-answer' ); ?></option>
+				<option value="term_group" <?php selected( $orderby, 'term_group' ); ?>><?php esc_attr_e( 'Term group', 'anspress-question-answer' ); ?></option>
 			</select>
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'order' ) ); ?>"><?php esc_attr_e( 'Order:', 'anspress-question-answer' ); ?></label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'order' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'order' ) ); ?>">
-				<option value="DESC" <?php echo selected( $order, 'DESC' ); ?>><?php esc_attr_e( 'DESC', 'anspress-question-answer' ); ?></option>
-				<option value="ASC" <?php echo selected( $order, 'ASC' ); ?>><?php esc_attr_e( 'ASC', 'anspress-question-answer' ); ?></option>
+				<option value="DESC" <?php selected( $order, 'DESC' ); ?>><?php esc_attr_e( 'DESC', 'anspress-question-answer' ); ?></option>
+				<option value="ASC" <?php selected( $order, 'ASC' ); ?>><?php esc_attr_e( 'ASC', 'anspress-question-answer' ); ?></option>
 			</select>
 		</p>
 		<p>
