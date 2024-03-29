@@ -168,4 +168,16 @@ class TestActivityClass extends TestCase {
 		$activity = new \AnsPress\Activity( [ 'a_id' => $id->a ] );
 		$this->assertEquals( 2, $activity->total_count );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::group_end
+	 */
+	public function testGroupEnd() {
+		$activity = new \AnsPress\Activity();
+		$activity->in_group = true;
+
+		// Test.
+		$activity->group_end();
+		$this->assertFalse( $activity->in_group );
+	}
 }
