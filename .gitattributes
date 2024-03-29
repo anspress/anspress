@@ -31,3 +31,4 @@ composer.lock export-ignore
 composer.json export-ignore
 .distignore export-ignore
 grumphp.yml export-ignore
+/templates/scss export-ignore

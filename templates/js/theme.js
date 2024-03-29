@@ -1,7 +1,11 @@
 (function ($) {
     $(document).ready(function () {
-        $('textarea.autogrow, textarea#post_content').autogrow({
-            onInitialize: true
+        $(document).on('focus', '.wp-editor-area', function() {
+            if (!$(this).data('autogrow_initialized')) {
+                $(this).autogrow({
+                    onInitialize: true
+                }).data('autogrow_initialized', true);
+            }
         });
 
         $('.ap-categories-list li .ap-icon-arrow-down').on('click', function (e) {
@@ -54,5 +58,3 @@
     });
 
 })(jQuery);
-
-
