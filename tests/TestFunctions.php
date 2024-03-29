@@ -10,14 +10,6 @@ class TestFunctions extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-		register_taxonomy( 'question_category', array( 'question' ) );
-		register_taxonomy( 'question_tag', array( 'question' ) );
-	}
-
-	public function tear_down() {
-		unregister_taxonomy( 'question_category' );
-		unregister_taxonomy( 'question_tag' );
-		parent::tear_down();
 	}
 
 	/**
