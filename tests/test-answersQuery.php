@@ -266,4 +266,50 @@ class TestAnswersQuery extends TestCase {
 		$answers_query->rewind_answers();
 		$this->assertEquals( $answers[0], $answers_query->next_answer() );
 	}
+
+	/**
+	 * @covers Answers_Query::the_answer
+	 */
+	public function testTheAnswer() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+
+		// Test.
+		foreach ( $answers as $answer ) {
+			$answers_query->the_answer();
+
+			global $post;
+			$this->assertSame( $answer, $post );
+			$this->assertSame( $answer, anspress()->current_answer );
+		}
+	}
+
+	/**
+	 * @covers Answers_Query::the_answer
+	 */
+	public function testTheAnswerForActionHookTriggered() {
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_query_loop_start', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+
+		// Test.
+		foreach ( $answers as $answer ) {
+			$answers_query->the_answer();
+
+			global $post;
+			$this->assertSame( $answer, $post );
+			$this->assertSame( $answer, anspress()->current_answer );
+		}
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_query_loop_start' ) > 0 );
+	}
 }
