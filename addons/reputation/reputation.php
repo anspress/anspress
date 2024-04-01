@@ -42,16 +42,13 @@ class Reputation extends \AnsPress\Singleton {
 	protected function __construct() {
 		$this->register_default_events();
 
-		ap_add_default_options(
-			array(
-				'user_page_title_reputations'    => __( 'Reputations', 'anspress-question-answer' ),
-				'user_page_slug_reputations'     => 'reputations',
-				'show_reputation_in_author_link' => false,
-			)
+		add_filter(
+			'ap_default_options',
+			array( $this, 'default_options' ),
 		);
 
 		add_action( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
-		add_action( 'ap_form_options_reputation', array( $this, 'load_options' ), 20 );
+		add_action( 'ap_form_options_reputation_reputation_settings', array( $this, 'load_options' ), 20 );
 		add_action( 'wp_ajax_ap_save_events', array( $this, 'ap_save_events' ) );
 		add_action( 'ap_after_new_question', array( $this, 'new_question' ), 10, 2 );
 		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ), 10, 2 );
@@ -78,11 +75,29 @@ class Reputation extends \AnsPress\Singleton {
 		add_filter( 'ap_ajax_load_more_reputation', array( $this, 'load_more_reputation' ) );
 		add_filter( 'ap_bp_nav', array( $this, 'ap_bp_nav' ) );
 		add_filter( 'ap_bp_page', array( $this, 'ap_bp_page' ), 10, 2 );
-		add_filter( 'ap_all_options', array( $this, 'ap_all_options' ), 10, 2 );
 
-		if ( ap_opt( 'show_reputation_in_author_link' ) ) {
+		if ( ap_opt( 'show_reputation_in_author_link' ) && ap_opt( 'enable_reputation' ) ) {
 			add_filter( 'ap_user_display_name', array( $this, 'display_name' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * Default options for the Reputation feature.
+	 *
+	 * @param array $options The options array.
+	 * @return array The modified options array.
+	 * @since 5.0.0
+	 */
+	public function default_options( $options ) {
+		return array_merge(
+			$options,
+			array(
+				'user_page_title_reputations'    => __( 'Reputations', 'anspress-question-answer' ),
+				'user_page_slug_reputations'     => 'reputations',
+				'show_reputation_in_author_link' => false,
+				'enable_reputation'              => true,
+			)
+		);
 	}
 
 	/**
@@ -94,8 +109,16 @@ class Reputation extends \AnsPress\Singleton {
 	 */
 	public function add_to_settings_page( $groups ) {
 		$groups['reputation'] = array(
-			'label' => __( 'Reputation', 'anspress-question-answer' ),
-			'info'  => __( 'Reputation event points can be adjusted here :', 'anspress-question-answer' ) . ' <a href="' . esc_url( admin_url( 'admin.php?page=anspress_options&active_tab=reputations' ) ) . '">' . __( 'Reputation Points', 'anspress-question-answer' ) . '</a>',
+			'label'  => __( 'Reputation', 'anspress-question-answer' ),
+			'groups' => array(
+				'reputation_settings' => array(
+					'label' => __( 'Settings', 'anspress-question-answer' ),
+				),
+				'reputation_events'   => array(
+					'label'    => __( 'Reputation Events', 'anspress-question-answer' ),
+					'template' => 'reputation-events.php',
+				),
+			),
 		);
 
 		return $groups;
@@ -108,6 +131,12 @@ class Reputation extends \AnsPress\Singleton {
 		$opt  = ap_opt();
 		$form = array(
 			'fields' => array(
+				'enable_reputation'              => array(
+					'label' => __( 'Enable reputation', 'anspress-question-answer' ),
+					'desc'  => __( 'Enable reputation system', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['enable_reputation'],
+				),
 				'user_page_title_reputations'    => array(
 					'label' => __( 'Reputations page title', 'anspress-question-answer' ),
 					'desc'  => __( 'Custom title for user profile reputations page', 'anspress-question-answer' ),
@@ -597,22 +626,6 @@ class Reputation extends \AnsPress\Singleton {
 
 		$reputations = new \AnsPress_Reputation_Query( array( 'user_id' => $user_id ) );
 		include ap_get_theme_location( 'addons/reputation/index.php' );
-	}
-
-	/**
-	 * Add reputation events option in AnsPress options.
-	 *
-	 * @param array $all_options Options.
-	 * @return array
-	 * @since 4.1.0
-	 */
-	public function ap_all_options( $all_options ) {
-		$all_options['reputations'] = array(
-			'label'    => __( '⚙ Reputations', 'anspress-question-answer' ),
-			'template' => 'reputation-events.php',
-		);
-
-		return $all_options;
 	}
 }
 

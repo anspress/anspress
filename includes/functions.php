@@ -352,8 +352,15 @@ function ap_truncate_chars( $text, $limit = 40, $ellipsis = '...' ) {
  * @param  integer $num       Number to convert.
  * @param  integer $precision Precision.
  * @return string
+ * @since  unknown
+ * @since  5.0.0 Added handling for negative numbers.
  */
 function ap_short_num( $num, $precision = 2 ) {
+	// Check if negative number.
+	$is_negative = empty( $num ) || $num >= 0 ? false : true;
+
+	$num = abs( (int) $num );
+
 	if ( $num >= 1000 && $num < 1000000 ) {
 		$n_format = number_format( $num / 1000, $precision ) . 'K';
 	} elseif ( $num >= 1000000 && $num < 1000000000 ) {
@@ -364,7 +371,7 @@ function ap_short_num( $num, $precision = 2 ) {
 		$n_format = $num;
 	}
 
-	return $n_format;
+	return $is_negative ? '-' . $n_format : $n_format;
 }
 
 /**

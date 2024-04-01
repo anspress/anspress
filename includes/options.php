@@ -66,12 +66,6 @@ function ap_opt( $key = false, $value = null ) {
  * @since 2.0.1
  */
 function ap_default_options() {
-	$cache = wp_cache_get( 'ap_default_options', 'ap' );
-
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
 	$defaults = array(
 		'show_login_signup'             => true,
 		'show_login'                    => true,
@@ -154,8 +148,6 @@ function ap_default_options() {
 	 * @since 0.1
 	 */
 	$defaults = apply_filters( 'ap_default_options', $defaults );
-
-	wp_cache_set( 'ap_default_options', $defaults, 'ap' );
 
 	return $defaults;
 }

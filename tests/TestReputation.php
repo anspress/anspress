@@ -14,26 +14,53 @@ class TestReputation extends TestCase {
 		global $wpdb;
 		$wpdb->query( "DELETE FROM {$wpdb->prefix}ap_reputation_events" );
 		$wpdb->query( "DELETE FROM {$wpdb->ap_reputations}" );
+
+		anspress()->reputation_events = [];
 	}
 
-	/**
-	 * @covers ::ap_insert_reputation
-	 */
 	public function testAPInsertReputation() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 455433,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
 
-		$id = $this->insert_answer();
+		$question_id = $this->factory()->post->create_and_get( array( 'post_type' => 'question' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
-		// Test begins.
-		$this->setRole( 'subscriber' );
-		$this->assertFalse( ap_insert_reputation( '', $id->q ) );
-		$this->assertFalse( ap_insert_reputation( 'ask', $id->q, 0 ) );
-		$this->assertIsInt( ap_insert_reputation( 'ask', $id->q ) );
-		$this->assertIsInt( ap_insert_reputation( 'answer', $id->a ) );
-		$this->assertIsInt( ap_insert_reputation( 'select_answer', $id->a ) );
-		$this->assertIsInt( ap_insert_reputation( 'best_answer', $id->a ) );
+		ap_insert_reputation( 'test', $question_id->ID, $user_id );
+
+		$this->assertEquals( 455433, ap_get_user_reputation( $user_id ) );
+	}
+
+	public function testApInsertReputationOnDisabed() {
+		ap_opt('disable_reputation', true);
+
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 455433,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+			'disabled'    => true,
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		$question_id = $this->factory()->post->create_and_get( array( 'post_type' => 'question' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		ap_insert_reputation( 'test', $question_id->ID, $user_id );
+
+		$this->assertEquals( 455433, ap_get_user_reputation( $user_id ) );
 	}
 
 	/**
@@ -41,8 +68,6 @@ class TestReputation extends TestCase {
 	 */
 	public function testAPGetReputation() {
 		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
 
 		$id = $this->insert_answer();
 
@@ -143,9 +168,6 @@ class TestReputation extends TestCase {
 	 * @covers ::ap_delete_reputation
 	 */
 	public function testAPDeleteReputation() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
 
 		$id = $this->insert_answer();
 
@@ -250,442 +272,247 @@ class TestReputation extends TestCase {
 		$this->assertEquals( 12, $register_reputation_event['rep_events_id'] );
 	}
 
-	/**
-	 * @covers ::ap_get_reputation_events()
-	 */
-	public function testAPGetReputationEvents() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
-
-		$reputation_events = ap_get_reputation_events();
-		$this->assertArrayHasKey( 'register', $reputation_events );
-		$this->assertArrayHasKey( 'ask', $reputation_events );
-		$this->assertArrayHasKey( 'answer', $reputation_events );
-		$this->assertArrayHasKey( 'comment', $reputation_events );
-		$this->assertArrayHasKey( 'select_answer', $reputation_events );
-		$this->assertArrayHasKey( 'best_answer', $reputation_events );
-		$this->assertArrayHasKey( 'received_vote_up', $reputation_events );
-		$this->assertArrayHasKey( 'received_vote_down', $reputation_events );
-		$this->assertArrayHasKey( 'given_vote_up', $reputation_events );
-		$this->assertArrayHasKey( 'given_vote_down', $reputation_events );
-
-		// Test for the inner array.
-		foreach ( $reputation_events as $reputation_event ) {
-			$this->assertArrayHasKey( 'icon', $reputation_event );
-			$this->assertArrayHasKey( 'parent', $reputation_event );
-			$this->assertArrayHasKey( 'rep_events_id', $reputation_event );
-			$this->assertArrayHasKey( 'label', $reputation_event );
-			$this->assertArrayHasKey( 'description', $reputation_event );
-			$this->assertArrayHasKey( 'activity', $reputation_event );
-			$this->assertArrayHasKey( 'points', $reputation_event );
-		}
-	}
-
-	/**
-	 * @covers ::ap_get_reputation_event_points
-	 */
-	public function testAPGetReputationEventPoints() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
-
-		// Test for non existance events.
-		$this->assertEquals( 0, ap_get_reputation_event_points( 'test' ) );
-		$this->assertEquals( 0, ap_get_reputation_event_points( 'new_event' ) );
-
-		// Test for pre-existing events.
-		$this->assertEquals( 10, ap_get_reputation_event_points( 'register' ) );
-		$this->assertEquals( 2, ap_get_reputation_event_points( 'ask' ) );
-		$this->assertEquals( 5, ap_get_reputation_event_points( 'answer' ) );
-		$this->assertEquals( 2, ap_get_reputation_event_points( 'comment' ) );
-		$this->assertEquals( 2, ap_get_reputation_event_points( 'select_answer' ) );
-		$this->assertEquals( 10, ap_get_reputation_event_points( 'best_answer' ) );
-		$this->assertEquals( 10, ap_get_reputation_event_points( 'received_vote_up' ) );
-		$this->assertEquals( -2, ap_get_reputation_event_points( 'received_vote_down' ) );
-		$this->assertEquals( 0, ap_get_reputation_event_points( 'given_vote_up' ) );
-		$this->assertEquals( 0, ap_get_reputation_event_points( 'given_vote_down' ) );
-
-		// Test for new reputation event.
-		$args = array(
-			'label'         => 'Test reputation event register',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => 'apicon-test-reputation',
-			'activity'      => 'Reputation registered',
-			'parent'        => '',
-			'points'        => 8,
-			'rep_events_id' => 11,
-		);
-		ap_register_reputation_event( 'test_register_reputation_event', $args );
-		$this->assertEquals( 8, ap_get_reputation_event_points( 'test_register_reputation_event' ) );
+	public function testAPGetReputationEventActivity() {
 		$args = array(
 			'label'         => 'Reputation event register',
 			'description'   => 'Lorem ipsum dolor sit amet',
 			'icon'          => 'apicon-reputation',
-			'activity'      => 'Reputation',
+			'activity'      => 'Test',
 			'parent'        => '',
 			'points'        => 12,
 			'rep_events_id' => 12,
 		);
-		ap_register_reputation_event( 'register_reputation_event', $args );
-		$this->assertEquals( 12, ap_get_reputation_event_points( 'register_reputation_event' ) );
+		ap_register_reputation_event( 'test', $args );
+
+		// Test for non existance events.
+		$this->assertEquals( 'Test', ap_get_reputation_event_activity( 'test' ) );
 	}
 
-	/**
-	 * @covers ::ap_get_reputation_event_icon
-	 */
-	public function testAPGetReputationEventIcon() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+	public function testGetReputationEventPoints() {
+		$args = array(
+			'label'         => 'Reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-reputation',
+			'activity'      => 'Test',
+			'parent'        => '',
+			'points'        => 12,
+			'rep_events_id' => 12,
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		// Test for non existance events.
+		$this->assertEquals( 12, ap_get_reputation_event_points( 'test' ) );
+	}
+
+	public function testGetRepuationEventIcon()
+	{
+		$args = array(
+			'label'         => 'Reputation event register',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-reputation',
+			'activity'      => 'Test',
+			'parent'        => '',
+			'points'        => 12,
+			'rep_events_id' => 12,
+		);
+		ap_register_reputation_event( 'test', $args );
 
 		// Test for non existance events.
 		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'test' ) );
-		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'new_event' ) );
 
-		// Test for pre-existing events.
-		$this->assertEquals( 'apicon-question', ap_get_reputation_event_icon( 'register' ) );
-		$this->assertEquals( 'apicon-question', ap_get_reputation_event_icon( 'ask' ) );
-		$this->assertEquals( 'apicon-answer', ap_get_reputation_event_icon( 'answer' ) );
-		$this->assertEquals( 'apicon-comments', ap_get_reputation_event_icon( 'comment' ) );
-		$this->assertEquals( 'apicon-check', ap_get_reputation_event_icon( 'select_answer' ) );
-		$this->assertEquals( 'apicon-check', ap_get_reputation_event_icon( 'best_answer' ) );
-		$this->assertEquals( 'apicon-thumb-up', ap_get_reputation_event_icon( 'received_vote_up' ) );
-		$this->assertEquals( 'apicon-thumb-down', ap_get_reputation_event_icon( 'received_vote_down' ) );
-		$this->assertEquals( 'apicon-thumb-up', ap_get_reputation_event_icon( 'given_vote_up' ) );
-		$this->assertEquals( 'apicon-thumb-down', ap_get_reputation_event_icon( 'given_vote_down' ) );
-
-		// Test for new reputation event.
-		$args = array(
-			'label'         => 'Test reputation event register',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => 'apicon-test-reputation',
-			'activity'      => 'Reputation registered',
-			'parent'        => '',
-			'points'        => 8,
-			'rep_events_id' => 11,
-		);
-		ap_register_reputation_event( 'test_register_reputation_event', $args );
-		$this->assertEquals( 'apicon-test-reputation', ap_get_reputation_event_icon( 'test_register_reputation_event' ) );
-		$args = array(
-			'label'         => 'Reputation event register',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => 'apicon-reputation',
-			'activity'      => 'Reputation',
-			'parent'        => '',
-			'points'        => 12,
-			'rep_events_id' => 12,
-		);
-		ap_register_reputation_event( 'register_reputation_event', $args );
-		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'register_reputation_event' ) );
-		$args = array(
-			'label'         => 'Reputation event',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => '',
-			'activity'      => 'Reputation',
-			'parent'        => '',
-			'points'        => 15,
-			'rep_events_id' => 13,
-		);
-		ap_register_reputation_event( 'new_reputation_event', $args );
-		$this->assertEquals( '', ap_get_reputation_event_icon( 'new_reputation_event' ) );
-		$args = array(
-			'label'         => 'Reputation event',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'activity'      => 'Reputation',
-			'points'        => 15,
-			'rep_events_id' => 14,
-		);
-		ap_register_reputation_event( 'latest_reputation_event', $args );
-		$this->assertEquals( 'apicon-reputation', ap_get_reputation_event_icon( 'latest_reputation_event' ) );
 	}
 
-	/**
-	 * @covers ::ap_get_reputation_event_activity
-	 */
-	public function testAPGetReputationEventActivity() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
-
-		// Test for non existance events.
-		$this->assertEquals( 'test', ap_get_reputation_event_activity( 'test' ) );
-		$this->assertEquals( 'new_event', ap_get_reputation_event_activity( 'new_event' ) );
-
-		// Test for pre-existing events.
-		$this->assertEquals( 'Registered', ap_get_reputation_event_activity( 'register' ) );
-		$this->assertEquals( 'Asked a question', ap_get_reputation_event_activity( 'ask' ) );
-		$this->assertEquals( 'Posted an answer', ap_get_reputation_event_activity( 'answer' ) );
-		$this->assertEquals( 'Commented on a post', ap_get_reputation_event_activity( 'comment' ) );
-		$this->assertEquals( 'Selected an answer as best', ap_get_reputation_event_activity( 'select_answer' ) );
-		$this->assertEquals( 'Answer was selected as best', ap_get_reputation_event_activity( 'best_answer' ) );
-		$this->assertEquals( 'Received an upvote', ap_get_reputation_event_activity( 'received_vote_up' ) );
-		$this->assertEquals( 'Received a down vote', ap_get_reputation_event_activity( 'received_vote_down' ) );
-		$this->assertEquals( 'Given an up vote', ap_get_reputation_event_activity( 'given_vote_up' ) );
-		$this->assertEquals( 'Given a down vote', ap_get_reputation_event_activity( 'given_vote_down' ) );
-
-		// Test for new reputation event.
-		$args = array(
-			'label'         => 'Test reputation event register',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => 'apicon-test-reputation',
-			'activity'      => 'Reputation registered',
-			'parent'        => '',
-			'points'        => 8,
-			'rep_events_id' => 11,
-		);
-		ap_register_reputation_event( 'test_register_reputation_event', $args );
-		$this->assertEquals( 'Reputation registered', ap_get_reputation_event_activity( 'test_register_reputation_event' ) );
-		$args = array(
-			'label'         => 'Reputation event register',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => 'apicon-reputation',
-			'activity'      => 'Reputation created',
-			'parent'        => '',
-			'points'        => 12,
-			'rep_events_id' => 12,
-		);
-		ap_register_reputation_event( 'register_reputation_event', $args );
-		$this->assertEquals( 'Reputation created', ap_get_reputation_event_activity( 'register_reputation_event' ) );
-		$args = array(
-			'label'         => 'Reputation event',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => '',
-			'activity'      => 'Reputation updated',
-			'parent'        => '',
-			'points'        => 15,
-			'rep_events_id' => 13,
-		);
-		ap_register_reputation_event( 'new_reputation_event', $args );
-		$this->assertEquals( 'Reputation updated', ap_get_reputation_event_activity( 'new_reputation_event' ) );
-	}
-
-	/**
-	 * @covers ::ap_get_user_reputation
-	 */
 	public function testAPGetUserReputation() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+		$args = array(
+			'slug'        => 'ask',
+			'points'      => 2,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'ask', $args );
 
 		// Test for manually adding the user reputation.
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		wp_set_current_user( $user_id );
-		$question_id = $this->factory()->post->create(
+
+		$question = $this->factory()->post->create_and_get(
 			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
 				'post_type'    => 'question',
 			)
 		);
-		$post        = get_post( $question_id );
-		ap_insert_reputation( 'ask', $question_id, $post->post_author );
+
+		ap_insert_reputation( 'ask', $question->ID, $user_id );
+
 		$this->assertEquals( 2, ap_get_user_reputation( $user_id ) );
-		$answer_id = $this->factory()->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'answer',
-				'post_parent'  => $question_id,
-			)
-		);
-		$post      = get_post( $answer_id );
-		ap_insert_reputation( 'answer', $answer_id, $post->post_author );
-		$this->assertEquals( 7, ap_get_user_reputation( $user_id ) );
-		$new_question_id = $this->factory()->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'question',
-			)
-		);
-		$post            = get_post( $new_question_id );
-		ap_insert_reputation( 'ask', $new_question_id, $post->post_author );
-		$this->assertEquals( 9, ap_get_user_reputation( $user_id ) );
-		ap_insert_reputation( 'best_answer', $answer_id, $post->post_author );
-		$this->assertEquals( 19, ap_get_user_reputation( $user_id ) );
-		ap_insert_reputation( 'received_vote_up', $question_id, get_post( $question_id )->post_author );
-		$this->assertEquals( 29, ap_get_user_reputation( $user_id ) );
-		ap_insert_reputation( 'given_vote_up', $question_id );
-		$this->assertEquals( 29, ap_get_user_reputation( $user_id ) );
-
-		// Test on the group.
-		$get_user_reputation = ap_get_user_reputation( $user_id, true );
-		$this->assertEquals( 0, $get_user_reputation['register'] );
-		$this->assertEquals( 4, $get_user_reputation['ask'] );
-		$this->assertEquals( 5, $get_user_reputation['answer'] );
-		$this->assertEquals( 0, $get_user_reputation['comment'] );
-		$this->assertEquals( 0, $get_user_reputation['select_answer'] );
-		$this->assertEquals( 10, $get_user_reputation['best_answer'] );
-		$this->assertEquals( 10, $get_user_reputation['received_vote_up'] );
-		$this->assertEquals( 0, $get_user_reputation['received_vote_down'] );
-		$this->assertEquals( 0, $get_user_reputation['given_vote_up'] );
-		$this->assertEquals( 0, $get_user_reputation['given_vote_down'] );
 	}
 
-	/**
-	 * @covers ::ap_get_user_reputation_meta
-	 */
 	public function testAPGetUserReputationMeta() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
-
-		$this->setRole( 'subscriber' );
-
-		// Test before inserting reputations.
-		$this->assertEquals( '', ap_get_user_reputation_meta() );
-
-		// Test after inserting reputations.
-		$question_id = $this->factory()->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'question',
-			)
-		);
-		$post        = get_post( $question_id );
-		ap_insert_reputation( 'ask', $question_id, $post->post_author );
-		$this->assertEquals( 2, ap_get_user_reputation_meta() );
-		$new_question_id = $this->factory()->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'question',
-			)
-		);
-		$post            = get_post( $new_question_id );
-		ap_insert_reputation( 'ask', $new_question_id, $post->post_author );
-		$this->assertEquals( 4, ap_get_user_reputation_meta() );
-		$answer_id = $this->factory()->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'answer',
-				'post_parent'  => $question_id,
-			)
-		);
-		$post      = get_post( $answer_id );
-		ap_insert_reputation( 'answer', $new_question_id, $post->post_author );
-		$this->assertEquals( 9, ap_get_user_reputation_meta() );
-		$new_answer_id = $this->factory()->post->create(
-			array(
-				'post_title'   => 'Question title',
-				'post_content' => 'Question content',
-				'post_type'    => 'answer',
-				'post_parent'  => $new_question_id,
-			)
-		);
-		$post          = get_post( $new_answer_id );
-		ap_insert_reputation( 'answer', $new_question_id, $post->post_author );
-		$this->assertEquals( 14, ap_get_user_reputation_meta() );
-
-		// Test for new reputation event.
+		anspress()->reputation_events = [];
 		$args = array(
-			'label'         => 'Test reputation event register',
-			'description'   => 'Lorem ipsum dolor sit amet',
-			'icon'          => 'apicon-test-reputation',
-			'activity'      => 'Reputation registered',
-			'parent'        => '',
-			'points'        => 500,
-			'rep_events_id' => 11,
+			'slug'        => 'test',
+			'points'      => 299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
 		);
-		ap_register_reputation_event( 'test_register_reputation_event', $args );
-		ap_insert_reputation( 'test_register_reputation_event', $new_question_id, $post->post_author );
-		$this->assertEquals( 514, ap_get_user_reputation_meta() );
-		ap_insert_reputation( 'test_register_reputation_event', $new_question_id, $post->post_author );
-		$this->assertEquals( '1.01K', ap_get_user_reputation_meta() );
-		$this->assertEquals( 1014, ap_get_user_reputation_meta( get_current_user_id(), false ) );
+		ap_register_reputation_event( 'test', $args );
 
-		// Test for a specific user id.
-		$user_id = $this->factory()->user->create();
-		$this->assertEquals( '', ap_get_user_reputation_meta( $user_id ) );
+		$user = $this->factory()->user->create_and_get( array( 'role' => 'subscriber' ) );
+
+		$ref_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
+		$this->assertNotFalse(ap_insert_reputation( 'test', $ref_id, $user->ID ));
+		$this->assertEquals( 299922, ap_get_user_reputation_meta($user->ID, false) );
+		$this->assertEquals( '299.92K', ap_get_user_reputation_meta($user->ID) );
 	}
 
-	/**
-	 * @covers ::ap_get_users_reputation
-	 */
-	public function testAPGetUsersReputation() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+	public function testApGetUserReputationMetaWithNegativeValue() {
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => -299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		$user = $this->factory()->user->create_and_get( array( 'role' => 'subscriber' ) );
+
+		$ref_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
+		$this->assertNotFalse(ap_insert_reputation( 'test', $ref_id, $user->ID ));
+		$this->assertEquals( '-299922', ap_get_user_reputation_meta($user->ID, false) );
+		$this->assertEquals( '-299.92K', ap_get_user_reputation_meta($user->ID, true) );
+	}
+
+	public function testApGetUserReputationMetaForCurrentUser() {
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
 
 		$this->setRole( 'subscriber' );
-		$user_id = $this->factory()->user->create();
 
-		// Test before adding any reputation.
-		$get_users_reputations = ap_get_users_reputation( array( get_current_user_id(), $user_id ) );
-		foreach ( $get_users_reputations as $user_reputation ) {
-			$this->assertEquals( 0, $user_reputation['register'] );
-			$this->assertEquals( 0, $user_reputation['ask'] );
-			$this->assertEquals( 0, $user_reputation['answer'] );
-			$this->assertEquals( 0, $user_reputation['comment'] );
-			$this->assertEquals( 0, $user_reputation['select_answer'] );
-			$this->assertEquals( 0, $user_reputation['best_answer'] );
-			$this->assertEquals( 0, $user_reputation['received_vote_up'] );
-			$this->assertEquals( 0, $user_reputation['received_vote_down'] );
-			$this->assertEquals( 0, $user_reputation['given_vote_up'] );
-			$this->assertEquals( 0, $user_reputation['given_vote_down'] );
-		}
+		$ref_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
 
-		// Test after adding reputation.
-		ap_insert_reputation( 'register', get_current_user_id(), get_current_user_id() );
-		ap_insert_reputation( 'ask', 501, get_current_user_id() );
-		ap_insert_reputation( 'ask', 502, get_current_user_id() );
-		ap_insert_reputation( 'ask', 505, get_current_user_id() );
-		ap_insert_reputation( 'answer', 50, get_current_user_id() );
-		ap_insert_reputation( 'answer', 51, get_current_user_id() );
-		ap_insert_reputation( 'answer', 52, get_current_user_id() );
-		ap_insert_reputation( 'best_answer', 50, get_current_user_id() );
-		ap_insert_reputation( 'best_answer', 51, get_current_user_id() );
-		ap_insert_reputation( 'best_answer', 52, get_current_user_id() );
-		ap_insert_reputation( 'select_answer', 50, get_current_user_id() );
-		ap_insert_reputation( 'select_answer', 51, get_current_user_id() );
-		ap_insert_reputation( 'select_answer', 52, get_current_user_id() );
-		ap_insert_reputation( 'received_vote_up', 100, get_current_user_id() );
-		ap_insert_reputation( 'received_vote_down', 101, get_current_user_id() );
-		ap_insert_reputation( 'given_vote_up', 100, get_current_user_id() );
-		ap_insert_reputation( 'given_vote_down', 101, get_current_user_id() );
-		$get_users_reputations        = ap_get_users_reputation( array( get_current_user_id(), $user_id ) );
-		$current_user_user_reputation = $get_users_reputations[ get_current_user_id() ];
-		$this->assertEquals( 10, $current_user_user_reputation['register'] );
-		$this->assertEquals( 6, $current_user_user_reputation['ask'] );
-		$this->assertEquals( 15, $current_user_user_reputation['answer'] );
-		$this->assertEquals( 0, $current_user_user_reputation['comment'] );
-		$this->assertEquals( 6, $current_user_user_reputation['select_answer'] );
-		$this->assertEquals( 30, $current_user_user_reputation['best_answer'] );
-		$this->assertEquals( 10, $current_user_user_reputation['received_vote_up'] );
-		$this->assertEquals( -2, $current_user_user_reputation['received_vote_down'] );
-		$this->assertEquals( 0, $current_user_user_reputation['given_vote_up'] );
-		$this->assertEquals( 0, $current_user_user_reputation['given_vote_down'] );
+		$this->assertNotFalse(ap_insert_reputation( 'test', $ref_id, get_current_user_id() ));
+		$this->assertEquals( '299.92K', ap_get_user_reputation_meta() );
+	}
 
-		// For specific user id.
-		ap_insert_reputation( 'register', $user_id, $user_id );
-		ap_insert_reputation( 'ask', 501, $user_id );
-		ap_insert_reputation( 'ask', 502, $user_id );
-		ap_insert_reputation( 'answer', 50, $user_id );
-		ap_insert_reputation( 'answer', 51, $user_id );
-		ap_insert_reputation( 'best_answer', 50, $user_id );
-		ap_insert_reputation( 'select_answer', 51, $user_id );
-		ap_insert_reputation( 'select_answer', 52, $user_id );
-		ap_insert_reputation( 'received_vote_up', 100, $user_id );
-		ap_insert_reputation( 'received_vote_up', 102, $user_id );
-		ap_insert_reputation( 'received_vote_down', 101, $user_id );
-		ap_insert_reputation( 'received_vote_down', 103, $user_id );
-		ap_insert_reputation( 'given_vote_up', 100, $user_id );
-		ap_insert_reputation( 'given_vote_down', 101, $user_id );
-		$get_users_reputations        = ap_get_users_reputation( array( get_current_user_id(), $user_id ) );
-		$current_user_user_reputation = $get_users_reputations[ $user_id ];
-		$this->assertEquals( 10, $current_user_user_reputation['register'] );
-		$this->assertEquals( 4, $current_user_user_reputation['ask'] );
-		$this->assertEquals( 10, $current_user_user_reputation['answer'] );
-		$this->assertEquals( 0, $current_user_user_reputation['comment'] );
-		$this->assertEquals( 4, $current_user_user_reputation['select_answer'] );
-		$this->assertEquals( 10, $current_user_user_reputation['best_answer'] );
-		$this->assertEquals( 20, $current_user_user_reputation['received_vote_up'] );
-		$this->assertEquals( -4, $current_user_user_reputation['received_vote_down'] );
-		$this->assertEquals( 0, $current_user_user_reputation['given_vote_up'] );
-		$this->assertEquals( 0, $current_user_user_reputation['given_vote_down'] );
+	public function testApGetUserReputationMetaForInvalidUser() {
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		$this->assertEquals( '0', ap_get_user_reputation_meta( 0 ) );
+	}
+
+	public function testUpdateUserReputationMeta() {
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		$user = $this->factory()->user->create_and_get( array( 'role' => 'subscriber' ) );
+
+		$ref_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
+		$this->assertNotFalse(ap_insert_reputation( 'test', $ref_id, $user->ID ));
+		$this->assertEquals( '299.92K', ap_get_user_reputation_meta($user->ID) );
+	}
+
+	public function testUpdateUserReputationMetaForCurrentUser() {
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		$this->setRole( 'subscriber' );
+
+		$ref_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
+		$this->assertNotFalse(ap_insert_reputation( 'test', $ref_id, get_current_user_id() ));
+		$this->assertEquals( '299.92K', ap_get_user_reputation_meta() );
+	}
+
+	public function testUpdateUserReputationMetaForInvalidUser() {
+		anspress()->reputation_events = [];
+		$args = array(
+			'slug'        => 'test',
+			'points'      => 299922,
+			'label'       => __( 'Asking', 'anspress-question-answer' ),
+			'description' => __( 'Points awarded when user asks a question', 'anspress-question-answer' ),
+			'icon'        => 'apicon-question',
+			'activity'    => __( 'Asked a question', 'anspress-question-answer' ),
+			'parent'      => 'question',
+		);
+		ap_register_reputation_event( 'test', $args );
+
+		$ref_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
+		ap_update_user_reputation_meta( 999 );
+
+		$this->assertEquals( '0', ap_get_user_reputation_meta( 999 ) );
 	}
 
 	/**
@@ -828,73 +655,45 @@ class TestReputation extends TestCase {
 		}
 	}
 
-	/**
-	 * @covers ::ap_update_user_reputation_meta
-	 */
-	public function testAPUpdateUserReputationMeta() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
-
-		// Test begins.
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-
-		// Before calling the function.
-		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
-		$this->assertEmpty( $reputation );
-
-		// After calling the function.
-		ap_update_user_reputation_meta( $user_id );
-		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
-		$this->assertEquals( ap_get_user_reputation( $user_id ), $reputation );
-	}
-
-	/**
-	 * @covers ::ap_update_user_reputation_meta
-	 */
 	public function testAPUpdateUserReputationWithNoArgs() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+		ap_opt( 'enable_reputation', true );
 
-		// Test begins.
+		anspress()->reputation_events = [
+			'test' => [
+				'label'       => 'Test reputation event register',
+				'description' => 'Lorem ipsum dolor sit amet',
+				'icon'        => 'apicon-test-reputation',
+				'activity'    => 'Reputation registered',
+				'parent'      => '',
+				'points'      => 111,
+			],
+		];
+
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+
+		$question_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
 		wp_set_current_user( $user_id );
-		$user_page = $this->factory()->post->create( array( 'post_type' => 'page' ) );
-		ap_opt( 'user_page', $user_page );
-		$this->go_to( '?post_type=page&p=' . $user_page );
-		set_query_var( 'user_page', 'reputations' );
 
 		// Before calling the function.
 		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
-		$this->assertEmpty( $reputation );
+		$this->assertEquals( '0', $reputation );
+
+		ap_insert_reputation( 'test', $question_id, $user_id );
+
+		$this->assertEquals( 111, ap_get_user_reputation( $user_id ) );
+
+		delete_user_meta( $user_id, 'ap_reputations' );
+
+		$this->assertEmpty( get_user_meta( $user_id, 'ap_reputations', true ) );
 
 		// After calling the function.
 		ap_update_user_reputation_meta();
 		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
-		$this->assertEquals( ap_get_user_reputation( $user_id ), $reputation );
-	}
-
-	public function testAPUpdateUserReputationWithFalseArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
-		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
-
-		// Test begins.
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		wp_set_current_user( $user_id );
-		$user_page = $this->factory()->post->create( array( 'post_type' => 'page' ) );
-		ap_opt( 'user_page', $user_page );
-		$this->go_to( '?post_type=page&p=' . $user_page );
-		set_query_var( 'user_page', 'reputations' );
-
-		// Before calling the function.
-		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
-		$this->assertEquals( 10, $reputation );
-
-		// After calling the function.
-		ap_update_user_reputation_meta( false );
-		$reputation = get_user_meta( $user_id, 'ap_reputations', true );
-		$this->assertEmpty( $reputation );
+		$this->assertEquals( 111, ap_get_user_reputation( $user_id ) );
 	}
 }

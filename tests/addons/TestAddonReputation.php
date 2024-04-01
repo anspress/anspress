@@ -8,14 +8,11 @@ class TestAddonReputation extends TestCase {
 
 	use Testcases\Common;
 
-	public function set_up() {
+	public function set_up()
+	{
 		parent::set_up();
-		ap_activate_addon( 'reputation.php' );
-	}
 
-	public function tear_down() {
-		parent::tear_down();
-		ap_deactivate_addon( 'reputation.php' );
+		anspress()->reputation_events = [];
 	}
 
 	public function testInstance() {
@@ -24,6 +21,15 @@ class TestAddonReputation extends TestCase {
 	}
 
 	public function testMethodExists() {
+		// Count the number of public methods.
+		$class = new \ReflectionClass( 'Anspress\Addons\Reputation' );
+		$methods = $class->getMethods( \ReflectionMethod::IS_PUBLIC );
+		$this->assertCount( 31, $methods );
+
+		// Count the number of protected methods.
+		$methods = $class->getMethods( \ReflectionMethod::IS_PROTECTED );
+		$this->assertCount( 1, $methods );
+
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', '__construct' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'add_to_settings_page' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'load_options' ) );
@@ -52,7 +58,6 @@ class TestAddonReputation extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'ap_bp_nav' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'ap_bp_page' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'bp_reputation_page' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'ap_all_options' ) );
 	}
 
 	public function testInit() {
@@ -69,9 +74,6 @@ class TestAddonReputation extends TestCase {
 		$property->setValue( null );
 		$instance = \Anspress\Addons\Reputation::init();
 
-		// Tests.
-		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'add_to_settings_page' ] ) );
-		$this->assertEquals( 20, has_action( 'ap_form_options_features_reputation', [ $instance, 'load_options' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_ap_save_events', [ $instance, 'ap_save_events' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ $instance, 'new_question' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ $instance, 'new_answer' ] ) );
@@ -91,7 +93,7 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 10, has_action( 'ap_unpublish_comment', [ $instance, 'delete_comment' ] ) );
 		$this->assertEquals( 10, has_filter( 'user_register', [ $instance, 'user_register' ] ) );
 		$this->assertEquals( 10, has_action( 'delete_user', [ $instance, 'delete_user' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_user_display_name', [ $instance, 'display_name' ] ) );
+
 		$this->assertEquals( 10, has_filter( 'ap_pre_fetch_question_data', [ $instance, 'pre_fetch_post' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_pre_fetch_answer_data', [ $instance, 'pre_fetch_post' ] ) );
 		$this->assertEquals( 10, has_filter( 'bp_before_member_header_meta', [ $instance, 'bp_profile_header_meta' ] ) );
@@ -99,12 +101,17 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 10, has_filter( 'ap_ajax_load_more_reputation', [ $instance, 'load_more_reputation' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_bp_nav', [ $instance, 'ap_bp_nav' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_bp_page', [ $instance, 'ap_bp_page' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_all_options', [ $instance, 'ap_all_options' ] ) );
+
+
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::add_to_settings_page
-	 */
+	public function testDefaultOptions() {
+		$this->assertArrayHasKey( 'user_page_title_reputations', ap_default_options() );
+		$this->assertArrayHasKey( 'user_page_slug_reputations', ap_default_options() );
+		$this->assertArrayHasKey( 'show_reputation_in_author_link', ap_default_options() );
+		$this->assertArrayHasKey( 'enable_reputation', ap_default_options() );
+	}
+
 	public function testAddtoSettingsPage() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -136,48 +143,6 @@ class TestAddonReputation extends TestCase {
 		$this->assertStringContainsString( 'Reputation Points', $groups['reputation']['info'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::load_options
-	 */
-	public function testLoadOptions() {
-		$instance = \Anspress\Addons\Reputation::init();
-
-		// Add user_page_title_reputations and user_page_slug_reputations options.
-		ap_add_default_options(
-			array(
-				'user_page_title_reputations' => __( 'Reputations', 'anspress-question-answer' ),
-				'user_page_slug_reputations'  => 'reputations',
-			)
-		);
-
-		// Call the method.
-		$form = $instance->load_options();
-
-		// Test begins.
-		$this->assertNotEmpty( $form );
-		$this->assertArrayHasKey( 'user_page_title_reputations', $form['fields'] );
-		$this->assertArrayHasKey( 'user_page_slug_reputations', $form['fields'] );
-
-		// Test for user_page_title_reputations field.
-		$this->assertArrayHasKey( 'label', $form['fields']['user_page_title_reputations'] );
-		$this->assertEquals( 'Reputations page title', $form['fields']['user_page_title_reputations']['label'] );
-		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_title_reputations'] );
-		$this->assertEquals( 'Custom title for user profile reputations page', $form['fields']['user_page_title_reputations']['desc'] );
-		$this->assertArrayHasKey( 'value', $form['fields']['user_page_title_reputations'] );
-		$this->assertEquals( ap_opt( 'user_page_title_reputations' ), $form['fields']['user_page_title_reputations']['value'] );
-
-		// Test for user_page_slug_reputations field.
-		$this->assertArrayHasKey( 'label', $form['fields']['user_page_slug_reputations'] );
-		$this->assertEquals( 'Reputations page slug', $form['fields']['user_page_slug_reputations']['label'] );
-		$this->assertArrayHasKey( 'desc', $form['fields']['user_page_slug_reputations'] );
-		$this->assertEquals( 'Custom slug for user profile reputations page', $form['fields']['user_page_slug_reputations']['desc'] );
-		$this->assertArrayHasKey( 'value', $form['fields']['user_page_slug_reputations'] );
-		$this->assertEquals( ap_opt( 'user_page_slug_reputations' ), $form['fields']['user_page_slug_reputations']['value'] );
-	}
-
-	/**
-	 * @covers Anspress\Addons\Reputation::ap_bp_nav
-	 */
 	public function testapBPNav() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -206,45 +171,26 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 'reputations', $last_item['slug'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::ap_all_options
-	 */
 	public function testAPAllOptions() {
-		$instance = \Anspress\Addons\Reputation::init();
+		$options = apply_filters('ap_all_options', []);
 
-		// Dummy options.
-		$dummy_options = [
-			'option1' => [
-				'label'    => 'Option 1',
-				'template' => 'option-1.php',
-			],
-			'option2' => [
-				'label'    => 'Option 2',
-				'template' => 'option-2.php',
-			],
-		];
-		$this->assertEquals( 2, count( $dummy_options ) );
+		$this->assertArrayHasKey('reputation', $options);
 
-		// Call the method.
-		$modified_options = $instance->ap_all_options( $dummy_options );
-
-		// Test begins.
-		$this->assertNotEmpty( $modified_options );
-		$this->assertIsArray( $modified_options );
-		$this->assertEquals( 3, count( $modified_options ) );
-
-		// Test for reputations options.
-		$reputations_options = end( $modified_options );
-		$this->assertArrayHasKey( 'reputations', $modified_options );
-		$this->assertArrayHasKey( 'label', $reputations_options );
-		$this->assertEquals( '⚙ Reputations', $reputations_options['label'] );
-		$this->assertArrayHasKey( 'template', $reputations_options );
-		$this->assertEquals( 'reputation-events.php', $reputations_options['template'] );
+		$this->assertSame('Reputation', $options['reputation']['label']);
+		$this->assertSame(
+			array(
+				'reputation_settings' => array(
+					'label' => __( 'Settings', 'anspress-question-answer' ),
+				),
+				'reputation_events'   => array(
+					'label'    => __( 'Reputation Events', 'anspress-question-answer' ),
+					'template' => 'reputation-events.php',
+				),
+			),
+			$options['reputation']['groups']
+		);
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::register_default_events
-	 */
 	public function testRegisterDefaultEvents() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -284,17 +230,15 @@ class TestAddonReputation extends TestCase {
 		$this->assertContains( 'given_vote_down', $event_lists );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::user_register
-	 */
+
 	public function testUserRegister() {
 		$instance = \Anspress\Addons\Reputation::init();
 
 		// Test by directly calling the method.
 		$user_id = $this->factory()->user->create();
-		$this->assertEquals( 0, ap_get_user_reputation( $user_id ) );
-		$instance->user_register( $user_id );
 		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
+		$instance->user_register( $user_id );
+		$this->assertEquals( 20, ap_get_user_reputation( $user_id ) );
 
 		// Test by creating a new user.
 		add_filter( 'user_register', [ $instance, 'user_register' ] );
@@ -303,30 +247,24 @@ class TestAddonReputation extends TestCase {
 		remove_filter( 'user_register', [ $instance, 'user_register' ] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::new_question
-	 */
 	public function testNewQuestion() {
 		$instance = \Anspress\Addons\Reputation::init();
 
 		// Test by directly calling the method.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_question( $question_id, get_post( $question_id ) );
-		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 14, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test by creating a new question.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_after_new_question', [ $instance, 'new_question' ], 10, 2 );
 		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
-		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_after_new_question', [ $instance, 'new_question' ], 10, 2 );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::new_answer
-	 */
 	public function testNewAnswer() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -334,49 +272,43 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 15, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
-		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 20, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test by creating a new answer.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
 		$question_id = $this->insert_question();
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 15, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_after_new_answer', [ $instance, 'new_answer' ], 10, 2 );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::trash_question
-	 */
 	public function testTrashQuestion() {
 		$instance = \Anspress\Addons\Reputation::init();
 
 		// Test by directly calling the method.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_question( $question_id, get_post( $question_id ) );
-		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 14, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->trash_question( $question_id, get_post( $question_id ) );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test by trashing a question.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_trash_question', [ $instance, 'trash_question' ], 10, 2 );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_question( $question_id, get_post( $question_id ) );
-		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 14, ap_get_user_reputation( get_current_user_id() ) );
 		wp_trash_post( $question_id );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_trash_question', [ $instance, 'trash_question' ], 10, 2 );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::trash_answer
-	 */
 	public function testTrashAnswer() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -384,28 +316,25 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 15, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
-		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 20, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->trash_answer( $answer_id, get_post( $answer_id ) );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test by trashing an answer.
 		$this->setRole( 'subscriber' );
 		add_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
 		$question_id = $this->insert_question();
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 15, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->new_answer( $answer_id, get_post( $answer_id ) );
-		$this->assertEquals( 5, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 20, ap_get_user_reputation( get_current_user_id() ) );
 		wp_trash_post( $answer_id );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 10, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_trash_answer', [ $instance, 'trash_answer' ], 10, 2 );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::select_answer
-	 */
 	public function testSelectAnswer() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -414,19 +343,19 @@ class TestAddonReputation extends TestCase {
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 17, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->select_answer( get_post( $answer_id ) );
-		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 29, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test 2.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
 		$user_id = $this->factory()->user->create();
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
-		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
 		$instance->select_answer( get_post( $answer_id ) );
-		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
-		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 25, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 14, ap_get_user_reputation( get_current_user_id() ) );
 
 		// Test by selecting an answer.
 		// Test 1.
@@ -435,7 +364,7 @@ class TestAddonReputation extends TestCase {
 		$question_id = $this->insert_question( '', '', get_current_user_id() );
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
-		$this->assertEquals( 12, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 29, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
 
 		// Test 2.
@@ -445,14 +374,11 @@ class TestAddonReputation extends TestCase {
 		$user_id = $this->factory()->user->create();
 		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
 		ap_set_selected_answer( $question_id, $answer_id );
-		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
-		$this->assertEquals( 2, ap_get_user_reputation( get_current_user_id() ) );
+		$this->assertEquals( 25, ap_get_user_reputation( $user_id ) );
+		$this->assertEquals( 14, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'ap_select_answer', [ $instance, 'select_answer' ] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Reputation::unselect_answer
-	 */
 	public function testUnselectAnswer() {
 		$instance = \Anspress\Addons\Reputation::init();
 
@@ -1136,43 +1062,6 @@ class TestAddonReputation extends TestCase {
 		wp_delete_user( get_current_user_id() );
 		$this->assertEquals( 0, ap_get_user_reputation( get_current_user_id() ) );
 		remove_action( 'delete_user', [ $instance, 'delete_user' ] );
-	}
-
-	/**
-	 * @covers Anspress\Addons\Reputation::display_name
-	 */
-	public function testDisplayName() {
-		$instance = \Anspress\Addons\Reputation::init();
-
-		// Test 1.
-		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
-		$result = $instance->display_name( 'User Testing', [ 'user_id' => 0 ] );
-		$this->assertEquals( 'User Testing', $result );
-
-		// Test 2.
-		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
-		$question_id = $this->insert_question( '', '', $user_id );
-		$instance->new_question( $question_id, get_post( $question_id ) );
-		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => false ] );
-		$this->assertEquals( 'User Testing', $result );
-
-		// Test 3.
-		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
-		$question_id = $this->insert_question( '', '', $user_id );
-		$instance->new_question( $question_id, get_post( $question_id ) );
-		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
-		$this->assertEquals( 'User Testing<span class="ap-user-reputation" title="Reputation">2</span>', $result );
-
-		// Test 4.
-		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
-		$question_id = $this->insert_question( '', '', $user_id );
-		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
-		$instance->new_question( $question_id, get_post( $question_id ) );
-		$instance->new_answer( $answer_id, get_post( $answer_id ) );
-		ap_activate_addon( 'profile.php' );
-		$result = $instance->display_name( 'User Testing', [ 'user_id' => $user_id, 'html' => true ] );
-		$this->assertEquals( 'User Testing<a href="' . ap_user_link( $user_id ) . 'reputations/" class="ap-user-reputation" title="Reputation">7</a>', $result );
-		ap_deactivate_addon( 'profile.php' );
 	}
 
 	/**

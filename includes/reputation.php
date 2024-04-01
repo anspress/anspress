@@ -23,17 +23,16 @@ if ( ! defined( 'WPINC' ) ) {
  * @param string          $event Event type.
  * @param integer         $ref_id Reference ID (post or comment ID).
  * @param integer|boolean $user_id User ID.
- * @return boolean
+ * @return boolean|int
  * @since 4.0.0
  */
 function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
-
-	// Don't do insert notification if defined.
-	if ( defined( 'AP_DISABLE_INSERT_REP' ) && AP_DISABLE_INSERT_REP ) {
-		return;
-	}
-
 	global $wpdb;
+
+	// Do not insert reputation if it is disabled.
+	if ( ! ap_opt( 'enable_reputation' ) ) {
+		return false;
+	}
 
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
@@ -68,7 +67,7 @@ function ap_insert_reputation( $event, $ref_id, $user_id = false ) {
 	 */
 	do_action( 'ap_insert_reputation', $new_id, $user_id, $event, $ref_id );
 
-	return $new_id;
+	return (int) $new_id;
 }
 
 /**
@@ -281,6 +280,12 @@ function ap_get_user_reputation_meta( $user_id = false, $short = true ) {
 function ap_update_user_reputation_meta( $user_id = false ) {
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
+	}
+
+	$user = get_user_by( 'id', $user_id );
+
+	if ( ! $user ) {
+		return;
 	}
 
 	update_user_meta( $user_id, 'ap_reputations', ap_get_user_reputation( $user_id ) ); // @codingStandardsIgnoreLine
