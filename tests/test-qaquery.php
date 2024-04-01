@@ -1273,4 +1273,13 @@ class TestQAQuery extends TestCase {
 		$result = ap_get_last_active( 0 );
 		$this->assertEquals( 'Invalid post', $result );
 	}
+
+	/**
+	 * @covers ::ap_have_questions
+	 */
+	public function testAPHaveQuestionsShouldReturnFalseIfAnsPressQuestionsIsSetToFalse() {
+		anspress()->questions = false;
+		$result = ap_have_questions();
+		$this->assertFalse( $result );
+	}
 }
