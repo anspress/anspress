@@ -209,4 +209,25 @@ class TestAnswersQuery extends TestCase {
 			$this->assertSame( $answer, $result );
 		}
 	}
+
+	/**
+	 * @covers Answers_Query::reset_next
+	 */
+	public function testResetNext() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+		$this->assertEquals( $answers[0], $answers_query->next_answer() );
+		$this->assertEquals( $answers[1], $answers_query->next_answer() );
+		$this->assertEquals( $answers[2], $answers_query->next_answer() );
+
+		// Test reset_next.
+		$result1 = $answers_query->reset_next();
+		$this->assertInstanceOf( 'WP_Post', $result1 );
+		$this->assertEquals( $answers[1], $result1 );
+		$result2 = $answers_query->reset_next();
+		$this->assertInstanceOf( 'WP_Post', $result2 );
+		$this->assertEquals( $answers[0], $result2 );
+	}
 }
