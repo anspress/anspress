@@ -312,4 +312,24 @@ class TestAnswersQuery extends TestCase {
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_query_loop_start' ) > 0 );
 	}
+
+	/**
+	 * @covers Answers_Query::is_main_query
+	 */
+	public function testIsMainQuery() {
+		$question_id = $this->insert_question();
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		anspress()->answers = $answers_query;
+		$this->assertTrue( $answers_query->is_main_query() );
+	}
+
+	/**
+	 * @covers Answers_Query::is_main_query
+	 */
+	public function testIsMainQueryReturnsFalse() {
+		$question_id = $this->insert_question();
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		anspress()->answers = '';
+		$this->assertFalse( $answers_query->is_main_query() );
+	}
 }
