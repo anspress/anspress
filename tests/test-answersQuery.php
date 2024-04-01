@@ -194,4 +194,19 @@ class TestAnswersQuery extends TestCase {
 		$answers = $answers_query->get_answers();
 		$this->assertEmpty( $answers );
 	}
+
+	/**
+	 * @covers Answers_Query::next_answer
+	 */
+	public function testNextAnswer() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+		foreach ( $answers as $answer ) {
+			$result = $answers_query->next_answer();
+			$this->assertInstanceOf( 'WP_Post', $result );
+			$this->assertSame( $answer, $result );
+		}
+	}
 }
