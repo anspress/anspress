@@ -162,4 +162,36 @@ class TestAnswersQuery extends TestCase {
 		$this->assertEquals( 'ASC', $answers_query->args['order'] );
 		$this->assertEquals( get_current_user_id(), $answers_query->args['author'] );
 	}
+
+	/**
+	 * @covers Answers_Query::get_answers
+	 */
+	public function testGetAnswersReturnsWPPostObjects() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+		$this->assertContainsOnlyInstancesOf( 'WP_Post', $answers );
+	}
+
+	/**
+	 * @covers Answers_Query::get_answers
+	 */
+	public function testGetAnswersReturnsIntegerArrays() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id, 'fields' => 'ids' ] );
+		$answers = $answers_query->get_answers();
+		$this->assertContainsOnly( 'integer', $answers );
+	}
+
+	/**
+	 * @covers Answers_Query::get_answers
+	 */
+	public function testGetAnswersReturnsEmptyArray() {
+		$question_id = $this->insert_question();
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+		$this->assertEmpty( $answers );
+	}
 }
