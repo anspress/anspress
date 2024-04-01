@@ -249,4 +249,21 @@ class TestAnswersQuery extends TestCase {
 		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
 		$this->assertFalse( $answers_query->have_answers() );
 	}
+
+	/**
+	 * @covers Answers_Query::rewind_answers
+	 */
+	public function testRewindAnswers() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers = $answers_query->get_answers();
+		$this->assertEquals( $answers[0], $answers_query->next_answer() );
+		$this->assertEquals( $answers[1], $answers_query->next_answer() );
+		$this->assertEquals( $answers[2], $answers_query->next_answer() );
+
+		// Test rewind_answers.
+		$answers_query->rewind_answers();
+		$this->assertEquals( $answers[0], $answers_query->next_answer() );
+	}
 }
