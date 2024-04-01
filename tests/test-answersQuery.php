@@ -230,4 +230,23 @@ class TestAnswersQuery extends TestCase {
 		$this->assertInstanceOf( 'WP_Post', $result2 );
 		$this->assertEquals( $answers[0], $result2 );
 	}
+
+	/**
+	 * @covers Answers_Query::have_answers
+	 */
+	public function testHaveAnswers() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$this->assertTrue( $answers_query->have_answers() );
+	}
+
+	/**
+	 * @covers Answers_Query::have_answers
+	 */
+	public function testHaveAnswersReturnsFalse() {
+		$question_id = $this->insert_question();
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$this->assertFalse( $answers_query->have_answers() );
+	}
 }
