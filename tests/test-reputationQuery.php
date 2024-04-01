@@ -170,4 +170,27 @@ class TestReputationQuery extends TestCase {
 		$this->assertTrue( in_array( 'given_vote_down', $with_zero_points ) );
 		$this->assertTrue( in_array( 'custom_test_event', $with_zero_points ) );
 	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::has
+	 */
+	public function testHas() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		$activity = new \AnsPress_Reputation_Query();
+
+		// Test 1.
+		$activity->count = 0;
+		$this->assertFalse( $activity->has() );
+
+		// Test 2.
+		$activity->count = 1;
+		$this->assertTrue( $activity->has() );
+
+		// Test 3.
+		$activity->count = 2;
+		$this->assertTrue( $activity->has() );
+	}
 }
