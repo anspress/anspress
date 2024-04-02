@@ -26,4 +26,24 @@ class TestQuestionsQuery extends TestCase {
 		$this->assertTrue( method_exists( 'Question_Query', 'get_ids' ) );
 		$this->assertTrue( method_exists( 'Question_Query', 'pre_fetch' ) );
 	}
+
+	/**
+	 * @covers Question_Query::is_main_query
+	 */
+	public function testIsMainQuery() {
+		$question_id = $this->insert_question();
+		$question_query = new \Question_Query();
+		anspress()->questions = $question_query;
+		$this->assertTrue( $question_query->is_main_query() );
+	}
+
+	/**
+	 * @covers Question_Query::is_main_query
+	 */
+	public function testIsMainQueryReturnsFalse() {
+		$question_id = $this->insert_question();
+		$question_query = new \Question_Query();
+		anspress()->questions = '';
+		$this->assertFalse( $question_query->is_main_query() );
+	}
 }
