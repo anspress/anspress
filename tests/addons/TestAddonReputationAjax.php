@@ -1,27 +1,13 @@
 <?php
 
-namespace Anspress\Tests;
+namespace AnsPress\Tests;
 
 use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
 
-class TestAjaxAddons extends TestCaseAjax {
-
+class TestAddonReputationAjax extends TestCaseAjax {
 	use Testcases\Common;
 	use Testcases\Ajax;
 
-	public function set_up() {
-		parent::set_up();
-		ap_activate_addon( 'reputation.php' );
-	}
-
-	public function tear_down() {
-		parent::tear_down();
-		ap_deactivate_addon( 'reputation.php' );
-	}
-
-	/**
-	 * @covers Anspress\Addons\Reputation::ap_save_events
-	 */
 	public function testAPSaveEvents() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );

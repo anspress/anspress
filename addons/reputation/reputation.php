@@ -622,7 +622,11 @@ class Reputation extends \AnsPress\Singleton {
 	 * @since unknown
 	 */
 	public function bp_reputation_page() {
-		$user_id = bp_displayed_user_id();
+		if ( ! function_exists( 'bp_displayed_user_id' ) ) {
+			return;
+		}
+
+		$user_id = \bp_displayed_user_id();
 
 		$reputations = new \AnsPress_Reputation_Query( array( 'user_id' => $user_id ) );
 		include ap_get_theme_location( 'addons/reputation/index.php' );

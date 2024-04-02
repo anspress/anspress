@@ -410,7 +410,7 @@ class Email extends \AnsPress\Singleton {
 	 * @since 4.1.0 Updated to use new email class.
 	 */
 	public function select_answer( $_post ) {
-		if ( get_current_user_id() === $_post->post_author || ! ap_opt( 'email_user_select_answer' ) ) {
+		if ( ! $_post || get_current_user_id() === $_post->post_author || ! ap_opt( 'email_user_select_answer' ) ) {
 			return;
 		}
 
