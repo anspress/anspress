@@ -279,4 +279,154 @@ class TestQuestionsQuery extends TestCase {
 		$this->assertEquals( true, $question_query->args['ap_show_unpublished'] );
 		$this->assertEquals( get_current_user_id(), $question_query->args['author'] );
 	}
+
+	/**
+	 * @covers Question_Query::get_questions
+	 */
+	public function testGetQuestionsReturnsWPPostObjects() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+		$this->assertContainsOnlyInstancesOf( 'WP_Post', $questions );
+	}
+
+	/**
+	 * @covers Question_Query::get_questions
+	 */
+	public function testGetQuestionsReturnsIntegerArrays() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query( [ 'fields' => 'ids' ] );
+		$questions = $question_query->get_questions();
+		$this->assertContainsOnly( 'integer', $questions );
+	}
+
+	/**
+	 * @covers Question_Query::get_questions
+	 */
+	public function testGetQuestionsReturnsEmptyArray() {
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+		$this->assertEmpty( $questions );
+	}
+
+	/**
+	 * @covers Question_Query::next_question
+	 */
+	public function testNextQuestion() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+		foreach ( $questions as $question ) {
+			$result = $question_query->next_question();
+			$this->assertInstanceOf( 'WP_Post', $result );
+			$this->assertSame( $question, $result );
+		}
+	}
+
+	/**
+	 * @covers Question_Query::reset_next
+	 */
+	public function testResetNext() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+		$this->assertEquals( $questions[0], $question_query->next_question() );
+		$this->assertEquals( $questions[1], $question_query->next_question() );
+		$this->assertEquals( $questions[2], $question_query->next_question() );
+
+		// Test reset_next.
+		$result1 = $question_query->reset_next();
+		$this->assertInstanceOf( 'WP_Post', $result1 );
+		$this->assertEquals( $questions[1], $result1 );
+		$result2 = $question_query->reset_next();
+		$this->assertInstanceOf( 'WP_Post', $result2 );
+		$this->assertEquals( $questions[0], $result2 );
+	}
+
+	/**
+	 * @covers Question_Query::the_question
+	 */
+	public function testTheQuestion() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+
+		// Test.
+		foreach ( $questions as $question ) {
+			$question_query->the_question();
+
+			global $post;
+			$this->assertSame( $question, $post );
+			$this->assertSame( $question, anspress()->current_question );
+		}
+	}
+
+	/**
+	 * @covers Question_Query::the_question
+	 */
+	public function testTheQuestionForActionHookTriggered() {
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_query_loop_start', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+
+		// Test.
+		foreach ( $questions as $question ) {
+			$question_query->the_question();
+
+			global $post;
+			$this->assertSame( $question, $post );
+			$this->assertSame( $question, anspress()->current_question );
+		}
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_query_loop_start' ) > 0 );
+	}
+
+	/**
+	 * @covers Question_Query::have_questions
+	 */
+	public function testHaveQuestions() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$this->assertTrue( $question_query->have_questions() );
+	}
+
+	/**
+	 * @covers Question_Query::have_questions
+	 */
+	public function testHaveQuestionsReturnsFalse() {
+		$question_query = new \Question_Query();
+		$this->assertFalse( $question_query->have_questions() );
+	}
+
+	/**
+	 * @covers Question_Query::rewind_questions
+	 */
+	public function testRewindQuestions() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$questions = $question_query->get_questions();
+		$this->assertEquals( $questions[0], $question_query->next_question() );
+		$this->assertEquals( $questions[1], $question_query->next_question() );
+		$this->assertEquals( $questions[2], $question_query->next_question() );
+
+		// Test rewind_questions.
+		$question_query->rewind_questions();
+		$this->assertEquals( $questions[0], $question_query->next_question() );
+	}
+
+	/**
+	 * @covers Question_Query::reset_questions_data
+	 */
+	public function testResetQuestionsData() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$question_query = new \Question_Query();
+		$question_query->reset_questions_data();
+		$this->assertEquals( $question_query->post, anspress()->current_question );
+	}
 }
