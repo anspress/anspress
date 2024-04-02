@@ -429,4 +429,39 @@ class TestQuestionsQuery extends TestCase {
 		$question_query->reset_questions_data();
 		$this->assertEquals( $question_query->post, anspress()->current_question );
 	}
+
+	/**
+	 * @covers Question_Query::get_ids
+	 */
+	public function testGetIds() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		$attachment_id_1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_ids[0] );
+		$attachment_id_2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $question_ids[1] );
+		ap_update_post_attach_ids( $question_ids[0] );
+		ap_update_post_attach_ids( $question_ids[1] );
+		$new_question = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		ap_update_post_activity_meta( $new_question, 'new_q', $user_id );
+
+		// Test.
+		$question_query = new \Question_Query();
+		$expected = [
+			'post_ids'   => array_merge( [ $new_question ], $question_ids ),
+			'attach_ids' => [ '', $attachment_id_2,$attachment_id_1 ],
+			'user_ids'   => [ 0 => $user_id, 2 => get_current_user_id() ],
+		];
+		$this->assertEquals( $expected, $question_query->ap_ids );
+	}
+
+	/**
+	 * @covers Question_Query::get_ids
+	 */
+	public function testGetIdsForCallingTheMethodAgain() {
+		$question_query = new \Question_Query();
+		$ap_ids = $question_query->ap_ids;
+		$this->assertNotEmpty( $ap_ids );
+		$this->assertNull( $question_query->get_ids() );
+		$this->assertEquals( $ap_ids, $question_query->ap_ids );
+	}
 }

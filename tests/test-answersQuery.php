@@ -343,4 +343,53 @@ class TestAnswersQuery extends TestCase {
 		$answers_query->reset_answers_data();
 		$this->assertEquals( $answers_query->post, anspress()->current_answer );
 	}
+
+	/**
+	 * @covers Answers_Query::get_ids
+	 */
+	public function testGetIds() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		wp_update_post( [ 'ID' => $answer_ids[0], 'post_date' => '2024-01-03 00:00:00' ] );
+		wp_update_post( [ 'ID' => $answer_ids[1], 'post_date' => '2024-01-02 00:00:00' ] );
+		wp_update_post( [ 'ID' => $answer_ids[2], 'post_date' => '2024-01-01 00:00:00' ] );
+		$attachment_id_1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $answer_ids[0] );
+		$attachment_id_2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/anspress-hero.png', $answer_ids[1] );
+		ap_update_post_attach_ids( $answer_ids[0] );
+		ap_update_post_attach_ids( $answer_ids[1] );
+		$new_answer = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id, 'post_author' => $user_id ] );
+		$new_user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$comment_id = $this->factory()->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $answer_ids[0],
+				'user_id'         => $new_user_id,
+			)
+		);
+		ap_update_post_activity_meta( $new_answer, 'new_c', $new_user_id );
+
+		// Test.
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id, 'ap_order_by' => 'newest' ] );
+		$expected = [
+			'post_ids'   => array_merge( [ $new_answer ], $answer_ids ),
+			'attach_ids' => [ 1 => $attachment_id_2, 2 => $attachment_id_1 ],
+			'user_ids'   => [ $user_id, $new_user_id, get_current_user_id() ],
+		];
+		$this->assertEquals( $expected, $answers_query->ap_ids );
+	}
+
+	/**
+	 * @covers Answers_Query::get_ids
+	 */
+	public function testGetIdsForCallingTheMethodAgain() {
+		$question_id = $this->insert_question();
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$ap_ids = $answers_query->ap_ids;
+		$this->assertNotEmpty( $ap_ids );
+		$this->assertNull( $answers_query->get_ids() );
+		$this->assertEquals( $ap_ids, $answers_query->ap_ids );
+	}
 }
