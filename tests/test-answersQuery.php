@@ -392,4 +392,34 @@ class TestAnswersQuery extends TestCase {
 		$this->assertNull( $answers_query->get_ids() );
 		$this->assertEquals( $ap_ids, $answers_query->ap_ids );
 	}
+
+	/**
+	 * @covers ::ap_the_answer
+	 */
+	public function testApTheAnswer() {
+		global $answers;
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers = new \Answers_Query( [ 'question_id' => $question_id ] );
+
+		// Test.
+		foreach ( $answers->posts as $answer ) {
+			ap_the_answer();
+
+			global $post;
+			$this->assertSame( $post, $answer );
+		}
+
+		// Reset,
+		$answers = null;
+	}
+
+	/**
+	 * @covers ::ap_the_answer
+	 */
+	public function testApTheAnswerShouldReturnNull() {
+		global $answers;
+		unset( $answers );
+		$this->assertNull( ap_the_answer() );
+	}
 }

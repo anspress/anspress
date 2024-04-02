@@ -464,4 +464,15 @@ class TestQuestionsQuery extends TestCase {
 		$this->assertNull( $question_query->get_ids() );
 		$this->assertEquals( $ap_ids, $question_query->ap_ids );
 	}
+
+	/**
+	 * @covers ::ap_reset_question_query
+	 */
+	public function testAPResetQuestionQuery() {
+		$question_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'question' ] );
+		anspress()->questions = new \Question_Query();
+		$this->assertInstanceOf( 'Question_Query', anspress()->questions );
+		ap_reset_question_query();
+		$this->assertEquals( anspress()->questions->post, anspress()->current_question );
+	}
 }
