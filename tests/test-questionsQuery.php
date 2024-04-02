@@ -445,11 +445,11 @@ class TestQuestionsQuery extends TestCase {
 		ap_update_post_activity_meta( $new_question, 'new_q', $user_id );
 
 		// Test.
-		$question_query = new \Question_Query();
+		$question_query = new \Question_Query( [ 'ap_order_by' => 'oldest' ] );
 		$expected = [
-			'post_ids'   => array_merge( [ $new_question ], $question_ids ),
-			'attach_ids' => [ '', $attachment_id_2,$attachment_id_1 ],
-			'user_ids'   => [ 0 => $user_id, 2 => get_current_user_id() ],
+			'post_ids'   => array_merge( $question_ids, [ $new_question ] ),
+			'attach_ids' => [ 0 => '', 2 => $attachment_id_2, 3 => $attachment_id_1 ],
+			'user_ids'   => [ 0 => get_current_user_id(), 3 => $user_id ],
 		];
 		$this->assertEquals( $expected, $question_query->ap_ids );
 	}
