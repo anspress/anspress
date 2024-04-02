@@ -218,19 +218,20 @@ class TestAddonReputation extends TestCase {
 
 
 	public function testUserRegister() {
-		$instance = \Anspress\Addons\Reputation::init();
+		ap_opt( 'enable_reputation', true );
 
-		// Test by directly calling the method.
-		$user_id = $this->factory()->user->create();
-		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
-		$instance->user_register( $user_id );
-		$this->assertEquals( 20, ap_get_user_reputation( $user_id ) );
+		ap_register_reputation_event( 'register', [
+			'label'         => 'Test reputation event',
+			'description'   => 'Lorem ipsum dolor sit amet',
+			'icon'          => 'apicon-test-reputation',
+			'activity'      => 'Reputation registered',
+			'parent'        => '',
+			'points'        => 999,
+		] );
 
-		// Test by creating a new user.
-		add_filter( 'user_register', [ $instance, 'user_register' ] );
-		$user_id = $this->factory()->user->create();
-		$this->assertEquals( 10, ap_get_user_reputation( $user_id ) );
-		remove_filter( 'user_register', [ $instance, 'user_register' ] );
+		$this->setRole( 'subscriber' );
+
+		$this->assertEquals(999, ap_get_user_reputation(get_current_user_id()));
 	}
 
 	public function testNewQuestion() {
