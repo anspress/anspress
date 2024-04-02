@@ -94,8 +94,6 @@ class TestAnsPress extends TestCase {
 		// Check addon files exists.
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/akismet/akismet.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/akismet/image.png' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/avatar.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/class-generator.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/buddypress.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/image.png' );

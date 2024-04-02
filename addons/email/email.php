@@ -77,9 +77,8 @@ class Email extends \AnsPress\Singleton {
 	protected function __construct() {
 		$this->ap_default_options();
 		add_filter( 'ap_all_options', array( $this, 'load_options' ) );
-		add_filter( 'ap_form_options_email', array( $this, 'register_option' ) );
+		add_filter( 'ap_form_options_email_email_settings', array( $this, 'register_option' ) );
 		add_filter( 'ap_form_email_template', array( $this, 'register_email_template' ) );
-		add_filter( 'ap_all_options', array( $this, 'ap_all_options' ), 3, 2 );
 		add_action( 'wp_ajax_ap_email_template', array( $this, 'ap_email_template' ) );
 		add_action( 'ap_ajax_form_email_template', array( $this, 'save_email_template_form' ), 11 );
 		add_action( 'ap_email_default_template_new_question', array( $this, 'template_new_question' ) );
@@ -94,14 +93,16 @@ class Email extends \AnsPress\Singleton {
 
 		add_filter( 'comment_notification_recipients', array( $this, 'default_recipients' ), 10, 2 );
 
-		add_action( 'ap_after_new_question', array( $this, 'ap_after_new_question' ) );
-		add_action( 'ap_after_new_answer', array( $this, 'ap_after_new_answer' ) );
-		add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
-		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
-		add_action( 'ap_processed_update_question', array( $this, 'ap_after_update_question' ), 10, 2 );
-		add_action( 'ap_processed_update_answer', array( $this, 'ap_after_update_answer' ), 10, 2 );
-		add_action( 'ap_trash_question', array( $this, 'ap_trash_question' ), 10, 2 );
-		add_action( 'ap_trash_answer', array( $this, 'ap_trash_answer' ), 10, 2 );
+		if ( ap_opt( 'enable_email' ) ) {
+			add_action( 'ap_after_new_question', array( $this, 'ap_after_new_question' ) );
+			add_action( 'ap_after_new_answer', array( $this, 'ap_after_new_answer' ) );
+			add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
+			add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
+			add_action( 'ap_processed_update_question', array( $this, 'ap_after_update_question' ), 10, 2 );
+			add_action( 'ap_processed_update_answer', array( $this, 'ap_after_update_answer' ), 10, 2 );
+			add_action( 'ap_trash_question', array( $this, 'ap_trash_question' ), 10, 2 );
+			add_action( 'ap_trash_answer', array( $this, 'ap_trash_answer' ), 10, 2 );
+		}
 	}
 
 	/**
@@ -128,6 +129,7 @@ class Email extends \AnsPress\Singleton {
 	 */
 	public function ap_default_options() {
 		$defaults = array(
+			'enable_email'               => true,
 			'email_admin_emails'         => get_option( 'admin_email' ),
 			'email_admin_new_question'   => true,
 			'email_admin_new_answer'     => true,
@@ -151,18 +153,22 @@ class Email extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Register Categories options.
+	 * Register email options.
 	 *
 	 * @param array $groups Group tabs.
 	 * @since 4.2.0
 	 */
 	public function load_options( $groups ) {
 		$groups['email'] = array(
-			'label' => __( 'Email', 'anspress-question-answer' ),
-			'info'  => sprintf(
-				// translators: placeholder contains link to email templates.
-				__( 'Email templates can be customized here %s.', 'anspress-question-answer' ),
-				'<a href="' . admin_url( 'admin.php?page=anspress_options&active_tab=emails' ) . '">' . esc_attr__( 'Customize email templates', 'anspress-question-answer' ) . '</a>'
+			'label'  => __( 'Email', 'anspress-question-answer' ),
+			'groups' => array(
+				'email_settings'  => array(
+					'label' => __( 'Email Settings', 'anspress-question-answer' ),
+				),
+				'email_templates' => array(
+					'label'    => __( 'Email Templates', 'anspress-question-answer' ),
+					'template' => 'emails.php',
+				),
 			),
 		);
 
@@ -177,6 +183,12 @@ class Email extends \AnsPress\Singleton {
 
 		$form = array(
 			'fields' => array(
+				'enable_email'               => array(
+					'label' => __( 'Enable email notifications', 'anspress-question-answer' ),
+					'desc'  => __( 'Enable or disable email notifications.', 'anspress-question-answer' ),
+					'type'  => 'checkbox',
+					'value' => $opt['enable_email'] ?? false,
+				),
 				'sep1'                       => array(
 					'html' => '<h3>' . __( 'Admin Notifications', 'anspress-question-answer' ) . '<p>' . __( 'Select types of notification which will be sent to admin.', 'anspress-question-answer' ) . '</p></h3>',
 				),
@@ -653,22 +665,6 @@ class Email extends \AnsPress\Singleton {
 
 		$email = new EmailHelper( 'trash_question', $args );
 		$email->send_emails();
-	}
-
-	/**
-	 * Add reputation events option in AnsPress options.
-	 *
-	 * @param array $all_options Options.
-	 * @return array
-	 * @since 4.1.0
-	 */
-	public function ap_all_options( $all_options ) {
-		$all_options['emails'] = array(
-			'label'    => __( '📧 Email Templates', 'anspress-question-answer' ),
-			'template' => 'emails.php',
-		);
-
-		return $all_options;
 	}
 
 	/**

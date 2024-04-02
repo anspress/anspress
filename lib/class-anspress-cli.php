@@ -76,17 +76,8 @@ class AnsPress_Cli extends WP_CLI_Command {
 	 * @param mixed $assoc_args Options.
 	 */
 	public function activate_addon( $args, $assoc_args ) {
-		if ( empty( $args[0] ) ) {
-			return WP_CLI::error( __( 'You must pass a addon name i.e. free/avatar.php', 'anspress-question-answer' ) );
-		}
+		_deprecated_function( __METHOD__, '5.0.0', 'ap_activate_addon' );
 
-		$addon_name = $args[0];
-		$ret        = ap_activate_addon( $args[0] );
-
-		if ( false === $ret ) {
-			return WP_CLI::error( __( 'Unable to activate addon. May be its already active or wrong name passed.', 'anspress-question-answer' ) );
-		}
-
-		WP_CLI::success( __( 'Successfully enabled addon', 'anspress-question-answer' ) );
+		return \WP_CLI::error( __( 'This command is deprecated since 5.0.0', 'anspress-question-answer' ) );
 	}
 }

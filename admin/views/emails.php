@@ -15,6 +15,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if ( ! ap_opt( 'enable_email' ) ) {
+	esc_attr_e( 'Email is disabled.', 'anspress-question-answer' );
+	return;
+}
+
 global $wpdb;
 $i = 1;
 ?>

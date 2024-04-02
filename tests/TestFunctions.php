@@ -782,7 +782,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'reputation.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_addons() );
-		$this->assertArrayHasKey( 'avatar.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'notifications.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_addons() );
@@ -800,7 +799,6 @@ class TestFunctions extends TestCase {
 			'email.php',
 			'reputation.php',
 			'akismet.php',
-			'avatar.php',
 			'buddypress.php',
 			'notifications.php',
 			'profile.php',

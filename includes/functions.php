@@ -1650,10 +1650,6 @@ function ap_get_addons() {
 			'name'        => __( 'Reputation', 'anspress-question-answer' ),
 			'description' => __( 'Award points to user based on activities.', 'anspress-question-answer' ),
 		),
-		'avatar.php'            => array(
-			'name'        => __( 'Dynamic Avatar', 'anspress-question-answer' ),
-			'description' => __( 'Generate user avatar based on display name initials.', 'anspress-question-answer' ),
-		),
 		'buddypress.php'        => array(
 			'name'        => __( 'BuddyPress', 'anspress-question-answer' ),
 			'description' => __( 'Integrate AnsPress with BuddyPress.', 'anspress-question-answer' ),
