@@ -332,4 +332,15 @@ class TestAnswersQuery extends TestCase {
 		anspress()->answers = '';
 		$this->assertFalse( $answers_query->is_main_query() );
 	}
+
+	/**
+	 * @covers Answers_Query::reset_answers_data
+	 */
+	public function testResetAnswersData() {
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers_query->reset_answers_data();
+		$this->assertEquals( $answers_query->post, anspress()->current_answer );
+	}
 }
