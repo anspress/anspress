@@ -228,7 +228,7 @@ class TestCommonPages extends TestCase {
 		// Test 3.
 		$question_rendered = false;
 		$this->assertFalse( $question_rendered );
-		$ids = $this->insert_answers( [], [], 5 );
+		$ids = $this->insert_answers( [], [], 7 );
 		ap_set_selected_answer( $ids['question'], $ids['answers'][3] );
 		$this->go_to( '?post_type=question&p=' . $ids['question'] );
 		$question = get_post( $ids['question'] );
