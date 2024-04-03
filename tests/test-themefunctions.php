@@ -2128,4 +2128,194 @@ class TestThemeFunctions extends TestCase {
 		$this->assertStringContainsString( '<a class="prev page-numbers" rel="prev"', $result );
 		unset( $_REQUEST['ap_paged'] );
 	}
+
+	/**
+	 * @covers ::ap_get_questions_orderby
+	 */
+	public function testAPGetQuestionsOrderBy() {
+		set_query_var( 'ap_s', 'Test Question' );
+
+		// Test.
+		$expected = [
+			array(
+				'key'    => 'order_by',
+				'value'  => 'active',
+				'label'  => 'Active',
+				'active' => true,
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'newest',
+				'label' => 'New',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'voted',
+				'label' => 'Votes',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'answers',
+				'label' => 'Answers',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'views',
+				'label' => 'Views',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'solved',
+				'label' => 'Solved',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'unanswered',
+				'label' => 'Unanswered',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'unsolved',
+				'label' => 'Unsolved',
+			),
+		];
+		$this->assertEquals( $expected, ap_get_questions_orderby() );
+	}
+
+	/**
+	 * @covers ::ap_get_questions_orderby
+	 */
+	public function testAPGetQuestionsOrderByForNewestSetAsAuestionOrderBy() {
+		set_query_var( 'ap_s', 'Test Question' );
+		ap_opt( 'question_order_by', 'newest' );
+
+		// Test.
+		$expected = [
+			array(
+				'key'   => 'order_by',
+				'value' => 'active',
+				'label' => 'Active',
+			),
+			array(
+				'key'    => 'order_by',
+				'value'  => 'newest',
+				'label'  => 'New',
+				'active' => true,
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'voted',
+				'label' => 'Votes',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'answers',
+				'label' => 'Answers',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'views',
+				'label' => 'Views',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'solved',
+				'label' => 'Solved',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'unanswered',
+				'label' => 'Unanswered',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'unsolved',
+				'label' => 'Unsolved',
+			),
+		];
+		$this->assertEquals( $expected, ap_get_questions_orderby() );
+
+		// Reset.
+		ap_opt( 'question_order_by', 'active' );
+	}
+
+	/**
+	 * @covers ::ap_get_questions_orderby
+	 */
+	public function testAPGetQuestionsOrderByForDisableVotingOnQuestionSetToTrue() {
+		set_query_var( 'ap_s', 'Test Question' );
+		ap_opt( 'disable_voting_on_question', true );
+
+		// Test.
+		$expected = [
+			array(
+				'key'    => 'order_by',
+				'value'  => 'active',
+				'label'  => 'Active',
+				'active' => true,
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'newest',
+				'label' => 'New',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'answers',
+				'label' => 'Answers',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'views',
+				'label' => 'Views',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'solved',
+				'label' => 'Solved',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'unanswered',
+				'label' => 'Unanswered',
+			),
+			array(
+				'key'   => 'order_by',
+				'value' => 'unsolved',
+				'label' => 'Unsolved',
+			),
+		];
+		$this->assertEquals( $expected, ap_get_questions_orderby() );
+
+		// Reset.
+		ap_opt( 'disable_voting_on_question', false );
+	}
+
+	public static function APQuestionsOrderBy() {
+		return [
+			[
+				'key'    => 'order_by',
+				'value'  => 'test_value',
+				'label'  => 'Test Value',
+				'active' => true,
+			],
+		];
+	}
+
+	/**
+	 * @covers ::ap_get_questions_orderby
+	 */
+	public function testAPGetQuestionsOrderByForAPQuestionsOrderByFilter() {
+		add_filter( 'ap_questions_order_by', [ $this, 'APQuestionsOrderBy' ] );
+		$expected = [
+			[
+				'key'    => 'order_by',
+				'value'  => 'test_value',
+				'label'  => 'Test Value',
+				'active' => true,
+			],
+		];
+		$this->assertEquals( $expected, ap_get_questions_orderby() );
+		remove_filter( 'ap_questions_order_by', [ $this, 'APQuestionsOrderBy' ] );
+	}
 }
