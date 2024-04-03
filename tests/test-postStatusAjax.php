@@ -177,4 +177,30 @@ class TestPostAjax extends TestCaseAjax {
 		$qameta = ap_get_qameta( $question_id );
 		$this->assertTrue( $qameta->activities['type'] === 'changed_status' );
 	}
+
+	/**
+	 * @covers AnsPress_Post_Status::change_post_status
+	 */
+	public function testChangePostStatusForAnswerBeingAlreadySelected() {
+		add_action( 'ap_ajax_action_status', [ 'AnsPress_Post_Status', 'change_post_status' ] );
+
+		// Test.
+		// Before calling the Ajax hook.
+		$this->setRole( 'administrator', true );
+		$question_id = $this->insert_question();
+		$answer_id_1 = $this->factory()->post->create( [ 'post_parent' => $question_id, 'post_type' => 'answer' ] );
+		$answer_id_2 = $this->factory()->post->create( [ 'post_parent' => $question_id, 'post_type' => 'answer' ] );
+		ap_set_selected_answer( $question_id, $answer_id_2 );
+		$this->assertTrue( ap_have_answer_selected( $question_id ) );
+
+		// After calling the Ajax hook.
+		$this->_set_post_data( 'ap_ajax_action=action_status&post_id=' . $answer_id_2 . '&status=moderate&__nonce=' . wp_create_nonce( 'change-status-moderate-' . $answer_id_2 ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Answer status updated successfully' );
+		$this->assertTrue( $this->ap_ajax_success( 'action' )->active === true );
+		$this->assertTrue( $this->ap_ajax_success( 'postmessage' ) === ap_get_post_status_message( $answer_id_2 ) );
+		$this->assertTrue( $this->ap_ajax_success( 'newStatus' ) === 'moderate' );
+		$this->assertFalse( ap_have_answer_selected( $question_id ) );
+	}
 }
