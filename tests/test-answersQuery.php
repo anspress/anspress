@@ -418,8 +418,9 @@ class TestAnswersQuery extends TestCase {
 	 * @covers ::ap_the_answer
 	 */
 	public function testApTheAnswerShouldReturnNull() {
-		global $answers;
+		global $answers, $post;
 		unset( $answers );
-		$this->assertNull( ap_the_answer() );
+		ap_the_answer();
+		$this->assertNull( $post );
 	}
 }
