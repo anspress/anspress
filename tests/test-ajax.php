@@ -863,4 +863,19 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'commentsCount' )->unapproved === 3 );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Comment approved successfully.' );
 	}
+
+	/**
+	 * @covers AnsPress_Uploader::delete_attachment
+	 */
+	public function testDeleteAttachmentForFailure() {
+		add_action( 'ap_ajax_delete_attachment', array( 'AnsPress_Uploader', 'delete_attachment' ) );
+
+		// Test.
+		$this->setRole( 'administrator', true );
+		$post_id = $this->factory()->post->create();
+		$this->_set_post_data( 'ap_ajax_action=delete_attachment&attachment_id=' . $post_id . '&__nonce=' . wp_create_nonce( 'delete-attachment-' . $post_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Unable to delete attachment' );
+	}
 }
