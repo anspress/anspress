@@ -199,4 +199,172 @@ class TestActivityClass extends TestCase {
 		$activity->count = 2;
 		$this->assertTrue( $activity->has() );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::when
+	 */
+	public function testWhenForJustUnder30Minutes() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-10 minutes' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-20 minutes' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-25 minutes' ) ),
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+			$this->assertEquals( 'Just now', $activities->when( $activities->object ) );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::when
+	 */
+	public function testWhenForJustUnder1Day() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-45 minutes' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-11 hours' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-23 hours' ) ),
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+			$this->assertEquals( 'Today', $activities->when( $activities->object ) );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::when
+	 */
+	public function testWhenForJustUnder2Days() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-25 hours' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-36 hours' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-47 hours' ) ),
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+			$this->assertEquals( 'Yesterday', $activities->when( $activities->object ) );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::when
+	 */
+	public function testWhenForBelow1Year() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-3 days 1 hour' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-1 week' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-1 month' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][2],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-11 months 30 days' ) ),
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+			$this->assertEquals( date_i18n( 'M', strtotime( $activity->date ) ), $activities->when( $activities->object ) );
+		}
+	}
 }
