@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAnsPress_Query extends TestCase {
 
+	use Testcases\Common;
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress_Query' );
 		$this->assertTrue( $class->hasProperty( 'current' ) && $class->getProperty( 'current' )->isPublic() );
@@ -37,5 +39,87 @@ class TestAnsPress_Query extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Query', 'append_ref_data' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Query', 'template' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Query', 'have_pages' ) );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::total_count
+	 */
+	public function testTotalCountWithUserIDArg() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activity = new \AnsPress\Activity( [ 'user_id' => get_current_user_id() ] );
+		$this->assertEquals( 2, $activity->total_count );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::total_count
+	 */
+	public function testTotalCountWithAIDArg() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create();
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action'  => 'new_a',
+				'q_id'    => $id->q,
+				'a_id'    => $id->a,
+				'user_id' => $user_id,
+			]
+		);
+
+		// Test.
+		$activity = new \AnsPress\Activity( [ 'a_id' => $id->a ] );
+		$this->assertEquals( 2, $activity->total_count );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::has
+	 */
+	public function testHas() {
+		$activity = new \AnsPress\Activity();
+
+		// Test 1.
+		$activity->count = 0;
+		$this->assertFalse( $activity->has() );
+
+		// Test 2.
+		$activity->count = 1;
+		$this->assertTrue( $activity->has() );
+
+		// Test 3.
+		$activity->count = 2;
+		$this->assertTrue( $activity->has() );
 	}
 }

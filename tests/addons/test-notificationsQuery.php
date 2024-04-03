@@ -115,25 +115,6 @@ class TestAddonNotificationsQuery extends TestCase {
 	}
 
 	/**
-	 * @covers Anspress\Notifications::has
-	 */
-	public function testHas() {
-		$notifications = new \Anspress\Notifications();
-
-		// Test 1.
-		$notifications->count = 0;
-		$this->assertFalse( $notifications->has() );
-
-		// Test 2.
-		$notifications->count = 1;
-		$this->assertTrue( $notifications->has() );
-
-		// Test 3.
-		$notifications->count = 2;
-		$this->assertTrue( $notifications->has() );
-	}
-
-	/**
 	 * @covers Anspress\Notifications::verb_args
 	 */
 	public function testVerbArgs() {
