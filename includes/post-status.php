@@ -79,7 +79,7 @@ class AnsPress_Post_Status {
 
 		// Unselect as best answer if moderate.
 		if ( 'answer' === $post->post_type && 'moderate' === $status && ap_have_answer_selected( $post->post_parent ) ) {
-			ap_unset_selected_answer( $post->ID );
+			ap_unset_selected_answer( $post->post_parent );
 		}
 
 		do_action( 'ap_post_status_updated', $post->ID );
