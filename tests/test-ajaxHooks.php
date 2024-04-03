@@ -1222,4 +1222,17 @@ class TestAjaxHooks extends TestCaseAjax {
 		$this->handle( 'ap_search_tags' );
 		$this->assertEquals( '[]', $this->_last_response );
 	}
+
+	/**
+	 * @covers AnsPress_Ajax::search_tags
+	 */
+	public function testSearchTagsForNoFormExists() {
+		add_action( 'wp_ajax_ap_search_tags', [ 'AnsPress_Ajax', 'search_tags' ] );
+
+		// Test.
+		$this->_set_post_data( 'action=ap_search_tags&q=Tag&form=New Form&field=tags&__nonce=' . wp_create_nonce( 'tags_New Formtags' ) );
+		$this->handle( 'ap_search_tags' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+	}
 }
