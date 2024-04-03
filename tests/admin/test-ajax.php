@@ -2015,4 +2015,73 @@ class TestAdminAjax extends TestCaseAjax {
 		add_role( 'ap_participant', 'AnsPress Participants', ap_role_caps( 'participant' ) );
 		add_role( 'ap_banned', 'AnsPress Banned', [ 'read' => true ] );
 	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::recount_views
+	 */
+	public function testRecountViewsForUsageOfApGetViews() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+		add_action( 'wp_ajax_ap_recount_views', [ 'AnsPress_Admin_Ajax', 'recount_views' ] );
+
+		// Test.
+		$this->setRole( 'administrator' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$ids = $this->insert_answers( [], [], 5 );
+		ap_insert_qameta( $ids['question'], [ 'views' => 1 ] );
+		ap_insert_views( $ids['question'] );
+		ap_insert_views( $ids['question'], 'question', $user_id );
+
+		// Before Ajax call.
+		$qameta = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 1, $qameta->views );
+
+		// After Ajax call.
+		$this->_set_post_data( 'action=ap_recount_views&__nonce=' . wp_create_nonce( 'recount_views' ) );
+		$this->handle( 'ap_recount_views' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '1' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-views' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '1 done out of 1' );
+		$qameta = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 3, $qameta->views );
+	}
+
+	/**
+	 * @covers AnsPress_Admin_Ajax::recount_views
+	 */
+	public function testRecountViewsForUsageOfApGetViewsWithFakeViewsAdded() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+		add_action( 'wp_ajax_ap_recount_views', [ 'AnsPress_Admin_Ajax', 'recount_views' ] );
+
+		// Test.
+		$this->setRole( 'administrator' );
+		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
+		$ids = $this->insert_answers( [], [], 5 );
+		ap_insert_qameta( $ids['question'], [ 'views' => 1 ] );
+		ap_insert_views( $ids['question'] );
+		ap_insert_views( $ids['question'], 'question', $user_id );
+
+		// Before Ajax call.
+		$qameta = ap_get_qameta( $ids['question'] );
+		$this->assertEquals( 1, $qameta->views );
+
+		// After Ajax call.
+		$this->_set_post_data( 'action=ap_recount_views&__nonce=' . wp_create_nonce( 'recount_views' ) );
+		$_POST['args'] = [
+			'fake_views' => true,
+		];
+		$this->handle( 'ap_recount_views' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'total' ) === '1' );
+		$this->assertTrue( $this->ap_ajax_success( 'remain' ) === 0 );
+		$this->assertTrue( $this->ap_ajax_success( 'el' ) === '.ap-recount-views' );
+		$this->assertTrue( $this->ap_ajax_success( 'msg' ) === '1 done out of 1' );
+		$qameta = ap_get_qameta( $ids['question'] );
+		$result = $qameta->views + ap_rand( 100, 200, 0.5 );
+		$this->assertGreaterThanOrEqual( $qameta->views + 100, $result );
+		$this->assertLessThanOrEqual( $qameta->views + 200, $result );
+	}
 }
