@@ -392,4 +392,34 @@ class TestAnswersQuery extends TestCase {
 		$this->assertNull( $answers_query->get_ids() );
 		$this->assertEquals( $ap_ids, $answers_query->ap_ids );
 	}
+
+	/**
+	 * @covers Answers_Query::pre_fetch
+	 */
+	public function testPreFetchForActionHookTriggered() {
+		// Action callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_pre_fetch_answer_data', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$answer_ids = $this->factory()->post->create_many( 3, [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$comment_id = $this->factory()->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $answer_ids[0],
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		ap_update_post_activity_meta( $answer_ids[0], 'new_c', get_current_user_id() );
+
+		// Test.
+		$answers_query = new \Answers_Query( [ 'question_id' => $question_id ] );
+		$answers_query->pre_fetch();
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_pre_fetch_answer_data' ) > 0 );
+	}
 }
