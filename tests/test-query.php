@@ -209,4 +209,106 @@ class TestAnsPress_Query extends TestCase {
 		$this->assertTrue( did_action( 'ap_loop_start' ) === 1 );
 		$this->assertFalse( did_action( 'ap_loop_start' ) === count( $activities->objects ) );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::have_pages
+	 */
+	public function testHavePagesShouldReturnTrueIfTotalPagesIsGreaterThanPaged() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q, 'number' => 2, 'paged' => 1 ] );
+		$this->assertTrue( $activities->have_pages() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::have_pages
+	 */
+	public function testHavePagesShouldReturnFalseIfTotalPagesIsLessThanPaged() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q, 'number' => 4, 'paged' => 2 ] );
+		$this->assertFalse( $activities->have_pages() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::have_pages
+	 */
+	public function testHavePagesShouldReturnFalseIfTotalPagesIsEqualToPaged() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q, 'number' => 3, 'paged' => 1 ] );
+		$this->assertFalse( $activities->have_pages() );
+	}
 }
