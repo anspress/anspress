@@ -393,4 +393,20 @@ class TestAnsPressFormFieldCheckbox extends TestCase {
 		];
 		$this->assertEquals( ' <script>alert( "Hello World!" )</script> ', $field->unsafe_value() );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Field\Checkbox::unsafe_value
+	 */
+	public function testUnsafeValueForFormSubmitted() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$field = new \AnsPress\Form\Field\Checkbox( 'Sample Form', 'sample-form', [] );
+
+		// Test.
+		$_REQUEST['Sample Form_nonce'] = wp_create_nonce( 'Sample Form' );
+		$_REQUEST['Sample Form_submit'] = true;
+		$this->assertFalse( $form->submitted );
+		$this->assertTrue( $form->is_submitted() );
+		$this->assertfalse( $field->unsafe_value() );
+		unset( $_REQUEST['Sample Form_nonce'], $_REQUEST['Sample Form_submit'] );
+	}
 }
