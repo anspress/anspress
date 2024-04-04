@@ -122,4 +122,91 @@ class TestAnsPress_Query extends TestCase {
 		$activity->count = 2;
 		$this->assertTrue( $activity->has() );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::the_object
+	 */
+	public function testTheObject() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		$activities->in_the_loop = false;
+		$activities->object = null;
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+
+			$this->assertTrue( $activities->in_the_loop );
+			$this->assertNotNull( $activities->object );
+			$this->assertEquals( $activity, $activities->object );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::the_object
+	 */
+	public function testTheObjectForHookTriggered() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Action hook callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_loop_start', function () use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Tests.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+		}
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_loop_start' ) === 1 );
+		$this->assertFalse( did_action( 'ap_loop_start' ) === count( $activities->objects ) );
+	}
 }
