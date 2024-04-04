@@ -311,4 +311,189 @@ class TestAnsPress_Query extends TestCase {
 		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q, 'number' => 3, 'paged' => 1 ] );
 		$this->assertFalse( $activities->have_pages() );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::next
+	 */
+	public function testNext() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		foreach ( $activities->objects as $activity ) {
+			$result = $activities->next();
+			$this->assertSame( $activity, $result );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::rewind
+	 */
+	public function testRewind() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		$this->assertEquals( $activities->objects[0], $activities->next() );
+		$this->assertEquals( $activities->objects[1], $activities->next() );
+		$this->assertEquals( $activities->objects[2], $activities->next() );
+		$this->assertNotEquals( -1, $activities->current );
+
+		// Test for rewind.
+		$activities->rewind();
+		$this->assertEquals( -1, $activities->current );
+		$this->assertEquals( $activities->objects[0], $activities->next() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::have
+	 */
+	public function testHaveShouldReturnTrueIfThereAreActivitiesAvailable() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		$this->assertTrue( $activities->have() );
+		$activities->next();
+		$this->assertTrue( $activities->have() );
+		$activities->next();
+		$this->assertTrue( $activities->have() );
+		$activities->next();
+		$this->assertFalse( $activities->have() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::have
+	 */
+	public function testHaveShouldReturnFalseIfThereAreNoActivitiesAvailable() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		$this->assertFalse( $activities->have() );
+		$this->assertFalse( $activities->in_the_loop );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::have
+	 */
+	public function testHaveShouldTriggerActionHookIfCurrentPlusOneAndObjectCountMatches() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+
+		// Action hook callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_loop_end', function () use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id->q ] );
+		$this->assertTrue( $activities->have() );
+		$activities->next();
+		$this->assertTrue( $activities->have() );
+		$activities->next();
+		$this->assertTrue( $activities->have() );
+		$activities->next();
+		$this->assertFalse( $activities->have() );
+
+		// For action hook.
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_loop_end' ) === 1 );
+		$this->assertFalse( did_action( 'ap_loop_end' ) === count( $activities->objects ) );
+		$this->assertEquals( -1, $activities->current );
+		$this->assertEquals( $activities->objects[0], $activities->object );
+	}
 }
