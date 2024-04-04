@@ -94,15 +94,24 @@ class Email extends \AnsPress\Singleton {
 		add_filter( 'comment_notification_recipients', array( $this, 'default_recipients' ), 10, 2 );
 
 		if ( ap_opt( 'enable_email' ) ) {
-			add_action( 'ap_after_new_question', array( $this, 'ap_after_new_question' ) );
-			add_action( 'ap_after_new_answer', array( $this, 'ap_after_new_answer' ) );
-			add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
-			add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
-			add_action( 'ap_processed_update_question', array( $this, 'ap_after_update_question' ), 10, 2 );
-			add_action( 'ap_processed_update_answer', array( $this, 'ap_after_update_answer' ), 10, 2 );
-			add_action( 'ap_trash_question', array( $this, 'ap_trash_question' ), 10, 2 );
-			add_action( 'ap_trash_answer', array( $this, 'ap_trash_answer' ), 10, 2 );
+			$this->register_hooks_on_enabled();
 		}
+	}
+
+	/**
+	 * Register hooks when enabled.
+	 *
+	 * @return void
+	 */
+	public function register_hooks_on_enabled() {
+		add_action( 'ap_after_new_question', array( $this, 'ap_after_new_question' ) );
+		add_action( 'ap_after_new_answer', array( $this, 'ap_after_new_answer' ) );
+		add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
+		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
+		add_action( 'ap_processed_update_question', array( $this, 'ap_after_update_question' ), 10, 2 );
+		add_action( 'ap_processed_update_answer', array( $this, 'ap_after_update_answer' ), 10, 2 );
+		add_action( 'ap_trash_question', array( $this, 'ap_trash_question' ), 10, 2 );
+		add_action( 'ap_trash_answer', array( $this, 'ap_trash_answer' ), 10, 2 );
 	}
 
 	/**

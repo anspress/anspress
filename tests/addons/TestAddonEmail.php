@@ -8,19 +8,39 @@ class TestAddonEmail extends TestCase {
 
 	use Testcases\Common;
 
-	public function set_up() {
-		parent::set_up();
-		ap_activate_addon( 'email.php' );
-	}
-
-	public function tear_down() {
-		parent::tear_down();
-		ap_deactivate_addon( 'email.php' );
-	}
-
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Email' );
 		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
+
+		// Assert methods.
+		$this->assertTrue( $class->hasMethod( 'default_recipients' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_default_options' ) );
+		$this->assertTrue( $class->hasMethod( 'load_options' ) );
+		$this->assertTrue( $class->hasMethod( 'register_option' ) );
+		$this->assertTrue( $class->hasMethod( 'register_email_template' ) );
+		$this->assertTrue( $class->hasMethod( 'get_admin_emails' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_after_new_question' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_after_new_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'select_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'new_comment' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_after_update_question' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_after_update_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_trash_question' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_trash_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_trash_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'save_email_template_form' ) );
+		$this->assertTrue( $class->hasMethod( 'ap_email_template' ) );
+		$this->assertTrue( $class->hasMethod( 'template_form' ) );
+		$this->assertTrue( $class->hasMethod( 'get_default_template' ) );
+		$this->assertTrue( $class->hasMethod( 'template_new_question' ) );
+		$this->assertTrue( $class->hasMethod( 'template_new_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'template_select_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'template_new_comment' ) );
+		$this->assertTrue( $class->hasMethod( 'template_edit_question' ) );
+		$this->assertTrue( $class->hasMethod( 'template_edit_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'template_trash_question' ) );
+		$this->assertTrue( $class->hasMethod( 'template_trash_answer' ) );
+		$this->assertTrue( $class->hasMethod( 'form_allowed_tags' ) );
 	}
 
 	public function testClassProperties() {
@@ -28,38 +48,6 @@ class TestAddonEmail extends TestCase {
 		$this->assertTrue( $class->hasProperty( 'emails' ) && $class->getProperty( 'emails' )->isPublic() );
 		$this->assertTrue( $class->hasProperty( 'subject' ) && $class->getProperty( 'subject' )->isPublic() );
 		$this->assertTrue( $class->hasProperty( 'message' ) && $class->getProperty( 'message' )->isPublic() );
-	}
-
-	public function testMethodExists() {
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', '__construct' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'default_recipients' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_default_options' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'load_options' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'register_option' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'register_email_template' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'get_admin_emails' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_after_new_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_after_new_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'select_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'new_comment' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_after_update_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_after_update_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_trash_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_trash_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_all_options' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'save_email_template_form' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'ap_email_template' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_form' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'get_default_template' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_new_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_new_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_select_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_new_comment' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_edit_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_edit_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_trash_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'template_trash_answer' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Email', 'form_allowed_tags' ) );
 	}
 
 	public function testInit() {
@@ -73,10 +61,10 @@ class TestAddonEmail extends TestCase {
 		$instance = \Anspress\Addons\Email::init();
 
 		// Tests.
-		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'load_options' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_form_options_features_email', [ $instance, 'register_option' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_all_options', [ $instance, 'load_options' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_form_options_email_email_settings', [ $instance, 'register_option' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_form_email_template', [ $instance, 'register_email_template' ] ) );
-		$this->assertEquals( 3, has_filter( 'ap_all_options', [ $instance, 'ap_all_options' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_all_options', [ $instance, 'load_options' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_ap_email_template', [ $instance, 'ap_email_template' ] ) );
 		$this->assertEquals( 11, has_action( 'ap_ajax_form_email_template', [ $instance, 'save_email_template_form' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_email_default_template_new_question', [ $instance, 'template_new_question' ] ) );
@@ -89,15 +77,32 @@ class TestAddonEmail extends TestCase {
 		$this->assertEquals( 10, has_action( 'ap_email_default_template_trash_answer', [ $instance, 'template_trash_answer' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_email_form_allowed_tags', [ $instance, 'form_allowed_tags' ] ) );
 		$this->assertEquals( 10, has_filter( 'comment_notification_recipients', [ $instance, 'default_recipients' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ $instance, 'ap_after_new_question' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ $instance, 'ap_after_new_answer' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_select_answer', [ $instance, 'select_answer' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ $instance, 'new_comment' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_processed_update_question', [ $instance, 'ap_after_update_question' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_processed_update_answer', [ $instance, 'ap_after_update_answer' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_trash_question', [ $instance, 'ap_trash_question' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_trash_answer', [ $instance, 'ap_trash_answer' ] ) );
+
+		$this->assertFalse( has_action( 'ap_after_new_question', [ $instance, 'ap_after_new_question' ] ) );
+		$this->assertFalse( has_action( 'ap_after_new_answer', [ $instance, 'ap_after_new_answer' ] ) );
+		$this->assertFalse( has_action( 'ap_select_answer', [ $instance, 'select_answer' ] ) );
+		$this->assertFalse( has_action( 'ap_publish_comment', [ $instance, 'new_comment' ] ) );
+		$this->assertFalse( has_action( 'ap_processed_update_question', [ $instance, 'ap_after_update_question' ] ) );
+		$this->assertFalse( has_action( 'ap_processed_update_answer', [ $instance, 'ap_after_update_answer' ] ) );
+		$this->assertFalse( has_action( 'ap_trash_question', [ $instance, 'ap_trash_question' ] ) );
+		$this->assertFalse( has_action( 'ap_trash_answer', [ $instance, 'ap_trash_answer' ] ) );
 	}
+
+    public function testHooksFiltersOnEmailEnabled()
+    {
+        $instance = \Anspress\Addons\Email::init();
+
+		$instance->register_hooks_on_enabled();
+
+        $this->assertEquals(10, has_action( 'ap_after_new_question', [ $instance, 'ap_after_new_question' ]));
+		$this->assertEquals(10, has_action( 'ap_after_new_answer', [ $instance, 'ap_after_new_answer' ]));
+		$this->assertEquals(10, has_action( 'ap_select_answer', [ $instance, 'select_answer' ]));
+		$this->assertEquals(10, has_action( 'ap_publish_comment', [ $instance, 'new_comment' ]));
+		$this->assertEquals(10, has_action( 'ap_processed_update_question', [ $instance, 'ap_after_update_question' ]));
+		$this->assertEquals(10, has_action( 'ap_processed_update_answer', [ $instance, 'ap_after_update_answer' ]));
+		$this->assertEquals(10, has_action( 'ap_trash_question', [ $instance, 'ap_trash_question' ]));
+		$this->assertEquals(10, has_action( 'ap_trash_answer', [ $instance, 'ap_trash_answer' ]));
+    }
 
 	/**
 	 * @covers Anspress\Addons\Email::ap_default_options
