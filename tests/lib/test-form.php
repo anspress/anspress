@@ -470,4 +470,92 @@ class TestAnsPressForm extends TestCase {
 		$this->assertTrue( $form->prepared );
 		$this->assertInstanceof( 'AnsPress\Form', $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form::add_field
+	 */
+	public function testAddFieldWithStringPath() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$form->add_field( 'parent.child', 'value' );
+		$expected = [
+			'parent' => [
+				'fields' => [
+					'child' => [
+						'fields' => [
+							'fields' => 'value',
+						]
+					]
+				]
+			],
+		];
+		$this->assertEquals( $expected, $form->args['fields'] );
+	}
+
+	/**
+	 * @covers AnsPress\Form::add_field
+	 */
+	public function testAddFieldWithArrayPath() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$form->add_field( [ 'parent', 'child' ], 'value' );
+		$expected = [
+			'parent' => [
+				'fields' => [
+					'child' => [
+						'fields' => [
+							'fields' => 'value',
+						]
+					]
+				]
+			],
+		];
+		$this->assertEquals( $expected, $form->args['fields'] );
+	}
+
+	/**
+	 * @covers AnsPress\Form::add_field
+	 */
+	public function testAddFieldWithNestedStringPath() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$form->add_field( 'parent.child.grandchild', 'value' );
+		$expected = [
+			'parent' => [
+				'fields' => [
+					'child' => [
+						'fields' => [
+							'grandchild' => [
+								'fields' => [
+									'fields' => 'value',
+								]
+							]
+						]
+					]
+				]
+			],
+		];
+		$this->assertEquals( $expected, $form->args['fields'] );
+	}
+
+	/**
+	 * @covers AnsPress\Form::add_field
+	 */
+	public function testAddFieldWithNestedArrayPath() {
+		$form = new \AnsPress\Form( 'Sample Form', [] );
+		$form->add_field( [ 'parent', 'child', 'grandchild' ], 'value' );
+		$expected = [
+			'parent' => [
+				'fields' => [
+					'child' => [
+						'fields' => [
+							'grandchild' => [
+								'fields' => [
+									'fields' => 'value',
+								]
+							]
+						]
+					]
+				]
+			],
+		];
+		$this->assertEquals( $expected, $form->args['fields'] );
+	}
 }
