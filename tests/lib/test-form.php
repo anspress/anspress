@@ -175,4 +175,95 @@ class TestAnsPressForm extends TestCase {
 		$this->assertFalse( $form->prepared );
 		$this->assertInstanceof( 'AnsPress\Form', $output );
 	}
+
+	/**
+	 * @covers AnsPress\Form::prepare
+	 */
+	public function testPrepareWithAllowPrivatePostsOptionBeingSetToFalse() {
+		ap_opt( 'allow_private_posts', false );
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'is_private' => [
+					'type'  => 'checkbox',
+					'label' => 'Is Private',
+				],
+			]
+		] );
+		$form->prepare();
+		$this->assertFalse( isset( $form->fields['is_private'] ) );
+		$this->assertTrue( $form->prepared );
+
+		// Reset.
+		ap_opt( 'allow_private_posts', true );
+	}
+
+	/**
+	 * @covers AnsPress\Form::prepare
+	 */
+	public function testPrepareWithAllowPrivatePostsOptionBeingSetToTrue() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'is_private' => [
+					'type'  => 'checkbox',
+					'label' => 'Is Private',
+				],
+			]
+		] );
+		$form->prepare();
+		$this->assertTrue( isset( $form->fields['is_private'] ) );
+		$this->assertTrue( $form->prepared );
+	}
+
+	/**
+	 * @covers AnsPress\Form::prepare
+	 */
+	public function testPrepareForPassingInputTypeAsFieldArg() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'checkbox_field' => [
+					'type'  => 'checkbox',
+					'label' => 'Input Field',
+				],
+				'radio_field'    => [
+					'type'  => 'radio',
+					'label' => 'Input Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+				],
+				'select_field'   => [
+					'type'  => 'select',
+					'label' => 'Input Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+				],
+			]
+		] );
+		$result = $form->prepare();
+		$this->assertInstanceof( 'AnsPress\Form\Field\Checkbox', $form->fields['checkbox_field'] );
+		$this->assertInstanceof( 'AnsPress\Form\Field\Radio', $form->fields['radio_field'] );
+		$this->assertInstanceof( 'AnsPress\Form\Field\Select', $form->fields['select_field'] );
+		$this->assertTrue( $form->prepared );
+		$this->assertInstanceof( 'AnsPress\Form', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form::prepare
+	 */
+	public function testPrepareForNotPassingInputTypeAsFieldArg() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			]
+		] );
+		$result = $form->prepare();
+		$this->assertInstanceof( 'AnsPress\Form\Field\Input', $form->fields['input_field'] );
+		$this->assertTrue( $form->prepared );
+		$this->assertInstanceof( 'AnsPress\Form', $result );
+	}
 }
