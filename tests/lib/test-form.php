@@ -154,4 +154,25 @@ class TestAnsPressForm extends TestCase {
 		$this->assertNull( $form->get( 'parent.non_existing_child', null, $test_args ) );
 		$this->assertNull( $form->get( 'parent.child.non_existing_grand_child', null, $test_args ) );
 	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForEmptyFields() {
+		$form = new \AnsPress\Form( 'Sample Form', [ 'fields' => [] ] );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertEquals( '<p class="ap-form-nofields">No fields found for form: Sample Form</p>', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::prepare
+	 */
+	public function testPrepareForEmptyFields() {
+		$form = new \AnsPress\Form( 'Sample Form', [ 'fields' => [] ] );
+		$output = $form->prepare();
+		$this->assertFalse( $form->prepared );
+		$this->assertInstanceof( 'AnsPress\Form', $output );
+	}
 }
