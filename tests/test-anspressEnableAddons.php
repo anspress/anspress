@@ -18,7 +18,6 @@ class TestEnableAllAddonsFromConstant extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'email.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'akismet.php' ) );
-		$this->assertFalse( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'buddypress.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'profile.php' ) );
@@ -33,7 +32,6 @@ class TestEnableAllAddonsFromConstant extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'akismet.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'buddypress.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'profile.php' ) );

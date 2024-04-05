@@ -388,7 +388,6 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'email.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'akismet.php' ) );
-		$this->assertFalse( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'buddypress.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'profile.php' ) );
@@ -401,7 +400,6 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
-		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
@@ -414,7 +412,6 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'akismet.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'buddypress.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'profile.php' ) );
@@ -528,7 +525,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'akismet.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'buddypress.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'notifications.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'profile.php', ap_get_active_addons() );
@@ -538,7 +534,6 @@ class TestFunctions extends TestCase {
 
 		// Addon activate and check.
 		ap_activate_addon( 'akismet.php' );
-		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
@@ -554,7 +549,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'notifications.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_active_addons() );
@@ -757,7 +751,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
@@ -770,7 +763,6 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
-		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
@@ -783,7 +775,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'profile.php', get_option( 'anspress_addons' ) );
@@ -796,7 +787,6 @@ class TestFunctions extends TestCase {
 		ap_deactivate_addon( 'email.php' );
 		ap_deactivate_addon( 'reputation.php' );
 		ap_deactivate_addon( 'akismet.php' );
-		ap_deactivate_addon( 'avatar.php' );
 		ap_deactivate_addon( 'buddypress.php' );
 		ap_deactivate_addon( 'notifications.php' );
 		ap_deactivate_addon( 'profile.php' );
@@ -809,7 +799,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
@@ -941,7 +930,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'reputation.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_addons() );
-		$this->assertArrayHasKey( 'avatar.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'notifications.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_addons() );
@@ -959,7 +947,6 @@ class TestFunctions extends TestCase {
 			'email.php',
 			'reputation.php',
 			'akismet.php',
-			'avatar.php',
 			'buddypress.php',
 			'notifications.php',
 			'profile.php',
