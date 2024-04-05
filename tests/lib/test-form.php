@@ -167,6 +167,210 @@ class TestAnsPressForm extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForHiddenFields() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields'        => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+			'hidden_fields' => [
+				[
+					'name'  => 'hidden_field',
+					'value' => 'hidden_value',
+				],
+				[
+					'name'  => 'hidden_field_2',
+					'value' => 'hidden_value_2',
+				],
+			]
+		] );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<input type="hidden" name="hidden_field" value="hidden_value" />', $output );
+		$this->assertStringContainsString( '<input type="hidden" name="hidden_field_2" value="hidden_value_2" />', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForCustomFormActionLink() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+		] );
+		ob_start();
+		$form->generate( [ 'form_action' => 'http://example.com' ] );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<form id="Sample Form" name="Sample Form" method="POST" enctype="multipart/form-data" action="http://example.com"  apform>', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForAjaxSubmitSetToFalse() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+		] );
+		ob_start();
+		$form->generate( [ 'ajax_submit' => false ] );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<form id="Sample Form" name="Sample Form" method="POST" enctype="multipart/form-data" action="" >', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForFormTagSetToFalse() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+			'form_tag' => false,
+		] );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringNotContainsString( '<form id="Sample Form" name="Sample Form" method="POST" enctype="multipart/form-data" action="" >', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForFormFieldsHavingError() {
+		$form = anspress()->forms['Sample Form'] = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'checkbox_field' => [
+					'type'  => 'checkbox',
+					'label' => 'Input Field',
+				],
+				'radio_field'    => [
+					'type'  => 'radio',
+					'label' => 'Input Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+				],
+				'select_field'   => [
+					'type'  => 'select',
+					'label' => 'Input Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+				],
+			]
+		] );
+		$form->add_error( 'checkbox_field', 'Error on checkbox field' );
+		$form->add_error( 'radio_field', 'Error on radio field' );
+		$form->add_error( 'select_field', 'Error on select field' );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<div class="ap-form-errors">', $output );
+		$this->assertStringContainsString( '<span class="ap-form-error ecode-checkbox_field">Error on checkbox field</span>', $output );
+		$this->assertStringContainsString( '<span class="ap-form-error ecode-radio_field">Error on radio field</span>', $output );
+		$this->assertStringContainsString( '<span class="ap-form-error ecode-select_field">Error on select field</span>', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForSubmitButtonSetToFalse() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+			'submit_button' => false,
+		] );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringNotContainsString( '<button type="submit" class="ap-btn ap-btn-submit">Submit</button>', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForAfterForm() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields'    => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+		] );
+		$form->after_form = '<p>After Form</p>';
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<p>After Form</p>', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerateForActionHookTriggered() {
+		// Action hook triggered.
+		$callback_triggered = false;
+		add_action( 'ap_after_form_field', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+			echo 'This content is added after form field';
+		} );
+
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+		] );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( 'This content is added after form field', $output );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_after_form_field' ) > 0 );
+	}
+
+	/**
+	 * @covers AnsPress\Form::generate
+	 */
+	public function testGenerate() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+				],
+			],
+		] );
+		ob_start();
+		$form->generate();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<form id="Sample Form" name="Sample Form" method="POST" enctype="multipart/form-data" action=""  apform>', $output );
+		$this->assertStringContainsString( $form->generate_fields(), $output );
+		$this->assertStringContainsString( '<input type="hidden" name="ap_form_name" value="Sample Form" />', $output );
+		$this->assertStringContainsString( '<button type="submit" class="ap-btn ap-btn-submit">Submit</button>', $output );
+		$this->assertStringContainsString( '<input type="hidden" name="Sample Form_nonce" value="' . esc_attr( wp_create_nonce( 'Sample Form' ) ) . '" />', $output );
+		$this->assertStringContainsString( '<input type="hidden" name="Sample Form_submit" value="true" />', $output );
+	}
+
+	/**
 	 * @covers AnsPress\Form::prepare
 	 */
 	public function testPrepareForEmptyFields() {
