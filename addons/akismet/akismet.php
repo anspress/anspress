@@ -20,7 +20,9 @@
  * Author URI:    https://anspress.net
  */
 
-namespace Anspress\Addons;
+namespace AnsPress\Addons;
+
+use AnsPress;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -34,22 +36,22 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 4.1.11
  */
-class Akismet extends \AnsPress\Singleton {
-
+class Akismet extends \AnsPress\Classes\AbstractAddon {
 	/**
-	 * Refers to a single instance of this class.
+	 * Add default options.
 	 *
-	 * @var null|object
-	 * @since 4.1.8
+	 * @return array
 	 */
-	public static $instance = null;
+	protected function default_options(): array {
+		return array( 'spam_post_action' => 'moderate' );
+	}
 
 	/**
-	 * Initialize the class.
+	 * Add hooks.
+	 *
+	 * @return void
 	 */
-	protected function __construct() {
-		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
-
+	protected function add_filters_and_actions() {
 		add_filter( 'ap_all_options', array( $this, 'add_to_settings_page' ) );
 		add_filter( 'ap_form_options_akismet', array( $this, 'option_form' ) );
 		add_action( 'ap_after_question_form_processed', array( $this, 'new_question_answer' ) );
@@ -65,7 +67,7 @@ class Akismet extends \AnsPress\Singleton {
 	 * @return array
 	 * @since 4.2.0
 	 */
-	public function add_to_settings_page( $groups ) {
+	public function add_to_settings_page( array $groups ): array {
 		$groups['akismet'] = array(
 			'label' => __( 'Akismet', 'anspress-question-answer' ),
 		);
@@ -74,12 +76,12 @@ class Akismet extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Register options of Avatar addon.
+	 * Register options form.
 	 *
 	 * @return array
 	 * @since 4.1.0
 	 */
-	public static function option_form() {
+	public function option_form() {
 		$opt = ap_opt();
 
 		$form = array(

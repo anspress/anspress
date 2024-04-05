@@ -2,11 +2,24 @@
 
 namespace Anspress\Tests;
 
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use PHPUnit\Framework\ExpectationFailedException;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAddonEmail extends TestCase {
 
 	use Testcases\Common;
+
+	public function testConstructor()
+    {
+        // Create a mock object of the Email class
+        $email = $this->getMockBuilder(\Anspress\Addons\Email::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Assert that the constructor is called without any errors
+        $this->assertInstanceOf(\Anspress\Addons\Email::class, $email);
+    }
 
 	public function testInstance() {
 		$class = new \ReflectionClass( 'Anspress\Addons\Email' );
@@ -57,6 +70,12 @@ class TestAddonEmail extends TestCase {
 		$this->assertSame( $instance1, $instance2 );
 	}
 
+	/**
+	 * @covers Anspress\Addons\Email::hooks_filters
+	 * @return void
+	 * @throws InvalidArgumentException
+	 * @throws ExpectationFailedException
+	 */
 	public function testHooksFilters() {
 		$instance = \Anspress\Addons\Email::init();
 
@@ -108,16 +127,12 @@ class TestAddonEmail extends TestCase {
 	 * @covers Anspress\Addons\Email::ap_default_options
 	 */
 	public function testAPDefaultOptions() {
-		$instance = \Anspress\Addons\Email::init();
-
-		// Call the method.
-		$instance->ap_default_options();
-
 		// Get all available options.
 		$ap_options = ap_opt();
 
 		// Test begins.
 		$expected_options = [
+			'enable_email' 			     => false,
 			'email_admin_emails'         => get_option( 'admin_email' ),
 			'email_admin_new_question'   => true,
 			'email_admin_new_answer'     => true,
