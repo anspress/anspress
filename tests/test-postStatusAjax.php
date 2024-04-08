@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
 
-class TestPostAjax extends TestCaseAjax {
+class TestPostStatusAjax extends TestCaseAjax {
 
 	use Testcases\Common;
 	use Testcases\Ajax;
