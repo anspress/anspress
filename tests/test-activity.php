@@ -2308,4 +2308,106 @@ class TestActivity extends TestCase {
 		$this->assertEquals( $wpdb->prefix . 'ap_activity', $table->getValue( $activity ) );
 		$this->assertNotEmpty( $actions->getValue( $activity ) );
 	}
+
+	/**
+	 * @covers ::ap_get_recent_activity
+	 */
+	public function testApGetRecentActivityWhenVisitingQuestionPageForNewAnswer() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// For new answer.
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'date'   => '2024-01-01 00:00:00'
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$get_recent_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $activity_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'new_a' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( $id->a, $get_recent_activity->a_id );
+		$this->assertEquals( 0, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( '2024-01-01 00:00:00', $get_recent_activity->date );
+	}
+
+	/**
+	 * @covers ::ap_get_recent_activity
+	 */
+	public function testApGetRecentActivityWhenVisitingQuestionPageForUnselectedAnswer() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// For unselected answer.
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'unselected',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'date'   => '2024-01-01 00:00:00'
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$get_recent_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $activity_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'unselected' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( $id->a, $get_recent_activity->a_id );
+		$this->assertEquals( 0, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( '2024-01-01 00:00:00', $get_recent_activity->date );
+	}
+
+	/**
+	 * @covers ::ap_get_recent_activity
+	 */
+	public function testApGetRecentActivityWhenVisitingQuestionPageForSelectedAnswer() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$activity = \AnsPress\Activity_Helper::get_instance();
+
+		// For selected answer.
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'selected',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'date'   => '2024-01-01 00:00:00'
+			)
+		);
+		$this->go_to( '?post_type=question&p=' . $id->q );
+		$get_recent_activity = ap_get_recent_activity( $id->q );
+		$this->assertNotNull( $get_recent_activity );
+		$this->assertNotEmpty( $get_recent_activity );
+		$this->assertIsObject( $get_recent_activity );
+		$this->assertEquals( $activity_id, $get_recent_activity->id );
+		$this->assertEquals( $activity->get_action( 'selected' ), $get_recent_activity->action );
+		$this->assertEquals( $id->q, $get_recent_activity->q_id );
+		$this->assertEquals( $id->a, $get_recent_activity->a_id );
+		$this->assertEquals( 0, $get_recent_activity->c_id );
+		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
+		$this->assertEquals( '2024-01-01 00:00:00', $get_recent_activity->date );
+	}
 }
