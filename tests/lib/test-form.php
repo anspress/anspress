@@ -558,4 +558,60 @@ class TestAnsPressForm extends TestCase {
 		];
 		$this->assertEquals( $expected, $form->args['fields'] );
 	}
+
+	/**
+	 * @covers AnsPress\Form::save_values_session
+	 * @covers AnsPress\Form::delete_values_session
+	 */
+	public function testSaveDeleteValuesSession() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field' => [
+					'label' => 'Input Field',
+					'value' => 'Input Value',
+				],
+				'checkbox_field' => [
+					'type'  => 'checkbox',
+					'label' => 'Checkbox Field',
+					'value' => '1',
+				],
+				'radio_field' => [
+					'type'  => 'radio',
+					'label' => 'Radio Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+					'value' => 'option1',
+				],
+			],
+		] );
+
+		// Tests.
+		// For saving values without passing id.
+		$form->save_values_session();
+		$session_storage = anspress()->session->get( 'Sample Form' );
+		$this->assertNotEmpty( $session_storage );
+		$this->assertEquals( [ 'value' => 'Input Value' ], $session_storage['input_field'] );
+		$this->assertEquals( [ 'value' => '1' ], $session_storage['checkbox_field'] );
+		$this->assertEquals( [ 'value' => 'option1' ], $session_storage['radio_field'] );
+
+		// For saving values with passing id.
+		$form->save_values_session( 1 );
+		$session_storage = anspress()->session->get( 'Sample Form_1' );
+		$this->assertNotEmpty( $session_storage );
+		$this->assertEquals( [ 'value' => 'Input Value' ], $session_storage['input_field'] );
+		$this->assertEquals( [ 'value' => '1' ], $session_storage['checkbox_field'] );
+		$this->assertEquals( [ 'value' => 'option1' ], $session_storage['radio_field'] );
+
+		// For deleting values without passing id.
+		$form->delete_values_session();
+		$session_storage = anspress()->session->get( 'Sample Form' );
+		$this->assertEmpty( $session_storage );
+
+		// For deleting values with passing id.
+		$form->delete_values_session( 1 );
+		$session_storage = anspress()->session->get( 'Sample Form_1' );
+		$this->assertEmpty( $session_storage );
+	}
 }
