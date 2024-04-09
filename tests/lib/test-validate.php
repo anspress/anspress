@@ -2591,4 +2591,337 @@ class TestAnsPressFormValidate extends TestCase {
 		$result = $method->invokeArgs( $field, [ $arr ] );
 		$this->assertEquals( '&#91;test_shortcode&#93;', $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_have_error
+	 */
+	public function testFileHaveErrorShouldReturnFalseIfThereIsNoError() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 0 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_have_error
+	 */
+	public function testFileHaveErrorShouldReturnErrorMessageIfThereIsAnyError() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 1 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'The uploaded file exceeds the upload_max_filesize directive in php.ini', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 2 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 3 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'The uploaded file was only partially uploaded', $result );
+
+		// Test 4.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 4 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'No file was uploaded', $result );
+
+		// Test 5.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 6 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'Missing a temporary folder', $result );
+
+		// Test 6.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 7 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'Failed to write file to disk.', $result );
+
+		// Test 7.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'error' => 8 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'A PHP extension stopped the file upload.', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_have_error
+	 */
+	public function testFileHaveErrorShouldReturnFalseIfThereIsNoErrorAndMultipleSetToTrue() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => true ],
+			'value'          => [
+				[ 'error' => 0 ],
+				[ 'error' => 0 ],
+				[ 'error' => 0 ],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_have_error
+	 */
+	public function testFileHaveErrorShouldReturnErrorMessageIfThereIsAnyErrorAndMultipleSetToTrue() {
+		// Test 1.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => true ],
+			'value'          => [
+				[ 'error' => 0 ],
+				[ 'error' => 4 ],
+				[ 'error' => 7 ],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'Failed to write file to disk.', $result );
+
+		// Test 2.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => true ],
+			'value'          => [
+				[ 'error' => 0 ],
+				[ 'error' => 3 ],
+				[ 'error' => 4 ],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'No file was uploaded', $result );
+
+		// Test 3.
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => true ],
+			'value'          => [
+				[ 'error' => 0 ],
+				[ 'error' => 2 ],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_have_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertEquals( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_size_error
+	 */
+	public function testFileSizeErrorShouldReturnFalseIfThereIsNoError() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'size' => 2048 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_size_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_size_error
+	 */
+	public function testFileSizeErrorShouldReturnTrueIfThereIsAnyError() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => false ],
+			'value'          => [ 'size' => 600000 ],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_size_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_size_error
+	 */
+	public function testFileSizeErrorShouldReturnFalseIfThereIsNoErrorAndMultipleSetToTrue() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => true ],
+			'value'          => [
+				[ 'size' => 2048 ],
+				[ 'size' => 2048 ],
+				[ 'size' => 2048 ],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_size_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_size_error
+	 */
+	public function testFileSizeErrorShouldReturnTrueIfThereIsAnyErrorAndMultipleSetToTrue() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [ 'multiple' => true ],
+			'value'          => [
+				[ 'size' => 2048 ],
+				[ 'size' => 600000 ],
+				[ 'size' => 2048 ],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_size_error' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_valid_type
+	 */
+	public function testFileValidTypeShouldReturnFalseIfThereIsNoError() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.jpg',
+				'name'     => 'test.jpg',
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_valid_type' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_valid_type
+	 */
+	public function testFileValidTypeShouldReturnTrueIfThereIsAnyError() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.pdf',
+				'name'     => 'test.pdf',
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_valid_type' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertTrue( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_valid_type
+	 */
+	public function testFileValidTypeShouldReturnFalseIfThereIsNoErrorAndMultipleSetToTrue() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => true,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				[
+					'tmp_name' => 'test.jpg',
+					'name'     => 'test.jpg',
+				],
+				[
+					'tmp_name' => 'test.gif',
+					'name'     => 'test.gif',
+				],
+				[
+					'tmp_name' => 'test.png',
+					'name'     => 'test.png',
+				],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_valid_type' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::file_valid_type
+	 */
+	public function testFileValidTypeShouldReturnTrueIfThereIsAnyErrorAndMultipleSetToTrue() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => true,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				[
+					'tmp_name' => 'test.html',
+					'name'     => 'test.html',
+				],
+				[
+					'tmp_name' => 'test.docx',
+					'name'     => 'test.docx',
+				],
+				[
+					'tmp_name' => 'test.pdf',
+					'name'     => 'test.pdf',
+				],
+			],
+		] );
+		$method = new \ReflectionMethod( '\AnsPress\Form\Validate', 'file_valid_type' );
+		$method->setAccessible( true );
+		$result = $method->invokeArgs( $field, [ $field ] );
+		$this->assertTrue( $result );
+	}
 }
