@@ -614,4 +614,76 @@ class TestAnsPressForm extends TestCase {
 		$session_storage = anspress()->session->get( 'Sample Form_1' );
 		$this->assertEmpty( $session_storage );
 	}
+
+	/**
+	 * @covers AnsPress\Form::get_values
+	 */
+	public function testGetValuesShouldReturnValuesBeingAlreadySet() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field'    => [
+					'label' => 'Input Field',
+					'value' => 'Input Value',
+				],
+				'checkbox_field' => [
+					'type'  => 'checkbox',
+					'label' => 'Checkbox Field',
+					'value' => '1',
+				],
+				'radio_field'    => [
+					'type'  => 'radio',
+					'label' => 'Radio Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+					'value' => 'option1',
+				],
+			],
+		] );
+
+		// Test.
+		$form->values = [
+			'test_field'    => 'Test Value',
+			'another_field' => 'Another Value',
+		];
+		$this->assertEquals( $form->values, $form->get_values() );
+	}
+
+	/**
+	 * @covers AnsPress\Form::get_values
+	 */
+	public function testGetValuesShouldReturnValuesFromTheFormOptions() {
+		$form = new \AnsPress\Form( 'Sample Form', [
+			'fields' => [
+				'input_field'    => [
+					'label' => 'Input Field',
+					'value' => 'Input Value',
+				],
+				'checkbox_field' => [
+					'type'  => 'checkbox',
+					'label' => 'Checkbox Field',
+					'value' => '1',
+				],
+				'radio_field'    => [
+					'type'  => 'radio',
+					'label' => 'Radio Field',
+					'options' => [
+						'option1' => 'Test Option',
+						'option2' => 'Test Option 2',
+					],
+					'value' => 'option1',
+				],
+			],
+		] );
+
+		// Test.
+		$expected = [
+			'input_field'    => [ 'value' => 'Input Value' ],
+			'checkbox_field' => [ 'value' => '1' ],
+			'radio_field'    => [ 'value' => 'option1' ],
+		];
+		$this->assertEquals( $expected, $form->get_values() );
+		$this->assertEquals( $expected, $form->values );
+	}
 }
