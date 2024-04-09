@@ -1368,4 +1368,32 @@ class TestAnsPressFormField extends TestCase {
 		$this->assertEmpty( $field->args );
 		$this->assertEquals( 'AnotherForm-another-form', $field->field_id );
 	}
+
+	public static function SaveCB( $value, $field ) {
+		return 'I\'m custom saved value';
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::save_cb
+	 */
+	public function testSaveCbWhenCallbackFunctionExists() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'save'  => [ $this, 'SaveCB' ],
+			'value' => 'Test Value',
+		] );
+		$result = $field->save_cb();
+		$this->assertEquals( 'I\'m custom saved value', $result );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Field::save_cb
+	 */
+	public function testSaveCbWhenCallbackFunctionDoesNotExist() {
+		$field = new \AnsPress\Form\Field( 'Sample Form', 'sample-form', [
+			'save'  => 'InvalidCallbackFunction',
+			'value' => 'Test Value',
+		] );
+		$result = $field->save_cb();
+		$this->assertNull( $result );
+	}
 }
