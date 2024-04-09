@@ -4,7 +4,7 @@ namespace Anspress\Tests;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestAnsPressFormFieldUpload extends TestCase {
+class TestFormFieldUpload extends TestCase {
 
 	use Testcases\Common;
 
@@ -48,11 +48,9 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				'multiple'        => false,
 				'max_files'       => 1,
 				'allowed_mimes'   => [
-					'jpg|jpeg' => 'image/jpeg',
-					'gif'      => 'image/gif',
+					'jpeg|jpg' => 'image/jpeg',
 					'png'      => 'image/png',
-					'doc|docx' => 'application/msword',
-					'xls'      => 'application/vnd.ms-excel',
+					'gif'      => 'image/gif',
 				],
 				'label_deny_type' => 'This file type is not allowed to upload.',
 				'async_upload'    => false,
@@ -60,6 +58,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 			],
 			'browse_label'   => 'Select file(s) to upload',
 		];
+
 		$this->assertEquals( $expected, $field->args );
 
 		// Test 2.
@@ -106,11 +105,9 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				'multiple'        => false,
 				'max_files'       => 1,
 				'allowed_mimes'   => [
-					'jpg|jpeg' => 'image/jpeg',
-					'gif'      => 'image/gif',
+					'jpeg|jpg' => 'image/jpeg',
 					'png'      => 'image/png',
-					'doc|docx' => 'application/msword',
-					'xls'      => 'application/vnd.ms-excel',
+					'gif'      => 'image/gif',
 				],
 				'label_deny_type' => 'This file type is not allowed to upload.',
 				'async_upload'    => false,
@@ -133,11 +130,9 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				'multiple'        => false,
 				'max_files'       => 1,
 				'allowed_mimes'   => [
-					'jpg|jpeg' => 'image/jpeg',
-					'gif'      => 'image/gif',
+					'jpeg|jpg' => 'image/jpeg',
 					'png'      => 'image/png',
-					'doc|docx' => 'application/msword',
-					'xls'      => 'application/vnd.ms-excel',
+					'gif'      => 'image/gif',
 				],
 				'label_deny_type' => 'This file type is not allowed to upload.',
 				'async_upload'    => false,
@@ -184,11 +179,9 @@ class TestAnsPressFormFieldUpload extends TestCase {
 				'multiple'        => false,
 				'max_files'       => 1,
 				'allowed_mimes'   => [
-					'jpg|jpeg' => 'image/jpeg',
-					'gif'      => 'image/gif',
+					'jpeg|jpg' => 'image/jpeg',
 					'png'      => 'image/png',
-					'doc|docx' => 'application/msword',
-					'xls'      => 'application/vnd.ms-excel',
+					'gif'      => 'image/gif',
 				],
 				'label_deny_type' => 'This file type is not allowed to upload.',
 				'async_upload'    => false,
@@ -593,7 +586,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$this->assertFalse( $callback_triggered );
 		$this->assertEmpty( $property->getValue( $field ) );
 		$field->field_markup();
-		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="SampleForm-sample-form[]" id="SampleForm-sample-form" class="ap-form-control " multiple="multiple" accept=".jpg,.jpeg,.gif,.png,.doc,.docx,.xls"  /></div>', $property->getValue( $field ) );
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="SampleForm-sample-form[]" id="SampleForm-sample-form" class="ap-form-control " multiple="multiple" accept=".jpeg,.jpg,.png,.gif"  /></div>', $property->getValue( $field ) );
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
 
@@ -613,7 +606,7 @@ class TestAnsPressFormFieldUpload extends TestCase {
 		$this->assertFalse( $callback_triggered );
 		$this->assertEmpty( $property->getValue( $field ) );
 		$field->field_markup();
-		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="TestForm-test-form" id="TestForm-test-form" class="ap-form-control custom-class" data-custom="custom-data" placeholder="Custom Placeholder" accept=".jpg,.jpeg,.gif,.png,.doc,.docx,.xls"  /></div>', $property->getValue( $field ) );
+		$this->assertEquals( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $field->js_args() ) . '" name="TestForm-test-form" id="TestForm-test-form" class="ap-form-control custom-class" data-custom="custom-data" placeholder="Custom Placeholder" accept=".jpeg,.jpg,.png,.gif"  /></div>', $property->getValue( $field ) );
 		$this->assertTrue( $callback_triggered );
 		$this->assertTrue( did_action( 'ap_after_field_markup' ) > 0 );
 

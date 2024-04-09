@@ -679,18 +679,22 @@ class Validate {
 		$have_error = true;
 		$is_numeric = wp_is_numeric_array( $value );
 
+		$allowed_mimes = ! empty( $args['allowed_mimes'] ) ? $args['allowed_mimes'] : ap_allowed_mimes() ?? array();
+
+		$allowed_mimes = array_values( $allowed_mimes );
+
 		if ( true === $args['multiple'] && $is_numeric ) {
 			foreach ( $value as $key => $file ) {
 				$actual_mime = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
 
-				if ( false !== $actual_mime && in_array( $actual_mime['type'], $args['allowed_mimes'], true ) ) {
+				if ( false !== $actual_mime && in_array( $actual_mime['type'], $allowed_mimes, true ) ) {
 					$have_error = false;
 				}
 			}
 		} elseif ( ! $is_numeric ) {
 			$actual_mime = wp_check_filetype_and_ext( $value['tmp_name'], $value['name'] );
 
-			if ( false !== $actual_mime && in_array( $actual_mime['type'], $args['allowed_mimes'], true ) ) {
+			if ( false !== $actual_mime && in_array( $actual_mime['type'], $allowed_mimes, true ) ) {
 				$have_error = false;
 			}
 		}
@@ -780,6 +784,31 @@ class Validate {
 					)
 				);
 			}
+		}
+	}
+
+	/**
+	 * Validate 'valid-mimes' field.
+	 *
+	 * @param object $field Instance of @see `AP_Field` object.
+	 * @return void
+	 */
+	public static function validate_valid_mimes( $field ) {
+		$value = $field->unsafe_value();
+
+		$regex = '/^(?:[^|]+\|)?(.+)=>(.+\/.+)(?:\r?\n|$)/';
+
+		// Check value against a regex pattern.
+		if ( empty( $value ) ) {
+			$field->add_error( 'valid-mimes', __( 'Allowed mimes format cannot be empty.', 'anspress-question-answer' ) );
+		}
+
+		// Check string against a regex pattern.
+		if ( ! preg_match(
+			$regex,
+			$value
+		) ) {
+			$field->add_error( 'valid-mimes', __( 'Allowed mimes format does not match the required pattern.', 'anspress-question-answer' ) );
 		}
 	}
 }
