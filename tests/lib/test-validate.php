@@ -2924,4 +2924,291 @@ class TestAnsPressFormValidate extends TestCase {
 		$result = $method->invokeArgs( $field, [ $field ] );
 		$this->assertTrue( $result );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldAddErrorForUserWhoCantUpload() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.jpg',
+				'name'     => 'test.jpg',
+				'size'     => 2048,
+				'error'    => 0,
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					'tmp_name' => 'test.jpg',
+					'name'     => 'test.jpg',
+					'size'     => 2048,
+					'error'    => 0,
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'deny-upload' => 'You are not allowed to upload file(s)' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldAddErrorForUploadingManyFilesThanAllowed() {
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'          => 'Test Field',
+			'upload_options' => [
+				'multiple'      => true,
+				'max_files'     => 1,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				[
+					'tmp_name' => 'test.jpg',
+					'name'     => 'test.jpg',
+					'size'     => 2048,
+					'error'    => 0,
+				],
+				[
+					'tmp_name' => 'test.gif',
+					'name'     => 'test.gif',
+					'size'     => 2048,
+					'error'    => 0,
+				],
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					[
+						'tmp_name' => 'test.jpg',
+						'name'     => 'test.jpg',
+						'size'     => 2048,
+						'error'    => 0,
+					],
+					[
+						'tmp_name' => 'test.gif',
+						'name'     => 'test.gif',
+						'size'     => 2048,
+						'error'    => 0,
+					],
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-uploads' => 'You cannot upload more than 1 file in field Test Field' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldAddErrorForUploadingManyFilesThanAllowedWhenMultipleSetToFalse() {
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'          => 'Test Field',
+			'upload_options' => [
+				'multiple'      => false,
+				'max_files'     => 1,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.jpg',
+				'name'     => 'test.jpg',
+				'size'     => 2048,
+				'error'    => 0,
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					[
+						'tmp_name' => 'test.jpg',
+						'name'     => 'test.jpg',
+						'size'     => 2048,
+						'error'    => 0,
+					],
+					[
+						'tmp_name' => 'test.gif',
+						'name'     => 'test.gif',
+						'size'     => 2048,
+						'error'    => 0,
+					],
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-uploads' => 'You cannot upload more than 1 file in field Test Field' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldAddErrorForInvalidFileType() {
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.pdf',
+				'name'     => 'test.pdf',
+				'size'     => 2048,
+				'error'    => 0,
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					'tmp_name' => 'test.pdf',
+					'name'     => 'test.pdf',
+					'size'     => 2048,
+					'error'    => 0,
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'mimes-not-allowed' => 'File type is not allowed to upload.' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldAddErrorForFileHavingError() {
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.jpg',
+				'name'     => 'test.jpg',
+				'size'     => 2048,
+				'error'    => 1,
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					'tmp_name' => 'test.jpg',
+					'name'     => 'test.jpg',
+					'size'     => 2048,
+					'error'    => 1,
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'upload-file-error' => 'The uploaded file exceeds the upload_max_filesize directive in php.ini' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldAddErrorForFileSizeError() {
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.jpg',
+				'name'     => 'test.jpg',
+				'size'     => 600000,
+				'error'    => 0,
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					'tmp_name' => 'test.jpg',
+					'name'     => 'test.jpg',
+					'size'     => 600000,
+					'error'    => 0,
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'max-size-upload' => 'File(s) size is bigger than 0.48 MB' ], $field->errors );
+
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_upload
+	 */
+	public function testValidateUploadShouldNotAddAnyErrorForUpdateValid() {
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		wp_set_current_user( $user_id );
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'label'          => 'Test Field',
+			'upload_options' => [
+				'multiple'      => false,
+				'max_files'     => 1,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+			'value'          => [
+				'tmp_name' => 'test.jpg',
+				'name'     => 'test.jpg',
+				'size'     => 2048,
+				'error'    => 0,
+			],
+		] );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => [
+					'tmp_name' => 'test.jpg',
+					'name'     => 'test.jpg',
+					'size'     => 2048,
+					'error'    => 0,
+				],
+			],
+		];
+		\AnsPress\Form\Validate::validate_upload( $field );
+		$this->assertEmpty( $field->errors );
+	}
 }
