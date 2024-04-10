@@ -224,7 +224,7 @@ function ap_recent_activity( $_post = null, $output = true, $query_db = null ) {
 		return $html;
 	}
 
-	echo wp_kses_post( $html );
+	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**
