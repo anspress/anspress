@@ -2,7 +2,7 @@
     "name": "anspress",
     "version": "4.3.2",
     "description": "Question And answer plugin for WordPress",
-    "main": "Gruntfile.js",
+    "main": "build/index.js",
     "private": true,
     "devDependencies": {
         "grunt": "^1.6.1",
@@ -13,14 +13,23 @@
         "grunt-wp-i18n": "^1.0.3",
         "grunt-wp-readme-to-markdown": "^2.1.0",
         "load-grunt-tasks": "^5.1.0",
-        "sass": "^1.64.1"
+        "sass": "^1.64.1",
+        "@wordpress/scripts": "^27.6.0"
     },
     "scripts": {
         "test": "php ./vendor/bin/phpunit",
         "phpcs": "php ./vendor/bin/phpcs",
-        "build": "grunt build",
-        "server": "cd ../../../ && start php -d zend_extension=xdebug -S localhost:80"
+        "build": "grunt build && wp-scripts build --webpack-copy-php --webpack-src-dir=blocks/",
+        "format": "wp-scripts format",
+        "lint:css": "wp-scripts lint-style",
+        "lint:js": "wp-scripts lint-js",
+        "packages-update": "wp-scripts packages-update",
+        "plugin-zip": "wp-scripts plugin-zip",
+        "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks/"
     },
     "author": "Rahul Aryan",
-    "license": "GPL 3+"
+    "license": "GPL 3+",
+    "dependencies": {
+        "@wordpress/server-side-render": "^4.32.0"
+    }
 }

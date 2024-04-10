@@ -353,6 +353,9 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				require_once ANSPRESS_DIR . 'lib/class-anspress-cli.php';
 			}
+
+			// Load blocks.
+			require_once ANSPRESS_DIR . 'includes/class-block.php';
 		}
 
 		/**
@@ -399,6 +402,10 @@ if ( ! class_exists( 'AnsPress' ) ) {
 					require_once $data['path'];
 				}
 			}
+
+			// Load blocks.
+			$block = new AnsPress\Block();
+			$block->init();
 		}
 
 		/**
