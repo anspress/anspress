@@ -212,15 +212,15 @@ function get_question_id() {
 	}
 
 	if ( is_question() ) {
-		return get_queried_object_id();
+		return (int) get_queried_object_id();
 	}
 
 	if ( get_query_var( 'edit_q' ) ) {
-		return get_query_var( 'edit_q' );
+		return (int) get_query_var( 'edit_q' );
 	}
 
 	if ( ap_answer_the_object() ) {
-		return ap_get_post_field( 'post_parent' );
+		return (int) ap_get_post_field( 'post_parent' );
 	}
 
 	return 0;

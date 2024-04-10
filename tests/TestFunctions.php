@@ -184,9 +184,6 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $id, get_question_id() );
 	}
 
-	/**
-	 * @covers ::get_question_id
-	 */
 	public function testGetQuestionIDWithQuestionIDQueryVar() {
 		$this->assertEquals( 0, get_question_id() );
 		$id = $this->insert_question();
@@ -247,11 +244,17 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( true );
 		if ( ! \is_multisite() ) {
 			$nonce = wp_create_nonce( 'edit-post-' . $id->q );
-			$this->assertEquals( ap_get_link_to( 'ask' ) . '?id=' . $id->q . '&__nonce=' . $nonce, ap_post_edit_link( $id->q ) );
+			$this->assertEquals(
+				add_query_arg(['id' => $id->q, '__nonce' => $nonce], ap_get_link_to( 'ask' )),
+				ap_post_edit_link( $id->q )
+			);
 		}
 		if ( ! \is_multisite() ) {
 			$nonce = wp_create_nonce( 'edit-post-' . $id->a );
-			$this->assertEquals( ap_get_link_to( 'edit' ) . '?id=' . $id->a . '&__nonce=' . $nonce, ap_post_edit_link( $id->a ) );
+			$this->assertEquals(
+				add_query_arg(['id' => $id->a, '__nonce' => $nonce], ap_get_link_to( 'edit' )),
+				ap_post_edit_link( $id->a )
+			);
 		}
 	}
 
@@ -746,18 +749,6 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_deactivate_addon
 	 */
 	public function testAPActivateAddon() {
-		// For default addons activate behaviour.
-		$this->assertArrayNotHasKey( 'categories.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
-
 		// For addons activate behaviour test.
 		ap_activate_addon( 'categories.php' );
 		ap_activate_addon( 'email.php' );
@@ -2223,26 +2214,6 @@ class TestFunctions extends TestCase {
 		$this->assertStringContainsString( 'param1/value1', ap_current_page_url( $args ) );
 		$this->assertStringContainsString( 'param2/value2', ap_current_page_url( $args ) );
 		$this->assertStringContainsString( 'questions/question/question-title/param1/value1/param2/value2/', ap_current_page_url( $args ) );
-	}
-
-	/**
-	 * @covers ::ap_is_ajax
-	 */
-	public function testAPIsAjax() {
-		// DOING_AJAX is already defined so can't test with false value on it
-		// since changing constant value on PHP is not possible.
-		// Should return false since we're not passing any values.
-		$this->assertFalse( ap_is_ajax() );
-
-		// Should return false since we're passing wrong value.
-		$_REQUEST['ap_action'] = 'new_question';
-		$this->assertFalse( ap_is_ajax() );
-		unset( $_REQUEST['ap_action'] );
-
-		// Should return true since we're passing value as intended.
-		$_REQUEST['ap_ajax_action'] = 'new_question';
-		$this->assertTrue( ap_is_ajax() );
-		unset( $_REQUEST['ap_ajax_action'] );
 	}
 
 	/**

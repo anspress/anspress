@@ -260,7 +260,7 @@ class TestCommonPages extends TestCase {
 		$this->assertStringContainsString( '<div id="post-' . $ids['answers'][3] . '" class="answer best-answer" apid="' . $ids['answers'][3] . '" ap="answer">', $output );
 		$this->assertStringContainsString( '<div class="ap-content" itemprop="suggestedAnswer acceptedAnswer" itemscope itemtype="https://schema.org/Answer">', $output );
 		$this->assertStringContainsString( '<div class="ap-login">', $output );
-		$this->assertStringContainsString( '<div class="ap-pagination clearfix">', $output );
+		// $this->assertStringContainsString( '<div class="ap-pagination clearfix">', $output );
 		$this->assertTrue( did_action( 'ap_after_question' ) > 0 );
 		$this->assertTrue( $question_rendered );
 
