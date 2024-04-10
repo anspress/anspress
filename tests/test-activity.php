@@ -2410,4 +2410,128 @@ class TestActivity extends TestCase {
 		$this->assertEquals( get_current_user_id(), $get_recent_activity->user_id );
 		$this->assertEquals( '2024-01-01 00:00:00', $get_recent_activity->date );
 	}
+
+	/**
+	 * @covers ::ap_recent_activity
+	 */
+	public function testApRecentActivityForNewQuestion() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		// Add new question activity.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id,
+				'date'   => '2024-01-01 00:00:00',
+			)
+		);
+
+		// Test.
+		ob_start();
+		ap_recent_activity( $id );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<span class="ap-post-history">', $output );
+		$this->assertStringContainsString( '<a href="' . ap_user_link( get_current_user_id() ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( get_current_user_id() ) . '</span></a>', $output );
+		$this->assertStringContainsString( 'Asked question', $output );
+		$this->assertStringContainsString( '<a href="' . esc_url( ap_get_short_link( array( 'ap_q' => $id ) ) ) . '">', $output );
+		$this->assertStringContainsString( '<time itemprop="dateModified" datetime="' . mysql2date( 'c', '2024-01-01 00:00:00' ) . '">' . ap_human_time( '2024-01-01 00:00:00', false ) . '</time>', $output );
+	}
+
+	/**
+	 * @covers ::ap_recent_activity
+	 */
+	public function testApRecentActivityForNewAnswer() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		// Add new answer activity.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'new_a',
+				'q_id'   => $id->q,
+				'a_id'   => $id->a,
+				'date'   => '2024-01-01 00:00:00',
+			)
+		);
+
+		// Test.
+		ob_start();
+		ap_recent_activity( $id->q );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<span class="ap-post-history">', $output );
+		$this->assertStringContainsString( '<a href="' . ap_user_link( get_current_user_id() ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( get_current_user_id() ) . '</span></a>', $output );
+		$this->assertStringContainsString( 'Answered question', $output );
+		$this->assertStringContainsString( '<a href="' . esc_url( ap_get_short_link( array( 'ap_a' => $id->a ) ) ) . '">', $output );
+		$this->assertStringContainsString( '<time itemprop="dateModified" datetime="' . mysql2date( 'c', '2024-01-01 00:00:00' ) . '">' . ap_human_time( '2024-01-01 00:00:00', false ) . '</time>', $output );
+	}
+
+	/**
+	 * @covers ::ap_recent_activity
+	 */
+	public function testApRecentActivityForNewComment() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		// Add new comment activity.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		$c_id = $this->factory()->comment->create_object(
+			array(
+				'comment_type'    => 'anspress',
+				'post_status'     => 'publish',
+				'comment_post_ID' => $id->q,
+				'user_id'         => get_current_user_id(),
+			)
+		);
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'new_c',
+				'q_id'   => $id->q,
+				'c_id'   => $c_id,
+				'date'   => '2024-01-01 00:00:00',
+			)
+		);
+
+		// Test.
+		ob_start();
+		ap_recent_activity( $id->q );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<span class="ap-post-history">', $output );
+		$this->assertStringContainsString( '<a href="' . ap_user_link( get_current_user_id() ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( get_current_user_id() ) . '</span></a>', $output );
+		$this->assertStringContainsString( 'Posted new comment', $output );
+		$this->assertStringContainsString( '<a href="' . esc_url( ap_get_short_link( array( 'ap_c' => $c_id ) ) ) . '">', $output );
+		$this->assertStringContainsString( '<time itemprop="dateModified" datetime="' . mysql2date( 'c', '2024-01-01 00:00:00' ) . '">' . ap_human_time( '2024-01-01 00:00:00', false ) . '</time>', $output );
+	}
+
+	/**
+	 * @covers ::ap_recent_activity
+	 */
+	public function testApRecentActivityForNewQuestionAndReturnValue() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_activity}" );
+
+		// Add new question activity.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+		$activity_id = ap_activity_add(
+			array(
+				'action' => 'new_q',
+				'q_id'   => $id,
+				'date'   => '2024-01-01 00:00:00',
+			)
+		);
+
+		// Test.
+		$output = ap_recent_activity( $id, false );
+		$this->assertStringContainsString( '<span class="ap-post-history">', $output );
+		$this->assertStringContainsString( '<a href="' . ap_user_link( get_current_user_id() ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( get_current_user_id() ) . '</span></a>', $output );
+		$this->assertStringContainsString( 'Asked question', $output );
+		$this->assertStringContainsString( '<a href="' . esc_url( ap_get_short_link( array( 'ap_q' => $id ) ) ) . '">', $output );
+		$this->assertStringContainsString( '<time itemprop="dateModified" datetime="' . mysql2date( 'c', '2024-01-01 00:00:00' ) . '">' . ap_human_time( '2024-01-01 00:00:00', false ) . '</time>', $output );
+	}
 }
