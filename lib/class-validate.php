@@ -800,7 +800,7 @@ class Validate {
 
 		// Check value against a regex pattern.
 		if ( empty( $value ) ) {
-			$field->add_error( 'valid-mimes', __( 'Allowed mimes format cannot be empty.', 'anspress-question-answer' ) );
+			$field->add_error( 'empty-mimes', __( 'Allowed mimes format cannot be empty.', 'anspress-question-answer' ) );
 		}
 
 		// Check string against a regex pattern.
