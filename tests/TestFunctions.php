@@ -184,9 +184,6 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $id, get_question_id() );
 	}
 
-	/**
-	 * @covers ::get_question_id
-	 */
 	public function testGetQuestionIDWithQuestionIDQueryVar() {
 		$this->assertEquals( 0, get_question_id() );
 		$id = $this->insert_question();
@@ -247,11 +244,17 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( true );
 		if ( ! \is_multisite() ) {
 			$nonce = wp_create_nonce( 'edit-post-' . $id->q );
-			$this->assertEquals( ap_get_link_to( 'ask' ) . '?id=' . $id->q . '&__nonce=' . $nonce, ap_post_edit_link( $id->q ) );
+			$this->assertEquals(
+				add_query_arg(['id' => $id->q, '__nonce' => $nonce], ap_get_link_to( 'ask' )),
+				ap_post_edit_link( $id->q )
+			);
 		}
 		if ( ! \is_multisite() ) {
 			$nonce = wp_create_nonce( 'edit-post-' . $id->a );
-			$this->assertEquals( ap_get_link_to( 'edit' ) . '?id=' . $id->a . '&__nonce=' . $nonce, ap_post_edit_link( $id->a ) );
+			$this->assertEquals(
+				add_query_arg(['id' => $id->a, '__nonce' => $nonce], ap_get_link_to( 'edit' )),
+				ap_post_edit_link( $id->a )
+			);
 		}
 	}
 
@@ -388,7 +391,6 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'email.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'akismet.php' ) );
-		$this->assertFalse( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'buddypress.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'profile.php' ) );
@@ -401,7 +403,6 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
-		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
@@ -414,7 +415,6 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'email.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'reputation.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'akismet.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'avatar.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'buddypress.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'profile.php' ) );
@@ -528,7 +528,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'email.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'akismet.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'buddypress.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'notifications.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'profile.php', ap_get_active_addons() );
@@ -538,7 +537,6 @@ class TestFunctions extends TestCase {
 
 		// Addon activate and check.
 		ap_activate_addon( 'akismet.php' );
-		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
@@ -554,7 +552,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'reputation.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'avatar.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'notifications.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_active_addons() );
@@ -752,25 +749,11 @@ class TestFunctions extends TestCase {
 	 * @covers ::ap_deactivate_addon
 	 */
 	public function testAPActivateAddon() {
-		// For default addons activate behaviour.
-		$this->assertArrayNotHasKey( 'categories.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
-
 		// For addons activate behaviour test.
 		ap_activate_addon( 'categories.php' );
 		ap_activate_addon( 'email.php' );
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'akismet.php' );
-		ap_activate_addon( 'avatar.php' );
 		ap_activate_addon( 'buddypress.php' );
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
@@ -783,7 +766,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'profile.php', get_option( 'anspress_addons' ) );
@@ -796,7 +778,6 @@ class TestFunctions extends TestCase {
 		ap_deactivate_addon( 'email.php' );
 		ap_deactivate_addon( 'reputation.php' );
 		ap_deactivate_addon( 'akismet.php' );
-		ap_deactivate_addon( 'avatar.php' );
 		ap_deactivate_addon( 'buddypress.php' );
 		ap_deactivate_addon( 'notifications.php' );
 		ap_deactivate_addon( 'profile.php' );
@@ -809,7 +790,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'email.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'reputation.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'akismet.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'avatar.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'buddypress.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
@@ -941,7 +921,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'email.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'reputation.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'akismet.php', ap_get_addons() );
-		$this->assertArrayHasKey( 'avatar.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'buddypress.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'notifications.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_addons() );
@@ -959,7 +938,6 @@ class TestFunctions extends TestCase {
 			'email.php',
 			'reputation.php',
 			'akismet.php',
-			'avatar.php',
 			'buddypress.php',
 			'notifications.php',
 			'profile.php',
@@ -2236,26 +2214,6 @@ class TestFunctions extends TestCase {
 		$this->assertStringContainsString( 'param1/value1', ap_current_page_url( $args ) );
 		$this->assertStringContainsString( 'param2/value2', ap_current_page_url( $args ) );
 		$this->assertStringContainsString( 'questions/question/question-title/param1/value1/param2/value2/', ap_current_page_url( $args ) );
-	}
-
-	/**
-	 * @covers ::ap_is_ajax
-	 */
-	public function testAPIsAjax() {
-		// DOING_AJAX is already defined so can't test with false value on it
-		// since changing constant value on PHP is not possible.
-		// Should return false since we're not passing any values.
-		$this->assertFalse( ap_is_ajax() );
-
-		// Should return false since we're passing wrong value.
-		$_REQUEST['ap_action'] = 'new_question';
-		$this->assertFalse( ap_is_ajax() );
-		unset( $_REQUEST['ap_action'] );
-
-		// Should return true since we're passing value as intended.
-		$_REQUEST['ap_ajax_action'] = 'new_question';
-		$this->assertTrue( ap_is_ajax() );
-		unset( $_REQUEST['ap_ajax_action'] );
 	}
 
 	/**

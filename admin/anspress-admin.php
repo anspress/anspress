@@ -1197,6 +1197,13 @@ class AnsPress_Admin {
 					'desc'  => __( 'Set maximum upload size in bytes.', 'anspress-question-answer' ),
 					'value' => $opt['max_upload_size'],
 				),
+				'allowed_file_mime'             => array(
+					'label'    => __( 'Allowed file mime types', 'anspress-question-answer' ),
+					'desc'     => __( "Enter comma separated file mime. Format: extension(s) => MIME type.\nUse | for multiple file types and ensure each entry is on a new line.\nExample: jpeg|jpg=>image/jpeg", 'anspress-question-answer' ),
+					'value'    => $opt['allowed_file_mime'],
+					'type'     => 'textarea',
+					'validate' => 'required,valid_mimes',
+				),
 				'allow_private_posts'           => array(
 					'label' => __( 'Allow private posts', 'anspress-question-answer' ),
 					'desc'  => __( 'Allows users to create private question and answer. Private Q&A are only visible to admin and moderators.', 'anspress-question-answer' ),

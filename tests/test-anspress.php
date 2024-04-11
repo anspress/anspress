@@ -94,9 +94,6 @@ class TestAnsPress extends TestCase {
 		// Check addon files exists.
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/akismet/akismet.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/akismet/image.png' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/avatar.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/class-generator.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/avatar/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/buddypress.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/buddypress/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/categories/categories.php' );
@@ -162,6 +159,7 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'classes/ajax.php' );
 
 		// Check includes file exists.
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-abstract-addon.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity-helper.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-activity.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class/class-session.php' );
@@ -359,8 +357,6 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Email\Helper' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Reputation' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Akismet' ) );
-		$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar' ) );
-		$this->assertTrue( class_exists( 'AnsPress\Addons\Avatar\Generator' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\BuddyPress' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Addons\Notifications' ) );
 		$this->assertTrue( class_exists( 'AnsPress\Notifications' ) );

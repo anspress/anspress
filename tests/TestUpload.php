@@ -33,27 +33,47 @@ class TestUpload extends TestCase {
 		return $mimes;
 	}
 
-	/**
-	 * @covers ::ap_allowed_mimes
-	 */
-	public function testAPAllowedMimes() {
-		$this->assertArrayHasKey( 'jpg|jpeg', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'gif', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'png', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'doc|docx', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'xls', ap_allowed_mimes() );
+	public function testAPAllowedMimesWhenEmpty() {
+		ap_opt( 'allowed_file_mime', '' );
 
-		// Test for adding filter.
-		add_filter( 'ap_allowed_mimes', [ $this, 'allowedMimes' ] );
-		$this->assertArrayHasKey( 'ico', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'pdf', ap_allowed_mimes() );
-		$this->assertArrayNotHasKey( 'gif', ap_allowed_mimes() );
-		$this->assertArrayNotHasKey( 'png', ap_allowed_mimes() );
-		remove_filter( 'ap_allowed_mimes', [ $this, 'allowedMimes' ] );
-		$this->assertArrayNotHasKey( 'ico', ap_allowed_mimes() );
-		$this->assertArrayNotHasKey( 'pdf', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'gif', ap_allowed_mimes() );
-		$this->assertArrayHasKey( 'png', ap_allowed_mimes() );
+		$this->assertTrue( empty( ap_allowed_mimes() ) );
+	}
+
+	public function testApAllowedMimesDefault() {
+		$this->assertEquals([
+			'jpeg|jpg' => 'image/jpeg',
+			'png'  => 'image/png',
+			'gif'  => 'image/gif',
+		], ap_allowed_mimes() );
+	}
+
+	public function testApAllowedMimesCustomOption() {
+		ap_opt( 'allowed_file_mime', "pdf=>application/pdf\nico=>image/x-icon" );
+
+		$this->assertEquals([
+			'ico'  => 'image/x-icon',
+			'pdf'  => 'application/pdf',
+		], ap_allowed_mimes() );
+	}
+
+	public function testApAllowedMimesCustomOptionWithInvalidData() {
+		ap_opt( 'allowed_file_mime', "pdf" );
+
+		$this->assertEquals([], ap_allowed_mimes() );
+	}
+
+	public function testApAllowedMimesCustomOptionWithInvalidDataMime() {
+		ap_opt( 'allowed_file_mime', "pdf=>\nico\n" );
+
+		$this->assertEquals([], ap_allowed_mimes() );
+	}
+
+	public function testApAllowedMimesCustomOptionWithExcessiveNewLines() {
+		ap_opt( 'allowed_file_mime', "ico=>image/x-icon\n\n" );
+
+		$this->assertEquals([
+			'ico' => 'image/x-icon',
+		], ap_allowed_mimes() );
 	}
 
 	/**

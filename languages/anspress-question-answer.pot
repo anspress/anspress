@@ -29,10 +29,6 @@ msgstr ""
 msgid "Akismet"
 msgstr ""
 
-#: addons/akismet/akismet.php:91 addons/avatar/avatar.php:121
-msgid "Save add-on options"
-msgstr ""
-
 #: addons/akismet/akismet.php:94
 msgid "What to do when post is a spam?"
 msgstr ""
@@ -55,46 +51,6 @@ msgstr ""
 
 #: addons/akismet/akismet.php:261
 msgid "Mark as spam"
-msgstr ""
-
-#: addons/avatar/avatar.php:81 includes/functions.php:1648
-msgid "Dynamic Avatar"
-msgstr ""
-
-#: addons/avatar/avatar.php:102
-msgid ""
-"Do you wish to proceed? All previously generated Avatar cache will get "
-"deleted."
-msgstr ""
-
-#: addons/avatar/avatar.php:110
-msgid "All avatar deleted"
-msgstr ""
-
-#: addons/avatar/avatar.php:124
-msgid "Clear Cache"
-msgstr ""
-
-#: addons/avatar/avatar.php:125
-msgid "Clear avatar cache"
-msgstr ""
-
-#: addons/avatar/avatar.php:128
-msgid "Font family"
-msgstr ""
-
-#: addons/avatar/avatar.php:129
-msgid "Select font family for avatar letters."
-msgstr ""
-
-#: addons/avatar/avatar.php:141
-msgid "Force avatar"
-msgstr ""
-
-#: addons/avatar/avatar.php:142
-msgid ""
-"Show AnsPress avatars by default instead of gravatar fallback. Useful in "
-"localhost development."
 msgstr ""
 
 #: addons/buddypress/buddypress.php:108
@@ -4194,10 +4150,6 @@ msgstr ""
 
 #: includes/votes.php:598 includes/votes.php:610
 msgid "Withdraw your vote"
-msgstr ""
-
-#: lib/class-anspress-cli.php:80
-msgid "You must pass a addon name i.e. free/avatar.php"
 msgstr ""
 
 #: lib/class-anspress-cli.php:87

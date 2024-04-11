@@ -994,22 +994,36 @@ class AP_Form_Hooks {
 	 * @since 4.1.8
 	 */
 	public static function image_upload_form() {
+		$allowed_mimes = ap_allowed_mimes() ?? array();
+
+		// Get keys from allowed mimes.
+		$allowed_mimes_keys = array_keys( $allowed_mimes );
+
+		$combined_mimes = array();
+
+		// Split | from mime type and append to same array.
+		foreach ( $allowed_mimes_keys as $key => $value ) {
+			$combined_mimes = array_merge( $combined_mimes, explode( '|', $value ) );
+		}
+
+		// Remove duplicates.
+		$combined_mimes = array_unique( $combined_mimes );
+
 		return array(
 			'submit_label' => __( 'Upload & insert', 'anspress-question-answer' ),
 			'fields'       => array(
 				'image' => array(
 					'label'          => __( 'Image', 'anspress-question-answer' ),
-					'desc'           => __( 'Select image(s) to upload. Only .jpg, .png and .gif files allowed.', 'anspress-question-answer' ),
+					'desc'           => wp_sprintf_l(
+						__( '%l file types allowed.', 'anspress-question-answer' ),
+						$combined_mimes
+					),
 					'type'           => 'upload',
 					'save'           => array( __CLASS__, 'image_upload_save' ),
 					'upload_options' => array(
 						'multiple'      => false,
 						'max_files'     => 1,
-						'allowed_mimes' => array(
-							'jpg|jpeg' => 'image/jpeg',
-							'gif'      => 'image/gif',
-							'png'      => 'image/png',
-						),
+						'allowed_mimes' => $allowed_mimes,
 					),
 					'validate'       => 'required',
 				),

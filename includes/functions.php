@@ -212,15 +212,15 @@ function get_question_id() {
 	}
 
 	if ( is_question() ) {
-		return get_queried_object_id();
+		return (int) get_queried_object_id();
 	}
 
 	if ( get_query_var( 'edit_q' ) ) {
-		return get_query_var( 'edit_q' );
+		return (int) get_query_var( 'edit_q' );
 	}
 
 	if ( ap_answer_the_object() ) {
-		return ap_get_post_field( 'post_parent' );
+		return (int) ap_get_post_field( 'post_parent' );
 	}
 
 	return 0;
@@ -1643,10 +1643,6 @@ function ap_get_addons() {
 		'reputation.php'        => array(
 			'name'        => __( 'Reputation', 'anspress-question-answer' ),
 			'description' => __( 'Award points to user based on activities.', 'anspress-question-answer' ),
-		),
-		'avatar.php'            => array(
-			'name'        => __( 'Dynamic Avatar', 'anspress-question-answer' ),
-			'description' => __( 'Generate user avatar based on display name initials.', 'anspress-question-answer' ),
 		),
 		'buddypress.php'        => array(
 			'name'        => __( 'BuddyPress', 'anspress-question-answer' ),

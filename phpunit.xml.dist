@@ -10,6 +10,7 @@
 	<testsuites>
 		<testsuite name="AnsPress-Core">
 			<directory prefix="test-" suffix=".php">./tests/</directory>
+			<directory prefix="Test" suffix=".php">./tests/</directory>
 		</testsuite>
 
 

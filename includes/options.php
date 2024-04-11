@@ -123,6 +123,7 @@ function ap_default_options() {
 		'question_page_slug'            => 'question',
 		'question_page_permalink'       => 'question_perma_1',
 		'max_upload_size'               => 500000,
+		'allowed_file_mime'             => "jpeg|jpg=>image/jpeg\npng=>image/png\ngif=>image/gif",
 		'disable_down_vote_on_question' => false,
 		'disable_down_vote_on_answer'   => false,
 		'show_solved_prefix'            => true,

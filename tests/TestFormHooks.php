@@ -36,16 +36,16 @@ class TestFormHooks extends TestCase {
 		// Test for image field.
 		$this->assertArrayHasKey( 'image', $form['fields'] );
 		$this->assertEquals( 'Image', $form['fields']['image']['label'] );
-		$this->assertEquals( 'Select image(s) to upload. Only .jpg, .png and .gif files allowed.', $form['fields']['image']['desc'] );
+		$this->assertEquals( 'jpeg, jpg, png, and gif file types allowed.', $form['fields']['image']['desc'] );
 		$this->assertEquals( 'upload', $form['fields']['image']['type'] );
 		$this->assertEquals( [ 'AP_Form_Hooks', 'image_upload_save' ], $form['fields']['image']['save'] );
 		$options_args = [
 			'multiple'      => false,
 			'max_files'     => 1,
 			'allowed_mimes' => array(
-				'jpg|jpeg' => 'image/jpeg',
-				'gif'      => 'image/gif',
+				'jpeg|jpg' => 'image/jpeg',
 				'png'      => 'image/png',
+				'gif'      => 'image/gif',
 			),
 		];
 		$this->assertEquals( $options_args, $form['fields']['image']['upload_options'] );
@@ -53,7 +53,7 @@ class TestFormHooks extends TestCase {
 			$this->assertArrayHasKey( $key, $form['fields']['image']['upload_options'] );
 			$this->assertEquals( $value, $form['fields']['image']['upload_options'][ $key ] );
 		}
-		$this->assertEqualSets( [ 'jpg|jpeg', 'gif', 'png' ], array_keys( $form['fields']['image']['upload_options']['allowed_mimes'] ) );
+		$this->assertEqualSets( [ 'jpeg|jpg', 'png', 'gif' ], array_keys( $form['fields']['image']['upload_options']['allowed_mimes'] ) );
 		$this->assertEqualSets( [ 'image/jpeg', 'image/gif', 'image/png' ], array_values( $form['fields']['image']['upload_options']['allowed_mimes'] ) );
 		$this->assertEquals( 'required', $form['fields']['image']['validate'] );
 	}

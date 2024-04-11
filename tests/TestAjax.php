@@ -612,8 +612,8 @@ class TestAjax extends TestCaseAjax {
 				'form_name'       => 'form_image_upload',
 			)
 		);
-		$this->assertStringContainsString( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $custom_attrs ) . '" name="form_image_upload-image" id="form_image_upload-image" class="ap-form-control " accept=".jpg,.jpeg,.gif,.png"  /></div>', $this->ap_ajax_success( 'html' ) );
-		$this->assertStringContainsString( '<div class="ap-field-desc">Select image(s) to upload. Only .jpg, .png and .gif files allowed.</div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $custom_attrs ) . '" name="form_image_upload-image" id="form_image_upload-image" class="ap-form-control " accept=".jpeg,.jpg,.png,.gif"  /></div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( 'jpeg, jpg, png, and gif file types allowed.', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<div class="ap-upload-list"></div>', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<input type="hidden" name="ap_form_name" value="form_image_upload" />', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<input type="hidden" name="form_image_upload_nonce" value="' . wp_create_nonce( 'form_image_upload' ) . '" />', $this->ap_ajax_success( 'html' ) );
@@ -644,8 +644,8 @@ class TestAjax extends TestCaseAjax {
 				'form_name'       => 'form_image_upload',
 			)
 		);
-		$this->assertStringContainsString( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $custom_attrs ) . '" name="form_image_upload-image" id="form_image_upload-image" class="ap-form-control " accept=".jpg,.jpeg,.gif,.png"  /></div>', $this->ap_ajax_success( 'html' ) );
-		$this->assertStringContainsString( '<div class="ap-field-desc">Select image(s) to upload. Only .jpg, .png and .gif files allowed.</div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-upload-c"><input type="file"data-upload="' . esc_js( $custom_attrs ) . '" name="form_image_upload-image" id="form_image_upload-image" class="ap-form-control " accept=".jpeg,.jpg,.png,.gif"  /></div>', $this->ap_ajax_success( 'html' ) );
+		$this->assertStringContainsString( '<div class="ap-field-desc">jpeg, jpg, png, and gif file types allowed.</div>', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<div class="ap-upload-list"></div>', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<input type="hidden" name="ap_form_name" value="form_image_upload" />', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<input type="hidden" name="form_image_upload_nonce" value="' . wp_create_nonce( 'form_image_upload' ) . '" />', $this->ap_ajax_success( 'html' ) );

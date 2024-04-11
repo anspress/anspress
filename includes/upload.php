@@ -335,13 +335,28 @@ function ap_upload_user_file( $file = array(), $temp = true, $parent_post = '', 
  * @since  3.0.0
  */
 function ap_allowed_mimes() {
-	$mimes = array(
-		'jpg|jpeg' => 'image/jpeg',
-		'gif'      => 'image/gif',
-		'png'      => 'image/png',
-		'doc|docx' => 'application/msword',
-		'xls'      => 'application/vnd.ms-excel',
-	);
+	$allowed = ap_opt( 'allowed_file_mime' );
+
+	if ( empty( $allowed ) ) {
+		$allowed = '';
+	}
+
+	// Convert to array split by new line and =>.
+	$allowed = explode( "\n", $allowed );
+
+	$mimes = array();
+
+	if ( ! empty( $allowed ) ) {
+		foreach ( $allowed as $a ) {
+			$a = explode( '=>', $a );
+
+			if ( ! isset( $a[1] ) || empty( $a[0] ) || empty( $a[1] ) ) {
+				continue;
+			}
+
+			$mimes[ trim( $a[0] ) ] = trim( $a[1] );
+		}
+	}
 
 	/**
 	 * Filter allowed mimes types.
