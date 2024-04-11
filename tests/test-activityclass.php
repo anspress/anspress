@@ -713,4 +713,398 @@ class TestActivityClass extends TestCase {
 		$activities->the_object();
 		$this->assertEquals( date( 'Y-m-d H:i:s', strtotime( '-25 minutes' ) ), $activities->get_the_date() );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::get_avatar
+	 */
+	public function testGetAvatar() {
+		$user_id_1 = $this->factory()->user->create();
+		$user_id_2 = $this->factory()->user->create();
+		$user_id_3 = $this->factory()->user->create();
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'user_id' => $user_id_1,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'user_id' => $user_id_2,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'user_id' => $user_id_3,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertStringContainsString( get_avatar( $user_id_1, 40 ), $activities->get_avatar() );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertStringContainsString( get_avatar( $user_id_2, 40 ), $activities->get_avatar() );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertStringContainsString( get_avatar( $user_id_3, 40 ), $activities->get_avatar() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_avatar
+	 */
+	public function testGetAvatarByPassingSizeArg() {
+		$user_id_1 = $this->factory()->user->create();
+		$user_id_2 = $this->factory()->user->create();
+		$user_id_3 = $this->factory()->user->create();
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'user_id' => $user_id_1,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'user_id' => $user_id_2,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'user_id' => $user_id_3,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertStringContainsString( get_avatar( $user_id_1, 64 ), $activities->get_avatar( 64 ) );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertStringContainsString( get_avatar( $user_id_2, 64 ), $activities->get_avatar( 64 ) );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertStringContainsString( get_avatar( $user_id_3, 64 ), $activities->get_avatar( 64 ) );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_user_id
+	 */
+	public function testGetUserId() {
+		$user_id_1 = $this->factory()->user->create();
+		$user_id_2 = $this->factory()->user->create();
+		$user_id_3 = $this->factory()->user->create();
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'user_id' => $user_id_1,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'user_id' => $user_id_2,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'user_id' => $user_id_3,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertEquals( $user_id_1, $activities->get_user_id() );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertEquals( $user_id_2, $activities->get_user_id() );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertEquals( $user_id_3, $activities->get_user_id() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_the_icon
+	 */
+	public function testGetTheIconShouldReturnRespectiveIcon() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertEquals( 'apicon-question', $activities->get_the_icon() );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertEquals( 'apicon-answer', $activities->get_the_icon() );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertEquals( 'apicon-answer', $activities->get_the_icon() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_the_icon
+	 */
+	public function testGetTheIconShouldReturnPulseIfActionIsNotAnArray() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity which should not be valid.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activity->action = '';
+			$activities->the_object();
+			$this->assertEquals( 'apicon-pulse', $activities->get_the_icon() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::the_icon
+	 */
+	public function testTheIcon() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		ob_start();
+		$activities->the_icon();
+		$output = ob_get_clean();
+		$this->assertEquals( 'apicon-question', $output );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		ob_start();
+		$activities->the_icon();
+		$output = ob_get_clean();
+		$this->assertEquals( 'apicon-answer', $output );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		ob_start();
+		$activities->the_icon();
+		$output = ob_get_clean();
+		$this->assertEquals( 'apicon-answer', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::the_when
+	 */
+	public function testTheWhen() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-10 minutes' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-22 hours' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-45 hours' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][2],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-11 months' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][2],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-11 months' ) ),
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		ob_start();
+		$activities->the_when();
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-activity-when">Just now</div>', $output );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		ob_start();
+		$activities->the_when();
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-activity-when">Today</div>', $output );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		ob_start();
+		$activities->the_when();
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-activity-when">Yesterday</div>', $output );
+
+		// Test 4.
+		$activities->objects[3];
+		$activities->the_object();
+		ob_start();
+		$activities->the_when();
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-activity-when">' . date_i18n( 'M', strtotime( '-11 months' ) ) . '</div>', $output );
+
+		// Test 5.
+		$activities->objects[4];
+		$activities->the_object();
+		ob_start();
+		$activities->the_when();
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+	}
 }
