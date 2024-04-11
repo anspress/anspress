@@ -1107,4 +1107,64 @@ class TestActivityClass extends TestCase {
 		$output = ob_get_clean();
 		$this->assertEmpty( $output );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::more_button
+	 */
+	public function testMoreButton() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id ] );
+		$args = wp_json_encode(
+			array(
+				'ap_ajax_action' => 'more_activities',
+				'__nonce'        => wp_create_nonce( 'load_activities' ),
+				'paged'          => 2,
+			)
+		);
+		ob_start();
+		$activities->more_button();
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">Load More</a>', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::more_button
+	 */
+	public function testMoreButtonWhenPagedArgIsSet() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $id, 'paged' => 10 ] );
+		$args = wp_json_encode(
+			array(
+				'ap_ajax_action' => 'more_activities',
+				'__nonce'        => wp_create_nonce( 'load_activities' ),
+				'paged'          => 11,
+			)
+		);
+		ob_start();
+		$activities->more_button();
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">Load More</a>', $output );
+	}
 }
