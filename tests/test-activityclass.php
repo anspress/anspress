@@ -285,4 +285,432 @@ class TestActivityClass extends TestCase {
 			$this->assertEquals( date_i18n( 'M', strtotime( $activity->date ) ), $activities->when( $activities->object ) );
 		}
 	}
+
+	/**
+	 * @covers AnsPress\Activity::get_q_id
+	 */
+	public function testGetQIdForSingleQuestion() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+			$this->assertEquals( $ids['question'], $activities->get_q_id() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_q_id
+	 */
+	public function testGetQIdForMultipleQuestions() {
+		$this->setRole( 'subscriber' );
+		$id_1 = $this->insert_answer();
+		$id_2 = $this->insert_answer();
+		$id_3 = $this->insert_answer();
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id_1->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id_2->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $id_3->q,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id_1->q,
+				'a_id'   => $id_1->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id_2->q,
+				'a_id'   => $id_2->a,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $id_3->q,
+				'a_id'   => $id_3->a,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity();
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertEquals( $id_1->q, $activities->get_q_id() );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertEquals( $id_2->q, $activities->get_q_id() );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertEquals( $id_3->q, $activities->get_q_id() );
+
+		// Test 4.
+		$activities->objects[3];
+		$activities->the_object();
+		$this->assertEquals( $id_1->q, $activities->get_q_id() );
+
+		// Test 5.
+		$activities->objects[4];
+		$activities->the_object();
+		$this->assertEquals( $id_2->q, $activities->get_q_id() );
+
+		// Test 6.
+		$activities->objects[5];
+		$activities->the_object();
+		$this->assertEquals( $id_3->q, $activities->get_q_id() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::has_action
+	 */
+	public function testHasActionShouldReturnTrueIfActionExists() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activities->the_object();
+			$this->assertTrue( $activities->has_action() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::has_action
+	 */
+	public function testHasActionShouldReturnFalseIfActionDoesNotExist() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity which should not be valid.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activity->action = '';
+			$activities->the_object();
+			$this->assertFalse( $activities->has_action() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_the_verb
+	 */
+	public function testGetTheVerbReturnVerbContents() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertEquals( 'Asked question', $activities->get_the_verb() );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertEquals( 'Answered question', $activities->get_the_verb() );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertEquals( 'Answered question', $activities->get_the_verb() );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_the_verb
+	 */
+	public function testGetTheVerbReturnNullIfDoesNotHaveAction() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity which should not be valid.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activity->action = '';
+			$activities->the_object();
+			$this->assertNull( $activities->get_the_verb() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_the_verb
+	 */
+	public function testGetTheVerbReturnNullIfActionVerbIsEmpty() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity which should not be valid.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+		foreach ( $activities->objects as $activity ) {
+			$activity->action['verb'] = '';
+			$activities->the_object();
+			$this->assertNull( $activities->get_the_verb() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress\Activity::the_verb
+	 */
+	public function testTheVerb() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		ob_start();
+		$activities->the_verb();
+		$output = ob_get_clean();
+		$this->assertEquals( 'Asked question', $output );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		ob_start();
+		$activities->the_verb();
+		$output = ob_get_clean();
+		$this->assertEquals( 'Answered question', $output );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		ob_start();
+		$activities->the_verb();
+		$output = ob_get_clean();
+		$this->assertEquals( 'Answered question', $output );
+	}
+
+	/**
+	 * @covers AnsPress\Activity::get_the_date
+	 */
+	public function testGetTheDate() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $ids['question'],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-10 minutes' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][0],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-20 minutes' ) ),
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $ids['question'],
+				'a_id'   => $ids['answers'][1],
+				'date'   => date( 'Y-m-d H:i:s', strtotime( '-25 minutes' ) ),
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $ids['question'] ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		$this->assertEquals( date( 'Y-m-d H:i:s', strtotime( '-10 minutes' ) ), $activities->get_the_date() );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		$this->assertEquals( date( 'Y-m-d H:i:s', strtotime( '-20 minutes' ) ), $activities->get_the_date() );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		$this->assertEquals( date( 'Y-m-d H:i:s', strtotime( '-25 minutes' ) ), $activities->get_the_date() );
+	}
 }
