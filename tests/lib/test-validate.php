@@ -3211,4 +3211,74 @@ class TestAnsPressFormValidate extends TestCase {
 		\AnsPress\Form\Validate::validate_upload( $field );
 		$this->assertEmpty( $field->errors );
 	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_valid_mimes
+	 */
+	public function testValidateValidMimesShouldAddErrorIfNoMimeTypesAdded() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' =>  [
+					'pdf' => 'application/pdf',
+				],
+			],
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => '',
+			],
+		];
+		\AnsPress\Form\Validate::validate_valid_mimes( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'empty-mimes' => 'Allowed mimes format cannot be empty.', 'valid-mimes' => 'Allowed mimes format does not match the required pattern.' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_valid_mimes
+	 */
+	public function testValidateValidMimesShouldAddErrorIfInvalidMimeTypesAdded() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'pdf' => 'application/pdf',
+				],
+			],
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'invalid_mime_type',
+			],
+		];
+		\AnsPress\Form\Validate::validate_valid_mimes( $field );
+		$this->assertNotEmpty( $field->errors );
+		$this->assertEquals( [ 'valid-mimes' => 'Allowed mimes format does not match the required pattern.' ], $field->errors );
+	}
+
+	/**
+	 * @covers AnsPress\Form\Validate::validate_valid_mimes
+	 */
+	public function testValidateValidMimesShouldNotAddAnyErrorIfValidMimeTypesAdded() {
+		$field = new \AnsPress\Form\Field( 'Test Form', 'test-field', [
+			'upload_options' => [
+				'multiple'      => false,
+				'allowed_mimes' => [
+					'jpg|jpeg' => 'image/jpeg',
+					'gif'      => 'image/gif',
+					'png'      => 'image/png',
+				],
+			],
+		] );
+		$this->assertEmpty( $field->errors );
+		$_REQUEST = [
+			'Test Form' => [
+				'test-field' => 'jpg|jpeg => image/jpeg',
+			],
+		];
+		\AnsPress\Form\Validate::validate_valid_mimes( $field );
+		$this->assertEmpty( $field->errors );
+	}
 }
