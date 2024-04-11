@@ -1167,4 +1167,80 @@ class TestActivityClass extends TestCase {
 		$output = ob_get_clean();
 		$this->assertEquals( '<a href="#" class="ap-btn" apajaxbtn apquery="' . esc_js( $args ) . '">Load More</a>', $output );
 	}
+
+	/**
+	 * @covers AnsPress\Activity::the_ref_content
+	 */
+	public function testTheRefContent() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [
+			'post_type'    => 'question',
+			'post_title'   => 'Question Title',
+			'post_content' => 'Question Content',
+		] );
+		$answer_id_1 = $this->factory()->post->create( [
+			'post_type'    => 'answer',
+			'post_title'   => 'Answer Title 1',
+			'post_content' => 'Answer Content 1',
+		] );
+		$answer_id_2 = $this->factory()->post->create( [
+			'post_type'    => 'answer',
+			'post_title'   => 'Answer Title 2',
+			'post_content' => 'Answer Content 2',
+		] );
+		$answer_id_3 = $this->factory()->post->create( [
+			'post_type'    => 'answer',
+			'post_title'   => 'Answer Title 3',
+			'post_content' => 'Answer Content 3',
+		] );
+
+		// Add some user activity.
+		ap_activity_add(
+			[
+				'action' => 'new_q',
+				'q_id'   => $question_id,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $question_id,
+				'a_id'   => $answer_id_1,
+			]
+		);
+		ap_activity_add(
+			[
+				'action' => 'new_a',
+				'q_id'   => $question_id,
+				'a_id'   => $answer_id_2,
+			]
+		);
+
+		// Test begins.
+		$activities = new \AnsPress\Activity( [ 'q_id' => $question_id ] );
+
+		// Test 1.
+		$activities->objects[0];
+		$activities->the_object();
+		ob_start();
+		$activities->the_ref_content();
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="' . esc_url( get_permalink( $question_id ) ) . '">Question Title</a>', $output );
+
+		// Test 2.
+		$activities->objects[1];
+		$activities->the_object();
+		ob_start();
+		$activities->the_ref_content();
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="' . esc_url( get_permalink( $answer_id_1 ) ) . '">Answer Title 1</a>', $output );
+
+		// Test 3.
+		$activities->objects[2];
+		$activities->the_object();
+		ob_start();
+		$activities->the_ref_content();
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="' . esc_url( get_permalink( $answer_id_2 ) ) . '">Answer Title 2</a>', $output );
+	}
 }
