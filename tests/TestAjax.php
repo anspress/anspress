@@ -1147,4 +1147,44 @@ class TestAjax extends TestCaseAjax {
 		$this->assertTrue( ap_is_user_flagged( $question_id ) );
 		$this->assertEquals( 1, ap_count_post_flags( $question_id ) );
 	}
+
+	/**
+	 * @covers ::ap_answer_post_ajax_response
+	 */
+	public function testAnswerPostAjaxResponse() {
+		$this->setRole( 'subscriber' );
+		$ids = $this->insert_answers( [], [], 3 );
+
+		// Test.
+		ini_set( 'implicit_flush', false );
+		ob_start();
+		try {
+			ap_answer_post_ajax_response( $ids['question'], $ids['answers'][0] );
+		} catch ( \WPAjaxDieStopException $e ) {
+			// Do nothing.
+		} catch ( \WPAjaxDieContinueException $e ) {
+			// Do nothing.
+		}
+		$buffer = ob_get_clean();
+		if ( ! empty( $buffer ) ) {
+			$this->_last_response = $buffer;
+		}
+
+		// Assertions.
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'ID' ) === $ids['answers'][0] );
+		$this->assertTrue( $this->ap_ajax_success( 'form' ) === 'answer' );
+		$this->assertTrue( $this->ap_ajax_success( 'div_id' ) === '#post-' . $ids['answers'][0] );
+		$this->assertTrue( $this->ap_ajax_success( 'can_answer' ) === false );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Answer submitted successfully' );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->text === '3 Answers' );
+		$this->assertTrue( $this->ap_ajax_success( 'answersCount' )->number === '3' );
+		$this->assertStringContainsString( 'html', $this->_last_response );
+		$this->assertStringContainsString( 'id=\"post-' . $ids['answers'][0] . '\"', $this->_last_response );
+		$this->assertStringContainsString( 'apid=\"' . $ids['answers'][0] . '\"', $this->_last_response );
+		$this->assertStringContainsString( 'ap=\"answer\"', $this->_last_response );
+
+		// Start output buffer.
+		ob_start();
+	}
 }
