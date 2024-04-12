@@ -3144,4 +3144,40 @@ class TestFunctions extends TestCase {
 		$this->assertCount( 1, $ap->new_filters->wp_filter['test_hook'] );
 		$this->assertArrayNotHasKey( 'test_hook', $merged_filters );
 	}
+
+	/**
+	 * @covers ::ap_user_link_anchor
+	 */
+	public function testAPUserLinkAnchorForUserIDLessThanOne() {
+		ob_start();
+		ap_user_link_anchor( 0 );
+		$output = ob_get_clean();
+		$this->assertEquals( 'Anonymous<a href="#/user/anonymous">Anonymous</a>', $output );
+	}
+
+	/**
+	 * @covers ::ap_user_link_anchor
+	 */
+	public function testAPUserLinkAnchorForUserIDLessThanOneWithReturnValue() {
+		$this->assertEquals( 'Anonymous', ap_user_link_anchor( 0, false ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link_anchor
+	 */
+	public function testAPUserLinkAnchorForUserIDGreaterThanZero() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		ob_start();
+		ap_user_link_anchor( $user_id );
+		$output = ob_get_clean();
+		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '">Test User</a>', $output );
+	}
+
+	/**
+	 * @covers ::ap_user_link_anchor
+	 */
+	public function testAPUserLinkAnchorForUserIDGreaterThanZeroWithReturnValue() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '">Test User</a>', ap_user_link_anchor( $user_id, false ) );
+	}
 }
