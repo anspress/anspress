@@ -1187,4 +1187,48 @@ class TestAjax extends TestCaseAjax {
 		// Start output buffer.
 		ob_start();
 	}
+
+	/**
+	 * @covers AnsPress_Theme::post_actions
+	 */
+	public function testPostActionsForNonLoggedInUser() {
+		add_action( 'ap_ajax_post_actions', [ 'AnsPress_Theme', 'post_actions' ] );
+
+		// Test.
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=post_actions&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'post-actions-' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+	}
+
+	/**
+	 * @covers AnsPress_Theme::post_actions
+	 */
+	public function testPostActionsForInvalidNonce() {
+		add_action( 'ap_ajax_post_actions', [ 'AnsPress_Theme', 'post_actions' ] );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=post_actions&post_id=' . $question_id . '&nonce=invalid_nonce' );
+		$this->handle( 'ap_ajax' );
+		$this->assertFalse( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Something went wrong, last action failed.' );
+	}
+
+	/**
+	 * @covers AnsPress_Theme::post_actions
+	 */
+	public function testPostActions() {
+		add_action( 'ap_ajax_post_actions', [ 'AnsPress_Theme', 'post_actions' ] );
+
+		// Test.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question();
+		$this->_set_post_data( 'ap_ajax_action=post_actions&post_id=' . $question_id . '&nonce=' . wp_create_nonce( 'post-actions-' . $question_id ) );
+		$this->handle( 'ap_ajax' );
+		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
+		$this->assertTrue( wp_json_encode( $this->ap_ajax_success( 'actions' ) ) === wp_json_encode( ap_post_actions( $question_id ) ) );
+	}
 }
