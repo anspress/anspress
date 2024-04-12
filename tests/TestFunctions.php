@@ -3180,4 +3180,105 @@ class TestFunctions extends TestCase {
 		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
 		$this->assertEquals( '<a href="' . esc_url( ap_user_link( $user_id ) ) . '">Test User</a>', ap_user_link_anchor( $user_id, false ) );
 	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkForUserIDLessThanOne() {
+		$this->assertEquals( '#/user/anonymous', ap_user_link( 0 ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkForInvalidUserID() {
+		$this->assertEquals( '#/user/anonymous', ap_user_link( \PHP_INT_MAX ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkForNotPassingUserID() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		global $post;
+		$post = ap_get_post( $question_id );
+		setup_postdata( $post );
+		$this->assertEquals( get_author_posts_url( $user_id ), ap_user_link() );
+		wp_reset_postdata();
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkForEmptyUserIDAndVisitingAuthorPage() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		$this->go_to( get_author_posts_url( $user_id ) );
+		$this->assertEquals( get_author_posts_url( $user_id ), ap_user_link( 0 ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkForUserIDGreaterThanZero() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$this->assertEquals( get_author_posts_url( $user_id ), ap_user_link( $user_id ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkWhenUserProfileAddonIsEnabled() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User', 'user_nicename' => 'test-user' ] );
+		ap_activate_addon( 'profile.php' );
+		$this->assertEquals( home_url( get_option( 'ap_user_path' ) ) . '/test-user', ap_user_link( $user_id ) );
+		ap_deactivate_addon( 'profile.php' );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkWhenUserProfileAddonIsEnabledAndNotPassingUserID() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User', 'user_nicename' => 'test-user' ] );
+		ap_activate_addon( 'profile.php' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		global $post;
+		$post = ap_get_post( $question_id );
+		setup_postdata( $post );
+		$this->assertEquals( home_url( get_option( 'ap_user_path' ) ) . '/test-user', ap_user_link() );
+		wp_reset_postdata();
+		ap_deactivate_addon( 'profile.php' );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkPassingSlugAsString() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$this->assertEquals( get_author_posts_url( $user_id ) . 'test-slug', ap_user_link( $user_id, 'test-slug' ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkPassingSlugAsArray() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User' ] );
+		$this->assertEquals( get_author_posts_url( $user_id ) . 'test-slug/another-slug', ap_user_link( $user_id, [ 'test-slug', 'another-slug' ] ) );
+	}
+
+	/**
+	 * @covers ::ap_user_link
+	 */
+	public function testAPUserLinkPassingSlugAsArrayWithUserProfileAddonEnabledAndNotPassingUserID() {
+		$user_id = $this->factory()->user->create( [ 'display_name' => 'Test User', 'user_nicename' => 'test-user' ] );
+		ap_activate_addon( 'profile.php' );
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_author' => $user_id ] );
+		global $post;
+		$post = ap_get_post( $question_id );
+		setup_postdata( $post );
+		$this->assertEquals( home_url( get_option( 'ap_user_path' ) ) . '/test-usertest-slug/another-slug', ap_user_link( $user_id, [ 'test-slug', 'another-slug' ] ) );
+		wp_reset_postdata();
+		ap_deactivate_addon( 'profile.php' );
+	}
 }
