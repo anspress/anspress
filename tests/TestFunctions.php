@@ -3296,4 +3296,158 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( ap_is_ajax() );
 		unset( $_REQUEST['ap_ajax_action'] );
 	}
+
+	/**
+	 * @covers ::ap_total_solved_questions
+	 */
+	public function testAPTotalSolvedQuestionsForPassingObjectAsArg() {
+		$id = $this->insert_answer();
+		ap_insert_qameta(
+			$id->q,
+			array(
+				'selected_id'  => $id->a,
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$new_id = $this->insert_answer();
+		ap_insert_qameta(
+			$new_id->q,
+			array(
+				'selected_id'  => $new_id->a,
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$question_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_type'    => 'question',
+				'post_status'  => 'private_post',
+				'post_content' => 'Question content',
+			)
+		);
+		$answer_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_type'    => 'answer',
+				'post_status'  => 'publish',
+				'post_content' => 'Question content',
+				'post_parent'  => $question_id,
+			)
+		);
+		ap_insert_qameta(
+			$question_id,
+			array(
+				'selected_id'  => $answer_id,
+				'last_updated' => current_time( 'mysql' ),
+				'closed'       => 1,
+			)
+		);
+		$result = ap_total_solved_questions( 'object' );
+		$this->assertEquals( 3, $result->total );
+		$this->assertEquals( 2, $result->publish );
+		$this->assertEquals( 1, $result->private_post );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalPostsCountForFlagAsAPTypeArg() {
+		$this->setRole( 'subscriber' );
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		ap_add_flag( $question_id_1 );
+		ap_add_flag( $question_id_2 );
+		ap_add_flag( $question_id_3 );
+		ap_update_flags_count( $question_id_1 );
+		ap_update_flags_count( $question_id_2 );
+		ap_update_flags_count( $question_id_3 );
+
+		// Test.
+		$result = ap_total_posts_count( 'question', 'flag' );
+		$this->assertEquals( 3, $result->total );
+		$this->assertEquals( 2, $result->publish );
+		$this->assertEquals( 1, $result->private_post );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalPostsCountForUnansweredAsAPTypeArg() {
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_1 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_1 ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_2 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_2 ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+		$answer_id_3 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_3 ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$answer_id_4 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_4 ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id_6 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
+		$question_id_7 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+
+		// Test.
+		$result = ap_total_posts_count( 'question', 'unanswered' );
+		$this->assertEquals( 3, $result->total );
+		$this->assertEquals( 1, $result->publish );
+		$this->assertEquals( 1, $result->private_post );
+		$this->assertEquals( 1, $result->moderate );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalPostsCountForBestAnswerAsAPTypeArg() {
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_1 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_1 ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_2 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'private_post', 'post_parent' => $question_id_2 ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_3 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'moderate', 'post_parent' => $question_id_3 ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_4 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_4 ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$answer_id_5 = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_status' => 'publish', 'post_parent' => $question_id_5 ] );
+		ap_set_selected_answer( $question_id_1, $answer_id_1 );
+		ap_set_selected_answer( $question_id_2, $answer_id_2 );
+		ap_set_selected_answer( $question_id_3, $answer_id_3 );
+
+		// Test.
+		$result = ap_total_posts_count( 'answer', 'best_answer' );
+		$this->assertEquals( 3, $result->total );
+		$this->assertEquals( 1, $result->publish );
+		$this->assertEquals( 1, $result->private_post );
+		$this->assertEquals( 1, $result->moderate );
+	}
+
+	/**
+	 * @covers ::ap_total_posts_count
+	 */
+	public function testAPTotalPostsCountForSpecificUser() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create();
+		$question_id_1 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish', 'post_author' => $user_id ] );
+		$question_id_2 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post', 'post_author' => $user_id ] );
+		$question_id_3 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate', 'post_author' => $user_id ] );
+		$question_id_4 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'publish' ] );
+		$question_id_5 = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'private_post' ] );
+
+		// Test.
+		// For user having ID.
+		$result = ap_total_posts_count( 'question', false, $user_id );
+		$this->assertEquals( 3, $result->total );
+		$this->assertEquals( 1, $result->publish );
+		$this->assertEquals( 1, $result->private_post );
+		$this->assertEquals( 1, $result->moderate );
+
+		// For the current user.
+		$result = ap_total_posts_count( 'question', false, get_current_user_id() );
+		$this->assertEquals( 2, $result->total );
+		$this->assertEquals( 1, $result->publish );
+		$this->assertEquals( 1, $result->private_post );
+	}
 }
