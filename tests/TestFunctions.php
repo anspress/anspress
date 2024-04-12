@@ -3281,4 +3281,19 @@ class TestFunctions extends TestCase {
 		wp_reset_postdata();
 		ap_deactivate_addon( 'profile.php' );
 	}
+
+	/**
+	 * @covers ::ap_is_ajax
+	 */
+	public function testAPIsAjax() {
+		// Should return false since we're passing wrong value.
+		$_REQUEST['ap_action'] = 'new_question';
+		$this->assertFalse( ap_is_ajax() );
+		unset( $_REQUEST['ap_action'] );
+
+		// Should return true since we're passing value as intended.
+		$_REQUEST['ap_ajax_action'] = 'new_question';
+		$this->assertTrue( ap_is_ajax() );
+		unset( $_REQUEST['ap_ajax_action'] );
+	}
 }
