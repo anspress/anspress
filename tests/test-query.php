@@ -42,6 +42,113 @@ class TestAnsPress_Query extends TestCase {
 	}
 
 	/**
+	 * @covers AnsPress_Query::__construct
+	 */
+	public function testConstructor() {
+		$this->setRole( 'subscriber' );
+		$query = new class() extends \AnsPress_Query {
+			public $objects = [];
+		};
+		$instance = new $query();
+
+		// Tests.
+		$this->assertEquals( 1, $instance->paged );
+		$this->assertEquals( 0, $instance->offset );
+		$this->assertEquals( get_current_user_id(), $instance->args['user_id'] );
+		$this->assertEquals( 20, $instance->args['number'] );
+		$this->assertEquals( 0, $instance->args['offset'] );
+		$this->assertEquals( 'DESC', $instance->args['order'] );
+		$this->assertEquals( 20, $instance->per_page );
+	}
+
+	/**
+	 * @covers AnsPress_Query::__construct
+	 */
+	public function testConstructorWithArgs() {
+		$this->setRole( 'subscriber' );
+		$query = new class() extends \AnsPress_Query {
+			public $objects = [];
+		};
+		$instance = new $query( [ 'number' => 10, 'paged' => 2, 'order' => 'ASC', 'ap_order_by' => 'active' ] );
+
+		// Tests.
+		$this->assertEquals( 2, $instance->paged );
+		$this->assertEquals( 20, $instance->offset );
+		$this->assertEquals( get_current_user_id(), $instance->args['user_id'] );
+		$this->assertEquals( 10, $instance->args['number'] );
+		$this->assertEquals( 20, $instance->args['offset'] );
+		$this->assertEquals( 'ASC', $instance->args['order'] );
+		$this->assertEquals( 10, $instance->per_page );
+		$this->assertEquals( 'active', $instance->args['ap_order_by'] );
+	}
+
+	/**
+	 * @covers AnsPress_Query::query
+	 */
+	public function testQuery() {
+		$this->setRole( 'subscriber' );
+		$query = new class() extends \AnsPress_Query {
+			public $per_page = 20;
+			public $total_count = 15;
+			public $objects = [
+				'object1',
+				'object2',
+				'object3',
+			];
+		};
+		$instance = new $query();
+
+		// Test.
+		$instance->query();
+		$this->assertEquals( 3, $instance->count );
+		$this->assertEquals( 1, $instance->total_pages );
+	}
+
+	/**
+	 * @covers AnsPress_Query::query
+	 */
+	public function testQueryForMorePagesAvailable() {
+		$this->setRole( 'subscriber' );
+		$query = new class() extends \AnsPress_Query {
+			public $per_page = 5;
+			public $total_count = 15;
+			public $objects = [
+				'object1',
+				'object2',
+				'object3',
+				'object4',
+				'object5',
+				'object6',
+				'object7',
+			];
+		};
+		$instance = new $query();
+
+		// Test.
+		$instance->query();
+		$this->assertEquals( 7, $instance->count );
+		$this->assertEquals( 3, $instance->total_pages );
+	}
+
+	/**
+	 * @covers AnsPress_Query::template
+	 */
+	public function testTemplate() {
+		$this->setRole( 'subscriber' );
+		$query = new class() extends \AnsPress_Query {
+			public $objects = [];
+		};
+		$instance = new $query();
+
+		// Test.
+		$instance->query();
+		ob_start();
+		$instance->template( 'not-found' );
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<h1>Error 404</h1>', $output );
+	}
+
+	/**
 	 * @covers AnsPress\Activity::total_count
 	 */
 	public function testTotalCountWithUserIDArg() {
