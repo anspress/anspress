@@ -3,7 +3,7 @@ Contributors: nerdaryan
 Donate link: https://www.paypal.me/anspress
 Tags: question, answer, q&a, forum, profile, stackoverflow, quora, buddypress
 Requires at least: 4.7
-Tested up to: 6.2.2
+Tested up to: 6.5
 Stable tag: 4.3.2
 Requires PHP: 8.0
 License: GPLv2 or later
@@ -13,6 +13,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 A free question and answer plugin for WordPress. Made with developers in mind, and highly customizable.
 
 == Description ==
+Zen Projects and Rahul have agreed to team up to bring substantial resources into the development of AnsPress and its related themes and extensions, read the full announcement here: https://anspress.net/blog/anspress-update-annoucement/
+
 AnsPress is an open source, developer friendly, question and answer plugin for WordPress. AnsPress adds a full question and answer system to your existing WordPress site. It can be used to create a Q&A network similar to StackOverflow and Quora, or be a single page on existing site. The plugin supports multiple languages, shortcodes, reCAPTCHA, email and push notifications, and more.
 
 AnsPress is not just limited to questions and answers. It can be used in many different ways, like a bug tracker, an internal Q&A board, support ticket forum, FAQ, and more. Anspress is trusted and used by many popular companies and sites at scale.

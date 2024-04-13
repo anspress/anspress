@@ -26,7 +26,6 @@ jobs:
         echo "Current tag is: $CURRENT_TAG"
         npm install
         npm run build
-        sed -i "s/0.0.1-dev-rc1/$CURRENT_TAG/g" ./anspress-question-answer.php
         rm package.json
         rm package-lock.json
 
