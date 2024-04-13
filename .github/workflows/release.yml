@@ -32,8 +32,6 @@ jobs:
         sed -i "s/0.0.1-dev-rc1/$CURRENT_TAG/g" ./anspress-question-answer.php
         rm package.json
         rm package-lock.json
-        rm docker-compose.yml
-        rm Dockerfile
 
     - name: WordPress Plugin Deploy
       id: deploy
