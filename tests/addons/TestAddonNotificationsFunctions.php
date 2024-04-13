@@ -863,15 +863,18 @@ class TestAddonNotificationsFunctions extends TestCase {
 		// Insert notification.
 		$args = [ 'seen' => 0 ];
 		$notification_id = ap_insert_notification( $args );
-
+		var_dump($notification_id);
 		// Test.
 		// Before function call.
 		$get_notification = ap_get_notifications( [] );
+		var_dump($get_notification);
+		$this->assertCount( 1, $get_notification );
 		$this->assertEquals( 0, $get_notification[0]->noti_seen );
 
 		// After function call.
 		ap_set_notification_as_seen( $notification_id );
 		$get_notification = ap_get_notifications( [] );
+		$this->assertCount( 1, $get_notification );
 		$this->assertEquals( 1, $get_notification[0]->noti_seen );
 	}
 
