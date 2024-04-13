@@ -20,13 +20,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Get current tag
+    - name: Build
       run: |
         CURRENT_TAG=$(echo "${GITHUB_REF/refs\/tags\//}")
         echo "Current tag is: $CURRENT_TAG"
-
-    - name: Build
-      run: |
         npm install
         npm run build
         sed -i "s/0.0.1-dev-rc1/$CURRENT_TAG/g" ./anspress-question-answer.php
