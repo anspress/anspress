@@ -11,6 +11,7 @@ class TestAddonNotificationsFunctions extends TestCase {
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'notifications.php' );
+		\AnsPress\Addons\ap_notification_addon_activation();
 	}
 
 	public function tear_down() {
