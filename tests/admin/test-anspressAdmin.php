@@ -1562,4 +1562,59 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( '1', get_transient( 'ap_pages_check' ) );
 		$this->assertTrue( $result );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_styles
+	 */
+	public function testEnqueueAdminStylesForPostPage() {
+		set_current_screen( 'edit-post' );
+		\AnsPress_Admin::enqueue_admin_styles();
+		$this->assertFalse( wp_style_is( 'ap-admin-css' ) );
+		$this->assertFalse( wp_style_is( 'wp-color-picker' ) );
+		// $this->assertFalse( wp_style_is( 'anspress-fonts' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_styles
+	 */
+	public function testEnqueueAdminStylesForOptionsPage() {
+		set_current_screen( 'options' );
+		\AnsPress_Admin::enqueue_admin_styles();
+		$this->assertFalse( wp_style_is( 'ap-admin-css' ) );
+		$this->assertFalse( wp_style_is( 'wp-color-picker' ) );
+		// $this->assertFalse( wp_style_is( 'anspress-fonts' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_styles
+	 */
+	public function testEnqueueAdminStylesForAnsPressDashboardPage() {
+		set_current_screen( 'anspress' );
+		\AnsPress_Admin::enqueue_admin_styles();
+		$this->assertTrue( wp_style_is( 'ap-admin-css' ) );
+		$this->assertTrue( wp_style_is( 'wp-color-picker' ) );
+		$this->assertTrue( wp_style_is( 'anspress-fonts' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_styles
+	 */
+	public function testEnqueueAdminStylesForAnsPressQuestionPage() {
+		set_current_screen( 'question' );
+		\AnsPress_Admin::enqueue_admin_styles();
+		$this->assertTrue( wp_style_is( 'ap-admin-css' ) );
+		$this->assertTrue( wp_style_is( 'wp-color-picker' ) );
+		$this->assertTrue( wp_style_is( 'anspress-fonts' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_styles
+	 */
+	public function testEnqueueAdminStylesForAnsPressAnswerPage() {
+		set_current_screen( 'answer' );
+		\AnsPress_Admin::enqueue_admin_styles();
+		$this->assertTrue( wp_style_is( 'ap-admin-css' ) );
+		$this->assertTrue( wp_style_is( 'wp-color-picker' ) );
+		$this->assertTrue( wp_style_is( 'anspress-fonts' ) );
+	}
 }
