@@ -1341,4 +1341,86 @@ class TestQAQuery extends TestCase {
 		$result = ob_get_clean();
 		$this->assertEquals( ap_user_link( get_current_user_id() ), $result );
 	}
+
+	/**
+	 * @covers ::ap_get_author_avatar
+	 */
+	public function testAPGetAuthorAvatarForInvalidPost() {
+		$result = ap_get_author_avatar( 0 );
+		$this->assertNull( $result );
+	}
+
+	/**
+	 * @covers ::ap_get_author_avatar
+	 */
+	public function testAPGetAuthorAvatarForPostAuthorSetAsZero() {
+		$id = $this->insert_question();
+		$result = ap_get_author_avatar( 64, $id );
+		$this->assertEquals( get_avatar( 'anonymous_' . $id, 64 ), $result );
+	}
+
+	/**
+	 * @covers ::ap_get_author_avatar
+	 */
+	public function testAPGetAuthorAvatarForPostAuthorBeingSetToSpecificID() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question( '', '', get_current_user_id() );
+		$result = ap_get_author_avatar( 64, $id );
+		$this->assertEquals( get_avatar( get_current_user_id(), 64 ), $result );
+	}
+
+	/**
+	 * @covers ::ap_get_author_avatar
+	 */
+	public function testAPGetAuthorAvatarForPostAuthorAnonymousNameBeingSet() {
+		$id = $this->insert_question();
+		ap_insert_qameta( $id, [ 'fields' => [ 'anonymous_name' => 'Rahul' ] ] );
+		$result = ap_get_author_avatar( 64, $id );
+		$this->assertEquals( get_avatar( 'Rahul', 64 ), $result );
+	}
+
+	/**
+	 * @covers ::ap_author_avatar
+	 */
+	public function testAPAuthorAvatarForInvalidPost() {
+		ob_start();
+		ap_author_avatar( 64, 0 );
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers ::ap_author_avatar
+	 */
+	public function testAPAuthorAvatarForPostAuthorSetAsZero() {
+		$id = $this->insert_question();
+		ob_start();
+		ap_author_avatar( 64, $id );
+		$result = ob_get_clean();
+		$this->assertEquals( get_avatar( 'anonymous_' . $id, 64 ), $result );
+	}
+
+	/**
+	 * @covers ::ap_author_avatar
+	 */
+	public function testAPAuthorAvatarForPostAuthorBeingSetToSpecificID() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question( '', '', get_current_user_id() );
+		ob_start();
+		ap_author_avatar( 64, $id );
+		$result = ob_get_clean();
+		$this->assertEquals( get_avatar( get_current_user_id(), 64 ), $result );
+	}
+
+	/**
+	 * @covers ::ap_author_avatar
+	 */
+	public function testAPAuthorAvatarForPostAuthorAnonymousNameBeingSet() {
+		$id = $this->insert_question();
+		ap_insert_qameta( $id, [ 'fields' => [ 'anonymous_name' => 'Rahul' ] ] );
+		ob_start();
+		ap_author_avatar( 64, $id );
+		$result = ob_get_clean();
+		$this->assertEquals( get_avatar( 'Rahul', 64 ), $result );
+	}
 }
