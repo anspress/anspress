@@ -1617,4 +1617,64 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( wp_style_is( 'wp-color-picker' ) );
 		$this->assertTrue( wp_style_is( 'anspress-fonts' ) );
 	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_scripts
+	 */
+	public function testEnqueueAdminScriptsForRegisterScriptsOnly() {
+		set_current_screen( 'edit-post' );
+		\AnsPress_Admin::enqueue_admin_scripts();
+		$this->assertTrue( wp_script_is( 'anspress-common', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-question', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-ask', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-list', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-notifiactions', 'registered' ) );
+		$this->assertTrue( wp_script_is( 'anspress-admin-js', 'registered' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_scripts
+	 */
+	public function testEnqueueAdminScriptsForAlwaysEnqueuedScripts() {
+		set_current_screen( 'edit-post' );
+		\AnsPress_Admin::enqueue_admin_scripts();
+		$this->assertTrue( wp_script_is( 'selectize', 'enqueued' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_scripts
+	 */
+	public function testEnqueueAdminScriptsForAnsPressDashboardPage() {
+		set_current_screen( 'anspress' );
+		ob_start();
+		do_action( 'admin_enqueue_scripts' );
+		\AnsPress_Admin::enqueue_admin_scripts();
+		$output = ob_get_clean();
+		$this->assertTrue( wp_script_is( 'anspress-common' ) );
+		$this->assertTrue( wp_script_is( 'anspress-question' ) );
+		$this->assertTrue( wp_script_is( 'anspress-ask' ) );
+		$this->assertTrue( wp_script_is( 'anspress-list' ) );
+		$this->assertTrue( wp_script_is( 'anspress-notifiactions' ) );
+		$this->assertTrue( wp_script_is( 'anspress-admin-js' ) );
+		// $this->assertTrue( wp_script_is( 'postbox' ) );
+		$this->assertStringContainsString( '<script type="text/javascript">', $output );
+		$this->assertStringContainsString( 'currentQuestionID = \'' . the_ID() . '\';', $output );
+		$this->assertStringContainsString( 'apTemplateUrl = \'' . esc_url( ap_get_theme_url( 'js-template', false, false ) ) . '\';', $output );
+		$this->assertStringContainsString( 'aplang = {};', $output );
+		$this->assertStringContainsString( 'apShowComments  = false;', $output );
+		$this->assertStringContainsString( 'Remove image', $output );
+		$this->assertFalse( wp_script_is( 'ap-admin-app-js' ) );
+	}
+
+	/**
+	 * @covers AnsPress_Admin::enqueue_admin_scripts
+	 */
+	public function testEnqueueAdminScriptsForAnsPressQuestionPage() {
+		set_current_screen( 'question' );
+		ob_start();
+		do_action( 'admin_enqueue_scripts' );
+		\AnsPress_Admin::enqueue_admin_scripts();
+		$output = ob_get_clean();
+		$this->assertTrue( wp_script_is( 'ap-admin-app-js' ) );
+	}
 }
