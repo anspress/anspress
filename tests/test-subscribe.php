@@ -438,4 +438,27 @@ class TestSubscribe extends TestCase {
 		$subscriber = ap_get_subscribers( [ 'subs_user_id' => get_current_user_id() ] );
 		$this->assertEquals( 1, count( $subscriber ) );
 	}
+
+	/**
+	 * @covers ::ap_delete_subscribers
+	 */
+	public function testAPDeleteSubscribersForPassingEmptyArray() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_subscribers}" );
+
+		// Callback triggered check.
+		$callback_triggered = false;
+		add_action( 'ap_before_delete_subscribers', function () use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		$id = $this->insert_question();
+		$this->setRole( 'subscriber' );
+		ap_new_subscriber( get_current_user_id(), 'question', $id );
+		$this->assertTrue( ap_is_user_subscriber( 'question', $id ) );
+		$delete = ap_delete_subscribers( [] );
+		$this->assertNull( $delete );
+		$this->assertFalse( $callback_triggered );
+		$this->assertTrue( ap_is_user_subscriber( 'question', $id ) );
+	}
 }
