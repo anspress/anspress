@@ -13,7 +13,9 @@ namespace AnsPress\Ajax;
 
 // Die if called directly.
 if ( ! defined( 'ABSPATH' ) ) {
+	// @codeCoverageIgnoreStart
 	exit;
+	// @codeCoverageIgnoreEnd
 }
 
 /**
