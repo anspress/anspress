@@ -608,4 +608,120 @@ class TestComments extends TestCase {
 		$this->assertNull( ap_comment_btn_html( $question_id ) );
 		$this->assertNull( ap_comment_btn_html( $answer_id ) );
 	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsShouldBeEmptyIfCommentNumberIsSetToLessThanOneAndSingleArgSetToTrue() {
+		ap_opt( 'comment_number', 0 );
+		$question_id = $this->insert_question();
+		$comment_ids = $this->factory()->comment->create_many( 5, [
+			'comment_post_ID' => $question_id,
+			'comment_type' => 'anspress',
+		] );
+		ob_start();
+		ap_the_comments( $question_id, [], true );
+		$output = ob_get_clean();
+		$this->assertEmpty( $output );
+
+		// Reset.
+		ap_opt( 'comment_number', 5 );
+	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsForInvalidPost() {
+		$question_id = $this->insert_question();
+		$comment_ids = $this->factory()->comment->create_many( 5, [
+			'comment_post_ID' => $question_id,
+			'comment_type' => 'anspress',
+		] );
+		ob_start();
+		ap_the_comments( 0 );
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-comment-no-perm">Not a valid post ID.</div>', $output );
+	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsForNotValidPostType() {
+		$post_id = $this->factory()->post->create();
+		$comment_ids = $this->factory()->comment->create_many( 5, [
+			'comment_post_ID' => $post_id,
+			'comment_type' => 'anspress',
+		] );
+		ob_start();
+		ap_the_comments( $post_id );
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-comment-no-perm">Not a valid post ID.</div>', $output );
+	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsForUserWhoCantReadPost() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->insert_question( '', '', $user_id );
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'moderate' ] );
+		$comment_ids = $this->factory()->comment->create_many( 5, [
+			'comment_post_ID' => $question_id,
+			'comment_type' => 'anspress',
+		] );
+		ob_start();
+		ap_the_comments( $question_id );
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-comment-no-perm">Sorry, you do not have permission to read comments.</div>', $output );
+	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsForDisableCommentsOnQuestionOptionSetToTrue() {
+		ap_opt( 'disable_comments_on_question', true );
+		$question_id = $this->insert_question();
+		$comment_ids = $this->factory()->comment->create_many( 5, [
+			'comment_post_ID' => $question_id,
+			'comment_type' => 'anspress',
+		] );
+		ob_start();
+		ap_the_comments( $question_id );
+		$output = ob_get_clean();
+		$this->assertEmpty(  $output );
+
+		// Reset.
+		ap_opt( 'disable_comments_on_question', false );
+	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsForDisableCommentsOnAnswerOptionSetToTrue() {
+		ap_opt( 'disable_comments_on_answer', true );
+		$id = $this->insert_answer();
+		$comment_ids = $this->factory()->comment->create_many( 5, [
+			'comment_post_ID' => $id->a,
+			'comment_type' => 'anspress',
+		] );
+		ob_start();
+		ap_the_comments( $id->a );
+		$output = ob_get_clean();
+		$this->assertEmpty(  $output );
+
+		// Reset.
+		ap_opt( 'disable_comments_on_answer', false );
+	}
+
+	/**
+	 * @covers ::ap_the_comments
+	 */
+	public function testAPTheCommentsForNoCommentsAvailable() {
+		$question_id = $this->insert_question();
+		ob_start();
+		ap_the_comments( $question_id );
+		$output = ob_get_clean();
+		$this->assertEquals( '<div class="ap-comment-no-perm">No comments found.</div>', $output );
+	}
 }
