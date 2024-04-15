@@ -1293,4 +1293,52 @@ class TestQAQuery extends TestCase {
 		ap_reset_question_query();
 		$this->assertEquals( anspress()->questions->post, anspress()->current_question );
 	}
+
+	/**
+	 * @covers ::ap_get_profile_link
+	 */
+	public function testAPGetProfileLinkReturnFalseIfNotGlobalPostObject() {
+		global $post;
+		unset( $post );
+		$result = ap_get_profile_link();
+		$this->assertFalse( $result );
+	}
+
+	/**
+	 * @covers ::ap_get_profile_link
+	 */
+	public function testAPGetProfileLinkReturnApUserLinkForCurrentPostObject() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question( '', '', get_current_user_id() );
+		global $post;
+		$post = ap_get_post( $id );
+		$result = ap_get_profile_link();
+		$this->assertEquals( ap_user_link( get_current_user_id() ), $result );
+	}
+
+	/**
+	 * @covers ::ap_profile_link
+	 */
+	public function testAPProfileLinkShouldBeEmptyIfNotGlobalPostObject() {
+		global $post;
+		unset( $post );
+		ob_start();
+		ap_profile_link();
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers ::ap_profile_link
+	 */
+	public function testAPProfileLinkShouldEchoApUserLinkForCurrentPostObject() {
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_question( '', '', get_current_user_id() );
+		global $post;
+		$post = ap_get_post( $id );
+		ob_start();
+		ap_profile_link();
+		$result = ob_get_clean();
+		$this->assertEquals( ap_user_link( get_current_user_id() ), $result );
+	}
 }
