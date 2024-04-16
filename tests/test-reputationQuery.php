@@ -6,6 +6,8 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestReputationQuery extends TestCase {
 
+	use Testcases\Common;
+
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress_Reputation_Query' );
 		$this->assertTrue( $class->hasProperty( 'current' ) && $class->getProperty( 'current' )->isPublic() );
@@ -179,18 +181,18 @@ class TestReputationQuery extends TestCase {
 		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
 		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
 
-		$activity = new \AnsPress_Reputation_Query();
+		$reputation = new \AnsPress_Reputation_Query();
 
 		// Test 1.
-		$activity->count = 0;
-		$this->assertFalse( $activity->has() );
+		$reputation->count = 0;
+		$this->assertFalse( $reputation->has() );
 
 		// Test 2.
-		$activity->count = 1;
-		$this->assertTrue( $activity->has() );
+		$reputation->count = 1;
+		$this->assertTrue( $reputation->has() );
 
 		// Test 3.
-		$activity->count = 2;
-		$this->assertTrue( $activity->has() );
+		$reputation->count = 2;
+		$this->assertTrue( $reputation->has() );
 	}
 }
