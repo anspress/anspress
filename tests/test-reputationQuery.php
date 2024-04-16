@@ -453,4 +453,458 @@ class TestReputationQuery extends TestCase {
 		$this->assertEquals( 2, $reputation->current );
 		$this->assertEquals( $reputation->reputations[2], $reputation->reputation );
 	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_event
+	 */
+	public function testGetEvent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_up', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertEquals( 'ask', $reputation->get_event() );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertEquals( 'answer', $reputation->get_event() );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertEquals( 'received_vote_up', $reputation->get_event() );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_event
+	 */
+	public function testTheEvent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_up', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_event();
+		$event = ob_get_clean();
+		$this->assertEquals( 'ask', $event );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_event();
+		$event = ob_get_clean();
+		$this->assertEquals( 'answer', $event );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_event();
+		$event = ob_get_clean();
+		$this->assertEquals( 'received_vote_up', $event );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_points
+	 */
+	public function testGetPoints() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertEquals( 2, $reputation->get_points() );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertEquals( 5, $reputation->get_points() );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertEquals( -2, $reputation->get_points() );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_points
+	 */
+	public function testThePoints() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_points();
+		$points = ob_get_clean();
+		$this->assertEquals( 2, $points );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_points();
+		$points = ob_get_clean();
+		$this->assertEquals( 5, $points );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_points();
+		$points = ob_get_clean();
+		$this->assertEquals( -2, $points );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_date
+	 */
+	public function testGetDate() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		foreach ( $reputation->reputations as $rep ) {
+			$reputation->the_reputation();
+			$this->assertEquals( current_time( 'mysql', true ), $reputation->get_date() );
+		}
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_date
+	 */
+	public function testTheDate() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		foreach ( $reputation->reputations as $rep ) {
+			$reputation->the_reputation();
+			ob_start();
+			$reputation->the_date();
+			$date = ob_get_clean();
+			$this->assertEquals( ap_human_time( current_time( 'mysql', true ), false ), $date );
+		}
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_icon
+	 */
+	public function testGetIcon() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertEquals( 'apicon-question', $reputation->get_icon() );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertEquals( 'apicon-answer', $reputation->get_icon() );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertEquals( 'apicon-thumb-down', $reputation->get_icon() );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_icon
+	 */
+	public function testTheIcon() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_icon();
+		$icon = ob_get_clean();
+		$this->assertEquals( 'apicon-question', $icon );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_icon();
+		$icon = ob_get_clean();
+		$this->assertEquals( 'apicon-answer', $icon );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_icon();
+		$icon = ob_get_clean();
+		$this->assertEquals( 'apicon-thumb-down', $icon );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::get_activity
+	 */
+	public function testGetActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertEquals( 'Asked a question', $reputation->get_activity() );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertEquals( 'Posted an answer', $reputation->get_activity() );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertEquals( 'Received a down vote', $reputation->get_activity() );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_activity
+	 */
+	public function testTheActivity() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->insert_answer();
+		ap_insert_reputation( 'ask', $id->q );
+		ap_insert_reputation( 'answer', $id->a );
+		ap_insert_reputation( 'received_vote_down', $id->a );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_activity();
+		$activity = ob_get_clean();
+		$this->assertEquals( 'Asked a question', $activity );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_activity();
+		$activity = ob_get_clean();
+		$this->assertEquals( 'Posted an answer', $activity );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_activity();
+		$activity = ob_get_clean();
+		$this->assertEquals( 'Received a down vote', $activity );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_ref_content
+	 */
+	public function testTheRefContentForQuestionSetAsParent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$id = $this->factory()->post->create( [
+			'post_type'    => 'question',
+			'post_title'   => 'Question Title',
+			'post_content' => 'Question Content',
+		] );
+		ap_insert_reputation( 'ask', $id );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_ref_content();
+		$content = ob_get_clean();
+		$this->assertStringContainsString( '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( array( 'ap_p' => $id ) ) ) . '">', $content );
+		$this->assertStringContainsString( '<strong>Question Title</strong>', $content );
+		$this->assertStringContainsString( '<p>Question Content</p>', $content );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_ref_content
+	 */
+	public function testTheRefContentForAnswerSetAsParent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [
+			'post_type'    => 'question',
+			'post_title'   => 'Question Title',
+			'post_content' => 'Question Content',
+		] );
+		$answer_id = $this->factory()->post->create( [
+			'post_type'    => 'answer',
+			'post_title'   => 'Answer Title',
+			'post_content' => 'Answer Content',
+			'post_parent'  => $question_id,
+		] );
+		ap_insert_reputation( 'answer', $answer_id );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_ref_content();
+		$content = ob_get_clean();
+		$this->assertStringContainsString( '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( array( 'ap_p' => $answer_id ) ) ) . '">', $content );
+		$this->assertStringContainsString( '<strong>Answer Title</strong>', $content );
+		$this->assertStringContainsString( '<p>Answer Content</p>', $content );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_ref_content
+	 */
+	public function testTheRefContentForCommentSetAsParent() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$question_id = $this->factory()->post->create( [
+			'post_type'    => 'question',
+			'post_title'   => 'Question Title',
+			'post_content' => 'Question Content',
+		] );
+		$comment_id = $this->factory()->comment->create( [
+			'comment_post_ID' => $question_id,
+			'comment_content' => 'Comment Content',
+			'comment_type'    => 'anspres',
+		] );
+		ap_insert_reputation( 'comment', $comment_id );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		ob_start();
+		$reputation->the_ref_content();
+		$content = ob_get_clean();
+		$this->assertStringContainsString( '<a class="ap-reputation-ref" href="' . esc_url( ap_get_short_link( array( 'ap_c' => $comment_id ) ) ) . '">', $content );
+		$this->assertStringContainsString( '<p>Comment Content</p>', $content );
+	}
 }
