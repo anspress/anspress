@@ -195,4 +195,262 @@ class TestReputationQuery extends TestCase {
 		$reputation->count = 2;
 		$this->assertTrue( $reputation->has() );
 	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::have
+	 */
+	public function testHaveShouldReturnTrueIfReputationsAvailable() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$q_id_1 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_1 );
+		$q_id_2 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_2 );
+		$q_id_3 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_3 );
+
+		// Test.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		$this->assertTrue( $reputation->have() );
+		$this->assertNull( $reputation->in_the_loop );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::have
+	 */
+	public function testHaveShouldReturnFalseIfNoReputationsAvailable() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		$this->setRole( 'subscriber' );
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+		$this->assertFalse( $reputation->have() );
+		$this->assertEquals( false, $reputation->in_the_loop );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::have
+	 */
+	public function testHaveShouldShouldFireAPReputationsLoopEndActionHookAfterAllReputationEventIsLoopedThrough() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_reputations_loop_end', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$q_id_1 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_1 );
+		$q_id_2 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_2 );
+		$q_id_3 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_3 );
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertTrue( $reputation->have() );
+		$this->assertFalse( $callback_triggered );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertTrue( $reputation->have() );
+		$this->assertFalse( $callback_triggered );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertFalse( $reputation->have() );
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_reputations_loop_end' ) > 0 );
+		$this->assertEquals( -1, $reputation->current );
+		$this->assertEquals( $reputation->reputation, $reputation->reputations[0] );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::rewind_reputation
+	 */
+	public function testRewindReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$q_id_1 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_1 );
+		$q_id_2 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_2 );
+		$q_id_3 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_3 );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Before calling the method.
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertEquals( $reputation->reputations[0], $reputation->reputation );
+		$this->assertEquals( 0, $reputation->current );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertEquals( $reputation->reputations[1], $reputation->reputation );
+		$this->assertEquals( 1, $reputation->current );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertEquals( $reputation->reputations[2], $reputation->reputation );
+		$this->assertEquals( 2, $reputation->current );
+
+		// After calling the method.
+		$reputation->rewind_reputation();
+		$this->assertEquals( $reputation->reputations[0], $reputation->reputation );
+		$this->assertEquals( -1, $reputation->current );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::next_reputation
+	 */
+	public function testNextReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$q_id_1 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_1 );
+		$q_id_2 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_2 );
+		$q_id_3 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_3 );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$result = $reputation->next_reputation();
+		$this->assertEquals( 0, $reputation->current );
+		$this->assertEquals( $reputation->reputations[0], $result );
+
+		// Test 2.
+		$result = $reputation->next_reputation();
+		$this->assertEquals( 1, $reputation->current );
+		$this->assertEquals( $reputation->reputations[1], $result );
+
+		// Test 3.
+		$result = $reputation->next_reputation();
+		$this->assertEquals( 2, $reputation->current );
+		$this->assertEquals( $reputation->reputations[2], $result );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_reputation
+	 */
+	public function testTheReputation() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Insert some reputations.
+		$this->setRole( 'subscriber' );
+		$q_id_1 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_1 );
+		$q_id_2 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_2 );
+		$q_id_3 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_3 );
+
+		// Test begins.
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertTrue( $reputation->in_the_loop );
+		$this->assertEquals( 0, $reputation->current );
+		$this->assertEquals( $reputation->reputations[0], $reputation->reputation );
+
+		// Test 2.
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertTrue( $reputation->in_the_loop );
+		$this->assertEquals( 1, $reputation->current );
+		$this->assertEquals( $reputation->reputations[1], $reputation->reputation );
+
+		// Test 3.
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertTrue( $reputation->in_the_loop );
+		$this->assertEquals( 2, $reputation->current );
+		$this->assertEquals( $reputation->reputations[2], $reputation->reputation );
+	}
+
+	/**
+	 * @covers AnsPress_Reputation_Query::the_reputation
+	 */
+	public function testTheReputationShouldTriggerTheAPReputationLoopStartActionHookOnFirstLoopOnly() {
+		global $wpdb;
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputations}" );
+		$wpdb->query( "TRUNCATE {$wpdb->ap_reputation_events}" );
+
+		// Callback triggered.
+		$callback_triggered = false;
+		add_action( 'ap_reputation_loop_start', function() use ( &$callback_triggered ) {
+			$callback_triggered = true;
+		} );
+
+		// Test begins.
+		$this->setRole( 'subscriber' );
+		$q_id_1 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_1 );
+		$q_id_2 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_2 );
+		$q_id_3 = $this->insert_question();
+		ap_insert_reputation( 'ask', $q_id_3 );
+		$reputation = new \AnsPress_Reputation_Query( [ 'user_id' => get_current_user_id() ] );
+
+		// Test 1.
+		$reputation->reputations[0];
+		$reputation->the_reputation();
+		$this->assertTrue( $callback_triggered );
+		$this->assertTrue( did_action( 'ap_reputation_loop_start' ) > 0 );
+		$this->assertTrue( $reputation->in_the_loop );
+		$this->assertEquals( 0, $reputation->current );
+		$this->assertEquals( $reputation->reputations[0], $reputation->reputation );
+
+		// Test 2.
+		$callback_triggered = false;
+		$reputation->reputations[1];
+		$reputation->the_reputation();
+		$this->assertFalse( $callback_triggered );
+		$this->assertTrue( $reputation->in_the_loop );
+		$this->assertEquals( 1, $reputation->current );
+		$this->assertEquals( $reputation->reputations[1], $reputation->reputation );
+
+		// Test 3.
+		$callback_triggered = false;
+		$reputation->reputations[2];
+		$reputation->the_reputation();
+		$this->assertFalse( $callback_triggered );
+		$this->assertTrue( $reputation->in_the_loop );
+		$this->assertEquals( 2, $reputation->current );
+		$this->assertEquals( $reputation->reputations[2], $reputation->reputation );
+	}
 }
