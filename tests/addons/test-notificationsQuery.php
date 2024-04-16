@@ -11,6 +11,8 @@ class TestAddonNotificationsQuery extends TestCase {
 	public function set_up() {
 		parent::set_up();
 		ap_activate_addon( 'notifications.php' );
+		$instance = \AnsPress\Addons\Notifications::init();
+		add_action( 'ap_notification_verbs', [ $instance, 'register_verbs' ] );
 	}
 
 	public function tear_down() {
@@ -118,8 +120,6 @@ class TestAddonNotificationsQuery extends TestCase {
 	 * @covers Anspress\Notifications::verb_args
 	 */
 	public function testVerbArgs() {
-		$instance = \AnsPress\Addons\Notifications::init();
-		add_action( 'ap_notification_verbs', [ $instance, 'register_verbs' ] );
 		$notifications = new \Anspress\Notifications();
 		$this->assertInstanceOf( 'Anspress\Notifications', $notifications );
 
