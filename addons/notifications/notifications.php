@@ -517,8 +517,6 @@ class Notifications extends \AnsPress\Singleton {
 				'cb'       => 'notificationAllRead',
 			)
 		);
-
-		wp_die();
 	}
 
 	/**
