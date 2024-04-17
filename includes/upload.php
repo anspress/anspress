@@ -177,7 +177,7 @@ class AnsPress_Uploader {
 				'success' => true,
 				'action'  => 'ap_upload_modal',
 				'html'    => $html,
-				'title'   => __( 'Select image file to upload', 'anspress-question-answer' ),
+				'title'   => __( 'Select meida file to upload', 'anspress-question-answer' ),
 			)
 		);
 	}
@@ -230,6 +230,27 @@ class AnsPress_Uploader {
 
 		// Call save.
 		$files = $field->save_cb();
+
+		$new_arr = array();
+
+		// Add a property to check if image or not.
+		if ( ! empty( $files ) ) {
+			$all_possible_images_ext = array( 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp' );
+
+			foreach ( $files as $file_basename => $file_url ) {
+				// Get file extension from file name.
+				$ext = pathinfo( $file_basename, PATHINFO_EXTENSION );
+
+				$new_arr[ $file_basename ] = array(
+					'ext'      => $ext,
+					'filename' => $file_basename,
+					'is_image' => in_array( $ext, $all_possible_images_ext, true ),
+					'url'      => $file_url,
+				);
+			}
+
+			$files = $new_arr;
+		}
 
 		$res = array(
 			'success'   => true,

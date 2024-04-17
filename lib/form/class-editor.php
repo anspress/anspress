@@ -78,7 +78,7 @@ class Editor extends \AnsPress\Form\Field {
 		);
 
 		if ( ap_user_can_upload() ) {
-			$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>' . __( 'Insert image', 'anspress-question-answer' ) . '</button>' );
+			$this->add_html( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>' . __( 'Insert media', 'anspress-question-answer' ) . '</button>' );
 		}
 
 		/**

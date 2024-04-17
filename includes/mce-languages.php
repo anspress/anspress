@@ -24,7 +24,7 @@ if ( ! class_exists( '_WP_Editors' ) ) {
  */
 function ap_tinymce_translations() {
 	$strings = array(
-		'i18n_insert_image'         => __( 'Insert image', 'anspress-question-answer' ),
+		'i18n_insert_image'         => __( 'Insert media', 'anspress-question-answer' ),
 		'i18n_insert_media'         => __( 'Insert Media (AnsPress)', 'anspress-question-answer' ),
 		'i18n_close'                => __( 'Close', 'anspress-question-answer' ),
 		'i18n_select_file'          => __( 'Select File', 'anspress-question-answer' ),
