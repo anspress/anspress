@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/anspress
 Tags: question, answer, q&a, forum, profile
 Requires at least: 4.7
 Tested up to: 6.5
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 Requires PHP: 8.0
 License: GPLv2 or later
 Demo: https://anspress.net/demo/?product=anspress

@@ -15,7 +15,7 @@
  * Plugin URI:        https://anspress.net
  * Description:       The most advance community question and answer system for WordPress
  * Donate link:       https://paypal.me/anspress
- * Version:           4.4.0
+ * Version:           4.4.1
  * Author:            Rahul Aryan
  * Author URI:        https://anspress.net
  * License:           GPL-3.0+
@@ -69,7 +69,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @var string
 		 */
-		private $_plugin_version = '4.4.0'; // phpcs:ignore
+		private $_plugin_version = '4.4.1'; // phpcs:ignore
 
 		/**
 		 * Class instance
