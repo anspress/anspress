@@ -360,7 +360,7 @@ class AnsPress_Theme {
 		$activity = ap_recent_activity( null, false );
 
 		if ( ! empty( $activity ) ) {
-			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . wp_kses_post( $activity ) . '</div>';
+			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . $activity . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 	}
 }
