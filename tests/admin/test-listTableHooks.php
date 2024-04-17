@@ -523,4 +523,84 @@ class TestListTableHooks extends TestCase {
 		unset( $_REQUEST['orderby'] );
 		unset( $_REQUEST['flagged'] );
 	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::edit_form_after_title
+	 */
+	public function testEditFormAfterTitleForQuestionPostTypeEditPage() {
+		global $pagenow, $post;
+		$pagenow = 'post.php';
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
+		$post = ap_get_post( $question_id );
+
+		// Test begins.
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		ob_start();
+		@$hooks::edit_form_after_title();
+		$result = ob_get_clean();
+		$this->assertEmpty( $result );
+	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::edit_form_after_title
+	 */
+	public function testEditFormAfterTitleForAnswerPostTypeEditPageWhichHasParentPostPassingAction() {
+		global $pagenow, $post;
+		$pagenow = 'post.php';
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title', 'post_content' => 'Question Content' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post = ap_get_post( $answer_id );
+
+		// Test begins.
+		$_REQUEST['action'] = 'edit';
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		ob_start();
+		@$hooks::edit_form_after_title();
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<div class="ap-selected-question">', $result );
+		$this->assertStringContainsString( '<a class="ap-q-title" href="' . esc_url( get_permalink( $question_id ) ) . '">', $result );
+		$this->assertStringContainsString( 'Question Title', $result );
+		$this->assertStringContainsString( '<div class="ap-q-meta">', $result );
+		$this->assertStringContainsString( '<span class="ap-a-count">', $result );
+		$this->assertStringContainsString( '1 Answer', $result );
+		$this->assertStringContainsString( '<span class="ap-edit-link">', $result );
+		@$this->assertStringContainsString( '<a href="' . esc_url( get_edit_post_link( $question_id ) ) . '">', $result );
+		$this->assertStringContainsString( 'Edit question', $result );
+		$this->assertStringContainsString( '<div class="ap-q-content">Question Content</div>', $result );
+		$this->assertStringContainsString( '<input type="hidden" name="post_parent" value="' . $question_id . '" />', $result );
+		unset( $_REQUEST['action'] );
+	}
+
+	/**
+	 * @covers AnsPress_Post_Table_Hooks::edit_form_after_title
+	 */
+	public function testEditFormAfterTitleForAnswerPostTypeEditPageWhichHasParentPostPassingPostParent() {
+		global $pagenow, $post;
+		$pagenow = 'post.php';
+		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_title' => 'Question Title', 'post_content' => 'Question Content' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$new_answer = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		$post = ap_get_post( $answer_id );
+
+		// Test begins.
+		$_REQUEST['post_parent'] = $question_id;
+		$hooks = new \AnsPress_Post_Table_Hooks();
+		ob_start();
+		@$hooks::edit_form_after_title();
+		$result = ob_get_clean();
+		$this->assertNotEmpty( $result );
+		$this->assertStringContainsString( '<div class="ap-selected-question">', $result );
+		$this->assertStringContainsString( '<a class="ap-q-title" href="' . esc_url( get_permalink( $question_id ) ) . '">', $result );
+		$this->assertStringContainsString( 'Question Title', $result );
+		$this->assertStringContainsString( '<div class="ap-q-meta">', $result );
+		$this->assertStringContainsString( '<span class="ap-a-count">', $result );
+		$this->assertStringContainsString( '2 Answers', $result );
+		$this->assertStringContainsString( '<span class="ap-edit-link">', $result );
+		@$this->assertStringContainsString( '<a href="' . esc_url( get_edit_post_link( $question_id ) ) . '">', $result );
+		$this->assertStringContainsString( 'Edit question', $result );
+		$this->assertStringContainsString( '<div class="ap-q-content">Question Content</div>', $result );
+		$this->assertStringContainsString( '<input type="hidden" name="post_parent" value="' . $question_id . '" />', $result );
+		unset( $_REQUEST['post_parent'] );
+	}
 }
