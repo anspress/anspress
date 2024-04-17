@@ -624,4 +624,26 @@ class TestThemeClass extends TestCase {
 		$this->assertNotEquals( $args, $result );
 		$this->assertStringContainsString( 'Question Title', $result['title'] );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::after_question_content
+	 */
+	public function testAfterQuestionContent() {
+		$this->setRole( 'subscriber' );
+		$question_id = $this->insert_question( '', '', get_current_user_id() );
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'moderate' ] );
+		ap_activity_add( [
+			'action' => 'new_q',
+			'q_id'   => $question_id,
+			'date'   => '2024-01-01 00:00:00',
+		] );
+		global $post;
+		$post = ap_get_post( $question_id );
+		ob_start();
+		\AnsPress_Theme::after_question_content();
+		$output = ob_get_clean();
+		$this->assertStringContainsString( '<postmessage><div class="ap-notice status-moderate"><i class="apicon-alert"></i><span>This Question is waiting for the approval by the moderator.</span></div></postmessage>', $output );
+		$this->assertStringContainsString( '<div class="ap-post-updated"><i class="apicon-clock"></i>', $output );
+		$this->assertStringContainsString( '<span class="ap-post-history"><a href="' . ap_user_link( get_current_user_id() ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( get_current_user_id() ) . '</span></a> Changed status to moderate <a href="' . esc_url( ap_get_short_link( array( 'ap_q' => $question_id ) ) ) . '"><time itemprop="dateModified" datetime="' . mysql2date( 'c', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) ) . '">' . ap_human_time( strtotime( 'now' ), false ) . '</time></a></span>', $output );
+	}
 }
