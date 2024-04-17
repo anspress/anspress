@@ -646,4 +646,19 @@ class TestThemeClass extends TestCase {
 		$this->assertStringContainsString( '<div class="ap-post-updated"><i class="apicon-clock"></i>', $output );
 		$this->assertStringContainsString( '<span class="ap-post-history"><a href="' . ap_user_link( get_current_user_id() ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( get_current_user_id() ) . '</span></a> Changed status to moderate <a href="' . esc_url( ap_get_short_link( array( 'ap_q' => $question_id ) ) ) . '"><time itemprop="dateModified" datetime="' . mysql2date( 'c', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) ) . '">' . ap_human_time( strtotime( 'now' ), false ) . '</time></a></span>', $output );
 	}
+
+	/**
+	 * @covers AnsPress_Theme::question_answer_post_class
+	 */
+	public function testQuestionAnswerPostClassForUserWhoCantReadAnswer() {
+		$this->setRole( 'subscriber' );
+		$user_id = $this->factory()->user->create( [ 'role' => 'subscriber' ] );
+		$question_id = $this->insert_question( '', '', $user_id );
+		wp_update_post( [ 'ID' => $question_id, 'post_status' => 'moderate' ] );
+		$answer_id = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
+		global $post;
+		$post = ap_get_post( $answer_id );
+		$result = \AnsPress_Theme::question_answer_post_class( [] );
+		$this->assertContains( 'no-permission', $result );
+	}
 }
