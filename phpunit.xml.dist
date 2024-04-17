@@ -26,6 +26,9 @@
 			<directory suffix=".php">./includes/</directory>
 			<directory suffix=".php">./lib/</directory>
 			<directory suffix=".php">./widgets/</directory>
+			<directory suffix=".php">./anspress-question-answer.php</directory>
+			<directory suffix=".php">./activate.php</directory>
+			<directory suffix=".php">./loader.php</directory>
 		</include>
 		<exclude>
 			<directory suffix=".php">./addons/recaptcha/recaptcha/</directory>

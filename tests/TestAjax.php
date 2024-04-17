@@ -595,7 +595,7 @@ class TestAjax extends TestCaseAjax {
 		$this->handle( 'ap_upload_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_upload_modal' );
-		$this->assertTrue( $this->ap_ajax_success( 'title' ) === 'Select image file to upload' );
+		$this->assertTrue( $this->ap_ajax_success( 'title' ) === 'Select media file to upload' );
 		$this->assertStringContainsString( 'html', $this->_last_response );
 		$this->assertStringContainsString( '<form id="form_image_upload" name="form_image_upload" method="POST" enctype="multipart/form-data" action=""  apform>', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<div class="ap-form-group ap-field-form_image_upload-image ap-field-type-upload ">', $this->ap_ajax_success( 'html' ) );
@@ -627,7 +627,7 @@ class TestAjax extends TestCaseAjax {
 		$this->handle( 'ap_upload_modal' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'action' ) === 'ap_upload_modal' );
-		$this->assertTrue( $this->ap_ajax_success( 'title' ) === 'Select image file to upload' );
+		$this->assertTrue( $this->ap_ajax_success( 'title' ) === 'Select media file to upload' );
 		$this->assertStringContainsString( 'html', $this->_last_response );
 		$this->assertStringContainsString( '<form id="form_image_upload" name="form_image_upload" method="POST" enctype="multipart/form-data" action=""  apform>', $this->ap_ajax_success( 'html' ) );
 		$this->assertStringContainsString( '<div class="ap-form-group ap-field-form_image_upload-image ap-field-type-upload ">', $this->ap_ajax_success( 'html' ) );

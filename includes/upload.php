@@ -177,7 +177,7 @@ class AnsPress_Uploader {
 				'success' => true,
 				'action'  => 'ap_upload_modal',
 				'html'    => $html,
-				'title'   => __( 'Select meida file to upload', 'anspress-question-answer' ),
+				'title'   => __( 'Select media file to upload', 'anspress-question-answer' ),
 			)
 		);
 	}

@@ -69,7 +69,6 @@ class AP_Activate {
 	public function __construct() {
 		global $network_wide;
 		$this->network_wide = $network_wide;
-		$this->disable_ext();
 		$this->delete_options();
 
 		// Append table names in $wpdb.
@@ -87,21 +86,6 @@ class AP_Activate {
 
 		// Migrate old datas.
 		$this->migrate();
-	}
-
-	/**
-	 * Disable old AnsPress extensions.
-	 */
-	public function disable_ext() {
-		deactivate_plugins(
-			array(
-				'categories-for-anspress/categories-for-anspress.php',
-				'tags-for-anspress/tags-for-anspress.php',
-				'anspress-email/anspress-email.php',
-				'question-labels/question-labels.php',
-				'anspress-paid-membership/anspress-paid-membership.php',
-			)
-		);
 	}
 
 	/**
