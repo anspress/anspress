@@ -13,12 +13,14 @@ class TestAjaxAddons extends TestCaseAjax {
 		parent::set_up();
 		ap_activate_addon( 'reputation.php' );
 		ap_activate_addon( 'notifications.php' );
+		ap_activate_addon( 'tags.php' );
 	}
 
 	public function tear_down() {
 		parent::tear_down();
 		ap_deactivate_addon( 'reputation.php' );
 		ap_deactivate_addon( 'notifications.php' );
+		ap_deactivate_addon( 'tags.php' );
 	}
 
 	/**
@@ -151,5 +153,81 @@ class TestAjaxAddons extends TestCaseAjax {
 		$this->assertTrue( $this->ap_ajax_success( 'btn' )->hide === true );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Successfully updated all notifications' );
 		$this->assertTrue( $this->ap_ajax_success( 'cb' ) === 'notificationAllRead' );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_tags_suggestion
+	 */
+	public function testTagsSuggestionForTagSearchForNotAvailableTagsOnSearch() {
+		$instance = \Anspress\Addons\Tags::init();
+		add_action( 'wp_ajax_ap_tags_suggestion', [ $instance, 'ap_tags_suggestion' ] );
+
+		// Register taxonomy.
+		register_taxonomy( 'question_tag', array( 'question' ) );
+
+		// Add some dummy tags.
+		$tag_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Tag 1' ] );
+		$tag_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Tag 2' ] );
+		$tag_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Tag 3' ] );
+
+		// Test.
+		$this->_set_post_data( 'action=ap_tags_suggestion' );
+		$_POST['q'] = 'Invalid Search';
+		$this->handle( 'ap_tags_suggestion' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) === false );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_tag' );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_tags_suggestion
+	 */
+	public function testTagsSuggestionForTagSearchForAvailableTagsOnSearch() {
+		$instance = \Anspress\Addons\Tags::init();
+		add_action( 'wp_ajax_ap_tags_suggestion', [ $instance, 'ap_tags_suggestion' ] );
+
+		// Register taxonomy.
+		register_taxonomy( 'question_tag', array( 'question' ) );
+
+		// Add some dummy tags.
+		$tag_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question 1', 'slug' => 'question' ] );
+		$tag_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Test Tag 2', 'slug' => 'test-tag' ] );
+		$tag_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Another Tag 3', 'slug' => 'another-tag' ] );
+
+		// Test.
+		$this->_set_post_data( 'action=ap_tags_suggestion' );
+		$_POST['q'] = 'Tag';
+		$this->handle( 'ap_tags_suggestion' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'items' ) === [ 'test-tag', 'another-tag' ] );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_tag' );
+	}
+
+	/**
+	 * @covers Anspress\Addons\Tags::ap_tags_suggestion
+	 */
+	public function testTagsSuggestionForNotPassingSearchString() {
+		$instance = \Anspress\Addons\Tags::init();
+		add_action( 'wp_ajax_ap_tags_suggestion', [ $instance, 'ap_tags_suggestion' ] );
+
+		// Register taxonomy.
+		register_taxonomy( 'question_tag', array( 'question' ) );
+
+		// Add some dummy tags.
+		$tag_1 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Question 1', 'slug' => 'question' ] );
+		$tag_2 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Test Tag 2', 'slug' => 'test-tag' ] );
+		$tag_3 = $this->factory()->term->create( [ 'taxonomy' => 'question_tag', 'name' => 'Another Tag 3', 'slug' => 'another-tag' ] );
+
+		// Test.
+		$this->_set_post_data( 'action=ap_tags_suggestion' );
+		$this->handle( 'ap_tags_suggestion' );
+		$this->assertTrue( $this->ap_ajax_success( 'status' ) === true );
+		$this->assertTrue( $this->ap_ajax_success( 'items' ) === [ 'question', 'test-tag', 'another-tag' ] );
+
+		// Unregister taxonomy.
+		unregister_taxonomy( 'question_tag' );
 	}
 }
