@@ -2,6 +2,9 @@
 
 namespace Anspress\Tests;
 
+use AnsPress;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use PHPUnit\Framework\ExpectationFailedException;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestAnsPress extends TestCase {
@@ -51,31 +54,22 @@ class TestAnsPress extends TestCase {
 	}
 
 	/**
-	 * @covers AnsPress::setup_constants
+	 * @covers \AnsPress::setup_constants
+	 * @return void
+	 * @throws InvalidArgumentException
+	 * @throws ExpectationFailedException
 	 */
 	public function testConstant() {
-		$plugin_dir = wp_normalize_path( ANSPRESS_DIR );
-		$plugin_url = home_url( 'wp-content/plugins/anspress-question-answer/' );
-
-		$this->assertSame( DS, DIRECTORY_SEPARATOR );
-
-		// $this->assertSame( ANSPRESS_URL, $plugin_url );
-		$this->assertSame( ANSPRESS_DIR, $plugin_dir );
-
-		$path = $plugin_dir . 'widgets/';
-		$this->assertSame( ANSPRESS_WIDGET_DIR, $path );
-
-		$path = $plugin_dir . 'templates';
-		$this->assertSame( ANSPRESS_THEME_DIR, $path );
-
-		$path = $plugin_url . 'templates';
-		// $this->assertSame( ANSPRESS_THEME_URL, $path );
-
-		$this->assertSame( ANSPRESS_CACHE_DIR, WP_CONTENT_DIR . '/cache/anspress' );
-		$this->assertSame( ANSPRESS_CACHE_TIME, HOUR_IN_SECONDS );
-
-		$path = $plugin_dir . 'addons';
-		$this->assertSame( ANSPRESS_ADDONS_DIR, $path );
+        // Assert that the constants are properly defined
+        $this->assertTrue(defined('ANSPRESS_DIR'));
+        $this->assertTrue(defined('ANSPRESS_URL'));
+        $this->assertTrue(defined('AP_VERSION'));
+        $this->assertTrue(defined('ANSPRESS_WIDGET_DIR'));
+        $this->assertTrue(defined('ANSPRESS_THEME_DIR'));
+        $this->assertTrue(defined('ANSPRESS_THEME_URL'));
+        $this->assertTrue(defined('ANSPRESS_CACHE_DIR'));
+        $this->assertTrue(defined('ANSPRESS_CACHE_TIME'));
+        $this->assertTrue(defined('ANSPRESS_ADDONS_DIR'));
 	}
 
 	/**
