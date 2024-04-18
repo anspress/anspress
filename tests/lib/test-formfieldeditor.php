@@ -105,7 +105,7 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		$field->image_button();
 		$this->assertEmpty( $property->getValue( $field ) );
 		$this->assertStringNotContainsString( esc_js( $btn_args ), $property->getValue( $field ) );
-		$this->assertStringNotContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert image</button>', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert media</button>', $property->getValue( $field ) );
 		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
 
 		// Test 2.
@@ -121,7 +121,7 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		$field->image_button();
 		$this->assertNotEmpty( $property->getValue( $field ) );
 		$this->assertStringContainsString( esc_js( $btn_args ), $property->getValue( $field ) );
-		$this->assertStringContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert image</button>', $property->getValue( $field ) );
+		$this->assertStringContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert media</button>', $property->getValue( $field ) );
 		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
 		$this->logout();
 
@@ -139,7 +139,7 @@ class TestAnsPressFormFieldEditor extends TestCase {
 		$field->image_button();
 		$this->assertEmpty( $property->getValue( $field ) );
 		$this->assertStringNotContainsString( esc_js( $btn_args ), $property->getValue( $field ) );
-		$this->assertStringNotContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert image</button>', $property->getValue( $field ) );
+		$this->assertStringNotContainsString( '<button type="button" class="ap-btn-insertimage ap-btn-small ap-btn mb-10 ap-mr-5" apajaxbtn aponce="false" apquery="' . esc_js( $btn_args ) . '"><i class="apicon-image ap-mr-3"></i>Insert media</button>', $property->getValue( $field ) );
 		$this->assertTrue( did_action( 'ap_editor_buttons' ) > 0 );
 		$this->logout();
 

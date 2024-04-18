@@ -22,7 +22,7 @@ class TestMCELanguages extends TestCase {
 
 		// Test if the returned string contains the expected translations.
 		$expected_translations = array(
-			'i18n_insert_image'         => 'Insert image',
+			'i18n_insert_image'         => 'Insert media',
 			'i18n_insert_media'         => 'Insert Media (AnsPress)',
 			'i18n_close'                => 'Close',
 			'i18n_select_file'          => 'Select File',
