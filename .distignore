@@ -24,3 +24,6 @@ README.md
 .env.testing
 Dockerfile
 anspress.json
+.devcontainer
+composer.json
+composer.lock

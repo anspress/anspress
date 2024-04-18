@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  release:
+    types: [ published ]
+
+  workflow_dispatch:
+    inputs:
+      refSha:
+        description: 'branch'
+        required: true
+        default: dev
+
+jobs:
+  wp-release:
+    name: New release on WordPress.org
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        CURRENT_TAG=$(echo "${GITHUB_REF/refs\/tags\//}")
+        echo "Current tag is: $CURRENT_TAG"
+        npm install
+        npm run build
+        rm package.json
+        rm package-lock.json
+
+    - name: WordPress Plugin Deploy
+      id: deploy
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      with:
+        generate-zip: true
+      env:
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SLUG: anspress-question-answer
+    - name: Upload release asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ github.workspace }}/anspress-question-answer.zip
+        asset_name: anspress-question-answer.zip
+        asset_content_type: application/zip

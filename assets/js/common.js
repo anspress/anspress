@@ -487,7 +487,7 @@ _.templateSettings = {
 (function ($) {
 	AnsPress.Common = {
 		init: function () {
-			AnsPress.on('showImgPreview', this.showImgPreview);
+			// AnsPress.on('showImgPreview', this.showImgPreview);
 			AnsPress.on('formPosted', this.imageUploaded);
 			AnsPress.on('ajaxBtnDone', this.uploadModal);
 			AnsPress.on('ajaxBtnDone', this.commentModal);
@@ -524,11 +524,12 @@ _.templateSettings = {
 		},
 		imageUploaded: function (data) {
 			if (data.action !== 'ap_image_upload')
-				return;
+        return;
 
 			if (data.files)
-				$.each(data.files, function (old, newFile) {
-					var cont = '<img src="' + newFile + '" />';
+        $.each(data.files, function (old, newFile) {
+
+					var cont = newFile.is_image ? '<img src="' + newFile.url + '" />' : '<a href="' + newFile.url + '">' + newFile.filename + '</a>';
 					if ( typeof tinymce !== 'undefined' ) {
 						tinymce.activeEditor.insertContent(cont);
 					} else {
