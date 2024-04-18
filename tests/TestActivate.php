@@ -159,17 +159,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[0]->Default); // Check if it is NULL (NULL).
 
 		// Check vote_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_votes}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_votes} WHERE Column_name = 'vote_id'" );
 
-		$this->assertEquals( 'vote_id', $indexes_info[0]->Column_name );
-		$this->assertEquals( 'PRIMARY', $indexes_info[0]->Key_name );
-
-		// $this->assertEquals( 'vote_post_id', $cols[1]->Field );
-		// $this->assertEquals( 'vote_user_id', $cols[2]->Field );
-		// $this->assertEquals( 'vote_rec_user', $cols[3]->Field );
-		// $this->assertEquals( 'vote_type', $cols[4]->Field );
-		// $this->assertEquals( 'vote_value', $cols[5]->Field );
-		// $this->assertEquals( 'vote_date', $cols[6]->Field );
+		$this->assertEquals( 'vote_id', $indexes_info->Column_name );
+		$this->assertEquals( 'PRIMARY', $indexes_info->Key_name );
 	}
 
 	public function testVotesTableColumnVotePostId() {
@@ -184,10 +177,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[1]->Default); // Check if it is NULL (NULL).
 
 		// Check vote_post_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_votes}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_votes} WHERE Column_name = 'vote_post_id'" );
 
-		$this->assertEquals( 'vote_post_id', $indexes_info[1]->Column_name );
-		$this->assertEquals( 'vote_post_id', $indexes_info[1]->Key_name );
+		$this->assertEquals( 'vote_post_id', $indexes_info->Column_name );
+		$this->assertEquals( 'vote_post_id', $indexes_info->Key_name );
 	}
 
 	public function testVotesTableColumnVoteUserId() {
@@ -265,10 +258,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[0]->Default); // Check if it is NULL (NULL).
 
 		// Check vote_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_views}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_views} WHERE Column_name = 'view_id'" );
 
-		$this->assertEquals( 'view_id', $indexes_info[0]->Column_name );
-		$this->assertEquals( 'PRIMARY', $indexes_info[0]->Key_name );
+		$this->assertEquals( 'view_id', $indexes_info->Column_name );
+		$this->assertEquals( 'PRIMARY', $indexes_info->Key_name );
 	}
 
 	public function testViewsTableColumnViewUserId() {
@@ -346,10 +339,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[0]->Default); // Check if it is NULL (NULL).
 
 		// Check rep_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputations}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_reputations} WHERE Column_name = 'rep_id'" );
 
-		$this->assertEquals( 'rep_id', $indexes_info[0]->Column_name );
-		$this->assertEquals( 'PRIMARY', $indexes_info[0]->Key_name );
+		$this->assertEquals( 'rep_id', $indexes_info->Column_name );
+		$this->assertEquals( 'PRIMARY', $indexes_info->Key_name );
 	}
 
 	public function testReputationTableColumnRepUserId() {
@@ -364,9 +357,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[1]->Default); // Check if it is NULL (NULL).
 
 		// Check rep_user_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputations}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_reputations} WHERE Column_name = 'rep_user_id'" );
 
-		$this->assertEquals( 'rep_user_id', $indexes_info[1]->Column_name );
+		$this->assertEquals( 'rep_user_id', $indexes_info->Column_name );
 	}
 
 	public function testReputationTableColumnRepEvent() {
@@ -393,9 +386,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[3]->Default); // Check if it is NULL (NULL).
 
 		// Check rep_ref_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputations}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_reputations} WHERE Column_name = 'rep_ref_id'" );
 
-		$this->assertEquals( 'rep_ref_id', $indexes_info[2]->Column_name );
+		$this->assertEquals( 'rep_ref_id', $indexes_info->Column_name );
 	}
 
 	public function testReputationTableColumnRepDate() {
@@ -425,10 +418,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[0]->Default); // Check if it is NULL (NULL).
 
 		// Check subs_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_subscribers}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_subscribers} WHERE Column_name = 'subs_id'" );
 
-		$this->assertEquals( 'subs_id', $indexes_info[0]->Column_name );
-		$this->assertEquals( 'PRIMARY', $indexes_info[0]->Key_name );
+		$this->assertEquals( 'subs_id', $indexes_info->Column_name );
+		$this->assertEquals( 'PRIMARY', $indexes_info->Key_name );
 	}
 
 	public function testSubscribersTableColumnSubUserId() {
@@ -443,9 +436,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[1]->Default); // Check if it is NULL (NULL).
 
 		// Check subs_user_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_subscribers}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_subscribers} WHERE Column_name = 'subs_user_id'" );
 
-		$this->assertEquals( 'subs_user_id', $indexes_info[1]->Column_name );
+		$this->assertEquals( 'subs_user_id', $indexes_info->Column_name );
 	}
 
 	public function testSubscribersTableColumnSubsRefId() {
@@ -460,9 +453,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[2]->Default); // Check if it is NULL (NULL).
 
 		// Check subs_ref_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_subscribers}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_subscribers} WHERE Column_name = 'subs_ref_id'" );
 
-		$this->assertEquals( 'subs_ref_id', $indexes_info[2]->Column_name );
+		$this->assertEquals( 'subs_ref_id', $indexes_info->Column_name );
 
 	}
 
@@ -493,10 +486,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[0]->Default); // Check if it is NULL (NULL).
 
 		// Check activity_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_activity}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_activity} WHERE Column_name = 'activity_id'" );
 
-		$this->assertEquals( 'activity_id', $indexes_info[0]->Column_name );
-		$this->assertEquals( 'PRIMARY', $indexes_info[0]->Key_name );
+		$this->assertEquals( 'activity_id', $indexes_info->Column_name );
+		$this->assertEquals( 'PRIMARY', $indexes_info->Key_name );
 	}
 
 	public function testActivityTableColumnActivityAction() {
@@ -523,9 +516,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[2]->Default); // Check if it is NULL (NULL).
 
 		// Check activity_q_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_activity}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_activity} WHERE Column_name = 'activity_q_id'" );
 
-		$this->assertEquals( 'activity_q_id', $indexes_info[1]->Column_name );
+		$this->assertEquals( 'activity_q_id', $indexes_info->Column_name );
 	}
 
 	public function testActivityTableColumnActivityAId() {
@@ -540,9 +533,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[3]->Default); // Check if it is NULL (NULL).
 
 		// Check activity_a_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_activity}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_activity} WHERE Column_name = 'activity_a_id'" );
 
-		$this->assertEquals( 'activity_a_id', $indexes_info[2]->Column_name );
+		$this->assertEquals( 'activity_a_id', $indexes_info->Column_name );
 	}
 
 	public function testActivityTableColumnActivityCId() {
@@ -569,9 +562,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[5]->Default); // Check if it is NULL (NULL).
 
 		// Check activity_user_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_activity}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_activity} WHERE Column_name = 'activity_user_id'" );
 
-		$this->assertEquals( 'activity_user_id', $indexes_info[3]->Column_name );
+		$this->assertEquals( 'activity_user_id', $indexes_info->Column_name );
 	}
 
 	public function testActivityTableColumnActivityDate() {
@@ -601,10 +594,10 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[0]->Default); // Check if it is NULL (NULL).
 
 		// Check rep_events_id index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputation_events}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_reputation_events} WHERE Column_name = 'rep_events_id'" );
 
-		$this->assertEquals( 'rep_events_id', $indexes_info[0]->Column_name );
-		$this->assertEquals( 'PRIMARY', $indexes_info[0]->Key_name );
+		$this->assertEquals( 'rep_events_id', $indexes_info->Column_name );
+		$this->assertEquals( 'PRIMARY', $indexes_info->Key_name );
 	}
 
 	public function testReputationEventsTableRepEventSlug() {
@@ -619,9 +612,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[1]->Default); // Check if it is NULL (NULL).
 
 		// Check slug index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputation_events}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_reputation_events} WHERE Column_name = 'slug'" );
 
-		$this->assertEquals( 'slug', $indexes_info[1]->Column_name );
+		$this->assertEquals( 'slug', $indexes_info->Column_name );
 	}
 
 	public function testReputationEventsTableRepEventIcon() {
@@ -684,9 +677,9 @@ class TestActivate extends TestCase {
 		$this->assertEquals( NULL, $cols[6]->Default);
 
 		// Check parent index.
-		$indexes_info = $wpdb->get_results( "SHOW INDEX FROM {$wpdb->ap_reputation_events}" );
+		$indexes_info = $wpdb->get_row( "SHOW INDEX FROM {$wpdb->ap_reputation_events} WHERE Column_name = 'parent'" );
 
-		$this->assertEquals( 'parent', $indexes_info[4]->Column_name );
+		$this->assertEquals( 'parent', $indexes_info->Column_name );
 	}
 
 	public function testReputationEventsTableRepEventPoints() {
