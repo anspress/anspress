@@ -43,10 +43,12 @@ function ap_qameta_fields() {
 /**
  * Insert post meta
  *
- * @param array   $post_id Post ID.
- * @param boolean $args Arguments.
- * @param boolean $wp_error Return wp_error on fail.
- * @return boolean|integer qameta id on success else false.
+ * @param int   $post_id  Post ID.
+ * @param array $args     Arguments.
+ * @param bool  $wp_error Return wp_error on fail.
+ *
+ * @return bool|int qameta id on success else false.
+ *
  * @since   4.0.0
  */
 function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
@@ -134,9 +136,15 @@ function ap_insert_qameta( $post_id, $args, $wp_error = false ) {
  *
  * @param  integer $post_id Post ID.
  * @return integer|false
+ * @since  4.4.2 Return if post_id is empty.
  */
 function ap_delete_qameta( $post_id ) {
 	global $wpdb;
+
+	if ( empty( $post_id ) ) {
+		return false;
+	}
+
 	return $wpdb->delete( $wpdb->ap_qameta, array( 'post_id' => $post_id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 }
 
@@ -173,7 +181,7 @@ function ap_get_qameta( $post_id ) {
 }
 
 /**
- * Append post object with apmeta feilds.
+ * Append post object with apmeta fields.
  *
  * @param  object $post Post Object.
  * @return object

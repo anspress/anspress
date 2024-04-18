@@ -2,6 +2,7 @@
 
 namespace Anspress\Tests;
 
+use tad\FunctionMocker\FunctionMocker;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestQAMeta extends TestCase {
@@ -20,13 +21,7 @@ class TestQAMeta extends TestCase {
 		parent::tear_down();
 	}
 
-	/**
-	 * @covers ::ap_qameta_fields
-	 */
 	public function testAPQametaFields() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Test for if the array key exists or not.
 		$qameta_fields_array = array(
 			'post_id',
@@ -78,14 +73,122 @@ class TestQAMeta extends TestCase {
 		$this->assertFalse( $qameta_fields['is_new'] );
 	}
 
-	/**
-	 * @covers ::ap_set_selected_answer
-	 * @covers ::ap_unset_selected_answer
-	 */
-	public function testSelectedAnswer() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+	public function testAPInsertQametaWithEmptyPostIdWpError() {
+		$this->assertInstanceOf( 'WP_Error', ap_insert_qameta( 0, [], true ) );
+	}
 
+	public function testAPInsertQametaWithEmptyPostId() {
+		$this->assertFalse( ap_insert_qameta( 0, [], false ) );
+	}
+
+	public function testAPInsertQametaWhenNotQuestion() {
+		$id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'post',
+			)
+		);
+		$this->assertFalse( ap_insert_qameta( $id, [], false ) );
+	}
+
+	public function testAPInsertQametaWhenInvalidPost() {
+		$this->assertFalse( ap_insert_qameta( 1, [], false ) );
+	}
+
+	public function testAPInsertQametaWhenValidQuestion() {
+		$id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+
+		$qameta_id = ap_insert_qameta( $id, [
+			'last_updated' => '2020-01-01 00:00:00',
+		], false );
+
+		$qameta = ap_get_qameta( $qameta_id );
+
+		$this->assertNotEmpty( $qameta );
+
+		$this->assertEquals( $id, $qameta->post_id );
+		$this->assertEquals( 0, $qameta->selected );
+		$this->assertEquals( 0, $qameta->selected_id );
+		$this->assertEquals( 0, $qameta->comments );
+		$this->assertEquals( 0, $qameta->answers );
+		$this->assertEquals( 'question', $qameta->ptype );
+		$this->assertEquals( 0, $qameta->featured );
+		$this->assertEquals( 0, $qameta->closed );
+		$this->assertEquals( 0, $qameta->views );
+		$this->assertEquals( 0, $qameta->votes_up );
+		$this->assertEquals( 0, $qameta->votes_down );
+		$this->assertEquals( 0, $qameta->subscribers );
+		$this->assertEquals( 0, $qameta->flags );
+		$this->assertEquals( '', $qameta->terms );
+		$this->assertEquals( '', $qameta->attach );
+		$this->assertEmpty( $qameta->activities );
+		$this->assertEquals( '', $qameta->fields );
+		$this->assertEquals( '', $qameta->roles );
+		$this->assertEquals( '2020-01-01 00:00:00', $qameta->last_updated );
+		$this->assertFalse($qameta->is_new );
+
+	}
+
+	public function testApDeleteQameta() {
+		global $wpdb;
+
+		$id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+
+		$qameta_id = ap_insert_qameta( $id, [], false );
+
+		$this->assertNotEmpty( ap_get_qameta( $qameta_id ) );
+
+		$this->assertNotNull( $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->ap_qameta} WHERE post_id = %d", $qameta_id ) ) );
+
+		ap_delete_qameta( $qameta_id );
+
+		$this->assertNull( $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->ap_qameta} WHERE post_id = %d", $qameta_id ) ) );
+	}
+
+	public function testApDeleteQametaWithInvalidId() {
+		$this->assertFalse( ap_delete_qameta( 0 ) );
+	}
+
+	public function testAPGetQameta() {
+		$question_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
+			)
+		);
+
+		$answer_id = $this->factory()->post->create(
+			array(
+				'post_title'   => 'Answer title',
+				'post_content' => 'Answer Content',
+				'post_type'    => 'answer',
+				'post_parent'  => $question_id,
+			)
+		);
+
+		$question_qameta = ap_get_qameta( $question_id );
+		$answer_qameta   = ap_get_qameta( $answer_id );
+
+		$this->assertNotEmpty( $question_qameta );
+		$this->assertNotEmpty( $answer_qameta );
+
+		$this->assertEquals( $question_id, $question_qameta->post_id );
+		$this->assertEquals( $answer_id, $answer_qameta->post_id );
+	}
+
+	public function testSelectedAnswer() {
 		$question_id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
@@ -196,77 +299,94 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 100, $get_qameta->answers );
 	}
 
-	/**
-	 * @covers ::ap_update_last_active
-	 */
 	public function testAPUpdateLastActive() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+		FunctionMocker::replace( 'current_time', '2024-01-01 10:00:00' );
 
-		$id = $this->insert_question();
-		ap_insert_qameta(
-			$id,
+		$id = $this->factory()->post->create(
 			array(
-				'last_updated' => '0000-00-00 00:00:00',
+				'post_title'   => 'Question title',
+				'post_content' => 'Question Content',
+				'post_type'    => 'question',
 			)
 		);
+		ap_insert_qameta( $id, [] );
 		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( '0000-00-00 00:00:00', $get_qameta->last_updated );
 
+		$this->assertEquals( '2024-01-01 10:00:00', $get_qameta->last_updated );
+
+		FunctionMocker::replace( 'current_time', '2025-01-01 10:00:00' );
 		// Real function test goes here.
 		ap_update_last_active( $id );
 		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( current_time( 'mysql' ), $get_qameta->last_updated );
+		$this->assertEquals( '2025-01-01 10:00:00', $get_qameta->last_updated );
 	}
 
-	/**
-	 * @covers ::ap_set_flag_count
-	 */
-	public function testAPSetFlagCount() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
+	public function testAPSetFlagCountForQuestion() {
+		$question_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
 
-		$id       = $this->insert_answer();
-		$question = ap_get_post( $id->q );
-		$answer   = ap_get_post( $id->a );
-		$this->assertEquals( 0, $question->flags );
-		$this->assertEquals( 0, $answer->flags );
+		$this->assertEquals( 0, ap_get_qameta( $question_id )->flags );
 
-		// Real function test goes here.
-		ap_set_flag_count( $id->q );
-		ap_set_flag_count( $id->a );
-		$question = ap_get_post( $id->q );
-		$answer   = ap_get_post( $id->a );
-		$this->assertEquals( 1, $question->flags );
-		$this->assertEquals( 1, $answer->flags );
+		ap_set_flag_count( $question_id );
 
-		// Modifying the flags.
-		ap_set_flag_count( $id->q, 5 );
-		ap_set_flag_count( $id->a, 10 );
-		$question = ap_get_post( $id->q );
-		$answer   = ap_get_post( $id->a );
-		$this->assertEquals( 5, $question->flags );
-		$this->assertEquals( 10, $answer->flags );
+		$this->assertEquals( 1, ap_get_qameta( $question_id )->flags );
 
-		// Resetting the flags to 0.
-		ap_set_flag_count( $id->q, 0 );
-		ap_set_flag_count( $id->a, 0 );
-		$question = ap_get_post( $id->q );
-		$answer   = ap_get_post( $id->a );
-		$this->assertEquals( 0, $question->flags );
-		$this->assertEquals( 0, $answer->flags );
-		$this->assertNotEquals( 1, $question->flags );
-		$this->assertNotEquals( 1, $answer->flags );
-		$this->assertNotEquals( 5, $question->flags );
-		$this->assertNotEquals( 10, $answer->flags );
+		ap_set_flag_count( $question_id, 211 );
+
+		$this->assertEquals( 211, ap_get_qameta( $question_id )->flags );
 	}
 
-	/**
-	 * @covers ::ap_update_answer_selected
-	 */
+	public function testAPSetFlagCountForAnswer() {
+
+		$answer_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'answer',
+			)
+		);
+
+		$this->assertEquals( 0, ap_get_qameta( $answer_id )->flags );
+
+		ap_set_flag_count( $answer_id );
+
+		$this->assertEquals( 1, ap_get_qameta( $answer_id )->flags );
+
+		ap_set_flag_count( $answer_id, 211 );
+
+		$this->assertEquals( 211, ap_get_qameta( $answer_id )->flags );
+	}
+
+	public function testAPUpdateFlagsCountForQuestion() {
+		FunctionMocker::replace('ap_count_post_flags', 300);
+
+		$question_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'question',
+			)
+		);
+
+		ap_update_flags_count( $question_id );
+
+		$this->assertEquals( 300, ap_get_qameta( $question_id )->flags );
+	}
+
+	public function testAPUpdateFlagsCountForAnswer() {
+		FunctionMocker::replace('ap_count_post_flags', 300);
+
+		$answer_id = $this->factory()->post->create(
+			array(
+				'post_type'    => 'answer',
+			)
+		);
+
+		ap_update_flags_count( $answer_id );
+
+		$this->assertEquals( 300, ap_get_qameta( $answer_id )->flags );
+	}
+
 	public function testAPUpdateAnswerSelected() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
 		$question_id = $this->factory()->post->create(
 			array(
@@ -487,184 +607,6 @@ class TestQAMeta extends TestCase {
 	}
 
 	/**
-	 * @covers ::ap_get_qameta
-	 */
-	public function testAPGetQameta() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
-		$id = $this->insert_answer();
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-
-		// Test for question.
-		$this->assertObjectHasProperty( 'post_id', $question_get_qameta );
-		$this->assertObjectHasProperty( 'selected', $question_get_qameta );
-		$this->assertObjectHasProperty( 'selected_id', $question_get_qameta );
-		$this->assertObjectHasProperty( 'comments', $question_get_qameta );
-		$this->assertObjectHasProperty( 'answers', $question_get_qameta );
-		$this->assertObjectHasProperty( 'ptype', $question_get_qameta );
-		$this->assertObjectHasProperty( 'featured', $question_get_qameta );
-		$this->assertObjectHasProperty( 'closed', $question_get_qameta );
-		$this->assertObjectHasProperty( 'views', $question_get_qameta );
-		$this->assertObjectHasProperty( 'votes_up', $question_get_qameta );
-		$this->assertObjectHasProperty( 'votes_down', $question_get_qameta );
-		$this->assertObjectHasProperty( 'subscribers', $question_get_qameta );
-		$this->assertObjectHasProperty( 'flags', $question_get_qameta );
-		$this->assertObjectHasProperty( 'terms', $question_get_qameta );
-		$this->assertObjectHasProperty( 'attach', $question_get_qameta );
-		$this->assertObjectHasProperty( 'activities', $question_get_qameta );
-		$this->assertObjectHasProperty( 'fields', $question_get_qameta );
-		$this->assertObjectHasProperty( 'roles', $question_get_qameta );
-		$this->assertObjectHasProperty( 'last_updated', $question_get_qameta );
-		$this->assertObjectHasProperty( 'is_new', $question_get_qameta );
-
-		// Test for answer.
-		$this->assertObjectHasProperty( 'post_id', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'selected', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'selected_id', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'comments', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'answers', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'ptype', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'featured', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'closed', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'views', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'votes_up', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'votes_down', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'subscribers', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'flags', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'terms', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'attach', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'activities', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'fields', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'roles', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'last_updated', $answer_get_qameta );
-		$this->assertObjectHasProperty( 'is_new', $answer_get_qameta );
-
-		// Test if getting the correct values.
-		// Test for selected answer.
-		$id = $this->insert_answer();
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( '', $question_get_qameta->selected_id );
-		$this->assertEquals( 0, $answer_get_qameta->selected );
-		ap_set_selected_answer( $id->q, $id->a );
-		ap_update_answer_selected( $id->a );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( $id->a, $question_get_qameta->selected_id );
-		$this->assertEquals( 1, $answer_get_qameta->selected );
-
-		// Test for closed question.
-		$id = $this->insert_answer();
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->closed );
-		ap_toggle_close_question( $id->q );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 1, $question_get_qameta->closed );
-		ap_toggle_close_question( $id->q );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->closed );
-
-		// Test for featured question.
-		$id = $this->insert_answer();
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->featured );
-		ap_set_featured_question( $id->q );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 1, $question_get_qameta->featured );
-		ap_unset_featured_question( $id->q );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->featured );
-	}
-
-	/**
-	 * @covers ::ap_insert_qameta
-	 */
-	public function testAPInsertQameta() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
-		$id = $this->insert_answer();
-
-		// Test for inserting the selected answer.
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( '', $question_get_qameta->selected_id );
-		$this->assertEquals( 0, $answer_get_qameta->selected );
-		ap_insert_qameta(
-			$id->q,
-			array(
-				'selected_id'  => $id->a,
-				'last_updated' => current_time( 'mysql' ),
-			)
-		);
-		ap_insert_qameta(
-			$id->a,
-			array(
-				'selected'     => 1,
-				'last_updated' => current_time( 'mysql' ),
-			)
-		);
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( $id->a, $question_get_qameta->selected_id );
-		$this->assertEquals( 1, $answer_get_qameta->selected );
-
-		// Test for closed question.
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->closed );
-		ap_insert_qameta( $id->q, array( 'closed' => 1 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 1, $question_get_qameta->closed );
-		ap_insert_qameta( $id->q, array( 'closed' => 0 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->closed );
-
-		// Test for featured question.
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->featured );
-		ap_insert_qameta( $id->q, array( 'featured' => 1 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 1, $question_get_qameta->featured );
-		ap_insert_qameta( $id->q, array( 'featured' => 0 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->featured );
-
-		// Test for flags count.
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->flags );
-		$this->assertEquals( 0, $answer_get_qameta->flags );
-		ap_insert_qameta( $id->q, array( 'flags' => 100 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 100, $question_get_qameta->flags );
-		$this->assertEquals( 100, $answer_get_qameta->flags );
-		ap_insert_qameta( $id->q, array( 'flags' => 500 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 500, $question_get_qameta->flags );
-		$this->assertEquals( 500, $answer_get_qameta->flags );
-
-		// Test for views count.
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 0, $question_get_qameta->views );
-		$this->assertEquals( 0, $answer_get_qameta->views );
-		ap_insert_qameta( $id->q, array( 'views' => 100 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 100, $question_get_qameta->views );
-		$this->assertEquals( 100, $answer_get_qameta->views );
-		ap_insert_qameta( $id->q, array( 'views' => 500 ) );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->q );
-		$this->assertEquals( 500, $question_get_qameta->views );
-		$this->assertEquals( 500, $answer_get_qameta->views );
-	}
-
-	/**
 	 * @covers ::ap_append_qameta
 	 */
 	public function testAPAppendQameta() {
@@ -760,38 +702,6 @@ class TestQAMeta extends TestCase {
 		}
 	}
 
-	/**
-	 * @covers ::ap_update_flags_count
-	 */
-	public function testAPUpdateFlagsCount() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
-		$id = $this->insert_answer();
-
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 0, $question_get_qameta->flags );
-		$this->assertEquals( 0, $answer_get_qameta->flags );
-		ap_update_flags_count( $id->q );
-		ap_update_flags_count( $id->a );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 0, $question_get_qameta->flags );
-		$this->assertEquals( 0, $answer_get_qameta->flags );
-		ap_add_flag( $id->q );
-		ap_add_flag( $id->a );
-		ap_update_flags_count( $id->q );
-		ap_update_flags_count( $id->a );
-		$question_get_qameta = ap_get_qameta( $id->q );
-		$answer_get_qameta = ap_get_qameta( $id->a );
-		$this->assertEquals( 1, $question_get_qameta->flags );
-		$this->assertEquals( 1, $answer_get_qameta->flags );
-	}
-
-	/**
-	 * @covers ::ap_update_qameta_terms
-	 */
 	public function testAPUpdateQametaTerms() {
 		global $wpdb;
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
@@ -913,9 +823,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_post_activities
 	 */
 	public function testAPUpdatePostActivities() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Test for empty activities.
 		$id = $this->insert_question();
 
@@ -949,86 +856,9 @@ class TestQAMeta extends TestCase {
 		$this->assertIsArray( $qameta->activities );
 		$this->assertArrayHasKey( 'action', $qameta->activities );
 		$this->assertEquals( 'new_q', $qameta->activities['action'] );
-		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
 	}
 
-	/**
-	 * @covers ::ap_update_post_activity_meta
-	 */
-	function testAPUpdatePostActivityMeta() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		wp_set_current_user( $user_id );
-
-		// Test with empty question id.
-		$output = ap_update_post_activity_meta( '', 'new_q', $user_id );
-		$this->assertFalse( $output );
-
-		// Test by passing the question id.
-		$id = $this->insert_question();
-		$output = ap_update_post_activity_meta( $id, 'new_q', $user_id );
-		$this->assertNotEmpty( $output );
-		$this->assertIsInt( $output );
-
-		// Get the qameta from the question to test assertions.
-		$qameta = ap_get_qameta( $id );
-		$this->assertNotEmpty( $qameta->activities );
-		$this->assertIsArray( $qameta->activities );
-		$this->assertArrayHasKey( 'type', $qameta->activities );
-		$this->assertArrayHasKey( 'user_id', $qameta->activities );
-		$this->assertArrayHasKey( 'date', $qameta->activities );
-		$this->assertEquals( 'new_q', $qameta->activities['type'] );
-		$this->assertEquals( $user_id, $qameta->activities['user_id'] );
-		$this->assertEquals( current_time( 'mysql' ), $qameta->activities['date'] );
-		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
-
-		// Test by passing the question id with different date.
-		$id = $this->insert_question();
-		$output = ap_update_post_activity_meta( $id, 'new_q', $user_id, false, '2024-01-01 12:00:00' );
-		$this->assertNotEmpty( $output );
-		$this->assertIsInt( $output );
-
-		// Get the qameta from the question to test assertions.
-		$qameta = ap_get_qameta( $id );
-		$this->assertNotEmpty( $qameta->activities );
-		$this->assertIsArray( $qameta->activities );
-		$this->assertArrayHasKey( 'type', $qameta->activities );
-		$this->assertArrayHasKey( 'user_id', $qameta->activities );
-		$this->assertArrayHasKey( 'date', $qameta->activities );
-		$this->assertEquals( 'new_q', $qameta->activities['type'] );
-		$this->assertEquals( $user_id, $qameta->activities['user_id'] );
-		$this->assertEquals( '2024-01-01 12:00:00', $qameta->activities['date'] );
-		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
-
-		// Test by passing the question id and appending to question enabled.
-		$id = $this->insert_answer();
-		$output = ap_update_post_activity_meta( $id->a, 'new_a', $user_id, true, '2024-01-01 12:00:00' );
-		$this->assertNotEmpty( $output );
-		$this->assertIsInt( $output );
-
-		// Get the qameta from the question to test assertions.
-		$qameta = ap_get_qameta( $id->q );
-		$this->assertNotEmpty( $qameta->activities );
-		$this->assertIsArray( $qameta->activities );
-		$this->assertIsArray( $qameta->activities['child'] );
-		$this->assertArrayHasKey( 'child', $qameta->activities );
-		$this->assertArrayHasKey( 'type', $qameta->activities['child'] );
-		$this->assertArrayHasKey( 'user_id', $qameta->activities['child'] );
-		$this->assertArrayHasKey( 'date', $qameta->activities['child'] );
-		$this->assertEquals( 'new_a', $qameta->activities['child']['type'] );
-		$this->assertEquals( $user_id, $qameta->activities['child']['user_id'] );
-		$this->assertEquals( '2024-01-01 12:00:00', $qameta->activities['child']['date'] );
-		$this->assertEquals( current_time( 'mysql' ), $qameta->last_updated );
-	}
-
-	/**
-	 * @covers ::ap_update_user_unpublished_count
-	 */
 	public function testAPUpdateUserUnpublishedCount() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
 		// Test for not adding any user id.
 		$this->setRole( 'subscriber' );

@@ -1,6 +1,7 @@
 <?php
-namespace EDD\Tests;
+namespace AnsPress\Tests;
 
+use tad\FunctionMocker\FunctionMocker;
 use Yoast\WPTestUtils\WPIntegration;
 
 define('COOKIEPATH', '/');
@@ -14,6 +15,13 @@ $plugin_dir = dirname( dirname( __FILE__ ) );
 
 require_once $plugin_dir . '/vendor/autoload.php';
 require_once $plugin_dir . '/vendor/yoast/wp-test-utils/src/WPIntegration/bootstrap-functions.php';
+
+FunctionMocker::init([
+	'blacklist' => dirname(__DIR__),
+	'whitelist' => [
+		$plugin_dir . '/includes',
+	]
+]);
 
 // Find WordPress.
 $_tests_dir = WPIntegration\get_path_to_wp_test_dir();
