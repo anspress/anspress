@@ -10,8 +10,6 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
  * @package Anspress\Tests
  */
 class TestAbstractAddon extends TestCase {
-	use \phpmock\phpunit\PHPMock;
-
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress\Classes\AbstractAddon' );
 		$this->assertFalse(

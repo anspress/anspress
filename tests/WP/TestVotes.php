@@ -2,11 +2,24 @@
 
 namespace Anspress\Tests;
 
+use Mockery;
+use tad\FunctionMocker\FunctionMocker;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Brain\Monkey;
+use Brain\Monkey\Functions;
 
 class TestVotes extends TestCase {
 
 	use Testcases\Common;
+
+    use MockeryPHPUnitIntegration;
+
+    public function tear_down()
+    {
+        Monkey\tearDown();
+        parent::tearDown();
+    }
 
 	public function testVoteHooks() {
 		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ 'AnsPress_Vote', 'delete_votes' ] ) );
@@ -20,13 +33,75 @@ class TestVotes extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Vote', 'ap_deleted_votes' ) );
 	}
 
-	/**
-	 * @covers ::ap_vote_insert
-	 */
-	public function testAPVoteInsert() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
+	public function testApVoteInsertForQuestion() {
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
 
+		Functions\expect('do_action')
+			->once()
+			->with(
+				'ap_insert_vote',
+				[
+					'vote_post_id'  => $question_id,
+					'vote_user_id'  => 1,
+					'vote_rec_user' => 111,
+					'vote_type'     => 'vote',
+					'vote_value'    => '-11',
+					'vote_date'     => '2024-01-01 00:00:00',
+				]
+			);
+
+		$ret = ap_vote_insert( $question_id, 1, 'vote', 111, '-11', '2024-01-01 00:00:00' );
+
+		$this->assertNotNull( $ret );
+	}
+
+	public function testApVoteInsertForQuestionFailed() {
+		global $wpdb;
+
+		$previous = $wpdb;
+
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+
+        $wpdb = Mockery::mock('WPDB');
+		$wpdb->ap_votes = $wpdb->prefix . 'ap_votes';
+
+		$wpdb->shouldReceive('insert')
+			->andReturn( false );
+
+		$ret = ap_vote_insert( $question_id, 1, 'vote', 111, '-11', '2024-01-01 00:00:00' );
+
+		$this->assertFalse( $ret );
+
+		$wpdb = $previous;
+	}
+
+	public function testApVoteInsertForQuestionCurrentUser() {
+		global $wpdb;
+
+		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
+
+		$this->setRole( 'subscriber' );
+
+		$do_action = FunctionMocker::replace('do_action');
+
+		$ret = ap_vote_insert( $question_id, false, 'vote', 111, '-11', '2024-01-01 00:00:00' );
+
+		$this->assertNotFalse( $ret );
+
+		$do_action->wasCalledWithOnce([
+			'ap_insert_vote',
+			[
+				'vote_post_id'  => $question_id,
+				'vote_user_id'  => get_current_user_id(),
+				'vote_rec_user' => 111,
+				'vote_type'     => 'vote',
+				'vote_value'    => '-11',
+				'vote_date'     => '2024-01-01 00:00:00',
+			]
+		]);
+	}
+
+	public function testAPVoteInsert() {
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $user_id );
@@ -772,44 +847,75 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 5, $get_qameta->votes_net );
 	}
 
-	/**
-	 * @covers ::ap_delete_votes
-	 */
-	public function testAPDeleteVotes() {
+	public function testApDeleteVotes()
+	{
 		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
 
-		$id = $this->insert_question();
+		$question_id = $this->factory()->post->create([
+			'post_type' => 'question'
+		]);
 
-		// Test begins.
-		$this->setRole( 'subscriber' );
-		ap_add_post_vote( $id );
-		ap_add_post_vote( $id );
-		ap_add_post_vote( $id, get_current_user_id(), false );
-		ap_add_flag( $id, get_current_user_id() );
-		ap_add_flag( $id, get_current_user_id() );
-		ap_update_flags_count( $id );
-		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( 2, $get_qameta->votes_up );
-		$this->assertEquals( 1, $get_qameta->votes_down );
-		$this->assertEquals( 3, $get_qameta->votes_net );
-		$this->assertEquals( 2, $get_qameta->flags );
+		ap_vote_insert($question_id, 2, 'test');
 
-		// Delete vote and test begins.
-		$delete_votes = ap_delete_votes( $id );
-		$this->assertTrue( $delete_votes );
-		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( 0, $get_qameta->votes_up );
-		$this->assertEquals( 0, $get_qameta->votes_down );
-		$this->assertEquals( 0, $get_qameta->votes_net );
-		$this->assertEquals( 2, $get_qameta->flags );
-		$delete_votes = ap_delete_votes( $id, 'flag' );
-		$this->assertTrue( $delete_votes );
-		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( 0, $get_qameta->votes_up );
-		$this->assertEquals( 0, $get_qameta->votes_down );
-		$this->assertEquals( 0, $get_qameta->votes_net );
-		$this->assertEquals( 0, $get_qameta->flags );
+		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
+
+		$this->assertEquals(1, $exists);
+
+		// Test should not delete unrelated vote type.
+
+		ap_delete_votes($question_id, 'testsxxx');
+
+		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
+
+		$this->assertEquals(1, $exists);
+
+		// Test should not delete unrelated post id.
+
+		ap_delete_votes(22, 'testsxxx');
+
+		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
+
+		$this->assertEquals(1, $exists);
+
+		// Test should delete related rows.
+
+		$mock = FunctionMocker::replace('do_action');
+
+		ap_delete_votes($question_id, 'test');
+
+		$mock->wasCalledWithOnce(['ap_deleted_votes', $question_id, 'test']);
+
+		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
+
+		$this->assertEquals(0, $exists);
+	}
+
+	public function testApDeleteVotesFailed(){
+		global $wpdb;
+
+		$question_id = $this->factory()->post->create([
+			'post_type' => 'question'
+		]);
+
+		ap_vote_insert($question_id, 2, 'test');
+
+		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
+
+		$this->assertEquals(1, $exists);
+
+		$wpdb = $this->getMockBuilder('wpdb')
+			->getMock()
+			->method('delete')
+			->willReturn(false);
+
+		ap_delete_votes($question_id, 'test');
+
+		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
+
+		$this->assertFalse($exists);
+
+		// $mock->wasCalledWithOnce([$wpdb->prefix . 'ap_votes', ['vote_post_id' => $question_id, 'vote_type' => 'test']]);
+
 	}
 
 	/**

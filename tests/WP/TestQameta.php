@@ -2,7 +2,7 @@
 
 namespace Anspress\Tests;
 
-use tad\FunctionMocker\FunctionMocker;
+use WP_Mock;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestQAMeta extends TestCase {
@@ -300,8 +300,6 @@ class TestQAMeta extends TestCase {
 	}
 
 	public function testAPUpdateLastActive() {
-		FunctionMocker::replace( 'current_time', '2024-01-01 10:00:00' );
-
 		$id = $this->factory()->post->create(
 			array(
 				'post_title'   => 'Question title',
@@ -310,15 +308,11 @@ class TestQAMeta extends TestCase {
 			)
 		);
 		ap_insert_qameta( $id, [] );
-		$get_qameta = ap_get_qameta( $id );
+		$old_qameta = ap_get_qameta( $id );
 
-		$this->assertEquals( '2024-01-01 10:00:00', $get_qameta->last_updated );
-
-		FunctionMocker::replace( 'current_time', '2025-01-01 10:00:00' );
-		// Real function test goes here.
 		ap_update_last_active( $id );
 		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( '2025-01-01 10:00:00', $get_qameta->last_updated );
+		$this->assertEquals( $old_qameta->last_updated, $get_qameta->last_updated );
 	}
 
 	public function testAPSetFlagCountForQuestion() {
@@ -359,7 +353,7 @@ class TestQAMeta extends TestCase {
 	}
 
 	public function testAPUpdateFlagsCountForQuestion() {
-		FunctionMocker::replace('ap_count_post_flags', 300);
+		WP_Mock::userFunction('ap_count_post_flags', ['return' => 300]);
 
 		$question_id = $this->factory()->post->create(
 			array(

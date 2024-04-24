@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28a004e14a2b36ec84bd845cefedb457",
+    "content-hash": "3f0d8a0271958fa729cfb4a30d8681f9",
     "packages": [],
     "packages-dev": [
         {
@@ -1902,111 +1902,17 @@
             "time": "2020-07-06T04:49:32+00:00"
         },
         {
-            "name": "lucatume/args",
-            "version": "1.0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lucatume/args.git",
-                "reference": "9ab69f5c995813b2dfbb067100ada500ee2893e8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lucatume/args/zipball/9ab69f5c995813b2dfbb067100ada500ee2893e8",
-                "reference": "9ab69f5c995813b2dfbb067100ada500ee2893e8",
-                "shasum": ""
-            },
-            "require": {
-                "xrstf/composer-php52": "1.*"
-            },
-            "require-dev": {
-                "codeception/codeception": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Arg": "src/",
-                    "tad_": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Luca Tumedei",
-                    "email": "luca@theaveragedev.com"
-                }
-            ],
-            "description": "A PHP 5.2 compatible arguments handling library.",
-            "support": {
-                "issues": "https://github.com/lucatume/args/issues",
-                "source": "https://github.com/lucatume/args/tree/master"
-            },
-            "time": "2018-02-11T12:20:29+00:00"
-        },
-        {
-            "name": "lucatume/function-mocker",
-            "version": "1.3.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lucatume/function-mocker.git",
-                "reference": "97dbec0d806dfa2745fd1f793a86bec9a852629e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lucatume/function-mocker/zipball/97dbec0d806dfa2745fd1f793a86bec9a852629e",
-                "reference": "97dbec0d806dfa2745fd1f793a86bec9a852629e",
-                "shasum": ""
-            },
-            "require": {
-                "antecedent/patchwork": "^2.0",
-                "lucatume/args": "^1.0",
-                "php": ">=5.6.0",
-                "phpunit/phpunit": ">=5.7"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/shims.php",
-                    "src/functions.php"
-                ],
-                "psr-0": {
-                    "tad\\FunctionMocker": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "theAverageDev",
-                    "email": "luca@theaveragedev.com"
-                }
-            ],
-            "description": "Function mocking with Patchwork",
-            "support": {
-                "issues": "https://github.com/lucatume/function-mocker/issues",
-                "source": "https://github.com/lucatume/function-mocker/tree/1.3.8"
-            },
-            "time": "2018-04-18T15:25:42+00:00"
-        },
-        {
             "name": "mockery/mockery",
-            "version": "1.6.8",
+            "version": "1.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "415720b7e3052f42de05c384134387771d3e183b"
+                "reference": "81a161d0b135df89951abd52296adf97deb0723d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/415720b7e3052f42de05c384134387771d3e183b",
-                "reference": "415720b7e3052f42de05c384134387771d3e183b",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/81a161d0b135df89951abd52296adf97deb0723d",
+                "reference": "81a161d0b135df89951abd52296adf97deb0723d",
                 "shasum": ""
             },
             "require": {
@@ -2076,7 +1982,7 @@
                 "security": "https://github.com/mockery/mockery/security/advisories",
                 "source": "https://github.com/mockery/mockery"
             },
-            "time": "2024-03-12T12:33:41+00:00"
+            "time": "2024-03-21T18:34:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2555,213 +2461,6 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "time": "2022-02-21T01:04:05+00:00"
-        },
-        {
-            "name": "php-mock/php-mock",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-mock/php-mock.git",
-                "reference": "fff1a621ebe54100fa3bd852e7be57773a0c0127"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-mock/php-mock/zipball/fff1a621ebe54100fa3bd852e7be57773a0c0127",
-                "reference": "fff1a621ebe54100fa3bd852e7be57773a0c0127",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0 || ^8.0",
-                "phpunit/php-text-template": "^1 || ^2 || ^3 || ^4"
-            },
-            "replace": {
-                "malkusch/php-mock": "*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "squizlabs/php_codesniffer": "^3.8"
-            },
-            "suggest": {
-                "php-mock/php-mock-phpunit": "Allows integration into PHPUnit testcase with the trait PHPMock."
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "autoload.php"
-                ],
-                "psr-4": {
-                    "phpmock\\": [
-                        "classes/",
-                        "tests/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "WTFPL"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Malkusch",
-                    "email": "markus@malkusch.de",
-                    "homepage": "http://markus.malkusch.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP-Mock can mock built-in PHP functions (e.g. time()). PHP-Mock relies on PHP's namespace fallback policy. No further extension is needed.",
-            "homepage": "https://github.com/php-mock/php-mock",
-            "keywords": [
-                "BDD",
-                "TDD",
-                "function",
-                "mock",
-                "stub",
-                "test",
-                "test double",
-                "testing"
-            ],
-            "support": {
-                "issues": "https://github.com/php-mock/php-mock/issues",
-                "source": "https://github.com/php-mock/php-mock/tree/2.5.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/michalbundyra",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-02-10T21:07:01+00:00"
-        },
-        {
-            "name": "php-mock/php-mock-integration",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-mock/php-mock-integration.git",
-                "reference": "ec6a00a8129d50ed0f07907c91e3274ca4ade877"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-mock/php-mock-integration/zipball/ec6a00a8129d50ed0f07907c91e3274ca4ade877",
-                "reference": "ec6a00a8129d50ed0f07907c91e3274ca4ade877",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6",
-                "php-mock/php-mock": "^2.5",
-                "phpunit/php-text-template": "^1 || ^2 || ^3 || ^4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7.27 || ^6 || ^7 || ^8 || ^9 || ^10 || ^11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "phpmock\\integration\\": "classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "WTFPL"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Malkusch",
-                    "email": "markus@malkusch.de",
-                    "homepage": "http://markus.malkusch.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Integration package for PHP-Mock",
-            "homepage": "https://github.com/php-mock/php-mock-integration",
-            "keywords": [
-                "BDD",
-                "TDD",
-                "function",
-                "mock",
-                "stub",
-                "test",
-                "test double"
-            ],
-            "support": {
-                "issues": "https://github.com/php-mock/php-mock-integration/issues",
-                "source": "https://github.com/php-mock/php-mock-integration/tree/2.3.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/michalbundyra",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-02-10T21:37:25+00:00"
-        },
-        {
-            "name": "php-mock/php-mock-phpunit",
-            "version": "2.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-mock/php-mock-phpunit.git",
-                "reference": "e1f7e795990b00937376e345883ea68ca3bda7e0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-mock/php-mock-phpunit/zipball/e1f7e795990b00937376e345883ea68ca3bda7e0",
-                "reference": "e1f7e795990b00937376e345883ea68ca3bda7e0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7",
-                "php-mock/php-mock-integration": "^2.3",
-                "phpunit/phpunit": "^6 || ^7 || ^8 || ^9 || ^10.0.17 || ^11"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.3.6"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "autoload.php"
-                ],
-                "psr-4": {
-                    "phpmock\\phpunit\\": "classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "WTFPL"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Malkusch",
-                    "email": "markus@malkusch.de",
-                    "homepage": "http://markus.malkusch.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Mock built-in PHP functions (e.g. time()) with PHPUnit. This package relies on PHP's namespace fallback policy. No further extension is needed.",
-            "homepage": "https://github.com/php-mock/php-mock-phpunit",
-            "keywords": [
-                "BDD",
-                "TDD",
-                "function",
-                "mock",
-                "phpunit",
-                "stub",
-                "test",
-                "test double",
-                "testing"
-            ],
-            "support": {
-                "issues": "https://github.com/php-mock/php-mock-phpunit/issues",
-                "source": "https://github.com/php-mock/php-mock-phpunit/tree/2.10.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/michalbundyra",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-02-11T07:24:16+00:00"
         },
         {
             "name": "php-parallel-lint/php-parallel-lint",
@@ -7251,41 +6950,6 @@
                 }
             ],
             "time": "2024-03-05T10:47:01+00:00"
-        },
-        {
-            "name": "xrstf/composer-php52",
-            "version": "v1.0.21",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer-php52/composer-php52.git",
-                "reference": "670ac996f93792f8de0427605cfef342b3429ff3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer-php52/composer-php52/zipball/670ac996f93792f8de0427605cfef342b3429ff3",
-                "reference": "670ac996f93792f8de0427605cfef342b3429ff3",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-default": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "xrstf\\Composer52": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "support": {
-                "issues": "https://github.com/composer-php52/composer-php52/issues",
-                "source": "https://github.com/composer-php52/composer-php52"
-            },
-            "time": "2022-06-08T03:23:46+00:00"
         },
         {
             "name": "yoast/phpunit-polyfills",
