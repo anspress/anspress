@@ -393,8 +393,10 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
-			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
-			$new_counts[ $type ] = (int) $row->count;
+			if ( is_object( $row ) && isset( $row->count ) ) {
+				$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+				$new_counts[ $type ] = (int) $row->count;
+			}
 		}
 		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
 	}
