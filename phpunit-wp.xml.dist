@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
+		backupGlobals="false"
+		backupStaticAttributes="false"
+		bootstrap="tests/WP/bootstrap.php"
+		colors="true"
+		convertDeprecationsToExceptions="true"
+		convertErrorsToExceptions="true"
+		convertNoticesToExceptions="true"
+		convertWarningsToExceptions="true"
+		forceCoversAnnotation="true"
+		processIsolation="false"
+		stopOnError="false"
+		stopOnFailure="false"
+		stopOnIncomplete="false"
+		stopOnSkipped="false"
+		verbose="true"
+	>
+	<testsuites>
+		<testsuite name="AnsPress-Core">
+			<directory prefix="Test" suffix=".php">./tests/WP</directory>
+		</testsuite>
+
+
+	</testsuites>
+
+	<coverage>
+		<include>
+			<directory suffix=".php">./includes/</directory>
+			<directory suffix=".php">./addons/</directory>
+			<directory suffix=".php">./admin/</directory>
+			<directory suffix=".php">./ajax/</directory>
+			<directory suffix=".php">./classes/</directory>
+			<directory suffix=".php">./includes/</directory>
+			<directory suffix=".php">./lib/</directory>
+			<directory suffix=".php">./widgets/</directory>
+			<directory suffix=".php">./anspress-question-answer.php</directory>
+			<directory suffix=".php">./activate.php</directory>
+			<directory suffix=".php">./loader.php</directory>
+		</include>
+		<exclude>
+			<directory suffix=".php">./addons/recaptcha/recaptcha/</directory>
+		</exclude>
+	</coverage>
+
+	<php>
+		<server name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="./vendor/yoast/phpunit-polyfills"/>
+	</php>
+
+</phpunit>

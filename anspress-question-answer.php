@@ -265,6 +265,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since  2.0.1
 		 * @access private
 		 * @since 4.2.0 Made constants compatible for code editors.
+		 * @codeCoverageIgnore
 		 */
 		private function setup_constants() {
 			$plugin_dir = wp_normalize_path( plugin_dir_path( __FILE__ ) );
@@ -287,6 +288,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @since  2.0.1
 		 * @since  4.2.0 Added categories/categories.php
+		 * @codeCoverageIgnore
 		 */
 		private function includes() {
 			require_once ANSPRESS_DIR . 'loader.php';

@@ -72,7 +72,9 @@ jobs:
           DB_NAME: wordpress_test
           DB_USER: root
           DB_PASS: root
-        run: composer run test:coverage-text
+        run: |
+          composer run coverage
+          composer run coverage-wp
 
       - name: Run multi-site tests
         env:
@@ -82,7 +84,9 @@ jobs:
           DB_USER: root
           DB_PASS: root
           WP_MULTISITE: true
-        run: composer run test:coverage-text
+        run: |
+          composer run coverage
+          composer run coverage-wp
 
       - name: Run PHP CodeSniffer
         run: |

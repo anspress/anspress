@@ -180,7 +180,7 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
 
 	$inserted = $wpdb->insert( $wpdb->ap_votes, $args, array( '%d', '%d', '%d', '%s', '%s', '%s' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 
-	if ( false !== $inserted ) {
+	if ( $inserted ) {
 		/**
 		 * Action triggered after inserting a vote.
 		 *
@@ -204,7 +204,7 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
  */
 function ap_get_votes( $args = array() ) {
 	if ( ! is_array( $args ) ) {
-		$args = array( 'vote_post_id' => $args );
+		$args = array( 'vote_post_id' => (int) $args );
 	}
 
 	global $wpdb;
@@ -213,7 +213,11 @@ function ap_get_votes( $args = array() ) {
 	// Single or multiple posts.
 	if ( isset( $args['vote_post_id'] ) && ! empty( $args['vote_post_id'] ) ) {
 		if ( is_array( $args['vote_post_id'] ) ) {
-			$where .= ' AND vote_post_id IN (' . sanitize_comma_delimited( $args['vote_post_id'], 'str' ) . ')';
+			$in_str = sanitize_comma_delimited( $args['vote_post_id'] );
+
+			if ( ! empty( $in_str ) ) {
+				$where .= ' AND vote_post_id IN (' . $in_str . ')';
+			}
 		} else {
 			$where .= ' AND vote_post_id = ' . (int) $args['vote_post_id'];
 		}
@@ -222,7 +226,10 @@ function ap_get_votes( $args = array() ) {
 	// Single or multiple users.
 	if ( isset( $args['vote_user_id'] ) && ! empty( $args['vote_user_id'] ) ) {
 		if ( is_array( $args['vote_user_id'] ) ) {
-			$where .= ' AND vote_user_id IN (' . sanitize_comma_delimited( $args['vote_user_id'] ) . ')';
+			$in_str = sanitize_comma_delimited( $args['vote_user_id'] );
+			if ( ! empty( $in_str ) ) {
+				$where .= ' AND vote_user_id IN (' . $in_str . ')';
+			}
 		} else {
 			$where .= ' AND vote_user_id = ' . (int) $args['vote_user_id'];
 		}
@@ -231,7 +238,11 @@ function ap_get_votes( $args = array() ) {
 	// Vote actors.
 	if ( isset( $args['vote_actor_id'] ) && ! empty( $args['vote_actor_id'] ) ) {
 		if ( is_array( $args['vote_actor_id'] ) ) {
-			$where .= ' AND vote_actor_id IN (' . sanitize_comma_delimited( $args['vote_actor_id'] ) . ')';
+			$in_str = sanitize_comma_delimited( $args['vote_actor_id'] );
+
+			if ( ! empty( $in_str ) ) {
+				$where .= ' AND vote_actor_id IN (' . $in_str . ')';
+			}
 		} else {
 			$where .= ' AND vote_actor_id = ' . (int) $args['vote_actor_id'];
 		}
@@ -240,15 +251,19 @@ function ap_get_votes( $args = array() ) {
 	// Single or multiple vote types.
 	if ( isset( $args['vote_type'] ) && ! empty( $args['vote_type'] ) ) {
 		if ( is_array( $args['vote_type'] ) ) {
-			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
+			$vote_type_in = sanitize_comma_delimited( $args['vote_type'], 'str' );
+
+			if ( ! empty( $vote_type_in ) ) {
+				$where .= ' AND vote_type IN (' . $vote_type_in . ')';
+			}
 		} else {
-			$where .= ' AND vote_type = "' . sanitize_text_field( $args['vote_type'] ) . '"';
+			$where .= $wpdb->prepare( ' AND vote_type = %s', $args['vote_type'] );
 		}
 	}
 
 	$results = $wpdb->get_results( $where ); // phpcs:ignore WordPress.DB
 
-	return $results;
+	return ! is_array( $results ) ? array() : $results;
 }
 
 /**
@@ -281,16 +296,23 @@ function ap_count_votes( $args ) {
 
 	if ( isset( $args['vote_type'] ) ) {
 		if ( is_array( $args['vote_type'] ) ) {
-			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $args['vote_type'], 'str' ) . ')';
+			$in_str = sanitize_comma_delimited( $args['vote_type'], 'str' );
+
+			if ( ! empty( $in_str ) ) {
+				$where .= ' AND vote_type IN (' . $in_str . ')';
+			}
 		} else {
-			$where .= " AND vote_type = '" . sanitize_text_field( $args['vote_type'] ) . "'";
+			$where .= $wpdb->prepare( ' AND vote_type = %s', $args['vote_type'] );
 		}
 	}
 
 	// Vote user id.
 	if ( isset( $args['vote_user_id'] ) ) {
 		if ( is_array( $args['vote_user_id'] ) ) {
-			$where .= ' AND vote_user_id IN (' . sanitize_comma_delimited( $args['vote_user_id'] ) . ')';
+			$vote_user_in = sanitize_comma_delimited( $args['vote_user_id'] );
+			if ( ! empty( $vote_user_in ) ) {
+				$where .= ' AND vote_user_id IN (' . $vote_user_in . ')';
+			}
 		} else {
 			$where .= " AND vote_user_id = '" . (int) $args['vote_user_id'] . "'";
 		}
@@ -299,18 +321,24 @@ function ap_count_votes( $args ) {
 	// Vote actor id.
 	if ( isset( $args['vote_actor_id'] ) ) {
 		if ( is_array( $args['vote_actor_id'] ) ) {
-			$where .= ' AND vote_actor_id IN (' . sanitize_comma_delimited( $args['vote_actor_id'] ) . ')';
+			$vote_actor_id_in = sanitize_comma_delimited( $args['vote_actor_id'] );
+			if ( ! empty( $vote_actor_id_in ) ) {
+				$where .= ' AND vote_actor_id IN (' . $vote_actor_id_in . ')';
+			}
 		} else {
-			$where .= " AND vote_actor_id = '" . (int) $args['vote_actor_id'] . "'";
+			$where .= $wpdb->prepare( ' AND vote_actor_id = %d', $args['vote_actor_id'] );
 		}
 	}
 
 	// Vote value.
 	if ( isset( $args['vote_value'] ) ) {
 		if ( is_array( $args['vote_value'] ) ) {
-			$where .= ' AND vote_value IN (' . sanitize_comma_delimited( $args['vote_value'], 'str' ) . ')';
+			$vote_value_in = sanitize_comma_delimited( $args['vote_value'], 'str' );
+			if ( ! empty( $vote_value_in ) ) {
+				$where .= ' AND vote_value IN (' . $vote_value_in . ')';
+			}
 		} else {
-			$where .= " AND vote_value = '" . sanitize_text_field( $args['vote_value'] ) . "'";
+			$where .= $wpdb->prepare( ' AND vote_value = %s', $args['vote_value'] );
 		}
 	}
 
@@ -365,8 +393,10 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	if ( false !== $rows ) {
 		foreach ( (array) $rows as $row ) {
-			$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
-			$new_counts[ $type ] = (int) $row->count;
+			if ( is_object( $row ) && isset( $row->count ) ) {
+				$type                = '-1' == $row->vote_value ? 'votes_down' : 'votes_up'; // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+				$new_counts[ $type ] = (int) $row->count;
+			}
 		}
 		$new_counts['votes_net'] = $new_counts['votes_up'] - $new_counts['votes_down'];
 	}
@@ -390,21 +420,31 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 
 	if ( ! empty( $type ) ) {
 		if ( is_array( $type ) ) {
-			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $type, 'str' ) . ')';
+			$vote_type_in = sanitize_comma_delimited( $type, 'str' );
+
+			if ( ! empty( $vote_type_in ) ) {
+				$where .= ' AND vote_type IN (' . $vote_type_in . ')';
+			}
 		} else {
-			$where .= " AND vote_type = '" . sanitize_text_field( $type ) . "'";
+			$where .= $wpdb->prepare( ' AND vote_type = %s', $type );
 		}
 	}
 
 	if ( ! empty( $value ) ) {
 		if ( is_array( $value ) ) {
-			$where .= ' AND vote_value IN (' . sanitize_comma_delimited( $value, 'str' ) . ')';
+			$value_in = sanitize_comma_delimited( $value, 'str' );
+
+			if ( ! empty( $value_in ) ) {
+				$where .= ' AND vote_value IN (' . $value_in . ')';
+			}
 		} else {
-			$where .= " AND vote_value = '" . sanitize_text_field( $value ) . "'";
+			$where .= $wpdb->prepare( ' AND vote_value = %s', $value );
 		}
 	}
 
-	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // phpcs:ignore WordPress.DB
+	$query = $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id );
+
+	$vote = $wpdb->get_row( $query ); // phpcs:ignore WordPress.DB
 
 	if ( ! empty( $vote ) ) {
 		return $vote;
@@ -497,12 +537,12 @@ function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true ) {
 		$vote_type = $up_vote ? 'vote_up' : 'vote_down';
 
 		/**
-			* Action ap_[vote_type]
-			* Action triggred after adding a vote for a post.
-			*
-			* @param integer $post_id Post ID.
-			* @param array   $counts All vote counts.
-			*/
+		 * Action ap_[vote_type]
+		 * Action triggred after adding a vote for a post.
+		 *
+		 * @param integer $post_id Post ID.
+		 * @param array   $counts All vote counts.
+		 */
 		do_action( 'ap_' . $vote_type, $post_id, $counts );
 
 		return $counts;

@@ -19,7 +19,6 @@
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "ergebnis/composer-normalize": "^2.28",
-        "lucatume/function-mocker": "^1.3",
         "phpro/grumphp": "^1.13",
         "phpunit/phpunit": "^9.6",
         "szepeviktor/phpstan-wordpress": "^1.3",
@@ -31,13 +30,29 @@
         "yoast/wp-test-utils": "dev-JRF/update-for-polyfills-2.0",
         "phpunit/php-code-coverage": "^9.2",
         "squizlabs/php_codesniffer": "^3.9",
-        "rregeer/phpunit-coverage-check": "^0.3.1",
-        "php-mock/php-mock-phpunit": "^2.10"
+        "rregeer/phpunit-coverage-check": "^0.3.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "test": "phpunit",
+        "test": [
+            "@php ./vendor/phpunit/phpunit/phpunit --no-coverage"
+        ],
+        "coverage": [
+            "XDEBUG_MODE=coverage ./vendor/phpunit/phpunit/phpunit --coverage-clover .coverage/cov.xml"
+        ],
+        "test-wp": [
+            "@php ./vendor/phpunit/phpunit/phpunit -c phpunit-wp.xml.dist --no-coverage"
+        ],
+        "coverage-wp": [
+            "XDEBUG_MODE=coverage ./vendor/phpunit/phpunit/phpunit -c phpunit-wp.xml.dist --coverage-clover .coverage/cov.xml"
+        ],
+        "integration-test": [
+            "@test-wp"
+        ],
+        "integration-coverage": [
+            "@coverage-wp"
+        ],
         "phpcs": "phpcs",
         "grumphp": "grumphp run",
         "phpstan": "phpstan --memory-limit=1G",
