@@ -7,6 +7,7 @@ use Yoast\WPTestUtils\BrainMonkey;
 
 require_once __DIR__ . '/../../vendor/yoast/wp-test-utils/src/BrainMonkey/bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/AnsPressTestHelpers.php';
 
 $GLOBALS['wp_version'] = '1.0';
 
