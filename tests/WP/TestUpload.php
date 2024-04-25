@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers \AnsPress_Uploader
+ * @package AnsPress\Tests\WP
+ */
 class TestUpload extends TestCase {
 
 	use Testcases\Common;

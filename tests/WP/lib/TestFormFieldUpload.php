@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers AnsPress\Form\Field\Upload
+ * @package AnsPress\Tests\WP
+ */
 class TestFormFieldUpload extends TestCase {
 
 	use Testcases\Common;

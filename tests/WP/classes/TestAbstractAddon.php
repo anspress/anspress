@@ -6,7 +6,7 @@ use AnsPress\Classes\AbstractAddon;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 /**
- *
+ * @covers AnsPress\Classes\AbstractAddon
  * @package AnsPress\Tests\WP
  */
 class TestAbstractAddon extends TestCase {

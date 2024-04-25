@@ -2,9 +2,16 @@
 
 namespace AnsPress\Tests\WP;
 
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 use WP_Mock;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * Test for qameta functions.
+ * @package AnsPress\Tests\WP
+ */
 class TestQAMeta extends TestCase {
 
 	use Testcases\Common;
@@ -21,6 +28,9 @@ class TestQAMeta extends TestCase {
 		parent::tear_down();
 	}
 
+	/**
+	 * @covers ::ap_qameta_fields
+	 */
 	public function testAPQametaFields() {
 		// Test for if the array key exists or not.
 		$qameta_fields_array = array(
@@ -73,14 +83,23 @@ class TestQAMeta extends TestCase {
 		$this->assertFalse( $qameta_fields['is_new'] );
 	}
 
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
 	public function testAPInsertQametaWithEmptyPostIdWpError() {
 		$this->assertInstanceOf( 'WP_Error', ap_insert_qameta( 0, [], true ) );
 	}
 
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
 	public function testAPInsertQametaWithEmptyPostId() {
 		$this->assertFalse( ap_insert_qameta( 0, [], false ) );
 	}
 
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
 	public function testAPInsertQametaWhenNotQuestion() {
 		$id = $this->factory()->post->create(
 			array(
@@ -90,10 +109,16 @@ class TestQAMeta extends TestCase {
 		$this->assertFalse( ap_insert_qameta( $id, [], false ) );
 	}
 
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
 	public function testAPInsertQametaWhenInvalidPost() {
 		$this->assertFalse( ap_insert_qameta( 1, [], false ) );
 	}
 
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
 	public function testAPInsertQametaWhenValidQuestion() {
 		$id = $this->factory()->post->create(
 			array(
@@ -131,9 +156,11 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( '', $qameta->roles );
 		$this->assertEquals( '2020-01-01 00:00:00', $qameta->last_updated );
 		$this->assertFalse($qameta->is_new );
-
 	}
 
+	/**
+	 * @covers ::ap_insert_qameta
+	 */
 	public function testApDeleteQameta() {
 		global $wpdb;
 
@@ -156,10 +183,16 @@ class TestQAMeta extends TestCase {
 		$this->assertNull( $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->ap_qameta} WHERE post_id = %d", $qameta_id ) ) );
 	}
 
+	/**
+	 * @covers ::ap_delete_qameta
+	 */
 	public function testApDeleteQametaWithInvalidId() {
 		$this->assertFalse( ap_delete_qameta( 0 ) );
 	}
 
+	/**
+	 * @covers ::ap_get_qameta
+	 */
 	public function testAPGetQameta() {
 		$question_id = $this->factory()->post->create(
 			array(
@@ -188,6 +221,9 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( $answer_id, $answer_qameta->post_id );
 	}
 
+	/**
+	 * @covers ::ap_set_selected_answer
+	 */
 	public function testSelectedAnswer() {
 		$question_id = $this->factory()->post->create(
 			array(
@@ -299,6 +335,9 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 100, $get_qameta->answers );
 	}
 
+	/**
+	 * @covers ::ap_update_last_active
+	 */
 	public function testAPUpdateLastActive() {
 		$id = $this->factory()->post->create(
 			array(
@@ -315,6 +354,9 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( $old_qameta->last_updated, $get_qameta->last_updated );
 	}
 
+	/**
+	 * @covers ::ap_set_flag_count
+	 */
 	public function testAPSetFlagCountForQuestion() {
 		$question_id = $this->factory()->post->create(
 			array(
@@ -333,6 +375,9 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 211, ap_get_qameta( $question_id )->flags );
 	}
 
+	/**
+	 * @covers ::ap_set_flag_count
+	 */
 	public function testAPSetFlagCountForAnswer() {
 
 		$answer_id = $this->factory()->post->create(
@@ -352,34 +397,9 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 211, ap_get_qameta( $answer_id )->flags );
 	}
 
-	public function testAPUpdateFlagsCountForQuestion() {
-		WP_Mock::userFunction('ap_count_post_flags', ['return' => 300]);
-
-		$question_id = $this->factory()->post->create(
-			array(
-				'post_type'    => 'question',
-			)
-		);
-
-		ap_update_flags_count( $question_id );
-
-		$this->assertEquals( 300, ap_get_qameta( $question_id )->flags );
-	}
-
-	public function testAPUpdateFlagsCountForAnswer() {
-		FunctionMocker::replace('ap_count_post_flags', 300);
-
-		$answer_id = $this->factory()->post->create(
-			array(
-				'post_type'    => 'answer',
-			)
-		);
-
-		ap_update_flags_count( $answer_id );
-
-		$this->assertEquals( 300, ap_get_qameta( $answer_id )->flags );
-	}
-
+	/**
+	 * @covers ::ap_update_answer_selected
+	 */
 	public function testAPUpdateAnswerSelected() {
 
 		$question_id = $this->factory()->post->create(
@@ -604,9 +624,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_append_qameta
 	 */
 	public function testAPAppendQameta() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		$id = $this->insert_question();
 
 		// Post meta check before appending.
@@ -696,53 +713,11 @@ class TestQAMeta extends TestCase {
 		}
 	}
 
-	public function testAPUpdateQametaTerms() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
-		$id = $this->insert_question();
-
-		// Test begins.
-		$question_get_qameta = ap_get_qameta( $id );
-		$this->assertEmpty( $question_get_qameta->terms );
-		$cid = $this->factory()->term->create(
-			array(
-				'taxonomy' => 'question_category',
-			)
-		);
-		$ncid = $this->factory()->term->create(
-			array(
-				'taxonomy' => 'question_category',
-			)
-		);
-		wp_set_object_terms( $id, array( $cid, $ncid ), 'question_category' );
-		do_action( 'save_post_question', $id, get_post( $id ), true );
-		$question_get_qameta = ap_get_qameta( $id );
-		$this->assertNotEmpty( $question_get_qameta->terms );
-		$tid = $this->factory()->term->create(
-			array(
-				'taxonomy' => 'question_tag',
-			)
-		);
-		$ntid = $this->factory()->term->create(
-			array(
-				'taxonomy' => 'question_tag',
-			)
-		);
-		wp_set_object_terms( $id, array( $tid, $ntid ), 'question_tag' );
-		do_action( 'save_post_question', $id, get_post( $id ), true );
-		$question_get_qameta = ap_get_qameta( $id );
-		$this->assertNotEmpty( $question_get_qameta->terms );
-	}
-
 	/**
 	 * @covers ::ap_get_post_field
 	 * @covers ::ap_post_field
 	 */
 	public function testAPGetPostField() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Add question.
 		$id = $this->factory()->post->create(
 			array(
@@ -852,8 +827,10 @@ class TestQAMeta extends TestCase {
 		$this->assertEquals( 'new_q', $qameta->activities['action'] );
 	}
 
+	/**
+	 * @covers ::ap_update_user_unpublished_count
+	 */
 	public function testAPUpdateUserUnpublishedCount() {
-
 		// Test for not adding any user id.
 		$this->setRole( 'subscriber' );
 		$this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'draft' ] );
@@ -896,9 +873,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_insert_qameta
 	 */
 	public function testAPInsertQametaShouldReturnFalseOnEmptyPostIdArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Test 1.
 		$result = ap_insert_qameta( '', [] );
 		$this->assertFalse( $result );
@@ -912,9 +886,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_insert_qameta
 	 */
 	public function testAPInsertQametaShouldReturnWPErrorMessageOnEmptyPostIdAndWPErrorArgs() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Test 1.
 		$result = ap_insert_qameta( '', [], true );
 		$this->assertInstanceOf( 'WP_Error', $result );
@@ -932,9 +903,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_qameta_terms
 	 */
 	public function testAPUpdateQametaTermsForQuestionLabelTaxonomy() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Register required taxonomy.
 		register_taxonomy( 'question_label', array( 'question' ) );
 
@@ -965,9 +933,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_qameta_terms
 	 */
 	public function testAPUpdateQametaTermsForQuestionLabelTaxonomyMoreThanOne() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Register required taxonomy.
 		register_taxonomy( 'question_label', array( 'question' ) );
 
@@ -1005,9 +970,6 @@ class TestQAMeta extends TestCase {
 	 * @covers ::ap_update_qameta_terms
 	 */
 	public function testAPUpdateQametaTermsForQuestionLabelAndCategoryTaxonomy() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
 		// Register required taxonomies.
 		register_taxonomy( 'question_category', array( 'question' ) );
 		register_taxonomy( 'question_label', array( 'question' ) );

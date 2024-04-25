@@ -9,24 +9,36 @@ class TestVotes extends TestCase {
 
 	use Testcases\Common;
 
+	/**
+	 * @covers \AnsPress_Vote
+	 */
 	public function testVoteHooks() {
 		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ 'AnsPress_Vote', 'delete_votes' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_before_delete_answer', [ 'AnsPress_Vote', 'delete_votes' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_deleted_votes', [ 'AnsPress_Vote', 'ap_deleted_votes' ], 10, 2 ) );
 	}
 
+	/**
+	 * @covers \AnsPress_Vote
+	 */
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Vote', 'vote' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Vote', 'delete_votes' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Vote', 'ap_deleted_votes' ) );
 	}
 
+	/**
+	 * @covers ::ap_vote_insert
+	 */
 	public function testApVoteInsertForQuestion() {
 		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
 		$ret = ap_vote_insert( $question_id, 1, 'vote', 111, '-11', '2024-01-01 00:00:00' );
 		$this->assertNotNull( $ret );
 	}
 
+	/**
+	 * @covers ::ap_vote_insert
+	 */
 	public function testApVoteInsertForCurrentUser() {
 		$this->setRole( 'subscriber' );
 		$ret = ap_vote_insert( 2, false, 'vote', 111, '-11', '2024-01-01 00:00:00' );
@@ -683,6 +695,9 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 5, $get_qameta->votes_net );
 	}
 
+	/**
+	 * @covers ::ap_delete_votes
+	 */
 	public function testApDeleteVotes()
 	{
 		global $wpdb;

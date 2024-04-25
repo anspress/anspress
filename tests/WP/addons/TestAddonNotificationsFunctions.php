@@ -9,7 +9,6 @@ class TestAddonNotificationsFunctions extends TestCase {
 	use Testcases\Common;
 
 	public function set_up() {
-		$this->markTestIncomplete();
 		parent::set_up();
 		ap_activate_addon( 'notifications.php' );
 		\AnsPress\Addons\ap_notification_addon_activation();

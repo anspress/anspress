@@ -127,6 +127,9 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $template_f . $file, ap_get_theme_location( $file ) );
 	}
 
+	/**
+	 * @covers ::ap_get_theme_url
+	 */
 	public function testApGetThemeUrl() {
 		$file = 'test.css';
 
@@ -184,6 +187,9 @@ class TestFunctions extends TestCase {
 		$this->assertEquals( $id, get_question_id() );
 	}
 
+	/**
+	 * @covers ::get_question_id
+	 */
 	public function testGetQuestionIDWithQuestionIDQueryVar() {
 		$this->assertEquals( 0, get_question_id() );
 		$id = $this->insert_question();

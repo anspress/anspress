@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers \AP_Form_Hooks
+ * @package AnsPress\Tests\WP
+ */
 class TestFormHooks extends TestCase {
 
 	use Testcases\Common;
