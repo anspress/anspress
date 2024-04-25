@@ -537,12 +537,12 @@ function ap_add_post_vote( $post_id, $user_id = 0, $up_vote = true ) {
 		$vote_type = $up_vote ? 'vote_up' : 'vote_down';
 
 		/**
-			* Action ap_[vote_type]
-			* Action triggred after adding a vote for a post.
-			*
-			* @param integer $post_id Post ID.
-			* @param array   $counts All vote counts.
-			*/
+		 * Action ap_[vote_type]
+		 * Action triggred after adding a vote for a post.
+		 *
+		 * @param integer $post_id Post ID.
+		 * @param array   $counts All vote counts.
+		 */
 		do_action( 'ap_' . $vote_type, $post_id, $counts );
 
 		return $counts;
