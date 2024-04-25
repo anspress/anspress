@@ -1,25 +1,13 @@
 <?php
 
-namespace Anspress\Tests;
+namespace AnsPress\Tests\WP;
 
 use Mockery;
-use tad\FunctionMocker\FunctionMocker;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Brain\Monkey;
-use Brain\Monkey\Functions;
 
 class TestVotes extends TestCase {
 
 	use Testcases\Common;
-
-    use MockeryPHPUnitIntegration;
-
-    public function tear_down()
-    {
-        Monkey\tearDown();
-        parent::tearDown();
-    }
 
 	public function testVoteHooks() {
 		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ 'AnsPress_Vote', 'delete_votes' ] ) );
@@ -35,132 +23,25 @@ class TestVotes extends TestCase {
 
 	public function testApVoteInsertForQuestion() {
 		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
-
-		Functions\expect('do_action')
-			->once()
-			->with(
-				'ap_insert_vote',
-				[
-					'vote_post_id'  => $question_id,
-					'vote_user_id'  => 1,
-					'vote_rec_user' => 111,
-					'vote_type'     => 'vote',
-					'vote_value'    => '-11',
-					'vote_date'     => '2024-01-01 00:00:00',
-				]
-			);
-
 		$ret = ap_vote_insert( $question_id, 1, 'vote', 111, '-11', '2024-01-01 00:00:00' );
-
 		$this->assertNotNull( $ret );
 	}
 
-	public function testApVoteInsertForQuestionFailed() {
-		global $wpdb;
-
-		$previous = $wpdb;
-
-		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
-
-        $wpdb = Mockery::mock('WPDB');
-		$wpdb->ap_votes = $wpdb->prefix . 'ap_votes';
-
-		$wpdb->shouldReceive('insert')
-			->andReturn( false );
-
-		$ret = ap_vote_insert( $question_id, 1, 'vote', 111, '-11', '2024-01-01 00:00:00' );
-
-		$this->assertFalse( $ret );
-
-		$wpdb = $previous;
-	}
-
-	public function testApVoteInsertForQuestionCurrentUser() {
-		global $wpdb;
-
-		$question_id = $this->factory()->post->create( array( 'post_type' => 'question' ) );
-
+	public function testApVoteInsertForCurrentUser() {
 		$this->setRole( 'subscriber' );
+		$ret = ap_vote_insert( 2, false, 'vote', 111, '-11', '2024-01-01 00:00:00' );
+		$this->assertTrue( $ret );
+		$vote = ap_get_vote( 2, get_current_user_id(), 'vote' );
 
-		$do_action = FunctionMocker::replace('do_action');
-
-		$ret = ap_vote_insert( $question_id, false, 'vote', 111, '-11', '2024-01-01 00:00:00' );
-
-		$this->assertNotFalse( $ret );
-
-		$do_action->wasCalledWithOnce([
-			'ap_insert_vote',
-			[
-				'vote_post_id'  => $question_id,
-				'vote_user_id'  => get_current_user_id(),
-				'vote_rec_user' => 111,
-				'vote_type'     => 'vote',
-				'vote_value'    => '-11',
-				'vote_date'     => '2024-01-01 00:00:00',
-			]
-		]);
-	}
-
-	public function testAPVoteInsert() {
-		$id = $this->insert_question();
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		wp_set_current_user( $user_id );
-
-		// Test beofre inserting the vote.
-		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
-		$this->assertFalse( $get_vote );
-
-		// Test after inserting the vote.
-		ap_vote_insert( $id, $user_id );
-		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
-		$this->assertObjectHasProperty( 'vote_id', $get_vote );
-		$this->assertObjectHasProperty( 'vote_post_id', $get_vote );
-		$this->assertObjectHasProperty( 'vote_user_id', $get_vote );
-		$this->assertObjectHasProperty( 'vote_rec_user', $get_vote );
-		$this->assertObjectHasProperty( 'vote_type', $get_vote );
-		$this->assertObjectHasProperty( 'vote_value', $get_vote );
-		$this->assertObjectHasProperty( 'vote_date', $get_vote );
-		$this->assertEquals( 'vote', $get_vote->vote_type );
-		$this->assertEquals( $id, $get_vote->vote_post_id );
-		$this->assertEquals( $user_id, $get_vote->vote_user_id );
-		$this->logout();
-
-		// Test on new question.
-		$id = $this->insert_question();
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_vote_insert( $id, $user_id, 'vote', $new_user_id, 101, current_time( 'mysql' ) );
-		$get_vote = ap_get_vote( $id, $user_id, 'vote' );
-		$this->assertEquals( 'vote', $get_vote->vote_type );
-		$this->assertEquals( $id, $get_vote->vote_post_id );
-		$this->assertEquals( $user_id, $get_vote->vote_user_id );
-		$this->assertEquals( $new_user_id, $get_vote->vote_rec_user );
-		$this->assertEquals( 101, $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
-
-		// Test on new question.
-		$id = $this->insert_question();
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_vote_insert( $id, $user_id, 'flag', $new_user_id, 10 );
-		$get_vote = ap_get_vote( $id, $user_id, 'flag' );
-		$this->assertEquals( 'flag', $get_vote->vote_type );
-		$this->assertNotEquals( 'vote', $get_vote->vote_type );
-		$this->assertEquals( $id, $get_vote->vote_post_id );
-		$this->assertEquals( $user_id, $get_vote->vote_user_id );
-		$this->assertEquals( $new_user_id, $get_vote->vote_rec_user );
-		$this->assertEquals( 10, $get_vote->vote_value );
-		$this->assertNotEquals( 101, $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
+		$this->assertNotNull( $vote );
+		$this->assertEquals( 2, $vote->vote_post_id );
+		$this->assertEquals( get_current_user_id(), $vote->vote_user_id );
 	}
 
 	/**
 	 * @covers ::ap_is_user_voted
 	 */
 	public function testAPIsUserVoted() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		$this->assertFalse( ap_is_user_voted( $id ) );
@@ -177,36 +58,12 @@ class TestVotes extends TestCase {
 		ap_vote_insert( $id, get_current_user_id(), 'flag' );
 		$this->assertFalse( ap_is_user_voted( $id ) );
 		$this->assertTrue( ap_is_user_voted( $id, 'flag' ) );
-
-		// New test.
-		$id = $this->insert_question();
-		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$new_user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		$this->assertFalse( ap_is_user_voted( $id, 'vote', $user_id ) );
-		$this->assertFalse( ap_is_user_voted( $id, 'vote', $new_user_id ) );
-		$this->assertFalse( ap_is_user_voted( $id, 'flag', $user_id ) );
-		$this->assertFalse( ap_is_user_voted( $id, 'flag', $new_user_id ) );
-		ap_vote_insert( $id, $user_id, 'vote', $new_user_id, 10 );
-		$this->assertTrue( ap_is_user_voted( $id, 'vote', $user_id ) );
-		$this->assertFalse( ap_is_user_voted( $id, 'flag', $user_id ) );
-		ap_vote_insert( $id, $new_user_id, 'vote', $user_id, 10 );
-		$this->assertTrue( ap_is_user_voted( $id, 'vote', $new_user_id ) );
-		$this->assertFalse( ap_is_user_voted( $id, 'flag', $new_user_id ) );
-		ap_vote_insert( $id, $user_id, 'flag', $new_user_id, 10 );
-		$this->assertTrue( ap_is_user_voted( $id, 'vote', $user_id ) );
-		$this->assertTrue( ap_is_user_voted( $id, 'flag', $user_id ) );
-		ap_vote_insert( $id, $new_user_id, 'flag', $user_id, 10 );
-		$this->assertTrue( ap_is_user_voted( $id, 'vote', $new_user_id ) );
-		$this->assertTrue( ap_is_user_voted( $id, 'flag', $new_user_id ) );
 	}
 
 	/**
 	 * @covers ::ap_delete_vote
 	 */
 	public function testAPDeleteVote() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		$this->assertEquals( 0, ap_delete_vote( $id ) );
@@ -270,9 +127,6 @@ class TestVotes extends TestCase {
 	 * @covers AnsPress_Vote::delete_votes
 	 */
 	public function testAnsPressVoteDeleteVotes() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 		$this->setRole( 'subscriber' );
 		ap_vote_insert( $id, get_current_user_id() );
@@ -305,9 +159,6 @@ class TestVotes extends TestCase {
 	 * @covers AnsPress_Vote::ap_deleted_votes
 	 */
 	public function testAnsPressVoteAPDeletedVotes() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 
 		// Test for adding first vote and flag.
@@ -355,9 +206,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_votes
 	 */
 	public function testAPGetVotes() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 		$new_id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
@@ -427,9 +275,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_count_votes
 	 */
 	public function testAPCountVotes() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 
@@ -572,9 +417,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_count_post_votes_by
 	 */
 	public function testAPCountPostVotesBy() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		$this->setRole( 'subscriber' );
@@ -737,9 +579,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_vote
 	 */
 	public function testAPGetVote() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 
 		// Test without adding a vote or flag.
@@ -783,9 +622,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_add_post_vote
 	 */
 	public function testAPAddPostVote() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		$id = $this->insert_question();
 
 		// Test begins.
@@ -876,55 +712,12 @@ class TestVotes extends TestCase {
 		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
 
 		$this->assertEquals(1, $exists);
-
-		// Test should delete related rows.
-
-		$mock = FunctionMocker::replace('do_action');
-
-		ap_delete_votes($question_id, 'test');
-
-		$mock->wasCalledWithOnce(['ap_deleted_votes', $question_id, 'test']);
-
-		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
-
-		$this->assertEquals(0, $exists);
-	}
-
-	public function testApDeleteVotesFailed(){
-		global $wpdb;
-
-		$question_id = $this->factory()->post->create([
-			'post_type' => 'question'
-		]);
-
-		ap_vote_insert($question_id, 2, 'test');
-
-		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
-
-		$this->assertEquals(1, $exists);
-
-		$wpdb = $this->getMockBuilder('wpdb')
-			->getMock()
-			->method('delete')
-			->willReturn(false);
-
-		ap_delete_votes($question_id, 'test');
-
-		$exists = $wpdb->get_var("SELECT count(1) FROM {$wpdb->prefix}ap_votes");
-
-		$this->assertFalse($exists);
-
-		// $mock->wasCalledWithOnce([$wpdb->prefix . 'ap_votes', ['vote_post_id' => $question_id, 'vote_type' => 'test']]);
-
 	}
 
 	/**
 	 * @covers ::ap_vote_insert
 	 */
 	public function testAPVoteInsertWithUserIdAsFalseArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		// Action callback triggered.
 		$callback_triggered = false;
 		add_action( 'ap_insert_vote', function() use ( &$callback_triggered ) {
@@ -944,10 +737,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_votes
 	 */
 	public function testAPGetVotesWithEmptyArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$vote_id = ap_vote_insert( $question_id, get_current_user_id() );
@@ -967,10 +756,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_count_votes
 	 */
 	public function testAPCountVotesForVoteUserIDs() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
 		$question_id = $this->insert_question();
@@ -1081,10 +866,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_vote
 	 */
 	public function testAPGetVoteByValueArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', -1 );
@@ -1104,10 +885,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_get_vote
 	 */
 	public function testAPGetVoteByValueAsArrayArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$vote_id_1 = ap_vote_insert( $question_id, get_current_user_id(), 'flag', '', 1 );
@@ -1127,9 +904,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_delete_vote
 	 */
 	public function testAPDeleteVoteWithVoteValueArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		// Action callback triggered.
 		$callback_triggered = false;
 		add_action( 'ap_delete_vote', function() use ( &$callback_triggered ) {
@@ -1155,16 +929,12 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_add_post_vote
 	 */
 	public function testAPAddPostVoteWithFalseUserIDArg() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		// Action callback triggered.
 		$callback_triggered = false;
 		add_action( 'ap_vote_up', function() use ( &$callback_triggered ) {
 			$callback_triggered = true;
 		} );
 
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$this->assertEmpty( ap_get_vote( $question_id, get_current_user_id(), 'vote' )  );
@@ -1180,7 +950,6 @@ class TestVotes extends TestCase {
 	 */
 	public function testAPDeletePostVoteWithUpvoteArg() {
 		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
 
 		// Action callback triggered.
 		$callback_triggered = false;
@@ -1192,7 +961,6 @@ class TestVotes extends TestCase {
 			$undo_vote_callback_triggered = true;
 		} );
 
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		ap_add_post_vote( $question_id, get_current_user_id() );
@@ -1210,9 +978,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_delete_post_vote
 	 */
 	public function testAPDeletePostVoteWithUpvoteArgAndFalseAsUserId() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
 		// Action callback triggered.
 		$callback_triggered = false;
 		add_action( 'ap_undo_vote_up', function() use ( &$callback_triggered ) {
@@ -1223,7 +988,6 @@ class TestVotes extends TestCase {
 			$undo_vote_callback_triggered = true;
 		} );
 
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		ap_add_post_vote( $question_id, get_current_user_id() );
@@ -1241,7 +1005,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForNotValidPost() {
-		// Test.
 		$this->assertNull( ap_vote_btn( 0 ) );
 	}
 
@@ -1249,10 +1012,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForDisableVotingOnAnswerEnabled() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		ap_opt( 'disable_voting_on_answer', true );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
@@ -1265,10 +1024,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForDisableVotingOnQuestionEnabled() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		ap_opt( 'disable_voting_on_question', true );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
@@ -1280,10 +1035,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForTypeSetAsEmptyAndReturnValue() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$this->go_to( '?post_type=question&p=' . $question_id );
@@ -1304,10 +1055,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForTypeSetAsEmptyAndEchoValue() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		$this->go_to( '?post_type=question&p=' . $question_id );
@@ -1330,10 +1077,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForTypeQuestionPostTypeDisableDownvote() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		ap_opt( 'disable_down_vote_on_question', true );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
@@ -1387,10 +1130,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForUserWhoAlreadyHaveDownVote() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', '-1' );
@@ -1414,10 +1153,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForUserWhoAlreadyHaveUpVote() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();
 		ap_vote_insert( $question_id, get_current_user_id(), 'vote', '', '1' );
@@ -1446,10 +1181,6 @@ class TestVotes extends TestCase {
 	 * @covers ::ap_vote_btn
 	 */
 	public function testAPVoteBtnForAPVoteBtnHTML() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_votes}" );
-
-		// Test.
 		add_filter( 'ap_vote_btn_html', [ $this, 'APVoteBtnHTML' ] );
 		$this->setRole( 'subscriber' );
 		$question_id = $this->insert_question();

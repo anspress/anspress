@@ -1,6 +1,6 @@
 <?php
 
-namespace Anspress\Tests;
+namespace AnsPress\Tests\WP;
 
 use AnsPress_Breadcrumbs_Widget;
 use Yoast\WPTestUtils\WPIntegration\TestCase;

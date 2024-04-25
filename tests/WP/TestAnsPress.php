@@ -1,6 +1,6 @@
 <?php
 
-namespace Anspress\Tests;
+namespace AnsPress\Tests\WP;
 
 use AnsPress;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;

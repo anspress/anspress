@@ -1,13 +1,13 @@
 <?php
 
-namespace Anspress\Tests;
+namespace AnsPress\Tests\WP;
 
 use AnsPress\Classes\AbstractAddon;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 /**
  *
- * @package Anspress\Tests
+ * @package AnsPress\Tests\WP
  */
 class TestAbstractAddon extends TestCase {
 	public function testClassProperties() {

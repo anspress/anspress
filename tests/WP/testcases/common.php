@@ -1,6 +1,6 @@
 <?php
 
-namespace AnsPress\Tests\Testcases;
+namespace AnsPress\Tests\WP\Testcases;
 
 trait Common {
 

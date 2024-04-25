@@ -1,6 +1,6 @@
 <?php
 
-namespace Anspress\Tests;
+namespace AnsPress\Tests\WP;
 
 use WP_Mock;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
