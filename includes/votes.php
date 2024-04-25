@@ -420,21 +420,31 @@ function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
 
 	if ( ! empty( $type ) ) {
 		if ( is_array( $type ) ) {
-			$where .= ' AND vote_type IN (' . sanitize_comma_delimited( $type, 'str' ) . ')';
+			$vote_type_in = sanitize_comma_delimited( $type, 'str' );
+
+			if ( ! empty( $vote_type_in ) ) {
+				$where .= ' AND vote_type IN (' . $vote_type_in . ')';
+			}
 		} else {
-			$where .= " AND vote_type = '" . sanitize_text_field( $type ) . "'";
+			$where .= $wpdb->prepare( ' AND vote_type = %s', $type );
 		}
 	}
 
 	if ( ! empty( $value ) ) {
 		if ( is_array( $value ) ) {
-			$where .= ' AND vote_value IN (' . sanitize_comma_delimited( $value, 'str' ) . ')';
+			$value_in = sanitize_comma_delimited( $value, 'str' );
+
+			if ( ! empty( $value_in ) ) {
+				$where .= ' AND vote_value IN (' . $value_in . ')';
+			}
 		} else {
-			$where .= " AND vote_value = '" . sanitize_text_field( $value ) . "'";
+			$where .= $wpdb->prepare( ' AND vote_value = %s', $value );
 		}
 	}
 
-	$vote = $wpdb->get_row( $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id ) ); // phpcs:ignore WordPress.DB
+	$query = $where . $wpdb->prepare( ' AND vote_post_id = %d AND  vote_user_id = %d LIMIT 1', $post_id, $user_id );
+
+	$vote = $wpdb->get_row( $query ); // phpcs:ignore WordPress.DB
 
 	if ( ! empty( $vote ) ) {
 		return $vote;
