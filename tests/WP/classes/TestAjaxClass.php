@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers \AnsPress\Classes\Ajax
+ * @package AnsPress\Tests\WP
+ */
 class TestAjaxClass extends TestCase {
 
 	public function testClassProperties() {

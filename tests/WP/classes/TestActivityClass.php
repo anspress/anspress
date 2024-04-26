@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers \AnsPress\Activity
+ * @package AnsPress\Tests\WP
+ */
 class TestActivityClass extends TestCase {
 
 	public function testClassProperties() {
