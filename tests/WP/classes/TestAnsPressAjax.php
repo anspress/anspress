@@ -1,10 +1,15 @@
 <?php
 
-namespace AnsPress\Tests\WP;
+namespace AnsPress\Tests\WP\Classes;
 
 use AnsPress\WPTestUtils\WPIntegration\TestCaseAjax;
+use AnsPress\Tests\WP\Testcases;
 
-class TestAjaxHooks extends TestCaseAjax {
+/**
+ * @covers \AnsPress_Ajax
+ * @package AnsPress\Tests\WP
+ */
+class TestAnsPressAjax extends TestCaseAjax {
 
 	use Testcases\Ajax;
 	use Testcases\Common;

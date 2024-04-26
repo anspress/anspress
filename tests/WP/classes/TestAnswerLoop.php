@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers \Answers_Query
+ * @package AnsPress\Tests\WP
+ */
 class TestAnswerLoop extends TestCase {
 
 	use TestCases\Common;

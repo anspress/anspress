@@ -4,7 +4,7 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestQAQuery extends TestCase {
+class TestQuestionQuery extends TestCase {
 
 	use Testcases\Common;
 
@@ -20,11 +20,17 @@ class TestQAQuery extends TestCase {
 		parent::tear_down();
 	}
 
+	/**
+	 * @covers \Question_Query
+	 */
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'Question_Query' );
 		$this->assertTrue( $class->hasProperty( 'count_request' ) && $class->getProperty( 'count_request' )->isPublic() );
 	}
 
+	/**
+	 * @covers \Question_Query
+	 */
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'Question_Query', '__construct' ) );
 		$this->assertTrue( method_exists( 'Question_Query', 'get_questions' ) );
@@ -853,7 +859,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_have_attach( $id ) );
 
 		// Test after adding the attachments.
-		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $id );
+		$attachment_id = $this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/files/anspress.pdf', $id );
 		ap_update_post_attach_ids( $id );
 		$this->assertTrue( ap_have_attach( $id ) );
 		$this->assertNotEmpty( ap_have_attach( $id ) );
@@ -882,7 +888,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_get_attach( $qid_1 ) );
 
 		// Test after adding the attachments.
-		$attachment_id_1 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $qid_1 );
+		$attachment_id_1 = $this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/question.png', $qid_1 );
 		ap_update_post_attach_ids( $qid_1 );
 		$this->assertIsArray( ap_get_attach( $qid_1 ) );
 		$this->assertNotEmpty( ap_get_attach( $qid_1 ) );
@@ -894,7 +900,7 @@ class TestQAQuery extends TestCase {
 		$this->assertEmpty( ap_get_attach( $qid_2 ) );
 
 		// Test after adding the attachments.
-		$attachment_id_2 = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $qid_2 );
+		$attachment_id_2 = $this->factory()->attachment->create_upload_object( dirname( __DIR__ ) . '/assets/img/answer.png', $qid_2 );
 		ap_update_post_attach_ids( $qid_2 );
 		$this->assertIsArray( ap_get_attach( $qid_2 ) );
 		$this->assertNotEmpty( ap_get_attach( $qid_2 ) );
@@ -902,9 +908,9 @@ class TestQAQuery extends TestCase {
 
 		// Test for array values on adding the attachments.
 		$q_id    = $this->insert_question();
-		$pdf_id  = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/files/anspress.pdf', $q_id );
-		$png1_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/question.png', $q_id );
-		$png2_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/img/answer.png', $q_id );
+		$pdf_id  = $this->factory()->attachment->create_upload_object( dirname( __DIR__ )  . '/assets/files/anspress.pdf', $q_id );
+		$png1_id = $this->factory()->attachment->create_upload_object( dirname( __DIR__ )  . '/assets/img/question.png', $q_id );
+		$png2_id = $this->factory()->attachment->create_upload_object( dirname( __DIR__ )  . '/assets/img/answer.png', $q_id );
 		ap_update_post_attach_ids( $q_id );
 		$this->assertEquals( [ $pdf_id, $png1_id, $png2_id ], ap_get_attach( $q_id ) );
 	}

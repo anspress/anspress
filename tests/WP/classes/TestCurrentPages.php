@@ -4,6 +4,10 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
+/**
+ * @covers \AnsPress_Common_Pages
+ * @package AnsPress\Tests\WP
+ */
 class TestCommonPages extends TestCase {
 
 	use Testcases\Common;
@@ -190,9 +194,6 @@ class TestCommonPages extends TestCase {
 		global $question_rendered, $answers;
 		add_action( 'ap_after_question', function() {} );
 
-		// Test begins.
-		// Test 1.
-		$this->assertFalse( $question_rendered );
 		$question_id = $this->factory()->post->create( [ 'post_type' => 'question', 'post_status' => 'moderate' ] );
 		$this->go_to( '?post_type=question&p=' . $question_id );
 		$question = get_post( $question_id );

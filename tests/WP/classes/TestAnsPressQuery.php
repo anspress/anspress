@@ -4,7 +4,11 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestAnsPress_Query extends TestCase {
+/**
+ * @covers \AnsPress_Query
+ * @package AnsPress\Tests\WP
+ */
+class TestAnsPressQuery extends TestCase {
 
 	public function testClassProperties() {
 		$class = new \ReflectionClass( 'AnsPress_Query' );
