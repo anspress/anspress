@@ -6,15 +6,24 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestPostStatus extends TestCase {
 
+	/**
+	 * @covers \AnsPress_Post_Status::register_post_status
+	 */
 	public function testMethodExists() {
 		$this->assertTrue( method_exists( 'AnsPress_Post_Status', 'register_post_status' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Status', 'change_post_status' ) );
 	}
 
+	/**
+	 * @covers \AnsPress_Post_Status::register_post_status
+	 */
 	public function TestHooks() {
 		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Post_Status', 'register_post_status' ] ) );
 	}
 
+	/**
+	 * @covers \AnsPress_Post_Status::register_post_status
+	 */
 	public function testRegisterPostStatuses() {
 		\AnsPress_Post_Status::register_post_status();
 		global $wp_post_statuses;
@@ -71,7 +80,7 @@ class TestPostStatus extends TestCase {
 			$question_id,
 			array(
 				'selected_id'  => '',
-				'last_updated' => current_time( 'mysql' ),
+				'last_updated' => '2021-01-01 00:00:00',
 				'closed'       => 1,
 			)
 		);
@@ -163,7 +172,7 @@ class TestPostStatus extends TestCase {
 			$question_id,
 			array(
 				'selected_id'  => '',
-				'last_updated' => current_time( 'mysql' ),
+				'last_updated' => '2021-01-01 00:00:00',
 				'closed'       => 1,
 			)
 		);

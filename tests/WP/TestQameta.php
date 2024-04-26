@@ -2,11 +2,8 @@
 
 namespace AnsPress\Tests\WP;
 
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExpectationFailedException;
-use WP_Mock;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
+use Brain\Monkey\Functions;
 
 /**
  * Test for qameta functions.
@@ -346,12 +343,14 @@ class TestQAMeta extends TestCase {
 				'post_type'    => 'question',
 			)
 		);
-		ap_insert_qameta( $id, [] );
+		ap_insert_qameta( $id, [
+			'last_updated' => '2020-01-01 00:00:00',
+		] );
 		$old_qameta = ap_get_qameta( $id );
 
 		ap_update_last_active( $id );
 		$get_qameta = ap_get_qameta( $id );
-		$this->assertEquals( $old_qameta->last_updated, $get_qameta->last_updated );
+		$this->assertNotEquals( $old_qameta->last_updated, $get_qameta->last_updated );
 	}
 
 	/**
