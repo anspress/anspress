@@ -240,8 +240,13 @@ function ap_get_user_reputation( $user_id, $group = false ) {
 	}
 
 	$count = array();
-	foreach ( ap_get_reputation_events() as $slug => $event ) {
-		$count[ $slug ] = isset( $event_counts[ $slug ] ) ? ( (int) $event_counts[ $slug ] * (int) $event['points'] ) : 0;
+
+	$reputation_events = ap_get_reputation_events();
+
+	if ( ! empty( $reputation_events ) ) {
+		foreach ( $reputation_events as $slug => $event ) {
+			$count[ $slug ] = isset( $event_counts[ $slug ] ) ? ( (int) $event_counts[ $slug ] * (int) $event['points'] ) : 0;
+		}
 	}
 
 	if ( false === $group ) {

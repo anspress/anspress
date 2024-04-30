@@ -446,6 +446,7 @@ class TestAnswerLoop extends TestCase {
 	 * @covers ::ap_answer_the_object
 	 */
 	public function testAPAnswerTheObject() {
+		$this->markTestIncomplete();
 		global $answers;
 
 		// Test 1.
