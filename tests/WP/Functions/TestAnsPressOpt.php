@@ -4,7 +4,7 @@ namespace AnsPress\Tests\WP;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestOptions extends TestCase {
+class TestAnsPressOpt extends TestCase {
 
 	/**
 	 * @covers ::ap_opt

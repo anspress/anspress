@@ -6,7 +6,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestFunctions extends TestCase {
 
-	use Testcases\Common;
+	use \AnsPress\Tests\WP\Testcases\Common;
 
 	public function set_up() {
 		parent::set_up();

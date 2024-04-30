@@ -1,12 +1,12 @@
 <?php
 
-namespace AnsPress\Tests\WP;
+namespace AnsPress\Tests\WP\Fuctions;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
-class TestFlag extends TestCase {
+class TestFlagFunctions extends TestCase {
 
-	use Testcases\Common;
+	use \AnsPress\Tests\WP\Testcases\Common;
 
 	/**
 	 * @covers ::ap_is_user_flagged

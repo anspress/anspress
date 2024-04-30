@@ -1,12 +1,12 @@
 <?php
 
-namespace AnsPress\Tests\WP;
+namespace AnsPress\Tests\WP\Functions;
 
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 class TestThemeFunctions extends TestCase {
 
-	use Testcases\Common;
+	use \AnsPress\Tests\WP\Testcases\Common;
 
 	public function set_up() {
 		parent::set_up();
