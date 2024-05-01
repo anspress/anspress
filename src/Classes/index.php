@@ -1,0 +1,2 @@
+<?php
+// Intentionally left blank.

@@ -1,6 +1,8 @@
 {
   "redefinable-internals": [
     "file_exists",
-    "filesize"
+    "filesize",
+    "strpos",
+    "fopen"
   ]
 }
