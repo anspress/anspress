@@ -35,6 +35,8 @@ if ( ! defined( 'WPINC' ) ) {
 // Define database version.
 define( 'AP_DB_VERSION', 38 );
 
+define( 'ANSPRESS_PLUGIN_ROOT_FILE', __FILE__ );
+
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
 
@@ -649,6 +651,10 @@ add_filter( 'wpmu_drop_tables', array( 'AnsPress_Init', 'drop_blog_tables' ), 10
 
 require_once __DIR__ . '/includes/class/roles-cap.php';
 require_once __DIR__ . '/includes/class/class-singleton.php';
+require_once __DIR__ . '/src/autoloader.php';
+
+// Load new container class.
+AnsPress\Core\Classes\Plugin::getInstance();
 
 /**
  * Register hooks that are fired when the plugin is activated or deactivated.

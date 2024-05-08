@@ -34,6 +34,7 @@
 			<directory suffix=".php">./ajax/</directory>
 			<directory suffix=".php">./classes/</directory>
 			<directory suffix=".php">./includes/</directory>
+			<directory suffix=".php">./src/</directory>
 			<directory suffix=".php">./lib/</directory>
 			<directory suffix=".php">./widgets/</directory>
 			<directory suffix=".php">./anspress-question-answer.php</directory>

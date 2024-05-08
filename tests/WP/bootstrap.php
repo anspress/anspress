@@ -12,6 +12,8 @@ $PHP_SELF = $GLOBALS['PHP_SELF'] = $_SERVER['PHP_SELF'] = '/index.php';
 
 $plugin_dir = dirname( dirname( dirname( __FILE__ ) ) );
 
+define( 'ANSPRESS_PLUGIN_DIR', $plugin_dir );
+
 require_once $plugin_dir . '/vendor/autoload.php';
 
 require_once $plugin_dir . '/vendor/yoast/wp-test-utils/src/WPIntegration/bootstrap-functions.php';
@@ -33,6 +35,7 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
+
 
 /**
  * Manually load the plugins.
