@@ -46,7 +46,6 @@ class TestAnsPressAjax extends TestCaseAjax {
 	 */
 	public function testInit() {
 		$instance = \AnsPress_Ajax::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_action( 'ap_ajax_suggest_similar_questions', [ 'AnsPress_Ajax', 'suggest_similar_questions' ] ) );

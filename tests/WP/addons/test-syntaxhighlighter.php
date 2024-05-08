@@ -45,7 +45,6 @@ class TestAddonSyntaxHighlighter extends TestCase {
 
 	public function testHooksFilters() {
 		$instance = \Anspress\Addons\Syntax_Highlighter::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_filter( 'wp_enqueue_scripts', [ $instance, 'scripts' ] ) );

@@ -9,7 +9,7 @@ class TestActivity extends TestCase {
 	use Testcases\Common;
 
 	/**
-	 * @covers AnsPress\Activity_Helper::instance
+	 * @covers AnsPress\Activity_Helper
 	 */
 	public function testInstance() {
 		$class = new \ReflectionClass( 'AnsPress\Activity_Helper' );
@@ -54,7 +54,6 @@ class TestActivity extends TestCase {
 		$hooks = $reflection->getMethod( 'hooks' );
 		$hooks->setAccessible( true );
 		$hooks->invoke( $instance );
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_action( 'before_delete_post', [ 'AnsPress\Activity_Helper', '_before_delete' ] ) );

@@ -55,12 +55,12 @@ class Akismet extends \AnsPress\Singleton {
 
 		ap_add_default_options( array( 'spam_post_action' => 'moderate' ) );
 
-		anspress()->add_filter( 'ap_settings_menu_features_groups', $this, 'add_to_settings_page' );
-		anspress()->add_filter( 'ap_form_options_features_akismet', $this, 'option_form' );
-		anspress()->add_action( 'ap_after_question_form_processed', $this, 'new_question_answer' );
-		anspress()->add_action( 'ap_after_answer_form_processed', $this, 'new_question_answer' );
-		anspress()->add_action( 'admin_action_ap_mark_spam', $this, 'submit_spam' );
-		anspress()->add_action( 'post_row_actions', $this, 'row_actions', 10, 2 );
+		add_filter( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
+		add_filter( 'ap_form_options_features_akismet', array( $this, 'option_form' ) );
+		add_action( 'ap_after_question_form_processed', array( $this, 'new_question_answer' ) );
+		add_action( 'ap_after_answer_form_processed', array( $this, 'new_question_answer' ) );
+		add_action( 'admin_action_ap_mark_spam', array( $this, 'submit_spam' ) );
+		add_action( 'post_row_actions', array( $this, 'row_actions' ), 10, 2 );
 	}
 
 	/**

@@ -49,10 +49,6 @@ class TestAnsPress extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress', 'includes' ) );
 		$this->assertTrue( method_exists( 'AnsPress', 'ajax_hooks' ) );
 		$this->assertTrue( method_exists( 'AnsPress', 'site_include' ) );
-		$this->assertTrue( method_exists( 'AnsPress', 'add_action' ) );
-		$this->assertTrue( method_exists( 'AnsPress', 'add_filter' ) );
-		$this->assertTrue( method_exists( 'AnsPress', 'add' ) );
-		$this->assertTrue( method_exists( 'AnsPress', 'setup_hooks' ) );
 		$this->assertTrue( method_exists( 'AnsPress', 'get_form' ) );
 		$this->assertTrue( method_exists( 'AnsPress', 'form_exists' ) );
 	}

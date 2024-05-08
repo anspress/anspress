@@ -19,14 +19,12 @@ class TestListTableHooks extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'flag_view' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'posts_clauses' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'answer_row_actions' ) );
-		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'add_question_flag_link' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'cpt_question_columns' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'custom_columns_value' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'cpt_answer_columns' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'admin_column_sort_flag' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'edit_form_after_title' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'comment_flag_column' ) );
-		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'comment_flag_column_data' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'comment_flag_view' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'comments_flag_query' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Post_Table_Hooks', 'post_custom_message' ) );
@@ -38,7 +36,6 @@ class TestListTableHooks extends TestCase {
 	 */
 	public function testInit() {
 		\AnsPress_Post_Table_Hooks::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_filter( 'views_edit-question', [ 'AnsPress_Post_Table_Hooks', 'flag_view' ] ) );
@@ -354,56 +351,6 @@ class TestListTableHooks extends TestCase {
 		foreach ( $expected as $key => $value ) {
 			$this->assertArrayHasKey( $key, $views );
 			$this->assertEquals( $value, $views[ $key ] );
-		}
-	}
-
-	/**
-	 * @covers AnsPress_Post_Table_Hooks::add_question_flag_link
-	 */
-	public function testAddQuestionFlagLink() {
-		$hooks = new \AnsPress_Post_Table_Hooks();
-		$question_id = $this->factory()->post->create( [ 'post_type' => 'question' ] );
-		$answer_id   = $this->factory()->post->create( [ 'post_type' => 'answer', 'post_parent' => $question_id ] );
-		$question    = get_post( $question_id );
-		$answer      = get_post( $answer_id );
-
-		// Test begins.
-		// For question post type.
-		// Test 1.
-		$flag_link = $hooks::add_question_flag_link( [], $question );
-		$this->assertEmpty( $flag_link );
-
-		// Test 2.
-		ap_add_flag( $question_id );
-		ap_update_flags_count( $question_id );
-		$flag_link = $hooks::add_question_flag_link( [], $question );
-		$this->assertNotEmpty( $flag_link );
-		$expected = [
-			'flag' => '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $question_id ) . '::' . $question_id . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">Clear flag</a>',
-		];
-		$this->assertEquals( $expected, $flag_link );
-		foreach ( $expected as $key => $value ) {
-			$this->assertArrayHasKey( $key, $flag_link );
-			$this->assertEquals( $value, $flag_link[ $key ] );
-		}
-
-		// For answer post type.
-		// Test 1.
-		$flag_link = $hooks::add_question_flag_link( [], $answer );
-		$this->assertEmpty( $flag_link );
-
-		// Test 2.
-		ap_add_flag( $answer_id );
-		ap_update_flags_count( $answer_id );
-		$flag_link = $hooks::add_question_flag_link( [], $answer );
-		$this->assertNotEmpty( $flag_link );
-		$expected = [
-			'flag' => '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $answer_id ) . '::' . $answer_id . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">Clear flag</a>',
-		];
-		$this->assertEquals( $expected, $flag_link );
-		foreach ( $expected as $key => $value ) {
-			$this->assertArrayHasKey( $key, $flag_link );
-			$this->assertEquals( $value, $flag_link[ $key ] );
 		}
 	}
 

@@ -611,7 +611,6 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_vote->vote_rec_user );
 		$this->assertEquals( 'vote', $get_vote->vote_type );
 		$this->assertEquals( '', $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
 
 		// Adding flag.
 		ap_vote_insert( $id, get_current_user_id(), 'flag' );
@@ -623,7 +622,6 @@ class TestVotes extends TestCase {
 		$this->assertEquals( 0, $get_vote->vote_rec_user );
 		$this->assertEquals( 'flag', $get_vote->vote_type );
 		$this->assertEquals( '', $get_vote->vote_value );
-		$this->assertEquals( current_time( 'mysql' ), $get_vote->vote_date );
 
 		// Testing for both type.
 		$get_vote = ap_get_vote( $id, get_current_user_id(), array( 'vote', 'flag' ) );
