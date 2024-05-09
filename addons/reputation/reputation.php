@@ -48,9 +48,9 @@ class Reputation extends \AnsPress\Singleton {
 			)
 		);
 
-		add_action( 'ap_settings_menu_features_groups', array( anspress(), 'add_to_settings_page' ) );
-		add_action( 'ap_form_options_features_reputation', array( anspress(), 'load_options' ), 20 );
-		add_action( 'wp_ajax_ap_save_events', array( anspress(), 'ap_save_events' ) );
+		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_features_reputation', array( $this, 'load_options' ), 20 );
+		add_action( 'wp_ajax_ap_save_events', array( $this, 'ap_save_events' ) );
 		add_action( 'ap_after_new_question', array( $this, 'new_question' ), 10, 2 );
 		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ), 10, 2 );
 		add_action( 'ap_untrash_question', array( $this, 'new_question' ), 10, 2 );

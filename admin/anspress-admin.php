@@ -15,8 +15,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once 'license.php';
-
 /**
  * This class should ideally be used to work with the
  * administrative side of the WordPress site.
@@ -85,8 +83,6 @@ class AnsPress_Admin {
 	 */
 	public static function includes() {
 		require_once 'functions.php';
-
-		new AP_license();
 	}
 
 	/**

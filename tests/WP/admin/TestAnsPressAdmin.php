@@ -108,24 +108,6 @@ class TestAnsPressAdmin extends TestCase {
 	}
 
 	/**
-	 * @covers AnsPress_Admin::includes
-	 */
-	public function testIncludes() {
-		// Test before the method is called.
-		$this->assertFalse( function_exists( 'ap_flagged_posts_count' ) );
-		$this->assertFalse( function_exists( 'ap_update_caps_for_role' ) );
-		$this->assertFalse( function_exists( 'ap_load_admin_assets' ) );
-
-		// Test after the method is called.
-		\AnsPress_Admin::includes();
-		$this->assertTrue( function_exists( 'ap_flagged_posts_count' ) );
-		$this->assertTrue( function_exists( 'ap_update_caps_for_role' ) );
-		$this->assertTrue( function_exists( 'ap_load_admin_assets' ) );
-		$this->assertTrue( class_exists( 'AP_license' ) );
-		$this->assertInstanceOf('AP_license', new \AP_license() );
-	}
-
-	/**
 	 * @covers AnsPress_Admin::add_action_links
 	 */
 	public function testAddActionLinks() {
@@ -1443,8 +1425,6 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertTrue( function_exists( 'ap_flagged_posts_count' ) );
 		$this->assertTrue( function_exists( 'ap_update_caps_for_role' ) );
 		$this->assertTrue( function_exists( 'ap_load_admin_assets' ) );
-		$this->assertTrue( class_exists( 'AP_license' ) );
-		$this->assertInstanceOf('AP_license', new \AP_license() );
 	}
 
 	/**

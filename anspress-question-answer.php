@@ -126,24 +126,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $current_answer;
 
 		/**
-		 * The array of actions registered with WordPress.
-		 *
-		 * @since  1.0.0
-		 * @access protected
-		 * @var array The actions registered with WordPress to fire when the plugin loads.
-		 */
-		protected $actions;
-
-		/**
-		 * The array of filters registered with WordPress.
-		 *
-		 * @since  1.0.0
-		 * @access protected
-		 * @var array The filters registered with WordPress to fire when the plugin loads.
-		 */
-		protected $filters;
-
-		/**
 		 * AnsPress reputation events.
 		 *
 		 * @access public
@@ -190,14 +172,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @since 4.1.5
 		 */
 		public $session;
-
-		/**
-		 * Used for storing new filters.
-		 *
-		 * @since 4.1.20
-		 * @var object
-		 */
-		public $new_filters;
 
 		/**
 		 * Used for property assignment.

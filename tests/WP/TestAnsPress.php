@@ -139,7 +139,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/anspress-admin.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/class-list-table-hooks.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/functions.php' );
-		$this->assertFileExists( ANSPRESS_DIR . '/admin/license.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/meta-box.php' );
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/updater.php' );
 

@@ -41,8 +41,8 @@ class Tags extends \AnsPress\Singleton {
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), array( $this, 'tag_page' ), false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), array( $this, 'tags_page' ) );
 
-		add_action( 'ap_settings_menu_features_groups', array( anspress(), 'add_to_settings_page' ) );
-		add_action( 'ap_form_options_features_tag', array( anspress(), 'option_fields' ) );
+		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
+		add_action( 'ap_form_options_features_tag', array( $this, 'option_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widget_positions' ) );
 		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
 		add_action( 'ap_admin_menu', array( $this, 'admin_tags_menu' ) );
