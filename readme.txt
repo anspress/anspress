@@ -101,6 +101,10 @@ Read the full FAQ here https://anspress.net/resources/faq/
 
 == Changelog ==
 
+= 4.4.3 =
+
+Changelog can be found at https://github.com/anspress/anspress/releases/tag/4.4.3
+
 = 4.4.2 =
 
 Changelog can be found at https://github.com/anspress/anspress/releases/tag/4.4.2

@@ -1433,10 +1433,10 @@ class TestAnsPressAdmin extends TestCase {
 	public function testPostDataCheck() {
 		global $pagenow;
 		$pagenow = 'post.php';
-		$_REQUEST['ap_q'] = 11;
+		$_REQUEST['ap_q'] = null;
 		$data = [
 			'post_type'   => 'answer',
-			'post_parent' => 22,
+			'post_parent' => '',
 		];
 		\AnsPress_Admin::post_data_check( $data );
 		$this->assertEquals( 99, has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
@@ -1451,7 +1451,7 @@ class TestAnsPressAdmin extends TestCase {
 		$pagenow = 'post.php';
 		$data = [
 			'post_type'   => 'answer',
-			'post_parent' => 22,
+			'post_parent' => '',
 		];
 		\AnsPress_Admin::post_data_check( $data );
 		$this->assertEquals( 99, has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );
@@ -1498,7 +1498,7 @@ class TestAnsPressAdmin extends TestCase {
 		$pagenow = 'post.php';
 		$data = [
 			'post_type'   => 'answer',
-			'post_parent' => '',
+			'post_parent' => 9912,
 		];
 		$result = \AnsPress_Admin::post_data_check( $data );
 		$this->assertFalse( has_filter( 'redirect_post_location', array( 'AnsPress_Admin', 'custom_post_location' ) ) );

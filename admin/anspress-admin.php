@@ -440,8 +440,12 @@ class AnsPress_Admin {
 
 			$parent_q = ! empty( $parent_q ) ? $parent_q : $data['post_parent'];
 
-			if ( ! empty( $parent_q ) ) {
-				add_filter( 'redirect_post_location', array( __CLASS__, 'custom_post_location' ), 99 );
+			if ( empty( $parent_q ) ) {
+				add_filter(
+					'redirect_post_location',
+					array( __CLASS__, 'custom_post_location' ),
+					99
+				);
 				return;
 			}
 		}
