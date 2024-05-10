@@ -2431,62 +2431,6 @@ function ap_is_cpt( $_post ) {
 }
 
 /**
- * Removes all filters from a WordPress filter, and stashes them in the anspress()
- * global in the event they need to be restored later.
- * Copied directly from bbPress plugin.
- *
- * @global WP_filter $wp_filter
- * @global array $merged_filters
- *
- * @param string $tag Hook name.
- * @param int    $priority Hook priority.
- * @return bool
- *
- * @since 4.2.0
- */
-function ap_remove_all_filters( $tag, $priority = false ) {
-	global $wp_filter, $merged_filters;
-
-	$ap = anspress();
-
-	if ( ! is_object( $ap->new_filters ) ) {
-		$ap->new_filters = new stdClass();
-	}
-
-	// Filters exist.
-	if ( isset( $wp_filter[ $tag ] ) ) {
-
-		// Filters exist in this priority.
-		if ( ! empty( $priority ) && isset( $wp_filter[ $tag ][ $priority ] ) ) {
-
-			// Store filters in a backup.
-			$ap->new_filters->wp_filter[ $tag ][ $priority ] = $wp_filter[ $tag ][ $priority ];
-
-			// Unset the filters.
-			unset( $wp_filter[ $tag ][ $priority ] );
-		} else {
-			// Store filters in a backup.
-			$ap->new_filters->wp_filter[ $tag ] = $wp_filter[ $tag ];
-
-			// Unset the filters.
-			unset( $wp_filter[ $tag ] );
-		}
-	}
-
-	// Check merged filters.
-	if ( isset( $merged_filters[ $tag ] ) ) {
-
-		// Store filters in a backup.
-		$ap->new_filters->merged_filters[ $tag ] = $merged_filters[ $tag ];
-
-		// Unset the filters.
-		unset( $merged_filters[ $tag ] );
-	}
-
-	return true;
-}
-
-/**
  * Return current timestamp.
  *
  * @return int

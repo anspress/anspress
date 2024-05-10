@@ -33,10 +33,14 @@ if ( ! defined( 'WPINC' ) ) {
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
 
 // Define database version.
-define( 'AP_DB_VERSION', 38 );
+define( 'AP_DB_VERSION', 38 ); // @todo remove this in version 5.0.0
+
+// New constants for version 5.0.0.
+define( 'ANSPRESS_DB_VERSION', 38 );
+define( 'ANSPRESS_PLUGIN_VERSION', '5.0.0' );
 
 // Check if using required PHP version.
-if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
+if ( version_compare( PHP_VERSION, '8.0' ) < 0 ) {
 
 	/**
 	 * Checks PHP version before initiating AnsPress.
@@ -192,8 +196,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
 				self::$instance = new self();
 				self::$instance->setup_constants();
-				self::$instance->actions = array();
-				self::$instance->filters = array();
 
 				self::$instance->includes();
 				self::$instance->session = AnsPress\Session::init();
@@ -558,3 +560,74 @@ function anspress_activation() {
 	\AP_Activate::get_instance();
 }
 register_activation_hook( __FILE__, 'anspress_activation' );
+
+// Version 5.0.0 of AnsPress introduced a new way of handling services.
+
+
+spl_autoload_register(
+	/**
+	 * Callback function for auto loading class on demand.
+	 *
+	 * @param string $class_name Name of class.
+	 * @since 5.0.0
+	 * @throws \Exception If class not found in file.
+	 */
+	function ( $class_name ): void {
+		if ( false === strpos( $class_name, 'AnsPress\\' ) ) {
+			return;
+		}
+
+		$class_name = str_replace( 'AnsPress\\', '', $class_name );
+		$filename   = wp_normalize_path( __DIR__ . '/src/backend/' . str_replace( '\\', '/', $class_name ) . '.php' );
+
+		// Check if file exists before including.
+		if ( file_exists( $filename ) ) {
+			require_once $filename;
+		} else {
+			throw new \Exception(
+				wp_sprintf(
+				// translators: 1: Class name, 2: File name.
+					esc_html__( 'Class %1$s not found', 'anspress-question-answer' ),
+					esc_html( $class_name )
+				)
+			);
+		}
+	}
+);
+
+/**
+ * AnsPress modules.
+ *
+ * @return AnsPress\Classes\Plugin
+ * @since 5.0.0
+ */
+function anspressModules() {
+	static $plugin;
+
+	if ( isset( $plugin ) ) {
+		return $plugin;
+	}
+
+	$plugin = new AnsPress\Classes\Plugin(
+		__FILE__,
+		new AnsPress\Classes\Container()
+	);
+
+	return $plugin;
+}
+
+// Register modules.
+anspressModules()->registerModules(
+	array(
+		AnsPress\Modules\Subscriber\SubscriberModule::class,
+	)
+);
+
+// Register hooks.
+$modules = anspressModules()->getModules();
+
+if ( ! empty( $modules ) ) {
+	foreach ( $modules as $module ) {
+		$module->register_hooks();
+	}
+}

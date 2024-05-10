@@ -25,10 +25,13 @@
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
 	<config name="minimum_supported_wp_version" value="5.8"/>
 	<rule ref="WordPress"/>
-	<!-- <rule ref="WordPress.NamingConventions">
-		<exclude name="WordPress.NamingConventions.PrefixAllGlobals" />
-		<exclude name="WordPress.NamingConventions.ValidHookName" />
-	</rule> -->
+	<rule ref="WordPress.NamingConventions">
+		<exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase"/>
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid"/>
+		<exclude name="WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase"/>
+		<exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase"/>
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid"/>
+	</rule>
 	<rule ref="WordPress.Files">
 		<exclude name="WordPress.Files.FileName" />
 	</rule>
