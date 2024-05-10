@@ -1,6 +1,6 @@
 <?php
 /**
- * Base class for modules.
+ * Base class for services.
  *
  * @since 5.0.0
  * @package AnsPress
@@ -21,6 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 5.0.0
  */
-abstract class AbstractModule implements ModuleInterface, SingletonInterface {
+abstract class AbstractService implements SingletonInterface {
 	use TraitSingleton;
 }

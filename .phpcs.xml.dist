@@ -31,6 +31,7 @@
 		<exclude name="WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase"/>
 		<exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase"/>
 		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid"/>
+		<exclude name="WordPress.NamingConventions.ValidVariableName.InterpolatedVariableNotSnakeCase"/>
 	</rule>
 	<rule ref="WordPress.Files">
 		<exclude name="WordPress.Files.FileName" />

@@ -38,6 +38,7 @@ define( 'AP_DB_VERSION', 38 ); // @todo remove this in version 5.0.0
 // New constants for version 5.0.0.
 define( 'ANSPRESS_DB_VERSION', 38 );
 define( 'ANSPRESS_PLUGIN_VERSION', '5.0.0' );
+define( 'ANSPRESS_PLUGIN_FILE', __FILE__ );
 
 // Check if using required PHP version.
 if ( version_compare( PHP_VERSION, '8.0' ) < 0 ) {
@@ -602,32 +603,13 @@ spl_autoload_register(
  * @since 5.0.0
  */
 function anspressModules() {
-	static $plugin;
+	$instnace = AnsPress\Classes\Plugin::make();
 
-	if ( isset( $plugin ) ) {
-		return $plugin;
-	}
-
-	$plugin = new AnsPress\Classes\Plugin(
-		__FILE__,
-		new AnsPress\Classes\Container()
+	$instnace->registerModules(
+		array(
+			AnsPress\Modules\Subscriber\SubscriberModule::class,
+		)
 	);
 
-	return $plugin;
-}
-
-// Register modules.
-anspressModules()->registerModules(
-	array(
-		AnsPress\Modules\Subscriber\SubscriberModule::class,
-	)
-);
-
-// Register hooks.
-$modules = anspressModules()->getModules();
-
-if ( ! empty( $modules ) ) {
-	foreach ( $modules as $module ) {
-		$module->register_hooks();
-	}
+	return $instnace;
 }

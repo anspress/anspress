@@ -9,6 +9,7 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Interfaces\ModuleInterface;
 use AnsPress\Interfaces\ServiceInterface;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,15 +42,35 @@ class Plugin {
 	const MIN_WP_VERSION = '5.8';
 
 	/**
+	 * Migration option key.
+	 */
+	const MIGRATION_OPT_KEY = 'anspress_migrations';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string    $pluginFile Plugin file.
 	 * @param Container $container Container object.
 	 */
-	public function __construct(
+	private function __construct(
 		private string $pluginFile,
 		private Container $container
 	) {
+	}
+
+	/**
+	 * Get plugin instance.
+	 *
+	 * @return Plugin
+	 */
+	public static function make() {
+		static $instance = null;
+
+		if ( null === $instance ) {
+			$instance = new self( dirname( ANSPRESS_PLUGIN_FILE ), new Container() );
+		}
+
+		return $instance;
 	}
 
 	/**
@@ -107,27 +128,6 @@ class Plugin {
 	}
 
 	/**
-	 * Get service object.
-	 *
-	 * @param class-string $serviceClass Service class name.
-	 */
-	public function getService( string $serviceClass ) {
-		return $this->container->get( $serviceClass );
-	}
-
-	/**
-	 * Register services.
-	 *
-	 * @param class-string[] $services Services.
-	 * @return void
-	 */
-	public function registerModules( array $services ) {
-		foreach ( $services as $service ) {
-			$this->container->set( $service );
-		}
-	}
-
-	/**
 	 * Get plugin file.
 	 *
 	 * @return string
@@ -137,11 +137,14 @@ class Plugin {
 	}
 
 	/**
-	 * Get services.
+	 * Register modules.
 	 *
-	 * @return array
+	 * @param class-string[] $modulesName Modules name.
+	 * @return void
 	 */
-	public function getModules(): array {
-		return $this->container->getModules();
+	public function registerModules( array $modulesName ) {
+		foreach ( $modulesName as $moduleName ) {
+			$this->container->set( $moduleName );
+		}
 	}
 }
