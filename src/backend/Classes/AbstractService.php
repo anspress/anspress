@@ -8,8 +8,8 @@
 
 namespace AnsPress\Classes;
 
-use AnsPress\Interfaces\ModuleInterface;
 use AnsPress\Interfaces\SingletonInterface;
+use AnsPress\Traits\SingletonTrait;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,5 +22,5 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 5.0.0
  */
 abstract class AbstractService implements SingletonInterface {
-	use TraitSingleton;
+	use SingletonTrait;
 }
