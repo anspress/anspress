@@ -21,4 +21,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress\Exceptions
  */
 class InvalidColumnException extends Exception {
+	/**
+	 * Serialize the exception.
+	 *
+	 * @return array
+	 */
+	public function __serialize(): array {
+		return array(
+			'message' => $this->getMessage(),
+			'code'    => $this->getCode(),
+		);
+	}
+
+	/**
+	 * Unserialize the exception.
+	 *
+	 * @param array $data The exception data.
+	 * @return void
+	 */
+	public function __unserialize( array $data ): void {
+		parent::__construct( $data['message'], $data['code'] );
+	}
 }

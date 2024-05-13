@@ -110,9 +110,11 @@ interface ModelInterface {
 	/**
 	 * Get the model's original attributes.
 	 *
-	 * @return array
+	 * @param string $columnName The column name.
+	 * @return mixed
+	 * @throws InvalidColumnException If the column does not exist.
 	 */
-	public function getOriginal(): array;
+	public function getOriginal( string $columnName ): mixed;
 
 	/**
 	 * Sync the original attributes with the current attributes.
@@ -178,11 +180,4 @@ interface ModelInterface {
 	 * @throws \InvalidArgumentException If the attribute does not exist.
 	 */
 	public function __get( string $name ): mixed;
-
-	/**
-	 * Returns an array of properties to be serialized.
-	 *
-	 * @return array
-	 */
-	public function __sleep();
 }

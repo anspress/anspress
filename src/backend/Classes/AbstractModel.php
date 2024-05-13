@@ -256,7 +256,7 @@ abstract class AbstractModel implements ModelInterface {
 	 * Get formats for all passed columns in order.
 	 *
 	 * @param array $columns The columns to get formats for.
-	 * @return array<string> The format strings.
+	 * @return string[] The format strings.
 	 */
 	public function getFormatStrings( array $columns ): array {
 		return array_map( array( $this, 'getFormatString' ), $columns );
@@ -265,10 +265,16 @@ abstract class AbstractModel implements ModelInterface {
 	/**
 	 * Get the model's original attributes.
 	 *
-	 * @return array
+	 * @param string $columnName The column name.
+	 * @return mixed
+	 * @throws InvalidColumnException If the column does not exist.
 	 */
-	public function getOriginal(): array {
-		return $this->original;
+	public function getOriginal( string $columnName ): mixed {
+		if ( ! $this->isValidColumn( $columnName ) ) {
+			throw new InvalidColumnException( esc_attr( "Invalid column: $columnName" ) );
+		}
+
+		return $this->original[ $columnName ] ?? null;
 	}
 
 	/**
@@ -346,6 +352,20 @@ abstract class AbstractModel implements ModelInterface {
 	}
 
 	/**
+	 * Save the model.
+	 *
+	 * @return AbstractModel
+	 */
+	public function save(): self {
+		// Update updated_at timestamp if the model exists.
+		if ( $this->timestamps && $this->exists() ) {
+			$this->setAttribute( 'updated_at', $this->currentTime( 'mysql' ) );
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Magic method to get the model's attributes.
 	 *
 	 * @param string $name The attribute name.
@@ -358,14 +378,5 @@ abstract class AbstractModel implements ModelInterface {
 
 		// Throw an exception if the attribute does not exist.
 		throw new \InvalidArgumentException( esc_attr( "Attribute $name does not exist" ) );
-	}
-
-	/**
-	 * Returns an array of properties to be serialized.
-	 *
-	 * @return array
-	 */
-	public function __sleep() {
-		return array( 'attributes', 'original' );
 	}
 }
