@@ -28,6 +28,13 @@ interface ModelInterface {
 	public function __construct( array $attributes = array() );
 
 	/**
+	 * Fill the model with the initial values.
+	 *
+	 * @return void
+	 */
+	public function fillInitial(): void;
+
+	/**
 	 * Fill the model with an array of attributes.
 	 *
 	 * @param array $attributes The attributes to fill.
@@ -116,17 +123,17 @@ interface ModelInterface {
 	 * Created at setter.
 	 *
 	 * @param string $value The value to format.
-	 * @return DateTime|null
+	 * @return string|null
 	 */
-	public function setCreatedAtAttribute( $value ): DateTime;
+	public function setCreatedAtAttribute( $value ): string;
 
 	/**
 	 * Updated at setter.
 	 *
 	 * @param string $value The value to format.
-	 * @return DateTime|null
+	 * @return string|null
 	 */
-	public function setUpdatedAtAttribute( $value ): DateTime;
+	public function setUpdatedAtAttribute( $value ): string;
 
 	/**
 	 * Check if the model exists.
@@ -139,9 +146,9 @@ interface ModelInterface {
 	 * Get the current time.
 	 *
 	 * @param string $format The format to return the time in.
-	 * @return int|bool
+	 * @return mixed
 	 */
-	public function currentTime( $format = 'mysql' ): int|bool;
+	public function currentTime( $format = 'mysql' ): mixed;
 
 	/**
 	 * Get model data as array.
@@ -156,6 +163,13 @@ interface ModelInterface {
 	 * @return string
 	 */
 	public function toJson(): string;
+
+	/**
+	 * Set isNew flag.
+	 *
+	 * @param bool $isNew The flag to set.
+	 */
+	public function setIsNew( bool $isNew ): void;
 
 	/**
 	 * Magic method to get the model's attributes.

@@ -66,6 +66,13 @@ abstract class AbstractModel implements ModelInterface {
 	protected $timestamps = false;
 
 	/**
+	 * Whether the model is new.
+	 *
+	 * @var bool
+	 */
+	protected $isNew = true;
+
+	/**
 	 * AbstractModel constructor.
 	 *
 	 * @param array $attributes The model's attributes.
@@ -76,9 +83,22 @@ abstract class AbstractModel implements ModelInterface {
 			$this->columns['updated_at'] = '%s';
 		}
 
+		$this->fillInitial();
+
 		$this->syncOriginal();
 
 		$this->fill( $attributes );
+	}
+
+	/**
+	 * Fill the model with the initial values.
+	 *
+	 * @return void
+	 */
+	public function fillInitial(): void {
+		foreach ( $this->columns as $key => $format ) {
+			$this->setAttribute( $key, null );
+		}
 	}
 
 	/**
@@ -91,17 +111,6 @@ abstract class AbstractModel implements ModelInterface {
 		foreach ( $attributes as $key => $value ) {
 			if ( ! $this->isValidColumn( $key ) ) {
 				throw new InvalidColumnException( esc_attr( "Invalid attribute: $key" ) );
-			}
-
-			// Set created_at and updated_at if timestamps are enabled.
-			if ( ! $this->exists() ) {
-				if ( 'created_at' === $key ) {
-					$value = $this->currentTime();
-				}
-
-				if ( 'updated_at' === $key ) {
-					$value = $this->currentTime();
-				}
 			}
 
 			// Use setter to allow for mutators and formatting.
@@ -120,7 +129,7 @@ abstract class AbstractModel implements ModelInterface {
 		$method = 'set' . ucfirst( Str::toCamelCase( $attribute ) ) . 'Attribute';
 
 		// Get default value if value is null.
-		if ( is_null( $value ) ) {
+		if ( is_null( $value ) && ! $this->exists() ) {
 			$value = $this->getColumnDefaultValue( $attribute );
 		}
 
@@ -136,6 +145,8 @@ abstract class AbstractModel implements ModelInterface {
 			} else {
 				$value = (string) $value;
 			}
+
+			$this->attributes[ $attribute ] = $value;
 		}
 	}
 
@@ -271,20 +282,20 @@ abstract class AbstractModel implements ModelInterface {
 	 * Created at setter.
 	 *
 	 * @param string $value The value to format.
-	 * @return DateTime|null
+	 * @return string
 	 */
-	public function setCreatedAtAttribute( $value ): DateTime {
-		return $value ? new DateTime( $value ) : null;
+	public function setCreatedAtAttribute( $value ): string {
+		return $value ? $value : $this->currentTime( 'mysql' );
 	}
 
 	/**
 	 * Updated at setter.
 	 *
 	 * @param string $value The value to format.
-	 * @return DateTime|null
+	 * @return string
 	 */
-	public function setUpdatedAtAttribute( $value ): DateTime {
-		return $value ? new DateTime( $value ) : null;
+	public function setUpdatedAtAttribute( $value ): string {
+		return $value ? $value : $this->currentTime( 'mysql' );
 	}
 
 	/**
@@ -293,17 +304,45 @@ abstract class AbstractModel implements ModelInterface {
 	 * @return bool
 	 */
 	public function exists(): bool {
-		return ! empty( $this->attributes[ $this->primaryKey ] );
+		return ! $this->isNew;
 	}
 
 	/**
 	 * Get the current time.
 	 *
 	 * @param string $format The format to return the time in.
-	 * @return int|bool
+	 * @return mixed
 	 */
-	public function currentTime( $format = 'mysql' ): int|bool {
+	public function currentTime( $format = 'mysql' ): mixed {
 		return current_time( $format );
+	}
+
+	/**
+	 * Set whether the model is new.
+	 *
+	 * @param bool $isNew Whether the model is new.
+	 * @return void
+	 */
+	public function setIsNew( bool $isNew ): void {
+		$this->isNew = $isNew;
+	}
+
+	/**
+	 * Convert the model to an array.
+	 *
+	 * @return array The model's attributes.
+	 */
+	public function toArray(): array {
+		return $this->attributes;
+	}
+
+	/**
+	 * Convert the model to JSON.
+	 *
+	 * @return string
+	 */
+	public function toJson(): string {
+		return wp_json_encode( $this->toArray() );
 	}
 
 	/**
@@ -314,7 +353,7 @@ abstract class AbstractModel implements ModelInterface {
 	 */
 	public function __get( string $name ): mixed {
 		if ( $this->isValidColumn( $name ) ) {
-			return $this->{$name} ?? null;
+			return $this->attributes[ $name ] ?? null;
 		}
 
 		// Throw an exception if the attribute does not exist.
