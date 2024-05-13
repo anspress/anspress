@@ -156,4 +156,19 @@ interface ModelInterface {
 	 * @return string
 	 */
 	public function toJson(): string;
+
+	/**
+	 * Magic method to get the model's attributes.
+	 *
+	 * @param string $name The attribute name.
+	 * @throws \InvalidArgumentException If the attribute does not exist.
+	 */
+	public function __get( string $name ): mixed;
+
+	/**
+	 * Returns an array of properties to be serialized.
+	 *
+	 * @return array
+	 */
+	public function __sleep();
 }
