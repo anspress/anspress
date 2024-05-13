@@ -8,6 +8,8 @@
 
 namespace AnsPress\Interfaces;
 
+use DateTime;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -19,73 +21,127 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 interface ModelInterface {
 	/**
-	 * Get primary key.
+	 * AbstractModel constructor.
+	 *
+	 * @param array $attributes The model's attributes.
+	 */
+	public function __construct( array $attributes = array() );
+
+	/**
+	 * Fill the model with an array of attributes.
+	 *
+	 * @param array $attributes The attributes to fill.
+	 * @throws InvalidColumnException If an invalid column is provided.
+	 */
+	public function fill( array $attributes ): void;
+
+	/**
+	 * Set the model's attribute. This method will also call mutator
+	 * if available.
+	 *
+	 * @param string $attribute The attribute name.
+	 * @param mixed  $value     The attribute value.
+	 */
+	public function setAttribute( string $attribute, $value ): void;
+
+	/**
+	 * Get the model's attribute. This method will also call accessor
+	 * if available.
+	 *
+	 * @param string $attribute The attribute name.
+	 * @return mixed
+	 */
+	public function getAttribute( string $attribute ): mixed;
+
+	/**
+	 * Get the default value for a column.
+	 *
+	 * @param string $column Column name.
+	 * @return mixed
+	 * @throws InvalidColumnException If the column does not exist.
+	 */
+	public function getColumnDefaultValue( string $column ): mixed;
+
+	/**
+	 * Get the model's primary key.
 	 *
 	 * @return string
 	 */
 	public function getPrimaryKey(): string;
 
 	/**
-	 * Get table name.
+	 * Get the model's table name with prefix.
 	 *
 	 * @return string
 	 */
 	public function getTableName(): string;
 
 	/**
-	 * Set model attributes.
+	 * Get the model's attributes.
 	 *
-	 * @param array $attributes Attributes.
-	 * @return void
+	 * @return array
 	 */
-	public function setAttributes( array $attributes ): void;
+	public function getAttributes(): array;
 
 	/**
-	 * Get model attribute.
+	 * Get the format string for preparing a SQL query.
 	 *
-	 * @param string $key Attribute key.
-	 * @return mixed
+	 * @param string $column The column name.
+	 * @return string The format string.
+	 * @throws InvalidColumnException If the column does not exist.
 	 */
-	public function getAttribute( string $key );
+	public function getFormatString( string $column ): string;
 
 	/**
-	 * Set model attribute.
+	 * Get formats for all passed columns in order.
 	 *
-	 * @param string $key Attribute key.
-	 * @param mixed  $value Attribute value.
-	 * @return void
+	 * @param array $columns The columns to get formats for.
+	 * @return array<string> The format strings.
 	 */
-	public function setAttribute( string $key, mixed $value ): void;
+	public function getFormatStrings( array $columns ): array;
 
 	/**
-	 * Update model.
+	 * Get the model's original attributes.
 	 *
-	 * @param array $data Data to update.
-	 * @return self
+	 * @return array
 	 */
-	public function update( array $data ): self;
+	public function getOriginal(): array;
 
 	/**
-	 * Save model.
-	 *
-	 * @return mixed
+	 * Sync the original attributes with the current attributes.
 	 */
-	public function save();
+	public function syncOriginal(): void;
 
 	/**
-	 * Delete model.
+	 * Created at setter.
 	 *
-	 * @return mixed
+	 * @param string $value The value to format.
+	 * @return DateTime|null
 	 */
-	public function delete();
+	public function setCreatedAtAttribute( $value ): DateTime;
 
 	/**
-	 * Find model by primary key.
+	 * Updated at setter.
 	 *
-	 * @param int|string $id Primary key.
-	 * @return mixed
+	 * @param string $value The value to format.
+	 * @return DateTime|null
 	 */
-	public static function find( int|string $id );
+	public function setUpdatedAtAttribute( $value ): DateTime;
+
+	/**
+	 * Check if the model exists.
+	 *
+	 * @return bool
+	 */
+	public function exists(): bool;
+
+	/**
+	 * Get the current time.
+	 *
+	 * @param string $format The format to return the time in.
+	 * @return int|bool
+	 */
+	public function currentTime( $format = 'mysql' ): int|bool;
 
 	/**
 	 * Get model data as array.

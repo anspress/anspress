@@ -8,7 +8,9 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Exceptions\InvalidColumnException;
 use AnsPress\Interfaces\ModelInterface;
+use DateTime;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,66 +18,177 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Abstract data model.
+ * Class AbstractModel
  *
- * @package AnsPress
+ * @package AnsPress\Classes
  */
 abstract class AbstractModel implements ModelInterface {
 	/**
-	 * Primary column key.
+	 * The model's primary key.
 	 *
 	 * @var string
 	 */
-	protected string $primaryKey = 'id';
+	protected $primaryKey = 'id';
 
 	/**
-	 * Table name.
+	 * The model's table name.
 	 *
 	 * @var string
 	 */
-	protected string $table;
+	protected $tableName;
 
 	/**
-	 * Columns and format.
-	 *
-	 * @var array<string, string>
-	 */
-	protected array $columnsAndFormat = array();
-
-	/**
-	 * Fillable fields.
-	 *
-	 * @var array<string, string> An associative array of settings.
-	 */
-	protected array $fillable = array();
-
-	/**
-	 * Attributes.
+	 * The model's attributes.
 	 *
 	 * @var array
 	 */
-	protected array $attributes = array();
+	protected $attributes = array();
 
 	/**
-	 * Constructor.
+	 * The model's original attributes.
 	 *
-	 * @return void
-	 * @throws \Exception If table name is not set.
+	 * @var array
 	 */
-	public function __construct() {
-		// Check if table is set.
-		if ( ! isset( $this->table ) ) {
-			throw new \Exception( esc_attr( 'Table name is not set.' ) );
+	protected $original = array();
+
+	/**
+	 * Array mapping column names to their database formats (%s, %d, or %f).
+	 *
+	 * @var array<string, string>
+	 */
+	protected $columns = array();
+
+	/**
+	 * Whether to include timestamps in the model.
+	 *
+	 * @var bool
+	 */
+	protected $timestamps = false;
+
+	/**
+	 * AbstractModel constructor.
+	 *
+	 * @param array $attributes The model's attributes.
+	 */
+	public function __construct( array $attributes = array() ) {
+		if ( $this->timestamps ) {
+			$this->columns['created_at'] = '%s';
+			$this->columns['updated_at'] = '%s';
 		}
 
-		// Check if columns and format is set.
-		if ( empty( $this->columnsAndFormat ) ) {
-			throw new \Exception( esc_attr( 'Columns and format is not set.' ) );
+		$this->syncOriginal();
+
+		$this->fill( $attributes );
+	}
+
+	/**
+	 * Fill the model with an array of attributes.
+	 *
+	 * @param array $attributes The attributes to fill.
+	 * @throws InvalidColumnException If an invalid column is provided.
+	 */
+	public function fill( array $attributes ): void {
+		foreach ( $attributes as $key => $value ) {
+			if ( ! $this->isValidColumn( $key ) ) {
+				throw new InvalidColumnException( esc_attr( "Invalid attribute: $key" ) );
+			}
+
+			// Set created_at and updated_at if timestamps are enabled.
+			if ( ! $this->exists() ) {
+				if ( 'created_at' === $key ) {
+					$value = $this->currentTime();
+				}
+
+				if ( 'updated_at' === $key ) {
+					$value = $this->currentTime();
+				}
+			}
+
+			// Use setter to allow for mutators and formatting.
+			$this->setAttribute( $key, $value );
 		}
 	}
 
 	/**
-	 * Get primary key.
+	 * Set the model's attribute. This method will also call mutator
+	 * if available.
+	 *
+	 * @param string $attribute The attribute name.
+	 * @param mixed  $value     The attribute value.
+	 */
+	public function setAttribute( string $attribute, $value ): void {
+		$method = 'set' . ucfirst( Str::toCamelCase( $attribute ) ) . 'Attribute';
+
+		// Get default value if value is null.
+		if ( is_null( $value ) ) {
+			$value = $this->getColumnDefaultValue( $attribute );
+		}
+
+		if ( method_exists( $this, $method ) ) {
+			$this->attributes[ $attribute ] = $this->{$method}( $value );
+		} else {
+			$format = $this->getFormatString( $attribute );
+
+			if ( '%d' === $format ) {
+				$value = (int) $value;
+			} elseif ( '%f' === $format ) {
+				$value = (float) $value;
+			} else {
+				$value = (string) $value;
+			}
+		}
+	}
+
+	/**
+	 * Get the model's attribute. This method will also call accessor
+	 * if available.
+	 *
+	 * @param string $attribute The attribute name.
+	 * @return mixed
+	 */
+	public function getAttribute( string $attribute ): mixed {
+		$method = 'get' . ucfirst( Str::toCamelCase( $attribute ) ) . 'Attribute';
+
+		if ( method_exists( $this, $method ) ) {
+			return $this->{$method}( $this->attributes[ $attribute ] );
+		}
+
+		return $this->attributes[ $attribute ] ?? null;
+	}
+
+	/**
+	 * Get the default value for a column.
+	 *
+	 * @param string $column Column name.
+	 * @return mixed
+	 * @throws InvalidColumnException If the column does not exist.
+	 */
+	public function getColumnDefaultValue( string $column ): mixed {
+		if ( ! $this->isValidColumn( $column ) ) {
+			throw new InvalidColumnException( esc_attr( "Column $column does not exist" ) );
+		}
+
+		// Check if a method exists for the column.
+		$method = 'get' . ucfirst( Str::toCamelCase( $column ) ) . 'ColumnDefaultValue';
+
+		if ( method_exists( $this, $method ) ) {
+			return $this->$method();
+		}
+
+		// Else return based on the column type.
+		if ( '%d' === $this->columns[ $column ] ) {
+			return 0;
+		}
+
+		if ( '%f' === $this->columns[ $column ] ) {
+			return 0.0;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get the model's primary key.
 	 *
 	 * @return string
 	 */
@@ -84,159 +197,136 @@ abstract class AbstractModel implements ModelInterface {
 	}
 
 	/**
-	 * Get table name.
+	 * Get the model's table name with prefix.
 	 *
 	 * @return string
 	 */
 	public function getTableName(): string {
-		global $wpdb;
-
-		return $wpdb->prefix . $this->table;
+		return $GLOBALS['wpdb']->prefix . $this->tableName;
 	}
 
 	/**
-	 * Get wpdb format for values.
-	 *
-	 * @param array $data An array of fillable fields.
-	 * @return array An array of fillable fields formats.
-	 * @throws \Exception If fillable invlaid format passed.
-	 */
-	public function getFormatsForValues( array $data ): array {
-		if ( empty( $data ) ) {
-			return array();
-		}
-
-		$formats = array();
-
-		// Remove any fields that are not in the columnsAndFormat array.
-		$allowedData = array_intersect( $data, array_keys( $this->columnsAndFormat ) );
-
-		// Check if $allowedData count is same as $data count.
-		if ( count( $allowedData ) !== count( $data ) ) {
-			throw new \Exception(
-				sprintf(
-					'Invalid data. Allowed fields are: %s',
-					esc_attr(
-						implode( ', ', array_keys( $this->columnsAndFormat ) )
-					)
-				)
-			);
-		}
-
-		foreach ( $data as $field ) {
-			$formats[] = $this->columnsAndFormat[ $field ];
-		}
-
-		return $formats;
-	}
-
-	/**
-	 * Update model.
-	 *
-	 * @return mixed
-	 */
-	public function update() {
-		global $wpdb;
-
-		$data  = array_intersect_key( (array) $this, array_flip( $this->fillable ) );
-		$where = array( $this->primaryKey => $this->{$this->primaryKey} );
-
-		/**
-		 * Filter to modify data before saving.
-		 *
-		 * @param array $data Data to be saved.
-		 * @since 5.0.0
-		 */
-		$data = apply_filters( 'anspress/model/pre_update/' . $this->getTableName(), $data );
-
-		$updated = $wpdb->update( // @codingStandardsIgnoreLine
-			$this->getTableName(),
-			$data,
-			$where,
-			$this->getFormatsForValues( $data ),
-			$this->getFormatsForValues( $where )
-		);
-
-		if ( false === $updated ) {
-			/**
-			 * Action to run after model update failed.
-			 *
-			 * @param string $table Table name.
-			 * @param array $data Data to be saved.
-			 * @since 5.0.0
-			 */
-			do_action( 'anspress/model/update_failed/' . $this->getTableName(), $data );
-
-			return false;
-		}
-
-		/**
-		 * Action to run after model update.
-		 *
-		 * @param string $table Table name.
-		 * @param array $data Data to be saved.
-		 * @since 5.0.0
-		 */
-		do_action( 'anspress/model/updated/' . $this->getTableName(), $data );
-
-		return $updated;
-	}
-
-	/**
-	 * Create model.
-	 *
-	 * @return false|int
-	 */
-	public function create() {
-		global $wpdb;
-
-		$data = array_intersect_key( $this->attributes, array_flip( $this->fillable ) );
-
-		/**
-		 * Filter to modify data before saving.
-		 *
-		 * @param array $data Data to be saved.
-		 * @since 5.0.0
-		 */
-		$data = apply_filters( 'anspress/model/pre_create/' . $this->getTableName(), $data );
-
-		$created = $wpdb->insert( // @codingStandardsIgnoreLine
-			$this->getTableName(),
-			$data,
-			$this->getFormatsForValues( $data )
-		);
-
-		if ( false === $created ) {
-			/**
-			 * Action to run after model creation failed.
-			 *
-			 * @param string $table Table name.
-			 * @param array $data Data to be saved.
-			 * @since 5.0.0
-			 */
-			do_action( 'anspress/model/create_failed/' . $this->getTableName(), $data );
-
-			return false;
-		}
-
-		/**
-		 * Action to run after model creation.
-		 *
-		 * @param string $table Table name.
-		 * @param array $data Data to be saved.
-		 * @since 5.0.0
-		 */
-		do_action( 'anspress/model/created/' . $this->getTableName(), $data );
-
-		return $created;
-	}
-
-	/**
-	 * Delete model.
+	 * Get the model's attributes.
 	 *
 	 * @return array
 	 */
-	public function toArray(): array {
-		return (array) $this->attributes;
+	public function getAttributes(): array {
+		return $this->attributes;
+	}
+
+	/**
+	 * Check if a column is valid.
+	 *
+	 * @param string $column The column name.
+	 * @return bool
+	 */
+	public function isValidColumn( string $column ): bool {
+		return isset( $this->columns[ $column ] );
+	}
+
+	/**
+	 * Get the format string for preparing a SQL query.
+	 *
+	 * @param string $column The column name.
+	 * @return string The format string.
+	 * @throws InvalidColumnException If the column does not exist.
+	 */
+	public function getFormatString( string $column ): string {
+		$validFormats = array( '%s', '%d', '%f' );
+
+		if ( isset( $this->columns[ $column ] ) && in_array( $this->columns[ $column ], $validFormats, true ) ) {
+			return $this->columns[ $column ];
+		}
+
+		throw new InvalidColumnException( esc_attr( "Invalid column: $column" ) );
+	}
+
+	/**
+	 * Get formats for all passed columns in order.
+	 *
+	 * @param array $columns The columns to get formats for.
+	 * @return array<string> The format strings.
+	 */
+	public function getFormatStrings( array $columns ): array {
+		return array_map( array( $this, 'getFormatString' ), $columns );
+	}
+
+	/**
+	 * Get the model's original attributes.
+	 *
+	 * @return array
+	 */
+	public function getOriginal(): array {
+		return $this->original;
+	}
+
+	/**
+	 * Sync the original attributes with the current attributes.
+	 */
+	public function syncOriginal(): void {
+		$this->original = $this->attributes;
+	}
+
+	/**
+	 * Created at setter.
+	 *
+	 * @param string $value The value to format.
+	 * @return DateTime|null
+	 */
+	public function setCreatedAtAttribute( $value ): DateTime {
+		return $value ? new DateTime( $value ) : null;
+	}
+
+	/**
+	 * Updated at setter.
+	 *
+	 * @param string $value The value to format.
+	 * @return DateTime|null
+	 */
+	public function setUpdatedAtAttribute( $value ): DateTime {
+		return $value ? new DateTime( $value ) : null;
+	}
+
+	/**
+	 * Check if the model exists.
+	 *
+	 * @return bool
+	 */
+	public function exists(): bool {
+		return ! empty( $this->attributes[ $this->primaryKey ] );
+	}
+
+	/**
+	 * Get the current time.
+	 *
+	 * @param string $format The format to return the time in.
+	 * @return int|bool
+	 */
+	public function currentTime( $format = 'mysql' ): int|bool {
+		return current_time( $format );
+	}
+
+	/**
+	 * Magic method to get the model's attributes.
+	 *
+	 * @param string $name The attribute name.
+	 * @throws \InvalidArgumentException If the attribute does not exist.
+	 */
+	public function __get( string $name ): mixed {
+		if ( $this->isValidColumn( $name ) ) {
+			return $this->{$name} ?? null;
+		}
+
+		// Throw an exception if the attribute does not exist.
+		throw new \InvalidArgumentException( esc_attr( "Attribute $name does not exist" ) );
+	}
+
+	/**
+	 * Returns an array of properties to be serialized.
+	 *
+	 * @return array
+	 */
+	public function __sleep() {
+		return array( 'attributes', 'original' );
 	}
 }
