@@ -10,6 +10,10 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Interfaces\SingletonInterface;
+use Exception;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionNamedType;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -34,37 +38,71 @@ class Container {
 	 * @param string $className Class name.
 	 * @return void
 	 *
-	 * @throws \Exception If invalid service.
+	 * @throws Exception If invalid service.
 	 */
 	public function set( string $className ): void {
 		if ( ! class_exists( $className ) ) {
-			throw new \Exception( esc_attr( 'Not a valid class.' ) );
+			throw new Exception( esc_attr( 'Not a valid class.' ) );
 		}
 
 		if ( isset( $this->instances[ $className ] ) ) {
 			return;
 		}
 
-		$reflectionClass = new \ReflectionClass( $className );
-		$constructor     = $reflectionClass->getConstructor();
+		$this->instances[ $className ] = $this->build( $className );
+	}
 
-		// Check if constructor exists and if its first parameter is of type ServiceInterface.
-		if ( $constructor && $constructor->getParameters() && $constructor->getParameters()[0]->getType() && $constructor->getParameters()[0]->getType()->getName() === 'AnsPress\Interfaces\ServiceInterface' ) {
-			// Get the requested service instance.
-			$requestedService = $this->get( 'AnsPress\Interfaces\ServiceInterface' );
-
-			// Instantiate the class with the injected service.
-			$instance = $reflectionClass->newInstanceArgs( array( $requestedService ) );
-		} else {
-			// If the constructor does not require ServiceInterface, instantiate the class without injection.
-			$instance = new $className();
+	/**
+	 * Build a class with dependencies.
+	 *
+	 * @param string $className Class name.
+	 * @return object|null
+	 * @throws Exception If the target class does not exist.
+	 */
+	public function build( string $className ) {
+		try {
+			$reflector = new ReflectionClass( $className );
+		} catch ( ReflectionException $e ) {
+			throw new Exception(
+				esc_attr( "Target class [$className] does not exist." ),
+				0,
+				$e // @phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			);
 		}
 
-		if ( ! $instance instanceof SingletonInterface ) {
-			throw new \Exception( esc_attr( 'Invalid class, does not implement SingletonInterface.' ) );
+		// If the type is not instantiable, such as an Interface or Abstract Class.
+		if ( ! $reflector->isInstantiable() ) {
+			throw new Exception( esc_attr( "Target [$className] is not instantiable." ) );
 		}
 
-		$this->instances[ $className ] = $instance;
+		$constructor = $reflector->getConstructor();
+
+		if ( null === $constructor ) {
+			return new $className();
+		}
+
+		$parameters   = $constructor->getParameters();
+		$dependencies = array();
+
+		foreach ( $parameters as $parameter ) {
+			$type = $parameter->getType();
+
+			if ( ! $type instanceof ReflectionNamedType || $type->isBuiltin() ) {
+				throw new Exception( esc_attr( "Missing type hint for {$parameter->getName()}. Please provide a class type." ) );
+			}
+
+			$name = $type->getName();
+
+			// Check if class impliments SingletonInterface.
+			if ( class_exists( $name ) && is_subclass_of( $name, SingletonInterface::class ) ) {
+				$dependency     = $this->get( $name );
+				$dependencies[] = $dependency;
+			} else {
+				throw new Exception( esc_attr( "Only classes which impliments SingletonInface can be used as dependency. For {$parameter->getName()}. Please provide a valid class type." ) );
+			}
+		}
+
+		return $reflector->newInstanceArgs( $dependencies );
 	}
 
 	/**
@@ -74,9 +112,13 @@ class Container {
 	 * @return SingletonInterface|null Service object or null if not found.
 	 * @throws \InvalidArgumentException If the service name is not valid.
 	 */
-	public function get( string $className ): ?SingletonInterface {
-		if ( ! isset( $this->instances[ $className ] ) ) {
+	public function get( string $className ): mixed {
+		if ( $this->instances[ $className ] ?? true ) {
 			$this->set( $className );
+		}
+
+		if ( ! isset( $this->instances[ $className ] ) ) {
+			throw new \InvalidArgumentException( esc_attr( 'Class not found.' ) );
 		}
 
 		return $this->instances[ $className ];

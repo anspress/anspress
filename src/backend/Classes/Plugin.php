@@ -11,6 +11,7 @@ namespace AnsPress\Classes;
 
 use AnsPress\Interfaces\ModuleInterface;
 use AnsPress\Interfaces\ServiceInterface;
+use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -146,5 +147,15 @@ class Plugin {
 		foreach ( $modulesName as $moduleName ) {
 			$this->container->set( $moduleName );
 		}
+	}
+
+	/**
+	 * Get singleton instance of a class.
+	 *
+	 * @param class-string $className Class name.
+	 * @return mixed
+	 */
+	public function singleton( string $className ): mixed {
+		return $this->container->get( $className );
 	}
 }

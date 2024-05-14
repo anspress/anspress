@@ -10,7 +10,6 @@ namespace AnsPress\Classes;
 
 use AnsPress\Exceptions\InvalidColumnException;
 use AnsPress\Interfaces\ModelInterface;
-use DateTime;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
