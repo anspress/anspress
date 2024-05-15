@@ -149,7 +149,7 @@ class Plugin {
 	 * @return void
 	 */
 	public static function updateInstalledDbVersion() {
-		update_option( self::DB_VERSION_OPT_KEY, (int) self::$instance->dbVersion );
+		update_option( self::DB_VERSION_OPT_KEY, (int) self::$instance->dbVersion, true );
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Plugin {
 	 * @return mixed
 	 */
 	public static function get( string $className ) {
-		return self::$instance->container->singleton( $className );
+		return self::$instance->container->get( $className );
 	}
 
 	/**
@@ -171,10 +171,6 @@ class Plugin {
 	 * @throws InvalidArgumentException If instance is not created.
 	 */
 	public static function __callStatic( string $method, array $args ): mixed {
-		if ( null === self::$instance ) {
-			throw new InvalidArgumentException( 'Plugin instance not created.' );
-		}
-
 		if ( str_starts_with( $method, 'get' ) ) {
 			$attribute = lcfirst( substr( $method, 3 ) );
 
