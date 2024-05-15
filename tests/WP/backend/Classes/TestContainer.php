@@ -5,9 +5,7 @@ namespace Tests\Unit\src\backend\Classes;
 use AnsPress\Classes\Container;
 use AnsPress\Tests\Unit\src\backend\Classes\DummyClass;
 use AnsPress\Tests\Unit\src\backend\Classes\SampleService;
-use Mockery;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
-use Brain\Monkey\Functions;
 use wpdb;
 
 class SampleClassWithoutImplimentation {

@@ -4,13 +4,11 @@
  *
  * @link         https://anspress.net/anspress
  * @since        5.0.0
- * @package      AnsPress\Core
+ * @package      AnsPress
  */
 
 namespace AnsPress\Classes;
 
-use AnsPress\Interfaces\ModuleInterface;
-use AnsPress\Interfaces\ServiceInterface;
 use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,21 +24,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Plugin {
 
 	/**
-	 * Plugin database verison.
+	 * Plugin instance.
 	 *
-	 * @change 5.0.0 Last updated at 2024-05-08
+	 * @var mixed
 	 */
-	const PLUGIN_DB_VERSION = '38';
+	protected static $instance = null;
+
+	/**
+	 * Plugin version.
+	 *
+	 * @var string
+	 */
+	private string $pluginVersion;
+
+	/**
+	 * Plugin database version.
+	 *
+	 * @var string
+	 */
+	private string $dbVersion;
 
 	/**
 	 * Minimum PHP version.
+	 *
+	 * @var string
 	 */
-	const MIN_PHP_VERSION = '8.1';
+	private string $minPHPVersion;
 
 	/**
 	 * Minimum WordPress version.
+	 *
+	 * @var string
 	 */
-	const MIN_WP_VERSION = '5.8';
+	private string $minWPVersion;
 
 	/**
 	 * Migration option key.
@@ -60,102 +76,85 @@ class Plugin {
 	}
 
 	/**
+	 * Set protected attributes.
+	 *
+	 * @param string $attributeName  Attribute name.
+	 * @param string $value          Value.
+	 * @return void
+	 */
+	protected function setAttribute( string $attributeName, string $value ) {
+		$this->{$attributeName} = $value;
+	}
+
+	/**
 	 * Get plugin instance.
 	 *
+	 * @param string    $pluginFile     Plugin file.
+	 * @param string    $pluginVersion  Plugin version.
+	 * @param string    $dbVersion      Database version.
+	 * @param string    $minPHPVersion  Minimum PHP version.
+	 * @param string    $minWPVersion   Minimum WordPress version.
+	 * @param Container $container   Container object.
 	 * @return Plugin
 	 */
-	public static function make() {
-		static $instance = null;
+	public static function make(
+		string $pluginFile,
+		string $pluginVersion,
+		string $dbVersion,
+		string $minPHPVersion,
+		string $minWPVersion,
+		Container $container
+	) {
 
-		if ( null === $instance ) {
-			$instance = new self( dirname( ANSPRESS_PLUGIN_FILE ), new Container() );
+		if ( null === self::$instance ) {
+			$instance = new self( $pluginFile, $container );
+
+			$instance->setAttribute( 'pluginVersion', $pluginVersion );
+
+			$instance->setAttribute( 'dbVersion', $dbVersion );
+
+			$instance->setAttribute( 'minPHPVersion', $minPHPVersion );
+
+			$instance->setAttribute( 'minWPVersion', $minWPVersion );
+
+			self::$instance = $instance;
 		}
 
-		return $instance;
+		return self::$instance;
 	}
 
 	/**
-	 * Get minimum PHP version.
+	 * Get current PHP version, useful for mocking.
 	 *
 	 * @return string
 	 */
-	public function getMinPHPVersion(): string {
-		return self::MIN_PHP_VERSION;
-	}
-
-	/**
-	 * Get minimum WordPress version.
-	 *
-	 * @return string
-	 */
-	public function getMinWPVersion(): string {
-		return self::MIN_WP_VERSION;
-	}
-
-	/**
-	 * Get plugin version.
-	 *
-	 * @return string
-	 */
-	public function getPluginVersion(): string {
-		return ANSPRESS_PLUGIN_VERSION;
-	}
-
-	/**
-	 * Get database version.
-	 *
-	 * @return string
-	 */
-	public function getDbVersion(): string {
-		return ANSPRESS_DB_VERSION;
-	}
-
-	/**
-	 * Get current PHP version.
-	 *
-	 * @return string
-	 */
-	public function getCurrentPHPVersion(): string {
+	public static function getCurrentPHPVersion(): string {
 		return PHP_VERSION;
 	}
 
 	/**
-	 * Get container object.
+	 * Magic method for static call.
 	 *
-	 * @return Container
-	 */
-	public function getContainer(): Container {
-		return $this->container;
-	}
-
-	/**
-	 * Get plugin file.
-	 *
-	 * @return string
-	 */
-	public function getPluginFile() {
-		return $this->pluginFile;
-	}
-
-	/**
-	 * Register modules.
-	 *
-	 * @param class-string[] $modulesName Modules name.
-	 * @return void
-	 */
-	public function registerModules( array $modulesName ) {
-		foreach ( $modulesName as $moduleName ) {
-			$this->container->set( $moduleName );
-		}
-	}
-
-	/**
-	 * Get singleton instance of a class.
-	 *
-	 * @param class-string $className Class name.
+	 * @param string $method Method name.
+	 * @param array  $args   Arguments.
 	 * @return mixed
+	 * @throws InvalidArgumentException If instance is not created.
 	 */
-	public function singleton( string $className ): mixed {
-		return $this->container->get( $className );
+	public static function __callStatic( string $method, array $args ): mixed {
+		if ( null === self::$instance ) {
+			throw new InvalidArgumentException( 'Plugin instance not created.' );
+		}
+
+		if ( str_starts_with( $method, 'get' ) ) {
+			$attribute = lcfirst( substr( $method, 3 ) );
+
+			if ( ! property_exists( self::$instance, $attribute ) ) {
+				throw new InvalidArgumentException( 'Attribute not found.' );
+			}
+
+			return self::$instance->{$attribute};
+		}
+
+		throw new InvalidArgumentException( 'Method not found.' );
 	}
 }

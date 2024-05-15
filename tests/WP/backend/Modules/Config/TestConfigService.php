@@ -1,10 +1,11 @@
 <?php
 
 namespace Tests\Unit\src\backend\Classes;
-use Yoast\WPTestUtils\BrainMonkey\TestCase;
-use Brain\Monkey\Functions;
-use AnsPress\Modules\Config\ConfigService;
 
+use AnsPress\Classes\AbstractService;
+use AnsPress\Classes\Container;
+use Yoast\WPTestUtils\BrainMonkey\TestCase;
+use AnsPress\Modules\Config\ConfigService;
 
 /**
  * @covers AnsPress\Modules\Config\ConfigService

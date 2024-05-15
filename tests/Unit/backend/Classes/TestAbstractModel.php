@@ -12,7 +12,7 @@ use wpdb;
  * @covers AnsPress\Classes\AbstractModel
  * @package Tests\Unit
  */
-class TestAbstractClass extends TestCase {
+class TestAbstractModel extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();

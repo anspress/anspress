@@ -573,12 +573,13 @@ require_once __DIR__ . '/src/backend/autoloader.php';
  * @since 5.0.0
  */
 function anspressModules() {
-	$instnace = AnsPress\Classes\Plugin::make();
-
-	$instnace->registerModules(
-		array(
-			AnsPress\Modules\Subscriber\SubscriberModule::class,
-		)
+	$instnace = AnsPress\Classes\Plugin::make(
+		ANSPRESS_PLUGIN_FILE,
+		ANSPRESS_PLUGIN_VERSION,
+		ANSPRESS_DB_VERSION,
+		'8.1',
+		'6.5',
+		new AnsPress\Classes\Container()
 	);
 
 	return $instnace;
