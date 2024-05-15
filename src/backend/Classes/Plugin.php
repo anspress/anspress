@@ -59,9 +59,11 @@ class Plugin {
 	private string $minWPVersion;
 
 	/**
-	 * Migration option key.
+	 * Database version option key.
+	 *
+	 * @var string
 	 */
-	const MIGRATION_OPT_KEY = 'anspress_migrations';
+	const DB_VERSION_OPT_KEY = 'anspress_db_version';
 
 	/**
 	 * Constructor.
@@ -130,6 +132,34 @@ class Plugin {
 	 */
 	public static function getCurrentPHPVersion(): string {
 		return PHP_VERSION;
+	}
+
+	/**
+	 * Get installed databse version.
+	 *
+	 * @return int
+	 */
+	public static function getInstalledDbVersion(): int {
+		return (int) get_option( self::DB_VERSION_OPT_KEY, 0 );
+	}
+
+	/**
+	 * Updated installed database version.
+	 *
+	 * @return void
+	 */
+	public static function updateInstalledDbVersion() {
+		update_option( self::DB_VERSION_OPT_KEY, (int) self::$instance->dbVersion );
+	}
+
+	/**
+	 * Get instance of a class from container.
+	 *
+	 * @param string $className Class name.
+	 * @return mixed
+	 */
+	public static function get( string $className ) {
+		return self::$instance->container->singleton( $className );
 	}
 
 	/**

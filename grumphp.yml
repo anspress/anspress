@@ -13,6 +13,4 @@ grumphp:
         phpunit: ~
         git_blacklist:
             keywords:
-                - 'print_r('
                 - 'var_dump('
-                - 'error_log('
