@@ -22,37 +22,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SubscriberModel extends AbstractModel {
 	/**
-	 * Primary column key.
+	 * The model's primary key.
 	 *
 	 * @var string
 	 */
-	protected string $primaryKey = 'subs_id';
+	protected $primaryKey = 'subs_id';
 
 	/**
-	 * Subscriber ID.
-	 *
-	 * @var int
-	 */
-	public int $subs_id;
-
-	/**
-	 * User ID.
-	 *
-	 * @var int
-	 */
-	public int $subs_user_id;
-
-	/**
-	 * Reference id.
-	 *
-	 * @var int
-	 */
-	public int $subs_ref_id;
-
-	/**
-	 * Event type.
+	 * The model's table name.
 	 *
 	 * @var string
 	 */
-	public string $subs_event;
+	protected $tableName = 'ap_subscribers';
+
+	/**
+	 * The model's columns.
+	 *
+	 * @var string[]
+	 */
+	protected $columns = array(
+		'subs_id'      => '%d',
+		'subs_user_id' => '%d',
+		'subs_ref_id'  => '%d',
+		'subs_event'   => '%s',
+	);
 }

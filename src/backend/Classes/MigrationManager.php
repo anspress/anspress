@@ -37,11 +37,19 @@ class MigrationManager {
 	protected $migrations = array();
 
 	/**
+	 * Path to migrations directory.
+	 *
+	 * @var string
+	 */
+	protected $migrationsDir;
+
+	/**
 	 * Constructor to initialize the migration manager.
 	 *
 	 * @param ConfigService $configService Config service instance.
 	 */
 	public function __construct( protected ConfigService $configService ) {
+		$this->migrationsDir = Plugin::getPathTo( '/migrations' );
 		$this->loadMigrations();
 	}
 

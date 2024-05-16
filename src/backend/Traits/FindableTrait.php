@@ -24,14 +24,9 @@ trait FindableTrait {
 	 * Find a model by its primary key (internal method).
 	 *
 	 * @param mixed $id The primary key value.
-	 * @return $this|null The model instance or null if not found.
-	 * @throws InvalidColumnException If the primary key is not defined.
+	 * @return self|null The model instance or null if not found.
 	 */
-	public function findByPrimaryKey( $id ) {
-		if ( empty( $this->primaryKey ) ) {
-			throw new InvalidColumnException( 'Primary key is not defined for this model.' );
-		}
-
+	public function findByPrimaryKey( $id ): self|null {
 		global $wpdb;
 		$table = $this->getTableName();
 		$sql   = $wpdb->prepare( "SELECT * FROM $table WHERE $this->primaryKey = %d", $id ); // phpcs:ignore WordPress.DB.PreparedSQL
@@ -39,6 +34,7 @@ trait FindableTrait {
 
 		if ( $row ) {
 			$this->fill( $row );
+			$this->setIsNew( false );
 			return $this;
 		}
 
@@ -57,51 +53,27 @@ trait FindableTrait {
 	}
 
 	/**
-	 * Get all models.
-	 *
-	 * @return static[] An array of model instances.
-	 */
-	public static function all() {
-		return ( new static() )->getAll();
-	}
-
-	/**
-	 * Get all models.
-	 *
-	 * @return $this[] An array of model instances.
-	 */
-	public function getAll() {
-		global $wpdb;
-
-		$table = $this->getTableName();
-		$rows  = $wpdb->get_results( "SELECT * FROM $table", ARRAY_A ); // phpcs:ignore WordPress.DB
-
-		$models = array();
-		foreach ( $rows as $row ) {
-			$model    = new static( $row );
-			$models[] = $model;
-		}
-
-		return $models;
-	}
-
-	/**
-	 * Get models based on where conditions (internal method).
+	 * Get models based on where conditions.
 	 *
 	 * @param string $query The query string.
 	 * @param array  $bindings The query bindings.
-	 * @return $this[] An array of model instances.
+	 * @return array An array of model instances.
 	 */
-	public function where( string $query, $bindings = array() ) {
+	public function where( string $query, $bindings = array() ): array {
 		global $wpdb;
 		$table = $this->getTableName();
 
 		$sql  = $wpdb->prepare( "SELECT * FROM $table WHERE $query", $bindings ); // phpcs:ignore WordPress.DB
 		$rows = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB
 
+		if ( ! $rows ) {
+			return array();
+		}
+
 		$models = array();
 		foreach ( $rows as $row ) {
-			$model    = new static( $row );
+			$model = new static( $row );
+			$model->setIsNew( false );
 			$models[] = $model;
 		}
 
