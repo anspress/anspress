@@ -25,6 +25,9 @@
  * GitHub Plugin URI: anspress/anspress
  */
 
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Config\ConfigService;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -460,95 +463,6 @@ if ( ! function_exists( 'anspress' ) ) {
 	}
 }
 
-if ( ! class_exists( 'AnsPress_Init' ) ) {
-
-	/**
-	 * AnsPress initialization class.
-	 */
-	class AnsPress_Init { // phpcs:ignore
-
-		/**
-		 * Load anspress.
-		 *
-		 * @access public
-		 * @static
-		 */
-		public static function load_anspress() {
-			/*
-			 * Action before loading AnsPress.
-			 * @since 2.4.7
-			 */
-			do_action( 'before_loading_anspress' );
-		}
-
-		/**
-		 * Load translations.
-		 *
-		 * @since  2.0.1
-		 * @access public
-		 * @static
-		 */
-		public static function load_textdomain() {
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
-			$loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ) . "anspress-question-answer/anspress-question-answer-{$locale}.mo" );
-
-			if ( $loaded ) {
-				return $loaded;
-			} else {
-				load_plugin_textdomain( 'anspress-question-answer', false, basename( __DIR__ ) . '/languages/' );
-			}
-		}
-
-		/**
-		 * Creating table whenever a new blog is created
-		 *
-		 * @access public
-		 * @static
-		 *
-		 * @param  integer $blog_id Blog id.
-		 */
-		public static function create_blog( $blog_id ) {
-			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
-				switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
-				require_once __DIR__ . '/activate.php';
-				AP_Activate::get_instance( true );
-				restore_current_blog();
-			}
-		}
-
-		/**
-		 * Deleting the table whenever a blog is deleted
-		 *
-		 * @access public
-		 * @static
-		 *
-		 * @param  array $tables  Table names.
-		 * @param  int   $blog_id Blog ID.
-		 *
-		 * @return array
-		 */
-		public static function drop_blog_tables( $tables, $blog_id ) {
-			if ( empty( $blog_id ) || 1 === (int) $blog_id || $blog_id !== $GLOBALS['blog_id'] ) {
-				return $tables;
-			}
-
-			global $wpdb;
-
-			$tables[] = $wpdb->prefix . 'ap_views';
-			$tables[] = $wpdb->prefix . 'ap_qameta';
-			$tables[] = $wpdb->prefix . 'ap_activity';
-			$tables[] = $wpdb->prefix . 'ap_votes';
-			return $tables;
-		}
-	}
-}
-
-add_action( 'plugins_loaded', 'anspress' );
-add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_anspress' ), 1 );
-add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_textdomain' ), 0 );
-add_action( 'wpmu_new_blog', array( 'AnsPress_Init', 'create_blog' ), 10, 6 );
-add_filter( 'wpmu_drop_tables', array( 'AnsPress_Init', 'drop_blog_tables' ), 10, 2 );
-
 require_once __DIR__ . '/includes/class/roles-cap.php';
 require_once __DIR__ . '/includes/class/class-singleton.php';
 
@@ -566,21 +480,24 @@ register_activation_hook( __FILE__, 'anspress_activation' );
 
 require_once __DIR__ . '/src/backend/autoloader.php';
 
-/**
- * AnsPress modules.
- *
- * @return AnsPress\Classes\Plugin
- * @since 5.0.0
- */
-function anspressModules() {
-	$instnace = AnsPress\Classes\Plugin::make(
-		ANSPRESS_PLUGIN_FILE,
-		ANSPRESS_PLUGIN_VERSION,
-		ANSPRESS_DB_VERSION,
-		'8.1',
-		'6.5',
-		new AnsPress\Classes\Container()
-	);
+Plugin::make(
+	ANSPRESS_PLUGIN_FILE,
+	ANSPRESS_PLUGIN_VERSION,
+	ANSPRESS_DB_VERSION,
+	'8.1',
+	'6.5',
+	new AnsPress\Classes\Container()
+);
 
-	return $instnace;
+$options = include Plugin::getPathTo( 'src/backend/config.php' );
+
+Plugin::get( ConfigService::class )->registerDefaults( $options );
+
+// Load module hooks.
+$modules = array(
+	AnsPress\Modules\Core\CoreModule::class,
+);
+
+foreach ( $modules as $module ) {
+	Plugin::get( $module )->register_hooks();
 }

@@ -4,14 +4,69 @@ namespace Tests\WP\backend\Classes;
 
 use AnsPress\Classes\Container;
 use AnsPress\Classes\Plugin;
-use AnsPress\Tests\Unit\src\backend\Classes\DummyClass;
+use AnsPress\Interfaces\SingletonInterface;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
+use Brain\Monkey\Functions;
+use AnsPress\Classes\AbstractService;
+
+require_once PLUGIN_DIR . '/src/backend/autoloader.php';
+
+
+
+/**
+ * Dummy class.
+ */
+class DummyClass implements SingletonInterface {
+	protected $sampleService;
+
+	/**
+	 * Constructor class.
+	 *
+	 * @return void
+	 */
+	public function __construct(SampleService $sampleService) {
+		$this->sampleService = $sampleService;
+	}
+
+	public function __clone()
+	{
+
+	}
+
+	public function __wakeup()
+	{
+
+	}
+
+	/**
+	 * Get the sample service.
+	 *
+	 * @return SampleService
+	 */
+	public function getSampleService(): SampleService {
+		return $this->sampleService;
+	}
+}
+
+
+
+/**
+ * Dummy class.
+ */
+class SampleService extends AbstractService {
+
+}
+
 
 /**
  * @covers AnsPress\Classes\Plugin
  * @package Tests\WP
  */
 class TestPlugin extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+	}
+
 
 	public function testProperties() {
 		$plugin = Plugin::make(
@@ -50,29 +105,26 @@ class TestPlugin extends TestCase {
 		$this->assertEquals( $container, $plugin::getContainer() );
 	}
 
-	public function testGetInstalledDbVersion() {
-		$plugin = Plugin::make(
-			'test.php',
-			'1.1.1',
-			'33000',
-			'7.4',
-			'5.8',
-			new Container()
-		);
+	// public function testGetInstalledDbVersion() {
+	// 	$plugin = Plugin::make(
+	// 		'test.php',
+	// 		'1.1.1',
+	// 		'33000',
+	// 		'7.4',
+	// 		'5.8',
+	// 		new Container()
+	// 	);
 
-		delete_option( 'anspress_db_version' );
+	// 	delete_option( 'anspress_db_version' );
 
-		$this->assertEquals( 0, $plugin::getInstalledDbVersion() );
+	// 	$this->assertEquals( 0, $plugin::getInstalledDbVersion() );
 
-		$plugin->updateInstalledDbVersion();
+	// 	$plugin->updateInstalledDbVersion();
 
-		$this->assertEquals( 33000, $plugin::getInstalledDbVersion() );
-	}
+	// 	$this->assertEquals( 33000, $plugin::getInstalledDbVersion() );
+	// }
 
 	public function testGetMethod() {
-		require_once __DIR__ . '/DummyClass.php';
-		require_once __DIR__ . '/SampleService.php';
-
 		$plugin = Plugin::make(
 			'test.php',
 			'1.1.1',

@@ -9,6 +9,7 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Interfaces\MigrationInterface;
+use AnsPress\Modules\Config\ConfigService;
 use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,19 +37,11 @@ class MigrationManager {
 	protected $migrations = array();
 
 	/**
-	 * Directory where migration files are located.
-	 *
-	 * @var string
-	 */
-	protected $migrationsDir;
-
-	/**
 	 * Constructor to initialize the migration manager.
 	 *
-	 * @param string $migrationDir Directory where migration files are located.
+	 * @param ConfigService $configService Config service instance.
 	 */
-	public function __construct( $migrationDir ) {
-		$this->migrationsDir = $migrationDir;
+	public function __construct( protected ConfigService $configService ) {
 		$this->loadMigrations();
 	}
 

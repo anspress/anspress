@@ -108,11 +108,12 @@ class Container {
 	/**
 	 * Method to load singleton classes on demand.
 	 *
-	 * @param class-string $className Class name.
-	 * @return SingletonInterface|null Service object or null if not found.
+	 * @template T of object
+	 * @param class-string<T> $className Class name.
+	 * @return T|null Service object or null if not found.
 	 * @throws \InvalidArgumentException If the service name is not valid.
 	 */
-	public function get( string $className ): mixed {
+	public function get( $className ): mixed {
 		if ( $this->instances[ $className ] ?? true ) {
 			$this->set( $className );
 		}

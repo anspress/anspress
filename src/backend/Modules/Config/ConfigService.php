@@ -134,24 +134,37 @@ class ConfigService extends AbstractService {
 	 * @throws InvalidArgumentException If value or type is missing.
 	 */
 	public function registerDefaults( array $options ): void {
+		foreach ( $options as $name => $opt ) {
+			$this->registerOption( $name, $opt['value'], $opt['type'] );
+		}
+	}
+
+	/**
+	 * Register option.
+	 *
+	 * @param string $name Option name.
+	 * @param mixed  $value Option value.
+	 * @param string $type Option type, e.g. boolean, float, integer, string, double.
+	 * @return void
+	 * @throws InvalidArgumentException If value or type is missing or invalid type.
+	 */
+	public function registerOption( string $name, mixed $value, string $type ): void {
 		$builtInTypes = array( 'boolean', 'float', 'integer', 'string', 'double' );
 
-		foreach ( $options as $name => $opt ) {
-			// Check if value and type is set if not throw an error.
-			if ( ! isset( $opt['type'] ) || ! isset( $opt['value'] ) ) {
-				throw new InvalidArgumentException( esc_attr( $name . ': When registering options [value] and [type] must be present.' ) );
-			}
-
-			// Check if type is valid.
-			if ( ! in_array( $opt['type'], $builtInTypes, true ) ) {
-				throw new InvalidArgumentException( esc_attr( $name . ': Invalid type.' ) );
-			}
-
-			$this->registeredDefaults[ $name ] = array(
-				'value' => $opt['value'],
-				'type'  => $opt['type'],
-			);
+		// Check if value and type is set if not throw an error.
+		if ( ! isset( $type ) || ! isset( $value ) ) {
+			throw new InvalidArgumentException( esc_attr( $name . ': When registering options [value] and [type] must be present.' ) );
 		}
+
+		// Check if type is valid.
+		if ( ! in_array( $type, $builtInTypes, true ) ) {
+			throw new InvalidArgumentException( esc_attr( $name . ': Invalid type.' ) );
+		}
+
+		$this->registeredDefaults[ $name ] = array(
+			'value' => $value,
+			'type'  => $type,
+		);
 	}
 
 	/**
@@ -163,7 +176,7 @@ class ConfigService extends AbstractService {
 	 */
 	public function getDefault( string $name ) {
 		if ( ! $this->isRegistered( $name ) ) {
-			throw new InvalidArgumentException( esc_attr( 'Option not registered.' ) );
+			throw new InvalidArgumentException( esc_attr( $name . ': Option not registered.' ) );
 		}
 
 		$defaultValue = $this->registeredDefaults[ $name ]['value'];

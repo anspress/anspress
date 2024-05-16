@@ -9,6 +9,7 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Modules\Config\ConfigService;
 use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,7 +27,7 @@ class Plugin {
 	/**
 	 * Plugin instance.
 	 *
-	 * @var mixed
+	 * @var null|self
 	 */
 	protected static $instance = null;
 
@@ -59,6 +60,13 @@ class Plugin {
 	private string $minWPVersion;
 
 	/**
+	 * Container.
+	 *
+	 * @var Container
+	 */
+	private Container $container;
+
+	/**
 	 * Database version option key.
 	 *
 	 * @var string
@@ -73,8 +81,9 @@ class Plugin {
 	 */
 	private function __construct(
 		private string $pluginFile,
-		private Container $container
+		Container $container
 	) {
+		$this->container = $container;
 	}
 
 	/**
@@ -93,7 +102,7 @@ class Plugin {
 	 *
 	 * @param string    $pluginFile     Plugin file.
 	 * @param string    $pluginVersion  Plugin version.
-	 * @param string    $dbVersion      Database version.
+	 * @param int       $dbVersion      Database version.
 	 * @param string    $minPHPVersion  Minimum PHP version.
 	 * @param string    $minWPVersion   Minimum WordPress version.
 	 * @param Container $container   Container object.
@@ -102,25 +111,22 @@ class Plugin {
 	public static function make(
 		string $pluginFile,
 		string $pluginVersion,
-		string $dbVersion,
+		int $dbVersion,
 		string $minPHPVersion,
 		string $minWPVersion,
 		Container $container
 	) {
+		$instance = new self( $pluginFile, $container );
 
-		if ( null === self::$instance ) {
-			$instance = new self( $pluginFile, $container );
+		$instance->setAttribute( 'pluginVersion', $pluginVersion );
 
-			$instance->setAttribute( 'pluginVersion', $pluginVersion );
+		$instance->setAttribute( 'dbVersion', $dbVersion );
 
-			$instance->setAttribute( 'dbVersion', $dbVersion );
+		$instance->setAttribute( 'minPHPVersion', $minPHPVersion );
 
-			$instance->setAttribute( 'minPHPVersion', $minPHPVersion );
+		$instance->setAttribute( 'minWPVersion', $minWPVersion );
 
-			$instance->setAttribute( 'minWPVersion', $minWPVersion );
-
-			self::$instance = $instance;
-		}
+		self::$instance = $instance;
 
 		return self::$instance;
 	}
@@ -140,7 +146,8 @@ class Plugin {
 	 * @return int
 	 */
 	public static function getInstalledDbVersion(): int {
-		return (int) get_option( self::DB_VERSION_OPT_KEY, 0 );
+		return self::get( ConfigService::class )
+			->get( 'migration.installed_version' );
 	}
 
 	/**
@@ -149,16 +156,29 @@ class Plugin {
 	 * @return void
 	 */
 	public static function updateInstalledDbVersion() {
-		update_option( self::DB_VERSION_OPT_KEY, (int) self::$instance->dbVersion, true );
+		self::get( ConfigService::class )
+			->set( 'migration.installed_version', self::$instance->dbVersion );
 	}
 
 	/**
-	 * Get instance of a class from container.
+	 * Get path relative to plugin directory.
 	 *
-	 * @param string $className Class name.
-	 * @return mixed
+	 * @param string $path Path.
+	 * @return string Full path.
 	 */
-	public static function get( string $className ) {
+	public static function getPathTo( string $path ): string {
+		return plugin_dir_path( self::$instance->pluginFile ) . $path;
+	}
+
+	/**
+	 * Method to load singleton classes on demand.
+	 *
+	 * @template T of object
+	 * @param class-string<T> $className Class name.
+	 * @return T|null Service object or null if not found.
+	 * @throws \InvalidArgumentException If the service name is not valid.
+	 */
+	public static function get( $className ) {
 		return self::$instance->container->get( $className );
 	}
 
