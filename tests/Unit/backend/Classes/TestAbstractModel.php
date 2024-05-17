@@ -19,11 +19,7 @@ class TestAbstractModel extends TestCase {
 
 		Functions\expect('current_time')->andReturn('2024-05-13 15:30:00');
 
-		require_once PLUGIN_DIR . '/src/backend/Classes/Str.php';
-		require_once PLUGIN_DIR . '/src/backend/Exceptions/InvalidColumnException.php';
-		require_once PLUGIN_DIR . '/src/backend/Interfaces/ModelInterface.php';
-		require_once PLUGIN_DIR . '/src/backend/Interfaces/ModelInterface.php';
-		require_once PLUGIN_DIR . '/src/backend/Classes/AbstractModel.php';
+		require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 	}
 
 	protected function tearDown(): void {
@@ -33,7 +29,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testValidColumn() {
         $model = new class extends AbstractModel {
-            protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
+            protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
         };
 
         $this->assertTrue($model->isValidColumn('id'));
@@ -42,8 +38,8 @@ class TestAbstractModel extends TestCase {
 
 	public function testFill() {
 		$class = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s'];
-			protected $timestamps = true;
+			protected static $columns = ['id' => '%d', 'name' => '%s'];
+			protected static $timestamps = true;
 		};
 
         $model = Mockery::mock($class)->makePartial(); // Partial mock allows overriding methods.
@@ -75,8 +71,8 @@ class TestAbstractModel extends TestCase {
 		Functions\expect('esc_attr');
 
 		$model = new class extends AbstractModel {
-			protected $timestamps = true;
-			protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
+			protected static $timestamps = true;
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
 		};
 
 		$model->fill(['id' => 1, 'name' => 'Test Model']);
@@ -96,7 +92,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testFillInitial() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
 		};
 
 		$model->fillInitial();
@@ -109,7 +105,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testSetAttribute() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
 		};
 
 		$model->setAttribute('id', 1);
@@ -123,7 +119,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testSetAttributeWithCustomMethod() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
 
 			public function setFloatValAttribute($value) {
 				return 999.111;
@@ -137,7 +133,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testSetAttributeDefaultValueOnlyOnNew() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
 
 			public function getFloatValColumnDefaultValue() {
 				return 1100.11;
@@ -161,7 +157,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetAttributeWithoutMethod() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
 		};
 
 		$model->setAttribute('id', 1);
@@ -175,7 +171,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetAttributeWithMethod() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
 
 			public function getIdAttribute($value) {
 				return $value + 1;
@@ -201,7 +197,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetColumnDefaultValueException() {
 		$class = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
 		};
 
 		// Mock esc_attr function.
@@ -217,7 +213,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetPrimaryKey() {
 		$model = new class extends AbstractModel {
-			protected $primaryKey = 'id_custom';
+			protected static $primaryKey = 'id_custom';
 		};
 
 		$this->assertEquals('id_custom', $model->getPrimaryKey());
@@ -225,15 +221,17 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetTableName() {
 		$model = new class extends AbstractModel {
-			protected $tableName = 'custom_table';
+			protected static $tableName = 'custom_table';
 		};
+
+
 
 		// Mock wpdb global variable.
 		global $wpdb;
 		$wpdb = Mockery::mock(wpdb::class)->makePartial();
 		$wpdb->prefix = 'wp_';
 
-		$this->assertEquals('wp_custom_table', $model->getTableName());
+		$this->assertEquals('wp_custom_table', $model::getTableName());
 	}
 
 	public function testGetAttributes() {
@@ -246,7 +244,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetFormatString() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'float_val' => '%f'];
 		};
 
 		$this->assertEquals('%d', $model->getFormatString('id'));
@@ -257,7 +255,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetOriginalValid() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s'];
 		};
 
 		$model->fill(['id' => 1, 'name' => 'Test Model']);
@@ -268,7 +266,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetOriginalInvalid() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s'];
 		};
 
 		Functions\expect('esc_attr');
@@ -279,16 +277,16 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetFormatStrings() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'float_val' => '%f'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'float_val' => '%f'];
 		};
 
-		$this->assertEquals(['%d', '%s', '%s'], $model->getFormatStrings(['id', 'name', 'created_at']));
-		$this->assertEquals(['%d', '%s'], $model->getFormatStrings(['id', 'name']));
+		$this->assertEquals(['%d', '%s', '%s'], $model::getFormatStrings(['id', 'name', 'created_at']));
+		$this->assertEquals(['%d', '%s'], $model::getFormatStrings(['id', 'name']));
 	}
 
 	public function testToArray() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
 		};
 
 		$model->fill(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00']);
@@ -298,7 +296,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testToJson() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
 		};
 
 		$model->fill(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00']);
@@ -308,7 +306,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testGetterMethod() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s'];
 		};
 
 		$model->fill(['id' => 2, 'name' => 'TEST MODEL']);
@@ -319,7 +317,7 @@ class TestAbstractModel extends TestCase {
 
 	public function testInvalidArgumentInGetterMethod() {
 		$model = new class extends AbstractModel {
-			protected $columns = ['id' => '%d', 'name' => '%s'];
+			protected static $columns = ['id' => '%d', 'name' => '%s'];
 		};
 
 		// Mock esc_attr function.
@@ -327,5 +325,34 @@ class TestAbstractModel extends TestCase {
 
 		$this->expectException(\InvalidArgumentException::class);
 		$model->invalid_column;
+	}
+
+	public function testGetColumnFormat() {
+		$model = new class extends AbstractModel {
+			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
+		};
+
+		$this->assertEquals('%d', $model::getColumnFormat('id'));
+		$this->assertEquals('%s', $model::getColumnFormat('name'));
+		$this->assertEquals('%f', $model::getColumnFormat('float_val'));
+	}
+
+	public function testHydrate() {
+		$model = new class extends AbstractModel {
+			protected static $columns = ['id' => '%d', 'name' => '%s'];
+		};
+
+		$rows = [
+			['id' => 1, 'name' => 'Test Model 1'],
+			['id' => 2, 'name' => 'Test Model 2'],
+		];
+
+		$models = $model::hydrate($rows);
+
+		$this->assertCount(2, $models);
+		$this->assertEquals(1, $models[0]->id);
+		$this->assertEquals('Test Model 1', $models[0]->name);
+		$this->assertEquals(2, $models[1]->id);
+		$this->assertEquals('Test Model 2', $models[1]->name);
 	}
 }

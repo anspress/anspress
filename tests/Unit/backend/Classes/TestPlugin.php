@@ -8,6 +8,7 @@ use AnsPress\Interfaces\SingletonInterface;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
 use Brain\Monkey\Functions;
 use AnsPress\Classes\AbstractService;
+use AnsPress\Modules\Config\ConfigService;
 
 require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 
@@ -105,25 +106,6 @@ class TestPlugin extends TestCase {
 		$this->assertEquals( $container, $plugin::getContainer() );
 	}
 
-	// public function testGetInstalledDbVersion() {
-	// 	$plugin = Plugin::make(
-	// 		'test.php',
-	// 		'1.1.1',
-	// 		'33000',
-	// 		'7.4',
-	// 		'5.8',
-	// 		new Container()
-	// 	);
-
-	// 	delete_option( 'anspress_db_version' );
-
-	// 	$this->assertEquals( 0, $plugin::getInstalledDbVersion() );
-
-	// 	$plugin->updateInstalledDbVersion();
-
-	// 	$this->assertEquals( 33000, $plugin::getInstalledDbVersion() );
-	// }
-
 	public function testGetMethod() {
 		$plugin = Plugin::make(
 			'test.php',
@@ -169,4 +151,29 @@ class TestPlugin extends TestCase {
 		$plugin::getInvalidProperty();
 	}
 
+	public function testGetInstalledDbVersion() {
+		Functions\expect( 'update_option' )->once()->andReturn( true );
+
+		$plugin = Plugin::make(
+			'test.php',
+			'1.1.1',
+			'33000',
+			'7.4',
+			'5.8',
+			new Container()
+		);
+
+		$plugin->get( ConfigService::class )->registerDefaults(
+			[
+				'migration.installed_version' => [
+					'type' => 'integer',
+					'value' => 0
+				]
+			]
+		);
+
+		$plugin::updateInstalledDbVersion(3300001);
+
+		$this->assertEquals( 33000, $plugin::getInstalledDbVersion() );
+	}
 }

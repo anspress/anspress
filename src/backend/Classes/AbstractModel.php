@@ -22,19 +22,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress\Classes
  */
 abstract class AbstractModel implements ModelInterface {
+	use \AnsPress\Traits\FindableTrait;
+
 	/**
 	 * The model's primary key.
 	 *
 	 * @var string
 	 */
-	protected $primaryKey = 'id';
+	protected static $primaryKey = 'id';
 
 	/**
 	 * The model's table name.
 	 *
 	 * @var string
 	 */
-	protected $tableName;
+	protected static $tableName;
 
 	/**
 	 * The model's attributes.
@@ -55,14 +57,14 @@ abstract class AbstractModel implements ModelInterface {
 	 *
 	 * @var array<string, string>
 	 */
-	protected $columns = array();
+	protected static $columns = array();
 
 	/**
 	 * Whether to include timestamps in the model.
 	 *
 	 * @var bool
 	 */
-	protected $timestamps = false;
+	protected static $timestamps = false;
 
 	/**
 	 * Whether the model is new.
@@ -77,11 +79,6 @@ abstract class AbstractModel implements ModelInterface {
 	 * @param array $attributes The model's attributes.
 	 */
 	public function __construct( array $attributes = array() ) {
-		if ( $this->timestamps ) {
-			$this->columns['created_at'] = '%s';
-			$this->columns['updated_at'] = '%s';
-		}
-
 		$this->fillInitial();
 
 		$this->syncOriginal();
@@ -95,7 +92,7 @@ abstract class AbstractModel implements ModelInterface {
 	 * @return void
 	 */
 	public function fillInitial(): void {
-		foreach ( $this->columns as $key => $format ) {
+		foreach ( get_called_class()::getColumns() as $key => $format ) {
 			$this->setAttribute( $key, null );
 		}
 	}
@@ -186,11 +183,11 @@ abstract class AbstractModel implements ModelInterface {
 		}
 
 		// Else return based on the column type.
-		if ( '%d' === $this->columns[ $column ] ) {
+		if ( '%d' === get_called_class()::getFormatString( $column ) ) {
 			return 0;
 		}
 
-		if ( '%f' === $this->columns[ $column ] ) {
+		if ( '%f' === get_called_class()::getFormatString( $column ) ) {
 			return 0.0;
 		}
 
@@ -198,12 +195,36 @@ abstract class AbstractModel implements ModelInterface {
 	}
 
 	/**
+	 * Get the model's columns.
+	 *
+	 * @return array
+	 */
+	public static function getColumns(): array {
+		if ( get_called_class()::$timestamps ) {
+			get_called_class()::$columns['created_at'] = '%s';
+			get_called_class()::$columns['updated_at'] = '%s';
+		}
+
+		return get_called_class()::$columns;
+	}
+
+	/**
+	 * Get foramt of a column by name.
+	 *
+	 * @param string $column The column name.
+	 * @return string|null The column format.
+	 */
+	public static function getColumnFormat( string $column ): string {
+		return get_called_class()::$columns[ $column ] ?? null;
+	}
+
+	/**
 	 * Get the model's primary key.
 	 *
 	 * @return string
 	 */
-	public function getPrimaryKey(): string {
-		return $this->primaryKey;
+	public static function getPrimaryKey(): string {
+		return get_called_class()::$primaryKey;
 	}
 
 	/**
@@ -211,8 +232,10 @@ abstract class AbstractModel implements ModelInterface {
 	 *
 	 * @return string
 	 */
-	public function getTableName(): string {
-		return $GLOBALS['wpdb']->prefix . $this->tableName;
+	public static function getTableName(): string {
+		global $wpdb;
+
+		return $wpdb->prefix . ( get_called_class()::$tableName );
 	}
 
 	/**
@@ -230,8 +253,8 @@ abstract class AbstractModel implements ModelInterface {
 	 * @param string $column The column name.
 	 * @return bool
 	 */
-	public function isValidColumn( string $column ): bool {
-		return isset( $this->columns[ $column ] );
+	public static function isValidColumn( string $column ): bool {
+		return isset( get_called_class()::getColumns()[ $column ] );
 	}
 
 	/**
@@ -241,11 +264,13 @@ abstract class AbstractModel implements ModelInterface {
 	 * @return string The format string.
 	 * @throws InvalidColumnException If the column does not exist.
 	 */
-	public function getFormatString( string $column ): string {
+	public static function getFormatString( string $column ): string {
 		$validFormats = array( '%s', '%d', '%f' );
 
-		if ( isset( $this->columns[ $column ] ) && in_array( $this->columns[ $column ], $validFormats, true ) ) {
-			return $this->columns[ $column ];
+		$columns = get_called_class()::getColumns();
+
+		if ( isset( $columns[ $column ] ) && in_array( $columns[ $column ], $validFormats, true ) ) {
+			return $columns[ $column ];
 		}
 
 		throw new InvalidColumnException( esc_attr( "Invalid column: $column" ) );
@@ -257,8 +282,8 @@ abstract class AbstractModel implements ModelInterface {
 	 * @param array $columns The columns to get formats for.
 	 * @return string[] The format strings.
 	 */
-	public function getFormatStrings( array $columns ): array {
-		return array_map( array( $this, 'getFormatString' ), $columns );
+	public static function getFormatStrings( array $columns ): array {
+		return array_map( array( get_called_class(), 'getFormatString' ), $columns );
 	}
 
 	/**
@@ -351,17 +376,22 @@ abstract class AbstractModel implements ModelInterface {
 	}
 
 	/**
-	 * Save the model.
+	 * Hydrate array.
 	 *
-	 * @return AbstractModel
+	 * @param array $data The data to convert.
+	 * @return array The converted models.
 	 */
-	public function save(): self {
-		// Update updated_at timestamp if the model exists.
-		if ( $this->timestamps && $this->exists() ) {
-			$this->setAttribute( 'updated_at', $this->currentTime( 'mysql' ) );
+	public static function hydrate( array $data ): array {
+		$models = array();
+
+		foreach ( $data as $attributes ) {
+			$model = new static( $attributes );
+			$model->setIsNew( false );
+
+			$models[] = $model;
 		}
 
-		return $this;
+		return $models;
 	}
 
 	/**

@@ -8,8 +8,6 @@
 
 namespace AnsPress\Interfaces;
 
-use DateTime;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -61,6 +59,14 @@ interface ModelInterface {
 	public function getAttribute( string $attribute ): mixed;
 
 	/**
+	 * Get foramt of a column by name.
+	 *
+	 * @param string $column The column name.
+	 * @return string|null The column format.
+	 */
+	public static function getColumnFormat( string $column ): string;
+
+	/**
 	 * Get the default value for a column.
 	 *
 	 * @param string $column Column name.
@@ -74,14 +80,14 @@ interface ModelInterface {
 	 *
 	 * @return string
 	 */
-	public function getPrimaryKey(): string;
+	public static function getPrimaryKey(): string;
 
 	/**
 	 * Get the model's table name with prefix.
 	 *
 	 * @return string
 	 */
-	public function getTableName(): string;
+	public static function getTableName(): string;
 
 	/**
 	 * Get the model's attributes.
@@ -97,7 +103,7 @@ interface ModelInterface {
 	 * @return string The format string.
 	 * @throws InvalidColumnException If the column does not exist.
 	 */
-	public function getFormatString( string $column ): string;
+	public static function getFormatString( string $column ): string;
 
 	/**
 	 * Get formats for all passed columns in order.
@@ -105,7 +111,7 @@ interface ModelInterface {
 	 * @param array $columns The columns to get formats for.
 	 * @return array<string> The format strings.
 	 */
-	public function getFormatStrings( array $columns ): array;
+	public static function getFormatStrings( array $columns ): array;
 
 	/**
 	 * Get the model's original attributes.
@@ -172,6 +178,14 @@ interface ModelInterface {
 	 * @param bool $isNew The flag to set.
 	 */
 	public function setIsNew( bool $isNew ): void;
+
+	/**
+	 * Hydrate array.
+	 *
+	 * @param array $data The data to convert.
+	 * @return array The converted models.
+	 */
+	public static function hydrate( array $data ): array;
 
 	/**
 	 * Magic method to get the model's attributes.

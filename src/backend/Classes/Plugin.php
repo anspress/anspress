@@ -21,6 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 5.0.0
  * @package AnsPress
+ * @method static string getPluginVersion() Gets the plugin version.
+ * @method static int getDbVersion() Gets the database version.
+ * @method static string getMinPHPVersion() Gets the minimum PHP version.
+ * @method static string getMinWPVersion() Gets the minimum WordPress version.
+ * @method static string getPluginFile() Gets the plugin file.
  */
 class Plugin {
 

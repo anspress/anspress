@@ -21,21 +21,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 trait FindableTrait {
 	/**
-	 * Find a model by its primary key (internal method).
+	 * Find a model by its primary key.
 	 *
 	 * @param mixed $id The primary key value.
 	 * @return self|null The model instance or null if not found.
 	 */
-	public function findByPrimaryKey( $id ): self|null {
+	public static function findByPrimaryKey( $id ): self|null {
 		global $wpdb;
-		$table = $this->getTableName();
-		$sql   = $wpdb->prepare( "SELECT * FROM $table WHERE $this->primaryKey = %d", $id ); // phpcs:ignore WordPress.DB.PreparedSQL
-		$row   = $wpdb->get_row( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB
+		$table      = self::getTableName();
+		$primaryKey = self::getPrimaryKey();
+		$sql        = $wpdb->prepare( "SELECT * FROM $table WHERE $primaryKey = %d", $id ); // phpcs:ignore WordPress.DB.PreparedSQL
+		$row        = $wpdb->get_row( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB
 
 		if ( $row ) {
-			$this->fill( $row );
-			$this->setIsNew( false );
-			return $this;
+			$model = new static(
+				$row
+			);
+			$model->setIsNew( false );
+			return $model;
 		}
 
 		return null;
@@ -50,33 +53,5 @@ trait FindableTrait {
 	 */
 	public static function find( $id ) {
 		return ( new static() )->findByPrimaryKey( $id );
-	}
-
-	/**
-	 * Get models based on where conditions.
-	 *
-	 * @param string $query The query string.
-	 * @param array  $bindings The query bindings.
-	 * @return array An array of model instances.
-	 */
-	public function where( string $query, $bindings = array() ): array {
-		global $wpdb;
-		$table = $this->getTableName();
-
-		$sql  = $wpdb->prepare( "SELECT * FROM $table WHERE $query", $bindings ); // phpcs:ignore WordPress.DB
-		$rows = $wpdb->get_results( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB
-
-		if ( ! $rows ) {
-			return array();
-		}
-
-		$models = array();
-		foreach ( $rows as $row ) {
-			$model = new static( $row );
-			$model->setIsNew( false );
-			$models[] = $model;
-		}
-
-		return $models;
 	}
 }

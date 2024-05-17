@@ -12,8 +12,8 @@ class MockModelWithTrait extends AbstractModel
 {
     use FindableTrait;
 
-    protected $primaryKey = 'id';
-    protected $columns = ['id' => '%d', 'name' => '%s', 'email' => '%s'];
+    protected static $primaryKey = 'id';
+    protected static $columns = ['id' => '%d', 'name' => '%s', 'email' => '%s'];
 }
 
 define( 'ARRAY_A', 'ARRAY_A' );
@@ -114,64 +114,5 @@ class TestFindableTrait extends TestCase {
 		$this->assertEquals(1, $result->id);
 		$this->assertEquals('John Doe', $result->name);
 		$this->assertEquals('john@doe.com', $result->email);
-	}
-
-	public function testWhereEmptyArray() {
-		$wpdb = $this->setupDBMock();
-
-		// Set up the expected query and result
-		$wpdb->shouldReceive('prepare')
-			->andReturn('SELECT * FROM mock_table WHERE id = 1');
-
-		$wpdb->shouldReceive('get_results')
-			->with('SELECT * FROM mock_table WHERE id = 1', ARRAY_A)
-			->andReturn(null);
-
-		// Create an instance of your mock model
-		$model = new MockModelWithTrait();
-
-		// Call the method under test
-		$result = $model->where('id = 1');
-
-		// Assertions
-		$this->assertIsArray($result); // Ensure an array is returned
-		$this->assertEmpty($result); // Ensure the array is empty
-	}
-
-	public function testWhereNotEmptyArray() {
-		$wpdb = $this->setupDBMock();
-
-		// Set up the expected query and result
-		$wpdb->shouldReceive('prepare')
-			->andReturn('SELECT * FROM mock_table WHERE id = 1');
-
-		$wpdb->shouldReceive('get_results')
-			->with('SELECT * FROM mock_table WHERE id = 1', ARRAY_A)
-			->andReturn([
-				['id' => 1, 'name' => 'John Doe', 'email' => 'john@doe.com'],
-				['id' => 2, 'name' => 'Jane Doe', 'email' => 'john@doe2.com'],
-			]);
-
-		// Create an instance of your mock model
-		$model = new MockModelWithTrait();
-
-		// Call the method under test
-		$result = $model->where('id = 1');
-
-		// Assertions
-
-		$this->assertIsArray($result); // Ensure an array is returned
-		$this->assertCount(2, $result); // Ensure the array has two elements
-
-		$this->assertInstanceOf(MockModelWithTrait::class, $result[0]); // Ensure the first element is a model
-		$this->assertEquals(1, $result[0]->id);
-		$this->assertEquals('John Doe', $result[0]->name);
-		$this->assertEquals('john@doe.com', $result[0]->email);
-
-		$this->assertInstanceOf(MockModelWithTrait::class, $result[1]); // Ensure the second element is a model
-		$this->assertEquals(2, $result[1]->id);
-		$this->assertEquals('Jane Doe', $result[1]->name);
-		$this->assertEquals('john@doe2.com', $result[1]->email);
-
 	}
 }
