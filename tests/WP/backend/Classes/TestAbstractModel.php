@@ -165,4 +165,30 @@ class TestAbstractModel extends TestCase {
 
 		$this->assertFalse( $model->delete() );
 	}
+
+	public function testFindMany() {
+		$this->createTable();
+
+		global $wpdb;
+
+		$wpdb->insert( $wpdb->prefix . 'test_table', array(
+			'str_field' => 'test',
+		) );
+
+		$wpdb->insert( $wpdb->prefix . 'test_table', array(
+			'str_field' => 'test2',
+		) );
+
+		$models = SampleModel::findMany("SELECT * FROM {$wpdb->prefix}test_table ORDER BY id ASC");
+
+		$this->assertCount( 2, $models );
+
+		$this->assertEquals( 'test', $models[0]->getAttribute( 'str_field' ) );
+		$this->assertEquals( 'test2', $models[1]->getAttribute( 'str_field' ) );
+
+		// Test for empty array
+		$models = SampleModel::findMany("SELECT * FROM {$wpdb->prefix}test_table WHERE 1 = 0");
+
+		$this->assertEmpty( $models );
+	}
 }

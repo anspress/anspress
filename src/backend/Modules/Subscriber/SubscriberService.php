@@ -9,7 +9,10 @@
 namespace AnsPress\Modules\Subscriber;
 
 use AnsPress\Classes\AbstractService;
+use AnsPress\Exceptions\InvalidColumnException;
+use AnsPress\Exceptions\DBException;
 use AnsPress\Modules\Subscriber\SubscriberModel;
+use WP_Error;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,6 +25,48 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 5.0.0
  */
 class SubscriberService extends AbstractService {
+	/**
+	 * Create a new subscriber.
+	 *
+	 * @param array $data Subscriber data.
+	 * @return null|SubscriberModel  Subscriber model.
+	 */
+	public function create( array $data ): ?SubscriberModel {
+		$subscriber = new SubscriberModel();
+
+		$subscriber->fill( $data );
+
+		if ( ! $subscriber->save() ) {
+			return null;
+		}
+
+		return $subscriber;
+	}
+
+	/**
+	 * Update subscriber.
+	 *
+	 * @param int   $subsId Subscriber ID.
+	 * @param array $data Subscriber data.
+	 * @return null|SubscriberModel
+	 * @throws WP_Error If subscriber not found.
+	 */
+	public function update( int $subsId, array $data ): ?SubscriberModel {
+		$subscriber = SubscriberModel::find( $subsId );
+
+		if ( ! $subscriber ) {
+			throw new WP_Error( 'subscriber_not_found', esc_attr__( 'Subscriber not found.', 'anspress-question-answer' ) );
+		}
+
+		$subscriber->fill( $data );
+
+		if ( ! $subscriber->save() ) {
+			return null;
+		}
+
+		return $subscriber;
+	}
+
 	/**
 	 * Get subascriber by subs_id.
 	 *

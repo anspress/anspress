@@ -523,4 +523,26 @@ abstract class AbstractModel implements ModelInterface {
 
 		return true;
 	}
+
+	/**
+	 * Find models by a SQL query.
+	 *
+	 * @param string $sql The SQL query.
+	 * @return self[] The models found.
+	 */
+	public static function findMany( string $sql ): array {
+		global $wpdb;
+
+		$rows = $wpdb->get_results( $sql, ARRAY_A ); // @codingStandardsIgnoreLine WordPress.DB
+
+		$models = array();
+
+		foreach ( $rows as $row ) {
+			$model = new static( $row );
+
+			$models[] = $model;
+		}
+
+		return $models;
+	}
 }
