@@ -147,6 +147,11 @@ abstract class AbstractModel implements ModelInterface {
 
 			$this->attributes[ $attribute ] = $value;
 		}
+
+		// Check if primary key is set and the model is not new.
+		if ( $this->schema->getPrimaryKey() === $attribute && $this->isNew && ! empty( $value ) ) {
+			$this->setIsNew( false );
+		}
 	}
 
 	/**
@@ -374,6 +379,9 @@ abstract class AbstractModel implements ModelInterface {
 	public static function create( array $attributes ): self {
 		global $wpdb;
 
+		// Remove primary key from attributes.
+		unset( $attributes[ static::getSchema()->getPrimaryKey() ] );
+
 		$format = self::getSchema()->getFormatStrings( array_keys( $attributes ) );
 
         $inserted = $wpdb->insert( // @codingStandardsIgnoreLine
@@ -422,10 +430,9 @@ abstract class AbstractModel implements ModelInterface {
 	/**
 	 * Update the model instance in the database.
 	 *
-	 * @return static The model instance after updating.
-	 * @throws DBException If failed to update.
+	 * @return static|null The model instance after updating.
 	 */
-	public function update(): static {
+	public function update(): ?static {
 		global $wpdb;
 
 		$attributes        = $this->getAttributes();
@@ -446,8 +453,6 @@ abstract class AbstractModel implements ModelInterface {
 		);
 
 		if ( ! $updated ) {
-			$error_message = $wpdb->last_error;
-
 			/**
 			 * Hook triggered when failed to update a model.
 			 *
@@ -456,7 +461,7 @@ abstract class AbstractModel implements ModelInterface {
 			 */
 			do_action( 'anspress/model/failed_to_update', self::getSchema()->getTableName(), $attributes );
 
-			throw new DBException( esc_html( $error_message ) );
+			return null;
 		}
 
 		$updated = self::find( $primary_key_value );
@@ -475,7 +480,7 @@ abstract class AbstractModel implements ModelInterface {
 	/**
 	 * Delete the model instance from the database.
 	 *
-	 * @return self Current model.
+	 * @return bool Current model.
 	 * @throws DBException If an error occurs during deletion.
 	 */
 	public function delete(): bool {
@@ -503,7 +508,7 @@ abstract class AbstractModel implements ModelInterface {
 			 */
 			do_action( 'anspress/model/failed_to_delete', $this->schema->getTableName(), $this->getAttributes() );
 
-			throw new DBException( esc_html( $wpdb->last_error ) );
+			return false;
 		}
 
 		$this->setIsNew( true );

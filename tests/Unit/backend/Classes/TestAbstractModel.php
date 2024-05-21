@@ -567,9 +567,7 @@ class TestAbstractModel extends TestCase {
 		$result->fill(['id' => 1]); // Set the ID.
 
 		// Assertions
-		$this->expectExceptionMessage('Error message');
-		$this->expectException(DBException::class);
-		$result->update();
+		$this->assertNull($result->update());
 	}
 
 	public function testUpdatePassed() {
@@ -655,9 +653,7 @@ class TestAbstractModel extends TestCase {
 		$result->setIsNew(false); // Set the model as not new.
 
 		// Assertions
-		$this->expectExceptionMessage('Error message');
-		$this->expectException(DBException::class);
-		$result->delete();
+		$this->assertFalse($result->delete());
 	}
 
 	public function testDeletePassed() {
