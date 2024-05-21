@@ -9,11 +9,8 @@
 namespace AnsPress\Modules\Subscriber;
 
 use AnsPress\Classes\AbstractService;
-use AnsPress\Exceptions\InvalidColumnException;
-use AnsPress\Exceptions\DBException;
 use AnsPress\Modules\Subscriber\SubscriberModel;
 use Exception;
-use WP_Error;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -33,6 +30,11 @@ class SubscriberService extends AbstractService {
 	 * @return null|SubscriberModel  Subscriber model.
 	 */
 	public function create( array $data ): ?SubscriberModel {
+		// Add current user id if not set.
+		if ( empty( $data['subs_user_id'] ) ) {
+			$data['subs_user_id'] = get_current_user_id();
+		}
+
 		$subscriber = new SubscriberModel();
 
 		$subscriber->fill( $data );
@@ -103,6 +105,7 @@ class SubscriberService extends AbstractService {
 	 *
 	 * @param int $subsId  Subscriber ID.
 	 * @return bool True if subscriber deleted successfully.
+	 * @throws Exception If subscriber not found.
 	 */
 	public function destroy( int $subsId ): bool {
 		$subscriber = SubscriberModel::find( $subsId );

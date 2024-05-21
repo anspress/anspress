@@ -26,8 +26,18 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since  4.0.0
  * @since  4.1.5 Removed default values for arguments `$event` and `$ref_id`. Delete count cache.
+ * @deprecated 5.0.0 Use AnsPress\Plugin::get(AnsPress\Modules\Subscriber\SubscriberService::class)->create() instead.
  */
 function ap_new_subscriber( $user_id = false, $event = '', $ref_id = 0 ) {
+	_deprecated_function(
+		__FUNCTION__,
+		'5.0.0',
+		esc_attr__(
+			'Use AnsPress\Plugin::get(AnsPress\Modules\Subscriber\SubscriberService::class)->create() instead.',
+			'anspress-question-answer'
+		)
+	);
+
 	global $wpdb;
 
 	if ( false === $user_id ) {
