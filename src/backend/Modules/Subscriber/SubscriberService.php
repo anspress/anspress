@@ -12,6 +12,7 @@ use AnsPress\Classes\AbstractService;
 use AnsPress\Exceptions\InvalidColumnException;
 use AnsPress\Exceptions\DBException;
 use AnsPress\Modules\Subscriber\SubscriberModel;
+use Exception;
 use WP_Error;
 
 // Exit if accessed directly.
@@ -36,11 +37,13 @@ class SubscriberService extends AbstractService {
 
 		$subscriber->fill( $data );
 
-		if ( ! $subscriber->save() ) {
+		$updated = $subscriber->save();
+
+		if ( ! $updated ) {
 			return null;
 		}
 
-		return $subscriber;
+		return $updated;
 	}
 
 	/**
@@ -49,13 +52,13 @@ class SubscriberService extends AbstractService {
 	 * @param int   $subsId Subscriber ID.
 	 * @param array $data Subscriber data.
 	 * @return null|SubscriberModel
-	 * @throws WP_Error If subscriber not found.
+	 * @throws Exception If subscriber not found.
 	 */
 	public function update( int $subsId, array $data ): ?SubscriberModel {
 		$subscriber = SubscriberModel::find( $subsId );
 
 		if ( ! $subscriber ) {
-			throw new WP_Error( 'subscriber_not_found', esc_attr__( 'Subscriber not found.', 'anspress-question-answer' ) );
+			throw new Exception( esc_attr__( 'Subscriber not found.', 'anspress-question-answer' ) );
 		}
 
 		$subscriber->fill( $data );
@@ -70,11 +73,11 @@ class SubscriberService extends AbstractService {
 	/**
 	 * Get subascriber by subs_id.
 	 *
-	 * @param int $subs_id Subscriber ID.
+	 * @param int $subsId Subscriber ID.
 	 * @return SubscriberModel|null
 	 */
-	public function getById( int $subs_id ): ?SubscriberModel {
-		return SubscriberModel::find( $subs_id );
+	public function getById( int $subsId ): ?SubscriberModel {
+		return SubscriberModel::find( $subsId );
 	}
 
 	/**
@@ -88,16 +91,26 @@ class SubscriberService extends AbstractService {
 	public function getByUserAndEvent( int $user_id, string $event, int $ref_id ): ?array {
 		global $wpdb;
 
-		$table = SubscriberModel::getTableName();
+		$table = SubscriberModel::getSchema()->getTableName();
 
 		$sql = $wpdb->prepare( "SELECT * FROM $table WHERE subs_user_id = %d AND subs_event = %s AND subs_ref_id = %d", $user_id, $event, $ref_id ); // @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery
 
-		$rows = $wpdb->get_results( $sql, ARRAY_A ); // @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery.DirectQuery
+		return SubscriberModel::findMany( $sql );
+	}
 
-		if ( ! $rows ) {
-			return array();
+	/**
+	 * Destroy subscriber.
+	 *
+	 * @param int $subsId  Subscriber ID.
+	 * @return bool True if subscriber deleted successfully.
+	 */
+	public function destroy( int $subsId ): bool {
+		$subscriber = SubscriberModel::find( $subsId );
+
+		if ( ! $subscriber ) {
+			throw new Exception( esc_attr__( 'Subscriber not found.', 'anspress-question-answer' ) );
 		}
 
-		return SubscriberModel::hydrate( $rows );
+		return $subscriber->delete();
 	}
 }

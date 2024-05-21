@@ -19,13 +19,5 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress\Interfaces
  */
 interface SingletonInterface {
-	/**
-	 * Prevent cloning of the object.
-	 */
-	public function __clone();
 
-	/**
-	 * Prevent unserializing of the object.
-	 */
-	public function __wakeup();
 }

@@ -9,6 +9,7 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Exceptions\InvalidColumnException;
+use AnsPress\Interfaces\SingletonInterface;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package AnsPress\Classes
  */
-abstract class AbstractSchema {
+abstract class AbstractSchema implements SingletonInterface {
 	/**
 	 * Get the schema's table name.
 	 *
