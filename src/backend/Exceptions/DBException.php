@@ -8,6 +8,8 @@
 
 namespace AnsPress\Exceptions;
 
+use AnsPress\Classes\Logger;
+use AnsPress\Classes\Plugin;
 use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,4 +22,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress\Exceptions
  */
 class DBException extends Exception {
+	/**
+	 * DBException constructor.
+	 *
+	 * @param string $message Exception message.
+	 */
+	public function __construct( $message ) {
+		parent::__construct( $message );
+
+		// Logging.
+		Plugin::get( Logger::class )->error( $message );
+	}
 }

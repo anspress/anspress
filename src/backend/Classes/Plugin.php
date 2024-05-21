@@ -10,6 +10,8 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Modules\Config\ConfigService;
+use AnsPress\Modules\Subscriber\SubscriberModel;
+use AnsPress\Modules\Subscriber\SubscriberSchema;
 use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -70,6 +72,15 @@ class Plugin {
 	 * @var Container
 	 */
 	private Container $container;
+
+	/**
+	 * Model schema.
+	 *
+	 * @var array
+	 */
+	private array $modelSchema = array(
+		SubscriberModel::class => SubscriberSchema::class,
+	);
 
 	/**
 	 * Database version option key.
@@ -207,5 +218,20 @@ class Plugin {
 		}
 
 		throw new InvalidArgumentException( 'Method not found.' );
+	}
+
+	/**
+	 * Get model schema.
+	 *
+	 * @param string $model Model class name.
+	 * @return string Model schema class name.
+	 * @throws InvalidArgumentException  If model schema not found.
+	 */
+	public static function getModelSchema( string $model ): AbstractSchema {
+		if ( ! isset( self::$instance->modelSchema[ $model ] ) ) {
+			throw new InvalidArgumentException( 'Model schema not found.' );
+		}
+
+		return self::$instance->get( self::$instance->modelSchema[ $model ] );
 	}
 }

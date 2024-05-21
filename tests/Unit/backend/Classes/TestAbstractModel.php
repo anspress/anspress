@@ -2,11 +2,52 @@
 namespace Tests\Unit\Functions\src\backend\Classes;
 
 use AnsPress\Classes\AbstractModel;
+use AnsPress\Classes\AbstractSchema;
+use AnsPress\Classes\Container;
+use AnsPress\Classes\Plugin;
+use AnsPress\Exceptions\DBException;
 use AnsPress\Exceptions\InvalidColumnException;
 use Mockery;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
 use Brain\Monkey\Functions;
 use wpdb;
+
+require_once PLUGIN_DIR . '/src/backend/autoloader.php';
+
+class MockSchema extends AbstractSchema
+{
+	public function getTableName(): string
+	{
+		global $wpdb;
+
+		return $wpdb->prefix . 'mock_table';
+	}
+
+	public function getPrimaryKey(): string {
+		return 'id';
+	}
+
+	public function getColumns(): array {
+		return [
+			'id'         => '%d',
+			'name'       => '%s',
+			'email'      => '%s',
+			'created_at' => '%s',
+			'updated_at' => '%s'
+		];
+	}
+}
+
+class MockModelWithTrait extends AbstractModel
+{
+
+	public static function createSchema(): AbstractSchema
+	{
+		return Plugin::get(MockSchema::class);
+	}
+}
+
+define( 'ARRAY_A', 'ARRAY_A');
 
 /**
  * @covers AnsPress\Classes\AbstractModel
@@ -19,7 +60,7 @@ class TestAbstractModel extends TestCase {
 
 		Functions\expect('current_time')->andReturn('2024-05-13 15:30:00');
 
-		require_once PLUGIN_DIR . '/src/backend/autoloader.php';
+		Plugin::make(PLUGIN_DIR . '/anspress-question-answer.php', '5.0.0', 38, '8.1', '5.8.0', new Container);
 	}
 
 	protected function tearDown(): void {
@@ -27,20 +68,24 @@ class TestAbstractModel extends TestCase {
         parent::tearDown();
     }
 
-	public function testValidColumn() {
-        $model = new class extends AbstractModel {
-            protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
-        };
+	private function setupDBMock() {
+		global $wpdb;
+		$wpdb = Mockery::mock(wpdb::class)->makePartial();
+		$wpdb->ap_votes = 'wp_ap_votes';
+		$wpdb->prefix = 'wp_';
 
-        $this->assertTrue($model->isValidColumn('id'));
-        $this->assertFalse($model->isValidColumn('invalid_column'));
+		return $wpdb;
+	}
+
+	public function testValidColumn() {
+        $model = new MockModelWithTrait();
+
+        $this->assertTrue($model->getSchema()->isValidColumn('id'));
+        $this->assertFalse($model->getSchema()->isValidColumn('invalid_column'));
     }
 
 	public function testFill() {
-		$class = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s'];
-			protected static $timestamps = true;
-		};
+		$class = new MockModelWithTrait();
 
         $model = Mockery::mock($class)->makePartial(); // Partial mock allows overriding methods.
         $model->shouldReceive('isValidColumn')->andReturn(true); // All columns are valid for this test.
@@ -70,10 +115,7 @@ class TestAbstractModel extends TestCase {
 	public function testTimestampsAndColumnSetting() {
 		Functions\expect('esc_attr');
 
-		$model = new class extends AbstractModel {
-			protected static $timestamps = true;
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
-		};
+		$model = new MockModelWithTrait();
 
 		$model->fill(['id' => 1, 'name' => 'Test Model']);
 
@@ -91,9 +133,7 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testFillInitial() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
-		};
+		$model = new MockModelWithTrait();
 
 		$model->fillInitial();
 
@@ -104,23 +144,17 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testSetAttribute() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-		};
+		$model = new MockModelWithTrait();
 
 		$model->setAttribute('id', 1);
 		$model->setAttribute('name', 'Test Model');
-		$model->setAttribute('float_val', '11.11');
 
 		$this->assertEquals(1, $model->getAttribute('id'));
 		$this->assertEquals('Test Model', $model->getAttribute('name'));
-		$this->assertEquals(11.11, $model->getAttribute('float_val'));
 	}
 
 	public function testSetAttributeWithCustomMethod() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-
+		$model = new class extends MockModelWithTrait {
 			public function setFloatValAttribute($value) {
 				return 999.111;
 			}
@@ -132,47 +166,35 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testSetAttributeDefaultValueOnlyOnNew() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-
-			public function getFloatValColumnDefaultValue() {
-				return 1100.11;
+		$model = new class extends MockModelWithTrait {
+			public function getNameColumnDefaultValue() {
+				return 'UPDATED';
 			}
 		};
 
-		$model->setAttribute('float_val', null);
-
-		$this->assertEquals(1100.11, $model->getAttribute('float_val'));
-
 		$model->setIsNew(false); // Set model as not new.
+
+		$this->assertEquals('UPDATED', $model->name);
 
 		$model->setAttribute('id', 2);
 		$model->setAttribute('name', 'Test Model 2');
-		$model->setAttribute('float_val', '22.22');
 
 		$this->assertEquals(2, $model->getAttribute('id'));
 		$this->assertEquals('Test Model 2', $model->getAttribute('name'));
-		$this->assertEquals(22.22, $model->getAttribute('float_val'));
 	}
 
 	public function testGetAttributeWithoutMethod() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-		};
+		$model = new MockModelWithTrait();
 
 		$model->setAttribute('id', 1);
 		$model->setAttribute('name', 'Test Model');
-		$model->setAttribute('float_val', '11.11');
 
 		$this->assertEquals(1, $model->getAttribute('id'));
 		$this->assertEquals('Test Model', $model->getAttribute('name'));
-		$this->assertEquals(11.11, $model->getAttribute('float_val'));
 	}
 
 	public function testGetAttributeWithMethod() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-
+		$model = new class extends MockModelWithTrait {
 			public function getIdAttribute($value) {
 				return $value + 1;
 			}
@@ -188,17 +210,13 @@ class TestAbstractModel extends TestCase {
 
 		$model->setAttribute('id', 1);
 		$model->setAttribute('name', 'Test Model');
-		$model->setAttribute('float_val', '11.11');
 
 		$this->assertEquals(2, $model->getAttribute('id'));
 		$this->assertEquals('TEST MODEL', $model->getAttribute('name'));
-		$this->assertEquals(22.22, $model->getAttribute('float_val'));
 	}
 
 	public function testGetColumnDefaultValueException() {
-		$class = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-		};
+		$class = new MockModelWithTrait();
 
 		// Mock esc_attr function.
 		Functions\expect('esc_attr');
@@ -212,51 +230,38 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testGetPrimaryKey() {
-		$model = new class extends AbstractModel {
-			protected static $primaryKey = 'id_custom';
-		};
+		$model = new MockModelWithTrait();
 
-		$this->assertEquals('id_custom', $model->getPrimaryKey());
+		$this->assertEquals('id', $model->getSchema()->getPrimaryKey());
 	}
 
 	public function testGetTableName() {
-		$model = new class extends AbstractModel {
-			protected static $tableName = 'custom_table';
-		};
-
-
+		$model = new MockModelWithTrait();
 
 		// Mock wpdb global variable.
 		global $wpdb;
 		$wpdb = Mockery::mock(wpdb::class)->makePartial();
 		$wpdb->prefix = 'wp_';
 
-		$this->assertEquals('wp_custom_table', $model::getTableName());
+		$this->assertEquals('wp_mock_table', $model->getSchema()->getTableName());
 	}
 
 	public function testGetAttributes() {
-		$model = new class extends AbstractModel {
-			protected $attributes = ['id', 'name', 'created_at', 'updated_at'];
-		};
+		$model = new MockModelWithTrait;
 
-		$this->assertEquals(['id', 'name', 'created_at', 'updated_at'], $model->getAttributes());
+		$this->assertEquals(['id' => 0, 'name' => '', 'email' => '', 'created_at' => '2024-05-13 15:30:00', 'updated_at' => '2024-05-13 15:30:00'], $model->getAttributes());
 	}
 
 	public function testGetFormatString() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'float_val' => '%f'];
-		};
+		$model = new MockModelWithTrait;
 
-		$this->assertEquals('%d', $model->getFormatString('id'));
-		$this->assertEquals('%s', $model->getFormatString('name'));
-		$this->assertEquals('%s', $model->getFormatString('created_at'));
-		$this->assertEquals('%f', $model->getFormatString('float_val'));
+		$this->assertEquals('%d', $model->getSchema()->getFormatString('id'));
+		$this->assertEquals('%s', $model->getSchema()->getFormatString('name'));
+		$this->assertEquals('%s', $model->getSchema()->getFormatString('created_at'));
 	}
 
 	public function testGetOriginalValid() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
 		$model->fill(['id' => 1, 'name' => 'Test Model']);
 
@@ -265,9 +270,7 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testGetOriginalInvalid() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
 		Functions\expect('esc_attr');
 
@@ -276,38 +279,30 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testGetFormatStrings() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'float_val' => '%f'];
-		};
+		$model = new MockModelWithTrait;
 
-		$this->assertEquals(['%d', '%s', '%s'], $model::getFormatStrings(['id', 'name', 'created_at']));
-		$this->assertEquals(['%d', '%s'], $model::getFormatStrings(['id', 'name']));
+		$this->assertEquals(['%d', '%s', '%s'], $model->getSchema()->getFormatStrings(['id', 'name', 'created_at']));
+		$this->assertEquals(['%d', '%s'], $model->getSchema()->getFormatStrings(['id', 'name']));
 	}
 
 	public function testToArray() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
-		$model->fill(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00']);
+		$model->fill(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00', 'email' => 'rah12@live.com']);
 
-		$this->assertEquals(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00'], $model->toArray());
+		$this->assertEquals(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00', 'email' => 'rah12@live.com'], $model->toArray());
 	}
 
 	public function testToJson() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'created_at' => '%s', 'updated_at' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
 		$model->fill(['id' => 1, 'name' => 'Test Model', 'created_at' => '2023-01-01 12:00:00', 'updated_at' => '2023-01-02 12:00:00']);
 
-		$this->assertEquals('{"id":1,"name":"Test Model","created_at":"2023-01-01 12:00:00","updated_at":"2023-01-02 12:00:00"}', $model->toJson());
+		$this->assertEquals('{"id":1,"name":"Test Model","email":"","created_at":"2023-01-01 12:00:00","updated_at":"2023-01-02 12:00:00"}', $model->toJson());
 	}
 
 	public function testGetterMethod() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
 		$model->fill(['id' => 2, 'name' => 'TEST MODEL']);
 
@@ -316,9 +311,7 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testInvalidArgumentInGetterMethod() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
 		// Mock esc_attr function.
 		Functions\expect('esc_attr');
@@ -328,19 +321,14 @@ class TestAbstractModel extends TestCase {
 	}
 
 	public function testGetColumnFormat() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s', 'float_val' => '%f'];
-		};
+		$model = new MockModelWithTrait;
 
-		$this->assertEquals('%d', $model::getColumnFormat('id'));
-		$this->assertEquals('%s', $model::getColumnFormat('name'));
-		$this->assertEquals('%f', $model::getColumnFormat('float_val'));
+		$this->assertEquals('%d', $model->getSchema()->getColumnFormat('id'));
+		$this->assertEquals('%s', $model->getSchema()->getColumnFormat('name'));
 	}
 
 	public function testHydrate() {
-		$model = new class extends AbstractModel {
-			protected static $columns = ['id' => '%d', 'name' => '%s'];
-		};
+		$model = new MockModelWithTrait;
 
 		$rows = [
 			['id' => 1, 'name' => 'Test Model 1'],
@@ -354,5 +342,366 @@ class TestAbstractModel extends TestCase {
 		$this->assertEquals('Test Model 1', $models[0]->name);
 		$this->assertEquals(2, $models[1]->id);
 		$this->assertEquals('Test Model 2', $models[1]->name);
+	}
+
+	public function testFloatFormat() {
+
+		$model = new class extends AbstractModel {
+			public static function createSchema(): AbstractSchema
+			{
+				return new class extends AbstractSchema {
+					public function getPrimaryKey(): string
+					{
+						return 'id';
+					}
+
+					public function getTableName(): string
+					{
+						global $wpdb;
+
+						return $wpdb->prefix . 'mock_table';
+					}
+
+					public function getColumns(): array
+					{
+						return [
+							'id'       => '%d',
+							'float_val' => '%f',
+						];
+					}
+				};
+			}
+		};
+
+		$model->fill(['float_val' => '11.11']);
+
+		$this->assertEquals(11.11, $model->float_val);
+	}
+
+	public function testFindByPrimaryKeySuccess()
+    {
+		// Mock esc_attr.
+		// Functions\expect('esc_attr');
+
+        $wpdb = $this->setupDBMock();
+
+        // Set up the expected query and result
+        $wpdb->shouldReceive('prepare')
+            // ->with("SELECT * FROM mock_table WHERE id = %d", 1)
+            ->andReturn('SELECT * FROM mock_table WHERE id = 1');
+
+        $wpdb->shouldReceive('get_row')
+            ->with('SELECT * FROM mock_table WHERE id = 1', 'ARRAY_A')
+            ->andReturn(['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com']);
+
+        // Create an instance of your mock model
+        $model = new MockModelWithTrait();
+
+        // Call the method under test
+        $result = $model->findByPrimaryKey(1);
+
+        // Assertions
+        $this->assertInstanceOf(MockModelWithTrait::class, $result); // Ensure a model is returned
+        $this->assertEquals(1, $result->id);
+        $this->assertEquals('John Doe', $result->name);
+        $this->assertEquals('john@example.com', $result->email);
+    }
+
+	public function testFindByPrimaryKeyFailure()
+	{
+		$wpdb = $this->setupDBMock();
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('prepare')
+			->andReturn('SELECT * FROM mock_table WHERE id = 1');
+
+		$wpdb->shouldReceive('get_row')
+			->with('SELECT * FROM mock_table WHERE id = 1', 'ARRAY_A')
+			->andReturn(null);
+
+		// Create an instance of your mock model
+		$model = new MockModelWithTrait();
+
+		// Call the method under test
+		$result = $model->findByPrimaryKey(1);
+
+		// Assertions
+		$this->assertNull($result); // Ensure null is returned
+	}
+
+	public function testFindMethod() {
+		$wpdb = $this->setupDBMock();
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('prepare')
+			->andReturn('SELECT * FROM mock_table WHERE id = 1');
+
+		$wpdb->shouldReceive('get_row')
+			->with('SELECT * FROM mock_table WHERE id = 1', 'ARRAY_A')
+			->andReturn(['id' => 1, 'name' => 'John Doe', 'email' => 'john@doe.com']);
+
+		// Call the method under test
+		$result = MockModelWithTrait::find(1);
+
+		// Assertions
+		$this->assertInstanceOf(MockModelWithTrait::class, $result); // Ensure a model is returned
+		$this->assertEquals(1, $result->id);
+		$this->assertEquals('John Doe', $result->name);
+		$this->assertEquals('john@doe.com', $result->email);
+	}
+
+	public function testCreatePassed() {
+		$wpdb = $this->setupDBMock();
+
+		$wpdb->insert_id = 1;
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('insert')
+			->with('wp_mock_table', ['name' => 'John Doe', 'email' => 'john@doe.com'], ['%s', '%s'])
+			->andReturn(1);
+
+		$wpdb->shouldReceive('prepare')
+			->with("SELECT * FROM wp_mock_table WHERE id = %d", 1)
+			->andReturn('SELECT * FROM wp_mock_table WHERE id = 1');
+
+		$wpdb->shouldReceive('get_row')
+			->with('SELECT * FROM wp_mock_table WHERE id = 1', 'ARRAY_A')
+			->andReturn(['id' => 1, 'name' => 'John Doe', 'email' => 'john@doe.com']);
+
+		// Functions\expect('do_action')
+		// 	->with('anspress/model/failed_to_insert', 'mock_table', ['name' => 'John Doe', 'email' => 'john@doe.com'], 'Error message');
+
+		// Call the method under test
+		$result = MockModelWithTrait::create(['name' => 'John Doe', 'email' => 'john@doe.com']);
+
+		// Assertions
+		$this->assertInstanceOf(MockModelWithTrait::class, $result); // Ensure a model is returned
+		$this->assertEquals(1, $result->id);
+		$this->assertEquals('John Doe', $result->name);
+		$this->assertEquals('john@doe.com', $result->email);
+	}
+
+	public function testCreateFailed() {
+		$wpdb = $this->setupDBMock();
+
+		$wpdb->insert_id = 1;
+		$wpdb->last_error = 'Error message';
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('insert')
+			->with('wp_mock_table', ['name' => 'John Doe', 'email' => 'john@doe.com'], ['%s', '%s'])
+			->andReturn(false);
+
+		$wpdb->shouldReceive('prepare')
+			->with("SELECT * FROM wp_mock_table WHERE id = %d", 1)
+			->andReturn('SELECT * FROM wp_mock_table WHERE id = 1');
+
+		$wpdb->shouldReceive('get_row')
+			->with('SELECT * FROM wp_mock_table WHERE id = 1', 'ARRAY_A')
+			->andReturn(['id' => 1, 'name' => 'John Doe', 'email' => 'john@doe.com']);
+
+		Functions\expect('do_action')
+			->with('anspress/model/failed_to_insert', 'wp_mock_table', ['name' => 'John Doe', 'email' => 'john@doe.com'], 'Error message');
+
+		Functions\expect('esc_html')
+			->with('Error message')
+			->andReturn('Error message');
+
+		$this->expectException( DBException::class );
+
+		// Call the method under test
+		MockModelWithTrait::create(['name' => 'John Doe', 'email' => 'john@doe.com']);
+	}
+
+	public function testUpdateFailed() {
+		$wpdb = $this->setupDBMock();
+
+		$wpdb->last_error = 'Error message';
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('update')
+			->with(
+					'wp_mock_table',
+					[
+						"name"       => "John Doe",
+						"email"      => "rah12@live.com",
+						"created_at" => "2024-05-13 15:30:00",
+						"updated_at" => "2024-05-13 15:30:00"
+					],
+					['id' => 1],
+					['%s', '%s', '%s', '%s'],
+					['%d']
+				)
+			->andReturn(0);
+
+		$wpdb->shouldReceive('prepare')
+			->with("SELECT * FROM wp_mock_table WHERE id = %d", 1)
+			->andReturn('SELECT * FROM wp_mock_table WHERE id = 1');
+
+		$wpdb->shouldReceive('get_row')
+			->with('SELECT * FROM wp_mock_table WHERE id = 1', 'ARRAY_A')
+			->andReturn(['id' => 1, 'name' => 'John Doe', 'email' => 'rah12@live.com']);
+
+		// Expect do_action call.
+		Functions\expect(
+			'do_action',
+			[
+				'anspress/model/failed_to_update',
+				'wp_mock_table',
+				[
+					'name'       => 'John Doe',
+					'email'      => 'rah12@live.com',
+					"created_at" => "2024-05-13 15:30:00",
+					"updated_at" => "2024-05-13 15:30:00"
+				],
+				'Error message'
+			]
+		);
+
+		Functions\expect('esc_html')
+			->with('Error message')
+			->andReturn('Error message');
+
+		// Call the method under test
+		$result = new MockModelWithTrait(['name' => 'John Doe', 'email' => 'rah12@live.com']);
+		$result->fill(['id' => 1]); // Set the ID.
+
+		// Assertions
+		$this->expectExceptionMessage('Error message');
+		$this->expectException(DBException::class);
+		$result->update();
+	}
+
+	public function testUpdatePassed() {
+		$wpdb = $this->setupDBMock();
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('update')
+			->with(
+					'wp_mock_table',
+					[
+						"name"       => "John Doe",
+						"email"      => "rah12@live.com",
+						"created_at" => "2024-05-13 15:30:00",
+						"updated_at" => "2024-05-13 15:30:00"
+					],
+					['id' => 1],
+					['%s', '%s', '%s', '%s'],
+					['%d']
+				)
+			->andReturn(1);
+
+		$wpdb->shouldReceive('prepare')
+			->with("SELECT * FROM wp_mock_table WHERE id = %d", 1)
+			->andReturn('SELECT * FROM wp_mock_table WHERE id = 1');
+
+		$wpdb->shouldReceive('get_row')
+			->with('SELECT * FROM wp_mock_table WHERE id = 1', 'ARRAY_A')
+			->andReturn(['id' => 1, 'name' => 'John Doe', 'email' => 'rah12@live.com']);
+
+		// Expect do_action call.
+		Functions\expect(
+			'do_action',
+			[
+				'anspress/model/after_update',
+				'wp_mock_table',
+				[
+					'name'       => 'John Doe',
+					'email'      => 'rah12@live.com',
+					"created_at" => "2024-05-13 15:30:00",
+					"updated_at" => "2024-05-13 15:30:00"
+				]
+			]
+		);
+
+		// Call the method under test
+		$result = new MockModelWithTrait(['name' => 'John Doe', 'email' => 'rah12@live.com']);
+		$result->fill(['id' => 1]); // Set the ID.
+
+		$result->update();
+
+		// Assertions
+		$this->assertInstanceOf(MockModelWithTrait::class, $result); // Ensure a model is returned
+	}
+
+	public function testDeleteFailed() {
+		$wpdb = $this->setupDBMock();
+
+		$wpdb->last_error = 'Error message';
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('delete')
+			->with('wp_mock_table', ['id' => 1], ['%d'])
+			->andReturn(0);
+
+		// Expect do_action call.
+		Functions\expect(
+			'do_action',
+			[
+				'anspress/model/failed_to_delete',
+				'wp_mock_table',
+				['id' => 1],
+				'Error message'
+			]
+		);
+
+		Functions\expect('esc_html')
+			->with('Error message')
+			->andReturn('Error message');
+
+		// Call the method under test
+		$result = new MockModelWithTrait();
+		$result->fill(['id' => 1]); // Set the ID.
+		$result->setIsNew(false); // Set the model as not new.
+
+		// Assertions
+		$this->expectExceptionMessage('Error message');
+		$this->expectException(DBException::class);
+		$result->delete();
+	}
+
+	public function testDeletePassed() {
+		$wpdb = $this->setupDBMock();
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('delete')
+			->with('wp_mock_table', ['id' => 1], ['%d'])
+			->andReturn(1);
+
+		// Expect do_action call.
+		Functions\expect(
+			'do_action',
+			[
+				'anspress/model/after_delete',
+				'wp_mock_table',
+				['id' => 1]
+			]
+		);
+
+		// Call the method under test
+		$result = new MockModelWithTrait();
+		$result->fill(['id' => 1]); // Set the ID.
+		$result->setIsNew(false); // Set the model as not new.
+
+		$result->delete();
+
+		// Assertions
+		$this->assertInstanceOf(MockModelWithTrait::class, $result); // Ensure a model is returned
+	}
+
+	public function testDeleteWhenNotExists() {
+		$wpdb = $this->setupDBMock();
+
+		// Set up the expected query and result
+		$wpdb->shouldReceive('delete')
+			->with('wp_mock_table', ['id' => 1], ['%d'])
+			->andReturn(0);
+
+		// Call the method under test
+		$result = new MockModelWithTrait();
+		$result->fill(['id' => 1]); // Set the ID.
+		$result->setIsNew(true); // Set the model as not new.
+
+		$this->assertFalse($result->delete());
 	}
 }

@@ -8,6 +8,7 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Exceptions\DBException;
 use AnsPress\Exceptions\InvalidColumnException;
 use AnsPress\Interfaces\ModelInterface;
 
@@ -22,22 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress\Classes
  */
 abstract class AbstractModel implements ModelInterface {
-	use \AnsPress\Traits\FindableTrait;
-
-	/**
-	 * The model's primary key.
-	 *
-	 * @var string
-	 */
-	protected static $primaryKey = 'id';
-
-	/**
-	 * The model's table name.
-	 *
-	 * @var string
-	 */
-	protected static $tableName;
-
 	/**
 	 * The model's attributes.
 	 *
@@ -51,13 +36,6 @@ abstract class AbstractModel implements ModelInterface {
 	 * @var array
 	 */
 	protected $original = array();
-
-	/**
-	 * Array mapping column names to their database formats (%s, %d, or %f).
-	 *
-	 * @var array<string, string>
-	 */
-	protected static $columns = array();
 
 	/**
 	 * Whether to include timestamps in the model.
@@ -74,11 +52,20 @@ abstract class AbstractModel implements ModelInterface {
 	protected $isNew = true;
 
 	/**
+	 * The model's schema.
+	 *
+	 * @var AbstractSchema
+	 */
+	protected AbstractSchema $schema;
+
+	/**
 	 * AbstractModel constructor.
 	 *
 	 * @param array $attributes The model's attributes.
 	 */
 	public function __construct( array $attributes = array() ) {
+		$this->schema = self::getSchema();
+
 		$this->fillInitial();
 
 		$this->syncOriginal();
@@ -87,12 +74,28 @@ abstract class AbstractModel implements ModelInterface {
 	}
 
 	/**
+	 * Create the model's schema.
+	 *
+	 * @return AbstractSchema
+	 */
+	abstract protected static function createSchema(): AbstractSchema;
+
+	/**
+	 * Get the model's schema.
+	 *
+	 * @return AbstractSchema
+	 */
+	public static function getSchema(): AbstractSchema {
+		return static::createSchema();
+	}
+
+	/**
 	 * Fill the model with the initial values.
 	 *
 	 * @return void
 	 */
 	public function fillInitial(): void {
-		foreach ( get_called_class()::getColumns() as $key => $format ) {
+		foreach ( $this->schema->getColumns() as $key => $format ) {
 			$this->setAttribute( $key, null );
 		}
 	}
@@ -105,7 +108,7 @@ abstract class AbstractModel implements ModelInterface {
 	 */
 	public function fill( array $attributes ): void {
 		foreach ( $attributes as $key => $value ) {
-			if ( ! $this->isValidColumn( $key ) ) {
+			if ( ! $this->schema->isValidColumn( $key ) ) {
 				throw new InvalidColumnException( esc_attr( "Invalid attribute: $key" ) );
 			}
 
@@ -132,7 +135,7 @@ abstract class AbstractModel implements ModelInterface {
 		if ( method_exists( $this, $method ) ) {
 			$this->attributes[ $attribute ] = $this->{$method}( $value );
 		} else {
-			$format = $this->getFormatString( $attribute );
+			$format = $this->schema->getFormatString( $attribute );
 
 			if ( '%d' === $format ) {
 				$value = (int) $value;
@@ -171,7 +174,7 @@ abstract class AbstractModel implements ModelInterface {
 	 * @throws InvalidColumnException If the column does not exist.
 	 */
 	public function getColumnDefaultValue( string $column ): mixed {
-		if ( ! $this->isValidColumn( $column ) ) {
+		if ( ! $this->schema->isValidColumn( $column ) ) {
 			throw new InvalidColumnException( esc_attr( "Column $column does not exist" ) );
 		}
 
@@ -183,59 +186,15 @@ abstract class AbstractModel implements ModelInterface {
 		}
 
 		// Else return based on the column type.
-		if ( '%d' === get_called_class()::getFormatString( $column ) ) {
+		if ( '%d' === $this->schema->getFormatString( $column ) ) {
 			return 0;
 		}
 
-		if ( '%f' === get_called_class()::getFormatString( $column ) ) {
+		if ( '%f' === $this->schema->getFormatString( $column ) ) {
 			return 0.0;
 		}
 
 		return '';
-	}
-
-	/**
-	 * Get the model's columns.
-	 *
-	 * @return array
-	 */
-	public static function getColumns(): array {
-		if ( get_called_class()::$timestamps ) {
-			get_called_class()::$columns['created_at'] = '%s';
-			get_called_class()::$columns['updated_at'] = '%s';
-		}
-
-		return get_called_class()::$columns;
-	}
-
-	/**
-	 * Get foramt of a column by name.
-	 *
-	 * @param string $column The column name.
-	 * @return string|null The column format.
-	 */
-	public static function getColumnFormat( string $column ): string {
-		return get_called_class()::$columns[ $column ] ?? null;
-	}
-
-	/**
-	 * Get the model's primary key.
-	 *
-	 * @return string
-	 */
-	public static function getPrimaryKey(): string {
-		return get_called_class()::$primaryKey;
-	}
-
-	/**
-	 * Get the model's table name with prefix.
-	 *
-	 * @return string
-	 */
-	public static function getTableName(): string {
-		global $wpdb;
-
-		return $wpdb->prefix . ( get_called_class()::$tableName );
 	}
 
 	/**
@@ -248,45 +207,6 @@ abstract class AbstractModel implements ModelInterface {
 	}
 
 	/**
-	 * Check if a column is valid.
-	 *
-	 * @param string $column The column name.
-	 * @return bool
-	 */
-	public static function isValidColumn( string $column ): bool {
-		return isset( get_called_class()::getColumns()[ $column ] );
-	}
-
-	/**
-	 * Get the format string for preparing a SQL query.
-	 *
-	 * @param string $column The column name.
-	 * @return string The format string.
-	 * @throws InvalidColumnException If the column does not exist.
-	 */
-	public static function getFormatString( string $column ): string {
-		$validFormats = array( '%s', '%d', '%f' );
-
-		$columns = get_called_class()::getColumns();
-
-		if ( isset( $columns[ $column ] ) && in_array( $columns[ $column ], $validFormats, true ) ) {
-			return $columns[ $column ];
-		}
-
-		throw new InvalidColumnException( esc_attr( "Invalid column: $column" ) );
-	}
-
-	/**
-	 * Get formats for all passed columns in order.
-	 *
-	 * @param array $columns The columns to get formats for.
-	 * @return string[] The format strings.
-	 */
-	public static function getFormatStrings( array $columns ): array {
-		return array_map( array( get_called_class(), 'getFormatString' ), $columns );
-	}
-
-	/**
 	 * Get the model's original attributes.
 	 *
 	 * @param string $columnName The column name.
@@ -294,7 +214,7 @@ abstract class AbstractModel implements ModelInterface {
 	 * @throws InvalidColumnException If the column does not exist.
 	 */
 	public function getOriginal( string $columnName ): mixed {
-		if ( ! $this->isValidColumn( $columnName ) ) {
+		if ( ! $this->schema->isValidColumn( $columnName ) ) {
 			throw new InvalidColumnException( esc_attr( "Invalid column: $columnName" ) );
 		}
 
@@ -401,11 +321,201 @@ abstract class AbstractModel implements ModelInterface {
 	 * @throws \InvalidArgumentException If the attribute does not exist.
 	 */
 	public function __get( string $name ): mixed {
-		if ( $this->isValidColumn( $name ) ) {
+		if ( $this->schema->isValidColumn( $name ) ) {
 			return $this->attributes[ $name ] ?? null;
 		}
 
 		// Throw an exception if the attribute does not exist.
 		throw new \InvalidArgumentException( esc_attr( "Attribute $name does not exist" ) );
+	}
+
+	/**
+	 * Find a model by its primary key.
+	 *
+	 * @param mixed $id The primary key value.
+	 * @return self|null The model instance or null if not found.
+	 */
+	public static function findByPrimaryKey( $id ): self|null {
+		global $wpdb;
+		$table      = self::getSchema()->getTableName();
+		$primaryKey = self::getSchema()->getPrimaryKey();
+		$sql        = $wpdb->prepare( "SELECT * FROM $table WHERE $primaryKey = %d", $id ); // phpcs:ignore WordPress.DB.PreparedSQL
+		$row        = $wpdb->get_row( $sql, ARRAY_A ); // phpcs:ignore WordPress.DB
+
+		if ( $row ) {
+			$model = new static(
+				$row
+			);
+			$model->setIsNew( false );
+			return $model;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Find a model by its primary key.
+	 *
+	 * @param mixed $id The primary key value.
+	 * @return static|null The model instance or null if not found.
+	 * @throws InvalidColumnException If the primary key is not defined.
+	 */
+	public static function find( $id ) {
+		return self::findByPrimaryKey( $id );
+	}
+
+	/**
+	 * Create a new model instance and save it to the database.
+	 *
+	 * @param array $attributes Attributes to save.
+	 * @return self New instance of the model after creation.
+	 * @throws DBException If failed to insert.
+	 */
+	public static function create( array $attributes ): self {
+		global $wpdb;
+
+		$format = self::getSchema()->getFormatStrings( array_keys( $attributes ) );
+
+        $inserted = $wpdb->insert( // @codingStandardsIgnoreLine
+			self::getSchema()->getTableName(),
+			$attributes,
+			$format
+		);
+
+		if ( ! $inserted ) {
+			/**
+			 * Hook triggered when failed to insert a model.
+			 *
+			 * @param string $table The table name.
+			 * @param array $attributes The attributes that failed to insert.
+			 * @param string $error The error message.
+			 */
+			do_action( 'anspress/model/failed_to_insert', self::getSchema()->getTableName(), $attributes, $wpdb->last_error );
+
+			throw new DBException( esc_html( $wpdb->last_error ) );
+		}
+
+		$inserted = self::find( $wpdb->insert_id );
+
+		/**
+		 * Hook triggered after inserting a model.
+		 *
+		 * @param string $table The table name.
+		 * @param object $model Inserted model.
+		 */
+		do_action( 'anspress/model/after_insert', self::getSchema()->getTableName(), $inserted );
+
+		return self::find( $wpdb->insert_id );
+	}
+
+	/**
+	 * Save the model instance to the database.
+	 * Determines whether to create a new record or update an existing one.
+	 *
+	 * @return static The model instance after saving.
+	 * @throws DBException If failed to insert or update.
+	 */
+	public function save(): static {
+		return $this->exists() ? $this->update() : static::create( $this->getAttributes() );
+	}
+
+	/**
+	 * Update the model instance in the database.
+	 *
+	 * @return static The model instance after updating.
+	 * @throws DBException If failed to update.
+	 */
+	public function update(): static {
+		global $wpdb;
+
+		$attributes        = $this->getAttributes();
+		$primary_key       = static::getSchema()->getPrimaryKey();
+		$primary_key_value = $this->getAttribute( $primary_key );
+
+		// Remove primary key from attributes.
+		unset( $attributes[ $primary_key ] );
+
+		$format = self::getSchema()->getFormatStrings( array_keys( $attributes ) );
+
+		$updated = $wpdb->update( // @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery
+			self::getSchema()->getTableName(),
+			$attributes,
+			array( $primary_key => $primary_key_value ),
+			$format,
+			array( '%d' )
+		);
+
+		if ( ! $updated ) {
+			$error_message = $wpdb->last_error;
+
+			/**
+			 * Hook triggered when failed to update a model.
+			 *
+			 * @param string $table The table name.
+			 * @param array $attributes The attributes that failed to update.
+			 */
+			do_action( 'anspress/model/failed_to_update', self::getSchema()->getTableName(), $attributes );
+
+			throw new DBException( esc_html( $error_message ) );
+		}
+
+		$updated = self::find( $primary_key_value );
+
+		/**
+		 * Hook triggered after updating a model.
+		 *
+		 * @param string $table The table name.
+		 * @param object $model Updated model.
+		 */
+		do_action( 'anspress/model/after_update', self::getSchema()->getTableName(), $updated );
+
+		return $updated;
+	}
+
+	/**
+	 * Delete the model instance from the database.
+	 *
+	 * @return self Current model.
+	 * @throws DBException If an error occurs during deletion.
+	 */
+	public function delete(): bool {
+		global $wpdb;
+
+		if ( ! $this->exists() ) {
+			$this->setIsNew( true );
+			return false;
+		}
+
+		$deleted = $wpdb->delete( // @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery
+			$this->schema->getTableName(),
+			array(
+				$this->schema->getPrimaryKey() => $this->getAttribute( $this->schema->getPrimaryKey() ),
+			),
+			array( $this->schema->getFormatString( $this->schema->getPrimaryKey() ) )
+		);
+
+		if ( ! $deleted ) {
+			/**
+			 * Hook triggered when failed to delete a model.
+			 *
+			 * @param string $table The table name.
+			 * @param array $attributes The attributes that failed to delete.
+			 */
+			do_action( 'anspress/model/failed_to_delete', $this->schema->getTableName(), $this->getAttributes() );
+
+			throw new DBException( esc_html( $wpdb->last_error ) );
+		}
+
+		$this->setIsNew( true );
+
+		/**
+		 * Hook triggered after deleting a model.
+		 *
+		 * @param string $table The table name.
+		 * @param object $model Deleted model.
+		 */
+		do_action( 'anspress/model/after_delete', $this->schema->getTableName(), $this );
+
+		return true;
 	}
 }

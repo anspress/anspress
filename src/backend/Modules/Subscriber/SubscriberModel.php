@@ -9,6 +9,8 @@
 namespace AnsPress\Modules\Subscriber;
 
 use AnsPress\Classes\AbstractModel;
+use AnsPress\Classes\AbstractSchema;
+use AnsPress\Classes\Plugin;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,28 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SubscriberModel extends AbstractModel {
 	/**
-	 * The model's primary key.
+	 * Create the model's schema.
 	 *
-	 * @var string
+	 * @return AbstractSchema
 	 */
-	protected $primaryKey = 'subs_id';
-
-	/**
-	 * The model's table name.
-	 *
-	 * @var string
-	 */
-	protected $tableName = 'ap_subscribers';
-
-	/**
-	 * The model's columns.
-	 *
-	 * @var string[]
-	 */
-	protected $columns = array(
-		'subs_id'      => '%d',
-		'subs_user_id' => '%d',
-		'subs_ref_id'  => '%d',
-		'subs_event'   => '%s',
-	);
+	protected static function createSchema(): AbstractSchema {
+		return Plugin::get( SubscriberSchema::class );
+	}
 }
