@@ -43,6 +43,11 @@ class NumericRule implements ValidationRuleInterface {
 		return is_numeric( $value );
 	}
 
+	/**
+	 * Get message.
+	 *
+	 * @return string
+	 */
 	public function message(): string {
 		return 'The :attribute must be a number.';
 	}

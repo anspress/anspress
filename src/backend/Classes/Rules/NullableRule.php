@@ -44,6 +44,11 @@ class NullableRule implements ValidationRuleInterface {
 		return true;
 	}
 
+	/**
+	 * Get message.
+	 *
+	 * @return string
+	 */
 	public function message(): string {
 		return 'The :attributes field can be null.';
 	}
