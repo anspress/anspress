@@ -30,14 +30,7 @@ interface ValidationRuleInterface {
 	 */
 	public function validate( $attribute, $value, $parameters, $validator ): bool;
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string;
+	public function message(): string;
 
 	/**
 	 * Get rule name.

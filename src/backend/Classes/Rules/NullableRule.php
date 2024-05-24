@@ -44,14 +44,7 @@ class NullableRule implements ValidationRuleInterface {
 		return true;
 	}
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string {
-		return "The {$attribute} field can be null.";
+	public function message(): string {
+		return 'The :attributes field can be null.';
 	}
 }

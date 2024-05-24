@@ -1,6 +1,6 @@
 <?php
 /**
- * String rule.
+ * Numeric rule.
  *
  * @since 5.0.0
  * @package AnsPress
@@ -16,18 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * String rule.
+ * Numeric rule.
  *
  * @since 5.0.0
  */
-class StringRule implements ValidationRuleInterface {
+class NumericRule implements ValidationRuleInterface {
 	/**
 	 * Get rule name.
 	 *
 	 * @return string
 	 */
 	public function ruleName(): string {
-		return 'string';
+		return 'numeric';
 	}
 
 	/**
@@ -40,10 +40,10 @@ class StringRule implements ValidationRuleInterface {
 	 * @return bool
 	 */
 	public function validate( $attribute, $value, $parameters, $validator ): bool {
-		return is_string( $value );
+		return is_numeric( $value );
 	}
 
 	public function message(): string {
-		return 'The :attribute must be a string.';
+		return 'The :attribute must be a number.';
 	}
 }

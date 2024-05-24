@@ -43,14 +43,8 @@ class ArrayRule implements ValidationRuleInterface {
 		return is_array( $value );
 	}
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string {
-		return "The {$attribute} must be an array.";
+
+	public function message(): string {
+		return 'The :attribute must be an array.';
 	}
 }

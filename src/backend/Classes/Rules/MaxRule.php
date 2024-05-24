@@ -59,14 +59,7 @@ class MaxRule implements ValidationRuleInterface {
 		return isset( $value ) && strlen( $value ) <= $this->max;
 	}
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string {
-		return "The {$attribute} may not be greater than {$this->max} characters.";
+	public function message(): string {
+		return "The :attribute may not be greater than {$this->max} characters.";
 	}
 }

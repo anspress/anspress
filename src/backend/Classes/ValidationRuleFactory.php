@@ -14,6 +14,7 @@ use AnsPress\Classes\Rules\IntegerRule;
 use AnsPress\Classes\Rules\MaxRule;
 use AnsPress\Classes\Rules\MinRule;
 use AnsPress\Classes\Rules\NullableRule;
+use AnsPress\Classes\Rules\NumericRule;
 use AnsPress\Classes\Rules\RequiredRule;
 use AnsPress\Classes\Rules\StringRule;
 use AnsPress\Exceptions\ValidationException;
@@ -40,6 +41,7 @@ class ValidationRuleFactory {
 		'required' => RequiredRule::class,
 		'string'   => StringRule::class,
 		'integer'  => IntegerRule::class,
+		'numeric'  => NumericRule::class,
 		'array'    => ArrayRule::class,
 		'min'      => MinRule::class,
 		'max'      => MaxRule::class,

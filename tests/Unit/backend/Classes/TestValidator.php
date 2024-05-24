@@ -5,6 +5,8 @@
 
 namespace Tests\Unit\Functions\src\backend\Classes;
 
+use AnsPress\Classes\Container;
+use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\ValidationException;
 use AnsPress\Interfaces\ValidationRuleInterface;
@@ -18,6 +20,7 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
  * @package Tests\Unit
  */
 class TestValidator extends TestCase {
+
 
 	public function testValidatePasses()
     {
@@ -102,7 +105,7 @@ class TestValidator extends TestCase {
         $this->expectException(ValidationException::class);
 
         try {
-            $validator->validate();
+            $validator->validated();
         } catch (ValidationException $e) {
             $errors = $e->getErrors();
             $this->assertEquals('The email format is invalid OVERRIDEN.', $errors['email'][0]);
@@ -110,18 +113,98 @@ class TestValidator extends TestCase {
         }
     }
 
+	public function testDeepRules()
+	{
+		$data = [
+			'foo' => [
+				'bar' => ['test'],
+				'test' => [1]
+			],
+			'obj' => [
+				[
+					'obj1' => 'obj1val'
+				]
+			],
+			'nested' => [
+				'nested' => [
+					[
+						[
+							'name' => 'John Doe',
+							'email' => 'test@email.com',
+							'obj' => [
+								'obj1' => 'obj1val',
+								'obj2' => [
+									'key' => 'val'
+								]
+							]
+						]
+					]
+				]
+			]
+		];
+
+		$rules = [
+			'foo.bar' => 'required|array',
+			'foo.test' => 'required|array',
+			'foo.test.*' => 'required|integer',
+			'obj.*.obj1' => 'required|string',
+			'nested.nested' => 'required|array',
+			'nested.nested.*.*.name' => 'required|string',
+			'nested.nested.*.*.email' => 'required|email',
+			'nested.nested.*.*.obj.obj1' => 'required|string',
+			'nested.nested.*.*.obj.obj2' => 'required|array',
+		];
+
+		$validator = new Validator($data, $rules);
+
+		$valiated = $validator->validated();
+
+		$this->assertEquals(
+			$data,
+			$valiated
+		);
+	}
+
+
 	public function testCustomAttributes()
     {
         $data = [
             'email_address' => 'not-an-email',
+            'foo' => [
+				'bar' => 222,
+				'test' => [
+					'foo' => 'bar',
+					'nested' => [
+						[
+							[
+								'name' => 'John Doe'
+							]
+						]
+					]
+				]
+			],
+			'obj' => [
+				[
+					'foo' => 'bar'
+				]
+			]
         ];
 
         $rules = [
             'email_address' => 'required|email',
+			'foo.bar' => 'required|array',
+			'foo.test.*' => 'required|array',
+			'obj.*.foo' => 'integer',
+			'foo.test.nested' => 'required|string',
+			'foo.test.nested.*.*' => 'required|string',
+			'foo.test.nested.*.*.name' => 'required|integer',
         ];
 
         $customAttributes = [
-            'email_address' => 'Email Address',
+            'email_address' => 'XXXXXXX3333E',
+			'foo.bar' => 'BarXXXXX',
+			'foo.test.*.foo' => 'TestXXXXX',
+			'obj.*.foo' => 'ObjXXXXX'
         ];
 
         $validator = new Validator($data, $rules, [], $customAttributes);
@@ -129,10 +212,25 @@ class TestValidator extends TestCase {
         $this->expectException(ValidationException::class);
 
         try {
-            $validator->validate();
+            $validator->validated();
         } catch (ValidationException $e) {
             $errors = $e->getErrors();
-            $this->assertStringContainsString('Email Address', $errors['email_address'][0]);
+
+            $this->assertEquals('The XXXXXXX3333E must be a valid email address.', $errors['email_address'][0]);
+			$this->assertEquals('The BarXXXXX must be an array.', $errors['foo.bar'][0]);
+			$this->assertEquals('The foo.test.foo must be an array.', $errors['foo.test.foo'][0]);
+			$this->assertEquals('The ObjXXXXX must be an integer.', $errors['obj.0.foo'][0]);
+
+			$this->assertCount(7, $errors);
+
+			$this->assertCount(1, $errors['email_address']);
+			$this->assertCount(1, $errors['foo.bar']);
+			$this->assertCount(1, $errors['foo.test.foo']);
+			$this->assertCount(1, $errors['obj.0.foo']);
+			$this->assertCount(1, $errors['foo.test.nested']);
+			$this->assertCount(1, $errors['foo.test.nested.0.0']);
+			$this->assertCount(1, $errors['foo.test.nested.0.0.name']);
+
             throw $e;
         }
     }
@@ -159,7 +257,7 @@ class TestValidator extends TestCase {
 
         $validator = new Validator($data, $rules);
 
-        $this->assertTrue($validator->validate());
+		$this->assertFalse($validator->fails());
 
 		$this->assertEquals(
 			$data,
@@ -225,9 +323,9 @@ class TestValidator extends TestCase {
                     return $value === 'validuser';
                 }
 
-                public function message($attribute, $parameters): string
+                public function message(): string
                 {
-                    return "The {$attribute} is invalid.";
+                    return "The :attribute is invalid.";
                 }
             }],
         ];
@@ -258,9 +356,9 @@ class TestValidator extends TestCase {
                     return $value === 'validuser';
                 }
 
-                public function message($attribute, $parameters): string
+                public function message(): string
                 {
-                    return "The {$attribute} is invalid.";
+                    return "The :attribute is invalid.";
                 }
             }],
         ];
@@ -270,7 +368,7 @@ class TestValidator extends TestCase {
         $this->expectException(ValidationException::class);
 
         try {
-            $validator->validate();
+            $validator->validated();
         } catch (ValidationException $e) {
             $errors = $e->getErrors();
             $this->assertEquals('The username is invalid.', $errors['username'][0]);
@@ -291,8 +389,6 @@ class TestValidator extends TestCase {
         ];
 
         $validator = new Validator($data, $rules);
-
-        $validator->validate();
 
         $validatedData = $validator->validated();
         $this->assertEquals('validuser', $validatedData['username']);
@@ -315,10 +411,10 @@ class TestValidator extends TestCase {
         $this->expectException(ValidationException::class);
 
         try {
-            $validator->validate();
+            $validator->validated();
         } catch (ValidationException $e) {
             $errors = $e->getErrors();
-            $this->assertEquals('The username field failed validation for rule custom.', $errors['username'][0]);
+            $this->assertEquals('Validation failed for username.', $errors['username'][0]);
             throw $e;
         }
     }
@@ -341,7 +437,7 @@ class TestValidator extends TestCase {
         ];
 
         $validator = new Validator($data, $rules);
-        $validator->validate();
+        $validator->validated();
     }
 
 	public function testWhenNoneOfTheRuleMatches()
@@ -362,6 +458,36 @@ class TestValidator extends TestCase {
         ];
 
         $validator = new Validator($data, $rules);
+        $validator->validated();
+    }
+
+	public function testNestedAttributesWithAdditionalLevels()
+    {
+        $data = [
+            'order' => [
+                'items' => [
+                    ['name' => 'Item 1', 'price' => 100],
+                    ['name' => 'Item 2', 'price' => 200],
+                ],
+            ],
+        ];
+
+        $rules = [
+            'order.items.*'       => 'required|array',
+            'order.items.*.name'  => 'required|string',
+            'order.items.*.price' => 'required|numeric|min:0',
+        ];
+
+        $validator = new Validator($data, $rules);
+
         $validator->validate();
+
+        $validatedData = $validator->validated();
+
+        $this->assertCount(2, $validatedData['order']['items']);
+        $this->assertEquals('Item 1', $validatedData['order']['items'][0]['name']);
+        $this->assertEquals(100, $validatedData['order']['items'][0]['price']);
+        $this->assertEquals('Item 2', $validatedData['order']['items'][1]['name']);
+        $this->assertEquals(200, $validatedData['order']['items'][1]['price']);
     }
 }

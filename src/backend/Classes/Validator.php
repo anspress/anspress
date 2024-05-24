@@ -23,228 +23,214 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 5.0.0
  */
 class Validator {
-	/**
-	 * Data to validate.
-	 *
-	 * @var array
-	 */
+
 	protected $data;
-
-	/**
-	 * Validation rules.
-	 *
-	 * @var array
-	 */
 	protected $rules;
-
-	/**
-	 * Validation custom messages.
-	 *
-	 * @var array
-	 */
 	protected $customMessages;
-
-	/**
-	 * Validation attribute names.
-	 *
-	 * @var array
-	 */
 	protected $customAttributes;
-
-	/**
-	 * Validated data.
-	 *
-	 * @var array
-	 */
-	protected array $validatedData = array();
-
-	/**
-	 * Validation errors.
-	 *
-	 * @var array
-	 */
 	protected $errors = array();
 
-	/**
-	 * Constructor.
-	 *
-	 * @param array $data Data to validate.
-	 * @param array $rules Validation rules.
-	 * @param array $customMessages Custom validation messages.
-	 * @param array $customAttributes Custom validation attributes.
-	 * @return void
-	 */
 	public function __construct( array $data, array $rules, array $customMessages = array(), array $customAttributes = array() ) {
 		$this->data             = $data;
 		$this->rules            = $rules;
 		$this->customMessages   = $customMessages;
 		$this->customAttributes = $customAttributes;
+
+		$this->validate();
 	}
 
-	/**
-	 * Validate data.
-	 *
-	 * @return true
-	 * @throws ValidationException If validation fails.
-	 */
 	public function validate() {
 		foreach ( $this->rules as $attribute => $rules ) {
-			$rules = is_array( $rules ) ? $rules : explode( '|', $rules );
-			$this->validateAttribute( $attribute, $rules, $this->data );
-		}
-
-		if ( ! empty( $this->errors ) ) {
-			throw new ValidationException( $this->errors ); // @codingStandardsIgnoreLine
+			$this->validateAttribute( $attribute, $rules );
 		}
 
 		return true;
 	}
 
-	/**
-	 * Validate attribute.
-	 *
-	 * @param mixed $attribute Attributes.
-	 * @param mixed $rules Rules.
-	 * @param mixed $data Data.
-	 * @return void
-	 * @throws ValidationException If validation rule not found.
-	 */
-	protected function validateAttribute( $attribute, $rules, $data ) {
-		$value = $this->getValue( $attribute, $data );
+	protected function validateAttribute( $attribute, $rules, $index = null, $originalAttribute = null ) {
+		$data          = $this->data;
+		$attributeData = $this->getAttributeData( $attribute, $data, $index );
+		$parsedRules   = $this->parseRules( $rules );
 
-		foreach ( $rules as $rule ) {
-			if ( is_string( $rule ) ) {
-				$parameters = array();
-				if ( strpos( $rule, ':' ) !== false ) {
-					list($rule, $parameterString) = explode( ':', $rule );
-					$parameters                   = explode( ',', $parameterString );
+		if ( strpos( $attribute, '.*' ) !== false ) {
+			$this->validateWildcardAttribute( $attribute, $parsedRules, $data );
+		} else {
+			foreach ( $parsedRules as $rule ) {
+				$parameters = $rule['parameters'];
+
+				if ( is_object( $rule['rule'] ) && $rule['rule'] instanceof ValidationRuleInterface ) {
+					if ( ! $rule['rule']->validate( $attribute, $attributeData, $parameters, $this ) ) {
+						$this->addError(
+							$attribute,
+							$this->getMessage( $attribute, $rule['rule']->ruleName(), $rule['rule']->message() ),
+							$parameters,
+							$originalAttribute
+						);
+					}
+
+					continue;
 				}
 
-				$ruleInstance = ValidationRuleFactory::make( $rule, $parameters );
+				if ( ! is_string( $rule['rule'] ) && is_callable( $rule['rule'], true ) ) {
+					if ( ! $rule['rule']( $attribute, $attributeData, $rule['parameters'], $this ) ) {
+						$this->addError(
+							$attribute,
+							'Validation failed for ' . $attribute . '.',
+							$rule['parameters'],
+							$originalAttribute
+						);
+					}
 
-				if ( ! $ruleInstance->validate( $attribute, $value, array(), $this ) ) {
-					$this->addError( $attribute, $ruleInstance, $parameters );
-				} else {
-					$this->setValidatedData( $attribute, $value );
+					continue;
 				}
-			} elseif ( $rule instanceof ValidationRuleInterface ) {
-				if ( ! $rule->validate( $attribute, $value, array(), $this ) ) {
-					$this->addError( $attribute, $rule, array() );
-				} else {
-					$this->setValidatedData( $attribute, $value );
-				}
-			} elseif ( is_callable( $rule ) ) {
-				if ( ! $rule( $attribute, $value, array(), $this ) ) {
-					$this->addError( $attribute, 'custom', array() );
-				} else {
-					$this->setValidatedData( $attribute, $value );
-				}
-			} else {
-				throw new ValidationException(
-					array(),
-					sprintf(
-						// translators: 1: rule name.
-						esc_attr__( 'Validation rule %s not found.', 'anspress-question-answer' ),
-						esc_attr( $rule )
-					)
-				);
-			}
-		}
 
-		if ( is_array( $value ) ) {
-			foreach ( $value as $key => $nestedValue ) {
-				$nestedAttribute = "{$attribute}.{$key}";
-				if ( isset( $this->rules[ $nestedAttribute ] ) ) {
-					$this->validateAttribute( $nestedAttribute, $this->rules[ $nestedAttribute ], $data );
+				$validationRule = ValidationRuleFactory::make( $rule['rule'], $parameters );
+
+				if ( ! $validationRule instanceof ValidationRuleInterface ) {
+					throw new ValidationException(
+						array(
+							$attribute => array( 'Unhandled validation rule.' ),
+						),
+						'Unhandled validation rule.'
+					);
+				}
+
+				if ( ! $validationRule->validate( $attribute, $attributeData, $parameters, $data ) ) {
+					$this->addError(
+						$attribute,
+						$this->getMessage( $attribute, $rule['rule'], $validationRule->message() ),
+						$parameters,
+						$originalAttribute
+					);
 				}
 			}
 		}
 	}
 
-	/**
-	 * Get value from data.
-	 *
-	 * @param string $attribute Attributes.
-	 * @param mixed  $data Data.
-	 * @return mixed
-	 */
-	protected function getValue( string $attribute, $data ) {
+	protected function validateWildcardAttribute( $attribute, $parsedRules, $data ) {
+		$segments           = explode( '.*', $attribute );
+		$baseAttribute      = $segments[0];
+		$remainingAttribute = isset( $segments[1] ) ? substr( $attribute, strpos( $attribute, '.*' ) + 2 ) : null;
+		$baseData           = $this->getAttributeData( $baseAttribute, $data );
+
+		if ( is_array( $baseData ) ) {
+			foreach ( $baseData as $index => $item ) {
+				$currentAttribute = $baseAttribute . '.' . $index;
+				if ( $remainingAttribute ) {
+					$currentAttribute .= $remainingAttribute;
+				}
+
+				foreach ( $parsedRules as $rule ) {
+					$this->validateAttribute( $currentAttribute, array( $rule['rule'] ), $index, $attribute );
+				}
+			}
+		} else {
+			// Validate with the base attribute and remaining attribute for all rules if base data doesn't exist
+			foreach ( $parsedRules as $index => $rule ) {
+				$this->validateAttribute( $baseAttribute, array( $rule['rule'] ), $index, $attribute );
+			}
+		}
+	}
+
+	protected function getAttributeData( $attribute, $data, $index = null ) {
 		$keys = explode( '.', $attribute );
 
-		if ( empty( $keys ) ) {
-			return null;
-		}
-
 		foreach ( $keys as $key ) {
-			if ( is_array( $data ) && array_key_exists( $key, $data ) ) {
+			if ( $key === '*' ) {
+				// Handle wildcard
+				if ( is_array( $data ) ) {
+					$result = array();
+					foreach ( $data as $item ) {
+						$result[] = $item;
+					}
+					return $result;
+				} else {
+					return null;
+				}
+			}
+
+			if ( isset( $data[ $key ] ) ) {
 				$data = $data[ $key ];
 			} else {
 				return null;
 			}
 		}
+
+		// If an index is provided, return data at that index
+		if ( $index !== null && is_array( $data ) && isset( $data[ $index ] ) ) {
+			return $data[ $index ];
+		}
+
 		return $data;
 	}
 
-	/**
-	 * Set validated data.
-	 *
-	 * @param string $attribute Attributes.
-	 * @param mixed  $value Value.
-	 * @return void
-	 */
-	protected function setValidatedData( $attribute, $value ) {
-		$keys = explode( '.', $attribute );
-		$data = &$this->validatedData;
+	protected function parseRules( $rules ) {
+		$parsedRules = array();
 
-		foreach ( $keys as $key ) {
-			if ( ! isset( $data[ $key ] ) ) {
-				$data[ $key ] = array();
+		foreach ( (array) $rules as $rule ) {
+			if ( is_string( $rule ) ) {
+				foreach ( explode( '|', $rule ) as $rulePart ) {
+					$parsedRules[] = $this->parseStringRule( $rulePart );
+				}
+			} elseif ( is_callable( $rule ) ) {
+				$parsedRules[] = array(
+					'rule'       => $rule,
+					'parameters' => array(),
+				);
+			} else {
+				$parsedRules[] = array(
+					'rule'       => $rule,
+					'parameters' => array(),
+				);
 			}
-			$data = &$data[ $key ];
 		}
 
-		$data = $value;
+		return $parsedRules;
 	}
 
-	/**
-	 * Get validation errors.
-	 *
-	 * @return array
-	 */
+	protected function parseStringRule( $rule ) {
+		if ( strpos( $rule, ':' ) !== false ) {
+			list($rule, $parameters) = explode( ':', $rule, 2 );
+			$parameters              = explode( ',', $parameters );
+		} else {
+			$parameters = array();
+		}
+
+		return array(
+			'rule'       => $rule,
+			'parameters' => $parameters,
+		);
+	}
+
+	protected function addError( $attribute, $message, $parameters, $originalAttribute = null ) {
+		$attributeName = $this->customAttributes[ $originalAttribute ?? $attribute ] ?? $attribute;
+
+		$this->errors[ $attribute ][] = str_replace(
+			array( ':attribute' ),
+			array( $attributeName ),
+			$message
+		);
+	}
+
+
+	protected function getMessage( $attribute, $rule, $defaultMessage ) {
+		$customMessageKey = $attribute . '.' . $rule;
+		return $this->customMessages[ $customMessageKey ] ?? $defaultMessage;
+	}
+
 	public function errors() {
 		return $this->errors;
 	}
 
-	/**
-	 * Add error.
-	 *
-	 * @param mixed $attribute Attributes.
-	 * @param mixed $rule    Rule.
-	 * @param array $parameters Parameters.
-	 * @return void
-	 */
-	protected function addError( $attribute, $rule, $parameters = array() ) {
-		$attributeLabel = $this->customAttributes[ $attribute ] ?? $attribute;
-
-		if ( $rule instanceof ValidationRuleInterface ) {
-			$ruleName = is_object( $rule ) ? $rule->ruleName() : $rule;
-
-			$message = $this->customMessages[ "{$attribute}.{$ruleName}" ] ?? $rule->message( $attributeLabel, $parameters );
-		} else {
-			$ruleName = is_object( $rule ) ? get_class( $rule ) : $rule;
-			$message  = $this->customMessages[ "{$attribute}.{$ruleName}" ] ??
-				"The {$attributeLabel} field failed validation for rule {$ruleName}.";
-		}
-
-		$this->errors[ $attribute ][] = $message;
+	public function fails() {
+		return ! empty( $this->errors );
 	}
 
-	/**
-	 * Get validated data.
-	 *
-	 * @return array
-	 */
-	public function validated(): array {
-		return $this->validatedData;
+	public function validated() {
+		if ( ! empty( $this->errors ) ) {
+			throw new ValidationException( $this->errors, 'Validation failed.' ); // @codingStandardsIgnoreLine
+		}
+
+		return $this->data;
 	}
 }

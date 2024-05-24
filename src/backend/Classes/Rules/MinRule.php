@@ -33,7 +33,7 @@ class MinRule implements ValidationRuleInterface {
 	 *
 	 * @param int $min Minimum length.
 	 */
-	public function __construct( $min ) {
+	public function __construct( $min = 0 ) {
 		$this->min = $min;
 	}
 
@@ -67,14 +67,7 @@ class MinRule implements ValidationRuleInterface {
 		return isset( $value ) && strlen( $value ) >= $this->min;
 	}
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string {
-		return "The {$attribute} must be at least {$this->min} characters.";
+	public function message(): string {
+		return "The :attribute must be at least {$this->min} characters.";
 	}
 }

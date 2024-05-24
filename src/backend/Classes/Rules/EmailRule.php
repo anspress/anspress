@@ -43,14 +43,7 @@ class EmailRule implements ValidationRuleInterface {
 		return is_string( $value ) && filter_var( $value, FILTER_VALIDATE_EMAIL );
 	}
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string {
-		return "The {$attribute} must be a valid email address.";
+	public function message(): string {
+		return 'The :attribute must be a valid email address.';
 	}
 }

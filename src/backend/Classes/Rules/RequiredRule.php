@@ -43,14 +43,7 @@ class RequiredRule implements ValidationRuleInterface {
 		return isset( $value ) && ! empty( $value );
 	}
 
-	/**
-	 * Get validation error message.
-	 *
-	 * @param string $attribute Attribute.
-	 * @param array  $parameters Parameters.
-	 * @return string
-	 */
-	public function message( $attribute, $parameters ): string {
-		return "The {$attribute} field is required.";
+	public function message(): string {
+		return 'The :attribute field is required.';
 	}
 }
