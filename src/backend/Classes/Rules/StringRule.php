@@ -43,6 +43,11 @@ class StringRule implements ValidationRuleInterface {
 		return is_string( $value );
 	}
 
+	/**
+	 * Get message.
+	 *
+	 * @return string
+	 */
 	public function message(): string {
 		return 'The :attribute must be a string.';
 	}

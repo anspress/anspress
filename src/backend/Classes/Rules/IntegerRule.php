@@ -43,6 +43,11 @@ class IntegerRule implements ValidationRuleInterface {
 		return is_int( $value );
 	}
 
+	/**
+	 * Get message.
+	 *
+	 * @return string
+	 */
 	public function message(): string {
 		return 'The :attribute must be an integer.';
 	}

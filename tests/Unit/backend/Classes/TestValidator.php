@@ -5,8 +5,6 @@
 
 namespace Tests\Unit\Functions\src\backend\Classes;
 
-use AnsPress\Classes\Container;
-use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\ValidationException;
 use AnsPress\Interfaces\ValidationRuleInterface;
