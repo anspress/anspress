@@ -56,10 +56,23 @@ class MaxRule implements ValidationRuleInterface {
 	 * @return bool
 	 */
 	public function validate( $attribute, $value, $parameters, $validator ): bool {
-		return isset( $value ) && strlen( $value ) <= $this->max;
+		if ( is_array( $value ) ) {
+			return count( $value ) <= $this->max;
+		} elseif ( is_numeric( $value ) ) {
+			return $value <= $this->max;
+		} elseif ( is_string( $value ) ) {
+			return strlen( $value ) <= $this->max;
+		}
+
+		return false;
 	}
 
+	/**
+	 * Get message.
+	 *
+	 * @return string
+	 */
 	public function message(): string {
-		return "The :attribute may not be greater than {$this->max} characters.";
+		return "The :attribute may not be greater than {$this->max}.";
 	}
 }
