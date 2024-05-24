@@ -18,15 +18,19 @@ class TestUniqueRule extends TestCase {
         global $wpdb;
         self::$wpdb = $wpdb;
 
-        // Set up your test data
-        self::$wpdb->query("CREATE TABLE IF NOT EXISTS test_users (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) UNIQUE)");
+		$table = self::$wpdb->prefix . 'test_users';
 
-        self::$wpdb->query("INSERT INTO test_users (email) VALUES ('existing@example.com')");
+        // Set up your test data
+        self::$wpdb->query("CREATE TABLE IF NOT EXISTS {$table} (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) UNIQUE)");
+
+        self::$wpdb->query("INSERT INTO {$table} (email) VALUES ('existing@example.com')");
     }
 
 	public static function tearDownAfterClass(): void {
+		$table = self::$wpdb->prefix . 'test_users';
+
         // Clean up the database
-        self::$wpdb->query("DROP TABLE IF EXISTS test_users");
+        self::$wpdb->query("DROP TABLE IF EXISTS {$table}");
         parent::tearDownAfterClass();
     }
 
@@ -46,8 +50,10 @@ class TestUniqueRule extends TestCase {
     }
 
     public function testValidateNonUniqueValueWithIgnore() {
+		$table = self::$wpdb->prefix . 'test_users';
+
         // Insert a new user to test ignoring
-        self::$wpdb->query("INSERT INTO test_users (email) VALUES ('another@example.com')");
+        self::$wpdb->query("INSERT INTO {$table} (email) VALUES ('another@example.com')");
 
 		$validator = new Validator(['email' => 'another@example.com'], ['email' => 'unique:test_users,email,1']);
 		$this->assertTrue($validator->fails());

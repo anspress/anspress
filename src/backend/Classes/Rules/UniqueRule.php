@@ -59,7 +59,9 @@ class UniqueRule implements ValidationRuleInterface {
 	 * @param string      $ignoreColumn Ignore column.
 	 */
 	public function __construct( $table, $column = null, $ignoreId = null, $ignoreColumn = 'id' ) {
-		$this->table        = $table;
+		global $wpdb;
+
+		$this->table        = $wpdb->prefix . $table;
 		$this->column       = $column;
 		$this->ignoreId     = $ignoreId;
 		$this->ignoreColumn = $ignoreColumn;

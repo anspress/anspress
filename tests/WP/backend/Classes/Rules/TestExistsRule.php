@@ -18,25 +18,28 @@ class TestExistsRule extends TestCase {
         global $wpdb;
         self::$wpdb = $wpdb;
 
+		$table = self::$wpdb->prefix . 'test_users';
+
         // Set up your test data
-        self::$wpdb->query("CREATE TABLE IF NOT EXISTS test_users (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) UNIQUE)");
-        self::$wpdb->query("INSERT INTO test_users (email) VALUES ('existing@example.com')");
+        self::$wpdb->query("CREATE TABLE IF NOT EXISTS {$table} (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255) UNIQUE)");
+        self::$wpdb->query("INSERT INTO {$table} (email) VALUES ('existing@example.com')");
     }
 
     public static function tearDownAfterClass(): void {
+		$table = self::$wpdb->prefix . 'test_users';
         // Clean up the database
-        self::$wpdb->query("DROP TABLE IF EXISTS test_users");
+        self::$wpdb->query("DROP TABLE IF EXISTS $table");
         parent::tearDownAfterClass();
     }
 
     public function testValidateExistingValue() {
-        $rule = new ExistsRule('test_users', 'email');
-        $this->assertTrue($rule->validate('email', 'existing@example.com', [], null));
+		$validator = new Validator(['email' => 'existing@example.com'], ['email' => 'exists:test_users,email']);
+        $this->assertFalse($validator->fails());
     }
 
     public function testValidateNonExistingValue() {
-        $rule = new ExistsRule('test_users', 'email');
-        $this->assertFalse($rule->validate('email', 'nonexisting@example.com', [], null));
+		$validator = new Validator(['email' => 'nonexisting@example.com'], ['email' => 'exists:test_users,email']);
+        $this->assertTrue($validator->fails());
     }
 
 	public function testRuleWithValidator() {

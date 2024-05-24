@@ -43,7 +43,9 @@ class ExistsRule implements ValidationRuleInterface {
 	 * @param string|null $column Column name.
 	 */
 	public function __construct( $table, $column = null ) {
-		$this->table  = $table;
+		global $wpdb;
+
+		$this->table  = $wpdb->prefix . $table;
 		$this->column = $column;
 	}
 
