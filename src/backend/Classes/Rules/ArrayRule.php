@@ -8,6 +8,7 @@
 
 namespace AnsPress\Classes\Rules;
 
+use AnsPress\Classes\Validator;
 use AnsPress\Interfaces\ValidationRuleInterface;
 
 // Exit if accessed directly.
@@ -31,19 +32,23 @@ class ArrayRule implements ValidationRuleInterface {
 	}
 
 	/**
-	 * Validate data.
+	 * Validate the rule.
 	 *
-	 * @param mixed $attribute Attributes.
-	 * @param mixed $value Value.
-	 * @param mixed $parameters Parameters.
-	 * @param mixed $validator Validator.
+	 * @param string    $attribute Attributes.
+	 * @param mixed     $value Value.
+	 * @param array     $parameters Parameters.
+	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( $attribute, $value, $parameters, $validator ): bool {
+	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
 		return is_array( $value );
 	}
 
-
+	/**
+	 * Get error message.
+	 *
+	 * @return string
+	 */
 	public function message(): string {
 		return 'The :attribute must be an array.';
 	}

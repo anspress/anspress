@@ -213,7 +213,7 @@ class Validator {
 	 * @param string|null             $originalAttribute Original attribute name.
 	 */
 	public function validateWithRuleInstance( $attribute, $attributeData, $parameters, $data, $rule, $validationRule, $originalAttribute ): void {
-		if ( ! $validationRule->validate( $attribute, $attributeData, $parameters, $data ) ) {
+		if ( ! $validationRule->validate( $attribute, $attributeData, $parameters, $this ) ) {
 			$this->addError(
 				$attribute,
 				$this->getMessage( $attribute, $rule['rule'], $validationRule->message() ),

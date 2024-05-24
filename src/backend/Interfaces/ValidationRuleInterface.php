@@ -8,6 +8,8 @@
 
 namespace AnsPress\Interfaces;
 
+use AnsPress\Classes\Validator;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,14 +24,19 @@ interface ValidationRuleInterface {
 	/**
 	 * Validate data.
 	 *
-	 * @param mixed $attribute Attributes.
-	 * @param mixed $value Value.
-	 * @param mixed $parameters Parameters.
-	 * @param mixed $validator Validator.
+	 * @param string    $attribute Attributes.
+	 * @param mixed     $value Value.
+	 * @param array     $parameters Parameters.
+	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( $attribute, $value, $parameters, $validator ): bool;
+	public function validate( string $attribute, $value, array $parameters, Validator $validator ): bool;
 
+	/**
+	 * Get error message.
+	 *
+	 * @return string
+	 */
 	public function message(): string;
 
 	/**

@@ -9,6 +9,8 @@
 namespace AnsPress\Modules\Subscriber;
 
 use AnsPress\Classes\AbstractService;
+use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Validator;
 use AnsPress\Modules\Subscriber\SubscriberModel;
 use Exception;
 
@@ -30,6 +32,15 @@ class SubscriberService extends AbstractService {
 	 * @return null|SubscriberModel  Subscriber model.
 	 */
 	public function create( array $data ): ?SubscriberModel {
+		$validator = new Validator(
+			$data,
+			array(
+				'subs_user_id' => 'required|numeric',
+				'subs_event'   => 'required',
+				'subs_ref_id'  => 'required|numeric',
+			)
+		);
+
 		// Add current user id if not set.
 		if ( empty( $data['subs_user_id'] ) ) {
 			$data['subs_user_id'] = get_current_user_id();
