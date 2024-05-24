@@ -41,8 +41,6 @@ class TestValidator extends TestCase {
 
         $validator = new Validator($data, $rules);
 
-        $this->assertTrue($validator->validate());
-
 		$this->assertEmpty($validator->errors());
 
 		$this->assertEquals(
@@ -140,7 +138,9 @@ class TestValidator extends TestCase {
 						]
 					]
 				]
-			]
+			],
+			'testnonarray' => 'testNonArray',
+			'nonexistant' => 'nonexistant',
 		];
 
 		$rules = [
@@ -153,11 +153,17 @@ class TestValidator extends TestCase {
 			'nested.nested.*.*.email' => 'required|email',
 			'nested.nested.*.*.obj.obj1' => 'required|string',
 			'nested.nested.*.*.obj.obj2' => 'required|array',
+			'testnonarray.*' => 'required|string'
 		];
 
 		$validator = new Validator($data, $rules);
 
 		$valiated = $validator->validated();
+
+		// Check for non-existant key
+		$this->assertArrayNotHasKey('nonexistant', $valiated);
+
+		unset($data['nonexistant']);
 
 		$this->assertEquals(
 			$data,
@@ -277,7 +283,7 @@ class TestValidator extends TestCase {
 
         $validator = new Validator($data, $rules);
 
-        $this->assertTrue($validator->validate());
+        $this->assertFalse($validator->fails());
     }
 
 	public function testInvalidData()
@@ -490,4 +496,52 @@ class TestValidator extends TestCase {
         $this->assertEquals('Item 2', $validatedData['order']['items'][1]['name']);
         $this->assertEquals(200, $validatedData['order']['items'][1]['price']);
     }
+
+	public function testInvalidRule()
+	{
+		Functions\expect('esc_attr__')->andReturn('Validation rule %1$s not found.');
+
+		Functions\expect('esc_attr')->andReturn('unknownRule');
+
+		Functions\expect('wp_sprintf')->andReturn('Validation rule unknownRule not found.');
+
+		$data = [
+			'username' => 'testuser',
+		];
+
+		$rules = [
+			'username' => 'required|unknownRule',
+		];
+
+		$this->expectException(ValidationException::class);
+		$this->getExpectedExceptionMessage('Validation rule unknownRule not found.');
+
+		$validator = new Validator($data, $rules);
+	}
+
+	public function testDataShouldNotBeIncludedWithoutRules()
+	{
+		$data = [
+			'username' => 'testuser',
+			'email' => 'rah12@live.com',
+		];
+
+		$rules = [
+			'username' => 'required|string',
+		];
+
+		$validator = new Validator($data, $rules);
+
+		$validatedData = $validator->validated();
+
+		$this->assertArrayNotHasKey('email', $validatedData);
+
+		$this->assertEquals(
+			[
+				'username' => 'testuser',
+			],
+			$validatedData
+		);
+
+	}
 }
