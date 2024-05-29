@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\src\backend\Classes;
 
+use AnsPress\Classes\Auth;
+use AnsPress\Modules\Subscriber\SubscriberModel;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 /**
@@ -38,6 +40,8 @@ class TestSubscriberPolicy extends TestCase {
 		$model->subs_user_id = $user->ID;
 
 		$this->assertTrue( $policy->view( $user, $model ) );
+
+		$this->assertTrue( Auth::check( 'view', $model, $user ) );
 	}
 
 	public function testViewFail() {
@@ -50,6 +54,8 @@ class TestSubscriberPolicy extends TestCase {
 		$model->subs_user_id = $user->ID + 1;
 
 		$this->assertFalse( $policy->view( $user, $model ) );
+
+		$this->assertFalse( Auth::check( 'view', $model, $user ) );
 	}
 
 	public function testCreatePass() {
@@ -58,6 +64,16 @@ class TestSubscriberPolicy extends TestCase {
 		$user = $this->factory()->user->create_and_get();
 
 		$this->assertTrue( $policy->create( $user ) );
+
+		$this->assertTrue( Auth::check( 'create', new SubscriberModel(), $user ) );
+	}
+
+	public function testCreateFail() {
+		$policy = new \AnsPress\Modules\Subscriber\SubscriberPolicy();
+
+		$this->assertFalse( $policy->create( null ) );
+
+		$this->assertFalse( Auth::check( 'create', new SubscriberModel(), null ) );
 	}
 
 	public function testUpdatePass() {
@@ -70,6 +86,8 @@ class TestSubscriberPolicy extends TestCase {
 		$model->subs_user_id = $user->ID;
 
 		$this->assertTrue( $policy->update( $user, $model ) );
+
+		$this->assertTrue( Auth::check( 'update', $model, $user ) );
 	}
 
 	public function testUpdateFail() {
@@ -82,6 +100,8 @@ class TestSubscriberPolicy extends TestCase {
 		$model->subs_user_id = $user->ID + 1;
 
 		$this->assertFalse( $policy->update( $user, $model ) );
+
+		$this->assertFalse( Auth::check( 'update', $model, $user ) );
 	}
 
 	public function testDeletePass() {
@@ -94,6 +114,8 @@ class TestSubscriberPolicy extends TestCase {
 		$model->subs_user_id = $user->ID;
 
 		$this->assertTrue( $policy->delete( $user, $model ) );
+
+		$this->assertTrue( Auth::check( 'delete', $model, $user ) );
 	}
 
 	public function testDeleteFail() {
@@ -106,6 +128,8 @@ class TestSubscriberPolicy extends TestCase {
 		$model->subs_user_id = $user->ID + 1;
 
 		$this->assertFalse( $policy->delete( $user, $model ) );
+
+		$this->assertFalse( Auth::check( 'delete', $model, $user ) );
 	}
 
 }

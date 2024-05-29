@@ -14,6 +14,7 @@ use AnsPress\Interfaces\PolicyInterface;
 use AnsPress\Modules\Config\ConfigService;
 use AnsPress\Modules\Subscriber\SubscriberModel;
 use AnsPress\Modules\Subscriber\SubscriberSchema;
+use AnsPress\Modules;
 use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -48,7 +49,7 @@ class Plugin {
 	 * @var array<AbstractModel, AbstractPolicy>
 	 */
 	private array $modelPolicies = array(
-		\AnsPress\Modules\Subscriber\SubscriberPolicy::class,
+		Modules\Subscriber\SubscriberModel::class => Modules\Subscriber\SubscriberPolicy::class,
 	);
 
 	/**

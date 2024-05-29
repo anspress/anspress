@@ -63,7 +63,7 @@ class Auth {
 	 * @return bool True if the user has the ability, false otherwise.
 	 * @throws GeneralException If the policy does not have the given ability method.
 	 */
-	public static function check( string $ability, AbstractModel $model, ?WP_User $user = null ) {
+	public static function check( string $ability, AbstractModel $model = null, ?WP_User $user = null ) {
 		$policy = Plugin::getPolicy( get_class( $model ) );
 
 		// Check if the policy has a before method.

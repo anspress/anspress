@@ -58,11 +58,15 @@ class SubscriberPolicy extends AbstractPolicy {
 	/**
 	 * Determine if the given user can create a new model.
 	 *
-	 * @param WP_User $user The current user attempting the action.
+	 * @param WP_User|null $user The current user attempting the action.
 	 * @return bool True if the user is authorized to create the model, false otherwise.
 	 */
-	public function create( WP_User $user ): bool {
-		return true;
+	public function create( ?WP_User $user ): bool {
+		if ( $user ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
