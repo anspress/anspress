@@ -8,6 +8,7 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Exceptions\AuthException;
 use AnsPress\Exceptions\GeneralException;
 use WP_User;
 
@@ -79,5 +80,23 @@ class Auth {
 		}
 
 		return $policy->$ability( $user, $model );
+	}
+
+	/**
+	 * Check if the user has the given ability for the model and throw an exception if not.
+	 *
+	 * @param string        $ability The ability to check.
+	 * @param AbstractModel $model The model instance.
+	 * @param WP_User|null  $user The user object.
+	 * @throws AuthException If the user is not authorized.
+	 */
+	public static function checkAndThrow( string $ability, AbstractModel $model = null, ?WP_User $user = null ) {
+		if ( null === $user ) {
+			$user = self::user();
+		}
+
+		if ( ! self::check( $ability, $model, $user ) ) {
+			throw new AuthException( 'User is not authorized to perform this action.' );
+		}
 	}
 }
