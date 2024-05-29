@@ -35,17 +35,23 @@ class Container {
 	/**
 	 * Set service object.
 	 *
-	 * @param string $className Class name.
+	 * @param string        $className Class name.
+	 * @param callable|null $cb Callback function.
 	 * @return void
 	 *
 	 * @throws Exception If invalid service.
 	 */
-	public function set( string $className ): void {
+	public function set( string $className, ?callable $cb = null ): void {
 		if ( ! class_exists( $className ) ) {
 			throw new Exception( esc_attr( 'Not a valid class.' ) );
 		}
 
 		if ( isset( $this->instances[ $className ] ) ) {
+			return;
+		}
+
+		if ( null !== $cb ) {
+			$this->instances[ $className ] = $cb( $this );
 			return;
 		}
 

@@ -60,6 +60,8 @@ class TestAbstractModel extends TestCase {
 
 		Functions\expect('current_time')->andReturn('2024-05-13 15:30:00');
 
+		Functions\expect('plugin_dir_path')->andReturn(PLUGIN_DIR . '/');
+
 		Plugin::make(PLUGIN_DIR . '/anspress-question-answer.php', '5.0.0', 38, '8.1', '5.8.0', new Container);
 	}
 

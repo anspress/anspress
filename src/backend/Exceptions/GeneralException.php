@@ -9,6 +9,7 @@
 namespace AnsPress\Exceptions;
 
 use AnsPress\Classes\Logger;
+use AnsPress\Classes\Plugin;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,6 +33,6 @@ class GeneralException extends \Exception {
 		parent::__construct( $message, $code );
 
 		// Log the exception message.
-		Logger::log( Logger::LOG_LEVEL_ERROR, $message, $data );
+		Plugin::get( Logger::class )->log( Logger::LOG_LEVEL_ERROR, $message, $data );
 	}
 }

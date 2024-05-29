@@ -480,24 +480,26 @@ register_activation_hook( __FILE__, 'anspress_activation' );
 
 require_once __DIR__ . '/src/backend/autoloader.php';
 
-Plugin::make(
-	ANSPRESS_PLUGIN_FILE,
-	ANSPRESS_PLUGIN_VERSION,
-	ANSPRESS_DB_VERSION,
-	'8.1',
-	'6.5',
-	new AnsPress\Classes\Container()
+/**
+ * Hook before AnsPress is loaded.
+ */
+do_action( 'anspress/pre_load' );
+
+/**
+ * Load AnsPress.
+ */
+add_action(
+	'plugins_loaded',
+	function () {
+		Plugin::make(
+			ANSPRESS_PLUGIN_FILE,
+			ANSPRESS_PLUGIN_VERSION,
+			ANSPRESS_DB_VERSION,
+			'8.1',
+			'6.5',
+			new AnsPress\Classes\Container()
+		);
+	}
 );
 
-$options = include Plugin::getPathTo( 'src/backend/config.php' );
-
-Plugin::get( ConfigService::class )->registerDefaults( $options );
-
-// Load module hooks.
-$modules = array(
-	AnsPress\Modules\Core\CoreModule::class,
-);
-
-foreach ( $modules as $module ) {
-	Plugin::get( $module )->register_hooks();
-}
+anspress();

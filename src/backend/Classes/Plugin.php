@@ -9,6 +9,8 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Exceptions\GeneralException;
+use AnsPress\Interfaces\PolicyInterface;
 use AnsPress\Modules\Config\ConfigService;
 use AnsPress\Modules\Subscriber\SubscriberModel;
 use AnsPress\Modules\Subscriber\SubscriberSchema;
@@ -30,6 +32,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @method static string getPluginFile() Gets the plugin file.
  */
 class Plugin {
+
+	/**
+	 * Modules.
+	 *
+	 * @var array
+	 */
+	private array $modules = array(
+		\AnsPress\Modules\Core\CoreModule::class,
+	);
+
+	/**
+	 * Registered policies.
+	 *
+	 * @var array<AbstractModel, AbstractPolicy>
+	 */
+	private array $modelPolicies = array(
+		\AnsPress\Modules\Subscriber\SubscriberPolicy::class,
+	);
 
 	/**
 	 * Plugin instance.
@@ -144,8 +164,32 @@ class Plugin {
 
 		self::$instance = $instance;
 
+		$instance->registerModules();
+
 		return self::$instance;
 	}
+
+	/**
+	 * Register modules.
+	 *
+	 * @return void
+	 */
+	private function registerModules(): void {
+		foreach ( $this->modules as $module ) {
+			$this->container->set(
+				$module,
+				function () use ( $module ) {
+					return new $module( $this->container );
+				}
+			);
+		}
+
+		foreach ( $this->modules as $module ) {
+			$this->container->get( $module )->register_hooks();
+		}
+	}
+
+
 
 	/**
 	 * Get current PHP version, useful for mocking.
@@ -233,5 +277,36 @@ class Plugin {
 		}
 
 		return self::$instance->get( self::$instance->modelSchema[ $model ] );
+	}
+
+	/**
+	 * Register a policy.
+	 *
+	 * @param string $model The model name.
+	 * @param string $policy The policy name.
+	 */
+	public static function registerPolicy( $model, $policy ) {
+		self::$instance->modelPolicies[ $model ] = $policy;
+	}
+
+	/**
+	 * Resolve a policy.
+	 *
+	 * @param string $model The model name.
+	 * @return AbstractPolicy The policy object.
+	 * @throws GeneralException If policy not found.
+	 */
+	public static function getPolicy( $model ): AbstractPolicy {
+		if ( ! isset( self::$instance->modelPolicies[ $model ] ) ) {
+			throw new GeneralException(
+				sprintf(
+					// translators: %s: model name.
+					esc_attr__( 'No policy registered for model %s', 'anspress-question-answer' ),
+					esc_attr( $model )
+				)
+			);
+		}
+
+		return self::get( self::$instance->modelPolicies[ $model ] );
 	}
 }

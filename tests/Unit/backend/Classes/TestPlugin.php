@@ -154,23 +154,25 @@ class TestPlugin extends TestCase {
 	public function testGetInstalledDbVersion() {
 		Functions\expect( 'update_option' )->once()->andReturn( true );
 
+		$container = new Container();
+
 		$plugin = Plugin::make(
 			'test.php',
 			'1.1.1',
 			'33000',
 			'7.4',
 			'5.8',
-			new Container()
+			$container
 		);
 
-		$plugin->get( ConfigService::class )->registerDefaults(
-			[
+		$container->set( ConfigService::class, function () {
+			return new ConfigService( [
 				'migration.installed_version' => [
 					'type' => 'integer',
 					'value' => 0
 				]
-			]
-		);
+			] );
+		} );
 
 		$plugin::updateInstalledDbVersion(3300001);
 

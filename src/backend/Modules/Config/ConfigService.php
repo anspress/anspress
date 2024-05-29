@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Config;
 
 use AnsPress\Classes\AbstractService;
+use AnsPress\Classes\Plugin;
 use InvalidArgumentException;
 
 // Exit if accessed directly.
@@ -40,6 +41,16 @@ class ConfigService extends AbstractService {
 	 * @var array
 	 */
 	private $registeredDefaults = array();
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array $defaultOptions Default options.
+	 * @return void
+	 */
+	public function __construct( array $defaultOptions = array() ) {
+		$this->registerDefaults( $defaultOptions );
+	}
 
 	/**
 	 * Get option value.
