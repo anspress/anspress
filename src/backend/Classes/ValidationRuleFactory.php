@@ -9,6 +9,7 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Classes\Rules\ArrayRule;
+use AnsPress\Classes\Rules\CanRule;
 use AnsPress\Classes\Rules\EmailRule;
 use AnsPress\Classes\Rules\ExistsRule;
 use AnsPress\Classes\Rules\IntegerRule;
@@ -50,6 +51,7 @@ class ValidationRuleFactory {
 		'email'    => EmailRule::class,
 		'unique'   => UniqueRule::class,
 		'exists'   => ExistsRule::class,
+		'can'      => CanRule::class,
 	);
 
 	/**

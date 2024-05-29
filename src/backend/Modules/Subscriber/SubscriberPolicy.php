@@ -48,7 +48,7 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
 	public function view( WP_User $user, SubscriberModel $model ): bool {
-		if ( $user && $model && $model->subs_user_id === $user->ID ) {
+		if ( $user && $model && $model->subs_user_id === (int) $user->ID ) {
 			return true;
 		}
 
@@ -77,7 +77,7 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( WP_User $user, SubscriberModel $model ): bool {
-		if ( $user && $model && $model->subs_user_id === $user->ID ) {
+		if ( $user && $model && $model->subs_user_id === (int) $user->ID ) {
 			return true;
 		}
 
@@ -92,7 +92,7 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( WP_User $user, SubscriberModel $model ): bool {
-		if ( $user && $model && $model->subs_user_id === $user->ID ) {
+		if ( $user && $model && $model->subs_user_id === (int) $user->ID ) {
 			return true;
 		}
 
