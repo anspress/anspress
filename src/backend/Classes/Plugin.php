@@ -189,8 +189,6 @@ class Plugin {
 		}
 	}
 
-
-
 	/**
 	 * Get current PHP version, useful for mocking.
 	 *

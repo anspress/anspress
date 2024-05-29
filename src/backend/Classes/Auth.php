@@ -8,6 +8,7 @@
 
 namespace AnsPress\Classes;
 
+use AnsPress\Exceptions\GeneralException;
 use WP_User;
 
 /**
@@ -60,6 +61,7 @@ class Auth {
 	 * @param AbstractModel $model The model instance.
 	 * @param WP_User|null  $user The user object.
 	 * @return bool True if the user has the ability, false otherwise.
+	 * @throws GeneralException If the policy does not have the given ability method.
 	 */
 	public static function check( string $ability, AbstractModel $model, ?WP_User $user = null ) {
 		$policy = Plugin::getPolicy( get_class( $model ) );
@@ -69,6 +71,11 @@ class Auth {
 
 		if ( null !== $before ) {
 			return $before;
+		}
+
+		// Check if the policy has the ability method.
+		if ( ! method_exists( $policy, $ability ) ) {
+			throw new GeneralException( 'Policy does not have the given ability method.' );
 		}
 
 		return $policy->$ability( $user, $model );

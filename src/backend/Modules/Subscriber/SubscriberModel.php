@@ -21,6 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Subscriber model.
  *
  * @package AnsPress
+ *
+ * @property int    $subs_id      Subscriber ID.
+ * @property int    $subs_user_id User ID.
+ * @property int    $subs_ref_id  Reference ID.
+ * @property string $subs_event   Event.
  */
 class SubscriberModel extends AbstractModel {
 	/**
