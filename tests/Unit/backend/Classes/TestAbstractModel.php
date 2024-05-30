@@ -505,6 +505,9 @@ class TestAbstractModel extends TestCase {
 		Functions\expect('do_action')
 			->with('anspress/model/failed_to_insert', 'wp_mock_table', ['name' => 'John Doe', 'email' => 'john@doe.com'], 'Error message');
 
+		Functions\expect('do_action')
+			->with('anspress/model/failed_to_insert/mock_table', ['name' => 'John Doe', 'email' => 'john@doe.com'], 'Error message');
+
 		Functions\expect('esc_html')
 			->with('Error message')
 			->andReturn('Error message');

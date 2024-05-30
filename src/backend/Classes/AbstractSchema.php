@@ -92,4 +92,14 @@ abstract class AbstractSchema implements SingletonInterface {
 	public function getColumnFormat( string $column ): string {
 		return $this->getColumns()[ $column ] ?? null;
 	}
+
+	/**
+	 * Get the table name without the prefix.
+	 *
+	 * @return string
+	 */
+	public function getShortTableName(): string {
+		global $wpdb;
+		return str_replace( $wpdb->prefix, '', $this->getTableName() );
+	}
 }

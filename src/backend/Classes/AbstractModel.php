@@ -397,8 +397,18 @@ abstract class AbstractModel implements ModelInterface {
 			 * @param string $table The table name.
 			 * @param array $attributes The attributes that failed to insert.
 			 * @param string $error The error message.
+			 * @since 5.0.0
 			 */
 			do_action( 'anspress/model/failed_to_insert', self::getSchema()->getTableName(), $attributes, $wpdb->last_error );
+
+			/**
+			 * Hook triggered when failed to insert a model.
+			 *
+			 * @param array $attributes The attributes that failed to insert.
+			 * @param string $error The error message.
+			 * @since 5.0.0
+			 */
+			do_action( 'anspress/model/failed_to_insert/' . self::getSchema()->getShortTableName(), $attributes, $wpdb->last_error );
 
 			throw new DBException( esc_html( $wpdb->last_error ) );
 		}
@@ -410,8 +420,17 @@ abstract class AbstractModel implements ModelInterface {
 		 *
 		 * @param string $table The table name.
 		 * @param object $model Inserted model.
+		 * @since 5.0.0
 		 */
 		do_action( 'anspress/model/after_insert', self::getSchema()->getTableName(), $inserted );
+
+		/**
+		 * Hook triggered after inserting a model.
+		 *
+		 * @param object $model Inserted model.
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress/model/after_insert/' . self::getSchema()->getShortTableName(), $inserted );
 
 		return self::find( $wpdb->insert_id );
 	}
@@ -461,6 +480,14 @@ abstract class AbstractModel implements ModelInterface {
 			 */
 			do_action( 'anspress/model/failed_to_update', self::getSchema()->getTableName(), $attributes );
 
+			/**
+			 * Hook triggered when failed to update a model.
+			 *
+			 * @param array $attributes The attributes that failed to update.
+			 * @since 5.0.0
+			 */
+			do_action( 'anspress/model/failed_to_update/' . self::getSchema()->getShortTableName(), $attributes );
+
 			return null;
 		}
 
@@ -471,8 +498,16 @@ abstract class AbstractModel implements ModelInterface {
 		 *
 		 * @param string $table The table name.
 		 * @param object $model Updated model.
+		 * @since 5.0.0
 		 */
 		do_action( 'anspress/model/after_update', self::getSchema()->getTableName(), $updated );
+
+		/**
+		 * Hook triggered after updating a model.
+		 *
+		 * @param object $model Updated model.
+		 */
+		do_action( 'anspress/model/after_update/' . self::getSchema()->getShortTableName(), $updated );
 
 		return $updated;
 	}
@@ -505,8 +540,17 @@ abstract class AbstractModel implements ModelInterface {
 			 *
 			 * @param string $table The table name.
 			 * @param array $attributes The attributes that failed to delete.
+			 * @since 5.0.0
 			 */
 			do_action( 'anspress/model/failed_to_delete', $this->schema->getTableName(), $this->getAttributes() );
+
+			/**
+			 * Hook triggered when failed to delete a model.
+			 *
+			 * @param array $attributes The attributes that failed to delete.
+			 * @since 5.0.0
+			 */
+			do_action( 'anspress/model/failed_to_delete/' . $this->schema->getShortTableName(), $this->getAttributes() );
 
 			return false;
 		}
@@ -520,6 +564,14 @@ abstract class AbstractModel implements ModelInterface {
 		 * @param object $model Deleted model.
 		 */
 		do_action( 'anspress/model/after_delete', $this->schema->getTableName(), $this );
+
+		/**
+		 * Hook triggered after deleting a model.
+		 *
+		 * @param object $model Deleted model.
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress/model/after_delete/' . $this->schema->getShortTableName(), $this );
 
 		return true;
 	}
