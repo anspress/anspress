@@ -2,80 +2,137 @@
 
 namespace AnsPress\Tests\WP;
 
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Category\CategoryModule;
+use AnsPress\Modules\Category\CategoryWidget;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
-class TestAddonCategories extends TestCase {
+
+/**
+ * @covers AnsPress\Modules\Category\CategoryModule
+ */
+class TestCategoryModule extends TestCase {
 
 	use Testcases\Common;
 
-	public function set_up() {
-		parent::set_up();
-		ap_activate_addon( 'categories.php' );
-	}
+	public function testHooks() {
+		$instance = new CategoryModule();
 
-	public function tear_down() {
-		parent::tear_down();
-		ap_deactivate_addon( 'categories.php' );
-	}
+		$instance->register_hooks();
 
-	public function testInstance() {
-		$class = new \ReflectionClass( 'Anspress\Addons\Categories' );
-		$this->assertTrue( $class->hasProperty( 'instance' ) && $class->getProperty( 'instance' )->isStatic() );
+		$this->assertEquals( 1, has_action( 'init', [ $instance, 'registerQuestionCategories' ], 1 ) );
+		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'load_options' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_form_options_features_category', [ $instance, 'register_general_settings_form' ] ) );
+		$this->assertEquals( 10, has_action( 'admin_enqueue_scripts', [ $instance, 'admin_enqueue_scripts' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_load_admin_assets', [ $instance, 'ap_load_admin_assets' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_admin_menu', [ $instance, 'admin_category_menu' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_display_question_metas', [ $instance, 'ap_display_question_metas' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_enqueue', [ $instance, 'ap_assets_js' ] ) );
+		$this->assertEquals( 10, has_filter( 'term_link', [ $instance, 'termLinkFilter' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_question_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
+		$this->assertEquals( 0, has_action( 'save_post_question', [ $instance, 'after_new_question' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_breadcrumbs', [ $instance, 'ap_breadcrumbs' ] ) );
+		$this->assertEquals( 10, has_action( 'terms_clauses', [ $instance, 'terms_clauses' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filters', [ $instance, 'ap_list_filters' ] ) );
+		$this->assertEquals( 10, has_action( 'question_category_add_form_fields', [ $instance, 'image_field_new' ] ) );
+		$this->assertEquals( 10, has_action( 'question_category_edit_form_fields', [ $instance, 'image_field_edit' ] ) );
+		$this->assertEquals( 10, has_action( 'create_question_category', [ $instance, 'save_image_field' ] ) );
+		$this->assertEquals( 10, has_action( 'edited_question_category', [ $instance, 'save_image_field' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_rewrites', [ $instance, 'rewrite_rules' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_main_questions_args', [ $instance, 'ap_main_questions_args' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_question_subscribers_action_id', [ $instance, 'subscribers_action_id' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_ask_btn_link', [ $instance, 'ap_ask_btn_link' ] ) );
+		$this->assertEquals( 10, has_filter( 'wp_head', [ $instance, 'category_feed' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_edit-question_category_columns', [ $instance, 'column_header' ] ) );
+		$this->assertEquals( 10, has_filter( 'manage_question_category_custom_column', [ $instance, 'column_content' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_current_page', [ $instance, 'ap_current_page' ] ) );
+		$this->assertEquals( 9999, has_action( 'posts_pre_query', [ $instance, 'modify_query_category_archive' ] ) );
+		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_category', [ $instance, 'load_filter_category' ] ) );
+		$this->assertEquals( 10, has_filter( 'ap_list_filter_active_category', [ $instance, 'filter_active_category' ] ) );
+		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget' ] ) );
 	}
 
 	public function testMethodExists() {
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', '__construct' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'category_page' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'categories_page' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'register_question_categories' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'load_options' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'register_general_settings_form' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'admin_enqueue_scripts' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_load_admin_assets' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'admin_category_menu' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_display_question_metas' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_assets_js' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'term_link_filter' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_question_form_fields' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'after_new_question' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_breadcrumbs' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'terms_clauses' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_list_filters' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'image_field_new' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'image_field_edit' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'save_image_field' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'rewrite_rules' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_main_questions_args' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'subscribers_action_id' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_ask_btn_link' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_canonical_url' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'category_feed' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'load_filter_category' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'filter_active_category' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'column_header' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'column_content' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'ap_current_page' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'modify_query_category_archive' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Categories', 'widget' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'categoryPage' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'categoriesPage' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'registerQuestionCategories' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'load_options' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'register_general_settings_form' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'admin_enqueue_scripts' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_load_admin_assets' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'admin_category_menu' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_display_question_metas' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_assets_js' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'termLinkFilter' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_question_form_fields' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'after_new_question' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_breadcrumbs' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'terms_clauses' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_list_filters' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'image_field_new' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'image_field_edit' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'save_image_field' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'rewrite_rules' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_main_questions_args' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'subscribers_action_id' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_ask_btn_link' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_canonical_url' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'category_feed' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'load_filter_category' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'filter_active_category' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'column_header' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'column_content' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'ap_current_page' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'modify_query_category_archive' ) );
+		$this->assertTrue( method_exists( 'AnsPress\Modules\Category\CategoryModule', 'widget' ) );
 	}
 
-	public function testInit() {
-		$instance1 = \Anspress\Addons\Categories::init();
-		$this->assertInstanceOf( 'Anspress\Addons\Categories', $instance1 );
-		$instance2 = \Anspress\Addons\Categories::init();
-		$this->assertSame( $instance1, $instance2 );
+	public function testCategoryPage() {
+		$this->assertEquals(
+			[
+				'title'        => 'Categories',
+				'show_in_menu' => true,
+				'private'      => false,
+				'func'         => [ Plugin::get(CategoryModule::class), 'categoriesPage' ]
+			],
+			anspress()->pages['categories']
+		);
 	}
 
-	public function test_register_category_page()
-	{
-		$this->assertEquals( 'Category', anspress()->pages['category']['title'] );
-		$this->assertEquals( [ \Anspress\Addons\Categories::init(), 'category_page' ], anspress()->pages['category']['func'] );
-		$this->assertEquals( false, anspress()->pages['category']['show_in_menu'] );
-		$this->assertEquals( false, anspress()->pages['category']['private'] );
+	public function testCategoriesPage() {
+		$this->assertEquals(
+			[
+				'title'        => 'Category',
+				'show_in_menu' => false,
+				'private'      => false,
+				'func'         => [ Plugin::get(CategoryModule::class), 'categoryPage' ]
+			],
+			anspress()->pages['category']
+		);
 	}
 
-	public function test_after_new_question()
-	{
-		$this->assertEquals( 0, has_action( 'save_post_question', [ \Anspress\Addons\Categories::init(), 'after_new_question' ] ) );
+	public function testTestRegisterCategoriesPage() {
+		$this->assertTrue(taxonomy_exists( 'question_category' ));
+
+		// Assert taxonomy labels.
+		$taxonomy = get_taxonomy( 'question_category' );
+		$this->assertEquals( 'Question Categories', $taxonomy->label );
+		$this->assertEquals( 'Question Categories', $taxonomy->labels->name );
+		$this->assertEquals( 'Category', $taxonomy->labels->singular_name );
+		$this->assertEquals( 'All Categories', $taxonomy->labels->all_items );
+		$this->assertEquals( 'Add New Category', $taxonomy->labels->add_new_item );
+		$this->assertEquals( 'Edit Category', $taxonomy->labels->edit_item );
+		$this->assertEquals( 'New Category', $taxonomy->labels->new_item );
+		$this->assertEquals( 'View Category', $taxonomy->labels->view_item );
+		$this->assertEquals( 'Search Category', $taxonomy->labels->search_items );
+		$this->assertEquals( 'Nothing Found', $taxonomy->labels->not_found );
+		$this->assertEquals( 'Nothing found in Trash', $taxonomy->labels->not_found_in_trash );
+		$this->assertEquals( '', $taxonomy->labels->parent_item_colon );
+
+		$this->assertEquals( 'question_category', $taxonomy->name );
+		$this->assertTrue( $taxonomy->hierarchical );
+		$this->assertTrue( $taxonomy->publicly_queryable );
+		$this->assertFalse( $taxonomy->rewrite );
+
 	}
 
 	public function test_ap_breadcrumbs_single_question()
@@ -85,10 +142,10 @@ class TestAddonCategories extends TestCase {
 			'post_title' => 'Question Title',
 		]);
 
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Call the method.
-		$instance->register_question_categories();
+		$instance->registerQuestionCategories();
 
 		$category = $this->factory()->term->create_and_get([
 			'taxonomy' => 'question_category',
@@ -126,10 +183,10 @@ class TestAddonCategories extends TestCase {
 			'post_title' => 'Question Title',
 		]);
 
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Call the method.
-		$instance->register_question_categories();
+		$instance->registerQuestionCategories();
 
 		$category = $this->factory()->term->create_and_get([
 			'taxonomy' => 'question_category',
@@ -161,55 +218,8 @@ class TestAddonCategories extends TestCase {
 		);
 	}
 
-	public function test_register_categories_page()
-	{
-		$this->assertEquals( 'Categories', anspress()->pages['categories']['title'] );
-		$this->assertEquals( [ \Anspress\Addons\Categories::init(), 'categories_page' ], anspress()->pages['categories']['func'] );
-		$this->assertEquals( true, anspress()->pages['categories']['show_in_menu'] );
-		$this->assertEquals( false, anspress()->pages['categories']['private'] );
-	}
-
-	public function testHooksFilters() {
-		$instance = \Anspress\Addons\Categories::init();
-
-		// Tests.
-		$this->assertEquals( 1, has_action( 'init', [ $instance, 'register_question_categories' ], 1 ) );
-		$this->assertEquals( 10, has_action( 'ap_settings_menu_features_groups', [ $instance, 'load_options' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_form_options_features_category', [ $instance, 'register_general_settings_form' ] ) );
-		$this->assertEquals( 10, has_action( 'admin_enqueue_scripts', [ $instance, 'admin_enqueue_scripts' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_load_admin_assets', [ $instance, 'ap_load_admin_assets' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_admin_menu', [ $instance, 'admin_category_menu' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_display_question_metas', [ $instance, 'ap_display_question_metas' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_enqueue', [ $instance, 'ap_assets_js' ] ) );
-		$this->assertEquals( 10, has_filter( 'term_link', [ $instance, 'term_link_filter' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_question_form_fields', [ $instance, 'ap_question_form_fields' ] ) );
-		$this->assertEquals( 0, has_action( 'save_post_question', [ $instance, 'after_new_question' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_breadcrumbs', [ $instance, 'ap_breadcrumbs' ] ) );
-		$this->assertEquals( 10, has_action( 'terms_clauses', [ $instance, 'terms_clauses' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_list_filters', [ $instance, 'ap_list_filters' ] ) );
-		$this->assertEquals( 10, has_action( 'question_category_add_form_fields', [ $instance, 'image_field_new' ] ) );
-		$this->assertEquals( 10, has_action( 'question_category_edit_form_fields', [ $instance, 'image_field_edit' ] ) );
-		$this->assertEquals( 10, has_action( 'create_question_category', [ $instance, 'save_image_field' ] ) );
-		$this->assertEquals( 10, has_action( 'edited_question_category', [ $instance, 'save_image_field' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_rewrites', [ $instance, 'rewrite_rules' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_main_questions_args', [ $instance, 'ap_main_questions_args' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_question_subscribers_action_id', [ $instance, 'subscribers_action_id' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_ask_btn_link', [ $instance, 'ap_ask_btn_link' ] ) );
-		$this->assertEquals( 10, has_filter( 'wp_head', [ $instance, 'category_feed' ] ) );
-		$this->assertEquals( 10, has_filter( 'manage_edit-question_category_columns', [ $instance, 'column_header' ] ) );
-		$this->assertEquals( 10, has_filter( 'manage_question_category_custom_column', [ $instance, 'column_content' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_current_page', [ $instance, 'ap_current_page' ] ) );
-		$this->assertEquals( 9999, has_action( 'posts_pre_query', [ $instance, 'modify_query_category_archive' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_category', [ $instance, 'load_filter_category' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_list_filter_active_category', [ $instance, 'filter_active_category' ] ) );
-		$this->assertEquals( 10, has_action( 'widgets_init', [ $instance, 'widget' ] ) );
-	}
-
-	/**
-	 * @covers Anspress\Addons\Categories::load_options
-	 */
 	public function testLoadOptions() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Call the method.
 		$groups = $instance->load_options( [] );
@@ -230,11 +240,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'Category', $groups['category']['label'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::register_general_settings_form
-	 */
 	public function testRegisterGeneralSettingsForm() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Add form_category_orderby, categories_page_order, categories_page_orderby, category_page_slug, categories_per_page and categories_image_height options.
 		ap_add_default_options(
@@ -364,89 +371,14 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( ap_opt( 'categories_image_height' ), $forms['fields']['categories_image_height']['value'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::register_question_categories
-	 */
-	public function testRegisterQuestionCategories() {
-		$instance = \Anspress\Addons\Categories::init();
-
-		// Call the method.
-		$instance->register_question_categories();
-
-		// Test begins.
-		$category_options = [
-			'form_category_orderby'   => 'count',
-			'categories_page_order'   => 'DESC',
-			'categories_page_orderby' => 'count',
-			'category_page_slug'      => 'category',
-			'categories_per_page'     => 20,
-			'categories_image_height' => 150,
-		];
-		foreach ( $category_options as $key => $value ) {
-			$this->assertEquals( $value, ap_opt( $key ) );
-		}
-
-		global $wp_taxonomies;
-		$question_category = $wp_taxonomies['question_category'];
-		$this->assertTrue( isset( $question_category ) );
-		$this->assertTrue( taxonomy_exists( 'question_category' ) );
-		$this->assertEquals( 'question_category', $question_category->name );
-		$this->assertEquals( 'Question Categories', $question_category->label );
-		$this->assertEquals( 'Question Categories', $question_category->labels->name );
-		$this->assertEquals( 'Category', $question_category->labels->singular_name );
-		$this->assertEquals( 'All Categories', $question_category->labels->all_items );
-		$this->assertEquals( 'Add New Category', $question_category->labels->add_new_item );
-		$this->assertEquals( 'Edit Category', $question_category->labels->edit_item );
-		$this->assertEquals( 'New Category', $question_category->labels->new_item );
-		$this->assertEquals( 'View Category', $question_category->labels->view_item );
-		$this->assertEquals( 'Search Category', $question_category->labels->search_items );
-		$this->assertEquals( 'Nothing Found', $question_category->labels->not_found );
-		$this->assertEquals( 'Nothing found in Trash', $question_category->labels->not_found_in_trash );
-		$this->assertEquals( '', $question_category->labels->parent_item_colon );
-		$this->assertEquals( 1, $question_category->hierarchical );
-		$this->assertEquals( 0, $question_category->rewrite );
-		$this->assertEquals( 1, $question_category->publicly_queryable );
-	}
-
-	public function testCategoryCategoriesPagesRegistered()	{
-		$instance = \Anspress\Addons\Categories::init();
-
-		// Test if the category page is registered.
-		$category_page = anspress()->pages['category'];
-		$this->assertIsArray( $category_page );
-		$this->assertEquals( 'Category', $category_page['title'] );
-		$this->assertEquals( [ $instance, 'category_page' ], $category_page['func'] );
-		$this->assertEquals( false, $category_page['show_in_menu'] );
-		$this->assertEquals( false, $category_page['private'] );
-
-		// Test if the categories page is registered.
-		$categories_page = anspress()->pages['categories'];
-		$this->assertIsArray( $categories_page );
-		$this->assertEquals( 'Categories', $categories_page['title'] );
-		$this->assertEquals( [ $instance, 'categories_page' ], $categories_page['func'] );
-		$this->assertEquals( true, $categories_page['show_in_menu'] );
-		$this->assertEquals( false, $categories_page['private'] );
-	}
-
-	/**
-	 * @covers Anspress\Addons\Categories::widget
-	 */
 	public function testWidget() {
-		$instance = \Anspress\Addons\Categories::init();
-
-		// Call the method.
+		$instance = new CategoryModule;
 		$instance->widget();
-
-		// Test begins.
-		$this->assertTrue( class_exists( 'Anspress\Widgets\Categories' ) );
-		$this->assertTrue( array_key_exists( 'Anspress\Widgets\Categories', $GLOBALS['wp_widget_factory']->widgets ) );
+		$this->assertTrue( array_key_exists( CategoryWidget::class, $GLOBALS['wp_widget_factory']->widgets ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::category_feed
-	 */
 	public function testCategoryFeed() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		// Test without viewing the category page.
@@ -472,15 +404,9 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( '<link href="' . esc_url( home_url( 'feed' ) ) . '?post_type=question&question_category=' . esc_attr( $term->slug ) . '" title="Question category feed" type="application/rss+xml" rel="alternate">', $result );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_ask_btn_link
-	 */
 	public function testAPAskBtnLink() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
-		// Test begins.
-		// Test without viewing the category page.
-		// Test 1.
 		$this->go_to( '/' );
 		$result = $instance->ap_ask_btn_link( '' );
 		$this->assertEmpty( $result );
@@ -506,11 +432,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'http://example.com?category=' . $term->term_id, $result );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::column_header
-	 */
 	public function testColumnHeader() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Call the method.
 		$columns = $instance->column_header( [] );
@@ -521,11 +444,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'Icon', $columns['icon'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::column_content
-	 */
 	public function testColumnContent() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		$category = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
@@ -560,11 +480,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( '<span class="ap-category-icon apicon-question"style=" background:#000000;"></span>', $result );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_current_page
-	 */
 	public function testAPCurrentPage() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test by visiting other page.
 		$this->go_to( '/' );
@@ -579,6 +496,7 @@ class TestAddonCategories extends TestCase {
 				'post_title'  => 'Categories',
 			)
 		);
+
 		ap_opt( 'categories_page', $categories_page );
 		// Test by just visiting the categories page.
 		$this->go_to( '/?post_type=page&p=' . $categories_page );
@@ -600,11 +518,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( 'category', $method );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_assets_js
-	 */
 	public function testAPAssetsJS() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Required for wp_script_is() to work as expected.
 		ob_start();
@@ -629,11 +544,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertTrue( wp_script_is( 'anspress-theme' ) );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::image_field_new
-	 */
 	public function testImageFieldNew() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		ob_start();
@@ -648,12 +560,11 @@ class TestAddonCategories extends TestCase {
 	}
 
 	/**
-	 * @covers Anspress\Addons\Categories::image_field_edit
+	 * @covers AnsPress\Modules\Category\CategoryModule::image_field_edit
 	 */
 	public function testImageFieldEdit() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
-		// Test begins.
 		// Test 1.
 		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		ob_start();
@@ -699,11 +610,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertStringContainsString( 'jQuery(\'#ap-category-color\').wpColorPicker();', $result );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::save_image_field
-	 */
 	public function testSaveImageField() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 
 		// Test begins.
@@ -764,11 +672,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEquals( '#000000', $term_meta['color'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::subscribers_action_id
-	 */
 	public function testSubscribersActionID() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		// Test 1.
@@ -801,10 +706,10 @@ class TestAddonCategories extends TestCase {
 	}
 
 	/**
-	 * @covers Anspress\Addons\Categories::ap_canonical_url
+	 * @covers AnsPress\Modules\Category\CategoryModule::ap_canonical_url
 	 */
 	public function testAPCanonicalUrl() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		// Test 1.
@@ -837,11 +742,8 @@ class TestAddonCategories extends TestCase {
 		$question_category = null;
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_load_admin_assets
-	 */
 	public function testAPLoadAdminAssets() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		// Test 1.
@@ -880,13 +782,10 @@ class TestAddonCategories extends TestCase {
 		$this->assertTrue( $result );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::admin_category_menu
-	 */
 	public function testAdminCategoryMenu() {
 		$this->setRole( 'administrator' );
 		global $submenu;
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		$instance->admin_category_menu();
@@ -899,37 +798,34 @@ class TestAddonCategories extends TestCase {
 		$this->logout();
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::term_link_filter
-	 */
 	public function testTermLinkFilter() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test begins.
 		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $term_id, 'question_category' );
 
 		// Test 1.
-		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_tag' );
+		$result = $instance->termLinkFilter( 'http://example.com/sample-page/', $term, 'question_tag' );
 		$this->assertEquals( 'http://example.com/sample-page/', $result );
 
 		// Test 2.
 		update_option( 'permalink_structure', '' );
-		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_category' );
+		$result = $instance->termLinkFilter( 'http://example.com/sample-page/', $term, 'question_category' );
 		$this->assertStringContainsString( 'ap_page=category', $result );
 		$this->assertStringContainsString( 'question_category=' . $term->slug, $result );
 		$this->assertEquals( home_url() . '?ap_page=category&question_category=' . $term->slug, $result );
 
 		// Test 3.
 		update_option( 'permalink_structure', '/%postname%/' );
-		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_category' );
+		$result = $instance->termLinkFilter( 'http://example.com/sample-page/', $term, 'question_category' );
 		$this->assertStringContainsString( 'categories', $result );
 		$this->assertStringContainsString( $term->slug, $result );
 		$this->assertEquals( home_url() . '/categories/' . $term->slug . '/', $result );
 
 		// Test 4.
 		update_option( 'ap_categories_path', 'tests' );
-		$result = $instance->term_link_filter( 'http://example.com/sample-page/', $term, 'question_category' );
+		$result = $instance->termLinkFilter( 'http://example.com/sample-page/', $term, 'question_category' );
 		$this->assertStringContainsString( 'tests', $result );
 		$this->assertStringContainsString( $term->slug, $result );
 		$this->assertEquals( home_url() . '/tests/' . $term->slug . '/', $result );
@@ -939,11 +835,8 @@ class TestAddonCategories extends TestCase {
 		update_option( 'permalink_structure', '' );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_question_form_fields
-	 */
 	public function testAPQuestionFormFields() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test with empty question categories.
 		$form = $instance->ap_question_form_fields( [] );
@@ -1004,12 +897,9 @@ class TestAddonCategories extends TestCase {
 		unset( $_REQUEST['id'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_list_filters
-	 */
 	public function testAPListFilters() {
 		global $wp;
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 		$category_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 		$term = get_term_by( 'id', $category_id, 'question_category' );
 
@@ -1052,11 +942,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertEqualSets( $filter_args, $result );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::save_image_field
-	 */
 	public function testSaveImageFieldForImageNotAsAnArray() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );
 
 		// Test.
@@ -1073,11 +960,8 @@ class TestAddonCategories extends TestCase {
 		$this->assertIsArray( $term_meta['image'] );
 	}
 
-	/**
-	 * @covers Anspress\Addons\Categories::ap_canonical_url
-	 */
 	public function testAPCanonicalUrlForNotSettingGlobalQuestionCategoryVariable() {
-		$instance = \Anspress\Addons\Categories::init();
+		$instance = new CategoryModule();
 
 		// Test.
 		$term_id = $this->factory()->term->create( [ 'taxonomy' => 'question_category' ] );

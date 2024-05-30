@@ -1,23 +1,18 @@
 <?php
 /**
- * AnsPress category widget.
+ * Add category widget.
  *
- * @package      AnsPress
- * @subpackage   Categories Addon
- * @author       Rahul Aryan <rah12@live.com>
- * @license      GPL-3.0+
- * @link         https://anspress.net
- * @copyright    2014 Rahul Aryan
+ * @package AnsPress
  */
 
-namespace Anspress\Widgets;
+namespace AnsPress\Modules\Category;
 
 /**
  * Register AnsPress category widget.
  *
- * @since 4.1.8
+ * @since 5.0.0
  */
-class Categories extends \WP_Widget {
+class CategoryWidget extends \WP_Widget {
 	/**
 	 * Construct
 	 */

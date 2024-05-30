@@ -26,6 +26,7 @@
  */
 
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Router;
 use AnsPress\Modules\Config\ConfigService;
 
 // If this file is called directly, abort.
@@ -491,14 +492,20 @@ do_action( 'anspress/pre_load' );
 add_action(
 	'plugins_loaded',
 	function () {
-		Plugin::make(
+		$container = new AnsPress\Classes\Container();
+
+		$instnace = Plugin::make(
 			ANSPRESS_PLUGIN_FILE,
 			ANSPRESS_PLUGIN_VERSION,
 			ANSPRESS_DB_VERSION,
 			'8.1',
 			'6.5',
-			new AnsPress\Classes\Container()
+			$container
 		);
+
+		$instnace->registerModules();
+
+		( new Router( $container ) )->register();
 	}
 );
 

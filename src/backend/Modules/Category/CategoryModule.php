@@ -1,52 +1,32 @@
 <?php
 /**
- * Add category support in AnsPress questions.
+ * The Category module.
  *
- * @author     Rahul Aryan <rah12@live.com>
- * @copyright  2014 anspress.net & Rahul Aryan
- * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link       https://anspress.net
- * @package    AnsPress
- * @subpackage Categories Addon
- * @since      4.1.8
- * @since      4.2.1 Moved addon settings to settings page.
+ * @package AnsPress
+ * @since 5.0.0
  */
 
-namespace AnsPress\Addons;
+namespace AnsPress\Modules\Category;
 
-use WP_Post;
+use AnsPress\Classes\AbstractModule;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	// @codeCoverageIgnoreStart
-	die;
-	// @codeCoverageIgnoreEnd
-}
 
 /**
- * Categories addon class.
+ * Category module class.
+ *
+ * @since 5.0.0
  */
-class Categories extends \AnsPress\Singleton {
-
+class CategoryModule extends AbstractModule {
 	/**
-	 * Refers to a single instance of this class.
+	 * Register hooks.
 	 *
-	 * @var null|object
-	 * @since 4.1.8
+	 * @return void
 	 */
-	public static $instance = null;
+	public function register_hooks() {
+		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( $this, 'categoryPage' ), false );
+		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categoriesPage' ) );
 
-	/**
-	 * Initialize the class.
-	 *
-	 * @since 4.0.0
-	 * @since 4.2.1 Replaced action `ap_form_addon-categories` by `ap_all_options`.
-	 */
-	protected function __construct() {
-		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( $this, 'category_page' ), false );
-		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categories_page' ) );
-
-		add_action( 'init', array( $this, 'register_question_categories' ), 1 );
+		add_action( 'init', array( $this, 'registerQuestionCategories' ), 1 );
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'load_options' ) );
 		add_filter( 'ap_form_options_features_category', array( $this, 'register_general_settings_form' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -54,7 +34,7 @@ class Categories extends \AnsPress\Singleton {
 		add_action( 'ap_admin_menu', array( $this, 'admin_category_menu' ) );
 		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
 		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
-		add_filter( 'term_link', array( $this, 'term_link_filter' ), 10, 3 );
+		add_filter( 'term_link', array( $this, 'termLinkFilter' ), 10, 3 );
 		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ) );
 		add_action( 'save_post_question', array( $this, 'after_new_question' ), 0, 2 );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
@@ -84,10 +64,9 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Category page layout.
 	 *
-	 * @since 4.1.0 Use `get_queried_object()` to get current term.
-	 * @since 4.1.8 Added new filter `ap_category_questions_args`.
+	 * @since 5.0.0
 	 */
-	public function category_page() {
+	public function categoryPage() {
 		$question_args = array(
 			'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				array(
@@ -127,7 +106,7 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Categories page layout
 	 */
-	public function categories_page() {
+	public function categoriesPage() {
 		global $question_categories, $ap_max_num_pages, $ap_per_page;
 
 		$paged            = max( 1, get_query_var( 'paged' ) );
@@ -172,7 +151,7 @@ class Categories extends \AnsPress\Singleton {
 	 * @return void
 	 * @since 2.0
 	 */
-	public function register_question_categories() {
+	public function registerQuestionCategories() {
 		ap_add_default_options(
 			array(
 				'form_category_orderby'   => 'count',
@@ -390,7 +369,7 @@ class Categories extends \AnsPress\Singleton {
 	 * @param  string $taxonomy Current taxonomy slug.
 	 * @return string
 	 */
-	public function term_link_filter( $url, $term, $taxonomy ) {
+	public function termLinkFilter( $url, $term, $taxonomy ) {
 		if ( 'question_category' === $taxonomy ) {
 			if ( get_option( 'permalink_structure' ) !== '' ) {
 				$opt          = get_option( 'ap_categories_path', 'categories' );
@@ -992,13 +971,9 @@ class Categories extends \AnsPress\Singleton {
 	/**
 	 * Include required files.
 	 *
-	 * @since 4.1.8
+	 * @since 5.0.0
 	 */
 	public function widget() {
-		require_once ANSPRESS_ADDONS_DIR . '/categories/widget.php';
-		register_widget( 'Anspress\Widgets\Categories' );
+		register_widget( CategoryWidget::class );
 	}
 }
-
-// Init addon.
-Categories::init();

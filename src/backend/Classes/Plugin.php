@@ -41,6 +41,7 @@ class Plugin {
 	 */
 	private array $modules = array(
 		\AnsPress\Modules\Core\CoreModule::class,
+		\AnsPress\Modules\Category\CategoryModule::class,
 	);
 
 	/**
@@ -165,8 +166,6 @@ class Plugin {
 
 		self::$instance = $instance;
 
-		$instance->registerModules();
-
 		return self::$instance;
 	}
 
@@ -174,8 +173,15 @@ class Plugin {
 	 * Register modules.
 	 *
 	 * @return void
+	 * @throws GeneralException If modules already registered.
 	 */
-	private function registerModules(): void {
+	public function registerModules(): void {
+		static $registered = false;
+
+		if ( $registered ) {
+			throw new GeneralException( 'Modules already registered.' );
+		}
+
 		foreach ( $this->modules as $module ) {
 			$this->container->set(
 				$module,
