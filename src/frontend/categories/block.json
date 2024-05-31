@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress-question-answer/categories",
+  "version": "0.1.0",
+  "title": "(AnsPress) Question Categories",
+  "category": "widgets",
+  "icon": "list-view",
+  "description": "A block to display AnsPress question categories.",
+  "attributes": {
+    "itemsPerPage": {
+      "type": "number",
+      "default": 10
+    },
+    "showPagination": {
+      "type": "boolean",
+      "default": false
+    },
+    "showCount": {
+      "type": "boolean",
+      "default": false
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "descriptionLength": {
+      "type": "number",
+      "default": 20
+    },
+    "columns": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "example": {
+    "attributes": {
+      "itemsPerPage": 5,
+      "showPagination": false,
+      "columns": 3,
+      "showDescription": true,
+      "showCount": true,
+      "descriptionLength": 20
+    }
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

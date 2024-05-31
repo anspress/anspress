@@ -9,7 +9,7 @@
 namespace AnsPress\Modules\Category;
 
 use AnsPress\Classes\AbstractModule;
-
+use AnsPress\Classes\Plugin;
 
 /**
  * Category module class.
@@ -27,6 +27,8 @@ class CategoryModule extends AbstractModule {
 		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categoriesPage' ) );
 
 		add_action( 'init', array( $this, 'registerQuestionCategories' ), 1 );
+		add_action( 'init', array( $this, 'registerBlocks' ) );
+
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'load_options' ) );
 		add_filter( 'ap_form_options_features_category', array( $this, 'register_general_settings_form' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -52,7 +54,7 @@ class CategoryModule extends AbstractModule {
 		add_filter( 'manage_edit-question_category_columns', array( $this, 'column_header' ) );
 		add_filter( 'manage_question_category_custom_column', array( $this, 'column_content' ), 10, 3 );
 		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
-		add_action( 'posts_pre_query', array( $this, 'modify_query_category_archive' ), 9999, 2 );
+		add_action( 'posts_pre_query', array( $this, 'modifyQueryCategoryArchive' ), 9999, 2 );
 
 		// List filtering.
 		add_action( 'ap_ajax_load_filter_category', array( $this, 'load_filter_category' ) );
@@ -199,6 +201,7 @@ class CategoryModule extends AbstractModule {
 			'labels'             => $categories_labels,
 			'rewrite'            => false,
 			'publicly_queryable' => true,
+			'show_in_rest'       => true,
 		);
 
 		/**
@@ -212,6 +215,15 @@ class CategoryModule extends AbstractModule {
 		 * Now let WordPress know about our taxonomy
 		 */
 		register_taxonomy( 'question_category', array( 'question' ), $category_args );
+	}
+
+	/**
+	 * Register blocks.
+	 *
+	 * @return void
+	 */
+	public function registerBlocks() {
+		register_block_type( Plugin::getPathTo( 'build/frontend/categories' ) );
 	}
 
 	/**
@@ -951,7 +963,7 @@ class CategoryModule extends AbstractModule {
 	 * @return void|array
 	 * @since 4.1.0
 	 */
-	public function modify_query_category_archive( $posts, $query ) {
+	public function modifyQueryCategoryArchive( $posts, $query ) {
 		if ( $query->is_main_query() && $query->is_tax( 'question_category' ) && 'category' === get_query_var( 'ap_page' ) ) {
 			$query->found_posts   = 1;
 			$query->max_num_pages = 1;

@@ -14,6 +14,7 @@ services:
       WORDPRESS_DEBUG: true
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_DEBUG_LOG', true);
+        define('SCRIPT_DEBUG', true);
     links:
       - db
     volumes:

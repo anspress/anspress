@@ -28,7 +28,8 @@ class CoreModule extends AbstractModule {
 	 * @return void
 	 */
 	public function register_hooks() {
-		add_action( 'plugins_loaded', array( $this, 'loadTextdomain' ) );
+		$this->loadTextdomain();
+
 		add_action( 'wpmu_new_blog', array( $this, 'createBlogTables' ), 10, 6 );
 		add_filter( 'wpmu_drop_tables', array( $this, 'dropBlogTables' ), 10, 2 );
 	}

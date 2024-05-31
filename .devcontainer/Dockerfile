@@ -13,7 +13,7 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - ; \
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - ; \
 	apt-get install -y nodejs; \
 	rm -rf /var/lib/apt/lists/*;
 
