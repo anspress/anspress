@@ -86,27 +86,29 @@ const Edit = ({ attributes, setAttributes }) => {
 
       <CategoryList hasResolved={hasResolved} terms={terms} columns={columns} showCount={showCount} showDescription={showDescription} descriptionLength={descriptionLength} showImage={showImage} />
 
-      <div className='wp-block-anspress-question-answer-categories-p'>
-        <nav aria-label="Pagination">
-          <div className="wp-block-anspress-question-answer-categories-p-ul">
-            <div className="wp-block-anspress-question-answer-categories-p-item">
-              <a className="wp-block-anspress-question-answer-categories-p-link" href="#">Previous</a>
+      {showPagination && (
+        <div className='wp-block-anspress-question-answer-categories-p'>
+          <nav aria-label="Pagination">
+            <div className="wp-block-anspress-question-answer-categories-p-ul">
+              <div className="wp-block-anspress-question-answer-categories-p-item">
+                <a className="wp-block-anspress-question-answer-categories-p-link" href="#">Previous</a>
+              </div>
+              <div className="wp-block-anspress-question-answer-categories-p-item">
+                <a className="wp-block-anspress-question-answer-categories-p-link" href="#">1</a>
+              </div>
+              <div className="wp-block-anspress-question-answer-categories-p-item">
+                <a className="wp-block-anspress-question-answer-categories-p-link" href="#">2</a>
+              </div>
+              <div className="wp-block-anspress-question-answer-categories-p-item">
+                <a className="wp-block-anspress-question-answer-categories-p-link" href="#">3</a>
+              </div>
+              <div className="wp-block-anspress-question-answer-categories-p-item">
+                <a className="wp-block-anspress-question-answer-categories-p-link" href="#">Next</a>
+              </div>
             </div>
-            <div className="wp-block-anspress-question-answer-categories-p-item">
-              <a className="wp-block-anspress-question-answer-categories-p-link" href="#">1</a>
-            </div>
-            <div className="wp-block-anspress-question-answer-categories-p-item">
-              <a className="wp-block-anspress-question-answer-categories-p-link" href="#">2</a>
-            </div>
-            <div className="wp-block-anspress-question-answer-categories-p-item">
-              <a className="wp-block-anspress-question-answer-categories-p-link" href="#">3</a>
-            </div>
-            <div className="wp-block-anspress-question-answer-categories-p-item">
-              <a className="wp-block-anspress-question-answer-categories-p-link" href="#">Next</a>
-            </div>
-          </div>
-        </nav>
-      </div>
+          </nav>
+        </div>
+      )}
     </div>
   );
 };

@@ -81,84 +81,88 @@ if ( $attributes['columns'] > 1 ) {
 		<?php } ?>
 	</div>
 
-	<div class='wp-block-anspress-categories-p'>
-		<nav aria-label="Pagination">
-			<div class="wp-block-anspress-question-answer-categories-p-ul">
-				<?php
-				$totalPages = ceil( $count / $attributes['itemsPerPage'] );
-				$prevPage   = $currentPage - 1;
-				$nextPage   = $currentPage + 1;
-				$range      = 3; // Number of pages to show around the current page.
-				?>
-				<div class="wp-block-anspress-question-answer-categories-p-item">
-					<?php if ( $currentPage > 1 ) { ?>
-						<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', $prevPage ) ); ?>">
-							<?php echo esc_html__( 'Previous', 'anspress-question-answer' ); ?>
-						</a>
-					<?php } ?>
-				</div>
+	<?php if ( $attributes['showPagination'] ) : ?>
 
-				<?php
-
-				if ( $totalPages > 1 ) {
-					// Display first page link.
-					if ( $currentPage > $range + 1 ) {
-						?>
-						<div class="wp-block-anspress-question-answer-categories-p-item">
-							<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', 1 ) ); ?>">
-								<?php echo esc_attr( number_format_i18n( 1 ) ); ?>
+		<div class='wp-block-anspress-categories-p'>
+			<nav aria-label="Pagination">
+				<div class="wp-block-anspress-question-answer-categories-p-ul">
+					<?php
+					$totalPages = ceil( $count / $attributes['itemsPerPage'] );
+					$prevPage   = $currentPage - 1;
+					$nextPage   = $currentPage + 1;
+					$range      = 3; // Number of pages to show around the current page.
+					?>
+					<div class="wp-block-anspress-question-answer-categories-p-item">
+						<?php if ( $currentPage > 1 ) { ?>
+							<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', $prevPage ) ); ?>">
+								<?php echo esc_html__( 'Previous', 'anspress-question-answer' ); ?>
 							</a>
-						</div>
-						<?php if ( $currentPage > $range + 2 ) { ?>
-							<div class="wp-block-anspress-question-answer-categories-p-item">
-								<span>...</span>
-							</div>
 						<?php } ?>
-						<?php
-					}
+					</div>
 
-					// Display pages around the current page.
-					$minValue = max( 1, $currentPage - $range );
-					$maxValue = min( $totalPages, $currentPage + $range );
+					<?php
 
-					for ( $i = $minValue; $i <= $maxValue; $i++ ) {
-						?>
-						<div class="wp-block-anspress-question-answer-categories-p-item">
-							<a class="wp-block-anspress-question-answer-categories-p-link <?php echo $currentPage === $i ? 'active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'ap_page', $i ) ); ?>">
-								<?php echo esc_attr( number_format_i18n( $i ) ); ?>
-							</a>
-						</div>
-						<?php
-					}
-
-					// Display last page link.
-					if ( $currentPage < $totalPages - $range ) {
-						if ( $currentPage < $totalPages - $range - 1 ) {
+					if ( $totalPages > 1 ) {
+						// Display first page link.
+						if ( $currentPage > $range + 1 ) {
 							?>
 							<div class="wp-block-anspress-question-answer-categories-p-item">
-								<span>...</span>
+								<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', 1 ) ); ?>">
+									<?php echo esc_attr( number_format_i18n( 1 ) ); ?>
+								</a>
 							</div>
-						<?php } ?>
-						<div class="wp-block-anspress-question-answer-categories-p-item">
-							<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', $totalPages ) ); ?>">
-								<?php echo esc_attr( number_format_i18n( $totalPages ) ); ?>
-							</a>
-						</div>
-						<?php
-					}
-				}
-				?>
+							<?php if ( $currentPage > $range + 2 ) { ?>
+								<div class="wp-block-anspress-question-answer-categories-p-item">
+									<span>...</span>
+								</div>
+							<?php } ?>
+							<?php
+						}
 
-				<div class="wp-block-anspress-question-answer-categories-p-item">
-					<?php if ( $currentPage < $totalPages ) { ?>
-						<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', $nextPage ) ); ?>">
-							<?php echo esc_html__( 'Next', 'anspress-question-answer' ); ?>
-						</a>
-					<?php } ?>
+						// Display pages around the current page.
+						$minValue = max( 1, $currentPage - $range );
+						$maxValue = min( $totalPages, $currentPage + $range );
+
+						for ( $i = $minValue; $i <= $maxValue; $i++ ) {
+							?>
+							<div class="wp-block-anspress-question-answer-categories-p-item">
+								<a class="wp-block-anspress-question-answer-categories-p-link <?php echo $currentPage === $i ? 'active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'ap_page', $i ) ); ?>">
+									<?php echo esc_attr( number_format_i18n( $i ) ); ?>
+								</a>
+							</div>
+							<?php
+						}
+
+						// Display last page link.
+						if ( $currentPage < $totalPages - $range ) {
+							if ( $currentPage < $totalPages - $range - 1 ) {
+								?>
+								<div class="wp-block-anspress-question-answer-categories-p-item">
+									<span>...</span>
+								</div>
+							<?php } ?>
+							<div class="wp-block-anspress-question-answer-categories-p-item">
+								<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', $totalPages ) ); ?>">
+									<?php echo esc_attr( number_format_i18n( $totalPages ) ); ?>
+								</a>
+							</div>
+							<?php
+						}
+					}
+					?>
+
+					<div class="wp-block-anspress-question-answer-categories-p-item">
+						<?php if ( $currentPage < $totalPages ) { ?>
+							<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_page', $nextPage ) ); ?>">
+								<?php echo esc_html__( 'Next', 'anspress-question-answer' ); ?>
+							</a>
+						<?php } ?>
+					</div>
 				</div>
-			</div>
-		</nav>
-	</div>
+			</nav>
+		</div>
+
+	<?php endif; ?>
 
 	<?php
 } else {
