@@ -60,8 +60,6 @@ class CategoryModule extends AbstractModule {
 		// List filtering.
 		add_action( 'ap_ajax_load_filter_category', array( $this, 'load_filter_category' ) );
 		add_filter( 'ap_list_filter_active_category', array( $this, 'filter_active_category' ), 10, 2 );
-
-		add_action( 'widgets_init', array( $this, 'widget' ) );
 	}
 
 	/**
@@ -922,14 +920,5 @@ class CategoryModule extends AbstractModule {
 		}
 
 		return $posts;
-	}
-
-	/**
-	 * Include required files.
-	 *
-	 * @since 5.0.0
-	 */
-	public function widget() {
-		register_widget( CategoryWidget::class );
 	}
 }

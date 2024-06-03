@@ -1,0 +1,36 @@
+.wp-block-anspress-pagination {
+	&-ul {
+		display: flex;
+		list-style: none;
+		padding: 0;
+		margin: 1em 0;
+	}
+
+	&-item {
+		margin: 0 0.5em;
+	}
+
+	&-link {
+		align-items: center;
+		background: none;
+		border-radius: 2px;
+		box-sizing: border-box;
+		color: var(--wp-components-color-foreground, #1e1e1e);
+		cursor: pointer;
+		display: inline-flex;
+		font-family: inherit;
+		font-size: 13px;
+		font-weight: 400;
+		height: 36px;
+		margin: 0;
+		padding: 6px 12px;
+		text-decoration: none;
+		transition: box-shadow .1s linear;
+		border: solid 1px;
+	}
+
+	&-link:hover {
+		background-color: #0073aa;
+		color: #ffffff;
+	}
+}

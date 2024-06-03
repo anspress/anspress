@@ -1,0 +1,17 @@
+{
+  "apiVersion": 3,
+  "name": "anspress/pagination",
+  "title": "Pagination Block",
+  "category": "anspress",
+  "icon": "list-view",
+  "description": "A block for pagination.",
+  "supports": {
+    "html": false,
+    "align": true,
+    "ariaLabel": true
+  },
+  "attributes": {},
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

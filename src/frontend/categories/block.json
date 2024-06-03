@@ -4,7 +4,7 @@
   "name": "anspress-question-answer/categories",
   "version": "0.1.0",
   "title": "(AnsPress) Question Categories",
-  "category": "widgets",
+  "category": "anspress",
   "icon": "list-view",
   "description": "A block to display AnsPress question categories.",
   "attributes": {

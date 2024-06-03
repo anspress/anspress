@@ -27,7 +27,7 @@ function CategoryList({ hasResolved, terms, columns, showDescription, descriptio
 
             <div className='wp-block-anspress-question-answer-categories-chead'>
               <div className='wp-block-anspress-question-answer-categories-cicon'></div>
-              <a class='wp-block-anspress-question-answer-categories-ctitle' href={term.link}>{term.name}</a>
+              <a className='wp-block-anspress-question-answer-categories-ctitle' href={term.link}>{term.name}</a>
               {showCount && <div>Questions: {term.count}</div>}
             </div>
             {showDescription && term.description && (
