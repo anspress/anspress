@@ -1,7 +1,7 @@
 import { Spinner } from '@wordpress/components';
 import PropTypes from 'prop-types';
 
-function CategoryList({ hasResolved, terms, columns, showDescription, descriptionCount, showCount }) {
+function CategoryList({ hasResolved, terms, columns, showDescription, descriptionCount, showCount, showImage }) {
   if (!hasResolved) {
     return <Spinner />;
   }
@@ -14,16 +14,30 @@ function CategoryList({ hasResolved, terms, columns, showDescription, descriptio
 
     return (
       <div className='wp-block-anspress-question-answer-categories-ccon' style={columnStyle}>
-        {terms.map((term) => (
-          <div key={term.id}>
-            <div className='wp-block-anspress-question-answer-categories-ctitle'>{term.name}</div>
+        {terms.map((term) => {
+
+          const bgColorStyle = {
+            backgroundColor: term.meta?.ap_category?.color || '#eee',
+            backgroundImage: term.meta?.ap_category?.image?.url ? `url(${term.meta.ap_category.image.url})` : 'none',
+          }
+
+          return <div key={term.id} className='wp-block-anspress-question-answer-categories-citem'>
+            {showImage && <div className='wp-block-anspress-question-answer-categories-cimage' style={bgColorStyle}>
+            </div>}
+
+            <div className='wp-block-anspress-question-answer-categories-chead'>
+              <div className='wp-block-anspress-question-answer-categories-cicon'></div>
+              <a class='wp-block-anspress-question-answer-categories-ctitle' href={term.link}>{term.name}</a>
+              {showCount && <div>Questions: {term.count}</div>}
+            </div>
             {showDescription && term.description && (
               <p className='wp-block-anspress-question-answer-categories-cdesc'>{term.description.substring(0, descriptionCount)}...</p>
             )}
-            {showCount && <p>Questions: {term.count}</p>}
+
           </div>
-        ))}
-      </div>
+        })
+        }
+      </div >
     );
   }
 
@@ -37,6 +51,7 @@ CategoryList.propTypes = {
   showDescription: PropTypes.bool,
   descriptionCount: PropTypes.number,
   showCount: PropTypes.bool,
+  showImage: PropTypes.bool
 };
 
 export default CategoryList;

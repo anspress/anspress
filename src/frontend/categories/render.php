@@ -21,19 +21,35 @@ if ( $attributes['columns'] > 1 ) {
 	$columnStyle = 'display: grid; grid-template-columns: repeat(' . esc_attr( $attributes['columns'] ) . ', 1fr);';
 }
 ?>
-<div>
+<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 <?php if ( ! empty( $terms ) && ! is_wp_error( $terms ) && ! empty( $terms ) ) { ?>
-	<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> className='wp-block-anspress-question-answer-categories-ccon' style="<?php echo esc_attr( $columnStyle ); ?>">
+	<div class='wp-block-anspress-question-answer-categories-ccon' style="<?php echo esc_attr( $columnStyle ); ?>">
 	<?php foreach ( $terms as $t ) { ?>
-		<div>
-			<div class='wp-block-anspress-question-answer-categories-ctitle'><?php echo esc_html( $t->name ); ?></div>
-			<?php if ( $attributes['showDescription'] ) { ?>
-				<p class='wp-block-anspress-question-answer-categories-cdesc'>
-					<?php echo esc_html( wp_trim_words( $t->description, $attributes['descriptionLength'] ) ); ?>
-				</p>
+		<?php
+		$apCategoryMeta = get_term_meta( $t->term_id, 'ap_category', true );
+
+		$style = '';
+
+		if ( ! empty( $apCategoryMeta['image'] ) && ! empty( $apCategoryMeta['image']['url'] ) ) {
+			$style = 'background-image: url(' . esc_url( $apCategoryMeta['image']['url'] ) . ');';
+		}
+
+		if ( ! empty( $apCategoryMeta['color'] ) ) {
+			$style .= 'background-color: ' . esc_attr( $apCategoryMeta['color'] ) . ';';
+		}
+		?>
+		<div class="wp-block-anspress-question-answer-categories-citem">
+			<?php if ( ! empty( $attributes['showImage'] ) ) { ?>
+				<div class='wp-block-anspress-question-answer-categories-cimage' style="<?php echo esc_attr( $style ); ?>">
+				</div>
 			<?php } ?>
+
+			<a class='wp-block-anspress-question-answer-categories-ctitle' href="<?php echo esc_url( get_term_link( $t->term_id, 'question_category' ) ); ?>">
+				<?php echo esc_html( $t->name ); ?>
+			</a>
+
 			<?php if ( $attributes['showCount'] ) { ?>
-				<p>
+				<div class="wp-block-anspress-question-answer-categories-ccount">
 					<?php
 					printf(
 						/* translators: %d: number of questions */
@@ -41,8 +57,15 @@ if ( $attributes['columns'] > 1 ) {
 						(int) $t->count
 					);
 					?>
-				</p>
+				</div>
 			<?php } ?>
+
+			<?php if ( $attributes['showDescription'] ) { ?>
+				<div class='wp-block-anspress-question-answer-categories-cdesc'>
+					<?php echo esc_html( wp_trim_words( $t->description, $attributes['descriptionLength'] ) ); ?>
+				</div>
+			<?php } ?>
+
 		</div>
 	<?php } ?>
 	</div>

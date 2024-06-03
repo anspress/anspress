@@ -6,7 +6,9 @@
  */
 
 .wp-block-anspress-question-answer-categories {
+
 	&-ccon {
+
 		display: grid;
 		grid-auto-rows: auto;
 		gap: 20px;
@@ -14,9 +16,19 @@
 
 	&-ctitle {
 		font-weight: bold;
+		margin-bottom: 0;
 	}
 
 	&-cdesc {
 		font-size: 90%;
+	}
+
+	&-cimage {
+		background: #eee;
+		height: 120px;
+		margin-bottom: 10px;
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
 	}
 }

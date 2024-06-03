@@ -31,6 +31,10 @@
     "columns": {
       "type": "number",
       "default": 1
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
     }
   },
   "example": {
@@ -40,7 +44,8 @@
       "columns": 3,
       "showDescription": true,
       "showCount": true,
-      "descriptionLength": 20
+      "descriptionLength": 20,
+      "showImage": true
     }
   },
   "editorScript": "file:./index.js",

@@ -17,23 +17,24 @@
         "sass": "^1.77.0"
     },
     "dependencies": {
+        "@playwright/test": "^1.40.0",
+        "@wordpress/base-styles": "^4.37.0",
         "@wordpress/block-editor": "^12.14.0",
         "@wordpress/blocks": "^12.23.0",
+        "@wordpress/browserslist-config": "^5.29.0",
         "@wordpress/components": "^25.12.0",
+        "@wordpress/core-data": "^7.0.0",
         "@wordpress/data": "^9.16.0",
+        "@wordpress/e2e-test-utils-playwright": "^0.14.0",
         "@wordpress/element": "^5.23.0",
+        "@wordpress/eslint-plugin": "^17.3.0",
         "@wordpress/hooks": "^3.46.0",
         "@wordpress/i18n": "^4.46.0",
         "bootstrap": "^5.3.2",
-        "sass": "^1.69.5",
-        "@playwright/test": "^1.40.0",
-        "@wordpress/base-styles": "^4.37.0",
-        "@wordpress/browserslist-config": "^5.29.0",
-        "@wordpress/e2e-test-utils-playwright": "^0.14.0",
-        "@wordpress/eslint-plugin": "^17.3.0",
         "eslint-plugin-prettier": "^5.0.1",
         "lodash": "^4.17.21",
-        "prettier": "npm:wp-prettier@3.0.3"
+        "prettier": "npm:wp-prettier@3.0.3",
+        "sass": "^1.69.5"
     },
     "scripts": {
         "test": "php ./vendor/bin/phpunit",

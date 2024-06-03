@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import CategoryList from './CategoryList';
 
 const Edit = ({ attributes, setAttributes }) => {
-  const { itemsPerPage, showPagination, showCount, showDescription, descriptionLength, columns } = attributes;
+  const { itemsPerPage, showPagination, showCount, showDescription, descriptionLength, columns, showIcon, showImage } = attributes;
 
   const { terms, hasResolved } = useSelect(
     (select) => {
@@ -37,6 +37,13 @@ const Edit = ({ attributes, setAttributes }) => {
             onChange={(value) => setAttributes({ itemsPerPage: value })}
             min={1}
             max={30}
+          />
+
+          <ToggleControl
+            label="Show image"
+            checked={showImage}
+            onChange={(value) => setAttributes({ showImage: value })}
+            help="Show the image of the category"
           />
 
           <ToggleControl
@@ -77,7 +84,7 @@ const Edit = ({ attributes, setAttributes }) => {
         </PanelBody>
       </InspectorControls>
 
-      <CategoryList hasResolved={hasResolved} terms={terms} columns={columns} showCount={showCount} showDescription={showDescription} descriptionLength={descriptionLength} />
+      <CategoryList hasResolved={hasResolved} terms={terms} columns={columns} showCount={showCount} showDescription={showDescription} descriptionLength={descriptionLength} showImage={showImage} />
     </div>
   );
 };

@@ -28,6 +28,7 @@ class CategoryModule extends AbstractModule {
 
 		add_action( 'init', array( $this, 'registerQuestionCategories' ), 1 );
 		add_action( 'init', array( $this, 'registerBlocks' ) );
+		add_action( 'rest_api_init', array( $this, 'registerCustomTermMeta' ) );
 
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'load_options' ) );
 		add_filter( 'ap_form_options_features_category', array( $this, 'register_general_settings_form' ) );
@@ -224,6 +225,40 @@ class CategoryModule extends AbstractModule {
 	 */
 	public function registerBlocks() {
 		register_block_type( Plugin::getPathTo( 'build/frontend/categories' ) );
+	}
+
+	/**
+	 * Register custom term meta.
+	 *
+	 * @return void
+	 */
+	public function registerCustomTermMeta() {
+		register_term_meta(
+			'question_category',
+			'ap_category',
+			array(
+				'single'       => true,
+				'type'         => 'object',
+				'show_in_rest' => array(
+					'default'          => null,
+					'prepare_callback' => null,
+					'schema'           => array(
+						'type'       => 'object',
+						'properties' => array(
+							'image' => array(
+								'type'       => 'object',
+								'properties' => array(
+									'id'  => array( 'type' => 'integer' ),
+									'url' => array( 'type' => 'string' ),
+								),
+							),
+							'color' => array( 'type' => 'string' ),
+						),
+						'context'    => array( 'view', 'edit' ),
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -559,39 +594,6 @@ class CategoryModule extends AbstractModule {
 
 			<p class="description"><?php esc_attr_e( 'Category image', 'anspress-question-answer' ); ?></p>
 		</div>
-
-		<div class='form-field term-image-wrap'>
-			<label for='ap_icon'><?php esc_attr_e( 'Category icon class', 'anspress-question-answer' ); ?></label>
-			<input id="ap_icon" type="text" name="ap_icon" value="">
-			<p class="description">
-				<?php
-				echo wp_kses(
-					sprintf(
-						/* translators: %s Link to font icon class. */
-						__( 'Font icon class, if image not set. Find our official list of icons from <a href="%s" target="_blank">here</a>.', 'anspress-question-answer' ),
-						esc_url( 'https://htmlpreview.github.io/?https://github.com/anspress/anspress/blob/3.0.7/theme/default/fonts/demo.html' )
-					),
-					array(
-						'a' => array(
-							'href'   => array(),
-							'target' => array(),
-						),
-					)
-				);
-				?>
-			</p>
-		</div>
-
-		<div class='form-field term-image-wrap'>
-			<label for='ap-category-color'><?php esc_attr_e( 'Icon background color', 'anspress-question-answer' ); ?></label>
-			<input id="ap-category-color" type="text" name="ap_color" value="">
-			<p class="description"><?php esc_attr_e( 'Set background color to be used with icon', 'anspress-question-answer' ); ?></p>
-			<script type="text/javascript">
-				jQuery(document).ready(function(){
-					jQuery('#ap-category-color').wpColorPicker();
-				});
-			</script>
-		</div>
 		<?php
 	}
 
@@ -609,7 +611,6 @@ class CategoryModule extends AbstractModule {
 					'id'  => '',
 					'url' => '',
 				),
-				'icon'  => '',
 				'color' => '',
 			)
 		);
@@ -639,36 +640,11 @@ class CategoryModule extends AbstractModule {
 			</tr>
 			<tr class='form-field term-name-wrap'>
 				<th scope='row'>
-					<label for='custom-field'><?php esc_attr_e( 'Category icon class', 'anspress-question-answer' ); ?></label>
-				</th>
-				<td>
-					<input id="ap_icon" type="text" name="ap_icon" value="<?php echo esc_attr( $term_meta['icon'] ); ?>">
-					<p class="description">
-						<?php
-						echo wp_kses(
-							sprintf(
-								/* translators: %s Link to font icon class. */
-								__( 'Font icon class, if image not set. Find our official list of icons from <a href="%s" target="_blank">here</a>.', 'anspress-question-answer' ),
-								esc_url( 'https://htmlpreview.github.io/?https://github.com/anspress/anspress/blob/3.0.7/theme/default/fonts/demo.html' )
-							),
-							array(
-								'a' => array(
-									'href'   => array(),
-									'target' => array(),
-								),
-							)
-						);
-						?>
-					</p>
-				</td>
-			</tr>
-			<tr class='form-field term-name-wrap'>
-				<th scope='row'>
-					<label for='ap-category-color'><?php esc_attr_e( 'Icon background color', 'anspress-question-answer' ); ?></label>
+					<label for='ap-category-color'><?php esc_attr_e( 'Background color', 'anspress-question-answer' ); ?></label>
 				</th>
 				<td>
 					<input id="ap-category-color" type="text" name="ap_color" value="<?php echo esc_attr( $term_meta['color'] ); ?>">
-					<p class="description"><?php esc_attr_e( 'Set background color to be used with icon', 'anspress-question-answer' ); ?></p>
+					<p class="description"><?php esc_attr_e( 'Set background color to be used when background is not present', 'anspress-question-answer' ); ?></p>
 					<script type="text/javascript">
 						jQuery(document).ready(function(){
 							jQuery('#ap-category-color').wpColorPicker();
@@ -687,7 +663,6 @@ class CategoryModule extends AbstractModule {
 	public function save_image_field( $term_id ) {
 		$image_url = ap_isset_post_value( 'ap_category_image_url', '' );
 		$image_id  = ap_isset_post_value( 'ap_category_image_id', '' );
-		$icon      = ap_isset_post_value( 'ap_icon', '' );
 		$color     = ap_isset_post_value( 'ap_color', '' );
 
 		if ( current_user_can( 'manage_categories' ) ) {
@@ -714,13 +689,6 @@ class CategoryModule extends AbstractModule {
 				$term_meta['image']['id'] = (int) $image_id;
 			} else {
 				unset( $term_meta['image']['id'] );
-			}
-
-			// Category icon.
-			if ( ! empty( $icon ) ) {
-				$term_meta['icon'] = sanitize_text_field( $icon );
-			} else {
-				unset( $term_meta['icon'] );
 			}
 
 			// Category color.
@@ -913,30 +881,6 @@ class CategoryModule extends AbstractModule {
 
 				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : '' ) . '</span>';
 			}
-		}
-	}
-
-	/**
-	 * Column header.
-	 *
-	 * @param array $columns Category columns.
-	 * @return array
-	 */
-	public function column_header( $columns ) {
-		$columns['icon'] = 'Icon';
-		return $columns;
-	}
-
-	/**
-	 * Icon column content.
-	 *
-	 * @param mixed  $value       Value.
-	 * @param string $column_name Column name.
-	 * @param int    $tax_id      Taxonomy id.
-	 */
-	public function column_content( $value, $column_name, $tax_id ) {
-		if ( 'icon' === $column_name ) {
-			ap_category_icon( $tax_id );
 		}
 	}
 
