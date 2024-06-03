@@ -23,9 +23,6 @@ class CategoryModule extends AbstractModule {
 	 * @return void
 	 */
 	public function register_hooks() {
-		ap_register_page( 'category', __( 'Category', 'anspress-question-answer' ), array( $this, 'categoryPage' ), false );
-		ap_register_page( 'categories', __( 'Categories', 'anspress-question-answer' ), array( $this, 'categoriesPage' ) );
-
 		add_action( 'init', array( $this, 'registerQuestionCategories' ), 1 );
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_action( 'rest_api_init', array( $this, 'registerCustomTermMeta' ) );
@@ -60,90 +57,6 @@ class CategoryModule extends AbstractModule {
 		// List filtering.
 		add_action( 'ap_ajax_load_filter_category', array( $this, 'load_filter_category' ) );
 		add_filter( 'ap_list_filter_active_category', array( $this, 'filter_active_category' ), 10, 2 );
-	}
-
-	/**
-	 * Category page layout.
-	 *
-	 * @since 5.0.0
-	 */
-	public function categoryPage() {
-		$question_args = array(
-			'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-				array(
-					'taxonomy' => 'question_category',
-					'field'    => 'id',
-					'terms'    => array( get_queried_object_id() ),
-				),
-			),
-		);
-
-		$question_category = get_queried_object();
-
-		if ( $question_category ) {
-
-			/**
-			 * Filter category page question list query arguments.
-			 *
-			 * @param array $args Wp_Query arguments.
-			 * @since 4.1.8
-			 */
-			$question_args = apply_filters( 'ap_category_questions_args', $question_args );
-
-			anspress()->questions = ap_get_questions( $question_args );
-
-			/**
-			 * This action can be used to show custom message before category page.
-			 *
-			 * @param object $question_category Current question category.
-			 * @since 1.4.2
-			 */
-			do_action( 'ap_before_category_page', $question_category );
-
-			include ap_get_theme_location( 'addons/category/single-category.php' );
-		}
-	}
-
-	/**
-	 * Categories page layout
-	 */
-	public function categoriesPage() {
-		global $question_categories, $ap_max_num_pages, $ap_per_page;
-
-		$paged            = max( 1, get_query_var( 'paged' ) );
-		$per_page         = ap_opt( 'categories_per_page' );
-		$total_terms      = wp_count_terms(
-			array(
-				'taxonomy'   => 'question_category',
-				'hide_empty' => false,
-				'parent'     => 0,
-			)
-		);
-		$offset           = $per_page * ( $paged - 1 );
-		$ap_max_num_pages = ceil( $total_terms / $per_page );
-
-		$order = ap_opt( 'categories_page_order' ) === 'ASC' ? 'ASC' : 'DESC';
-
-		$cat_args = array(
-			'parent'     => 0,
-			'number'     => $per_page,
-			'offset'     => $offset,
-			'hide_empty' => false,
-			'orderby'    => ap_opt( 'categories_page_orderby' ),
-			'order'      => $order,
-		);
-
-		/**
-		 * Filter applied before getting categories.
-		 *
-		 * @param array $cat_args `get_terms` arguments.
-		 * @since 1.0
-		 */
-		$cat_args             = apply_filters( 'ap_categories_shortcode_args', $cat_args );
-		$cat_args['taxonomy'] = 'question_category';
-
-		$question_categories = get_terms( $cat_args );
-		include ap_get_theme_location( 'addons/category/categories.php' );
 	}
 
 	/**
