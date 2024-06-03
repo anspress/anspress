@@ -42,6 +42,7 @@ class Plugin {
 	private array $modules = array(
 		\AnsPress\Modules\Core\CoreModule::class,
 		\AnsPress\Modules\Category\CategoryModule::class,
+		\AnsPress\Modules\Tag\TagModule::class,
 	);
 
 	/**

@@ -1,17 +1,17 @@
 <?php
 /**
- * Render function for the categories block.
+ * Render function for the tags block.
  *
  * @package AnsPress
  * @subpackage Block
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-$currentPage   = isset( $_GET['ap_cat_page'] ) ? intval( $_GET['ap_cat_page'] ) : 1; // @codingStandardsIgnoreLine
+$currentPage   = isset( $_GET['ap_tag_page'] ) ? intval( $_GET['ap_tag_page'] ) : 1; // @codingStandardsIgnoreLine
 $currentOffset = ( $currentPage - 1 ) * $attributes['itemsPerPage'];
 
 $termsArgs = array(
-	'taxonomy'   => 'question_category',
+	'taxonomy'   => 'question_tag',
 	'number'     => $attributes['itemsPerPage'],
 	'hide_empty' => false,
 	'offset'     => $currentOffset,
@@ -20,7 +20,7 @@ $termsArgs = array(
 $terms = get_terms( $termsArgs );
 $count = (int) wp_count_terms(
 	array(
-		'taxonomy'   => 'question_category',
+		'taxonomy'   => 'question_tag',
 		'hide_empty' => false,
 	)
 );
@@ -34,33 +34,15 @@ if ( $attributes['columns'] > 1 ) {
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 
 <?php if ( ! empty( $terms ) && ! is_wp_error( $terms ) && ! empty( $terms ) ) { ?>
-	<div class='wp-block-anspress-question-answer-categories-ccon' style="<?php echo esc_attr( $columnStyle ); ?>">
+	<div class='wp-block-anspress-question-answer-tags-ccon' style="<?php echo esc_attr( $columnStyle ); ?>">
 		<?php foreach ( $terms as $t ) { ?>
-			<?php
-			$apCategoryMeta = get_term_meta( $t->term_id, 'ap_category', true );
-
-			$style = '';
-
-			if ( ! empty( $apCategoryMeta['image'] ) && ! empty( $apCategoryMeta['image']['url'] ) ) {
-				$style = 'background-image: url(' . esc_url( $apCategoryMeta['image']['url'] ) . ');';
-			}
-
-			if ( ! empty( $apCategoryMeta['color'] ) ) {
-				$style .= 'background-color: ' . esc_attr( $apCategoryMeta['color'] ) . ';';
-			}
-			?>
-			<div class="wp-block-anspress-question-answer-categories-citem">
-				<?php if ( ! empty( $attributes['showImage'] ) ) { ?>
-					<div class='wp-block-anspress-question-answer-categories-cimage' style="<?php echo esc_attr( $style ); ?>">
-					</div>
-				<?php } ?>
-
-				<a class='wp-block-anspress-question-answer-categories-ctitle' href="<?php echo esc_url( get_term_link( $t->term_id, 'question_category' ) ); ?>">
+			<div class="wp-block-anspress-question-answer-tags-citem">
+				<a class='wp-block-anspress-question-answer-tags-ctitle' href="<?php echo esc_url( get_term_link( $t->term_id, 'question_tag' ) ); ?>">
 					<?php echo esc_html( $t->name ); ?>
 				</a>
 
 				<?php if ( $attributes['showCount'] ) { ?>
-					<div class="wp-block-anspress-question-answer-categories-ccount">
+					<div class="wp-block-anspress-question-answer-tags-ccount">
 						<?php
 						printf(
 							/* translators: %d: number of questions */
@@ -72,7 +54,7 @@ if ( $attributes['columns'] > 1 ) {
 				<?php } ?>
 
 				<?php if ( $attributes['showDescription'] ) { ?>
-					<div class='wp-block-anspress-question-answer-categories-cdesc'>
+					<div class='wp-block-anspress-question-answer-tags-cdesc'>
 						<?php echo esc_html( wp_trim_words( $t->description, $attributes['descriptionLength'] ) ); ?>
 					</div>
 				<?php } ?>
@@ -83,18 +65,18 @@ if ( $attributes['columns'] > 1 ) {
 
 	<?php if ( $attributes['showPagination'] ) : ?>
 
-		<div class='wp-block-anspress-categories-p'>
+		<div class='wp-block-anspress-tags-p'>
 			<nav aria-label="Pagination">
-				<div class="wp-block-anspress-question-answer-categories-p-ul">
+				<div class="wp-block-anspress-question-answer-tags-p-ul">
 					<?php
 					$totalPages = ceil( $count / $attributes['itemsPerPage'] );
 					$prevPage   = $currentPage - 1;
 					$nextPage   = $currentPage + 1;
 					$range      = 3; // Number of pages to show around the current page.
 					?>
-					<div class="wp-block-anspress-question-answer-categories-p-item">
+					<div class="wp-block-anspress-question-answer-tags-p-item">
 						<?php if ( $currentPage > 1 ) { ?>
-							<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $prevPage ) ); ?>">
+							<a class="wp-block-anspress-question-answer-tags-p-link" href="<?php echo esc_url( add_query_arg( 'ap_tag_page', $prevPage ) ); ?>">
 								<?php echo esc_html__( 'Previous', 'anspress-question-answer' ); ?>
 							</a>
 						<?php } ?>
@@ -106,13 +88,13 @@ if ( $attributes['columns'] > 1 ) {
 						// Display first page link.
 						if ( $currentPage > $range + 1 ) {
 							?>
-							<div class="wp-block-anspress-question-answer-categories-p-item">
-								<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', 1 ) ); ?>">
+							<div class="wp-block-anspress-question-answer-tags-p-item">
+								<a class="wp-block-anspress-question-answer-tags-p-link" href="<?php echo esc_url( add_query_arg( 'ap_tag_page', 1 ) ); ?>">
 									<?php echo esc_attr( number_format_i18n( 1 ) ); ?>
 								</a>
 							</div>
 							<?php if ( $currentPage > $range + 2 ) { ?>
-								<div class="wp-block-anspress-question-answer-categories-p-item">
+								<div class="wp-block-anspress-question-answer-tags-p-item">
 									<span>...</span>
 								</div>
 							<?php } ?>
@@ -125,8 +107,8 @@ if ( $attributes['columns'] > 1 ) {
 
 						for ( $i = $minValue; $i <= $maxValue; $i++ ) {
 							?>
-							<div class="wp-block-anspress-question-answer-categories-p-item">
-								<a class="wp-block-anspress-question-answer-categories-p-link <?php echo $currentPage === $i ? 'active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $i ) ); ?>">
+							<div class="wp-block-anspress-question-answer-tags-p-item">
+								<a class="wp-block-anspress-question-answer-tags-p-link <?php echo $currentPage === $i ? 'active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'ap_tag_page', $i ) ); ?>">
 									<?php echo esc_attr( number_format_i18n( $i ) ); ?>
 								</a>
 							</div>
@@ -137,12 +119,12 @@ if ( $attributes['columns'] > 1 ) {
 						if ( $currentPage < $totalPages - $range ) {
 							if ( $currentPage < $totalPages - $range - 1 ) {
 								?>
-								<div class="wp-block-anspress-question-answer-categories-p-item">
+								<div class="wp-block-anspress-question-answer-tags-p-item">
 									<span>...</span>
 								</div>
 							<?php } ?>
-							<div class="wp-block-anspress-question-answer-categories-p-item">
-								<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $totalPages ) ); ?>">
+							<div class="wp-block-anspress-question-answer-tags-p-item">
+								<a class="wp-block-anspress-question-answer-tags-p-link" href="<?php echo esc_url( add_query_arg( 'ap_tag_page', $totalPages ) ); ?>">
 									<?php echo esc_attr( number_format_i18n( $totalPages ) ); ?>
 								</a>
 							</div>
@@ -151,9 +133,9 @@ if ( $attributes['columns'] > 1 ) {
 					}
 					?>
 
-					<div class="wp-block-anspress-question-answer-categories-p-item">
+					<div class="wp-block-anspress-question-answer-tags-p-item">
 						<?php if ( $currentPage < $totalPages ) { ?>
-							<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $nextPage ) ); ?>">
+							<a class="wp-block-anspress-question-answer-tags-p-link" href="<?php echo esc_url( add_query_arg( 'ap_tag_page', $nextPage ) ); ?>">
 								<?php echo esc_html__( 'Next', 'anspress-question-answer' ); ?>
 							</a>
 						<?php } ?>
@@ -166,7 +148,7 @@ if ( $attributes['columns'] > 1 ) {
 
 	<?php
 } else {
-	echo esc_html_e( 'No categories found.', 'anspress-question-answer' );
+	echo esc_html_e( 'No tags found.', 'anspress-question-answer' );
 }
 ?>
 

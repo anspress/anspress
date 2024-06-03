@@ -1,50 +1,37 @@
 <?php
 /**
- * Add tags support in AnsPress questions.
+ * The Category module.
  *
- * @author       Rahul Aryan <rah12@live.com>
- * @copyright    2014 anspress.net & Rahul Aryan
- * @license      GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link         https://anspress.net
- * @package      AnsPress
- * @subpackage   Tags Addon
+ * @package AnsPress
+ * @since 5.0.0
  */
 
-namespace AnsPress\Addons;
+namespace AnsPress\Modules\Tag;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	// @codeCoverageIgnoreStart
-	die;
-	// @codeCoverageIgnoreEnd
-}
+use AnsPress\Classes\AbstractModule;
+use AnsPress\Classes\Plugin;
 
 /**
- * Tags addon for AnsPress
+ * Category module class.
+ *
+ * @since 5.0.0
  */
-class Tags extends \AnsPress\Singleton {
+class TagModule extends AbstractModule {
 	/**
-	 * Instance of this class.
+	 * Register hooks.
 	 *
-	 * @var     object
-	 * @since 4.1.8
+	 * @return void
 	 */
-	protected static $instance = null;
-
-	/**
-	 * Initialize the class
-	 *
-	 * @since 4.1.8 Added filter `ap_category_questions_args`.
-	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
-	 */
-	protected function __construct() {
+	public function register_hooks() {
 		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), array( $this, 'tag_page' ), false );
 		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), array( $this, 'tags_page' ) );
+
+		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
+		add_action( 'init', array( $this, 'registerBlocks' ) );
 
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
 		add_action( 'ap_form_options_features_tag', array( $this, 'option_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widget_positions' ) );
-		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
 		add_action( 'ap_admin_menu', array( $this, 'admin_tags_menu' ) );
 		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
 		add_action( 'ap_question_info', array( $this, 'ap_question_info' ) );
@@ -153,6 +140,15 @@ class Tags extends \AnsPress\Singleton {
 		$question_tags      = $query->get_terms();
 
 		include ap_get_theme_location( 'addons/tag/tags.php' );
+	}
+
+	/**
+	 * Register blocks.
+	 *
+	 * @return void
+	 */
+	public function registerBlocks() {
+		register_block_type( Plugin::getPathTo( 'build/frontend/tags' ) );
 	}
 
 	/**
@@ -762,7 +758,3 @@ class Tags extends \AnsPress\Singleton {
 		return $posts;
 	}
 }
-
-
-// Init addons.
-Tags::init();
