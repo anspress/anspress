@@ -1625,17 +1625,9 @@ function ap_get_addons() {
 			'name'        => __( 'Notifications', 'anspress-question-answer' ),
 			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),
 		),
-		'reputation.php'        => array(
-			'name'        => __( 'Reputation', 'anspress-question-answer' ),
-			'description' => __( 'Award points to user based on activities.', 'anspress-question-answer' ),
-		),
 		'buddypress.php'        => array(
 			'name'        => __( 'BuddyPress', 'anspress-question-answer' ),
 			'description' => __( 'Integrate AnsPress with BuddyPress.', 'anspress-question-answer' ),
-		),
-		'profile.php'           => array(
-			'name'        => __( 'User Profile', 'anspress-question-answer' ),
-			'description' => __( 'User profile for users.', 'anspress-question-answer' ),
 		),
 		'recaptcha.php'         => array(
 			'name'        => __( 'reCaptcha', 'anspress-question-answer' ),

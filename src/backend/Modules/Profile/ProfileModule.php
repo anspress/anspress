@@ -1,50 +1,28 @@
 <?php
 /**
- * An AnsPress add-on to for displaying user profile.
+ * The profile module.
  *
- * @author     Rahul Aryan <rah12@live.com>
- * @copyright  2014 anspress.net & Rahul Aryan
- * @license    GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link       https://anspress.net
- * @package    AnsPress
- * @subpackage User Profile Addon
- *
- * @anspress-addon
- * Addon Name:    User Profile
- * Addon URI:     https://anspress.net
- * Description:   Display user profile.
- * Author:        Rahul Aryan
- * Author URI:    https://anspress.net
+ * @package AnsPress
+ * @since 5.0.0
  */
 
-namespace AnsPress\Addons;
+namespace AnsPress\Modules\Profile;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	// @codeCoverageIgnoreStart
-	die;
-	// @codeCoverageIgnoreEnd
-}
+use AnsPress\Classes\AbstractModule;
+use AnsPress\Classes\Plugin;
 
 /**
- * User profile hooks.
+ * Profile module class.
+ *
+ * @since 5.0.0
  */
-class Profile extends \AnsPress\Singleton {
+class ProfileModule extends AbstractModule {
 	/**
-	 * Instance of this class.
+	 * Register hooks.
 	 *
-	 * @var     object
-	 * @since 4.1.8
+	 * @since 5.0.0
 	 */
-	protected static $instance = null;
-
-	/**
-	 * Initialize the plugin by setting localization and loading public scripts
-	 * and styles.
-	 *
-	 * @since 4.0.0
-	 */
-	protected function __construct() {
+	public function register_hooks() {
 		ap_add_default_options(
 			array(
 				'user_page_slug_questions'  => 'questions',
@@ -54,8 +32,11 @@ class Profile extends \AnsPress\Singleton {
 			)
 		);
 
+		add_action( 'init', array( $this, 'registerBlocks' ) );
+
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
 		add_action( 'ap_form_options_features_profile', array( $this, 'options' ) );
+
 		ap_register_page( 'user', __( 'User profile', 'anspress-question-answer' ), array( $this, 'user_page' ), true, true );
 
 		add_action( 'ap_rewrites', array( $this, 'rewrite_rules' ), 10, 3 );
@@ -64,7 +45,6 @@ class Profile extends \AnsPress\Singleton {
 		add_action( 'the_post', array( $this, 'filter_page_title' ) );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
 		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
-		add_filter( 'posts_pre_query', array( $this, 'modify_query_archive' ), 999, 2 );
 	}
 
 	/**
@@ -114,6 +94,17 @@ class Profile extends \AnsPress\Singleton {
 		);
 
 		return $form;
+	}
+
+	/**
+	 * Register blocks.
+	 *
+	 * @since 5.0.0
+	 */
+	public function registerBlocks() {
+		register_block_type( Plugin::getPathTo( 'build/frontend/user-profile' ) );
+		register_block_type( Plugin::getPathTo( 'build/frontend/user-profile-nav' ) );
+		register_block_type( Plugin::getPathTo( 'build/frontend/questions' ) );
 	}
 
 	/**
@@ -474,34 +465,6 @@ class Profile extends \AnsPress\Singleton {
 	}
 
 	/**
-	 * Modify main query.
-	 *
-	 * @param  array  $posts  Array of post object.
-	 * @param  object $query Wp_Query object.
-	 * @return void|array
-	 * @since 4.1.0
-	 * @since 4.1.1 Redirect to current user profile if no author set.
-	 * @since 4.1.2 Check for 404 error.
-	 */
-	public function modify_query_archive( $posts, $query ) {
-		if ( $query->is_main_query() && ! $query->is_404 && 'user' === get_query_var( 'ap_page' ) ) {
-			$query_object = get_queried_object();
-
-			if ( ! $query_object && ! get_query_var( 'author_name' ) && is_user_logged_in() ) {
-				wp_safe_redirect( ap_user_link( get_current_user_id() ) );
-				exit;
-			} elseif ( $query_object && $query_object instanceof \WP_User ) {
-				return array( get_post( ap_opt( 'user_page' ) ) );
-			} else {
-				$query->set_404();
-				status_header( 404 );
-			}
-		}
-
-		return $posts;
-	}
-
-	/**
 	 * Override user page template.
 	 *
 	 * @param string $template Template file.
@@ -535,6 +498,3 @@ class Profile extends \AnsPress\Singleton {
 		return (int) $user_id;
 	}
 }
-
-// Init addon.
-Profile::init();

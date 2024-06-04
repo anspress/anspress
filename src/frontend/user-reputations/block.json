@@ -1,12 +1,12 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "anspress-question-answer/tags",
+  "name": "anspress-question-answer/user-reputations",
   "version": "0.1.0",
-  "title": "(AnsPress) Question Tags",
+  "title": "(AnsPress) User Reputations",
   "category": "anspress",
-  "icon": "tag",
-  "description": "A block to display AnsPress question tags.",
+  "icon": "list-tag",
+  "description": "A block to display users reputations.",
   "attributes": {
     "itemsPerPage": {
       "type": "number",

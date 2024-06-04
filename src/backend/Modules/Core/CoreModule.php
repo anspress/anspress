@@ -32,7 +32,7 @@ class CoreModule extends AbstractModule {
 
 		add_action( 'wpmu_new_blog', array( $this, 'createBlogTables' ), 10, 6 );
 		add_filter( 'wpmu_drop_tables', array( $this, 'dropBlogTables' ), 10, 2 );
-		add_filter( 'block_categories', array( $this, 'registerBlockCategory' ) );
+		add_filter( 'block_categories_all', array( $this, 'registerBlockCategory' ), 1 );
 	}
 
 	/**

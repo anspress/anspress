@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress-question-answer/user-profile",
+  "version": "0.1.0",
+  "title": "(AnsPress) User Profile",
+  "category": "anspress",
+  "icon": "admin-users",
+  "description": "A custom block to display user profile.",
+  "attributes": {
+    "avatarPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "avatarSize": {
+      "type": "number",
+      "default": 96
+    },
+    "displayName": {
+      "type": "boolean",
+      "default": true
+    },
+    "showBiography": {
+      "type": "boolean",
+      "default": true
+    },
+    "metaFields": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

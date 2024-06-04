@@ -1,0 +1,30 @@
+.wp-block-anspress-question-answer-user-profile-nav {
+	&-items {
+		display: flex;
+		align-items: center;
+		margin-bottom: 20px;
+		border: solid 1px #ddd;
+
+		a {
+			display: block;
+			padding: 10px 20px;
+			color: #333;
+			text-decoration: none;
+
+			font-weight: 500;
+			transition: all 0.3s;
+
+			&:hover {
+				background-color: #eee;
+			}
+
+			&:last-child {
+				border-right: none;
+			}
+		}
+
+		.active-nav a {
+			background: #eee;
+		}
+	}
+}

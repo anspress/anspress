@@ -1,0 +1,110 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress/questions",
+  "version": "0.1.0",
+  "title": "(AnsPress) Questions",
+  "category": "anspress",
+  "icon": "list-view",
+  "description": "A block to display AnsPress questions.",
+  "attributes": {
+    "query": {
+      "type": "object",
+      "default": {
+        "perPage": 5,
+        "pages": 0,
+        "offset": 0,
+        "order": "desc",
+        "orderBy": "date",
+        "authors": "",
+        "search": "",
+        "exclude": [],
+        "sticky": false
+      }
+    },
+    "currentAuthor": {
+      "type": "boolean",
+      "default": false
+    },
+    "displayAvatar": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayVoteCount": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayAnsCount": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayMeta": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayViews": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayActivity": {
+      "type": "boolean",
+      "default": true
+    },
+    "displaySolved": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayCategories": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayTags": {
+      "type": "boolean",
+      "default": true
+    },
+    "displayPagination": {
+      "type": "boolean",
+      "default": true
+    },
+    "itemsPerPage": {
+      "type": "number",
+      "default": 10
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false
+  },
+  "example": {
+    "attributes": {
+      "query": {
+        "perPage": 5,
+        "pages": 0,
+        "offset": 0,
+        "order": "desc",
+        "orderBy": "date",
+        "author": "",
+        "search": "",
+        "exclude": [],
+        "sticky": false
+      },
+      "displayAvatar": true,
+      "displayVoteCount": true,
+      "displayAnsCount": true,
+      "displayActivity": true,
+      "displaySolved": true,
+      "displayCategories": true,
+      "displayTags": true,
+      "displayViews": true,
+      "displayPagination": true,
+      "itemsPerPage": 10
+    }
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

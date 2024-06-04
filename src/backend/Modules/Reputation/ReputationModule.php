@@ -1,44 +1,28 @@
 <?php
 /**
- * Award reputation to user based on activities.
+ * The Reputation module.
  *
- * @author       Rahul Aryan <rah12@live.com>
- * @copyright    2014 anspress.net & Rahul Aryan
- * @license      GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
- * @link         https://anspress.net
- * @package      AnsPress
- * @subpackage   Reputation addon
+ * @package AnsPress
+ * @since 5.0.0
  */
 
-namespace Anspress\Addons;
+namespace AnsPress\Modules\Reputation;
 
-// @codeCoverageIgnoreStart
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-// @codeCoverageIgnoreEnd
+use AnsPress\Classes\AbstractModule;
+use AnsPress\Classes\Plugin;
 
 /**
- * Reputation hooks.
+ * Reputation module class.
+ *
+ * @since 5.0.0
  */
-class Reputation extends \AnsPress\Singleton {
-
+class ReputationModule extends AbstractModule {
 	/**
-	 * Instance of this class.
+	 * Register hooks.
 	 *
-	 * @var     object
-	 * @since 4.1.8
+	 * @since 5.0.0
 	 */
-	protected static $instance = null;
-
-	/**
-	 * Init class.
-	 *
-	 * @since unknown
-	 * @since 4.2.0 Added hook `ap_settings_menu_features_groups`.
-	 * @since 4.2.0 Renamed hook `ap_form_addon-reputation` to `ap_form_options_features_tag`.
-	 */
-	protected function __construct() {
+	public function register_hooks() {
 		$this->register_default_events();
 
 		ap_add_default_options(
@@ -604,6 +588,3 @@ class Reputation extends \AnsPress\Singleton {
 		return $all_options;
 	}
 }
-
-// Initialize addon.
-Reputation::init();

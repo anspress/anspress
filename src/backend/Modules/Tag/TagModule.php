@@ -124,6 +124,7 @@ class TagModule extends AbstractModule {
 			'hierarchical' => true,
 			'labels'       => $tag_labels,
 			'rewrite'      => false,
+			'show_in_rest' => true,
 		);
 
 		/**
