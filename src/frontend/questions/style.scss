@@ -3,9 +3,7 @@
 	&-avatar {
 		margin-right: 20px;
 
-		img {
-			border-radius: 2px;
-		}
+		img {}
 	}
 
 	&-items {}
@@ -43,7 +41,6 @@
 		flex-direction: column;
 		justify-content: center;
 		text-decoration: none;
-		border-radius: 4px;
 
 		&:hover {
 			background: #eee;
