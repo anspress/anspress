@@ -1,0 +1,50 @@
+.wp-block-anspress-single-question {
+	display: flex;
+
+	&-avatar {
+		margin-right: 20px;
+	}
+
+	&-content {
+		border: solid 1px;
+		flex: 1;
+	}
+
+	&-metas {
+		display: flex;
+		border-bottom: solid 1px;
+		padding: 5px 20px;
+		font-size: 85%;
+
+		>* {
+			margin-right: 10px;
+		}
+
+		a {
+			text-decoration: none;
+		}
+	}
+
+	&-inner {
+		margin: 10px 20px;
+	}
+
+	&-votes {
+		margin-left: 10px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		>a {
+			text-decoration: none;
+			border: solid 1px;
+			font-size: 13px;
+			padding: 2px 5px;
+		}
+
+		span {
+			font-size: 14px;
+			padding: 3px 0;
+		}
+	}
+}

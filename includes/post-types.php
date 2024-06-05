@@ -132,6 +132,7 @@ class AnsPress_PostTypes {
 			'rewrite'             => false,
 			'query_var'           => 'question',
 			'delete_with_user'    => true,
+			'show_in_rest'        => true,
 		);
 
 		/**

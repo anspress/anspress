@@ -65,7 +65,7 @@ class AnsPress_Hooks {
 			// Theme hooks.
 			add_action( 'init', array( 'AnsPress_Theme', 'init_actions' ) );
 			add_filter( 'template_include', array( 'AnsPress_Theme', 'template_include' ) );
-			add_filter( 'ap_template_include', array( 'AnsPress_Theme', 'template_include_theme_compat' ) );
+			// add_filter( 'ap_template_include', array( 'AnsPress_Theme', 'template_include_theme_compat' ) );
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'question_answer_post_class' ) );
 			add_filter( 'body_class', array( 'AnsPress_Theme', 'body_class' ) );
 			add_action( 'after_setup_theme', array( 'AnsPress_Theme', 'includes_theme' ) );

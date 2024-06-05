@@ -105,6 +105,7 @@ class ProfileModule extends AbstractModule {
 		register_block_type( Plugin::getPathTo( 'build/frontend/user-profile' ) );
 		register_block_type( Plugin::getPathTo( 'build/frontend/user-profile-nav' ) );
 		register_block_type( Plugin::getPathTo( 'build/frontend/questions' ) );
+		register_block_type( Plugin::getPathTo( 'build/frontend/single-question' ) );
 	}
 
 	/**
