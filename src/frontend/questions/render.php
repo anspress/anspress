@@ -1,18 +1,38 @@
 <?php
-$attributes = $attributes ?? array(); // Ensure $attributes is defined
+/**
+ * Questions block render.
+ *
+ * @package AnsPress
+ */
+
+use AnsPress\Classes\Plugin;
+
+$attributes = $attributes ?? array();
 
 $args = array(
 	'post_type'      => 'question',
-	'posts_per_page' => $attributes['query']['perPage'],
+	'posts_per_page' => $attributes['itemsPerPage'],
 	'orderby'        => $attributes['query']['orderBy'],
 	'order'          => $attributes['query']['order'],
 	'author__in'     => $attributes['query']['authors'],
 	's'              => $attributes['query']['search'],
 );
 
+$currentAuthorId = (int) get_query_var( 'author' );
+
 if ( $attributes['currentAuthor'] ) {
+
+	// Show error if author is not set.
+	if ( ! is_archive() || ! is_author() || empty( $currentAuthorId ) ) {
+		echo esc_html__( 'Author is not set or not author archive page.', 'anspress-question-answer' );
+
+		return;
+	}
+
+
+	// Remove author__in query.
 	unset( $args['author__in'] );
-	$args['author'] = get_current_user_id();
+	$args['author'] = $currentAuthorId;
 }
 
 // Add category and tag query.
@@ -155,86 +175,13 @@ $query = new WP_Query( $args );
 
 		<?php if ( $attributes['displayPagination'] ) : ?>
 
-			<div class='wp-block-anspress-categories-p'>
-				<nav aria-label="Pagination">
-					<div class="wp-block-anspress-question-answer-categories-p-ul">
-						<?php
-						$totalPages = ceil( $count / $attributes['itemsPerPage'] );
-						$prevPage   = $currentPage - 1;
-						$nextPage   = $currentPage + 1;
-						$range      = 3; // Number of pages to show around the current page.
-						?>
-						<div class="wp-block-anspress-question-answer-categories-p-item">
-							<?php if ( $currentPage > 1 ) { ?>
-								<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $prevPage ) ); ?>">
-									<?php echo esc_html__( 'Previous', 'anspress-question-answer' ); ?>
-								</a>
-							<?php } ?>
-						</div>
-
-						<?php
-
-						if ( $totalPages > 1 ) {
-							// Display first page link.
-							if ( $currentPage > $range + 1 ) {
-								?>
-								<div class="wp-block-anspress-question-answer-categories-p-item">
-									<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', 1 ) ); ?>">
-										<?php echo esc_attr( number_format_i18n( 1 ) ); ?>
-									</a>
-								</div>
-								<?php if ( $currentPage > $range + 2 ) { ?>
-									<div class="wp-block-anspress-question-answer-categories-p-item">
-										<span>...</span>
-									</div>
-								<?php } ?>
-								<?php
-							}
-
-							// Display pages around the current page.
-							$minValue = max( 1, $currentPage - $range );
-							$maxValue = min( $totalPages, $currentPage + $range );
-
-							for ( $i = $minValue; $i <= $maxValue; $i++ ) {
-								?>
-								<div class="wp-block-anspress-question-answer-categories-p-item">
-									<a class="wp-block-anspress-question-answer-categories-p-link <?php echo $currentPage === $i ? 'active' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $i ) ); ?>">
-										<?php echo esc_attr( number_format_i18n( $i ) ); ?>
-									</a>
-								</div>
-								<?php
-							}
-
-							// Display last page link.
-							if ( $currentPage < $totalPages - $range ) {
-								if ( $currentPage < $totalPages - $range - 1 ) {
-									?>
-									<div class="wp-block-anspress-question-answer-categories-p-item">
-										<span>...</span>
-									</div>
-								<?php } ?>
-								<div class="wp-block-anspress-question-answer-categories-p-item">
-									<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $totalPages ) ); ?>">
-										<?php echo esc_attr( number_format_i18n( $totalPages ) ); ?>
-									</a>
-								</div>
-								<?php
-							}
-						}
-						?>
-
-						<div class="wp-block-anspress-question-answer-categories-p-item">
-							<?php if ( $currentPage < $totalPages ) { ?>
-								<a class="wp-block-anspress-question-answer-categories-p-link" href="<?php echo esc_url( add_query_arg( 'ap_cat_page', $nextPage ) ); ?>">
-									<?php echo esc_html__( 'Next', 'anspress-question-answer' ); ?>
-								</a>
-							<?php } ?>
-						</div>
-					</div>
-				</nav>
-			</div>
+			<?php
+				$totalPages = $query->max_num_pages;
+				include Plugin::getPathTo( 'src/frontend/common/pagination.php' );
+			?>
 
 		<?php endif; ?>
+
 		<?php wp_reset_postdata(); ?>
 	<?php else : ?>
 		<div><?php esc_attr_e( 'No questions found.', 'anspress-question-answer' ); ?></div>

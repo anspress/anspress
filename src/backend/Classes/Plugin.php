@@ -239,6 +239,16 @@ class Plugin {
 	}
 
 	/**
+	 * Get URL relative to plugin directory.
+	 *
+	 * @param string $path Path.
+	 * @return string Full URL.
+	 */
+	public static function getUrlTo( string $path ): string {
+		return plugin_dir_url( self::$instance->pluginFile ) . $path;
+	}
+
+	/**
 	 * Method to load singleton classes on demand.
 	 *
 	 * @template T of object

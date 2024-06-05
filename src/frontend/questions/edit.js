@@ -18,7 +18,8 @@ const Edit = ({ attributes, setAttributes }) => {
     displayCategories,
     displayTags,
     currentAuthor,
-    displayPagination
+    displayPagination,
+    itemsPerPage
   } = attributes;
 
   const blockProps = useBlockProps();
@@ -62,13 +63,6 @@ const Edit = ({ attributes, setAttributes }) => {
       <InspectorControls>
 
         <PanelBody title={__('Query Settings', 'anspress-question-answer')}>
-          <RangeControl
-            label={__('Number of Posts', 'anspress-question-answer')}
-            value={query.perPage}
-            onChange={(value) => setAttributes({ query: { ...query, perPage: value } })}
-            min={1}
-            max={10}
-          />
           <SelectControl
             label={__('Order By', 'anspress-question-answer')}
             value={query.orderBy}
@@ -157,11 +151,11 @@ const Edit = ({ attributes, setAttributes }) => {
             onChange={(value) => setAttributes({ displayPagination: value })}
           />
 
-          {!displayPagination && (
+          {displayPagination && (
             <TextControl
               label={__('Items per page', 'anspress-question-answer')}
-              value={query.perPage}
-              onChange={(value) => setAttributes({ query: { ...query, perPage: value } })}
+              value={itemsPerPage}
+              onChange={(value) => setAttributes({ itemsPerPage: value })}
             />
           )}
         </PanelBody>

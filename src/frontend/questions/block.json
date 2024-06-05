@@ -11,7 +11,6 @@
     "query": {
       "type": "object",
       "default": {
-        "perPage": 5,
         "pages": 0,
         "offset": 0,
         "order": "desc",

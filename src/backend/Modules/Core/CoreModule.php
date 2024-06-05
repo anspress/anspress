@@ -33,6 +33,9 @@ class CoreModule extends AbstractModule {
 		add_action( 'wpmu_new_blog', array( $this, 'createBlogTables' ), 10, 6 );
 		add_filter( 'wpmu_drop_tables', array( $this, 'dropBlogTables' ), 10, 2 );
 		add_filter( 'block_categories_all', array( $this, 'registerBlockCategory' ), 1 );
+		add_action( 'init', array( $this, 'registerCommonBlock' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'registerBlockAssets' ) );
+		add_filter( 'query_vars', array( $this, 'addQueryVars' ) );
 	}
 
 	/**
@@ -110,5 +113,42 @@ class CoreModule extends AbstractModule {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Register block.
+	 *
+	 * @return void
+	 */
+	public function registerCommonBlock() {
+		$assetInfo = include Plugin::getPathTo( 'build/frontend/common/index.asset.php' );
+
+		wp_register_style(
+			'anspress-common',
+			Plugin::getUrlTo( 'build/frontend/common/index.css' ),
+			false,
+			$assetInfo['version']
+		);
+	}
+
+	/**
+	 * Register block assets.
+	 *
+	 * @return void
+	 */
+	public function registerBlockAssets() {
+		wp_enqueue_style( 'anspress-common' );
+	}
+
+	/**
+	 * Add query vars.
+	 *
+	 * @param mixed $qvars Query vars.
+	 * @return mixed
+	 */
+	public function addQueryVars( $qvars ) {
+		$qvars[] = 'ap_question_paged';
+
+		return $qvars;
 	}
 }
