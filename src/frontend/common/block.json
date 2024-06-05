@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress-question-answer/pagination",
+  "version": "0.1.0",
+  "category": "anspress",
+  "icon": "list-view",
+  "description": "A pagination block.",
+  "style": "file:./style-index.css",
+  "editorScript": "file:./index.js"
+}

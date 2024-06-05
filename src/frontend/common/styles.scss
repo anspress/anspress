@@ -1,0 +1,28 @@
+.anspress-pagination {
+	display: flex;
+	margin: 20px 0;
+
+	&-page-item {
+
+		>span,
+		>a {
+			display: block;
+			padding: 5px 10px;
+			margin: 0 5px;
+			border-radius: 4px;
+			border: solid 1px #aaa;
+		}
+
+		a {
+			text-decoration: none;
+
+			&:hover {
+				background: #eee;
+			}
+		}
+
+		span.current {
+			background: #eee;
+		}
+	}
+}
