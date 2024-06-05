@@ -1,6 +1,7 @@
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, SelectControl, RangeControl, ToggleControl, TextControl, Button } from '@wordpress/components';
 import { useState } from 'react';
+import ServerSideRender from '@wordpress/server-side-render';
 
 const Edit = ({ attributes }) => {
   const { avatarPosition } = attributes;
@@ -31,20 +32,11 @@ const Edit = ({ attributes }) => {
           /> */}
         </PanelBody>
       </InspectorControls>
-      <div className='wp-block-anspress-question-answer-user-profile-nav-items'>
-        <div className='wp-block-anspress-question-answer-user-profile-nav-item active-nav'>
-          <a href='#'>Questions</a>
-        </div>
-        <div className='wp-block-anspress-question-answer-user-profile-nav-item'>
-          <a href='#'>Answers</a>
-        </div>
-        <div className='wp-block-anspress-question-answer-user-profile-nav-item'>
-          <a href='#'>Comments</a>
-        </div>
-        <div className='wp-block-anspress-question-answer-user-profile-nav-item'>
-          <a href='#'>Reputations</a>
-        </div>
-      </div>
+
+      <ServerSideRender
+        block="anspress/user-profile-nav"
+        attributes={attributes}
+      />
     </div>
   );
 };

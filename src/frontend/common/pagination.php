@@ -6,10 +6,10 @@
  * @since 5.0.0
  */
 
-$big = 999999999;
-
-$request = remove_query_arg( 'ap_question_paged' );
-$current = max( 1, get_query_var( 'ap_question_paged' ) );
+$big         = 999999999;
+$queryVarKey = $queryVarKey ?? 'ap_question_paged';
+$request     = remove_query_arg( $queryVarKey );
+$current     = max( 1, get_query_var( $queryVarKey ) );
 
 $home_root = parse_url( home_url() );
 $home_root = ( isset( $home_root['path'] ) ) ? $home_root['path'] : '';
@@ -20,9 +20,9 @@ $request = preg_replace( '|^/+|', '', $request );
 
 $items = paginate_links(
 	array(
-		'base'      => add_query_arg( 'ap_question_paged', '%#%', home_url( $home_root . $request ) ),
-		'format'    => '?ap_question_paged=%#%',
-		'current'   => max( 1, get_query_var( 'ap_question_paged' ) ),
+		'base'      => add_query_arg( $queryVarKey, '%#%', home_url( $home_root . $request ) ),
+		'format'    => '?' . $queryVarKey . '=%#%',
+		'current'   => max( 1, get_query_var( $queryVarKey ) ),
 		'total'     => $totalPages,
 		'prev_text' => __( '&laquo; Prev', 'anspress-question-answer' ),
 		'next_text' => __( 'Next &raquo;', 'anspress-question-answer' ),

@@ -1,9 +1,7 @@
-.wp-block-anspress-question-answer-user-profile-nav {
+.wp-block-anspress-user-profile-nav {
 	&-items {
 		display: flex;
-		align-items: center;
 		margin-bottom: 20px;
-		border: solid 1px #ddd;
 
 		a {
 			display: block;
@@ -24,7 +22,7 @@
 		}
 
 		.active-nav a {
-			background: #eee;
+			border: solid 1px;
 		}
 	}
 }

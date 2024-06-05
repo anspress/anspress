@@ -148,6 +148,8 @@ class CoreModule extends AbstractModule {
 	 */
 	public function addQueryVars( $qvars ) {
 		$qvars[] = 'ap_question_paged';
+		$qvars[] = 'ap_cat_paged';
+		$qvars[] = 'ap_tag_paged';
 
 		return $qvars;
 	}

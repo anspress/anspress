@@ -23,9 +23,6 @@ class TagModule extends AbstractModule {
 	 * @return void
 	 */
 	public function register_hooks() {
-		ap_register_page( 'tag', __( 'Tag', 'anspress-question-answer' ), array( $this, 'tag_page' ), false );
-		ap_register_page( 'tags', __( 'Tags', 'anspress-question-answer' ), array( $this, 'tags_page' ) );
-
 		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 
