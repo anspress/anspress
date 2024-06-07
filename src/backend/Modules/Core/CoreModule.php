@@ -36,6 +36,7 @@ class CoreModule extends AbstractModule {
 		add_action( 'init', array( $this, 'registerCommonBlock' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'registerBlockAssets' ) );
 		add_filter( 'query_vars', array( $this, 'addQueryVars' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueueBlockAssets' ) );
 	}
 
 	/**
@@ -152,5 +153,9 @@ class CoreModule extends AbstractModule {
 		$qvars[] = 'ap_tag_paged';
 
 		return $qvars;
+	}
+
+	public function enqueueBlockAssets() {
+		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
 	}
 }

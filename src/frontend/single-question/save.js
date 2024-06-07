@@ -1,38 +1,8 @@
-import { useBlockProps, InspectorControls, InnerBlocks } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, RangeControl, ToggleControl, TextControl, Button } from '@wordpress/components';
-import { useState } from 'react';
-import ServerSideRender from '@wordpress/server-side-render';
+import { useBlockProps } from '@wordpress/block-editor';
 
-const Edit = ({ attributes }) => {
-  const { avatarPosition } = attributes;
-
-  const blockProps = useBlockProps();
-
+const Save = ({ attributes }) => {
   return (
-    <div {...blockProps}>
-      <InspectorControls>
-        <PanelBody title="Avatar Settings">
-          {/* <SelectControl
-            label="Avatar Position"
-            value={avatarPosition}
-            options={[
-              { label: 'Left', value: 'left' },
-              { label: 'Right', value: 'right' },
-              { label: 'Top', value: 'top' },
-              { label: 'Bottom', value: 'bottom' }
-            ]}
-            onChange={(value) => setAttributes({ avatarPosition: value })}
-          />
-          <RangeControl
-            label="Avatar Size"
-            value={avatarSize}
-            onChange={(value) => setAttributes({ avatarSize: value })}
-            min={24}
-            max={192}
-          /> */}
-        </PanelBody>
-      </InspectorControls>
-
+    <div {...useBlockProps.save()}>
       <div className="wp-block-anspress-single-question-avatar">
         <a href="#">
           <img src="https://placehold.it/50x50" alt="Rahul Arya" className="avatar avatar-100 photo" loading="lazy" />
@@ -59,15 +29,16 @@ const Edit = ({ attributes }) => {
         </div>
       </div>
 
-      <div className="wp-block-anspress-single-question-votes">
+      <div className="wp-block-anspress-single-question-votes from edit" data-gutenberg-attributes={JSON.stringify(attributes)}>
         <a className="apicon-thumb-up wp-block-anspress-single-question-vote-up" href="#" title="Up vote this question"></a>
         <span className="wp-block-anspress-single-question-count">0</span>
         <a data-tipposition="bottom center" className="apicon-thumb-down wp-block-anspress-single-question-vote-down" href="#" title="Down vote this question">
 
         </a>
       </div>
+      <vote-component data-gutenberg-attributes={JSON.stringify(attributes)}></vote-component>
     </div>
   );
 };
 
-export default Edit;
+export default Save;

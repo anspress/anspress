@@ -29,5 +29,5 @@ registerBlockType(metadata.name, {
   /**
    * @see ./edit.js
    */
-  edit: Edit,
+  edit: Edit
 });
