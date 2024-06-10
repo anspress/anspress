@@ -25,4 +25,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress
  */
 interface PolicyInterface {
+	/**
+	 * Get the policy name.
+	 *
+	 * @return string
+	 */
+	public static function getPolicyName(): string;
 }

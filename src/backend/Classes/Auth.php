@@ -10,27 +10,30 @@ namespace AnsPress\Classes;
 
 use AnsPress\Exceptions\AuthException;
 use AnsPress\Exceptions\GeneralException;
+use InvalidArgumentException;
 use WP_User;
 
 /**
  * Authorization class.
+ *
+ * @package AnsPress\Classes
  */
 class Auth {
 	/**
-	 * Auth policies.
+	 * Bindings.
 	 *
 	 * @var array
 	 */
-	private static array $policies = array();
+	private array $bindings = array();
 
 	/**
-	 * Register policies.
+	 * Constructor.
 	 *
 	 * @param array $policies Policies.
 	 * @throws GeneralException If the policy class does not exist.
 	 * @throws GeneralException If the policy class is not a subclass of Abstract Policy.
 	 */
-	public static function registerPolicies( array $policies ) {
+	public function __construct( array $policies ) {
 		// Check policy class exists.
 		foreach ( $policies as $policy ) {
 			if ( ! class_exists( $policy ) ) {
@@ -41,9 +44,8 @@ class Auth {
 				throw new GeneralException( 'Policy class must be a subclass of Abstract Policy.' );
 			}
 
-			$policy = new $policy();
-
-			self::$policies[ $policy->getPolicyName() ] = new $policy();
+			// Lazy loading.
+			$this->bindings[ $policy::getPolicyName() ] = fn() => new $policy( $policy::getPolicyName() );
 		}
 	}
 
@@ -76,14 +78,16 @@ class Auth {
 	 * @param array  $context The context.
 	 * @return bool True if the user has the ability, false otherwise.
 	 */
-	public static function currentUserCan( $ability, array $context = array() ): bool {
+	public static function currentUserCan( string $ability, array $context = array() ): bool {
 		$user = self::user();
 
 		if ( ! $user ) {
 			return false;
 		}
 
-		return self::check( $ability, $context, $user );
+		$instance = Plugin::get( self::class );
+
+		return $instance->check( $ability, $context, $user );
 	}
 
 	/**
@@ -97,17 +101,26 @@ class Auth {
 	 * @throws GeneralException If the policy does not exist.
 	 * @throws GeneralException If the policy does not have the given ability method.
 	 */
-	public static function check( string $ability, array $context = array(), ?WP_User $user = null ) {
+	public function check( string $ability, array $context = array(), ?WP_User $user = null ) {
 		$abilityParts = explode( ':', $ability );
-		$policy       = self::$policies[ $abilityParts[0] ] ?? null;
+
+		$policyName = $abilityParts[0];
 
 		if ( count( $abilityParts ) < 2 ) {
 			throw new GeneralException( 'Invalid ability format, it must be policyName:ability.' );
 		}
 
-		if ( null === $policy ) {
+		if ( ! isset( $this->bindings[ $policyName ] ) ) {
 			throw new GeneralException( 'Policy does not exist.' );
 		}
+
+		$policy = $this->bindings[ $policyName ];
+
+		if ( ! $policy instanceof AbstractPolicy ) {
+			$this->bindings[ $policyName ] = $policy();
+		}
+
+		$policy = $this->bindings[ $policyName ];
 
 		// Check if the policy has a before method.
 		$before = $policy->before( $ability, $user, $context );
@@ -141,7 +154,8 @@ class Auth {
 			$user = self::user();
 		}
 
-		if ( ! self::check( $ability, $context, $user ) ) {
+		$instance = Plugin::get( self::class );
+		if ( ! $instance->check( $ability, $context, $user ) ) {
 			throw new AuthException( 'User is not authorized to perform this action.' );
 		}
 	}

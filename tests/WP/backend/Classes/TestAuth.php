@@ -44,7 +44,7 @@ class SamplePolicy extends AbstractPolicy{
 		),
 	);
 
-	public function getPolicyName(): string {
+	public static function getPolicyName(): string {
 		return 'sample';
 	}
 
@@ -65,8 +65,16 @@ class SamplePolicy extends AbstractPolicy{
 class TestAuth extends TestCase {
 	use Common;
 
+	public function setUp(): void {
+		parent::setUp();
+
+		Plugin::getContainer()->set(Auth::class, function() {
+			return new Auth([ SamplePolicy::class ]);
+		});
+	}
+
 	public function testIsUserIsLoggedIn() {
-		$auth = new \AnsPress\Classes\Auth();
+		$auth = new \AnsPress\Classes\Auth([ SamplePolicy::class ]);
 
 		$this->assertFalse($auth->isLoggedIn());
 
@@ -84,10 +92,6 @@ class TestAuth extends TestCase {
 	}
 
 	public function testCurrentUserCan() {
-		$policy = new SamplePolicy();
-
-		Auth::registerPolicies(array(SamplePolicy::class));
-
 		$this->assertFalse(\AnsPress\Classes\Auth::currentUserCan('sample:view', ['id' => 1]));
 
 		$this->setRole('subscriber');
@@ -100,50 +104,24 @@ class TestAuth extends TestCase {
 	}
 
 	public function testCheckBefore() {
-		$policy = new SamplePolicy();
-		$policy->abilities = array(
-			'view' => array(
-				'id',
-			),
-		);
-
-		Auth::registerPolicies(array(SamplePolicy::class));
-
 		$this->setRole('administrator');
 
-		$this->assertTrue(\AnsPress\Classes\Auth::check('sample:view', ['id' => 1]));
+		$this->assertTrue(\AnsPress\Classes\Plugin::get(Auth::class)->check('sample:view', ['id' => 1]));
 	}
 
 	public function testCheckThrow() {
-		$policy = new SamplePolicy();
-		$policy->abilities = array(
-			'view' => array(
-				'id',
-			),
-		);
-
-		Auth::registerPolicies(array(SamplePolicy::class));
-
 		$this->expectException(\AnsPress\Exceptions\AuthException::class);
 
 		\AnsPress\Classes\Auth::checkAndThrow('sample:view', ['id' => 1]);
 	}
 
 	public function testCheckGeneralException() {
-		$policy = new SamplePolicy();
-		$policy->abilities = array(
-			'view' => array(
-				'id',
-			),
-		);
-
-		Auth::registerPolicies(array(SamplePolicy::class));
 
 		$this->expectException(\AnsPress\Exceptions\GeneralException::class);
 
 		$this->expectExceptionMessage('Invalid ability format, it must be policyName:ability.');
 
-		\AnsPress\Classes\Auth::check('sample');
+		Plugin::get(Auth::class)->check('sample');
 	}
 
 	public function testGeneralExceptionForInvalidPolicy() {
@@ -151,11 +129,10 @@ class TestAuth extends TestCase {
 
 		$this->expectExceptionMessage('Policy does not exist.');
 
-		\AnsPress\Classes\Auth::check('invalid:view');
+		Plugin::get(Auth::class)->check('invalid:view');
 	}
 
 	public function testGeneralExceptionForInvalidContext() {
-		Auth::registerPolicies(array(SamplePolicy::class));
 
 		$this->expectException(\AnsPress\Exceptions\GeneralException::class);
 
@@ -163,6 +140,6 @@ class TestAuth extends TestCase {
 
 		$this->expectExceptionMessage('Invalid context.');
 
-		\AnsPress\Classes\Auth::check('sample:view');
+		Plugin::get(Auth::class)->check('sample:view');
 	}
 }

@@ -26,6 +26,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class AbstractPolicy implements PolicyInterface {
 	/**
+	 * Policy name.
+	 *
+	 * @var string
+	 */
+	public $policyName = '';
+
+	/**
 	 * List of abilities that the policy can handle.
 	 *
 	 * @var array
@@ -33,11 +40,14 @@ abstract class AbstractPolicy implements PolicyInterface {
 	public array $abilities = array();
 
 	/**
-	 * Name of the policy.
+	 * Constructor.
 	 *
-	 * @return string
+	 * @param string $policyName Policy name.
+	 * @return void
 	 */
-	abstract public function getPolicyName(): string;
+	public function __construct( string $policyName ) {
+		$this->policyName = $policyName;
+	}
 
 	/**
 	 * Validation for the context of the ability.
@@ -100,7 +110,7 @@ abstract class AbstractPolicy implements PolicyInterface {
 		}
 
 		// Check if the user has the ability to perform the action.
-		if ( ! $user->has_cap( $this->getPolicyName() . ':' . $ability ) ) {
+		if ( ! $user->has_cap( $this->policyName . ':' . $ability ) ) {
 			return false;
 		}
 

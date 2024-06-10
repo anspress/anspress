@@ -39,8 +39,9 @@ class VoteService extends AbstractService {
 			$data,
 			array(
 				'vote_user_id' => 'required|numeric|exists:users,ID',
-				'vote_event'   => 'required|string',
+				'vote_type'    => 'required|string|max:120',
 				'vote_ref_id'  => 'required|numeric',
+				'vote_value'   => 'required|numeric|min:-1|max:1',
 			)
 		);
 

@@ -15,6 +15,8 @@ use AnsPress\Modules\Config\ConfigService;
 use AnsPress\Modules\Subscriber\SubscriberModel;
 use AnsPress\Modules\Subscriber\SubscriberSchema;
 use AnsPress\Modules;
+use AnsPress\Modules\Subscriber\SubscriberPolicy;
+use AnsPress\Modules\Vote\VotePolicy;
 use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,15 +47,6 @@ class Plugin {
 		\AnsPress\Modules\Tag\TagModule::class,
 		\AnsPress\Modules\Reputation\ReputationModule::class,
 		\AnsPress\Modules\Profile\ProfileModule::class,
-	);
-
-	/**
-	 * Registered policies.
-	 *
-	 * @var array<AbstractModel, AbstractPolicy>
-	 */
-	private array $modelPolicies = array(
-		Modules\Subscriber\SubscriberModel::class => Modules\Subscriber\SubscriberPolicy::class,
 	);
 
 	/**
@@ -249,6 +242,15 @@ class Plugin {
 	}
 
 	/**
+	 * Get plugin version.
+	 *
+	 * @return Container
+	 */
+	public static function getContainer(): Container {
+		return self::$instance->container;
+	}
+
+	/**
 	 * Method to load singleton classes on demand.
 	 *
 	 * @template T of object
@@ -295,36 +297,5 @@ class Plugin {
 		}
 
 		return self::$instance->get( self::$instance->modelSchema[ $model ] );
-	}
-
-	/**
-	 * Register a policy.
-	 *
-	 * @param string $model The model name.
-	 * @param string $policy The policy name.
-	 */
-	public static function registerPolicy( $model, $policy ) {
-		self::$instance->modelPolicies[ $model ] = $policy;
-	}
-
-	/**
-	 * Resolve a policy.
-	 *
-	 * @param string $model The model name.
-	 * @return AbstractPolicy The policy object.
-	 * @throws GeneralException If policy not found.
-	 */
-	public static function getPolicy( $model ): AbstractPolicy {
-		if ( ! isset( self::$instance->modelPolicies[ $model ] ) ) {
-			throw new GeneralException(
-				sprintf(
-					// translators: %s: model name.
-					esc_attr__( 'No policy registered for model %s', 'anspress-question-answer' ),
-					esc_attr( $model )
-				)
-			);
-		}
-
-		return self::get( self::$instance->modelPolicies[ $model ] );
 	}
 }

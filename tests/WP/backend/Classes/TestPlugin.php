@@ -60,7 +60,7 @@ class SampleService extends AbstractService {
 }
 
 class SamplePolicy extends AbstractPolicy{
-	public function getPolicyName(): string {
+	public static function getPolicyName(): string {
 		return 'sample';
 	}
 	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
@@ -88,27 +88,5 @@ class TestPlugin extends TestCase {
 
 	public function testGetPathTo() {
 		$this->assertEquals( dirname( Plugin::getPluginFile() ) . '/test.php', Plugin::getPathTo( 'test.php' ) );
-	}
-
-	public function testRegisterPolicyPass() {
-		$model = SampleModel::class;
-		$policy = SamplePolicy::class;
-
-		\AnsPress\Classes\Plugin::registerPolicy($model, $policy);
-
-		$this->assertInstanceOf($policy, \AnsPress\Classes\Plugin::getPolicy($model));
-	}
-
-	public function testRegisterPolicyFail() {
-		$model = SampleModel::class;
-		$policy = SamplePolicy::class;
-
-		\AnsPress\Classes\Plugin::registerPolicy($model, $policy);
-
-		$this->expectException( GeneralException::class );
-
-		$this->expectExceptionMessage( 'No policy registered for model SomeOtherModel' );
-
-		$this->assertNotEquals($policy, \AnsPress\Classes\Plugin::getPolicy('SomeOtherModel'));
 	}
 }

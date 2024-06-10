@@ -36,4 +36,13 @@ class VoteModel extends AbstractModel {
 	public static function createSchema(): AbstractSchema {
 		return Plugin::get( VoteSchema::class );
 	}
+
+	/**
+	 * Get the default value for the vote date column.
+	 *
+	 * @return string
+	 */
+	public function getVoteDateColumnDefaultValue() {
+		return current_time( 'mysql' );
+	}
 }

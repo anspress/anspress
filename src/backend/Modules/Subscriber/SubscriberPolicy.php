@@ -30,9 +30,10 @@ class SubscriberPolicy extends AbstractPolicy {
 	 *
 	 * @param string       $ability The ability being checked (e.g., 'view', 'create').
 	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The context of the ability.
 	 * @return bool|null Null to proceed to specific policy method, or a boolean to override.
 	 */
-	public function before( string $ability, ?WP_User $user ): ?bool {
+	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
 		if ( $user && $user->has_cap( 'manage_options' ) ) {
 			return true;
 		}
