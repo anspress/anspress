@@ -60,7 +60,10 @@ class SampleService extends AbstractService {
 }
 
 class SamplePolicy extends AbstractPolicy{
-	public function before( string $ability, ?WP_User $user ) : ?bool {
+	public function getPolicyName(): string {
+		return 'sample';
+	}
+	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
 		if ( ! Auth::isLoggedIn() ) {
 			return false;
 		}

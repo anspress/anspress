@@ -53,7 +53,7 @@ const VoteCounter = ({ postId, initialCount, initialVote }) => {
         title="Up vote this question"
       >
       </button>
-      <span className="wp-block-anspress-single-question-count vote-count">{count}</span>
+      <span className="wp-block-anspress-single-question-vcount vote-count">{count}</span>
       <button
         className="apicon-thumb-down"
         onClick={() => vote('downvote')}
@@ -66,9 +66,9 @@ const VoteCounter = ({ postId, initialCount, initialVote }) => {
 };
 
 window.addEventListener('load', () => {
-  document.querySelectorAll('.wp-block-anspress-single-question-votes').forEach(voteBlock => {
+  document.querySelectorAll('.wp-block-anspress-single-question-vote').forEach(voteBlock => {
     const postId = voteBlock.dataset.postId;
-    const initialCount = parseInt(voteBlock.querySelector('.wp-block-anspress-single-question-count').textContent, 10);
+    const initialCount = parseInt(voteBlock.querySelector('.wp-block-anspress-single-question-vcount').textContent, 10);
     const vote = JSON.parse(voteBlock.dataset.voteData);
     console.log(vote)
     const root = createRoot(voteBlock);
