@@ -8,9 +8,7 @@
 
 namespace AnsPress\Modules\Subscriber;
 
-use AnsPress\Classes\AbstractModel;
 use AnsPress\Classes\AbstractPolicy;
-use AnsPress\Interfaces\ModelInterface;
 use WP_User;
 
 // Exit if accessed directly.
@@ -22,6 +20,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Subscriber policy class.
  */
 class SubscriberPolicy extends AbstractPolicy {
+	public const POLICY_NAME = 'subscriber';
+
+	/**
+	 * Ability list.
+	 *
+	 * @var array
+	 */
+	protected array $abilities = array(
+		'view'   => array(
+			'subscriber',
+		),
+		'create' => array(),
+		'update' => array(
+			'subscriber',
+		),
+		'delete' => array(
+			'subscriber',
+		),
+	);
+
 	/**
 	 * Perform pre-authorization checks before any specific policy method.
 	 *
@@ -44,12 +62,12 @@ class SubscriberPolicy extends AbstractPolicy {
 	/**
 	 * Determine if the given user can view the specified model.
 	 *
-	 * @param WP_User         $user The current user attempting the action.
-	 * @param SubscriberModel $model The model instance being viewed.
+	 * @param WP_User $user The current user attempting the action.
+	 * @param array   $context The model instance being viewed.
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
-	public function view( WP_User $user, SubscriberModel $model ): bool {
-		if ( $user && $model && $model->subs_user_id === (int) $user->ID ) {
+	public function view( WP_User $user, array $context = array() ): bool {
+		if ( $user && ! empty( $context['subscriber'] ) && is_object( $context['subscriber'] ) && $context['subscriber']->subs_user_id === (int) $user->ID ) {
 			return true;
 		}
 
@@ -73,12 +91,12 @@ class SubscriberPolicy extends AbstractPolicy {
 	/**
 	 * Determine if the given user can update the specified model.
 	 *
-	 * @param WP_User         $user The current user attempting the action.
-	 * @param SubscriberModel $model The model instance being updated.
+	 * @param WP_User $user The current user attempting the action.
+	 * @param array   $context The model instance being updated.
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
-	public function update( WP_User $user, SubscriberModel $model ): bool {
-		if ( $user && $model && $model->subs_user_id === (int) $user->ID ) {
+	public function update( WP_User $user, array $context ): bool {
+		if ( $user && ! empty( $context['subscriber'] ) && is_object( $context['subscriber'] ) && $context['subscriber']->subs_user_id === (int) $user->ID ) {
 			return true;
 		}
 
@@ -88,12 +106,12 @@ class SubscriberPolicy extends AbstractPolicy {
 	/**
 	 * Determine if the given user can delete the specified model.
 	 *
-	 * @param WP_User         $user The current user attempting the action.
-	 * @param SubscriberModel $model The model instance being deleted.
+	 * @param WP_User $user The current user attempting the action.
+	 * @param array   $context The model instance being deleted.
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
-	public function delete( WP_User $user, SubscriberModel $model ): bool {
-		if ( $user && $model && $model->subs_user_id === (int) $user->ID ) {
+	public function delete( WP_User $user, array $context ): bool {
+		if ( $user && ! empty( $context['subscriber'] ) && is_object( $context['subscriber'] ) && $context['subscriber']->subs_user_id === (int) $user->ID ) {
 			return true;
 		}
 

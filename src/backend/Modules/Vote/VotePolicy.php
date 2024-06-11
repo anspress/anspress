@@ -20,14 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Vote policy class.
  */
 class VotePolicy extends AbstractPolicy {
-	/**
-	 * Get the policy name.
-	 *
-	 * @return string
-	 */
-	public static function getPolicyName(): string {
-		return 'vote';
-	}
+	const POLICY_NAME = 'vote';
 
 	/**
 	 * List of abilities that the policy can handle.

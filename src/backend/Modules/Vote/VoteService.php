@@ -30,18 +30,18 @@ class VoteService extends AbstractService {
 	 * @return null|VoteModel  Vote model.
 	 */
 	public function create( array $data ): ?VoteModel {
-		// Check if user can create vote.
-		Auth::checkAndThrow( 'create', new VoteModel() );
-
-		$data['vote_user_id'] = get_current_user_id();
+		if ( empty( $data['vote_user_id'] ) && Auth::isLoggedIn() ) {
+			$data['vote_user_id'] = Auth::user()->ID;
+		}
 
 		$validator = new Validator(
 			$data,
 			array(
-				'vote_user_id' => 'required|numeric|exists:users,ID',
-				'vote_type'    => 'required|string|max:120',
-				'vote_ref_id'  => 'required|numeric',
-				'vote_value'   => 'required|numeric|min:-1|max:1',
+				'vote_user_id'  => 'required|numeric|exists:users,ID',
+				'vote_rec_user' => 'numeric|exists:users,ID',
+				'vote_type'     => 'required|string|max:120',
+				'vote_ref_id'   => 'required|numeric',
+				'vote_value'    => 'required',
 			)
 		);
 

@@ -30,5 +30,5 @@ interface PolicyInterface {
 	 *
 	 * @return string
 	 */
-	public static function getPolicyName(): string;
+	public function getPolicyName(): string;
 }

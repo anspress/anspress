@@ -14,6 +14,10 @@ use AnsPress\Interfaces\PolicyInterface;
 use InvalidArgumentException;
 use WP_User;
 
+use function Patchwork\getCalledClass;
+
+use const Patchwork\CodeManipulation\Actions\RedefinitionOfNew\CALLED_CLASS;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -26,27 +30,38 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class AbstractPolicy implements PolicyInterface {
 	/**
-	 * Policy name.
+	 * Name of the policy.
 	 *
 	 * @var string
 	 */
-	public $policyName = '';
+	public const POLICY_NAME = '';
 
 	/**
 	 * List of abilities that the policy can handle.
 	 *
 	 * @var array
 	 */
-	public array $abilities = array();
+	protected array $abilities = array();
 
 	/**
 	 * Constructor.
 	 *
-	 * @param string $policyName Policy name.
 	 * @return void
+	 * @throws InvalidArgumentException If the POLICY_NAME constant is not defined.
 	 */
-	public function __construct( string $policyName ) {
-		$this->policyName = $policyName;
+	public function __construct() {
+		if ( empty( $this->getPolicyName() ) ) {
+			throw new InvalidArgumentException( 'POLICY_NAME constant must be defined in the child class.' );
+		}
+	}
+
+	/**
+	 * Get the name of the policy.
+	 *
+	 * @return string
+	 */
+	public function getPolicyName(): string {
+		return $this::POLICY_NAME;
 	}
 
 	/**
@@ -110,7 +125,7 @@ abstract class AbstractPolicy implements PolicyInterface {
 		}
 
 		// Check if the user has the ability to perform the action.
-		if ( ! $user->has_cap( $this->policyName . ':' . $ability ) ) {
+		if ( ! $user->has_cap( $this->getPolicyName() . ':' . $ability ) ) {
 			return false;
 		}
 

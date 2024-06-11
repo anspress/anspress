@@ -38,15 +38,13 @@ class SampleModel extends AbstractModel {
 }
 
 class SamplePolicy extends AbstractPolicy{
+	public const POLICY_NAME = 'sample';
+
 	public array $abilities = array(
 		'view' => array(
 			'id',
 		),
 	);
-
-	public static function getPolicyName(): string {
-		return 'sample';
-	}
 
 	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
 		if ( Auth::user() && Auth::user()->has_cap('manage_options') ) {

@@ -60,9 +60,8 @@ class SampleService extends AbstractService {
 }
 
 class SamplePolicy extends AbstractPolicy{
-	public static function getPolicyName(): string {
-		return 'sample';
-	}
+	const POLICY_NAME = 'sample';
+
 	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
 		if ( ! Auth::isLoggedIn() ) {
 			return false;

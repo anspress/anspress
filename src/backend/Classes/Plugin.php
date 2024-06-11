@@ -10,13 +10,9 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Exceptions\GeneralException;
-use AnsPress\Interfaces\PolicyInterface;
 use AnsPress\Modules\Config\ConfigService;
 use AnsPress\Modules\Subscriber\SubscriberModel;
 use AnsPress\Modules\Subscriber\SubscriberSchema;
-use AnsPress\Modules;
-use AnsPress\Modules\Subscriber\SubscriberPolicy;
-use AnsPress\Modules\Vote\VotePolicy;
 use InvalidArgumentException;
 
 if ( ! defined( 'ABSPATH' ) ) {

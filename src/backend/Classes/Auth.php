@@ -45,7 +45,7 @@ class Auth {
 			}
 
 			// Lazy loading.
-			$this->bindings[ $policy::getPolicyName() ] = fn() => new $policy( $policy::getPolicyName() );
+			$this->bindings[ $policy::POLICY_NAME ] = fn() => new $policy();
 		}
 	}
 
