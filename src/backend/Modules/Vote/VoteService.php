@@ -55,4 +55,89 @@ class VoteService extends AbstractService {
 
 		return $updated;
 	}
+
+	/**
+	 * Delete a vote.
+	 *
+	 * @param int $vote_id Vote ID.
+	 * @return bool
+	 */
+	public function delete( int $vote_id ): bool {
+		$vote = VoteModel::find( $vote_id );
+
+		if ( ! $vote ) {
+			return false;
+		}
+
+		return $vote->delete();
+	}
+
+	/**
+	 * Get user casted vote.
+	 *
+	 * @param int    $user_id User ID.
+	 * @param int    $ref_id Reference ID.
+	 * @param string $type Vote type.
+	 * @return bool
+	 */
+	public function getUserVote( int $user_id, int $ref_id, string $type ): ?VoteModel {
+		global $wpdb;
+
+		$models = VoteModel::findMany(
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}ap_votes WHERE vote_user_id = %d AND vote_ref_id = %d AND vote_type = %s LIMIT 1",
+				$user_id,
+				$ref_id,
+				$type
+			)
+		);
+
+		if ( empty( $models ) ) {
+			return null;
+		}
+
+		return $models[0];
+	}
+
+	/**
+	 * Get vote count on a post.
+	 *
+	 * @param int    $ref_id Reference ID.
+	 * @param string $type Vote type.
+	 * @return int
+	 */
+	public function getVoteCount( int $ref_id, string $type ): int {
+		global $wpdb;
+
+		$vote_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_ref_id = %d AND vote_type = %s",
+				$ref_id,
+				$type
+			)
+		);
+
+		return (int) $vote_count;
+	}
+
+	/**
+	 * Get vote counts by user.
+	 *
+	 * @param int    $user_id User ID.
+	 * @param string $type Vote type.
+	 * @return int
+	 */
+	public function getVoteCountByUser( int $user_id, string $type ): int {
+		global $wpdb;
+
+		$vote_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_user_id = %d AND vote_type = %s",
+				$user_id,
+				$type
+			)
+		);
+
+		return (int) $vote_count;
+	}
 }
