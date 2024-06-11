@@ -37,13 +37,15 @@ class TestVoteModule extends TestCase {
 	}
 
 	public function testRegisterRoutes() {
+		$postId = $this->factory()->post->create( [ 'post_type' => 'question' ] );
 
 		$module = Plugin::get( VoteModule::class);
 
 		$module->register_hooks();
 
 		$data = $this->getRestData(
-			'/anspress/v1/vote', 'POST'
+			'/anspress/v1/vote/' . $postId,
+			'POST'
 		);
 
 		$this->assertEquals( ['message' => 'Invalid nonce'], $data->get_data() );

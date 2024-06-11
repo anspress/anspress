@@ -10,6 +10,7 @@ namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\RestRouteHandler;
+use WP_REST_Server;
 
 /**
  * Category module class.
@@ -34,10 +35,30 @@ class VoteModule extends AbstractModule {
 	public function registerRoutes() {
 		register_rest_route(
 			'anspress/v1',
-			'/vote',
+			'/vote/(?P<post_id>\d+)',
 			array(
-				'methods'             => 'POST',
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'getPostVotes' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/vote/(?P<post_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'createVote' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/vote/(?P<post_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'undoVote' ),
 				'permission_callback' => '__return_true',
 			)
 		);

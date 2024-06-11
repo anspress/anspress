@@ -32,6 +32,22 @@ class VoteController extends AbstractController {
 	public function __construct( private VoteService $voteService ) {}
 
 	/**
+	 * Get votes for a post.
+	 *
+	 * @param int $postId Post ID.
+	 * @return WP_REST_Response
+	 */
+	public function getPostVotes( int $postId ): WP_REST_Response {
+		if ( ! is_user_logged_in() ) {
+			return $this->unauthorized();
+		}
+
+		$votes = $this->voteService->getVoteCount( $postId, 'vote' );
+
+		return $this->response( array( 'votes' => $votes ) );
+	}
+
+	/**
 	 * Create a new vote.
 	 */
 	public function createVote(): WP_REST_Response {

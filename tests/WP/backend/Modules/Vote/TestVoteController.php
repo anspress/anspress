@@ -301,4 +301,50 @@ class TestVoteController extends TestCase {
 
 		$this->assertNull( VoteModel::find( $vote->vote_id ) );
 	}
+
+	public function testGetPostVotesSuccess() {
+		$postId = $this->factory()->post->create();
+
+		$this->setRole( 'subscriber' );
+
+		VoteModel::create([
+			'vote_user_id'  => get_current_user_id(),
+			'vote_rec_user' => get_current_user_id(),
+			'vote_type'     => 'vote',
+			'vote_post_id'  => $postId,
+			'vote_value'    => 1
+		]);
+
+		// Unrelated.
+		VoteModel::create([
+			'vote_user_id'  => get_current_user_id(),
+			'vote_rec_user' => get_current_user_id(),
+			'vote_type'     => 'vote',
+			'vote_post_id'  => $this->factory()->post->create(),
+			'vote_value'    => 1
+		]);
+
+		$response = $this->controller->getPostVotes( $postId );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$this->assertArrayHasKey( 'votes', $response->get_data() );
+
+		$this->assertEquals( 1, $response->get_data()['votes'] );
+	}
+
+	public function testGetPostVotesUnauthorized() {
+		$postId = $this->factory()->post->create();
+
+		$response = $this->controller->getPostVotes( $postId );
+
+		$this->assertEquals( 401, $response->get_status() );
+
+		$this->assertEquals(
+			[
+				'message' => 'Unauthorized'
+			],
+			$response->get_data()
+		);
+	}
 }
