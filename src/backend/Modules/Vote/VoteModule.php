@@ -9,7 +9,7 @@
 namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractModule;
-use AnsPress\Classes\Plugin;
+use AnsPress\Classes\RestRouteHandler;
 
 /**
  * Category module class.
@@ -32,14 +32,13 @@ class VoteModule extends AbstractModule {
 	 * @return void
 	 */
 	public function registerRoutes() {
-		$voteController = Plugin::get( VoteController::class );
-
 		register_rest_route(
 			'anspress/v1',
 			'/vote',
 			array(
-				'methods'  => 'POST',
-				'callback' => array( $voteController, 'createVote' ),
+				'methods'             => 'POST',
+				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'createVote' ),
+				'permission_callback' => '__return_true',
 			)
 		);
 	}

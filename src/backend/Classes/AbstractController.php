@@ -102,7 +102,7 @@ abstract class AbstractController {
 	 */
 	public function validateNonce( string $action, string $key = '_wpnonce' ): void {
 		if ( ! wp_verify_nonce( $this->getRequest( $key ), $action ) ) {
-			throw new HTTPException( 403, 'Invalid nonce' );
+			throw new HTTPException( 400, 'Invalid nonce' );
 		}
 	}
 

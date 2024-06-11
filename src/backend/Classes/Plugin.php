@@ -43,6 +43,8 @@ class Plugin {
 		\AnsPress\Modules\Tag\TagModule::class,
 		\AnsPress\Modules\Reputation\ReputationModule::class,
 		\AnsPress\Modules\Profile\ProfileModule::class,
+		\AnsPress\Modules\Vote\VoteModule::class,
+		\AnsPress\Modules\Subscriber\SubscriberModule::class,
 	);
 
 	/**
