@@ -26,8 +26,11 @@ class AnsPress_Vote {
 	 * @since 2.0.1.1
 	 *
 	 * @todo Add ajax tests for subscribers.
+	 * @deprecated 5.0.0 Use VoteController instead.
 	 */
 	public static function vote() {
+		_deprecated_function( __METHOD__, '5.0.0', 'VoteController' );
+
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
 		if ( ! anspress_verify_nonce( 'vote_' . $post_id ) ) {
@@ -122,8 +125,11 @@ class AnsPress_Vote {
 	 *
 	 * @param integer $post_id Post ID.
 	 * @since 4.0.0
+	 * @deprecated 5.0.0 Use VoteController instead.
 	 */
 	public static function delete_votes( $post_id ) {
+		_deprecated_function( __METHOD__, '5.0.0', 'VoteController' );
+
 		$votes = ap_get_votes( array( 'vote_post_id' => $post_id ) );
 
 		foreach ( (array) $votes as $vote ) {
@@ -158,8 +164,11 @@ class AnsPress_Vote {
  * @param  string|false  $date Date of vote, default is current time.
  * @return boolean
  * @since  4.0.0
+ * @deprecated 5.0.0 Use VoteService instead.
  */
 function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $value = '', $date = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService' );
+
 	if ( false === $date ) {
 		$date = current_time( 'mysql' );
 	}
@@ -201,8 +210,11 @@ function ap_vote_insert( $post_id, $user_id, $type = 'vote', $rec_user_id = 0, $
  * @param  array|integer $args Arguments or vote_post_id.
  * @return array|boolean
  * @since  4.0.0
+ * @deprecated 5.0.0 Use VoteModel instead.
  */
 function ap_get_votes( $args = array() ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteModel' );
+
 	if ( ! is_array( $args ) ) {
 		$args = array( 'vote_post_id' => (int) $args );
 	}
@@ -484,8 +496,11 @@ function ap_is_user_voted( $post_id, $type = 'vote', $user_id = false ) {
  * @param  string          $value   Vote value.
  * @return boolean
  * @since  4.0.0
+ * @deprecated 5.0.0 Use VoteService instead.
  */
 function ap_delete_vote( $post_id, $user_id = false, $type = 'vote', $value = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService' );
+
 	global $wpdb;
 
 	if ( false === $user_id ) {
@@ -587,8 +602,11 @@ function ap_delete_post_vote( $post_id, $user_id = false, $up_vote = null ) {
  * @param   bool       $output Echo or return vote button.
  * @return  null|string
  * @since 0.1
+ * @deprecated 5.0.0
  */
 function ap_vote_btn( $post = null, $output = true ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	$post = ap_get_post( $post );
 	if ( ! $post || ( 'answer' === $post->post_type && ap_opt( 'disable_voting_on_answer' ) ) ) {
 		return;
@@ -674,8 +692,11 @@ function ap_vote_btn( $post = null, $output = true ) {
  *
  * @param  array $ids Post IDs.
  * @since  4.0.0
+ * @deprecated 5.0.0
  */
 function ap_user_votes_pre_fetch( $ids ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	if ( $ids && is_user_logged_in() ) {
 		$votes = ap_get_votes(
 			array(

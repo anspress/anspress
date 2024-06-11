@@ -23,5 +23,24 @@ class VoteModule extends AbstractModule {
 	 * @return void
 	 */
 	public function register_hooks() {
+		add_action( 'rest_api_init', array( $this, 'registerRoutes' ) );
+	}
+
+	/**
+	 * Register REST API routes.
+	 *
+	 * @return void
+	 */
+	public function registerRoutes() {
+		$voteController = Plugin::get( VoteController::class );
+
+		register_rest_route(
+			'anspress/v1',
+			'/vote',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $voteController, 'createVote' ),
+			)
+		);
 	}
 }

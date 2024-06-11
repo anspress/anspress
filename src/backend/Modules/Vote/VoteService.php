@@ -57,11 +57,11 @@ class VoteService extends AbstractService {
 	/**
 	 * Delete a vote.
 	 *
-	 * @param int $vote_id Vote ID.
+	 * @param int $voteId Vote ID.
 	 * @return bool
 	 */
-	public function delete( int $vote_id ): bool {
-		$vote = VoteModel::find( $vote_id );
+	public function delete( int $voteId ): bool {
+		$vote = VoteModel::find( $voteId );
 
 		if ( ! $vote ) {
 			return false;
@@ -73,19 +73,19 @@ class VoteService extends AbstractService {
 	/**
 	 * Get user casted vote.
 	 *
-	 * @param int    $user_id User ID.
-	 * @param int    $ref_id Reference ID.
+	 * @param int    $userId User ID.
+	 * @param int    $postId Reference ID.
 	 * @param string $type Vote type.
-	 * @return bool
+	 * @return VoteModel|null
 	 */
-	public function getUserVote( int $user_id, int $ref_id, string $type ): ?VoteModel {
+	public function getUserVote( int $userId, int $postId, string $type ): ?VoteModel {
 		global $wpdb;
 
 		$models = VoteModel::findMany(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}ap_votes WHERE vote_user_id = %d AND vote_ref_id = %d AND vote_type = %s LIMIT 1",
-				$user_id,
-				$ref_id,
+				"SELECT * FROM {$wpdb->prefix}ap_votes WHERE vote_user_id = %d AND vote_post_id = %d AND vote_type = %s LIMIT 1",
+				$userId,
+				$postId,
 				$type
 			)
 		);
@@ -100,17 +100,17 @@ class VoteService extends AbstractService {
 	/**
 	 * Get vote count on a post.
 	 *
-	 * @param int    $ref_id Reference ID.
+	 * @param int    $refId Reference ID.
 	 * @param string $type Vote type.
 	 * @return int
 	 */
-	public function getVoteCount( int $ref_id, string $type ): int {
+	public function getVoteCount( int $refId, string $type ): int {
 		global $wpdb;
 
 		$vote_count = $wpdb->get_var( // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_ref_id = %d AND vote_type = %s",
-				$ref_id,
+				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_post_id = %d AND vote_type = %s",
+				$refId,
 				$type
 			)
 		);

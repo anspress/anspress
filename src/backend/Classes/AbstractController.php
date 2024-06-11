@@ -170,10 +170,13 @@ abstract class AbstractController {
 	/**
 	 * Return not found response.
 	 *
-	 * @return WP_REST_Response
+	 * @param string $message Error message.
+	 *
+	 * @throws HTTPException If not found.
 	 */
-	public function notFound(): WP_REST_Response {
-		return $this->response( array( 'message' => 'Not found' ), 404 );
+	public function notFound( string $message = '' ): never {
+		$message = $message ? $message : __( 'Not found', 'anspress-question-answer' );
+		throw new HTTPException( 404, esc_html( $message ) );
 	}
 
 	/**
@@ -183,5 +186,17 @@ abstract class AbstractController {
 	 */
 	public function badRequest(): WP_REST_Response {
 		return $this->response( array( 'message' => 'Bad request' ), 400 );
+	}
+
+	/**
+	 * Return server error response.
+	 *
+	 * @param string $message Error message.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function serverError( string $message = '' ): WP_REST_Response {
+		$message = $message ? $message : __( 'Internal error', 'anspress-question-answer' );
+		return $this->response( array( 'message' => $message ), 500 );
 	}
 }

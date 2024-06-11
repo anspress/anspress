@@ -3,8 +3,10 @@
 namespace Tests\WP\backend\Modules\Vote;
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\Plugin;
 use AnsPress\Exceptions\ValidationException;
 use AnsPress\Modules\Vote\VoteController;
+use AnsPress\Modules\Vote\VoteModel;
 use AnsPress\Modules\Vote\VoteService;
 use AnsPress\Tests\WP\Testcases\Common;
 use WP_REST_Request;
@@ -171,5 +173,132 @@ class TestVoteController extends TestCase {
 		$this->assertArrayHasKey( 'vote', $response->get_data() );
 
 		$this->assertEquals( 200, $response->get_status() );
+	}
+
+	public function testUndoVoteNonce() {
+		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
+		$this->expectExceptionMessage( 'Invalid nonce' );
+
+		$_REQUEST['__ap_vote_nonce'] = 'invalid_nonce';
+
+		$this->controller->undoVote();
+	}
+
+	public function testUndoVoteUnauthorized() {
+		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+
+		$response = $this->controller->undoVote();
+
+		$this->assertEquals(
+			[
+				'message' => 'Unauthorized'
+			],
+			$response->get_data()
+		);
+
+		$this->assertEquals( 401, $response->get_status() );
+	}
+
+	// public function testUndoVoteNoPermission() {
+	// 	$this->setRole( 'subscriber' );
+
+	// 	$this->expectException( \AnsPress\Exceptions\HTTPException::class );
+	// 	$this->expectExceptionMessage( 'Forbidden' );
+
+	// 	$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+
+	// 	$response = $this->controller->undoVote();
+
+	// 	$this->assertEquals(
+	// 		[
+	// 			'message' => 'Forbidden'
+	// 		],
+	// 		$response->get_data()
+	// 	);
+
+	// 	$this->assertEquals( 401, $response->get_status() );
+	// }
+
+	public function testUndoVoteFailedValidation() {
+		$this->setRole( 'subscriber' );
+
+		// Auth::user()->add_cap( 'vote:create' );
+
+		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+
+		$this->expectException( ValidationException::class );
+		$this->expectExceptionMessage( 'Validation failed.' );
+
+		try {
+			$response = $this->controller->undoVote();
+		} catch ( ValidationException $e ) {
+			$this->assertEquals(
+				[
+					"vote.vote_post_id" => array(
+						0 => "The vote.vote_post_id field is required.",
+						1 => "The vote.vote_post_id must be a number.",
+						2 => "The selected vote.vote_post_id is invalid."
+					),
+					"vote.vote_type" => array(
+						0 => "The vote.vote_type field is required.",
+						1 => "The vote.vote_type must be a string.",
+						2 => "The vote.vote_type must be one of upvote, downvote"
+					)
+				],
+				$e->getErrors()
+			);
+
+			throw $e;
+		}
+	}
+
+	public function testUndoVoteFailedValidationVoteNotFound() {
+		$this->setRole( 'subscriber' );
+
+		$postId = $this->factory()->post->create();
+
+		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+
+		$_REQUEST['vote'] = [
+			'vote_type'    => 'upvote',
+			'vote_post_id' => $postId
+		];
+
+		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
+		$this->expectExceptionMessage( 'Failed to undo vote' );
+
+		$this->controller->undoVote();
+	}
+
+	public function testUndoVoteSuccess() {
+		$this->setRole( 'subscriber' );
+
+		Auth::user()->add_cap( 'vote:delete' );
+
+		$postId = $this->factory()->post->create();
+
+		// Add vote.
+		$vote = VoteModel::create([
+			'vote_user_id'  => get_current_user_id(),
+			'vote_rec_user' => get_current_user_id(),
+			'vote_type'     => 'vote',
+			'vote_post_id'  => $postId,
+			'vote_value'    => 1
+		]);
+
+		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+
+		$_REQUEST['vote'] = [
+			'vote_type'    => 'upvote',
+			'vote_post_id' => $postId
+		];
+
+		$response = $this->controller->undoVote();
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$this->assertArrayHasKey( 'vote', $response->get_data() );
+
+		$this->assertNull( VoteModel::find( $vote->vote_id ) );
 	}
 }
