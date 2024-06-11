@@ -8,6 +8,8 @@
 
 namespace AnsPress\Exceptions;
 
+use AnsPress\Classes\Logger;
+use AnsPress\Classes\Plugin;
 use Exception;
 
 // Exit if accessed directly.
@@ -40,6 +42,9 @@ class ValidationException extends Exception {
 	public function __construct( $errors = array(), $message = 'Validation failed', $code = 0, Exception $previous = null ) {
 		$this->errors = $errors;
 		parent::__construct( $message, $code, $previous );
+
+		// Log the exception message.
+		Plugin::get( Logger::class )->log( Logger::LOG_LEVEL_ERROR, $message, $this->getErrors() );
 	}
 
 	/**

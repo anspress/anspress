@@ -25,9 +25,12 @@
  * GitHub Plugin URI: anspress/anspress
  */
 
+use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Config\ConfigService;
+use AnsPress\Modules\Subscriber\SubscriberPolicy;
+use AnsPress\Modules\Vote\VotePolicy;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -501,6 +504,17 @@ add_action(
 			'8.1',
 			'6.5',
 			$container
+		);
+
+		// Register auth policies.
+		$instnace->getContainer()->set(
+			Auth::class,
+			fn() => new Auth(
+				array(
+					VotePolicy::class,
+					SubscriberPolicy::class,
+				)
+			)
 		);
 
 		$instnace->registerModules();

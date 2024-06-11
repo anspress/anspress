@@ -40,7 +40,7 @@ class VoteService extends AbstractService {
 				'vote_user_id'  => 'required|numeric|exists:users,ID',
 				'vote_rec_user' => 'numeric|exists:users,ID',
 				'vote_type'     => 'required|string|max:120',
-				'vote_ref_id'   => 'required|numeric',
+				'vote_post_id'  => 'required|numeric',
 				'vote_value'    => 'required',
 			)
 		);
@@ -51,9 +51,7 @@ class VoteService extends AbstractService {
 
 		$vote->fill( $validated );
 
-		$updated = $vote->save();
-
-		return $updated;
+		return $vote->save();
 	}
 
 	/**
@@ -109,7 +107,7 @@ class VoteService extends AbstractService {
 	public function getVoteCount( int $ref_id, string $type ): int {
 		global $wpdb;
 
-		$vote_count = $wpdb->get_var(
+		$vote_count = $wpdb->get_var( // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_ref_id = %d AND vote_type = %s",
 				$ref_id,
@@ -130,7 +128,7 @@ class VoteService extends AbstractService {
 	public function getVoteCountByUser( int $user_id, string $type ): int {
 		global $wpdb;
 
-		$vote_count = $wpdb->get_var(
+		$vote_count = $wpdb->get_var( // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_user_id = %d AND vote_type = %s",
 				$user_id,

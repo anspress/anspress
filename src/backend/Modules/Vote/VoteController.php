@@ -1,0 +1,69 @@
+<?php
+/**
+ * Vote controller.
+ *
+ * @since 5.0.0
+ * @package AnsPress
+ */
+
+namespace AnsPress\Modules\Vote;
+
+use AnsPress\Classes\AbstractController;
+use WP_REST_Response;
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Vote controller.
+ *
+ * @package AnsPress\Modules\Vote
+ */
+class VoteController extends AbstractController {
+	/**
+	 * Constructor.
+	 *
+	 * @param VoteService $voteService Vote service.
+	 * @return void
+	 */
+	public function __construct( private VoteService $voteService ) {}
+
+	/**
+	 * Create a new vote.
+	 */
+	public function createVote(): WP_REST_Response {
+		// Chekc for proper nonce.
+		$this->validateNonce( 'ap_vote_nonce', '__ap_vote_nonce' );
+
+		if ( ! is_user_logged_in() ) {
+			return $this->unauthorized();
+		}
+
+		// Check for permission.
+		$this->checkPermission( 'vote:create' );
+
+		// Validate request data.
+		$data = $this->validate(
+			array(
+				'vote'              => 'required|array',
+				'vote.vote_type'    => 'required|string|in:upvote,downvote',
+				'vote.vote_post_id' => 'required|numeric|exists:posts,ID',
+			)
+		);
+
+		$vote = $data['vote'];
+
+		$postObj = get_post( $vote['vote_post_id'] );
+
+		$vote['vote_user_id']  = get_current_user_id();
+		$vote['vote_value']    = 'upvote' === $vote['vote_type'] ? 1 : -1;
+		$vote['vote_type']     = 'vote';
+		$vote['vote_rec_user'] = (int) $postObj->post_author;
+
+		$vote = $this->voteService->create( $vote );
+
+		return $this->response( array( 'vote' => $vote->toArray() ) );
+	}
+}

@@ -22,7 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 5.0.0
  */
 class InRule implements ValidationRuleInterface {
-	protected $in = array();
+	/**
+	 * Allowed values.
+	 *
+	 * @var array
+	 */
+	protected $allowed = array();
 
 	/**
 	 * Get rule name.
@@ -39,7 +44,7 @@ class InRule implements ValidationRuleInterface {
 	 * @param mixed ...$args Rule arguments.
 	 */
 	public function __construct( ...$args ) {
-		$this->in = $args;
+		$this->allowed = $args;
 	}
 
 	/**
@@ -61,6 +66,6 @@ class InRule implements ValidationRuleInterface {
 	 * @return string
 	 */
 	public function message(): string {
-		return 'The :attribute must be in :parameters';
+		return 'The :attribute must be one of ' . implode( ', ', $this->allowed );
 	}
 }
