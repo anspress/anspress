@@ -14,9 +14,9 @@ const VoteCounter = ({ postId, initialCount, initialVote }) => {
 
     try {
       const response = await apiFetch({
-        path: `/wp/v2/posts/${postId}/vote`,
+        path: `/anspress/v1/vote/${postId}`,
         method: 'POST',
-        data: { action }
+        data: { vote: { action, vote_post_id: postId } }
       });
 
       if (response.success) {

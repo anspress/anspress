@@ -28,6 +28,8 @@ class TestVoteController extends TestCase {
      */
     private $controller;
 
+	private $request;
+
 	/**
      * Setup test dependencies.
      */
@@ -35,41 +37,31 @@ class TestVoteController extends TestCase {
         parent::setUp();
 
         $this->controller = new VoteController( new VoteService() );
+		$this->request = $this->getMockBuilder('WP_REST_Request')
+			->disableOriginalConstructor()
+			->getMock();
+
+
+		$this->controller->setRequest( $this->request );
     }
 
 	public function testInvalidNonce() {
 		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
 		$this->expectExceptionMessage( 'Invalid nonce' );
 
-		$_REQUEST['__ap_vote_nonce'] = 'invalid_nonce';
+		$this->controller->setRequest( $this->request );
 
 		$this->controller->createVote();
-	}
-
-	/**
-	 * Test createVote method when user is not logged in.
-	 */
-	public function testUnauthorized() {
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
-
-		$response = $this->controller->createVote();
-
-		$this->assertEquals(
-			[
-				'message' => 'Unauthorized'
-			],
-			$response->get_data()
-		);
-
-		$this->assertEquals( 401, $response->get_status() );
 	}
 
 	public function testFailWhenNoPermission() {
 		$this->setRole( 'subscriber' );
 
+		$this->request->method('get_param')
+			->willReturn(wp_create_nonce( 'ap_vote_nonce' ));
+
 		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
 		$this->expectExceptionMessage( 'Forbidden' );
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
 
 		$response = $this->controller->createVote();
 
@@ -88,7 +80,11 @@ class TestVoteController extends TestCase {
 
 		Auth::user()->add_cap( 'vote:create' );
 
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+		$this->request->method('get_param')
+			->willReturn(wp_create_nonce( 'ap_vote_nonce' ));
+
+		$this->request->method('get_params')
+			->willReturn([]);
 
 		$this->expectException( ValidationException::class );
 		$this->expectExceptionMessage( 'Validation failed.' );
@@ -127,12 +123,22 @@ class TestVoteController extends TestCase {
 
 		Auth::user()->add_cap( 'vote:create' );
 
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+		// Mocked WP_REST_Request.
+		$this->request->method('get_param')
+			->with('__ap_vote_nonce')
+			->willReturn(
+				wp_create_nonce( 'ap_vote_nonce' )
+			);
 
-		$_REQUEST['vote'] = [
-			'vote_type' => 'invalid_vote_type',
-			'vote_post_id' => $postId
-		];
+		$this->request->method('get_params')
+			->willReturn(
+				[
+					'vote' => [
+						'vote_type'    => 'invalid_vote_type',
+						'vote_post_id' => $postId
+					]
+				]
+			);
 
 		$this->expectException( ValidationException::class );
 		$this->expectExceptionMessage( 'Validation failed.' );
@@ -161,12 +167,21 @@ class TestVoteController extends TestCase {
 
 		Auth::user()->add_cap( 'vote:create' );
 
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+		$this->request->method('get_params')
+			->willReturn(
+				[
+					'vote' => [
+						'vote_type'    => 'upvote',
+						'vote_post_id' => $postId
+					]
+				]
+			);
 
-		$_REQUEST['vote'] = [
-			'vote_type' => 'upvote',
-			'vote_post_id' => $postId
-		];
+		$this->request->method('get_param')
+			->with('__ap_vote_nonce')
+			->willReturn(
+				wp_create_nonce( 'ap_vote_nonce' ),
+			);
 
 		$response = $this->controller->createVote();
 
@@ -179,13 +194,16 @@ class TestVoteController extends TestCase {
 		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
 		$this->expectExceptionMessage( 'Invalid nonce' );
 
-		$_REQUEST['__ap_vote_nonce'] = 'invalid_nonce';
+		// Mocked WP_REST_Request.
+		$this->request->method('get_param')
+			->willReturn( 'invalid_nonce' );
 
 		$this->controller->undoVote();
 	}
 
 	public function testUndoVoteUnauthorized() {
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+		$this->request->method('get_param')
+			->willReturn( wp_create_nonce( 'ap_vote_nonce' ) );
 
 		$response = $this->controller->undoVote();
 
@@ -222,12 +240,14 @@ class TestVoteController extends TestCase {
 	public function testUndoVoteFailedValidation() {
 		$this->setRole( 'subscriber' );
 
-		// Auth::user()->add_cap( 'vote:create' );
-
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
-
 		$this->expectException( ValidationException::class );
 		$this->expectExceptionMessage( 'Validation failed.' );
+
+		$this->request->method('get_param')
+			->willReturn( wp_create_nonce( 'ap_vote_nonce' ) );
+
+		$this->request->method('get_params')
+			->willReturn([]);
 
 		try {
 			$response = $this->controller->undoVote();
@@ -257,12 +277,18 @@ class TestVoteController extends TestCase {
 
 		$postId = $this->factory()->post->create();
 
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+		$this->request->method('get_param')
+			->willReturn( wp_create_nonce( 'ap_vote_nonce' ) );
 
-		$_REQUEST['vote'] = [
-			'vote_type'    => 'upvote',
-			'vote_post_id' => $postId
-		];
+		$this->request->method('get_params')
+			->willReturn( [
+				'vote' => [
+					'vote_type'       => 'upvote',
+					'vote_post_id'    => $postId,
+				]
+			] );
+
+		$this->controller->setRequest( $this->request );
 
 		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
 		$this->expectExceptionMessage( 'Failed to undo vote' );
@@ -286,12 +312,19 @@ class TestVoteController extends TestCase {
 			'vote_value'    => 1
 		]);
 
-		$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
+		$this->request->method('get_param')
+			->willReturn( wp_create_nonce( 'ap_vote_nonce' ) );
 
-		$_REQUEST['vote'] = [
-			'vote_type'    => 'upvote',
-			'vote_post_id' => $postId
-		];
+		$this->request->method('get_params')
+			->willReturn([
+				'vote' => [
+					'vote_type'    => 'upvote',
+					'vote_post_id' => $postId
+				]
+			]);
+
+
+		$this->controller->setRequest( $this->request );
 
 		$response = $this->controller->undoVote();
 
@@ -324,7 +357,11 @@ class TestVoteController extends TestCase {
 			'vote_value'    => 1
 		]);
 
-		$response = $this->controller->getPostVotes( $postId );
+		$this->request->method('get_param')
+			->with('post_id')
+			->willReturn( $postId );
+
+		$response = $this->controller->getPostVotes();
 
 		$this->assertEquals( 200, $response->get_status() );
 

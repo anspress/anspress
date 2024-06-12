@@ -38,7 +38,7 @@ class VoteModule extends AbstractModule {
 			'/vote/(?P<post_id>\d+)',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'getPostVotes' ),
+				'callback'            => array( VoteController::class, 'getPostVotes' ),
 				'permission_callback' => '__return_true',
 			)
 		);
@@ -48,7 +48,7 @@ class VoteModule extends AbstractModule {
 			'/vote/(?P<post_id>\d+)',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'createVote' ),
+				'callback'            => array( VoteController::class, 'createVote' ),
 				'permission_callback' => '__return_true',
 			)
 		);
@@ -58,7 +58,7 @@ class VoteModule extends AbstractModule {
 			'/vote/(?P<post_id>\d+)',
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => fn() => RestRouteHandler::handle( VoteController::class, 'undoVote' ),
+				'callback'            => array( VoteController::class, 'undoVote' ),
 				'permission_callback' => '__return_true',
 			)
 		);

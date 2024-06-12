@@ -9,6 +9,7 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Exceptions\HTTPException;
+use WP_REST_Request;
 use WP_REST_Response;
 
 // Exit if accessed directly.
@@ -23,50 +24,37 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class AbstractController {
 	/**
+	 * Request data.
+	 *
+	 * @var WP_REST_Request
+	 */
+	protected WP_REST_Request $request;
+
+	/**
 	 * Constructor.
 	 *
 	 * @return void
 	 */
 	public function __construct() {
-		$this->init();
 	}
 
 	/**
-	 * Initialize controller.
+	 * Set request data.
 	 *
+	 * @param WP_REST_Request $req Request data.
 	 * @return void
 	 */
-	public function init() {}
+	public function setRequest( WP_REST_Request $req ): void {
+		$this->request = $req;
+	}
 
 	/**
-	 * Get request data.
+	 * Get all params.
 	 *
 	 * @return array
 	 */
-	public function getRequestData(): array {
-		return $_REQUEST; // @codingStandardsIgnoreLine
-	}
-
-	/**
-	 * Get request data.
-	 *
-	 * @param string $key Request key.
-	 * @param mixed  $def Default value.
-	 * @return mixed
-	 */
-	public function getRequest( string $key, mixed $def = null ): mixed {
-		return $_REQUEST[ $key ] ?? $def; // @codingStandardsIgnoreLine
-	}
-
-	/**
-	 * Get request data.
-	 *
-	 * @param string $key Request key.
-	 * @param mixed  $def Default value.
-	 * @return mixed
-	 */
-	public function getPost( string $key, mixed $def = null ): mixed {
-		return $_POST[ $key ] ?? $def; // @codingStandardsIgnoreLine
+	public function getParams(): array {
+		return $this->request->get_params();
 	}
 
 	/**
@@ -77,7 +65,7 @@ abstract class AbstractController {
 	 * @return mixed
 	 */
 	public function getQuery( string $key, mixed $def = null ): mixed {
-		return $_GET[ $key ] ?? $def; // @codingStandardsIgnoreLine
+		return $this->request->get_query_params()[ $key ] ?? $def;
 	}
 
 	/**
@@ -88,7 +76,7 @@ abstract class AbstractController {
 	 * @return mixed
 	 */
 	public function getParam( string $key, mixed $def = null ): mixed {
-		return $_REQUEST[ $key ] ?? $_POST[ $key ] ?? $_GET[ $key ] ?? $def; // @codingStandardsIgnoreLine
+		return $this->request->get_param( $key ) ?? $def;
 	}
 
 	/**
@@ -101,7 +89,7 @@ abstract class AbstractController {
 	 * @throws HTTPException If nonce is invalid.
 	 */
 	public function validateNonce( string $action, string $key = '_wpnonce' ): void {
-		if ( ! wp_verify_nonce( $this->getRequest( $key ), $action ) ) {
+		if ( ! wp_verify_nonce( $this->getParam( $key ), $action ) ) {
 			throw new HTTPException( 400, 'Invalid nonce' );
 		}
 	}
@@ -131,7 +119,7 @@ abstract class AbstractController {
 	 * @return array
 	 */
 	public function validate( array $rules, array $customMessages = array(), array $customAttributes = array() ): array {
-		$validator = new Validator( $this->getRequestData(), $rules, $customMessages, $customAttributes );
+		$validator = new Validator( $this->getParams(), $rules, $customMessages, $customAttributes );
 		return $validator->validated();
 	}
 

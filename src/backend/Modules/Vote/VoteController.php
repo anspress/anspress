@@ -10,6 +10,7 @@ namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractController;
 use AnsPress\Classes\Auth;
+use WP_REST_Request;
 use WP_REST_Response;
 
 // Exit if accessed directly.
@@ -34,13 +35,14 @@ class VoteController extends AbstractController {
 	/**
 	 * Get votes for a post.
 	 *
-	 * @param int $postId Post ID.
 	 * @return WP_REST_Response
 	 */
-	public function getPostVotes( int $postId ): WP_REST_Response {
+	public function getPostVotes(): WP_REST_Response {
 		if ( ! is_user_logged_in() ) {
 			return $this->unauthorized();
 		}
+
+		$postId = (int) $this->getParam( 'post_id' );
 
 		$votes = $this->voteService->getVoteCount( $postId, 'vote' );
 
