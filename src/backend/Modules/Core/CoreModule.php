@@ -34,11 +34,12 @@ class CoreModule extends AbstractModule {
 		add_action( 'wpmu_new_blog', array( $this, 'createBlogTables' ), 10, 6 );
 		add_filter( 'wpmu_drop_tables', array( $this, 'dropBlogTables' ), 10, 2 );
 		add_filter( 'block_categories_all', array( $this, 'registerBlockCategory' ), 1 );
+
 		add_action( 'init', array( $this, 'registerCommonBlock' ) );
+
 		add_action( 'enqueue_block_assets', array( $this, 'registerBlockAssets' ) );
 		add_filter( 'query_vars', array( $this, 'addQueryVars' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueueBlockAssets' ) );
-		add_filter( 'rest_dispatch_request', array( $this, 'restDispatchRequest' ), 10, 4 );
 	}
 
 	/**
@@ -164,23 +165,5 @@ class CoreModule extends AbstractModule {
 	 */
 	public function enqueueBlockAssets() {
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
-	}
-
-	/**
-	 * Dispatch REST request.
-	 *
-	 * @param mixed $result  Result.
-	 * @param mixed $server  Server.
-	 * @param mixed $request Request.
-	 * @param mixed $handler Handler.
-	 * @return mixed
-	 */
-	public function restDispatchRequest( $result, $server, $request, $handler ) {
-		if ( is_array( $handler['callback'] ) && is_string( $handler['callback'][0] ) && strpos( $handler['callback'][0], 'AnsPress\\Modules\\' ) ) {
-			$handler = new RestRouteHandler( $handler['callback'], $request );
-			return $handler->handle();
-		}
-
-		return $result;
 	}
 }

@@ -35,31 +35,54 @@ class VoteModule extends AbstractModule {
 	public function registerRoutes() {
 		register_rest_route(
 			'anspress/v1',
-			'/vote/(?P<post_id>\d+)',
+			'/post/(?P<post_id>\d+)/meta/votes',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( VoteController::class, 'getPostVotes' ),
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( VoteController::class, 'getPostVotes' ), $req ),
 				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
 			)
 		);
 
 		register_rest_route(
 			'anspress/v1',
-			'/vote/(?P<post_id>\d+)',
+			'/post/(?P<post_id>\d+)/actions/vote/(?P<vote_type>\w+)',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( VoteController::class, 'createVote' ),
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( VoteController::class, 'createVote' ), $req ),
 				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'   => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'vote_type' => array(
+						'required' => true,
+						'type'     => 'string',
+					),
+				),
 			)
 		);
 
 		register_rest_route(
 			'anspress/v1',
-			'/vote/(?P<post_id>\d+)',
+			'/post/(?P<post_id>\d+)/actions/undo-vote',
 			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => array( VoteController::class, 'undoVote' ),
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( VoteController::class, 'undoVote' ), $req ),
 				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+
+				),
 			)
 		);
 	}

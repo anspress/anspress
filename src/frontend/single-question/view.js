@@ -1,32 +1,30 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import { createRoot } from 'react-dom';
 import apiFetch from '@wordpress/api-fetch';
 
-const VoteCounter = ({ postId, initialCount, initialVote }) => {
+const VoteCounter = ({ postId, initialCount, voteData }) => {
   const [count, setCount] = useState(initialCount);
   const [previousCount, setPreviousCount] = useState(initialCount);
-  const [userVote, setUserVote] = useState(initialVote);
+  const [postVoteData, setPostVoteData] = useState(voteData);
 
   const vote = async (action) => {
-    setPreviousCount(count);
-    const newCount = action === 'upvote' ? count + 1 : count - 1;
-    setCount(newCount);
+    // setPreviousCount(count);
+    // const newCount = action === 'voteup' ? count + 1 : count - 1;
+    // setCount(newCount);
 
     try {
-      const response = await apiFetch({
-        path: `/anspress/v1/vote/${postId}`,
-        method: 'POST',
-        data: { vote: { action, vote_post_id: postId } }
-      });
+      const path = !postVoteData.currentUserVoted ? `/anspress/v1/post/${postId}/actions/vote/${action}` : `/anspress/v1/post/${postId}/actions/undo-vote`;
 
-      if (response.success) {
-        setUserVote(action);
-      } else {
-        setCount(previousCount);
-        console.error('Vote action failed:', response.message);
+      const response = await apiFetch({
+        path,
+        method: 'POST'
+      })
+      console.log(response)
+      if (response.voteData) {
+        setPostVoteData(response.voteData);
       }
     } catch (error) {
-      setCount(previousCount);
+      // setCount(previousCount);
       console.error('An error occurred:', error);
     }
   };
@@ -47,17 +45,17 @@ const VoteCounter = ({ postId, initialCount, initialVote }) => {
   return (
     <>
       <button
-        className="apicon-thumb-up"
-        onClick={() => vote('upvote')}
-        disabled={userVote === 'upvote'}
+        className="apicon-thumb-up wp-block-anspress-single-question-vote-up"
+        onClick={() => vote('voteup')}
+        disabled={postVoteData.currentUserVoted === 'votedown'}
         title="Up vote this question"
       >
       </button>
-      <span className="wp-block-anspress-single-question-vcount vote-count">{count}</span>
+      <span className="wp-block-anspress-single-question-vcount vote-count">{postVoteData.votesNet}</span>
       <button
-        className="apicon-thumb-down"
-        onClick={() => vote('downvote')}
-        disabled={userVote === 'downvote'}
+        className="apicon-thumb-down wp-block-anspress-single-question-vote-down"
+        onClick={() => vote('votedown')}
+        disabled={postVoteData.currentUserVoted === 'voteup'}
         title="Down vote this question"
       >
       </button>
@@ -69,9 +67,10 @@ window.addEventListener('load', () => {
   document.querySelectorAll('.wp-block-anspress-single-question-vote').forEach(voteBlock => {
     const postId = voteBlock.dataset.postId;
     const initialCount = parseInt(voteBlock.querySelector('.wp-block-anspress-single-question-vcount').textContent, 10);
-    const vote = JSON.parse(voteBlock.dataset.voteData);
-    console.log(vote)
+    const voteData = JSON.parse(voteBlock.dataset.voteData || '{}');
+    console.log(voteData);
+
     const root = createRoot(voteBlock);
-    root.render(<VoteCounter postId={postId} initialCount={initialCount} vote={vote} />);
+    root.render(<VoteCounter postId={postId} initialCount={initialCount} voteData={voteData} />);
   });
 }, false);

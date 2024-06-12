@@ -102,4 +102,17 @@ class RestRouteHandler {
 
 		return rest_ensure_response( $response );
 	}
+
+	/**
+	 * Run handler.
+	 *
+	 * @param array           $controllerMethod Controller method.
+	 * @param WP_REST_Request $request      Request data.
+	 * @return WP_REST_Response
+	 */
+	public static function run( array $controllerMethod, WP_REST_Request $request ): WP_REST_Response {
+		$handler = new self( $controllerMethod, $request );
+
+		return $handler->handle();
+	}
 }

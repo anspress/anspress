@@ -49,8 +49,6 @@ class TestVoteController extends TestCase {
 		$this->expectException( \AnsPress\Exceptions\HTTPException::class );
 		$this->expectExceptionMessage( 'Invalid nonce' );
 
-		$this->controller->setRequest( $this->request );
-
 		$this->controller->createVote();
 	}
 
@@ -94,19 +92,15 @@ class TestVoteController extends TestCase {
 		} catch ( ValidationException $e ) {
 			$this->assertEquals(
 				[
-					"vote" => array(
-						0 => "The vote field is required.",
-						1 => "The vote must be an array."
+					"vote_type" => array(
+						0 => "The vote_type field is required.",
+						1 => "The vote_type must be a string.",
+						2 => "The vote_type must be one of upvote, downvote"
 					),
-					"vote.vote_type" => array(
-						0 => "The vote.vote_type field is required.",
-						1 => "The vote.vote_type must be a string.",
-						2 => "The vote.vote_type must be one of upvote, downvote"
-					),
-					"vote.vote_post_id" => array(
-						0 => "The vote.vote_post_id field is required.",
-						1 => "The vote.vote_post_id must be a number.",
-						2 => "The selected vote.vote_post_id is invalid."
+					"post_id" => array(
+						0 => "The post_id field is required.",
+						1 => "The post_id must be a number.",
+						2 => "The selected post_id is invalid."
 					)
 				],
 				$e->getErrors()
@@ -133,10 +127,8 @@ class TestVoteController extends TestCase {
 		$this->request->method('get_params')
 			->willReturn(
 				[
-					'vote' => [
-						'vote_type'    => 'invalid_vote_type',
-						'vote_post_id' => $postId
-					]
+					'vote_type' => 'invalid_vote_type',
+					'post_id'   => $postId
 				]
 			);
 
@@ -149,8 +141,8 @@ class TestVoteController extends TestCase {
 
 			$this->assertEquals(
 				[
-					"vote.vote_type" => array(
-						0 => "The vote.vote_type must be one of upvote, downvote"
+					"vote_type" => array(
+						0 => "The vote_type must be one of upvote, downvote"
 					)
 				],
 				$e->getErrors()
@@ -170,10 +162,8 @@ class TestVoteController extends TestCase {
 		$this->request->method('get_params')
 			->willReturn(
 				[
-					'vote' => [
-						'vote_type'    => 'upvote',
-						'vote_post_id' => $postId
-					]
+					'vote_type' => 'upvote',
+					'post_id'   => $postId
 				]
 			);
 
@@ -217,26 +207,6 @@ class TestVoteController extends TestCase {
 		$this->assertEquals( 401, $response->get_status() );
 	}
 
-	// public function testUndoVoteNoPermission() {
-	// 	$this->setRole( 'subscriber' );
-
-	// 	$this->expectException( \AnsPress\Exceptions\HTTPException::class );
-	// 	$this->expectExceptionMessage( 'Forbidden' );
-
-	// 	$_REQUEST['__ap_vote_nonce'] = wp_create_nonce( 'ap_vote_nonce' );
-
-	// 	$response = $this->controller->undoVote();
-
-	// 	$this->assertEquals(
-	// 		[
-	// 			'message' => 'Forbidden'
-	// 		],
-	// 		$response->get_data()
-	// 	);
-
-	// 	$this->assertEquals( 401, $response->get_status() );
-	// }
-
 	public function testUndoVoteFailedValidation() {
 		$this->setRole( 'subscriber' );
 
@@ -254,16 +224,11 @@ class TestVoteController extends TestCase {
 		} catch ( ValidationException $e ) {
 			$this->assertEquals(
 				[
-					"vote.vote_post_id" => array(
-						0 => "The vote.vote_post_id field is required.",
-						1 => "The vote.vote_post_id must be a number.",
-						2 => "The selected vote.vote_post_id is invalid."
-					),
-					"vote.vote_type" => array(
-						0 => "The vote.vote_type field is required.",
-						1 => "The vote.vote_type must be a string.",
-						2 => "The vote.vote_type must be one of upvote, downvote"
-					)
+					'post_id' => [
+						0 => "The post_id field is required.",
+						1 => "The post_id must be a number.",
+						2 => "The selected post_id is invalid."
+					]
 				],
 				$e->getErrors()
 			);
@@ -282,10 +247,7 @@ class TestVoteController extends TestCase {
 
 		$this->request->method('get_params')
 			->willReturn( [
-				'vote' => [
-					'vote_type'       => 'upvote',
-					'vote_post_id'    => $postId,
-				]
+				'post_id' => $postId
 			] );
 
 		$this->controller->setRequest( $this->request );
@@ -317,10 +279,7 @@ class TestVoteController extends TestCase {
 
 		$this->request->method('get_params')
 			->willReturn([
-				'vote' => [
-					'vote_type'    => 'upvote',
-					'vote_post_id' => $postId
-				]
+				'post_id' => $postId
 			]);
 
 

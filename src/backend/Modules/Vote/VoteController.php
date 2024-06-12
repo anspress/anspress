@@ -9,8 +9,6 @@
 namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractController;
-use AnsPress\Classes\Auth;
-use WP_REST_Request;
 use WP_REST_Response;
 
 // Exit if accessed directly.
@@ -53,9 +51,6 @@ class VoteController extends AbstractController {
 	 * Create a new vote.
 	 */
 	public function createVote(): WP_REST_Response {
-		// Chekc for proper nonce.
-		$this->validateNonce( 'ap_vote_nonce', '__ap_vote_nonce' );
-
 		if ( ! is_user_logged_in() ) {
 			return $this->unauthorized();
 		}
@@ -66,24 +61,31 @@ class VoteController extends AbstractController {
 		// Validate request data.
 		$data = $this->validate(
 			array(
-				'vote'              => 'required|array',
-				'vote.vote_type'    => 'required|string|in:upvote,downvote',
-				'vote.vote_post_id' => 'required|numeric|exists:posts,ID',
+				'post_id'   => 'required|numeric|exists:posts,ID',
+				'vote_type' => 'required|string|in:voteup,votedown',
 			)
 		);
 
-		$vote = $data['vote'];
-
-		$postObj = get_post( $vote['vote_post_id'] );
+		$postObj = get_post( $data['post_id'] );
 
 		$vote['vote_user_id']  = get_current_user_id();
-		$vote['vote_value']    = 'upvote' === $vote['vote_type'] ? 1 : -1;
+		$vote['vote_value']    = 'voteup' === $data['vote_type'] ? 1 : -1;
 		$vote['vote_type']     = 'vote';
 		$vote['vote_rec_user'] = (int) $postObj->post_author;
+		$vote['vote_post_id']  = $data['post_id'];
 
 		$vote = $this->voteService->create( $vote );
 
-		return $this->response( array( 'vote' => $vote->toArray() ) );
+		if ( ! $vote ) {
+			return $this->serverError( __( 'Failed to create vote', 'anspress-question-answer' ) );
+		}
+
+		return $this->response(
+			array(
+				'snackbar' => __( 'Vote added', 'anspress-question-answer' ),
+				'voteData' => $this->voteService->getPostVoteData( $vote->vote_post_id ),
+			)
+		);
 	}
 
 	/**
@@ -92,9 +94,6 @@ class VoteController extends AbstractController {
 	 * @return WP_REST_Response
 	 */
 	public function undoVote(): WP_REST_Response {
-		// Check for proper nonce.
-		$this->validateNonce( 'ap_vote_nonce', '__ap_vote_nonce' );
-
 		if ( ! is_user_logged_in() ) {
 			return $this->unauthorized();
 		}
@@ -102,14 +101,11 @@ class VoteController extends AbstractController {
 		// Validate request data.
 		$data = $this->validate(
 			array(
-				'vote.vote_post_id' => 'required|numeric|exists:posts,ID',
-				'vote.vote_type'    => 'required|string|in:upvote,downvote',
+				'post_id' => 'required|numeric|exists:posts,ID',
 			)
 		);
 
-		$vote = $data['vote'];
-
-		$vote = $this->voteService->getUserVote( get_current_user_id(), $vote['vote_post_id'], 'vote' );
+		$vote = $this->voteService->getUserVote( get_current_user_id(), $data['post_id'], 'vote' );
 
 		// Check if vote exists.
 		if ( ! $vote ) {
@@ -125,6 +121,11 @@ class VoteController extends AbstractController {
 			return $this->serverError( __( 'Failed to undo vote', 'anspress-question-answer' ) );
 		}
 
-		return $this->response( array( 'vote' => $vote->toArray() ) );
+		return $this->response(
+			array(
+				'snackbar' => __( 'Vote added', 'anspress-question-answer' ),
+				'voteData' => $this->voteService->getPostVoteData( $vote->vote_post_id ),
+			)
+		);
 	}
 }

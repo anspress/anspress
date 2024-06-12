@@ -80,6 +80,15 @@ abstract class AbstractController {
 	}
 
 	/**
+	 * Get nonce from cookie.
+	 *
+	 * @return string
+	 */
+	protected function getNonceFromCookie(): string {
+		return sanitize_text_field( wp_unslash( $_COOKIE['anspress_nonce'] ?? '' ) );
+	}
+
+	/**
 	 * Validate nonce.
 	 *
 	 * @param string $action Nonce action.
@@ -88,8 +97,15 @@ abstract class AbstractController {
 	 *
 	 * @throws HTTPException If nonce is invalid.
 	 */
-	public function validateNonce( string $action, string $key = '_wpnonce' ): void {
-		if ( ! wp_verify_nonce( $this->getParam( $key ), $action ) ) {
+	public function validateNonce( string $action = 'anspress_default_nonce', string $key = '_wpnonce' ): void {
+		$nonce = sanitize_text_field( $this->getParam( $key ) );
+
+		// If default nonce then get from cookie.
+		if ( 'anspress_default_nonce' === $action ) {
+			$nonce = $this->getNonceFromCookie();
+		}
+
+		if ( ! wp_verify_nonce( $nonce, $action ) ) {
 			throw new HTTPException( 400, 'Invalid nonce' );
 		}
 	}

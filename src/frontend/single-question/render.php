@@ -7,15 +7,12 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-$_post = ap_get_post( get_post() );
-$vote  = ap_get_vote( $_post->ID, get_current_user_id(), 'vote' );
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Vote\VoteService;
 
-$voteData = array(
-	'votesUp'   => $_post->votes_up,
-	'votesDown' => $_post->votes_down,
-	'voted'     => $vote ? ( '-1' === $vote->vote_value ? 'vote_down' : 'vote_up' ) : null,
-);
+$_post = ap_get_post( get_the_ID() );
 
+$voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 ?>
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> data-gutenberg-attributes="<?php echo esc_attr( wp_json_encode( $attributes ) ); ?>" data-post-id="<?php the_ID(); ?>">
 	<div class="wp-block-anspress-single-question-q">
@@ -83,11 +80,19 @@ $voteData = array(
 
 			<div class="wp-block-anspress-single-question-footer">
 				<div class="wp-block-anspress-single-question-vote" data-post-id="<?php the_ID(); ?>" data-vote-data="<?php echo esc_attr( wp_json_encode( $voteData ) ); ?>">
-					<button class="apicon-thumb-up wp-block-anspress-single-question-vote-up" href="#" title="Up vote this question"></button>
+					<button
+						class="apicon-thumb-up wp-block-anspress-single-question-vote-up"
+						<?php echo 'votedown' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
+						title="Up vote this question"
+					></button>
 					<span class="wp-block-anspress-single-question-vcount">
 						<?php echo (int) $_post->votes_net; ?>
 					</span>
-					<button data-tipposition="bottom center" class="apicon-thumb-down wp-block-anspress-single-question-vote-down" href="#" title="Down vote this question"></button>
+					<button
+						class="apicon-thumb-down wp-block-anspress-single-question-vote-down"
+						<?php echo 'voteup' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
+						title="Down vote this question"
+					></button>
 				</div>
 
 				<?php do_action( 'ap_post_footer' ); ?>

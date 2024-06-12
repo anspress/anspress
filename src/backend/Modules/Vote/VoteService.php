@@ -11,6 +11,7 @@ namespace AnsPress\Modules\Vote;
 use AnsPress\Classes\AbstractService;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Validator;
+use AnsPress\Exceptions\ValidationException;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,6 +29,7 @@ class VoteService extends AbstractService {
 	 *
 	 * @param array $data Vote data.
 	 * @return null|VoteModel  Vote model.
+	 * @throws ValidationException If validation fails.
 	 */
 	public function create( array $data ): ?VoteModel {
 		if ( empty( $data['vote_user_id'] ) && Auth::isLoggedIn() ) {
@@ -51,7 +53,25 @@ class VoteService extends AbstractService {
 
 		$vote->fill( $validated );
 
-		return $vote->save();
+		// Make sure that user can only vote once.
+		$existingVote = $this->getUserVote( $data['vote_user_id'], $data['vote_post_id'], $data['vote_type'] );
+
+		if ( $existingVote ) {
+			throw new ValidationException(
+				array(
+					'vote' => array(
+						esc_attr__( 'You have already voted on this post', 'anspress-question-answer' ),
+					),
+				)
+			);
+		}
+
+		$saved = $vote->save();
+
+		// Update votes count.
+		ap_update_votes_count( $data['vote_post_id'] );
+
+		return $saved;
 	}
 
 	/**
@@ -67,7 +87,12 @@ class VoteService extends AbstractService {
 			return false;
 		}
 
-		return $vote->delete();
+		$deleted = $vote->delete();
+
+		// Update votes count.
+		ap_update_votes_count( $vote->vote_post_id );
+
+		return $deleted;
 	}
 
 	/**
@@ -137,5 +162,23 @@ class VoteService extends AbstractService {
 		);
 
 		return (int) $vote_count;
+	}
+
+	/**
+	 * Get vote data.
+	 *
+	 * @param int $postId Post ID.
+	 * @return array
+	 */
+	public function getPostVoteData( int $postId ): array {
+		$post     = ap_get_post( $postId );
+		$userVote = $this->getUserVote( get_current_user_id(), $postId, 'vote' );
+
+		return array(
+			'votesUp'          => $post->votes_up,
+			'votesDown'        => $post->votes_down,
+			'votesNet'         => $post->votes_net,
+			'currentUserVoted' => $userVote ? ( '-1' == $userVote->vote_value ? 'votedown' : 'voteup' ) : null, // @codingStandardsIgnoreLine Universal.Operators.StrictComparisons.LooseEqual
+		);
 	}
 }
