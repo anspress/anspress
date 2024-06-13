@@ -233,7 +233,7 @@ class Editor extends \AnsPress\Form\Field {
 			if ( in_array( $basename, $files, true ) ) {
 				$this->images[] = $basename;
 
-				$newfile = $upload_dir . "/$basename";
+				$newfile = $upload_dir . $basename;
 
 				$new_file_url = $uploads['baseurl'] . "/anspress-uploads/$basename";
 				$wp_filesystem->move( $uploads['basedir'] . "/anspress-temp/$basename", $newfile );
