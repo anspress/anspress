@@ -9,8 +9,11 @@
 	}
 
 	&-content {
-		border: solid 1px;
 		flex: 1;
+	}
+
+	&-qbody {
+		border: solid 1px;
 	}
 
 	&-metas {
@@ -52,4 +55,25 @@
 		padding: 10px;
 		border-top: solid 1px;
 	}
+
+	@keyframes count-animation {
+		0% {
+			transform: scale(1);
+		}
+
+		50% {
+			transform: scale(1.2);
+		}
+
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	.animate-count {
+		animation: count-animation 0.5s ease-in-out;
+	}
 }
+
+// Import the style.css from common/comments
+@import "../common/comments/style.scss";

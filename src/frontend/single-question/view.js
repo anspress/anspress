@@ -1,30 +1,26 @@
-import { useState, useEffect, useMemo } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { createRoot } from 'react-dom';
 import apiFetch from '@wordpress/api-fetch';
 
 const VoteCounter = ({ postId, initialCount, voteData }) => {
   const [count, setCount] = useState(initialCount);
-  const [previousCount, setPreviousCount] = useState(initialCount);
   const [postVoteData, setPostVoteData] = useState(voteData);
 
   const vote = async (action) => {
-    // setPreviousCount(count);
-    // const newCount = action === 'voteup' ? count + 1 : count - 1;
-    // setCount(newCount);
-
     try {
       const path = !postVoteData.currentUserVoted ? `/anspress/v1/post/${postId}/actions/vote/${action}` : `/anspress/v1/post/${postId}/actions/undo-vote`;
 
       const response = await apiFetch({
         path,
         method: 'POST'
-      })
-      console.log(response)
+      });
+
       if (response.voteData) {
         setPostVoteData(response.voteData);
+        // Manually trigger a re-render to apply the animation
+        setCount(response.voteData.votesNet);
       }
     } catch (error) {
-      // setCount(previousCount);
       console.error('An error occurred:', error);
     }
   };
@@ -68,7 +64,6 @@ window.addEventListener('load', () => {
     const postId = voteBlock.dataset.postId;
     const initialCount = parseInt(voteBlock.querySelector('.wp-block-anspress-single-question-vcount').textContent, 10);
     const voteData = JSON.parse(voteBlock.dataset.voteData || '{}');
-    console.log(voteData);
 
     const root = createRoot(voteBlock);
     root.render(<VoteCounter postId={postId} initialCount={initialCount} voteData={voteData} />);

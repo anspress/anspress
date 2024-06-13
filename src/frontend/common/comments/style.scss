@@ -1,0 +1,24 @@
+.anspress-comments {
+	display: flex;
+	font-size: small;
+	margin-top: 20px;
+
+	&-item {
+		display: flex;
+	}
+
+	&-avatar {
+		display: block;
+		background: #aaa;
+		margin-right: 10px;
+		margin-top: 5px;
+	}
+
+	&-content {
+		flex: 1;
+	}
+
+	&-meta {
+		font-weight: bold;
+	}
+}

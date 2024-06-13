@@ -296,4 +296,25 @@ class Plugin {
 
 		return self::$instance->get( self::$instance->modelSchema[ $model ] );
 	}
+
+	/**
+	 * Load view file.
+	 *
+	 * @param string $pathToFile Path to file.
+	 * @param array  $args       Arguments.
+	 * @return void
+	 * @throws InvalidArgumentException If file not found.
+	 */
+	public static function loadView( string $pathToFile, array $args = array() ) { // @codingStandardsIgnoreLine Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		// First check if theme has a custom template in the anspress folder.
+		$themePath = wp_normalize_path( get_stylesheet_directory() . '/anspress/' . $pathToFile );
+
+		$path = file_exists( $themePath ) ? $themePath : self::getPathTo( $pathToFile );
+
+		if ( ! file_exists( $path ) ) {
+			throw new InvalidArgumentException( 'File not found.' );
+		}
+
+		include $path;
+	}
 }
