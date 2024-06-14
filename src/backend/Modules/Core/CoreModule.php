@@ -11,6 +11,7 @@ namespace AnsPress\Modules\Core;
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\RestRouteHandler;
+use WP_REST_Server;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,6 +41,8 @@ class CoreModule extends AbstractModule {
 		add_action( 'enqueue_block_assets', array( $this, 'registerBlockAssets' ) );
 		add_filter( 'query_vars', array( $this, 'addQueryVars' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueueBlockAssets' ) );
+
+		add_action( 'rest_api_init', array( $this, 'registerRoutes' ) );
 	}
 
 	/**
@@ -165,5 +168,48 @@ class CoreModule extends AbstractModule {
 	 */
 	public function enqueueBlockAssets() {
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
+	}
+
+	/**
+	 * Register routes.
+	 *
+	 * @return void
+	 */
+	public function registerRoutes() {
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/comments',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( CoreController::class, 'createComment' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/comments/(?P<comment_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( CoreController::class, 'deleteComment' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'    => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'comment_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
 	}
 }

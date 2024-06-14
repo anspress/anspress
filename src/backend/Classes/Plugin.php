@@ -302,10 +302,11 @@ class Plugin {
 	 *
 	 * @param string $pathToFile Path to file.
 	 * @param array  $args       Arguments.
-	 * @return void
+	 * @param bool   $output     Output or return.
+	 * @return mixed
 	 * @throws InvalidArgumentException If file not found.
 	 */
-	public static function loadView( string $pathToFile, array $args = array() ) { // @codingStandardsIgnoreLine Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+	public static function loadView( string $pathToFile, array $args = array(), bool $output = true ) { // @codingStandardsIgnoreLine Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		// First check if theme has a custom template in the anspress folder.
 		$themePath = wp_normalize_path( get_stylesheet_directory() . '/anspress/' . $pathToFile );
 
@@ -315,6 +316,14 @@ class Plugin {
 			throw new InvalidArgumentException( 'File not found.' );
 		}
 
+		if ( ! $output ) {
+			ob_start();
+		}
+
 		include $path;
+
+		if ( ! $output ) {
+			return ob_get_clean();
+		}
 	}
 }

@@ -13,6 +13,7 @@
         "grunt-version": "^3.0.1",
         "grunt-wp-i18n": "^1.0.3",
         "grunt-wp-readme-to-markdown": "^2.1.0",
+        "html-loader": "^5.0.0",
         "load-grunt-tasks": "^5.1.0",
         "sass": "^1.77.0"
     },

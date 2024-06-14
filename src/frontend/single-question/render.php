@@ -13,6 +13,7 @@ use AnsPress\Modules\Vote\VoteService;
 $_post = ap_get_post( get_the_ID() );
 
 $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
+
 ?>
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> data-gutenberg-attributes="<?php echo esc_attr( wp_json_encode( $attributes ) ); ?>" data-post-id="<?php the_ID(); ?>">
 	<div class="wp-block-anspress-single-question-q">
