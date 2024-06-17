@@ -136,6 +136,16 @@ class CoreModule extends AbstractModule {
 			false,
 			$assetInfo['version']
 		);
+
+		$viewInfo = include Plugin::getPathTo( 'build/frontend/common/view.asset.php' );
+
+		wp_register_script(
+			'anspress-view',
+			Plugin::getUrlTo( 'build/frontend/common/view.js' ),
+			$assetInfo['dependencies'],
+			$assetInfo['version'],
+			true
+		);
 	}
 
 	/**
@@ -145,6 +155,7 @@ class CoreModule extends AbstractModule {
 	 */
 	public function registerBlockAssets() {
 		wp_enqueue_style( 'anspress-common' );
+		wp_enqueue_script( 'anspress-view' );
 	}
 
 	/**

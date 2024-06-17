@@ -38,4 +38,51 @@
 			background: #eee;
 		}
 	}
+
+	&snackbar-container {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		z-index: 1000;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		max-width: 300px;
+	}
+
+	&snackbar-message {
+		background-color: #333;
+		color: white;
+		padding: 16px;
+		border-radius: 4px;
+		opacity: 0;
+		transform: translateY(100%);
+		transition: opacity 0.3s, transform 0.3s;
+
+		&.anspress-snackbar-success {
+			background-color: #4caf50;
+		}
+
+		&.anspress-snackbar-error {
+			background-color: #f44336;
+		}
+
+		&.anspress-snackbar-info {
+			background-color: #2196f3;
+		}
+
+		&.anspress-snackbar-warning {
+			background-color: #ff9800;
+		}
+	}
+
+	&snackbar-message.show {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	&snackbar-message.hide {
+		opacity: 0;
+		transform: translateY(100%);
+	}
 }

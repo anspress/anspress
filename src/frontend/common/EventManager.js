@@ -1,4 +1,5 @@
 import apiFetch from '@wordpress/api-fetch';
+
 export class EventManager {
   constructor(containerSelector, requiredElements = []) {
     this.container = containerSelector;
@@ -187,6 +188,16 @@ export class EventManager {
         // Replace the container with the new content
         if (res[`${this.containerId}Html`]) {
           this.container.innerHTML = res[`${this.containerId}Content`];
+        }
+        console.log(res[`${this.containerId}Messages`])
+        if (res[`${this.containerId}Messages`]) {
+          for (const snackbarItem of res[`${this.containerId}Messages`]) {
+            const event = new CustomEvent('anspress-snackbar', {
+              detail: { message: snackbarItem.message, type: snackbarItem.type || 'success', duration: 5000 }
+            });
+
+            document.body.dispatchEvent(event);
+          }
         }
 
         return res;

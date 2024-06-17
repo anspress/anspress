@@ -67,8 +67,14 @@ class CommentController extends AbstractController {
 
 		return $this->response(
 			array(
-				'html'         => $commentHtml,
-				'commentsData' => Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) ),
+				'html'             => $commentHtml,
+				'commentsData'     => Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) ),
+				'commentsMessages' => array(
+					array(
+						'type'    => 'success',
+						'message' => esc_attr__( 'Comment added successfully.', 'anspress-question-answer' ),
+					),
+				),
 			)
 		);
 	}
@@ -102,9 +108,15 @@ class CommentController extends AbstractController {
 
 		return $this->response(
 			array(
-				'message'      => esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ),
-				'commentsData' => Plugin::get( CommentService::class )->getCommentsData(
+				'message'          => esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ),
+				'commentsData'     => Plugin::get( CommentService::class )->getCommentsData(
 					get_post( $comment->comment_post_ID )
+				),
+				'commentsMessages' => array(
+					array(
+						'type'    => 'success',
+						'message' => esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ),
+					),
 				),
 			)
 		);

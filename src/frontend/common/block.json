@@ -7,5 +7,6 @@
   "icon": "list-view",
   "description": "A pagination block.",
   "style": "file:./style-index.css",
-  "editorScript": "file:./index.js"
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js"
 }

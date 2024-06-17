@@ -82,8 +82,13 @@ class VoteController extends AbstractController {
 
 		return $this->response(
 			array(
-				'snackbar' => __( 'Vote added', 'anspress-question-answer' ),
-				'voteData' => $this->voteService->getPostVoteData( $vote->vote_post_id ),
+				'voteMessages' => array(
+					array(
+						'type'    => 'success',
+						'message' => esc_attr__( 'Vote added', 'anspress-question-answer' ),
+					),
+				),
+				'voteData'     => $this->voteService->getPostVoteData( $vote->vote_post_id ),
 			)
 		);
 	}
@@ -123,8 +128,13 @@ class VoteController extends AbstractController {
 
 		return $this->response(
 			array(
-				'snackbar' => __( 'Vote added', 'anspress-question-answer' ),
-				'voteData' => $this->voteService->getPostVoteData( $vote->vote_post_id ),
+				'voteMessages' => array(
+					array(
+						'type'    => 'success',
+						'message' => esc_attr__( 'Vote removed', 'anspress-question-answer' ),
+					),
+				),
+				'voteData'     => $this->voteService->getPostVoteData( $vote->vote_post_id ),
 			)
 		);
 	}

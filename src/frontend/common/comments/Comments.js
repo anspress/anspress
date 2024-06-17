@@ -28,12 +28,7 @@ export class Comments extends EventManager {
 
   updateElements() {
     return {
-      'comments-total-count': 'totalComments',
-      'comments-showing-count': () => {
-        const showing = this.data.showing + this.data.offset
-
-        return showing > this.data.totalComments ? this.data.totalComments : showing;
-      }
+      'comments-total-count': 'totalComments'
     };
   }
 
