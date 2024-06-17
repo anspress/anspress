@@ -1,53 +1,59 @@
-import apiFetch from '@wordpress/api-fetch';
+import { EventManager } from "../EventManager";
 
-export class VoteButton {
-  constructor(voteBlock) {
-    this.voteBlock = voteBlock;
-    this.postId = voteBlock.dataset.postId;
-    this.voteData = JSON.parse(voteBlock.dataset.voteData || '{}');
-    this.upvoteButton = voteBlock.querySelector('.wp-block-anspress-single-question-vote-up');
-    this.downvoteButton = voteBlock.querySelector('.wp-block-anspress-single-question-vote-down');
-    this.voteCountSpan = voteBlock.querySelector('.wp-block-anspress-single-question-vcount');
-
-    this.currentState = {
-      postVoteData: this.voteData
+export class VoteButton extends EventManager {
+  updateElements() {
+    return {
+      'votes-net-count': 'votesNet',
     };
+  }
+  init() {
+    if (!this.data?.postId) {
+      console.error('Post ID not found.');
+      return;
+    }
 
-    this.upvoteButton.addEventListener('click', () => this.vote('voteup'));
-    this.downvoteButton.addEventListener('click', () => this.vote('votedown'));
+    console.log(this.data)
+    super.init();
+    // this.voteBlock = voteBlock;
+    // this.postId = voteBlock.dataset.postId;
+    // this.voteData = JSON.parse(voteBlock.dataset.voteData || '{}');
+    // this.upvoteButton = voteBlock.querySelector('.wp-block-anspress-single-question-vote-up');
+    // this.downvoteButton = voteBlock.querySelector('.wp-block-anspress-single-question-vote-down');
+    // this.voteCountSpan = voteBlock.querySelector('.wp-block-anspress-single-question-vcount');
 
-    // Initial render
-    this.render();
+    // this.currentState = {
+    //   postVoteData: this.voteData
+    // };
   }
 
   async vote(action) {
     try {
-      const path = !this.currentState.postVoteData.currentUserVoted
-        ? `/anspress/v1/post/${this.postId}/actions/vote/${action}`
-        : `/anspress/v1/post/${this.postId}/actions/undo-vote`;
+      const path = !this.data.currentUserVoted
+        ? `/anspress/v1/post/${this.data.postId}/actions/vote/${action}`
+        : `/anspress/v1/post/${this.data.postId}/actions/undo-vote`;
 
-      const response = await apiFetch({
+      const response = await this.fetch({
         path,
         method: 'POST'
       });
 
-      if (response.voteData) {
-        this.currentState.postVoteData = response.voteData;
-        this.render();
-      }
+      this.changeButtonState();
     } catch (error) {
       console.error('An error occurred:', error);
     }
   }
 
-  render() {
-    this.voteCountSpan.textContent = this.currentState.postVoteData.votesNet;
-    this.upvoteButton.disabled = this.currentState.postVoteData.currentUserVoted === 'votedown';
-    this.downvoteButton.disabled = this.currentState.postVoteData.currentUserVoted === 'voteup';
+  voteUp() {
+    this.vote('voteup');
 
-    // Animation logic
-    this.voteCountSpan.classList.add('animate-count');
-    const animationEndHandler = () => this.voteCountSpan.classList.remove('animate-count');
-    this.voteCountSpan.addEventListener('animationend', animationEndHandler, { once: true });
+  }
+
+  voteDown() {
+    this.vote('votedown');
+  }
+
+  changeButtonState() {
+    this.elements['vote-up'].disabled = this.data.currentUserVoted === 'votedown';
+    this.elements['vote-down'].disabled = this.data.currentUserVoted === 'voteup';
   }
 }

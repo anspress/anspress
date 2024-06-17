@@ -81,21 +81,9 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 				</div>
 
 				<div class="wp-block-anspress-single-question-footer">
-					<div anspressel="vote" class="wp-block-anspress-single-question-vote" data-post-id="<?php the_ID(); ?>" data-vote-data="<?php echo esc_attr( wp_json_encode( $voteData ) ); ?>">
-						<button
-							class="apicon-thumb-up wp-block-anspress-single-question-vote-up"
-							<?php echo 'votedown' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
-							title="Up vote this question"
-						></button>
-						<span class="wp-block-anspress-single-question-vcount">
-							<?php echo (int) $_post->votes_net; ?>
-						</span>
-						<button
-							class="apicon-thumb-down wp-block-anspress-single-question-vote-down"
-							<?php echo 'voteup' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
-							title="Down vote this question"
-						></button>
-					</div>
+					<?php
+						Plugin::loadView( 'src/frontend/single-question/vote-button.php', array( 'ID' => get_the_ID() ) );
+					?>
 
 					<?php do_action( 'ap_post_footer' ); ?>
 				</div>

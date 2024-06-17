@@ -175,6 +175,7 @@ class VoteService extends AbstractService {
 		$userVote = $this->getUserVote( get_current_user_id(), $postId, 'vote' );
 
 		return array(
+			'postId'           => $postId,
 			'votesUp'          => $post->votes_up,
 			'votesDown'        => $post->votes_down,
 			'votesNet'         => $post->votes_net,
