@@ -60,6 +60,12 @@ export class EventManager {
         if (attr.name.startsWith('@')) {
           const [event, ...modifiers] = attr.name.slice(1).split('.');
           const handlerName = attr.value;
+
+          if (!this[handlerName]) {
+            console.error(`Handler ${handlerName} not found.`, element);
+            return;
+          }
+
           const handler = this[handlerName].bind(this);
           const finalHandler = (event) => {
             if (modifiers.includes('prevent')) event.preventDefault();
@@ -177,6 +183,14 @@ export class EventManager {
     });
   }
 
+  static dispatchSnackbar(message, type = 'success', duration = 5000) {
+    const event = new CustomEvent('anspress-snackbar', {
+      detail: { message, type, duration }
+    });
+
+    document.body.dispatchEvent(event);
+  }
+
   fetch(path, options) {
     return apiFetch(path, options)
       .then(res => {
@@ -189,19 +203,32 @@ export class EventManager {
         if (res[`${this.containerId}Html`]) {
           this.container.innerHTML = res[`${this.containerId}Content`];
         }
-        console.log(res[`${this.containerId}Messages`])
+
         if (res[`${this.containerId}Messages`]) {
           for (const snackbarItem of res[`${this.containerId}Messages`]) {
-            const event = new CustomEvent('anspress-snackbar', {
-              detail: { message: snackbarItem.message, type: snackbarItem.type || 'success', duration: 5000 }
-            });
-
-            document.body.dispatchEvent(event);
+            EventManager.dispatchSnackbar(snackbarItem.message, snackbarItem.type || 'success', 5000);
           }
         }
 
+        if (res.errors && Array.isArray(res.errors) && res.errors.length) {
+          res.errors.map(snackbarItem => this.dispatchSnackbar(snackbarItem.message, 'error', 5000));
+        }
         return res;
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err)
+
+        if (err.errors && Array.isArray(err.errors) && err.errors.length) {
+          err.errors.map(snackbarItem => EventManager.dispatchSnackbar(snackbarItem, 'error', 5000));
+        } else if (
+          err.message &&
+          typeof err.message === 'string' &&
+          err.message.length
+        ) {
+          EventManager.dispatchSnackbar(err.message, 'error', 5000);
+        }
+
+        throw err;
+      });
   }
 }

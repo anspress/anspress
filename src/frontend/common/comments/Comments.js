@@ -7,7 +7,6 @@ export class Comments extends EventManager {
     ];
   }
   init() {
-    console.log(this.data)
     // Validate post ID.
     if (!this.data?.postId) {
       console.error('Post ID not found.');
@@ -36,7 +35,7 @@ export class Comments extends EventManager {
     const form = document.createElement('form');
     form.setAttribute('class', 'anspress-comments-form');
     form.innerHTML = `
-      <textarea name="comment" placeholder="Write your comment..."></textarea>
+      <textarea name="anspress-comment-content" placeholder="Write your comment..."></textarea>
       <div class="anspress-comments-form-buttons">
         <button data-anspressel @click.prevent="toggleCommentForm" class="anspress-comments-form-cancel" type="button">Cancel</button>
         <button class="anspress-comments-form-submit" type="submit">Submit</button>
@@ -60,12 +59,12 @@ export class Comments extends EventManager {
   async submitForm(e, form) {
     e.preventDefault(); // Prevent default form submission behavior
     const comment = form.querySelector('textarea').value;
-    try {
-      const response = await this.fetch({
-        path: `/anspress/v1/post/${this.data.postId}/comments`,
-        method: 'POST',
-        data: { comment }
-      });
+
+    await this.fetch({
+      path: `/anspress/v1/post/${this.data.postId}/comments`,
+      method: 'POST',
+      data: { comment }
+    }).then(response => {
 
       if (response) {
         this.form.style.display = 'none';
@@ -87,12 +86,20 @@ export class Comments extends EventManager {
         newComment.classList.add('fade-in');
 
         this.replyButton.style.display = 'inline-block';
-      } else {
-        alert('Failed to submit comment');
       }
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
+    }).catch(error => {
+      console.error('An error occurred while submitting the comment:', error);
+
+      if (!error?.errors?.comment) {
+        return;
+      }
+
+      // Add validation error message to the form element by name anspress-comment-content.
+      const errorElement = document.createElement('div');
+      errorElement.setAttribute('class', 'anspress-comment-error anspress-validation-error');
+      errorElement.textContent = error.errors.comment;
+      form.querySelector('[name=anspress-comment-content]').insertAdjacentElement('afterend', errorElement);
+    });
   }
 
   async loadMoreComments() {
@@ -123,20 +130,18 @@ export class Comments extends EventManager {
     const commentElement = element.closest('.anspress-comments-item');
     const commentId = element.dataset.commentId;
 
-    try {
-      const response = await this.fetch({
-        path: `/anspress/v1/post/${this.data.postId}/comments/${commentId}`,
-        method: 'DELETE'
-      });
 
-      if (response) {
-        commentElement.remove();
-      } else {
-        alert('Failed to delete comment');
-      }
-    } catch (error) {
-      console.error('An error occurred while deleting the comment:', error);
+    const response = await this.fetch({
+      path: `/anspress/v1/post/${this.data.postId}/comments/${commentId}`,
+      method: 'DELETE'
+    });
+
+    if (response) {
+      commentElement.remove();
+    } else {
+      alert('Failed to delete comment');
     }
+
   }
 
   updateLoadMoreButton() {
@@ -155,6 +160,10 @@ export class Comments extends EventManager {
     if (this.elements['comments-showing-count']) {
       this.elements['comments-showing-count'].textContent = this.data.showing;
     }
+  }
+
+  editComment(e, element) {
+    console.error('Edit comment not implemented yet');
   }
 }
 

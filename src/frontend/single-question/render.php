@@ -93,8 +93,8 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 				Plugin::loadView( 'src/frontend/common/comments/render.php', array( 'post' => get_post() ) );
 			?>
 		</div>
-
-
 	</div>
-
+	<?php
+		Plugin::loadView( 'src/frontend/single-question/answers.php', array( 'question' => get_post() ) );
+	?>
 </div>

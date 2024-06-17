@@ -45,7 +45,7 @@ class CommentService extends AbstractService {
 		);
 
 		if ( is_wp_error( $commentId ) ) {
-			throw new ValidationException( $commentId->get_error_message() ); // @codingStandardsIgnoreLine
+			throw new ValidationException( $commentId->get_error_messages() ); // @codingStandardsIgnoreLine
 		}
 
 		return $commentId;

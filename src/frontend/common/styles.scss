@@ -58,6 +58,7 @@
 		opacity: 0;
 		transform: translateY(100%);
 		transition: opacity 0.3s, transform 0.3s;
+		min-width: 200px;
 
 		&.anspress-snackbar-success {
 			background-color: #4caf50;
@@ -84,5 +85,9 @@
 	&snackbar-message.hide {
 		opacity: 0;
 		transform: translateY(100%);
+	}
+
+	&validation-error {
+		color: red;
 	}
 }
