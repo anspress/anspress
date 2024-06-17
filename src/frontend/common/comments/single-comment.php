@@ -34,7 +34,20 @@ $postComment = $args['comment'];
 					$time = ap_human_time( $time );
 				}
 				?>
-				<time itemprop="datePublished" datetime="<?php echo esc_attr( ap_get_time( $postComment->comment_ID, 'c' ) ); ?>"><?php echo esc_attr( $time ); ?></time>
+				<time itemprop="datePublished" datetime="<?php echo esc_attr( comment_date( 'c', $postComment ) ); ?>">
+					<?php
+						echo esc_attr(
+							sprintf(
+								/* translators: %s: human-readable time difference */
+								_x( '%s ago', '%s = human-readable time difference', 'anspress-question-answer' ),
+								human_time_diff(
+									get_comment_time( 'U', false, true, $postComment ),
+									current_datetime()->getTimestamp()
+								)
+							)
+						);
+						?>
+				</time>
 			</a>
 		</div>
 		<div class="anspress-comments-content">
@@ -42,7 +55,7 @@ $postComment = $args['comment'];
 		</div>
 		<div class="anspress-comments-actions">
 			<?php if ( ap_user_can_delete_comment( $postComment->comment_ID ) ) : ?>
-				<a href="#" class="anspress-comments-delete" data-comment-id="<?php echo (int) $postComment->comment_ID; ?>">
+				<a data-anspressel @click.prevent="deleteComment" href="#" class="anspress-comments-delete" data-comment-id="<?php echo (int) $postComment->comment_ID; ?>">
 					<?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?>
 				</a>
 			<?php endif; ?>

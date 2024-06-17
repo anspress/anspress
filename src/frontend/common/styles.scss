@@ -1,26 +1,40 @@
-.anspress-pagination {
-	display: flex;
-	margin: 20px 0;
+.anspress- {
+	&pagination {
+		display: flex;
+		margin: 20px 0;
 
-	&-page-item {
+		&-page-item {
 
-		>span,
-		>a {
-			display: block;
-			padding: 5px 10px;
-			margin: 0 5px;
-			border: solid 1px;
-		}
+			>span,
+			>a {
+				display: block;
+				padding: 5px 10px;
+				margin: 0 5px;
+				border: solid 1px;
+			}
 
-		a {
-			text-decoration: none;
+			a {
+				text-decoration: none;
 
-			&:hover {
+				&:hover {
+					background: #eee;
+				}
+			}
+
+			span.current {
 				background: #eee;
 			}
 		}
+	}
 
-		span.current {
+	&button {
+		display: inline-block;
+		border: solid 1px;
+		padding: 5px 15px;
+		background: #fff;
+		text-decoration: none;
+
+		&:hover {
 			background: #eee;
 		}
 	}

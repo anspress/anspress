@@ -81,7 +81,7 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 				</div>
 
 				<div class="wp-block-anspress-single-question-footer">
-					<div class="wp-block-anspress-single-question-vote" data-post-id="<?php the_ID(); ?>" data-vote-data="<?php echo esc_attr( wp_json_encode( $voteData ) ); ?>">
+					<div anspressel="vote" class="wp-block-anspress-single-question-vote" data-post-id="<?php the_ID(); ?>" data-vote-data="<?php echo esc_attr( wp_json_encode( $voteData ) ); ?>">
 						<button
 							class="apicon-thumb-up wp-block-anspress-single-question-vote-up"
 							<?php echo 'votedown' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
@@ -101,7 +101,9 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 				</div>
 			</div>
 
-			<?php Plugin::loadView( 'src/frontend/common/comments/render.php', array( 'post' => get_post() ) ); ?>
+			<?php
+				Plugin::loadView( 'src/frontend/common/comments/render.php', array( 'post' => get_post() ) );
+			?>
 		</div>
 
 

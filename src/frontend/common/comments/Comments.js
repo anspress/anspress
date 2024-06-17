@@ -1,17 +1,13 @@
-import apiFetch from '@wordpress/api-fetch';
 import { EventManager } from '../EventManager';
 
 export class Comments extends EventManager {
   eventMappings() {
     return [
-      { selector: '.anspress-comments-add-comment-button', eventType: 'click', handler: this.toggleForm, cancel: true },
-      { selector: '.anspress-comments-loadmore-button', eventType: 'click', handler: this.loadMoreComments, cancel: true },
-      { selector: '.anspress-comments-form-cancel', eventType: 'click', handler: this.toggleForm, cancel: true },
       { selector: 'form.anspress-comments-form', eventType: 'submit', handler: this.submitForm, cancel: true },
-      { selector: '.anspress-comments-delete', eventType: 'click', handler: this.deleteComment, cancel: true }
     ];
   }
   init() {
+    console.log(this.data)
     // Validate post ID.
     if (!this.data?.postId) {
       console.error('Post ID not found.');
@@ -19,12 +15,26 @@ export class Comments extends EventManager {
     }
 
     this.form = this.createForm();
-    this.loadMoreButton = this.el('.anspress-comments-loadmore-button');
-    this.commentsCountNode = this.el('.anspress-comments-count');
 
-    this.replyButtons = this.el('.anspress-comments-add-comment-button');
+    this.commentsCountNode = this.el('.anspress-comments-count');
+    this.replyButton = this.el('.anspress-comments-add-comment-button');
 
     super.init();
+
+    if (!this.data?.canComment) {
+      this.elements['comments-toggle-form'].style.display = 'none';
+    }
+  }
+
+  updateElements() {
+    return {
+      'comments-total-count': 'totalComments',
+      'comments-showing-count': () => {
+        const showing = this.data.showing + this.data.offset
+
+        return showing > this.data.totalComments ? this.data.totalComments : showing;
+      }
+    };
   }
 
   createForm() {
@@ -33,7 +43,7 @@ export class Comments extends EventManager {
     form.innerHTML = `
       <textarea name="comment" placeholder="Write your comment..."></textarea>
       <div class="anspress-comments-form-buttons">
-        <button class="anspress-comments-form-cancel" type="button">Cancel</button>
+        <button data-anspressel @click.prevent="toggleCommentForm" class="anspress-comments-form-cancel" type="button">Cancel</button>
         <button class="anspress-comments-form-submit" type="submit">Submit</button>
       </div>
     `;
@@ -42,18 +52,21 @@ export class Comments extends EventManager {
     return form;
   }
 
-  toggleForm(button) {
+  toggleCommentForm() {
     if (this.form.style.display === 'none') {
+      this.replyButton.style.display = 'none';
       this.form.style.display = 'block';
     } else {
+      this.replyButton.style.display = 'inline-block';
       this.form.style.display = 'none';
     }
   }
 
   async submitForm(e, form) {
+    e.preventDefault(); // Prevent default form submission behavior
     const comment = form.querySelector('textarea').value;
     try {
-      const response = await apiFetch({
+      const response = await this.fetch({
         path: `/anspress/v1/post/${this.data.postId}/comments`,
         method: 'POST',
         data: { comment }
@@ -62,7 +75,23 @@ export class Comments extends EventManager {
       if (response) {
         this.form.style.display = 'none';
         this.form.reset();
-        this.el('.anspress-comments-items').insertAdjacentHTML('beforebegin', response.html);
+
+        // Create a temporary container to extract the newly added HTML element
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = response.html;
+        const newComment = tempContainer.firstElementChild;
+
+        // Insert the new comment into the DOM
+        const commentsContainer = this.el('.anspress-comments-items');
+        commentsContainer.insertAdjacentElement('afterbegin', newComment);
+
+        // Scroll to the new comment
+        newComment.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Apply fade-in animation using CSS class
+        newComment.classList.add('fade-in');
+
+        this.replyButton.style.display = 'inline-block';
       } else {
         alert('Failed to submit comment');
       }
@@ -72,17 +101,23 @@ export class Comments extends EventManager {
   }
 
   async loadMoreComments() {
-    console.log(this)
+    console.log(this.data)
     try {
-      const response = await apiFetch({
-        path: `/anspress/v1/post/${this.commentsData.postId}/comments?offset=${this.itemsShowing}&limit=5`,
+      const response = await this.fetch({
+        path: `/anspress/v1/post/${this.data.postId}/comments?offset=${(this.data.offset + this.data.showing)}`,
         method: 'GET'
       });
 
-      if (response.comments && response.comments.length) {
-        response.comments.forEach(comment => this.appendComment(comment));
+      if (response.html) {
+        this.elements['comments-items'].insertAdjacentHTML('beforeend', response.html);
       } else {
-        this.loadMoreButton.style.display = 'none';
+        this.elements['comments-load-more'].style.display = 'none';
+      }
+
+      if (this.data.hasMore) {
+        this.elements['comments-load-more'].style.display = 'inline-block';
+      } else {
+        this.elements['comments-load-more'].style.display = 'none';
       }
     } catch (error) {
       console.error('An error occurred while loading more comments:', error);
@@ -94,7 +129,7 @@ export class Comments extends EventManager {
     const commentId = element.dataset.commentId;
 
     try {
-      const response = await apiFetch({
+      const response = await this.fetch({
         path: `/anspress/v1/post/${this.data.postId}/comments/${commentId}`,
         method: 'DELETE'
       });
@@ -109,17 +144,21 @@ export class Comments extends EventManager {
     }
   }
 
-  updateCommentsCount() {
-    if (this.commentsCountNode) {
-      this.commentsCountNode.textContent = `Showing ${this.itemsShowing} of ${this.totalItems} items`;
+  updateLoadMoreButton() {
+    if (this.itemsShowing >= this.totalItems) {
+      this.elements['comments-load-more'].style.display = 'none';
+    } else {
+      this.elements['comments-load-more'].style.display = 'block';
     }
   }
 
-  updateLoadMoreButton() {
-    if (this.itemsShowing >= this.totalItems) {
-      this.loadMoreButton.style.display = 'none';
-    } else {
-      this.loadMoreButton.style.display = 'block';
+  updateCommentsCount() {
+    if (this.elements['comments-total-count']) {
+      this.elements['comments-total-count'].textContent = this.data.totalComments;
+    }
+
+    if (this.elements['comments-showing-count']) {
+      this.elements['comments-showing-count'].textContent = this.data.showing;
     }
   }
 }
