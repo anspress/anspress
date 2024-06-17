@@ -18,5 +18,8 @@
   "editorScript": "file:./index.js",
   "render": "file:./render.php",
   "style": "file:./style-index.css",
-  "viewScript": "file:./view.js"
+  "viewScript": [
+    "file:./view.js",
+    "quicktags"
+  ]
 }

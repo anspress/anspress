@@ -12,18 +12,7 @@ export class VoteButton extends EventManager {
       return;
     }
 
-    console.log(this.data)
     super.init();
-    // this.voteBlock = voteBlock;
-    // this.postId = voteBlock.dataset.postId;
-    // this.voteData = JSON.parse(voteBlock.dataset.voteData || '{}');
-    // this.upvoteButton = voteBlock.querySelector('.wp-block-anspress-single-question-vote-up');
-    // this.downvoteButton = voteBlock.querySelector('.wp-block-anspress-single-question-vote-down');
-    // this.voteCountSpan = voteBlock.querySelector('.wp-block-anspress-single-question-vcount');
-
-    // this.currentState = {
-    //   postVoteData: this.voteData
-    // };
   }
 
   async vote(action) {

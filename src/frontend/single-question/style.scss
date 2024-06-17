@@ -1,8 +1,7 @@
-.wp-block-anspress-single-question {
-	&-q {
-		display: flex;
-		width: 100%;
-	}
+.anspress-apq-item {
+	display: flex;
+	width: 100%;
+	margin-bottom: 20px;
 
 	&-avatar {
 		margin-right: 20px;
@@ -42,8 +41,6 @@
 			font-size: 13px;
 			padding: 2px 5px;
 		}
-
-
 	}
 
 	&-vcount {
@@ -74,6 +71,45 @@
 		animation: count-animation 0.5s ease-in-out;
 	}
 }
+
+.anspress- {
+	&answer-form {
+		padding: 15px;
+
+		textarea {
+			width: 100%;
+			height: 100px;
+			box-sizing: border-box;
+		}
+	}
+
+	&form {
+		.quicktags-toolbar {
+			display: flex;
+			margin-bottom: 10px;
+
+			input {
+				padding: 3px 6px;
+				margin-right: 5px;
+				border: solid 1px;
+
+				&:hover {
+					background: #ddd;
+				}
+			}
+		}
+	}
+}
+
+// .anspress- {
+// 	&apq-item {
+// 		margin-bottom: 20px;
+// 	}
+
+// 	&answers-answer {
+// 		margin-bottom: 20px;
+// 	}
+// }
 
 // Import the style.css from common/comments
 @import "../common/comments/style.scss";

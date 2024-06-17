@@ -313,7 +313,10 @@ class Plugin {
 		$path = file_exists( $themePath ) ? $themePath : self::getPathTo( $pathToFile );
 
 		if ( ! file_exists( $path ) ) {
-			throw new InvalidArgumentException( 'File not found.' );
+			throw new InvalidArgumentException(
+				// translators: %s: file path.
+				sprintf( esc_attr__( 'File %s not found.', 'anspress-question-answer' ), esc_attr( $path ) )
+			);
 		}
 
 		if ( ! $output ) {

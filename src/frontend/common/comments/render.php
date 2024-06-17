@@ -31,7 +31,7 @@ $commentQuery = new WP_Comment_Query(
 		'post_id' => $args['post']->ID,
 		'status'  => 'approve',
 		'orderby' => 'comment_date_gmt',
-		'order'   => 'DESC',
+		'order'   => 'ASC',
 		'number'  => $showingComments,
 		'offset'  => $offset,
 	)
@@ -54,7 +54,7 @@ if ( $commentsWithourContainer ) {
 	return;
 }
 ?>
-<div data-anspressel="comments" class="wp-block-anspress-single-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
+<div data-anspressel="comments" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
 	<div class="anspress-comments-line"></div>
 	<div data-anspressel="comments-items" class="anspress-comments-items">
 		<?php if ( $totalComments ) : ?>
@@ -71,9 +71,7 @@ if ( $commentsWithourContainer ) {
 	<div class="anspress-comments-footer anspress-comments-form-container">
 		<span class="anspress-comments-count">
 		<?php
-		if ( ! $totalComments ) {
-			esc_attr_e( 'No Comments', 'anspress-question-answer' );
-		} else {
+		if ( $totalComments ) {
 			echo wp_kses_post(
 				sprintf(
 				// translators: %1$d is the total number of comments.

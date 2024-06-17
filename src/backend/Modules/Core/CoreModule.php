@@ -142,8 +142,8 @@ class CoreModule extends AbstractModule {
 		wp_register_script(
 			'anspress-view',
 			Plugin::getUrlTo( 'build/frontend/common/view.js' ),
-			$assetInfo['dependencies'],
-			$assetInfo['version'],
+			$viewInfo['dependencies'],
+			$viewInfo['version'],
 			true
 		);
 	}

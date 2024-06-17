@@ -16,7 +16,7 @@ if ( ! isset( $args['comment'] ) ) {
 
 $postComment = $args['comment'];
 ?>
-<div class="wp-block-anspress-single-comment anspress-comments-item">
+<div class="anspress-comments-item">
 	<a class="anspress-comments-avatar" href="<?php echo esc_url( get_comment_author_url( $postComment ) ); ?>" style="height: 30px;width: 30px">
 		<?php echo get_avatar( $postComment->user_id || $postComment->comment_author_email, 30 ); ?>
 	</a>
@@ -24,7 +24,7 @@ $postComment = $args['comment'];
 		<div class="anspress-comments-meta">
 			<a href="<?php echo esc_url( ap_user_link( $postComment->user_id ) ); ?>" class="anspress-comments-author"><?php echo esc_html( get_comment_author( $postComment ) ); ?></a>
 			<?php esc_html_e( 'commented', 'anspress-question-answer' ); ?>
-			<a href="<?php echo esc_url( get_comment_link( $postComment ) ); ?>" class="wp-block-anspress-single-comment-posted">
+			<a href="<?php echo esc_url( get_comment_link( $postComment ) ); ?>" class="anspress-apq-item-comment-posted">
 				<?php
 				$posted = 'future' === get_post_status( $postComment->comment_post_ID ) ? __( 'Scheduled for', 'anspress-question-answer' ) : __( 'Published', 'anspress-question-answer' );
 

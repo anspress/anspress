@@ -23,6 +23,8 @@ export class Comments extends EventManager {
     if (!this.data?.canComment) {
       this.elements['comments-toggle-form'].style.display = 'none';
     }
+
+    this.updateLoadMoreButton();
   }
 
   updateElements() {
@@ -60,6 +62,11 @@ export class Comments extends EventManager {
     e.preventDefault(); // Prevent default form submission behavior
     const comment = form.querySelector('textarea').value;
 
+    // Remove all validation error messages.
+    form.querySelectorAll('.anspress-validation-error').forEach(errorElement => {
+      errorElement.remove();
+    });
+
     await this.fetch({
       path: `/anspress/v1/post/${this.data.postId}/comments`,
       method: 'POST',
@@ -77,7 +84,7 @@ export class Comments extends EventManager {
 
         // Insert the new comment into the DOM
         const commentsContainer = this.el('.anspress-comments-items');
-        commentsContainer.insertAdjacentElement('afterbegin', newComment);
+        commentsContainer.insertAdjacentElement('afterend', newComment);
 
         // Scroll to the new comment
         newComment.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -103,7 +110,6 @@ export class Comments extends EventManager {
   }
 
   async loadMoreComments() {
-    console.log(this.data)
     try {
       const response = await this.fetch({
         path: `/anspress/v1/post/${this.data.postId}/comments?offset=${(this.data.offset + this.data.showing)}`,
@@ -145,10 +151,10 @@ export class Comments extends EventManager {
   }
 
   updateLoadMoreButton() {
-    if (this.itemsShowing >= this.totalItems) {
+    if (!this.data.hasMore) {
       this.elements['comments-load-more'].style.display = 'none';
     } else {
-      this.elements['comments-load-more'].style.display = 'block';
+      this.elements['comments-load-more'].style.display = 'inline-block';
     }
   }
 
