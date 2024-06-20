@@ -75,41 +75,48 @@
 .anspress- {
 	&answer-form {
 		padding: 15px;
+		position: relative;
 
 		textarea {
 			width: 100%;
 			height: 100px;
 			box-sizing: border-box;
 		}
+
+		&-overlay-showing {
+			textarea {
+				display: none;
+			}
+		}
 	}
 
 	&form {
-		.quicktags-toolbar {
-			display: flex;
-			margin-bottom: 10px;
+		position: relative;
 
-			input {
-				padding: 3px 6px;
-				margin-right: 5px;
-				border: solid 1px;
+		&-overlay {
+			border: solid 1px;
+			padding: 25px;
+			background: #eee;
+			text-align: center;
 
-				&:hover {
-					background: #ddd;
+			&-showing {
+				.anspress-form-groups {
+					display: none;
 				}
 			}
+		}
+
+		&-submit-button {
+			margin-top: 10px;
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: flex-end;
 		}
 	}
 }
 
-// .anspress- {
-// 	&apq-item {
-// 		margin-bottom: 20px;
-// 	}
-
-// 	&answers-answer {
-// 		margin-bottom: 20px;
-// 	}
-// }
 
 // Import the style.css from common/comments
 @import "../common/comments/style.scss";

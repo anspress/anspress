@@ -86,6 +86,8 @@ export class Comments extends EventManager {
         const commentsContainer = this.el('.anspress-comments-items');
         commentsContainer.insertAdjacentElement('afterend', newComment);
 
+        this.rebindEvents();
+
         // Scroll to the new comment
         newComment.scrollIntoView({ behavior: 'smooth', block: 'start' });
 

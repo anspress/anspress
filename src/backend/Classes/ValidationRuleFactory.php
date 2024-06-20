@@ -18,6 +18,7 @@ use AnsPress\Classes\Rules\MaxRule;
 use AnsPress\Classes\Rules\MinRule;
 use AnsPress\Classes\Rules\NullableRule;
 use AnsPress\Classes\Rules\NumericRule;
+use AnsPress\Classes\Rules\PostTypeRule;
 use AnsPress\Classes\Rules\RequiredRule;
 use AnsPress\Classes\Rules\StringRule;
 use AnsPress\Classes\Rules\UniqueRule;
@@ -41,19 +42,20 @@ class ValidationRuleFactory {
 	 * @var class-string<RequiredRule>[]
 	 */
 	protected static $ruleMap = array(
-		'nullable' => NullableRule::class,
-		'required' => RequiredRule::class,
-		'string'   => StringRule::class,
-		'integer'  => IntegerRule::class,
-		'numeric'  => NumericRule::class,
-		'array'    => ArrayRule::class,
-		'min'      => MinRule::class,
-		'max'      => MaxRule::class,
-		'email'    => EmailRule::class,
-		'unique'   => UniqueRule::class,
-		'exists'   => ExistsRule::class,
-		'can'      => CanRule::class,
-		'in'       => InRule::class,
+		'nullable'  => NullableRule::class,
+		'required'  => RequiredRule::class,
+		'string'    => StringRule::class,
+		'integer'   => IntegerRule::class,
+		'numeric'   => NumericRule::class,
+		'array'     => ArrayRule::class,
+		'min'       => MinRule::class,
+		'max'       => MaxRule::class,
+		'email'     => EmailRule::class,
+		'unique'    => UniqueRule::class,
+		'exists'    => ExistsRule::class,
+		'can'       => CanRule::class,
+		'in'        => InRule::class,
+		'post_type' => PostTypeRule::class,
 	);
 
 	/**

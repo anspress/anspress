@@ -14,17 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Trying to cheat?' );
 }
 
-// Check if answer is set or not.
-if ( ! isset( $args['post'] ) ) {
-	throw new GeneralException( 'Post not set.' );
-}
-
-$_post = $args['post'];
+$_post = get_post();
 
 $isQuestion = 'question' === $_post->post_type;
 
 ?>
-<div class="anspress-apq-item">
+<div data-anspressel="question-item" class="anspress-apq-item">
 	<div class="anspress-apq-item-avatar">
 		<a href="<?php ap_profile_link(); ?>">
 			<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
@@ -90,15 +85,18 @@ $isQuestion = 'question' === $_post->post_type;
 
 			<div class="anspress-apq-item-footer">
 				<?php
-					Plugin::loadView( 'src/frontend/single-question/vote-button.php', array( 'ID' => get_the_ID() ) );
-				?>
+					Plugin::loadView(
+						'src/frontend/single-question/vote-button.php',
+						array( 'ID' => $_post->ID )
+					);
+					?>
 
 				<?php do_action( 'ap_post_footer' ); ?>
 			</div>
 		</div>
 
 		<?php
-			Plugin::loadView( 'src/frontend/common/comments/render.php', array( 'post' => get_post() ) );
+			Plugin::loadView( 'src/frontend/common/comments/render.php', array( 'post' => $_post ) );
 		?>
 	</div>
 </div>

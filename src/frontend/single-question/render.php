@@ -17,8 +17,9 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 ?>
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> data-gutenberg-attributes="<?php echo esc_attr( wp_json_encode( $attributes ) ); ?>" data-post-id="<?php the_ID(); ?>">
 	<?php
-		Plugin::loadView( 'src/frontend/single-question/item.php', array( 'post' => get_post() ) );
+		Plugin::loadView( 'src/frontend/single-question/item.php' );
 		Plugin::loadView( 'src/frontend/single-question/answers.php', array( 'question' => get_post() ) );
-		Plugin::loadView( 'src/frontend/single-question/answer-form.php', array( 'question' => get_post() ) );
 	?>
+
+	<?php Plugin::loadView( 'src/frontend/single-question/answer-form.php', array( 'question' => get_post() ) ); ?>
 </div>

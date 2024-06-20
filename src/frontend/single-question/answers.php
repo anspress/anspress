@@ -33,12 +33,12 @@ $query = new WP_Query(
 
 ?>
 <div data-anspressel="answers" class="anspress-answers">
-	<div class="anspress-answers-items">
+	<div data-anspressel="answers-items" class="anspress-answers-items">
 		<?php if ( $query->have_posts() ) : ?>
 			<?php
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				Plugin::loadView( 'src/frontend/single-question/item.php', array( 'post' => get_post() ) );
+				Plugin::loadView( 'src/frontend/single-question/item.php' );
 			}
 			wp_reset_postdata();
 			?>

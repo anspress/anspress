@@ -146,6 +146,21 @@ class CoreModule extends AbstractModule {
 			$viewInfo['version'],
 			true
 		);
+
+		wp_register_style(
+			'anspress-easymde',
+			Plugin::getUrlTo( 'src/assets/lib/easymde/easymde.min.css' ),
+			array(),
+			'2.18.0'
+		);
+
+		wp_register_script(
+			'anspress-easymde',
+			Plugin::getUrlTo( 'src/assets/lib/easymde/easymde.min.js' ),
+			array(),
+			'2.18.0',
+			true
+		);
 	}
 
 	/**

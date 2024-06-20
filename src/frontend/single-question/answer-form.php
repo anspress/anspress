@@ -18,38 +18,58 @@ if ( ! isset( $args['question'] ) ) {
 	throw new GeneralException( 'Question is required.' );
 }
 
+$question = $args['question'];
+
+$answerFormArgs = array(
+	'question_id'    => $question->ID,
+	'form_loaded'    => $args['form_loaded'] ?? false,
+	'load_form_path' => '/anspress/v1/post/' . $question->ID . '/load-answer-form',
+	'form_action'    => '/anspress/v1/post/' . $question->ID . '/answers',
+);
 ?>
-<div data-anspressel="answer-form" class="anspress-answer-form-c">
-	<div class="anspress-apq-item">
-		<div class="anspress-apq-item-avatar">
-			<a href="<?php ap_profile_link(); ?>">
-				<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
-			</a>
-		</div>
-		<div class="anspress-apq-item-content">
-			<div class="anspress-apq-item-qbody">
-				<form
-					class="anspress-form anspress-answer-form"
-					method="post"
-				>
-					<div class="anspress-form-group">
+<div class="anspress-apq-item anspress-answer-form-c" data-anspressel="answer-form" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>">
+	<div class="anspress-apq-item-avatar">
+		<a href="<?php ap_profile_link(); ?>">
+			<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ), $question->ID ); ?>
+		</a>
+	</div>
+	<div class="anspress-apq-item-content">
+		<div class="anspress-apq-item-qbody">
+			<form
+				data-anspressel
+				class="anspress-form anspress-answer-form"
+				method="post"
+				data-anspress-form="answer"
+				@submit.prevent="submitForm"
+			>
+				<?php if ( ! $answerFormArgs['form_loaded'] ) : ?>
+
+					<div data-anspressel class="anspress-form-overlay" @click.prevent="loadForm">
+						<?php esc_html_e( 'Type your answer here...', 'anspress-question-answer' ); ?>
+					</div>
+
+				<?php else : ?>
+
+					<div data-anspress-field="post_content" class="anspress-form-group">
 						<textarea
-							id="anspress-quicktag-editor"
-							name="content"
+							id="anspress-answer-content"
+							name="post_content"
 							class="anspress-form-control"
-							rows="5"
-							required
+							placeholder="<?php esc_attr_e( 'Type your answer here.', 'anspress-question-answer' ); ?>"
 						></textarea>
 					</div>
-					<?php wp_nonce_field( 'anspress_answer', 'anspress_answer_nonce' ); ?>
-					<input type="hidden" name="action" value="anspress_answer" />
-					<input type="hidden" name="post_id" value="<?php echo esc_attr( $args['question']->ID ); ?>" />
-					<input type="hidden" name="ap_form" value="answer" />
-					<button type="submit" class="anspress-button anspress-btn-primary">
-						<?php esc_html_e( 'Submit Answer', 'anspress-question-answer' ); ?>
-					</button>
-				</form>
-			</div>
+					<div class="anspress-form-buttons">
+						<button
+							data-anspressel="submit"
+							data-anspress-button="submit"
+							type="submit"
+							class="anspress-button anspress-button-primary"
+						>
+							<?php esc_html_e( 'Post Answer', 'anspress-question-answer' ); ?>
+						</button>
+					</div>
+				<?php endif; ?>
+			</form>
 		</div>
 	</div>
 </div>

@@ -33,14 +33,19 @@ export class EventManager {
   // Initialize event bindings
   init() {
     this.bindEvents();
-    this.setupMutationObserver();
+    // this.setupMutationObserver();
+  }
+
+  rebindEvents() {
+    this.unbindEvents();
+    this.bindEvents();
   }
 
   // Bind all events defined in eventMappings
   bindEvents() {
     this.eventMappings().forEach(mapping => {
       const elements = this.container.querySelectorAll(mapping.selector);
-      elements.forEach(element => {
+      elements?.forEach(element => {
         let handler = (event) => {
           if (mapping?.cancel) event.preventDefault();
           mapping.handler.call(this, event, element);
@@ -54,10 +59,22 @@ export class EventManager {
   }
 
   bindAttributeEvents() {
-    const elements = this.container.querySelectorAll('[data-anspressel]');
+    console.log(`Binding attribute events for ${this.containerId}`)
+    let elements = this.container.querySelectorAll('[data-anspressel]');
+
+    // Also include the container itself if it has any event attributes.
+    if (this.container.attributes) {
+      [...this.container.attributes].forEach(attr => {
+        if (attr.name.startsWith('@')) {
+          elements = [...elements, this.container];
+        }
+      });
+    }
+
     elements.forEach(element => {
       [...element.attributes].forEach(attr => {
         if (attr.name.startsWith('@')) {
+          console.log(`Binding attribute event for ${attr.name} on ${element}`)
           const [event, ...modifiers] = attr.name.slice(1).split('.');
           const handlerName = attr.value;
 
@@ -89,11 +106,30 @@ export class EventManager {
 
   setupMutationObserver() {
     let debounceTimer;
-    const observer = new MutationObserver(() => {
+    const observer = new MutationObserver((mutations) => {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        this.unbindEvents();
-        this.bindEvents();
+        let shouldRebind = false;
+
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE && node.hasAttribute('data-anspressel')) {
+              shouldRebind = true;
+            }
+          });
+
+          mutation.removedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE && node.hasAttribute('data-anspressel')) {
+              shouldRebind = true;
+            }
+          });
+        });
+
+        if (shouldRebind) {
+          console.log('Mutation detected. Rebinding events: ' + this.containerId);
+          this.unbindEvents();
+          this.bindEvents();
+        }
       }, 100);
     });
 
@@ -191,17 +227,39 @@ export class EventManager {
     document.body.dispatchEvent(event);
   }
 
+  replaceContainer(html) {
+    this.destroy();
+
+    // Create a temporary container to hold the new HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html.trim();
+
+    // Get the new container element from the temporary container
+    const newContainer = tempDiv.firstChild;
+
+    // Find the parent of the current container
+    const parent = this.container.parentNode;
+
+    // Replace the old container with the new one
+    parent.replaceChild(newContainer, this.container);
+
+    // Update the container reference
+    this.container = newContainer;
+
+    // Reinitialize the class
+    this.init();
+  }
+
   fetch(path, options) {
     return apiFetch(path, options)
       .then(res => {
-        console.log(this.containerId)
         if (res[`${this.containerId}Data`]) {
           this.data = res[`${this.containerId}Data`];
         }
 
         // Replace the container with the new content
         if (res[`${this.containerId}Html`]) {
-          this.container.innerHTML = res[`${this.containerId}Content`];
+          this.replaceContainer(res[`${this.containerId}Html`]);
         }
 
         if (res[`${this.containerId}Messages`]) {
@@ -213,6 +271,16 @@ export class EventManager {
         if (res.errors && Array.isArray(res.errors) && res.errors.length) {
           res.errors.map(snackbarItem => this.dispatchSnackbar(snackbarItem.message, 'error', 5000));
         }
+
+        if (res?.appendHtmlTo) {
+          Object.keys(res.appendHtmlTo).forEach(key => {
+            const appendTo = this.apEl(key) || document.querySelector(`[data-anspressel="${key}"]`);
+            if (appendTo) {
+              appendTo.insertAdjacentHTML('beforeend', res.appendHtmlTo[key]);
+            }
+          })
+        }
+
         return res;
       })
       .catch(err => {

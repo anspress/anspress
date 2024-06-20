@@ -45,6 +45,7 @@ class Plugin {
 		\AnsPress\Modules\Profile\ProfileModule::class,
 		\AnsPress\Modules\Vote\VoteModule::class,
 		\AnsPress\Modules\Subscriber\SubscriberModule::class,
+		\AnsPress\Modules\Answer\AnswerModule::class,
 	);
 
 	/**

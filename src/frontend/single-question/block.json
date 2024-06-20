@@ -17,9 +17,12 @@
   },
   "editorScript": "file:./index.js",
   "render": "file:./render.php",
-  "style": "file:./style-index.css",
+  "style": [
+    "file:./style-index.css",
+    "anspress-easymde"
+  ],
   "viewScript": [
     "file:./view.js",
-    "quicktags"
+    "anspress-easymde"
   ]
 }
