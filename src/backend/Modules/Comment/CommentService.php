@@ -6,7 +6,7 @@
  * @since 5.0.0
  */
 
-namespace AnsPress\Modules\Core;
+namespace AnsPress\Modules\Comment;
 
 use AnsPress\Classes\AbstractService;
 use AnsPress\Classes\Validator;
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Comment service.
  *
- * @package AnsPress\Modules\Core
+ * @package AnsPress\Modules\Comment
  */
 class CommentService extends AbstractService {
 
@@ -45,7 +45,7 @@ class CommentService extends AbstractService {
 		);
 
 		if ( is_wp_error( $commentId ) ) {
-			throw new ValidationException( $commentId->get_error_messages() ); // @codingStandardsIgnoreLine
+			throw new ValidationException( ['*' => $commentId->get_error_messages()] ); // @codingStandardsIgnoreLine
 		}
 
 		return $commentId;
@@ -71,7 +71,7 @@ class CommentService extends AbstractService {
 		$deleted = wp_delete_comment( $commentId, true );
 
 		if ( ! $deleted ) {
-			throw new ValidationException( esc_attr__( 'Failed to delete comment.', 'anspress-question-answer' ) );
+			throw new ValidationException( array( '*' => esc_attr__( 'Failed to delete comment.', 'anspress-question-answer' ) ) );
 		}
 
 		return true;

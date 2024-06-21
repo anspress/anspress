@@ -66,20 +66,73 @@ class Validator {
 	protected array $validatedData = array();
 
 	/**
+	 * Transformations to apply before validation.
+	 *
+	 * @var array
+	 */
+	protected array $transformations = array(
+		'bool' => 'transformToBool',
+	);
+
+	/**
+	 * Custom transformations.
+	 *
+	 * @var array
+	 */
+	protected array $customTransformations = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * @param array $data Data to validate.
 	 * @param array $rules Validation rules.
 	 * @param array $customMessages Custom messages.
 	 * @param array $customAttributes Custom attributes.
+	 * @param array $customTransformations Custom transformations.
 	 */
-	public function __construct( array $data, array $rules, array $customMessages = array(), array $customAttributes = array() ) {
-		$this->data             = $data;
-		$this->rules            = $rules;
-		$this->customMessages   = $customMessages;
-		$this->customAttributes = $customAttributes;
+	public function __construct( array $data, array $rules, array $customMessages = array(), array $customAttributes = array(), array $customTransformations = array() ) {
+		$this->data                  = $data;
+		$this->rules                 = $rules;
+		$this->customMessages        = $customMessages;
+		$this->customAttributes      = $customAttributes;
+		$this->customTransformations = $customTransformations;
 
+		$this->applyTransformations();
 		$this->validate();
+	}
+
+	/**
+	 * Apply transformations to data.
+	 */
+	protected function applyTransformations(): void {
+		foreach ( $this->rules as $attribute => $rules ) {
+			$rules = is_string( $rules ) ? explode( '|', $rules ) : $rules;
+
+			foreach ( $rules as $rule ) {
+				$ruleName = null;
+
+				if ( is_string( $rule ) ) {
+					$ruleName = explode( ':', $rule )[0] ?? null;
+				} elseif ( is_array( $rule ) ) {
+					$ruleName = $rule[0] ?? null;
+				}
+
+				if ( ! is_string( $ruleName ) ) {
+					continue;
+				}
+
+				// Apply built-in transformations.
+				if ( isset( $this->transformations[ $ruleName ] ) ) {
+					$transformationMethod     = $this->transformations[ $ruleName ];
+					$this->data[ $attribute ] = $this->$transformationMethod( $this->data[ $attribute ] );
+				}
+
+				// Apply custom transformations.
+				if ( isset( $this->customTransformations[ $ruleName ] ) ) {
+					$this->data[ $attribute ] = call_user_func( $this->customTransformations[ $ruleName ], $this->data[ $attribute ] );
+				}
+			}
+		}
 	}
 
 	/**
@@ -103,6 +156,21 @@ class Validator {
 		$attributeData = $this->getAttributeData( $attribute, $data );
 		$parsedRules   = $this->parseRules( $rules );
 
+		// Check for nullable rule.
+		$isNullable = false;
+		foreach ( $parsedRules as $rule ) {
+			if ( 'nullable' === $rule['rule'] ) {
+				$isNullable = true;
+				break;
+			}
+		}
+
+		// Skip further validation if the attribute is nullable and its value is null.
+		if ( $isNullable && is_null( $attributeData ) ) {
+			$this->setAttributeData( $attribute, $attributeData );
+			return;
+		}
+
 		// Handle wildcard attribute validation.
 		if ( strpos( $attribute, '.*' ) !== false ) {
 			$this->validateWildcardAttribute( $attribute, $parsedRules, $data );
@@ -116,7 +184,6 @@ class Validator {
 				} elseif ( $this->isCallableFunction( $rule ) ) {
 					$this->validateWithCallable( $attribute, $attributeData, $parameters, $rule, $originalAttribute );
 				} else {
-
 					// Create validation rule instance.
 					$validationRule = $this->createValidationRule( $rule, $parameters );
 
@@ -420,5 +487,15 @@ class Validator {
 
 		// Set the value to the final key.
 		$data = $value;
+	}
+
+	/**
+	 * Transform value to boolean.
+	 *
+	 * @param mixed $value Value to transform.
+	 * @return bool Transformed value.
+	 */
+	protected function transformToBool( $value ): bool {
+		return filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE ) ?? $value;
 	}
 }

@@ -19,10 +19,10 @@
   "render": "file:./render.php",
   "style": [
     "file:./style-index.css",
-    "anspress-easymde"
+    "wp-tinymce"
   ],
   "viewScript": [
     "file:./view.js",
-    "anspress-easymde"
+    "wp-tinymce"
   ]
 }

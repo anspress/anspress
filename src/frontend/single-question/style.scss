@@ -90,31 +90,7 @@
 		}
 	}
 
-	&form {
-		position: relative;
 
-		&-overlay {
-			border: solid 1px;
-			padding: 25px;
-			background: #eee;
-			text-align: center;
-
-			&-showing {
-				.anspress-form-groups {
-					display: none;
-				}
-			}
-		}
-
-		&-submit-button {
-			margin-top: 10px;
-		}
-
-		&-buttons {
-			display: flex;
-			justify-content: flex-end;
-		}
-	}
 }
 
 

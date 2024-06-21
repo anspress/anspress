@@ -1,4 +1,5 @@
 import { EventManager } from './EventManager';
+import { addQueryArgs } from '@wordpress/url';
 
 export class FormManager extends EventManager {
 
@@ -9,6 +10,7 @@ export class FormManager extends EventManager {
   appendError(field, errors) {
     let errorElement = field.parentElement.querySelector('.anspress-form-error');
     if (!errorElement) {
+      field?.classList.add('anspress-form-has-error')
       errorElement = document.createElement('div');
       errorElement.classList.add('anspress-form-error');
       field.appendChild(errorElement);
@@ -17,6 +19,9 @@ export class FormManager extends EventManager {
   }
 
   clearErrors(form) {
+    form.querySelectorAll('.anspress-form-has-error').forEach(errorElement => {
+      errorElement.classList.remove('anspress-form-has-error');
+    });
     form.querySelectorAll('.anspress-form-error').forEach(errorElement => {
       errorElement.remove();
     });
@@ -24,14 +29,6 @@ export class FormManager extends EventManager {
 
   async submitForm(e, form) {
     this.clearErrors(form);
-
-    // Search for the form fields and trigger easymed.toTextArea() to update the textarea value.
-    const formFields = this.getFormFields(form);
-    console.log(formFields)
-    formFields?.forEach((field) => {
-      console.log(field.querySelector('textarea')?.easymde)
-      field.querySelector('textarea').value = field.querySelector('textarea')?.easymde?.value();
-    });
 
     const formData = new FormData(form);
 
@@ -45,6 +42,8 @@ export class FormManager extends EventManager {
       });
 
       this.handleSuccess(response, form);
+
+      tinymce.remove();
     } catch (error) {
       console.error('Form submission error:', error);
       this.handleErrors(error.errors, form);
@@ -57,6 +56,23 @@ export class FormManager extends EventManager {
 
   handleErrors(errors, form) {
     Object.keys(errors).forEach((field) => {
+      // If error field is * then show error on top of form.
+      if (field === '*') {
+        const errorElement = form.querySelector('.anspress-form-error');
+        if (errorElement) {
+          errorElement.remove();
+        }
+
+        {
+          const errorElement = document.createElement('div');
+          errorElement.classList.add('anspress-form-error', 'anspress-form-global-error');
+          errorElement.innerHTML = errors[field];
+          form.prepend(errorElement);
+        }
+
+        return;
+      }
+
       const fieldErrors = errors[field] ?? [];
       const fieldEl = form.querySelector(`[data-anspress-field="${field}"]`);
       if (fieldEl) {
@@ -73,20 +89,42 @@ export class FormManager extends EventManager {
 
   loadForm() {
     this.fetch({
-      path: this.data.load_form_path,
+      path: addQueryArgs(this.data.load_form_path, { form_loaded: true }),
       method: 'GET',
     })
       .then(res => {
         if (res?.load_easymde) {
-          const easymde = new EasyMDE({
-            element: document.getElementById(res?.load_easymde),
-            toolbar: [
-              'bold', 'italic', 'strikethrough', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'image', '|', 'preview', 'guide'
-            ]
-          })
-
-          document.getElementById(res?.load_easymde).easymde = easymde;
+          tinymce.init({
+            selector: '#' + res?.load_easymde,
+            toolbar: 'bold italic | underline strikethrough | bullist numlist | link unlink blockquote hr| image removeformat',
+            menubar: false,
+            statusbar: false,
+            plugins: 'lists link hr wpautoresize image',
+            min_height: 200,
+            wp_autoresize_on: true,
+            images_file_types: 'jpg,svg,webp',
+            file_picker_types: 'file image media',
+            automatic_uploads: true,
+            images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+            }),
+            setup: function (editor) {
+              editor.on('change', function () {
+                editor.save();
+              });
+            }
+          });
         }
       });
+  }
+
+  closeForm() {
+    this.fetch({
+      path: addQueryArgs(this.data.load_form_path, { form_loaded: false }),
+      method: 'GET',
+    })
+  }
+
+  imageUploadHandler() {
+
   }
 }

@@ -8,7 +8,7 @@
 
 use AnsPress\Classes\Plugin;
 use AnsPress\Exceptions\GeneralException;
-use AnsPress\Modules\Core\CommentService;
+use AnsPress\Modules\Comment\CommentService;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -54,7 +54,7 @@ if ( $commentsWithourContainer ) {
 	return;
 }
 ?>
-<div data-anspressel="comments" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
+<div data-anspressel="comments" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
 	<div class="anspress-comments-line"></div>
 	<div data-anspressel="comments-items" class="anspress-comments-items">
 		<?php if ( $totalComments ) : ?>
@@ -84,7 +84,13 @@ if ( $commentsWithourContainer ) {
 		</span>
 		<a data-anspressel="comments-load-more" @click.prevent="loadMoreComments" href="#" class="anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></a>
 	</div>
-	<a data-anspressel="comments-toggle-form" @click.prevent="toggleCommentForm" href="#" class="anspress-comments-add-comment-button anspress-button" data-post-id="<?php echo (int) $args['post']->ID; ?>">
-		<?php esc_html_e( 'Add your comment', 'anspress-question-answer' ); ?>
-	</a>
+	<?php
+		Plugin::loadView(
+			'src/frontend/common/comments/comment-form.php',
+			array(
+				'post'        => $args['post'],
+				'form_loaded' => false,
+			)
+		);
+		?>
 </div>

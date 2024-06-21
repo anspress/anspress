@@ -87,6 +87,12 @@
 	&-add-comment-button {
 		margin-top: 15px;
 	}
+}
 
-
+.anspress-comment {
+	&-form {
+		border: solid 1px;
+		background: #fff;
+		padding: 10px;
+	}
 }

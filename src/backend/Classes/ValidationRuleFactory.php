@@ -9,6 +9,7 @@
 namespace AnsPress\Classes;
 
 use AnsPress\Classes\Rules\ArrayRule;
+use AnsPress\Classes\Rules\BoolRule;
 use AnsPress\Classes\Rules\CanRule;
 use AnsPress\Classes\Rules\EmailRule;
 use AnsPress\Classes\Rules\ExistsRule;
@@ -56,6 +57,7 @@ class ValidationRuleFactory {
 		'can'       => CanRule::class,
 		'in'        => InRule::class,
 		'post_type' => PostTypeRule::class,
+		'bool'      => BoolRule::class,
 	);
 
 	/**

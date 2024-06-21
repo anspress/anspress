@@ -16,7 +16,7 @@ if ( ! isset( $args['comment'] ) ) {
 
 $postComment = $args['comment'];
 ?>
-<div class="anspress-comments-item">
+<div class="anspress-comments-item" id="anspress-comment-<?php echo esc_attr( $postComment->comment_ID ); ?>" data-anspressel="comment">
 	<a class="anspress-comments-avatar" href="<?php echo esc_url( get_comment_author_url( $postComment ) ); ?>" style="height: 30px;width: 30px">
 		<?php echo get_avatar( $postComment->user_id || $postComment->comment_author_email, 30 ); ?>
 	</a>
@@ -60,7 +60,12 @@ $postComment = $args['comment'];
 				</a>
 			<?php endif; ?>
 			<?php if ( ap_user_can_edit_comment( $postComment->comment_ID ) ) : ?>
-				<a data-anspressel @click.prevent="editComment" href="#" class="anspress-comments-edit" data-comment-id="<?php echo (int) $postComment->comment_ID; ?>">
+				<?php
+					$editCommentArgs = array(
+						'path' => 'anspress/v1/post/' . $postComment->comment_post_ID . '/load-edit-comment-form/' . $postComment->comment_ID,
+					);
+					?>
+				<a data-anspressel @click.prevent="editComment" href="#" class="anspress-comments-edit" data-anspress="<?php echo esc_attr( wp_json_encode( $editCommentArgs ) ); ?>">
 					<?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?>
 				</a>
 			<?php endif; ?>

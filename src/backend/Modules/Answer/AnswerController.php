@@ -118,13 +118,13 @@ class AnswerController extends AbstractController {
 
 		return $this->response(
 			array(
-				'formMessages'    => array(
+				'answer-formMessages' => array(
 					array(
 						'message' => esc_attr__( 'Answer posted successfully.', 'anspress-question-answer' ),
 					),
 				),
-				'appendHtmlTo'    => array( 'answers-items' => $html ),
-				'answer-formHtml' => Plugin::loadView(
+				'appendHtmlTo'        => array( '[data-anspressel="answers-items"]' => $html ),
+				'answer-formHtml'     => Plugin::loadView(
 					'src/frontend/single-question/answer-form.php',
 					array(
 						'question'    => get_post( $data['post_id'] ),

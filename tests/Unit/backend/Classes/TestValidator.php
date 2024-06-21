@@ -18,8 +18,6 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
  * @package Tests\Unit
  */
 class TestValidator extends TestCase {
-
-
 	public function testValidatePasses()
     {
 		Functions\expect('wp_sprintf')

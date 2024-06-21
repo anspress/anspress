@@ -112,6 +112,7 @@ export class EventManager {
         let shouldRebind = false;
 
         mutations.forEach((mutation) => {
+          console.log(mutation.addedNodes)
           mutation.addedNodes.forEach((node) => {
             if (node.nodeType === Node.ELEMENT_NODE && node.hasAttribute('data-anspressel')) {
               shouldRebind = true;
@@ -274,11 +275,23 @@ export class EventManager {
 
         if (res?.appendHtmlTo) {
           Object.keys(res.appendHtmlTo).forEach(key => {
-            const appendTo = this.apEl(key) || document.querySelector(`[data-anspressel="${key}"]`);
+            const appendTo = document.querySelector(key);
+            console.log(appendTo)
             if (appendTo) {
               appendTo.insertAdjacentHTML('beforeend', res.appendHtmlTo[key]);
             }
           })
+        }
+
+        // Handle replaceHtml.
+        if (res?.replaceHtml) {
+          Object.keys(res.replaceHtml).forEach(key => {
+            const replaceEl = document.querySelector(key);
+            console.log(replaceEl)
+            if (replaceEl) {
+              replaceEl.outerHTML = res.replaceHtml[key];
+            }
+          });
         }
 
         return res;

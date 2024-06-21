@@ -10,8 +10,6 @@ namespace AnsPress\Modules\Core;
 
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\Plugin;
-use AnsPress\Classes\RestRouteHandler;
-use WP_REST_Server;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -146,21 +144,6 @@ class CoreModule extends AbstractModule {
 			$viewInfo['version'],
 			true
 		);
-
-		wp_register_style(
-			'anspress-easymde',
-			Plugin::getUrlTo( 'src/assets/lib/easymde/easymde.min.css' ),
-			array(),
-			'2.18.0'
-		);
-
-		wp_register_script(
-			'anspress-easymde',
-			Plugin::getUrlTo( 'src/assets/lib/easymde/easymde.min.js' ),
-			array(),
-			'2.18.0',
-			true
-		);
 	}
 
 	/**
@@ -202,56 +185,5 @@ class CoreModule extends AbstractModule {
 	 * @return void
 	 */
 	public function registerRoutes() {
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'createComment' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
-
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments/(?P<comment_id>\d+)',
-			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'deleteComment' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id'    => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-					'comment_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
-
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'showComments' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
 	}
 }

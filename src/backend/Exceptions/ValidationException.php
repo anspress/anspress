@@ -44,7 +44,7 @@ class ValidationException extends Exception {
 		parent::__construct( $message, $code, $previous );
 
 		// Log the exception message.
-		Plugin::get( Logger::class )->log( Logger::LOG_LEVEL_ERROR, $message, $this->getErrors() );
+		// Plugin::get( Logger::class )->log( Logger::LOG_LEVEL_ERROR, $message, $this->getErrors() ); // @codingStandardsIgnoreLine
 	}
 
 	/**

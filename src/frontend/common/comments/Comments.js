@@ -1,4 +1,5 @@
 import { EventManager } from '../EventManager';
+import { FormManager } from '../FormManager';
 
 export class Comments extends EventManager {
   eventMappings() {
@@ -19,10 +20,6 @@ export class Comments extends EventManager {
     this.replyButton = this.el('.anspress-comments-add-comment-button');
 
     super.init();
-
-    if (!this.data?.canComment) {
-      this.elements['comments-toggle-form'].style.display = 'none';
-    }
 
     this.updateLoadMoreButton();
   }
@@ -171,7 +168,15 @@ export class Comments extends EventManager {
   }
 
   editComment(e, element) {
-    console.error('Edit comment not implemented yet');
+    const data = JSON.parse(element.dataset.anspress || '');
+    this.fetch({
+      path: data?.path
+    }).then(res => {
+      console.log(res);
+      if (res) {
+        new FormManager(document.querySelector(`#anspress-comment-form-${res.comment.id}`));
+      }
+    })
   }
 }
 
