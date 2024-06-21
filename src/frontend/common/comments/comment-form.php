@@ -29,9 +29,9 @@ $answerFormArgs = array(
 	'form_action'    => '/anspress/v1/post/' . $_post->ID . '/comments' . ( $postComment ? '/' . $postComment->comment_ID : '' ),
 );
 ?>
-<div class="anspress-comment-form-c" data-anspressel="comment-form" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">
+<anspress-comment-form class="anspress-comment-form-c" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">
 	<?php if ( ! $answerFormArgs['form_loaded'] ) : ?>
-		<div data-anspressel class="anspress-form-overlay" @click.prevent="loadForm">
+		<div data-anspressel="load-form" class="anspress-form-overlay">
 			<?php esc_html_e( 'Type your comment here...', 'anspress-question-answer' ); ?>
 		</div>
 
@@ -46,4 +46,4 @@ $answerFormArgs = array(
 			</div>
 		</form>
 	<?php endif; ?>
-</div>
+</anspress-comment-form>

@@ -69,7 +69,7 @@ class CommentController extends AbstractController {
 
 		return $this->response(
 			array(
-				'comment-formHtml' => $commentForm,
+				'html' => $commentForm,
 			)
 		);
 	}
@@ -200,7 +200,7 @@ class CommentController extends AbstractController {
 		return $this->response(
 			array(
 				'message'          => esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ),
-				'commentsData'     => Plugin::get( CommentService::class )->getCommentsData(
+				'data'             => Plugin::get( CommentService::class )->getCommentsData(
 					get_post( $comment->comment_post_ID )
 				),
 				'commentsMessages' => array(
@@ -243,8 +243,8 @@ class CommentController extends AbstractController {
 
 		return $this->response(
 			array(
-				'html'         => $commentHtml,
-				'commentsData' => Plugin::get( CommentService::class )->getCommentsData(
+				'html' => $commentHtml,
+				'data' => Plugin::get( CommentService::class )->getCommentsData(
 					$post,
 					absint( $this->getParam( 'offset', 0 ) )
 				),

@@ -33,8 +33,13 @@ export class BaseCustomElement extends HTMLElement {
     this.setAttribute('data-anspress', JSON.stringify(data));
   }
 
+  setDataValue(key, value) {
+    this.data[key] = value;
+    this.setAttribute('data-anspress', JSON.stringify(this.data));
+  }
+
   updateComponent() {
-    throw new Error('updateComponent method must be implemented by subclasses');
+    // throw new Error('updateComponent method must be implemented by subclasses');
   }
 
   addEventListeners() {
@@ -50,7 +55,17 @@ export class BaseCustomElement extends HTMLElement {
         }
       }
 
-      return res;
+      return res.anspress || {};
     })
+  }
+
+  getElData(el, key) {
+    const data = el.getAttribute(`data-${key}`);
+
+    if (!data) {
+      return {};
+    }
+
+    return JSON.parse(data);
   }
 }

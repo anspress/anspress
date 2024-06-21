@@ -147,7 +147,7 @@ abstract class AbstractController {
 	 * @return WP_REST_Response
 	 */
 	public function response( mixed $data, int $status = 200 ): WP_REST_Response {
-		$response = new WP_REST_Response( $data );
+		$response = new WP_REST_Response( array( 'anspress' => $data ) );
 		$response->set_status( $status );
 		$response->header( 'Content-Type', 'application/json' );
 		return $response;

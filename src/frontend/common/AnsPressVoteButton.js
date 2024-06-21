@@ -39,6 +39,12 @@ export class VoteButton extends BaseCustomElement {
     this.querySelector('[data-anspressel="vote-down"]').addEventListener('click', this.voteDown.bind(this));
   }
 
+  disconnectedCallback() {
+    this.removeEventListener('vote-up');
+    this.removeEventListener('vote-down');
+    this.removeEventListener('vote-undo');
+  }
+
   async send(action) {
     try {
       const path = !this.data.currentUserVoted

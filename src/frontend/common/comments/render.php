@@ -54,8 +54,21 @@ if ( $commentsWithourContainer ) {
 	return;
 }
 ?>
-<div data-anspressel="comments" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
+<anspress-comment-list data-post-id="<?php echo esc_attr( $args['post']->ID ); ?>" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
 	<div class="anspress-comments-line"></div>
+	<div class="anspress-comments-count">
+		<?php
+		if ( $totalComments ) {
+			echo wp_kses_post(
+				sprintf(
+				// translators: %1$d is the total number of comments.
+					__( 'Total comments %1$s.', 'anspress-question-answer' ),
+					'<span data-anspressel="comments-total-count">' . number_format_i18n( $totalComments ) . '</span>'
+				)
+			);
+		}
+		?>
+	</div>
 	<div data-anspressel="comments-items" class="anspress-comments-items">
 		<?php if ( $totalComments ) : ?>
 			<?php foreach ( $postComments as $postComment ) : ?>
@@ -69,28 +82,18 @@ if ( $commentsWithourContainer ) {
 		<?php endif; ?>
 	</div>
 	<div class="anspress-comments-footer anspress-comments-form-container">
-		<span class="anspress-comments-count">
-		<?php
-		if ( $totalComments ) {
-			echo wp_kses_post(
-				sprintf(
-				// translators: %1$d is the total number of comments.
-					__( 'Total %1$s.', 'anspress-question-answer' ),
-					'<span data-anspressel="comments-total-count">' . number_format_i18n( $totalComments ) . '</span>'
-				)
-			);
-		}
-		?>
-		</span>
-		<a data-anspressel="comments-load-more" @click.prevent="loadMoreComments" href="#" class="anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></a>
+
+		<a data-anspressel="comments-load-more" href="#" class="anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></a>
 	</div>
+
 	<?php
-		Plugin::loadView(
-			'src/frontend/common/comments/comment-form.php',
-			array(
-				'post'        => $args['post'],
-				'form_loaded' => false,
-			)
-		);
-		?>
-</div>
+	Plugin::loadView(
+		'src/frontend/common/comments/comment-form.php',
+		array(
+			'post'        => $args['post'],
+			'form_loaded' => false,
+		)
+	);
+	?>
+
+</anspress-comment-list>
