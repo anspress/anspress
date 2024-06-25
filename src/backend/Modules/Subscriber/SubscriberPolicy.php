@@ -28,6 +28,9 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @var array
 	 */
 	protected array $abilities = array(
+		'list'   => array(
+			'post',
+		),
 		'view'   => array(
 			'subscriber',
 		),

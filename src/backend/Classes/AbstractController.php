@@ -148,6 +148,19 @@ abstract class AbstractController {
 	}
 
 	/**
+	 * Assure user is logged in.
+	 * s
+	 *
+	 * @return void
+	 * @throws HTTPException If user is not logged in.
+	 */
+	public function assureLoggedIn(): void {
+		if ( ! Auth::isLoggedIn() ) {
+			throw new HTTPException( 401, esc_attr__( 'You must be logged in to perform this action', 'anspress-question-answer' ) );
+		}
+	}
+
+	/**
 	 * Validate request data.
 	 *
 	 * @param array $rules Validation rules.

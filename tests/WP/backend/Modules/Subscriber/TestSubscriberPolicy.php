@@ -5,7 +5,7 @@ namespace Tests\Unit\src\backend\Classes;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Modules\Subscriber\SubscriberModel;
-use AnsPress\Modules\Subscriber\SubscriberPolicy;
+use AnsPress\Modules\Subscriber\CommentPolicy;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 /**
@@ -17,12 +17,12 @@ class TestSubscriberPolicy extends TestCase {
 		parent::setUp();
 
 		Plugin::getContainer()->set(Auth::class, function() {
-			return new Auth([ SubscriberPolicy::class ]);
+			return new Auth([ CommentPolicy::class ]);
 		});
 	}
 
 	public function testBeforePass() {
-		$policy = new SubscriberPolicy();
+		$policy = new CommentPolicy();
 
 		$user = $this->factory()->user->create_and_get();
 
@@ -32,7 +32,7 @@ class TestSubscriberPolicy extends TestCase {
 	}
 
 	public function testBeforeFail() {
-		$policy = new SubscriberPolicy();
+		$policy = new CommentPolicy();
 
 		$user = $this->factory()->user->create_and_get();
 
@@ -40,7 +40,7 @@ class TestSubscriberPolicy extends TestCase {
 	}
 
 	public function testViewPass() {
-		$policy = new SubscriberPolicy();
+		$policy = new CommentPolicy();
 
 		$user = $this->factory()->user->create_and_get();
 

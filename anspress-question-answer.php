@@ -28,6 +28,7 @@
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Router;
+use AnsPress\Modules\Comment\CommentPolicy;
 use AnsPress\Modules\Config\ConfigService;
 use AnsPress\Modules\Subscriber\SubscriberPolicy;
 use AnsPress\Modules\Vote\VotePolicy;
@@ -513,6 +514,7 @@ add_action(
 				array(
 					VotePolicy::class,
 					SubscriberPolicy::class,
+					CommentPolicy::class,
 				)
 			)
 		);

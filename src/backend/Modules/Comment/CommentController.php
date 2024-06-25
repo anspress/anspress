@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Comment;
 
 use AnsPress\Classes\AbstractController;
+use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Exceptions\HTTPException;
 use AnsPress\Exceptions\ValidationException;
@@ -41,9 +42,7 @@ class CommentController extends AbstractController {
 	 * @return WP_REST_Response Response.
 	 */
 	public function loadCommentForm() {
-		if ( ! is_user_logged_in() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
@@ -57,6 +56,9 @@ class CommentController extends AbstractController {
 		if ( ! $post ) {
 			return $this->notFound();
 		}
+
+		// Check if user can comment.
+		$this->checkPermission( 'comment:create', array( 'post' => $post ) );
 
 		$commentForm = Plugin::loadView(
 			'src/frontend/common/comments/comment-form.php',
@@ -82,9 +84,7 @@ class CommentController extends AbstractController {
 	 * @return WP_REST_Response Response.
 	 */
 	public function loadEditCommentForm() {
-		if ( ! is_user_logged_in() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
@@ -99,6 +99,9 @@ class CommentController extends AbstractController {
 		if ( ! $post ) {
 			return $this->notFound();
 		}
+
+		// Check if user can edit comment.
+		$this->checkPermission( 'comment:update', array( 'comment' => $comment ) );
 
 		$commentForm = Plugin::loadView(
 			'src/frontend/common/comments/comment-form.php',
@@ -126,9 +129,7 @@ class CommentController extends AbstractController {
 	 * @return WP_REST_Response
 	 */
 	public function createComment() {
-		if ( ! is_user_logged_in() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
@@ -138,6 +139,15 @@ class CommentController extends AbstractController {
 			array(),
 			$this->commentService->commentAttributes()
 		);
+
+		$commentPost = get_post( $data['post_id'] );
+
+		if ( ! $commentPost ) {
+			return $this->notFound();
+		}
+
+		// Check if user can comment.
+		$this->checkPermission( 'comment:create', array( 'post' => $commentPost ) );
 
 		$commentId = $this->commentService->createComment(
 			array(
@@ -178,9 +188,7 @@ class CommentController extends AbstractController {
 	 * @throws ValidationException If validation fails.
 	 */
 	public function deleteComment() {
-		if ( ! is_user_logged_in() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
@@ -191,6 +199,9 @@ class CommentController extends AbstractController {
 		);
 
 		$comment = get_comment( $data['comment_id'] );
+
+		// Check if user can delete comment.
+		$this->checkPermission( 'comment:delete', array( 'comment' => $comment ) );
 
 		$deleted = wp_delete_comment( $data['comment_id'], true );
 
@@ -232,6 +243,9 @@ class CommentController extends AbstractController {
 
 		$post = ap_get_post( $data['post_id'] );
 
+		// Check if user can view comments.
+		$this->checkPermission( 'comment:list', array( 'post' => $post ) );
+
 		if ( ! $post ) {
 			return $this->notFound();
 		}
@@ -268,16 +282,16 @@ class CommentController extends AbstractController {
 	 * @return WP_REST_Response Rest response.
 	 */
 	public function updateComment(): WP_REST_Response {
-		if ( ! is_user_logged_in() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
 				'post_id'         => 'required|numeric|exists:posts,ID',
 				'comment_id'      => 'required|numeric|exists:comments,comment_ID',
 				'comment_content' => 'required|string|min:2|max:1000',
-			)
+			),
+			array(),
+			$this->commentService->commentAttributes()
 		);
 
 		$comment = get_comment( $data['comment_id'] );
@@ -285,6 +299,9 @@ class CommentController extends AbstractController {
 		if ( ! $comment ) {
 			return $this->notFound();
 		}
+
+		// Check if user can update comment.
+		$this->checkPermission( 'comment:update', array( 'comment' => $comment ) );
 
 		$updated = wp_update_comment(
 			array(

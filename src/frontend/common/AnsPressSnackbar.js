@@ -12,7 +12,6 @@ export class AnsPressSnackbar extends BaseCustomElement {
   }
 
   showSnackbarMessage(event, element) {
-    console.log(event)
     const { message, type, duration } = event.detail;
     const messageElement = this.createSnackbarMessage(message, type);
     this.appendChild(messageElement);

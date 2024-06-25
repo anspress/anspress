@@ -81,10 +81,6 @@ class Auth {
 	public static function currentUserCan( string $ability, array $context = array() ): bool {
 		$user = self::user();
 
-		if ( ! $user ) {
-			return false;
-		}
-
 		$instance = Plugin::get( self::class );
 
 		return $instance->check( $ability, $context, $user );
@@ -131,10 +127,6 @@ class Auth {
 
 		if ( ! $policy->validateContext( $abilityParts[1], $context ) ) {
 			throw new GeneralException( 'Invalid context.' );
-		}
-
-		if ( ! $user ) {
-			return false;
 		}
 
 		return $policy->check( $abilityParts[1], $user, $context );

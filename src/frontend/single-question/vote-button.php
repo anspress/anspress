@@ -22,7 +22,7 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( $args['ID'] );
 $_post    = ap_get_post( $args['ID'] );
 ?>
 
-<anspress-vote-button data-post-id="<?php echo (int) $args['ID']; ?>" data-anspressel="vote" class="anspress-apq-item-vote" data-anspress="<?php echo esc_attr( wp_json_encode( $voteData ) ); ?>">
+<anspress-vote-button data-anspress-id="vote:<?php echo (int) $args['ID']; ?>" data-post-id="<?php echo (int) $args['ID']; ?>" data-anspressel="vote" class="anspress-apq-item-vote" data-anspress="<?php echo esc_attr( wp_json_encode( $voteData ) ); ?>">
 	<button
 		data-anspressel="vote-up"
 		class="apicon-thumb-up anspress-apq-item-vote-up"

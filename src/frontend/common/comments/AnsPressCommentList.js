@@ -55,7 +55,7 @@ class AnsPressCommentList extends BaseCustomElement {
 
   updateTotalCount() {
     const totalCountElement = this.querySelector('[data-anspressel="comments-total-count"]');
-    console.log(totalCountElement)
+
     if (totalCountElement) {
       totalCountElement.textContent = this.data.totalComments;
     }
@@ -65,7 +65,7 @@ class AnsPressCommentList extends BaseCustomElement {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
     const comments = tempDiv.querySelectorAll('anspress-comment-item');
-    console.log(comments, tempDiv)
+
     comments.forEach(comment => {
       this.querySelector('[data-anspressel="comments-items"]').appendChild(comment);
     });

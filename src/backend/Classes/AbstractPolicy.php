@@ -107,13 +107,13 @@ abstract class AbstractPolicy implements PolicyInterface {
 	/**
 	 * Determine if the given user can create a new model.
 	 *
-	 * @param string  $ability The ability being checked (e.g., 'view', 'create').
-	 * @param WP_User $user The current user attempting the action.
-	 * @param array   $context The context of the ability.
+	 * @param string       $ability The ability being checked (e.g., 'view', 'create').
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The context of the ability.
 	 * @return bool True if the user is authorized to create the model, false otherwise.
 	 * @throws InvalidArgumentException If the ability is invalid.
 	 */
-	public function check( string $ability, WP_User $user, array $context = array() ): bool {
+	public function check( string $ability, ?WP_User $user, array $context = array() ): bool {
 		// Check if the ability is valid.
 		if ( ! in_array( $ability, array_keys( $this->abilities ), true ) ) {
 			throw new InvalidArgumentException( 'Invalid ability provided.' );

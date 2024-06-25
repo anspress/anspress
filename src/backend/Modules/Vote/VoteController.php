@@ -77,20 +77,16 @@ class VoteController extends AbstractController {
 		$vote = $this->voteService->create( $vote );
 
 		if ( ! $vote ) {
+			$this->addMessage( 'error', __( 'Failed to create vote', 'anspress-question-answer' ) );
+
 			return $this->serverError( __( 'Failed to create vote', 'anspress-question-answer' ) );
 		}
 
-		return $this->response(
-			array(
-				'voteMessages' => array(
-					array(
-						'type'    => 'success',
-						'message' => esc_attr__( 'Vote added', 'anspress-question-answer' ),
-					),
-				),
-				'voteData'     => $this->voteService->getPostVoteData( $vote->vote_post_id ),
-			)
-		);
+		$this->addMessage( 'success', __( 'Vote added', 'anspress-question-answer' ) );
+
+		$this->setData( 'vote:' . $postObj->ID, $this->voteService->getPostVoteData( $vote->vote_post_id ) );
+
+		return $this->response();
 	}
 
 	/**
@@ -126,16 +122,10 @@ class VoteController extends AbstractController {
 			return $this->serverError( __( 'Failed to undo vote', 'anspress-question-answer' ) );
 		}
 
-		return $this->response(
-			array(
-				'voteMessages' => array(
-					array(
-						'type'    => 'success',
-						'message' => esc_attr__( 'Vote removed', 'anspress-question-answer' ),
-					),
-				),
-				'voteData'     => $this->voteService->getPostVoteData( $vote->vote_post_id ),
-			)
-		);
+		$this->addMessage( 'success', __( 'Vote removed', 'anspress-question-answer' ) );
+
+		$this->setData( 'vote:' . $vote->vote_post_id, $this->voteService->getPostVoteData( $vote->vote_post_id ) );
+
+		return $this->response();
 	}
 }
