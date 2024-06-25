@@ -11,8 +11,10 @@ namespace AnsPress\Modules\Answer;
 use AnsPress\Classes\AbstractController;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
+use AnsPress\Exceptions\HTTPException;
 use AnsPress\Exceptions\ValidationException;
 use InvalidArgumentException;
+use WP_Post;
 use WP_Query;
 use WP_REST_Response;
 
@@ -41,33 +43,34 @@ class AnswerController extends AbstractController {
 	 * @throws ValidationException If validation fails.
 	 */
 	public function loadAnswerForm(): WP_REST_Response {
-		if ( ! Auth::isLoggedIn() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
-			array( 'post_id' => 'required|numeric|exists:posts,id' ),
+			array(
+				'post_id'     => 'required|numeric|exists:posts,id|post_type:question',
+				'form_loaded' => 'nullable|bool',
+			),
 		);
 
 		$post = get_post( $data['post_id'] );
 
-		if ( ! $post || 'question' !== $post->post_type ) {
-			throw new ValidationException( array( 'post_id' => esc_attr__( 'Invalid post id', 'anspress-question-answer' ) ) );
-		}
+		$this->checkPermission( 'answer:create', array( 'question' => $post ) );
 
-		// @todo: check for user access to the question.
+		$this->replaceHtml(
+			'[data-anspress-id="answer-form-c-' . $post->ID . '"]',
+			Plugin::loadView(
+				'src/frontend/single-question/answer-form.php',
+				array(
+					'question'    => $post,
+					'form_loaded' => (bool) $this->getParam( 'form_loaded', false ),
+				),
+				false
+			)
+		);
 
 		return $this->response(
 			array(
-				'answer-formHtml' => Plugin::loadView(
-					'src/frontend/single-question/answer-form.php',
-					array(
-						'question'    => $post,
-						'form_loaded' => true,
-					),
-					false
-				),
-				'load_easymde'    => 'anspress-answer-content',
+				'load_tinymce' => 'anspress-answer-content',
 			)
 		);
 	}
@@ -79,9 +82,7 @@ class AnswerController extends AbstractController {
 	 * @throws ValidationException If validation fails.
 	 */
 	public function createAnswer(): WP_REST_Response {
-		if ( ! Auth::isLoggedIn() ) {
-			return $this->unauthorized();
-		}
+		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
@@ -90,10 +91,14 @@ class AnswerController extends AbstractController {
 			)
 		);
 
+		$question = get_post( $data['post_id'] );
+
+		$this->checkPermission( 'answer:create', array( 'question' => $question ) );
+
 		$answer = $this->answerService->createAnswer(
 			array(
 				'post_content' => $data['post_content'],
-				'question_id'  => $data['post_id'],
+				'question_id'  => $question->ID,
 				'post_author'  => get_current_user_id(),
 			)
 		);
@@ -116,23 +121,65 @@ class AnswerController extends AbstractController {
 
 		wp_reset_postdata();
 
-		return $this->response(
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Answer posted successfully.', 'anspress-question-answer' )
+		);
+
+		$this->addEvent( 'anspress:answer:added:' . $question->ID, array( 'html' => $html ) );
+
+		return $this->response();
+	}
+
+	/**
+	 * Fetch answers.
+	 *
+	 * @return WP_REST_Response Response object.
+	 */
+	public function showAnswers(): WP_REST_Response {
+		$data = $this->validate(
 			array(
-				'answer-formMessages' => array(
+				'post_id' => 'required|numeric|exists:posts,ID|post_type:question',
+			)
+		);
+
+		$question = get_post( $data['post_id'] );
+
+		$currentPage = max( 1, $this->getParam( 'page', 1 ) );
+
+		$query = new WP_Query(
+			array(
+				'post_type'      => 'answer',
+				'post_parent'    => $question->ID,
+				'posts_per_page' => ap_opt( 'answers_per_page' ),
+				'paged'          => $currentPage,
+				'order'          => 'ASC',
+				'orderby'        => 'date',
+			)
+		);
+
+		$answersArgs = $this->answerService->getAnswersData( $query, $question, $this->getParam( 'page', 1 ) );
+
+		$this->addEvent(
+			'anspress:answer:added:' . $question->ID,
+			array(
+				'html' => Plugin::loadView(
+					'src/frontend/single-question/answers.php',
 					array(
-						'message' => esc_attr__( 'Answer posted successfully.', 'anspress-question-answer' ),
-					),
-				),
-				'appendHtmlTo'        => array( '[data-anspressel="answers-items"]' => $html ),
-				'answer-formHtml'     => Plugin::loadView(
-					'src/frontend/single-question/answer-form.php',
-					array(
-						'question'    => get_post( $data['post_id'] ),
-						'form_loaded' => false,
+						'question'     => $question,
+						'query'        => $query,
+						'answers_args' => $answersArgs,
 					),
 					false
 				),
 			)
 		);
+
+		$this->setData(
+			'answers-' . $question->ID,
+			$answersArgs
+		);
+
+		return $this->response();
 	}
 }

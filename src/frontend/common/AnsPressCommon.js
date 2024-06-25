@@ -72,7 +72,7 @@ export const fetch = (path, options) => {
       if (data?.setData) {
         Object.keys(data?.setData).forEach(key => {
           const element = document.querySelector('[data-anspress-id="' + key + '"]');
-          console.log(element)
+
           if (element && element?.data) {
             element.data = data?.setData[key];
           }
@@ -142,15 +142,15 @@ export const replaceHTML = (selector, newHTML) => {
   }
 }
 
-export const loadForm = (path) => {
+export const loadForm = (data) => {
   return fetch({
-    path: addQueryArgs(path, { form_loaded: true }),
+    path: addQueryArgs(data.load_form_path, { form_loaded: true }),
     method: 'GET',
   })
     .then(res => {
-      if (res?.load_easymde) {
+      if (res?.load_tinymce) {
         tinymce.init({
-          selector: '#' + res?.load_easymde,
+          selector: '#' + res?.load_tinymce,
           toolbar: 'bold italic | underline strikethrough | bullist numlist | link unlink blockquote hr| image removeformat',
           menubar: false,
           statusbar: false,
@@ -172,9 +172,13 @@ export const loadForm = (path) => {
     });
 }
 
-export const removeForm = async (path) => {
+export const removeForm = async (data) => {
+  if (data?.load_tinymce) {
+    tinymce.remove('#' + data?.load_tinymce);
+  }
+
   return fetch({
-    path: addQueryArgs(path, { form_loaded: false }),
+    path: addQueryArgs(data.load_form_path, { form_loaded: 0 }),
     method: 'GET',
   })
 }

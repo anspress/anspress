@@ -24,6 +24,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class AnswerService extends AbstractService {
 	/**
+	 * Get answers data.
+	 *
+	 * @param WP_Query $query Query.
+	 * @param WP_Post  $question Question.
+	 * @param int      $currentPage Current page.
+	 * @param int|null $perPage Per page.
+	 * @return array
+	 */
+	public function getAnswersData( $query, $question, $currentPage, ?int $perPage = null ) {
+		if ( ! $perPage ) {
+			$perPage = ap_opt( 'answers_per_page' );
+		}
+
+		$totalAnswers = $query->found_posts;
+		$totalPages   = ceil( $totalAnswers / $perPage );
+		$havePages    = $query->max_num_pages > 1 && $currentPage < $totalPages;
+
+		return array(
+			'question_id'     => $question->ID,
+			'per_page'        => $perPage,
+			'total_pages'     => $totalPages,
+			'current_page'    => $currentPage,
+			'have_pages'      => max( 0, $query->max_num_pages - $currentPage ),
+			'remaining_items' => max( 0, $totalAnswers - ( $currentPage * $perPage ) ),
+			'load_more_path'  => 'anspress/v1/post/' . $question->ID . '/answers',
+		);
+	}
+
+	/**
 	 * Create answer.
 	 *
 	 * @param array $data Data.

@@ -15,8 +15,9 @@ export class CommentItem extends BaseCustomElement {
 
   editComment(e) {
     e.preventDefault();
+    console.log(this.getElData(e.target, 'anspress'))
     // trigger edit form.
-    loadForm(this.getElData(e.target, 'anspress')?.path);
+    loadForm(this.getElData(e.target, 'anspress'));
   }
 
   async deleteComment(e) {

@@ -29,12 +29,11 @@ $answerFormArgs = array(
 	'form_action'    => '/anspress/v1/post/' . $_post->ID . '/comments' . ( $postComment ? '/' . $postComment->comment_ID : '' ),
 );
 ?>
-<anspress-comment-form data-anspress-id="comment-form-c-<?php echo (int) $_post->ID; ?>" class="anspress-comment-form-c" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">
+<anspress-comment-form data-anspress-id="comment-form-c-<?php echo (int) $_post->ID; ?>" class="anspress-comment-form-c anspress-card" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">
 	<?php if ( ! $answerFormArgs['form_loaded'] ) : ?>
 		<div data-anspressel="load-form" class="anspress-form-overlay">
 			<?php esc_html_e( 'Type your comment here...', 'anspress-question-answer' ); ?>
 		</div>
-
 	<?php else : ?>
 		<form class="anspress-form anspress-comment-form" data-anspressel="comment-form" data-anspress-form="comment-form" @submit.prevent="submitForm">
 			<div data-anspress-field="comment_content" class="anspress-form-group">

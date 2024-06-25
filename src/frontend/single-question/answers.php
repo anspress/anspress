@@ -8,6 +8,7 @@
 
 use AnsPress\Classes\Plugin;
 use AnsPress\Exceptions\GeneralException;
+use AnsPress\Modules\Answer\AnswerService;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,33 +20,26 @@ if ( ! isset( $args['question'] ) ) {
 	throw new GeneralException( 'Question not set.' );
 }
 
-// Answers.
-$query = new WP_Query(
-	array(
-		'post_type'      => 'answer',
-		'post_parent'    => $args['question']->ID,
-		'posts_per_page' => ap_opt( 'answers_per_page' ),
-		'paged'          => 0,
-		'order'          => 'ASC',
-		'orderby'        => 'menu_order date',
-	)
-);
+// Check query is set or not.
+if ( ! isset( $args['query'] ) ) {
+	throw new GeneralException( 'Query not set.' );
+}
 
+// Check answers_args is set or not.
+if ( ! isset( $args['answers_args'] ) ) {
+	throw new GeneralException( 'Answers args not set.' );
+}
+
+$query = $args['query'];
 ?>
-<div data-anspressel="answers" class="anspress-answers">
-	<div data-anspressel="answers-items" class="anspress-answers-items">
-		<?php if ( $query->have_posts() ) : ?>
-			<?php
-			while ( $query->have_posts() ) {
-				$query->the_post();
-				Plugin::loadView( 'src/frontend/single-question/item.php' );
-			}
-			wp_reset_postdata();
-			?>
-		<?php endif; ?>
-	</div>
 
-	<?php if ( ap_have_answers() ) : ?>
-		<?php ap_answers_the_pagination(); ?>
-	<?php endif; ?>
-</div>
+<?php if ( $query->have_posts() ) : ?>
+	<?php
+	while ( $query->have_posts() ) {
+		$query->the_post();
+		Plugin::loadView( 'src/frontend/single-question/item.php' );
+	}
+	wp_reset_postdata();
+	?>
+	<?php
+endif;

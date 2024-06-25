@@ -55,19 +55,18 @@ if ( $commentsWithourContainer ) {
 }
 ?>
 <anspress-comment-list data-anspress-id="comment-list-<?php echo (int) $args['post']->ID; ?>" data-post-id="<?php echo esc_attr( $args['post']->ID ); ?>" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
-	<div class="anspress-comments-line"></div>
-	<div class="anspress-comments-count">
-		<?php
-		if ( $totalComments ) {
+	<div class="anspress-comments-count-c anspress-left-caret" data-anspress-count="<?php echo (int) $totalComments; ?>">
+		<div class="anspress-comments-count">
+			<?php
 			echo wp_kses_post(
 				sprintf(
 				// translators: %1$d is the total number of comments.
-					__( 'Total comments %1$s.', 'anspress-question-answer' ),
+					__( 'Total comments %1$s', 'anspress-question-answer' ),
 					'<span data-anspressel="comments-total-count">' . number_format_i18n( $totalComments ) . '</span>'
 				)
 			);
-		}
-		?>
+			?>
+		</div>
 	</div>
 	<div data-anspressel="comments-items" class="anspress-comments-items">
 		<?php if ( $totalComments ) : ?>
@@ -82,8 +81,7 @@ if ( $commentsWithourContainer ) {
 		<?php endif; ?>
 	</div>
 	<div class="anspress-comments-footer anspress-comments-form-container">
-
-		<a data-anspressel="comments-load-more" href="#" class="anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></a>
+		<a data-anspressel="comments-load-more" href="#" class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></a>
 	</div>
 
 	<?php

@@ -46,7 +46,7 @@ class AnsPressCommentList extends BaseCustomElement {
     const loadMoreButton = this.querySelector('[data-anspressel="comments-load-more"]');
     if (loadMoreButton) {
       if (hasMore) {
-        loadMoreButton.style.display = 'block';
+        loadMoreButton.style.display = 'inline-block';
       } else {
         loadMoreButton.style.display = 'none';
       }

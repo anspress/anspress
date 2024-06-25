@@ -1,7 +1,17 @@
 .anspress-comments {
 	font-size: small;
 	margin-top: 15px;
-	position: relative;
+	padding-left: var(--anspress-single-question-avatar-size);
+	display: block;
+
+	&-count {
+		background: #fff;
+		display: inline-block;
+		padding: 0px 7px;
+		border-radius: 7px;
+		margin-bottom: 15px;
+		font-size: 11px;
+	}
 
 	&-item {
 		display: flex;
@@ -13,15 +23,19 @@
 		background: #aaa;
 		margin-right: 10px;
 		margin-top: 5px;
+		margin-left: calc(var(--anspress-single-question-avatar-size) * -1 + 10px);
 	}
 
 	&-inner {
 		flex: 1;
+		padding: 10px;
 	}
 
 	&-meta {
-		font-weight: bold;
 		margin-bottom: 5px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	&-actions {
@@ -30,7 +44,6 @@
 		a {
 			text-decoration: none;
 			margin-right: 5px;
-			font-weight: bold;
 		}
 	}
 
@@ -57,19 +70,6 @@
 		}
 	}
 
-	&-line {
-		border-left: solid 2px #eee;
-		height: 100%;
-		position: absolute;
-		left: 15px;
-		z-index: -1;
-		top: -15px;
-	}
-
-	&-footer {
-		margin-left: 40px;
-	}
-
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
@@ -91,14 +91,16 @@
 
 .anspress-comment {
 	&-form {
-		border: solid 1px;
-		background: #fff;
 		padding: 10px;
 	}
 
 	&-form-c {
 		margin-top: 10px;
 	}
+}
+
+.anspress-comments-count-c[data-anspress-count="0"] {
+	display: none;
 }
 
 anspress-comment-form {

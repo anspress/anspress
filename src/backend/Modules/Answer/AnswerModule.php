@@ -63,5 +63,21 @@ class AnswerModule extends AbstractModule {
 				),
 			)
 		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/answers',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( AnswerController::class, 'showAnswers' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
 	}
 }

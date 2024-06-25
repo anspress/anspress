@@ -20,13 +20,13 @@ $isQuestion = 'question' === $_post->post_type;
 
 ?>
 <anspress-item data-post-id="<?php echo (int) $_post->ID; ?>" data-anspressel="question-item" class="anspress-apq-item">
-	<div class="anspress-apq-item-avatar">
+	<div class="anspress-apq-item-avatar anspress-avatar-link">
 		<a href="<?php ap_profile_link(); ?>">
 			<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
 		</a>
 	</div>
 	<div class="anspress-apq-item-content">
-		<div class="anspress-apq-item-qbody">
+		<div class="anspress-apq-item-qbody anspress-card">
 			<div class="anspress-apq-item-metas">
 				<div class="anspress-apq-item-author">
 					<?php
@@ -92,6 +92,11 @@ $isQuestion = 'question' === $_post->post_type;
 					?>
 
 				<?php do_action( 'ap_post_footer' ); ?>
+
+				<div class="anspress-apq-item-actions">
+					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></a>
+					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Report', 'anspress-question-answer' ); ?></a>
+				</div>
 			</div>
 		</div>
 

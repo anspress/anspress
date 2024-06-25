@@ -1,25 +1,38 @@
+.wp-block-anspress-single-question {
+	padding-left: calc(var(--anspress-single-question-avatar-size) * 2);
+	position: relative;
+
+	&::before {
+		content: " ";
+		border-left: solid 2px #ccc;
+		height: 100%;
+		position: absolute;
+		left: calc(var(--anspress-single-question-avatar-size)* 3);
+		z-index: -1;
+		top: 0;
+	}
+}
+
 .anspress-apq-item {
 	display: flex;
 	width: 100%;
 	margin-bottom: 20px;
+	align-items: flex-start;
 
 	&-avatar {
-		margin-right: 20px;
+		margin-right: 10px;
+		margin-left: calc(var(--anspress-single-question-avatar-size)* -1);
 	}
 
 	&-content {
 		flex: 1;
-	}
 
-	&-qbody {
-		border: solid 1px;
 	}
 
 	&-metas {
 		display: flex;
-		border-bottom: solid 1px;
-		padding: 10px 20px;
-		font-size: 85%;
+		padding: 10px 20px 0;
+		font-size: 14px;
 
 		>* {
 			margin-right: 10px;
@@ -37,9 +50,17 @@
 	&-vote {
 		>button {
 			text-decoration: none;
-			border: solid 1px;
+			border: solid 1px #aaa;
 			font-size: 13px;
 			padding: 2px 5px;
+			background: #fff;
+			color: #666;
+			border-radius: 4px;
+
+			&:disabled {
+				background: #f1f1f1;
+				opacity: 0.5;
+			}
 		}
 	}
 
@@ -49,8 +70,18 @@
 	}
 
 	&-footer {
-		padding: 10px;
-		border-top: solid 1px;
+		padding: 0 10px 10px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&-actions {
+		font-size: 12px;
+
+		a {
+			margin-left: 10px;
+			text-decoration: none;
+		}
 	}
 
 	@keyframes count-animation {
@@ -90,6 +121,11 @@
 		}
 	}
 
+	&load-more-answers {
+		margin-bottom: 20px;
+
+
+	}
 
 }
 

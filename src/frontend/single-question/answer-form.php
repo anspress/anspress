@@ -25,26 +25,26 @@ $answerFormArgs = array(
 	'form_loaded'    => $args['form_loaded'] ?? false,
 	'load_form_path' => '/anspress/v1/post/' . $question->ID . '/load-answer-form',
 	'form_action'    => '/anspress/v1/post/' . $question->ID . '/answers',
+	'load_tinymce'   => 'anspress-answer-content',
 );
 ?>
-<div class="anspress-apq-item anspress-answer-form-c" data-anspressel="answer-form" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>">
+
+<anspress-answer-form data-anspress-id="answer-form-c-<?php echo (int) $question->ID; ?>" class="anspress-apq-item anspress-answer-form-c" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>">
 	<div class="anspress-apq-item-avatar">
 		<a href="<?php ap_profile_link(); ?>">
 			<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ), $question->ID ); ?>
 		</a>
 	</div>
 	<div class="anspress-apq-item-content">
-		<div class="anspress-apq-item-qbody">
+		<div class="anspress-apq-item-qbody anspress-card">
 			<form
-				data-anspressel
 				class="anspress-form anspress-answer-form"
 				method="post"
 				data-anspress-form="answer"
-				@submit.prevent="submitForm"
 			>
 				<?php if ( ! $answerFormArgs['form_loaded'] ) : ?>
 
-					<div data-anspressel class="anspress-form-overlay" @click.prevent="loadForm">
+					<div class="anspress-form-overlay" data-anspressel="load-form">
 						<?php esc_html_e( 'Type your answer here...', 'anspress-question-answer' ); ?>
 					</div>
 
@@ -52,6 +52,7 @@ $answerFormArgs = array(
 
 					<div data-anspress-field="post_content" class="anspress-form-group">
 						<textarea
+							data-anspress-tinymce-field
 							id="anspress-answer-content"
 							name="post_content"
 							class="anspress-form-control"
@@ -72,4 +73,4 @@ $answerFormArgs = array(
 			</form>
 		</div>
 	</div>
-</div>
+</anspress-answer-form>

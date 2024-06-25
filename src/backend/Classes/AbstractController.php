@@ -52,6 +52,13 @@ abstract class AbstractController {
 	protected array $setData = array();
 
 	/**
+	 * Replace HTML.
+	 *
+	 * @var array
+	 */
+	protected array $replaceHtml = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * @return void
@@ -196,6 +203,11 @@ abstract class AbstractController {
 			$data['setData'] = ! empty( $data['setData'] ) ? array_merge( $data['setData'], $this->setData ) : $this->setData;
 		}
 
+		// If replace html is set then add to response.
+		if ( ! empty( $this->replaceHtml ) ) {
+			$data['replaceHtml'] = ! empty( $data['replaceHtml'] ) ? array_merge( $data['replaceHtml'], $this->replaceHtml ) : $this->replaceHtml;
+		}
+
 		$response = new WP_REST_Response( array( 'anspress' => $data ) );
 		$response->set_status( $status );
 		$response->header( 'Content-Type', 'application/json' );
@@ -287,5 +299,17 @@ abstract class AbstractController {
 	 */
 	public function setData( string $key, mixed $data ): void {
 		$this->setData[ $key ] = $data;
+	}
+
+	/**
+	 * Replace HTML.
+	 *
+	 * @param string $key Key.
+	 * @param string $html HTML.
+	 *
+	 * @return void
+	 */
+	public function replaceHtml( string $key, string $html ): void {
+		$this->replaceHtml[ $key ] = $html;
 	}
 }
