@@ -19,7 +19,7 @@ $_post = get_post();
 $isQuestion = 'question' === $_post->post_type;
 
 ?>
-<div data-anspressel="question-item" class="anspress-apq-item">
+<anspress-item data-post-id="<?php echo (int) $_post->ID; ?>" data-anspressel="question-item" class="anspress-apq-item">
 	<div class="anspress-apq-item-avatar">
 		<a href="<?php ap_profile_link(); ?>">
 			<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
@@ -99,4 +99,4 @@ $isQuestion = 'question' === $_post->post_type;
 			Plugin::loadView( 'src/frontend/common/comments/render.php', array( 'post' => $_post ) );
 		?>
 	</div>
-</div>
+</anspress-item>

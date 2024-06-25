@@ -34,6 +34,38 @@ class CommentModule extends AbstractModule {
 	public function register_routes() {
 		register_rest_route(
 			'anspress/v1',
+			'/post/(?P<post_id>\d+)/comments',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'showComments' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/comments',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'createComment' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
 			'/post/(?P<post_id>\d+)/load-comment-form',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -61,22 +93,6 @@ class CommentModule extends AbstractModule {
 						'type'     => 'integer',
 					),
 					'comment_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
-
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'createComment' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
 						'required' => true,
 						'type'     => 'integer',
 					),
@@ -117,22 +133,6 @@ class CommentModule extends AbstractModule {
 						'type'     => 'integer',
 					),
 					'comment_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
-
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'showComments' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
 						'required' => true,
 						'type'     => 'integer',
 					),

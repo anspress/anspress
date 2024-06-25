@@ -16,7 +16,7 @@ if ( ! isset( $args['comment'] ) ) {
 
 $postComment = $args['comment'];
 ?>
-<anspress-comment-item class="anspress-comments-item" id="anspress-comment-<?php echo esc_attr( $postComment->comment_ID ); ?>" data-anspressel="comment" data-id="<?php echo (int) $postComment->comment_ID; ?>">
+<anspress-comment-item data-anspress-id="comment-<?php echo (int) $postComment->comment_ID; ?>" class="anspress-comments-item" id="anspress-comment-<?php echo esc_attr( $postComment->comment_ID ); ?>" data-anspressel="comment" data-id="<?php echo (int) $postComment->comment_ID; ?>">
 	<a class="anspress-comments-avatar" href="<?php echo esc_url( get_comment_author_url( $postComment ) ); ?>" style="height: 30px;width: 30px">
 		<?php echo get_avatar( $postComment->user_id || $postComment->comment_author_email, 30 ); ?>
 	</a>

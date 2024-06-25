@@ -57,6 +57,10 @@ class MaxRule implements ValidationRuleInterface {
 	 * @return bool
 	 */
 	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
+		if ( empty( $value ) ) {
+			return true;
+		}
+
 		if ( is_array( $value ) ) {
 			return count( $value ) <= $this->max;
 		} elseif ( is_numeric( $value ) ) {

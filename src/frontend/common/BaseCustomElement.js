@@ -33,6 +33,10 @@ export class BaseCustomElement extends HTMLElement {
     this.setAttribute('data-anspress', JSON.stringify(data));
   }
 
+  get elementId() {
+    return this.getAttribute('data-anspress-id');
+  }
+
   setDataValue(key, value) {
     this.data[key] = value;
     this.setAttribute('data-anspress', JSON.stringify(this.data));
@@ -68,4 +72,6 @@ export class BaseCustomElement extends HTMLElement {
 
     return JSON.parse(data);
   }
+
+
 }

@@ -6,26 +6,25 @@ class AnsPressCommentList extends BaseCustomElement {
   }
 
   addEventListeners() {
-    this.addEventListener('comment-deleted', (event) => {
-      console.log('comment-deleted event:', event.detail);
-      this.removeComment(event.detail.comment_id);
-    });
-
-    this.addEventListener('comment-added', (event) => {
-      this.addComment(event.detail.comment);
-    });
-
     this.querySelector('[data-anspressel="comments-load-more"]')?.addEventListener('click', this.loadMoreComments.bind(this));
+
+    document.addEventListener(`anspress-comments-${this.data.postId}-added`, (event) => {
+      this.addComments(event.detail.html);
+    });
+
+    document.addEventListener(`anspress-comments-${this.data.postId}-deleted`, (event) => {
+      this.removeComment(event.detail.commentId);
+    })
   }
 
   disconnectedCallback() {
-    this.removeEventListener('comment-deleted');
-    this.removeEventListener('comment-added');
     this.querySelector('[data-anspressel="comments-load-more"]')?.removeEventListener('click', this.loadMoreComments.bind(this));
+
+    document.removeEventListener(`anspress-comments-${this.data.postId}-added`);
+    document.removeEventListener(`anspress-comments-${this.data.postId}-deleted`);
   }
 
   updateComponent() {
-    console.log('Triggered updateComponent method')
     this.checkLoadMoreButton();
     this.updateTotalCount();
   }
@@ -33,14 +32,10 @@ class AnsPressCommentList extends BaseCustomElement {
   async loadMoreComments(e) {
     e.preventDefault();
     try {
-      const response = await this.fetch({
+      await this.fetch({
         path: `/anspress/v1/post/${this.data.postId}/comments?offset=${(this.data.offset + this.data.showing)}`,
         method: 'GET'
       });
-      console.log(response);
-      if (response.html) {
-        this.addComments(response.html);
-      }
     } catch (error) {
       console.error('An error occurred while loading more comments:', error);
     }
@@ -70,6 +65,7 @@ class AnsPressCommentList extends BaseCustomElement {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
     const comments = tempDiv.querySelectorAll('anspress-comment-item');
+    console.log(comments, tempDiv)
     comments.forEach(comment => {
       this.querySelector('[data-anspressel="comments-items"]').appendChild(comment);
     });
@@ -79,7 +75,6 @@ class AnsPressCommentList extends BaseCustomElement {
     const commentElement = this.querySelector(`[data-id="${commentId}"]`);
     if (commentElement) {
       commentElement.remove();
-      this.setDataValue('totalComments', this.data.totalComments - 1);
     }
   }
 }

@@ -29,7 +29,7 @@ $answerFormArgs = array(
 	'form_action'    => '/anspress/v1/post/' . $_post->ID . '/comments' . ( $postComment ? '/' . $postComment->comment_ID : '' ),
 );
 ?>
-<anspress-comment-form class="anspress-comment-form-c" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">
+<anspress-comment-form data-anspress-id="comment-form-c-<?php echo (int) $_post->ID; ?>" class="anspress-comment-form-c" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">
 	<?php if ( ! $answerFormArgs['form_loaded'] ) : ?>
 		<div data-anspressel="load-form" class="anspress-form-overlay">
 			<?php esc_html_e( 'Type your comment here...', 'anspress-question-answer' ); ?>
@@ -41,7 +41,7 @@ $answerFormArgs = array(
 				<textarea name="comment_content" class="anspress-form-control" placeholder="Write your comment..."><?php echo esc_textarea( $postComment ? $postComment->comment_content : '' ); ?></textarea>
 			</div>
 			<div data-anspress-field="comment_content" class="anspress-comments-form-buttons">
-				<button data-anspressel @click.prevent="closeForm" class="anspress-comments-form-cancel anspress-button" type="button">Cancel</button>
+				<button data-anspressel="cancel-button" class="anspress-comments-form-cancel anspress-button" type="button">Cancel</button>
 				<button class="anspress-comments-form-submit anspress-button" type="submit">Submit</button>
 			</div>
 		</form>

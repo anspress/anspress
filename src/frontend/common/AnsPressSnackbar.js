@@ -1,27 +1,21 @@
-import { EventManager } from '../EventManager';
-import { doAction } from '@wordpress/hooks';
+import { BaseCustomElement } from "./BaseCustomElement";
 
-export class Snackbar extends EventManager {
-  init() {
-    super.init();
+export class AnsPressSnackbar extends BaseCustomElement {
 
-    // Add listener for snackbar events
+  addEventListeners() {
+    console.log('Initializing snackbar event listeners...')
     document.body.addEventListener('anspress-snackbar', this.showSnackbarMessage.bind(this));
-
-    doAction('anspress.snackbar.init', this);
   }
-  static createSnackbarContainer() {
-    const container = document.createElement('div');
-    container.setAttribute('data-anspressel', 'snackbar')
-    container.classList.add('anspress-snackbar-container');
-    document.body.appendChild(container);
-    return container;
+
+  disconnectedCallback() {
+    document.body.removeEventListener('anspress-snackbar', this.showSnackbarMessage.bind(this));
   }
 
   showSnackbarMessage(event, element) {
+    console.log(event)
     const { message, type, duration } = event.detail;
     const messageElement = this.createSnackbarMessage(message, type);
-    this.container.appendChild(messageElement);
+    this.appendChild(messageElement);
 
     // Show the message with animation
     setTimeout(() => {
@@ -45,11 +39,11 @@ export class Snackbar extends EventManager {
     messageElement.classList.remove('show');
     messageElement.classList.add('hide');
 
-    // Remove the message element after the animation is done
-    messageElement.addEventListener('transitionend', () => {
-      if (messageElement.parentElement) {
-        messageElement.parentElement.removeChild(messageElement);
-      }
-    });
+    // Remove after 2 seconds.
+    setTimeout(() => {
+      messageElement.remove();
+    }, 2000);
   }
 }
+
+customElements.define('anspress-snackbar', AnsPressSnackbar);

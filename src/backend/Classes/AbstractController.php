@@ -31,6 +31,27 @@ abstract class AbstractController {
 	protected WP_REST_Request $request;
 
 	/**
+	 * Messages.
+	 *
+	 * @var array
+	 */
+	protected array $messages = array();
+
+	/**
+	 * Events.
+	 *
+	 * @var array
+	 */
+	protected array $events = array();
+
+	/**
+	 * Set data.
+	 *
+	 * @var array
+	 */
+	protected array $setData = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * @return void
@@ -146,7 +167,22 @@ abstract class AbstractController {
 	 * @param int   $status Response status.
 	 * @return WP_REST_Response
 	 */
-	public function response( mixed $data, int $status = 200 ): WP_REST_Response {
+	public function response( mixed $data = array(), int $status = 200 ): WP_REST_Response {
+		// If messages are set then add to response.
+		if ( ! empty( $this->messages ) ) {
+			$data['messages'] = ! empty( $data['messages'] ) ? array_merge( $data['messages'], $this->messages ) : $this->messages;
+		}
+
+		// If events are set then add to response.
+		if ( ! empty( $this->events ) ) {
+			$data['triggerEvents'] = ! empty( $data['triggerEvents'] ) ? array_merge( $data['triggerEvents'], $this->events ) : $this->events;
+		}
+
+		// If set data is set then add to response.
+		if ( ! empty( $this->setData ) ) {
+			$data['setData'] = ! empty( $data['setData'] ) ? array_merge( $data['setData'], $this->setData ) : $this->setData;
+		}
+
 		$response = new WP_REST_Response( array( 'anspress' => $data ) );
 		$response->set_status( $status );
 		$response->header( 'Content-Type', 'application/json' );
@@ -202,5 +238,41 @@ abstract class AbstractController {
 	public function serverError( string $message = '' ): WP_REST_Response {
 		$message = $message ? $message : __( 'Internal error', 'anspress-question-answer' );
 		return $this->response( array( 'message' => $message ), 500 );
+	}
+
+	/**
+	 * Add message.
+	 *
+	 * @param string $type Message type.
+	 * @param string $message Message.
+	 * @return void
+	 */
+	public function addMessage( string $type, string $message ): void {
+		$this->messages[] = array(
+			'type'    => $type,
+			'message' => $message,
+		);
+	}
+
+	/**
+	 * Add event.
+	 *
+	 * @param string $name Event name.
+	 * @param array  $data Event data.
+	 * @return void
+	 */
+	public function addEvent( string $name, array $data ): void {
+		$this->events[ $name ] = $data;
+	}
+
+	/**
+	 * Set data.
+	 *
+	 * @param string $key Data key.
+	 * @param mixed  $data Data.
+	 * @return void
+	 */
+	public function setData( string $key, mixed $data ): void {
+		$this->setData[ $key ] = $data;
 	}
 }

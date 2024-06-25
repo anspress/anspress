@@ -24,6 +24,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package AnsPress\Modules\Comment
  */
 class CommentService extends AbstractService {
+	/**
+	 * Get comment attributes.
+	 *
+	 * @return array Comment attributes.
+	 */
+	public function commentAttributes(): array {
+		return array(
+			'comment_content' => __( 'Comment content', 'anspress-question-answer' ),
+			'comment_id'      => __( 'Comment ID', 'anspress-question-answer' ),
+			'user_id'         => __( 'User ID', 'anspress-question-answer' ),
+			'comment_post_ID' => __( 'Comment post ID', 'anspress-question-answer' ),
+		);
+	}
 
 	/**
 	 * Create a new comment.
@@ -33,6 +46,17 @@ class CommentService extends AbstractService {
 	 * @throws ValidationException If validation fails.
 	 */
 	public function createComment( $data ) {
+		$validated = new Validator(
+			$data,
+			array(
+				'comment_post_ID' => 'required|numeric|exists:posts,ID',
+				'comment_content' => 'required|string',
+				'user_id'         => 'required|numeric',
+			),
+			array(),
+			$this->commentAttributes()
+		);
+
 		$commentId = wp_new_comment(
 			array(
 				'comment_post_ID'  => $data['comment_post_ID'],
@@ -60,10 +84,14 @@ class CommentService extends AbstractService {
 	 */
 	public function deleteComment( $commentId ) {
 		$validated = new Validator(
-			compact( 'commentId' ),
 			array(
-				'commentId' => 'required|numeric|exists:comments,comment_ID',
-			)
+				'comment_id' => $commentId,
+			),
+			array(
+				'comment_id' => 'required|numeric|exists:comments,comment_ID',
+			),
+			array(),
+			$this->commentAttributes()
 		);
 
 		$comment = get_comment( $commentId );

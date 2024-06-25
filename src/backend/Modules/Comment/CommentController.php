@@ -69,7 +69,9 @@ class CommentController extends AbstractController {
 
 		return $this->response(
 			array(
-				'html' => $commentForm,
+				'replaceHtml' => array(
+					'anspress-item[data-post-id="' . (int) $data['post_id'] . '"] anspress-comment-form' => $commentForm,
+				),
 			)
 		);
 	}
@@ -103,7 +105,7 @@ class CommentController extends AbstractController {
 			array(
 				'comment'     => $comment,
 				'post'        => $post,
-				'form_loaded' => $data['form_loaded'] ?? true,
+				'form_loaded' => true,
 			),
 			false
 		);
@@ -111,7 +113,9 @@ class CommentController extends AbstractController {
 		return $this->response(
 			array(
 				'comment'     => array( 'id' => $data['comment_id'] ),
-				'replaceHtml' => array( '#anspress-comment-' . $comment->comment_ID => $commentForm ),
+				'replaceHtml' => array(
+					'[data-anspress-id="comment-form-c-' . $comment->comment_post_ID . '"]' => $commentForm,
+				),
 			)
 		);
 	}
@@ -130,7 +134,9 @@ class CommentController extends AbstractController {
 			array(
 				'post_id'         => 'required|numeric|exists:posts,ID',
 				'comment_content' => 'required|string|min:2|max:1000',
-			)
+			),
+			array(),
+			$this->commentService->commentAttributes()
 		);
 
 		$commentId = $this->commentService->createComment(
@@ -148,26 +154,21 @@ class CommentController extends AbstractController {
 			false
 		);
 
-		return $this->response(
+		$this->addMessage( 'success', esc_attr__( 'Comment added successfully.', 'anspress-question-answer' ) );
+
+		$this->addEvent(
+			'anspress-comments-' . (int) $data['post_id'] . '-added',
 			array(
-				'appendHtmlTo'         => array( '#anspress-comments-' . $data['post_id'] . ' [data-anspressel="comments-items"]' => $commentHtml ),
-				'commentsData'         => Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) ),
-				'comment-formMessages' => array(
-					array(
-						'type'    => 'success',
-						'message' => esc_attr__( 'Comment added successfully.', 'anspress-question-answer' ),
-					),
-				),
-				'comment-formHtml'     => Plugin::loadView(
-					'src/frontend/common/comments/comment-form.php',
-					array(
-						'post'        => get_post( $data['post_id'] ),
-						'form_loaded' => false,
-					),
-					false
-				),
+				'html' => $commentHtml,
 			)
 		);
+
+		$this->setData(
+			'comment-list-' . (int) $data['post_id'],
+			Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) )
+		);
+
+		return $this->response();
 	}
 
 	/**
@@ -184,7 +185,9 @@ class CommentController extends AbstractController {
 		$data = $this->validate(
 			array(
 				'comment_id' => 'required|numeric|exists:comments,comment_ID',
-			)
+			),
+			array(),
+			$this->commentService->commentAttributes()
 		);
 
 		$comment = get_comment( $data['comment_id'] );
@@ -197,20 +200,21 @@ class CommentController extends AbstractController {
 			);
 		}
 
-		return $this->response(
+		$this->addEvent(
+			'anspress-comments-' . (int) $comment->comment_post_ID . '-deleted',
 			array(
-				'message'          => esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ),
-				'data'             => Plugin::get( CommentService::class )->getCommentsData(
-					get_post( $comment->comment_post_ID )
-				),
-				'commentsMessages' => array(
-					array(
-						'type'    => 'success',
-						'message' => esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ),
-					),
-				),
+				'commentId' => $data['comment_id'],
 			)
 		);
+
+		$this->setData(
+			'comment-list-' . (int) $comment->comment_post_ID,
+			Plugin::get( CommentService::class )->getCommentsData( get_post( $comment->comment_post_ID ) )
+		);
+
+		$this->addMessage( 'success', esc_attr__( 'Comment deleted successfully.', 'anspress-question-answer' ) );
+
+		return $this->response();
 	}
 
 	/**
@@ -222,6 +226,7 @@ class CommentController extends AbstractController {
 		$data = $this->validate(
 			array(
 				'post_id' => 'required|numeric|exists:posts,ID',
+				'offset'  => 'nullable|numeric',
 			)
 		);
 
@@ -231,25 +236,30 @@ class CommentController extends AbstractController {
 			return $this->notFound();
 		}
 
-		$commentHtml = Plugin::loadView(
-			'src/frontend/common/comments/render.php',
+		$this->addEvent(
+			'anspress-comments-' . (int) $data['post_id'] . '-added',
 			array(
-				'post'             => $post,
-				'offset'           => $this->getParam( 'offset', 0 ),
-				'withoutContainer' => true,
-			),
-			false
-		);
-
-		return $this->response(
-			array(
-				'html' => $commentHtml,
-				'data' => Plugin::get( CommentService::class )->getCommentsData(
-					$post,
-					absint( $this->getParam( 'offset', 0 ) )
+				'html' => Plugin::loadView(
+					'src/frontend/common/comments/render.php',
+					array(
+						'post'             => $post,
+						'offset'           => $this->getParam( 'offset', 0 ),
+						'withoutContainer' => true,
+					),
+					false
 				),
 			)
 		);
+
+		$this->setData(
+			'comment-list-' . (int) $data['post_id'],
+			Plugin::get( CommentService::class )->getCommentsData(
+				$post,
+				absint( $this->getParam( 'offset', 0 ) )
+			)
+		);
+
+		return $this->response();
 	}
 
 	/**
@@ -294,17 +304,16 @@ class CommentController extends AbstractController {
 			false
 		);
 
+		$this->addMessage( 'success', esc_attr__( 'Comment updated successfully.', 'anspress-question-answer' ) );
+		$this->setData(
+			'comment-list-' . (int) $data['post_id'],
+			Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) )
+		);
+
 		return $this->response(
 			array(
-				'comment'              => array( 'id' => $data['comment_id'] ),
-				'replaceHtml'          => array( '#anspress-comment-form-' . $data['comment_id'] => $commentHtml ),
-				'commentsData'         => Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) ),
-				'comment-formMessages' => array(
-					array(
-						'type'    => 'success',
-						'message' => esc_attr__( 'Comment updated successfully.', 'anspress-question-answer' ),
-					),
-				),
+				'comment'     => array( 'id' => $data['comment_id'] ),
+				'replaceHtml' => array( '[data-anspress-id="comment-' . $data['comment_id'] . '"]' => $commentHtml ),
 			)
 		);
 	}

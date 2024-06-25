@@ -39,17 +39,6 @@
 		}
 	}
 
-	&snackbar-container {
-		position: fixed;
-		bottom: 20px;
-		right: 20px;
-		z-index: 1000;
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		max-width: 300px;
-	}
-
 	&snackbar-message {
 		background-color: #333;
 		color: white;
@@ -80,11 +69,13 @@
 	&snackbar-message.show {
 		opacity: 1;
 		transform: translateY(0);
+		transition: opacity 0.5s ease-in-out;
 	}
 
 	&snackbar-message.hide {
 		opacity: 0;
 		transform: translateY(100%);
+		transition: opacity 0.5s ease-in-out;
 	}
 
 	&validation-error {
@@ -99,7 +90,6 @@
 		color: #fff;
 		background-color: #ed4343;
 		padding: 10px;
-		font-size: 85%;
 		margin-top: 5px;
 	}
 
@@ -148,4 +138,15 @@ textarea {
 		box-sizing: border-box;
 		padding: 10px;
 	}
+}
+
+anspress-snackbar {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	max-width: 300px;
 }

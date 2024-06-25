@@ -54,7 +54,7 @@ if ( $commentsWithourContainer ) {
 	return;
 }
 ?>
-<anspress-comment-list data-post-id="<?php echo esc_attr( $args['post']->ID ); ?>" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
+<anspress-comment-list data-anspress-id="comment-list-<?php echo (int) $args['post']->ID; ?>" data-post-id="<?php echo esc_attr( $args['post']->ID ); ?>" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
 	<div class="anspress-comments-line"></div>
 	<div class="anspress-comments-count">
 		<?php
