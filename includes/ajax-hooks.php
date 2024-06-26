@@ -36,7 +36,6 @@ class AnsPress_Ajax {
 		add_action( 'ap_ajax_delete_comment', array( 'AnsPress\Ajax\Comment_Delete', 'init' ) );
 		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
 		add_action( 'wp_ajax_nopriv_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );
-		add_action( 'wp_ajax_ap_toggle_best_answer', array( 'AnsPress\Ajax\Toggle_Best_Answer', 'init' ) );
 
 		// Post actions.
 		add_action( 'ap_ajax_post_actions', array( 'AnsPress_Theme', 'post_actions' ) );
@@ -230,8 +229,12 @@ class AnsPress_Ajax {
 
 	/**
 	 * Handle Ajax callback for permanent delete of post.
+	 *
+	 * @depreacted 5.0.0
 	 */
 	public static function permanent_delete_post() {
+		_deprecated_function( __METHOD__, '5.0.0' );
+
 		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
 
 		if ( ! anspress_verify_nonce( 'delete_post_' . $post_id ) || ! ap_user_can_permanent_delete( $post_id ) ) {

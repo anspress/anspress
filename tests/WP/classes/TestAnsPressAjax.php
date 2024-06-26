@@ -58,7 +58,6 @@ class TestAnsPressAjax extends TestCaseAjax {
 		$this->assertEquals( 10, has_action( 'ap_ajax_delete_comment', [ 'AnsPress\Ajax\Comment_Delete', 'init' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
-		$this->assertEquals( 10, has_action( 'wp_ajax_ap_toggle_best_answer', [ 'AnsPress\Ajax\Toggle_Best_Answer', 'init' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_post_actions', [ 'AnsPress_Theme', 'post_actions' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_toggle_featured', [ 'AnsPress_Ajax', 'toggle_featured' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_close', [ 'AnsPress_Ajax', 'close_question' ] ) );
