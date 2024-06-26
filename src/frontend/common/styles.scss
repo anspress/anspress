@@ -178,3 +178,62 @@ anspress-snackbar {
 	border: solid 1px #ddd;
 	border-radius: 4px;
 }
+
+anspress-link {
+	cursor: pointer;
+}
+
+@keyframes anspress-glow {
+
+	0% {
+		background-color: rgba(255, 175, 175, 0.2);
+	}
+
+	50% {
+		background-color: rgba(255, 175, 175, 0.6);
+	}
+}
+
+.anspress-glowing-red-background,
+anspress-link.anspress-button-error {
+	animation: anspress-glow 2s infinite;
+}
+
+@keyframes anspress-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.anspress-button-loading-spinner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: inherit;
+	border: inherit;
+	border-radius: inherit;
+	z-index: 1;
+}
+
+.anspress-button-loading-spinner::after {
+	content: '';
+	width: 1em;
+	height: 1em;
+	border: 2px solid #ccc;
+	border-top-color: #333;
+	border-radius: 50%;
+	animation: anspress-spin 1s linear infinite;
+}
+
+.anspress-button-loading-content {
+	visibility: hidden;
+}

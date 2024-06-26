@@ -18,12 +18,20 @@ $_post = get_post();
 
 $isQuestion = 'question' === $_post->post_type;
 
+$selectedAnswer = ! $isQuestion ? ap_is_selected( $_post->ID ) : false;
+
+$classes = array( 'anspress-apq-item' );
+
+if ( $selectedAnswer ) {
+	$classes[] = 'anspress-apq-item-selected';
+}
+
 ?>
-<anspress-item data-post-id="<?php echo (int) $_post->ID; ?>" data-anspressel="question-item" class="anspress-apq-item">
-	<div class="anspress-apq-item-avatar anspress-avatar-link">
-		<a href="<?php ap_profile_link(); ?>">
-			<?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?>
-		</a>
+<anspress-item data-post-id="<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-anspress-id="answer:<?php echo (int) $_post->ID; ?>">
+	<div class="anspress-apq-item-avatar">
+		<div class="anspress-avatar-link">
+			<a href="<?php ap_profile_link(); ?>"><?php ap_author_avatar( ap_opt( 'avatar_size_qquestion' ) ); ?></a>
+		</div>
 	</div>
 	<div class="anspress-apq-item-content">
 		<div class="anspress-apq-item-qbody anspress-card">
@@ -56,7 +64,13 @@ $isQuestion = 'question' === $_post->post_type;
 						// translators: %s comments count.
 						echo wp_kses_post( sprintf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ), '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ) );
 					?>
+
 				</span>
+				<?php if ( ap_selected_answer( $_post->ID ) ) : ?>
+					<div class="anspress-apq-item-selected-answer">
+						<span ><?php esc_html_e( 'Solved', 'anspress-question-answer' ); ?></span>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div class="anspress-apq-item-inner">
 				<?php
@@ -90,11 +104,26 @@ $isQuestion = 'question' === $_post->post_type;
 						array( 'ID' => $_post->ID )
 					);
 					?>
+				<?php if ( ! $isQuestion ) : ?>
+					<?php
+						Plugin::loadView(
+							'src/frontend/single-question/button-select.php',
+							array( 'post' => $_post )
+						);
+					?>
+				<?php endif; ?>
 
 				<?php do_action( 'ap_post_footer' ); ?>
 
 				<div class="anspress-apq-item-actions">
-					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></a>
+					<?php
+						Plugin::loadView(
+							'src/frontend/single-question/button-delete.php',
+							array( 'post' => $_post )
+						);
+						?>
+					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></a>
+					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Share', 'anspress-question-answer' ); ?></a>
 					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Report', 'anspress-question-answer' ); ?></a>
 				</div>
 			</div>

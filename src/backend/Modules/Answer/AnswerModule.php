@@ -79,5 +79,65 @@ class AnswerModule extends AbstractModule {
 				),
 			)
 		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/actions/select/(?P<answer_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( AnswerController::class, 'selectAnswer' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'   => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'answer_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/actions/unselect/(?P<answer_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( AnswerController::class, 'unselectAnswer' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'   => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'answer_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/answers/(?P<answer_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( AnswerController::class, 'deleteAnswer' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'   => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'answer_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
 	}
 }

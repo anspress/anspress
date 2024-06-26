@@ -11,8 +11,7 @@ namespace AnsPress\Modules\Answer;
 use AnsPress\Classes\AbstractService;
 use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\ValidationException;
-
-use function Patchwork\CallRerouting\validate;
+use WP_Query;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,7 +38,6 @@ class AnswerService extends AbstractService {
 
 		$totalAnswers = $query->found_posts;
 		$totalPages   = ceil( $totalAnswers / $perPage );
-		$havePages    = $query->max_num_pages > 1 && $currentPage < $totalPages;
 
 		return array(
 			'question_id'     => $question->ID,
@@ -91,5 +89,80 @@ class AnswerService extends AbstractService {
 		}
 
 		return get_post( $answer );
+	}
+
+	/**
+	 * Delete answer.
+	 *
+	 * @param int $answer_id Id of the answer.
+	 * @return bool
+	 */
+	public function deleteAnswer( int $answer_id ) {
+		$deleted = wp_delete_post( $answer_id, true );
+
+		if ( ! $deleted ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get answers query.
+	 *
+	 * @param array $args Args.
+	 * @return WP_Query
+	 */
+	public function getAnswersQuery( array $args = array() ): WP_Query {
+
+		$args = wp_parse_args(
+			$args,
+			array(
+				'post_type'        => 'answer',
+				'posts_per_page'   => ap_opt( 'answers_per_page' ),
+				'paged'            => 0,
+				'order'            => 'ASC',
+				'orderby'          => 'date',
+				'ap_answers_query' => true,
+				'ap_query'         => true,
+			)
+		);
+
+		return new WP_Query( $args );
+	}
+
+	/**
+	 * Method to guess the page number of an answer in the pagination.
+	 *
+	 * @param int $question_id Question ID.
+	 * @param int $answer_id Answer ID.
+	 * @param int $per_page Number of answers per page.
+	 * @return int
+	 */
+	public function guessAnswerPageInPagination( $question_id, $answer_id, $per_page ): int {
+		$answer = get_post( $answer_id );
+
+		if ( ! $answer ) {
+			return 1;
+		}
+
+		$question = get_post( $question_id );
+
+		$answers = get_posts(
+			array(
+				'post_type'      => 'answer',
+				'post_parent'    => $question->ID,
+				'posts_per_page' => $per_page,
+				'fields'         => 'ids',
+			)
+		);
+
+		$answer_index = array_search( $answer_id, $answers, true );
+
+		if ( false === $answer_index ) {
+			return 1;
+		}
+
+		return ceil( ( $answer_index + 1 ) / $per_page );
 	}
 }

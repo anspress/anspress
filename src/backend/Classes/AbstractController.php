@@ -220,7 +220,7 @@ abstract class AbstractController {
 	 * @return WP_REST_Response
 	 */
 	public function unauthorized(): WP_REST_Response {
-		return $this->response( array( 'message' => 'Unauthorized' ), 401 );
+		return $this->response( array( 'message' => __( 'You must be logged in to perform this action', 'anspress-question-answer' ) ), 401 );
 	}
 
 	/**
@@ -235,11 +235,11 @@ abstract class AbstractController {
 	/**
 	 * Return not found response.
 	 *
-	 * @param string $message Error message.
+	 * @param string|null $message Error message.
 	 *
 	 * @throws HTTPException If not found.
 	 */
-	public function notFound( string $message = '' ): never {
+	public function notFound( ?string $message = null ): never {
 		$message = $message ? $message : __( 'Not found', 'anspress-question-answer' );
 		throw new HTTPException( 404, esc_html( $message ) );
 	}
@@ -247,10 +247,12 @@ abstract class AbstractController {
 	/**
 	 * Return bad request response.
 	 *
+	 * @param string|null $message Error message, default is Bad request.
 	 * @return WP_REST_Response
 	 */
-	public function badRequest(): WP_REST_Response {
-		return $this->response( array( 'message' => 'Bad request' ), 400 );
+	public function badRequest( ?string $message = null ): WP_REST_Response {
+		$message = $message ? $message : __( 'Bad request', 'anspress-question-answer' );
+		return $this->response( array( 'message' => $message ), 400 );
 	}
 
 	/**

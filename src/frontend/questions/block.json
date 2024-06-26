@@ -103,6 +103,6 @@
     }
   },
   "editorScript": "file:./index.js",
-  "render": "file:./render.php",
+  "render": "file:./questions.php",
   "style": "file:./style-index.css"
 }

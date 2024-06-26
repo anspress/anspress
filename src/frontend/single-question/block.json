@@ -16,7 +16,7 @@
     ]
   },
   "editorScript": "file:./index.js",
-  "render": "file:./render.php",
+  "render": "file:./single-question.php",
   "style": [
     "file:./style-index.css",
     "wp-tinymce"

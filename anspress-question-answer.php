@@ -31,6 +31,7 @@ use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerPolicy;
 use AnsPress\Modules\Comment\CommentPolicy;
 use AnsPress\Modules\Config\ConfigService;
+use AnsPress\Modules\Question\QuestionPolicy;
 use AnsPress\Modules\Subscriber\SubscriberPolicy;
 use AnsPress\Modules\Vote\VotePolicy;
 
@@ -517,6 +518,7 @@ add_action(
 					SubscriberPolicy::class,
 					CommentPolicy::class,
 					AnswerPolicy::class,
+					QuestionPolicy::class,
 				)
 			)
 		);

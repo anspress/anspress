@@ -1,26 +1,26 @@
 <?php
 /**
- * Answer policy class.
+ * Question policy.
  *
- * @since 5.0.0
  * @package AnsPress
+ * @since   5.0.0
  */
 
-namespace AnsPress\Modules\Answer;
+namespace AnsPress\Modules\Question;
 
 use AnsPress\Classes\AbstractPolicy;
 use WP_User;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	exit( 'Trying to cheat?' );
 }
 
 /**
- * Answer policy class.
+ * Question policy class.
  */
-class AnswerPolicy extends AbstractPolicy {
-	public const POLICY_NAME = 'answer';
+class QuestionPolicy extends AbstractPolicy {
+	public const POLICY_NAME = 'question';
 
 	/**
 	 * Ability list.
@@ -28,26 +28,18 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @var array
 	 */
 	protected array $abilities = array(
-		'list'     => array(
+		'list'   => array(
 			'question',
 		),
-		'view'     => array(
-			'answer',
-		),
-		'create'   => array(
+		'view'   => array(
 			'question',
 		),
-		'update'   => array(
-			'answer',
+		'create' => array(),
+		'update' => array(
+			'question',
 		),
-		'delete'   => array(
-			'answer',
-		),
-		'select'   => array(
-			'answer',
-		),
-		'unselect' => array(
-			'answer',
+		'delete' => array(
+			'question',
 		),
 	);
 
@@ -78,7 +70,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
 	public function view( ?WP_User $user, array $context = array() ): bool {
-		if ( $user && ! empty( $context['answer'] ) && is_object( $context['answer'] ) && $context['answer']->user_id === $user->user_id ) {
+		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
 			return true;
 		}
 
@@ -97,21 +89,7 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		if ( empty( $context['question'] ) || empty( $context['question']?->ID ) ) {
-			return false;
-		}
-
-		// Allow author to answer the question.
-		if ( $context['question']->post_author === $user->ID ) {
-			return true;
-		}
-
-		// Allow user to answer the question if it is not closed.
-		if ( 'closed' !== get_post_status( $context['question']->ID ) ) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	/**
@@ -122,7 +100,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['comment'] ) && is_object( $context['comment'] ) && $context['comment']->user_id === $user->user_id ) {
+		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
 			return true;
 		}
 
@@ -137,7 +115,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['comment'] ) && is_object( $context['comment'] ) && $context['comment']->user_id === $user->user_id ) {
+		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
 			return true;
 		}
 
@@ -152,65 +130,6 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to list the model, false otherwise.
 	 */
 	public function list( ?WP_User $user, array $context ): bool {
-		if ( empty( $context['post'] ) ) {
-			return false;
-		}
-
-		if ( $user && $context['post']->post_author === $user->ID ) {
-			return true;
-		}
-
-		// If post not published then only author can view the post.
-		if ( 'publish' === $context['post']->post_status ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Determine if the given user can select the answer.
-	 *
-	 * @param WP_User|null $user The current user attempting the action.
-	 * @param array        $context The model instance being selected.
-	 * @return bool True if the user is authorized to select the model, false otherwise.
-	 */
-	public function select( ?WP_User $user, array $context ): bool {
-		if ( ! $user ) {
-			return false;
-		}
-
-		if ( empty( $context['answer'] ) ) {
-			return false;
-		}
-
-		if ( $context['answer']->post_author === $user->ID ) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Determine if the given user can unselect the answer.
-	 *
-	 * @param WP_User|null $user The current user attempting the action.
-	 * @param array        $context The model instance being unselected.
-	 * @return bool True if the user is authorized to unselect the model, false otherwise.
-	 */
-	public function unselect( ?WP_User $user, array $context ): bool {
-		if ( ! $user ) {
-			return false;
-		}
-
-		if ( empty( $context['answer'] ) ) {
-			return false;
-		}
-
-		if ( $context['answer']->post_author === $user->ID ) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 }

@@ -8,20 +8,24 @@ class AnsPressCommentList extends BaseCustomElement {
   addEventListeners() {
     this.querySelector('[data-anspressel="comments-load-more"]')?.addEventListener('click', this.loadMoreComments.bind(this));
 
-    document.addEventListener(`anspress-comments-${this.data.postId}-added`, (event) => {
-      this.addComments(event.detail.html);
-    });
+    document.addEventListener(`anspress-comments-${this.data.postId}-added`, this.addCommentsHandler.bind(this));
 
-    document.addEventListener(`anspress-comments-${this.data.postId}-deleted`, (event) => {
-      this.removeComment(event.detail.commentId);
-    })
+    document.addEventListener(`anspress-comments-${this.data.postId}-deleted`, this.deleteCommentHandler.bind(this));
   }
 
   disconnectedCallback() {
     this.querySelector('[data-anspressel="comments-load-more"]')?.removeEventListener('click', this.loadMoreComments.bind(this));
 
-    document.removeEventListener(`anspress-comments-${this.data.postId}-added`);
-    document.removeEventListener(`anspress-comments-${this.data.postId}-deleted`);
+    document.removeEventListener(`anspress-comments-${this.data.postId}-added`, this.addCommentsHandler);
+    document.removeEventListener(`anspress-comments-${this.data.postId}-deleted`, this.deleteCommentHandler);
+  }
+
+  addCommentsHandler(event) {
+    this.addComments(event.detail.html);
+  }
+
+  deleteCommentHandler(event) {
+    this.removeComment(event.detail.commentId);
   }
 
   updateComponent() {

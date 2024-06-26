@@ -61,8 +61,8 @@ export const dispatchSnackbar = (message, type = 'success', duration = 5000) => 
   document.body.dispatchEvent(event);
 }
 
-export const fetch = (path, options) => {
-  return apiFetch(path, options)
+export const fetch = (options) => {
+  return apiFetch(options)
     .then(res => {
       const data = res?.anspress || {}
       if (data.errors && Array.isArray(data.errors) && data.errors.length) {
@@ -104,12 +104,22 @@ export const fetch = (path, options) => {
         data?.messages.map(snackbarItem => dispatchSnackbar(snackbarItem.message, snackbarItem.type));
       }
 
+      // Handle reload.
+      if (data?.reload) {
+        location.reload();
+      }
+
+      // Handle redirect.
+      if (data?.redirect) {
+        location.href = data?.redirect;
+      }
+
       return data;
     })
     .catch(err => {
       console.error(err)
 
-      const errorData = err?.anspress?.errors || err?.errors || {};
+      const errorData = err?.anspress?.errors || err?.anspress?.message || err?.errors || err?.message || {};
 
       if (err.errors && Array.isArray(err.errors) && err.errors.length) {
         err.errors.map(snackbarItem => dispatchSnackbar(snackbarItem, 'error'));
@@ -119,6 +129,8 @@ export const fetch = (path, options) => {
         err.message.length
       ) {
         dispatchSnackbar(err.message, 'error');
+      } else if (typeof errorData === 'string') {
+        dispatchSnackbar(errorData, 'error');
       }
 
       throw err;

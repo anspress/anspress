@@ -27,27 +27,29 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 	<?php
 		Plugin::loadView( 'src/frontend/single-question/item.php' );
 
+		$currentPage = 1;
+
 		// Answers.
-		$query = new WP_Query(
+		$query = Plugin::get( AnswerService::class )->getAnswersQuery(
 			array(
-				'post_type'      => 'answer',
-				'post_parent'    => $_post->ID,
-				'posts_per_page' => ap_opt( 'answers_per_page' ),
-				'paged'          => 0,
-				'order'          => 'ASC',
-				'orderby'        => 'date',
+				'post_parent' => $_post->ID,
+				'paged'       => $currentPage,
 			)
 		);
 
-		$currentPage = 1;
-		$perPage     = ap_opt( 'answers_per_page' );
 		$answersArgs = Plugin::get( AnswerService::class )->getAnswersData(
 			$query,
 			$_post,
 			$currentPage
 		);
+
+		$answersClass = 'anspress-answers';
+
+		if ( ap_selected_answer( $_post->ID ) ) {
+			$answersClass .= ' anspress-answers-selected';
+		}
 		?>
-		<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="anspress-answers" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
+		<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( $answersClass ); ?>" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
 			<div data-anspressel="answers-items" class="anspress-answers-items">
 				<?php
 				Plugin::loadView(

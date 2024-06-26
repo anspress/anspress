@@ -147,14 +147,10 @@ class AnswerController extends AbstractController {
 
 		$currentPage = max( 1, $this->getParam( 'page', 1 ) );
 
-		$query = new WP_Query(
+		$query = Plugin::get( AnswerService::class )->getAnswersQuery(
 			array(
-				'post_type'      => 'answer',
-				'post_parent'    => $question->ID,
-				'posts_per_page' => ap_opt( 'answers_per_page' ),
-				'paged'          => $currentPage,
-				'order'          => 'ASC',
-				'orderby'        => 'date',
+				'post_parent' => $question->ID,
+				'paged'       => $currentPage,
 			)
 		);
 
@@ -179,6 +175,123 @@ class AnswerController extends AbstractController {
 			'answers-' . $question->ID,
 			$answersArgs
 		);
+
+		return $this->response();
+	}
+
+	/**
+	 * Select answer.
+	 *
+	 * @return WP_REST_Response Response object.
+	 */
+	public function selectAnswer(): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$data = $this->validate(
+			array(
+				'post_id'   => 'required|numeric|exists:posts,ID|post_type:question',
+				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
+			)
+		);
+
+		$answer = get_post( $data['answer_id'] );
+
+		$this->checkPermission( 'answer:select', array( 'answer' => $answer ) );
+
+		ap_set_selected_answer( $data['post_id'], $data['answer_id'] );
+
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Answer selected successfully.', 'anspress-question-answer' )
+		);
+
+		return $this->response(
+			array(
+				'reload' => true,
+			)
+		);
+	}
+
+	/**
+	 * Unselect answer.
+	 *
+	 * @return WP_REST_Response Response object.
+	 */
+	public function unselectAnswer(): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$data = $this->validate(
+			array(
+				'post_id'   => 'required|numeric|exists:posts,ID|post_type:question',
+				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
+			)
+		);
+
+		$question = get_post( $data['post_id'] );
+		$answer   = get_post( $data['answer_id'] );
+
+		$this->checkPermission( 'answer:unselect', array( 'answer' => $answer ) );
+
+		// Check if answer is selected.
+		if ( ! ap_is_selected( $answer->ID ) ) {
+			return $this->badRequest( __( 'Answer is not selected for given question', 'anspress-question-answer' ) );
+		}
+
+		ap_unset_selected_answer( $question->ID );
+
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Answer unselected successfully.', 'anspress-question-answer' )
+		);
+
+		return $this->response(
+			array(
+				'reload' => true,
+			)
+		);
+	}
+
+	/**
+	 * Delete answer.
+	 *
+	 * @return WP_REST_Response Response object.
+	 */
+	public function deleteAnswer(): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$data = $this->validate(
+			array(
+				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
+			)
+		);
+
+		$answer = get_post( $data['answer_id'] );
+
+		$this->checkPermission( 'answer:delete', array( 'answer' => $answer ) );
+
+		$deleted = $this->answerService->deleteAnswer( $answer->ID );
+
+		if ( ! $deleted ) {
+			return $this->badRequest(
+				__( 'Failed to delete answer.', 'anspress-question-answer' )
+			);
+		}
+
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Answer deleted successfully.', 'anspress-question-answer' )
+		);
+
+		$this->addEvent( 'anspress:answer:deleted:' . $answer->post_parent, array( 'answer_id' => $answer->ID ) );
+
+		$query = Plugin::get( AnswerService::class )->getAnswersQuery(
+			array(
+				'post_parent' => $answer->post_parent,
+				'paged'       => 1,
+			)
+		);
+
+		$this->setData( 'answers-' . $answer->post_parent, $this->answerService->getAnswersData( $query, ap_get_post( $answer->post_parent ), 1 ) );
 
 		return $this->response();
 	}

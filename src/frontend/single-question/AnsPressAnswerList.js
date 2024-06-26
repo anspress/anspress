@@ -7,15 +7,12 @@ class AnsPressAnswerList extends BaseCustomElement {
   }
 
   addEventListeners() {
-    console.log(this)
     document.addEventListener(`anspress:answer:added:${this.data.question_id}`, (event) => {
       this.addAnswers(event.detail.html);
       // this.addComments(event.detail.html);
     });
 
-    document.addEventListener(`anspress:answer:deleted:${this.data.question_id}`, (event) => {
-      // this.removeComment(event.detail.commentId);
-    })
+    document.addEventListener(`anspress:answer:deleted:${this.data.question_id}`, this.removeAnswer.bind(this));
 
     this.querySelector('[data-anspressel="load-more-answers"]')?.addEventListener('click', this.loadMore.bind(this));
   }
@@ -23,12 +20,15 @@ class AnsPressAnswerList extends BaseCustomElement {
   disconnectedCallback() {
     document.removeEventListener(`anspress:answer:added:${this.data.question_id}`);
     document.removeEventListener(`anspress:answer:deleted:${this.data.question_id}`);
-    this.querySelector('[data-anspressel="load-more-answers"]')?.removeEventListener('click', this.loadMore.bind(this));
   }
 
   updateComponent() {
     if (this.data.current_page >= this.data.total_pages) {
-      this.querySelector('[data-anspressel="load-more-answers"]').style.display = 'none';
+      const loadMoreButton = this.querySelector('[data-anspressel="load-more-answers"]');
+
+      if (loadMoreButton) {
+        loadMoreButton.style.display = 'none';
+      }
     }
 
     // update answers-count-*
@@ -55,6 +55,12 @@ class AnsPressAnswerList extends BaseCustomElement {
       path: addQueryArgs(this.data.load_more_path, { page: parseInt(this.data.current_page) + 1 }),
       method: 'GET',
     });
+  }
+
+  removeAnswer(event) {
+    const answerId = event.detail.answer_id;
+    const answer = document.querySelector(`[data-anspress-id="answer:${answerId}"]`);
+    answer.remove();
   }
 }
 

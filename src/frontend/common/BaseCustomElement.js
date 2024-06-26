@@ -50,8 +50,8 @@ export class BaseCustomElement extends HTMLElement {
     throw new Error('addEventListeners method must be implemented by subclasses');
   }
 
-  fetch(path, options) {
-    return fetch(path, options).then(res => {
+  fetch(options) {
+    return fetch(options).then(res => {
       if (res?.anspress) {
         // Handle data-anspress attributes.
         if (res.anspress.data) {

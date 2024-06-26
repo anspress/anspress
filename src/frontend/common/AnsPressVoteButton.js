@@ -40,66 +40,29 @@ export class VoteButton extends BaseCustomElement {
   }
 
   disconnectedCallback() {
-    this.removeEventListener('vote-up');
-    this.removeEventListener('vote-down');
-    this.removeEventListener('vote-undo');
+    this.querySelector('[data-anspressel="vote-up"]').removeEventListener('click', this.voteUp);
+    this.querySelector('[data-anspressel="vote-down"]').removeEventListener('click', this.voteDown);
   }
 
   async send(action) {
-    try {
-      const path = !this.data.currentUserVoted
-        ? `/anspress/v1/post/${this.data.postId}/actions/vote/${action}`
-        : `/anspress/v1/post/${this.data.postId}/actions/undo-vote`;
+    const path = !this.data.currentUserVoted
+      ? `/anspress/v1/post/${this.data.postId}/actions/vote/${action}`
+      : `/anspress/v1/post/${this.data.postId}/actions/undo-vote`;
 
-      const response = await this.fetch({
-        path,
-        method: 'POST'
-      });
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
+    const response = await this.fetch({
+      path,
+      method: 'POST'
+    });
   }
 
   async voteUp(event) {
     event.preventDefault();
-    const voteData = this.data;
-
-    await this.send('voteup').then(() => {
-      if (voteData.currentUserVoted === 'voteup') {
-        voteData.votesNet--;
-        voteData.currentUserVoted = '';
-        this.dispatchEvent(new CustomEvent('vote-undo', { detail: { vote: 'up' } }));
-      } else {
-        if (voteData.currentUserVoted === 'votedown') {
-          voteData.votesNet++;
-        }
-        voteData.votesNet++;
-        voteData.currentUserVoted = 'voteup';
-        this.dispatchEvent(new CustomEvent('vote-up', { detail: { vote: 'up' } }));
-      }
-      this.data = voteData; // Use setter to update attribute and cache
-    });
+    await this.send('voteup');
   }
 
   async voteDown(event) {
     event.preventDefault();
-    const voteData = this.data;
-
-    await this.send('votedown').then(() => {
-      if (voteData.currentUserVoted === 'votedown') {
-        voteData.votesNet++;
-        voteData.currentUserVoted = '';
-        this.dispatchEvent(new CustomEvent('vote-undo', { detail: { vote: 'down' } }));
-      } else {
-        if (voteData.currentUserVoted === 'voteup') {
-          voteData.votesNet--;
-        }
-        voteData.votesNet--;
-        voteData.currentUserVoted = 'votedown';
-        this.dispatchEvent(new CustomEvent('vote-down', { detail: { vote: 'down' } }));
-      }
-      this.data = voteData; // Use setter to update attribute and cache
-    })
+    await this.send('votedown')
   }
 }
 
