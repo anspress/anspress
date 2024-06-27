@@ -43,6 +43,13 @@ jobs:
         run: |
           rm -rf .git
           rm -rf node_modules
+          rm -rf .github
+          rm -rf .gitignore
+          rm -rf .gitattributes
+          rm -rf .editorconfig
+          rm -rf tests
+          rm -rf .wordpress-org
+          rm -rf vendor
 
       - name: Upload
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
