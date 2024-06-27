@@ -11,6 +11,7 @@ namespace AnsPress\Modules\Answer;
 use AnsPress\Classes\AbstractService;
 use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\ValidationException;
+use WP_Post;
 use WP_Query;
 
 // Exit if accessed directly.
@@ -108,25 +109,63 @@ class AnswerService extends AbstractService {
 	}
 
 	/**
+	 * Update answer.
+	 *
+	 * @param array $data Data.
+	 * @return WP_Post
+	 * @throws ValidationException If validation fails.
+	 */
+	public function updateAnswer( $data ): WP_Post {
+		$data = ( new Validator(
+			$data,
+			array(
+				'post_content' => 'required|min:1|max:5000',
+				'post_id'      => 'required|numeric|exists:posts,ID|post_type:answer',
+			)
+		) )->validated();
+
+		$answer = wp_update_post(
+			array(
+				'ID'           => $data['post_id'],
+				'post_content' => $data['post_content'],
+			),
+			true
+		);
+
+		if ( is_wp_error( $answer ) ) {
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Failed to update answer.', 'anspress-question-answer' )
+			);
+		}
+
+		return get_post( $answer );
+	}
+
+	/**
 	 * Get answers query.
 	 *
 	 * @param array $args Args.
 	 * @return WP_Query
 	 */
 	public function getAnswersQuery( array $args = array() ): WP_Query {
-
 		$args = wp_parse_args(
 			$args,
 			array(
 				'post_type'        => 'answer',
 				'posts_per_page'   => ap_opt( 'answers_per_page' ),
 				'paged'            => 0,
-				'order'            => 'ASC',
-				'orderby'          => 'date',
+				'orderby'          => 'post_date',
 				'ap_answers_query' => true,
 				'ap_query'         => true,
 			)
 		);
+
+		// If only one answer is requested then we need to set posts_per_page to 1.
+		if ( ! empty( $args['answer_id'] ) ) {
+			$args['posts_per_page'] = 1;
+			$args['p']              = $args['answer_id'];
+		}
 
 		return new WP_Query( $args );
 	}

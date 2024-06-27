@@ -40,7 +40,7 @@
     "scripts": {
         "test": "php ./vendor/bin/phpunit",
         "phpcs": "php ./vendor/bin/phpcs",
-        "grunt:build": "grunt build",
+        "build:grunt": "grunt build",
         "start": "wp-scripts start",
         "dev": "npm run start",
         "prebuild": "npm run check-engines",

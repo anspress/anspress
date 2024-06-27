@@ -117,14 +117,18 @@ if ( $selectedAnswer ) {
 
 				<div class="anspress-apq-item-actions">
 					<?php
-						Plugin::loadView(
-							'src/frontend/single-question/button-delete.php',
-							array( 'post' => $_post )
-						);
-						?>
-					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></a>
+					Plugin::loadView(
+						'src/frontend/single-question/button-delete.php',
+						array( 'post' => $_post )
+					);
+
+					Plugin::loadView(
+						'src/frontend/single-question/button-edit.php',
+						array( 'post' => $_post )
+					);
+					?>
+
 					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Share', 'anspress-question-answer' ); ?></a>
-					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Report', 'anspress-question-answer' ); ?></a>
 				</div>
 			</div>
 		</div>

@@ -139,5 +139,45 @@ class AnswerModule extends AbstractModule {
 				),
 			)
 		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/answers/(?P<answer_id>\d+)/load-answer-edit-form',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( AnswerController::class, 'loadEditAnswerForm' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'   => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'answer_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/answers/(?P<answer_id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::EDITABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( AnswerController::class, 'updateAnswer' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id'   => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+					'answer_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
 	}
 }

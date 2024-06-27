@@ -61,6 +61,16 @@ export const dispatchSnackbar = (message, type = 'success', duration = 5000) => 
   document.body.dispatchEvent(event);
 }
 
+export const scrollToElement = (element) => {
+  if (element) {
+    setTimeout(() => {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    }, 100);
+  } else {
+    console.error(`Element with selector '${selector}' not found.`);
+  }
+}
+
 export const fetch = (options) => {
   return apiFetch(options)
     .then(res => {
@@ -79,13 +89,6 @@ export const fetch = (options) => {
         });
       }
 
-      // Handle trigger event.
-      if (data?.triggerEvents) {
-        Object.keys(data?.triggerEvents).forEach(key => {
-          document.dispatchEvent(new CustomEvent(key, { detail: data?.triggerEvents[key] }));
-        });
-      }
-
       // Handle replaceHtml.
       if (data?.replaceHtml) {
         Object.keys(data?.replaceHtml).forEach(key => {
@@ -95,6 +98,18 @@ export const fetch = (options) => {
             replaceHTML(key, data?.replaceHtml[key]);
           } else {
             console.error(`Element with selector '${key}' not found.`);
+          }
+        });
+      }
+
+      // Handle trigger event.
+      if (data?.triggerEvents) {
+        Object.keys(data?.triggerEvents).forEach(key => {
+          if (key === 'scrollTo' && data?.triggerEvents[key]?.element) {
+            const element = document.querySelector(data?.triggerEvents[key]?.element);
+            scrollToElement(element)
+          } else {
+            document.dispatchEvent(new CustomEvent(key, { detail: data?.triggerEvents[key] }));
           }
         });
       }
@@ -147,11 +162,44 @@ export const replaceHTML = (selector, newHTML) => {
     tempDiv.innerHTML = newHTML;
     const newElement = tempDiv.firstElementChild;
 
+    // add class to new element.
+    newElement.classList.add('anspress-replacing')
+
     // Replace the selected element with the new element
     element.replaceWith(newElement);
+
+    setTimeout(() => {
+      newElement.classList.add('anspress-replaced')
+    }, 300);
   } else {
     console.error(`Element with selector '${selector}' not found.`);
   }
+}
+
+export const initTynimce = (textarea) => {
+  tinymce.init({
+    selector: '#' + textarea,
+    toolbar: 'bold italic | underline strikethrough | bullist numlist | link unlink blockquote hr| image removeformat',
+    menubar: false,
+    statusbar: false,
+    plugins: 'lists link hr wpautoresize image',
+    min_height: 200,
+    wp_autoresize_on: true,
+    images_file_types: 'jpg,svg,webp',
+    file_picker_types: 'file image media',
+    automatic_uploads: true,
+    images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+    }),
+    setup: function (editor) {
+      editor.on('change', function () {
+        editor.save();
+      });
+    }
+  });
+}
+
+export const removeTinymce = (textarea) => {
+  tinymce.remove('#' + textarea);
 }
 
 export const loadForm = (data) => {
@@ -161,32 +209,14 @@ export const loadForm = (data) => {
   })
     .then(res => {
       if (res?.load_tinymce) {
-        tinymce.init({
-          selector: '#' + res?.load_tinymce,
-          toolbar: 'bold italic | underline strikethrough | bullist numlist | link unlink blockquote hr| image removeformat',
-          menubar: false,
-          statusbar: false,
-          plugins: 'lists link hr wpautoresize image',
-          min_height: 200,
-          wp_autoresize_on: true,
-          images_file_types: 'jpg,svg,webp',
-          file_picker_types: 'file image media',
-          automatic_uploads: true,
-          images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
-          }),
-          setup: function (editor) {
-            editor.on('change', function () {
-              editor.save();
-            });
-          }
-        });
+        initTynimce(res?.load_tinymce)
       }
     });
 }
 
 export const removeForm = async (data) => {
   if (data?.load_tinymce) {
-    tinymce.remove('#' + data?.load_tinymce);
+    removeForm(data.load_tinymce);
   }
 
   return fetch({

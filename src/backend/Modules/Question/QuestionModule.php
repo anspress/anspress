@@ -48,5 +48,37 @@ class QuestionModule extends AbstractModule {
 				),
 			)
 		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/load-edit-question-form',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( QuestionController::class, 'loadEditQuestion' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
+
+		register_rest_route(
+			'anspress/v1',
+			'/post/(?P<post_id>\d+)/actions/(?P<action>[a-z-]+)',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( QuestionController::class, 'loadEditQuestion' ), $req ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'post_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
 	}
 }

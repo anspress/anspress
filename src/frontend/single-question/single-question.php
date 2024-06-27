@@ -34,6 +34,7 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 			array(
 				'post_parent' => $_post->ID,
 				'paged'       => $currentPage,
+				'answer_id'   => get_query_var( 'answer_id' ),
 			)
 		);
 
@@ -50,6 +51,13 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 		}
 		?>
 		<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( $answersClass ); ?>" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
+			<?php if ( get_query_var( 'answer_id' ) ) : ?>
+				<div class="anspress-apq-item-single-answer-info anspress-card">
+					<?php esc_html_e( 'You are viewing one of many answers to this question. Click the button to show all answers.', 'anspress-question-answer' ); ?>
+					<a href="<?php the_permalink(); ?>" class="anspress-button anspress-btn-primary anspress-btn-sm"><?php esc_html_e( 'Back to all answers', 'anspress-question-answer' ); ?></a>
+				</div>
+			<?php endif; ?>
+
 			<div data-anspressel="answers-items" class="anspress-answers-items">
 				<?php
 				Plugin::loadView(

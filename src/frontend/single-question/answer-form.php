@@ -20,11 +20,13 @@ if ( ! isset( $args['question'] ) ) {
 
 $question = $args['question'];
 
+$answer = isset( $args['answer'] ) ? $args['answer'] : null;
+
 $answerFormArgs = array(
 	'question_id'    => $question->ID,
 	'form_loaded'    => $args['form_loaded'] ?? false,
 	'load_form_path' => '/anspress/v1/post/' . $question->ID . '/load-answer-form',
-	'form_action'    => '/anspress/v1/post/' . $question->ID . '/answers',
+	'form_action'    => $answer ? '/anspress/v1/post/' . $question->ID . '/answers/' . $answer->ID : '/anspress/v1/post/' . $question->ID . '/answers',
 	'load_tinymce'   => 'anspress-answer-content',
 );
 ?>
@@ -57,16 +59,17 @@ $answerFormArgs = array(
 							name="post_content"
 							class="anspress-form-control"
 							placeholder="<?php esc_attr_e( 'Type your answer here.', 'anspress-question-answer' ); ?>"
-						></textarea>
+						><?php echo wp_kses_post( apply_filters( 'the_content', $answer?->post_content ?? '' ) ); ?></textarea>
 					</div>
 					<div class="anspress-form-buttons">
+						<button data-anspressel="cancel-button" class="anspress-button anspress-button-secondary"><?php esc_attr_e( 'Cancel', 'anspress-question-answer' ); ?></button>
 						<button
 							data-anspressel="submit"
 							data-anspress-button="submit"
 							type="submit"
 							class="anspress-button anspress-button-primary"
 						>
-							<?php esc_html_e( 'Post Answer', 'anspress-question-answer' ); ?>
+							<?php $answer ? esc_attr_e( 'Update answer', 'anspress-question-answer' ) : esc_html_e( 'Post Answer', 'anspress-question-answer' ); ?>
 						</button>
 					</div>
 				<?php endif; ?>

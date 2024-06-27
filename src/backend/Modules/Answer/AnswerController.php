@@ -103,11 +103,9 @@ class AnswerController extends AbstractController {
 			)
 		);
 
-		$query = new WP_Query(
+		$query = $this->answerService->getAnswersQuery(
 			array(
-				'post_type'   => 'answer',
-				'post_status' => 'publish',
-				'p'           => $answer->ID,
+				'p' => $answer->ID,
 			)
 		);
 
@@ -292,6 +290,106 @@ class AnswerController extends AbstractController {
 		);
 
 		$this->setData( 'answers-' . $answer->post_parent, $this->answerService->getAnswersData( $query, ap_get_post( $answer->post_parent ), 1 ) );
+
+		return $this->response();
+	}
+
+	/**
+	 * Load edit answer form.
+	 *
+	 * @return WP_REST_Response Response object.
+	 */
+	public function loadEditAnswerForm() {
+		$this->assureLoggedIn();
+
+		$this->validate(
+			array(
+				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
+			)
+		);
+
+		$answer = get_post( $this->getParam( 'answer_id' ) );
+
+		$this->checkPermission( 'answer:edit', array( 'answer' => $answer ) );
+
+		$this->replaceHtml(
+			'[data-anspress-id="answer-form-c-' . $answer->post_parent . '"]',
+			Plugin::loadView(
+				'src/frontend/single-question/answer-form.php',
+				array(
+					'question'     => ap_get_post( $answer->post_parent ),
+					'answer'       => $answer,
+					'form_loaded'  => true,
+					'load_tinymce' => 'anspress-answer-content',
+				),
+				false
+			)
+		);
+
+		return $this->response();
+	}
+
+	/**
+	 * Update answer.
+	 *
+	 * @return WP_REST_Response Response object.
+	 */
+	public function updateAnswer() {
+		$this->assureLoggedIn();
+
+		$data = $this->validate(
+			array(
+				'post_content' => 'required|min:1|max:5000',
+				'answer_id'    => 'required|numeric|exists:posts,ID|post_type:answer',
+			)
+		);
+
+		$answer = get_post( $data['answer_id'] );
+
+		$this->checkPermission( 'answer:edit', array( 'answer' => $answer ) );
+
+		$updated = $this->answerService->updateAnswer(
+			array(
+				'post_content' => $data['post_content'],
+				'post_id'      => $answer->ID,
+			)
+		);
+
+		if ( ! $updated ) {
+			return $this->badRequest(
+				__( 'Failed to update answer.', 'anspress-question-answer' )
+			);
+		}
+
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Answer updated successfully.', 'anspress-question-answer' )
+		);
+
+		$query = $this->answerService->getAnswersQuery(
+			array(
+				'p' => $answer->ID,
+			)
+		);
+
+		$html = '';
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$html = Plugin::loadView( 'src/frontend/single-question/item.php', array(), false );
+			}
+		}
+
+		wp_reset_postdata();
+
+		$elm = '[data-anspress-id="answer:' . $answer->ID . '"]';
+
+		$this->replaceHtml(
+			$elm,
+			$html
+		);
+
+		$this->addEvent( 'scrollTo', array( 'element' => $elm ) );
 
 		return $this->response();
 	}

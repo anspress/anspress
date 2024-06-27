@@ -108,7 +108,8 @@
 	&-actions {
 		font-size: 12px;
 
-		a {
+		a,
+		anspress-link {
 			margin-left: 10px;
 			text-decoration: none;
 		}
@@ -153,6 +154,14 @@
 			display: block;
 		}
 	}
+
+	&-single-answer-info {
+		margin-bottom: 20px;
+		padding: 10px;
+		border: solid 1px #72aee6 !important;
+		background: #d1e2f2 !important;
+		margin-left: 15px;
+	}
 }
 
 .anspress- {
@@ -189,6 +198,17 @@
 		}
 	}
 
+}
+
+
+
+anspress-item.anspress-replacing {
+	opacity: 0;
+	transition: cubic-bezier(0.18, 0.89, 0.32, 1.28) opacity 0.4s;
+}
+
+anspress-item.anspress-replaced {
+	opacity: 1;
 }
 
 

@@ -107,7 +107,7 @@ class AP_QA_Query_Hooks {
 			}
 
 			// Keep best answer to top.
-			if ( $answer_query && ! empty( $wp_query->query['ignore_selected_answer'] ) ) {
+			if ( $answer_query && empty( $wp_query->query['ignore_selected_answer'] ) ) {
 				$sql['orderby'] = 'case when qameta.selected = 1 then 1 else 2 end, ' . $sql['orderby'];
 			}
 
