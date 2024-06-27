@@ -1,15 +1,17 @@
 .wp-block-anspress-single-question {
-	padding-left: calc(var(--anspress-single-question-avatar-size) * 2);
-	position: relative;
+	.anspress-apq-item-c {
+		padding-left: var(--anspress-single-question-avatar-size);
+		position: relative;
 
-	&::before {
-		content: " ";
-		border-left: solid 2px #ccc;
-		height: 100%;
-		position: absolute;
-		left: calc(var(--anspress-single-question-avatar-size)* 3);
-		z-index: -1;
-		top: 0;
+		&::before {
+			content: " ";
+			border-left: solid 2px #ccc;
+			height: 100%;
+			position: absolute;
+			left: calc(var(--anspress-single-question-avatar-size)* 2);
+			z-index: -1;
+			top: 0;
+		}
 	}
 }
 
