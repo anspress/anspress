@@ -50,6 +50,7 @@ jobs:
           rm -rf tests
           rm -rf .wordpress-org
           rm -rf vendor
+          rm -rf .devcontainer
 
       - name: Upload
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
