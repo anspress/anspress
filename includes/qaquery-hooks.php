@@ -38,7 +38,7 @@ class AP_QA_Query_Hooks {
 			$sql['join']   = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
 			$post_status   = '';
-			$query_status  = $wp_query->query['post_status'];
+			$query_status  = $wp_query->query['post_status'] ?? 'publish';
 
 			if ( isset( $wp_query->query['ap_current_user_ignore'] ) && false === $wp_query->query['ap_current_user_ignore'] ) {
 				// Build the post_status mysql query.
@@ -107,7 +107,7 @@ class AP_QA_Query_Hooks {
 			}
 
 			// Keep best answer to top.
-			if ( $answer_query && ! $wp_query->query['ignore_selected_answer'] ) {
+			if ( $answer_query && empty( $wp_query->query['ignore_selected_answer'] ) ) {
 				$sql['orderby'] = 'case when qameta.selected = 1 then 1 else 2 end, ' . $sql['orderby'];
 			}
 

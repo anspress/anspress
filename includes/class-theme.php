@@ -76,7 +76,7 @@ class AnsPress_Theme {
 		}
 
 		if ( true === anspress()->theme_compat->active ) {
-			ap_remove_all_filters( 'the_content' );
+			remove_all_filters( 'the_content' );
 		}
 
 		return $template;

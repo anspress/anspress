@@ -71,7 +71,6 @@ class TestAddonEmail extends TestCase {
 
 	public function testHooksFilters() {
 		$instance = \Anspress\Addons\Email::init();
-		anspress()->setup_hooks();
 
 		// Tests.
 		$this->assertEquals( 10, has_filter( 'ap_settings_menu_features_groups', [ $instance, 'load_options' ] ) );

@@ -1,0 +1,239 @@
+.anspress- {
+	&pagination {
+		display: flex;
+		margin: 20px 0;
+
+		&-page-item {
+
+			>span,
+			>a {
+				display: block;
+				padding: 5px 10px;
+				margin: 0 5px;
+				border: solid 1px;
+			}
+
+			a {
+				text-decoration: none;
+
+				&:hover {
+					background: #eee;
+				}
+			}
+
+			span.current {
+				background: #eee;
+			}
+		}
+	}
+
+	&button {
+		display: inline-block;
+		border: solid 1px #888;
+		padding: 5px 15px;
+		background: #fff;
+		text-decoration: none;
+		border-radius: 4px;
+
+		&:hover {
+			background: #eee;
+		}
+	}
+
+	&snackbar-message {
+		background-color: #333;
+		color: white;
+		padding: 16px;
+		border-radius: 4px;
+		opacity: 0;
+		transform: translateY(100%);
+		transition: opacity 0.3s, transform 0.3s;
+		min-width: 200px;
+
+		&.anspress-snackbar-success {
+			background-color: #4caf50;
+		}
+
+		&.anspress-snackbar-error {
+			background-color: #f44336;
+		}
+
+		&.anspress-snackbar-info {
+			background-color: #2196f3;
+		}
+
+		&.anspress-snackbar-warning {
+			background-color: #ff9800;
+		}
+	}
+
+	&snackbar-message.show {
+		opacity: 1;
+		transform: translateY(0);
+		transition: 0.5s ease-in-out;
+	}
+
+	&snackbar-message.hide {
+		opacity: 0;
+		transform: translateY(100%);
+		transition: 0.5s ease-in-out;
+	}
+
+	&validation-error {
+		color: red;
+	}
+
+	&form-group {
+		margin-bottom: 15px;
+	}
+
+	&form-error {
+		color: #ed4343;
+		border: solid 1px #ed4343;
+		padding: 4px 10px;
+		margin-top: 5px;
+		border-radius: 4px;
+		background: #ed434312;
+		font-size: 12px;
+	}
+
+	&form-help {
+		font-size: 85%;
+		margin-top: 10px;
+		opacity: 0.7;
+	}
+
+	&form {
+		position: relative;
+
+		&-overlay {
+			padding: 10px;
+
+			&-showing {
+				.anspress-form-groups {
+					display: none;
+				}
+			}
+		}
+
+		&-submit-button {
+			margin-top: 10px;
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		&-global-error {
+			margin-bottom: 10px;
+		}
+	}
+
+	&load-more {
+		&-count {
+			padding: 2px;
+			border-radius: 2px;
+			font-size: 12px;
+			background: #0693e3;
+			color: #fff;
+		}
+	}
+}
+
+textarea {
+	&.anspress-form-control {
+		width: 100%;
+		height: 100px;
+		box-sizing: border-box;
+		padding: 10px;
+	}
+}
+
+anspress-snackbar {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	max-width: 300px;
+}
+
+
+.anspress-avatar-link {
+	background: #ccc;
+	padding: 2px;
+	border-radius: 4px;
+
+	img {
+		display: block;
+		border-radius: 4px;
+	}
+}
+
+.anspress-card {
+	background: #fff;
+	border: solid 1px #ddd;
+	border-radius: 4px;
+}
+
+anspress-link {
+	cursor: pointer;
+}
+
+@keyframes anspress-glow {
+
+	0% {
+		background-color: rgba(255, 175, 175, 0.2);
+	}
+
+	50% {
+		background-color: rgba(255, 175, 175, 0.6);
+	}
+}
+
+.anspress-glowing-red-background,
+anspress-link.anspress-button-error {
+	animation: anspress-glow 2s infinite;
+}
+
+@keyframes anspress-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.anspress-button-loading-spinner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: inherit;
+	border: inherit;
+	border-radius: inherit;
+	z-index: 1;
+}
+
+.anspress-button-loading-spinner::after {
+	content: '';
+	width: 1em;
+	height: 1em;
+	border: 2px solid #ccc;
+	border-top-color: #333;
+	border-radius: 50%;
+	animation: anspress-spin 1s linear infinite;
+}
+
+.anspress-button-loading-content {
+	visibility: hidden;
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress/user-profile-nav",
+  "version": "0.1.0",
+  "title": "(AnsPress) User Profile Nav",
+  "category": "anspress",
+  "icon": "admin-users",
+  "description": "AnsPress block to show user profile navigation.",
+  "attributes": {},
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "style": "file:./style-index.css"
+}

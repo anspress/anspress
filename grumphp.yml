@@ -4,15 +4,7 @@ grumphp:
         composer: ~
         phpcs:
             standard: .phpcs.xml.dist
-        npm_script:
-            script: build
-            triggered_by: [js, jsx, coffee, ts, less, sass, scss]
-            working_directory: "./"
-            is_run_task: false
-            silent: false
         phpunit: ~
         git_blacklist:
             keywords:
-                - 'print_r('
                 - 'var_dump('
-                - 'error_log('

@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: AnsPress Question Answer 4.4.0\n"
+"Project-Id-Version: AnsPress Question Answer 4.4.3\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/anspress-question-answer\n"
-"POT-Creation-Date: 2024-04-17 10:23:00+00:00\n"
+"POT-Creation-Date: 2024-06-13 12:06:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -62,19 +62,21 @@ msgid "Q&A"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:118 addons/buddypress/buddypress.php:212
-#: addons/profile/profile.php:52 addons/profile/profile.php:165
 #: admin/views/dashboard.php:31 admin/views/dashboard.php:209
-#: includes/functions.php:2346 includes/options.php:102
+#: includes/functions.php:2323 includes/options.php:102
 #: includes/post-types.php:84 includes/taxo.php:77 includes/taxo.php:402
-#: widgets/questions.php:47 widgets/questions.php:102
+#: src/backend/Modules/Profile/ProfileModule.php:30
+#: src/backend/Modules/Profile/ProfileModule.php:157 src/backend/config.php:133
+#: src/frontend/user-profile-nav/render.php:14 widgets/questions.php:47
+#: widgets/questions.php:102
 msgid "Questions"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:122 addons/buddypress/buddypress.php:278
-#: addons/profile/profile.php:53 addons/profile/profile.php:172
-#: admin/views/dashboard.php:238 includes/post-types.php:161
-#: includes/theme.php:423 widgets/question_stats.php:91
-#: widgets/questions.php:134
+#: admin/views/dashboard.php:238 includes/post-types.php:162
+#: includes/theme.php:423 src/backend/Modules/Profile/ProfileModule.php:31
+#: src/backend/Modules/Profile/ProfileModule.php:164
+#: widgets/question_stats.php:91 widgets/questions.php:134
 msgid "Answers"
 msgstr ""
 
@@ -125,7 +127,7 @@ msgstr ""
 #: addons/buddypress/buddypress.php:371 admin/views/dashboard.php:35
 #: includes/ajax-hooks.php:164 includes/comments.php:86
 #: includes/post-status.php:97 includes/post-status.php:117
-#: includes/post-types.php:184 templates/answers.php:24
+#: includes/post-types.php:185 templates/answers.php:24
 msgid "Answer"
 msgstr ""
 
@@ -177,16 +179,16 @@ msgstr ""
 #: includes/class-form-hooks.php:872 includes/flag.php:46 includes/flag.php:67
 #: includes/flag.php:149 includes/flag.php:155 includes/post-types.php:106
 #: includes/theme.php:302 includes/theme.php:309 includes/theme.php:336
-#: includes/votes.php:582 includes/votes.php:587
+#: includes/votes.php:640 includes/votes.php:645
 msgid "question"
 msgstr ""
 
 #: addons/buddypress/buddypress.php:512 addons/notifications/query.php:329
 #: includes/ajax-hooks.php:182 includes/ajax-hooks.php:220
 #: includes/class-form-hooks.php:872 includes/flag.php:46 includes/flag.php:67
-#: includes/flag.php:149 includes/flag.php:155 includes/post-types.php:183
+#: includes/flag.php:149 includes/flag.php:155 includes/post-types.php:184
 #: includes/theme.php:302 includes/theme.php:309 includes/theme.php:336
-#: includes/votes.php:582 includes/votes.php:587
+#: includes/votes.php:640 includes/votes.php:645
 msgid "answer"
 msgstr ""
 
@@ -200,506 +202,242 @@ msgstr ""
 msgid "%1$s commented on your %3$s - %2$s"
 msgstr ""
 
-#: addons/categories/categories.php:46 addons/categories/categories.php:194
-#: addons/categories/categories.php:247 addons/categories/categories.php:435
-#: addons/categories/categories.php:545 admin/class-list-table-hooks.php:199
-#: includes/taxo.php:229
-msgid "Category"
-msgstr ""
-
-#: addons/categories/categories.php:47 addons/categories/categories.php:493
-#: addons/categories/categories.php:505 addons/categories/widget.php:43
-#: addons/categories/widget.php:130 includes/functions.php:1632
-#: includes/functions.php:2364 includes/taxo.php:29
-msgid "Categories"
-msgstr ""
-
-#: addons/categories/categories.php:193 addons/categories/categories.php:354
-msgid "Question Categories"
-msgstr ""
-
-#: addons/categories/categories.php:195
-msgid "All Categories"
-msgstr ""
-
-#: addons/categories/categories.php:196
-msgid "Add New Category"
-msgstr ""
-
-#: addons/categories/categories.php:197
-msgid "Edit Category"
-msgstr ""
-
-#: addons/categories/categories.php:198
-msgid "New Category"
-msgstr ""
-
-#: addons/categories/categories.php:199
-msgid "View Category"
-msgstr ""
-
-#: addons/categories/categories.php:200
-msgid "Search Category"
-msgstr ""
-
-#: addons/categories/categories.php:201 addons/tags/tags.php:200
-msgid "Nothing Found"
-msgstr ""
-
-#: addons/categories/categories.php:202 addons/tags/tags.php:201
-msgid "Nothing found in Trash"
-msgstr ""
-
-#: addons/categories/categories.php:265
-msgid "Categories base page"
-msgstr ""
-
-#: addons/categories/categories.php:265
-msgid "Base page for categories can be configured in general settings of AnsPress."
-msgstr ""
-
-#: addons/categories/categories.php:268
-msgid "Ask form category order"
-msgstr ""
-
-#: addons/categories/categories.php:269
-msgid "Set how you want to order categories in form."
-msgstr ""
-
-#: addons/categories/categories.php:272 addons/categories/categories.php:285
-#: addons/categories/widget.php:179
-msgid "ID"
-msgstr ""
-
-#: addons/categories/categories.php:273 addons/categories/categories.php:286
-#: addons/categories/widget.php:180 addons/tags/tags.php:660
-#: addons/tags/tags.php:719
-msgid "Name"
-msgstr ""
-
-#: addons/categories/categories.php:274 addons/categories/categories.php:287
-#: addons/categories/widget.php:181
-msgid "Slug"
-msgstr ""
-
-#: addons/categories/categories.php:275 addons/categories/categories.php:288
-#: addons/categories/widget.php:178
-msgid "Count"
-msgstr ""
-
-#: addons/categories/categories.php:276 addons/categories/categories.php:289
-msgid "Group"
-msgstr ""
-
-#: addons/categories/categories.php:281
-msgid "Categories page order by"
-msgstr ""
-
-#: addons/categories/categories.php:282 addons/categories/categories.php:295
-msgid "Set how you want to order categories in categories page."
-msgstr ""
-
-#: addons/categories/categories.php:294
-msgid "Categories page order"
-msgstr ""
-
-#: addons/categories/categories.php:298
-msgid "Ascending"
-msgstr ""
-
-#: addons/categories/categories.php:299
-msgid "Descending"
-msgstr ""
-
-#: addons/categories/categories.php:304
-msgid "Category per page"
-msgstr ""
-
-#: addons/categories/categories.php:305
-msgid "Category to show per page"
-msgstr ""
-
-#: addons/categories/categories.php:310
-msgid "Categories image height"
-msgstr ""
-
-#: addons/categories/categories.php:311
-msgid "Image height in categories page"
-msgstr ""
-
-#: addons/categories/categories.php:436
-msgid "Select a topic that best fits your question."
-msgstr ""
-
-#: addons/categories/categories.php:564 addons/categories/categories.php:629
-#: includes/class-form-hooks.php:1016
-msgid "Image"
-msgstr ""
-
-#: addons/categories/categories.php:565 addons/categories/categories.php:632
-msgid "Upload image"
-msgstr ""
-
-#: addons/categories/categories.php:569
-msgid "Category image"
-msgstr ""
-
-#: addons/categories/categories.php:573 addons/categories/categories.php:651
-msgid "Category icon class"
-msgstr ""
-
-#: addons/categories/categories.php:580 addons/categories/categories.php:660
-#. translators: %s Link to font icon class.
-msgid ""
-"Font icon class, if image not set. Find our official list of icons from <a "
-"href=\"%s\" target=\"_blank\">here</a>."
-msgstr ""
-
-#: addons/categories/categories.php:595 addons/categories/categories.php:676
-msgid "Icon background color"
-msgstr ""
-
-#: addons/categories/categories.php:597 addons/categories/categories.php:680
-msgid "Set background color to be used with icon"
-msgstr ""
-
-#: addons/categories/categories.php:643 admin/anspress-admin.php:136
-#: admin/anspress-admin.php:1464
-msgid "Remove image"
-msgstr ""
-
-#: addons/categories/categories.php:646
-msgid "Featured image for category"
-msgstr ""
-
-#: addons/categories/categories.php:867
-msgid "Question category feed"
-msgstr ""
-
-#: addons/categories/categories.php:921 addons/tags/tags.php:698
-#. translators: placeholder contains count.
-#. translators: Placeholder contains count.
-msgid ", %d+"
-msgstr ""
-
-#: addons/categories/widget.php:28
-msgid "(AnsPress) Categories"
-msgstr ""
-
-#: addons/categories/widget.php:29
-msgid "Display AnsPress categories"
-msgstr ""
-
-#: addons/categories/widget.php:104 includes/ajax-hooks.php:637
-#: templates/addons/category/categories.php:39
-#: templates/addons/category/single-category.php:49
-#: templates/addons/tag/tag.php:28 templates/addons/tag/tags.php:46
-#. translators: Placeholder contains questions count.
-#. translators: %d is question count.
-#. translators: %d is category question count.
-#. translators: %s is total question count of category.
-#. translators: %d is count of question.
-#. translators: %d is question count.
-msgid "%d Question"
-msgid_plural "%d Questions"
-msgstr[0] ""
-msgstr[1] ""
-
-#: addons/categories/widget.php:111
-#. translators: Placeholder contains child category count.
-msgid "%d Child"
-msgstr ""
-
-#: addons/categories/widget.php:149 widgets/ask-form.php:82
-#: widgets/leaderboard.php:149 widgets/question_stats.php:117
-#: widgets/questions.php:125 widgets/search.php:79
-msgid "Title:"
-msgstr ""
-
-#: addons/categories/widget.php:153
-msgid "Hide empty:"
-msgstr ""
-
-#: addons/categories/widget.php:157
-msgid "Parent:"
-msgstr ""
-
-#: addons/categories/widget.php:159
-msgid "Top level"
-msgstr ""
-
-#: addons/categories/widget.php:171
-msgid "Number:"
-msgstr ""
-
-#: addons/categories/widget.php:175
-msgid "Order By:"
-msgstr ""
-
-#: addons/categories/widget.php:177
-msgid "None"
-msgstr ""
-
-#: addons/categories/widget.php:182
-msgid "Term group"
-msgstr ""
-
-#: addons/categories/widget.php:186
-msgid "Order:"
-msgstr ""
-
-#: addons/categories/widget.php:188
-msgid "DESC"
-msgstr ""
-
-#: addons/categories/widget.php:189
-msgid "ASC"
-msgstr ""
-
-#: addons/categories/widget.php:193
-msgid "Icon width:"
-msgstr ""
-
-#: addons/categories/widget.php:197
-msgid "Icon height:"
-msgstr ""
-
-#: addons/email/email.php:147 addons/email/email.php:1037
+#: addons/email/email.php:145 addons/email/email.php:1035
 msgid "An answer is trashed by {user}"
 msgstr ""
 
-#: addons/email/email.php:148
+#: addons/email/email.php:146
 msgid ""
 "Hello!\n"
 "Answer on '{question_title}' is trashed by {user}.\n"
 msgstr ""
 
-#: addons/email/email.php:161
+#: addons/email/email.php:159
 msgid "Email"
 msgstr ""
 
-#: addons/email/email.php:164
+#: addons/email/email.php:162
 #. translators: placeholder contains link to email templates.
 msgid "Email templates can be customized here %s."
 msgstr ""
 
-#: addons/email/email.php:165
+#: addons/email/email.php:163
 msgid "Customize email templates"
 msgstr ""
 
-#: addons/email/email.php:181
+#: addons/email/email.php:179
 msgid "Admin Notifications"
 msgstr ""
 
-#: addons/email/email.php:181
+#: addons/email/email.php:179
 msgid "Select types of notification which will be sent to admin."
 msgstr ""
 
-#: addons/email/email.php:184
+#: addons/email/email.php:182
 msgid "Admin email(s)"
 msgstr ""
 
-#: addons/email/email.php:185
+#: addons/email/email.php:183
 msgid ""
 "Email where all admin notification will be sent. It can have multiple "
 "emails separated by comma."
 msgstr ""
 
-#: addons/email/email.php:189 addons/email/email.php:234
+#: addons/email/email.php:187 addons/email/email.php:232
 #: includes/post-types.php:89
 msgid "New question"
 msgstr ""
 
-#: addons/email/email.php:190
+#: addons/email/email.php:188
 msgid "Send new question notification to admin."
 msgstr ""
 
-#: addons/email/email.php:195 addons/email/email.php:240
-#: includes/post-types.php:166
+#: addons/email/email.php:193 addons/email/email.php:238
+#: includes/post-types.php:167
 msgid "New answer"
 msgstr ""
 
-#: addons/email/email.php:196
+#: addons/email/email.php:194
 msgid "Send new answer notification to admin."
 msgstr ""
 
-#: addons/email/email.php:201 addons/email/email.php:246
+#: addons/email/email.php:199 addons/email/email.php:244
 msgid "New comment"
 msgstr ""
 
-#: addons/email/email.php:202
+#: addons/email/email.php:200
 msgid "Send new comment notification to admin."
 msgstr ""
 
-#: addons/email/email.php:207 addons/email/email.php:252
-#: admin/class-list-table-hooks.php:377 includes/post-types.php:90
+#: addons/email/email.php:205 addons/email/email.php:250
+#: admin/class-list-table-hooks.php:360 includes/post-types.php:90
 msgid "Edit question"
 msgstr ""
 
-#: addons/email/email.php:208
+#: addons/email/email.php:206
 msgid "Send notification to admin when question is edited."
 msgstr ""
 
-#: addons/email/email.php:213 addons/email/email.php:258
-#: includes/post-types.php:167
+#: addons/email/email.php:211 addons/email/email.php:256
+#: includes/post-types.php:168
 msgid "Edit answer"
 msgstr ""
 
-#: addons/email/email.php:214
+#: addons/email/email.php:212
 msgid "Send email to admin when answer is edited."
 msgstr ""
 
-#: addons/email/email.php:219
+#: addons/email/email.php:217
 msgid "Delete question"
 msgstr ""
 
-#: addons/email/email.php:220
+#: addons/email/email.php:218
 msgid "Send email to admin when question is trashed."
 msgstr ""
 
-#: addons/email/email.php:225
+#: addons/email/email.php:223
 msgid "Delete answer"
 msgstr ""
 
-#: addons/email/email.php:226
+#: addons/email/email.php:224
 msgid "Send email to admin when answer is trashed."
 msgstr ""
 
-#: addons/email/email.php:231
+#: addons/email/email.php:229
 msgid "User Notifications"
 msgstr ""
 
-#: addons/email/email.php:231
+#: addons/email/email.php:229
 msgid "Select the types of notification which will be sent to user."
 msgstr ""
 
-#: addons/email/email.php:235
+#: addons/email/email.php:233
 msgid "Send new question notification to user?"
 msgstr ""
 
-#: addons/email/email.php:241
+#: addons/email/email.php:239
 msgid "Send new answer notification to user?"
 msgstr ""
 
-#: addons/email/email.php:247
+#: addons/email/email.php:245
 msgid "Send new comment notification to user?"
 msgstr ""
 
-#: addons/email/email.php:253
+#: addons/email/email.php:251
 msgid "Send edit question notification to user?"
 msgstr ""
 
-#: addons/email/email.php:259
+#: addons/email/email.php:257
 msgid "Send edit answer notification to user?"
 msgstr ""
 
-#: addons/email/email.php:264
+#: addons/email/email.php:262
 msgid "Answer selected"
 msgstr ""
 
-#: addons/email/email.php:265
+#: addons/email/email.php:263
 msgid "Send notification to user when their answer get selected?"
 msgstr ""
 
-#: addons/email/email.php:285
+#: addons/email/email.php:283
 msgid "Email subject"
 msgstr ""
 
-#: addons/email/email.php:288
+#: addons/email/email.php:286
 msgid "Email body"
 msgstr ""
 
-#: addons/email/email.php:296
+#: addons/email/email.php:294
 msgid "Allowed tags"
 msgstr ""
 
-#: addons/email/email.php:667
+#: addons/email/email.php:665
 msgid "📧 Email Templates"
 msgstr ""
 
-#: addons/email/email.php:693 classes/ajax.php:129
+#: addons/email/email.php:691 classes/ajax.php:129
 #: includes/class-form-hooks.php:339 includes/class-form-hooks.php:567
 #: includes/class-form-hooks.php:779
 msgid "Trying to cheat?!"
 msgstr ""
 
-#: addons/email/email.php:720 includes/class-form-hooks.php:610
+#: addons/email/email.php:718 includes/class-form-hooks.php:610
 msgid "Unable to post answer."
 msgstr ""
 
-#: addons/email/email.php:742
+#: addons/email/email.php:740
 #. Translators: placeholder contain error message.
 msgid "Unable to save template. Error: %s"
 msgstr ""
 
-#: addons/email/email.php:768
+#: addons/email/email.php:766
 msgid "Post updated successfully"
 msgstr ""
 
-#: addons/email/email.php:872
+#: addons/email/email.php:870
 msgid "{asker} have posted a new question"
 msgstr ""
 
-#: addons/email/email.php:875
+#: addons/email/email.php:873
 msgid "A new question is posted by"
 msgstr ""
 
-#: addons/email/email.php:896
+#: addons/email/email.php:894
 msgid "New answer posted by {answerer}"
 msgstr ""
 
-#: addons/email/email.php:899
+#: addons/email/email.php:897
 msgid "A new answer is posted by"
 msgstr ""
 
-#: addons/email/email.php:920
+#: addons/email/email.php:918
 msgid "Your answer is selected as best!"
 msgstr ""
 
-#: addons/email/email.php:923
+#: addons/email/email.php:921
 msgid "Your answer is selected as best by "
 msgstr ""
 
-#: addons/email/email.php:944
+#: addons/email/email.php:942
 msgid "New comment by {commenter}"
 msgstr ""
 
-#: addons/email/email.php:947
+#: addons/email/email.php:945
 msgid "A new comment posted by"
 msgstr ""
 
-#: addons/email/email.php:968
+#: addons/email/email.php:966
 msgid "A question is edited by {editor}"
 msgstr ""
 
-#: addons/email/email.php:971
+#: addons/email/email.php:969
 msgid "A question is edited by"
 msgstr ""
 
-#: addons/email/email.php:992
+#: addons/email/email.php:990
 msgid "A answer is edited by {editor}"
 msgstr ""
 
-#: addons/email/email.php:995
+#: addons/email/email.php:993
 msgid "A answer is edited by"
 msgstr ""
 
-#: addons/email/email.php:1016
+#: addons/email/email.php:1014
 msgid "A question is trashed by {user}"
 msgstr ""
 
-#: addons/email/email.php:1019
+#: addons/email/email.php:1017
 msgid "A question is trashed by"
 msgstr ""
 
-#: addons/email/email.php:1040
+#: addons/email/email.php:1038
 msgid "An answer is trashed by"
 msgstr ""
 
 #: addons/notifications/notifications.php:54
 #: addons/notifications/notifications.php:67
-#: addons/notifications/notifications.php:224 includes/functions.php:1636
-#: includes/theme.php:701 tests/addons/test-notifications.php:127
+#: addons/notifications/notifications.php:224 includes/functions.php:1625
+#: includes/theme.php:701 tests/WP/addons/test-notifications.php:126
 msgid "Notifications"
 msgstr ""
 
@@ -774,50 +512,6 @@ msgstr ""
 msgid "post"
 msgstr ""
 
-#: addons/profile/profile.php:59
-msgid "User profile"
-msgstr ""
-
-#: addons/profile/profile.php:79 includes/functions.php:2358
-msgid "Profile"
-msgstr ""
-
-#: addons/profile/profile.php:94
-msgid "Questions page title"
-msgstr ""
-
-#: addons/profile/profile.php:95
-msgid "Custom title for user profile questions page"
-msgstr ""
-
-#: addons/profile/profile.php:99
-msgid "Questions page slug"
-msgstr ""
-
-#: addons/profile/profile.php:100
-msgid "Custom slug for user profile questions page"
-msgstr ""
-
-#: addons/profile/profile.php:104
-msgid "Answers page title"
-msgstr ""
-
-#: addons/profile/profile.php:105
-msgid "Custom title for user profile answers page"
-msgstr ""
-
-#: addons/profile/profile.php:109
-msgid "Answers page slug"
-msgstr ""
-
-#: addons/profile/profile.php:110
-msgid "Custom slug for user profile answers page"
-msgstr ""
-
-#: addons/profile/profile.php:351
-msgid "Callback function not found for rendering this page"
-msgstr ""
-
 #: addons/recaptcha/recaptcha/class-captcha.php:47
 msgid "AnsPress reCaptcha Field"
 msgstr ""
@@ -830,7 +524,7 @@ msgstr ""
 msgid "Unable to render captcha. Please add reCpatcha keys in AnsPress options."
 msgstr ""
 
-#: addons/recaptcha/recaptcha.php:84 includes/functions.php:1656
+#: addons/recaptcha/recaptcha.php:84 includes/functions.php:1633
 msgid "reCaptcha"
 msgstr ""
 
@@ -872,174 +566,6 @@ msgstr ""
 msgid "Prove that you are a human"
 msgstr ""
 
-#: addons/reputation/reputation.php:46 addons/reputation/reputation.php:495
-#: addons/reputation/reputation.php:559 tests/addons/test-reputation.php:149
-msgid "Reputations"
-msgstr ""
-
-#: addons/reputation/reputation.php:92 addons/reputation/reputation.php:449
-#: addons/reputation/reputation.php:452 addons/reputation/reputation.php:454
-#: includes/functions.php:1644
-msgid "Reputation"
-msgstr ""
-
-#: addons/reputation/reputation.php:93
-msgid "Reputation event points can be adjusted here :"
-msgstr ""
-
-#: addons/reputation/reputation.php:93
-msgid "Reputation Points"
-msgstr ""
-
-#: addons/reputation/reputation.php:107
-msgid "Reputations page title"
-msgstr ""
-
-#: addons/reputation/reputation.php:108
-msgid "Custom title for user profile reputations page"
-msgstr ""
-
-#: addons/reputation/reputation.php:112
-msgid "Reputations page slug"
-msgstr ""
-
-#: addons/reputation/reputation.php:113
-msgid "Custom slug for user profile reputations page"
-msgstr ""
-
-#: addons/reputation/reputation.php:137
-msgid "Registration"
-msgstr ""
-
-#: addons/reputation/reputation.php:138
-msgid "Points awarded when user account is created"
-msgstr ""
-
-#: addons/reputation/reputation.php:140
-msgid "Registered"
-msgstr ""
-
-#: addons/reputation/reputation.php:146
-msgid "Asking"
-msgstr ""
-
-#: addons/reputation/reputation.php:147
-msgid "Points awarded when user asks a question"
-msgstr ""
-
-#: addons/reputation/reputation.php:149
-msgid "Asked a question"
-msgstr ""
-
-#: addons/reputation/reputation.php:155
-msgid "Answering"
-msgstr ""
-
-#: addons/reputation/reputation.php:156
-msgid "Points awarded when user answers a question"
-msgstr ""
-
-#: addons/reputation/reputation.php:158
-msgid "Posted an answer"
-msgstr ""
-
-#: addons/reputation/reputation.php:164
-msgid "Commenting"
-msgstr ""
-
-#: addons/reputation/reputation.php:165
-msgid "Points awarded when user comments on question or answer"
-msgstr ""
-
-#: addons/reputation/reputation.php:167
-msgid "Commented on a post"
-msgstr ""
-
-#: addons/reputation/reputation.php:173
-msgid "Selecting an Answer"
-msgstr ""
-
-#: addons/reputation/reputation.php:174
-msgid "Points awarded when user selects an answer for their question"
-msgstr ""
-
-#: addons/reputation/reputation.php:176
-msgid "Selected an answer as best"
-msgstr ""
-
-#: addons/reputation/reputation.php:182
-msgid "Answer selected as best"
-msgstr ""
-
-#: addons/reputation/reputation.php:183
-msgid "Points awarded when user's answer is selected as best"
-msgstr ""
-
-#: addons/reputation/reputation.php:185
-msgid "Answer was selected as best"
-msgstr ""
-
-#: addons/reputation/reputation.php:191
-msgid "Received up vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:192
-msgid "Points awarded when user receives an upvote"
-msgstr ""
-
-#: addons/reputation/reputation.php:194
-msgid "Received an upvote"
-msgstr ""
-
-#: addons/reputation/reputation.php:199
-msgid "Received down vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:200
-msgid "Points awarded when user receives a down vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:202
-msgid "Received a down vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:207
-msgid "Gives an up vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:208
-msgid "Points taken from user when they give an up vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:210
-msgid "Given an up vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:215
-msgid "Gives down vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:216
-msgid "Points taken from user when they give a down vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:218
-msgid "Given a down vote"
-msgstr ""
-
-#: addons/reputation/reputation.php:280
-msgid "Successfully updated reputation points!"
-msgstr ""
-
-#: addons/reputation/reputation.php:482
-#. translators: Placeholder contains reputation points.
-msgid "%s Reputation"
-msgstr ""
-
-#: addons/reputation/reputation.php:600
-msgid "⚙ Reputations"
-msgstr ""
-
 #: addons/syntaxhighlighter/syntaxhighlighter.php:78
 msgid "Language"
 msgstr ""
@@ -1065,125 +591,6 @@ msgstr ""
 msgid "Insert Code"
 msgstr ""
 
-#: addons/tags/tags.php:41 addons/tags/tags.php:193 addons/tags/tags.php:244
-#: addons/tags/tags.php:597 admin/class-list-table-hooks.php:203
-msgid "Tag"
-msgstr ""
-
-#: addons/tags/tags.php:42 addons/tags/tags.php:232 addons/tags/tags.php:316
-#: addons/tags/tags.php:402 addons/tags/tags.php:476 addons/tags/tags.php:490
-#: includes/functions.php:1640 includes/functions.php:2370
-msgid "Tags"
-msgstr ""
-
-#: addons/tags/tags.php:164
-msgid "(AnsPress) Tags"
-msgstr ""
-
-#: addons/tags/tags.php:168
-msgid "Widgets in this area will be shown in anspress tags page."
-msgstr ""
-
-#: addons/tags/tags.php:192 addons/tags/tags.php:232
-msgid "Question Tags"
-msgstr ""
-
-#: addons/tags/tags.php:194
-msgid "All Tags"
-msgstr ""
-
-#: addons/tags/tags.php:195
-msgid "Add New Tag"
-msgstr ""
-
-#: addons/tags/tags.php:196
-msgid "Edit Tag"
-msgstr ""
-
-#: addons/tags/tags.php:197
-msgid "New Tag"
-msgstr ""
-
-#: addons/tags/tags.php:198
-msgid "View Tag"
-msgstr ""
-
-#: addons/tags/tags.php:199
-msgid "Search Tag"
-msgstr ""
-
-#: addons/tags/tags.php:259
-msgid "Tags to show"
-msgstr ""
-
-#: addons/tags/tags.php:260
-msgid "Numbers of tags to show in tags page."
-msgstr ""
-
-#: addons/tags/tags.php:265
-msgid "Maximum tags"
-msgstr ""
-
-#: addons/tags/tags.php:266
-msgid "Maximum numbers of tags that user can add when asking."
-msgstr ""
-
-#: addons/tags/tags.php:271
-msgid "Minimum tags"
-msgstr ""
-
-#: addons/tags/tags.php:272
-msgid "minimum numbers of tags that user must add when asking."
-msgstr ""
-
-#: addons/tags/tags.php:277
-msgid "Tag page slug"
-msgstr ""
-
-#: addons/tags/tags.php:278
-msgid "Slug for tag page"
-msgstr ""
-
-#: addons/tags/tags.php:345
-msgid "Delete Tag"
-msgstr ""
-
-#: addons/tags/tags.php:346
-msgid "Add Tag"
-msgstr ""
-
-#: addons/tags/tags.php:347
-msgid "added to the tags list."
-msgstr ""
-
-#: addons/tags/tags.php:348
-msgid "removed from the tags list."
-msgstr ""
-
-#: addons/tags/tags.php:349
-msgid "Suggestions are available. Use the up and down arrow keys to read it."
-msgstr ""
-
-#: addons/tags/tags.php:405
-#. Translators: %1$d contain minimum tags required and %2$d contain maximum
-#. tags allowed.
-msgid ""
-"Tagging will helps others to easily find your question. Minimum %1$d and "
-"maximum %2$d tags."
-msgstr ""
-
-#: addons/tags/tags.php:606
-msgid "Order"
-msgstr ""
-
-#: addons/tags/tags.php:650 addons/tags/tags.php:717
-msgid "Popular"
-msgstr ""
-
-#: addons/tags/tags.php:655 addons/tags/tags.php:718 includes/theme.php:408
-msgid "New"
-msgstr ""
-
 #: admin/ajax.php:268
 msgid "Sorry, you do not have permission!"
 msgstr ""
@@ -1202,31 +609,36 @@ msgstr ""
 msgid "%1$d done out of %2$d"
 msgstr ""
 
-#: admin/anspress-admin.php:199
+#: admin/anspress-admin.php:132 admin/anspress-admin.php:1458
+#: src/backend/Modules/Category/CategoryModule.php:546
+msgid "Remove image"
+msgstr ""
+
+#: admin/anspress-admin.php:195
 msgid "All Questions"
 msgstr ""
 
-#: admin/anspress-admin.php:201 admin/views/emails.php:45
+#: admin/anspress-admin.php:197 admin/views/emails.php:45
 msgid "New Question"
 msgstr ""
 
-#: admin/anspress-admin.php:203
+#: admin/anspress-admin.php:199
 msgid "All Answers"
 msgstr ""
 
-#: admin/anspress-admin.php:205 admin/views/emails.php:46
+#: admin/anspress-admin.php:201 admin/views/emails.php:46
 msgid "New Answer"
 msgstr ""
 
-#: admin/anspress-admin.php:214 admin/views/options.php:171
+#: admin/anspress-admin.php:210 admin/views/options.php:171
 msgid "AnsPress Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:214 admin/anspress-admin.php:320
+#: admin/anspress-admin.php:210 admin/anspress-admin.php:316
 msgid "Settings"
 msgstr ""
 
-#: admin/anspress-admin.php:218
+#: admin/anspress-admin.php:214
 msgid "Theme & Extensions"
 msgstr ""
 
@@ -1555,375 +967,380 @@ msgid "Default status of question or answer submitted by non-loggedin user."
 msgstr ""
 
 #: admin/anspress-admin.php:1179
-msgid "Show admin bar"
-msgstr ""
-
-#: admin/anspress-admin.php:1180
-msgid "Show admin bar for non administrator users."
-msgstr ""
-
-#: admin/anspress-admin.php:1185
 msgid "Allow image upload"
 msgstr ""
 
-#: admin/anspress-admin.php:1186
+#: admin/anspress-admin.php:1180
 msgid "Allow logged-in users to upload image."
 msgstr ""
 
-#: admin/anspress-admin.php:1191
+#: admin/anspress-admin.php:1185
 msgid "Max uploads per post"
 msgstr ""
 
-#: admin/anspress-admin.php:1192
+#: admin/anspress-admin.php:1186
 msgid "Set numbers of media user can upload for each post."
 msgstr ""
 
-#: admin/anspress-admin.php:1196
+#: admin/anspress-admin.php:1190
 msgid "Max upload size"
 msgstr ""
 
-#: admin/anspress-admin.php:1197
+#: admin/anspress-admin.php:1191
 msgid "Set maximum upload size in bytes."
 msgstr ""
 
-#: admin/anspress-admin.php:1201
+#: admin/anspress-admin.php:1195
 msgid "Allowed file mime types"
 msgstr ""
 
-#: admin/anspress-admin.php:1202
+#: admin/anspress-admin.php:1196
 msgid ""
 "Enter comma separated file mime. Format: extension(s) => MIME type.\n"
 "Use | for multiple file types and ensure each entry is on a new line.\n"
 "Example: jpeg|jpg=>image/jpeg"
 msgstr ""
 
-#: admin/anspress-admin.php:1208
+#: admin/anspress-admin.php:1202
 msgid "Allow private posts"
 msgstr ""
 
-#: admin/anspress-admin.php:1209
+#: admin/anspress-admin.php:1203
 msgid ""
 "Allows users to create private question and answer. Private Q&A are only "
 "visible to admin and moderators."
 msgstr ""
 
-#: admin/anspress-admin.php:1214
+#: admin/anspress-admin.php:1208
 msgid "Trashing Question"
 msgstr ""
 
-#: admin/anspress-admin.php:1215
+#: admin/anspress-admin.php:1209
 msgid ""
 "Disable trashing the question if there are answers already available to the "
 "question."
 msgstr ""
 
-#: admin/anspress-admin.php:1220
+#: admin/anspress-admin.php:1214
 msgid "Deleting Question"
 msgstr ""
 
-#: admin/anspress-admin.php:1221
+#: admin/anspress-admin.php:1215
 msgid ""
 "Disable deleting the question permanently if there are answers already "
 "available to the question."
 msgstr ""
 
-#: admin/anspress-admin.php:1243
+#: admin/anspress-admin.php:1237
 msgid "Numbers of comments to show"
 msgstr ""
 
-#: admin/anspress-admin.php:1244
+#: admin/anspress-admin.php:1238
 msgid "Numbers of comments to load in each query?"
 msgstr ""
 
-#: admin/anspress-admin.php:1249
+#: admin/anspress-admin.php:1243
 msgid "Check duplicate"
 msgstr ""
 
-#: admin/anspress-admin.php:1250
+#: admin/anspress-admin.php:1244
 msgid "Check for duplicate posts before posting"
 msgstr ""
 
-#: admin/anspress-admin.php:1255
+#: admin/anspress-admin.php:1249
 msgid "Disable question suggestion"
 msgstr ""
 
-#: admin/anspress-admin.php:1256
+#: admin/anspress-admin.php:1250
 msgid "Checking this will disable question suggestion in ask form"
 msgstr ""
 
-#: admin/anspress-admin.php:1261
+#: admin/anspress-admin.php:1255
 msgid "Show default date format"
 msgstr ""
 
-#: admin/anspress-admin.php:1262
+#: admin/anspress-admin.php:1256
 msgid "Instead of showing time passed i.e. 1 Hour ago, show default format date."
 msgstr ""
 
-#: admin/anspress-admin.php:1267
+#: admin/anspress-admin.php:1261
 msgid "Show solved prefix"
 msgstr ""
 
-#: admin/anspress-admin.php:1268
+#: admin/anspress-admin.php:1262
 msgid ""
 "If an answer is selected for question then [solved] prefix will be added in "
 "title."
 msgstr ""
 
-#: admin/anspress-admin.php:1274
+#: admin/anspress-admin.php:1268
 msgid "Default question order"
 msgstr ""
 
-#: admin/anspress-admin.php:1275
+#: admin/anspress-admin.php:1269
 msgid "Order question list by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1278 admin/anspress-admin.php:1344
+#: admin/anspress-admin.php:1272 admin/anspress-admin.php:1338
 #: includes/theme.php:486 widgets/questions.php:133
 msgid "Voted"
 msgstr ""
 
-#: admin/anspress-admin.php:1279 admin/anspress-admin.php:1345
+#: admin/anspress-admin.php:1273 admin/anspress-admin.php:1339
 #: admin/views/toggle-features.php:73 includes/theme.php:403
 #: includes/theme.php:479 widgets/question_stats.php:73
 #: widgets/questions.php:131
 msgid "Active"
 msgstr ""
 
-#: admin/anspress-admin.php:1280 admin/anspress-admin.php:1346
+#: admin/anspress-admin.php:1274 admin/anspress-admin.php:1340
 #: includes/theme.php:492 widgets/questions.php:132
 msgid "Newest"
 msgstr ""
 
-#: admin/anspress-admin.php:1281 admin/anspress-admin.php:1347
+#: admin/anspress-admin.php:1275 admin/anspress-admin.php:1341
 #: includes/theme.php:496
 msgid "Oldest"
 msgstr ""
 
-#: admin/anspress-admin.php:1286
+#: admin/anspress-admin.php:1280
 msgid "Keep stop words in question slug"
 msgstr ""
 
-#: admin/anspress-admin.php:1287
+#: admin/anspress-admin.php:1281
 msgid "AnsPress will not strip stop words in question slug."
 msgstr ""
 
-#: admin/anspress-admin.php:1292
+#: admin/anspress-admin.php:1286
 msgid "Minimum title length"
 msgstr ""
 
-#: admin/anspress-admin.php:1293
+#: admin/anspress-admin.php:1287
 msgid "Set minimum letters for a question title."
 msgstr ""
 
-#: admin/anspress-admin.php:1298
+#: admin/anspress-admin.php:1292
 msgid "Minimum question content"
 msgstr ""
 
-#: admin/anspress-admin.php:1299
+#: admin/anspress-admin.php:1293
 msgid "Set minimum letters for a question contents."
 msgstr ""
 
-#: admin/anspress-admin.php:1304
+#: admin/anspress-admin.php:1298
 msgid "Question editor?"
 msgstr ""
 
-#: admin/anspress-admin.php:1305 admin/anspress-admin.php:1311
+#: admin/anspress-admin.php:1299 admin/anspress-admin.php:1305
 msgid "Quick tags editor"
 msgstr ""
 
-#: admin/anspress-admin.php:1310
+#: admin/anspress-admin.php:1304
 msgid "Answer editor?"
 msgstr ""
 
-#: admin/anspress-admin.php:1316 admin/anspress-admin.php:1358
+#: admin/anspress-admin.php:1310 admin/anspress-admin.php:1352
 msgid "Disable comments"
 msgstr ""
 
-#: admin/anspress-admin.php:1317
+#: admin/anspress-admin.php:1311
 msgid "Disable comments on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1322 admin/anspress-admin.php:1364
+#: admin/anspress-admin.php:1316 admin/anspress-admin.php:1358
 msgid "Disable voting"
 msgstr ""
 
-#: admin/anspress-admin.php:1323
+#: admin/anspress-admin.php:1317
 msgid "Disable voting on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1328 admin/anspress-admin.php:1370
+#: admin/anspress-admin.php:1322 admin/anspress-admin.php:1364
 msgid "Disable down voting"
 msgstr ""
 
-#: admin/anspress-admin.php:1329
+#: admin/anspress-admin.php:1323
 msgid "Disable down voting on questions."
 msgstr ""
 
-#: admin/anspress-admin.php:1334
+#: admin/anspress-admin.php:1328
 msgid "Close question after selecting answer"
 msgstr ""
 
-#: admin/anspress-admin.php:1335
+#: admin/anspress-admin.php:1329
 msgid "If enabled this will prevent user to submit answer on solved question."
 msgstr ""
 
-#: admin/anspress-admin.php:1340
+#: admin/anspress-admin.php:1334
 msgid "Default answers order"
 msgstr ""
 
-#: admin/anspress-admin.php:1341
+#: admin/anspress-admin.php:1335
 msgid "Order answers by by default using selected"
 msgstr ""
 
-#: admin/anspress-admin.php:1352
+#: admin/anspress-admin.php:1346
 msgid "Minimum answer content"
 msgstr ""
 
-#: admin/anspress-admin.php:1353
+#: admin/anspress-admin.php:1347
 msgid "Set minimum letters for a answer contents."
 msgstr ""
 
-#: admin/anspress-admin.php:1359
+#: admin/anspress-admin.php:1353
 msgid "Disable comments on answer."
 msgstr ""
 
-#: admin/anspress-admin.php:1365
+#: admin/anspress-admin.php:1359
 msgid "Disable voting on answers."
 msgstr ""
 
-#: admin/anspress-admin.php:1371
+#: admin/anspress-admin.php:1365
 msgid "Disable down voting on answers."
 msgstr ""
 
-#: admin/anspress-admin.php:1405
+#: admin/anspress-admin.php:1399
 msgid "Select the roles to exclude in activity feed."
 msgstr ""
 
-#: admin/anspress-admin.php:1406
+#: admin/anspress-admin.php:1400
 msgid "Selected role's activities will be excluded in site activity feed."
 msgstr ""
 
-#: admin/anspress-admin.php:1437
+#: admin/anspress-admin.php:1431
 msgid "View page"
 msgstr ""
 
-#: admin/anspress-admin.php:1438
+#: admin/anspress-admin.php:1432
 msgid "Edit page"
 msgstr ""
 
-#: admin/anspress-admin.php:1495
+#: admin/anspress-admin.php:1489
 msgid "Addon options updated successfully!"
 msgstr ""
 
-#: admin/anspress-admin.php:1504
+#: admin/anspress-admin.php:1498
 #. translators: %s is name of wp hook.
 msgid ""
 "There is no option registered by this addon. Custom options can be "
 "registered by using hook: %s"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:61 admin/class-list-table-hooks.php:428
+#: admin/class-list-table-hooks.php:58 admin/class-list-table-hooks.php:391
 msgid "Flagged"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:135
+#: admin/class-list-table-hooks.php:132
 msgid "Restore this item from the Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:135
+#: admin/class-list-table-hooks.php:132
 msgid "Restore"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:137
+#: admin/class-list-table-hooks.php:134
 msgid "Move this item to the Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:137 admin/meta-box.php:78
+#: admin/class-list-table-hooks.php:134 admin/meta-box.php:78
 msgid "Trash"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:141
+#: admin/class-list-table-hooks.php:138
 msgid "Delete this item permanently"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:141 includes/theme.php:332
+#: admin/class-list-table-hooks.php:138 includes/theme.php:332
 msgid "Delete Permanently"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:147
+#: admin/class-list-table-hooks.php:144
 #. translators: %s is post title.
 msgid "Edit &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:149 admin/meta-box.php:77
+#: admin/class-list-table-hooks.php:146 admin/meta-box.php:77
 #: includes/comments.php:273 includes/theme.php:274
 msgid "Edit"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:155
+#: admin/class-list-table-hooks.php:152
 #. translators: %s is post title.
 msgid "Preview &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:158
+#: admin/class-list-table-hooks.php:155
 msgid "Preview"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:161
+#: admin/class-list-table-hooks.php:158
 #. translators: %s is post title.
 msgid "View &#8220;%s&#8221;"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:163
+#: admin/class-list-table-hooks.php:160
 msgid "View"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:179 admin/meta-box.php:151
-msgid "Clear flag"
-msgstr ""
-
-#: admin/class-list-table-hooks.php:195 admin/class-list-table-hooks.php:317
+#: admin/class-list-table-hooks.php:178 admin/class-list-table-hooks.php:300
 msgid "Author"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:196 includes/class-form-hooks.php:41
+#: admin/class-list-table-hooks.php:179 includes/class-form-hooks.php:41
 msgid "Title"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:206 admin/class-list-table-hooks.php:319
+#: admin/class-list-table-hooks.php:182 includes/taxo.php:229
+#: src/backend/Modules/Category/CategoryModule.php:87
+#: src/backend/Modules/Category/CategoryModule.php:184
+#: src/backend/Modules/Category/CategoryModule.php:372
+#: src/backend/Modules/Category/CategoryModule.php:482
+msgid "Category"
+msgstr ""
+
+#: admin/class-list-table-hooks.php:186
+#: src/backend/Modules/Tag/TagModule.php:103
+#: src/backend/Modules/Tag/TagModule.php:155
+#: src/backend/Modules/Tag/TagModule.php:508
+msgid "Tag"
+msgstr ""
+
+#: admin/class-list-table-hooks.php:189 admin/class-list-table-hooks.php:302
 #: includes/theme.php:286
 msgid "Status"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:207 templates/question-list-item.php:41
+#: admin/class-list-table-hooks.php:190 src/frontend/questions/render.php:168
+#: templates/question-list-item.php:41
 msgid "Ans"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:208 admin/class-list-table-hooks.php:320
+#: admin/class-list-table-hooks.php:191 admin/class-list-table-hooks.php:303
 msgid "Comments"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:209 admin/class-list-table-hooks.php:321
-#: includes/theme.php:416 templates/question-list-item.php:34
+#: admin/class-list-table-hooks.php:192 admin/class-list-table-hooks.php:304
+#: includes/theme.php:416 src/frontend/questions/render.php:161
+#: templates/question-list-item.php:34
 msgid "Votes"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:210 admin/class-list-table-hooks.php:322
+#: admin/class-list-table-hooks.php:193 admin/class-list-table-hooks.php:305
 msgid "Flags"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:211 admin/class-list-table-hooks.php:323
+#: admin/class-list-table-hooks.php:194 admin/class-list-table-hooks.php:306
 msgid "Date"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:253 admin/class-list-table-hooks.php:276
+#: admin/class-list-table-hooks.php:236 admin/class-list-table-hooks.php:259
 msgid "--"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:288 admin/class-list-table-hooks.php:371
+#: admin/class-list-table-hooks.php:271 admin/class-list-table-hooks.php:354
 #: admin/views/select_question.php:64 includes/ajax-hooks.php:125
 #: includes/ajax-hooks.php:128 includes/ajax-hooks.php:279
-#: includes/functions.php:2154 templates/buddypress/question-item.php:48
+#: includes/functions.php:2131 templates/buddypress/question-item.php:48
 #: templates/widgets/widget-questions.php:27
 #. translators: %d is total numbers of answer.
 #. translators: %d is answers count.
@@ -1938,25 +1355,21 @@ msgid_plural "%d Answers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/class-list-table-hooks.php:318
+#: admin/class-list-table-hooks.php:301
 msgid "Content"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:357
+#: admin/class-list-table-hooks.php:340
 msgid "This question is orphan, no question is selected for this answer"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:397 admin/meta-box.php:150
+#: admin/class-list-table-hooks.php:380 admin/meta-box.php:150
 #: includes/flag.php:166
 msgid "Flag"
 msgstr ""
 
-#: admin/class-list-table-hooks.php:468
+#: admin/class-list-table-hooks.php:431
 msgid "Please fill parent question field, Answer was not saved!"
-msgstr ""
-
-#: admin/license.php:44 admin/views/licenses.php:19
-msgid "Licenses"
 msgstr ""
 
 #: admin/meta-box.php:40
@@ -1990,6 +1403,10 @@ msgstr ""
 msgid "+"
 msgstr ""
 
+#: admin/meta-box.php:151
+msgid "Clear flag"
+msgstr ""
+
 #: admin/updater.php:84
 msgid "Theme License"
 msgstr ""
@@ -2006,11 +1423,11 @@ msgstr ""
 msgid "License Action"
 msgstr ""
 
-#: admin/updater.php:88 admin/views/licenses.php:45
+#: admin/updater.php:88
 msgid "Deactivate License"
 msgstr ""
 
-#: admin/updater.php:89 admin/views/licenses.php:47
+#: admin/updater.php:89
 msgid "Activate License"
 msgstr ""
 
@@ -2237,27 +1654,6 @@ msgstr ""
 
 #: admin/views/emails.php:64
 msgid "Edit Template"
-msgstr ""
-
-#: admin/views/licenses.php:21
-msgid "License keys for AnsPress products, i.e. extensions and themes."
-msgstr ""
-
-#: admin/views/licenses.php:31
-#. translators: Placeholder contains name of product.
-msgid "Enter license key for %s"
-msgstr ""
-
-#: admin/views/licenses.php:44
-msgid "active"
-msgstr ""
-
-#: admin/views/licenses.php:56
-msgid "Save"
-msgstr ""
-
-#: admin/views/licenses.php:60
-msgid "No license yet."
 msgstr ""
 
 #: admin/views/options.php:21
@@ -2650,18 +2046,18 @@ msgstr ""
 msgid "Best answer is selected for your question."
 msgstr ""
 
-#: anspress-question-answer.php:46
+#: anspress-question-answer.php:58
 msgid "AnsPress is not running!"
 msgstr ""
 
-#: anspress-question-answer.php:49
+#: anspress-question-answer.php:61
 #. translators: %s contain server PHP version.
 msgid ""
 "Irks! At least PHP version 7.2 is required to run AnsPress. Current PHP "
 "version is %s. Please ask hosting provider to update your PHP version."
 msgstr ""
 
-#: anspress-question-answer.php:498
+#: anspress-question-answer.php:409
 #. translators: %s contains name of the form requested.
 msgid "Requested form: %s is not registered ."
 msgstr ""
@@ -2841,6 +2237,13 @@ msgstr ""
 msgid "Unsubscribe"
 msgstr ""
 
+#: includes/ajax-hooks.php:637
+#. translators: %d is question count.
+msgid "%d Question"
+msgid_plural "%d Questions"
+msgstr[0] ""
+msgstr[1] ""
+
 #: includes/answer-loop.php:363
 #. translators: %d is total answer count of question.
 msgid "You are viewing 1 out of %d answers, click here to view all answers."
@@ -3018,7 +2421,7 @@ msgid "Your Name"
 msgstr ""
 
 #: includes/class-form-hooks.php:80 includes/class-form-hooks.php:194
-#: tests/test-askform.php:57
+#: tests/WP/TestAskForm.php:57
 msgid "Enter your name to display"
 msgstr ""
 
@@ -3037,7 +2440,7 @@ msgid ""
 "you with the password."
 msgstr ""
 
-#: includes/class-form-hooks.php:130 includes/functions.php:2080
+#: includes/class-form-hooks.php:130 includes/functions.php:2057
 msgid "Update Question"
 msgstr ""
 
@@ -3045,7 +2448,7 @@ msgstr ""
 msgid "Post Answer"
 msgstr ""
 
-#: includes/class-form-hooks.php:227 includes/functions.php:2225
+#: includes/class-form-hooks.php:227 includes/functions.php:2202
 msgid "Update Answer"
 msgstr ""
 
@@ -3151,6 +2554,12 @@ msgstr ""
 msgid "Upload & insert"
 msgstr ""
 
+#: includes/class-form-hooks.php:1016
+#: src/backend/Modules/Category/CategoryModule.php:501
+#: src/backend/Modules/Category/CategoryModule.php:532
+msgid "Image"
+msgstr ""
+
 #: includes/class-form-hooks.php:1018
 msgid "%l file types allowed."
 msgstr ""
@@ -3217,11 +2626,11 @@ msgid "Ask a Question"
 msgstr ""
 
 #: includes/common-pages.php:27 includes/theme.php:703
-#: templates/addons/tag/tags.php:25 templates/search-form.php:20
+#: templates/search-form.php:20
 msgid "Search"
 msgstr ""
 
-#: includes/common-pages.php:29 includes/functions.php:2376
+#: includes/common-pages.php:29 includes/functions.php:2353
 msgid "Activities"
 msgstr ""
 
@@ -3252,6 +2661,13 @@ msgstr ""
 
 #: includes/common-pages.php:190
 msgid "Sorry, you cannot edit this answer."
+msgstr ""
+
+#: includes/deprecated.php:62
+msgid ""
+"Use "
+"AnsPress\\Plugin::get(AnsPress\\Modules\\Subscriber\\"
+"SubscriberService::class)->create() instead."
 msgstr ""
 
 #: includes/flag.php:45
@@ -3331,282 +2747,281 @@ msgstr ""
 msgid "You cannot vote on restricted posts"
 msgstr ""
 
-#: includes/functions.php:970
+#: includes/functions.php:963
 msgid "[Solved] "
 msgstr ""
 
-#: includes/functions.php:1312
+#: includes/functions.php:1305
 msgid "asked"
 msgstr ""
 
-#: includes/functions.php:1313 includes/functions.php:1314
+#: includes/functions.php:1306 includes/functions.php:1307
 msgid "approved"
 msgstr ""
 
-#: includes/functions.php:1315
+#: includes/functions.php:1308
 msgid "answered"
 msgstr ""
 
-#: includes/functions.php:1316
+#: includes/functions.php:1309
 msgid "deleted answer"
 msgstr ""
 
-#: includes/functions.php:1317
+#: includes/functions.php:1310
 msgid "restored question"
 msgstr ""
 
-#: includes/functions.php:1318
+#: includes/functions.php:1311
 msgid "restored answer"
 msgstr ""
 
-#: includes/functions.php:1319 includes/theme.php:696 templates/comment.php:32
+#: includes/functions.php:1312 includes/theme.php:696
+#: src/frontend/common/comments/render.php:48 templates/comment.php:32
 msgid "commented"
 msgstr ""
 
-#: includes/functions.php:1320
+#: includes/functions.php:1313
 msgid "deleted comment"
 msgstr ""
 
-#: includes/functions.php:1321
+#: includes/functions.php:1314
 msgid "commented on answer"
 msgstr ""
 
-#: includes/functions.php:1322
+#: includes/functions.php:1315
 msgid "edited question"
 msgstr ""
 
-#: includes/functions.php:1323
+#: includes/functions.php:1316
 msgid "edited answer"
 msgstr ""
 
-#: includes/functions.php:1324
+#: includes/functions.php:1317
 msgid "edited comment"
 msgstr ""
 
-#: includes/functions.php:1325
+#: includes/functions.php:1318
 msgid "edited comment on answer"
 msgstr ""
 
-#: includes/functions.php:1326
+#: includes/functions.php:1319
 msgid "selected answer"
 msgstr ""
 
-#: includes/functions.php:1327
+#: includes/functions.php:1320
 msgid "unselected answer"
 msgstr ""
 
-#: includes/functions.php:1328
+#: includes/functions.php:1321
 msgid "updated status"
 msgstr ""
 
-#: includes/functions.php:1329
+#: includes/functions.php:1322
 msgid "selected as best answer"
 msgstr ""
 
-#: includes/functions.php:1330
+#: includes/functions.php:1323
 msgid "unselected as best answer"
 msgstr ""
 
-#: includes/functions.php:1331
+#: includes/functions.php:1324
 msgid "changed status"
 msgstr ""
 
-#: includes/functions.php:1395
+#: includes/functions.php:1388
 msgid "Anonymous"
 msgstr ""
 
-#: includes/functions.php:1426
+#: includes/functions.php:1419
 msgid " (anonymous)"
 msgstr ""
 
-#: includes/functions.php:1628
+#: includes/functions.php:1621
 msgid "Emails"
 msgstr ""
 
-#: includes/functions.php:1629
+#: includes/functions.php:1622
 msgid "Notifies users and admins by email for various events and activities."
 msgstr ""
 
-#: includes/functions.php:1633
-msgid "Add category support in AnsPress questions."
-msgstr ""
-
-#: includes/functions.php:1637
+#: includes/functions.php:1626
 msgid "Adds a fancy user notification dropdown like Facebook and Stackoverflow."
 msgstr ""
 
-#: includes/functions.php:1641
-msgid "Add tag support in AnsPress questions."
-msgstr ""
-
-#: includes/functions.php:1645
-msgid "Award points to user based on activities."
-msgstr ""
-
-#: includes/functions.php:1648
+#: includes/functions.php:1629
 msgid "BuddyPress"
 msgstr ""
 
-#: includes/functions.php:1649
+#: includes/functions.php:1630
 msgid "Integrate AnsPress with BuddyPress."
 msgstr ""
 
-#: includes/functions.php:1652
-msgid "User Profile"
-msgstr ""
-
-#: includes/functions.php:1653
-msgid "User profile for users."
-msgstr ""
-
-#: includes/functions.php:1657
+#: includes/functions.php:1634
 msgid "Add reCaptcha verification in question, answer and comment forms."
 msgstr ""
 
-#: includes/functions.php:1660
+#: includes/functions.php:1637
 msgid "Syntax Highlighter"
 msgstr ""
 
-#: includes/functions.php:1661
+#: includes/functions.php:1638
 msgid "Add syntax highlighter support."
 msgstr ""
 
-#: includes/functions.php:1664
+#: includes/functions.php:1641
 msgid "Akismet Check"
 msgstr ""
 
-#: includes/functions.php:1665
+#: includes/functions.php:1642
 msgid "Check for spam in post content."
 msgstr ""
 
-#: includes/functions.php:2053
+#: includes/functions.php:2030
 msgid "You cannot edit this question."
 msgstr ""
 
-#: includes/functions.php:2058 templates/ask.php:21
+#: includes/functions.php:2035 templates/ask.php:21
 msgid "You do not have permission to ask a question."
 msgstr ""
 
-#: includes/functions.php:2163
+#: includes/functions.php:2140
 msgid "Answer submitted successfully"
 msgstr ""
 
-#: includes/functions.php:2194
+#: includes/functions.php:2171
 msgid "You cannot edit this answer."
 msgstr ""
 
-#: includes/functions.php:2199
+#: includes/functions.php:2176
 msgid "You do not have permission to answer this question."
 msgstr ""
 
-#: includes/functions.php:2344
+#: includes/functions.php:2321
 msgid "Archives page"
 msgstr ""
 
-#: includes/functions.php:2345
+#: includes/functions.php:2322
 msgid ""
 "Page used to display question archive (list). Sometimes this page is used "
 "for displaying other subpages of AnsPress.<br/>This page is also referred "
 "as <b>Base Page</b> in AnsPress documentations and support forum."
 msgstr ""
 
-#: includes/functions.php:2350
+#: includes/functions.php:2327
 msgid "Ask page"
 msgstr ""
 
-#: includes/functions.php:2351
+#: includes/functions.php:2328
 msgid "Page used to display ask form."
 msgstr ""
 
-#: includes/functions.php:2352
+#: includes/functions.php:2329
 msgid "Ask a question"
 msgstr ""
 
-#: includes/functions.php:2356
+#: includes/functions.php:2333
 msgid "User page"
 msgstr ""
 
-#: includes/functions.php:2357
+#: includes/functions.php:2334
 msgid "Page used to display user profile."
 msgstr ""
 
-#: includes/functions.php:2362
+#: includes/functions.php:2335 src/backend/Modules/Profile/ProfileModule.php:59
+msgid "Profile"
+msgstr ""
+
+#: includes/functions.php:2339
 msgid "Categories page"
 msgstr ""
 
-#: includes/functions.php:2363
+#: includes/functions.php:2340
 msgid ""
 "Page used to display question categories. NOTE: Categories addon must be "
 "enabled to render this page."
 msgstr ""
 
-#: includes/functions.php:2368
+#: includes/functions.php:2341 includes/taxo.php:29
+#: src/backend/Modules/Category/CategoryModule.php:430
+#: src/backend/Modules/Category/CategoryModule.php:442
+msgid "Categories"
+msgstr ""
+
+#: includes/functions.php:2345
 msgid "Tags page"
 msgstr ""
 
-#: includes/functions.php:2369
+#: includes/functions.php:2346
 msgid ""
 "Page used to display question tags. NOTE: Tags addon must be enabled to "
 "render this page."
 msgstr ""
 
-#: includes/functions.php:2374
+#: includes/functions.php:2347 src/backend/Modules/Tag/TagModule.php:143
+#: src/backend/Modules/Tag/TagModule.php:227
+#: src/backend/Modules/Tag/TagModule.php:313
+#: src/backend/Modules/Tag/TagModule.php:387
+#: src/backend/Modules/Tag/TagModule.php:401
+msgid "Tags"
+msgstr ""
+
+#: includes/functions.php:2351
 msgid "Activities page"
 msgstr ""
 
-#: includes/functions.php:2375
+#: includes/functions.php:2352
 msgid "Page used to display all anspress activities."
 msgstr ""
 
-#: includes/hooks.php:250
+#: includes/hooks.php:240
 msgid ""
 "Sorry, you are not allowed to delete the question permanently if there are "
 "answers available."
 msgstr ""
 
-#: includes/hooks.php:318
+#: includes/hooks.php:308
 msgid ""
 "Sorry, you are not allowed to trash the question if there are answers "
 "available."
 msgstr ""
 
-#: includes/hooks.php:880
+#: includes/hooks.php:870
 msgid "minute"
 msgstr ""
 
-#: includes/hooks.php:881
+#: includes/hooks.php:871
 msgid "minutes"
 msgstr ""
 
-#: includes/hooks.php:882
+#: includes/hooks.php:872
 msgid "hour"
 msgstr ""
 
-#: includes/hooks.php:883
+#: includes/hooks.php:873
 msgid "hours"
 msgstr ""
 
-#: includes/hooks.php:884
+#: includes/hooks.php:874
 msgid "day"
 msgstr ""
 
-#: includes/hooks.php:885
+#: includes/hooks.php:875
 msgid "days"
 msgstr ""
 
-#: includes/hooks.php:886
+#: includes/hooks.php:876
 msgid "week"
 msgstr ""
 
-#: includes/hooks.php:887
+#: includes/hooks.php:877
 msgid "weeks"
 msgstr ""
 
-#: includes/hooks.php:888
+#: includes/hooks.php:878
 msgid "year"
 msgstr ""
 
-#: includes/hooks.php:889
+#: includes/hooks.php:879
 msgid "years"
 msgstr ""
 
@@ -3650,7 +3065,7 @@ msgstr ""
 msgid "Insert your code."
 msgstr ""
 
-#: includes/options.php:104
+#: includes/options.php:104 src/backend/config.php:138
 #. translators: %s is search query.
 msgid "Search \"%s\""
 msgstr ""
@@ -3740,220 +3155,220 @@ msgstr ""
 msgid "No questions found in trash"
 msgstr ""
 
-#: includes/post-types.php:162
+#: includes/post-types.php:163
 msgid "Parent answer:"
 msgstr ""
 
-#: includes/post-types.php:163
+#: includes/post-types.php:164
 msgid "All answers"
 msgstr ""
 
-#: includes/post-types.php:164
+#: includes/post-types.php:165
 msgid "View answer"
 msgstr ""
 
-#: includes/post-types.php:165
+#: includes/post-types.php:166
 msgid "Add new answer"
 msgstr ""
 
-#: includes/post-types.php:168
+#: includes/post-types.php:169
 msgid "Update answer"
 msgstr ""
 
-#: includes/post-types.php:169
+#: includes/post-types.php:170
 msgid "Search answers"
 msgstr ""
 
-#: includes/post-types.php:170
+#: includes/post-types.php:171
 msgid "No answer found"
 msgstr ""
 
-#: includes/post-types.php:171
+#: includes/post-types.php:172
 msgid "No answer found in trash"
 msgstr ""
 
-#: includes/post-types.php:327
+#: includes/post-types.php:328
 #. translators: Publish box date string. 1: Date, 2: Time.
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: includes/post-types.php:338
+#: includes/post-types.php:339
 #. translators: %s Question view URL.
 msgid "Question updated. <a href=\"%s\">View Question</a>"
 msgstr ""
 
-#: includes/post-types.php:339 includes/post-types.php:364
+#: includes/post-types.php:340 includes/post-types.php:365
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/post-types.php:340 includes/post-types.php:365
+#: includes/post-types.php:341 includes/post-types.php:366
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/post-types.php:341
+#: includes/post-types.php:342
 msgid "Question updated."
 msgstr ""
 
-#: includes/post-types.php:343
+#: includes/post-types.php:344
 #. translators: %s: Date and time of the revision.
 msgid "Question restored to revision from %s."
 msgstr ""
 
-#: includes/post-types.php:345
+#: includes/post-types.php:346
 #. translators: %s: Question url
 msgid "Question published. <a href=\"%s\">View Question</a>"
 msgstr ""
 
-#: includes/post-types.php:346
+#: includes/post-types.php:347
 msgid "Question saved."
 msgstr ""
 
-#: includes/post-types.php:348
+#: includes/post-types.php:349
 #. translators: %s: Question url
 msgid "Question submitted. <a target=\"_blank\" href=\"%s\">Preview question</a>"
 msgstr ""
 
-#: includes/post-types.php:351
+#: includes/post-types.php:352
 #. translators: 1: Scheduled date for the question 2: Question url
 msgid ""
 "Question scheduled for: %1$s. <a target=\"_blank\" href=\"%2$s\">Preview "
 "question</a>"
 msgstr ""
 
-#: includes/post-types.php:356
+#: includes/post-types.php:357
 #. translators: %s: Question url
 msgid ""
 "Question draft updated. <a target=\"_blank\" href=\"%s\">Preview "
 "question</a>"
 msgstr ""
 
-#: includes/post-types.php:363
+#: includes/post-types.php:364
 #. translators: %s Answer view URL.
 msgid "Answer updated. <a href=\"%s\">View Answer</a>"
 msgstr ""
 
-#: includes/post-types.php:366
+#: includes/post-types.php:367
 msgid "Answer updated."
 msgstr ""
 
-#: includes/post-types.php:368
+#: includes/post-types.php:369
 #. translators: %s: Date and time of the revision.
 msgid "Answer restored to revision from %s."
 msgstr ""
 
-#: includes/post-types.php:370
+#: includes/post-types.php:371
 #. translators: %s: Answer url
 msgid "Answer published. <a href=\"%s\">View Answer</a>"
 msgstr ""
 
-#: includes/post-types.php:371
+#: includes/post-types.php:372
 msgid "Answer saved."
 msgstr ""
 
-#: includes/post-types.php:373
+#: includes/post-types.php:374
 #. translators: %s: Answer url
 msgid "Answer submitted. <a target=\"_blank\" href=\"%s\">Preview answer</a>"
 msgstr ""
 
-#: includes/post-types.php:376
+#: includes/post-types.php:377
 #. translators: 1: Scheduled date for the answer 2: Answer url
 msgid ""
 "Answer scheduled for: %1$s. <a target=\"_blank\" href=\"%2$s\">Preview "
 "answer</a>"
 msgstr ""
 
-#: includes/post-types.php:381
+#: includes/post-types.php:382
 #. translators: %s: Answer url
 msgid "Answer draft updated. <a target=\"_blank\" href=\"%s\">Preview answer</a>"
 msgstr ""
 
-#: includes/post-types.php:398
+#: includes/post-types.php:399
 #. translators: %s: Number of questions.
 msgid "%s question updated."
 msgid_plural "%s questions updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:399
+#: includes/post-types.php:400
 msgid "1 question not updated, somebody is editing it."
 msgstr ""
 
-#: includes/post-types.php:401
+#: includes/post-types.php:402
 #. translators: %s: Number of questions.
 msgid "%s question not updated, somebody is editing it."
 msgid_plural "%s questions not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:403
+#: includes/post-types.php:404
 #. translators: %s: Number of questions.
 msgid "%s question permanently deleted."
 msgid_plural "%s questions permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:405
+#: includes/post-types.php:406
 #. translators: %s: Number of questions.
 msgid "%s question moved to the Trash."
 msgid_plural "%s questions moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:407
+#: includes/post-types.php:408
 #. translators: %s: Number of questions.
 msgid "%s question restored from the Trash."
 msgid_plural "%s questions restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:412
+#: includes/post-types.php:413
 #. translators: %s: Number of answers.
 msgid "%s answer updated."
 msgid_plural "%s answers updated."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:413
+#: includes/post-types.php:414
 msgid "1 answer not updated, somebody is editing it."
 msgstr ""
 
-#: includes/post-types.php:415
+#: includes/post-types.php:416
 #. translators: %s: Number of answers.
 msgid "%s answer not updated, somebody is editing it."
 msgid_plural "%s answers not updated, somebody is editing them."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:417
+#: includes/post-types.php:418
 #. translators: %s: Number of answers.
 msgid "%s answer permanently deleted."
 msgid_plural "%s answers permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:419
+#: includes/post-types.php:420
 #. translators: %s: Number of answers.
 msgid "%s answer moved to the Trash."
 msgid_plural "%s answers moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/post-types.php:421
+#: includes/post-types.php:422
 #. translators: %s: Number of answers.
 msgid "%s answer restored from the Trash."
 msgid_plural "%s answers restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/qameta.php:54
+#: includes/qameta.php:56
 msgid "Post ID is required"
 msgstr ""
 
-#: includes/qameta.php:110
+#: includes/qameta.php:112
 msgid "Not question or answer CPT"
 msgstr ""
 
-#: includes/qameta.php:129
+#: includes/qameta.php:131
 msgid "Unable to insert AnsPress qameta"
 msgstr ""
 
@@ -3965,15 +3380,16 @@ msgstr ""
 msgid "You do not have permission to read this question."
 msgstr ""
 
-#: includes/qaquery.php:456
+#: includes/qaquery.php:456 src/frontend/questions/render.php:83
 msgid "Featured"
 msgstr ""
 
 #: includes/qaquery.php:460 includes/theme.php:433
+#: src/frontend/questions/render.php:89
 msgid "Solved"
 msgstr ""
 
-#: includes/qaquery.php:466
+#: includes/qaquery.php:466 src/frontend/questions/render.php:100
 #. translators: %s is views count i.e. 2.1k views.
 msgid "%s views"
 msgstr ""
@@ -3994,11 +3410,11 @@ msgstr ""
 msgid "Invalid or non existing question id."
 msgstr ""
 
-#: includes/subscribers.php:155
+#: includes/subscribers.php:77
 msgid "All 2 arguments $event and $ref_id are deprecated."
 msgstr ""
 
-#: includes/subscribers.php:221
+#: includes/subscribers.php:143
 msgid "All 3 arguments $event, $ref_id and $user_id are deprecated."
 msgstr ""
 
@@ -4018,6 +3434,11 @@ msgstr ""
 
 #: includes/theme.php:350
 msgid "Convert this question to blog post"
+msgstr ""
+
+#: includes/theme.php:408 src/backend/Modules/Tag/TagModule.php:566
+#: src/backend/Modules/Tag/TagModule.php:629
+msgid "New"
 msgstr ""
 
 #: includes/theme.php:438 widgets/questions.php:135
@@ -4115,7 +3536,7 @@ msgid "Sorry! you do not have permission to upload image."
 msgstr ""
 
 #: includes/upload.php:180
-msgid "Select meida file to upload"
+msgid "Select media file to upload"
 msgstr ""
 
 #: includes/upload.php:221
@@ -4131,35 +3552,35 @@ msgstr ""
 msgid "File cannot be uploaded, size is bigger than %s MB"
 msgstr ""
 
-#: includes/votes.php:75
+#: includes/votes.php:78
 msgid "Your vote has been removed."
 msgstr ""
 
-#: includes/votes.php:91
+#: includes/votes.php:94
 msgid "Undo your vote first."
 msgstr ""
 
-#: includes/votes.php:109
+#: includes/votes.php:112
 msgid "Thank you for voting."
 msgstr ""
 
-#: includes/votes.php:581
+#: includes/votes.php:639
 #. Translators: %s Question or Answer post type label for up voting the
 #. question or answer.
 msgid "Up vote this %s"
 msgstr ""
 
-#: includes/votes.php:586
+#: includes/votes.php:644
 #. Translators: %s Question or Answer post type label for down voting the
 #. question or answer.
 msgid "Down vote this %s"
 msgstr ""
 
-#: includes/votes.php:597 includes/votes.php:609
+#: includes/votes.php:655 includes/votes.php:667
 msgid "You have already voted"
 msgstr ""
 
-#: includes/votes.php:598 includes/votes.php:610
+#: includes/votes.php:656 includes/votes.php:668
 msgid "Withdraw your vote"
 msgstr ""
 
@@ -4435,6 +3856,595 @@ msgstr ""
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr ""
 
+#: src/backend/Classes/AbstractController.php:182
+msgid "Not found"
+msgstr ""
+
+#: src/backend/Classes/AbstractController.php:203
+msgid "Internal error"
+msgstr ""
+
+#: src/backend/Classes/ValidationRuleFactory.php:73
+#. translators: 1: rule name
+msgid "Validation rule %1$s not found."
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:86
+#: src/backend/Modules/Category/CategoryModule.php:291
+msgid "Question Categories"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:88
+msgid "All Categories"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:89
+msgid "Add New Category"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:90
+msgid "Edit Category"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:91
+msgid "New Category"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:92
+msgid "View Category"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:93
+msgid "Search Category"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:94
+#: src/backend/Modules/Tag/TagModule.php:110
+msgid "Nothing Found"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:95
+#: src/backend/Modules/Tag/TagModule.php:111
+msgid "Nothing found in Trash"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:202
+msgid "Categories base page"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:202
+msgid "Base page for categories can be configured in general settings of AnsPress."
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:205
+msgid "Ask form category order"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:206
+msgid "Set how you want to order categories in form."
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:209
+#: src/backend/Modules/Category/CategoryModule.php:222
+msgid "ID"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:210
+#: src/backend/Modules/Category/CategoryModule.php:223
+#: src/backend/Modules/Tag/TagModule.php:571
+#: src/backend/Modules/Tag/TagModule.php:630
+msgid "Name"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:211
+#: src/backend/Modules/Category/CategoryModule.php:224
+msgid "Slug"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:212
+#: src/backend/Modules/Category/CategoryModule.php:225
+msgid "Count"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:213
+#: src/backend/Modules/Category/CategoryModule.php:226
+msgid "Group"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:218
+msgid "Categories page order by"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:219
+#: src/backend/Modules/Category/CategoryModule.php:232
+msgid "Set how you want to order categories in categories page."
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:231
+msgid "Categories page order"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:235
+msgid "Ascending"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:236
+msgid "Descending"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:241
+msgid "Category per page"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:242
+msgid "Category to show per page"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:247
+msgid "Categories image height"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:248
+msgid "Image height in categories page"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:373
+msgid "Select a topic that best fits your question."
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:502
+#: src/backend/Modules/Category/CategoryModule.php:535
+msgid "Upload image"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:506
+msgid "Category image"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:549
+msgid "Featured image for category"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:554
+msgid "Background color"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:558
+msgid "Set background color to be used when background is not present"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:737
+msgid "Question category feed"
+msgstr ""
+
+#: src/backend/Modules/Category/CategoryModule.php:791
+#: src/backend/Modules/Tag/TagModule.php:609
+#. translators: placeholder contains count.
+#. translators: Placeholder contains count.
+msgid ", %d+"
+msgstr ""
+
+#: src/backend/Modules/Core/CoreModule.php:116
+msgid "AnsPress"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:40
+msgid "User profile"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:74
+msgid "Questions page title"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:75
+msgid "Custom title for user profile questions page"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:79
+msgid "Questions page slug"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:80
+msgid "Custom slug for user profile questions page"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:84
+msgid "Answers page title"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:85
+msgid "Custom title for user profile answers page"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:89
+msgid "Answers page slug"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:90
+msgid "Custom slug for user profile answers page"
+msgstr ""
+
+#: src/backend/Modules/Profile/ProfileModule.php:343
+msgid "Callback function not found for rendering this page"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:30
+#: src/backend/Modules/Reputation/ReputationModule.php:479
+#: src/backend/Modules/Reputation/ReputationModule.php:543
+#: src/frontend/user-profile-nav/render.php:17
+#: tests/WP/addons/test-reputation.php:148
+msgid "Reputations"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:76
+#: src/backend/Modules/Reputation/ReputationModule.php:433
+#: src/backend/Modules/Reputation/ReputationModule.php:436
+#: src/backend/Modules/Reputation/ReputationModule.php:438
+msgid "Reputation"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:77
+msgid "Reputation event points can be adjusted here :"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:77
+msgid "Reputation Points"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:91
+msgid "Reputations page title"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:92
+msgid "Custom title for user profile reputations page"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:96
+msgid "Reputations page slug"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:97
+msgid "Custom slug for user profile reputations page"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:121
+msgid "Registration"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:122
+msgid "Points awarded when user account is created"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:124
+msgid "Registered"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:130
+msgid "Asking"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:131
+msgid "Points awarded when user asks a question"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:133
+msgid "Asked a question"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:139
+msgid "Answering"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:140
+msgid "Points awarded when user answers a question"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:142
+msgid "Posted an answer"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:148
+msgid "Commenting"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:149
+msgid "Points awarded when user comments on question or answer"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:151
+msgid "Commented on a post"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:157
+msgid "Selecting an Answer"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:158
+msgid "Points awarded when user selects an answer for their question"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:160
+msgid "Selected an answer as best"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:166
+msgid "Answer selected as best"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:167
+msgid "Points awarded when user's answer is selected as best"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:169
+msgid "Answer was selected as best"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:175
+msgid "Received up vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:176
+msgid "Points awarded when user receives an upvote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:178
+msgid "Received an upvote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:183
+msgid "Received down vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:184
+msgid "Points awarded when user receives a down vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:186
+msgid "Received a down vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:191
+msgid "Gives an up vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:192
+msgid "Points taken from user when they give an up vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:194
+msgid "Given an up vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:199
+msgid "Gives down vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:200
+msgid "Points taken from user when they give a down vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:202
+msgid "Given a down vote"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:264
+msgid "Successfully updated reputation points!"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:466
+#. translators: Placeholder contains reputation points.
+msgid "%s Reputation"
+msgstr ""
+
+#: src/backend/Modules/Reputation/ReputationModule.php:584
+msgid "⚙ Reputations"
+msgstr ""
+
+#: src/backend/Modules/Subscriber/SubscriberService.php:72
+#: src/backend/Modules/Subscriber/SubscriberService.php:123
+msgid "Subscriber not found."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:74
+msgid "(AnsPress) Tags"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:78
+msgid "Widgets in this area will be shown in anspress tags page."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:102
+#: src/backend/Modules/Tag/TagModule.php:143
+msgid "Question Tags"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:104
+msgid "All Tags"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:105
+msgid "Add New Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:106
+msgid "Edit Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:107
+msgid "New Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:108
+msgid "View Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:109
+msgid "Search Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:170
+msgid "Tags to show"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:171
+msgid "Numbers of tags to show in tags page."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:176
+msgid "Maximum tags"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:177
+msgid "Maximum numbers of tags that user can add when asking."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:182
+msgid "Minimum tags"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:183
+msgid "minimum numbers of tags that user must add when asking."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:188
+msgid "Tag page slug"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:189
+msgid "Slug for tag page"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:256
+msgid "Delete Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:257
+msgid "Add Tag"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:258
+msgid "added to the tags list."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:259
+msgid "removed from the tags list."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:260
+msgid "Suggestions are available. Use the up and down arrow keys to read it."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:316
+#. Translators: %1$d contain minimum tags required and %2$d contain maximum
+#. tags allowed.
+msgid ""
+"Tagging will helps others to easily find your question. Minimum %1$d and "
+"maximum %2$d tags."
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:517
+msgid "Order"
+msgstr ""
+
+#: src/backend/Modules/Tag/TagModule.php:561
+#: src/backend/Modules/Tag/TagModule.php:628
+msgid "Popular"
+msgstr ""
+
+#: src/backend/Modules/Vote/VoteController.php:80
+msgid "Failed to create vote"
+msgstr ""
+
+#: src/backend/Modules/Vote/VoteController.php:85
+#: src/backend/Modules/Vote/VoteController.php:126
+msgid "Vote added"
+msgstr ""
+
+#: src/backend/Modules/Vote/VoteController.php:112
+#: src/backend/Modules/Vote/VoteController.php:121
+msgid "Failed to undo vote"
+msgstr ""
+
+#: src/backend/Modules/Vote/VoteService.php:63
+msgid "You have already voted on this post"
+msgstr ""
+
+#: src/backend/Traits/SingletonTrait.php:26
+msgid "Cloning is not allowed."
+msgstr ""
+
+#: src/backend/Traits/SingletonTrait.php:33
+msgid "Unserializing is not allowed."
+msgstr ""
+
+#: src/frontend/categories/render.php:72 src/frontend/tags/render.php:53
+#: src/frontend/user-reputations/render.php:49
+#. translators: %d: number of questions
+msgid "Questions: %d"
+msgstr ""
+
+#: src/frontend/categories/render.php:103
+msgid "No categories found."
+msgstr ""
+
+#: src/frontend/common/comments/render.php:51
+#: src/frontend/single-question/render.php:39 templates/single-question.php:77
+msgid "Scheduled for"
+msgstr ""
+
+#: src/frontend/common/comments/render.php:51
+#: src/frontend/single-question/render.php:39 templates/single-question.php:77
+msgid "Published"
+msgstr ""
+
+#: src/frontend/common/pagination.php:27
+msgid "&laquo; Prev"
+msgstr ""
+
+#: src/frontend/common/pagination.php:28
+msgid "Next &raquo;"
+msgstr ""
+
+#: src/frontend/questions/render.php:27
+msgid "Author is not set or not author archive page."
+msgstr ""
+
+#: src/frontend/questions/render.php:118
+msgid "Categories:"
+msgstr ""
+
+#: src/frontend/questions/render.php:135
+msgid "Tags:"
+msgstr ""
+
+#: src/frontend/questions/render.php:187
+#: templates/widgets/widget-questions.php:40
+msgid "No questions found."
+msgstr ""
+
+#: src/frontend/single-question/render.php:53 templates/single-question.php:91
+#. translators: %s comments count.
+msgid "%s Comment"
+msgid_plural "%s Comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/frontend/tags/render.php:84 src/frontend/user-reputations/render.php:151
+msgid "No tags found."
+msgstr ""
+
+#: src/frontend/user-profile/render.php:15
+msgid "Please use this block on author page."
+msgstr ""
+
+#: src/frontend/user-reputations/render.php:80
+msgid "Previous"
+msgstr ""
+
+#: src/frontend/user-reputations/render.php:139
+msgid "Next"
+msgstr ""
+
 #: templates/activities/activities.php:44
 msgid "That&sbquo;s all!"
 msgstr ""
@@ -4454,21 +4464,6 @@ msgid_plural "with other %d activities"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/addons/category/categories.php:64
-#. Translators: %d contains count of sub category.
-msgid "%d Sub category"
-msgid_plural "%d Sub categories"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/addons/category/no-category-found.php:17
-msgid "No category is set!"
-msgstr ""
-
-#: templates/addons/category/single-category.php:69
-msgid "Sub Categories"
-msgstr ""
-
 #: templates/addons/notification/index.php:35
 msgid "All"
 msgstr ""
@@ -4483,14 +4478,6 @@ msgstr ""
 
 #: templates/addons/notification/index.php:50
 msgid "No notification"
-msgstr ""
-
-#: templates/addons/tag/no-tags-found.php:18
-msgid "No tags is set!"
-msgstr ""
-
-#: templates/addons/tag/tags.php:27
-msgid "Search tags"
 msgstr ""
 
 #: templates/addons/user/answer-item.php:43 templates/answer.php:41
@@ -4665,25 +4652,6 @@ msgstr ""
 msgid "View all answers"
 msgstr ""
 
-#: templates/single-question.php:77
-msgid "Scheduled for"
-msgstr ""
-
-#: templates/single-question.php:77
-msgid "Published"
-msgstr ""
-
-#: templates/single-question.php:91
-#. translators: %s comments count.
-msgid "%s Comment"
-msgid_plural "%s Comments"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/widgets/widget-questions.php:40
-msgid "No questions found."
-msgstr ""
-
 #: widgets/ask-form.php:30
 msgid "(AnsPress) Ask form"
 msgstr ""
@@ -4694,6 +4662,12 @@ msgstr ""
 
 #: widgets/ask-form.php:76
 msgid "Ask questions"
+msgstr ""
+
+#: widgets/ask-form.php:82 widgets/leaderboard.php:149
+#: widgets/question_stats.php:117 widgets/questions.php:125
+#: widgets/search.php:79
+msgid "Title:"
 msgstr ""
 
 #: widgets/breadcrumbs.php:30
@@ -4827,7 +4801,7 @@ msgctxt "Post Type General Name"
 msgid "Questions"
 msgstr ""
 
-#: includes/post-types.php:159
+#: includes/post-types.php:160
 msgctxt "Post Type General Name"
 msgid "Answers"
 msgstr ""
@@ -4837,19 +4811,19 @@ msgctxt "Post Type Singular Name"
 msgid "Question"
 msgstr ""
 
-#: includes/post-types.php:160
+#: includes/post-types.php:161
 msgctxt "Post Type Singular Name"
 msgid "Answer"
 msgstr ""
 
-#: includes/post-types.php:329
+#: includes/post-types.php:330
 #. translators: Publish box date format, see
 #. https:www.php.net/manual/datetime.format.php
 msgctxt "publish box date format"
 msgid "M j, Y"
 msgstr ""
 
-#: includes/post-types.php:331
+#: includes/post-types.php:332
 #. translators: Publish box time format, see
 #. https:www.php.net/manual/datetime.format.php
 msgctxt "publish box time format"

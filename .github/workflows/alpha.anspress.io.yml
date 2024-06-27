@@ -1,0 +1,65 @@
+name: alpha.anspress.io
+
+on:
+  push:
+
+jobs:
+  deploy:
+    name: Deploy to alpha.anspress.io
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.x
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Build Vue
+        run: |
+          node -v
+          npm install
+          npm run build
+          npm run build:grunt
+
+      - name: Clean up
+        run: |
+          rm -rf .git
+          rm -rf node_modules
+          rm -rf .github
+          rm -rf .gitignore
+          rm -rf .gitattributes
+          rm -rf .editorconfig
+          rm -rf tests
+          rm -rf .wordpress-org
+          rm -rf vendor
+          rm -rf .devcontainer
+          rm -rf .vscode
+          rm -rf bin
+
+      - name: Upload
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: ${{ secrets.ALPHA_SFTP_HOST }}
+          username: ${{ secrets.ALPHA_SFTP_USERNAME }}
+          password: ${{ secrets.ALPHA_SFTP_PASSWORD }}
+          server-dir: /
+
+

@@ -189,7 +189,7 @@ function ap_recent_activity( $_post = null, $output = true, $query_db = null ) {
 	$activity = ap_get_recent_activity( $_post );
 
 	if ( $activity ) {
-		$html .= '<span class="ap-post-history">';
+		$html .= '<div class="ap-post-history">';
 		$html .= '<a href="' . ap_user_link( $activity->user_id ) . '" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">' . ap_user_display_name( $activity->user_id ) . '</span></a>';
 		$html .= ' ' . esc_html( $activity->action['verb'] );
 
@@ -204,7 +204,7 @@ function ap_recent_activity( $_post = null, $output = true, $query_db = null ) {
 		$html .= ' <a href="' . esc_url( $link ) . '">';
 		$html .= '<time itemprop="dateModified" datetime="' . mysql2date( 'c', $activity->date ) . '">' . ap_human_time( $activity->date, false ) . '</time>';
 		$html .= '</a>';
-		$html .= '</span>';
+		$html .= '</div>';
 	} else {
 		$post_id = false;
 

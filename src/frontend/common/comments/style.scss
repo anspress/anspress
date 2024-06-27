@@ -1,0 +1,108 @@
+.anspress-comments {
+	font-size: small;
+	margin-top: 15px;
+	padding-left: var(--anspress-single-question-avatar-size);
+	display: block;
+
+	&-count {
+		background: #fff;
+		display: inline-block;
+		padding: 0px 7px;
+		border-radius: 7px;
+		margin-bottom: 15px;
+		font-size: 11px;
+	}
+
+	&-item {
+		display: flex;
+		padding-bottom: 15px;
+	}
+
+	&-avatar {
+		display: block;
+		background: #aaa;
+		margin-right: 10px;
+		margin-top: 5px;
+		margin-left: calc(var(--anspress-single-question-avatar-size) * -1 + 10px);
+	}
+
+	&-inner {
+		flex: 1;
+		padding: 10px;
+	}
+
+	&-meta {
+		margin-bottom: 5px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	&-actions {
+		margin-top: 5px;
+
+		a {
+			text-decoration: none;
+			margin-right: 5px;
+		}
+	}
+
+	&-form {
+		background: #eee;
+		padding: 10px;
+		margin-top: 10px;
+
+		textarea {
+			width: 100%;
+			height: 100px;
+			margin-bottom: 10px;
+			box-sizing: border-box;
+			padding: 10px;
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		&-submit {
+			margin-left: 10px;
+		}
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+
+	.fade-in {
+		animation: fadeIn 1s ease-in-out;
+	}
+
+	&-add-comment-button {
+		margin-top: 15px;
+	}
+}
+
+.anspress-comment {
+	&-form {
+		padding: 10px;
+	}
+
+	&-form-c {
+		margin-top: 10px;
+	}
+}
+
+.anspress-comments-count-c[data-anspress-count="0"] {
+	display: none;
+}
+
+anspress-comment-form {
+	display: block;
+}

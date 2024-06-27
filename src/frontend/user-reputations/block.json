@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress-question-answer/user-reputations",
+  "version": "0.1.0",
+  "title": "(AnsPress) User Reputations",
+  "category": "anspress",
+  "icon": "list-tag",
+  "description": "A block to display users reputations.",
+  "attributes": {
+    "itemsPerPage": {
+      "type": "number",
+      "default": 10
+    },
+    "showPagination": {
+      "type": "boolean",
+      "default": false
+    },
+    "showCount": {
+      "type": "boolean",
+      "default": false
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "descriptionLength": {
+      "type": "number",
+      "default": 20
+    },
+    "columns": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "example": {
+    "attributes": {
+      "itemsPerPage": 5,
+      "showPagination": false,
+      "columns": 3,
+      "showDescription": true,
+      "showCount": true,
+      "descriptionLength": 20
+    }
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

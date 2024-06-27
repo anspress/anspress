@@ -3,7 +3,6 @@
 namespace Tests\Unit\Functions;
 
 use Mockery;
-use wpdb;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
 use Brain\Monkey\Functions;
 

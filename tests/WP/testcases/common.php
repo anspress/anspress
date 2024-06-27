@@ -5,6 +5,13 @@ namespace AnsPress\Tests\WP\Testcases;
 trait Common {
 
 	/**
+     * Holds the WP REST Server object
+     *
+     * @var WP_REST_Server
+     */
+    private $server;
+
+	/**
 	 * Switches between user roles.
 	 *
 	 * E.g. administrator, editor, author, contributor, subscriber.
@@ -104,5 +111,38 @@ trait Common {
 		$ids['answers'] = $this->factory()->post->create_many( $answer_num, $a_args );
 
 		return $ids;
+	}
+
+	/**
+	 * Init the REST server.
+	 *
+	 * @return void
+	 */
+    public function setUpRestServer() {
+        // Initiating the REST API.
+        global $wp_rest_server;
+        $this->server = $wp_rest_server = new \WP_REST_Server;
+        do_action( 'rest_api_init' );
+    }
+
+	public function tearDownRestServer() {
+		global $wp_rest_server;
+		$wp_rest_server = null;
+	}
+
+	/**
+	 * Get REST data.
+	 *
+	 * @param mixed $route
+	 * @param string $method
+	 * @param array $params
+	 * @return mixed
+	 */
+	public function getRestData( $route, $method = 'GET', $params = [] ) {
+		$request = new \WP_REST_Request( $method, $route );
+
+		$request->set_query_params( $params );
+
+		return $this->server->dispatch( $request );
 	}
 }

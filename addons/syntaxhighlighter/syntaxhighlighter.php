@@ -46,10 +46,10 @@ class Syntax_Highlighter extends \AnsPress\Singleton {
 	 */
 	protected function __construct() {
 		$this->brush();
-		anspress()->add_filter( 'wp_enqueue_scripts', $this, 'scripts' );
-		anspress()->add_filter( 'tiny_mce_before_init', $this, 'mce_before_init' );
-		anspress()->add_filter( 'ap_editor_buttons', $this, 'editor_buttons', 10, 2 );
-		anspress()->add_filter( 'ap_allowed_shortcodes', $this, 'allowed_shortcodes' );
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ) );
+		add_filter( 'tiny_mce_before_init', array( $this, 'mce_before_init' ) );
+		add_filter( 'ap_editor_buttons', array( $this, 'editor_buttons' ), 10, 2 );
+		add_filter( 'ap_allowed_shortcodes', array( $this, 'allowed_shortcodes' ) );
 
 		add_shortcode( 'apcode', array( $this, 'shortcode' ) );
 	}

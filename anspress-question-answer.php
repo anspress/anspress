@@ -25,6 +25,16 @@
  * GitHub Plugin URI: anspress/anspress
  */
 
+use AnsPress\Classes\Auth;
+use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Router;
+use AnsPress\Modules\Answer\AnswerPolicy;
+use AnsPress\Modules\Comment\CommentPolicy;
+use AnsPress\Modules\Config\ConfigService;
+use AnsPress\Modules\Question\QuestionPolicy;
+use AnsPress\Modules\Subscriber\SubscriberPolicy;
+use AnsPress\Modules\Vote\VotePolicy;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -33,10 +43,15 @@ if ( ! defined( 'WPINC' ) ) {
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
 
 // Define database version.
-define( 'AP_DB_VERSION', 38 );
+define( 'AP_DB_VERSION', 38 ); // @todo remove this in version 5.0.0
+
+// New constants for version 5.0.0.
+define( 'ANSPRESS_DB_VERSION', 38 );
+define( 'ANSPRESS_PLUGIN_VERSION', '5.0.0' );
+define( 'ANSPRESS_PLUGIN_FILE', __FILE__ );
 
 // Check if using required PHP version.
-if ( version_compare( PHP_VERSION, '7.2' ) < 0 ) {
+if ( version_compare( PHP_VERSION, '8.0' ) < 0 ) {
 
 	/**
 	 * Checks PHP version before initiating AnsPress.
@@ -126,24 +141,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $current_answer;
 
 		/**
-		 * The array of actions registered with WordPress.
-		 *
-		 * @since  1.0.0
-		 * @access protected
-		 * @var array The actions registered with WordPress to fire when the plugin loads.
-		 */
-		protected $actions;
-
-		/**
-		 * The array of filters registered with WordPress.
-		 *
-		 * @since  1.0.0
-		 * @access protected
-		 * @var array The filters registered with WordPress to fire when the plugin loads.
-		 */
-		protected $filters;
-
-		/**
 		 * AnsPress reputation events.
 		 *
 		 * @access public
@@ -192,14 +189,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		public $session;
 
 		/**
-		 * Used for storing new filters.
-		 *
-		 * @since 4.1.20
-		 * @var object
-		 */
-		public $new_filters;
-
-		/**
 		 * Used for property assignment.
 		 *
 		 * @var object
@@ -218,8 +207,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof self ) ) {
 				self::$instance = new self();
 				self::$instance->setup_constants();
-				self::$instance->actions = array();
-				self::$instance->filters = array();
 
 				self::$instance->includes();
 				self::$instance->session = AnsPress\Session::init();
@@ -404,81 +391,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		}
 
 		/**
-		 * Add a new action to the collection to be registered with WordPress.
-		 *
-		 * @since  2.4
-		 * @access public
-		 *
-		 * @param string            $hook          The name of the WordPress action that is being registered.
-		 * @param object            $component     A reference to the instance of the object on which the action is defined.
-		 * @param string            $callback      The name of the function definition on the $component.
-		 * @param int      Optional $priority      The priority at which the function should be fired.
-		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
-		 */
-		public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-			$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
-		}
-
-		/**
-		 * Add a new filter to the collection to be registered with WordPress.
-		 *
-		 * @since  2.4
-		 * @access public
-		 *
-		 * @param string            $hook          The name of the WordPress filter that is being registered.
-		 * @param object            $component     A reference to the instance of the object on which the filter is defined.
-		 * @param string            $callback      The name of the function definition on the $component.
-		 * @param int      Optional $priority      The priority at which the function should be fired.
-		 * @param int      Optional $accepted_args The number of arguments that should be passed to the $callback.
-		 */
-		public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-			$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
-		}
-
-		/**
-		 * A utility function that is used to register the actions and hooks into a single
-		 * collection.
-		 *
-		 * @since  2.4
-		 * @access private
-		 *
-		 * @param array  $hooks         The collection of hooks that is being registered (that is, actions or filters).
-		 * @param string $hook          The name of the WordPress filter that is being registered.
-		 * @param object $component     A reference to the instance of the object on which the filter is defined.
-		 * @param string $callback      The name of the function definition on the $component.
-		 * @param int    $priority      The priority at which the function should be fired.
-		 * @param int    $accepted_args The number of arguments that should be passed to the $callback.
-		 *
-		 * @return type The collection of actions and filters registered with WordPress.
-		 */
-		private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
-			$hooks[] = array(
-				'hook'          => $hook,
-				'component'     => $component,
-				'callback'      => $callback,
-				'priority'      => $priority,
-				'accepted_args' => $accepted_args,
-			);
-
-			return $hooks;
-		}
-
-		/**
-		 * Register the filters and actions with WordPress.
-		 *
-		 * @access public
-		 */
-		public function setup_hooks() {
-			foreach ( $this->filters as $hook ) {
-				add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
-			}
-
-			foreach ( $this->actions as $hook ) {
-				add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
-			}
-		}
-
-		/**
 		 * Get specific AnsPress form.
 		 *
 		 * @param string $name Name of form.
@@ -558,95 +470,6 @@ if ( ! function_exists( 'anspress' ) ) {
 	}
 }
 
-if ( ! class_exists( 'AnsPress_Init' ) ) {
-
-	/**
-	 * AnsPress initialization class.
-	 */
-	class AnsPress_Init { // phpcs:ignore
-
-		/**
-		 * Load anspress.
-		 *
-		 * @access public
-		 * @static
-		 */
-		public static function load_anspress() {
-			/*
-			 * Action before loading AnsPress.
-			 * @since 2.4.7
-			 */
-			do_action( 'before_loading_anspress' );
-			anspress()->setup_hooks();
-		}
-
-		/**
-		 * Load translations.
-		 *
-		 * @since  2.0.1
-		 * @access public
-		 * @static
-		 */
-		public static function load_textdomain() {
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'anspress-question-answer' );
-			$loaded = load_textdomain( 'anspress-question-answer', trailingslashit( WP_LANG_DIR ) . "anspress-question-answer/anspress-question-answer-{$locale}.mo" );
-
-			if ( $loaded ) {
-				return $loaded;
-			} else {
-				load_plugin_textdomain( 'anspress-question-answer', false, basename( __DIR__ ) . '/languages/' );
-			}
-		}
-
-		/**
-		 * Creating table whenever a new blog is created
-		 *
-		 * @access public
-		 * @static
-		 *
-		 * @param  integer $blog_id Blog id.
-		 */
-		public static function create_blog( $blog_id ) {
-			if ( is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
-				switch_to_blog( $blog_id ); // @codingStandardsIgnoreLine
-				require_once __DIR__ . '/activate.php';
-				AP_Activate::get_instance( true );
-				restore_current_blog();
-			}
-		}
-
-		/**
-		 * Deleting the table whenever a blog is deleted
-		 *
-		 * @access public
-		 * @static
-		 *
-		 * @param  array $tables  Table names.
-		 * @param  int   $blog_id Blog ID.
-		 *
-		 * @return array
-		 */
-		public static function drop_blog_tables( $tables, $blog_id ) {
-			if ( empty( $blog_id ) || 1 === (int) $blog_id || $blog_id !== $GLOBALS['blog_id'] ) {
-				return $tables;
-			}
-
-			global $wpdb;
-
-			$tables[] = $wpdb->prefix . 'ap_views';
-			$tables[] = $wpdb->prefix . 'ap_qameta';
-			$tables[] = $wpdb->prefix . 'ap_activity';
-			$tables[] = $wpdb->prefix . 'ap_votes';
-			return $tables;
-		}
-	}
-}
-
-add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_anspress' ), 1 );
-add_action( 'plugins_loaded', array( 'AnsPress_Init', 'load_textdomain' ), 0 );
-add_action( 'wpmu_new_blog', array( 'AnsPress_Init', 'create_blog' ), 10, 6 );
-add_filter( 'wpmu_drop_tables', array( 'AnsPress_Init', 'drop_blog_tables' ), 10, 2 );
-
 require_once __DIR__ . '/includes/class/roles-cap.php';
 require_once __DIR__ . '/includes/class/class-singleton.php';
 
@@ -659,3 +482,51 @@ function anspress_activation() {
 	\AP_Activate::get_instance();
 }
 register_activation_hook( __FILE__, 'anspress_activation' );
+
+// Version 5.0.0 of AnsPress introduced a new way of handling services.
+
+require_once __DIR__ . '/src/backend/autoloader.php';
+
+/**
+ * Hook before AnsPress is loaded.
+ */
+do_action( 'anspress/pre_load' );
+
+/**
+ * Load AnsPress.
+ */
+add_action(
+	'plugins_loaded',
+	function () {
+		$container = new AnsPress\Classes\Container();
+
+		$instnace = Plugin::make(
+			ANSPRESS_PLUGIN_FILE,
+			ANSPRESS_PLUGIN_VERSION,
+			ANSPRESS_DB_VERSION,
+			'8.1',
+			'6.5',
+			$container
+		);
+
+		// Register auth policies.
+		$instnace->getContainer()->set(
+			Auth::class,
+			fn() => new Auth(
+				array(
+					VotePolicy::class,
+					SubscriberPolicy::class,
+					CommentPolicy::class,
+					AnswerPolicy::class,
+					QuestionPolicy::class,
+				)
+			)
+		);
+
+		$instnace->registerModules();
+
+		( new Router( $container ) )->register();
+	}
+);
+
+anspress();

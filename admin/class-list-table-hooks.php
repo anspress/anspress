@@ -25,24 +25,21 @@ class AnsPress_Post_Table_Hooks {
 	 * Initialize the class
 	 */
 	public static function init() {
-		anspress()->add_filter( 'views_edit-question', __CLASS__, 'flag_view' );
-		anspress()->add_filter( 'views_edit-answer', __CLASS__, 'flag_view' );
-		anspress()->add_action( 'posts_clauses', __CLASS__, 'posts_clauses', 10, 2 );
-		anspress()->add_action( 'manage_answer_posts_custom_column', __CLASS__, 'answer_row_actions', 10, 2 );
+		add_action( 'views_edit-question', array( __CLASS__, 'flag_view' ) );
+		add_action( 'views_edit-answer', array( __CLASS__, 'flag_view' ) );
+		add_action( 'posts_clauses', array( __CLASS__, 'posts_clauses' ), 10, 2 );
+		add_action( 'manage_answer_posts_custom_column', array( __CLASS__, 'answer_row_actions' ), 10, 2 );
 
-		anspress()->add_filter( 'manage_edit-question_columns', __CLASS__, 'cpt_question_columns' );
-		anspress()->add_action( 'manage_posts_custom_column', __CLASS__, 'custom_columns_value' );
-		anspress()->add_filter( 'manage_edit-answer_columns', __CLASS__, 'cpt_answer_columns' );
-		anspress()->add_filter( 'manage_edit-question_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
-		anspress()->add_filter( 'manage_edit-answer_sortable_columns', __CLASS__, 'admin_column_sort_flag' );
-		anspress()->add_action( 'edit_form_after_title', __CLASS__, 'edit_form_after_title' );
-		anspress()->add_filter( 'manage_edit-comments_columns', __CLASS__, 'comment_flag_column' );
-		anspress()->add_filter( 'comment_status_links', __CLASS__, 'comment_flag_view' );
-		anspress()->add_action( 'current_screen', __CLASS__, 'comments_flag_query', 10, 2 );
-		anspress()->add_filter( 'post_updated_messages', __CLASS__, 'post_custom_message' );
-
-		// phpcs:ignore anspress()->add_filter( 'manage_comments_custom_column', __CLASS__, 'comment_flag_column_data', 10, 2 );
-		// phpcs:ignore anspress()->add_filter( 'post_row_actions', __CLASS__, 'add_question_flag_link', 10, 2 );
+		add_filter( 'manage_edit-question_columns', array( __CLASS__, 'cpt_question_columns' ) );
+		add_action( 'manage_posts_custom_column', array( __CLASS__, 'custom_columns_value' ) );
+		add_filter( 'manage_edit-answer_columns', array( __CLASS__, 'cpt_answer_columns' ) );
+		add_filter( 'manage_edit-question_sortable_columns', array( __CLASS__, 'admin_column_sort_flag' ) );
+		add_filter( 'manage_edit-answer_sortable_columns', array( __CLASS__, 'admin_column_sort_flag' ) );
+		add_action( 'edit_form_after_title', array( __CLASS__, 'edit_form_after_title' ) );
+		add_filter( 'manage_edit-comments_columns', array( __CLASS__, 'comment_flag_column' ) );
+		add_filter( 'comment_status_links', array( __CLASS__, 'comment_flag_view' ) );
+		add_action( 'current_screen', array( __CLASS__, 'comments_flag_query' ), 10, 2 );
+		add_filter( 'post_updated_messages', array( __CLASS__, 'post_custom_message' ) );
 	}
 
 	/**
@@ -166,20 +163,6 @@ class AnsPress_Post_Table_Hooks {
 		$wp_list_table = new WP_List_Table();
 
 		echo $wp_list_table->row_actions( $actions ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
-
-	/**
-	 * Add clear flag action button in question list.
-	 *
-	 * @param array  $actions Actions array.
-	 * @param object $post    Post object.
-	 */
-	public static function add_question_flag_link( $actions, $post ) {
-		if ( ap_get_post_field( 'flags', $post ) ) {
-			$actions['flag'] = '<a href="#" data-query="ap_clear_flag::' . wp_create_nonce( 'clear_flag_' . $post->ID ) . '::' . $post->ID . '" class="ap-ajax-btn flag-clear" data-cb="afterFlagClear">' . __( 'Clear flag', 'anspress-question-answer' ) . '</a>';
-		}
-
-		return $actions;
 	}
 
 	/**
@@ -396,26 +379,6 @@ class AnsPress_Post_Table_Hooks {
 	public static function comment_flag_column( $columns ) {
 		$columns['comment_flag'] = __( 'Flag', 'anspress-question-answer' );
 		return $columns;
-	}
-
-	/**
-	 * Show comment_flag data in comment table.
-	 *
-	 * @param  string  $column         name of the comment table column.
-	 * @param  integer $comment_id     Current comment ID.
-	 * @return void
-	 * @todo fix undefined constant `ANSPRESS_FLAG_META`.
-	 */
-	public static function comment_flag_column_data( $column, $comment_id ) {
-		if ( 'comment_flag' === $column ) {
-			$count = get_comment_meta( $comment_id, ANSPRESS_FLAG_META, true );
-
-			if ( $count ) {
-				echo '<span class="ap-comment-col-flag">';
-				echo esc_html( $count );
-				echo '</span>';
-			}
-		}
 	}
 
 	/**

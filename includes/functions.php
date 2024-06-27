@@ -557,13 +557,6 @@ function ap_response_message( $id, $only_message = false ) {
 		),
 	);
 
-	/**
-	 * Filter ajax response message.
-	 *
-	 * @param array $msg Messages.
-	 * @since 2.0.1
-	 */
-	$msg = apply_filters_deprecated( 'ap_responce_message', array( $msg ), '4.4.0', 'ap_response_message' );
 	$msg = apply_filters( 'ap_response_message', $msg );
 
 	if ( isset( $msg[ $id ] ) && $only_message ) {
@@ -1628,29 +1621,13 @@ function ap_get_addons() {
 			'name'        => __( 'Emails', 'anspress-question-answer' ),
 			'description' => __( 'Notifies users and admins by email for various events and activities.', 'anspress-question-answer' ),
 		),
-		'categories.php'        => array(
-			'name'        => __( 'Categories', 'anspress-question-answer' ),
-			'description' => __( 'Add category support in AnsPress questions.', 'anspress-question-answer' ),
-		),
 		'notifications.php'     => array(
 			'name'        => __( 'Notifications', 'anspress-question-answer' ),
 			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),
 		),
-		'tags.php'              => array(
-			'name'        => __( 'Tags', 'anspress-question-answer' ),
-			'description' => __( 'Add tag support in AnsPress questions.', 'anspress-question-answer' ),
-		),
-		'reputation.php'        => array(
-			'name'        => __( 'Reputation', 'anspress-question-answer' ),
-			'description' => __( 'Award points to user based on activities.', 'anspress-question-answer' ),
-		),
 		'buddypress.php'        => array(
 			'name'        => __( 'BuddyPress', 'anspress-question-answer' ),
 			'description' => __( 'Integrate AnsPress with BuddyPress.', 'anspress-question-answer' ),
-		),
-		'profile.php'           => array(
-			'name'        => __( 'User Profile', 'anspress-question-answer' ),
-			'description' => __( 'User profile for users.', 'anspress-question-answer' ),
 		),
 		'recaptcha.php'         => array(
 			'name'        => __( 'reCaptcha', 'anspress-question-answer' ),
@@ -2435,62 +2412,6 @@ function ap_current_user_id() {
  */
 function ap_is_cpt( $_post ) {
 	return ( in_array( $_post->post_type, array( 'answer', 'question' ), true ) );
-}
-
-/**
- * Removes all filters from a WordPress filter, and stashes them in the anspress()
- * global in the event they need to be restored later.
- * Copied directly from bbPress plugin.
- *
- * @global WP_filter $wp_filter
- * @global array $merged_filters
- *
- * @param string $tag Hook name.
- * @param int    $priority Hook priority.
- * @return bool
- *
- * @since 4.2.0
- */
-function ap_remove_all_filters( $tag, $priority = false ) {
-	global $wp_filter, $merged_filters;
-
-	$ap = anspress();
-
-	if ( ! is_object( $ap->new_filters ) ) {
-		$ap->new_filters = new stdClass();
-	}
-
-	// Filters exist.
-	if ( isset( $wp_filter[ $tag ] ) ) {
-
-		// Filters exist in this priority.
-		if ( ! empty( $priority ) && isset( $wp_filter[ $tag ][ $priority ] ) ) {
-
-			// Store filters in a backup.
-			$ap->new_filters->wp_filter[ $tag ][ $priority ] = $wp_filter[ $tag ][ $priority ];
-
-			// Unset the filters.
-			unset( $wp_filter[ $tag ][ $priority ] );
-		} else {
-			// Store filters in a backup.
-			$ap->new_filters->wp_filter[ $tag ] = $wp_filter[ $tag ];
-
-			// Unset the filters.
-			unset( $wp_filter[ $tag ] );
-		}
-	}
-
-	// Check merged filters.
-	if ( isset( $merged_filters[ $tag ] ) ) {
-
-		// Store filters in a backup.
-		$ap->new_filters->merged_filters[ $tag ] = $merged_filters[ $tag ];
-
-		// Unset the filters.
-		unset( $merged_filters[ $tag ] );
-	}
-
-	return true;
 }
 
 /**
