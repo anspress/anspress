@@ -51,6 +51,8 @@ jobs:
           rm -rf .wordpress-org
           rm -rf vendor
           rm -rf .devcontainer
+          rm -rf .vscode
+          rm -rf bin
 
       - name: Upload
         uses: SamKirkland/FTP-Deploy-Action@4.1.0
@@ -58,6 +60,6 @@ jobs:
           server: ${{ secrets.ALPHA_SFTP_HOST }}
           username: ${{ secrets.ALPHA_SFTP_USERNAME }}
           password: ${{ secrets.ALPHA_SFTP_PASSWORD }}
-          server-dir: ${{ secrets.ALPHA_THEME_PATH }}
+          server-dir: /
 
 
