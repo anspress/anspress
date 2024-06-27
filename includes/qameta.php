@@ -47,7 +47,7 @@ function ap_qameta_fields() {
  * @param array $args     Arguments.
  * @param bool  $wp_error Return wp_error on fail.
  *
- * @return bool|int qameta id on success else false.
+ * @return bool|int|WP_Error qameta id on success else false.
  *
  * @since   4.0.0
  */
@@ -407,19 +407,7 @@ function ap_update_last_active( $post_id ) {
 function ap_set_flag_count( $post_id, $count = 1 ) {
 	return ap_insert_qameta( $post_id, array( 'flags' => $count ) );
 }
-/**
- * Increment flags count.
- *
- * @param  integer $post_id Post ID.
- * @return integer|false
- * @since  3.1.0
- */
-function ap_update_flags_count( $post_id ) {
-	$count = ap_count_post_flags( $post_id );
-	ap_insert_qameta( $post_id, array( 'flags' => $count ) );
 
-	return $count;
-}
 
 /**
  * Updates selected field of qameta.
@@ -504,8 +492,11 @@ function ap_update_qameta_terms( $question_id ) {
  *
  * @param  integer $post_id Question ID.
  * @return boolean
+ * @deprecated 5.0.0 Use `QuestionService::toggleQuestionFeaturedState()`.
  */
 function ap_set_featured_question( $post_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'QuestionService::toggleQuestionFeaturedState()' );
+
 	return ap_insert_qameta( $post_id, array( 'featured' => 1 ) );
 }
 
@@ -514,8 +505,11 @@ function ap_set_featured_question( $post_id ) {
  *
  * @param  integer $post_id Question ID.
  * @return boolean
+ * @deprecated 5.0.0 Use `QuestionService::toggleQuestionFeaturedState()`.
  */
 function ap_unset_featured_question( $post_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'QuestionService::toggleQuestionFeaturedState()' );
+
 	return ap_insert_qameta( $post_id, array( 'featured' => 0 ) );
 }
 
@@ -591,8 +585,11 @@ function ap_update_post_activity_meta( $post, $type, $user_id, $append_to_questi
  *
  * @param  integer $post_id Question ID.
  * @return boolean
+ * @deprecated 5.0.0
  */
 function ap_toggle_close_question( $post_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	$qameta = ap_get_qameta( $post_id );
 	$toggle = $qameta->closed ? 0 : 1;
 	ap_insert_qameta( $post_id, array( 'closed' => $toggle ) );

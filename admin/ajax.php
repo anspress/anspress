@@ -10,6 +10,9 @@
  * @since 4.2.0 Fixed: CS bugs.
  */
 
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Vote\VoteService;
+
 // @codeCoverageIgnoreStart
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -408,7 +411,7 @@ class AnsPress_Admin_Ajax {
 		$total_found = $wpdb->get_var( 'SELECT FOUND_ROWS()' ); // phpcs:ignore WordPress.DB
 
 		foreach ( (array) $ids as $id ) {
-			ap_update_flags_count( $id );
+			ap_set_flag_count( $id, Plugin::get( VoteService::class )->getPostFlagsCount( (int) $id ) );
 		}
 
 		$done   = $offset + count( $ids );

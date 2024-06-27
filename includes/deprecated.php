@@ -155,3 +155,179 @@ function ap_get_subscriber( $user_id = false, $event = '', $ref_id = '' ) {
 
 	return null;
 }
+
+/**
+ * Add flag vote data to ap_votes table.
+ *
+ * @param integer $post_id     Post ID.
+ * @param integer $user_id     User ID.
+ * @return integer|boolean
+ * @depreacted 5.0.0 Use `VoteService::addPostFlag()`.
+ */
+function ap_add_flag( $post_id, $user_id = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService::addPostFlag()' );
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$inserted = ap_vote_insert( $post_id, $user_id, 'flag' );
+
+	return $inserted;
+}
+
+/**
+ * Count flag votes.
+ *
+ * @param integer $post_id Post ID.
+ * @return  integer
+ * @since  4.0.0
+ * @deprecated 5.0.0 Use `VoteService::getPostFlagsCount()`.
+ */
+function ap_count_post_flags( $post_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService::getPostFlagsCount()' );
+	$rows = ap_count_votes(
+		array(
+			'vote_post_id' => $post_id,
+			'vote_type'    => 'flag',
+		)
+	);
+
+	if ( false !== $rows ) {
+		return (int) $rows[0]->count;
+	}
+
+	return 0;
+}
+
+/**
+ * Check if user already flagged a post.
+ *
+ * @param bool|integer $post Post.
+ * @return bool
+ * @deprecated 5.0.0 Use `VoteService::hasUserFlaggedPost()`.
+ */
+function ap_is_user_flagged( $post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService::hasUserFlaggedPost()' );
+	$_post = ap_get_post( $post );
+
+	if ( is_user_logged_in() ) {
+		return ap_is_user_voted( $_post->ID, 'flag' );
+	}
+
+	return false;
+}
+
+/**
+ * Flag button html.
+ *
+ * @param mixed $post Post.
+ * @return string
+ * @since 0.9
+ * @deprecated 5.0.0
+ */
+function ap_flag_btn_args( $post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( ! is_user_logged_in() ) {
+		return;
+	}
+
+	$_post   = ap_get_post( $post );
+	$flagged = ap_is_user_flagged( $_post );
+
+	if ( ! $flagged ) {
+		$title = sprintf(
+			/* Translators: %s Question or Answer post type label for flagging question or answer. */
+			__( 'Flag this %s', 'anspress-question-answer' ),
+			( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+		);
+	} else {
+		$title = sprintf(
+			/* Translators: %s Question or Answer post type label for already flagged question or answer. */
+			__( 'You have flagged this %s', 'anspress-question-answer' ),
+			( 'question' === $_post->post_type ) ? esc_html__( 'question', 'anspress-question-answer' ) : esc_html__( 'answer', 'anspress-question-answer' )
+		);
+	}
+
+	$actions['close'] = array(
+		'cb'     => 'flag',
+		'icon'   => 'apicon-check',
+		'query'  => array(
+			'__nonce' => wp_create_nonce( 'flag_' . $_post->ID ),
+			'post_id' => $_post->ID,
+		),
+		'label'  => __( 'Flag', 'anspress-question-answer' ),
+		'title'  => $title,
+		'count'  => $_post->flags,
+		'active' => $flagged,
+	);
+
+	return $actions['close'];
+}
+
+/**
+ * Delete multiple posts flags.
+ *
+ * @param integer $post_id Post id.
+ * @return boolean
+ * @deprecated 5.0.0 Use `VoteService::removePostFlag()`.
+ */
+function ap_delete_flags( $post_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService::removePostFlag()' );
+	return ap_delete_votes( $post_id, 'flag' );
+}
+
+/**
+ * Update total flagged question and answer count.
+ *
+ * @since 4.0.0
+ * @deprecated 5.0.0 Use `VoteService::recountAndUpdateTotalFlagged()`.
+ */
+function ap_update_total_flags_count() {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService::recountAndUpdateTotalFlagged()' );
+
+	$opt                      = get_option( 'anspress_global', array() );
+	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
+	$opt['flagged_answers']   = ap_total_posts_count( 'answer', 'flag' );
+
+	update_option( 'anspress_global', $opt );
+}
+
+/**
+ * Return total flagged post count.
+ *
+ * @return array
+ * @since 4.0.0
+ * @deprecated 5.0.0 Use `VoteService::getTotalFlaggedPost()`.
+ */
+function ap_total_flagged_count() {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'VoteService::getTotalFlaggedPost()' );
+
+	$opt['flagged_questions'] = ap_total_posts_count( 'question', 'flag' );
+	$updated                  = true;
+
+	$opt['flagged_answers'] = ap_total_posts_count( 'answer', 'flag' );
+	$updated                = true;
+
+	return array(
+		'questions' => $opt['flagged_questions'],
+		'answers'   => $opt['flagged_answers'],
+	);
+}
+
+/**
+ * Increment flags count.
+ *
+ * @param  integer $post_id Post ID.
+ * @return integer|false
+ * @since  3.1.0
+ * @deprecated 5.0.0
+ */
+function ap_update_flags_count( $post_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	$count = ap_count_post_flags( $post_id );
+	ap_insert_qameta( $post_id, array( 'flags' => $count ) );
+
+	return $count;
+}

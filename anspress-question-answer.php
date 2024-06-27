@@ -275,6 +275,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @access private
 		 * @since  2.0.1
 		 * @since  4.2.0 Added categories/categories.php
+		 * @since  5.0.0 Removed flag.php and added deprecated-classes.php
 		 * @codeCoverageIgnore
 		 */
 		private function includes() {
@@ -300,7 +301,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
-			require_once ANSPRESS_DIR . 'includes/flag.php';
+			require_once ANSPRESS_DIR . 'includes/deprecated-classes.php';
 			require_once ANSPRESS_DIR . 'includes/shortcode-question.php';
 			require_once ANSPRESS_DIR . 'includes/akismet.php';
 			require_once ANSPRESS_DIR . 'includes/comments.php';

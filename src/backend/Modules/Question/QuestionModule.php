@@ -35,22 +35,6 @@ class QuestionModule extends AbstractModule {
 
 		register_rest_route(
 			'anspress/v1',
-			'/post/(?P<post_id>\d+)',
-			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( QuestionController::class, 'deleteQuestion' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
-
-		register_rest_route(
-			'anspress/v1',
 			'/post/(?P<post_id>\d+)/load-edit-question-form',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
@@ -70,12 +54,16 @@ class QuestionModule extends AbstractModule {
 			'/post/(?P<post_id>\d+)/actions/(?P<action>[a-z-]+)',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( QuestionController::class, 'loadEditQuestion' ), $req ),
+				'callback'            => fn( $req ) => RestRouteHandler::run( array( QuestionController::class, 'actions' ), $req ),
 				'permission_callback' => '__return_true',
 				'args'                => array(
 					'post_id' => array(
 						'required' => true,
 						'type'     => 'integer',
+					),
+					'action'  => array(
+						'required' => true,
+						'type'     => 'string',
 					),
 				),
 			)

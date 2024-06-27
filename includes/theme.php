@@ -234,8 +234,11 @@ function ap_page( $current_page = '' ) {
  * @param mixed $_post Post.
  * @return array
  * @since  3.0.0
+ * @deprecated 5.0.0
  */
 function ap_post_actions( $_post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	$_post = ap_get_post( $_post );
 
 	$actions = array();
@@ -266,7 +269,6 @@ function ap_post_actions( $_post = null ) {
 			'title' => $close_title,
 		);
 	}
-
 	// Edit link.
 	if ( ap_user_can_edit_post( $_post->ID ) ) {
 		$actions[] = array(
@@ -807,8 +809,11 @@ function ap_list_filters( $current_url = '' ) { // phpcs:ignore Generic.CodeAnal
  *
  * @param mixed $_post Post.
  * @return string
+ * @deprecated 5.0.0
  */
 function ap_select_answer_btn_html( $_post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	if ( ! ap_user_can_select_answer( $_post ) ) {
 		return;
 	}
@@ -902,8 +907,11 @@ function ap_post_status_btn_args( $_post = null ) {
  *
  * @param  boolean|integer $post_id Post ID.
  * @return array
+ * @deprecated 5.0.0
  */
 function ap_featured_post_args( $post_id = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	if ( ! is_user_logged_in() || ! ap_user_can_toggle_featured() ) {
 		return array();
 	}

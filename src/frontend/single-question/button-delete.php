@@ -17,9 +17,9 @@ if ( ! isset( $args ['post'] ) ) {
 }
 
 if ( 'question' === $args['post']->post_type ) {
-	$href = 'anspress/v1/post/' . $args['post']->ID;
+	$href = 'anspress/v1/post/' . $args['post']->ID . '/actions/delete-question';
 } else {
 	$href = 'anspress/v1/post/' . $args['post']->post_parent . '/answers/' . $args['post']->ID;
 }
 ?>
-<anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="DELETE" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></anspress-link>
+<anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="POST" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></anspress-link>

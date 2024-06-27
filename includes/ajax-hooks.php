@@ -39,15 +39,10 @@ class AnsPress_Ajax {
 
 		// Post actions.
 		add_action( 'ap_ajax_post_actions', array( 'AnsPress_Theme', 'post_actions' ) );
-		add_action( 'ap_ajax_action_toggle_featured', array( 'AnsPress_Ajax', 'toggle_featured' ) );
-		add_action( 'ap_ajax_action_close', array( 'AnsPress_Ajax', 'close_question' ) );
 		add_action( 'ap_ajax_action_toggle_delete_post', array( 'AnsPress_Ajax', 'toggle_delete_post' ) );
 		add_action( 'ap_ajax_action_delete_permanently', array( 'AnsPress_Ajax', 'permanent_delete_post' ) );
 		add_action( 'ap_ajax_action_status', array( 'AnsPress_Post_Status', 'change_post_status' ) );
 		add_action( 'ap_ajax_action_convert_to_post', array( 'AnsPress_Ajax', 'convert_to_post' ) );
-
-		// Flag ajax callbacks.
-		add_action( 'ap_ajax_action_flag', array( 'AnsPress_Flag', 'action_flag' ) );
 
 		// Uploader hooks.
 		add_action( 'ap_ajax_delete_attachment', array( 'AnsPress_Uploader', 'delete_attachment' ) );
@@ -292,140 +287,6 @@ class AnsPress_Ajax {
 				),
 			)
 		);
-	}
-
-	/**
-	 * Handle toggle featured question ajax callback
-	 *
-	 * @since unknown
-	 * @since 4.1.2 Insert to activity table when question is featured.
-	 */
-	public static function toggle_featured() {
-		$post_id = (int) ap_sanitize_unslash( 'post_id', 'request' );
-
-		if ( ! ap_user_can_toggle_featured() || ! anspress_verify_nonce( 'set_featured_' . $post_id ) ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => array( 'message' => __( 'Sorry, you cannot toggle a featured question', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		$post = ap_get_post( $post_id );
-
-		// Do nothing if post type is not question.
-		if ( 'question' !== $post->post_type ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => array( 'message' => __( 'Only question can be set as featured', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		// Check if current question ID is in featured question array.
-		if ( ap_is_featured_question( $post ) ) {
-			ap_unset_featured_question( $post->ID );
-
-			// Update activity.
-			ap_activity_add(
-				array(
-					'q_id'   => $post->ID,
-					'action' => 'unfeatured',
-				)
-			);
-
-			ap_ajax_json(
-				array(
-					'success'  => true,
-					'action'   => array(
-						'active' => false,
-						'title'  => __( 'Mark this question as featured', 'anspress-question-answer' ),
-						'label'  => __( 'Feature', 'anspress-question-answer' ),
-					),
-					'snackbar' => array( 'message' => __( 'Question is unmarked as featured.', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		ap_set_featured_question( $post->ID );
-
-		// Update activity.
-		ap_activity_add(
-			array(
-				'q_id'   => $post->ID,
-				'action' => 'featured',
-			)
-		);
-
-		ap_ajax_json(
-			array(
-				'success'  => true,
-				'action'   => array(
-					'active' => true,
-					'title'  => __( 'Unmark this question as featured', 'anspress-question-answer' ),
-					'label'  => __( 'Unfeature', 'anspress-question-answer' ),
-				),
-				'snackbar' => array( 'message' => __( 'Question is marked as featured.', 'anspress-question-answer' ) ),
-			)
-		);
-	}
-
-	/**
-	 * Close question callback.
-	 *
-	 * @since unknown
-	 * @since 4.1.2 Add activity when question is closed.
-	 */
-	public static function close_question() {
-		$post_id = ap_sanitize_unslash( 'post_id', 'p' );
-
-		// Check permission and nonce.
-		if ( ! is_user_logged_in() || ! check_ajax_referer( 'close_' . $post_id, 'nonce', false ) || ! ap_user_can_close_question() ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => array( 'message' => __( 'You cannot close a question', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		$_post       = ap_get_post( $post_id );
-		$toggle      = ap_toggle_close_question( $post_id );
-		$close_label = $_post->closed ? __( 'Close', 'anspress-question-answer' ) : __( 'Open', 'anspress-question-answer' );
-		$close_title = $_post->closed ? __( 'Close this question for new answer.', 'anspress-question-answer' ) : __( 'Open this question for new answers', 'anspress-question-answer' );
-
-		$message = 1 === $toggle ? __( 'Question closed', 'anspress-question-answer' ) : __( 'Question is opened', 'anspress-question-answer' );
-
-		// Log in activity table.
-		if ( 1 === $toggle ) {
-			ap_activity_add(
-				array(
-					'q_id'   => $_post->ID,
-					'action' => 'closed_q',
-				)
-			);
-		} else {
-			ap_activity_add(
-				array(
-					'q_id'   => $_post->ID,
-					'action' => 'open_q',
-				)
-			);
-		}
-
-		$results = array(
-			'success'     => true,
-			'action'      => array(
-				'label' => $close_label,
-				'title' => $close_title,
-			),
-			'snackbar'    => array( 'message' => $message ),
-			'postmessage' => ap_get_post_status_message( $post_id ),
-		);
-
-		ap_ajax_json( $results );
 	}
 
 	/**

@@ -28,17 +28,23 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @var array
 	 */
 	protected array $abilities = array(
-		'list'   => array(
+		'list'    => array(
 			'question',
 		),
-		'view'   => array(
+		'view'    => array(
 			'question',
 		),
-		'create' => array(),
-		'update' => array(
+		'create'  => array(),
+		'update'  => array(
 			'question',
 		),
-		'delete' => array(
+		'delete'  => array(
+			'question',
+		),
+		'close'   => array(
+			'question',
+		),
+		'feature' => array(
 			'question',
 		),
 	);
@@ -131,5 +137,43 @@ class QuestionPolicy extends AbstractPolicy {
 	 */
 	public function list( ?WP_User $user, array $context ): bool {
 		return true;
+	}
+
+	/**
+	 * Determine if the given user can close the specified model.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The model instance being closed.
+	 * @return bool True if the user is authorized to close the model, false otherwise.
+	 */
+	public function close( ?WP_User $user, array $context ): bool {
+		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
+			return true;
+		}
+
+		if ( $user && $user->has_cap( 'ap_close_question' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if the given user can feature the specified model.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The model instance being featured.
+	 * @return bool True if the user is authorized to feature the model, false otherwise.
+	 */
+	public function feature( ?WP_User $user, array $context ): bool {
+		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
+			return true;
+		}
+
+		if ( $user && $user->has_cap( 'ap_toggle_featured' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 }

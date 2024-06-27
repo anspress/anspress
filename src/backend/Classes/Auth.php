@@ -72,6 +72,15 @@ class Auth {
 	}
 
 	/**
+	 * Return the ID of the current user.
+	 *
+	 * @return int
+	 */
+	public static function getID(): int {
+		return (int) get_current_user_id();
+	}
+
+	/**
 	 * Check if the current user has the given ability.
 	 *
 	 * @param string $ability The ability to check.

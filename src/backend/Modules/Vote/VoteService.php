@@ -11,6 +11,7 @@ namespace AnsPress\Modules\Vote;
 use AnsPress\Classes\AbstractService;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Validator;
+use AnsPress\Exceptions\GeneralException;
 use AnsPress\Exceptions\ValidationException;
 
 // Exit if accessed directly.
@@ -25,13 +26,25 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class VoteService extends AbstractService {
 	/**
+	 * Vote type.
+	 */
+	const VOTE = 'vote';
+
+	/**
+	 * Flag type.
+	 */
+	const FLAG = 'flag';
+
+	/**
 	 * Create a new vote.
 	 *
-	 * @param array $data Vote data.
+	 * @param array       $data Vote data.
+	 * @param string|null $customErrorMessage Custom error message.
+	 *
 	 * @return null|VoteModel  Vote model.
 	 * @throws ValidationException If validation fails.
 	 */
-	public function create( array $data ): ?VoteModel {
+	public function create( array $data, ?string $customErrorMessage = null ): ?VoteModel {
 		if ( empty( $data['vote_user_id'] ) && Auth::isLoggedIn() ) {
 			$data['vote_user_id'] = Auth::user()->ID;
 		}
@@ -54,13 +67,20 @@ class VoteService extends AbstractService {
 		$vote->fill( $validated );
 
 		// Make sure that user can only vote once.
-		$existingVote = $this->getUserVote( $data['vote_user_id'], $data['vote_post_id'], $data['vote_type'] );
+		$existingVote = $this->getUserVote(
+			$data['vote_user_id'],
+			$data['vote_post_id'],
+			$data['vote_type']
+		);
 
 		if ( $existingVote ) {
 			throw new ValidationException(
 				array(
 					'vote' => array(
-						esc_attr__( 'You have already voted on this post', 'anspress-question-answer' ),
+						esc_attr(
+							$customErrorMessage ??
+							__( 'You have already voted on this post', 'anspress-question-answer' )
+						),
 					),
 				)
 			);
@@ -172,7 +192,7 @@ class VoteService extends AbstractService {
 	 */
 	public function getPostVoteData( int $postId ): array {
 		$post     = ap_get_post( $postId );
-		$userVote = $this->getUserVote( get_current_user_id(), $postId, 'vote' );
+		$userVote = $this->getUserVote( get_current_user_id(), $postId, self::VOTE );
 
 		return array(
 			'postId'           => $postId,
@@ -180,6 +200,129 @@ class VoteService extends AbstractService {
 			'votesDown'        => $post->votes_down,
 			'votesNet'         => $post->votes_net,
 			'currentUserVoted' => $userVote ? ( '-1' == $userVote->vote_value ? 'votedown' : 'voteup' ) : null, // @codingStandardsIgnoreLine Universal.Operators.StrictComparisons.LooseEqual
+		);
+	}
+
+	/**
+	 * Add a vote.
+	 *
+	 * @param int $postId Post ID.
+	 * @param int $userId User ID.
+	 * @return VoteModel|null
+	 */
+	public function addPostFlag( int $postId, int $userId = 0 ): ?VoteModel {
+		return $this->create(
+			array(
+				'vote_user_id'  => $userId,
+				'vote_post_id'  => $postId,
+				'vote_type'     => self::FLAG,
+				'vote_value'    => 1,
+				'vote_rec_user' => (int) get_post_field( 'post_author', $postId ),
+			),
+			__( 'You have already flagged this post', 'anspress-question-answer' )
+		);
+	}
+
+	/**
+	 * Remove a flag.
+	 *
+	 * @param int $postId Post ID.
+	 * @param int $userId User ID.
+	 * @return bool
+	 * @throws GeneralException If no flag found and user is not provided.
+	 */
+	public function removePostFlag( int $postId, int $userId = 0 ): bool {
+		$userId = $userId ?? Auth::getID();
+
+		if ( ! $userId ) {
+			throw new GeneralException( esc_attr__( 'User ID is required.', 'anspress-question-answer' ) );
+		}
+
+		$vote = $this->getUserVote( $userId, $postId, self::FLAG );
+
+		if ( ! $vote ) {
+			throw new GeneralException( esc_attr__( 'No flag found for this post by given user.', 'anspress-question-answer' ) );
+		}
+
+		return $this->delete( $vote->ID );
+	}
+
+	/**
+	 * Remove all flags from a post.
+	 *
+	 * @param int $postId Post ID.
+	 * @return bool
+	 */
+	public function removeAllPostFlags( int $postId ): bool {
+		global $wpdb;
+
+		$deleted = $wpdb->delete( // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->prefix . 'ap_votes',
+			array(
+				'vote_post_id' => $postId,
+				'vote_type'    => self::FLAG,
+			),
+			array( '%d', '%s' )
+		);
+
+		if ( $deleted ) {
+			ap_set_flag_count( $postId, $this->getPostFlagsCount( $postId ) );
+		}
+
+		return (bool) $deleted;
+	}
+
+	/**
+	 * Count flag votes.
+	 *
+	 * @param int $postId Post ID.
+	 * @return int
+	 */
+	public function getPostFlagsCount( int $postId ): int {
+		return $this->getVoteCount( $postId, self::FLAG );
+	}
+
+	/**
+	 * Check if user already flagged a post.
+	 *
+	 * @param int $postId Post ID.
+	 * @param int $userId User ID.
+	 * @return bool
+	 */
+	public function hasUserFlaggedPost( int $postId, ?int $userId = null ): bool {
+		$userId = $userId ?? Auth::getID();
+
+		if ( ! $userId ) {
+			return false;
+		}
+
+		return $this->getUserVote( $userId, $postId, self::FLAG ) ? true : false;
+	}
+
+	/**
+	 * Update total flagged question and answer count.
+	 */
+	public function recountAndUpdateTotalFlagged(): void {
+		$opt                      = get_option( 'anspress_global', array() );
+		$opt['flagged_questions'] = ap_total_posts_count( 'question', self::FLAG );
+		$opt['flagged_answers']   = ap_total_posts_count( 'answer', self::FLAG );
+
+		update_option( 'anspress_global', $opt );
+	}
+
+	/**
+	 * Return total flagged post count.
+	 *
+	 * @return array
+	 */
+	public function getTotalFlaggedPost(): array {
+		$opt['flagged_questions'] = ap_total_posts_count( 'question', self::FLAG );
+
+		$opt['flagged_answers'] = ap_total_posts_count( 'answer', self::FLAG );
+
+		return array(
+			'questions' => $opt['flagged_questions'],
+			'answers'   => $opt['flagged_answers'],
 		);
 	}
 }

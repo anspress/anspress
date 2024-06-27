@@ -9,6 +9,9 @@
  * @copyright 2014 Rahul Aryan
  */
 
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Vote\VoteService;
+
 // phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -143,12 +146,13 @@ class AnsPress_Vote {
 	 * @param integer $post_id Post ID.
 	 * @param string  $type    Vote type.
 	 * @since 4.0.0
+	 * @since 5.0.0 Use VoteService instead.
 	 */
 	public static function ap_deleted_votes( $post_id, $type ) {
 		if ( 'vote' === $type ) {
 			ap_update_votes_count( $post_id );
 		} elseif ( 'flag' === $type ) {
-			ap_update_flags_count( $post_id );
+			ap_set_flag_count( $post_id, Plugin::get( VoteService::class )->getPostFlagsCount( $post_id ) );
 		}
 	}
 }

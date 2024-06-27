@@ -70,7 +70,6 @@ class TestRoles extends TestCase {
 		$this->assertArrayHasKey( 'ap_restore_posts', $caps );
 		$this->assertArrayHasKey( 'ap_toggle_featured', $caps );
 		$this->assertArrayHasKey( 'ap_toggle_best_answer', $caps );
-		$this->assertArrayHasKey( 'ap_close_question', $caps );
 
 		$this->assertFalse( ap_role_caps( '' ) );
 	}

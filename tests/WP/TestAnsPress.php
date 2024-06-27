@@ -170,7 +170,7 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/comments.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/common-pages.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/deprecated.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/flag.php' );
+		$this->assertFileExists( ANSPRESS_DIR . 'includes/deprecated-classes.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/functions.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/hooks.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/mce-languages.php' );

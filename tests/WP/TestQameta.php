@@ -471,24 +471,6 @@ class TestQAMeta extends TestCase {
 	}
 
 	/**
-	 * @covers ::ap_toggle_close_question
-	 */
-	public function testAPToggleCloseQuestion() {
-		global $wpdb;
-		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
-
-		$id = $this->insert_question();
-		$this->assertEquals( 1, ap_toggle_close_question( $id ) );
-		$this->assertEquals( 0, ap_toggle_close_question( $id ) );
-		ap_insert_qameta( $id, array( 'closed' => 0 ) );
-		$this->assertEquals( 1, ap_toggle_close_question( $id ) );
-		$this->assertEquals( 0, ap_toggle_close_question( $id ) );
-		ap_insert_qameta( $id, array( 'closed' => 1 ) );
-		$this->assertEquals( 0, ap_toggle_close_question( $id ) );
-		$this->assertEquals( 1, ap_toggle_close_question( $id ) );
-	}
-
-	/**
 	 * @covers ::ap_update_post_attach_ids
 	 */
 	public function testAPUpdatePostAttachIds() {

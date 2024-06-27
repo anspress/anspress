@@ -10,6 +10,9 @@
  * @since 4.2.0 Fixed: CS bugs.
  */
 
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Vote\VoteService;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -147,7 +150,7 @@ class AnsPress_Admin {
 	 * @since 2.4.6
 	 */
 	public static function menu_counts() {
-		$flagged   = ap_total_flagged_count();
+		$flagged   = Plugin::get( VoteService::class )->getTotalFlaggedPost();
 		$q_flagged = $flagged['questions'];
 		$a_flagged = $flagged['answers'];
 

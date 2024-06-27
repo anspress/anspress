@@ -1005,8 +1005,11 @@ function ap_user_can_change_status( $post_id, $user_id = false ) {
  *
  * @param integer $user_id User ID.
  * @return boolean
+ * @deprecated 5.0.0
  */
 function ap_user_can_close_question( $user_id = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', "Auth::check('question:close')" );
+
 	if ( false === $user_id ) {
 		$user_id = get_current_user_id();
 	}

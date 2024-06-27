@@ -9,7 +9,10 @@
 namespace AnsPress\Modules\Question;
 
 use AnsPress\Classes\AbstractController;
-
+use AnsPress\Classes\Auth;
+use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Str;
+use AnsPress\Modules\Vote\VoteService;
 use WP_REST_Response;
 
 // Exit if accessed directly.
@@ -31,20 +34,37 @@ class QuestionController extends AbstractController {
 	}
 
 	/**
-	 * Delete question.
+	 * Question action handler.
 	 *
 	 * @return WP_REST_Response Response.
 	 */
-	public function deleteQuestion() {
-		$this->assureLoggedIn();
-
+	public function actions(): WP_REST_Response {
 		$data = $this->validate(
 			array(
 				'post_id' => 'required|numeric|exists:posts,id|post_type:question',
-			),
+				'action'  => 'required|string|in:delete-question,toggle-closed-state,toggle-featured,report',
+			)
 		);
 
-		$post = get_post( $data['post_id'] );
+		$action = Str::toCamelCase( 'action' . $data['action'] );
+
+		if ( method_exists( $this, $action ) ) {
+			return $this->$action( (int) $data['post_id'] );
+		}
+
+		return $this->badRequest( __( 'Invalid action.', 'anspress-question-answer' ) );
+	}
+
+	/**
+	 * Delete question.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 */
+	public function actionDeleteQuestion( int $questionId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$post = get_post( $questionId );
 
 		$this->checkPermission( 'question:delete', array( 'question' => $post ) );
 
@@ -57,5 +77,90 @@ class QuestionController extends AbstractController {
 				'redirect' => ap_base_page_link(),
 			)
 		);
+	}
+
+	/**
+	 * Toggle the closed state of a question.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 */
+	public function actionToggleClosedState( int $questionId ) {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $questionId );
+
+		$this->checkPermission( 'question:close', array( 'question' => $post ) );
+
+		$newState = $this->questionService->toggleQuestionClosedState( $post->ID );
+
+		$this->addMessage(
+			'success',
+			'closed' === $newState ? __( 'Question closed successfully.', 'anspress-question-answer' ) :
+			__( 'Question opened successfully.', 'anspress-question-answer' )
+		);
+
+		return $this->response(
+			array(
+				'reload' => true,
+			)
+		);
+	}
+
+	/**
+	 * Toggle the featured state of a question.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 */
+	public function actionToggleFeatured( int $questionId ) {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $questionId );
+
+		$this->checkPermission( 'question:feature', array( 'question' => $post ) );
+
+		$newState = $this->questionService->toggleQuestionFeaturedState( $post->ID );
+
+		$this->addMessage(
+			'success',
+			'featured' === $newState ? __( 'Question featured successfully.', 'anspress-question-answer' ) :
+			__( 'Question unfeatured successfully.', 'anspress-question-answer' )
+		);
+
+		return $this->response(
+			array(
+				'reload' => true,
+			)
+		);
+	}
+
+	/**
+	 * Report a question.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 */
+	public function actionReport( int $questionId ) {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $questionId );
+
+		if ( Plugin::get( VoteService::class )->hasUserFlaggedPost( $post->ID ) ) {
+			return $this->badRequest( __( 'You have already reported this question.', 'anspress-question-answer' ) );
+		}
+
+		$voted = Plugin::get( VoteService::class )->addPostFlag( $post->ID, Auth::getID() );
+
+		if ( ! $voted ) {
+			return $this->serverError( __( 'Failed to report this question.', 'anspress-question-answer' ) );
+		}
+
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Thank you for reporting this question.', 'anspress-question-answer' )
+		);
+
+		return $this->response();
 	}
 }
