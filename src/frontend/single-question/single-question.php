@@ -7,6 +7,7 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
+use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Modules\Answer\AnswerService;
 use AnsPress\Modules\Vote\VoteService;
@@ -80,6 +81,19 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 				<?php endif; ?>
 			</anspress-answer-list>
 
-		<?php Plugin::loadView( 'src/frontend/single-question/answer-form.php', array( 'question' => get_post() ) ); ?>
+		<?php
+		if ( Auth::currentUserCan( 'answer:create', array( 'question' => $_post ) ) ) {
+			Plugin::loadView(
+				'src/frontend/single-question/answer-form.php',
+				array( 'question' => get_post() )
+			);
+		} else {
+			?>
+			<div class="anspress-apq-item-answer-disabled anspress-card">
+				<?php esc_html_e( 'This question is not accepting new answers or you are not allowed to submit an answer.', 'anspress-question-answer' ); ?>
+			</div>
+			<?php
+		}
+		?>
 	</div>
 </div>

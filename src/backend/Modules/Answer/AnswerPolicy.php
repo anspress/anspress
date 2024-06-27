@@ -63,7 +63,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool|null Null to proceed to specific policy method, or a boolean to override.
 	 */
 	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
-		if ( $user && $user->has_cap( 'manage_options' ) ) {
+		if ( ! empty( $user?->ID ) && $user->has_cap( 'manage_options' ) ) {
 			return true;
 		}
 
@@ -78,7 +78,12 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
 	public function view( ?WP_User $user, array $context = array() ): bool {
-		if ( $user && ! empty( $context['answer'] ) && is_object( $context['answer'] ) && $context['answer']->user_id === $user->user_id ) {
+		if (
+			! empty( $user?->ID ) &&
+			! empty( $context['answer'] ) &&
+			is_object( $context['answer'] ) &&
+			$context['answer']->user_id == $user->user_id // @codingStandardsIgnoreLine
+		) {
 			return true;
 		}
 
@@ -98,6 +103,11 @@ class AnswerPolicy extends AbstractPolicy {
 		}
 
 		if ( empty( $context['question'] ) || empty( $context['question']?->ID ) ) {
+			return false;
+		}
+
+		// Do not allow user to answer the question if it is closed.
+		if ( is_post_closed( $context['question'] ) ) {
 			return false;
 		}
 
@@ -122,7 +132,12 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['comment'] ) && is_object( $context['comment'] ) && $context['comment']->user_id === $user->user_id ) {
+		if (
+			! empty( $user?->ID ) &&
+			! empty( $context['comment'] ) &&
+			is_object( $context['comment'] ) &&
+			$context['comment']->user_id == $user->user_id // @codingStandardsIgnoreLine
+		) {
 			return true;
 		}
 
@@ -137,7 +152,12 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['comment'] ) && is_object( $context['comment'] ) && $context['comment']->user_id === $user->user_id ) {
+		if (
+			! empty( $user?->ID ) &&
+			! empty( $context['comment'] ) &&
+			is_object( $context['comment'] ) &&
+			$context['comment']->user_id == $user->user_id // @codingStandardsIgnoreLine
+		) {
 			return true;
 		}
 
@@ -156,7 +176,7 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		if ( $user && $context['post']->post_author === $user->ID ) {
+		if ( ! empty( $user?->ID ) && $context['post']->post_author == $user->ID ) { // @codingStandardsIgnoreLine
 			return true;
 		}
 
@@ -176,7 +196,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to select the model, false otherwise.
 	 */
 	public function select( ?WP_User $user, array $context ): bool {
-		if ( ! $user ) {
+		if ( ! empty( $user?->ID ) ) {
 			return false;
 		}
 
@@ -184,7 +204,7 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		if ( $context['answer']->post_author === $user->ID ) {
+		if ( $context['answer']->post_author == $user->ID ) { // @codingStandardsIgnoreLine
 			return true;
 		}
 
@@ -199,7 +219,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to unselect the model, false otherwise.
 	 */
 	public function unselect( ?WP_User $user, array $context ): bool {
-		if ( ! $user ) {
+		if ( ! empty( $user?->ID ) ) {
 			return false;
 		}
 
@@ -207,7 +227,7 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		if ( $context['answer']->post_author === $user->ID ) {
+		if ( $context['answer']->post_author == $user->ID ) { // @codingStandardsIgnoreLine
 			return true;
 		}
 

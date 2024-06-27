@@ -61,7 +61,7 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool|null Null to proceed to specific policy method, or a boolean to override.
 	 */
 	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
-		if ( $user && $user->has_cap( 'manage_options' ) ) {
+		if ( ! empty( $user?->user_id ) && $user->has_cap( 'manage_options' ) ) {
 			return true;
 		}
 
@@ -76,7 +76,7 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
 	public function view( ?WP_User $user, array $context = array() ): bool {
-		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
+		if ( ! empty( $user?->user_id ) && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->post_author === $user->user_id ) {
 			return true;
 		}
 
@@ -106,7 +106,12 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
+		if (
+			! empty( $user?->user_id ) &&
+			! empty( $context['question'] ) &&
+			is_object( $context['question'] ) &&
+			$context['question']->post_author == $user->ID // @codingStandardsIgnoreLine
+			) {
 			return true;
 		}
 
@@ -121,7 +126,12 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
+		if (
+			! empty( $user?->user_id ) &&
+			! empty( $context['question'] ) &&
+			is_object( $context['question'] ) &&
+			$context['question']->post_author == $user->ID // @codingStandardsIgnoreLine
+			) {
 			return true;
 		}
 
@@ -147,11 +157,13 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to close the model, false otherwise.
 	 */
 	public function close( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
-			return true;
-		}
-
-		if ( $user && $user->has_cap( 'ap_close_question' ) ) {
+		if (
+			! empty( $user?->user_id ) &&
+			! empty( $context['question'] ) &&
+			is_object( $context['question'] ) &&
+			$context['question']->post_author == $user->ID && // @codingStandardsIgnoreLine
+			$user->has_cap( 'ap_close_question' )
+			) {
 			return true;
 		}
 
@@ -166,11 +178,13 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to feature the model, false otherwise.
 	 */
 	public function feature( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->user_id === $user->user_id ) {
-			return true;
-		}
-
-		if ( $user && $user->has_cap( 'ap_toggle_featured' ) ) {
+		if (
+			! empty( $user?->user_id ) &&
+			! empty( $context['question'] ) &&
+			is_object( $context['question'] ) &&
+			$context['question']->post_author == $user->ID // @codingStandardsIgnoreLine
+			&& $user->has_cap( 'ap_toggle_featured' )
+		) {
 			return true;
 		}
 

@@ -6,6 +6,10 @@
  * @since   5.0.0
  */
 
+use AnsPress\Classes\Auth;
+use AnsPress\Modules\Answer\AnswerModel;
+use AnsPress\Modules\Question\QuestionModel;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Trying to cheat?' );
@@ -14,6 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Check that post argument is set.
 if ( ! isset( $args ['post'] ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
+}
+
+$postType = QuestionModel::POST_TYPE === $args['post']->post_type ? QuestionModel::POST_TYPE : AnswerModel::POST_TYPE;
+
+$context = QuestionModel::POST_TYPE === $postType ? array( 'question' => $args['post'] ) : array( 'answer' => $args['post'] );
+
+if ( ! Auth::currentUserCan( $postType . ':update', $context ) ) {
+	return;
 }
 
 ?>
