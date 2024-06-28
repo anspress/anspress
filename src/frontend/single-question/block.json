@@ -7,7 +7,12 @@
   "category": "anspress",
   "icon": "admin-users",
   "description": "AnsPress block to show single question.",
-  "attributes": {},
+  "attributes": {
+    "currentQuestionId": {
+      "type": "string",
+      "default": ""
+    }
+  },
   "supports": {
     "html": false,
     "align": [

@@ -10,6 +10,7 @@ namespace AnsPress\Modules\Profile;
 
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\Plugin;
+use WP_Query;
 
 /**
  * Profile module class.
@@ -104,8 +105,6 @@ class ProfileModule extends AbstractModule {
 	public function registerBlocks() {
 		register_block_type( Plugin::getPathTo( 'build/frontend/user-profile' ) );
 		register_block_type( Plugin::getPathTo( 'build/frontend/user-profile-nav' ) );
-		register_block_type( Plugin::getPathTo( 'build/frontend/questions' ) );
-		register_block_type( Plugin::getPathTo( 'build/frontend/single-question' ) );
 	}
 
 	/**

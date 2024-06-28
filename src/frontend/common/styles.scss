@@ -38,6 +38,35 @@
 		&:hover {
 			background: #eee;
 		}
+
+		&-loading-spinner {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: inherit;
+			border: inherit;
+			border-radius: inherit;
+			z-index: 1;
+
+			&::after {
+				content: '';
+				width: 1em;
+				height: 1em;
+				border: 2px solid #ccc;
+				border-top-color: #333;
+				border-radius: 50%;
+				animation: anspress-spin 1s linear infinite;
+			}
+		}
+
+		&-loading-content {
+			visibility: hidden;
+		}
 	}
 
 	&snackbar-message {
@@ -65,18 +94,18 @@
 		&.anspress-snackbar-warning {
 			background-color: #ff9800;
 		}
-	}
 
-	&snackbar-message.show {
-		opacity: 1;
-		transform: translateY(0);
-		transition: 0.5s ease-in-out;
-	}
+		&.show {
+			opacity: 1;
+			transform: translateY(0);
+			transition: 0.5s ease-in-out;
+		}
 
-	&snackbar-message.hide {
-		opacity: 0;
-		transform: translateY(100%);
-		transition: 0.5s ease-in-out;
+		&.hide {
+			opacity: 0;
+			transform: translateY(100%);
+			transition: 0.5s ease-in-out;
+		}
 	}
 
 	&validation-error {
@@ -161,7 +190,6 @@ anspress-snackbar {
 	max-width: 300px;
 }
 
-
 .anspress-avatar-link {
 	background: #ccc;
 	padding: 2px;
@@ -184,13 +212,16 @@ anspress-link {
 }
 
 @keyframes anspress-glow {
-
 	0% {
 		background-color: rgba(255, 175, 175, 0.2);
 	}
 
 	50% {
 		background-color: rgba(255, 175, 175, 0.6);
+	}
+
+	100% {
+		background-color: rgba(255, 175, 175, 0.2);
 	}
 }
 
@@ -207,33 +238,4 @@ anspress-link.anspress-button-error {
 	100% {
 		transform: rotate(360deg);
 	}
-}
-
-.anspress-button-loading-spinner {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: inherit;
-	border: inherit;
-	border-radius: inherit;
-	z-index: 1;
-}
-
-.anspress-button-loading-spinner::after {
-	content: '';
-	width: 1em;
-	height: 1em;
-	border: 2px solid #ccc;
-	border-top-color: #333;
-	border-radius: 50%;
-	animation: anspress-spin 1s linear infinite;
-}
-
-.anspress-button-loading-content {
-	visibility: hidden;
 }

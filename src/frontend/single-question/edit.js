@@ -1,71 +1,55 @@
 import { useBlockProps, InspectorControls, InnerBlocks } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, RangeControl, ToggleControl, TextControl, Button } from '@wordpress/components';
+import { PanelBody, SelectControl, SearchControl, RangeControl, ToggleControl, TextControl, Button } from '@wordpress/components';
 import { useState } from 'react';
 import ServerSideRender from '@wordpress/server-side-render';
+import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
+import { ExternalLink } from '@wordpress/components';
 
-const Edit = ({ attributes }) => {
-  const { avatarPosition } = attributes;
+const Edit = ({ attributes, setAttributes }) => {
+  const { currentQuestionId } = attributes;
 
   const blockProps = useBlockProps();
+
+  const [questionSearch, setQuestionSearch] = useState('');
+
+  const questions = useSelect(
+    (select) => select('core').getEntityRecords('postType', 'question', { search: questionSearch, per_page: 10 }),
+    [questionSearch]
+  );
+
+  const questionsOptions = questions ? questions.map((q) => ({
+    label: q.title.rendered,
+    value: q.id,
+  })) : [];
 
   return (
     <div {...blockProps}>
       <InspectorControls>
-        <PanelBody title="Avatar Settings">
-          {/* <SelectControl
-            label="Avatar Position"
-            value={avatarPosition}
-            options={[
-              { label: 'Left', value: 'left' },
-              { label: 'Right', value: 'right' },
-              { label: 'Top', value: 'top' },
-              { label: 'Bottom', value: 'bottom' }
-            ]}
-            onChange={(value) => setAttributes({ avatarPosition: value })}
+        <PanelBody title={__('Preview Settings', 'anspress-question-answer')}>
+          <p>{__('Select a question from the options below or search for a specific question to display it in the editor.', 'anspress-question-answer')}</p>
+
+          <SearchControl
+            label={__('Search for a Question', 'anspress-question-answer')}
+            help={__('Search for questions', 'anspress-question-answer')}
+            value={questionSearch}
+            onChange={(value) => setQuestionSearch(value)}
           />
-          <RangeControl
-            label="Avatar Size"
-            value={avatarSize}
-            onChange={(value) => setAttributes({ avatarSize: value })}
-            min={24}
-            max={192}
-          /> */}
+
+          <SelectControl
+            label={__('Questions', 'anspress-question-answer')}
+            value={currentQuestionId}
+            options={questionsOptions}
+            onChange={(value) => setAttributes({ currentQuestionId: value })}
+          />
+        </PanelBody>
+        <PanelBody title={__('Customization', 'anspress-question-answer')}>
+          <p>{__('In the premium version of the plugin, every aspect of this block can be customized.', 'anspress-question-answer')}</p>
+          <ExternalLink href="https://anspress.net/pro">{__('Get the Pro version', 'anspress-question-answer')}</ExternalLink>
         </PanelBody>
       </InspectorControls>
 
-      <div className="anspress-apq-item-avatar">
-        <a href="#">
-          <img src="https://placehold.it/50x50" alt="Rahul Arya" className="avatar avatar-100 photo" loading="lazy" />
-        </a>
-      </div>
-      <div className="anspress-apq-item-content">
-        <div className="anspress-apq-item-metas">
-          <div className="anspress-apq-item-author">
-            Rahul Arya
-          </div>
-          <a href="#" className="anspress-apq-item-posted">
-            10 mins ago
-          </a>
-          <span className="anspress-apq-item-ccount">
-            0 Comments
-          </span>
-        </div>
-        <div className="anspress-apq-item-inner">
-          Vel facilis architecto laborum rerum debitis nam. Eius voluptatem sed dignissimos. Similique dolor molestias et voluptatibus.
-        </div>
-
-        <div className="ap-post-footer clearfix">
-          Footer
-        </div>
-      </div>
-
-      <div className="anspress-apq-item-votes">
-        <a className="apicon-thumb-up anspress-apq-item-vote-up" href="#" title="Up vote this question"></a>
-        <span className="anspress-apq-item-count">0</span>
-        <a data-tipposition="bottom center" className="apicon-thumb-down anspress-apq-item-vote-down" href="#" title="Down vote this question">
-
-        </a>
-      </div>
+      <ServerSideRender block="anspress/single-question" attributes={attributes} />
     </div>
   );
 };

@@ -71,95 +71,103 @@ export const scrollToElement = (element) => {
   }
 }
 
-export const fetch = (options) => {
-  return apiFetch(options)
-    .then(res => {
-      const data = res?.anspress || {}
-      if (data.errors && Array.isArray(data.errors) && data.errors.length) {
-        data.errors.map(snackbarItem => this.dispatchSnackbar(snackbarItem.message, 'error'));
+export const fetchData = async (options) => {
+  try {
+    const res = await apiFetch(options);
+    const data = res?.anspress || {};
+
+    if (data.errors && Array.isArray(data.errors) && data.errors.length) {
+      data.errors.forEach(snackbarItem => dispatchSnackbar(snackbarItem.message, 'error'));
+    }
+
+    if (data?.setData) {
+      Object.keys(data?.setData).forEach(key => {
+        const element = document.querySelector(`[data-anspress-id="${key}"]`);
+
+        if (element && element.data) {
+          element.data = data?.setData[key];
+        }
+      });
+    }
+
+    handleReplaceHtml(data?.replaceHtml);
+
+    handleTriggerEvents(data?.triggerEvents);
+
+    if (data?.messages && Array.isArray(data?.messages)) {
+      data?.messages.forEach(snackbarItem => dispatchSnackbar(snackbarItem.message, snackbarItem.type));
+    }
+
+    handleReload(data?.reload);
+
+    handleRedirect(data?.redirect);
+
+    return data;
+  } catch (err) {
+    console.error(err);
+
+    const errorData = err?.anspress?.errors || err?.anspress?.message || err?.errors || err?.message || {};
+
+    if (err.errors && Array.isArray(err.errors) && err.errors.length) {
+      err.errors.forEach(snackbarItem => dispatchSnackbar(snackbarItem, 'error'));
+    } else if (typeof err.message === 'string' && err.message.length) {
+      dispatchSnackbar(err.message, 'error');
+    } else if (typeof errorData === 'string') {
+      dispatchSnackbar(errorData, 'error');
+    }
+
+    throw err;
+  }
+};
+
+const handleReplaceHtml = (replaceHtmlData) => {
+  if (replaceHtmlData) {
+    Object.keys(replaceHtmlData).forEach(selector => {
+      const replaceEl = document.querySelector(selector);
+
+      if (replaceEl) {
+        replaceHTML(selector, replaceHtmlData[selector]);
+      } else {
+        console.error(`Element with selector '${selector}' not found.`);
       }
-
-      if (data?.setData) {
-        Object.keys(data?.setData).forEach(key => {
-          const element = document.querySelector('[data-anspress-id="' + key + '"]');
-
-          if (element && element?.data) {
-            element.data = data?.setData[key];
-          }
-        });
-      }
-
-      // Handle replaceHtml.
-      if (data?.replaceHtml) {
-        Object.keys(data?.replaceHtml).forEach(key => {
-          const replaceEl = document.querySelector(key);
-
-          if (replaceEl) {
-            replaceHTML(key, data?.replaceHtml[key]);
-          } else {
-            console.error(`Element with selector '${key}' not found.`);
-          }
-        });
-      }
-
-      // Handle trigger event.
-      if (data?.triggerEvents) {
-        Object.keys(data?.triggerEvents).forEach(key => {
-          if (key === 'scrollTo' && data?.triggerEvents[key]?.element) {
-            const element = document.querySelector(data?.triggerEvents[key]?.element);
-            scrollToElement(element)
-          } else if ('appendTo' === key && data?.triggerEvents[key]?.selector && data?.triggerEvents[key]?.html) {
-            const element = document.querySelector(data?.triggerEvents[key]?.selector);
-
-            if (element) {
-              element.insertAdjacentHTML(data?.triggerEvents[key]?.position || 'beforeend', data?.triggerEvents[key]?.html);
-            } else {
-              console.error(`Element with selector '${data?.triggerEvents[key]?.element}' not found.`);
-            }
-
-          } else {
-            document.dispatchEvent(new CustomEvent(key, { detail: data?.triggerEvents[key] }));
-          }
-        });
-      }
-
-      // Handle dispatch snackbar.
-      if (data?.messages && Array.isArray(data?.messages)) {
-        data?.messages.map(snackbarItem => dispatchSnackbar(snackbarItem.message, snackbarItem.type));
-      }
-
-      // Handle reload.
-      if (data?.reload) {
-        location.reload();
-      }
-
-      // Handle redirect.
-      if (data?.redirect) {
-        location.href = data?.redirect;
-      }
-
-      return data;
-    })
-    .catch(err => {
-      console.error(err)
-
-      const errorData = err?.anspress?.errors || err?.anspress?.message || err?.errors || err?.message || {};
-
-      if (err.errors && Array.isArray(err.errors) && err.errors.length) {
-        err.errors.map(snackbarItem => dispatchSnackbar(snackbarItem, 'error'));
-      } else if (
-        err.message &&
-        typeof err.message === 'string' &&
-        err.message.length
-      ) {
-        dispatchSnackbar(err.message, 'error');
-      } else if (typeof errorData === 'string') {
-        dispatchSnackbar(errorData, 'error');
-      }
-
-      throw err;
     });
-}
+  }
+};
+
+const handleTriggerEvents = (triggerEventsData) => {
+  if (triggerEventsData) {
+    Object.keys(triggerEventsData).forEach(eventName => {
+      const eventData = triggerEventsData[eventName];
+
+      if (eventName === 'scrollTo' && eventData?.element) {
+        const element = document.querySelector(eventData.element);
+        scrollToElement(element);
+      } else if (eventName === 'appendTo' && eventData?.selector && eventData?.html) {
+        const element = document.querySelector(eventData.selector);
+
+        if (element) {
+          element.insertAdjacentHTML(eventData.position || 'beforeend', eventData.html);
+        } else {
+          console.error(`Element with selector '${eventData.selector}' not found.`);
+        }
+      } else {
+        document.dispatchEvent(new CustomEvent(eventName, { detail: eventData }));
+      }
+    });
+  }
+};
+
+const handleReload = (reloadData) => {
+  if (reloadData) {
+    location.reload();
+  }
+};
+
+const handleRedirect = (redirectData) => {
+  if (redirectData) {
+    location.href = redirectData;
+  }
+};
 
 export const replaceHTML = (selector, newHTML) => {
   // Select the element based on the provided selector

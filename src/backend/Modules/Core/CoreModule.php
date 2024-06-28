@@ -11,6 +11,7 @@ namespace AnsPress\Modules\Core;
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Router;
+use WP_Query;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,6 +43,7 @@ class CoreModule extends AbstractModule {
 		add_action( 'enqueue_block_assets', array( $this, 'registerBlockAssets' ) );
 		add_filter( 'query_vars', array( $this, 'addQueryVars' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueueBlockAssets' ) );
+		add_action( 'init', array( $this, 'registerBlocks' ) );
 	}
 
 	/**
@@ -188,5 +190,69 @@ class CoreModule extends AbstractModule {
 	 */
 	public function enqueueBlockAssets() {
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
+	}
+
+	/**
+	 * Register blocks.
+	 *
+	 * @return void
+	 */
+	public function registerBlocks() {
+		register_block_type( Plugin::getPathTo( 'build/frontend/questions' ) );
+		register_block_type(
+			Plugin::getPathTo( 'build/frontend/single-question' ),
+			array(
+				'render_callback' => array( $this, 'renderSingleQuestionBlock' ),
+			)
+		);
+	}
+
+	/**
+	 * Render single question block.
+	 *
+	 * @param mixed $attributes Attributes.
+	 * @return string
+	 */
+	public function renderSingleQuestionBlock( $attributes ) {
+		ob_start();
+
+		if ( wp_is_serving_rest_request() ) {
+			if ( empty( $attributes['currentQuestionId'] ) ) {
+				echo esc_attr__( 'When editing this block, select a question to display from the block settings on the right side of the editor. If block settings are not visible, click on this text.', 'anspress-question-answer' );
+
+				return ob_get_clean();
+			}
+
+			$args = array(
+				'post_type'      => 'question',
+				'posts_per_page' => 1,
+				'orderby'        => 'date',
+				'order'          => 'ASC',
+				'p'              => $attributes['currentQuestionId'],
+			);
+
+			$query = new WP_Query( $args );
+
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
+					$query->the_post();
+
+					Plugin::loadView(
+						'src/frontend/single-question/single-question.php',
+						array( 'attributes' => $attributes )
+					);
+				}
+				wp_reset_postdata();
+			} else {
+				echo esc_attr__( 'No question found or selected question does not exists. Select a question to display.', 'anspress-question-answer' );
+			}
+		} else {
+			Plugin::loadView(
+				'src/frontend/single-question/single-question.php',
+				array( 'attributes' => $attributes )
+			);
+		}
+
+		return ob_get_clean();
 	}
 }
