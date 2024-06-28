@@ -9,7 +9,8 @@
 namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractPolicy;
-use AnsPress\Classes\Auth;
+use AnsPress\Modules\Answer\AnswerModel;
+use AnsPress\Modules\Question\QuestionModel;
 use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,7 +29,9 @@ class VotePolicy extends AbstractPolicy {
 	 * @var array
 	 */
 	public array $abilities = array(
-		'create' => array(),
+		'create' => array(
+			'post',
+		),
 		'view'   => array(
 			'vote',
 		),
@@ -67,7 +70,34 @@ class VotePolicy extends AbstractPolicy {
 	 * @return bool
 	 */
 	public function view( WP_User $user, array $context ): bool {
-		if ( $user->has_cap( 'vote:view' ) && $context['vote'] && is_object( $context['vote'] ) && (int) $context['vote']->vote_user_id === (int) $user->ID ) {
+		$voteType = self::getContextItemField( $context, 'vote', 'vote_type' );
+
+		// Flag vote can be viewed by author.
+		if ( VoteModel::FLAG === $voteType && (
+			self::isUserIdEmpty( $user ) || ! self::isAuthorOfItem( $user, $context, 'vote', 'vote_user_id' )
+		) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Allow user to create a vote.
+	 *
+	 * @param WP_User $user User.
+	 * @param array   $context Context array.
+	 * @return bool
+	 */
+	public function create( WP_User $user, array $context ): bool {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		$postType = self::getContextItemField( $context, 'post', 'post_type' );
+
+		// Allow if question or answer.
+		if ( in_array( $postType, array( QuestionModel::POST_TYPE, AnswerModel::POST_TYPE ), true ) ) {
 			return true;
 		}
 
@@ -82,10 +112,7 @@ class VotePolicy extends AbstractPolicy {
 	 * @return bool
 	 */
 	public function update( WP_User $user, array $context ): bool {
-		if ( $user->has_cap( 'vote:update' ) && $context['vote'] && is_object( $context['vote'] ) && (int) $context['vote']->vote_user_id === (int) $user->ID ) {
-			return true;
-		}
-
+		// At the moment we do not allow user to update their vote.
 		return false;
 	}
 
@@ -97,7 +124,11 @@ class VotePolicy extends AbstractPolicy {
 	 * @return bool
 	 */
 	public function delete( WP_User $user, array $context ): bool {
-		if ( $user->has_cap( 'vote:delete' ) && $context['vote'] && is_object( $context['vote'] ) && (int) $context['vote']->vote_user_id === (int) $user->ID ) {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'vote', 'vote_user_id' ) ) {
 			return true;
 		}
 

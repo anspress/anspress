@@ -167,6 +167,7 @@ class Auth {
 	 * Get the abilities for the participant role.
 	 *
 	 * @return array
+	 * @todo Replcae this with anspress:ability before release.
 	 */
 	public static function getParticipantAbilities(): array {
 		$abilities = array(
@@ -204,6 +205,7 @@ class Auth {
 	 * Get the abilities for the moderator role.
 	 *
 	 * @return array
+	 * @todo Replcae this with anspress:ability before release.
 	 */
 	public static function getModeratorAbilities(): array {
 		$abilities = array(

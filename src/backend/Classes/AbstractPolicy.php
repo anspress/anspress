@@ -131,4 +131,57 @@ abstract class AbstractPolicy implements PolicyInterface {
 
 		return true;
 	}
+
+	/**
+	 * Check if user ID is empty.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @return bool True if the user ID is not empty, false otherwise.
+	 */
+	public static function isUserIdEmpty( ?WP_User $user ): bool {
+		return empty( $user?->ID );
+	}
+
+	/**
+	 * Get the context item field.
+	 *
+	 * @param array  $context The context of the ability.
+	 * @param string $itemKey The key of the item in the context.
+	 * @param string $itemFieldKey The field name in the context item.
+	 * @return mixed|null The field value if found, null otherwise.
+	 */
+	public static function getContextItemField( array $context, string $itemKey, string $itemFieldKey ): mixed {
+		if ( empty( $context ) ) {
+			return null;
+		}
+
+		if ( ! isset( $context[ $itemKey ] ) ) {
+			return null;
+		}
+
+		return is_object( $context[ $itemKey ] ) ? $context[ $itemKey ]?->{$itemFieldKey} : $context[ $itemKey ][ $itemFieldKey ];
+	}
+
+	/**
+	 * Check if user is the author of the context item.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The context of the ability.
+	 * @param string       $itemKey The key of the item in the context.
+	 * @param string       $itemFieldKey The field name in the context item.
+	 * @return bool True if the user is authorized to view the model, false otherwise.
+	 */
+	public static function isAuthorOfItem( WP_User $user, array $context, string $itemKey, string $itemFieldKey ): bool {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		$fieldValue = self::getContextItemField( $context, $itemKey, $itemFieldKey );
+
+		if ( empty( $fieldValue ) ) {
+			return false;
+		}
+
+		return (int) $fieldValue === (int) $user->ID;
+	}
 }

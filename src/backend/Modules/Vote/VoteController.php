@@ -51,12 +51,7 @@ class VoteController extends AbstractController {
 	 * Create a new vote.
 	 */
 	public function createVote(): WP_REST_Response {
-		if ( ! is_user_logged_in() ) {
-			return $this->unauthorized();
-		}
-
-		// Check for permission.
-		$this->checkPermission( 'vote:create' );
+		$this->assureLoggedIn();
 
 		// Validate request data.
 		$data = $this->validate(
@@ -67,6 +62,9 @@ class VoteController extends AbstractController {
 		);
 
 		$postObj = get_post( $data['post_id'] );
+
+		// Check for permission.
+		$this->checkPermission( 'vote:create', array( 'post' => $postObj ) );
 
 		$vote['vote_user_id']  = get_current_user_id();
 		$vote['vote_value']    = 'voteup' === $data['vote_type'] ? 1 : -1;

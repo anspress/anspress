@@ -29,6 +29,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class VoteModel extends AbstractModel {
 	/**
+	 * Vote type.
+	 */
+	const VOTE = 'vote';
+
+	/**
+	 * Flag type.
+	 */
+	const FLAG = 'flag';
+
+	/**
 	 * Get the schema.
 	 *
 	 * @return AbstractSchema
