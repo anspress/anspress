@@ -10,6 +10,7 @@ namespace AnsPress\Modules\Core;
 
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Router;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,6 +31,8 @@ class CoreModule extends AbstractModule {
 	public function register_hooks() {
 		$this->loadTextdomain();
 
+		$this->registerRouter();
+
 		add_action( 'wpmu_new_blog', array( $this, 'createBlogTables' ), 10, 6 );
 		add_filter( 'wpmu_drop_tables', array( $this, 'dropBlogTables' ), 10, 2 );
 		add_filter( 'block_categories_all', array( $this, 'registerBlockCategory' ), 1 );
@@ -39,8 +42,16 @@ class CoreModule extends AbstractModule {
 		add_action( 'enqueue_block_assets', array( $this, 'registerBlockAssets' ) );
 		add_filter( 'query_vars', array( $this, 'addQueryVars' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueueBlockAssets' ) );
+	}
 
-		add_action( 'rest_api_init', array( $this, 'registerRoutes' ) );
+	/**
+	 * Register router.
+	 *
+	 * @return void
+	 */
+	public function registerRouter() {
+		$router = new Router( Plugin::getContainer() );
+		$router->register();
 	}
 
 	/**
@@ -177,13 +188,5 @@ class CoreModule extends AbstractModule {
 	 */
 	public function enqueueBlockAssets() {
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
-	}
-
-	/**
-	 * Register routes.
-	 *
-	 * @return void
-	 */
-	public function registerRoutes() {
 	}
 }
