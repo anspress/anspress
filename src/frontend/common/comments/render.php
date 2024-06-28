@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Router;
 use AnsPress\Exceptions\GeneralException;
 use AnsPress\Modules\Comment\CommentService;
 
@@ -81,17 +82,31 @@ if ( $commentsWithourContainer ) {
 		<?php endif; ?>
 	</div>
 	<div class="anspress-comments-footer anspress-comments-form-container">
-		<a data-anspressel="comments-load-more" href="#" class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></a>
-	</div>
+		<?php
+		$loadMoreHref = Router::route(
+			'v1.posts.showComments',
+			array(
+				'post_id' => $post->ID,
+			)
+		);
+		?>
 
-	<?php
-	Plugin::loadView(
-		'src/frontend/common/comments/comment-form.php',
-		array(
-			'post'        => $args['post'],
-			'form_loaded' => false,
-		)
-	);
-	?>
+		<anspress-link data-href="<?php echo esc_attr( $loadMoreHref ); ?>" data-method="GET" data-anspressel="comments-load-more" href="#" class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></anspress-link>
+
+		<?php
+		$loadFormBtnHref = Router::route(
+			'v1.posts.loadCommentForm',
+			array(
+				'post_id' => $post->ID,
+			)
+		);
+		?>
+		<anspress-link
+			data-href="<?php echo esc_attr( $loadFormBtnHref ); ?>"
+			data-method="POST"
+			data-anspress="<?php echo esc_attr( wp_json_encode( array( 'form_loaded' => true ) ) ); ?>"
+			class="anspress-button anspress-comments-add-button"><?php esc_html_e( 'Add comment', 'anspress-question-answer' ); ?></anspress-link>
+	</div>
+	<div data-anspress-id="comment:form:placeholder:<?php echo (int) $post->ID; ?>"></div>
 
 </anspress-comment-list>

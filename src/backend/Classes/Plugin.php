@@ -326,6 +326,8 @@ class Plugin {
 			ob_start();
 		}
 
+		extract( $args ); // @codingStandardsIgnoreLine Generic.PHP.NoSilencedErrors.Discouraged
+
 		include $path;
 
 		if ( ! $output ) {

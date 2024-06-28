@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerModel;
 use AnsPress\Modules\Question\QuestionModel;
 
@@ -24,14 +25,26 @@ $postType = QuestionModel::POST_TYPE === $args['post']->post_type ? QuestionMode
 
 $context = QuestionModel::POST_TYPE === $postType ? array( 'question' => $args['post'] ) : array( 'answer' => $args['post'] );
 
-if ( ! Auth::currentUserCan( $postType . ':update', $context ) ) {
+if ( ! Auth::currentUserCan( $postType . ':delete', $context ) ) {
 	return;
 }
 
 if ( 'question' === $args['post']->post_type ) {
-	$href = 'anspress/v1/post/' . $args['post']->ID . '/actions/delete-question';
+	$href = Router::route(
+		'v1.questions.actions',
+		array(
+			'question_id' => $args['post']->ID,
+			'action'      => 'delete-question',
+		)
+	);
 } else {
-	$href = 'anspress/v1/post/' . $args['post']->post_parent . '/answers/' . $args['post']->ID . '/actions/delete-answer';
+	$href = Router::route(
+		'v1.answers.actions',
+		array(
+			'answer_id' => $args['post']->ID,
+			'action'    => 'delete-answer',
+		)
+	);
 }
 ?>
 <anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="POST" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></anspress-link>

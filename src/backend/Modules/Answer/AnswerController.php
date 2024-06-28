@@ -11,8 +11,10 @@ namespace AnsPress\Modules\Answer;
 use AnsPress\Classes\AbstractController;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Str;
 use AnsPress\Exceptions\HTTPException;
 use AnsPress\Exceptions\ValidationException;
+use AnsPress\Modules\Vote\VoteService;
 use InvalidArgumentException;
 use WP_Post;
 use WP_Query;
@@ -37,42 +39,25 @@ class AnswerController extends AbstractController {
 	}
 
 	/**
-	 * Load answer form.
+	 * Answer action handler.
 	 *
 	 * @return WP_REST_Response Response.
-	 * @throws ValidationException If validation fails.
 	 */
-	public function loadAnswerForm(): WP_REST_Response {
-		$this->assureLoggedIn();
-
+	public function actions(): WP_REST_Response {
 		$data = $this->validate(
 			array(
-				'post_id'     => 'required|numeric|exists:posts,id|post_type:question',
-				'form_loaded' => 'nullable|bool',
-			),
-		);
-
-		$post = get_post( $data['post_id'] );
-
-		$this->checkPermission( 'answer:create', array( 'question' => $post ) );
-
-		$this->replaceHtml(
-			'[data-anspress-id="answer-form-c-' . $post->ID . '"]',
-			Plugin::loadView(
-				'src/frontend/single-question/answer-form.php',
-				array(
-					'question'    => $post,
-					'form_loaded' => (bool) $this->getParam( 'form_loaded', false ),
-				),
-				false
+				'answer_id' => 'required|numeric|exists:posts,id|post_type:answer',
+				'action'    => 'required|string',
 			)
 		);
 
-		return $this->response(
-			array(
-				'load_tinymce' => 'anspress-answer-content',
-			)
-		);
+		$action = Str::toCamelCase( 'action' . $data['action'] );
+
+		if ( method_exists( $this, $action ) ) {
+			return $this->$action( (int) $data['answer_id'] );
+		}
+
+		return $this->notFound( __( 'Invalid action.', 'anspress-question-answer' ) );
 	}
 
 	/**
@@ -87,11 +72,11 @@ class AnswerController extends AbstractController {
 		$data = $this->validate(
 			array(
 				'post_content' => 'required|min:1|max:5000',
-				'post_id'      => 'required|numeric|exists:posts,ID|post_type:question',
+				'question_id'  => 'required|numeric|exists:posts,ID|post_type:question',
 			)
 		);
 
-		$question = get_post( $data['post_id'] );
+		$question = get_post( $data['question_id'] );
 
 		$this->checkPermission( 'answer:create', array( 'question' => $question ) );
 
@@ -137,11 +122,11 @@ class AnswerController extends AbstractController {
 	public function showAnswers(): WP_REST_Response {
 		$data = $this->validate(
 			array(
-				'post_id' => 'required|numeric|exists:posts,ID|post_type:question',
+				'question_id' => 'required|numeric|exists:posts,ID|post_type:question',
 			)
 		);
 
-		$question = get_post( $data['post_id'] );
+		$question = get_post( $data['question_id'] );
 
 		$currentPage = max( 1, $this->getParam( 'page', 1 ) );
 
@@ -170,6 +155,13 @@ class AnswerController extends AbstractController {
 		);
 
 		$this->setData(
+			'button:answers:loadmore:' . $question->ID,
+			array(
+				'page' => $currentPage + 1,
+			)
+		);
+
+		$this->setData(
 			'answers-' . $question->ID,
 			$answersArgs
 		);
@@ -180,23 +172,17 @@ class AnswerController extends AbstractController {
 	/**
 	 * Select answer.
 	 *
+	 * @param int $answerId Answer ID.
 	 * @return WP_REST_Response Response object.
 	 */
-	public function selectAnswer(): WP_REST_Response {
+	public function actionSelect( int $answerId ): WP_REST_Response {
 		$this->assureLoggedIn();
 
-		$data = $this->validate(
-			array(
-				'post_id'   => 'required|numeric|exists:posts,ID|post_type:question',
-				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
-			)
-		);
-
-		$answer = get_post( $data['answer_id'] );
+		$answer = get_post( $answerId );
 
 		$this->checkPermission( 'answer:select', array( 'answer' => $answer ) );
 
-		ap_set_selected_answer( $data['post_id'], $data['answer_id'] );
+		ap_set_selected_answer( $answer->post_parent, $answerId );
 
 		$this->addMessage(
 			'success',
@@ -213,20 +199,14 @@ class AnswerController extends AbstractController {
 	/**
 	 * Unselect answer.
 	 *
+	 * @param int $answerId Answer ID.
 	 * @return WP_REST_Response Response object.
 	 */
-	public function unselectAnswer(): WP_REST_Response {
+	public function actionUnselect( int $answerId ): WP_REST_Response {
 		$this->assureLoggedIn();
 
-		$data = $this->validate(
-			array(
-				'post_id'   => 'required|numeric|exists:posts,ID|post_type:question',
-				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
-			)
-		);
-
-		$question = get_post( $data['post_id'] );
-		$answer   = get_post( $data['answer_id'] );
+		$answer   = get_post( $answerId );
+		$question = get_post( $answer->post_parent );
 
 		$this->checkPermission( 'answer:unselect', array( 'answer' => $answer ) );
 
@@ -252,18 +232,13 @@ class AnswerController extends AbstractController {
 	/**
 	 * Delete answer.
 	 *
+	 * @param int $answerId Answer ID.
 	 * @return WP_REST_Response Response object.
 	 */
-	public function deleteAnswer(): WP_REST_Response {
+	public function actionDeleteAnswer( int $answerId ): WP_REST_Response {
 		$this->assureLoggedIn();
 
-		$data = $this->validate(
-			array(
-				'answer_id' => 'required|numeric|exists:posts,ID|post_type:answer',
-			)
-		);
-
-		$answer = get_post( $data['answer_id'] );
+		$answer = get_post( $answerId );
 
 		$this->checkPermission( 'answer:delete', array( 'answer' => $answer ) );
 
@@ -299,7 +274,7 @@ class AnswerController extends AbstractController {
 	 *
 	 * @return WP_REST_Response Response object.
 	 */
-	public function loadEditAnswerForm() {
+	public function actionLoadAnswerEditForm() {
 		$this->assureLoggedIn();
 
 		$this->validate(
@@ -390,6 +365,35 @@ class AnswerController extends AbstractController {
 		);
 
 		$this->addEvent( 'scrollTo', array( 'element' => $elm ) );
+
+		return $this->response();
+	}
+
+	/**
+	 * Report an answer.
+	 *
+	 * @param int $answerId The ID of the answer.
+	 * @return WP_REST_Response Response.
+	 */
+	public function actionReport( int $answerId ) {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $answerId );
+
+		if ( Plugin::get( VoteService::class )->hasUserFlaggedPost( $post->ID ) ) {
+			return $this->badRequest( __( 'You have already reported this answer.', 'anspress-question-answer' ) );
+		}
+
+		$voted = Plugin::get( VoteService::class )->addPostFlag( $post->ID, Auth::getID() );
+
+		if ( ! $voted ) {
+			return $this->serverError( __( 'Failed to report this answer.', 'anspress-question-answer' ) );
+		}
+
+		$this->addMessage(
+			'success',
+			esc_attr__( 'Thank you for reporting this answer.', 'anspress-question-answer' )
+		);
 
 		return $this->response();
 	}

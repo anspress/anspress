@@ -1,4 +1,4 @@
-import { clearFormErrors, handleFormErrors, initTynimce, loadForm, removeForm, removeTinymce } from "../common/AnsPressCommon";
+import { clearFormErrors, handleFormErrors, initTynimce, loadForm, removeTinymce } from "../common/AnsPressCommon";
 import { BaseCustomElement } from "../common/BaseCustomElement";
 
 class AnsPressAnswerForm extends BaseCustomElement {
@@ -22,13 +22,9 @@ class AnsPressAnswerForm extends BaseCustomElement {
     this.querySelector('[data-anspressel="load-form"]')?.addEventListener('click', this.loadAnswerForm.bind(this));
 
     this.querySelector('form')?.addEventListener('submit', this.handleSubmit.bind(this));
-
-    this.querySelector('[data-anspressel="cancel-button"]')?.addEventListener('click', this.removeAnswerForm.bind(this));
-
   }
 
   loadAnswerForm() {
-    console.log(this)
     loadForm(this.data);
   }
 
@@ -45,16 +41,11 @@ class AnsPressAnswerForm extends BaseCustomElement {
         body: formData,
       });
 
-      this.removeAnswerForm();
+      this.querySelector('[data-anspress-id="button:answer:form"]').click();
     } catch (error) {
       handleFormErrors(error?.errors, this.querySelector('form'));
       console.error('An error occurred:', error);
     }
-  }
-
-  async removeAnswerForm(e) {
-    e?.preventDefault();
-    removeForm(this.data);
   }
 }
 

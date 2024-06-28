@@ -155,7 +155,7 @@ class AnswerService extends AbstractService {
 				'post_type'        => 'answer',
 				'posts_per_page'   => ap_opt( 'answers_per_page' ),
 				'paged'            => 0,
-				'orderby'          => 'post_date',
+				'ap_order_by'      => 'oldest',
 				'ap_answers_query' => true,
 				'ap_query'         => true,
 			)

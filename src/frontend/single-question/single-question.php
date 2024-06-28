@@ -9,12 +9,22 @@
 
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerService;
 use AnsPress\Modules\Vote\VoteService;
 
 $_post = ap_get_post( get_the_ID() );
 
 $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
+
+if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) {
+	?>
+		<div class="anspress-apq-item-answer-disabled anspress-card">
+			<?php esc_html_e( 'You are not allowed to view this question.', 'anspress-question-answer' ); ?>
+		</div>
+	<?php
+	return;
+}
 
 
 ?>
@@ -76,8 +86,24 @@ $voteData = Plugin::get( VoteService::class )->getPostVoteData( get_the_ID() );
 					?>
 				</div>
 				<?php if ( $answersArgs['have_pages'] ) : ?>
-					<button data-anspressel="load-more-answers" class="anspress-load-more anspress-load-more-answers anspress-button anspress-btn-primary anspress-btn-sm"
-						><?php esc_html_e( 'Load more answers', 'anspress-question-answer' ); ?> <span data-anspress-id="answers-count-<?php echo (int) $_post->ID; ?>" class="anspress-load-more-count"><?php echo esc_attr( number_format_i18n( $answersArgs['remaining_items'] ) ); ?></span></button>
+					<?php
+						$loadMoreHref = Router::route(
+							'v1.questions.answers',
+							array(
+								'question_id' => $_post->ID,
+							)
+						);
+
+						$loadMoreData = wp_json_encode( array( 'page' => $currentPage + 1 ) );
+					?>
+					<anspress-link
+						data-href="<?php echo esc_attr( $loadMoreHref ); ?>"
+						data-method="GET"
+						data-anspressel="load-more-answers"
+						data-anspress-id="button:answers:loadmore:<?php echo (int) $_post->ID; ?>"
+						data-anspress="<?php echo esc_attr( $loadMoreData ); ?>"
+						class="anspress-load-more anspress-load-more-answers anspress-button anspress-btn-primary anspress-btn-sm"
+						><?php esc_html_e( 'Load more answers', 'anspress-question-answer' ); ?> <span data-anspress-id="answers-count-<?php echo (int) $_post->ID; ?>" class="anspress-load-more-count"><?php echo esc_attr( number_format_i18n( $answersArgs['remaining_items'] ) ); ?></span></anspress-link>
 				<?php endif; ?>
 			</anspress-answer-list>
 

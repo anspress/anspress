@@ -9,9 +9,8 @@
 namespace AnsPress\Modules\Comment;
 
 use AnsPress\Classes\AbstractController;
-use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
-use AnsPress\Exceptions\HTTPException;
+use AnsPress\Classes\Str;
 use AnsPress\Exceptions\ValidationException;
 use InvalidArgumentException;
 use WP_REST_Response;
@@ -37,45 +36,64 @@ class CommentController extends AbstractController {
 	public function __construct( private CommentService $commentService ) {}
 
 	/**
+	 * Comment action handler.
+	 *
+	 * @return WP_REST_Response Response.
+	 */
+	public function actions(): WP_REST_Response {
+		$data = $this->validate(
+			array(
+				'comment_id' => 'required|numeric|exists:comments,comment_ID',
+				'action'     => 'required|string',
+			)
+		);
+
+		$action = Str::toCamelCase( 'action' . $data['action'] );
+
+		if ( method_exists( $this, $action ) ) {
+			return $this->$action( (int) $data['comment_id'] );
+		}
+
+		return $this->notFound( __( 'Invalid action.', 'anspress-question-answer' ) );
+	}
+
+	/**
 	 * Load comment form.
 	 *
 	 * @return WP_REST_Response Response.
 	 */
-	public function loadCommentForm() {
+	public function loadCommentForm(): WP_REST_Response {
 		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
 				'post_id'     => 'required|numeric|exists:posts,ID',
 				'form_loaded' => 'nullable|bool',
+				'comment_id'  => 'nullable|numeric|exists:comments,comment_ID',
 			)
 		);
 
 		$post = ap_get_post( $data['post_id'] );
 
-		if ( ! $post ) {
-			return $this->notFound();
-		}
-
 		// Check if user can comment.
 		$this->checkPermission( 'comment:create', array( 'post' => $post ) );
 
-		$commentForm = Plugin::loadView(
-			'src/frontend/common/comments/comment-form.php',
+		$this->addEvent(
+			'appendTo',
 			array(
-				'post'        => $post,
-				'form_loaded' => $data['form_loaded'] ?? true,
-			),
-			false
-		);
-
-		return $this->response(
-			array(
-				'replaceHtml' => array(
-					'anspress-item[data-post-id="' . (int) $data['post_id'] . '"] anspress-comment-form' => $commentForm,
+				'selector' => '[data-anspress-id="comment:form:placeholder:' . (int) $data['post_id'] . '"]',
+				'html'     => Plugin::loadView(
+					'src/frontend/common/comments/comment-form.php',
+					array(
+						'post'        => $post,
+						'form_loaded' => $data['form_loaded'] ?? true,
+					),
+					false
 				),
 			)
 		);
+
+		return $this->response();
 	}
 
 	/**
@@ -83,11 +101,12 @@ class CommentController extends AbstractController {
 	 *
 	 * @return WP_REST_Response Response.
 	 */
-	public function loadEditCommentForm() {
+	public function loadCommentEditForm() {
 		$this->assureLoggedIn();
 
 		$data = $this->validate(
 			array(
+				'post_id'     => 'required|numeric|exists:posts,ID',
 				'comment_id'  => 'required|numeric|exists:comments,comment_ID',
 				'form_loaded' => 'nullable|bool',
 			)
@@ -97,7 +116,7 @@ class CommentController extends AbstractController {
 		$post    = ap_get_post( $comment->comment_post_ID );
 
 		if ( ! $post ) {
-			return $this->notFound();
+			return $this->notFound( __( 'Invalid post.', 'anspress-question-answer' ) );
 		}
 
 		// Check if user can edit comment.
@@ -113,12 +132,14 @@ class CommentController extends AbstractController {
 			false
 		);
 
+		$this->replaceHtml(
+			'[data-anspress-id="comment-' . $comment->comment_ID . '"]',
+			$commentForm
+		);
+
 		return $this->response(
 			array(
-				'comment'     => array( 'id' => $data['comment_id'] ),
-				'replaceHtml' => array(
-					'[data-anspress-id="comment-form-c-' . $comment->comment_post_ID . '"]' => $commentForm,
-				),
+				'comment' => array( 'id' => $data['comment_id'] ),
 			)
 		);
 	}
@@ -184,26 +205,23 @@ class CommentController extends AbstractController {
 	/**
 	 * Delete a comment.
 	 *
+	 * @param int $commentId The ID of the comment.
 	 * @return WP_REST_Response
 	 * @throws ValidationException If validation fails.
 	 */
-	public function deleteComment() {
+	public function actionDeleteComment( int $commentId ) {
 		$this->assureLoggedIn();
 
-		$data = $this->validate(
-			array(
-				'comment_id' => 'required|numeric|exists:comments,comment_ID',
-			),
-			array(),
-			$this->commentService->commentAttributes()
-		);
+		$comment = get_comment( $commentId );
 
-		$comment = get_comment( $data['comment_id'] );
+		if ( 'anspress' !== $comment?->comment_type ) {
+			return $this->badRequest( __( 'Invalid comment.', 'anspress-question-answer' ) );
+		}
 
 		// Check if user can delete comment.
 		$this->checkPermission( 'comment:delete', array( 'comment' => $comment ) );
 
-		$deleted = wp_delete_comment( $data['comment_id'], true );
+		$deleted = wp_delete_comment( $comment->comment_ID, true );
 
 		if ( ! $deleted ) {
 			throw new ValidationException(
@@ -214,7 +232,7 @@ class CommentController extends AbstractController {
 		$this->addEvent(
 			'anspress-comments-' . (int) $comment->comment_post_ID . '-deleted',
 			array(
-				'commentId' => $data['comment_id'],
+				'commentId' => $comment->comment_ID,
 			)
 		);
 

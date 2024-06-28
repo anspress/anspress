@@ -61,7 +61,7 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool|null Null to proceed to specific policy method, or a boolean to override.
 	 */
 	public function before( string $ability, ?WP_User $user, array $context = array() ): ?bool {
-		if ( ! empty( $user?->user_id ) && $user->has_cap( 'manage_options' ) ) {
+		if ( ! self::isUserIdEmpty( $user ) && $user->has_cap( 'manage_options' ) ) {
 			return true;
 		}
 
@@ -76,7 +76,12 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
 	public function view( ?WP_User $user, array $context = array() ): bool {
-		if ( ! empty( $user?->user_id ) && ! empty( $context['question'] ) && is_object( $context['question'] ) && $context['question']->post_author === $user->user_id ) {
+		// Allow all to view publish question.
+		if ( 'publish' === self::getContextItemField( $context, 'question', 'post_status' ) ) {
+			return true;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'question', 'post_author' ) ) {
 			return true;
 		}
 
@@ -126,6 +131,7 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( ?WP_User $user, array $context ): bool {
+
 		if (
 			! empty( $user?->user_id ) &&
 			! empty( $context['question'] ) &&

@@ -6,6 +6,7 @@
  * @package AnsPress
  */
 
+use AnsPress\Classes\Router;
 use AnsPress\Exceptions\GeneralException;
 
 // Exit if accessed directly.
@@ -25,8 +26,22 @@ $answer = isset( $args['answer'] ) ? $args['answer'] : null;
 $answerFormArgs = array(
 	'question_id'    => $question->ID,
 	'form_loaded'    => $args['form_loaded'] ?? false,
-	'load_form_path' => '/anspress/v1/post/' . $question->ID . '/load-answer-form',
-	'form_action'    => $answer ? '/anspress/v1/post/' . $question->ID . '/answers/' . $answer->ID : '/anspress/v1/post/' . $question->ID . '/answers',
+	'load_form_path' => Router::route(
+		'v1.questions.actions',
+		array(
+			'question_id' => $question->ID,
+			'action'      => 'load-answer-form',
+		)
+	),
+	'form_action'    => $answer ? Router::route(
+		'v1.answers.update',
+		array( 'answer_id' => $answer->ID )
+	) : Router::route(
+		'v1.answers.create',
+		array(
+			'question_id' => $question->ID,
+		)
+	),
 	'load_tinymce'   => 'anspress-answer-content',
 );
 ?>
@@ -62,7 +77,17 @@ $answerFormArgs = array(
 						><?php echo wp_kses_post( apply_filters( 'the_content', $answer?->post_content ?? '' ) ); ?></textarea>
 					</div>
 					<div class="anspress-form-buttons">
-						<button data-anspressel="cancel-button" class="anspress-button anspress-button-secondary"><?php esc_attr_e( 'Cancel', 'anspress-question-answer' ); ?></button>
+						<?php
+							$href = Router::route(
+								'v1.questions.actions',
+								array(
+									'question_id' => $question->ID,
+									'action'      => 'load-answer-form',
+									'form_loaded' => true,
+								)
+							);
+						?>
+						<anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="POST" data-anspress-id="button:answer:form" class="anspress-button anspress-button-secondary"><?php esc_attr_e( 'Cancel', 'anspress-question-answer' ); ?></anspress-link>
 						<button
 							data-anspressel="submit"
 							data-anspress-button="submit"

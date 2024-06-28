@@ -6,6 +6,8 @@
  * @since 5.0.0
  */
 
+use AnsPress\Classes\Router;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Trying to cheat?' );
 }
@@ -54,27 +56,27 @@ $postComment = $args['comment'];
 			<div class="anspress-comments-actions">
 				<?php if ( ap_user_can_delete_comment( $postComment->comment_ID ) ) : ?>
 					<?php
-						$deleteCommentArgs = wp_json_encode(
+						$deleteHref = Router::route(
+							'v1.comments.actions',
 							array(
-								'path'       => 'anspress/v1/post/' . $postComment->comment_post_ID . '/comments/' . $postComment->comment_ID,
 								'comment_id' => $postComment->comment_ID,
-								'post_id'    => $postComment->comment_post_ID,
+								'action'     => 'delete-comment',
 							)
-						);
+						)
 					?>
-					<a data-anspressel="delete-button" href="#" class="anspress-comments-delete" data-anspress="<?php echo esc_attr( $deleteCommentArgs ); ?>">
-						<?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?>
-					</a>
+					<anspress-link data-href="<?php echo esc_attr( $deleteHref ); ?>" data-method="POST" class="anspress-comments-delete"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></anspress-link>
 				<?php endif; ?>
 				<?php if ( ap_user_can_edit_comment( $postComment->comment_ID ) ) : ?>
 					<?php
-						$editCommentArgs = array(
-							'load_form_path' => 'anspress/v1/post/' . $postComment->comment_post_ID . '/load-edit-comment-form/' . $postComment->comment_ID,
-						);
-						?>
-					<a data-anspressel="edit-button" href="#" class="anspress-comments-edit" data-anspress="<?php echo esc_attr( wp_json_encode( $editCommentArgs ) ); ?>">
-						<?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?>
-					</a>
+						$editHref = Router::route(
+							'v1.posts.loadCommentEditForm',
+							array(
+								'post_id'    => $postComment->comment_post_ID,
+								'comment_id' => $postComment->comment_ID,
+							)
+						)
+					?>
+					<anspress-link data-href="<?php echo esc_attr( $editHref ); ?>" data-method="POST" href="#" class="anspress-comments-edit"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></anspress-link>
 				<?php endif; ?>
 			</div>
 		</div>

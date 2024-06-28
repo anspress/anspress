@@ -8,6 +8,7 @@
 
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\Router;
 use AnsPress\Exceptions\GeneralException;
 
 // Exit if accessed directly.
@@ -129,21 +130,17 @@ if ( $selectedAnswer ) {
 				<?php do_action( 'ap_post_footer' ); ?>
 
 				<div class="anspress-apq-item-actions">
-					<?php if ( $isQuestion && Auth::currentUserCan( 'question:close', array( 'question' => $_post ) ) ) : ?>
-						<anspress-link
-							data-href="<?php echo esc_attr( 'anspress/v1/post/' . $_post->ID . '/actions/toggle-closed-state' ); ?>"
-							data-method="POST"
-							class="anspress-apq-item-action anspress-apq-item-action-close"><?php is_post_closed( $_post ) ? esc_html_e( 'Open', 'anspress-question-answer' ) : esc_html_e( 'Close', 'anspress-question-answer' ); ?></anspress-link>
-					<?php endif; ?>
-
-					<?php if ( $isQuestion && Auth::currentUserCan( 'question:feature', array( 'question' => $_post ) ) ) : ?>
-						<anspress-link
-							data-href="<?php echo esc_attr( 'anspress/v1/post/' . $_post->ID . '/actions/toggle-featured' ); ?>"
-							data-method="POST"
-							class="anspress-apq-item-action anspress-apq-item-action-feature"><?php ap_is_featured_question( $_post ) ? esc_html_e( 'Unfeature', 'anspress-question-answer' ) : esc_html_e( 'Feature', 'anspress-question-answer' ); ?></anspress-link>
-					<?php endif; ?>
-
 					<?php
+					Plugin::loadView(
+						'src/frontend/single-question/button-close.php',
+						array( 'post' => $_post )
+					);
+
+					Plugin::loadView(
+						'src/frontend/single-question/button-feature.php',
+						array( 'post' => $_post )
+					);
+
 					Plugin::loadView(
 						'src/frontend/single-question/button-delete.php',
 						array( 'post' => $_post )
@@ -153,14 +150,12 @@ if ( $selectedAnswer ) {
 						'src/frontend/single-question/button-edit.php',
 						array( 'post' => $_post )
 					);
-					?>
 
-					<?php if ( Auth::isLoggedIn() ) : ?>
-						<anspress-link
-							data-href="<?php echo esc_attr( 'anspress/v1/post/' . $_post->ID . '/actions/report' ); ?>"
-							data-method="POST"
-							class="anspress-apq-item-action anspress-apq-item-action-vote"><?php esc_html_e( 'Report', 'anspress-question-answer' ); ?></anspress-link>
-					<?php endif; ?>
+					Plugin::loadView(
+						'src/frontend/single-question/button-report.php',
+						array( 'post' => $_post )
+					);
+					?>
 
 					<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Share', 'anspress-question-answer' ); ?></a>
 				</div>

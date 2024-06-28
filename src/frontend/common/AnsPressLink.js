@@ -1,4 +1,5 @@
 import { BaseCustomElement } from './BaseCustomElement';
+import { addQueryArgs } from '@wordpress/url';
 
 export class AnsPressLink extends BaseCustomElement {
   constructor() {
@@ -31,8 +32,16 @@ export class AnsPressLink extends BaseCustomElement {
     this.style.position = 'relative'; // Ensure the button itself is relatively positioned
     this.appendChild(loader);
 
-    // Fetch data or handle link path here
-    this.fetch({ path: href, method })
+    const options = {
+      path: method === 'GET' ? addQueryArgs(href, this.data) : href,
+      method,
+    };
+
+    if (method === 'POST') {
+      options.data = this.data;
+    }
+
+    this.fetch(options)
       .then(response => {
         // Remove the loading state and restore button content
         this.classList.remove('anspress-button-loading');

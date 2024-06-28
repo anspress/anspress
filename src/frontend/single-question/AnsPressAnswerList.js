@@ -13,8 +13,6 @@ class AnsPressAnswerList extends BaseCustomElement {
     });
 
     document.addEventListener(`anspress:answer:deleted:${this.data.question_id}`, this.removeAnswer.bind(this));
-
-    this.querySelector('[data-anspressel="load-more-answers"]')?.addEventListener('click', this.loadMore.bind(this));
   }
 
   disconnectedCallback() {
@@ -44,16 +42,6 @@ class AnsPressAnswerList extends BaseCustomElement {
 
     answers?.forEach(answer => {
       document.querySelector(`[data-anspress-id="answers-${this.data.question_id}"] [data-anspressel="answers-items"]`).appendChild(answer);
-    });
-  }
-
-  async loadMore() {
-    const button = this.querySelector('[data-anspressel="load-form"]');
-    button.disabled = true;
-
-    const response = await this.fetch({
-      path: addQueryArgs(this.data.load_more_path, { page: parseInt(this.data.current_page) + 1 }),
-      method: 'GET',
     });
   }
 

@@ -6,16 +6,11 @@ class AnsPressCommentList extends BaseCustomElement {
   }
 
   addEventListeners() {
-    this.querySelector('[data-anspressel="comments-load-more"]')?.addEventListener('click', this.loadMoreComments.bind(this));
-
     document.addEventListener(`anspress-comments-${this.data.postId}-added`, this.addCommentsHandler.bind(this));
-
     document.addEventListener(`anspress-comments-${this.data.postId}-deleted`, this.deleteCommentHandler.bind(this));
   }
 
   disconnectedCallback() {
-    this.querySelector('[data-anspressel="comments-load-more"]')?.removeEventListener('click', this.loadMoreComments.bind(this));
-
     document.removeEventListener(`anspress-comments-${this.data.postId}-added`, this.addCommentsHandler);
     document.removeEventListener(`anspress-comments-${this.data.postId}-deleted`, this.deleteCommentHandler);
   }
@@ -31,18 +26,6 @@ class AnsPressCommentList extends BaseCustomElement {
   updateComponent() {
     this.checkLoadMoreButton();
     this.updateTotalCount();
-  }
-
-  async loadMoreComments(e) {
-    e.preventDefault();
-    try {
-      await this.fetch({
-        path: `/anspress/v1/post/${this.data.postId}/comments?offset=${(this.data.offset + this.data.showing)}`,
-        method: 'GET'
-      });
-    } catch (error) {
-      console.error('An error occurred while loading more comments:', error);
-    }
   }
 
   checkLoadMoreButton() {

@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerModel;
 use AnsPress\Modules\Question\QuestionModel;
 
@@ -32,5 +33,14 @@ if ( ! Auth::currentUserCan( $postType . ':update', $context ) ) {
 <?php if ( 'question' === $args['post']->post_type ) : ?>
 	<a href="<?php echo esc_url( ap_post_edit_link( $args['post'] ) ); ?>"class="anspress-apq-item-action anspress-apq-item-action-delete"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></a>
 <?php else : ?>
-	<anspress-link data-href="<?php echo esc_attr( 'anspress/v1/post/' . $args['post']->post_parent . '/answers/' . $args['post']->ID . '/load-answer-edit-form' ); ?>" data-method="POST" class="anspress-apq-item-action anspress-apq-item-action-edit"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></anspress-link>
+	<?php
+		$href = Router::route(
+			'v1.answers.actions',
+			array(
+				'answer_id' => $args['post']->ID,
+				'action'    => 'load-answer-edit-form',
+			)
+		);
+	?>
+	<anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="POST" class="anspress-apq-item-action anspress-apq-item-action-edit"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></anspress-link>
 <?php endif; ?>

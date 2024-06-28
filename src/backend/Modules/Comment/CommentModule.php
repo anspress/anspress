@@ -25,7 +25,6 @@ class CommentModule extends AbstractModule {
 	 * Register hooks.
 	 */
 	public function register_hooks() {
-		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
 
 	/**

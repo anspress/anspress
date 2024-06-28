@@ -108,6 +108,15 @@ export const fetch = (options) => {
           if (key === 'scrollTo' && data?.triggerEvents[key]?.element) {
             const element = document.querySelector(data?.triggerEvents[key]?.element);
             scrollToElement(element)
+          } else if ('appendTo' === key && data?.triggerEvents[key]?.selector && data?.triggerEvents[key]?.html) {
+            const element = document.querySelector(data?.triggerEvents[key]?.selector);
+
+            if (element) {
+              element.insertAdjacentHTML(data?.triggerEvents[key]?.position || 'beforeend', data?.triggerEvents[key]?.html);
+            } else {
+              console.error(`Element with selector '${data?.triggerEvents[key]?.element}' not found.`);
+            }
+
           } else {
             document.dispatchEvent(new CustomEvent(key, { detail: data?.triggerEvents[key] }));
           }
@@ -205,7 +214,7 @@ export const removeTinymce = (textarea) => {
 export const loadForm = (data) => {
   return fetch({
     path: addQueryArgs(data.load_form_path, { form_loaded: true }),
-    method: 'GET',
+    method: 'POST',
   })
     .then(res => {
       if (res?.load_tinymce) {
@@ -221,6 +230,6 @@ export const removeForm = async (data) => {
 
   return fetch({
     path: addQueryArgs(data.load_form_path, { form_loaded: 0 }),
-    method: 'GET',
+    method: 'POST',
   })
 }

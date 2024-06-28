@@ -150,7 +150,7 @@ class Router {
 
 		// Construct full route.
 		$fullRoute = '/' . trim( $prefix, '/' ) . '/' . ltrim( $route, '/' );
-		$fullRoute = rtrim( $fullRoute, '/' ); // Ensure no trailing slash.
+		$fullRoute = trim( $fullRoute, '/' ); // Ensure no trailing slash.
 
 		self::$routes[] = array(
 			'namespace'           => $groupSettings['namespace'] ?? '',
@@ -248,17 +248,6 @@ class Router {
 	}
 
 	/**
-	 * Add a PUT route.
-	 *
-	 * @param string $route Route path.
-	 * @param mixed  $controller Controller.
-	 * @param array  $options Route options.
-	 */
-	public static function put( string $route, $controller, array $options = array() ) {
-		self::addRoute( 'PUT', $route, $controller, $options );
-	}
-
-	/**
 	 * Add a DELETE route.
 	 *
 	 * @param string $route Route path.
@@ -304,7 +293,7 @@ class Router {
 			}
 		}
 
-		$fullRoute = $namespace . $prefix . $route;
+		$fullRoute = $namespace . ( ! empty( $namespace ) ? '/' : '' ) . ( ! empty( $prefix ) ? '/' : '' . $prefix ) . $route;
 
 		// Replace named regex groups in the route patterns with the provided arguments.
 		foreach ( $args as $key => $value ) {

@@ -41,18 +41,18 @@ class QuestionController extends AbstractController {
 	public function actions(): WP_REST_Response {
 		$data = $this->validate(
 			array(
-				'post_id' => 'required|numeric|exists:posts,id|post_type:question',
-				'action'  => 'required|string|in:delete-question,toggle-closed-state,toggle-featured,report',
+				'question_id' => 'required|numeric|exists:posts,id|post_type:question',
+				'action'      => 'required|string',
 			)
 		);
 
 		$action = Str::toCamelCase( 'action' . $data['action'] );
 
 		if ( method_exists( $this, $action ) ) {
-			return $this->$action( (int) $data['post_id'] );
+			return $this->$action( (int) $data['question_id'] );
 		}
 
-		return $this->badRequest( __( 'Invalid action.', 'anspress-question-answer' ) );
+		return $this->notFound( __( 'Invalid action.', 'anspress-question-answer' ) );
 	}
 
 	/**
@@ -162,5 +162,44 @@ class QuestionController extends AbstractController {
 		);
 
 		return $this->response();
+	}
+
+	/**
+	 * Load answer form.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function actionLoadAnswerForm( int $questionId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$this->validate(
+			array(
+				'form_loaded' => 'nullable|bool',
+			),
+		);
+
+		$post = get_post( $questionId );
+
+		$this->checkPermission( 'answer:create', array( 'question' => $post ) );
+
+		$this->replaceHtml(
+			'[data-anspress-id="answer-form-c-' . $post->ID . '"]',
+			Plugin::loadView(
+				'src/frontend/single-question/answer-form.php',
+				array(
+					'question'    => $post,
+					'form_loaded' => (bool) $this->getParam( 'form_loaded', false ),
+				),
+				false
+			)
+		);
+
+		return $this->response(
+			array(
+				'load_tinymce' => 'anspress-answer-content',
+			)
+		);
 	}
 }
