@@ -331,3 +331,313 @@ function ap_update_flags_count( $post_id ) {
 
 	return $count;
 }
+
+/**
+ * Load comment form button.
+ *
+ * @param   mixed $_post Post ID or object.
+ * @return  string
+ * @since   0.1
+ * @since   4.1.0 Added @see ap_user_can_read_comments() check.
+ * @since   4.1.2 Hide comments button if comments are already showing.
+ * @deprecated 5.0.0
+ */
+function ap_comment_btn_html( $_post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	if ( ! ap_user_can_read_comments( $_post ) ) {
+		return;
+	}
+
+	$_post = ap_get_post( $_post );
+
+	if ( 'question' === $_post->post_type && ap_opt( 'disable_comments_on_question' ) ) {
+		return;
+	}
+
+	if ( 'answer' === $_post->post_type && ap_opt( 'disable_comments_on_answer' ) ) {
+		return;
+	}
+
+	$comment_count = get_comments_number( $_post->ID );
+	$args          = wp_json_encode(
+		array(
+			'post_id' => $_post->ID,
+			'__nonce' => wp_create_nonce( 'comment_form_nonce' ),
+		)
+	);
+
+	$unapproved = '';
+
+	if ( ap_user_can_approve_comment() ) {
+		$unapproved_count = ! empty( $_post->fields['unapproved_comments'] ) ? (int) $_post->fields['unapproved_comments'] : 0;
+		$unapproved       = '<b class="unapproved' . ( $unapproved_count > 0 ? ' have' : '' ) . '" ap-un-commentscount title="' . esc_attr__( 'Comments awaiting moderation', 'anspress-question-answer' ) . '">' . $unapproved_count . '</b>';
+	}
+
+	$output = ap_new_comment_btn( $_post->ID, false );
+
+	return $output;
+}
+
+/**
+ * Comment actions args.
+ *
+ * @param object|integer $comment Comment object.
+ * @return array
+ * @since 4.0.0
+ * @deprecated 5.0.0
+ */
+function ap_comment_actions( $comment ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	$comment = get_comment( $comment );
+	$actions = array();
+
+	if ( ap_user_can_edit_comment( $comment->comment_ID ) ) {
+		$actions[] = array(
+			'title' => __( 'Edit this Comment', 'anspress-question-answer' ),
+			'label' => __( 'Edit', 'anspress-question-answer' ),
+			'href'  => '#',
+			'query' => array(
+				'action'     => 'comment_modal',
+				'__nonce'    => wp_create_nonce( 'edit_comment_' . $comment->comment_ID ),
+				'comment_id' => $comment->comment_ID,
+			),
+		);
+	}
+
+	if ( ap_user_can_delete_comment( $comment->comment_ID ) ) {
+		$actions[] = array(
+			'title' => __( 'Delete this Comment', 'anspress-question-answer' ),
+			'label' => __( 'Delete', 'anspress-question-answer' ),
+			'href'  => '#',
+			'query' => array(
+				'__nonce'        => wp_create_nonce( 'delete_comment_' . $comment->comment_ID ),
+				'ap_ajax_action' => 'delete_comment',
+				'comment_id'     => $comment->comment_ID,
+			),
+		);
+	}
+
+	/**
+	 * For filtering comment action buttons.
+	 *
+	 * @param array $actions Comment actions.
+	 * @since   2.0.0
+	 * @deprecated 5.0.0
+	 */
+	return apply_filters( 'ap_comment_actions', $actions );
+}
+
+/**
+ * Output comment wrapper.
+ *
+ * @param mixed $_post Post ID or object.
+ * @param array $args  Arguments.
+ * @param array $single Is on single page? Default is `false`.
+ *
+ * @return void
+ * @since 2.1
+ * @since 4.1.0 Added two args `$_post` and `$args` and using WP_Comment_Query.
+ * @since 4.1.1 Check if valid post and post type before loading comments.
+ * @since 4.1.2 Introduced new argument `$single`.
+ * @deprecated 5.0.0
+ */
+function ap_the_comments( $_post = null, $args = array(), $single = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	// If comment number is 0 then dont show on single question.
+	if ( $single && ap_opt( 'comment_number' ) < 1 ) {
+		return;
+	}
+
+	global $comment;
+
+	$_post = ap_get_post( $_post );
+
+	// Check if valid post.
+	if ( ! $_post || ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
+		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'Not a valid post ID.', 'anspress-question-answer' ) . '</div>';
+		return;
+	}
+
+	if ( ! ap_user_can_read_comments( $_post ) ) {
+		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'Sorry, you do not have permission to read comments.', 'anspress-question-answer' ) . '</div>';
+
+		return;
+	}
+
+	if ( 'question' === $_post->post_type && ap_opt( 'disable_comments_on_question' ) ) {
+		return;
+	}
+
+	if ( 'answer' === $_post->post_type && ap_opt( 'disable_comments_on_answer' ) ) {
+		return;
+	}
+
+	if ( 0 == get_comments_number( $_post->ID ) ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+		if ( ! $single ) {
+			echo '<div class="ap-comment-no-perm">' . esc_attr__( 'No comments found.', 'anspress-question-answer' ) . '</div>';
+		}
+		return;
+	}
+
+	$user_id = get_current_user_id();
+	$paged   = (int) max( 1, ap_isset_post_value( 'paged', 1 ) );
+
+	$default = array(
+		'post_id'       => $_post->ID,
+		'order'         => 'ASC',
+		'status'        => 'approve',
+		'number'        => $single ? ap_opt( 'comment_number' ) : 99,
+		'show_more'     => true,
+		'no_found_rows' => false,
+	);
+
+	// Always include current user comments.
+	if ( ! empty( $user_id ) && $user_id > 0 ) {
+		$default['include_unapproved'] = array( $user_id );
+	}
+
+	if ( ap_user_can_approve_comment() ) {
+		$default['status'] = 'all';
+	}
+
+	$args = wp_parse_args( $args, $default );
+	if ( $paged > 1 ) {
+		$args['offset'] = ap_opt( 'comment_number' );
+	}
+
+	$query = new WP_Comment_Query( $args );
+	if ( 0 == $query->found_comments && ! $single ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual
+		echo '<div class="ap-comment-no-perm">' . esc_attr__( 'No comments found.', 'anspress-question-answer' ) . '</div>';
+		return;
+	}
+
+	foreach ( $query->comments as $c ) {
+		$comment = $c; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		ap_get_template_part( 'comment' );
+	}
+
+	echo '<div class="ap-comments-footer">';
+	if ( $query->max_num_pages > 1 && $single ) {
+		echo '<a class="ap-view-comments" href="#/comments/' . (int) $_post->ID . '/all">' .
+		// translators: %s is total comments found.
+		esc_attr( sprintf( __( 'Show %s more comments', 'anspress-question-answer' ), $query->found_comments - ap_opt( 'comment_number' ) ) ) . '</a>';
+	}
+
+	echo '</div>';
+}
+
+/**
+ * A wrapper function for @see ap_the_comments() for using in
+ * post templates.
+ *
+ * @return void
+ * @since 4.1.2
+ * @deprecated 5.0.0
+ */
+function ap_post_comments() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	echo '<apcomments id="comments-' . esc_attr( get_the_ID() ) . '" class="have-comments">';
+	ap_the_comments( null, array(), true );
+	echo '</apcomments>';
+
+	// New comment button.
+	echo ap_comment_btn_html( get_the_ID() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Return or print new comment button.
+ *
+ * @param integer $post_id Post id.
+ * @param boolean $output  Return or echo. Default is echo.
+ * @return string|void
+ * @since 4.1.8
+ * @deprecated 5.0.0
+ */
+function ap_new_comment_btn( $post_id, $output = true ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( ap_user_can_comment( $post_id ) ) {
+		$html = '';
+
+		$btn_args = wp_json_encode(
+			array(
+				'action'  => 'comment_modal',
+				'post_id' => $post_id,
+				'__nonce' => wp_create_nonce( 'new_comment_' . $post_id ),
+			)
+		);
+
+		$html .= '<a href="#" class="ap-btn-newcomment" aponce="false" apajaxbtn apquery="' . esc_js( $btn_args ) . '">';
+		$html .= esc_attr__( 'Add a Comment', 'anspress-question-answer' );
+		$html .= '</a>';
+
+		if ( false === $output ) {
+			return $html;
+		}
+
+		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+}
+
+/**
+ * Generate comment form.
+ *
+ * @param  false|integer $post_id  Question or answer id.
+ * @param  false|object  $_comment Comment id or object.
+ * @return void
+ *
+ * @since 4.1.0
+ * @since 4.1.5 Don't use ap_ajax.
+ * @deprecated 5.0.0
+ */
+function ap_comment_form( $post_id = false, $_comment = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( false === $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	if ( ! ap_user_can_comment( $post_id ) ) {
+		return;
+	}
+
+	$args = array(
+		'hidden_fields' => array(
+			array(
+				'name'  => 'post_id',
+				'value' => $post_id,
+			),
+			array(
+				'name'  => 'action',
+				'value' => 'ap_form_comment',
+			),
+		),
+	);
+
+	$form = anspress()->get_form( 'comment' );
+
+	// Add value when editing post.
+	if ( false !== $_comment && ! empty( $_comment ) ) {
+		$_comment = get_comment( $_comment );
+		$values   = array();
+
+		$args['hidden_fields'][] = array(
+			'name'  => 'comment_id',
+			'value' => $_comment->comment_ID,
+		);
+
+		$values['content'] = $_comment->comment_content;
+
+		if ( empty( $_comment->user_id ) ) {
+			$values['author'] = $_comment->comment_author;
+			$values['email']  = $_comment->comment_author_email;
+			$values['url']    = $_comment->comment_author_url;
+		}
+
+		$form->set_values( $values );
+	}
+
+	$form->generate( $args );
+}

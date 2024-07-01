@@ -653,7 +653,6 @@ function ap_assets() {
 	wp_register_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
 
 	wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', array( 'jquery', 'jquery-form', 'underscore', 'backbone', 'selectize' ), AP_VERSION, true );
-	wp_register_script( 'anspress-question', ANSPRESS_URL . 'assets/js/question.js', array( 'anspress-common' ), AP_VERSION, true );
 	wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION, true );
 	wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION, true );
 	wp_register_script( 'anspress-notifications', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION, true );

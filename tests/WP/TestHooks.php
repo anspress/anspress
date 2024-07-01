@@ -69,11 +69,6 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_action( 'ap_after_question_content', [ 'AnsPress_Theme', 'after_question_content' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_after_answer_content', [ 'AnsPress_Theme', 'after_question_content' ] ) );
 
-		$this->assertEquals( 10, has_filter( 'the_comments', [ 'AnsPress_Comment_Hooks', 'the_comments' ] ) );
-		$this->assertEquals( 10, has_filter( 'get_comment_link', [ 'AnsPress_Comment_Hooks', 'comment_link' ] ) );
-		$this->assertEquals( 10, has_filter( 'preprocess_comment', [ 'AnsPress_Comment_Hooks', 'preprocess_comment' ] ) );
-		$this->assertEquals( 10, has_filter( 'comments_template', [ 'AnsPress_Comment_Hooks', 'comments_template' ] ) );
-
 		// Common pages hooks.
 		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Common_Pages', 'register_common_pages' ] ) );
 
@@ -102,7 +97,6 @@ class TestHooks extends TestCase {
 		// Form hooks.
 		$this->assertEquals( 11, has_action( 'ap_form_question', [ 'AP_Form_Hooks', 'question_form' ] ) );
 		$this->assertEquals( 11, has_action( 'ap_form_answer', [ 'AP_Form_Hooks', 'answer_form' ] ) );
-		$this->assertEquals( 11, has_action( 'ap_form_comment', [ 'AP_Form_Hooks', 'comment_form' ] ) );
 		$this->assertEquals( 11, has_action( 'ap_form_image_upload', [ 'AP_Form_Hooks', 'image_upload_form' ] ) );
 
 		// Subscriptions.

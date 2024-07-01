@@ -27,11 +27,6 @@ class AnsPress_Ajax {
 	public static function init() {
 		add_action( 'ap_ajax_suggest_similar_questions', array( __CLASS__, 'suggest_similar_questions' ) );
 		add_action( 'ap_ajax_load_tinymce', array( __CLASS__, 'load_tinymce' ) );
-		add_action( 'ap_ajax_load_comments', array( 'AnsPress_Comment_Hooks', 'load_comments' ) );
-		add_action( 'ap_ajax_edit_comment_form', array( 'AnsPress_Comment_Hooks', 'edit_comment_form' ) );
-		add_action( 'ap_ajax_edit_comment', array( 'AnsPress_Comment_Hooks', 'edit_comment' ) );
-		add_action( 'ap_ajax_approve_comment', array( 'AnsPress_Comment_Hooks', 'approve_comment' ) );
-		add_action( 'ap_ajax_vote', array( 'AnsPress_Vote', 'vote' ) );
 
 		add_action( 'ap_ajax_delete_comment', array( 'AnsPress\Ajax\Comment_Delete', 'init' ) );
 		add_action( 'wp_ajax_comment_modal', array( 'AnsPress\Ajax\Comment_Modal', 'init' ) );

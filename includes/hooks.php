@@ -65,7 +65,6 @@ class AnsPress_Hooks {
 			// Theme hooks.
 			add_action( 'init', array( 'AnsPress_Theme', 'init_actions' ) );
 			add_filter( 'template_include', array( 'AnsPress_Theme', 'template_include' ) );
-			// add_filter( 'ap_template_include', array( 'AnsPress_Theme', 'template_include_theme_compat' ) );
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'question_answer_post_class' ) );
 			add_filter( 'body_class', array( 'AnsPress_Theme', 'body_class' ) );
 			add_action( 'after_setup_theme', array( 'AnsPress_Theme', 'includes_theme' ) );
@@ -84,11 +83,6 @@ class AnsPress_Hooks {
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'remove_hentry_class' ), 10, 3 );
 			add_action( 'ap_after_question_content', array( 'AnsPress_Theme', 'after_question_content' ) );
 			add_filter( 'ap_after_answer_content', array( 'AnsPress_Theme', 'after_question_content' ) );
-
-			add_filter( 'the_comments', array( 'AnsPress_Comment_Hooks', 'the_comments' ) );
-			add_filter( 'get_comment_link', array( 'AnsPress_Comment_Hooks', 'comment_link' ), 10, 3 );
-			add_filter( 'preprocess_comment', array( 'AnsPress_Comment_Hooks', 'preprocess_comment' ) );
-			add_filter( 'comments_template', array( 'AnsPress_Comment_Hooks', 'comments_template' ) );
 
 			// Common pages hooks.
 			add_action( 'init', array( 'AnsPress_Common_Pages', 'register_common_pages' ) );
@@ -118,7 +112,6 @@ class AnsPress_Hooks {
 			// Form hooks.
 			add_action( 'ap_form_question', array( 'AP_Form_Hooks', 'question_form' ), 11 );
 			add_action( 'ap_form_answer', array( 'AP_Form_Hooks', 'answer_form' ), 11 );
-			add_action( 'ap_form_comment', array( 'AP_Form_Hooks', 'comment_form' ), 11 );
 			add_action( 'ap_form_image_upload', array( 'AP_Form_Hooks', 'image_upload_form' ), 11 );
 
 			add_action( 'get_comments_number', array( 'AnsPress_Hooks', 'get_comments_number' ), 11, 2 );

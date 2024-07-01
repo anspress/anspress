@@ -143,8 +143,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . '/admin/updater.php' );
 
 		// Check ajax file exists.
-		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-delete.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'ajax/comment-modal.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'ajax/repeatable-field.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'ajax/toggle-best-answer.php' );
 

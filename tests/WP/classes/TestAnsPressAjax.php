@@ -50,11 +50,6 @@ class TestAnsPressAjax extends TestCaseAjax {
 		// Tests.
 		$this->assertEquals( 10, has_action( 'ap_ajax_suggest_similar_questions', [ 'AnsPress_Ajax', 'suggest_similar_questions' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_load_tinymce', [ 'AnsPress_Ajax', 'load_tinymce' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_load_comments', [ 'AnsPress_Comment_Hooks', 'load_comments' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_edit_comment_form', [ 'AnsPress_Comment_Hooks', 'edit_comment_form' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_edit_comment', [ 'AnsPress_Comment_Hooks', 'edit_comment' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_approve_comment', [ 'AnsPress_Comment_Hooks', 'approve_comment' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_vote', [ 'AnsPress_Vote', 'vote' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_delete_comment', [ 'AnsPress\Ajax\Comment_Delete', 'init' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
@@ -65,7 +60,6 @@ class TestAnsPressAjax extends TestCaseAjax {
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_delete_permanently', [ 'AnsPress_Ajax', 'permanent_delete_post' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_status', [ 'AnsPress_Post_Status', 'change_post_status' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_convert_to_post', [ 'AnsPress_Ajax', 'convert_to_post' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_action_flag', [ 'AnsPress_Flag', 'action_flag' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_delete_attachment', [ 'AnsPress_Uploader', 'delete_attachment' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_order_by', [ 'AnsPress_Ajax', 'load_filter_order_by' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_subscribe', [ 'AnsPress_Ajax', 'subscribe_to_question' ] ) );

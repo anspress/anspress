@@ -35,7 +35,6 @@ class TestAssetsExists extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/common.js' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/list.js' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/notifications.js' );
-		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/question.js' );
 		$this->assertFileExists( ANSPRESS_DIR . '/assets/js/tags.js' );
 
 		// CSS files.

@@ -2223,63 +2223,6 @@ function ap_answer_form( $question_id, $editing = false ) {
 	anspress()->get_form( 'answer' )->set_values( $values )->generate( $args );
 }
 
-/**
- * Generate comment form.
- *
- * @param  false|integer $post_id  Question or answer id.
- * @param  false|object  $_comment Comment id or object.
- * @return void
- *
- * @since 4.1.0
- * @since 4.1.5 Don't use ap_ajax.
- */
-function ap_comment_form( $post_id = false, $_comment = false ) {
-	if ( false === $post_id ) {
-		$post_id = get_the_ID();
-	}
-
-	if ( ! ap_user_can_comment( $post_id ) ) {
-		return;
-	}
-
-	$args = array(
-		'hidden_fields' => array(
-			array(
-				'name'  => 'post_id',
-				'value' => $post_id,
-			),
-			array(
-				'name'  => 'action',
-				'value' => 'ap_form_comment',
-			),
-		),
-	);
-
-	$form = anspress()->get_form( 'comment' );
-
-	// Add value when editing post.
-	if ( false !== $_comment && ! empty( $_comment ) ) {
-		$_comment = get_comment( $_comment );
-		$values   = array();
-
-		$args['hidden_fields'][] = array(
-			'name'  => 'comment_id',
-			'value' => $_comment->comment_ID,
-		);
-
-		$values['content'] = $_comment->comment_content;
-
-		if ( empty( $_comment->user_id ) ) {
-			$values['author'] = $_comment->comment_author;
-			$values['email']  = $_comment->comment_author_email;
-			$values['url']    = $_comment->comment_author_url;
-		}
-
-		$form->set_values( $values );
-	}
-
-	$form->generate( $args );
-}
 
 /**
  * Include tinymce assets.

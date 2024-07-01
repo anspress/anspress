@@ -25,118 +25,43 @@ class CommentModule extends AbstractModule {
 	 * Register hooks.
 	 */
 	public function register_hooks() {
+		add_filter( 'get_comment_link', array( $this, 'commentLink' ), 10, 2 );
+		add_filter( 'preprocess_comment', array( $this, 'preprocessComment' ) );
 	}
 
 	/**
-	 * Register routes.
+	 * Manipulate question and answer comments link.
+	 *
+	 * @param string     $link    The comment permalink with '#comment-$id' appended.
+	 * @param WP_Comment $comment The current comment object.
 	 */
-	public function register_routes() {
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'showComments' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
+	public function commentLink( $link, $comment ) {
+		$_post = ap_get_post( $comment->comment_post_ID );
 
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'createComment' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
+		if ( ! in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
+			return $link;
+		}
 
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/load-comment-form',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'loadCommentForm' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
+		$permalink = get_permalink( $_post );
+		return $permalink . '#/comment/' . $comment->comment_ID;
+	}
 
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/load-edit-comment-form/(?P<comment_id>\d+)',
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'loadEditCommentForm' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id'    => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-					'comment_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
+	/**
+	 * Change comment_type while adding comments for question or answer.
+	 *
+	 * @param array $commentdata Comment data array.
+	 * @return array
+	 * @since 5.0.0
+	 */
+	public function preprocessComment( $commentdata ) {
+		if ( ! empty( $commentdata['comment_post_ID'] ) ) {
+			$post_type = get_post_type( $commentdata['comment_post_ID'] );
 
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments/(?P<comment_id>\d+)',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'updateComment' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id'    => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-					'comment_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
+			if ( in_array( $post_type, array( 'question', 'answer' ), true ) ) {
+				$commentdata['comment_type'] = 'anspress';
+			}
+		}
 
-		register_rest_route(
-			'anspress/v1',
-			'/post/(?P<post_id>\d+)/comments/(?P<comment_id>\d+)',
-			array(
-				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => fn( $req ) => RestRouteHandler::run( array( CommentController::class, 'deleteComment' ), $req ),
-				'permission_callback' => '__return_true',
-				'args'                => array(
-					'post_id'    => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-					'comment_id' => array(
-						'required' => true,
-						'type'     => 'integer',
-					),
-				),
-			)
-		);
+		return $commentdata;
 	}
 }

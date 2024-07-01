@@ -4,6 +4,7 @@
  *
  * @since 5.0.0
  * @package AnsPress
+ * @codingStandardsIgnoreFile
  */
 
 // Exit if accessed directly.
@@ -26,4 +27,22 @@ class AnsPress_Flag {
 	public static function action_flag() {
 		_deprecated_function( __FUNCTION__, '5.0.0' );
 	}
+}
+
+/**
+ * Comments class
+ *
+ * @deprecated 5.0.0
+ */
+class AnsPress_Comment_Hooks {
+
+}
+
+/**
+ * The `comment_modal` ajax callback.
+ *
+ * @since 4.1.8
+ * @deprecated 5.0.0
+ */
+class Comment_Modal extends \AnsPress\Classes\Ajax {
 }

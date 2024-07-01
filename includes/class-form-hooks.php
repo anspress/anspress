@@ -754,8 +754,11 @@ class AP_Form_Hooks {
 	 *
 	 * @return void
 	 * @since 4.1.0
+	 * @deprecated 5.0.0
 	 */
 	public static function submit_comment_form() {
+		_deprecated_function( __METHOD__, '5.0.0' );
+
 		global $comment;
 
 		$editing = false;

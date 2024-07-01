@@ -54,7 +54,6 @@ class TestTemplatesAssetsExists extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/buddypress.scss' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/buttons.scss' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/category.scss' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/comment.scss' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/dropdown.scss' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/embed-question.scss' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/scss/fonts.scss' );

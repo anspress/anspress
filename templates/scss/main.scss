@@ -2,10 +2,11 @@
 @import "mixins";
 
 :root {
-  // Custom variable values only support SassScript inside `#{}`.
-  @each $key, $value in $anspress-vars {
-    --ap_#{$key}: #{$value};
-  }
+
+	// Custom variable values only support SassScript inside `#{}`.
+	@each $key, $value in $anspress-vars {
+		--ap_#{$key}: #{$value};
+	}
 }
 
 @import "reset";
@@ -14,7 +15,6 @@
 @import "question";
 @import "buttons";
 @import "form";
-@import "comment";
 @import "user";
 @import "widget";
 @import "user-posts";
