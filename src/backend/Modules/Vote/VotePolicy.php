@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractPolicy;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Modules\Answer\AnswerModel;
 use AnsPress\Modules\Question\QuestionModel;
 use WP_User;
@@ -97,7 +98,7 @@ class VotePolicy extends AbstractPolicy {
 		$postType = self::getContextItemField( $context, 'post', 'post_type' );
 
 		// Allow if question or answer.
-		if ( in_array( $postType, array( QuestionModel::POST_TYPE, AnswerModel::POST_TYPE ), true ) ) {
+		if ( PostHelper::isValidPostType( $postType ) ) {
 			return true;
 		}
 

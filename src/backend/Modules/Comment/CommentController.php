@@ -10,7 +10,9 @@ namespace AnsPress\Modules\Comment;
 
 use AnsPress\Classes\AbstractController;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Str;
+use AnsPress\Classes\TemplateHelper;
 use AnsPress\Exceptions\ValidationException;
 use InvalidArgumentException;
 use WP_REST_Response;
@@ -82,13 +84,13 @@ class CommentController extends AbstractController {
 			'appendTo',
 			array(
 				'selector' => '[data-anspress-id="comment:form:placeholder:' . (int) $data['post_id'] . '"]',
-				'html'     => Plugin::loadView(
+				'html'     => TemplateHelper::loadRestBlockPart(
+					$this->request,
 					'src/frontend/common/comments/comment-form.php',
 					array(
 						'post'        => $post,
 						'form_loaded' => $data['form_loaded'] ?? true,
 					),
-					false
 				),
 			)
 		);
@@ -122,19 +124,20 @@ class CommentController extends AbstractController {
 		// Check if user can edit comment.
 		$this->checkPermission( 'comment:update', array( 'comment' => $comment ) );
 
-		$commentForm = Plugin::loadView(
-			'src/frontend/common/comments/comment-form.php',
+		$this->addEvent(
+			'appendTo',
 			array(
-				'comment'     => $comment,
-				'post'        => $post,
-				'form_loaded' => true,
-			),
-			false
-		);
-
-		$this->replaceHtml(
-			'[data-anspress-id="comment-' . $comment->comment_ID . '"]',
-			$commentForm
+				'selector' => '[data-anspress-id="comment:form:placeholder:' . (int) $data['post_id'] . '"]',
+				'html'     => TemplateHelper::loadRestBlockPart(
+					$this->request,
+					'src/frontend/common/comments/comment-form.php',
+					array(
+						'post'        => $post,
+						'form_loaded' => $data['form_loaded'] ?? true,
+						'comment'     => $comment,
+					),
+				),
+			)
 		);
 
 		return $this->response(
@@ -179,10 +182,10 @@ class CommentController extends AbstractController {
 			true
 		);
 
-		$commentHtml = Plugin::loadView(
+		$commentHtml = TemplateHelper::loadRestBlockPart(
+			$this->request,
 			'src/frontend/common/comments/single-comment.php',
-			array( 'comment' => get_comment( $commentId ) ),
-			false
+			array( 'comment' => get_comment( $commentId ) )
 		);
 
 		$this->addMessage( 'success', esc_attr__( 'Comment added successfully.', 'anspress-question-answer' ) );
@@ -271,14 +274,14 @@ class CommentController extends AbstractController {
 		$this->addEvent(
 			'anspress-comments-' . (int) $data['post_id'] . '-added',
 			array(
-				'html' => Plugin::loadView(
+				'html' => TemplateHelper::loadRestBlockPart(
+					$this->request,
 					'src/frontend/common/comments/render.php',
 					array(
 						'post'             => $post,
 						'offset'           => $this->getParam( 'offset', 0 ),
 						'withoutContainer' => true,
 					),
-					false
 				),
 			)
 		);
@@ -304,7 +307,6 @@ class CommentController extends AbstractController {
 
 		$data = $this->validate(
 			array(
-				'post_id'         => 'required|numeric|exists:posts,ID',
 				'comment_id'      => 'required|numeric|exists:comments,comment_ID',
 				'comment_content' => 'required|string|min:2|max:1000',
 			),
@@ -333,16 +335,16 @@ class CommentController extends AbstractController {
 			$this->serverError( $updated->get_error_message() );
 		}
 
-		$commentHtml = Plugin::loadView(
+		$commentHtml = TemplateHelper::loadRestBlockPart(
+			$this->request,
 			'src/frontend/common/comments/single-comment.php',
-			array( 'comment' => get_comment( $data['comment_id'] ) ),
-			false
+			array( 'comment' => get_comment( $data['comment_id'] ) )
 		);
 
 		$this->addMessage( 'success', esc_attr__( 'Comment updated successfully.', 'anspress-question-answer' ) );
 		$this->setData(
-			'comment-list-' . (int) $data['post_id'],
-			Plugin::get( CommentService::class )->getCommentsData( get_post( $data['post_id'] ) )
+			'comment-list-' . (int) $comment->comment_post_ID,
+			Plugin::get( CommentService::class )->getCommentsData( get_post( $comment->comment_post_ID ) )
 		);
 
 		return $this->response(

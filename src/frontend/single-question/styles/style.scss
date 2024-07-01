@@ -1,6 +1,6 @@
 .wp-block-anspress-single-question {
 	.anspress-apq-item-c {
-		padding-left: var(--anspress-single-question-avatar-size);
+		// padding-left: var(--anspress-single-question-avatar-size);
 		position: relative;
 
 		&::before {
@@ -8,7 +8,7 @@
 			border-left: solid 2px #ccc;
 			height: 100%;
 			position: absolute;
-			left: calc(var(--anspress-single-question-avatar-size) * 2);
+			left: calc(var(--anspress-single-question-line-left) + 16px);
 			z-index: -1;
 			top: 0;
 		}
@@ -23,7 +23,7 @@
 
 	&-avatar {
 		margin-right: 10px;
-		margin-left: calc(var(--anspress-single-question-avatar-size) * -1);
+		// margin-left: calc(var(--anspress-single-question-avatar-size) * -1);
 	}
 
 	&-select-link {
@@ -170,7 +170,14 @@
 
 	&-featuredlabel {
 		background: #fcb900;
+	}
 
+	&-privatelabel {
+		background: #333;
+	}
+
+	&-moderatelabel {
+		background: #fcb900;
 	}
 
 	&-single-answer-info {
@@ -233,4 +240,4 @@ anspress-item {
 }
 
 // Import the style.css from common/comments
-@import "../common/comments/style.scss";
+@import "../../common/comments/style.scss";

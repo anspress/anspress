@@ -7,9 +7,8 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Router;
-use AnsPress\Modules\Answer\AnswerModel;
-use AnsPress\Modules\Question\QuestionModel;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,23 +20,25 @@ if ( ! isset( $args ['post'] ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
 }
 
-$postType = QuestionModel::POST_TYPE === $args['post']->post_type ? QuestionModel::POST_TYPE : AnswerModel::POST_TYPE;
+if ( ! PostHelper::isValidPostType( $post->post_type ) ) {
+	return;
+}
 
-$context = QuestionModel::POST_TYPE === $postType ? array( 'question' => $args['post'] ) : array( 'answer' => $args['post'] );
+$context = array( $post->post_type => $post );
 
-if ( ! Auth::currentUserCan( $postType . ':update', $context ) ) {
+if ( ! Auth::currentUserCan( $post->post_type . ':update', $context ) ) {
 	return;
 }
 
 ?>
-<?php if ( 'question' === $args['post']->post_type ) : ?>
-	<a href="<?php echo esc_url( ap_post_edit_link( $args['post'] ) ); ?>"class="anspress-apq-item-action anspress-apq-item-action-delete"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></a>
+<?php if ( 'question' === $post->post_type ) : ?>
+	<a href="<?php echo esc_url( ap_post_edit_link( $post ) ); ?>"class="anspress-apq-item-action anspress-apq-item-action-delete"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></a>
 <?php else : ?>
 	<?php
 		$href = Router::route(
 			'v1.answers.actions',
 			array(
-				'answer_id' => $args['post']->ID,
+				'answer_id' => $post->ID,
 				'action'    => 'load-answer-edit-form',
 			)
 		);

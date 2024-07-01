@@ -8,10 +8,11 @@
 
 namespace AnsPress\Modules\Question;
 
-use AnsPress\Classes\AbstractController;
+use AnsPress\Classes\AbstractPostController;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Str;
+use AnsPress\Classes\TemplateHelper;
 use AnsPress\Modules\Vote\VoteService;
 use WP_REST_Response;
 
@@ -23,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Question controller class.
  */
-class QuestionController extends AbstractController {
+class QuestionController extends AbstractPostController {
 	/**
 	 * Question service.
 	 *
@@ -186,19 +187,75 @@ class QuestionController extends AbstractController {
 
 		$this->replaceHtml(
 			'[data-anspress-id="answer-form-c-' . $post->ID . '"]',
-			Plugin::loadView(
-				'src/frontend/single-question/answer-form.php',
+			TemplateHelper::loadRestBlockPart(
+				$this->request,
+				'src/frontend/single-question/php/answer-form.php',
 				array(
 					'question'    => $post,
 					'form_loaded' => (bool) $this->getParam( 'form_loaded', false ),
-				),
-				false
+				)
 			)
 		);
 
 		return $this->response(
 			array(
 				'load_tinymce' => 'anspress-answer-content',
+			)
+		);
+	}
+
+	/**
+	 * Set question as moderate.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function actionSetModerate( int $questionId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $questionId );
+
+		$this->checkPermission( 'question:moderate', array( 'question' => $post ) );
+
+		$this->questionService->updatePostStatusToModerate( $post->ID );
+
+		$this->addMessage(
+			'success',
+			__( 'Question status updated to moderate and is only visible to admin and moderators.', 'anspress-question-answer' )
+		);
+
+		return $this->response(
+			array(
+				'reload' => true,
+			)
+		);
+	}
+
+	/**
+	 * Set question as private.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function actionMakePrivate( int $questionId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $questionId );
+
+		$this->checkPermission( 'question:update', array( 'question' => $post ) );
+
+		$this->questionService->updatePostStatusToPrivate( $post->ID );
+
+		$this->addMessage(
+			'success',
+			__( 'Question status updated to private and is only visible to admin and moderators.', 'anspress-question-answer' )
+		);
+
+		return $this->response(
+			array(
+				'reload' => true,
 			)
 		);
 	}

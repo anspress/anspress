@@ -65,7 +65,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 									?>
 							</a>
 							<?php ap_recent_post_activity(); ?>
-							<?php echo ap_post_status_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 
 						<!-- Start ap-content-inner -->

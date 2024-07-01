@@ -47,7 +47,10 @@ if ( $commentsWithourContainer ) {
 		foreach ( $postComments as $postComment ) {
 			Plugin::loadView(
 				'src/frontend/common/comments/single-comment.php',
-				array( 'comment' => $postComment )
+				array(
+					'comment'    => $postComment,
+					'attributes' => $attributes,
+				)
 			);
 		}
 	}
@@ -75,7 +78,10 @@ if ( $commentsWithourContainer ) {
 				<?php
 					Plugin::loadView(
 						'src/frontend/common/comments/single-comment.php',
-						array( 'comment' => $postComment )
+						array(
+							'comment'    => $postComment,
+							'attributes' => $attributes,
+						)
 					);
 				?>
 			<?php endforeach; ?>

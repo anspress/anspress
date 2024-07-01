@@ -25,7 +25,7 @@ $postComment = $args['comment'] ?? null;
 $answerFormArgs = array(
 	'question_id' => $post->ID,
 	'form_loaded' => $postComment ? true : $formLoaded,
-	'form_action' => Router::route( 'v1.posts.createComment', array( 'post_id' => $post->ID ) ),
+	'form_action' => isset( $comment ) ? Router::route( 'v1.comments.updateComment', array( 'comment_id' => $postComment->comment_ID ) ) : Router::route( 'v1.posts.createComment', array( 'post_id' => $post->ID ) ),
 );
 ?>
 <anspress-comment-form data-anspress-id="comment-form-c-<?php echo (int) $post->ID; ?>" class="anspress-comment-form-c anspress-card" data-anspress="<?php echo esc_attr( wp_json_encode( $answerFormArgs ) ); ?>" id="anspress-comment-form<?php echo $postComment ? '-' . (int) $postComment->comment_ID : ''; ?>">

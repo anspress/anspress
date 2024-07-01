@@ -1,5 +1,5 @@
-import { clearFormErrors, handleFormErrors, initTynimce, loadForm, removeTinymce } from "../common/AnsPressCommon";
-import { BaseCustomElement } from "../common/BaseCustomElement";
+import { clearFormErrors, handleFormErrors, initTynimce, loadForm, removeTinymce } from "../../common/AnsPressCommon";
+import { BaseCustomElement } from "../../common/BaseCustomElement";
 
 class AnsPressAnswerForm extends BaseCustomElement {
   connectedCallback() {

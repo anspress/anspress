@@ -12,6 +12,7 @@ use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerService;
 use AnsPress\Modules\Vote\VoteService;
+use AnsPress\Classes\TemplateHelper;
 
 $_post = ap_get_post( get_the_ID() );
 
@@ -26,21 +27,59 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	return;
 }
 
-
 ?>
 <style>
 	body{
-		--anspress-single-question-avatar-size: <?php echo (int) ap_opt( 'avatar_size_qquestion' ); ?>px;
+		--anspress-single-question-avatar-size: <?php echo (int) $attributes['avatarSize']; ?>px;
+		--anspress-single-question-comment-avatar-size: <?php echo (int) $attributes['commentAvatarSize']; ?>px;
+		--anspress-single-question-line-left: <?php echo (int) $attributes['avatarSize'] + ( (int) $attributes['commentAvatarSize'] / 2 ); ?>px;
 	}
 </style>
-<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> data-gutenberg-attributes="<?php echo esc_attr( wp_json_encode( $attributes ) ); ?>" data-post-id="<?php the_ID(); ?>">
+<div
+	<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
+	data-gutenberg-attributes="<?php echo esc_attr( wp_json_encode( $attributes ) ); ?>"
+	data-post-id="<?php the_ID(); ?>"
+	data-anspress-template="<?php echo esc_attr( TemplateHelper::currentTemplateId() ); ?>"
+	data-anspress-block="anspress/single-question"
+	>
+	<?php
+	/**
+	 * Action triggered before question title.
+	 *
+	 * @since 5.0.0
+	 */
+	do_action( 'anspress/before/question_title' );
+	?>
 
 	<h1 class="anspress-apq-item-title"><?php the_title(); ?></h1>
 
+	<?php
+	/**
+	 * Action triggered after question title.
+	 *
+	 * @since 5.0.0
+	 */
+	do_action( 'anspress/after/question_title' );
+	?>
+
 	<div class="anspress-apq-item-c">
+		<?php
+		/**
+		 * Action triggered before question content.
+		 *
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress/before/question_content' );
+		?>
 
 		<?php
-			Plugin::loadView( 'src/frontend/single-question/item.php' );
+			Plugin::loadView(
+				'src/frontend/single-question/php/item.php',
+				array(
+					'post'       => $_post,
+					'attributes' => $attributes,
+				)
+			);
 
 			$currentPage = 1;
 
@@ -65,6 +104,15 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 				$answersClass .= ' anspress-answers-selected';
 			}
 			?>
+
+			<?php
+			/**
+			 * Action triggered before answers list.
+			 *
+			 * @since 5.0.0
+			 */
+			do_action( 'anspress/before/answers_list' )
+			?>
 			<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( $answersClass ); ?>" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
 				<?php if ( get_query_var( 'answer_id' ) ) : ?>
 					<div class="anspress-apq-item-single-answer-info anspress-card">
@@ -76,11 +124,12 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 				<div data-anspressel="answers-items" class="anspress-answers-items">
 					<?php
 					Plugin::loadView(
-						'src/frontend/single-question/answers.php',
+						'src/frontend/single-question/php/answers.php',
 						array(
 							'question'     => $_post,
 							'query'        => $query,
 							'answers_args' => $answersArgs,
+							'attributes'   => $attributes,
 						)
 					);
 					?>
@@ -110,8 +159,11 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 		<?php
 		if ( Auth::currentUserCan( 'answer:create', array( 'question' => $_post ) ) ) {
 			Plugin::loadView(
-				'src/frontend/single-question/answer-form.php',
-				array( 'question' => get_post() )
+				'src/frontend/single-question/php/answer-form.php',
+				array(
+					'question'   => get_post(),
+					'attributes' => $attributes,
+				)
 			);
 		} else {
 			?>
@@ -120,6 +172,15 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 			</div>
 			<?php
 		}
+		?>
+
+		<?php
+		/**
+		 * Action triggered after question content.
+		 *
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress/after/question_content' );
 		?>
 	</div>
 </div>

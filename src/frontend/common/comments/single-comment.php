@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Trying to cheat?' );
 }
 
+// Check if $attributes is set.
+if ( ! isset( $attributes ) ) {
+	throw new InvalidArgumentException( 'Attributes argument is required.' );
+}
+
 if ( ! isset( $args['comment'] ) ) {
 	return;
 }
@@ -19,8 +24,8 @@ if ( ! isset( $args['comment'] ) ) {
 $postComment = $args['comment'];
 ?>
 <anspress-comment-item data-anspress-id="comment-<?php echo (int) $postComment->comment_ID; ?>" class="anspress-comments-item" id="anspress-comment-<?php echo esc_attr( $postComment->comment_ID ); ?>" data-anspressel="comment" data-id="<?php echo (int) $postComment->comment_ID; ?>">
-	<a class="anspress-comments-avatar anspress-avatar-link" href="<?php echo esc_url( get_comment_author_url( $postComment ) ); ?>" style="height: 28px;width: 28px">
-		<?php echo get_avatar( $postComment->user_id || $postComment->comment_author_email, 30 ); ?>
+	<a class="anspress-comments-avatar anspress-avatar-link" href="<?php echo esc_url( get_comment_author_url( $postComment ) ); ?>">
+		<?php echo get_avatar( $postComment->user_id || $postComment->comment_author_email, $attributes['commentAvatarSize'] ?? 30 ); ?>
 	</a>
 	<div class="anspress-comments-inner anspress-comments-form-container anspress-card">
 		<div class="anspress-comments-meta">

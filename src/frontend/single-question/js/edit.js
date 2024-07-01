@@ -46,6 +46,25 @@ const Edit = ({ attributes, setAttributes }) => {
         <PanelBody title={__('Customization', 'anspress-question-answer')}>
           <p>{__('In the premium version of the plugin, every aspect of this block can be customized.', 'anspress-question-answer')}</p>
           <ExternalLink href="https://anspress.net/pro">{__('Get the Pro version', 'anspress-question-answer')}</ExternalLink>
+
+          <br />
+          <br />
+
+          <RangeControl
+            label={__('Avatar Size', 'anspress-question-answer')}
+            value={attributes.avatarSize}
+            min={20}
+            max={120}
+            onChange={(value) => setAttributes({ avatarSize: value })}
+          />
+
+          <RangeControl
+            label={__('Comment Avatar Size', 'anspress-question-answer')}
+            value={attributes.commentAvatarSize}
+            min={20}
+            max={120}
+            onChange={(value) => setAttributes({ commentAvatarSize: value })}
+          />
         </PanelBody>
       </InspectorControls>
 

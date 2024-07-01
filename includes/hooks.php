@@ -87,9 +87,6 @@ class AnsPress_Hooks {
 			// Common pages hooks.
 			add_action( 'init', array( 'AnsPress_Common_Pages', 'register_common_pages' ) );
 
-			// Register post status.
-			add_action( 'init', array( 'AnsPress_Post_Status', 'register_post_status' ) );
-
 			// Rewrite rules hooks.
 			add_filter( 'request', array( 'AnsPress_Rewrite', 'alter_the_query' ) );
 			add_filter( 'query_vars', array( 'AnsPress_Rewrite', 'query_var' ) );

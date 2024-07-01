@@ -51,6 +51,13 @@ export class BaseCustomElement extends HTMLElement {
   }
 
   fetch(options) {
+    options = {
+      ...options,
+      headers: {
+        'X-Anspress-Template-Id': this.getTemplateId(),
+        'X-Anspress-Block-Name': this.getBlockName(),
+      }
+    };
     return fetch(options).then(res => {
       if (res?.anspress) {
         // Handle data-anspress attributes.
@@ -71,6 +78,14 @@ export class BaseCustomElement extends HTMLElement {
     }
 
     return JSON.parse(data);
+  }
+
+  getTemplateId() {
+    return this.closest('[data-anspress-template]')?.getAttribute('data-anspress-template') || '';
+  }
+
+  getBlockName() {
+    return this.closest('[data-anspress-block]')?.getAttribute('data-anspress-block') || '';
   }
 
 

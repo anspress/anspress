@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerModel;
 use AnsPress\Modules\Question\QuestionModel;
@@ -17,21 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Check that post argument is set.
-if ( ! isset( $args ['post'] ) ) {
+if ( ! isset( $post ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
 }
 
-if ( ! Auth::isLoggedIn() ) {
+if ( ! Auth::isLoggedIn() || PostHelper::isAuthor( $post ) ) {
 	return;
 }
 
-$_post = $args['post'];
-
-if ( QuestionModel::POST_TYPE === $args['post']->post_type ) {
+if ( PostHelper::isQuestion( $post ) ) {
 	$href = Router::route(
 		'v1.questions.actions',
 		array(
-			'question_id' => $_post->ID,
+			'question_id' => $post->ID,
 			'action'      => 'report',
 		)
 	);
@@ -39,7 +38,7 @@ if ( QuestionModel::POST_TYPE === $args['post']->post_type ) {
 	$href = Router::route(
 		'v1.answers.actions',
 		array(
-			'answer_id' => $_post->ID,
+			'answer_id' => $post->ID,
 			'action'    => 'report',
 		)
 	);

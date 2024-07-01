@@ -11,6 +11,14 @@
     "currentQuestionId": {
       "type": "string",
       "default": ""
+    },
+    "avatarSize": {
+      "type": "number",
+      "default": 40
+    },
+    "commentAvatarSize": {
+      "type": "number",
+      "default": 30
     }
   },
   "supports": {
@@ -20,14 +28,14 @@
       "full"
     ]
   },
-  "editorScript": "file:./index.js",
-  "render": "file:./single-question.php",
+  "editorScript": "file:./js/index.js",
+  "render": "file:./php/single-question.php",
   "style": [
-    "file:./style-index.css",
+    "file:./js/style-index.css",
     "wp-tinymce"
   ],
   "viewScript": [
-    "file:./view.js",
+    "file:./js/view.js",
     "wp-tinymce"
   ]
 }

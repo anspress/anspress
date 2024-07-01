@@ -1,7 +1,7 @@
 .anspress-comments {
 	font-size: small;
 	margin-top: 15px;
-	padding-left: var(--anspress-single-question-avatar-size);
+	// padding-left: var(--anspress-single-question-avatar-size);
 	display: block;
 
 	&-count {
@@ -23,7 +23,9 @@
 		background: #aaa;
 		margin-right: 10px;
 		margin-top: 5px;
-		margin-left: calc(var(--anspress-single-question-avatar-size) * -1 + 10px);
+		// margin-left: calc(var(--anspress-single-question-avatar-size) * -1 + 10px);
+		height: var(--anspress-single-question-comment-avatar-size);
+		width: var(--anspress-single-question-comment-avatar-size);
 	}
 
 	&-inner {

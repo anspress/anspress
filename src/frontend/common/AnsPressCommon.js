@@ -71,7 +71,7 @@ export const scrollToElement = (element) => {
   }
 }
 
-export const fetchData = async (options) => {
+export const fetch = async (options) => {
   try {
     const res = await apiFetch(options);
     const data = res?.anspress || {};

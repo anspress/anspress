@@ -10,6 +10,7 @@ namespace AnsPress\Modules\Question;
 
 use AnsPress\Classes\AbstractService;
 use AnsPress\Exceptions\GeneralException;
+use AnsPress\Exceptions\ValidationException;
 use WP_Query;
 
 // Exit if accessed directly.
@@ -99,5 +100,104 @@ class QuestionService extends AbstractService {
 
 		// Return the new state as a string.
 		return $newState ? 'featured' : 'unfeatured';
+	}
+
+	/**
+	 * Update the status of a question to 'private_post'.
+	 *
+	 * @param int $postId The ID of the question.
+	 * @return bool
+	 * @throws ValidationException If an error occurs.
+	 */
+	public function updatePostStatusToPrivate( int $postId ): bool {
+		$updateData = array(
+			'ID'          => $postId,
+			'post_status' => 'private_post',
+		);
+
+		$post = ap_get_post( $postId );
+
+		if ( 'question' !== $post->post_type ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'Given post is not a question.', 'anspress-question-answer' ) ) );
+		}
+
+		// Check if already private.
+		if ( 'private_post' === $post->post_status ) {
+			return new ValidationException( array( '*' => esc_attr__( 'Question is already private.', 'anspress-question-answer' ) ) );
+		}
+
+		$updated = wp_update_post( $updateData, true );
+
+		if ( is_wp_error( $updated ) ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'Failed to update post status.', 'anspress-question-answer' ) ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Update the status of a question to 'publish'.
+	 *
+	 * @param int $postId The ID of the question.
+	 * @return bool
+	 * @throws ValidationException If an error occurs.
+	 */
+	public function updatePostStatusToPublish( int $postId ): bool {
+		$updateData = array(
+			'ID'          => $postId,
+			'post_status' => 'publish',
+		);
+
+		$post = ap_get_post( $postId );
+
+		if ( 'question' !== $post->post_type ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'Given post is not a question.', 'anspress-question-answer' ) ) );
+		}
+
+		// Check if already published.
+		if ( 'publish' === $post->post_status ) {
+			return new ValidationException( array( '*' => esc_attr__( 'Question is already published.', 'anspress-question-answer' ) ) );
+		}
+
+		$updated = wp_update_post( $updateData, true );
+
+		if ( is_wp_error( $updated ) ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'Failed to update question status.', 'anspress-question-answer' ) ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Update the status of a question to 'moderate'.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return bool
+	 * @throws ValidationException If an error occurs.
+	 */
+	public function updatePostStatusToModerate( int $questionId ) {
+		$updateData = array(
+			'ID'          => $questionId,
+			'post_status' => 'moderate',
+		);
+
+		$post = ap_get_post( $questionId );
+
+		if ( 'question' !== $post->post_type ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'Given post is not a question.', 'anspress-question-answer' ) ) );
+		}
+
+		// Check if already moderate.
+		if ( 'moderate' === $post->post_status ) {
+			return new ValidationException( array( '*' => esc_attr__( 'Question is already moderate.', 'anspress-question-answer' ) ) );
+		}
+
+		$updated = wp_update_post( $updateData, true );
+
+		if ( is_wp_error( $updated ) ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'Failed to update question status.', 'anspress-question-answer' ) ) );
+		}
+
+		return true;
 	}
 }

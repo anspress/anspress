@@ -656,7 +656,7 @@ function ap_assets() {
 	wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION, true );
 	wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION, true );
 	wp_register_script( 'anspress-notifications', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION, true );
-	wp_register_script( 'anspress-theme', ap_get_theme_url( 'js/theme.js', false, false ), array( 'anspress-common', 'anspress-question', 'anspress-ask', 'anspress-list', 'anspress-notifications' ), AP_VERSION, true );
+	wp_register_script( 'anspress-theme', ap_get_theme_url( 'js/theme.js', false, false ), array( 'anspress-common', 'anspress-ask', 'anspress-list', 'anspress-notifications' ), AP_VERSION, true );
 
 	wp_register_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css', false, false ), array(), AP_VERSION );
 	wp_register_style( 'anspress-main', ap_get_theme_url( 'css/main.css', false, false ), array( 'anspress-fonts' ), AP_VERSION );

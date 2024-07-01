@@ -23,35 +23,6 @@ if ( ! defined( 'WPINC' ) ) {
 class AnsPress_Post_Status {
 
 	/**
-	 * Register post status for question and answer CPT
-	 */
-	public static function register_post_status() {
-		register_post_status(
-			'moderate',
-			array(
-				'label'                     => __( 'Moderate', 'anspress-question-answer' ),
-				'public'                    => true,
-				'show_in_admin_all_list'    => false,
-				'show_in_admin_status_list' => true,
-				// translators: %s is count of post awaiting moderation.
-				'label_count'               => _n_noop( 'Moderate <span class="count">(%s)</span>', 'Moderate <span class="count">(%s)</span>', 'anspress-question-answer' ),
-			)
-		);
-
-		register_post_status(
-			'private_post',
-			array(
-				'label'                     => __( 'Private', 'anspress-question-answer' ),
-				'public'                    => true,
-				'show_in_admin_all_list'    => false,
-				'show_in_admin_status_list' => true,
-				// translators: %s is count of private post.
-				'label_count'               => _n_noop( 'Private Post <span class="count">(%s)</span>', 'Private Post <span class="count">(%s)</span>', 'anspress-question-answer' ),
-			)
-		);
-	}
-
-	/**
 	 * Handle change post status ajax request.
 	 *
 	 * @since 2.1
@@ -142,22 +113,4 @@ function ap_get_post_status_message( $post_id = false ) {
 	}
 
 	return apply_filters( 'ap_get_post_status_message', $msg, $post_id );
-}
-
-/**
- * Return description of a post status.
- *
- * @param  boolean|integer $post_id Post ID.
- */
-function ap_post_status_badge( $post_id = false ) {
-	$ret = '<postmessage>';
-	$msg = ap_get_post_status_message( $post_id );
-
-	if ( ! empty( $msg ) ) {
-		$ret .= $msg;
-	}
-
-	$ret .= '</postmessage>';
-
-	return $ret;
 }

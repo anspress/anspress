@@ -346,21 +346,4 @@ class AnsPress_Theme {
 
 		return $post_classes;
 	}
-
-	/**
-	 * Callback for showing content below question and answer.
-	 *
-	 * @return void
-	 * @since 4.1.2
-	 */
-	public static function after_question_content() {
-		echo ap_post_status_badge(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-		$_post    = ap_get_post();
-		$activity = ap_recent_activity( null, false );
-
-		if ( ! empty( $activity ) ) {
-			echo '<div class="ap-post-updated"><i class="apicon-clock"></i>' . wp_kses_post( $activity ) . '</div>';
-		}
-	}
 }

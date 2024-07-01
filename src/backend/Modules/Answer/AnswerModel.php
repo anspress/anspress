@@ -11,6 +11,7 @@ namespace AnsPress\Modules\Answer;
 use AnsPress\Classes\AbstractModel;
 use AnsPress\Classes\AbstractSchema;
 use AnsPress\Classes\Plugin;
+use InvalidArgumentException;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,6 +39,15 @@ class AnswerModel extends AbstractModel {
 	}
 
 	/**
+	 * Get the post type.
+	 *
+	 * @return string
+	 */
+	public static function postTypeSlug(): string {
+		return apply_filters( 'anspress/answer/post_type', self::POST_TYPE );
+	}
+
+	/**
 	 * Check if answer type.
 	 *
 	 * @param int|WP_Post $postIdOrObject Post ID or object.
@@ -47,5 +57,23 @@ class AnswerModel extends AbstractModel {
 		$post = get_post( $postIdOrObject );
 
 		return self::POST_TYPE === $post->post_type;
+	}
+
+	/**
+	 * Get the post type.
+	 *
+	 * @param int|WP_Post $postIdOrObject Post ID or object.
+	 * @return bool
+	 * @throws InvalidArgumentException If the given post is not a question.
+	 */
+	public static function isModerate( $postIdOrObject ): bool {
+		$post = get_post( $postIdOrObject );
+
+		// Check if question.
+		if ( ! self::isAnswer( $post ) ) {
+			throw new InvalidArgumentException( esc_attr__( 'Given post is not an answer.', 'anspress-question-answer' ) );
+		}
+
+		return 'moderate' === $post->post_status;
 	}
 }

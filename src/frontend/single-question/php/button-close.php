@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Question\QuestionModel;
 
@@ -21,7 +22,7 @@ if ( ! isset( $post ) ) {
 }
 
 
-if ( QuestionModel::POST_TYPE !== $post->post_type ) {
+if ( ! PostHelper::isQuestion( $post ) ) {
 	return;
 }
 

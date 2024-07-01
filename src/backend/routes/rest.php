@@ -214,5 +214,19 @@ Router::group(
 				),
 			)
 		);
+
+		Router::post(
+			'comments/(?P<comment_id>\d+)/update',
+			array( CommentController::class, 'updateComment' ),
+			array(
+				'name' => 'comments.updateComment',
+				'args' => array(
+					'comment_id' => array(
+						'required' => true,
+						'type'     => 'integer',
+					),
+				),
+			)
+		);
 	}
 );

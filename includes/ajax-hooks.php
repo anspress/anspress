@@ -36,7 +36,6 @@ class AnsPress_Ajax {
 		add_action( 'ap_ajax_post_actions', array( 'AnsPress_Theme', 'post_actions' ) );
 		add_action( 'ap_ajax_action_toggle_delete_post', array( 'AnsPress_Ajax', 'toggle_delete_post' ) );
 		add_action( 'ap_ajax_action_delete_permanently', array( 'AnsPress_Ajax', 'permanent_delete_post' ) );
-		add_action( 'ap_ajax_action_status', array( 'AnsPress_Post_Status', 'change_post_status' ) );
 		add_action( 'ap_ajax_action_convert_to_post', array( 'AnsPress_Ajax', 'convert_to_post' ) );
 
 		// Uploader hooks.

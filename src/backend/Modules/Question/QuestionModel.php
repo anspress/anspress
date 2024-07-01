@@ -11,6 +11,8 @@ namespace AnsPress\Modules\Question;
 use AnsPress\Classes\AbstractModel;
 use AnsPress\Classes\AbstractSchema;
 use AnsPress\Classes\Plugin;
+use InvalidArgumentException;
+use WP_Post;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,6 +37,30 @@ class QuestionModel extends AbstractModel {
 	 */
 	protected static function createSchema(): AbstractSchema {
 		return Plugin::get( QuestionSchema::class );
+	}
+
+	/**
+	 * Get the post type.
+	 *
+	 * @return string
+	 */
+	public static function postTypeSlug(): string {
+		return apply_filters( 'anspress/question/post_type', self::POST_TYPE );
+	}
+
+	/**
+	 * Get the post type.
+	 *
+	 * @return string
+	 */
+	public static function status() {
+		$postStatus = array(
+			'publish'      => __( 'Published', 'anspress-question-answer' ),
+			'private_post' => __( 'Private', 'anspress-question-answer' ),
+			'moderate'     => __( 'Moderate', 'anspress-question-answer' ),
+		);
+
+		return apply_filters( 'anspress/question/post_status', $postStatus );
 	}
 
 	/**

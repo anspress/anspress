@@ -37,7 +37,13 @@ $query = $args['query'];
 	<?php
 	while ( $query->have_posts() ) {
 		$query->the_post();
-		Plugin::loadView( 'src/frontend/single-question/item.php' );
+		Plugin::loadView(
+			'src/frontend/single-question/php/item.php',
+			array(
+				'post'       => get_post(),
+				'attributes' => $attributes,
+			)
+		);
 	}
 	wp_reset_postdata();
 	?>

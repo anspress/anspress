@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerModel;
 use AnsPress\Modules\Question\QuestionModel;
@@ -21,9 +22,13 @@ if ( ! isset( $args ['post'] ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
 }
 
-$postType = QuestionModel::POST_TYPE === $args['post']->post_type ? QuestionModel::POST_TYPE : AnswerModel::POST_TYPE;
+if ( ! PostHelper::isValidPostType( $args['post']->post_type ) ) {
+	return;
+}
 
-$context = QuestionModel::POST_TYPE === $postType ? array( 'question' => $args['post'] ) : array( 'answer' => $args['post'] );
+$postType = $args['post']->post_type;
+
+$context = PostHelper::isQuestion( $post ) ? array( 'question' => $args['post'] ) : array( 'answer' => $args['post'] );
 
 if ( ! Auth::currentUserCan( $postType . ':delete', $context ) ) {
 	return;

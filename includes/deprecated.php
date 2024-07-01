@@ -641,3 +641,22 @@ function ap_comment_form( $post_id = false, $_comment = false ) {
 
 	$form->generate( $args );
 }
+
+/**
+ * Return description of a post status.
+ *
+ * @param  boolean|integer $post_id Post ID.
+ * @deprecated 5.0.0
+ */
+function ap_post_status_badge( $post_id = false ) {
+	$ret = '<postmessage>';
+	$msg = ap_get_post_status_message( $post_id );
+
+	if ( ! empty( $msg ) ) {
+		$ret .= $msg;
+	}
+
+	$ret .= '</postmessage>';
+
+	return $ret;
+}

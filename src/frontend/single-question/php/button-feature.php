@@ -7,6 +7,7 @@
  */
 
 use AnsPress\Classes\Auth;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Question\QuestionModel;
 
@@ -16,24 +17,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Check that post argument is set.
-if ( ! isset( $args ['post'] ) ) {
+if ( ! isset( $post ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
 }
 
-$_post = $args['post'];
-
-if ( QuestionModel::POST_TYPE !== $_post->post_type ) {
+if ( ! PostHelper::isQuestion( $post ) ) {
 	return;
 }
 
-if ( ! Auth::currentUserCan( 'question:feature', array( 'question' => $_post ) ) ) {
+if ( ! Auth::currentUserCan( 'question:feature', array( 'question' => $post ) ) ) {
 	return;
 }
 
 $href = Router::route(
 	'v1.questions.actions',
 	array(
-		'question_id' => $_post->ID,
+		'question_id' => $post->ID,
 		'action'      => 'toggle-featured',
 	)
 );
@@ -41,4 +40,4 @@ $href = Router::route(
 <anspress-link
 	data-href="<?php echo esc_attr( $href ); ?>"
 	data-method="POST"
-	class="anspress-apq-item-action anspress-apq-item-action-feature"><?php ap_is_featured_question( $_post ) ? esc_html_e( 'Unfeature', 'anspress-question-answer' ) : esc_html_e( 'Feature', 'anspress-question-answer' ); ?></anspress-link>
+	class="anspress-apq-item-action anspress-apq-item-action-feature"><?php ap_is_featured_question( $post ) ? esc_html_e( 'Unfeature', 'anspress-question-answer' ) : esc_html_e( 'Feature', 'anspress-question-answer' ); ?></anspress-link>

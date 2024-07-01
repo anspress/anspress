@@ -8,15 +8,14 @@
 
 namespace AnsPress\Modules\Answer;
 
-use AnsPress\Classes\AbstractController;
+use AnsPress\Classes\AbstractPostController;
 use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Str;
-use AnsPress\Exceptions\HTTPException;
+use AnsPress\Classes\TemplateHelper;
 use AnsPress\Exceptions\ValidationException;
 use AnsPress\Modules\Vote\VoteService;
-use InvalidArgumentException;
-use WP_Post;
 use WP_Query;
 use WP_REST_Response;
 
@@ -28,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Answer controller class.
  */
-class AnswerController extends AbstractController {
+class AnswerController extends AbstractPostController {
 	/**
 	 * Answer service.
 	 *
@@ -98,7 +97,13 @@ class AnswerController extends AbstractController {
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				$html = Plugin::loadView( 'src/frontend/single-question/item.php', array(), false );
+				$html = TemplateHelper::loadRestBlockPart(
+					$this->request,
+					'src/frontend/single-question/php/item.php',
+					array(
+						'post' => $answer,
+					)
+				);
 			}
 		}
 
@@ -142,14 +147,14 @@ class AnswerController extends AbstractController {
 		$this->addEvent(
 			'anspress:answer:added:' . $question->ID,
 			array(
-				'html' => Plugin::loadView(
-					'src/frontend/single-question/answers.php',
+				'html' => TemplateHelper::loadRestBlockPart(
+					$this->request,
+					'src/frontend/single-question/php/answers.php',
 					array(
 						'question'     => $question,
 						'query'        => $query,
 						'answers_args' => $answersArgs,
-					),
-					false
+					)
 				),
 			)
 		);
@@ -289,15 +294,15 @@ class AnswerController extends AbstractController {
 
 		$this->replaceHtml(
 			'[data-anspress-id="answer-form-c-' . $answer->post_parent . '"]',
-			Plugin::loadView(
-				'src/frontend/single-question/answer-form.php',
+			TemplateHelper::loadRestBlockPart(
+				$this->request,
+				'src/frontend/single-question/php/answer-form.php',
 				array(
 					'question'     => ap_get_post( $answer->post_parent ),
 					'answer'       => $answer,
 					'form_loaded'  => true,
 					'load_tinymce' => 'anspress-answer-content',
-				),
-				false
+				)
 			)
 		);
 
@@ -351,7 +356,13 @@ class AnswerController extends AbstractController {
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				$html = Plugin::loadView( 'src/frontend/single-question/item.php', array(), false );
+				$html = TemplateHelper::loadRestBlockPart(
+					$this->request,
+					'src/frontend/single-question/php/item.php',
+					array(
+						'post' => $answer,
+					)
+				);
 			}
 		}
 
@@ -394,6 +405,104 @@ class AnswerController extends AbstractController {
 			'success',
 			esc_attr__( 'Thank you for reporting this answer.', 'anspress-question-answer' )
 		);
+
+		return $this->response();
+	}
+
+	/**
+	 * Set answer as moderate.
+	 *
+	 * @param int $answerId The ID of the anser.
+	 * @return WP_REST_Response Response.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function actionSetModerate( int $answerId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $answerId );
+
+		$this->checkPermission( 'answer:update', array( 'answer' => $post ) );
+
+		if ( PostHelper::isAuthor( $post ) ) {
+			return $this->badRequest( __( 'You can not moderate your own answer.', 'anspress-question-answer' ) );
+		}
+
+		$this->answerService->updatePostStatusToModerate( $post->ID );
+
+		$this->addMessage(
+			'success',
+			__( 'Question status updated to moderate and is only visible to admin and moderators.', 'anspress-question-answer' )
+		);
+
+		$query = new WP_Query(
+			array(
+				'p'         => $post->ID,
+				'post_type' => AnswerModel::postTypeSlug(),
+			)
+		);
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$this->replaceHtml(
+					'[data-anspress-id="answer:' . $post->ID . '"]',
+					TemplateHelper::loadRestBlockPart(
+						$this->request,
+						'src/frontend/single-question/php/item.php',
+						array(
+							'post' => $post,
+						)
+					)
+				);
+			}
+		}
+
+		return $this->response();
+	}
+
+	/**
+	 * Set answer as private.
+	 *
+	 * @param int $answerId The ID of the answer.
+	 * @return WP_REST_Response Response.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function actionMakePrivate( int $answerId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$post = ap_get_post( $answerId );
+
+		$this->checkPermission( 'answer:update', array( 'answer' => $post ) );
+
+		$this->answerService->updatePostStatusToPrivate( $post->ID );
+
+		$this->addMessage(
+			'success',
+			__( 'Answer status updated to private and is only visible to author, admin and moderators.', 'anspress-question-answer' )
+		);
+
+		$query = new WP_Query(
+			array(
+				'p'         => $post->ID,
+				'post_type' => AnswerModel::postTypeSlug(),
+			)
+		);
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$this->replaceHtml(
+					'[data-anspress-id="answer:' . $post->ID . '"]',
+					TemplateHelper::loadRestBlockPart(
+						$this->request,
+						'src/frontend/single-question/php/item.php',
+						array(
+							'post' => get_post(),
+						)
+					)
+				);
+			}
+		}
 
 		return $this->response();
 	}

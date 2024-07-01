@@ -44,5 +44,5 @@ class AnsPress_Comment_Hooks {
  * @since 4.1.8
  * @deprecated 5.0.0
  */
-class Comment_Modal extends \AnsPress\Classes\Ajax {
+class Comment_Modal {
 }

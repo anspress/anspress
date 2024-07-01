@@ -238,7 +238,7 @@ class CoreModule extends AbstractModule {
 					$query->the_post();
 
 					Plugin::loadView(
-						'src/frontend/single-question/single-question.php',
+						'src/frontend/single-question/php/single-question.php',
 						array( 'attributes' => $attributes )
 					);
 				}
@@ -248,7 +248,7 @@ class CoreModule extends AbstractModule {
 			}
 		} else {
 			Plugin::loadView(
-				'src/frontend/single-question/single-question.php',
+				'src/frontend/single-question/php/single-question.php',
 				array( 'attributes' => $attributes )
 			);
 		}
