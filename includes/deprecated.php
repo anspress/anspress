@@ -726,3 +726,322 @@ function ap_user_can_comment( $post_id = false, $user_id = false ) {
 
 	return false;
 }
+
+/**
+ * Get a subscribers count of a reference by specific event or without it.
+ *
+ * @param  string  $event   Event type.
+ * @param  integer $ref_id  Reference identifier id.
+ * @return null|array
+ *
+ * @category haveTest
+ *
+ * @since  4.0.0
+ * @since  4.1.5 When `$event` is empty and `$ref_id` is 0 then get total subscribers of site.
+ * @deprecated 5.0.0
+ */
+function ap_subscribers_count( $event = '', $ref_id = 0 ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	global $wpdb;
+
+	$ref_query = '';
+
+	if ( $ref_id > 0 ) {
+		$ref_query = $wpdb->prepare( ' AND subs_ref_id = %d', $ref_id );
+	}
+
+	$event_query = '';
+
+	if ( ! empty( $event ) ) {
+		$event_query = $wpdb->prepare( ' AND subs_event = %s', $event );
+	}
+
+	$results = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->ap_subscribers} WHERE 1=1 {$event_query} {$ref_query}" ); //phpcs:ignore WordPress.DB
+
+	return $results;
+}
+
+/**
+ * Get subscribers. Total subscribers count will be returned
+ * if no argument is passed.
+ *
+ * @param  array $where {
+ *          Where clauses.
+ *
+ *          @type string  $subs_event   Event type.
+ *          @type integer $subs_ref_id  Reference id.
+ *          @type integer $subs_user_id User id.
+ * }
+ * @param  null  $event  Deprecated.
+ * @param  null  $ref_id Deprecated.
+ *
+ * @return null|array
+ *
+ * @category haveTest
+ *
+ * @since  4.0.0
+ * @since  4.1.5 Deprecated arguments `$event` and `$ref_id`. Added new argument `$where`.
+ * @deprecated 5.0.0
+ */
+function ap_get_subscribers( $where = array(), $event = null, $ref_id = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( null !== $event || null !== $ref_id ) {
+		_deprecated_argument( __FUNCTION__, '4.1.5', esc_attr__( 'All 2 arguments $event and $ref_id are deprecated.', 'anspress-question-answer' ) );
+	}
+
+	global $wpdb;
+
+	$where = wp_parse_args(
+		$where,
+		array(
+			'subs_event'   => '',
+			'subs_ref_id'  => '',
+			'subs_user_id' => '',
+		)
+	);
+
+	$where = wp_array_slice_assoc( $where, array( 'subs_event', 'subs_ref_id', 'subs_user_id' ) );
+
+	// Return if where clauses are empty.
+	if ( empty( $where ) ) {
+		return;
+	}
+
+	$query = '';
+
+	if ( isset( $where['subs_ref_id'] ) && $where['subs_ref_id'] > 0 ) {
+		$query .= $wpdb->prepare( ' AND s.subs_ref_id = %d', $where['subs_ref_id'] );
+	}
+
+	if ( ! empty( $where['subs_event'] ) ) {
+		$query .= $wpdb->prepare( ' AND s.subs_event = %s', $where['subs_event'] );
+	}
+
+	if ( ! empty( $where['subs_user_id'] ) ) {
+		$query .= $wpdb->prepare( ' AND s.subs_user_id = %s', $where['subs_user_id'] );
+	}
+
+	$results = $wpdb->get_results( "SELECT * FROM {$wpdb->ap_subscribers} s LEFT JOIN {$wpdb->users} u ON u.ID = s.subs_user_id WHERE 1=1 {$query}" ); // phpcs:ignore WordPress.DB
+
+	return $results;
+}
+
+/**
+ * Delete subscribers by event, ref_id and user_id.
+ *
+ * This is not a recommended function to delete subscriber as this
+ * function does not properly handles hooks. Instead use @see ap_delete_subscriber().
+ *
+ * @param array   $where {
+ *          Where clauses.
+ *
+ *          @type string  $subs_event   Event type.
+ *          @type integer $subs_ref_id  Reference id.
+ *          @type integer $subs_user_id User id.
+ * }
+ * @param string  $event   Deprecated.
+ * @param integer $ref_id  Deprecated.
+ * @param integer $user_id Deprecated.
+ *
+ * @return bool|integer|null
+ *
+ * @category haveTest
+ *
+ * @since 4.0.0 Introduced
+ * @since 4.1.5 Deprecated arguments `$event`, `$ref_id` and `$user_id`. Added new arguments `$where`.
+ * @deprecated 5.0.0
+ */
+function ap_delete_subscribers( $where, $event = null, $ref_id = null, $user_id = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( null !== $event || null !== $ref_id || null !== $user_id ) {
+		_deprecated_argument( __FUNCTION__, '4.1.5', esc_attr__( 'All 3 arguments $event, $ref_id and $user_id are deprecated.', 'anspress-question-answer' ) );
+	}
+
+	global $wpdb;
+
+	$where = wp_array_slice_assoc( $where, array( 'subs_event', 'subs_ref_id', 'subs_user_id' ) );
+
+	// Return if where clauses are empty.
+	if ( empty( $where ) ) {
+		return;
+	}
+
+	/**
+	 * Action triggered right after deleting subscribers.
+	 *
+	 * @param string  $where   $where {
+	 *          Where clauses.
+	 *
+	 *          @type string  $subs_event   Event type.
+	 *          @type integer $subs_ref_id  Reference id.
+	 *          @type integer $subs_user_id User id.
+	 * }
+	 *
+	 * @category haveTest
+	 *
+	 * @since 4.1.5
+	 */
+	do_action( 'ap_before_delete_subscribers', $where );
+
+	$rows = $wpdb->delete( $wpdb->ap_subscribers, $where ); // phpcs:ignore WordPress.DB
+
+	if ( false !== $rows ) {
+		$ref_id = isset( $where['subs_ref_id'] ) ? $where['subs_ref_id'] : 0;
+		$event  = isset( $where['subs_event'] ) ? $where['subs_event'] : '';
+
+		/**
+		 * Action triggered right after deleting subscribers.
+		 *
+		 * @param integer $rows    Number of rows deleted.
+		 * @param string  $where   $where {
+		 *          Where clauses.
+		 *
+		 *          @type string  $subs_event   Event type.
+		 *          @type integer $subs_ref_id  Reference id.
+		 *          @type integer $subs_user_id User id.
+		 * }
+		 *
+		 * @since 4.0.0
+		 */
+		do_action( 'ap_delete_subscribers', $rows, $where );
+	}
+
+	return $rows;
+}
+
+/**
+ * Delete a single subscriber.
+ *
+ * This is a preferred function for deleting a subscriber. Avoid using
+ * function @see ap_delete_subscribers().
+ *
+ * @param integer $ref_id  Reference id.
+ * @param integer $user_id User id.
+ * @param string  $event   Event type.
+ *
+ * @return boolean Return true on success.
+ *
+ * @category haveTest
+ *
+ * @since 4.1.5
+ * @deprecated 5.0.0
+ */
+function ap_delete_subscriber( $ref_id, $user_id, $event ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	global $wpdb;
+
+	$rows = $wpdb->delete( // phpcs:ignore WordPress.DB
+		$wpdb->ap_subscribers,
+		array(
+			'subs_ref_id'  => $ref_id,
+			'subs_user_id' => $user_id,
+			'subs_event'   => $event,
+		),
+		array( '%d', '%d', '%s' )
+	);
+
+	if ( false !== $rows ) {
+		/**
+		 * Action triggered right after deleting a single subscriber.
+		 *
+		 * @param integer $ref_id  Reference id.
+		 * @param integer $user_id User id.
+		 * @param string  $event   Event type.
+		 */
+		do_action( 'ap_delete_subscriber', $ref_id, $user_id, $event );
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Output question subscribe button.
+ *
+ * @param object|integer|false $_post Post object or ID.
+ * @param boolean              $output Echo or return.
+ * @return string|null
+ * @since 4.0.0
+ * @deprecated 5.0.0
+ */
+function ap_subscribe_btn( $_post = false, $output = true ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	$_post = ap_get_post( $_post );
+
+	$args        = wp_json_encode(
+		array(
+			'__nonce' => wp_create_nonce( 'subscribe_' . $_post->ID ),
+			'id'      => $_post->ID,
+		)
+	);
+	$subscribers = (int) ap_get_post_field( 'subscribers', $_post );
+	$subscribed  = ap_is_user_subscriber( 'question', $_post->ID );
+	$label       = $subscribed ? __( 'Unsubscribe', 'anspress-question-answer' ) : __( 'Subscribe', 'anspress-question-answer' );
+
+	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">' . esc_html( $label ) . '</span><span class="apsubscribers-count">' . esc_html( $subscribers ) . '</span></a>';
+
+	if ( ! $output ) {
+		return $html;
+	}
+
+	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Check if user is subscribed to a reference event.
+ *
+ * @param string  $event Event type.
+ * @param integer $ref_id Reference id.
+ * @param integer $user_id User ID.
+ * @return bool
+ *
+ * @since 4.0.0
+ * @deprecated 5.0.0
+ */
+function ap_is_user_subscriber( $event, $ref_id, $user_id = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	$exists = ap_get_subscriber( $user_id, $event, $ref_id );
+
+	if ( $exists ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Return escaped subscriber event name. It basically removes
+ * id suffixed in event name and only name.
+ *
+ * @param string $event Event name.
+ * @return string
+ * @since 4.1.5
+ * @deprecated 5.0.0
+ */
+function ap_esc_subscriber_event( $event ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	return false !== strpos( $event, '_' ) ? substr( $event, 0, strpos( $event, '_' ) ) : $event;
+}
+
+/**
+ * Parse subscriber event name to get event id.
+ *
+ * @param string $event Event name. i.e. `answer_2334`.
+ * @return integer
+ * @since 4.1.5
+ * @deprecated 5.0.0
+ */
+function ap_esc_subscriber_event_id( $event ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	return (int) substr( $event, strpos( $event, '_' ) + 1 );
+}

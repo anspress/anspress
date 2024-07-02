@@ -44,8 +44,6 @@ class AnsPress_Ajax {
 		// List filtering.
 		add_action( 'ap_ajax_load_filter_order_by', array( 'AnsPress_Ajax', 'load_filter_order_by' ) );
 
-		// Subscribe.
-		add_action( 'ap_ajax_subscribe', array( 'AnsPress_Ajax', 'subscribe_to_question' ) );
 		add_action( 'wp_ajax_ap_repeatable_field', array( 'AnsPress\Ajax\Repeatable_Field', 'init' ) );
 		add_action( 'wp_ajax_nopriv_ap_repeatable_field', array( 'AnsPress\Ajax\Repeatable_Field', 'init' ) );
 
@@ -359,84 +357,6 @@ class AnsPress_Ajax {
 				'success'  => true,
 				'multiple' => false,
 				'items'    => ap_get_questions_orderby(),
-			)
-		);
-	}
-
-	/**
-	 * Subscribe user to a question.
-	 *
-	 * @return void
-	 * @since unknown
-	 */
-	public static function subscribe_to_question() {
-		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
-
-		if ( ! is_user_logged_in() ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => array( 'message' => __( 'You must be logged in to subscribe to a question', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		$_post = ap_get_post( $post_id );
-
-		if ( 'question' === $_post->post_type && ! anspress_verify_nonce( 'subscribe_' . $post_id ) ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => array( 'message' => __( 'Sorry, unable to subscribe', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		// Check if already subscribed, toggle if subscribed.
-		$exists = ap_get_subscriber( false, 'question', $post_id );
-
-		if ( $exists ) {
-			ap_delete_subscriber( $post_id, get_current_user_id(), 'question' );
-			ap_ajax_json(
-				array(
-					'success'  => true,
-					'snackbar' => array(
-						'message' => sprintf(
-							/* Translators: %s Unsubscribed to the question title */
-							__( 'Successfully unsubscribed from question: %s', 'anspress-question-answer' ),
-							$_post->post_title
-						),
-					),
-					'count'    => ap_get_post_field( 'subscribers', $post_id ),
-					'label'    => __( 'Subscribe', 'anspress-question-answer' ),
-				)
-			);
-		}
-
-		// Insert subscriber.
-		$insert = ap_new_subscriber( false, 'question', $post_id );
-
-		if ( false === $insert ) {
-			ap_ajax_json(
-				array(
-					'success'  => false,
-					'snackbar' => array( 'message' => __( 'Sorry, unable to subscribe', 'anspress-question-answer' ) ),
-				)
-			);
-		}
-
-		ap_ajax_json(
-			array(
-				'success'  => true,
-				'snackbar' => array(
-					'message' => sprintf(
-						/* Translators: %s Subscribed to the question title */
-						__( 'Successfully subscribed to question: %s', 'anspress-question-answer' ),
-						$_post->post_title
-					),
-				),
-				'count'    => ap_get_post_field( 'subscribers', $post_id ),
-				'label'    => __( 'Unsubscribe', 'anspress-question-answer' ),
 			)
 		);
 	}

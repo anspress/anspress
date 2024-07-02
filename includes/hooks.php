@@ -54,7 +54,6 @@ class AnsPress_Hooks {
 			add_action( 'transition_post_status', array( 'AnsPress_Hooks', 'transition_post_status' ), 10, 3 );
 			add_action( 'ap_vote_casted', array( 'AnsPress_Hooks', 'update_user_vote_casted_count' ), 10, 4 );
 			add_action( 'ap_vote_removed', array( 'AnsPress_Hooks', 'update_user_vote_casted_count' ), 10, 4 );
-			add_action( 'ap_display_question_metas', array( 'AnsPress_Hooks', 'display_question_metas' ), 100, 2 );
 			add_action( 'widget_comments_args', array( 'AnsPress_Hooks', 'widget_comments_args' ) );
 
 			add_filter( 'posts_clauses', array( 'AP_QA_Query_Hooks', 'sql_filter' ), 1, 2 );
@@ -821,29 +820,6 @@ class AnsPress_Hooks {
 		// Update total casted vote of user.
 		update_user_meta( $userid, '__up_vote_casted', $voted['votes_up'] );
 		update_user_meta( $userid, '__down_vote_casted', $voted['votes_down'] );
-	}
-
-	/**
-	 * Update qameta subscribers count on adding new subscriber.
-	 *
-	 * @param integer $rows Number of rows deleted.
-	 * @param string  $where Where clause.
-	 */
-	public static function delete_subscriber( $ref_id, $user_id, $event ) {
-		// Remove ids from event.
-		$esc_event = ap_esc_subscriber_event( $event );
-
-		if ( in_array( $esc_event, [ 'question', 'answer', 'comment' ], true ) ) {
-			ap_update_subscribers_count( $ref_id );
-		}
-	}
-
-	public static function display_question_metas( $metas, $question_id ) {
-		if ( is_user_logged_in() && is_question() && ap_is_addon_active( 'email.php' ) ) {
-			$metas['subscribe'] = ap_subscribe_btn( false, false );
-		}
-
-		return $metas;
 	}
 
 	/**

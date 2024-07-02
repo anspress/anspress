@@ -448,7 +448,6 @@ class TestQAMeta extends TestCase {
 		$wpdb->query( "TRUNCATE {$wpdb->ap_qameta}" );
 
 		$id = $this->insert_question();
-		$this->assertEquals( 0, ap_subscribers_count( 'question', $id ) );
 		$this->assertEquals( 0, ap_update_subscribers_count( $id ) );
 		$this->assertEquals( 100, ap_update_subscribers_count( $id, 100 ) );
 		$this->assertEquals( 1000, ap_update_subscribers_count( $id, 1000 ) );

@@ -9,6 +9,8 @@
 namespace AnsPress\Modules\Subscriber;
 
 use AnsPress\Classes\AbstractModule;
+use AnsPress\Classes\Plugin;
+use AnsPress\Classes\PostHelper;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,7 +34,6 @@ class SubscriberModule extends AbstractModule {
 		add_action( 'anspress/model/after_insert/ap_subscribers', array( $this, 'new_subscriber' ), 10, 4 );
 		add_action( 'before_delete_post', array( $this, 'delete_subscriptions' ) );
 		add_action( 'ap_publish_comment', array( $this, 'comment_subscription' ) );
-		add_action( 'deleted_comment', array( $this, 'delete_comment_subscriptions' ), 10, 2 );
 	}
 
 	/**
@@ -108,23 +109,24 @@ class SubscriberModule extends AbstractModule {
 	public function delete_subscriptions( $postid ) {
 		$_post = get_post( $postid );
 
-		if ( 'question' === $_post->post_type ) {
-			// Delete question subscriptions.
-			ap_delete_subscribers(
-				array(
-					'subs_event'  => 'question',
-					'subs_ref_id' => $postid,
-				)
-			);
+		// Return if not intended post types.
+		if ( ! PostHelper::isValidPostType( $_post->post_type ) ) {
+			return;
 		}
 
-		if ( 'answer' === $_post->post_type ) {
-			// Delete question subscriptions.
-			ap_delete_subscribers(
-				array(
-					'subs_event' => 'answer_' . $_post->post_parent,
-				)
-			);
+		$subscribers = Plugin::get( SubscriberService::class )->getSubscribers(
+			array(
+				'subs_event'  => PostHelper::isQuestion( $_post ) ? $_post->post_type : 'answer_' . $_post->post_parent,
+				'subs_ref_id' => $postid,
+			)
+		);
+
+		if ( empty( $subscribers ) ) {
+			return;
+		}
+
+		foreach ( $subscribers as $subscriber ) {
+			$subscriber->delete();
 		}
 	}
 
@@ -148,28 +150,6 @@ class SubscriberModule extends AbstractModule {
 					'subs_user_id' => $comment->user_id,
 					'subs_event'   => $type,
 					'subs_ref_id'  => $comment->comment_ID,
-				)
-			);
-		}
-	}
-
-	/**
-	 * Delete comment subscriptions right before deleting comment.
-	 *
-	 * @param integer        $comment_id Comment ID.
-	 * @param int|WP_Comment $_comment   Comment object.
-	 *
-	 * @since 5.0.0
-	 */
-	public function delete_comment_subscriptions( $comment_id, $_comment ) {
-		$_post = get_post( $_comment->comment_post_ID );
-
-		if ( in_array( $_post->post_type, array( 'question', 'answer' ), true ) ) {
-			$type = $_post->post_type . '_' . $_post->ID;
-			$row  = ap_delete_subscribers(
-				array(
-					'subs_event'  => $type,
-					'subs_ref_id' => $_comment->comment_ID,
 				)
 			);
 		}

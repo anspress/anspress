@@ -184,7 +184,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/rewrite.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-basepage.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-question.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/subscribers.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/taxo.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/theme.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/upload.php' );

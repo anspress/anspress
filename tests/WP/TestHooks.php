@@ -100,14 +100,6 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 11, has_action( 'ap_form_image_upload', [ 'AP_Form_Hooks', 'image_upload_form' ] ) );
 
 		// Subscriptions.
-		$this->assertEquals( 10, has_action( 'ap_after_new_question', [ 'AnsPress_Hooks', 'question_subscription' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_after_new_answer', [ 'AnsPress_Hooks', 'answer_subscription' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_new_subscriber', [ 'AnsPress_Hooks', 'new_subscriber' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_delete_subscribers', [ 'AnsPress_Hooks', 'delete_subscribers' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_delete_subscriber', [ 'AnsPress_Hooks', 'delete_subscriber' ] ) );
-		$this->assertEquals( 10, has_action( 'before_delete_post', [ 'AnsPress_Hooks', 'delete_subscriptions' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_publish_comment', [ 'AnsPress_Hooks', 'comment_subscription' ] ) );
-		$this->assertEquals( 10, has_action( 'deleted_comment', [ 'AnsPress_Hooks', 'delete_comment_subscriptions' ] ) );
 		$this->assertEquals( 11, has_action( 'get_comments_number', [ 'AnsPress_Hooks', 'get_comments_number' ] ) );
 	}
 
@@ -139,14 +131,12 @@ class TestHooks extends TestCase {
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'save_answer_hooks' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'transition_post_status' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'update_user_vote_casted_count' ) );
-		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_subscriber' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'display_question_metas' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'human_time_diff' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'widget_comments_args' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'question_subscription' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'answer_subscription' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'new_subscriber' ) );
-		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_subscribers' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_subscriptions' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'comment_subscription' ) );
 		$this->assertTrue( method_exists( 'AnsPress_Hooks', 'delete_comment_subscriptions' ) );
@@ -177,17 +167,8 @@ class TestHooks extends TestCase {
 		$comment = get_comment( $comment_id );
 
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
-		$this->assertTrue( null !== ap_get_subscriber( false, 'question_' . $question_id, $comment_id ) );
 
 		wp_delete_comment( $comment_id, true );
-		$this->assertTrue(
-			[] === ap_get_subscribers(
-				[
-					'subs_event'  => 'question_' . $question_id,
-					'subs_ref_id' => $comment_id,
-				]
-			)
-		);
 
 		$this->setRole( 'subscriber' );
 		$ids        = $this->insert_answer();
@@ -202,17 +183,8 @@ class TestHooks extends TestCase {
 		$comment = get_comment( $comment_id );
 
 		do_action( 'ap_publish_comment', get_comment( $comment_id ) );
-		$this->assertTrue( null !== ap_get_subscriber( false, 'answer_' . $ids->a, $comment_id ) );
 
 		wp_delete_comment( $comment_id, true );
-		$this->assertTrue(
-			[] === ap_get_subscribers(
-				[
-					'subs_event'  => 'answer_' . $ids->a,
-					'subs_ref_id' => $comment_id,
-				]
-			)
-		);
 	}
 
 	/**

@@ -941,35 +941,7 @@ function ap_featured_post_args( $post_id = false ) {
 	);
 }
 
-/**
- * Output question subscribe button.
- *
- * @param object|integer|false $_post Post object or ID.
- * @param boolean              $output Echo or return.
- * @return string|null
- * @since 4.0.0
- */
-function ap_subscribe_btn( $_post = false, $output = true ) {
-	$_post = ap_get_post( $_post );
 
-	$args        = wp_json_encode(
-		array(
-			'__nonce' => wp_create_nonce( 'subscribe_' . $_post->ID ),
-			'id'      => $_post->ID,
-		)
-	);
-	$subscribers = (int) ap_get_post_field( 'subscribers', $_post );
-	$subscribed  = ap_is_user_subscriber( 'question', $_post->ID );
-	$label       = $subscribed ? __( 'Unsubscribe', 'anspress-question-answer' ) : __( 'Subscribe', 'anspress-question-answer' );
-
-	$html = '<a href="#" class="ap-btn ap-btn-subscribe ap-btn-small ' . ( $subscribed ? 'active' : '' ) . '" apsubscribe apquery="' . esc_js( $args ) . '"><span class="apsubscribers-title">' . esc_html( $label ) . '</span><span class="apsubscribers-count">' . esc_html( $subscribers ) . '</span></a>';
-
-	if ( ! $output ) {
-		return $html;
-	}
-
-	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-}
 
 /**
  * Create array of object containing AnsPress pages. To be used in admin menu metabox.

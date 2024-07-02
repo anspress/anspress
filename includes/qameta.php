@@ -6,6 +6,9 @@
  * @package AnsPress
  */
 
+use AnsPress\Classes\Plugin;
+use AnsPress\Modules\Subscriber\SubscriberService;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -431,7 +434,8 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
  */
 function ap_update_subscribers_count( $post_id, $count = false ) {
 	if ( false === $count ) {
-		$count = ap_subscribers_count( 'question', $post_id );
+		$count = Plugin::get( SubscriberService::class )
+			->getSubscriberCountByEventRef( 'question', $post_id );
 	}
 
 	ap_insert_qameta( $post_id, array( 'subscribers' => $count ) );
