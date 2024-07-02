@@ -2354,6 +2354,10 @@ function ap_current_user_id() {
  * @since 4.1.2
  */
 function ap_is_cpt( $_post ) {
+	if ( ! $_post instanceof WP_Post ) {
+		return false;
+	}
+
 	return ( in_array( $_post->post_type, array( 'answer', 'question' ), true ) );
 }
 

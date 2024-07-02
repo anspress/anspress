@@ -28,19 +28,22 @@ class CommentPolicy extends AbstractPolicy {
 	 * @var array
 	 */
 	protected array $abilities = array(
-		'list'   => array(
+		'list'    => array(
 			'post',
 		),
-		'view'   => array(
+		'view'    => array(
 			'comment',
 		),
-		'create' => array(
+		'create'  => array(
 			'post',
 		),
-		'update' => array(
+		'update'  => array(
 			'comment',
 		),
-		'delete' => array(
+		'delete'  => array(
+			'comment',
+		),
+		'approve' => array(
 			'comment',
 		),
 	);
@@ -102,7 +105,11 @@ class CommentPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['comment'] ) && is_object( $context['comment'] ) && $context['comment']->user_id === $user->user_id ) {
+		if ( self::isUserIdEmpty( $user ) || empty( $context['comment'] ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'comment', 'user_id' ) ) {
 			return true;
 		}
 
@@ -117,7 +124,11 @@ class CommentPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( ?WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['comment'] ) && is_object( $context['comment'] ) && $context['comment']->user_id === $user->user_id ) {
+		if ( self::isUserIdEmpty( $user ) || empty( $context['comment'] ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'comment', 'user_id' ) ) {
 			return true;
 		}
 
@@ -142,6 +153,30 @@ class CommentPolicy extends AbstractPolicy {
 
 		// If post not published then only author can view the post.
 		if ( 'publish' === $context['post']->post_status ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if the given user can approve a comment.
+	 *
+	 * @param null|WP_User $user user object.
+	 * @param array        $context Context.
+	 * @return bool
+	 */
+	public function approve( ?WP_User $user, array $context ): bool {
+		if ( self::isUserIdEmpty( $user ) || empty( $context['comment'] ) ) {
+			return false;
+		}
+
+		// Check if comment is already approved.
+		if ( 1 === (int) $context['comment']->comment_approved ) {
+			return false;
+		}
+
+		if ( $user->has_cap( 'ap_approve_comment' ) ) {
 			return true;
 		}
 

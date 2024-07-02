@@ -408,6 +408,9 @@ function ap_answers_count( $_post = null ) {
  */
 function ap_get_votes_net( $_post = null ) {
 	$_post = ap_get_post( $_post );
+	if ( ! $_post ) {
+		return 0;
+	}
 	return (int) $_post->votes_net;
 }
 
@@ -427,6 +430,10 @@ function ap_votes_net( $_post = null ) {
  */
 function ap_question_status( $_post = null ) {
 	$_post = ap_get_post( $_post );
+
+	if ( ! $_post ) {
+		return;
+	}
 
 	if ( 'publish' === $_post->post_status ) {
 		return;
@@ -607,6 +614,9 @@ function ap_get_time( $_post = null, $format = '' ) {
  */
 function ap_is_featured_question( $question = null ) {
 	$question = ap_get_post( $question );
+	if ( ! $question ) {
+		return false;
+	}
 	return (bool) $question->featured;
 }
 
@@ -689,10 +699,10 @@ function ap_latest_post_activity_html( $post_id = false, $answer_activities = fa
 	}
 
 	$_post    = ap_get_post( $post_id );
-	$activity = $_post->activities;
+	$activity = $_post ? $_post?->activities : null;
 
 	if ( false !== $answer_activities && ! empty( $_post->activities['child'] ) ) {
-		$activity = $_post->activities['child'];
+		$activity = $_post?->activities['child'];
 	}
 
 	if ( ! empty( $activity ) && ! empty( $activity['date'] ) ) {

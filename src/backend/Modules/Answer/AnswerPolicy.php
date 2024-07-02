@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Answer;
 
 use AnsPress\Classes\AbstractPolicy;
+use AnsPress\Classes\PostHelper;
 use WP_User;
 
 // Exit if accessed directly.
@@ -28,25 +29,34 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @var array
 	 */
 	protected array $abilities = array(
-		'list'     => array(
+		'list'                   => array(
 			'question',
 		),
-		'view'     => array(
+		'view'                   => array(
 			'answer',
 		),
-		'create'   => array(
+		'create'                 => array(
 			'question',
 		),
-		'update'   => array(
+		'update'                 => array(
 			'answer',
 		),
-		'delete'   => array(
+		'delete'                 => array(
 			'answer',
 		),
-		'select'   => array(
+		'select'                 => array(
 			'answer',
 		),
-		'unselect' => array(
+		'unselect'               => array(
+			'answer',
+		),
+		'set_status_to_publish'  => array(
+			'answer',
+		),
+		'set_status_to_moderate' => array(
+			'answer',
+		),
+		'set_status_to_private'  => array(
 			'answer',
 		),
 	);
@@ -228,6 +238,77 @@ class AnswerPolicy extends AbstractPolicy {
 		}
 
 		if ( $context['answer']->post_author == $user->ID ) { // @codingStandardsIgnoreLine
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if the given user can set the status to publish.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The model instance being set to publish.
+	 * @return bool True if the user is authorized to set the model to publish, false otherwise.
+	 */
+	public function set_status_to_publish( ?WP_User $user, array $context ): bool {
+		if ( ! empty( $user?->ID ) ) {
+			return false;
+		}
+
+		// Check user has capability ap_change_status_other.
+		if ( $user->has_cap( 'ap_change_status_other' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if the given user can set the status to moderate.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The model instance being set to moderate.
+	 * @return bool True if the user is authorized to set the model to moderate, false otherwise.
+	 */
+	public function set_status_to_moderate( ?WP_User $user, array $context ): bool {
+		if ( ! empty( $user?->ID ) ) {
+			return false;
+		}
+
+		if ( empty( $context['answer'] ) || PostHelper::isModerateStatus( $context['answer'] ) ) {
+			return false;
+		}
+
+		$isAuthor = self::isAuthorOfItem( $user, $context, 'answer', 'post_author' );
+
+		// Check user has capability ap_change_status_other.
+		if ( $isAuthor || $user->has_cap( 'ap_change_status_other' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if the given user can set the status to private.
+	 *
+	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The model instance being set to private.
+	 * @return bool True if the user is authorized to set the model to private, false otherwise.
+	 */
+	public function set_status_to_private( ?WP_User $user, array $context ): bool {
+		if ( ! empty( $user?->ID ) ) {
+			return false;
+		}
+
+		if ( empty( $context['answer'] ) && PostHelper::isPrivateStatus( $context['answer'] ) ) {
+			return false;
+		}
+
+		$isAuthor = self::isAuthorOfItem( $user, $context, 'answer', 'post_author' );
+
+		if ( $isAuthor || $user->has_cap( 'ap_change_status_other' ) ) {
 			return true;
 		}
 

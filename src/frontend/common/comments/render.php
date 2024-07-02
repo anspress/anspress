@@ -17,30 +17,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Validate required arguments.
-if ( ! isset( $args['post'] ) ) {
+if ( ! isset( $post ) ) {
 	throw new GeneralException( 'Post object is required.' );
 }
 
 $showingComments          = 3;
-$totalComments            = get_comments_number( $args['post']->ID );
+$totalComments            = get_comments_number( $post->ID );
 $offset                   = absint( $args['offset'] ?? 0 );
 $commentsWithourContainer = $args['withoutContainer'] ?? false;
 
-$commentQuery = new WP_Comment_Query(
+$commentQuery = Plugin::get( CommentService::class )->getCommentsQuery(
+	$post->ID,
 	array(
-		'type'    => 'anspress',
-		'post_id' => $args['post']->ID,
-		'status'  => 'approve',
-		'orderby' => 'comment_ID',
-		'order'   => 'ASC',
-		'number'  => $showingComments,
-		'offset'  => $offset,
+		'number' => $showingComments,
+		'offset' => $offset,
 	)
 );
 
 $postComments = $commentQuery->get_comments();
 
-$commentsData = Plugin::get( CommentService::class )->getCommentsData( $args['post'], $showingComments, $offset );
+$commentsData = Plugin::get( CommentService::class )->getCommentsData( $post, $showingComments, $offset );
 
 if ( $commentsWithourContainer ) {
 	if ( $totalComments ) {
@@ -58,7 +54,7 @@ if ( $commentsWithourContainer ) {
 	return;
 }
 ?>
-<anspress-comment-list data-anspress-id="comment-list-<?php echo (int) $args['post']->ID; ?>" data-post-id="<?php echo esc_attr( $args['post']->ID ); ?>" id="anspress-comments-<?php echo esc_attr( $args['post']->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
+<anspress-comment-list data-anspress-id="comment-list-<?php echo (int) $post->ID; ?>" data-post-id="<?php echo esc_attr( $post->ID ); ?>" id="anspress-comments-<?php echo esc_attr( $post->ID ); ?>" class="anspress-apq-item-comments anspress-comments" data-anspress="<?php echo esc_attr( wp_json_encode( $commentsData ) ); ?>">
 	<div class="anspress-comments-count-c anspress-left-caret" data-anspress-count="<?php echo (int) $totalComments; ?>">
 		<div class="anspress-comments-count">
 			<?php

@@ -1,6 +1,6 @@
 <?php
 /**
- * Private post button.
+ * Publish post button.
  *
  * @package AnsPress
  * @since   5.0.0
@@ -22,14 +22,14 @@ if ( ! isset( $post ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
 }
 
-// Check if already private.
-if ( PostHelper::isPrivateStatus( $post ) ) {
+// Check if already moderate or author.
+if ( PostHelper::isPublishedStatus( $post ) ) {
 	return;
 }
 
 $context = array( $post->post_type => $post );
 
-if ( ! Auth::currentUserCan( $post->post_type . ':set_status_to_private', $context ) ) {
+if ( ! Auth::currentUserCan( $post->post_type . ':set_status_to_publish', $context ) ) {
 	return;
 }
 
@@ -38,7 +38,7 @@ if ( PostHelper::isQuestion( $post ) ) {
 		'v1.questions.actions',
 		array(
 			'question_id' => $post->ID,
-			'action'      => 'make-private',
+			'action'      => 'set-publish',
 		)
 	);
 } else {
@@ -46,9 +46,9 @@ if ( PostHelper::isQuestion( $post ) ) {
 		'v1.answers.actions',
 		array(
 			'answer_id' => $post->ID,
-			'action'    => 'make-private',
+			'action'    => 'set-publish',
 		)
 	);
 }
 ?>
-<anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="POST" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Make Private', 'anspress-question-answer' ); ?></anspress-link>
+<anspress-link data-href="<?php echo esc_attr( $href ); ?>" data-method="POST" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Public', 'anspress-question-answer' ); ?></anspress-link>

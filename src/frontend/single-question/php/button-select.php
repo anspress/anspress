@@ -6,6 +6,8 @@
  * @since   5.0.0
  */
 
+use AnsPress\Classes\Auth;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\Router;
 
 // Exit if accessed directly.
@@ -19,7 +21,11 @@ if ( ! isset( $post ) ) {
 }
 
 // Check post type is answer.
-if ( 'answer' !== $post->post_type ) {
+if ( PostHelper::isAnswer( $post ) ) {
+	return;
+}
+
+if ( ! Auth::currentUserCan( 'answer:select', array( 'answer' => $post ) ) ) {
 	return;
 }
 
@@ -29,8 +35,6 @@ $selectedAnswer = (int) ap_selected_answer( $post->post_parent );
 if ( $selectedAnswer && $selectedAnswer === (int) $post->ID ) {
 	$isSelected = true;
 }
-
-$selecthref = 'anspress/v1/post/' . (int) $post->post_parent . '/actions/select/' . (int) $post->ID;
 
 $href = Router::route(
 	'v1.answers.actions',

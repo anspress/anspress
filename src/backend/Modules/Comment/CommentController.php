@@ -79,6 +79,7 @@ class CommentController extends AbstractController {
 
 		// Check if user can comment.
 		$this->checkPermission( 'comment:create', array( 'post' => $post ) );
+		$this->addEvent( 'remove', array( 'selector' => '[data-anspress-id="comment-form-c-' . $post->ID . '"]' ) );
 
 		$this->addEvent(
 			'appendTo',
@@ -123,6 +124,8 @@ class CommentController extends AbstractController {
 
 		// Check if user can edit comment.
 		$this->checkPermission( 'comment:update', array( 'comment' => $comment ) );
+
+		$this->addEvent( 'remove', array( 'selector' => '[data-anspress-id="comment-form-c-' . $comment->comment_post_ID . '"]' ) );
 
 		$this->addEvent(
 			'appendTo',
@@ -182,10 +185,18 @@ class CommentController extends AbstractController {
 			true
 		);
 
+		$comment = get_comment( $commentId );
+
+		if ( 1 !== $comment->comment_approved ) {
+			$this->addMessage( 'success', esc_attr__( 'Comment added successfully but is awaiting approval.', 'anspress-question-answer' ) );
+
+			return $this->response();
+		}
+
 		$commentHtml = TemplateHelper::loadRestBlockPart(
 			$this->request,
 			'src/frontend/common/comments/single-comment.php',
-			array( 'comment' => get_comment( $commentId ) )
+			array( 'comment' => $comment )
 		);
 
 		$this->addMessage( 'success', esc_attr__( 'Comment added successfully.', 'anspress-question-answer' ) );
@@ -353,5 +364,48 @@ class CommentController extends AbstractController {
 				'replaceHtml' => array( '[data-anspress-id="comment-' . $data['comment_id'] . '"]' => $commentHtml ),
 			)
 		);
+	}
+
+	/**
+	 * Approve a comment.
+	 *
+	 * @param int $commentId Comment ID.
+	 * @return WP_REST_Response
+	 */
+	public function actionApproveComment( int $commentId ) {
+		$this->assureLoggedIn();
+
+		$comment = get_comment( $commentId );
+
+		if ( ! $comment ) {
+			return $this->notFound();
+		}
+
+		// Check if user can approve comment.
+		$this->checkPermission( 'comment:approve', array( 'comment' => $comment ) );
+
+		$approved = wp_set_comment_status( $commentId, 'approve' );
+
+		if ( ! $approved ) {
+			return $this->serverError( __( 'Failed to approve comment.', 'anspress-question-answer' ) );
+		}
+
+		$this->addMessage( 'success', esc_attr__( 'Comment approved successfully.', 'anspress-question-answer' ) );
+
+		$this->setData(
+			'comment-list-' . (int) $comment->comment_post_ID,
+			Plugin::get( CommentService::class )->getCommentsData( get_post( $comment->comment_post_ID ) )
+		);
+
+		$this->replaceHtml(
+			'[data-anspress-id="comment-' . $commentId . '"]',
+			TemplateHelper::loadRestBlockPart(
+				$this->request,
+				'src/frontend/common/comments/single-comment.php',
+				array( 'comment' => get_comment( $commentId ) )
+			)
+		);
+
+		return $this->response();
 	}
 }

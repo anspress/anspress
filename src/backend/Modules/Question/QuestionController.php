@@ -47,13 +47,19 @@ class QuestionController extends AbstractPostController {
 			)
 		);
 
-		$action = Str::toCamelCase( 'action' . $data['action'] );
+		$action = Str::toCamelCase( 'action ' . $data['action'] );
 
 		if ( method_exists( $this, $action ) ) {
 			return $this->$action( (int) $data['question_id'] );
 		}
 
-		return $this->notFound( __( 'Invalid action.', 'anspress-question-answer' ) );
+		return $this->notFound(
+			sprintf(
+				// translators: %s: action name.
+				esc_attr__( 'Invalid %s action.', 'anspress-question-answer' ),
+				$action
+			)
+		);
 	}
 
 	/**
@@ -137,35 +143,6 @@ class QuestionController extends AbstractPostController {
 	}
 
 	/**
-	 * Report a question.
-	 *
-	 * @param int $questionId The ID of the question.
-	 * @return WP_REST_Response Response.
-	 */
-	public function actionReport( int $questionId ) {
-		$this->assureLoggedIn();
-
-		$post = ap_get_post( $questionId );
-
-		if ( Plugin::get( VoteService::class )->hasUserFlaggedPost( $post->ID ) ) {
-			return $this->badRequest( __( 'You have already reported this question.', 'anspress-question-answer' ) );
-		}
-
-		$voted = Plugin::get( VoteService::class )->addPostFlag( $post->ID, Auth::getID() );
-
-		if ( ! $voted ) {
-			return $this->serverError( __( 'Failed to report this question.', 'anspress-question-answer' ) );
-		}
-
-		$this->addMessage(
-			'success',
-			esc_attr__( 'Thank you for reporting this question.', 'anspress-question-answer' )
-		);
-
-		return $this->response();
-	}
-
-	/**
 	 * Load answer form.
 	 *
 	 * @param int $questionId The ID of the question.
@@ -200,62 +177,6 @@ class QuestionController extends AbstractPostController {
 		return $this->response(
 			array(
 				'load_tinymce' => 'anspress-answer-content',
-			)
-		);
-	}
-
-	/**
-	 * Set question as moderate.
-	 *
-	 * @param int $questionId The ID of the question.
-	 * @return WP_REST_Response Response.
-	 * @throws ValidationException If validation fails.
-	 */
-	public function actionSetModerate( int $questionId ): WP_REST_Response {
-		$this->assureLoggedIn();
-
-		$post = ap_get_post( $questionId );
-
-		$this->checkPermission( 'question:moderate', array( 'question' => $post ) );
-
-		$this->questionService->updatePostStatusToModerate( $post->ID );
-
-		$this->addMessage(
-			'success',
-			__( 'Question status updated to moderate and is only visible to admin and moderators.', 'anspress-question-answer' )
-		);
-
-		return $this->response(
-			array(
-				'reload' => true,
-			)
-		);
-	}
-
-	/**
-	 * Set question as private.
-	 *
-	 * @param int $questionId The ID of the question.
-	 * @return WP_REST_Response Response.
-	 * @throws ValidationException If validation fails.
-	 */
-	public function actionMakePrivate( int $questionId ): WP_REST_Response {
-		$this->assureLoggedIn();
-
-		$post = ap_get_post( $questionId );
-
-		$this->checkPermission( 'question:update', array( 'question' => $post ) );
-
-		$this->questionService->updatePostStatusToPrivate( $post->ID );
-
-		$this->addMessage(
-			'success',
-			__( 'Question status updated to private and is only visible to admin and moderators.', 'anspress-question-answer' )
-		);
-
-		return $this->response(
-			array(
-				'reload' => true,
 			)
 		);
 	}

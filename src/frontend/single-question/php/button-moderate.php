@@ -22,14 +22,13 @@ if ( ! isset( $post ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.' );
 }
 
-// Check if already moderate or author.
-if ( PostHelper::isModerateStatus( $post ) || PostHelper::isAuthor( $post ) ) {
+if ( PostHelper::isModerateStatus( $post ) ) {
 	return;
 }
 
 $context = array( $post->post_type => $post );
 
-if ( ! Auth::currentUserCan( $post->post_type . ':update', $context ) ) {
+if ( ! Auth::currentUserCan( $post->post_type . ':set_status_to_moderate', $context ) ) {
 	return;
 }
 
@@ -38,7 +37,7 @@ if ( PostHelper::isQuestion( $post ) ) {
 		'v1.questions.actions',
 		array(
 			'question_id' => $post->ID,
-			'action'      => 'set-moderate',
+			'action'      => 'make-moderate',
 		)
 	);
 } else {
@@ -46,7 +45,7 @@ if ( PostHelper::isQuestion( $post ) ) {
 		'v1.answers.actions',
 		array(
 			'answer_id' => $post->ID,
-			'action'    => 'set-moderate',
+			'action'    => 'make-moderate',
 		)
 	);
 }

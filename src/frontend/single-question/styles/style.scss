@@ -228,16 +228,16 @@
 	}
 }
 
-anspress-item {
-	&.anspress-replacing {
-		opacity: 0;
-		transition: cubic-bezier(0.18, 0.89, 0.32, 1.28) opacity 0.4s;
-	}
+// anspress-item {
+// 	&.anspress-replacing {
+// 		// opacity: 0;
+// 		// transition: cubic-bezier(0.18, 0.89, 0.32, 1.28) opacity 0.2s;
+// 	}
 
-	&.anspress-replaced {
-		opacity: 1;
-	}
-}
+// 	&.anspress-replaced {
+// 		// opacity: 1;
+// 	}
+// }
 
 // Import the style.css from common/comments
 @import "../../common/comments/style.scss";

@@ -6,6 +6,8 @@
  * @since 5.0.0
  */
 
+use AnsPress\Classes\Auth;
+use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,8 +24,11 @@ if ( ! isset( $args['comment'] ) ) {
 }
 
 $postComment = $args['comment'];
+
+$post = get_post( $postComment->comment_post_ID ); // @codingStandardsIgnoreLine
+
 ?>
-<anspress-comment-item data-anspress-id="comment-<?php echo (int) $postComment->comment_ID; ?>" class="anspress-comments-item" id="anspress-comment-<?php echo esc_attr( $postComment->comment_ID ); ?>" data-anspressel="comment" data-id="<?php echo (int) $postComment->comment_ID; ?>">
+<anspress-comment-item data-anspress-id="comment-<?php echo (int) $postComment->comment_ID; ?>" class="anspress-comments-item<?php echo ! (bool) $postComment->comment_approved ? ' anspress-comment-pending' : ''; ?>" id="anspress-comment-<?php echo esc_attr( $postComment->comment_ID ); ?>" data-anspressel="comment" data-id="<?php echo (int) $postComment->comment_ID; ?>">
 	<a class="anspress-comments-avatar anspress-avatar-link" href="<?php echo esc_url( get_comment_author_url( $postComment ) ); ?>">
 		<?php echo get_avatar( $postComment->user_id || $postComment->comment_author_email, $attributes['commentAvatarSize'] ?? 30 ); ?>
 	</a>
@@ -59,7 +64,7 @@ $postComment = $args['comment'];
 				</a>
 			</div>
 			<div class="anspress-comments-actions">
-				<?php if ( ap_user_can_delete_comment( $postComment->comment_ID ) ) : ?>
+				<?php if ( Auth::currentUserCan( 'comment:delete', array( 'comment' => $postComment ) ) ) : ?>
 					<?php
 						$deleteHref = Router::route(
 							'v1.comments.actions',
@@ -71,7 +76,7 @@ $postComment = $args['comment'];
 					?>
 					<anspress-link data-href="<?php echo esc_attr( $deleteHref ); ?>" data-method="POST" class="anspress-comments-delete"><?php esc_html_e( 'Delete', 'anspress-question-answer' ); ?></anspress-link>
 				<?php endif; ?>
-				<?php if ( ap_user_can_edit_comment( $postComment->comment_ID ) ) : ?>
+				<?php if ( Auth::currentUserCan( 'comment:update', array( 'comment' => $postComment ) ) ) : ?>
 					<?php
 						$editHref = Router::route(
 							'v1.posts.loadCommentEditForm',
@@ -83,6 +88,14 @@ $postComment = $args['comment'];
 					?>
 					<anspress-link data-href="<?php echo esc_attr( $editHref ); ?>" data-method="POST" href="#" class="anspress-comments-edit"><?php esc_html_e( 'Edit', 'anspress-question-answer' ); ?></anspress-link>
 				<?php endif; ?>
+				<?php
+				Plugin::loadView(
+					'src/frontend/common/comments/php/button-approve.php',
+					array(
+						'comment' => $postComment,
+					)
+				);
+				?>
 			</div>
 		</div>
 		<div class="anspress-comments-content">

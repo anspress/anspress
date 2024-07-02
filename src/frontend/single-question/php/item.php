@@ -34,7 +34,7 @@ if ( $selectedAnswer ) {
 	$classes[] = 'anspress-apq-item-selected';
 }
 ?>
-<anspress-item data-post-id="<?php echo (int) $post->ID; ?>" class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-anspress-id="answer:<?php echo (int) $post->ID; ?>">
+<anspress-item data-post-id="<?php echo (int) $post->ID; ?>" class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-anspress-id="<?php echo esc_attr( $post->post_type . ':' . $post->ID ); ?>">
 
 	<div class="anspress-apq-item-avatar">
 		<div class="anspress-avatar-link">

@@ -65,6 +65,16 @@ abstract class AbstractPolicy implements PolicyInterface {
 	}
 
 	/**
+	 * Check if the ability is valid.
+	 *
+	 * @param string $ability Ability name.
+	 * @return bool
+	 */
+	public function isValidAbility( string $ability ): bool {
+		return in_array( $ability, array_keys( $this->abilities ), true );
+	}
+
+	/**
 	 * Validation for the context of the ability.
 	 *
 	 * @param string $ability Ability name.

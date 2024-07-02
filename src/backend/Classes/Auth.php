@@ -136,8 +136,12 @@ class Auth {
 			return $before;
 		}
 
+		if ( ! $policy->isValidAbility( $abilityParts[1] ) ) {
+			throw new GeneralException( 'Policy ' . esc_attr( $abilityParts[0] ) . ' does not have the ' . esc_attr( $abilityParts[1] ) . ' ability registered.' );
+		}
+
 		if ( ! $policy->validateContext( $abilityParts[1], $context ) ) {
-			throw new GeneralException( 'Invalid context.' );
+			throw new GeneralException( 'Invalid context passed to ' . esc_attr( $ability ) . ' policy.' );
 		}
 
 		return $policy->check( $abilityParts[1], $user, $context );

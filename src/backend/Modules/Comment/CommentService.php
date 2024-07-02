@@ -9,8 +9,10 @@
 namespace AnsPress\Modules\Comment;
 
 use AnsPress\Classes\AbstractService;
+use AnsPress\Classes\Auth;
 use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\ValidationException;
+use WP_Comment_Query;
 use WP_Post;
 
 // Exit if accessed directly.
@@ -46,7 +48,7 @@ class CommentService extends AbstractService {
 	 * @throws ValidationException If validation fails.
 	 */
 	public function createComment( $data ) {
-		$validated = new Validator(
+		$validator = new Validator(
 			$data,
 			array(
 				'comment_post_ID' => 'required|numeric|exists:posts,ID',
@@ -57,11 +59,13 @@ class CommentService extends AbstractService {
 			$this->commentAttributes()
 		);
 
+		$validated = $validator->validated();
+
 		$commentId = wp_new_comment(
 			array(
-				'comment_post_ID'  => $data['comment_post_ID'],
-				'comment_content'  => sanitize_textarea_field( wp_unslash( $data['comment_content'] ) ),
-				'user_id'          => $data['user_id'],
+				'comment_post_ID'  => $validated['comment_post_ID'],
+				'comment_content'  => sanitize_textarea_field( wp_unslash( $validated['comment_content'] ) ),
+				'user_id'          => $validated['user_id'],
 				'comment_type'     => 'anspress',
 				'comment_approved' => 1,
 			),
@@ -129,10 +133,40 @@ class CommentService extends AbstractService {
 			'postId'        => $post->ID,
 			'totalComments' => $commentsCount,
 			'showing'       => $number,
-			'canComment'    => ap_user_can_comment( $post->ID ),
+			'canComment'    => Auth::currentUserCan( 'comment:create', array( 'post' => $post ) ),
 			'offset'        => $offset,
 			'hasMore'       => $commentsCount > $loaded ? true : false,
-
 		);
+	}
+
+	/**
+	 * Get comments query.
+	 *
+	 * @param int   $postId Post ID.
+	 * @param array $args Query arguments.
+	 * @return WP_Comment_Query Comments query.
+	 */
+	public function getCommentsQuery( int $postId, array $args = array() ): WP_Comment_Query {
+		$showingComments = 3;
+		$offset          = absint( $args['offset'] ?? 0 );
+
+		$args = wp_parse_args(
+			$args,
+			array(
+				array(
+					'type'    => 'anspress',
+					'post_id' => $postId,
+					'status'  => 'approve',
+					'orderby' => 'comment_ID',
+					'order'   => 'DESC',
+					'number'  => $showingComments,
+					'offset'  => $offset,
+				),
+			)
+		);
+
+		$args = apply_filters( 'anspress/comments/query_args', $args, $postId );
+
+		return new WP_Comment_Query( $args );
 	}
 }

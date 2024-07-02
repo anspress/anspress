@@ -19,6 +19,11 @@ if ( ! isset( $post ) ) {
 	throw new InvalidArgumentException( 'Post argument is required.', 'anspress-question-answer' );
 }
 
+// Check for required variable $attributes.
+if ( ! isset( $attributes ) ) {
+	throw new InvalidArgumentException( 'Attributes argument is required.', 'anspress-question-answer' );
+}
+
 
 ?>
 <div class="anspress-apq-item-actions">
@@ -31,43 +36,30 @@ if ( ! isset( $post ) ) {
 
 	do_action( 'anspress/single_question/before_item_actions' );
 
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-close.php',
-		array( 'post' => $post )
+	$actions = array(
+		'close',
+		'feature',
+		'delete',
+		'edit',
+		'report',
+		'moderate',
+		'private',
+		'publish',
+		'link',
 	);
 
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-feature.php',
-		array( 'post' => $post )
-	);
-
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-delete.php',
-		array( 'post' => $post )
-	);
-
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-edit.php',
-		array( 'post' => $post )
-	);
-
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-report.php',
-		array( 'post' => $post )
-	);
-
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-moderate.php',
-		array( 'post' => $post )
-	);
-
-	Plugin::loadView(
-		'src/frontend/single-question/php/button-private.php',
-		array( 'post' => $post )
-	);
+	foreach ( $actions as $actionKey ) {
+		Plugin::loadView(
+			"src/frontend/single-question/php/button-{$actionKey}.php",
+			array(
+				'post'       => $post,
+				'attributes' => $attributes,
+			)
+		);
+	}
 	?>
 
-	<a href="<?php the_permalink(); ?>" class="anspress-apq-item-action anspress-apq-item-action-view"><?php esc_html_e( 'Share', 'anspress-question-answer' ); ?></a>
+
 	<?php
 
 	/**

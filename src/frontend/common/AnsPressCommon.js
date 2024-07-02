@@ -142,6 +142,15 @@ const handleTriggerEvents = (triggerEventsData) => {
       if (eventName === 'scrollTo' && eventData?.element) {
         const element = document.querySelector(eventData.element);
         scrollToElement(element);
+      } else if ('remove' === eventName && eventData?.selector) {
+        const element = document.querySelector(eventData.selector);
+
+        if (element) {
+          element.remove();
+        } else {
+          console.error(`Element with selector '${eventData.selector}' not found to remove.`);
+        }
+
       } else if (eventName === 'appendTo' && eventData?.selector && eventData?.html) {
         const element = document.querySelector(eventData.selector);
 

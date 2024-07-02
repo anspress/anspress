@@ -89,6 +89,8 @@
 	&-add-comment-button {
 		margin-top: 15px;
 	}
+
+
 }
 
 .anspress-comment {
@@ -98,6 +100,13 @@
 
 	&-form-c {
 		margin-top: 10px;
+	}
+
+	&-pending {
+		>.anspress-card {
+			background: #ffeaae;
+			border-color: #d2c090;
+		}
 	}
 }
 

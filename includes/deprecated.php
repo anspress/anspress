@@ -660,3 +660,69 @@ function ap_post_status_badge( $post_id = false ) {
 
 	return $ret;
 }
+
+/**
+ * Check if user can comment on AnsPress posts.
+ *
+ * @param boolean|integer $post_id Post ID.
+ * @param boolean|integer $user_id User ID.
+ * @return boolean
+ * @since 2.4.6 Added two arguments `$post_id` and `$user_id`. Also check if user can read post.
+ * @since 2.4.6 Added filter ap_user_can_comment.
+ * @deprecated 5.0.0
+ */
+function ap_user_can_comment( $post_id = false, $user_id = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
+	if ( false === $post_id ) {
+		$post_id = get_the_ID();
+	}
+
+	if ( false === $user_id ) {
+		$user_id = get_current_user_id();
+	}
+
+	if ( is_super_admin( $user_id ) ) {
+		return true;
+	}
+
+	/**
+	 * Filter to hijack ap_user_can_comment.
+	 *
+	 * @param  boolean|string   $apply_filter   Apply current filter, empty string by default.
+	 * @param  integer|object   $post_id        Post ID or object.
+	 * @param  integer          $user_id        User ID.
+	 * @return boolean
+	 * @since  2.4.6
+	 */
+	$filter = apply_filters( 'ap_user_can_comment', '', $post_id, $user_id );
+
+	if ( true === $filter ) {
+		return true;
+	} elseif ( false === $filter ) {
+		return false;
+	}
+
+	$post_o = ap_get_post( $post_id );
+
+	// Do not allow to comment if post is moderate.
+	if ( 'moderate' === $post_o->post_status ) {
+		return false;
+	}
+
+	// Don't allow user to comment if they don't have permission to read post.
+	if ( ! ap_user_can_read_post( $post_id, $user_id ) ) {
+		return false;
+	}
+
+	$option = ap_opt( 'post_comment_per' );
+	if ( 'have_cap' === $option && user_can( $user_id, 'ap_new_comment' ) ) {
+		return true;
+	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
+		return true;
+	} elseif ( 'anyone' === $option ) {
+		return true;
+	}
+
+	return false;
+}
