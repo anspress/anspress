@@ -13,6 +13,7 @@ use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Str;
 use AnsPress\Classes\TemplateHelper;
+use AnsPress\Modules\Subscriber\SubscriberService;
 use AnsPress\Modules\Vote\VoteService;
 use WP_REST_Response;
 
@@ -177,6 +178,37 @@ class QuestionController extends AbstractPostController {
 		return $this->response(
 			array(
 				'load_tinymce' => 'anspress-answer-content',
+			)
+		);
+	}
+
+	/**
+	 * Load question form.
+	 *
+	 * @param int $questionId The ID of the question.
+	 * @return WP_REST_Response Response.
+	 */
+	public function actionSubscribe( int $questionId ): WP_REST_Response {
+		$this->assureLoggedIn();
+
+		$post = get_post( $questionId );
+
+		$this->checkPermission( 'subscriber:create', array( 'ref' => $post ) );
+
+		// Check if user is already subscribed.
+		$subscribed = Plugin::get( SubscriberService::class )->isSubscribedToQuestion( Auth::getID(), $post->ID );
+
+		if ( $subscribed ) {
+			Plugin::get( SubscriberService::class )->destroy( $subscribed->subs_id );
+		}
+
+		Plugin::get( SubscriberService::class )->subscribeToQuestion( $post->ID, Auth::getID() );
+
+		$this->addMessage( 'success', __( 'Subscribed to question successfully.', 'anspress-question-answer' ) );
+
+		return $this->response(
+			array(
+				'reload' => true,
 			)
 		);
 	}

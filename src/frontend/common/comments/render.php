@@ -34,13 +34,11 @@ $commentQuery = Plugin::get( CommentService::class )->getCommentsQuery(
 	)
 );
 
-$postComments = $commentQuery->get_comments();
-
 $commentsData = Plugin::get( CommentService::class )->getCommentsData( $post, $showingComments, $offset );
 
 if ( $commentsWithourContainer ) {
 	if ( $totalComments ) {
-		foreach ( $postComments as $postComment ) {
+		foreach ( $commentQuery->comments as $postComment ) {
 			Plugin::loadView(
 				'src/frontend/common/comments/single-comment.php',
 				array(
@@ -70,7 +68,7 @@ if ( $commentsWithourContainer ) {
 	</div>
 	<div data-anspressel="comments-items" class="anspress-comments-items">
 		<?php if ( $totalComments ) : ?>
-			<?php foreach ( $postComments as $postComment ) : ?>
+			<?php foreach ( $commentQuery->comments as $postComment ) : ?>
 				<?php
 					Plugin::loadView(
 						'src/frontend/common/comments/single-comment.php',
@@ -91,9 +89,17 @@ if ( $commentsWithourContainer ) {
 				'post_id' => $post->ID,
 			)
 		);
+
+		$loadMoreData = wp_json_encode( array( 'offset' => $showingComments + $offset ) );
 		?>
 
-		<anspress-link data-href="<?php echo esc_attr( $loadMoreHref ); ?>" data-method="GET" data-anspressel="comments-load-more" href="#" class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></anspress-link>
+		<anspress-link
+			data-href="<?php echo esc_attr( $loadMoreHref ); ?>"
+			data-method="GET"
+			data-anspressel="comments-load-more"
+			data-anspress="<?php echo esc_attr( $loadMoreData ); ?>"
+			href="#"
+			class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></anspress-link>
 
 		<?php
 		$loadFormBtnHref = Router::route(

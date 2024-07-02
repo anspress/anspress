@@ -21,7 +21,7 @@ if ( ! isset( $post ) ) {
 }
 
 // Check post type is answer.
-if ( PostHelper::isAnswer( $post ) ) {
+if ( ! PostHelper::isAnswer( $post ) ) {
 	return;
 }
 

@@ -9,15 +9,10 @@
  * @copyright 2014 Rahul Aryan
  */
 
-use AnsPress\Modules\Subscriber\SubscriberModel;
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-
-
-
 
 /**
  * Get a subscribers count of a reference by specific event or without it.
@@ -262,23 +257,6 @@ function ap_is_user_subscriber( $event, $ref_id, $user_id = false ) {
 	}
 
 	return false;
-}
-
-/**
- * Delete cache of subscribers.
- *
- * @param integer $ref_id Reference id.
- * @param string  $event  Event type.
- * @return void
- *
- * @since 4.1.5
- * @deprecated 4.1.19 Deprecating this function in favour of 3rd party cache.
- */
-function ap_delete_subscribers_cache( $ref_id = 0, $event = '' ) {
-	wp_cache_delete( $event . '_' . $ref_id, 'ap_subscribers_count' );
-	wp_cache_delete( $event . '_0', 'ap_subscribers_count' );
-	wp_cache_delete( '_0' . $ref_id, 'ap_subscribers_count' );
-	wp_cache_delete( '_', 'ap_subscribers_count' );
 }
 
 /**

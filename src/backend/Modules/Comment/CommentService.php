@@ -153,15 +153,13 @@ class CommentService extends AbstractService {
 		$args = wp_parse_args(
 			$args,
 			array(
-				array(
-					'type'    => 'anspress',
-					'post_id' => $postId,
-					'status'  => 'approve',
-					'orderby' => 'comment_ID',
-					'order'   => 'DESC',
-					'number'  => $showingComments,
-					'offset'  => $offset,
-				),
+				'type'    => 'anspress',
+				'post_id' => $postId,
+				'status'  => 'approve',
+				'orderby' => 'comment_date_gmt',
+				'order'   => 'ASC',
+				'number'  => $showingComments,
+				'offset'  => $offset,
 			)
 		);
 

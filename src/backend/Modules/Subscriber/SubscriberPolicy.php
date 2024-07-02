@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Subscriber;
 
 use AnsPress\Classes\AbstractPolicy;
+use AnsPress\Classes\PostHelper;
 use WP_User;
 
 // Exit if accessed directly.
@@ -34,7 +35,9 @@ class SubscriberPolicy extends AbstractPolicy {
 		'view'   => array(
 			'subscriber',
 		),
-		'create' => array(),
+		'create' => array(
+			'ref',
+		),
 		'update' => array(
 			'subscriber',
 		),
@@ -70,7 +73,11 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
 	public function view( WP_User $user, array $context = array() ): bool {
-		if ( $user && ! empty( $context['subscriber'] ) && is_object( $context['subscriber'] ) && $context['subscriber']->subs_user_id === (int) $user->ID ) {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'subscriber', 'subs_user_id' ) ) {
 			return true;
 		}
 
@@ -81,10 +88,15 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * Determine if the given user can create a new model.
 	 *
 	 * @param WP_User|null $user The current user attempting the action.
+	 * @param array        $context The context of the ability.
 	 * @return bool True if the user is authorized to create the model, false otherwise.
 	 */
-	public function create( ?WP_User $user ): bool {
-		if ( $user ) {
+	public function create( ?WP_User $user, array $context = array() ): bool {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( PostHelper::isValidPostType( $context['ref']?->post_type ?? '' ) ) {
 			return true;
 		}
 
@@ -99,7 +111,11 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['subscriber'] ) && is_object( $context['subscriber'] ) && $context['subscriber']->subs_user_id === (int) $user->ID ) {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'subscriber', 'subs_user_id' ) ) {
 			return true;
 		}
 
@@ -114,7 +130,11 @@ class SubscriberPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( WP_User $user, array $context ): bool {
-		if ( $user && ! empty( $context['subscriber'] ) && is_object( $context['subscriber'] ) && $context['subscriber']->subs_user_id === (int) $user->ID ) {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'subscriber', 'subs_user_id' ) ) {
 			return true;
 		}
 

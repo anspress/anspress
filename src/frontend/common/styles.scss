@@ -34,6 +34,7 @@
 		background: #fff;
 		text-decoration: none;
 		border-radius: 4px;
+		font-size: 14px;
 
 		&:hover {
 			background: #eee;
@@ -66,6 +67,23 @@
 
 		&-loading-content {
 			visibility: hidden;
+		}
+
+		&-count {
+			background: rgba(0, 0, 0, 0.1);
+			padding: 0 5px;
+			border-radius: 4px;
+			font-size: 12px;
+			margin-left: 5px;
+		}
+
+		&-active {
+			background: #888;
+			color: #fff;
+
+			&:hover {
+				background: #666;
+			}
 		}
 	}
 

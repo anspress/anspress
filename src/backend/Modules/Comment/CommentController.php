@@ -187,7 +187,7 @@ class CommentController extends AbstractController {
 
 		$comment = get_comment( $commentId );
 
-		if ( 1 !== $comment->comment_approved ) {
+		if ( 1 !== (int) $comment->comment_approved ) {
 			$this->addMessage( 'success', esc_attr__( 'Comment added successfully but is awaiting approval.', 'anspress-question-answer' ) );
 
 			return $this->response();

@@ -62,6 +62,41 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	do_action( 'anspress/after/question_title' );
 	?>
 
+	<div class="anspress-apq-item-terms">
+		<?php
+		$questionCategories = get_the_terms( $_post->ID, 'question_category' );
+		$questionTags       = get_the_terms( $_post->ID, 'question_tag' );
+
+		if ( $questionCategories && ! is_wp_error( $questionCategories ) ) {
+			echo '<div class="anspress-apq-item-categories anspress-apq-item-terms">';
+			echo '<span class="anspress-apq-item-tax-label">' . esc_html__( 'Categories:', 'anspress-question-answer' ) . '</span>';
+			foreach ( $questionCategories as $category ) {
+				echo '<a href="' . esc_url( get_term_link( $category ) ) . '">' . esc_html( $category->name ) . '</a>';
+			}
+			echo '</div>';
+		}
+
+		if ( $questionTags && ! is_wp_error( $questionTags ) ) {
+			echo '<div class="anspress-apq-item-tags anspress-apq-item-terms">';
+			echo '<span class="anspress-apq-item-tax-label">' . esc_html__( 'Tags:', 'anspress-question-answer' ) . '</span>';
+			foreach ( $questionTags as $qtag ) {
+				echo '<a href="' . esc_url( get_term_link( $qtag ) ) . '">' . esc_html( $qtag->name ) . '</a>';
+			}
+			echo '</div>';
+		}
+		?>
+	</div>
+
+	<?php
+		Plugin::loadView(
+			'src/frontend/single-question/php/button-subscribe.php',
+			array(
+				'post'       => $_post,
+				'attributes' => $attributes,
+			)
+		);
+		?>
+
 	<div class="anspress-apq-item-c">
 		<?php
 		/**

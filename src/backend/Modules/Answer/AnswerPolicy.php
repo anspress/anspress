@@ -108,7 +108,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to create the model, false otherwise.
 	 */
 	public function create( ?WP_User $user, array $context = array() ): bool {
-		if ( ! $user ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
@@ -142,12 +142,11 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to update the model, false otherwise.
 	 */
 	public function update( ?WP_User $user, array $context ): bool {
-		if (
-			! empty( $user?->ID ) &&
-			! empty( $context['comment'] ) &&
-			is_object( $context['comment'] ) &&
-			$context['comment']->user_id == $user->user_id // @codingStandardsIgnoreLine
-		) {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'answer', 'post_author' ) ) {
 			return true;
 		}
 
@@ -162,12 +161,11 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to delete the model, false otherwise.
 	 */
 	public function delete( ?WP_User $user, array $context ): bool {
-		if (
-			! empty( $user?->ID ) &&
-			! empty( $context['comment'] ) &&
-			is_object( $context['comment'] ) &&
-			$context['comment']->user_id == $user->user_id // @codingStandardsIgnoreLine
-		) {
+		if ( self::isUserIdEmpty( $user ) ) {
+			return false;
+		}
+
+		if ( self::isAuthorOfItem( $user, $context, 'answer', 'post_author' ) ) {
 			return true;
 		}
 
@@ -206,7 +204,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to select the model, false otherwise.
 	 */
 	public function select( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
@@ -214,7 +212,9 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		if ( $context['answer']->post_author == $user->ID ) { // @codingStandardsIgnoreLine
+		$question = get_post( $context['answer']->post_parent );
+
+		if ( PostHelper::isAuthor( $question, $user->ID ) ) { // @codingStandardsIgnoreLine
 			return true;
 		}
 
@@ -229,7 +229,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to unselect the model, false otherwise.
 	 */
 	public function unselect( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
@@ -237,7 +237,9 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		if ( $context['answer']->post_author == $user->ID ) { // @codingStandardsIgnoreLine
+		$question = get_post( $context['answer']->post_parent );
+
+		if ( PostHelper::isAuthor( $question, $user->ID ) ) { // @codingStandardsIgnoreLine
 			return true;
 		}
 
@@ -252,7 +254,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to set the model to publish, false otherwise.
 	 */
 	public function set_status_to_publish( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
@@ -272,7 +274,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to set the model to moderate, false otherwise.
 	 */
 	public function set_status_to_moderate( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
@@ -298,7 +300,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to set the model to private, false otherwise.
 	 */
 	public function set_status_to_private( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 

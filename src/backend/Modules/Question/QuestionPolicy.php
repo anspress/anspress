@@ -235,7 +235,7 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to set the model to moderate, false otherwise.
 	 */
 	public function set_status_to_moderate( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
@@ -261,7 +261,7 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to set the model to private, false otherwise.
 	 */
 	public function set_status_to_private( ?WP_User $user, array $context ): bool {
-		if ( ! empty( $user?->ID ) ) {
+		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}
 
