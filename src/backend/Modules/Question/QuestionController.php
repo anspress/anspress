@@ -196,10 +196,19 @@ class QuestionController extends AbstractPostController {
 		$this->checkPermission( 'subscriber:create', array( 'ref' => $post ) );
 
 		// Check if user is already subscribed.
-		$subscribed = Plugin::get( SubscriberService::class )->isSubscribedToQuestion( Auth::getID(), $post->ID );
+		$subscribed = Plugin::get( SubscriberService::class )
+			->isSubscribedToQuestion( $post->ID, Auth::getID() );
 
 		if ( $subscribed ) {
 			Plugin::get( SubscriberService::class )->destroy( $subscribed->subs_id );
+
+			$this->addMessage( 'success', __( 'Unsubscribed from question successfully.', 'anspress-question-answer' ) );
+
+			return $this->response(
+				array(
+					'reload' => true,
+				)
+			);
 		}
 
 		Plugin::get( SubscriberService::class )->subscribeToQuestion( $post->ID, Auth::getID() );

@@ -85,6 +85,11 @@
 				background: #666;
 			}
 		}
+
+		&-small {
+			padding: 2px 10px;
+			font-size: 12px;
+		}
 	}
 
 	&snackbar-message {
@@ -217,6 +222,12 @@ anspress-snackbar {
 		display: block;
 		border-radius: 4px;
 	}
+
+
+}
+
+.anspress-avatar-shape-circle img {
+	border-radius: 50%;
 }
 
 .anspress-card {
@@ -255,5 +266,11 @@ anspress-link.anspress-button-error {
 
 	100% {
 		transform: rotate(360deg);
+	}
+}
+
+.anspress-pagination {
+	.page-link {
+		@extend .anspress-button;
 	}
 }

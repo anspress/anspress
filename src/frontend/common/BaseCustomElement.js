@@ -51,14 +51,7 @@ export class BaseCustomElement extends HTMLElement {
   }
 
   fetch(options) {
-    options = {
-      ...options,
-      headers: {
-        'X-Anspress-Template-Id': this.getTemplateId(),
-        'X-Anspress-Block-Name': this.getBlockName(),
-      }
-    };
-    return fetch(options).then(res => {
+    return fetch(options, { templateId: this.getTemplateId(), blockName: this.getBlockName() }).then(res => {
       if (res?.anspress) {
         // Handle data-anspress attributes.
         if (res.anspress.data) {

@@ -99,7 +99,7 @@ if ( $commentsWithourContainer ) {
 			data-anspressel="comments-load-more"
 			data-anspress="<?php echo esc_attr( $loadMoreData ); ?>"
 			href="#"
-			class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></anspress-link>
+			class="anspress-button anspress-comments-loadmore anspress-comments-loadmore-button anspress-button-small"><?php esc_html_e( 'Load more', 'anspress-question-answer' ); ?></anspress-link>
 
 		<?php
 		$loadFormBtnHref = Router::route(
@@ -113,7 +113,7 @@ if ( $commentsWithourContainer ) {
 			data-href="<?php echo esc_attr( $loadFormBtnHref ); ?>"
 			data-method="POST"
 			data-anspress="<?php echo esc_attr( wp_json_encode( array( 'form_loaded' => true ) ) ); ?>"
-			class="anspress-button anspress-comments-add-button"><?php esc_html_e( 'Add comment', 'anspress-question-answer' ); ?></anspress-link>
+			class="anspress-button anspress-comments-add-button anspress-button-small"><?php esc_html_e( 'Add comment', 'anspress-question-answer' ); ?></anspress-link>
 	</div>
 	<div data-anspress-id="comment:form:placeholder:<?php echo (int) $post->ID; ?>"></div>
 

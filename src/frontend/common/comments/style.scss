@@ -72,6 +72,16 @@
 		}
 	}
 
+	&-footer {
+		margin-left: calc(var(--anspress-single-question-comment-avatar-size) + 15px);
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&-add-button {
+		margin-left: auto;
+	}
+
 	@keyframes fadeIn {
 		from {
 			opacity: 0;

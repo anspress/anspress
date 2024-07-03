@@ -6,12 +6,21 @@
  * @since 5.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit( 'No direct script access allowed' );
+}
+
+// Check $attributes is set.
+if ( ! isset( $attributes ) ) {
+	throw new Exception( 'Attributes not set.' );
+}
+
 $big         = 999999999;
 $queryVarKey = $queryVarKey ?? 'ap_question_paged';
 $request     = remove_query_arg( $queryVarKey );
 $current     = max( 1, get_query_var( $queryVarKey ) );
 
-$home_root = parse_url( home_url() );
+$home_root = wp_parse_url( home_url() );
 $home_root = ( isset( $home_root['path'] ) ) ? $home_root['path'] : '';
 $home_root = preg_quote( $home_root, '|' );
 
@@ -27,7 +36,7 @@ $items = paginate_links(
 		'prev_text' => __( '&laquo; Prev', 'anspress-question-answer' ),
 		'next_text' => __( 'Next &raquo;', 'anspress-question-answer' ),
 		'type'      => 'array',
-		'mid_size'  => 2,
+		'mid_size'  => $attributes['paginationMidSize'] ?? 2,
 	)
 );
 
@@ -38,5 +47,5 @@ if ( is_array( $items ) ) {
 	}
 	$pagination .= '</nav>';
 
-	echo $pagination;
+	echo wp_kses_post( $pagination );
 }

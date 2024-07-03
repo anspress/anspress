@@ -49,6 +49,19 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	 * @since 5.0.0
 	 */
 	do_action( 'anspress/before/question_title' );
+
+	$questionCategories = get_the_terms( $_post->ID, 'question_category' );
+
+	if ( $questionCategories && ! is_wp_error( $questionCategories ) ) {
+		echo '<div class="anspress-apq-item-categories anspress-apq-item-categories">';
+		echo '<span class="anspress-apq-item-cat-label">' . esc_html__( 'Categories / ', 'anspress-question-answer' ) . '</span>';
+
+		foreach ( $questionCategories as $category ) {
+			echo '<a href="' . esc_url( get_term_link( $category ) ) . '">' . esc_html( $category->name ) . '</a>';
+		}
+
+		echo '</div>';
+	}
 	?>
 
 	<h1 class="anspress-apq-item-title"><?php the_title(); ?></h1>
@@ -64,21 +77,10 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 
 	<div class="anspress-apq-item-terms">
 		<?php
-		$questionCategories = get_the_terms( $_post->ID, 'question_category' );
-		$questionTags       = get_the_terms( $_post->ID, 'question_tag' );
-
-		if ( $questionCategories && ! is_wp_error( $questionCategories ) ) {
-			echo '<div class="anspress-apq-item-categories anspress-apq-item-terms">';
-			echo '<span class="anspress-apq-item-tax-label">' . esc_html__( 'Categories:', 'anspress-question-answer' ) . '</span>';
-			foreach ( $questionCategories as $category ) {
-				echo '<a href="' . esc_url( get_term_link( $category ) ) . '">' . esc_html( $category->name ) . '</a>';
-			}
-			echo '</div>';
-		}
+		$questionTags = get_the_terms( $_post->ID, 'question_tag' );
 
 		if ( $questionTags && ! is_wp_error( $questionTags ) ) {
 			echo '<div class="anspress-apq-item-tags anspress-apq-item-terms">';
-			echo '<span class="anspress-apq-item-tax-label">' . esc_html__( 'Tags:', 'anspress-question-answer' ) . '</span>';
 			foreach ( $questionTags as $qtag ) {
 				echo '<a href="' . esc_url( get_term_link( $qtag ) ) . '">' . esc_html( $qtag->name ) . '</a>';
 			}
@@ -140,82 +142,78 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 			}
 			?>
 
-			<?php
-			/**
-			 * Action triggered before answers list.
-			 *
-			 * @since 5.0.0
-			 */
-			do_action( 'anspress/before/answers_list' )
-			?>
-			<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( $answersClass ); ?>" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
-				<?php if ( get_query_var( 'answer_id' ) ) : ?>
-					<div class="anspress-apq-item-single-answer-info anspress-card">
-						<?php esc_html_e( 'You are viewing one of many answers to this question. Click the button to show all answers.', 'anspress-question-answer' ); ?>
-						<a href="<?php the_permalink(); ?>" class="anspress-button anspress-btn-primary anspress-btn-sm"><?php esc_html_e( 'Back to all answers', 'anspress-question-answer' ); ?></a>
-					</div>
-				<?php endif; ?>
-
-				<div data-anspressel="answers-items" class="anspress-answers-items">
-					<?php
-					Plugin::loadView(
-						'src/frontend/single-question/php/answers.php',
-						array(
-							'question'     => $_post,
-							'query'        => $query,
-							'answers_args' => $answersArgs,
-							'attributes'   => $attributes,
-						)
-					);
-					?>
-				</div>
-				<?php if ( $answersArgs['have_pages'] ) : ?>
-					<?php
-						$loadMoreHref = Router::route(
-							'v1.questions.answers',
-							array(
-								'question_id' => $_post->ID,
-							)
-						);
-
-						$loadMoreData = wp_json_encode( array( 'page' => $currentPage + 1 ) );
-					?>
-					<anspress-link
-						data-href="<?php echo esc_attr( $loadMoreHref ); ?>"
-						data-method="GET"
-						data-anspressel="load-more-answers"
-						data-anspress-id="button:answers:loadmore:<?php echo (int) $_post->ID; ?>"
-						data-anspress="<?php echo esc_attr( $loadMoreData ); ?>"
-						class="anspress-load-more anspress-load-more-answers anspress-button anspress-btn-primary anspress-btn-sm"
-						><?php esc_html_e( 'Load more answers', 'anspress-question-answer' ); ?> <span data-anspress-id="answers-count-<?php echo (int) $_post->ID; ?>" class="anspress-load-more-count"><?php echo esc_attr( number_format_i18n( $answersArgs['remaining_items'] ) ); ?></span></anspress-link>
-				<?php endif; ?>
-			</anspress-answer-list>
-
-		<?php
-		if ( Auth::currentUserCan( 'answer:create', array( 'question' => $_post ) ) ) {
-			Plugin::loadView(
-				'src/frontend/single-question/php/answer-form.php',
-				array(
-					'question'   => get_post(),
-					'attributes' => $attributes,
-				)
-			);
-		} else {
-			?>
-			<div class="anspress-apq-item-answer-disabled anspress-card">
-				<?php esc_html_e( 'This question is not accepting new answers or you are not allowed to submit an answer.', 'anspress-question-answer' ); ?>
-			</div>
-			<?php
-		}
-		?>
-
 		<?php
 		/**
-		 * Action triggered after question content.
+		 * Action triggered before answers list.
 		 *
 		 * @since 5.0.0
 		 */
-		do_action( 'anspress/after/question_content' );
+		do_action( 'anspress/before/answers_list' )
 		?>
+		<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( $answersClass ); ?>" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
+			<?php if ( get_query_var( 'answer_id' ) ) : ?>
+				<div class="anspress-apq-item-single-answer-info anspress-card">
+					<?php esc_html_e( 'You are viewing one of many answers to this question. Click the button to show all answers.', 'anspress-question-answer' ); ?>
+					<a href="<?php the_permalink(); ?>" class="anspress-button anspress-btn-primary anspress-btn-sm"><?php esc_html_e( 'Back to all answers', 'anspress-question-answer' ); ?></a>
+				</div>
+			<?php endif; ?>
+
+			<div data-anspressel="answers-items" class="anspress-answers-items">
+				<?php
+				Plugin::loadView(
+					'src/frontend/single-question/php/answers.php',
+					array(
+						'question'     => $_post,
+						'query'        => $query,
+						'answers_args' => $answersArgs,
+						'attributes'   => $attributes,
+					)
+				);
+				?>
+			</div>
+			<?php if ( $answersArgs['have_pages'] ) : ?>
+				<?php
+					$loadMoreHref = Router::route(
+						'v1.questions.answers',
+						array(
+							'question_id' => $_post->ID,
+						)
+					);
+
+					$loadMoreData = wp_json_encode( array( 'page' => $currentPage + 1 ) );
+				?>
+				<anspress-link
+					data-href="<?php echo esc_attr( $loadMoreHref ); ?>"
+					data-method="GET"
+					data-anspressel="load-more-answers"
+					data-anspress-id="button:answers:loadmore:<?php echo (int) $_post->ID; ?>"
+					data-anspress="<?php echo esc_attr( $loadMoreData ); ?>"
+					class="anspress-load-more anspress-load-more-answers anspress-button anspress-btn-primary anspress-btn-sm"
+					><?php esc_html_e( 'Load more answers', 'anspress-question-answer' ); ?> <span data-anspress-id="answers-count-<?php echo (int) $_post->ID; ?>" class="anspress-load-more-count"><?php echo esc_attr( number_format_i18n( $answersArgs['remaining_items'] ) ); ?></span></anspress-link>
+			<?php endif; ?>
+		</anspress-answer-list>
 	</div>
+	<?php
+	if ( Auth::currentUserCan( 'answer:create', array( 'question' => $_post ) ) ) {
+		Plugin::loadView(
+			'src/frontend/single-question/php/answer-form.php',
+			array(
+				'question'   => get_post(),
+				'attributes' => $attributes,
+			)
+		);
+	} else {
+		?>
+			<div class="anspress-apq-item-answer-disabled anspress-card">
+			<?php esc_html_e( 'This question is not accepting new answers or you are not allowed to submit an answer.', 'anspress-question-answer' ); ?>
+			</div>
+			<?php
+	}
+	/**
+	 * Action triggered after question content.
+	 *
+	 * @since 5.0.0
+	 */
+	do_action( 'anspress/after/question_content' );
+	?>
 </div>

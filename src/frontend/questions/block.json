@@ -15,10 +15,12 @@
         "offset": 0,
         "order": "desc",
         "orderBy": "date",
-        "authors": "",
+        "authors": [],
         "search": "",
         "exclude": [],
-        "sticky": false
+        "sticky": false,
+        "categories": [],
+        "tags": []
       }
     },
     "currentAuthor": {
@@ -68,6 +70,18 @@
     "itemsPerPage": {
       "type": "number",
       "default": 10
+    },
+    "paginationMidSize": {
+      "type": "number",
+      "default": 3
+    },
+    "avatarSize": {
+      "type": "number",
+      "default": 40
+    },
+    "avatarShape": {
+      "type": "string",
+      "default": "square"
     }
   },
   "supports": {
@@ -99,10 +113,13 @@
       "displayTags": true,
       "displayViews": true,
       "displayPagination": true,
-      "itemsPerPage": 10
+      "itemsPerPage": 10,
+      "paginationMidSize": 3,
+      "avatarSize": 40,
+      "avatarShape": "square"
     }
   },
-  "editorScript": "file:./index.js",
-  "render": "file:./questions.php",
-  "style": "file:./style-index.css"
+  "editorScript": "file:./js/index.js",
+  "render": "file:./php/questions.php",
+  "style": "file:./js/style-index.css"
 }

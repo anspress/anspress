@@ -71,8 +71,17 @@ export const scrollToElement = (element) => {
   }
 }
 
-export const fetch = async (options) => {
+export const fetch = async (options, args) => {
   try {
+    if (args) {
+      if (args.templateId) {
+        options.headers = { 'X-Anspress-Template-Id': args.templateId, ...options.headers };
+      }
+      if (args.blockName) {
+        options.headers = { 'X-Anspress-Block-Name': args.blockName, ...options.headers };
+      }
+    }
+
     const res = await apiFetch(options);
     const data = res?.anspress || {};
 
@@ -228,11 +237,11 @@ export const removeTinymce = (textarea) => {
   tinymce.remove('#' + textarea);
 }
 
-export const loadForm = (data) => {
+export const loadForm = (data, args) => {
   return fetch({
     path: addQueryArgs(data.load_form_path, { form_loaded: true }),
     method: 'POST',
-  })
+  }, args)
     .then(res => {
       if (res?.load_tinymce) {
         initTynimce(res?.load_tinymce)
@@ -240,13 +249,3 @@ export const loadForm = (data) => {
     });
 }
 
-export const removeForm = async (data) => {
-  if (data?.load_tinymce) {
-    removeForm(data.load_tinymce);
-  }
-
-  return fetch({
-    path: addQueryArgs(data.load_form_path, { form_loaded: 0 }),
-    method: 'POST',
-  })
-}

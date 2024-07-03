@@ -25,7 +25,10 @@ class AnsPressAnswerForm extends BaseCustomElement {
   }
 
   loadAnswerForm() {
-    loadForm(this.data);
+    loadForm(this.data, {
+      templateId: this.getTemplateId(),
+      blockName: this.getBlockName(),
+    });
   }
 
   async handleSubmit(event) {

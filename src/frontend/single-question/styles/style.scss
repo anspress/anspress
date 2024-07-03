@@ -89,8 +89,9 @@
 
 	&-metas {
 		display: flex;
-		padding: 10px 20px 0;
+		padding: 10px 20px;
 		font-size: 14px;
+		border-bottom: solid 1px #ddde;
 
 		>* {
 			margin-right: 10px;
@@ -135,9 +136,10 @@
 	}
 
 	&-footer {
-		padding: 0 10px 10px;
+		padding: 10px 20px;
 		display: flex;
 		justify-content: space-between;
+		border-top: solid 1px #ddd;
 	}
 
 	&-actions {
@@ -229,6 +231,11 @@
 
 		a {
 			margin-right: 10px;
+			background: #eee;
+			text-decoration: none;
+			padding: 2px 5px;
+			border-radius: 2px;
+			font-size: 14px;
 		}
 	}
 
@@ -256,7 +263,7 @@
 	}
 
 	&load-more-answers {
-		margin-bottom: 20px;
+		margin-left: calc(var(--anspress-single-question-avatar-size) + 14px);
 	}
 
 	&answers {
@@ -269,6 +276,10 @@
 				display: inline-block;
 			}
 		}
+	}
+
+	&answer-form-c {
+		margin-top: 20px;
 	}
 }
 

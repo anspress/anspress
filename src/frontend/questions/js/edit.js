@@ -5,6 +5,7 @@ import ServerSideRender from '@wordpress/server-side-render';
 import { useState, useEffect } from 'react';
 import { useSelect } from '@wordpress/data';
 import { TextControl } from '@wordpress/components';
+import { ProNoticeComponent } from '../../common/js/ProNoticeComponent';
 
 const Edit = ({ attributes, setAttributes }) => {
   const {
@@ -19,7 +20,10 @@ const Edit = ({ attributes, setAttributes }) => {
     displayTags,
     currentAuthor,
     displayPagination,
-    itemsPerPage
+    itemsPerPage,
+    paginationMidSize,
+    avatarSize,
+    avatarShape
   } = attributes;
 
   const blockProps = useBlockProps();
@@ -61,6 +65,8 @@ const Edit = ({ attributes, setAttributes }) => {
   return (
     <div {...blockProps}>
       <InspectorControls>
+
+        <ProNoticeComponent />
 
         <PanelBody title={__('Query Settings', 'anspress-question-answer')}>
           <SelectControl
@@ -152,11 +158,19 @@ const Edit = ({ attributes, setAttributes }) => {
           />
 
           {displayPagination && (
-            <TextControl
-              label={__('Items per page', 'anspress-question-answer')}
-              value={itemsPerPage}
-              onChange={(value) => setAttributes({ itemsPerPage: value })}
-            />
+            <>
+              <TextControl
+                label={__('Items per page', 'anspress-question-answer')}
+                value={itemsPerPage}
+                onChange={(value) => setAttributes({ itemsPerPage: value })}
+              />
+
+              <TextControl
+                label={__('Pagination Mid Size', 'anspress-question-answer')}
+                value={paginationMidSize}
+                onChange={(value) => setAttributes({ paginationMidSize: value })}
+              />
+            </>
           )}
         </PanelBody>
 
@@ -200,6 +214,24 @@ const Edit = ({ attributes, setAttributes }) => {
             label={__('Display Tags', 'anspress-question-answer')}
             checked={displayTags}
             onChange={(value) => setAttributes({ displayTags: value })}
+          />
+
+          <RangeControl
+            label={__('Avatar Size', 'anspress-question-answer')}
+            value={avatarSize}
+            onChange={(value) => setAttributes({ avatarSize: value })}
+            min={10}
+            max={120}
+          />
+
+          <SelectControl
+            label={__('Avatar Shape', 'anspress-question-answer')}
+            value={avatarShape}
+            options={[
+              { label: __('Square', 'anspress-question-answer'), value: 'square' },
+              { label: __('Circle', 'anspress-question-answer'), value: 'circle' },
+            ]}
+            onChange={(value) => setAttributes({ avatarShape: value })}
           />
         </PanelBody>
       </InspectorControls>

@@ -13,6 +13,11 @@
 		justify-content: space-between;
 		border-bottom: solid 1px #eee;
 		padding: 10px 0;
+		align-items: flex-start;
+
+		.anspress-avatar-shape-circle & img {
+			border-radius: 50%;
+		}
 
 		&:last-child {
 			border-bottom: none;
@@ -41,6 +46,7 @@
 		flex-direction: column;
 		justify-content: center;
 		text-decoration: none;
+		border-radius: 4px;
 
 		&:hover {
 			background: #eee;

@@ -4,7 +4,8 @@ import { useState } from 'react';
 import ServerSideRender from '@wordpress/server-side-render';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { ExternalLink } from '@wordpress/components';
+
+import { ProNoticeComponent } from '../../common/js/ProNoticeComponent';
 
 const Edit = ({ attributes, setAttributes }) => {
   const { currentQuestionId } = attributes;
@@ -44,11 +45,7 @@ const Edit = ({ attributes, setAttributes }) => {
           />
         </PanelBody>
         <PanelBody title={__('Customization', 'anspress-question-answer')}>
-          <p>{__('In the premium version of the plugin, every aspect of this block can be customized.', 'anspress-question-answer')}</p>
-          <ExternalLink href="https://anspress.net/pro">{__('Get the Pro version', 'anspress-question-answer')}</ExternalLink>
-
-          <br />
-          <br />
+          <ProNoticeComponent />
 
           <RangeControl
             label={__('Avatar Size', 'anspress-question-answer')}

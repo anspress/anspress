@@ -51,65 +51,12 @@ if ( $selectedAnswer ) {
 		do_action( 'anspress/single_question/before_item' );
 		?>
 		<div class="anspress-apq-item-qbody anspress-card">
-			<div class="anspress-apq-item-metas">
-				<div class="anspress-apq-item-author">
-					<?php
-					ap_user_display_name(
-						array(
-							'html' => true,
-							'echo' => true,
-						)
-					);
-					?>
-				</div>
-				<a href="<?php the_permalink(); ?>" class="anspress-apq-item-posted">
-					<?php
-					$posted = 'future' === get_post_status() ? __( 'Scheduled for', 'anspress-question-answer' ) : __( 'Published', 'anspress-question-answer' );
-
-					$time = ap_get_time( get_the_ID(), 'U' );
-
-					if ( 'future' !== get_post_status() ) {
-						$time = ap_human_time( $time );
-					}
-					?>
-					<time itemprop="datePublished" datetime="<?php echo esc_attr( ap_get_time( get_the_ID(), 'c' ) ); ?>"><?php echo esc_attr( $time ); ?></time>
-				</a>
-				<span class="anspress-apq-item-ccount">
-					<?php $comment_count = get_comments_number(); ?>
-					<?php
-						// translators: %s comments count.
-						echo wp_kses_post( sprintf( _n( '%s Comment', '%s Comments', $comment_count, 'anspress-question-answer' ), '<span itemprop="commentCount">' . (int) $comment_count . '</span>' ) );
-					?>
-
-				</span>
-				<div class="anspress-apq-item-meta-badges">
-					<?php if ( $isQuestion && ap_is_featured_question( $post ) ) : ?>
-						<div class="anspress-apq-item-featuredlabel">
-							<?php esc_html_e( 'Featured', 'anspress-question-answer' ); ?>
-						</div>
-					<?php endif; ?>
-					<?php if ( $isQuestion && ap_selected_answer( $post->ID ) ) : ?>
-						<div class="anspress-apq-item-selected-answer">
-							<span ><?php esc_html_e( 'Solved', 'anspress-question-answer' ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( $isQuestion && is_post_closed( $post ) ) : ?>
-						<div class="anspress-apq-item-closedlabel">
-							<span ><?php esc_html_e( 'Closed', 'anspress-question-answer' ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( PostHelper::isPrivateStatus( $post ) ) : ?>
-						<div class="anspress-apq-item-privatelabel">
-							<span><?php esc_html_e( 'Private', 'anspress-question-answer' ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( PostHelper::isModerateStatus( $post ) ) : ?>
-						<div class="anspress-apq-item-moderatelabel">
-							<span><?php esc_html_e( 'Moderate', 'anspress-question-answer' ); ?></span>
-						</div>
-					<?php endif; ?>
-				</div>
-			</div>
+			<?php
+			Plugin::loadView(
+				'src/frontend/single-question/php/item-meta.php',
+				$args
+			);
+			?>
 			<div class="anspress-apq-item-inner">
 				<?php
 					/**

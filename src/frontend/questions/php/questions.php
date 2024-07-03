@@ -65,9 +65,9 @@ $query = new WP_Query( $args );
 			?>
 			<div id="post-<?php the_ID(); ?>" <?php post_class( 'wp-block-anspress-questions-item' ); ?>>
 				<?php if ( $attributes['displayAvatar'] ) : ?>
-					<div class="wp-block-anspress-questions-avatar">
+					<div class="wp-block-anspress-questions-avatar anspress-avatar-shape-<?php echo esc_attr( $attributes['avatarShape'] ); ?>">
 						<a href="<?php ap_profile_link(); ?>">
-							<?php ap_author_avatar( ap_opt( 'avatar_size_list' ) ); ?>
+							<?php ap_author_avatar( $attributes['avatarSize'] ); ?>
 						</a>
 					</div>
 				<?php endif; ?>
@@ -174,12 +174,16 @@ $query = new WP_Query( $args );
 		<?php endwhile; ?>
 
 		<?php if ( $attributes['displayPagination'] ) : ?>
-
 			<?php
 				$totalPages = $query->max_num_pages;
-				include Plugin::getPathTo( 'src/frontend/common/pagination.php' );
+				Plugin::loadView(
+					'src/frontend/common/pagination.php',
+					array(
+						'totalPages' => $totalPages,
+						'attributes' => $attributes,
+					)
+				);
 			?>
-
 		<?php endif; ?>
 
 		<?php wp_reset_postdata(); ?>
