@@ -216,29 +216,6 @@ class TestUpload extends TestCase {
 	}
 
 	/**
-	 * @covers ::ap_post_attach_pre_fetch
-	 */
-	public function testAPPostAttachPreFetch() {
-		// Test for not passing attachment ids.
-		ap_post_attach_pre_fetch( [] );
-		$this->assertEmpty( wp_cache_get( 'posts', 'posts' ) );
-
-		// Test for passing attachment ids for non logged in user.
-		$attachment_ids = $this->factory()->attachment->create_many( 5 );
-		ap_post_attach_pre_fetch( $attachment_ids );
-		$this->assertEmpty( wp_cache_get( 'posts', 'posts' ) );
-
-		// Test for passing attachment ids for logged in user.
-		$this->setRole( 'subscriber' );
-		$attachment_ids = $this->factory()->attachment->create_many( 5 );
-		ap_post_attach_pre_fetch( $attachment_ids );
-		foreach ( $attachment_ids as $attachment_id ) {
-			$this->assertNotEmpty( wp_cache_get( $attachment_id, 'posts' ) );
-		}
-		$this->logout();
-	}
-
-	/**
 	 * @covers ::ap_clear_unattached_media
 	 */
 	public function testAPClearUnattachedMedia() {

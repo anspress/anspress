@@ -10,6 +10,7 @@
  * @since 4.2.0 Fixed: CS bugs.
  */
 
+use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Modules\Vote\VoteService;
 
@@ -87,9 +88,19 @@ class AnsPress_Admin_Ajax {
 			$post = ap_get_post( $args[0] );
 
 			if ( $post ) {
-				$value  = 'up' === $args[1] ? true : false;
-				$counts = ap_add_post_vote( $post->ID, 0, $value );
-				echo esc_attr( $counts['votes_net'] );
+				$value = 'up' === $args[1] ? '1' : '-1';
+
+				Plugin::get( VoteService::class )->create(
+					array(
+						'vote_post_id'  => $post->ID,
+						'vote_user_id'  => Auth::getID(),
+						'vote_type'     => 'vote',
+						'vote_rec_user' => $post->post_author,
+						'vote_value'    => $value,
+					)
+				);
+
+				echo esc_attr( Plugin::get( VoteService::class )->getVotesCount( $post->ID, 'vote' ) );
 			}
 		}
 		wp_die();

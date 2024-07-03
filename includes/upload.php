@@ -490,24 +490,6 @@ function ap_user_can_upload_temp_media( $user_id = false ) {
 }
 
 /**
- * Pre fetch and cache all question and answer attachments.
- *
- * @param  array $ids Post IDs.
- * @since  4.0.0
- */
-function ap_post_attach_pre_fetch( $ids ) {
-	if ( $ids && is_user_logged_in() ) {
-		$args = array(
-			'post_type' => 'attachment',
-			'include'   => $ids,
-		);
-
-		$posts = get_posts( $args );// @codingStandardsIgnoreLine
-		update_post_cache( $posts );
-	}
-}
-
-/**
  * Delete images uploaded in post.
  *
  * This function should be called after saving post content. This

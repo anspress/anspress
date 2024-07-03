@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractController;
+use AnsPress\Classes\Auth;
 use WP_REST_Response;
 
 // Exit if accessed directly.
@@ -42,7 +43,7 @@ class VoteController extends AbstractController {
 
 		$postId = (int) $this->getParam( 'post_id' );
 
-		$votes = $this->voteService->getVoteCount( $postId, 'vote' );
+		$votes = $this->voteService->getVotesCount( $postId, 'vote' );
 
 		return $this->response( array( 'votes' => $votes ) );
 	}
@@ -66,13 +67,11 @@ class VoteController extends AbstractController {
 		// Check for permission.
 		$this->checkPermission( 'vote:create', array( 'post' => $postObj ) );
 
-		$vote['vote_user_id']  = get_current_user_id();
-		$vote['vote_value']    = 'voteup' === $data['vote_type'] ? 1 : -1;
-		$vote['vote_type']     = 'vote';
-		$vote['vote_rec_user'] = (int) $postObj->post_author;
-		$vote['vote_post_id']  = $data['post_id'];
-
-		$vote = $this->voteService->create( $vote );
+		$vote = $this->voteService->addPostVote(
+			$data['post_id'],
+			'voteup' === $data['vote_type'] ? 1 : -1,
+			Auth::getID()
+		);
 
 		if ( ! $vote ) {
 			$this->addMessage( 'error', __( 'Failed to create vote', 'anspress-question-answer' ) );
@@ -108,7 +107,7 @@ class VoteController extends AbstractController {
 
 		// Check if vote exists.
 		if ( ! $vote ) {
-			return $this->notFound( __( 'Failed to undo vote', 'anspress-question-answer' ) );
+			return $this->notFound( __( 'No vote records found.', 'anspress-question-answer' ) );
 		}
 
 		// Check for permission.

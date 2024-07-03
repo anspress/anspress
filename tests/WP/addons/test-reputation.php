@@ -44,7 +44,6 @@ class TestAddonReputation extends TestCase {
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'user_register' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'delete_user' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'display_name' ) );
-		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'pre_fetch_post' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'bp_profile_header_meta' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'ap_user_pages' ) );
 		$this->assertTrue( method_exists( 'Anspress\Addons\Reputation', 'reputation_page' ) );
@@ -92,8 +91,6 @@ class TestAddonReputation extends TestCase {
 		$this->assertEquals( 10, has_filter( 'user_register', [ $instance, 'user_register' ] ) );
 		$this->assertEquals( 10, has_action( 'delete_user', [ $instance, 'delete_user' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_user_display_name', [ $instance, 'display_name' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_pre_fetch_question_data', [ $instance, 'pre_fetch_post' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_pre_fetch_answer_data', [ $instance, 'pre_fetch_post' ] ) );
 		$this->assertEquals( 10, has_filter( 'bp_before_member_header_meta', [ $instance, 'bp_profile_header_meta' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_user_pages', [ $instance, 'ap_user_pages' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_ajax_load_more_reputation', [ $instance, 'load_more_reputation' ] ) );

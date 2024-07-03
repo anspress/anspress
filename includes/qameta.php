@@ -8,6 +8,7 @@
 
 use AnsPress\Classes\Plugin;
 use AnsPress\Modules\Subscriber\SubscriberService;
+use AnsPress\Modules\Vote\VoteService;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -254,7 +255,7 @@ function ap_update_answers_count( $question_id, $counts = false, $update_time = 
  * @since  3.1.0
  */
 function ap_update_votes_count( $post_id ) {
-	$count = ap_count_post_votes_by( 'post_id', $post_id );
+	$count = Plugin::get( VoteService::class )->getVotesCount( $post_id, 'vote' );
 	ap_insert_qameta( $post_id, $count );
 	return $count;
 }

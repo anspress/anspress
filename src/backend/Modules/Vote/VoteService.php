@@ -38,13 +38,12 @@ class VoteService extends AbstractService {
 	/**
 	 * Create a new vote.
 	 *
-	 * @param array       $data Vote data.
-	 * @param string|null $customErrorMessage Custom error message.
+	 * @param array $data Vote data.
 	 *
 	 * @return null|VoteModel  Vote model.
 	 * @throws ValidationException If validation fails.
 	 */
-	public function create( array $data, ?string $customErrorMessage = null ): ?VoteModel {
+	public function create( array $data ): ?VoteModel {
 		if ( empty( $data['vote_user_id'] ) && Auth::isLoggedIn() ) {
 			$data['vote_user_id'] = Auth::user()->ID;
 		}
@@ -65,26 +64,6 @@ class VoteService extends AbstractService {
 		$vote = new VoteModel();
 
 		$vote->fill( $validated );
-
-		// Make sure that user can only vote once.
-		$existingVote = $this->getUserVote(
-			$data['vote_user_id'],
-			$data['vote_post_id'],
-			$data['vote_type']
-		);
-
-		if ( $existingVote ) {
-			throw new ValidationException(
-				array(
-					'vote' => array(
-						esc_attr(
-							$customErrorMessage ??
-							__( 'You have already voted on this post', 'anspress-question-answer' )
-						),
-					),
-				)
-			);
-		}
 
 		$saved = $vote->save();
 
@@ -116,6 +95,75 @@ class VoteService extends AbstractService {
 	}
 
 	/**
+	 * Add post vote.
+	 *
+	 * @param int    $postId Post ID.
+	 * @param string $voteValue Vote value.
+	 * @param int    $userId User ID.
+	 * @return VoteModel|null
+	 * @throws ValidationException If user already voted.
+	 */
+	public function addPostVote( int $postId, string $voteValue, int $userId = 0 ): ?VoteModel {
+		// Check if user already voted.
+		$userVote = $this->getUserVote( $userId, $postId, self::VOTE );
+
+		if ( $userVote ) {
+			throw new ValidationException( array( '*' => esc_attr__( 'You have already voted on this post.', 'anspress-question-answer' ) ) );
+		}
+
+		return $this->create(
+			array(
+				'vote_user_id'  => $userId,
+				'vote_post_id'  => $postId,
+				'vote_type'     => self::VOTE,
+				'vote_value'    => '-1' === $voteValue ? '-1' : '1',
+				'vote_rec_user' => (int) get_post_field( 'post_author', $postId ),
+			)
+		);
+	}
+
+	/**
+	 * Get votes.
+	 *
+	 * @param array $where Where clause.
+	 * @param array $args  Arguments.
+	 * @return array
+	 */
+	public function getVotes( array $where, array $args = array() ) {
+		global $wpdb;
+
+		$columns = wp_array_slice_assoc(
+			$where,
+			array( 'vote_post_id', 'vote_type', 'vote_user_id', 'vote_rec_user', 'vote_value' )
+		);
+
+		$args = wp_parse_args(
+			$args,
+			array(
+				'limit'  => 10,
+				'offset' => 0,
+			)
+		);
+
+		$tableName = VoteModel::getSchema()->getTableName();
+
+		$sql = "SELECT * FROM {$tableName} WHERE 1=1 ";
+
+		foreach ( $columns as $column => $value ) {
+			if ( empty( $value ) ) {
+				continue;
+			}
+
+			$columnFormat = VoteModel::getSchema()->getColumnFormat( $column );
+			$sql         .= $wpdb->prepare( " AND {$column} = {$columnFormat}", $value ); // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		$sql .= $wpdb->prepare( ' LIMIT %d, %d', (int) $args['offset'], (int) $args['limit'] );
+
+		return VoteModel::findMany( $sql );
+	}
+
+	/**
 	 * Get user casted vote.
 	 *
 	 * @param int    $userId User ID.
@@ -143,24 +191,43 @@ class VoteService extends AbstractService {
 	}
 
 	/**
-	 * Get vote count on a post.
+	 * Get votes count on a post.
 	 *
 	 * @param int    $refId Reference ID.
 	 * @param string $type Vote type.
+	 * @param string $value Vote value.
 	 * @return int
 	 */
-	public function getVoteCount( int $refId, string $type ): int {
+	public function getVotesCount( int $refId, string $type, ?string $value = null ): array {
 		global $wpdb;
 
-		$vote_count = $wpdb->get_var( // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}ap_votes WHERE vote_post_id = %d AND vote_type = %s",
-				$refId,
-				$type
-			)
+		$table = VoteModel::getSchema()->getTableName();
+
+		$sql = $wpdb->prepare(
+			"SELECT COUNT(*) as total, vote_value FROM {$table} WHERE vote_post_id = %d AND vote_type = %s ", // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
+			$refId,
+			$type
 		);
 
-		return (int) $vote_count;
+		if ( $value ) {
+			$sql .= $wpdb->prepare( ' AND vote_value = %s', $value );
+		}
+
+		$sql .= ' GROUP BY vote_value';
+
+		$votesGroup = $wpdb->get_results( $sql , ARRAY_A ); // @codingStandardsIgnoreLine WordPress.DB.PreparedSQL.NotPrepared
+
+		$votesGroup = wp_list_pluck( $votesGroup, 'total', 'vote_value' );
+
+		if ( 'vote' === $type ) {
+			$votesGroup = array(
+				'votes_up'   => (int) $votesGroup['1'] ?? 0,
+				'votes_down' => (int) $votesGroup['-1'] ?? 0,
+				'votes_net'  => (int) ( $votesGroup['1'] ?? 0 ) - ( $votesGroup['-1'] ?? 0 ),
+			);
+		}
+
+		return $votesGroup;
 	}
 
 	/**

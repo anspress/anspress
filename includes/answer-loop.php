@@ -216,27 +216,6 @@ class Answers_Query extends WP_Query {
 			$this->ap_ids[ $k ] = array_unique( $ids );
 		}
 	}
-
-
-
-	/**
-	 * Pre fetch current users vote on all answers
-	 *
-	 * @since 3.1.0
-	 * @since 4.1.2 Prefetch posts activity.
-	 */
-	public function pre_fetch() {
-		$this->get_ids();
-		ap_prefetch_recent_activities( $this->ap_ids['post_ids'], 'a_id' );
-		ap_user_votes_pre_fetch( $this->ap_ids['post_ids'] );
-		ap_post_attach_pre_fetch( $this->ap_ids['attach_ids'] );
-
-		if ( ! empty( $this->ap_ids['user_ids'] ) ) {
-			ap_post_author_pre_fetch( $this->ap_ids['user_ids'] );
-		}
-
-		do_action( 'ap_pre_fetch_answer_data', $this->ap_ids );
-	}
 }
 
 

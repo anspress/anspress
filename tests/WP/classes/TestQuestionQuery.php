@@ -42,7 +42,6 @@ class TestQuestionQuery extends TestCase {
 		$this->assertTrue( method_exists( 'Question_Query', 'is_main_query' ) );
 		$this->assertTrue( method_exists( 'Question_Query', 'reset_questions_data' ) );
 		$this->assertTrue( method_exists( 'Question_Query', 'get_ids' ) );
-		$this->assertTrue( method_exists( 'Question_Query', 'pre_fetch' ) );
 	}
 
 	/**

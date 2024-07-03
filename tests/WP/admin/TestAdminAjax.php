@@ -1241,10 +1241,6 @@ class TestAdminAjax extends TestCaseAjax {
 		$this->_last_response = '';
 		$ids = $this->insert_answers( [], [], 5 );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_vote_insert( $ids['question'], $user_id, 'vote', get_current_user_id(), '1' );
-		ap_vote_insert( $ids['answers'][0], $user_id, 'vote', get_current_user_id(), '1' );
-		ap_vote_insert( $ids['answers'][1], $user_id, 'vote', get_current_user_id(), '1' );
-		ap_vote_insert( $ids['answers'][2], $user_id, 'vote', get_current_user_id(), '-1' );
 
 		// Before Ajax call.
 		$test_vote_1 = ap_get_qameta( $ids['question'] );
@@ -1294,11 +1290,6 @@ class TestAdminAjax extends TestCaseAjax {
 		$answer_ids_set_9 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[8] ] );
 		$answer_ids_set_10 = $this->factory()->post->create_many( 10, [ 'post_type' => 'answer', 'post_parent' => $question_ids[9] ] );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_vote_insert( $question_ids[0], $user_id, 'vote', get_current_user_id(), '1' );
-		ap_vote_insert( $question_ids[5], $user_id, 'vote', get_current_user_id(), '-1' );
-		ap_vote_insert( $answer_ids_set_1[0], $user_id, 'vote', get_current_user_id(), '1' );
-		ap_vote_insert( $answer_ids_set_2[2], $user_id, 'vote', get_current_user_id(), '1' );
-		ap_vote_insert( $answer_ids_set_3[4], $user_id, 'vote', get_current_user_id(), '-1' );
 
 		// Before Ajax call.
 		$test_vote_1 = ap_get_qameta( $question_ids[0] );

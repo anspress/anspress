@@ -28,7 +28,6 @@ class TestAnswerLoop extends TestCase {
 		$this->assertTrue( method_exists( 'Answers_Query', 'is_main_query' ) );
 		$this->assertTrue( method_exists( 'Answers_Query', 'reset_answers_data' ) );
 		$this->assertTrue( method_exists( 'Answers_Query', 'get_ids' ) );
-		$this->assertTrue( method_exists( 'Answers_Query', 'pre_fetch' ) );
 	}
 
 	/**

@@ -9,6 +9,8 @@
 namespace AnsPress\Modules\Vote;
 
 use AnsPress\Classes\AbstractModule;
+use AnsPress\Classes\Plugin;
+use AnsPress\Classes\PostHelper;
 use AnsPress\Classes\RestRouteHandler;
 use WP_REST_Server;
 
@@ -25,6 +27,7 @@ class VoteModule extends AbstractModule {
 	 */
 	public function register_hooks() {
 		add_action( 'rest_api_init', array( $this, 'registerRoutes' ) );
+		add_action( 'delete_post', array( $this, 'deleteVotes' ), 10, 2 );
 	}
 
 	/**
@@ -85,5 +88,33 @@ class VoteModule extends AbstractModule {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Delete post votes.
+	 *
+	 * @param integer $post_id Post ID.
+	 * @param object  $post    Post object.
+	 * @since 4.0.0
+	 * @deprecated 5.0.0 Use VoteController instead.
+	 */
+	public static function deleteVotes( $post_id, $post ) {
+		if ( ! PostHelper::isValidPostType( $post->post_type ) ) {
+			return;
+		}
+
+		$votes = Plugin::get( VoteService::class )->getVotes(
+			array(
+				'vote_post_id' => $post_id,
+			)
+		);
+
+		if ( empty( $votes ) ) {
+			return;
+		}
+
+		foreach ( $votes as $vote ) {
+			$vote->delete();
+		}
 	}
 }

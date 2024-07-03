@@ -54,8 +54,6 @@ class ReputationModule extends AbstractModule {
 		add_filter( 'user_register', array( $this, 'user_register' ) );
 		add_action( 'delete_user', array( $this, 'delete_user' ) );
 		add_filter( 'ap_user_display_name', array( $this, 'display_name' ), 10, 2 );
-		add_filter( 'ap_pre_fetch_question_data', array( $this, 'pre_fetch_post' ) );
-		add_filter( 'ap_pre_fetch_answer_data', array( $this, 'pre_fetch_post' ) );
 		add_filter( 'bp_before_member_header_meta', array( $this, 'bp_profile_header_meta' ) );
 		add_filter( 'ap_user_pages', array( $this, 'ap_user_pages' ) );
 		add_filter( 'ap_ajax_load_more_reputation', array( $this, 'load_more_reputation' ) );
@@ -442,17 +440,6 @@ class ReputationModule extends AbstractModule {
 		}
 
 		return $name;
-	}
-
-	/**
-	 * Pre fetch user reputations.
-	 *
-	 * @param array $ids Pre fetching ids.
-	 */
-	public function pre_fetch_post( $ids ) {
-		if ( ! empty( $ids['user_ids'] ) ) {
-			ap_get_users_reputation( $ids['user_ids'] );
-		}
 	}
 
 	/**

@@ -38,7 +38,6 @@ class AnsPress_Hooks {
 			add_action( 'before_delete_post', array( 'AnsPress_Hooks', 'before_delete' ) );
 			add_action( 'wp_trash_post', array( 'AnsPress_Hooks', 'trash_post_action' ) );
 			add_action( 'untrash_post', array( 'AnsPress_Hooks', 'untrash_posts' ) );
-			add_action( 'comment_post', array( 'AnsPress_Hooks', 'new_comment_approve' ), 10, 2 );
 			add_action( 'comment_unapproved_to_approved', array( 'AnsPress_Hooks', 'comment_approve' ) );
 			add_action( 'comment_approved_to_unapproved', array( 'AnsPress_Hooks', 'comment_unapprove' ) );
 			add_action( 'trashed_comment', array( 'AnsPress_Hooks', 'comment_trash' ) );
@@ -99,11 +98,6 @@ class AnsPress_Hooks {
 			add_action( 'init', array( 'AnsPress_Uploader', 'create_single_schedule' ) );
 			add_action( 'ap_delete_temp_attachments', array( 'AnsPress_Uploader', 'cron_delete_temp_attachments' ) );
 			add_action( 'intermediate_image_sizes_advanced', array( 'AnsPress_Uploader', 'image_sizes_advanced' ) );
-
-			// Vote hooks.
-			add_action( 'ap_before_delete_question', array( 'AnsPress_Vote', 'delete_votes' ) );
-			add_action( 'ap_before_delete_answer', array( 'AnsPress_Vote', 'delete_votes' ) );
-			add_action( 'ap_deleted_votes', array( 'AnsPress_Vote', 'ap_deleted_votes' ), 10, 2 );
 
 			// Form hooks.
 			add_action( 'ap_form_question', array( 'AP_Form_Hooks', 'question_form' ), 11 );
@@ -361,31 +355,6 @@ class AnsPress_Hooks {
 
 			// Update answer count.
 			ap_update_answers_count( $_post->post_parent, $ans + 1 );
-		}
-	}
-
-	/**
-	 * Used to create an action when comment publishes.
-	 *
-	 * @param	integer			 $comment_id Comment ID.
-	 * @param	integer|false $approved	 1 if comment is approved else false.
-	 *
-	 * @since unknown
-	 * @since 4.1.0 Do not check post_type, instead comment type.
-	 */
-	public static function new_comment_approve( $comment_id, $approved ) {
-		if ( 1 === $approved ) {
-			$comment = get_comment( $comment_id );
-
-			if ( 'anspress' === $comment->comment_type ) {
-				/**
-				 * Action is triggered when a anspress comment is published.
-				 *
-				 * @param object $comment Comment object.
-				 * @since unknown
-				 */
-				do_action( 'ap_publish_comment', $comment );
-			}
 		}
 	}
 

@@ -46,3 +46,11 @@ class AnsPress_Comment_Hooks {
  */
 class Comment_Modal {
 }
+
+/**
+ * AnsPress vote related class.
+ *
+ * @deprecated 5.0.0
+ */
+class AnsPress_Vote {
+}
