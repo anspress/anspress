@@ -43,12 +43,6 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	data-anspress-block="anspress/single-question"
 	>
 	<?php
-	/**
-	 * Action triggered before question title.
-	 *
-	 * @since 5.0.0
-	 */
-	do_action( 'anspress/before/question_title' );
 
 	$questionCategories = get_the_terms( $_post->ID, 'question_category' );
 
@@ -63,8 +57,6 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 		echo '</div>';
 	}
 	?>
-
-	<h1 class="anspress-apq-item-title"><?php the_title(); ?></h1>
 
 	<?php
 	/**

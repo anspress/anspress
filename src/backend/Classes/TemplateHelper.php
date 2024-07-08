@@ -210,4 +210,35 @@ class TemplateHelper {
 
 		return Plugin::loadView( $filePath, array_merge( $args, array( 'attributes' => $attributes ) ), false );
 	}
+
+	/**
+	 * Get the current page URL.
+	 *
+	 * @return string
+	 */
+	public static function currentPageUrl(): string {
+		global $wp;
+		return home_url( add_query_arg( array(), $wp->request ) );
+	}
+
+	/**
+	 * Get the current questions query arguments.
+	 *
+	 * @return array
+	 */
+	public static function currentQuestionsQueryArgs() {
+		$currentArgs = isset( $_GET['queries'] ) ? sanitize_post( wp_unslash( $_GET['queries'] ) ) : array(); // @codingStandardsIgnoreLine
+
+		$args = wp_array_slice_assoc(
+			$currentArgs,
+			array(
+				'args:orderby',
+				'args:order',
+				'args:categories',
+				'args:tags',
+			)
+		);
+
+		return $args;
+	}
 }

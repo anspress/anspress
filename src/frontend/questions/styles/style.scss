@@ -1,4 +1,6 @@
 .wp-block-anspress-questions {
+	--anspress-current-bg: rgba(var(--anspress-white-bg), 1);
+	--anspress-current-border-color: rgba(221, 221, 221, 1);
 
 	&-avatar {
 		margin-right: 20px;
@@ -9,11 +11,20 @@
 	&-items {}
 
 	&-item {
-		display: flex;
-		justify-content: space-between;
-		border-bottom: solid 1px #eee;
-		padding: 10px 0;
-		align-items: flex-start;
+		background: var(--anspress-current-bg);
+		border: solid 1px var(--anspress-current-border-color);
+		margin-bottom: 15px;
+		border-radius: 4px;
+
+		&-head {
+			display: flex;
+			justify-content: space-between;
+			padding: 10px 0;
+			align-items: flex-start;
+			padding: 10px;
+			border-radius: 4px;
+			flex-wrap: wrap;
+		}
 
 		.anspress-avatar-shape-circle & img {
 			border-radius: 50%;
@@ -21,6 +32,24 @@
 
 		&:last-child {
 			border-bottom: none;
+		}
+
+		&-footer {
+			border-top: solid 1px #eee;
+			padding: 10px;
+			font-size: .7rem;
+		}
+
+		&-tags {
+			a {
+				text-decoration: none;
+				background: rgba(0, 0, 0, 0.08);
+				display: inline-block;
+				padding: 0px 5px;
+				border-radius: 3px;
+				margin-right: 5px;
+				margin-bottom: 2px;
+			}
 		}
 	}
 
@@ -47,6 +76,7 @@
 		justify-content: center;
 		text-decoration: none;
 		border-radius: 4px;
+		background: rgb(var(--anspress-white-bg));
 
 		&:hover {
 			background: #eee;
@@ -54,6 +84,14 @@
 
 		&:last-child {
 			margin-left: 10px;
+		}
+	}
+
+	&-acount {
+		border-color: rgba(var(--anspress-solved-bg), 0.6);
+
+		&:hover {
+			background: rgba(var(--anspress-solved-bg), 0.2);
 		}
 	}
 
@@ -76,4 +114,43 @@
 	}
 
 
+}
+
+.anspress-questions {
+	&-args {
+		border: solid 1px #eee;
+		background: #fff;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		padding: 15px;
+	}
+
+	&-queries {
+		display: flex;
+		align-items: center;
+		margin-bottom: 20px;
+		border: solid 1px var(--anspress-border-color);
+		border-radius: 4px;
+
+		&-buttons {
+			margin-left: auto;
+			margin-right: 5px;
+		}
+
+		&-count {
+			background: #ddd;
+			display: inline-block;
+			border-radius: 2px;
+			font-size: 13px;
+			padding: 1px 3px;
+			margin-left: 5px;
+		}
+
+		.anspress-dropdown-handle {
+			font-size: 0.8rem;
+			font-weight: bold;
+			padding: 5px 8px;
+			border-right: solid 1px #ddd;
+		}
+	}
 }

@@ -162,7 +162,8 @@ class AP_QA_Query_Hooks {
 					if ( $instance->is_single() && $instance->is_main_query() ) {
 						$posts[ $k ] = self::imaginary_post( $p );
 					} else {
-						unset( $posts[ $k ] );
+						$posts[ $k ]->post_title   = __( 'Protected content', 'anspress-question-answer' );
+						$posts[ $k ]->post_content = __( 'You do not have permission to view the contents of this question.', 'anspress-question-answer' );
 					}
 				} else {
 					$posts[ $k ] = $p;

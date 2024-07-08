@@ -8,8 +8,10 @@
 
 use AnsPress\Classes\Router;
 use AnsPress\Modules\Answer\AnswerController;
+use AnsPress\Modules\Category\CategoryController;
 use AnsPress\Modules\Comment\CommentController;
 use AnsPress\Modules\Question\QuestionController;
+use AnsPress\Modules\Tag\TagController;
 
 Router::group(
 	array(
@@ -227,6 +229,40 @@ Router::group(
 					),
 				),
 			)
+		);
+
+		Router::group(
+			array(
+				'prefix'     => 'categories',
+				'name'       => 'categories',
+				'controller' => CategoryController::class,
+			),
+			function () {
+				Router::get(
+					'',
+					'index',
+					array(
+						'name' => 'index',
+					)
+				);
+			}
+		);
+
+		Router::group(
+			array(
+				'prefix'     => 'tags',
+				'name'       => 'tags',
+				'controller' => TagController::class,
+			),
+			function () {
+				Router::get(
+					'',
+					'index',
+					array(
+						'name' => 'index',
+					)
+				);
+			}
 		);
 	}
 );

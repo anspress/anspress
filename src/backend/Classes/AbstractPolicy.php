@@ -181,7 +181,7 @@ abstract class AbstractPolicy implements PolicyInterface {
 	 * @param string       $itemFieldKey The field name in the context item.
 	 * @return bool True if the user is authorized to view the model, false otherwise.
 	 */
-	public static function isAuthorOfItem( WP_User $user, array $context, string $itemKey, string $itemFieldKey ): bool {
+	public static function isAuthorOfItem( ?WP_User $user, array $context, string $itemKey, string $itemFieldKey ): bool {
 		if ( self::isUserIdEmpty( $user ) ) {
 			return false;
 		}

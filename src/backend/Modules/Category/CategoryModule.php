@@ -49,7 +49,7 @@ class CategoryModule extends AbstractModule {
 		add_filter( 'ap_question_subscribers_action_id', array( $this, 'subscribers_action_id' ) );
 		add_filter( 'ap_ask_btn_link', array( $this, 'ap_ask_btn_link' ) );
 		add_filter( 'wp_head', array( $this, 'category_feed' ) );
-		add_filter( 'manage_edit-question_category_columns', array( $this, 'column_header' ) );
+		// add_filter( 'manage_edit-question_category_columns', array( $this, 'column_header' ) );
 		add_filter( 'manage_question_category_custom_column', array( $this, 'column_content' ), 10, 3 );
 		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
 		add_action( 'posts_pre_query', array( $this, 'modifyQueryCategoryArchive' ), 9999, 2 );

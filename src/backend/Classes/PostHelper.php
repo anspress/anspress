@@ -74,7 +74,7 @@ class PostHelper {
 	 * @param int|WP_Post $postObjOrId Post object or ID.
 	 * @return bool
 	 */
-	public static function isModerateStatus( int|WP_Post $postObjOrId ) {
+	public static function isModerateStatus( null|int|WP_Post $postObjOrId = null ) {
 		$post = get_post( $postObjOrId );
 		return 'moderate' === $post?->post_status;
 	}
@@ -116,5 +116,23 @@ class PostHelper {
 		$post = get_post( $postObjOrId );
 
 		return (int) $userId === (int) $post->post_author;
+	}
+
+	/**
+	 * Get post status label.
+	 *
+	 * @param int|WP_Post $postOrId Post object or ID.
+	 * @return string
+	 */
+	public static function postStatusLabel( int|WP_Post $postOrId ): string {
+		$post = get_post( $postOrId );
+
+		if ( ! $post ) {
+			return __( 'Invalid type', 'anspress-question-answer' );
+		}
+
+		$obj = get_post_status_object( $post->post_status );
+
+		return $obj->label;
 	}
 }

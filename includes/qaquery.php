@@ -407,8 +407,10 @@ function ap_votes_net( $_post = null ) {
  * Echo post status of a question.
  *
  * @param  mixed $_post Post ID, Object or null.
+ * @deprecated 5.0.0
  */
 function ap_question_status( $_post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$_post = ap_get_post( $_post );
 
 	if ( ! $_post ) {

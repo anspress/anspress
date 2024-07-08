@@ -1,4 +1,5 @@
 import { fetch } from './AnsPressCommon.js';
+
 export class BaseCustomElement extends HTMLElement {
   constructor() {
     super();
@@ -12,6 +13,10 @@ export class BaseCustomElement extends HTMLElement {
   connectedCallback() {
     this.updateComponent();
     this.addEventListeners();
+  }
+
+  disconnectedCallback() {
+    this.removeEventListeners();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -29,6 +34,7 @@ export class BaseCustomElement extends HTMLElement {
   }
 
   set data(data) {
+    console.log('Setting data', data)
     this._cachedData = data;
     this.setAttribute('data-anspress', JSON.stringify(data));
   }
@@ -50,16 +56,12 @@ export class BaseCustomElement extends HTMLElement {
     throw new Error('addEventListeners method must be implemented by subclasses');
   }
 
+  removeEventListeners() {
+  }
+
   fetch(options) {
     return fetch(options, { templateId: this.getTemplateId(), blockName: this.getBlockName() }).then(res => {
-      if (res?.anspress) {
-        // Handle data-anspress attributes.
-        if (res.anspress.data) {
-          this.data = res.anspress.data;
-        }
-      }
-
-      return res.anspress || {};
+      return res || {};
     })
   }
 
@@ -80,6 +82,4 @@ export class BaseCustomElement extends HTMLElement {
   getBlockName() {
     return this.closest('[data-anspress-block]')?.getAttribute('data-anspress-block') || '';
   }
-
-
 }

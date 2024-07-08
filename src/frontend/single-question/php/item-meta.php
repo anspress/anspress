@@ -49,28 +49,28 @@ if ( ! isset( $attributes ) ) {
 	<div class="anspress-apq-item-meta-badges">
 		<?php if ( PostHelper::isQuestion( $post ) ) : ?>
 			<?php if ( ap_is_featured_question( $post ) ) : ?>
-				<div class="anspress-apq-item-featuredlabel">
+				<div class="anspress-badge anspress-badge-featured">
 					<?php esc_html_e( 'Featured', 'anspress-question-answer' ); ?>
 				</div>
 			<?php endif; ?>
 				<?php if ( ap_selected_answer( $post->ID ) ) : ?>
-				<div class="anspress-apq-item-selected-answer">
+				<div class="anspress-badge anspress-badge-selected-answer">
 					<span ><?php esc_html_e( 'Solved', 'anspress-question-answer' ); ?></span>
 				</div>
 			<?php endif; ?>
 				<?php if ( is_post_closed( $post ) ) : ?>
-				<div class="anspress-apq-item-closedlabel">
+				<div class="anspress-badge anspress-badge-closed">
 					<span ><?php esc_html_e( 'Closed', 'anspress-question-answer' ); ?></span>
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php if ( PostHelper::isPrivateStatus( $post ) ) : ?>
-			<div class="anspress-apq-item-privatelabel">
+			<div class="anspress-badge anspress-badge-private_post">
 				<span><?php esc_html_e( 'Private', 'anspress-question-answer' ); ?></span>
 			</div>
 		<?php endif; ?>
 		<?php if ( PostHelper::isModerateStatus( $post ) ) : ?>
-			<div class="anspress-apq-item-moderatelabel">
+			<div class="anspress-badge anspress-badge-moderate">
 				<span><?php esc_html_e( 'Moderate', 'anspress-question-answer' ); ?></span>
 			</div>
 		<?php endif; ?>

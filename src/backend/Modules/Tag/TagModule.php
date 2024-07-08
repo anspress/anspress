@@ -23,11 +23,11 @@ class TagModule extends AbstractModule {
 	 * @return void
 	 */
 	public function register_hooks() {
-		add_action( 'init', array( $this, 'register_question_tag' ), 1 );
+		add_action( 'init', array( $this, 'registerQuestionTag' ), 1 );
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
-		add_action( 'ap_form_options_features_tag', array( $this, 'option_fields' ) );
+
 		add_action( 'widgets_init', array( $this, 'widget_positions' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_tags_menu' ) );
 		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
@@ -88,7 +88,7 @@ class TagModule extends AbstractModule {
 	 * @return void
 	 * @since 2.0
 	 */
-	public function register_question_tag() {
+	public function registerQuestionTag() {
 		ap_add_default_options(
 			array(
 				'max_tags'      => 5,
@@ -157,44 +157,6 @@ class TagModule extends AbstractModule {
 
 		return $groups;
 	}
-
-	/**
-	 * Register option fields.
-	 */
-	public function option_fields() {
-		$opt = ap_opt();
-
-		$form = array(
-			'fields' => array(
-				'tags_per_page' => array(
-					'label'       => __( 'Tags to show', 'anspress-question-answer' ),
-					'description' => __( 'Numbers of tags to show in tags page.', 'anspress-question-answer' ),
-					'subtype'     => 'number',
-					'value'       => $opt['tags_per_page'],
-				),
-				'max_tags'      => array(
-					'label'       => __( 'Maximum tags', 'anspress-question-answer' ),
-					'description' => __( 'Maximum numbers of tags that user can add when asking.', 'anspress-question-answer' ),
-					'subtype'     => 'number',
-					'value'       => $opt['max_tags'],
-				),
-				'min_tags'      => array(
-					'label'       => __( 'Minimum tags', 'anspress-question-answer' ),
-					'description' => __( 'minimum numbers of tags that user must add when asking.', 'anspress-question-answer' ),
-					'subtype'     => 'number',
-					'value'       => $opt['min_tags'],
-				),
-				'tag_page_slug' => array(
-					'label' => __( 'Tag page slug', 'anspress-question-answer' ),
-					'desc'  => __( 'Slug for tag page', 'anspress-question-answer' ),
-					'value' => $opt['tag_page_slug'],
-				),
-			),
-		);
-
-		return $form;
-	}
-
 
 	/**
 	 * Append meta display.

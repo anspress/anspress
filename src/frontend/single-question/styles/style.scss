@@ -184,32 +184,8 @@
 		display: flex;
 
 		>* {
-			margin-left: 10px;
-			padding: 1px 5px;
-			font-size: 12px;
-			border-radius: 3px;
-			color: #fff;
+			margin-left: 5px;
 		}
-	}
-
-	&-selected-answer {
-		background: #00d084;
-	}
-
-	&-closedlabel {
-		background: #f14f4f;
-	}
-
-	&-featuredlabel {
-		background: #fcb900;
-	}
-
-	&-privatelabel {
-		background: #333;
-	}
-
-	&-moderatelabel {
-		background: #fcb900;
 	}
 
 	&-single-answer-info {

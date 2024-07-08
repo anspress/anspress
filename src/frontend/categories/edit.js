@@ -7,6 +7,7 @@ import ServerSideRender from '@wordpress/server-side-render';
 
 const Edit = ({ attributes, setAttributes }) => {
   const { itemsPerPage, showPagination, showCount, showDescription, descriptionLength, columns, showIcon, showImage } = attributes;
+  console.log(attributes)
 
   const { terms, hasResolved } = useSelect(
     (select) => {

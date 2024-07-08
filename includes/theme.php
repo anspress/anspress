@@ -728,8 +728,11 @@ function ap_localize_script() {
 
 /**
  * Get all list filters.
+ *
+ * @deprecated 5.0.0
  */
 function ap_get_list_filters() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$param    = array();
 	$search_q = get_query_var( 'ap_s' );
 
@@ -757,8 +760,10 @@ function ap_get_list_filters() {
  * Output list filters form.
  *
  * @param string $current_url Current Url.
+ * @deprecated 5.0.0
  */
 function ap_list_filters( $current_url = '' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$filters = ap_get_list_filters();
 
 	echo '<form id="ap-filters" class="ap-filters clearfix" method="GET">';
@@ -855,8 +860,10 @@ function ap_select_answer_btn_html( $_post = null ) {
  * @param   mixed $_post Post.
  * @return  null|string
  * @since   4.0.0
+ * @deprecated 5.0.0
  */
 function ap_post_status_btn_args( $_post = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$_post = ap_get_post( $_post );
 	$args  = array();
 
