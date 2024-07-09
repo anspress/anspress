@@ -297,7 +297,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/votes.php';
 			require_once ANSPRESS_DIR . 'includes/views.php';
 			require_once ANSPRESS_DIR . 'includes/theme.php';
-			require_once ANSPRESS_DIR . 'includes/shortcode-basepage.php';
 			require_once ANSPRESS_DIR . 'includes/process-form.php';
 			require_once ANSPRESS_DIR . 'includes/rewrite.php';
 			require_once ANSPRESS_DIR . 'includes/deprecated.php';
@@ -375,19 +374,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			\AnsPress_Hooks::init();
 			$this->activity = AnsPress\Activity_Helper::get_instance();
 			\AnsPress_Views::init();
-
-			// Load all addons if constant set.
-			if ( defined( 'ANSPRESS_ENABLE_ADDONS' ) && ANSPRESS_ENABLE_ADDONS ) {
-				foreach ( ap_get_addons() as $name => $data ) {
-					ap_activate_addon( $name );
-				}
-			}
-
-			foreach ( (array) ap_get_addons() as $data ) {
-				if ( $data['active'] && file_exists( $data['path'] ) ) {
-					require_once $data['path'];
-				}
-			}
 		}
 
 		/**

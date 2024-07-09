@@ -97,7 +97,6 @@ class AnsPress_Admin {
 		}
 
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', array(), AP_VERSION );
-		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
 	}
 
@@ -105,24 +104,13 @@ class AnsPress_Admin {
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
-		wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', array( 'jquery', 'jquery-form', 'backbone' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-		wp_register_script( 'anspress-notifiactions', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
 		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-
-		wp_enqueue_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
 
 		$page = get_current_screen();
 
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
-
-		wp_enqueue_script( 'anspress-question' );
-		wp_enqueue_script( 'anspress-ask' );
-		wp_enqueue_script( 'anspress-list' );
-		wp_enqueue_script( 'anspress-notifiactions' );
 		wp_enqueue_script( 'anspress-admin-js' );
 
 		?>
@@ -1438,8 +1426,11 @@ class AnsPress_Admin {
 	 * Load addons options form in a thickbox.
 	 *
 	 * @return void
+	 * @deprecated 5.0.0
 	 */
 	public static function ap_addon_options() {
+		_deprecated_function( __METHOD__, '5.0.0' );
+
 		// Bail if no permission.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			exit;
@@ -1448,7 +1439,6 @@ class AnsPress_Admin {
 		define( 'IFRAME_REQUEST', true );
 		iframe_header();
 
-		wp_enqueue_style( 'anspress-main', ap_get_theme_url( 'css/main.css' ), array(), AP_VERSION );
 		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', array(), AP_VERSION );
 		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
 		?>
@@ -1461,10 +1451,6 @@ class AnsPress_Admin {
 			</script>
 		<?php
 
-		wp_enqueue_script( 'anspress-question' );
-		wp_enqueue_script( 'anspress-ask' );
-		wp_enqueue_script( 'anspress-list' );
-		wp_enqueue_script( 'anspress-notifiactions' );
 		wp_enqueue_script( 'anspress-admin-js' );
 
 		$addon     = ap_get_addon( ap_sanitize_unslash( 'addon', 'r' ) );

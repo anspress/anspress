@@ -367,8 +367,10 @@ function ap_post_actions( $_post = null ) {
  * Post actions buttons.
  *
  * @since   2.0
+ * @deprecated 5.0.0
  */
 function ap_post_actions_buttons() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	if ( ! is_user_logged_in() ) {
 		return;
 	}
@@ -389,8 +391,10 @@ function ap_post_actions_buttons() {
  * @param  string $current_url Current page URL.
  * @return array
  * @since  3.0.0 Moved from `ap_question_sorting()`.
+ * @deprecated 5.0.0
  */
 function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$param    = array();
 	$search_q = get_query_var( 'ap_s' );
 
@@ -506,54 +510,13 @@ function ap_answers_tab( $base = false ) {
 }
 
 /**
- * Answer meta to display.
- *
- * @param false|integer $answer_id Answer id.
- * @return string
- * @since 2.0.1
- * @deprecated 4.2.0
- */
-function ap_display_answer_metas( $answer_id = false ) {
-	_deprecated_function( __FUNCTION__, '4.2.0' );
-	return;
-
-	// @codingStandardsIgnoreStart
-	if ( false === $answer_id ) {
-		$answer_id = get_the_ID();
-	}
-
-	$metas = array();
-	if ( ap_is_selected( $answer_id ) ) {
-		$metas['best_answer'] = '<span class="ap-best-answer-label">' . __( 'Best answer', 'anspress-question-answer' ) . '</span>';
-	}
-
-	$metas['history'] = ap_last_active_time( $answer_id );
-
-	/**
-	 * Used to filter answer display meta.
-	 *
-	 * @since 2.0.1
-	 * @deprecated 4.2.0
-	 */
-	$metas = apply_filters( 'ap_display_answer_metas', $metas, $answer_id );
-
-	$output = '';
-	if ( ! empty( $metas ) && is_array( $metas ) ) {
-		foreach ( $metas as $meta => $display ) {
-			$output .= "<span class='ap-display-meta-item {$meta}'>{$display}</span>";
-		}
-	}
-
-	return $output;
-	// @codingStandardsIgnoreEnd
-}
-
-/**
  * Echo ask button.
  *
  * @since 2.1
+ * @deprecated 5.0.0
  */
 function ap_ask_btn() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	echo ap_get_ask_btn(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
@@ -562,8 +525,10 @@ function ap_ask_btn() {
  *
  * @return string Ask button HTML
  * @since 2.1
+ * @deprecated 5.0.0
  */
 function ap_get_ask_btn() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$link = ap_get_link_to( 'ask' );
 
 	/**
@@ -650,16 +615,7 @@ function ap_current_page( $looking_for = false ) {
  * @return array
  */
 function ap_assets() {
-	wp_register_script( 'selectize', ANSPRESS_URL . 'assets/js/lib/selectize.min.js', array( 'jquery' ), AP_VERSION, true );
-
-	wp_register_script( 'anspress-common', ANSPRESS_URL . 'assets/js/common.js', array( 'jquery', 'jquery-form', 'underscore', 'backbone', 'selectize' ), AP_VERSION, true );
-	wp_register_script( 'anspress-ask', ANSPRESS_URL . 'assets/js/ask.js', array( 'anspress-common' ), AP_VERSION, true );
-	wp_register_script( 'anspress-list', ANSPRESS_URL . 'assets/js/list.js', array( 'anspress-common' ), AP_VERSION, true );
-	wp_register_script( 'anspress-notifications', ANSPRESS_URL . 'assets/js/notifications.js', array( 'anspress-common' ), AP_VERSION, true );
-	wp_register_script( 'anspress-theme', ap_get_theme_url( 'js/theme.js', false, false ), array( 'anspress-common', 'anspress-ask', 'anspress-list', 'anspress-notifications' ), AP_VERSION, true );
-
 	wp_register_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css', false, false ), array(), AP_VERSION );
-	wp_register_style( 'anspress-main', ap_get_theme_url( 'css/main.css', false, false ), array( 'anspress-fonts' ), AP_VERSION );
 	wp_register_style( 'anspress-rtl', ap_get_theme_url( 'css/rtl.css', false, false ), array( 'anspress-main' ), AP_VERSION );
 
 	return array();
@@ -669,13 +625,13 @@ function ap_assets() {
  * Enqueue AnsPress assets.
  *
  * @since 2.4.6
+ * @deprecated 5.0.0
  */
 function ap_enqueue_scripts() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	if ( ap_current_page() !== '' ) {
 		wp_enqueue_script( 'anspress-theme' );
 	}
-
-	wp_enqueue_style( 'anspress-main' );
 
 	if ( is_rtl() ) {
 		wp_enqueue_style( 'anspress-rtl' );

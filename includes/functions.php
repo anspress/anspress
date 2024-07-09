@@ -1453,12 +1453,14 @@ function ap_user_link( $user_id = false, $sub = false ) {
 
 		if ( ! $user ) {
 			$link = '#/user/anonymous';
-		} elseif ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
-			$link = bp_core_get_userlink( $user_id, false, true ) . 'qa/';
-		} elseif ( ap_is_addon_active( 'profile.php' ) ) {
-			$slug = get_option( 'ap_user_path' );
-			$link = home_url( $slug ) . '/' . $user->user_nicename . '/';
-		} else {
+		}
+		// elseif ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
+		// $link = bp_core_get_userlink( $user_id, false, true ) . 'qa/';
+		// } elseif ( ap_is_addon_active( 'profile.php' ) ) {
+		// $slug = get_option( 'ap_user_path' );
+		// $link = home_url( $slug ) . '/' . $user->user_nicename . '/';
+		// }
+		else {
 			$link = get_author_posts_url( $user_id );
 		}
 	}
@@ -1568,8 +1570,10 @@ function ap_search_array( $arr, $key, $value ) {
  * @return array
  * @since 4.0.0
  * @since 4.1.8 Do not fetch addon meta data from files, instead defined it in array.
+ * @deprecated 5.0.0
  */
 function ap_get_addons() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$cache  = wp_cache_get( 'addons', 'anspress' );
 	$option = get_option( 'anspress_addons', array() );
 
@@ -1595,27 +1599,23 @@ function ap_get_addons() {
 	}
 
 	$addons = array(
-		'email.php'             => array(
+		'email.php'         => array(
 			'name'        => __( 'Emails', 'anspress-question-answer' ),
 			'description' => __( 'Notifies users and admins by email for various events and activities.', 'anspress-question-answer' ),
 		),
-		'notifications.php'     => array(
+		'notifications.php' => array(
 			'name'        => __( 'Notifications', 'anspress-question-answer' ),
 			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),
 		),
-		'buddypress.php'        => array(
+		'buddypress.php'    => array(
 			'name'        => __( 'BuddyPress', 'anspress-question-answer' ),
 			'description' => __( 'Integrate AnsPress with BuddyPress.', 'anspress-question-answer' ),
 		),
-		'recaptcha.php'         => array(
+		'recaptcha.php'     => array(
 			'name'        => __( 'reCaptcha', 'anspress-question-answer' ),
 			'description' => __( 'Add reCaptcha verification in question, answer and comment forms.', 'anspress-question-answer' ),
 		),
-		'syntaxhighlighter.php' => array(
-			'name'        => __( 'Syntax Highlighter', 'anspress-question-answer' ),
-			'description' => __( 'Add syntax highlighter support.', 'anspress-question-answer' ),
-		),
-		'akismet.php'           => array(
+		'akismet.php'       => array(
 			'name'        => __( 'Akismet Check', 'anspress-question-answer' ),
 			'description' => __( 'Check for spam in post content.', 'anspress-question-answer' ),
 		),
@@ -1662,8 +1662,10 @@ function ap_get_addons() {
  *
  * @return array
  * @since 4.0.0
+ * @deprecated 5.0.0
  */
 function ap_get_active_addons() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$active_addons = array();
 
 	foreach ( ap_get_addons() as $addon ) {
@@ -1681,8 +1683,10 @@ function ap_get_active_addons() {
  * @param string $file Main file name of addon.
  * @return array
  * @since 4.1.0
+ * @deprecated 5.0.0
  */
 function ap_get_addon( $file ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$search = false;
 
 	foreach ( ap_get_addons() as $f => $addon ) {
@@ -1702,8 +1706,10 @@ function ap_get_addon( $file ) {
  * @return boolean
  *
  * @since 4.1.8 Fixed fatal error if addon does not exists.
+ * @deprecated 5.0.0
  */
 function ap_activate_addon( $addon_name ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	if ( ap_is_addon_active( $addon_name ) ) {
 		return false;
 	}
@@ -1757,8 +1763,10 @@ function ap_activate_addon( $addon_name ) {
  *
  * @param string $addon_name Addons file name.
  * @return boolean
+ * @deprecated 5.0.0
  */
 function ap_deactivate_addon( $addon_name ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	if ( ! ap_is_addon_active( $addon_name ) ) {
 		return false;
 	}
@@ -1787,8 +1795,10 @@ function ap_deactivate_addon( $addon_name ) {
  * @param string $addon Addon file name without path.
  * @return boolean
  * @since 4.0.0
+ * @deprecated 5.0.0
  */
 function ap_is_addon_active( $addon ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$addons = ap_get_active_addons();
 
 	if ( isset( $addons[ $addon ] ) ) {
@@ -1804,8 +1814,10 @@ function ap_is_addon_active( $addon ) {
  * @param string $file Addon main file name. Example: `avatar.php` or `category.php`.
  * @return void|string Return image if exists else null.
  * @since 4.1.8
+ * @deprecated 5.0.0
  */
 function ap_get_addon_image( $file ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$addon = ap_get_addon( $file );
 
 	if ( isset( $addon['path'] ) ) {
@@ -1822,8 +1834,10 @@ function ap_get_addon_image( $file ) {
  * @param string $file Addon main file.
  * @return boolean
  * @since 4.1.8
+ * @deprecated 5.0.0
  */
 function ap_addon_has_options( $file ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$addon = ap_get_addon( $file );
 
 	$form_name = str_replace( '.php', '', $addon['id'] );
@@ -2087,8 +2101,10 @@ function ap_remove_stop_words_post_name( $str ) {
  * @return void
  * @since 4.0.0
  * @since 4.1.0 Moved from includes\answer-form.php.
+ * @deprecated 5.0.0
  */
 function ap_answer_post_ajax_response( $question_id, $answer_id ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$question = ap_get_post( $question_id );
 	// Get existing answer count.
 	$current_ans = ap_count_published_answers( $question_id );
@@ -2207,8 +2223,10 @@ function ap_answer_form( $question_id, $editing = false ) {
  *
  * @return void
  * @since 4.1.0
+ * @deprecated 5.0.0
  */
 function ap_ajax_tinymce_assets() {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	if ( ! class_exists( '_WP_Editors' ) ) {
 		require ABSPATH . WPINC . '/class-wp-editor.php';
 	}

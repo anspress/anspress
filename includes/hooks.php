@@ -62,13 +62,11 @@ class AnsPress_Hooks {
 
 			// Theme hooks.
 			add_action( 'init', array( 'AnsPress_Theme', 'init_actions' ) );
-			add_filter( 'template_include', array( 'AnsPress_Theme', 'template_include' ) );
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'question_answer_post_class' ) );
 			add_filter( 'body_class', array( 'AnsPress_Theme', 'body_class' ) );
-			add_action( 'after_setup_theme', array( 'AnsPress_Theme', 'includes_theme' ) );
+			// add_action( 'after_setup_theme', array( 'AnsPress_Theme', 'includes_theme' ) );
 			add_filter( 'wp_title', array( 'AnsPress_Theme', 'ap_title' ), 0 );
 			add_filter( 'document_title_parts', array( 'AnsPress_Theme', 'ap_title_parts' ), 0 );
-			add_action( 'ap_before', array( 'AnsPress_Theme', 'ap_before_html_body' ) );
 			add_action( 'wp_head', array( 'AnsPress_Theme', 'wp_head' ), 11 );
 			add_action( 'ap_after_question_content', array( 'AnsPress_Theme', 'question_attachments' ), 11 );
 			add_action( 'ap_after_answer_content', array( 'AnsPress_Theme', 'question_attachments' ), 11 );
@@ -76,7 +74,6 @@ class AnsPress_Hooks {
 			add_filter( 'wp_insert_post_data', array( 'AnsPress_Hooks', 'wp_insert_post_data' ), 1000, 2 );
 			add_filter( 'ap_form_contents_filter', array( 'AnsPress_Hooks', 'sanitize_description' ) );
 
-			add_filter( 'template_include', array( 'AnsPress_Theme', 'anspress_basepage_template' ), 9999 );
 			add_filter( 'get_the_excerpt', array( 'AnsPress_Theme', 'get_the_excerpt' ), 9999, 2 );
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'remove_hentry_class' ), 10, 3 );
 			add_action( 'ap_after_question_content', array( 'AnsPress_Theme', 'after_question_content' ) );

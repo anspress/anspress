@@ -118,9 +118,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/recaptcha/recaptcha/ReCaptcha/RequestMethod/SocketPost.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/reputation/reputation.php' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/reputation/image.png' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/syntaxhighlighter.php' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/image.png' );
-		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/syntaxhighlighter/script.js' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tags/image.png' );
 		$this->assertFileExists( ANSPRESS_ADDONS_DIR . '/tags/tags.php' );
 
@@ -182,7 +179,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/question-loop.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/reputation.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/rewrite.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-basepage.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/shortcode-question.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/taxo.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/theme.php' );
@@ -216,7 +212,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/category/no-category-found.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/category/single-category.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/email/style.css' );
-		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/email/style.scss' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/email/template.html' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/notification/comment.php' );
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/addons/notification/post.php' );

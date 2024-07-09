@@ -401,7 +401,6 @@ class TestFunctions extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'profile.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'recaptcha.php' ) );
-		$this->assertFalse( ap_is_addon_active( 'syntaxhighlighter.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'tags.php' ) );
 
 		// Check for addons enabled.
@@ -413,7 +412,6 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
 		ap_activate_addon( 'recaptcha.php' );
-		ap_activate_addon( 'syntaxhighlighter.php' );
 		ap_activate_addon( 'tags.php' );
 
 		// Checks.
@@ -425,7 +423,6 @@ class TestFunctions extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'profile.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'recaptcha.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'syntaxhighlighter.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'tags.php' ) );
 	}
 
@@ -538,7 +535,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'notifications.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'profile.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'recaptcha.php', ap_get_active_addons() );
-		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', ap_get_active_addons() );
 		$this->assertArrayNotHasKey( 'tags.php', ap_get_active_addons() );
 
 		// Addon activate and check.
@@ -547,7 +543,6 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
 		ap_activate_addon( 'recaptcha.php' );
-		ap_activate_addon( 'syntaxhighlighter.php' );
 		ap_activate_addon( 'tags.php' );
 		ap_activate_addon( 'categories.php' );
 		ap_activate_addon( 'email.php' );
@@ -562,7 +557,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'notifications.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'recaptcha.php', ap_get_active_addons() );
-		$this->assertArrayHasKey( 'syntaxhighlighter.php', ap_get_active_addons() );
 		$this->assertArrayHasKey( 'tags.php', ap_get_active_addons() );
 	}
 
@@ -764,7 +758,6 @@ class TestFunctions extends TestCase {
 		ap_activate_addon( 'notifications.php' );
 		ap_activate_addon( 'profile.php' );
 		ap_activate_addon( 'recaptcha.php' );
-		ap_activate_addon( 'syntaxhighlighter.php' );
 		ap_activate_addon( 'tags.php' );
 
 		// Test begins.
@@ -776,7 +769,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'profile.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayHasKey( 'tags.php', get_option( 'anspress_addons' ) );
 
 		// For addons deactivate behaviour test.
@@ -788,7 +780,6 @@ class TestFunctions extends TestCase {
 		ap_deactivate_addon( 'notifications.php' );
 		ap_deactivate_addon( 'profile.php' );
 		ap_deactivate_addon( 'recaptcha.php' );
-		ap_deactivate_addon( 'syntaxhighlighter.php' );
 		ap_deactivate_addon( 'tags.php' );
 
 		// Test begins.
@@ -800,7 +791,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayNotHasKey( 'notifications.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'profile.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'recaptcha.php', get_option( 'anspress_addons' ) );
-		$this->assertArrayNotHasKey( 'syntaxhighlighter.php', get_option( 'anspress_addons' ) );
 		$this->assertArrayNotHasKey( 'tags.php', get_option( 'anspress_addons' ) );
 	}
 
@@ -931,7 +921,6 @@ class TestFunctions extends TestCase {
 		$this->assertArrayHasKey( 'notifications.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'profile.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'recaptcha.php', ap_get_addons() );
-		$this->assertArrayHasKey( 'syntaxhighlighter.php', ap_get_addons() );
 		$this->assertArrayHasKey( 'tags.php', ap_get_addons() );
 	}
 
@@ -948,7 +937,6 @@ class TestFunctions extends TestCase {
 			'notifications.php',
 			'profile.php',
 			'recaptcha.php',
-			'syntaxhighlighter.php',
 			'tags.php',
 		);
 

@@ -17,14 +17,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Trying to cheat?' );
 }
 
-$attributes         = $attributes ?? array();
-$showQueryModifiers = $attributes['displayQueryModifiers'] ?? true;
-$currentTerm        = $attributes['currentTerm'] ?? false;
-$currentTermObject  = null;
+$attributes          = $attributes ?? array();
+$showQueryModifiers  = $attributes['displayQueryModifiers'] ?? true;
+$currentTerm         = $attributes['currentTerm'] ?? false;
+$currentTermObject   = null;
+$currentAuthor       = $attributes['currentAuthor'] ?? false;
+$currentAuthorObject = null;
 
 // Check if terms archive page.
 if ( $currentTerm && is_archive() && is_tax( array( 'question_category', 'question_tag' ) ) ) {
 	$currentTermObject = get_queried_object();
+}
+
+// Check if author archive page.
+if ( $currentAuthor && is_archive() && is_author() ) {
+	$currentAuthorObject = get_queried_object();
 }
 
 $currentQueriesArgs = $showQueryModifiers ? TemplateHelper::currentQuestionsQueryArgs() : array();
@@ -83,19 +90,11 @@ if ( $showQueryModifiers ) {
 
 $currentAuthorId = (int) get_query_var( 'author' );
 
-if ( $attributes['currentAuthor'] ) {
-
-	// Show error if author is not set.
-	if ( ! is_archive() || ! is_author() || empty( $currentAuthorId ) ) {
-		echo esc_html__( 'Author is not set or not author archive page.', 'anspress-question-answer' );
-
-		return;
-	}
-
+if ( $currentAuthor ) {
 
 	// Remove author__in query.
 	unset( $args['author__in'] );
-	$args['author'] = $currentAuthorId;
+	$args['author'] = $currentAuthorObject->ID;
 }
 
 // When current term is set and is taxonomy archive page always show current term.

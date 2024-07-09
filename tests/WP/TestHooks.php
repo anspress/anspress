@@ -49,13 +49,10 @@ class TestHooks extends TestCase {
 
 		// Theme hooks.
 		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Theme', 'init_actions' ] ) );
-		$this->assertEquals( 10, has_filter( 'template_include', [ 'AnsPress_Theme', 'template_include' ] ) );
-		$this->assertEquals( 10, has_filter( 'ap_template_include', [ 'AnsPress_Theme', 'template_include_theme_compat' ] ) );
 		$this->assertEquals( 10, has_filter( 'post_class', [ 'AnsPress_Theme', 'question_answer_post_class' ] ) );
 		$this->assertEquals( 10, has_filter( 'body_class', [ 'AnsPress_Theme', 'body_class' ] ) );
 		$this->assertEquals( 10, has_action( 'after_setup_theme', [ 'AnsPress_Theme', 'includes_theme' ] ) );
 		$this->assertEquals( 0, has_filter( 'wp_title', [ 'AnsPress_Theme', 'ap_title' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_before', [ 'AnsPress_Theme', 'ap_before_html_body' ] ) );
 		$this->assertEquals( 11, has_action( 'wp_head', [ 'AnsPress_Theme', 'wp_head' ] ) );
 		$this->assertEquals( 11, has_action( 'ap_after_question_content', [ 'AnsPress_Theme', 'question_attachments' ] ) );
 		$this->assertEquals( 11, has_action( 'ap_after_answer_content', [ 'AnsPress_Theme', 'question_attachments' ] ) );
@@ -63,7 +60,6 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 1000, has_filter( 'wp_insert_post_data', [ 'AnsPress_Hooks', 'wp_insert_post_data' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_form_contents_filter', [ 'AnsPress_Hooks', 'sanitize_description' ] ) );
 
-		$this->assertEquals( 9999, has_filter( 'template_include', [ 'AnsPress_Theme', 'anspress_basepage_template' ] ) );
 		$this->assertEquals( 9999, has_filter( 'get_the_excerpt', [ 'AnsPress_Theme', 'get_the_excerpt' ] ) );
 		$this->assertEquals( 10, has_filter( 'post_class', [ 'AnsPress_Theme', 'remove_hentry_class' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_after_question_content', [ 'AnsPress_Theme', 'after_question_content' ] ) );
@@ -88,11 +84,6 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Uploader', 'create_single_schedule' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_delete_temp_attachments', [ 'AnsPress_Uploader', 'cron_delete_temp_attachments' ] ) );
 		$this->assertEquals( 10, has_action( 'intermediate_image_sizes_advanced', [ 'AnsPress_Uploader', 'image_sizes_advanced' ] ) );
-
-		// Vote hooks.
-		$this->assertEquals( 10, has_action( 'ap_before_delete_question', [ 'AnsPress_Vote', 'delete_votes' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_before_delete_answer', [ 'AnsPress_Vote', 'delete_votes' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_deleted_votes', [ 'AnsPress_Vote', 'ap_deleted_votes' ] ) );
 
 		// Form hooks.
 		$this->assertEquals( 11, has_action( 'ap_form_question', [ 'AP_Form_Hooks', 'question_form' ] ) );

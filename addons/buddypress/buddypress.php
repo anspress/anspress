@@ -93,7 +93,7 @@ class BuddyPress extends \AnsPress\Singleton {
 		}
 
 		if ( bp_current_component() === 'qa' ) {
-			wp_enqueue_script( 'anspress-theme' );
+			// wp_enqueue_script( 'anspress-theme' );
 		}
 	}
 

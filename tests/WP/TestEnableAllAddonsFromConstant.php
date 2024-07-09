@@ -22,7 +22,6 @@ class TestEnableAllAddonsFromConstant extends TestCase {
 		$this->assertFalse( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'profile.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'recaptcha.php' ) );
-		$this->assertFalse( ap_is_addon_active( 'syntaxhighlighter.php' ) );
 		$this->assertFalse( ap_is_addon_active( 'tags.php' ) );
 
 		// After defining ANSPRESS_ENABLE_ADDONS.
@@ -36,7 +35,6 @@ class TestEnableAllAddonsFromConstant extends TestCase {
 		$this->assertTrue( ap_is_addon_active( 'notifications.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'profile.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'recaptcha.php' ) );
-		$this->assertTrue( ap_is_addon_active( 'syntaxhighlighter.php' ) );
 		$this->assertTrue( ap_is_addon_active( 'tags.php' ) );
 	}
 }

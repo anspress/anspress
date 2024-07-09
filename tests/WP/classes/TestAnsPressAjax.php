@@ -50,9 +50,7 @@ class TestAnsPressAjax extends TestCaseAjax {
 		// Tests.
 		$this->assertEquals( 10, has_action( 'ap_ajax_suggest_similar_questions', [ 'AnsPress_Ajax', 'suggest_similar_questions' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_load_tinymce', [ 'AnsPress_Ajax', 'load_tinymce' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_delete_comment', [ 'AnsPress\Ajax\Comment_Delete', 'init' ] ) );
-		$this->assertEquals( 10, has_action( 'wp_ajax_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
-		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_comment_modal', [ 'AnsPress\Ajax\Comment_Modal', 'init' ] ) );
+
 		$this->assertEquals( 10, has_action( 'ap_ajax_post_actions', [ 'AnsPress_Theme', 'post_actions' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_toggle_featured', [ 'AnsPress_Ajax', 'toggle_featured' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_close', [ 'AnsPress_Ajax', 'close_question' ] ) );
@@ -61,8 +59,6 @@ class TestAnsPressAjax extends TestCaseAjax {
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_status', [ 'AnsPress_Post_Status', 'change_post_status' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_action_convert_to_post', [ 'AnsPress_Ajax', 'convert_to_post' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_ajax_delete_attachment', [ 'AnsPress_Uploader', 'delete_attachment' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_load_filter_order_by', [ 'AnsPress_Ajax', 'load_filter_order_by' ] ) );
-		$this->assertEquals( 10, has_action( 'ap_ajax_subscribe', [ 'AnsPress_Ajax', 'subscribe_to_question' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_ap_repeatable_field', [ 'AnsPress\Ajax\Repeatable_Field', 'init' ] ) );
 		$this->assertEquals( 10, has_action( 'wp_ajax_nopriv_ap_repeatable_field', [ 'AnsPress\Ajax\Repeatable_Field', 'init' ] ) );
 		$this->assertEquals( 11, has_action( 'wp_ajax_ap_form_question', [ 'AP_Form_Hooks', 'submit_question_form' ] ) );

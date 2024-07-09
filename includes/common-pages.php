@@ -9,6 +9,8 @@
  * @copyright 2014 Rahul Aryan
  */
 
+use AnsPress\Classes\Plugin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -21,12 +23,11 @@ class AnsPress_Common_Pages {
 	 * Register all pages of AnsPress
 	 */
 	public static function register_common_pages() {
-		// ap_register_page( 'base', ap_opt( 'base_page_title' ), array( __CLASS__, 'base_page' ) );
 		// ap_register_page( 'question', __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
-		// ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
-		// ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
-		// ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
-		// ap_register_page( 'activities', __( 'Activities', 'anspress-question-answer' ), array( __CLASS__, 'activities_page' ), false );
+		ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
+		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
+		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
+		ap_register_page( 'activities', __( 'Activities', 'anspress-question-answer' ), array( __CLASS__, 'activities_page' ), false );
 	}
 
 	/**
@@ -65,7 +66,11 @@ class AnsPress_Common_Pages {
 		$args = apply_filters( 'ap_main_questions_args', $args );
 
 		anspress()->questions = new Question_Query( $args );
-		ap_get_template_part( 'archive' );
+		// ap_get_template_part( 'archive' );
+
+		var_dump( $args );
+
+		echo do_blocks( '<!-- wp:anspress/question-list /-->' );
 	}
 
 	/**
@@ -130,12 +135,7 @@ class AnsPress_Common_Pages {
 			return;
 		}
 
-		if ( have_posts() ) {
-			while ( have_posts() ) :
-				the_post();
-				include ap_get_theme_location( 'single-question.php' );
-			endwhile;
-		}
+		echo do_blocks( '<!-- wp:anspress/single-question /-->' );
 
 		/**
 		 * An action triggered after rendering single question page.

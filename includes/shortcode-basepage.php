@@ -14,8 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+_deprecated_file( basename( __FILE__ ), '5.0.0' );
+
 /**
  * Class for AnsPress base page shortcode
+ *
+ * @deprecated 5.0.0
  */
 class AnsPress_BasePage_Shortcode {
 	/**
@@ -76,8 +80,6 @@ class AnsPress_BasePage_Shortcode {
 			return __( 'AnsPress shortcode cannot be nested.', 'anspress-question-answer' );
 		}
 
-		wp_enqueue_script( 'anspress-theme' );
-		wp_enqueue_style( 'anspress-main' );
 		wp_enqueue_style( 'anspress-fonts' );
 
 		$ap_shortcode_loaded = true;

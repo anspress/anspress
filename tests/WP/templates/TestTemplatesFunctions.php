@@ -74,8 +74,6 @@ class TestTemplatesFunctions extends TestCase {
 		// Test for enqueues and registered scripts
 		// as well as echo of script tags.
 		$this->assertTrue( did_action( 'ap_enqueue' ) > 0 );
-		$this->assertTrue( wp_style_is( 'anspress-main', 'enqueued' ) );
-		$this->assertTrue( wp_style_is( 'ap-overrides', 'enqueued' ) );
 		$this->assertStringContainsString( 'ajaxurl', $output );
 		$this->assertStringContainsString( 'ap_nonce', $output );
 		$this->assertStringContainsString( 'ap_nonce', $output );

@@ -427,14 +427,10 @@ class ReputationModule extends AbstractModule {
 			if ( $args['html'] ) {
 				$reputation = ap_get_user_reputation_meta( $args['user_id'] );
 
-				if ( ap_is_addon_active( 'buddypress.php' ) && function_exists( 'bp_core_get_userlink' ) ) {
+				if ( function_exists( 'bp_core_get_userlink' ) ) {
 					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 				} else { // phpcs:ignore Universal.ControlStructures.DisallowLonelyIf.Found
-					if ( ap_is_addon_active( 'profile.php' ) ) {
-						return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
-					} else {
-						return $name . '<span class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</span>';
-					}
+					return $name . '<a href="' . ap_user_link( $args['user_id'] ) . 'reputations/" class="ap-user-reputation" title="' . __( 'Reputation', 'anspress-question-answer' ) . '">' . $reputation . '</a>';
 				}
 			}
 		}
