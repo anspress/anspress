@@ -5,7 +5,8 @@ body {
 	--anspress-moderate-bg: 240, 164, 58;
 	--anspress-private-bg: 181, 91, 226;
 	--anspress-white-bg: 255, 255, 255;
-	--anspress-border-color: rgba(0, 0, 0, 0.2);
+	--anspress-border-color: rgba(0, 0, 0, 0.25);
+	--anspress-border-radius: 4px;
 }
 
 .anspress- {
@@ -191,6 +192,15 @@ body {
 		&-global-error {
 			margin-bottom: 10px;
 		}
+
+		&-control {
+			width: 100%;
+			padding: 10px;
+			border: solid 1px var(--anspress-border-color);
+			border-radius: var(--anspress-border-radius);
+			box-sizing: border-box;
+
+		}
 	}
 
 	&load-more {
@@ -306,7 +316,7 @@ body {
 
 		&-selection {
 			display: inline-flex;
-			background: rgba(0, 0, 0, 0.1);
+			border: solid 1px var(--anspress-border-color);
 			font-size: 0.8rem;
 			padding: 0px 8px;
 			border-radius: 4px;

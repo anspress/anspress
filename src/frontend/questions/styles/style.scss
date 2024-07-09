@@ -125,32 +125,45 @@
 		padding: 15px;
 	}
 
+	&-search {
+		display: flex;
+		margin-bottom: 10px;
+
+		.anspress-button {
+			margin-left: 10px;
+		}
+	}
+
 	&-queries {
 		display: flex;
 		align-items: center;
-		margin-bottom: 20px;
-		border: solid 1px var(--anspress-border-color);
 		border-radius: 4px;
 
 		&-buttons {
-			margin-left: auto;
-			margin-right: 5px;
+			display: flex;
+			justify-content: flex-end;
+
+			.anspress-questions-args-submit {
+				margin-left: 10px;
+			}
 		}
 
 		&-count {
-			background: #ddd;
-			display: inline-block;
+			border: solid 1px var(--anspress-border-color);
 			border-radius: 2px;
-			font-size: 13px;
-			padding: 1px 3px;
+			font-size: 11px;
 			margin-left: 5px;
+			padding: 0px 4px;
 		}
 
 		.anspress-dropdown-handle {
 			font-size: 0.8rem;
 			font-weight: bold;
-			padding: 5px 8px;
-			border-right: solid 1px #ddd;
+			padding: 0px 8px;
+		}
+
+		&-selections {
+			padding: 10px;
 		}
 	}
 }

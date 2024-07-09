@@ -23,7 +23,12 @@ const Edit = ({ attributes, setAttributes }) => {
     itemsPerPage,
     paginationMidSize,
     avatarSize,
-    avatarShape
+    avatarShape,
+    displayQueryModifiers,
+    displayTagsFilter,
+    displayCategoriesFilter,
+    displaySearch,
+    currentTerm
   } = attributes;
 
   const blockProps = useBlockProps();
@@ -89,39 +94,50 @@ const Edit = ({ attributes, setAttributes }) => {
             ]}
             onChange={(value) => setAttributes({ query: { ...query, order: value } })}
           />
-        </PanelBody>
 
-        <PanelBody title={__('Tags Settings', 'anspress-question-answer')}>
-          <SearchControl
-            label={__('Search Tags', 'anspress-question-answer')}
-            help={__('Search for tags', 'anspress-question-answer')}
-            value={tagSearch}
-            onChange={(value) => setTagSearch(value)}
-          />
-
-          <SelectControl
-            label={__('Tags', 'anspress-question-answer')}
-            value={query.tags}
-            options={tagOptions}
-            onChange={(value) => setAttributes({ query: { ...query, tags: value } })}
-            multiple
+          <ToggleControl
+            label={__('Current Term from archive', 'anspress-question-answer')}
+            checked={currentTerm}
+            onChange={(value) => setAttributes({ currentTerm: value })}
+            help={__('Use the current term from the archive page.', 'anspress-question-answer')}
           />
         </PanelBody>
 
-        <PanelBody title={__('Category Settings', 'anspress-question-answer')}>
-          <SearchControl
-            label={__('Search Categories', 'anspress-question-answer')}
-            value={categorySearch}
-            onChange={(value) => setCategorySearch(value)}
-          />
-          <SelectControl
-            label={__('Categories', 'anspress-question-answer')}
-            value={query.categories}
-            options={categoryOptions}
-            onChange={(value) => setAttributes({ query: { ...query, categories: value } })}
-            multiple
-          />
-        </PanelBody>
+        {!currentTerm && (
+          <>
+            <PanelBody title={__('Tags Settings', 'anspress-question-answer')}>
+              <SearchControl
+                label={__('Search Tags', 'anspress-question-answer')}
+                help={__('Search for tags', 'anspress-question-answer')}
+                value={tagSearch}
+                onChange={(value) => setTagSearch(value)}
+              />
+
+              <SelectControl
+                label={__('Tags', 'anspress-question-answer')}
+                value={query.tags}
+                options={tagOptions}
+                onChange={(value) => setAttributes({ query: { ...query, tags: value } })}
+                multiple
+              />
+            </PanelBody>
+
+            <PanelBody title={__('Category Settings', 'anspress-question-answer')}>
+              <SearchControl
+                label={__('Search Categories', 'anspress-question-answer')}
+                value={categorySearch}
+                onChange={(value) => setCategorySearch(value)}
+              />
+              <SelectControl
+                label={__('Categories', 'anspress-question-answer')}
+                value={query.categories}
+                options={categoryOptions}
+                onChange={(value) => setAttributes({ query: { ...query, categories: value } })}
+                multiple
+              />
+            </PanelBody>
+          </>
+        )}
 
         <PanelBody title={__('Author Settings', 'anspress-question-answer')}>
           <ToggleControl
@@ -233,6 +249,35 @@ const Edit = ({ attributes, setAttributes }) => {
             ]}
             onChange={(value) => setAttributes({ avatarShape: value })}
           />
+        </PanelBody>
+
+        <PanelBody title={__('Query modifiers', 'anspress-question-answer')}>
+          <ToggleControl
+            label={__('Display query modifiers', 'anspress-question-answer')}
+            checked={displayQueryModifiers}
+            onChange={(value) => setAttributes({ displayQueryModifiers: value })}
+          />
+
+          {displayQueryModifiers && (
+            <>
+              <ToggleControl
+                label={__('Display search', 'anspress-question-answer')}
+                checked={displaySearch}
+                onChange={(value) => setAttributes({ displaySearch: value })} />
+
+              <ToggleControl
+                label={__('Display tags filter', 'anspress-question-answer')}
+                checked={displayTagsFilter}
+                onChange={(value) => setAttributes({ displayTagsFilter: value })}
+              />
+
+              <ToggleControl
+                label={__('Display categories filter', 'anspress-question-answer')}
+                checked={displayCategoriesFilter}
+                onChange={(value) => setAttributes({ displayCategoriesFilter: value })}
+              />
+            </>
+          )}
         </PanelBody>
       </InspectorControls>
       <ServerSideRender

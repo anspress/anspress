@@ -37,73 +37,43 @@ class AP_QA_Query_Hooks {
 		if ( isset( $wp_query->query['ap_query'] ) ) {
 			$sql['join']   = $sql['join'] . " LEFT JOIN {$wpdb->ap_qameta} qameta ON qameta.post_id = {$wpdb->posts}.ID";
 			$sql['fields'] = $sql['fields'] . ', qameta.*, qameta.votes_up - qameta.votes_down AS votes_net';
-			$post_status   = '';
-			$query_status  = $wp_query->query['post_status'] ?? 'publish';
 
-			if ( isset( $wp_query->query['ap_current_user_ignore'] ) && false === $wp_query->query['ap_current_user_ignore'] ) {
-				// Build the post_status mysql query.
-				if ( ! empty( $query_status ) ) {
-					if ( is_array( $query_status ) ) {
-						$i = 1;
+			$ap_filter = isset( $wp_query->query['ap_filter'] ) && is_string( $wp_query->query['ap_filter'] ) ? $wp_query->query['ap_filter'] : 'all';
 
-						foreach ( get_post_stati() as $status ) {
-							if ( in_array( $status, $wp_query->query['post_status'], true ) ) {
-								$post_status .= $wpdb->posts . ".post_status = '" . $status . "'";
+			$ap_order_by = isset( $wp_query->query['ap_order_by'] ) ? $wp_query->query['ap_order_by'] : 'active';
+			$order       = ! empty( $wp_query->query['order'] ) && is_string( $wp_query->query['order'] ) ? strtoupper( $wp_query->query['order'] ) : 'DESC';
+			$order       = in_array( $order, array( 'ASC', 'DESC' ), true ) ? $order : 'DESC';
 
-								if ( count( $query_status ) != $i ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
-									$post_status .= ' OR ';
-								} else {
-									$post_status .= ')';
-								}
-								++$i;
-							}
-						}
-					} else {
-						$post_status .= $wpdb->posts . ".post_status = '" . $query_status . "' ";
-					}
-				}
-
-				$pos = strpos( $sql['where'], $post_status );
-
-				// Replace post_status query.
-				if ( is_user_logged_in() && false !== $pos ) {
-					$pos          = $pos + strlen( $post_status );
-					$author_query = $wpdb->prepare( " OR ( {$wpdb->posts}.post_author = %d AND {$wpdb->posts}.post_status IN ('private_post') ) ", get_current_user_id() );
-					$sql['where'] = substr_replace( $sql['where'], $author_query, $pos, 0 );
-				}
-			}
-
-			// Hack to fix WP_Query for fetching anonymous author posts.
-			if ( isset( $wp_query->query['author'] ) && 0 === $wp_query->query['author'] ) {
-				$sql['where'] = $sql['where'] . $wpdb->prepare( " AND {$wpdb->posts}.post_author = %d", $wp_query->query['author'] );
-			}
-
-			$ap_order_by  = isset( $wp_query->query['ap_order_by'] ) ? $wp_query->query['ap_order_by'] : 'active';
 			$answer_query = isset( $wp_query->query['ap_answers_query'] );
 
 			if ( 'answers' === $ap_order_by && ! $answer_query ) {
-				$sql['orderby'] = 'IFNULL(qameta.answers, 0) DESC, ' . $sql['orderby'];
+				$sql['orderby'] = 'IFNULL(qameta.answers, 0) ' . $order . ', ' . $sql['orderby'];
 			} elseif ( 'views' === $ap_order_by && ! $answer_query ) {
-				$sql['orderby'] = 'IFNULL(qameta.views, 0) DESC, ' . $sql['orderby'];
-			} elseif ( 'unanswered' === $ap_order_by && ! $answer_query ) {
-				$sql['orderby'] = 'IFNULL(qameta.answers, 0) ASC,' . $sql['orderby'];
-			} elseif ( 'voted' === $ap_order_by ) {
-				$sql['orderby'] = 'CASE WHEN IFNULL(votes_net, 0) >= 0 THEN 1 ELSE 2 END ASC, ABS(votes_net) DESC, ' . $sql['orderby'];
-			} elseif ( 'solved' === $ap_order_by && ! $answer_query ) {
-				$sql['orderby'] = "if( qameta.selected_id = '' or qameta.selected_id is null, 0, 1 ) DESC," . $sql['orderby'];
-			} elseif ( 'unsolved' === $ap_order_by && ! $answer_query ) {
-				$sql['orderby'] = "if( qameta.selected_id = '' or qameta.selected_id is null, 1, 0 ) DESC," . $sql['orderby'];
-			} elseif ( 'oldest' === $ap_order_by ) {
-				$sql['orderby'] = "{$wpdb->posts}.post_date ASC";
-			} elseif ( 'newest' === $ap_order_by ) {
-				$sql['orderby'] = "{$wpdb->posts}.post_date DESC";
+				$sql['orderby'] = 'IFNULL(qameta.views, 0) ' . $order . ', ' . $sql['orderby'];
+			} elseif ( 'votes' === $ap_order_by ) {
+				$sql['orderby'] = 'votes_net ' . $order . ', ' . $sql['orderby'];
+			} elseif ( 'date' === $ap_order_by ) {
+				$sql['orderby'] = "{$wpdb->posts}.post_date " . $order;
 			} else {
-				$sql['orderby'] = 'qameta.last_updated DESC ';
+				$sql['orderby'] = 'qameta.last_updated ' . $order;
 			}
 
-			// Keep featured posts on top.
-			if ( ! $answer_query ) {
-				$sql['orderby'] = 'CASE WHEN IFNULL(qameta.featured, 0) =1 THEN 1 ELSE 2 END ASC, ' . $sql['orderby'];
+			if ( 'all' !== $ap_filter ) {
+				if ( 'solved' === $ap_filter ) {
+					$sql['where'] .= " AND COALESCE(qameta.selected_id, '') <> '' ";
+				} elseif ( 'unsolved' === $ap_filter ) {
+					$sql['where'] .= " AND COALESCE(qameta.selected_id, '') = '' ";
+				} elseif ( 'featured' === $ap_filter ) {
+					$sql['where'] .= ' AND COALESCE(qameta.featured, 0) = 1 ';
+				} elseif ( 'unanswered' === $ap_filter ) {
+					$sql['where'] .= ' AND IFNULL(qameta.answers, 0) = 0 ';
+				} elseif ( 'closed' === $ap_filter ) {
+					$sql['where'] .= ' AND COALESCE(qameta.closed, 0) = 1 ';
+				} elseif ( 'closed' === $ap_filter ) {
+					$sql['where'] .= ' AND COALESCE(qameta.closed, 0) = 1 ';
+				} elseif ( 'open' === $ap_filter ) {
+					$sql['where'] .= ' AND COALESCE(qameta.closed, 0) = 0 ';
+				}
 			}
 
 			// Keep best answer to top.

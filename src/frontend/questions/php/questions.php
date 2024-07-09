@@ -17,39 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit( 'Trying to cheat?' );
 }
 
-/**
- * Display question terms.
- *
- * @param array  $terms Terms to display.
- * @param string $label Label to display.
- *
- * @return void
- */
-function display_question_terms( array $terms, string $label ) {
-	$tagsCount = count( $terms );
+$attributes         = $attributes ?? array();
+$showQueryModifiers = $attributes['displayQueryModifiers'] ?? true;
+$currentTerm        = $attributes['currentTerm'] ?? false;
+$currentTermObject  = null;
 
-	if ( $terms && $tagsCount > 0 ) {
-		echo '<span class="wp-block-anspress-questions-item-tags">';
-		echo esc_html( $label );
-		$i = 1;
-		foreach ( $terms as $t ) {
-			if ( $i > 2 ) {
-				break;
-			}
-			echo '<a href="' . esc_url( get_term_link( $t ) ) . '">' . esc_html( $t->name ) . '</a>';
-			++$i;
-		}
-		if ( $tagsCount > 2 ) {
-			echo '<a href="' . esc_url( get_the_permalink() ) . '">';
-			// translators: %s is number of tags.
-			printf( esc_attr__( '%s+', 'anspress-question-answer' ), esc_attr( number_format_i18n( $tagsCount - 2 ) ) );
-			echo '</a>';
-		}
-		echo '</span>';
-	}
+// Check if terms archive page.
+if ( $currentTerm && is_archive() && is_tax( array( 'question_category', 'question_tag' ) ) ) {
+	$currentTermObject = get_queried_object();
 }
 
-$attributes = $attributes ?? array();
+$currentQueriesArgs = $showQueryModifiers ? TemplateHelper::currentQuestionsQueryArgs() : array();
 
 $args = array(
 	'post_type'      => 'question',
@@ -59,7 +37,49 @@ $args = array(
 	'author__in'     => $attributes['query']['authors'],
 	's'              => $attributes['query']['search'],
 	'paged'          => max( 1, get_query_var( 'ap_question_paged' ) ),
+	'ap_query'       => true,
+	'post_status'    => 'publish',
 );
+
+if ( $showQueryModifiers ) {
+	if ( ! empty( $currentQueriesArgs['keywords'] ) ) {
+		$args['s'] = $currentQueriesArgs['keywords'];
+	}
+
+	if ( ! empty( $currentQueriesArgs['args:filter'] ) ) {
+		$filter = $currentQueriesArgs['args:filter'][0];
+
+		$args['ap_filter'] = $filter;
+
+		if ( 'moderate' === $filter && current_user_can( 'ap_view_moderate' ) ) {
+			$args['post_status'] = 'moderate';
+		}
+
+		if ( 'private_post' === $filter && current_user_can( 'ap_view_private' ) ) {
+			$args['post_status'] = 'private_post';
+		}
+	}
+
+	if ( ! empty( $currentQueriesArgs['args:orderby'] ) ) {
+		$args['ap_order_by'] = $currentQueriesArgs['args:orderby'][0];
+	}
+
+	if ( ! empty( $currentQueriesArgs['args:order'] ) ) {
+		$args['order'] = $currentQueriesArgs['args:order'][0];
+	}
+
+	// Add categories if present in current args.
+	$categories = $currentQueriesArgs['args:categories'] ?? array();
+	if ( ! empty( $categories ) ) {
+		$attributes['query']['categories'] = array_merge( $attributes['query']['categories'] ?? array(), $categories );
+	}
+
+	// Add tags if present in current args.
+	$tags = $currentQueriesArgs['args:tags'] ?? array();
+	if ( ! empty( $tags ) ) {
+		$attributes['query']['tags'] = array_merge( $attributes['query']['tags'] ?? array(), $tags );
+	}
+}
 
 $currentAuthorId = (int) get_query_var( 'author' );
 
@@ -78,32 +98,52 @@ if ( $attributes['currentAuthor'] ) {
 	$args['author'] = $currentAuthorId;
 }
 
+// When current term is set and is taxonomy archive page always show current term.
+if ( $currentTermObject ) {
+	$termId = $currentTermObject->term_id;
+
+	if ( 'question_category' === $currentTermObject->taxonomy ) {
+		$attributes['query']['categories']     = array( $termId );
+		$attributes['displayCategoriesFilter'] = false;
+	} elseif ( 'question_tag' === $currentTermObject->taxonomy ) {
+		$attributes['query']['tags']     = array( $termId );
+		$attributes['displayTagsFilter'] = false;
+	}
+}
+
 // Add category and tag query.
 if ( ! empty( $attributes['query']['categories'] ) ) {
-	$args['tax_query'][] = array(
-		'taxonomy' => 'question_category',
-		'field'    => 'term_id',
-		'terms'    => $attributes['query']['categories'],
-		'operator' => 'IN',
-	);
+	$categoryIds = array_filter( array_map( 'intval', $attributes['query']['categories'] ) );
+
+	if ( ! empty( $categoryIds ) ) {
+		$args['tax_query'][] = array(
+			'taxonomy' => 'question_category',
+			'field'    => 'term_id',
+			'terms'    => $categoryIds,
+			'operator' => 'IN',
+		);
+	}
 }
 
 if ( ! empty( $attributes['query']['tags'] ) ) {
-	$args['tax_query'][] = array(
-		'taxonomy' => 'question_tag',
-		'field'    => 'term_id',
-		'terms'    => $attributes['query']['tags'],
-		'operator' => 'IN',
-	);
+	$tagIds = array_filter( array_map( 'intval', $attributes['query']['tags'] ) );
+
+	if ( ! empty( $tagIds ) ) {
+		$args['tax_query'][] = array(
+			'taxonomy' => 'question_tag',
+			'field'    => 'term_id',
+			'terms'    => $tagIds,
+			'operator' => 'IN',
+		);
+	}
 }
 
 $query = new WP_Query( $args );
-
-$currentQueriesArgs = TemplateHelper::currentQuestionsQueryArgs();
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 	<?php
+	if ( $attributes['displayQueryModifiers'] ?? true ) {
 		Plugin::loadView(
 			'src/frontend/questions/php/filters.php',
 			array(
@@ -111,7 +151,8 @@ $currentQueriesArgs = TemplateHelper::currentQuestionsQueryArgs();
 				'currentQueriesArgs' => $currentQueriesArgs,
 			)
 		);
-		?>
+	}
+	?>
 	<?php if ( $query->have_posts() ) : ?>
 		<?php
 		while ( $query->have_posts() ) :
@@ -226,11 +267,11 @@ $currentQueriesArgs = TemplateHelper::currentQuestionsQueryArgs();
 				<?php if ( $tags || $categories ) : ?>
 					<div class="wp-block-anspress-questions-item-footer">
 						<?php if ( $tags ) : ?>
-							<?php display_question_terms( $tags, __( 'Tags: ', 'anspress-question-answer' ) ); ?>
+							<?php TemplateHelper::displayQuestionTerms( $tags, __( 'Tags: ', 'anspress-question-answer' ) ); ?>
 						<?php endif; ?>
 
 						<?php if ( $categories ) : ?>
-							<?php display_question_terms( $categories, __( 'Categories: ', 'anspress-question-answer' ) ); ?>
+							<?php TemplateHelper::displayQuestionTerms( $categories, __( 'Categories: ', 'anspress-question-answer' ) ); ?>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
@@ -252,6 +293,6 @@ $currentQueriesArgs = TemplateHelper::currentQuestionsQueryArgs();
 
 		<?php wp_reset_postdata(); ?>
 	<?php else : ?>
-		<div><?php esc_attr_e( 'No questions found.', 'anspress-question-answer' ); ?></div>
+		<div><?php esc_attr_e( 'No questions were found. Please clear any active filters.', 'anspress-question-answer' ); ?></div>
 	<?php endif; ?>
 </div>

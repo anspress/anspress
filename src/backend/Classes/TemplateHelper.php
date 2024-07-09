@@ -222,16 +222,152 @@ class TemplateHelper {
 	}
 
 	/**
+	 * Get the current page URL with query arguments.
+	 *
+	 * @return array
+	 */
+	public static function questionFilterOptions(): array {
+		$options = array(
+			array(
+				'key'     => 'all',
+				'value'   => __( 'All', 'anspress-question-answer' ),
+				'default' => true,
+			),
+			array(
+				'key'   => 'open',
+				'value' => __( 'Open', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'closed',
+				'value' => __( 'Closed', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'solved',
+				'value' => __( 'Solved', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'unsolved',
+				'value' => __( 'Unsolved', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'featured',
+				'value' => __( 'Featured', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'unanswered',
+				'value' => __( 'Unanswered', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'moderate',
+				'value' => __( 'Moderate', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'private_post',
+				'value' => __( 'Private', 'anspress-question-answer' ),
+			),
+		);
+
+		$options = apply_filters( 'anspress/questions/filter_options', $options );
+
+		return $options;
+	}
+
+	/**
+	 * Get the current page URL with query arguments.
+	 *
+	 * @return array
+	 */
+	public static function questionOrderByOptions(): array {
+		$options = array(
+			array(
+				'key'     => 'active',
+				'value'   => __( 'Last active', 'anspress-question-answer' ),
+				'default' => true,
+			),
+			array(
+				'key'   => 'date',
+				'value' => __( 'Date', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'votes',
+				'value' => __( 'Votes count', 'anspress-question-answer' ),
+			),
+
+			array(
+				'key'   => 'answers',
+				'value' => __( 'Answers count', 'anspress-question-answer' ),
+			),
+			array(
+				'key'   => 'views',
+				'value' => __( 'Views count', 'anspress-question-answer' ),
+			),
+		);
+
+		$options = apply_filters( 'anspress/questions/orderby_options', $options );
+
+		return $options;
+	}
+
+	/**
+	 * Get the current page URL with query arguments.
+	 *
+	 * @return array
+	 */
+	public static function questionOrderOptions(): array {
+		$options = array(
+			array(
+				'key'     => 'desc',
+				'value'   => __( 'Descending', 'anspress-question-answer' ),
+				'default' => true,
+			),
+			array(
+				'key'   => 'asc',
+				'value' => __( 'Ascending', 'anspress-question-answer' ),
+			),
+		);
+
+		$options = apply_filters( 'anspress/questions/order_options', $options );
+
+		return $options;
+	}
+
+	/**
+	 * Sanitize and set default options.
+	 *
+	 * @param array  $args The arguments.
+	 * @param string $optionKey The option key.
+	 * @param array  $options The options.
+	 * @return array
+	 */
+	private static function argsSanitizeAndSetDefaultOptions( $args, $optionKey, $options ) {
+		if ( ! empty( $args[ $optionKey ] ) && is_array( $args[ $optionKey ] ) ) {
+			$validKeys          = array_column( $options, 'key' );
+			$args[ $optionKey ] = array_intersect( $args[ $optionKey ], $validKeys );
+		} else {
+			$defaultOption      = array_filter(
+				$options,
+				function ( $option ) {
+					return ! empty( $option['default'] );
+				}
+			);
+			$args[ $optionKey ] = ! empty( $defaultOption ) && ! empty( $defaultOption['key'] ) ? array( $defaultOption['key'] ) : array();
+		}
+		return $args;
+	}
+
+	/**
 	 * Get the current questions query arguments.
 	 *
 	 * @return array
 	 */
 	public static function currentQuestionsQueryArgs() {
-		$currentArgs = isset( $_GET['queries'] ) ? sanitize_post( wp_unslash( $_GET['queries'] ) ) : array(); // @codingStandardsIgnoreLine
+		$currentArgs = isset( $_GET ) ? sanitize_post( wp_unslash( $_GET ) ) : array(); // @codingStandardsIgnoreLine
 
 		$args = wp_array_slice_assoc(
 			$currentArgs,
 			array(
+				'keywords',
+				'args:filter',
 				'args:orderby',
 				'args:order',
 				'args:categories',
@@ -239,6 +375,95 @@ class TemplateHelper {
 			)
 		);
 
+		$orderByOptions = self::questionOrderByOptions();
+		$args           = self::argsSanitizeAndSetDefaultOptions( $args, 'args:orderby', $orderByOptions );
+
+		$orderOptions = self::questionOrderOptions();
+		$args         = self::argsSanitizeAndSetDefaultOptions( $args, 'args:order', $orderOptions );
+
+		$filterOptions = self::questionFilterOptions();
+		$args          = self::argsSanitizeAndSetDefaultOptions( $args, 'args:filter', $filterOptions );
+
+		// Sanitize keywords.
+		if ( ! empty( $args['keywords'] ) ) {
+			$args['keywords'] = sanitize_text_field( $args['keywords'] );
+		}
+
+		/**
+		 * Filter the current questions query arguments.
+		 *
+		 * @param array $args The current questions query arguments.
+		 * @return array The filtered current questions query arguments.
+		 */
+		$args = apply_filters( 'anspress/questions/query_args', $args );
+
 		return $args;
+	}
+
+	/**
+	 * Get the current questions query selected terms.
+	 *
+	 * @param string $taxonomy The taxonomy.
+	 * @param array  $currentArgs The current arguments.
+	 * @return array
+	 */
+	public static function currentQuestionQuerySelectedTerms( string $taxonomy, ?array $currentArgs = array() ) {
+		if ( empty( $currentArgs ) ) {
+			return array();
+		}
+
+		$selectedTerms = array();
+
+		$selectedTerms = array_map( 'intval', $currentArgs );
+
+		// Filter empty terms.
+		$selectedTerms = array_filter( $selectedTerms );
+
+		if ( empty( $selectedTerms ) ) {
+			return array();
+		}
+
+		// Get term objects.
+		$selectedTerms = get_terms(
+			array(
+				'taxonomy'   => $taxonomy,
+				'include'    => $selectedTerms,
+				'hide_empty' => false,
+			)
+		);
+
+		return $selectedTerms;
+	}
+
+	/**
+	 * Display question terms.
+	 *
+	 * @param array  $terms Terms to display.
+	 * @param string $label Label to display.
+	 *
+	 * @return void
+	 */
+	public static function displayQuestionTerms( array $terms, string $label ) {
+		$tagsCount = count( $terms );
+
+		if ( $terms && $tagsCount > 0 ) {
+			echo '<span class="wp-block-anspress-questions-item-tags">';
+			echo esc_html( $label );
+			$i = 1;
+			foreach ( $terms as $t ) {
+				if ( $i > 2 ) {
+					break;
+				}
+				echo '<a href="' . esc_url( get_term_link( $t ) ) . '">' . esc_html( $t->name ) . '</a>';
+				++$i;
+			}
+			if ( $tagsCount > 2 ) {
+				echo '<a href="' . esc_url( get_the_permalink() ) . '">';
+				// translators: %s is number of tags.
+				printf( esc_attr__( '%s+', 'anspress-question-answer' ), esc_attr( number_format_i18n( $tagsCount - 2 ) ) );
+				echo '</a>';
+			}
+			echo '</span>';
+		}
 	}
 }

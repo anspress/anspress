@@ -5,9 +5,11 @@ export class AnsPressQueries extends BaseCustomElement {
   constructor() {
     super();
 
-    this.selections = this.querySelector('.anspress-queries-selections');
+    this.selections = this.querySelector('.anspress-questions-queries-selections');
 
     this.data = {
+      'keywords': this.querySelector('input[data-anspress-id="keywords"]')?.value,
+      'args:filter': this.querySelector('anspress-dropdown[data-anspress-id="args:filter"]')?.data?.selected,
       'args:orderby': this.querySelector('anspress-dropdown[data-anspress-id="args:orderby"]')?.data?.selected,
       'args:order': this.querySelector('anspress-dropdown[data-anspress-id="args:order"]')?.data?.selected,
       'args:categories': this.querySelector('anspress-dropdown[data-anspress-id="args:categories"]')?.data?.selected,
@@ -24,6 +26,8 @@ export class AnsPressQueries extends BaseCustomElement {
 
   removeEventListeners() {
     this.querySelectorAll('anspress-dropdown').forEach(el => el.removeEventListener('selected', this.onChange.bind(this)));
+    this.selections.removeEventListener('click', this.selectionRemoveHandler.bind(this));
+    this.querySelector('.anspress-questions-args-submit').removeEventListener('click', this.submit.bind(this));
   }
 
   updateComponent() {
@@ -45,7 +49,7 @@ export class AnsPressQueries extends BaseCustomElement {
     Object.keys(this.data).forEach(key => {
       const dpData = this.data[key];
 
-      if (!dpData) return;
+      if (!dpData || !Array.isArray(dpData)) return;
 
       html += dpData?.map(item => {
         if (!item) return '';
@@ -85,6 +89,7 @@ export class AnsPressQueries extends BaseCustomElement {
       const selection = e.target.closest('.anspress-dropdown-selection');
       const key = selection.getAttribute('data-key');
       const dp = selection.getAttribute('data-dp');
+      console.log(dp, key);
 
       this.setDataValue(dp, this.data[dp].filter(item => item.key !== key));
 
@@ -99,14 +104,15 @@ export class AnsPressQueries extends BaseCustomElement {
 
     Object.keys(this.data).forEach(key => {
       if (this.data[key]) {
+        if (key === 'keywords') {
+          return;
+        }
         args[key] = this.data[key].map(item => item.key);
       }
     });
+    args.keywords = this.querySelector('input[data-anspress-id="keywords"]')?.value;
 
-    const params = { queries: args };
-    console.log(params)
-
-    window.location.href = addQueryArgs(window.location.href, params);
+    window.location.href = addQueryArgs(window.location.href, args);
 
   }
 }

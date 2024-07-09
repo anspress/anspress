@@ -180,7 +180,9 @@ export class AnsPressDropdown extends BaseCustomElement {
   }
 
   removeSelection(key) {
-    this.data.selected = this.data.selected.filter(item => item.key !== key);
+    this.setDataValue('selected', this.data.selected.filter(item => item.key != key));
+
+    this.dispatchEvent(new CustomEvent('selected', { detail: { ...this.data, id: this.elementId } }));
     this.buildSelected();
   }
 
