@@ -205,6 +205,8 @@ class CoreModule extends AbstractModule {
 				'render_callback' => array( $this, 'renderSingleQuestionBlock' ),
 			)
 		);
+
+		register_block_type( Plugin::getPathTo( 'build/frontend/ask-form' ) );
 	}
 
 	/**

@@ -71,7 +71,8 @@ class Validator {
 	 * @var array
 	 */
 	protected array $transformations = array(
-		'bool' => 'transformToBool',
+		'bool'    => 'transformToBool',
+		'numeric' => 'transformTrim',
 	);
 
 	/**
@@ -97,7 +98,7 @@ class Validator {
 		$this->customAttributes      = $customAttributes;
 		$this->customTransformations = $customTransformations;
 
-		$this->applyTransformations();
+		// $this->applyTransformations();
 		$this->validate();
 	}
 
@@ -173,7 +174,7 @@ class Validator {
 
 		// Handle wildcard attribute validation.
 		if ( strpos( $attribute, '.*' ) !== false ) {
-			$this->validateWildcardAttribute( $attribute, $parsedRules, $data );
+			$this->validateWildcardAttribute( $attribute, $rules, $data );
 		} else {
 			foreach ( $parsedRules as $rule ) {
 				$parameters = $rule['parameters'];
@@ -294,10 +295,10 @@ class Validator {
 	 * Validate wildcard attribute.
 	 *
 	 * @param string $attribute Attribute name.
-	 * @param array  $parsedRules Parsed rules.
+	 * @param array  $rules Parsed rules.
 	 * @param array  $data Data.
 	 */
-	protected function validateWildcardAttribute( $attribute, $parsedRules, $data ) {
+	protected function validateWildcardAttribute( $attribute, $rules, $data ) {
 		$segments           = explode( '.*', $attribute );
 		$baseAttribute      = $segments[0];
 		$remainingAttribute = isset( $segments[1] ) ? substr( $attribute, strpos( $attribute, '.*' ) + 2 ) : null;
@@ -310,15 +311,11 @@ class Validator {
 					$currentAttribute .= $remainingAttribute;
 				}
 
-				foreach ( $parsedRules as $rule ) {
-					$this->validateAttribute( $currentAttribute, array( $rule['rule'] ), $attribute );
-				}
+				$this->validateAttribute( $currentAttribute, $rules, $attribute );
 			}
 		} else {
 			// Validate with the base attribute and remaining attribute for all rules if base data doesn't exist.
-			foreach ( $parsedRules as $index => $rule ) {
-				$this->validateAttribute( $baseAttribute, array( $rule['rule'] ), $attribute );
-			}
+				$this->validateAttribute( $baseAttribute, $rules, $attribute );
 		}
 	}
 
@@ -479,7 +476,7 @@ class Validator {
 		$data = &$this->validatedData;
 
 		foreach ( $keys as $key ) {
-			if ( ! isset( $data[ $key ] ) ) {
+			if ( ! isset( $data[ $key ] ) || ! is_array( $data[ $key ] ) ) {
 				$data[ $key ] = array();
 			}
 			$data = &$data[ $key ];
@@ -497,5 +494,15 @@ class Validator {
 	 */
 	protected function transformToBool( $value ): bool {
 		return filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE ) ?? $value;
+	}
+
+	/**
+	 * Trim value.
+	 *
+	 * @param mixed $value Value to transform.
+	 * @return mixed Transformed value.
+	 */
+	protected function transformTrim( $value ) {
+		return is_string( $value ) ? trim( $value ) : $value;
 	}
 }

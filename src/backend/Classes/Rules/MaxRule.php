@@ -56,7 +56,7 @@ class MaxRule implements ValidationRuleInterface {
 	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
+	public function validate( string $attribute, mixed &$value, array $parameters, Validator $validator ): bool {
 		if ( empty( $value ) ) {
 			return true;
 		}

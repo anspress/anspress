@@ -5,13 +5,15 @@ export class AnsPressDropdown extends BaseCustomElement {
   constructor() {
     super();
 
+    this.as = this.getAttribute('as') || 'dropdown';
+
     this.innerHTML = `
-    <div class="anspress-dropdown-handle">${this.getAttribute('label')}</div>
+    <div class="anspress-dropdown-handle">${this.as === 'field' ? `<div class="anspress-dropdown-search"><input type="text" class="anspress-form-input anspress-dropdown-search-input" placeholder="${this.getAttribute('label-search') || 'Search'}"></div>` : this.getAttribute('label')}</div>
     <div class="anspress-dropdown-selections"></div>
     <div class="anspress-dropdown-dropdown" style="display:none">
-      <div class="anspress-dropdown-search">
+      ${this.as !== 'field' ? `<div class="anspress-dropdown-search">
         <input type="text" class="anspress-form-input anspress-dropdown-search-input" placeholder="${this.getAttribute('label-search') || 'Search'}">
-      </div>
+      </div>` : ''}
       <div class="anspress-dropdown-items">
         <div class="anspress-dropdown-message">Loading...</div>
       </div>
@@ -215,6 +217,10 @@ export class AnsPressDropdown extends BaseCustomElement {
         console.error(e);
         this.items.innerHTML = `<div class="anspress-dropdown-message">No data found</div>`;
       });
+  }
+
+  get value() {
+    return this.data?.selected;
   }
 }
 

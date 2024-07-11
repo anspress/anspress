@@ -56,7 +56,7 @@ class InRule implements ValidationRuleInterface {
 	 * @param Validator $validator Validator instance.
 	 * @return bool
 	 */
-	public function validate( string $attribute, $value, array $parameters, Validator $validator ): bool {
+	public function validate( string $attribute, mixed &$value, array $parameters, Validator $validator ): bool {
 		return in_array( $value, $parameters, true );
 	}
 

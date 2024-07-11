@@ -95,7 +95,7 @@ class CanRule implements ValidationRuleInterface {
 	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
+	public function validate( string $attribute, mixed &$value, array $parameters, Validator $validator ): bool {
 		$policy = Plugin::getPolicy( $this->modelName );
 
 		$user = get_user_by( 'id', $this->userId );

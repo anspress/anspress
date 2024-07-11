@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress/ask-form",
+  "version": "0.1.0",
+  "title": "(AnsPress) Ask Form",
+  "category": "anspress",
+  "icon": "admin-users",
+  "description": "AnsPress block to ask question form.",
+  "attributes": {},
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./js/index.js",
+  "render": "file:./php/ask-form.php",
+  "style": [
+    "file:./js/style-index.css",
+    "wp-tinymce"
+  ],
+  "viewScript": [
+    "file:./js/view.js",
+    "wp-tinymce"
+  ]
+}

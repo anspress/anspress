@@ -9,8 +9,10 @@
 namespace AnsPress\Modules\Question;
 
 use AnsPress\Classes\AbstractService;
+use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\GeneralException;
 use AnsPress\Exceptions\ValidationException;
+use WP_Post;
 use WP_Query;
 
 // Exit if accessed directly.
@@ -22,6 +24,107 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Question service class.
  */
 class QuestionService extends AbstractService {
+	/**
+	 * Create a question.
+	 *
+	 * @param array $data The data to create the question.
+	 * @return WP_Post The created question.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function createQuestion( array $data ): WP_Post {
+		$validationRules = array(
+			'post_title'          => 'required|string',
+			'post_content'        => 'required|string',
+			'post_author'         => 'required|numeric|exists:users,ID',
+			'private_question'    => 'nullable|bool',
+			'question_tags'       => 'nullable|array',
+			'question_tags.*'     => 'nullable|numeric|exists:terms,term_id',
+			'question_category'   => 'nullable|array',
+			'question_category.*' => 'nullable|numeric|exists:terms,term_id',
+		);
+
+		$validationRules = apply_filters( 'anspress/question/service/create/validation_rules', $validationRules );
+
+		// Validate the data.
+		$validator = new Validator( $data, $validationRules );
+
+		if ( $validator->fails() ) {
+			throw new ValidationException( $validator->errors() ); // @codingStandardsIgnoreLine
+		}
+
+		$data = $validator->validated();
+
+		/**
+		 * Filter the data before creating a question.
+		 *
+		 * @param array $data The data to create the question.
+		 * @since 5.0.0
+		 */
+		$data = apply_filters( 'anspress/question/service/create/data', $data );
+
+		if ( empty( $data ) ) {
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Data is empty, failed to create question.', 'anspress-question-answer' )
+			);
+		}
+
+		// Check all required fields are present.
+		if ( ! isset( $data['post_title'], $data['post_content'], $data['post_author'] ) ) {
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Required fields are missing.', 'anspress-question-answer' )
+			);
+		}
+
+		$postStatus = $data['post_status'] ?? 'publish';
+
+		if ( isset( $data['post_status'] ) ) {
+			$postStatus = $data['post_status'];
+		}
+
+		if ( $data['private_question'] ) {
+			$postStatus = 'private_post';
+		}
+
+		$postId = wp_insert_post(
+			array(
+				'post_title'   => $data['post_title'],
+				'post_content' => $data['post_content'],
+				'post_author'  => $data['post_author'],
+				'post_status'  => $postStatus,
+				'post_type'    => QuestionModel::postTypeSlug(),
+				'tax_input'    => array(
+					'question_tag'      => $data['question_tags'] ?? array(),
+					'question_category' => $data['question_category'] ?? array(),
+				),
+			),
+			true
+		);
+
+		if ( is_wp_error( $postId ) || ! $postId ) {
+			/**
+			 * Fires when question creation fails.
+			 *
+			 * @since 5.0.0
+			 */
+			do_action( 'anspress/question/service/create/error', $postId );
+
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Failed to create answer.', 'anspress-question-answer' )
+			);
+		}
+
+		/**
+		 * Fires after a question is created.
+		 *
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress/question/service/create/success', $postId );
+
+		return get_post( $postId );
+	}
 
 	/**
 	 * Delete question.

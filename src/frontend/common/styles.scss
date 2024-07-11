@@ -272,6 +272,8 @@ body {
 		position: relative;
 
 
+
+
 		&-handle {
 			cursor: pointer;
 			display: block;
@@ -328,14 +330,13 @@ body {
 			margin-left: 5px;
 		}
 
-		&-selections {
-			margin-left: 10px;
-		}
+		&-selections {}
 
 		&-search {
 			background: #eee;
 			border-bottom: solid 1px var(--anspress-border-color);
 			padding: 10px;
+
 		}
 
 		&-search-input {
@@ -344,6 +345,19 @@ body {
 			border: solid 1px var(--anspress-border-color);
 			border-radius: 4px;
 			box-sizing: border-box;
+			display: block;
+		}
+
+		&[as="field"] {
+			.anspress-dropdown-handle {
+				padding: 0;
+			}
+
+			.anspress-dropdown-search {
+				padding: 0;
+				background: none;
+				border: none;
+			}
 		}
 	}
 }

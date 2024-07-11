@@ -46,16 +46,10 @@ Router::group(
 				);
 
 				Router::post(
-					'(?P<answer_id>\d+)',
-					'createAnswer',
+					'',
+					'create',
 					array(
 						'name' => 'create',
-						'args' => array(
-							'answer_id' => array(
-								'required' => true,
-								'type'     => 'integer',
-							),
-						),
 					)
 				);
 

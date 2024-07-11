@@ -56,7 +56,7 @@ class PostTypeRule implements ValidationRuleInterface {
 	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
+	public function validate( string $attribute, mixed &$value, array $parameters, Validator $validator ): bool {
 		$post = get_post( (int) $value );
 
 		if ( ! $post ) {

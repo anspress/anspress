@@ -3,13 +3,13 @@ import { addQueryArgs } from '@wordpress/url';
 
 export const appendFormError = (field, errors) => {
   let errorElement = field.parentElement.querySelector('.anspress-form-error');
-  if (!errorElement) {
-    field?.classList.add('anspress-form-has-error')
-    errorElement = document.createElement('div');
-    errorElement.classList.add('anspress-form-error');
-    field.appendChild(errorElement);
-  }
+
+  field?.classList.add('anspress-form-has-error')
+  errorElement = document.createElement('div');
+  errorElement.classList.add('anspress-form-error');
+  field.appendChild(errorElement);
   errorElement.innerText = errors;
+  console.log(errorElement)
 }
 
 export const clearFormErrors = (form) => {
@@ -26,6 +26,7 @@ export const handleFormErrors = async (errors, form) => {
     return;
   }
   Object.keys(errors).forEach((field) => {
+
     // If error field is * then show error on top of form.
     if (field === '*') {
       const errorElement = form.querySelector('.anspress-form-error');
@@ -45,6 +46,7 @@ export const handleFormErrors = async (errors, form) => {
 
     const fieldErrors = errors[field] ?? [];
     const fieldEl = form.querySelector(`[data-anspress-field="${field}"]`);
+
     if (fieldEl) {
       appendFormError(fieldEl, fieldErrors);
     } else {
@@ -114,6 +116,12 @@ export const fetch = async (options, args) => {
     return data;
   } catch (err) {
     console.error(err);
+
+    if (err?.code === 'invalid_json') {
+      // create an element with the response text and append it to the body.
+      const errorElement = document.createElement('div');
+      errorElement.innerHTML = err.response.body;
+    }
 
     const errorData = err?.anspress?.errors || err?.anspress?.message || err?.errors || err?.message || {};
 

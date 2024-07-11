@@ -13,8 +13,10 @@ use AnsPress\Classes\Auth;
 use AnsPress\Classes\Plugin;
 use AnsPress\Classes\Str;
 use AnsPress\Classes\TemplateHelper;
+use AnsPress\Exceptions\ValidationException;
+use AnsPress\Exceptions\HTTPException;
 use AnsPress\Modules\Subscriber\SubscriberService;
-use AnsPress\Modules\Vote\VoteService;
+use InvalidArgumentException;
 use WP_REST_Response;
 
 // Exit if accessed directly.
@@ -218,6 +220,44 @@ class QuestionController extends AbstractPostController {
 		return $this->response(
 			array(
 				'reload' => true,
+			)
+		);
+	}
+
+	/**
+	 * Create a new question.
+	 *
+	 * @return WP_REST_Response  Response.
+	 */
+	public function create(): WP_REST_Response {
+		$data = $this->validate(
+			array(
+				'question_title'      => 'required|string|max:255|min:5',
+				'question_content'    => 'required|string|min:10',
+				'question_tags'       => 'array',
+				'question_tags.*'     => 'nullable|numeric',
+				'question_category'   => 'array',
+				'question_category.*' => 'nullable|numeric',
+				'private_question'    => 'nullable|bool',
+			)
+		);
+
+		$question = $this->questionService->createQuestion(
+			array(
+				'post_title'        => $data['question_title'],
+				'post_content'      => $data['question_content'],
+				'post_author'       => Auth::getID(),
+				'private_question'  => $data['private_question'],
+				'question_tags'     => $data['question_tags'],
+				'question_category' => $data['question_category'],
+			)
+		);
+
+		$this->addMessage( 'success', __( 'Question created successfully.', 'anspress-question-answer' ) );
+
+		return $this->response(
+			array(
+				'redirect' => get_permalink( $question ),
 			)
 		);
 	}

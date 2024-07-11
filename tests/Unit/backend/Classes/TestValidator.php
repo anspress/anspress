@@ -112,7 +112,7 @@ class TestValidator extends TestCase {
 		$data = [
 			'foo' => [
 				'bar' => ['test'],
-				'test' => [1]
+				'test' => [1, 2]
 			],
 			'obj' => [
 				[
@@ -142,7 +142,7 @@ class TestValidator extends TestCase {
 		$rules = [
 			'foo.bar' => 'required|array',
 			'foo.test' => 'required|array',
-			'foo.test.*' => 'required|integer',
+			'foo.test.*' => 'required|integer|min:1',
 			'obj.*.obj1' => 'required|string',
 			'nested.nested' => 'required|array',
 			'nested.nested.*.*.name' => 'required|string',
@@ -200,6 +200,7 @@ class TestValidator extends TestCase {
 			'foo.test.nested' => 'required|string',
 			'foo.test.nested.*.*' => 'required|string',
 			'foo.test.nested.*.*.name' => 'required|integer',
+
         ];
 
         $customAttributes = [

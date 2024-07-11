@@ -8,7 +8,7 @@ export class AnsPressSnackbar extends BaseCustomElement {
   }
 
   disconnectedCallback() {
-    document.body.removeEventListener('anspress-snackbar', this.showSnackbarMessage.bind(this));
+    document.body?.removeEventListener('anspress-snackbar', this.showSnackbarMessage.bind(this));
   }
 
   showSnackbarMessage(event, element) {

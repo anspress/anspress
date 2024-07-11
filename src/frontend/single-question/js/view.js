@@ -5,12 +5,3 @@ import '../../common/comments/AnsPressCommentForm';
 import './AnsPressAnswerForm';
 import './AnsPressAnswerList';
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    // document.querySelectorAll('[data-anspressel="answer-form"]').forEach(form => new FormManager(form));
-
-    // Append snackbar container.
-
-
-
-});

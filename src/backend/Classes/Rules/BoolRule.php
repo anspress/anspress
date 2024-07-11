@@ -40,7 +40,9 @@ class BoolRule implements ValidationRuleInterface {
 	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
+	public function validate( string $attribute, mixed &$value, array $parameters, Validator $validator ): bool {
+		$value = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+
 		return is_bool( $value );
 	}
 

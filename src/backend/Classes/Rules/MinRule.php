@@ -34,7 +34,7 @@ class MinRule implements ValidationRuleInterface {
 	 *
 	 * @param int $min Minimum length.
 	 */
-	public function __construct( $min = 0 ) {
+	public function __construct( int $min ) {
 		$this->min = $min;
 	}
 
@@ -56,7 +56,7 @@ class MinRule implements ValidationRuleInterface {
 	 * @param Validator $validator Validator.
 	 * @return bool
 	 */
-	public function validate( string $attribute, mixed $value, array $parameters, Validator $validator ): bool {
+	public function validate( string $attribute, mixed &$value, array $parameters, Validator $validator ): bool {
 		if ( is_array( $value ) ) {
 			return count( $value ) >= $this->min;
 		}
