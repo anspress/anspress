@@ -3,7 +3,6 @@ namespace Tests\Unit\Functions\src\backend\Classes;
 
 use AnsPress\Classes\Validator;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
-use Brain\Monkey\Functions;
 
 require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 
@@ -14,10 +13,11 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestMaxRule extends TestCase {
 	public function testPassWhenValidMax() {
 		$rule = new \AnsPress\Classes\Rules\MaxRule(10);
+		$value = 5;
 		$this->assertTrue(
 			$rule->validate(
 				'max',
-				5,
+				$value,
 				[10],
 				new Validator(
 					[
@@ -33,10 +33,11 @@ class TestMaxRule extends TestCase {
 
 	public function testFailWhenInvalidMax() {
 		$rule = new \AnsPress\Classes\Rules\MaxRule(10);
+		$value = 15;
 		$this->assertFalse(
 			$rule->validate(
 				'max',
-				15,
+				$value,
 				[10],
 				new Validator(
 					[
@@ -52,12 +53,13 @@ class TestMaxRule extends TestCase {
 
 	public function testPassWhenValueIsString() {
 		$rule = new \AnsPress\Classes\Rules\MaxRule(10);
+		$value = [
+			'foo' => 'one'
+		];
 		$this->assertTrue(
 			$rule->validate(
 				'max',
-				[
-					'foo' => 'one'
-				],
+				$value,
 				[10],
 				new Validator(
 					[
@@ -73,10 +75,11 @@ class TestMaxRule extends TestCase {
 
 	public function testFailWhenValueIsString() {
 		$rule = new \AnsPress\Classes\Rules\MaxRule(10);
+		$value = 'qwertzuiopasdfghjklyxcvbnm';
 		$this->assertFalse(
 			$rule->validate(
 				'max',
-				'qwertzuiopasdfghjklyxcvbnm',
+				$value,
 				[10],
 				new Validator(
 					[
@@ -92,13 +95,15 @@ class TestMaxRule extends TestCase {
 
 	public function testPassWhenValueIsArray() {
 		$rule = new \AnsPress\Classes\Rules\MaxRule(10);
+		$value = [
+			'foo' => 'one',
+			'bar' => 'two',
+		];
+
 		$this->assertTrue(
 			$rule->validate(
 				'max',
-				[
-					'foo' => 'one',
-					'bar' => 'two',
-				],
+				$value,
 				[2],
 				new Validator(
 					[
@@ -115,16 +120,16 @@ class TestMaxRule extends TestCase {
 
 	public function testFailWhenValueIsArray() {
 		$rule = new \AnsPress\Classes\Rules\MaxRule(2);
-
+		$value = [
+			'foo' => 'one',
+			'bar' => 'two',
+			'baz' => 'three',
+			'baz' => 'three',
+		];
 		$this->assertFalse(
 			$rule->validate(
 				'max',
-				[
-					'foo' => 'one',
-					'bar' => 'two',
-					'baz' => 'three',
-					'baz' => 'three',
-				],
+				$value,
 				[2],
 				new Validator(
 					[],

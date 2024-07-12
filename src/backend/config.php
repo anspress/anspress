@@ -245,10 +245,6 @@ return array(
 		'type'  => 'string',
 		'value' => 'anyone',
 	),
-	'read_comment_per'               => array(
-		'type'  => 'string',
-		'value' => 'anyone',
-	),
 	'post_question_per'              => array(
 		'type'  => 'string',
 		'value' => 'anyone',

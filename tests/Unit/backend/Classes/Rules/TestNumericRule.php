@@ -3,7 +3,6 @@ namespace Tests\Unit\Functions\src\backend\Classes;
 
 use AnsPress\Classes\Validator;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
-use Brain\Monkey\Functions;
 
 require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 
@@ -14,10 +13,11 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestNumericRule extends TestCase {
 	public function testPassWhenValueIsNumeric() {
 		$rule = new \AnsPress\Classes\Rules\NumericRule();
+		$value = '123';
 		$this->assertTrue(
 			$rule->validate(
 				'numeric',
-				'123',
+				$value,
 				[],
 				new Validator(
 					[
@@ -33,10 +33,11 @@ class TestNumericRule extends TestCase {
 
 	public function testFailWhenValueIsNotNumeric() {
 		$rule = new \AnsPress\Classes\Rules\NumericRule();
+		$value = 'abc';
 		$this->assertFalse(
 			$rule->validate(
 				'numeric',
-				'abc',
+				$value,
 				[],
 				new Validator(
 					[

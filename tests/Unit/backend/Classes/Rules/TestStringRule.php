@@ -14,10 +14,11 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestStringRule extends TestCase {
 	public function testPassWhenValueIsString() {
 		$rule = new \AnsPress\Classes\Rules\StringRule();
+		$value = 'abc';
 		$this->assertTrue(
 			$rule->validate(
 				'string',
-				'abc',
+				$value,
 				[],
 				new Validator(
 					[
@@ -33,10 +34,11 @@ class TestStringRule extends TestCase {
 
 	public function testFailWhenValueIsNotString() {
 		$rule = new \AnsPress\Classes\Rules\StringRule();
+		$value = 123;
 		$this->assertFalse(
 			$rule->validate(
 				'string',
-				123,
+				$value,
 				[],
 				new Validator(
 					[

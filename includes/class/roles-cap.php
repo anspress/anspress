@@ -1419,15 +1419,6 @@ function ap_user_can_read_comment( $_comment = false, $user_id = false ) {
 		return false;
 	}
 
-	$option = ap_opt( 'read_comment_per' );
-	if ( 'have_cap' === $option && is_user_logged_in() && user_can( $user_id, 'ap_read_comment' ) ) {
-		return true;
-	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
-		return true;
-	} elseif ( 'anyone' === $option ) {
-		return true;
-	}
-
 	return false;
 }
 
@@ -1471,15 +1462,5 @@ function ap_user_can_read_comments( $_post = null, $user_id = false ) {
 		return false;
 	}
 
-	$option = ap_opt( 'read_comment_per' );
-
-	if ( 'have_cap' === $option && is_user_logged_in() && get_user_by( 'ID', $user_id )->has_cap( 'ap_read_comment' ) ) {
-		return true;
-	} elseif ( 'logged_in' === $option && is_user_logged_in() ) {
-		return true;
-	} elseif ( 'anyone' === $option ) {
-		return true;
-	}
-
-	return false;
+	return true;
 }

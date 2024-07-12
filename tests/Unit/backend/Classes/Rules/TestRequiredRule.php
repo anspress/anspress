@@ -14,10 +14,11 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestRequiredRule extends TestCase {
 	public function testPassWhenValueIsSet() {
 		$rule = new \AnsPress\Classes\Rules\RequiredRule();
+		$value = 'qwert';
 		$this->assertTrue(
 			$rule->validate(
 				'required',
-				'qwert',
+				$value,
 				[],
 				new Validator(
 					[
@@ -33,14 +34,15 @@ class TestRequiredRule extends TestCase {
 
 	public function testFailWhenValueIsNotSet() {
 		$rule = new \AnsPress\Classes\Rules\RequiredRule();
+		$value = null;
 		$this->assertFalse(
 			$rule->validate(
 				'required',
-				'',
+				$value,
 				[],
 				new Validator(
 					[
-						'required' => '',
+						'required' => null,
 					],
 					[
 						'required' => 'required',

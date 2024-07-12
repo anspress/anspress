@@ -98,7 +98,6 @@ class Validator {
 		$this->customAttributes      = $customAttributes;
 		$this->customTransformations = $customTransformations;
 
-		// $this->applyTransformations();
 		$this->validate();
 	}
 
@@ -310,11 +309,11 @@ class Validator {
 				if ( $remainingAttribute ) {
 					$currentAttribute .= $remainingAttribute;
 				}
-				$this->validateAttribute( $currentAttribute, $rules, $currentAttribute );
+				$this->validateAttribute( $currentAttribute, $rules, $attribute );
 			}
 		} else {
 			// Validate with the base attribute and remaining attribute for all rules if base data doesn't exist.
-				$this->validateAttribute( $baseAttribute, $rules, $attribute );
+			$this->validateAttribute( $baseAttribute, $rules, $attribute );
 		}
 	}
 

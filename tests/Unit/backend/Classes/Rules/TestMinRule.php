@@ -3,8 +3,6 @@ namespace Tests\Unit\Functions\src\backend\Classes;
 
 use AnsPress\Classes\Validator;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
-use Brain\Monkey\Functions;
-
 require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 
 /**
@@ -14,10 +12,11 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestMinRule extends TestCase {
 	public function testPassWhenValidMin() {
 		$rule = new \AnsPress\Classes\Rules\MinRule(5);
+		$value = 10;
 		$this->assertTrue(
 			$rule->validate(
 				'min',
-				10,
+				$value,
 				[5],
 				new Validator(
 					[
@@ -33,10 +32,11 @@ class TestMinRule extends TestCase {
 
 	public function testFailWhenInvalidMin() {
 		$rule = new \AnsPress\Classes\Rules\MinRule(5);
+		$value = 2;
 		$this->assertFalse(
 			$rule->validate(
 				'min',
-				2,
+				$value,
 				[5],
 				new Validator(
 					[
@@ -52,10 +52,11 @@ class TestMinRule extends TestCase {
 
 	public function testPassWhenValueIsString() {
 		$rule = new \AnsPress\Classes\Rules\MinRule(5);
+		$value = 'qwert';
 		$this->assertTrue(
 			$rule->validate(
 				'min',
-				'qwert',
+				$value,
 				[5],
 				new Validator(
 					[
@@ -73,10 +74,11 @@ class TestMinRule extends TestCase {
 
 	public function testFailWhenValueIsString() {
 		$rule = new \AnsPress\Classes\Rules\MinRule(5);
+		$value = 'qwe';
 		$this->assertFalse(
 			$rule->validate(
 				'min',
-				'qwe',
+				$value,
 				[5],
 				new Validator(
 					[
@@ -92,16 +94,17 @@ class TestMinRule extends TestCase {
 
 	public function testPassWhenValueIsArray() {
 		$rule = new \AnsPress\Classes\Rules\MinRule(5);
+		$value = [
+			'foo' => 'one',
+			'bar' => 'two',
+			'baz' => 'three',
+			'qux' => 'four',
+			'quux' => 'five',
+		];
 		$this->assertTrue(
 			$rule->validate(
 				'min',
-				[
-					'foo' => 'one',
-					'bar' => 'two',
-					'baz' => 'three',
-					'qux' => 'four',
-					'quux' => 'five',
-				],
+				$value,
 				[5],
 				new Validator(
 					[
@@ -123,15 +126,16 @@ class TestMinRule extends TestCase {
 
 	public function testFailWhenValueIsArray() {
 		$rule = new \AnsPress\Classes\Rules\MinRule(5);
+		$value = [
+			'foo' => 'one',
+			'bar' => 'two',
+			'baz' => 'three',
+			'qux' => 'four',
+		];
 		$this->assertFalse(
 			$rule->validate(
 				'min',
-				[
-					'foo' => 'one',
-					'bar' => 'two',
-					'baz' => 'three',
-					'qux' => 'four',
-				],
+				$value,
 				[5],
 				new Validator(
 					[

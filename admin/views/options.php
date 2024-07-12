@@ -81,10 +81,6 @@ $all_options = array(
 			'other'   => array(
 				'label' => __( 'Other Permissions', 'anspress-question-answer' ),
 			),
-			'roles'   => array(
-				'label'    => __( 'Role Editor', 'anspress-question-answer' ),
-				'template' => 'roles.php',
-			),
 		),
 	),
 	'tools'         => array(

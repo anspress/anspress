@@ -321,7 +321,7 @@ class TestValidator extends TestCase {
 					return 'validuser';
 				}
 
-                public function validate($attribute, $value, $parameters, $validator): bool
+                public function validate($attribute, &$value, $parameters, $validator): bool
                 {
                     return $value === 'validuser';
                 }
@@ -354,7 +354,7 @@ class TestValidator extends TestCase {
 					return 'validuser';
 				}
 
-                public function validate($attribute, $value, $parameters, $validator): bool
+                public function validate($attribute, &$value, $parameters, $validator): bool
                 {
                     return $value === 'validuser';
                 }

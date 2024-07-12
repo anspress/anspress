@@ -14,7 +14,8 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestEmailRule extends TestCase {
 	public function testPassWhenValidEmail() {
 		$rule = new \AnsPress\Classes\Rules\EmailRule();
-		$this->assertTrue( $rule->validate( 'email', 'rah12@live.com', [], new Validator(
+		$value = 'rah12@live.com';
+		$this->assertTrue( $rule->validate( 'email', $value, [], new Validator(
 			[
 				'email' => 'rah12@live.com',
 			],
@@ -26,9 +27,10 @@ class TestEmailRule extends TestCase {
 
 	public function testFailWhenInvalidEmail() {
 		$rule = new \AnsPress\Classes\Rules\EmailRule();
+		$value = 'rah12live.com';
 		$this->assertFalse( $rule->validate(
 			'email',
-			'rah12live.com',
+			$value,
 			[],
 			new Validator(
 				[

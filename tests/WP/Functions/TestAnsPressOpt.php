@@ -80,7 +80,6 @@ class TestAnsPressOpt extends TestCase {
 			'comment_number',
 			'read_question_per',
 			'read_answer_per',
-			'read_comment_per',
 			'post_question_per',
 			'post_answer_per',
 			'post_comment_per',
@@ -152,7 +151,6 @@ class TestAnsPressOpt extends TestCase {
 		$this->assertEquals( 5, $default_options['comment_number'] );
 		$this->assertEquals( 'anyone', $default_options['read_question_per'] );
 		$this->assertEquals( 'anyone', $default_options['read_answer_per'] );
-		$this->assertEquals( 'anyone', $default_options['read_comment_per'] );
 		$this->assertEquals( 'anyone', $default_options['post_question_per'] );
 		$this->assertEquals( 'logged_in', $default_options['post_answer_per'] );
 		$this->assertEquals( 'logged_in', $default_options['post_comment_per'] );

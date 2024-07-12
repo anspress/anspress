@@ -1011,17 +1011,6 @@ class AnsPress_Admin {
 						'have_cap'  => __( 'Only user having ap_read_answer capability', 'anspress-question-answer' ),
 					),
 				),
-				'read_comment_per'  => array(
-					'label'   => __( 'Who can read comment?', 'anspress-question-answer' ),
-					'desc'    => __( 'Set who can view or read a comment.', 'anspress-question-answer' ),
-					'type'    => 'select',
-					'value'   => $opt['read_comment_per'],
-					'options' => array(
-						'anyone'    => __( 'Anyone, including non-loggedin', 'anspress-question-answer' ),
-						'logged_in' => __( 'Only logged in', 'anspress-question-answer' ),
-						'have_cap'  => __( 'Only user having ap_read_comment capability', 'anspress-question-answer' ),
-					),
-				),
 			),
 		);
 

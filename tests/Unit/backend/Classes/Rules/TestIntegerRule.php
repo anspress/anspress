@@ -14,10 +14,11 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestIntegerRule extends TestCase {
 	public function testPassWhenValidInteger() {
 		$rule = new \AnsPress\Classes\Rules\IntegerRule();
+		$value = 123;
 		$this->assertTrue(
 			$rule->validate(
 				'integer',
-				123,
+				$value,
 				[],
 				new Validator(
 					[
@@ -33,10 +34,11 @@ class TestIntegerRule extends TestCase {
 
 	public function testFailWhenInvalidInteger() {
 		$rule = new \AnsPress\Classes\Rules\IntegerRule();
+		$value = 'fdg dfg dfg f';
 		$this->assertFalse(
 			$rule->validate(
 				'integer',
-				'123',
+				$value,
 				[],
 				new Validator(
 					[

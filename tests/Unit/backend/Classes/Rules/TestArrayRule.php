@@ -3,7 +3,6 @@ namespace Tests\Unit\Functions\src\backend\Classes;
 
 use AnsPress\Classes\Validator;
 use Yoast\WPTestUtils\BrainMonkey\TestCase;
-use Brain\Monkey\Functions;
 
 require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 
@@ -14,10 +13,12 @@ require_once PLUGIN_DIR . '/src/backend/autoloader.php';
 class TestArrayRule extends TestCase {
 	public function testPassWhenValidArray() {
 		$rule = new \AnsPress\Classes\Rules\ArrayRule();
+
+		$value = ['test1', 'test2'];
 		$this->assertTrue(
 			$rule->validate(
 				'array',
-				['test1', 'test2'],
+				$value,
 				[],
 				new Validator(
 					[
@@ -33,10 +34,12 @@ class TestArrayRule extends TestCase {
 
 	public function testFailWhenInvalidArray() {
 		$rule = new \AnsPress\Classes\Rules\ArrayRule();
+
+		$value = 'test1';
 		$this->assertFalse(
 			$rule->validate(
 				'array',
-				'test1',
+				$value,
 				[],
 				new Validator(
 					[
