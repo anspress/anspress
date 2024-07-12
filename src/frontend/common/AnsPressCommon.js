@@ -117,12 +117,6 @@ export const fetch = async (options, args) => {
   } catch (err) {
     console.error(err);
 
-    if (err?.code === 'invalid_json') {
-      // create an element with the response text and append it to the body.
-      const errorElement = document.createElement('div');
-      errorElement.innerHTML = err.response.body;
-    }
-
     const errorData = err?.anspress?.errors || err?.anspress?.message || err?.errors || err?.message || {};
 
     if (err.errors && Array.isArray(err.errors) && err.errors.length) {
@@ -185,13 +179,17 @@ const handleTriggerEvents = (triggerEventsData) => {
 
 const handleReload = (reloadData) => {
   if (reloadData) {
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 2000);
   }
 };
 
 const handleRedirect = (redirectData) => {
   if (redirectData) {
-    location.href = redirectData;
+    setTimeout(() => {
+      location.href = redirectData;
+    }, 2000);
   }
 };
 

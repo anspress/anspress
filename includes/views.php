@@ -28,7 +28,6 @@ class AnsPress_Views {
 	 */
 	public static function init() {
 		add_action( 'shutdown', array( 'AnsPress_Views', 'insert_views' ) );
-		add_action( 'ap_before_delete_question', array( 'AnsPress_Vote', 'delete_votes' ) );
 	}
 
 	/**

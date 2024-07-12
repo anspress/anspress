@@ -8,8 +8,9 @@ export class AnsPressDropdown extends BaseCustomElement {
     this.as = this.getAttribute('as') || 'dropdown';
 
     this.innerHTML = `
-    <div class="anspress-dropdown-handle">${this.as === 'field' ? `<div class="anspress-dropdown-search"><input type="text" class="anspress-form-input anspress-dropdown-search-input" placeholder="${this.getAttribute('label-search') || 'Search'}"></div>` : this.getAttribute('label')}</div>
+    <div class="anspress-dropdown-handle">${this.as === 'field' ? `` : this.getAttribute('label')}</div>
     <div class="anspress-dropdown-selections"></div>
+    ${this.as === 'field' ? `<div class="anspress-dropdown-search"><input type="text" class="anspress-form-input anspress-dropdown-search-input" placeholder="${this.getAttribute('label-search') || 'Search'}"></div>` : ``}
     <div class="anspress-dropdown-dropdown" style="display:none">
       ${this.as !== 'field' ? `<div class="anspress-dropdown-search">
         <input type="text" class="anspress-form-input anspress-dropdown-search-input" placeholder="${this.getAttribute('label-search') || 'Search'}">
@@ -37,7 +38,11 @@ export class AnsPressDropdown extends BaseCustomElement {
   }
 
   addEventListeners() {
-    this.handle.addEventListener('click', this.toggleDropdownHandler.bind(this));
+    if (this.as !== 'field') {
+      this.handle.addEventListener('click', this.toggleDropdownHandler.bind(this));
+    } else {
+      this.search.querySelector('input').addEventListener('focus', this.toggleDropdownHandler.bind(this));
+    }
 
     this.items.addEventListener('click', (e) => {
       let item = e.target.closest('.anspress-dropdown-item');
@@ -83,6 +88,7 @@ export class AnsPressDropdown extends BaseCustomElement {
 
   toggleDropdownHandler(e) {
     e.preventDefault();
+
     this.toggleDropdown();
   }
 
@@ -103,7 +109,15 @@ export class AnsPressDropdown extends BaseCustomElement {
     }
 
     this.classList.toggle('anspress-dropdown-active');
-    let topPosition = this.handle.offsetTop + this.handle.offsetHeight;
+
+    let topPosition;
+
+    if (this.as === 'field') {
+      const input = this.search.querySelector('input');
+      topPosition = input.offsetTop + input.offsetHeight;
+    } else {
+      topPosition = this.handle.offsetTop + this.handle.offsetHeight;
+    }
 
     this.dropdown.style.display = 'block';
     this.dropdown.style.top = `${topPosition}px`;
@@ -161,6 +175,8 @@ export class AnsPressDropdown extends BaseCustomElement {
       this.data.selected = [];
     }
 
+    this.search.querySelector('input').value = '';
+
     // Check if the item is already selected
     const isAlreadySelected = this.data.selected.some(selectedItem => selectedItem.key === key);
 
@@ -177,12 +193,22 @@ export class AnsPressDropdown extends BaseCustomElement {
       this.dropdown.style.display = 'none';
     }
 
+    // Hide search if not multiple.
+    if (!this.isMultiple() && this.data?.search_path) {
+      this.search.style.display = 'none';
+    }
+
     // Emit event
     this.dispatchEvent(new CustomEvent('selected', { detail: { ...this.data, id: this.elementId } }));
   }
 
   removeSelection(key) {
     this.setDataValue('selected', this.data.selected.filter(item => item.key != key));
+
+    // Show search if not multiple and search is enabled.
+    if (!this.isMultiple() && this.data?.search_path) {
+      this.search.style.display = 'block';
+    }
 
     this.dispatchEvent(new CustomEvent('selected', { detail: { ...this.data, id: this.elementId } }));
     this.buildSelected();

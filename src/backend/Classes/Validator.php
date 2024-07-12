@@ -310,8 +310,7 @@ class Validator {
 				if ( $remainingAttribute ) {
 					$currentAttribute .= $remainingAttribute;
 				}
-
-				$this->validateAttribute( $currentAttribute, $rules, $attribute );
+				$this->validateAttribute( $currentAttribute, $rules, $currentAttribute );
 			}
 		} else {
 			// Validate with the base attribute and remaining attribute for all rules if base data doesn't exist.
@@ -476,6 +475,11 @@ class Validator {
 		$data = &$this->validatedData;
 
 		foreach ( $keys as $key ) {
+			if ( '*' === $key ) {
+				$data = null;
+				return;
+			}
+
 			if ( ! isset( $data[ $key ] ) || ! is_array( $data[ $key ] ) ) {
 				$data[ $key ] = array();
 			}

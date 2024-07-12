@@ -108,9 +108,7 @@ class AnswerPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to create the model, false otherwise.
 	 */
 	public function create( ?WP_User $user, array $context = array() ): bool {
-		if ( self::isUserIdEmpty( $user ) ) {
-			return false;
-		}
+		$postPermission = ap_opt( 'post_answer_per' );
 
 		if ( empty( $context['question'] ) || empty( $context['question']?->ID ) ) {
 			return false;
@@ -121,13 +119,19 @@ class AnswerPolicy extends AbstractPolicy {
 			return false;
 		}
 
-		// Allow author to answer the question.
-		if ( $context['question']->post_author === $user->ID ) {
+		if ( ! self::isUserIdEmpty( $user ) && self::isAuthorOfItem( $user, $context, 'question', 'post_author' ) ) {
 			return true;
 		}
 
-		// Allow user to answer the question if it is not closed.
-		if ( 'closed' !== get_post_status( $context['question']->ID ) ) {
+		if ( 'anyone' === $postPermission ) {
+			return true;
+		}
+
+		if ( 'logged_in' === $postPermission && ! self::isUserIdEmpty( $user ) ) {
+			return true;
+		}
+
+		if ( 'have_cap' === $postPermission && $user?->has_cap( 'ap_new_answer' ) ) {
 			return true;
 		}
 

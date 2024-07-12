@@ -52,7 +52,7 @@ class VoteService extends AbstractService {
 			$data,
 			array(
 				'vote_user_id'  => 'required|numeric|exists:users,ID',
-				'vote_rec_user' => 'numeric|exists:users,ID',
+				'vote_rec_user' => 'nullable|numeric|exists:users,ID',
 				'vote_type'     => 'required|string|max:120',
 				'vote_post_id'  => 'required|numeric',
 				'vote_value'    => 'required',
@@ -111,13 +111,14 @@ class VoteService extends AbstractService {
 			throw new ValidationException( array( '*' => esc_attr__( 'You have already voted on this post.', 'anspress-question-answer' ) ) );
 		}
 
+		$postAuthor = get_post_field( 'post_author', $postId );
 		return $this->create(
 			array(
 				'vote_user_id'  => $userId,
 				'vote_post_id'  => $postId,
 				'vote_type'     => self::VOTE,
 				'vote_value'    => '-1' === $voteValue ? '-1' : '1',
-				'vote_rec_user' => (int) get_post_field( 'post_author', $postId ),
+				'vote_rec_user' => empty( $postAuthor ) ? null : (int) $postAuthor,
 			)
 		);
 	}

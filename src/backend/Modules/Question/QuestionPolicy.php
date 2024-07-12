@@ -106,11 +106,21 @@ class QuestionPolicy extends AbstractPolicy {
 	 * @return bool True if the user is authorized to create the model, false otherwise.
 	 */
 	public function create( ?WP_User $user, array $context = array() ): bool {
-		if ( ! $user ) {
-			return false;
+		$postPermission = ap_opt( 'post_question_per' );
+
+		if ( 'anyone' === $postPermission ) {
+			return true;
 		}
 
-		return true;
+		if ( 'logged_in' === $postPermission && ! self::isUserIdEmpty( $user ) ) {
+			return true;
+		}
+
+		if ( 'have_cap' === $postPermission && $user?->has_cap( 'ap_new_question' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

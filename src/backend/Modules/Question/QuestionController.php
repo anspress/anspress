@@ -230,13 +230,15 @@ class QuestionController extends AbstractPostController {
 	 * @return WP_REST_Response  Response.
 	 */
 	public function create(): WP_REST_Response {
+		$this->checkPermission( 'question:create' );
+
 		$data = $this->validate(
 			array(
 				'question_title'      => 'required|string|max:255|min:5',
 				'question_content'    => 'required|string|min:10',
 				'question_tags'       => 'array',
 				'question_tags.*'     => 'nullable|numeric',
-				'question_category'   => 'array',
+				'question_category'   => 'nullable|array',
 				'question_category.*' => 'nullable|numeric',
 				'private_question'    => 'nullable|bool',
 			)
@@ -246,14 +248,57 @@ class QuestionController extends AbstractPostController {
 			array(
 				'post_title'        => $data['question_title'],
 				'post_content'      => $data['question_content'],
-				'post_author'       => Auth::getID(),
+				'post_author'       => Auth::isLoggedIn() ? Auth::getID() : null,
 				'private_question'  => $data['private_question'],
 				'question_tags'     => $data['question_tags'],
 				'question_category' => $data['question_category'],
 			)
 		);
 
-		$this->addMessage( 'success', __( 'Question created successfully.', 'anspress-question-answer' ) );
+		$this->addMessage( 'success', __( 'Question created successfully. Redirecting..', 'anspress-question-answer' ) );
+
+		return $this->response(
+			array(
+				'redirect' => get_permalink( $question ),
+			)
+		);
+	}
+
+	/**
+	 * Update a question.
+	 *
+	 * @return WP_REST_Response Response.
+	 */
+	public function update(): WP_REST_Response {
+		$data = $this->validate(
+			array(
+				'question_id'         => 'required|numeric|exists:posts,ID|post_type:question',
+				'question_title'      => 'required|string|max:255|min:5',
+				'question_content'    => 'required|string|min:10',
+				'question_tags'       => 'array',
+				'question_tags.*'     => 'nullable|numeric',
+				'question_category'   => 'nullable|array',
+				'question_category.*' => 'nullable|numeric',
+				'private_question'    => 'nullable|bool',
+			)
+		);
+
+		$question = get_post( $data['question_id'] );
+
+		$this->checkPermission( 'question:update', array( 'question' => $question ) );
+
+		$this->questionService->updateQuestion(
+			array(
+				'id'                => $data['question_id'],
+				'post_title'        => $data['question_title'],
+				'post_content'      => $data['question_content'],
+				'private_question'  => $data['private_question'],
+				'question_tags'     => $data['question_tags'],
+				'question_category' => $data['question_category'],
+			)
+		);
+
+		$this->addMessage( 'success', __( 'Question updated successfully. Redirecting..', 'anspress-question-answer' ) );
 
 		return $this->response(
 			array(

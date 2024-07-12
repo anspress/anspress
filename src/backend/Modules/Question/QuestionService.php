@@ -9,6 +9,7 @@
 namespace AnsPress\Modules\Question;
 
 use AnsPress\Classes\AbstractService;
+use AnsPress\Classes\Auth;
 use AnsPress\Classes\Validator;
 use AnsPress\Exceptions\GeneralException;
 use AnsPress\Exceptions\ValidationException;
@@ -35,7 +36,7 @@ class QuestionService extends AbstractService {
 		$validationRules = array(
 			'post_title'          => 'required|string',
 			'post_content'        => 'required|string',
-			'post_author'         => 'required|numeric|exists:users,ID',
+			'post_author'         => 'nullable|numeric|exists:users,ID',
 			'private_question'    => 'nullable|bool',
 			'question_tags'       => 'nullable|array',
 			'question_tags.*'     => 'nullable|numeric|exists:terms,term_id',
@@ -70,7 +71,7 @@ class QuestionService extends AbstractService {
 		}
 
 		// Check all required fields are present.
-		if ( ! isset( $data['post_title'], $data['post_content'], $data['post_author'] ) ) {
+		if ( ! isset( $data['post_title'], $data['post_content'] ) ) {
 			throw new ValidationException(
 				array(),
 				esc_attr__( 'Required fields are missing.', 'anspress-question-answer' )
@@ -91,7 +92,7 @@ class QuestionService extends AbstractService {
 			array(
 				'post_title'   => $data['post_title'],
 				'post_content' => $data['post_content'],
-				'post_author'  => $data['post_author'],
+				'post_author'  => (int) $data['post_author'],
 				'post_status'  => $postStatus,
 				'post_type'    => QuestionModel::postTypeSlug(),
 				'tax_input'    => array(
@@ -122,6 +123,110 @@ class QuestionService extends AbstractService {
 		 * @since 5.0.0
 		 */
 		do_action( 'anspress/question/service/create/success', $postId );
+
+		return get_post( $postId );
+	}
+
+	/**
+	 * Update a question.
+	 *
+	 * @param array $data The data to update the question.
+	 * @return WP_Post The updated question.
+	 * @throws ValidationException If validation fails.
+	 */
+	public function updateQuestion( array $data ) {
+		$validationRules = array(
+			'id'                  => 'required|numeric|exists:posts,ID|post_type:question',
+			'post_title'          => 'required|string',
+			'post_content'        => 'required|string',
+			'private_question'    => 'nullable|bool',
+			'question_tags'       => 'nullable|array',
+			'question_tags.*'     => 'nullable|numeric|exists:terms,term_id',
+			'question_category'   => 'nullable|array',
+			'question_category.*' => 'nullable|numeric|exists:terms,term_id',
+		);
+
+		$validationRules = apply_filters( 'anspress/question/service/update/validation_rules', $validationRules );
+
+		// Validate the data.
+		$validator = new Validator( $data, $validationRules );
+
+		if ( $validator->fails() ) {
+			throw new ValidationException( $validator->errors() ); // @codingStandardsIgnoreLine
+		}
+
+		$data = $validator->validated();
+
+		$question = get_post( $data['id'] );
+
+		/**
+		 * Filter the data before updating a question.
+		 *
+		 * @param array $data The data to update the question.
+		 * @since 5.0.0
+		 */
+		$data = apply_filters( 'anspress/question/service/update/data', $data, $question );
+
+		if ( empty( $data ) ) {
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Data is empty, failed to update question.', 'anspress-question-answer' )
+			);
+		}
+
+		// Check all required fields are present.
+		if ( ! isset( $data['post_title'], $data['post_content'] ) ) {
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Required fields are missing.', 'anspress-question-answer' )
+			);
+		}
+
+		$postStatus = $data['post_status'] ?? 'publish';
+
+		if ( isset( $data['post_status'] ) ) {
+			$postStatus = $data['post_status'];
+		}
+
+		if ( $data['private_question'] ) {
+			$postStatus = 'private_post';
+		}
+
+		$postId = wp_update_post(
+			array(
+				'ID'           => $data['id'],
+				'post_title'   => $data['post_title'],
+				'post_content' => $data['post_content'],
+				'post_status'  => $postStatus,
+				'post_type'    => QuestionModel::postTypeSlug(),
+				'tax_input'    => array(
+					'question_tag'      => $data['question_tags'] ?? array(),
+					'question_category' => $data['question_category'] ?? array(),
+				),
+			),
+			true
+		);
+
+		if ( is_wp_error( $postId ) || ! $postId ) {
+			/**
+			 * Fires when question creation fails.
+			 *
+			 * @since 5.0.0
+			 */
+			do_action( 'anspress/question/service/update/error', $postId );
+
+			throw new ValidationException(
+				array(),
+				esc_attr__( 'Failed to update answer.', 'anspress-question-answer' )
+			);
+		}
+
+		/**
+		 * Fires after a question is updated.
+		 *
+		 * @since 5.0.0
+		 */
+		do_action( 'anspress/question/service/update/success', $postId );
 
 		return get_post( $postId );
 	}

@@ -206,7 +206,12 @@ class CoreModule extends AbstractModule {
 			)
 		);
 
-		register_block_type( Plugin::getPathTo( 'build/frontend/ask-form' ) );
+		register_block_type(
+			Plugin::getPathTo( 'build/frontend/ask-form' ),
+			array(
+				'render_callback' => array( $this, 'renderAskFormBlock' ),
+			)
+		);
 	}
 
 	/**
@@ -254,6 +259,37 @@ class CoreModule extends AbstractModule {
 				array( 'attributes' => $attributes )
 			);
 		}
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render ask form block.
+	 *
+	 * @param mixed $attributes Attributes.
+	 * @return string
+	 */
+	public function renderAskFormBlock( $attributes ) {
+		ob_start();
+
+		$editingId = isset( $_GET['id'] ) ? absint( $_GET['id'] ) : 0; // @codingStandardsIgnoreLine
+
+		if ( ! empty( $editingId ) ) {
+			$question = get_post( $editingId, OBJECT, 'edit' );
+
+			if ( ! $question ) {
+				echo esc_attr__( 'Invalid question id to edit.', 'anspress-question-answer' );
+
+				return ob_get_clean();
+			}
+
+			$attributes['question'] = $question;
+		}
+
+		Plugin::loadView(
+			'src/frontend/ask-form/php/ask-form.php',
+			array( 'attributes' => $attributes )
+		);
 
 		return ob_get_clean();
 	}

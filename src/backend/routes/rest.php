@@ -53,6 +53,20 @@ Router::group(
 					)
 				);
 
+				Router::post(
+					'(?P<question_id>\d+)/update',
+					'update',
+					array(
+						'name' => 'update',
+						'args' => array(
+							'question_id' => array(
+								'required' => true,
+								'type'     => 'integer',
+							),
+						),
+					)
+				);
+
 				Router::get(
 					'(?P<question_id>\d+)/answers',
 					array( AnswerController::class, 'showAnswers' ),
