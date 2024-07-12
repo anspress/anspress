@@ -15,7 +15,7 @@
       "step": "installPlugin",
       "pluginZipFile": {
         "resource": "url",
-        "url": "https:\/\/downloads.wordpress.org\/plugin\/anspress-question-answer.4.4.1.zip"
+        "url": "https:\/\/downloads.wordpress.org\/plugin\/anspress-question-answer.zip"
       },
       "options": {
         "activate": true
