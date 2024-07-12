@@ -32,9 +32,6 @@ class AnsPress_Hooks {
 	 * @since 2.4.8 Removed `$ap` argument.
 	 */
 	public static function init() {
-			add_action( 'registered_taxonomy', array( 'AnsPress_Hooks', 'add_ap_tables' ) );
-			add_action( 'ap_processed_new_question', array( 'AnsPress_Hooks', 'after_new_question' ), 1, 2 );
-			add_action( 'ap_processed_new_answer', array( 'AnsPress_Hooks', 'after_new_answer' ), 1, 2 );
 			add_action( 'before_delete_post', array( 'AnsPress_Hooks', 'before_delete' ) );
 			add_action( 'wp_trash_post', array( 'AnsPress_Hooks', 'trash_post_action' ) );
 			add_action( 'untrash_post', array( 'AnsPress_Hooks', 'untrash_posts' ) );
@@ -48,8 +45,7 @@ class AnsPress_Hooks {
 			add_action( 'wp_loaded', array( 'AnsPress_Hooks', 'flush_rules' ) );
 			add_action( 'safe_style_css', array( 'AnsPress_Hooks', 'safe_style_css' ), 11 );
 			add_action( 'save_post', array( 'AnsPress_Hooks', 'base_page_update' ), 10, 2 );
-			add_action( 'save_post_question', array( 'AnsPress_Hooks', 'save_question_hooks' ), 1, 3 );
-			add_action( 'save_post_answer', array( 'AnsPress_Hooks', 'save_answer_hooks' ), 1, 3 );
+
 			add_action( 'transition_post_status', array( 'AnsPress_Hooks', 'transition_post_status' ), 10, 3 );
 			add_action( 'ap_vote_casted', array( 'AnsPress_Hooks', 'update_user_vote_casted_count' ), 10, 4 );
 			add_action( 'ap_vote_removed', array( 'AnsPress_Hooks', 'update_user_vote_casted_count' ), 10, 4 );
@@ -61,10 +57,9 @@ class AnsPress_Hooks {
 			add_filter( 'pre_get_posts', array( 'AP_QA_Query_Hooks', 'pre_get_posts' ) );
 
 			// Theme hooks.
-			add_action( 'init', array( 'AnsPress_Theme', 'init_actions' ) );
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'question_answer_post_class' ) );
 			add_filter( 'body_class', array( 'AnsPress_Theme', 'body_class' ) );
-			// add_action( 'after_setup_theme', array( 'AnsPress_Theme', 'includes_theme' ) );
+
 			add_filter( 'wp_title', array( 'AnsPress_Theme', 'ap_title' ), 0 );
 			add_filter( 'document_title_parts', array( 'AnsPress_Theme', 'ap_title_parts' ), 0 );
 			add_action( 'wp_head', array( 'AnsPress_Theme', 'wp_head' ), 11 );
@@ -78,9 +73,6 @@ class AnsPress_Hooks {
 			add_filter( 'post_class', array( 'AnsPress_Theme', 'remove_hentry_class' ), 10, 3 );
 			add_action( 'ap_after_question_content', array( 'AnsPress_Theme', 'after_question_content' ) );
 			add_filter( 'ap_after_answer_content', array( 'AnsPress_Theme', 'after_question_content' ) );
-
-			// Common pages hooks.
-			add_action( 'init', array( 'AnsPress_Common_Pages', 'register_common_pages' ) );
 
 			// Rewrite rules hooks.
 			add_filter( 'request', array( 'AnsPress_Rewrite', 'alter_the_query' ) );
@@ -96,11 +88,6 @@ class AnsPress_Hooks {
 			add_action( 'ap_delete_temp_attachments', array( 'AnsPress_Uploader', 'cron_delete_temp_attachments' ) );
 			add_action( 'intermediate_image_sizes_advanced', array( 'AnsPress_Uploader', 'image_sizes_advanced' ) );
 
-			// Form hooks.
-			add_action( 'ap_form_question', array( 'AP_Form_Hooks', 'question_form' ), 11 );
-			add_action( 'ap_form_answer', array( 'AP_Form_Hooks', 'answer_form' ), 11 );
-			add_action( 'ap_form_image_upload', array( 'AP_Form_Hooks', 'image_upload_form' ), 11 );
-
 			add_action( 'get_comments_number', array( 'AnsPress_Hooks', 'get_comments_number' ), 11, 2 );
 	}
 
@@ -109,45 +96,6 @@ class AnsPress_Hooks {
 	 */
 	public static function add_ap_tables() {
 		ap_append_table_names();
-	}
-
-	/**
-	 * Things to do after creating a question
-	 *
-	 * @param   integer $post_id Question id.
-	 * @param   object  $post Question post object.
-	 * @since   1.0
-	 * @since   4.1.2 Removed @see ap_update_post_activity_meta().
-	 */
-	public static function after_new_question( $post_id, $post ) {
-
-		/**
-		 * Action triggered after inserting a question
-		 *
-		 * @since 0.9
-		 */
-		do_action( 'ap_after_new_question', $post_id, $post );
-	}
-
-	/**
-	 * Things to do after creating an answer
-	 *
-	 * @param   integer $post_id answer id.
-	 * @param   object  $post answer post object.
-	 * @since 2.0.1
-	 * @since 4.1.2  Removed @see ap_update_post_activity_meta().
-	 * @since 4.1.11 Removed @see ap_update_answers_count().
-	 */
-	public static function after_new_answer( $post_id, $post ) {
-		// Update answer count.
-		ap_update_answers_count( $post->post_parent );
-
-		/**
-		 * Action triggered after inserting an answer
-		 *
-		 * @since 0.9
-		 */
-		do_action( 'ap_after_new_answer', $post_id, $post );
 	}
 
 	/**
@@ -589,163 +537,6 @@ class AnsPress_Hooks {
 
 			ap_opt( 'ap_flush', 'true' );
 		}
-	}
-
-	/**
-	 * Trigger posts hooks right after saving question.
-	 *
-	 * @param	integer $post_id Post ID.
-	 * @param	object	$post		Post Object
-	 * @param	boolean $updated Is updating post
-	 * @since 4.1.0
-	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
-	 * @since 4.1.8 Add `ap_delete_images_not_in_content`.
-	 */
-	public static function save_question_hooks( $post_id, $post, $updated ) {
-		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
-			return;
-		}
-
-		if ( $updated ) {
-			// Deleted unused images from meta.
-			ap_delete_images_not_in_content( $post_id );
-		}
-
-		$form = anspress()->get_form( 'question' );
-		$values = $form->get_values();
-
-		$qameta = array(
-			'last_updated' => current_time( 'mysql' ),
-			'answers'      => ap_count_published_answers( $post_id ),
-		);
-
-		// Check if anonymous post and have name.
-		if ( $form->is_submitted() && ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
-			$qameta['fields'] = array(
-				'anonymous_name' => $values['anonymous_name']['value'],
-			);
-		}
-
-		/**
-		 * Modify qameta args which will be inserted after inserting
-		 * or updating question.
-		 *
-		 * @param array   $qameta  Qameta arguments.
-		 * @param object  $post    Post object.
-		 * @param boolean $updated Is updated.
-		 * @since 4.1.0
-		 */
-		$qameta = apply_filters( 'ap_insert_question_qameta', $qameta, $post, $updated );
-		ap_insert_qameta( $post_id, $qameta );
-
-		if ( $updated ) {
-			/**
-			 * Action triggered right after updating question.
-			 *
-			 * @param integer $post_id Inserted post ID.
-			 * @param object	$post		Inserted post object.
-			 * @since 0.9
-			 * @since 4.1.0 Removed `$post->post_type` variable.
-			 */
-			do_action( 'ap_processed_update_question' , $post_id, $post );
-
-		} else {
-			/**
-			 * Action triggered right after inserting new question.
-			 *
-			 * @param integer $post_id Inserted post ID.
-			 * @param object	$post		Inserted post object.
-			 * @since 0.9
-			 * @since 4.1.0 Removed `$post->post_type` variable.
-			 */
-			do_action( 'ap_processed_new_question', $post_id, $post );
-		}
-
-		// Update qameta terms.
-		ap_update_qameta_terms( $post_id );
-	}
-
-	/**
-	 * Trigger posts hooks right after saving answer.
-	 *
-	 * @param	integer $post_id Post ID.
-	 * @param	object	$post		Post Object
-	 * @param	boolean $updated Is updating post
-	 * @since 4.1.0
-	 * @since 4.1.2 Do not process if form not submitted. Insert updated to activity table.
-	 * @since 4.1.8 Add `ap_delete_images_not_in_content`.
-	 */
-	public static function save_answer_hooks( $post_id, $post, $updated ) {
-		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
-			return;
-		}
-
-		if ( $updated ) {
-			// Deleted unused images from meta.
-			ap_delete_images_not_in_content( $post_id );
-		}
-
-		$form = anspress()->get_form( 'answer' );
-
-		$values = $form->get_values();
-		$activity_type = ! empty( $values['post_id']['value'] ) ? 'edit_answer' : 'new_answer';
-
-		// Update parent question's answer count.
-		ap_update_answers_count( $post->post_parent );
-
-		$qameta = array(
-			'last_updated' => current_time( 'mysql' ),
-			'activities'   => array(
-				'type'    => $activity_type,
-				'user_id' => $post->post_author,
-				'date'    => current_time( 'mysql' ),
-			),
-		);
-
-		// Check if anonymous post and have name.
-		if ( $form->is_submitted() && ! is_user_logged_in() && ap_allow_anonymous() && ! empty( $values['anonymous_name']['value'] ) ) {
-			$qameta['fields'] = array(
-				'anonymous_name' => $values['anonymous_name']['value'],
-			);
-		}
-
-		/**
-		 * Modify qameta args which will be inserted after inserting
-		 * or updating answer.
-		 *
-		 * @param array   $qameta  Qameta arguments.
-		 * @param object  $post    Post object.
-		 * @param boolean $updated Is updated.
-		 * @since 4.1.0
-		 */
-		$qameta = apply_filters( 'ap_insert_answer_qameta', $qameta, $post, $updated );
-		ap_insert_qameta( $post_id, $qameta );
-
-		if ( $updated ) {
-			/**
-			 * Action triggered right after updating answer.
-			 *
-			 * @param integer $post_id Inserted post ID.
-			 * @param object	$post		Inserted post object.
-			 * @since 0.9
-			 * @since 4.1.0 Removed `$post->post_type` variable.
-			 */
-			do_action( 'ap_processed_update_answer' , $post_id, $post );
-
-		} else {
-			/**
-			 * Action triggered right after inserting new answer.
-			 *
-			 * @param integer $post_id Inserted post ID.
-			 * @param object	$post		Inserted post object.
-			 * @since 0.9
-			 * @since 4.1.0 Removed `$post->post_type` variable.
-			 */
-			do_action( 'ap_processed_new_answer', $post_id, $post );
-		}
-
-		// Update qameta terms.
-		ap_update_qameta_terms( $post_id );
 	}
 
 	/**

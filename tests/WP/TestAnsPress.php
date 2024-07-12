@@ -252,7 +252,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_THEME_DIR . '/single-question.php' );
 
 		// Check widget file exists.
-		$this->assertFileExists( ANSPRESS_DIR . 'widgets/ask-form.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/breadcrumbs.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/leaderboard.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'widgets/question_stats.php' );

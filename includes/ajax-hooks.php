@@ -26,22 +26,7 @@ class AnsPress_Ajax {
 	 */
 	public static function init() {
 		add_action( 'ap_ajax_suggest_similar_questions', array( __CLASS__, 'suggest_similar_questions' ) );
-		add_action( 'ap_ajax_load_tinymce', array( __CLASS__, 'load_tinymce' ) );
 
-		// Uploader hooks.
-		add_action( 'ap_ajax_delete_attachment', array( 'AnsPress_Uploader', 'delete_attachment' ) );
-
-		add_action( 'wp_ajax_ap_repeatable_field', array( 'AnsPress\Ajax\Repeatable_Field', 'init' ) );
-		add_action( 'wp_ajax_nopriv_ap_repeatable_field', array( 'AnsPress\Ajax\Repeatable_Field', 'init' ) );
-
-		add_action( 'wp_ajax_ap_form_question', array( 'AP_Form_Hooks', 'submit_question_form' ), 11, 0 );
-		add_action( 'wp_ajax_nopriv_ap_form_question', array( 'AP_Form_Hooks', 'submit_question_form' ), 11, 0 );
-		add_action( 'wp_ajax_ap_form_answer', array( 'AP_Form_Hooks', 'submit_answer_form' ), 11, 0 );
-		add_action( 'wp_ajax_nopriv_ap_form_answer', array( 'AP_Form_Hooks', 'submit_answer_form' ), 11, 0 );
-		add_action( 'wp_ajax_ap_form_comment', array( 'AP_Form_Hooks', 'submit_comment_form' ), 11, 0 );
-		add_action( 'wp_ajax_nopriv_ap_form_comment', array( 'AP_Form_Hooks', 'submit_comment_form' ), 11, 0 );
-		add_action( 'wp_ajax_ap_search_tags', array( 'AnsPress_Ajax', 'search_tags' ) );
-		add_action( 'wp_ajax_nopriv_ap_search_tags', array( 'AnsPress_Ajax', 'search_tags' ) );
 		add_action( 'wp_ajax_ap_image_upload', array( 'AnsPress_Uploader', 'image_upload' ) );
 		add_action( 'wp_ajax_ap_upload_modal', array( 'AnsPress_Uploader', 'upload_modal' ) );
 		add_action( 'wp_ajax_nopriv_ap_upload_modal', array( 'AnsPress_Uploader', 'upload_modal' ) );
@@ -124,76 +109,5 @@ class AnsPress_Ajax {
 	 */
 	public static function send( $result ) {
 		ap_send_json( ap_ajax_responce( $result ) );
-	}
-
-	/**
-	 * Load tinyMCE assets using ajax.
-	 *
-	 * @since 3.0.0
-	 */
-	public static function load_tinymce() {
-		ap_answer_form( ap_sanitize_unslash( 'question_id', 'r' ) );
-		ap_ajax_tinymce_assets();
-
-		wp_die();
-	}
-
-	/**
-	 * Ajax callback for `ap_search_tags`. This was called by tags field
-	 * for fetching tags suggestions.
-	 *
-	 * @return void
-	 * @since 4.1.5
-	 */
-	public static function search_tags() {
-		$q          = ap_sanitize_unslash( 'q', 'r' );
-		$form       = ap_sanitize_unslash( 'form', 'r' );
-		$field_name = ap_sanitize_unslash( 'field', 'r' );
-
-		if ( ! anspress_verify_nonce( 'tags_' . $form . $field_name ) ) {
-			wp_send_json( '{}' );
-		}
-
-		// Die if not valid form.
-		if ( ! anspress()->form_exists( $form ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$field = anspress()->get_form( $form )->find( $field_name );
-
-		// Check if field exists and type is tags.
-		if ( ! is_a( $field, 'AnsPress\Form\Field\Tags' ) ) {
-			ap_ajax_json( 'something_wrong' );
-		}
-
-		$taxo = $field->get( 'terms_args.taxonomy' );
-		$taxo = ! empty( $taxo ) ? $taxo : 'tag';
-
-		$terms = get_terms(
-			array(
-				'taxonomy'   => $taxo,
-				'search'     => $q,
-				'count'      => true,
-				'number'     => 20,
-				'hide_empty' => false,
-				'orderby'    => 'count',
-			)
-		);
-
-		$format = array();
-
-		if ( $terms ) {
-			foreach ( $terms as $t ) {
-				$format[] = array(
-					'term_id'     => $t->term_id,
-					'name'        => $t->name,
-					'description' => $t->description,
-					// translators: %d is question count.
-					'count'       => sprintf( _n( '%d Question', '%d Questions', $t->count, 'anspress-question-answer' ), $t->count ),
-				);
-			}
-		}
-
-		wp_send_json( $format );
 	}
 }

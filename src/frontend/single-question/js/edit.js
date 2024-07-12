@@ -63,6 +63,39 @@ const Edit = ({ attributes, setAttributes }) => {
             onChange={(value) => setAttributes({ commentAvatarSize: value })}
           />
         </PanelBody>
+
+        <PanelBody title={__('Toggle Features', 'anspress-question-answer')}>
+          <ToggleControl
+            label={__('Enable Question Comments', 'anspress-question-answer')}
+            checked={attributes.enableQuestionComment}
+            onChange={(value) => setAttributes({ enableQuestionComment: value })}
+          />
+
+          <ToggleControl
+            label={__('Enable Answer Comments', 'anspress-question-answer')}
+            checked={attributes.enableAnswerComment}
+            onChange={(value) => setAttributes({ enableAnswerComment: value })}
+          />
+
+          <ToggleControl
+            label={__('Enable Voting', 'anspress-question-answer')}
+            checked={attributes.enableVote}
+            onChange={(value) => setAttributes({ enableVote: value })}
+          />
+          {attributes.enableVote && (
+            <ToggleControl
+              label={__('Disable down voting', 'anspress-question-answer')}
+              checked={attributes.disableVoteDown}
+              onChange={(value) => setAttributes({ disableVoteDown: value })}
+            />
+          )}
+
+          <ToggleControl
+            label={__('Hide subscribe button', 'anspress-question-answer')}
+            checked={attributes.hideSubscribeButton}
+            onChange={(value) => setAttributes({ hideSubscribeButton: value })}
+          />
+        </PanelBody>
       </InspectorControls>
 
       <ServerSideRender block="anspress/single-question" attributes={attributes} />

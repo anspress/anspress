@@ -44,18 +44,14 @@ class TestAnsPressOpt extends TestCase {
 			'avatar_size_list',
 			'question_per_page',
 			'answers_per_page',
-			'question_order_by',
 			'answers_sort',
 			'close_selected',
 			'moderate_new_question',
 			'mod_question_point',
 			'question_prefix',
-			'question_text_editor',
-			'answer_text_editor',
 			'base_page_title',
 			'search_page_title',
 			'user_page_title',
-			'disable_comments_on_question',
 			'disable_comments_on_answer',
 			'new_question_status',
 			'new_answer_status',
@@ -63,8 +59,6 @@ class TestAnsPressOpt extends TestCase {
 			'edit_answer_status',
 			'disable_delete_after',
 			'db_cleanup',
-			'disable_voting_on_question',
-			'disable_voting_on_answer',
 			'enable_recaptcha',
 			'recaptcha_site_key',
 			'recaptcha_secret_key',
@@ -74,7 +68,6 @@ class TestAnsPressOpt extends TestCase {
 			'question_page_slug',
 			'question_page_permalink',
 			'max_upload_size',
-			'disable_down_vote_on_question',
 			'disable_down_vote_on_answer',
 			'show_solved_prefix',
 			'load_assets_in_anspress_only',
@@ -123,18 +116,14 @@ class TestAnsPressOpt extends TestCase {
 		$this->assertEquals( 45, $default_options['avatar_size_list'] );
 		$this->assertEquals( '20', $default_options['question_per_page'] );
 		$this->assertEquals( '5', $default_options['answers_per_page'] );
-		$this->assertEquals( 'active', $default_options['question_order_by'] );
 		$this->assertEquals( 'active', $default_options['answers_sort'] );
 		$this->assertEquals( true, $default_options['close_selected'] );
 		$this->assertEquals( 'no_mod', $default_options['moderate_new_question'] );
 		$this->assertEquals( 10, $default_options['mod_question_point'] );
 		$this->assertEquals( 'question', $default_options['question_prefix'] );
-		$this->assertEquals( false, $default_options['question_text_editor'] );
-		$this->assertEquals( false, $default_options['answer_text_editor'] );
 		$this->assertEquals( 'Questions', $default_options['base_page_title'] );
 		$this->assertEquals( 'Search "%s"', $default_options['search_page_title'] );
 		$this->assertEquals( '%s', $default_options['user_page_title'] );
-		$this->assertEquals( false, $default_options['disable_comments_on_question'] );
 		$this->assertEquals( false, $default_options['disable_comments_on_answer'] );
 		$this->assertEquals( 'publish', $default_options['new_question_status'] );
 		$this->assertEquals( 'publish', $default_options['new_answer_status'] );
@@ -142,8 +131,6 @@ class TestAnsPressOpt extends TestCase {
 		$this->assertEquals( 'publish', $default_options['edit_answer_status'] );
 		$this->assertEquals( 86400, $default_options['disable_delete_after'] );
 		$this->assertEquals( false, $default_options['db_cleanup'] );
-		$this->assertEquals( false, $default_options['disable_voting_on_question'] );
-		$this->assertEquals( false, $default_options['disable_voting_on_answer'] );
 		$this->assertEquals( false, $default_options['enable_recaptcha'] );
 		$this->assertEquals( '', $default_options['recaptcha_site_key'] );
 		$this->assertEquals( '', $default_options['recaptcha_secret_key'] );
@@ -153,7 +140,6 @@ class TestAnsPressOpt extends TestCase {
 		$this->assertEquals( 'question', $default_options['question_page_slug'] );
 		$this->assertEquals( 'question_perma_1', $default_options['question_page_permalink'] );
 		$this->assertEquals( 500000, $default_options['max_upload_size'] );
-		$this->assertEquals( false, $default_options['disable_down_vote_on_question'] );
 		$this->assertEquals( false, $default_options['disable_down_vote_on_answer'] );
 		$this->assertEquals( true, $default_options['show_solved_prefix'] );
 		$this->assertEquals( false, $default_options['load_assets_in_anspress_only'] );

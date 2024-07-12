@@ -20,17 +20,6 @@ if ( ! defined( 'WPINC' ) ) {
  */
 class AnsPress_Theme {
 	/**
-	 * Function get called on init
-	 */
-	public static function init_actions() {
-		// Register anspress shortcode.
-		// add_shortcode( 'anspress', array( AnsPress_BasePage_Shortcode::get_instance(), 'anspress_sc' ) );
-
-		// Register question shortcode.
-		// add_shortcode( 'question', array( AnsPress_Question_Shortcode::get_instance(), 'anspress_question_sc' ) );
-	}
-
-	/**
 	 * Add answer-seleted class in post_class.
 	 *
 	 * @param  array $classes Post class attribute.

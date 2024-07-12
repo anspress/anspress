@@ -1134,8 +1134,11 @@ function ap_isset_post_value( $val, $default_val = '' ) {
  * @param  string|null $filter  Filter key.
  * @return false|string|array
  * @since  4.0.0
+ * @deprecated 5.0.0
  */
 function ap_get_current_list_filters( $filter = null ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+
 	$get_filters = array();
 	$filters     = array_keys( ap_get_list_filters() );
 
@@ -1574,87 +1577,8 @@ function ap_search_array( $arr, $key, $value ) {
  */
 function ap_get_addons() {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	$cache  = wp_cache_get( 'addons', 'anspress' );
-	$option = get_option( 'anspress_addons', array() );
 
-	if ( false !== $cache ) {
-		return $cache;
-	}
-
-	$all_files = array();
-	foreach ( array( 'pro', 'free' ) as $folder ) {
-		$path = ANSPRESS_ADDONS_DIR . DS . $folder;
-
-		if ( file_exists( $path ) ) {
-			$files = scandir( $path );
-
-			foreach ( $files as $file ) {
-				$ext = pathinfo( $file, PATHINFO_EXTENSION );
-
-				if ( 'php' === $ext ) {
-					$all_files[] = $folder . DS . $file;
-				}
-			}
-		}
-	}
-
-	$addons = array(
-		'email.php'         => array(
-			'name'        => __( 'Emails', 'anspress-question-answer' ),
-			'description' => __( 'Notifies users and admins by email for various events and activities.', 'anspress-question-answer' ),
-		),
-		'notifications.php' => array(
-			'name'        => __( 'Notifications', 'anspress-question-answer' ),
-			'description' => __( 'Adds a fancy user notification dropdown like Facebook and Stackoverflow.', 'anspress-question-answer' ),
-		),
-		'buddypress.php'    => array(
-			'name'        => __( 'BuddyPress', 'anspress-question-answer' ),
-			'description' => __( 'Integrate AnsPress with BuddyPress.', 'anspress-question-answer' ),
-		),
-		'recaptcha.php'     => array(
-			'name'        => __( 'reCaptcha', 'anspress-question-answer' ),
-			'description' => __( 'Add reCaptcha verification in question, answer and comment forms.', 'anspress-question-answer' ),
-		),
-		'akismet.php'       => array(
-			'name'        => __( 'Akismet Check', 'anspress-question-answer' ),
-			'description' => __( 'Check for spam in post content.', 'anspress-question-answer' ),
-		),
-	);
-
-	/**
-	 * This hooks can be used to filter existing addons or for adding new addons.
-	 *
-	 * @since 4.1.8
-	 */
-	$addons = apply_filters( 'ap_addons', $addons );
-
-	$valid_addons = array();
-	foreach ( (array) $addons as $k => $addon ) {
-		$path  = ANSPRESS_ADDONS_DIR . DS . basename( $k, '.php' ) . DS . $k;
-		$path2 = ANSPRESS_ADDONS_DIR . DS . $k;
-
-		$addons[ $k ]['path'] = '';
-
-		if ( isset( $addon['path'] ) && file_exists( $addon['path'] ) ) {
-			$addons[ $k ]['path'] = wp_normalize_path( $addon['path'] );
-		} elseif ( file_exists( $path ) ) {
-			$addons[ $k ]['path'] = wp_normalize_path( $path );
-		} elseif ( file_exists( $path2 ) ) {
-			$addons[ $k ]['path'] = wp_normalize_path( $path2 );
-		}
-
-		$addons[ $k ]['pro']    = isset( $addon['pro'] ) ? $addon['pro'] : false;
-		$addons[ $k ]['active'] = isset( $option[ $k ] ) ? true : false;
-		$addons[ $k ]['id']     = $k;
-		$addons[ $k ]['class']  = sanitize_html_class( sanitize_title( str_replace( array( '/', '.php' ), array( '-', '' ), 'addon-' . $k ) ) );
-
-		if ( ! empty( $addons[ $k ]['path'] ) && file_exists( $addons[ $k ]['path'] ) ) {
-			$valid_addons[ $k ] = $addons[ $k ];
-		}
-	}
-
-	wp_cache_set( 'addons', $valid_addons, 'anspress' );
-	return $valid_addons;
+	return array();
 }
 
 /**
@@ -1667,12 +1591,6 @@ function ap_get_addons() {
 function ap_get_active_addons() {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$active_addons = array();
-
-	foreach ( ap_get_addons() as $addon ) {
-		if ( $addon['active'] ) {
-			$active_addons[ $addon['id'] ] = $addon;
-		}
-	}
 
 	return $active_addons;
 }
@@ -1689,13 +1607,6 @@ function ap_get_addon( $file ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$search = false;
 
-	foreach ( ap_get_addons() as $f => $addon ) {
-		if ( $f === $file ) {
-			$search = $addon;
-			break;
-		}
-	}
-
 	return $search;
 }
 
@@ -1710,51 +1621,6 @@ function ap_get_addon( $file ) {
  */
 function ap_activate_addon( $addon_name ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	if ( ap_is_addon_active( $addon_name ) ) {
-		return false;
-	}
-
-	global $ap_addons_activation;
-
-	$opt        = get_option( 'anspress_addons', array() );
-	$all_addons = ap_get_addons();
-	$addon_name = wp_normalize_path( $addon_name );
-
-	if ( isset( $all_addons[ $addon_name ] ) ) {
-		$opt[ $addon_name ] = true;
-		update_option( 'anspress_addons', $opt );
-
-		$file = $all_addons[ $addon_name ]['path'];
-
-		// Check file exists before requiring.
-		if ( ! file_exists( $file ) ) {
-			return false;
-		}
-
-		require_once $file;
-
-		if ( isset( $ap_addons_activation[ $addon_name ] ) ) {
-			call_user_func( $ap_addons_activation[ $addon_name ] );
-		}
-
-		do_action( 'ap_addon_activated', $addon_name );
-
-		// Fix to drop wpengine cache.
-		if ( class_exists( 'WpeCommon' ) ) {
-			WpeCommon::purge_memcached();
-			WpeCommon::clear_maxcdn_cache();
-			WpeCommon::purge_varnish_cache();
-		}
-
-		// Delete cache.
-		wp_cache_delete( 'addons', 'anspress' );
-
-		// Flush rewrite rules.
-		ap_opt( 'ap_flush', 'true' );
-
-		return true;
-	}
-
 	return false;
 }
 
@@ -1767,24 +1633,6 @@ function ap_activate_addon( $addon_name ) {
  */
 function ap_deactivate_addon( $addon_name ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	if ( ! ap_is_addon_active( $addon_name ) ) {
-		return false;
-	}
-
-	$opt        = get_option( 'anspress_addons', array() );
-	$all_addons = ap_get_addons();
-	$addon_name = wp_normalize_path( $addon_name );
-
-	if ( isset( $all_addons[ $addon_name ] ) ) {
-		unset( $opt[ $addon_name ] );
-		update_option( 'anspress_addons', $opt );
-		do_action( 'ap_addon_deactivated', $addon_name );
-
-		// Delete cache.
-		wp_cache_delete( 'addons', 'anspress' );
-
-		return true;
-	}
 
 	return false;
 }
@@ -1799,11 +1647,6 @@ function ap_deactivate_addon( $addon_name ) {
  */
 function ap_is_addon_active( $addon ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	$addons = ap_get_active_addons();
-
-	if ( isset( $addons[ $addon ] ) ) {
-		return true;
-	}
 
 	return false;
 }
@@ -1818,14 +1661,6 @@ function ap_is_addon_active( $addon ) {
  */
 function ap_get_addon_image( $file ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	$addon = ap_get_addon( $file );
-
-	if ( isset( $addon['path'] ) ) {
-		$path_parts = pathinfo( $addon['path'] );
-		if ( isset( $path_parts['dirname'] ) && file_exists( $path_parts['dirname'] . '/image.png' ) ) {
-			return plugin_dir_url( $addon['path'] ) . 'image.png';
-		}
-	}
 }
 
 /**
@@ -1838,14 +1673,6 @@ function ap_get_addon_image( $file ) {
  */
 function ap_addon_has_options( $file ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	$addon = ap_get_addon( $file );
-
-	$form_name = str_replace( '.php', '', $addon['id'] );
-	$form_name = str_replace( '/', '_', $form_name );
-
-	if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
-		return true;
-	}
 
 	return false;
 }
@@ -2004,66 +1831,10 @@ function ap_set_in_array( &$arr, $path, $val, $merge_arr = false ) {
  * @since 4.1.5 Don't use ap_ajax as action. Set values here while editing. Get values form session if exists.
  *
  * @category haveTests
+ * @deprecated 5.0.0
  */
 function ap_ask_form( $deprecated = null ) {
-	if ( ! is_null( $deprecated ) ) {
-		_deprecated_argument( __FUNCTION__, '4.1.0', 'Use $_GET[id] for currently editing question ID.' );
-	}
-
-	$editing    = false;
-	$editing_id = ap_sanitize_unslash( 'id', 'r' );
-
-	// If post_id is empty then its not editing.
-	if ( ! empty( $editing_id ) ) {
-		$editing = true;
-	}
-
-	if ( $editing && ! ap_user_can_edit_question( $editing_id ) ) {
-		echo '<p>' . esc_attr__( 'You cannot edit this question.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
-
-	if ( ! $editing && ! ap_user_can_ask() ) {
-		echo '<p>' . esc_attr__( 'You do not have permission to ask a question.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
-
-	$args = array(
-		'hidden_fields' => array(
-			array(
-				'name'  => 'action',
-				'value' => 'ap_form_question',
-			),
-		),
-	);
-
-	$values         = array();
-	$session_values = anspress()->session->get( 'form_question' );
-
-	// Add value when editing post.
-	if ( $editing ) {
-		$question = ap_get_post( $editing_id );
-
-		$form['editing']      = true;
-		$form['editing_id']   = $editing_id;
-		$form['submit_label'] = __( 'Update Question', 'anspress-question-answer' );
-
-		$values['post_title']   = $question->post_title;
-		$values['post_content'] = $question->post_content;
-		$values['is_private']   = 'private_post' === $question->post_status ? true : false;
-
-		if ( isset( $values['anonymous_name'] ) ) {
-			$fields = ap_get_post_field( 'fields', $question );
-
-			$values['anonymous_name'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
-		}
-	} elseif ( ! empty( $session_values ) ) {
-		// Set last session values if not editing.
-		$values = $session_values;
-	}
-
-	// Generate form.
-	anspress()->get_form( 'question' )->set_values( $values )->generate( $args );
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 }
 
 /**
@@ -2105,40 +1876,6 @@ function ap_remove_stop_words_post_name( $str ) {
  */
 function ap_answer_post_ajax_response( $question_id, $answer_id ) {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	$question = ap_get_post( $question_id );
-	// Get existing answer count.
-	$current_ans = ap_count_published_answers( $question_id );
-
-	global $post;
-	$post = ap_get_post( $answer_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-	setup_postdata( $post );
-
-	ob_start();
-	global $withcomments;
-	$withcomments = true; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-
-	ap_get_template_part( 'answer' );
-
-	$html = ob_get_clean();
-
-	// translators: %d is answer count.
-	$count_label = sprintf( _n( '%d Answer', '%d Answers', $current_ans, 'anspress-question-answer' ), $current_ans );
-
-	$result = array(
-		'success'      => true,
-		'ID'           => $answer_id,
-		'form'         => 'answer',
-		'div_id'       => '#post-' . get_the_ID(),
-		'can_answer'   => ap_user_can_answer( $post->ID ),
-		'html'         => $html,
-		'snackbar'     => array( 'message' => __( 'Answer submitted successfully', 'anspress-question-answer' ) ),
-		'answersCount' => array(
-			'text'   => $count_label,
-			'number' => $current_ans,
-		),
-	);
-
-	ap_ajax_json( $result );
 }
 
 /**
@@ -2151,70 +1888,10 @@ function ap_answer_post_ajax_response( $question_id, $answer_id ) {
  * @since 4.1.0 Moved from includes\answer-form.php. Using new Form class.
  * @since 4.1.5 Don't use ap_ajax as action.
  * @since 4.1.6 Fixed: editing answer creates new answer.
+ * @deprecated 5.0.0
  */
 function ap_answer_form( $question_id, $editing = false ) {
-	$editing    = false;
-	$editing_id = ap_sanitize_unslash( 'id', 'r' );
-
-	// If post_id is empty then its not editing.
-	if ( ! empty( $editing_id ) ) {
-		$editing = true;
-	}
-
-	if ( $editing && ! ap_user_can_edit_answer( $editing_id ) ) {
-		echo '<p>' . esc_attr__( 'You cannot edit this answer.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
-
-	if ( ! $editing && ! ap_user_can_answer( $question_id ) ) {
-		echo '<p>' . esc_attr__( 'You do not have permission to answer this question.', 'anspress-question-answer' ) . '</p>';
-		return;
-	}
-
-	$args = array(
-		'hidden_fields' => array(
-			array(
-				'name'  => 'action',
-				'value' => 'ap_form_answer',
-			),
-			array(
-				'name'  => 'question_id',
-				'value' => (int) $question_id,
-			),
-		),
-	);
-
-	$values         = array();
-	$session_values = anspress()->session->get( 'form_answer_' . $question_id );
-
-	// Add value when editing post.
-	if ( $editing ) {
-		$answer = ap_get_post( $editing_id );
-
-		$form['editing']      = true;
-		$form['editing_id']   = $editing_id;
-		$form['submit_label'] = __( 'Update Answer', 'anspress-question-answer' );
-
-		$values['post_title']   = $answer->post_title;
-		$values['post_content'] = $answer->post_content;
-		$values['is_private']   = 'private_post' === $answer->post_status ? true : false;
-
-		if ( isset( $values['anonymous_name'] ) ) {
-			$fields = ap_get_post_field( 'fields', $answer );
-
-			$values['anonymous_name'] = ! empty( $fields['anonymous_name'] ) ? $fields['anonymous_name'] : '';
-		}
-
-		$args['hidden_fields'][] = array(
-			'name'  => 'post_id',
-			'value' => (int) $editing_id,
-		);
-	} elseif ( ! empty( $session_values ) ) {
-		// Set last session values if not editing.
-		$values = $session_values;
-	}
-
-	anspress()->get_form( 'answer' )->set_values( $values )->generate( $args );
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 }
 
 
@@ -2227,25 +1904,6 @@ function ap_answer_form( $question_id, $editing = false ) {
  */
 function ap_ajax_tinymce_assets() {
 	_deprecated_function( __FUNCTION__, '5.0.0' );
-	if ( ! class_exists( '_WP_Editors' ) ) {
-		require ABSPATH . WPINC . '/class-wp-editor.php';
-	}
-
-	\_WP_Editors::enqueue_scripts();
-
-	// Enqueue wp-tinymce when Jetpack photon-cdn module is enabled,
-	// since while user are trying to add an answer to the question,
-	// creates JS console error and hence, the editor does not work.
-	if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon-cdn' ) ) {
-		wp_enqueue_script( 'wp-tinymce' );
-	}
-
-	ob_start();
-	print_footer_scripts();
-	$scripts = ob_get_clean();
-
-	echo str_replace( 'jquery-core,', '', $scripts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	\_WP_Editors::editor_js();
 }
 
 /**

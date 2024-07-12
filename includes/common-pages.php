@@ -23,11 +23,6 @@ class AnsPress_Common_Pages {
 	 * Register all pages of AnsPress
 	 */
 	public static function register_common_pages() {
-		// ap_register_page( 'question', __( 'Question', 'anspress-question-answer' ), array( __CLASS__, 'question_page' ), false );
-		ap_register_page( 'ask', __( 'Ask a Question', 'anspress-question-answer' ), array( __CLASS__, 'ask_page' ) );
-		ap_register_page( 'search', __( 'Search', 'anspress-question-answer' ), array( __CLASS__, 'search_page' ), false );
-		ap_register_page( 'edit', __( 'Edit Answer', 'anspress-question-answer' ), array( __CLASS__, 'edit_page' ), false );
-		ap_register_page( 'activities', __( 'Activities', 'anspress-question-answer' ), array( __CLASS__, 'activities_page' ), false );
 	}
 
 	/**
@@ -178,23 +173,6 @@ class AnsPress_Common_Pages {
 		$keywords = ap_sanitize_unslash( 'ap_s', 'query_var', false );
 		wp_safe_redirect( add_query_arg( array( 'ap_s' => $keywords ), ap_get_link_to( '/' ) ) );
 		exit;
-	}
-
-	/**
-	 * Output edit page template
-	 */
-	public static function edit_page() {
-		$post_id = (int) ap_sanitize_unslash( 'id', 'r' );
-
-		if ( ! anspress_verify_nonce( 'edit-post-' . $post_id ) || empty( $post_id ) || ! ap_user_can_edit_answer( $post_id ) ) {
-				echo '<p>' . esc_attr__( 'Sorry, you cannot edit this answer.', 'anspress-question-answer' ) . '</p>';
-				return;
-		}
-
-		global $editing_post;
-		$editing_post = ap_get_post( $post_id );
-
-		ap_answer_form( $editing_post->post_parent, true );
 	}
 
 	/**

@@ -1112,17 +1112,6 @@ function ap_vote_btn( $post = null, $output = true ) {
 		'<span class="net-vote-count" data-view="ap-net-vote" itemprop="upvoteCount" ap="votes_net">' .
 		ap_get_votes_net() . '</span>';
 
-	if ( ( 'question' === $post->post_type && ! ap_opt( 'disable_down_vote_on_question' ) ) ||
-	( 'answer' === $post->post_type && ! ap_opt( 'disable_down_vote_on_answer' ) ) ) {
-		$html .= '<a data-tipposition="bottom center" class="apicon-thumb-down ap-tip vote-down' .
-			( $voted ? ' voted' : '' ) .
-			( $vote && 'vote_up' === $type ? ' disable' : '' ) .
-			'" href="#" title="' .
-			( $vote && 'vote_up' === $type ? __( 'You have already voted', 'anspress-question-answer' ) :
-			( $voted ? __( 'Withdraw your vote', 'anspress-question-answer' ) : $downvote_message ) ) .
-			'" ap="vote_down"></a>';
-	}
-
 	$html .= '</div>';
 
 	/**

@@ -28,20 +28,13 @@ class TagModule extends AbstractModule {
 
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
 
-		add_action( 'widgets_init', array( $this, 'widget_positions' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_tags_menu' ) );
-		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
 		add_action( 'ap_question_info', array( $this, 'ap_question_info' ) );
 		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
 		add_action( 'ap_enqueue', array( $this, 'ap_localize_scripts' ) );
 		add_filter( 'term_link', array( $this, 'term_link_filter' ), 10, 3 );
-		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ) );
-		add_action( 'ap_processed_new_question', array( $this, 'after_new_question' ), 0, 2 );
-		add_action( 'ap_processed_update_question', array( $this, 'after_new_question' ), 0, 2 );
 		add_filter( 'ap_page_title', array( $this, 'page_title' ) );
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
-		add_action( 'wp_ajax_ap_tags_suggestion', array( $this, 'ap_tags_suggestion' ) );
-		add_action( 'wp_ajax_nopriv_ap_tags_suggestion', array( $this, 'ap_tags_suggestion' ) );
 		add_action( 'ap_rewrites', array( $this, 'rewrite_rules' ), 10, 3 );
 		add_filter( 'ap_main_questions_args', array( $this, 'ap_main_questions_args' ) );
 		add_filter( 'ap_category_questions_args', array( $this, 'ap_main_questions_args' ) );
@@ -63,23 +56,6 @@ class TagModule extends AbstractModule {
 	 */
 	public function registerBlocks() {
 		register_block_type( Plugin::getPathTo( 'build/frontend/tags' ) );
-	}
-
-	/**
-	 * Register widget position.
-	 */
-	public function widget_positions() {
-		register_sidebar(
-			array(
-				'name'          => __( '(AnsPress) Tags', 'anspress-question-answer' ),
-				'id'            => 'ap-tags',
-				'before_widget' => '<div id="%1$s" class="ap-widget-pos %2$s">',
-				'after_widget'  => '</div>',
-				'description'   => __( 'Widgets in this area will be shown in anspress tags page.', 'anspress-question-answer' ),
-				'before_title'  => '<h3 class="ap-widget-title">',
-				'after_title'   => '</h3>',
-			)
-		);
 	}
 
 	/**
@@ -156,26 +132,6 @@ class TagModule extends AbstractModule {
 		);
 
 		return $groups;
-	}
-
-	/**
-	 * Append meta display.
-	 *
-	 * @param  array $metas Display metas.
-	 * @param  array $question_id Post ID.
-	 * @return array
-	 * @since 2.0
-	 */
-	public function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id, 'question_tag' ) ) {
-			$metas['tags'] = ap_question_tags_html(
-				array(
-					'label' => '<i class="apicon-tag"></i>',
-					'show'  => 1,
-				)
-			); }
-
-		return $metas;
 	}
 
 	/**
@@ -263,58 +219,6 @@ class TagModule extends AbstractModule {
 	}
 
 	/**
-	 * Add tag field in question form.
-	 *
-	 * @param array $form AnsPress form arguments.
-	 * @since 4.1.0
-	 */
-	public function ap_question_form_fields( $form ) {
-		$editing_id = ap_sanitize_unslash( 'id', 'r' );
-
-		$form['fields']['tags'] = array(
-			'label'      => __( 'Tags', 'anspress-question-answer' ),
-			'desc'       => sprintf(
-				// Translators: %1$d contain minimum tags required and %2$d contain maximum tags allowed.
-				__( 'Tagging will helps others to easily find your question. Minimum %1$d and maximum %2$d tags.', 'anspress-question-answer' ),
-				ap_opt( 'min_tags' ),
-				ap_opt( 'max_tags' )
-			),
-			'type'       => 'tags',
-			'array_max'  => ap_opt( 'max_tags' ),
-			'array_min'  => ap_opt( 'min_tags' ),
-			'js_options' => array(
-				'create' => true,
-			),
-		);
-
-		// Add value when editing post.
-		if ( ! empty( $editing_id ) ) {
-			$tags = get_the_terms( $editing_id, 'question_tag' );
-			if ( $tags ) {
-				$tags                            = wp_list_pluck( $tags, 'term_id' );
-				$form['fields']['tags']['value'] = $tags;
-			}
-		}
-
-		return $form;
-	}
-
-	/**
-	 * Things to do after creating a question.
-	 *
-	 * @param  integer $post_id Post ID.
-	 * @param  object  $post Post object.
-	 * @since 1.0
-	 */
-	public function after_new_question( $post_id, $post ) {
-		$values = anspress()->get_form( 'question' )->get_values();
-
-		if ( isset( $values['tags'], $values['tags']['value'] ) ) {
-			wp_set_object_terms( $post_id, $values['tags']['value'], 'question_tag' );
-		}
-	}
-
-	/**
 	 * Tags page title.
 	 *
 	 * @param  string $title Title.
@@ -367,39 +271,6 @@ class TagModule extends AbstractModule {
 		}
 
 		return $navs;
-	}
-
-	/**
-	 * Handle tags suggestion on question form
-	 */
-	public function ap_tags_suggestion() {
-		$keyword = ap_sanitize_unslash( 'q', 'r' );
-
-		$tags = get_terms(
-			array(
-				'taxonomy'   => 'question_tag',
-				'orderby'    => 'count',
-				'order'      => 'DESC',
-				'hide_empty' => false,
-				'search'     => $keyword,
-				'number'     => 8,
-			)
-		);
-
-		if ( $tags ) {
-			$items = array();
-			foreach ( $tags as $k => $t ) {
-				$items [ $k ] = $t->slug;
-			}
-
-			$result = array(
-				'status' => true,
-				'items'  => $items,
-			);
-			wp_send_json( $result );
-		}
-
-		wp_send_json( array( 'status' => false ) );
 	}
 
 	/**

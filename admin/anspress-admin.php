@@ -76,8 +76,6 @@ class AnsPress_Admin {
 		add_action( 'admin_notices', array( __CLASS__, 'anspress_notice' ) );
 		add_action( 'ap_register_options', array( __CLASS__, 'register_options' ) );
 		add_action( 'ap_after_field_markup', array( __CLASS__, 'page_select_field_opt' ) );
-		add_action( 'admin_action_ap_addon_options', array( __CLASS__, 'ap_addon_options' ) );
-		add_action( 'admin_action_ap_save_addon_options', array( __CLASS__, 'save_addon_options' ) );
 		add_action( 'admin_footer', array( __CLASS__, 'admin_footer' ) );
 	}
 
@@ -1223,104 +1221,62 @@ class AnsPress_Admin {
 
 		$form = array(
 			'fields' => array(
-				'comment_number'                => array(
+				'comment_number'          => array(
 					'label'   => __( 'Numbers of comments to show', 'anspress-question-answer' ),
 					'desc'    => __( 'Numbers of comments to load in each query?', 'anspress-question-answer' ),
 					'value'   => $opt['comment_number'],
 					'subtype' => 'number',
 				),
-				'duplicate_check'               => array(
+				'duplicate_check'         => array(
 					'label' => __( 'Check duplicate', 'anspress-question-answer' ),
 					'desc'  => __( 'Check for duplicate posts before posting', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['duplicate_check'],
 				),
-				'disable_q_suggestion'          => array(
+				'disable_q_suggestion'    => array(
 					'label' => __( 'Disable question suggestion', 'anspress-question-answer' ),
 					'desc'  => __( 'Checking this will disable question suggestion in ask form', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['disable_q_suggestion'],
 				),
-				'default_date_format'           => array(
+				'default_date_format'     => array(
 					'label' => __( 'Show default date format', 'anspress-question-answer' ),
 					'desc'  => __( 'Instead of showing time passed i.e. 1 Hour ago, show default format date.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['default_date_format'],
 				),
-				'show_solved_prefix'            => array(
+				'show_solved_prefix'      => array(
 					'label'    => __( 'Show solved prefix', 'anspress-question-answer' ),
 					'desc'     => __( 'If an answer is selected for question then [solved] prefix will be added in title.', 'anspress-question-answer' ),
 					'type'     => 'checkbox',
 					'value'    => $opt['show_solved_prefix'],
 					'validate' => 'required',
 				),
-				'question_order_by'             => array(
-					'label'   => __( 'Default question order', 'anspress-question-answer' ),
-					'desc'    => __( 'Order question list by default using selected', 'anspress-question-answer' ),
-					'type'    => 'select',
-					'options' => array(
-						'voted'  => __( 'Voted', 'anspress-question-answer' ),
-						'active' => __( 'Active', 'anspress-question-answer' ),
-						'newest' => __( 'Newest', 'anspress-question-answer' ),
-						'oldest' => __( 'Oldest', 'anspress-question-answer' ),
-					),
-					'value'   => $opt['question_order_by'],
-				),
-				'keep_stop_words'               => array(
+				'keep_stop_words'         => array(
 					'label' => __( 'Keep stop words in question slug', 'anspress-question-answer' ),
 					'desc'  => __( 'AnsPress will not strip stop words in question slug.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['keep_stop_words'],
 				),
-				'minimum_qtitle_length'         => array(
+				'minimum_qtitle_length'   => array(
 					'label'   => __( 'Minimum title length', 'anspress-question-answer' ),
 					'desc'    => __( 'Set minimum letters for a question title.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['minimum_qtitle_length'],
 				),
-				'minimum_question_length'       => array(
+				'minimum_question_length' => array(
 					'label'   => __( 'Minimum question content', 'anspress-question-answer' ),
 					'desc'    => __( 'Set minimum letters for a question contents.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['minimum_question_length'],
 				),
-				'question_text_editor'          => array(
-					'label' => __( 'Question editor?', 'anspress-question-answer' ),
-					'desc'  => __( 'Quick tags editor', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['question_text_editor'],
-				),
-				'answer_text_editor'            => array(
-					'label' => __( 'Answer editor?', 'anspress-question-answer' ),
-					'desc'  => __( 'Quick tags editor', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['answer_text_editor'],
-				),
-				'disable_comments_on_question'  => array(
-					'label' => __( 'Disable comments', 'anspress-question-answer' ),
-					'desc'  => __( 'Disable comments on questions.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['disable_comments_on_question'],
-				),
-				'disable_voting_on_question'    => array(
-					'label' => __( 'Disable voting', 'anspress-question-answer' ),
-					'desc'  => __( 'Disable voting on questions.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['disable_voting_on_question'],
-				),
-				'disable_down_vote_on_question' => array(
-					'label' => __( 'Disable down voting', 'anspress-question-answer' ),
-					'desc'  => __( 'Disable down voting on questions.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['disable_down_vote_on_question'],
-				),
-				'close_selected'                => array(
+				'close_selected'          => array(
 					'label' => __( 'Close question after selecting answer', 'anspress-question-answer' ),
 					'desc'  => __( 'If enabled this will prevent user to submit answer on solved question.', 'anspress-question-answer' ),
 					'type'  => 'checkbox',
 					'value' => $opt['close_selected'],
 				),
-				'answers_sort'                  => array(
+				'answers_sort'            => array(
 					'label'   => __( 'Default answers order', 'anspress-question-answer' ),
 					'desc'    => __( 'Order answers by by default using selected', 'anspress-question-answer' ),
 					'type'    => 'select',
@@ -1332,29 +1288,11 @@ class AnsPress_Admin {
 					),
 					'value'   => $opt['answers_sort'],
 				),
-				'minimum_ans_length'            => array(
+				'minimum_ans_length'      => array(
 					'label'   => __( 'Minimum answer content', 'anspress-question-answer' ),
 					'desc'    => __( 'Set minimum letters for a answer contents.', 'anspress-question-answer' ),
 					'subtype' => 'number',
 					'value'   => $opt['minimum_ans_length'],
-				),
-				'disable_comments_on_answer'    => array(
-					'label' => __( 'Disable comments', 'anspress-question-answer' ),
-					'desc'  => __( 'Disable comments on answer.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['disable_comments_on_answer'],
-				),
-				'disable_voting_on_answer'      => array(
-					'label' => __( 'Disable voting', 'anspress-question-answer' ),
-					'desc'  => __( 'Disable voting on answers.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['disable_voting_on_answer'],
-				),
-				'disable_down_vote_on_answer'   => array(
-					'label' => __( 'Disable down voting', 'anspress-question-answer' ),
-					'desc'  => __( 'Disable down voting on answers.', 'anspress-question-answer' ),
-					'type'  => 'checkbox',
-					'value' => $opt['disable_down_vote_on_answer'],
 				),
 			),
 		);
@@ -1420,121 +1358,6 @@ class AnsPress_Admin {
 
 		$field->add_html( '&nbsp;&nbsp;&nbsp;<a href="' . esc_url( get_permalink( $field->value() ) ) . '">' . __( 'View page', 'anspress-question-answer' ) . '</a>&nbsp;&nbsp;&nbsp;' );
 		$field->add_html( '<a href="' . esc_url( get_edit_post_link( $field->value() ) ) . '">' . __( 'Edit page', 'anspress-question-answer' ) . '</a>' );
-	}
-
-	/**
-	 * Load addons options form in a thickbox.
-	 *
-	 * @return void
-	 * @deprecated 5.0.0
-	 */
-	public static function ap_addon_options() {
-		_deprecated_function( __METHOD__, '5.0.0' );
-
-		// Bail if no permission.
-		if ( ! current_user_can( 'manage_options' ) ) {
-			exit;
-		}
-
-		define( 'IFRAME_REQUEST', true );
-		iframe_header();
-
-		wp_enqueue_style( 'ap-admin-css', ANSPRESS_URL . 'assets/ap-admin.css', array(), AP_VERSION );
-		wp_enqueue_style( 'anspress-fonts', ap_get_theme_url( 'css/fonts.css' ), array(), AP_VERSION );
-		?>
-			<script type="text/javascript">
-				currentQuestionID = '<?php the_ID(); ?>';
-				apTemplateUrl = '<?php echo esc_url( ap_get_theme_url( 'js-template', false, false ) ); ?>';
-				aplang = {};
-				apShowComments  = false;
-				removeImage = '<?php esc_attr_e( 'Remove image', 'anspress-question-answer' ); ?>';
-			</script>
-		<?php
-
-		wp_enqueue_script( 'anspress-admin-js' );
-
-		$addon     = ap_get_addon( ap_sanitize_unslash( 'addon', 'r' ) );
-		$from_args = array(
-			'form_action' => admin_url( 'admin.php?action=ap_save_addon_options&active_addon=' . $addon['id'] ),
-			'ajax_submit' => false,
-		);
-
-		/**
-		 * Filter AnsPress add-on options form.
-		 *
-		 * @param array $form_args Array for form arguments.
-		 * @since 4.1.0
-		 */
-		$form_args = apply_filters( 'ap_addon_form_args', $from_args );
-
-		$form_name = str_replace( '.php', '', $addon['id'] );
-		$form_name = str_replace( '/', '_', $form_name );
-
-		echo '<div class="ap-thickboxw">';
-		// Show updated notice.
-		if ( ap_isset_post_value( 'updated' ) === '1' ) {
-			echo '<div class="notice notice-success is-dismissible">';
-			echo '<p>' . esc_html__( 'Addon options updated successfully!', 'anspress-question-answer' ) . '</p>';
-			echo '</div>';
-		}
-
-		if ( anspress()->form_exists( 'addon-' . $form_name ) ) {
-			anspress()->get_form( 'addon-' . $form_name )->generate( $form_args );
-		} else {
-			echo '<p class="ap-form-nofields">';
-			// translators: %s is name of wp hook.
-			echo esc_attr( sprintf( __( 'There is no option registered by this addon. Custom options can be registered by using hook: %s', 'anspress-question-answer' ), 'ap_form_addon-' . $form_name ) );
-			echo '</p>';
-		}
-		echo '</div>';
-
-		iframe_footer();
-		exit;
-	}
-
-	/**
-	 * Saves addons options and redirect back to addon form.
-	 *
-	 * @return void
-	 * @since 4.1.8
-	 */
-	public static function save_addon_options() {
-		// Bail if no permission.
-		if ( ! current_user_can( 'manage_options' ) ) {
-			exit;
-		}
-
-		$form_name  = ap_sanitize_unslash( 'ap_form_name', 'r' );
-		$addon_name = ap_sanitize_unslash( 'active_addon', 'r' );
-		$addon      = ap_get_active_addons( $addon_name );
-		$updated    = false;
-
-		// Process submit form.
-		if ( ! empty( $form_name ) && anspress()->get_form( $form_name )->is_submitted() ) {
-			$form   = anspress()->get_form( $form_name );
-			$values = $form->get_values();
-
-			if ( ! $form->have_errors() ) {
-				$options = get_option( 'anspress_opt', array() );
-
-				foreach ( $values as $key => $opt ) {
-					$options[ $key ] = $opt['value'];
-				}
-
-				update_option( 'anspress_opt', $options );
-				wp_cache_delete( 'anspress_opt', 'ap' );
-				wp_cache_delete( 'anspress_opt', 'ap' );
-
-				$updated = true;
-
-				// Flush rewrite rules.
-				ap_opt( 'ap_flush', 'true' );
-			}
-		}
-
-		wp_redirect( admin_url( 'admin.php?action=ap_addon_options&addon=' . $addon_name . '&updated=' . $updated ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
-
-		exit;
 	}
 
 	/**

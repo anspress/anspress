@@ -36,7 +36,7 @@ class CategoryModule extends AbstractModule {
 		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
 		add_filter( 'term_link', array( $this, 'termLinkFilter' ), 10, 3 );
 		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ) );
-		add_action( 'save_post_question', array( $this, 'after_new_question' ), 0, 2 );
+
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
 		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
 		add_filter( 'ap_list_filters', array( $this, 'ap_list_filters' ) );
@@ -389,22 +389,6 @@ class CategoryModule extends AbstractModule {
 		}
 
 		return $form;
-	}
-
-	/**
-	 * Things to do after creating a question.
-	 *
-	 * @param   integer $post_id    Questions ID.
-	 * @param   object  $post       Question post object.
-	 * @return  void
-	 * @since   1.0
-	 */
-	public function after_new_question( $post_id, $post ) {
-		$values = anspress()->get_form( 'question' )->get_values();
-
-		if ( isset( $values['category']['value'] ) ) {
-			wp_set_post_terms( $post_id, $values['category']['value'], 'question_category' );
-		}
 	}
 
 	/**

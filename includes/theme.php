@@ -402,7 +402,7 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
 		$param['ap_s'] = $search_q;
 	}
 
-	$navs = array(
+	$navs   = array(
 		array(
 			'key'   => 'order_by',
 			'value' => 'active',
@@ -414,15 +414,6 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
 			'label' => __( 'New', 'anspress-question-answer' ),
 		),
 	);
-
-	if ( ! ap_opt( 'disable_voting_on_question' ) ) {
-		$navs[] = array(
-			'key'   => 'order_by',
-			'value' => 'voted',
-			'label' => __( 'Votes', 'anspress-question-answer' ),
-		);
-	}
-
 	$navs[] = array(
 		'key'   => 'order_by',
 		'value' => 'answers',
@@ -471,8 +462,10 @@ function ap_get_questions_orderby( $current_url = '' ) { // phpcs:ignore Generic
  *
  * @param string|boolean $base Current page url.
  * @since 2.0.1
+ * @deprecated 5.0.0
  */
 function ap_answers_tab( $base = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
 	$sort = ap_sanitize_unslash( 'order_by', 'r', ap_opt( 'answers_sort' ) );
 
 	if ( ! $base ) {
@@ -485,13 +478,6 @@ function ap_answers_tab( $base = false ) {
 			'title' => __( 'Active', 'anspress-question-answer' ),
 		),
 	);
-
-	if ( ! ap_opt( 'disable_voting_on_answer' ) ) {
-		$navs['voted'] = array(
-			'link'  => add_query_arg( array( 'order_by' => 'voted' ), $base ),
-			'title' => __( 'Voted', 'anspress-question-answer' ),
-		);
-	}
 
 	$navs['newest'] = array(
 		'link'  => add_query_arg( array( 'order_by' => 'newest' ), $base ),

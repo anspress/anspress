@@ -64,7 +64,7 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	 *
 	 * @since 5.0.0
 	 */
-	do_action( 'anspress/after/question_title' );
+	do_action( 'anspress/block/single-question/after/question_title' );
 	?>
 
 	<div class="anspress-apq-item-terms">
@@ -82,6 +82,7 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	</div>
 
 	<?php
+	if ( ! $attributes['hideSubscribeButton'] ?? true ) {
 		Plugin::loadView(
 			'src/frontend/single-question/php/button-subscribe.php',
 			array(
@@ -89,7 +90,8 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 				'attributes' => $attributes,
 			)
 		);
-		?>
+	}
+	?>
 
 	<div class="anspress-apq-item-c">
 		<?php
@@ -98,7 +100,7 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 		 *
 		 * @since 5.0.0
 		 */
-		do_action( 'anspress/before/question_content' );
+		do_action( 'anspress/block/single-question/before/question_content' );
 		?>
 
 		<?php
@@ -140,7 +142,7 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 		 *
 		 * @since 5.0.0
 		 */
-		do_action( 'anspress/before/answers_list' )
+		do_action( 'anspress/block/single-question/before/answers_list' )
 		?>
 		<anspress-answer-list data-anspress-id="answers-<?php echo (int) $_post->ID; ?>" class="<?php echo esc_attr( $answersClass ); ?>" data-anspress="<?php echo esc_attr( wp_json_encode( $answersArgs ) ); ?>">
 			<?php if ( get_query_var( 'answer_id' ) ) : ?>
@@ -206,6 +208,6 @@ if ( ! Auth::currentUserCan( 'question:view', array( 'question' => $_post ) ) ) 
 	 *
 	 * @since 5.0.0
 	 */
-	do_action( 'anspress/after/question_content' );
+	do_action( 'anspress/block/single-question/after/question_content' );
 	?>
 </div>

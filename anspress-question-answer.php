@@ -317,7 +317,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'widgets/question_stats.php';
 			require_once ANSPRESS_DIR . 'widgets/questions.php';
 			require_once ANSPRESS_DIR . 'widgets/breadcrumbs.php';
-			require_once ANSPRESS_DIR . 'widgets/ask-form.php';
 			require_once ANSPRESS_DIR . 'widgets/leaderboard.php';
 
 			require_once ANSPRESS_DIR . 'lib/class-anspress-upgrader.php';
@@ -384,8 +383,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @throws \Exception Throws when requested from does not exits.
 		 * @since 4.1.0
 		 * @since 4.2.0 Fixed: Only variable references should be returned by reference.
+		 * @deprecated 5.0.0
 		 */
 		public function &get_form( $name ) {
+			_deprecated_function( __METHOD__, '5.0.0' );
+
 			$name = preg_replace( '/^form_/i', '', $name );
 
 			if ( $this->form_exists( $name ) ) {
@@ -407,8 +409,11 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string $name Name of form.
 		 * @return boolean
 		 * @since 4.1.0
+		 * @deprecated 5.0.0
 		 */
 		public function form_exists( $name ) {
+			_deprecated_function( __METHOD__, '5.0.0' );
+
 			$name = preg_replace( '/^form_/i', '', $name );
 
 			if ( isset( $this->forms[ $name ] ) ) {
@@ -428,6 +433,7 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			 * }
 			 * @since 4.1.0
 			 * @todo  Add detailed docs for `$fields`.
+			 * @deprecated 5.0.0
 			 */
 			$args = apply_filters( 'ap_form_' . $name, null );
 

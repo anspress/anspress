@@ -213,7 +213,6 @@ class TestAjax extends TestCaseAjax {
 		// Test on disabling down vote.
 		$this->setRole( 'subscriber' );
 		$user_id = $this->factory()->user->create( array( 'role' => 'subscriber' ) );
-		ap_opt( 'disable_down_vote_on_question', true );
 		ap_opt( 'disable_down_vote_on_answer', true );
 
 		// For question post type.
@@ -250,10 +249,6 @@ class TestAjax extends TestCaseAjax {
 		$this->handle( 'ap_ajax' );
 		$this->assertTrue( $this->ap_ajax_success( 'success' ) );
 		$this->assertTrue( $this->ap_ajax_success( 'snackbar' )->message === 'Voting down is disabled.' );
-
-		// Reset option.
-		ap_opt( 'disable_down_vote_on_question', false );
-		ap_opt( 'disable_down_vote_on_answer', false );
 
 		// Voting on own question and answer.
 		$this->setRole( 'subscriber' );

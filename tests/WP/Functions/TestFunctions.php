@@ -2380,69 +2380,6 @@ class TestFunctions extends TestCase {
 	}
 
 	/**
-	 * @covers ::ap_get_current_list_filters
-	 */
-	public function testAPGetCurrentListFilters() {
-		// Test 1.
-		$result = ap_get_current_list_filters( 'order_by' );
-		$this->assertEquals( 'active', $result );
-
-		// After changing the order_by data.
-		ap_opt( 'question_order_by', 'newest' );
-		$result = ap_get_current_list_filters( 'order_by' );
-		$this->assertEquals( 'newest', $result );
-		ap_opt( 'question_order_by', 'voted' );
-		$result = ap_get_current_list_filters( 'order_by' );
-		$this->assertEquals( 'voted', $result );
-
-		// Test 2.
-		ap_opt( 'question_order_by', 'active' );
-		$result = ap_get_current_list_filters();
-		$this->assertIsArray( $result );
-		$this->assertArrayHasKey( 'order_by', $result );
-		$this->assertEquals( [ 'order_by' => 'active' ], $result );
-
-		// Test 3.
-		// Before applying the filter.
-		// Case 1.
-		$result = ap_get_current_list_filters();
-		$this->assertIsArray( $result );
-		$this->assertEquals( [ 'order_by' => 'active' ], $result );
-		$this->assertArrayHasKey( 'order_by', $result );
-
-		// Case 2.
-		$result = ap_get_current_list_filters( 'order_by' );
-		$this->assertIsString( $result );
-		$this->assertEquals( 'active', $result );
-
-		// After applying the filter with empty array.
-		add_filter( 'ap_list_filters', [ $this, 'apListFilters' ] );
-		// Case 1.
-		$result = ap_get_current_list_filters();
-		$this->assertIsArray( $result );
-		$this->assertEquals( [], $result );
-		$this->assertArrayNotHasKey( 'order_by', $result );
-
-		// Case 2.
-		$result = ap_get_current_list_filters( 'order_by' );
-		$this->assertEmpty( $result );
-		$this->assertEquals( false, $result );
-
-		// After removing the filter with empty array.
-		remove_filter( 'ap_list_filters', [ $this, 'apListFilters' ] );
-		// Case 1.
-		$result = ap_get_current_list_filters();
-		$this->assertIsArray( $result );
-		$this->assertEquals( [ 'order_by' => 'active' ], $result );
-		$this->assertArrayHasKey( 'order_by', $result );
-
-		// Case 2.
-		$result = ap_get_current_list_filters( 'order_by' );
-		$this->assertIsString( $result );
-		$this->assertEquals( 'active', $result );
-	}
-
-	/**
 	 * @covers ::ap_get_addon_image
 	 */
 	public function testAPGetAddonImage() {
@@ -2519,21 +2456,6 @@ class TestFunctions extends TestCase {
 		// Test on answer post type.
 		ap_trigger_qa_update_hook( get_post( $id->a ), 'update' );
 		$this->assertTrue( did_action( 'ap_after_update_answer' ) > 0 );
-	}
-
-	/**
-	 * @covers ::ap_ajax_tinymce_assets
-	 */
-	public function testAPAjaxTinyMCEAssets() {
-		ob_start();
-		ap_ajax_tinymce_assets();
-		$output = ob_get_clean();
-
-		// Test for assertions.
-		$this->assertStringContainsString( 'tinyMCEPreInit', $output );
-		$this->assertStringContainsString( 'ajaxurl', $output );
-		$this->assertStringContainsString( 'tinymce', $output );
-		$this->assertStringContainsString( 'quicktags', $output );
 	}
 
 	/**

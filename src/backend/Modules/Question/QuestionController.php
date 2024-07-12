@@ -80,7 +80,7 @@ class QuestionController extends AbstractPostController {
 
 		$this->questionService->deleteQuestion( $post->ID );
 
-		$this->addMessage( 'success', __( 'Question deleted successfully.', 'anspress-question-answer' ) );
+		$this->addMessage( 'success', __( 'Question deleted successfully. Redirecting..', 'anspress-question-answer' ) );
 
 		return $this->response(
 			array(

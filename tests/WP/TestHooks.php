@@ -64,10 +64,6 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_filter( 'post_class', [ 'AnsPress_Theme', 'remove_hentry_class' ] ) );
 		$this->assertEquals( 10, has_action( 'ap_after_question_content', [ 'AnsPress_Theme', 'after_question_content' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_after_answer_content', [ 'AnsPress_Theme', 'after_question_content' ] ) );
-
-		// Common pages hooks.
-		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Common_Pages', 'register_common_pages' ] ) );
-
 		// Register post status.
 		$this->assertEquals( 10, has_action( 'init', [ 'AnsPress_Post_Status', 'register_post_status' ] ) );
 
@@ -86,9 +82,6 @@ class TestHooks extends TestCase {
 		$this->assertEquals( 10, has_action( 'intermediate_image_sizes_advanced', [ 'AnsPress_Uploader', 'image_sizes_advanced' ] ) );
 
 		// Form hooks.
-		$this->assertEquals( 11, has_action( 'ap_form_question', [ 'AP_Form_Hooks', 'question_form' ] ) );
-		$this->assertEquals( 11, has_action( 'ap_form_answer', [ 'AP_Form_Hooks', 'answer_form' ] ) );
-		$this->assertEquals( 11, has_action( 'ap_form_image_upload', [ 'AP_Form_Hooks', 'image_upload_form' ] ) );
 
 		// Subscriptions.
 		$this->assertEquals( 11, has_action( 'get_comments_number', [ 'AnsPress_Hooks', 'get_comments_number' ] ) );

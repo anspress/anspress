@@ -32,10 +32,12 @@ $_post    = ap_get_post( $args['ID'] );
 	<span data-anspressel="votes-net-count" class="anspress-apq-item-vcount">
 		<?php echo (int) $_post->votes_net; ?>
 	</span>
-	<button
-		data-anspressel="vote-down"
-		class="apicon-thumb-down anspress-apq-item-vote-down"
-		<?php echo 'voteup' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
-		title="Down vote this question"
-	></button>
+	<?php if ( ! $disableVoteDown ?? true ) : ?>
+		<button
+			data-anspressel="vote-down"
+			class="apicon-thumb-down anspress-apq-item-vote-down"
+			<?php echo 'voteup' === $voteData['currentUserVoted'] ? 'disabled' : ''; ?>
+			title="Down vote this question"
+		></button>
+	<?php endif; ?>
 </anspress-vote-button>

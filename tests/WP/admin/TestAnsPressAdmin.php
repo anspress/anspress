@@ -755,24 +755,6 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( ap_opt( 'show_solved_prefix' ), $form['fields']['show_solved_prefix']['value'] );
 		$this->assertEquals( 'required', $form['fields']['show_solved_prefix']['validate'] );
 
-		// Test for question_order_by field.
-		$this->assertArrayHasKey( 'question_order_by', $form['fields'] );
-		$this->assertEquals( 'Default question order', $form['fields']['question_order_by']['label'] );
-		$this->assertEquals( 'Order question list by default using selected', $form['fields']['question_order_by']['desc'] );
-		$this->assertEquals( 'select', $form['fields']['question_order_by']['type'] );
-		$options_args = [
-			'voted'  => 'Voted',
-			'active' => 'Active',
-			'newest' => 'Newest',
-			'oldest' => 'Oldest',
-		];
-		$this->assertEquals( $options_args, $form['fields']['question_order_by']['options'] );
-		foreach ( $options_args as $key => $value ) {
-			$this->assertArrayHasKey( $key, $form['fields']['question_order_by']['options'] );
-			$this->assertEquals( $value, $form['fields']['question_order_by']['options'][ $key ] );
-		}
-		$this->assertEquals( ap_opt( 'question_order_by' ), $form['fields']['question_order_by']['value'] );
-
 		// Test for keep_stop_words field.
 		$this->assertArrayHasKey( 'keep_stop_words', $form['fields'] );
 		$this->assertEquals( 'Keep stop words in question slug', $form['fields']['keep_stop_words']['label'] );
@@ -793,41 +775,6 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'Set minimum letters for a question contents.', $form['fields']['minimum_question_length']['desc'] );
 		$this->assertEquals( 'number', $form['fields']['minimum_question_length']['subtype'] );
 		$this->assertEquals( ap_opt( 'minimum_question_length' ), $form['fields']['minimum_question_length']['value'] );
-
-		// Test for question_text_editor field.
-		$this->assertArrayHasKey( 'question_text_editor', $form['fields'] );
-		$this->assertEquals( 'Question editor?', $form['fields']['question_text_editor']['label'] );
-		$this->assertEquals( 'Quick tags editor', $form['fields']['question_text_editor']['desc'] );
-		$this->assertEquals( 'checkbox', $form['fields']['question_text_editor']['type'] );
-		$this->assertEquals( ap_opt( 'question_text_editor' ), $form['fields']['question_text_editor']['value'] );
-
-		// Test for answer_text_editor field.
-		$this->assertArrayHasKey( 'answer_text_editor', $form['fields'] );
-		$this->assertEquals( 'Answer editor?', $form['fields']['answer_text_editor']['label'] );
-		$this->assertEquals( 'Quick tags editor', $form['fields']['answer_text_editor']['desc'] );
-		$this->assertEquals( 'checkbox', $form['fields']['answer_text_editor']['type'] );
-		$this->assertEquals( ap_opt( 'answer_text_editor' ), $form['fields']['answer_text_editor']['value'] );
-
-		// Test for disable_comments_on_question field.
-		$this->assertArrayHasKey( 'disable_comments_on_question', $form['fields'] );
-		$this->assertEquals( 'Disable comments', $form['fields']['disable_comments_on_question']['label'] );
-		$this->assertEquals( 'Disable comments on questions.', $form['fields']['disable_comments_on_question']['desc'] );
-		$this->assertEquals( 'checkbox', $form['fields']['disable_comments_on_question']['type'] );
-		$this->assertEquals( ap_opt( 'disable_comments_on_question' ), $form['fields']['disable_comments_on_question']['value'] );
-
-		// Test for disable_voting_on_question field.
-		$this->assertArrayHasKey( 'disable_voting_on_question', $form['fields'] );
-		$this->assertEquals( 'Disable voting', $form['fields']['disable_voting_on_question']['label'] );
-		$this->assertEquals( 'Disable voting on questions.', $form['fields']['disable_voting_on_question']['desc'] );
-		$this->assertEquals( 'checkbox', $form['fields']['disable_voting_on_question']['type'] );
-		$this->assertEquals( ap_opt( 'disable_voting_on_question' ), $form['fields']['disable_voting_on_question']['value'] );
-
-		// Test for disable_down_vote_on_question field.
-		$this->assertArrayHasKey( 'disable_down_vote_on_question', $form['fields'] );
-		$this->assertEquals( 'Disable down voting', $form['fields']['disable_down_vote_on_question']['label'] );
-		$this->assertEquals( 'Disable down voting on questions.', $form['fields']['disable_down_vote_on_question']['desc'] );
-		$this->assertEquals( 'checkbox', $form['fields']['disable_down_vote_on_question']['type'] );
-		$this->assertEquals( ap_opt( 'disable_down_vote_on_question' ), $form['fields']['disable_down_vote_on_question']['value'] );
 
 		// Test for close_selected field.
 		$this->assertArrayHasKey( 'close_selected', $form['fields'] );
@@ -867,13 +814,6 @@ class TestAnsPressAdmin extends TestCase {
 		$this->assertEquals( 'Disable comments on answer.', $form['fields']['disable_comments_on_answer']['desc'] );
 		$this->assertEquals( 'checkbox', $form['fields']['disable_comments_on_answer']['type'] );
 		$this->assertEquals( ap_opt( 'disable_comments_on_answer' ), $form['fields']['disable_comments_on_answer']['value'] );
-
-		// Test for disable_voting_on_answer field.
-		$this->assertArrayHasKey( 'disable_voting_on_answer', $form['fields'] );
-		$this->assertEquals( 'Disable voting', $form['fields']['disable_voting_on_answer']['label'] );
-		$this->assertEquals( 'Disable voting on answers.', $form['fields']['disable_voting_on_answer']['desc'] );
-		$this->assertEquals( 'checkbox', $form['fields']['disable_voting_on_answer']['type'] );
-		$this->assertEquals( ap_opt( 'disable_voting_on_answer' ), $form['fields']['disable_voting_on_answer']['value'] );
 
 		// Test for disable_down_vote_on_answer field.
 		$this->assertArrayHasKey( 'disable_down_vote_on_answer', $form['fields'] );

@@ -7,7 +7,6 @@
  */
 
 use AnsPress\Classes\Plugin;
-use AnsPress\Classes\PostHelper;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -84,11 +83,16 @@ if ( $selectedAnswer ) {
 
 			<div class="anspress-apq-item-footer">
 				<?php
+				if ( $attributes['enableVote'] ) {
 					Plugin::loadView(
 						'src/frontend/single-question/php/vote-button.php',
-						array( 'ID' => $post->ID )
+						array(
+							'ID'              => $post->ID,
+							'disableVoteDown' => $attributes['disableVoteDown'],
+						)
 					);
-					?>
+				}
+				?>
 				<?php if ( ! $isQuestion ) : ?>
 					<?php
 						Plugin::loadView(
@@ -117,7 +121,9 @@ if ( $selectedAnswer ) {
 		?>
 
 		<?php
+		if ( ( $isQuestion && $attributes['enableQuestionComment'] ) || ( ! $isQuestion && $attributes['enableAnswerComment'] ) ) {
 			Plugin::loadView( 'src/frontend/common/comments/render.php', $args );
+		}
 		?>
 	</div>
 

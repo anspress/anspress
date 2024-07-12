@@ -96,10 +96,6 @@ return array(
 		'type'  => 'string',
 		'value' => '5',
 	),
-	'question_order_by'              => array(
-		'type'  => 'string',
-		'value' => 'active',
-	),
 	'answers_sort'                   => array(
 		'type'  => 'string',
 		'value' => 'active',
@@ -120,14 +116,6 @@ return array(
 		'type'  => 'string',
 		'value' => 'question',
 	),
-	'question_text_editor'           => array(
-		'type'  => 'boolean',
-		'value' => false,
-	),
-	'answer_text_editor'             => array(
-		'type'  => 'boolean',
-		'value' => false,
-	),
 	'base_page_title'                => array(
 		'type'  => 'string',
 		'value' => __( 'Questions', 'anspress-question-answer' ),
@@ -140,10 +128,6 @@ return array(
 	'user_page_title'                => array(
 		'type'  => 'string',
 		'value' => '%s',
-	),
-	'disable_comments_on_question'   => array(
-		'type'  => 'boolean',
-		'value' => false,
 	),
 	'disable_comments_on_answer'     => array(
 		'type'  => 'boolean',
@@ -170,14 +154,6 @@ return array(
 		'value' => 86400,
 	),
 	'db_cleanup'                     => array(
-		'type'  => 'boolean',
-		'value' => false,
-	),
-	'disable_voting_on_question'     => array(
-		'type'  => 'boolean',
-		'value' => false,
-	),
-	'disable_voting_on_answer'       => array(
 		'type'  => 'boolean',
 		'value' => false,
 	),
@@ -220,10 +196,6 @@ return array(
 	'allowed_file_mime'              => array(
 		'type'  => 'string',
 		'value' => "jpeg|jpg=>image/jpeg\npng=>image/png\ngif=>image/gif",
-	),
-	'disable_down_vote_on_question'  => array(
-		'type'  => 'boolean',
-		'value' => false,
 	),
 	'disable_down_vote_on_answer'    => array(
 		'type'  => 'boolean',

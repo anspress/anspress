@@ -238,7 +238,7 @@ class QuestionService extends AbstractService {
 	 * @return bool
 	 */
 	public function deleteQuestion( int $questionId ) {
-		$deleted = wp_delete_post( $questionId, true );
+		$deleted = wp_trash_post( $questionId );
 
 		if ( ! $deleted ) {
 			return false;

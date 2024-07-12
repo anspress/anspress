@@ -100,7 +100,7 @@ class AnswerService extends AbstractService {
 	 * @return bool
 	 */
 	public function deleteAnswer( int $answer_id ) {
-		$deleted = wp_delete_post( $answer_id, true );
+		$deleted = wp_trash_post( $answer_id, true );
 
 		if ( ! $deleted ) {
 			return false;
