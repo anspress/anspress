@@ -141,7 +141,6 @@ class TestAnsPress extends TestCase {
 
 		// Check ajax file exists.
 		$this->assertFileExists( ANSPRESS_DIR . 'ajax/repeatable-field.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'ajax/toggle-best-answer.php' );
 
 		// Check classes file exists.
 		$this->assertFileExists( ANSPRESS_DIR . 'classes/ajax.php' );
@@ -184,7 +183,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/theme.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/upload.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/views.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/votes.php' );
 
 		// Check lib file exists.
 		$this->assertFileExists( ANSPRESS_DIR . 'lib/form/class-checkbox.php' );

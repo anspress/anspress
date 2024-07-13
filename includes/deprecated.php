@@ -1537,3 +1537,19 @@ function ap_count_post_votes_by( $by, $value ) {
 
 	return $new_counts;
 }
+
+/**
+ * Get a single vote from database.
+ *
+ * @param  integer      $post_id Post ID.
+ * @param  integer      $user_id User ID.
+ * @param  string|array $type    Vote type.
+ * @param  string       $value   Vote value.
+ * @return boolean|object
+ * @since  4.0.0
+ * @deprecated 5.0.0
+ */
+function ap_get_vote( $post_id, $user_id, $type, $value = '' ) {
+	_deprecated_function( __FUNCTION__, '5.0.0' );
+	return false;
+}

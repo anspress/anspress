@@ -432,7 +432,7 @@ abstract class AbstractModel implements ModelInterface {
 		 */
 		do_action( 'anspress/model/after_insert/' . self::getSchema()->getShortTableName(), $inserted );
 
-		return self::find( $wpdb->insert_id );
+		return $inserted;
 	}
 
 	/**

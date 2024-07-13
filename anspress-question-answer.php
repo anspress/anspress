@@ -294,7 +294,6 @@ if ( ! class_exists( 'AnsPress' ) ) {
 			require_once ANSPRESS_DIR . 'includes/qaquery-hooks.php';
 			require_once ANSPRESS_DIR . 'includes/post-types.php';
 			require_once ANSPRESS_DIR . 'includes/post-status.php';
-			require_once ANSPRESS_DIR . 'includes/votes.php';
 			require_once ANSPRESS_DIR . 'includes/views.php';
 			require_once ANSPRESS_DIR . 'includes/theme.php';
 			require_once ANSPRESS_DIR . 'includes/process-form.php';

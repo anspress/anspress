@@ -159,28 +159,19 @@ class SubscriberService extends AbstractService {
 	 * @return SubscriberModel|null
 	 */
 	public function isSubscribedToQuestion( int $questionId, ?int $userId = null ): ?SubscriberModel {
-		$userId = $userId ?? Auth::getID();
+		return $this->isSubscribed( $questionId, 'question', $userId );
+	}
 
-		if ( empty( $userId ) ) {
-			return null;
-		}
-
-		$subscribers = $this->getSubscribers(
-			array(
-				'subs_user_id' => $userId,
-				'subs_event'   => 'question',
-				'subs_ref_id'  => $questionId,
-			),
-			array(
-				'limit' => 1,
-			)
-		);
-
-		if ( empty( $subscribers ) ) {
-			return null;
-		}
-
-		return $subscribers[0];
+	/**
+	 * Check if user is subscribed to an answer.
+	 *
+	 * @param int      $answerId Answer id.
+	 * @param null|int $userId User id.
+	 * @return null|SubscriberModel
+	 */
+	public function isSubscribedToAnswer( int $answerId, ?int $userId = null ): ?SubscriberModel {
+		$postParent = get_post_field( 'post_parent', $answerId );
+		return $this->isSubscribed( $answerId, 'answer_' . $postParent, $userId );
 	}
 
 	/**
@@ -192,20 +183,58 @@ class SubscriberService extends AbstractService {
 	 * @throws InvalidArgumentException If user is already subscribed to the question.
 	 */
 	public function subscribeToQuestion( int $questionId, ?int $userId = null ): SubscriberModel {
+		$subscriber = $this->subscribe( $questionId, 'question', $userId );
+		$count      = $this->getSubscriberCountByEventRef( 'question', $questionId );
+
+		ap_insert_qameta( $questionId, array( 'subscribers' => $count ) );
+
+		return $subscriber;
+	}
+
+	/**
+	 * Subscribe to an answer.
+	 *
+	 * @param int      $answerId Answer ID.
+	 * @param int|null $userId User ID.
+	 * @return SubscriberModel
+	 * @throws InvalidArgumentException If user is already subscribed to the answer.
+	 */
+	public function subscribeToAnswer( int $answerId, ?int $userId = null ): SubscriberModel {
+		$postParent = get_post_field( 'post_parent', $answerId );
+		$event      = 'answer_' . $postParent;
+		$subscriber = $this->subscribe( $answerId, $event, $userId );
+
+		$count = $this->getSubscriberCountByEventRef( $event, $answerId );
+
+		ap_insert_qameta( $answerId, array( 'subscribers' => $count ) );
+
+		return $subscriber;
+	}
+
+	/**
+	 * Subscribe.
+	 *
+	 * @param int      $refId ID.
+	 * @param string   $event Event.
+	 * @param int|null $userId User ID.
+	 * @return SubscriberModel
+	 * @throws InvalidArgumentException If user is already subscribed.
+	 */
+	public function subscribe( int $refId, string $event, ?int $userId = null ): SubscriberModel {
 		$userId = $userId ?? Auth::getID();
 
 		if ( empty( $userId ) ) {
-			throw new InvalidArgumentException( esc_attr__( 'User ID is required when creating a question subscription.', 'anspress-question-answer' ) );
+			throw new InvalidArgumentException( esc_attr__( 'User ID is required when creating a answer subscription.', 'anspress-question-answer' ) );
 		}
 
-		if ( $this->isSubscribedToQuestion( $questionId, $userId ) ) {
-			throw new InvalidArgumentException( esc_attr__( 'User is already subscribed to this question.', 'anspress-question-answer' ) );
+		if ( $this->isSubscribed( $refId, $event, $userId ) ) {
+			throw new InvalidArgumentException( esc_attr__( 'User is already subscribed.', 'anspress-question-answer' ) );
 		}
 
 		$data = array(
 			'subs_user_id' => $userId,
-			'subs_event'   => 'question',
-			'subs_ref_id'  => $questionId,
+			'subs_event'   => $event,
+			'subs_ref_id'  => $refId,
 		);
 
 		return $this->create( $data );
@@ -226,6 +255,39 @@ class SubscriberService extends AbstractService {
 		$sql = $wpdb->prepare( "SELECT COUNT(*) FROM $table WHERE subs_event = %s AND subs_ref_id = %d", $event, $refId ); // @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery
 
 		return (int) $wpdb->get_var( $sql ); // @codingStandardsIgnoreLine WordPress.DB.DirectDatabaseQuery
+	}
+
+	/**
+	 * Check if user is subscribed.
+	 *
+	 * @param int      $refId Reference id.
+	 * @param string   $event Event name.
+	 * @param null|int $userId User id.
+	 * @return null|SubscriberModel
+	 */
+	public function isSubscribed( int $refId, string $event, ?int $userId = null ): ?SubscriberModel {
+		$userId = $userId ?? Auth::getID();
+
+		if ( empty( $userId ) ) {
+			return null;
+		}
+
+		$subscribers = $this->getSubscribers(
+			array(
+				'subs_user_id' => $userId,
+				'subs_event'   => $event,
+				'subs_ref_id'  => $refId,
+			),
+			array(
+				'limit' => 1,
+			)
+		);
+
+		if ( empty( $subscribers ) ) {
+			return null;
+		}
+
+		return $subscribers[0];
 	}
 
 	/**

@@ -29,11 +29,9 @@ class SubscriberModule extends AbstractModule {
 	 * @return void
 	 */
 	public function register_hooks() {
-		add_action( 'ap_after_new_question', array( $this, 'question_subscription' ), 10, 2 );
-		add_action( 'ap_after_new_answer', array( $this, 'answer_subscription' ), 10, 2 );
-		add_action( 'anspress/model/after_insert/ap_subscribers', array( $this, 'new_subscriber' ), 10, 4 );
-		add_action( 'before_delete_post', array( $this, 'delete_subscriptions' ) );
-		add_action( 'ap_publish_comment', array( $this, 'comment_subscription' ) );
+		add_action( 'save_post_question', array( $this, 'questionSubscription' ), 10, 3 );
+		add_action( 'save_post_answer', array( $this, 'answerSubscription' ), 10, 3 );
+		add_action( 'before_delete_post', array( $this, 'deleteSubscriptions' ) );
 	}
 
 	/**
@@ -41,20 +39,17 @@ class SubscriberModule extends AbstractModule {
 	 *
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post post objct.
-	 *
-	 * @category haveTest
+	 * @param boolean $updated Whether post is updated or not.
 	 *
 	 * @since 5.0.0
 	 */
-	public function question_subscription( $post_id, $_post ) {
-		if ( $_post->post_author > 0 ) {
-			SubscriberModel::create(
-				array(
-					'subs_user_id' => $_post->post_author,
-					'subs_event'   => 'question',
-					'subs_ref_id'  => $_post->ID,
-				)
-			);
+	public function questionSubscription( $post_id, $_post, $updated ) {
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		if ( $_post->post_author > 0 && ! $updated ) {
+			Plugin::get( SubscriberService::class )->subscribeToQuestion( $post_id, $_post->post_author );
 		}
 	}
 
@@ -63,39 +58,17 @@ class SubscriberModule extends AbstractModule {
 	 *
 	 * @param integer $post_id Post ID.
 	 * @param object  $_post   Post object.
+	 * @param boolean $updated Whether post is updated or not.
 	 *
 	 * @since 5.0.0
 	 */
-	public function answer_subscription( $post_id, $_post ) {
-		if ( $_post->post_author > 0 ) {
-			SubscriberModel::create(
-				array(
-					'subs_user_id' => $_post->post_author,
-					'subs_event'   => 'answer_' . $post_id,
-					'subs_ref_id'  => $_post->post_parent,
-				)
-			);
-		}
-	}
-
-	/**
-	 * Update qameta subscribers count on adding new subscriber.
-	 *
-	 * @param SubscriberModel $subscriber Subscriber object.
-	 * @since 5.0.0
-	 */
-	public function new_subscriber( SubscriberModel $subscriber ) {
-		// Remove ids from event.
-		$esc_event = ap_esc_subscriber_event( $subscriber->subs_event );
-
-		if ( in_array( $esc_event, array( 'question', 'answer', 'comment' ), true ) ) {
-			ap_update_subscribers_count( $subscriber->subs_ref_id );
+	public function answerSubscription( $post_id, $_post, $updated ) {
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return;
 		}
 
-		// Update answer subscribers count.
-		if ( 'answer' === $esc_event ) {
-			$event_id = ap_esc_subscriber_event_id( $subscriber->subs_event );
-			ap_update_subscribers_count( $event_id );
+		if ( $_post->post_author > 0 && ! $updated ) {
+			Plugin::get( SubscriberService::class )->subscribeToAnswer( $post_id, $_post->post_author );
 		}
 	}
 
@@ -106,7 +79,7 @@ class SubscriberModule extends AbstractModule {
 	 *
 	 * @since 5.0.0
 	 */
-	public function delete_subscriptions( $postid ) {
+	public function deleteSubscriptions( $postid ) {
 		$_post = get_post( $postid );
 
 		// Return if not intended post types.
@@ -127,31 +100,6 @@ class SubscriberModule extends AbstractModule {
 
 		foreach ( $subscribers as $subscriber ) {
 			$subscriber->delete();
-		}
-	}
-
-	/**
-	 * Add comment subscriber.
-	 *
-	 * If question than subscription event will be `question_{$question_id}` and ref id will contain
-	 * comment id. If answer than subscription event will be `answer_{$answer_id}` and ref_id
-	 * will contain comment ID.
-	 *
-	 * @param object $comment Comment object.
-	 * @since 5.0.0
-	 */
-	public function comment_subscription( $comment ) {
-		if ( $comment->user_id > 0 ) {
-			$_post = ap_get_post( $comment->comment_post_ID );
-			$type  = $_post->post_type . '_' . $_post->ID;
-
-			SubscriberModel::create(
-				array(
-					'subs_user_id' => $comment->user_id,
-					'subs_event'   => $type,
-					'subs_ref_id'  => $comment->comment_ID,
-				)
-			);
 		}
 	}
 }

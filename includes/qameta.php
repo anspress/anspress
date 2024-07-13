@@ -432,8 +432,10 @@ function ap_update_answer_selected( $answer_id, $selected = true ) {
  * @param  integer $count Custom count to update.
  * @return integer|false
  * @since  3.1.0
+ * @deprecated 5.0.0 Use `SubscriberService::getSubscriberCountByEventRef()`.
  */
 function ap_update_subscribers_count( $post_id, $count = false ) {
+	_deprecated_function( __FUNCTION__, '5.0.0', 'SubscriberService::getSubscriberCountByEventRef()' );
 	if ( false === $count ) {
 		$count = Plugin::get( SubscriberService::class )
 			->getSubscriberCountByEventRef( 'question', $post_id );
