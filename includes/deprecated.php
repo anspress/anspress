@@ -7,6 +7,7 @@
  * @license   GPL-3.0+
  * @link      https://anspress.net
  * @copyright 2014 Rahul Aryan
+ * @codingStandardsIgnoreFile
  */
 
 use AnsPress\Classes\Plugin;
