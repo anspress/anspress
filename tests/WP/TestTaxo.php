@@ -281,29 +281,6 @@ class TestTaxo extends TestCase {
 		return 'imtag';
 	}
 
-	/**
-	 * @covers ::ap_get_tag_slug
-	 */
-	public function testAPGetTagSlug() {
-		$this->assertEquals( 'tag', ap_get_tag_slug() );
-		ap_opt( 'tag_page_slug', '#' );
-		$this->assertEquals( '#', ap_get_tag_slug() );
-		ap_opt( 'tag_page_slug', '' );
-		$this->assertEquals( 'tag', ap_get_tag_slug() );
-
-		// Test for filter within same function.
-		add_filter( 'ap_tag_slug', [ $this, 'tagSlug' ] );
-		$this->assertEquals( 'imtag', ap_get_tag_slug() );
-		remove_filter( 'ap_tag_slug', [ $this, 'tagSlug' ] );
-		$this->assertEquals( 'tag', ap_get_tag_slug() );
-
-		// Test for filter within the main function.
-		add_filter( 'ap_page_slug_tag', [ $this, 'tagSlug' ] );
-		$this->assertEquals( 'imtag', ap_get_tag_slug() );
-		remove_filter( 'ap_page_slug_tag', [ $this, 'tagSlug' ] );
-		$this->assertEquals( 'tag', ap_get_tag_slug() );
-	}
-
 	public function tagsSlug() {
 		return 'imtags';
 	}

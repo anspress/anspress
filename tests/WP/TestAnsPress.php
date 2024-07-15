@@ -158,7 +158,6 @@ class TestAnsPress extends TestCase {
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/answer-loop.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/api.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-async-tasks.php' );
-		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-form-hooks.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-query.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/class-theme.php' );
 		$this->assertFileExists( ANSPRESS_DIR . 'includes/comments.php' );

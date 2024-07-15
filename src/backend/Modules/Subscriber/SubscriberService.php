@@ -183,6 +183,11 @@ class SubscriberService extends AbstractService {
 	 * @throws InvalidArgumentException If user is already subscribed to the question.
 	 */
 	public function subscribeToQuestion( int $questionId, ?int $userId = null ): SubscriberModel {
+		$question = get_post( $questionId );
+
+		// Check if user has access to view question.
+		Auth::checkAndThrow( 'question:view', array( 'question' => $question ) );
+
 		$subscriber = $this->subscribe( $questionId, 'question', $userId );
 		$count      = $this->getSubscriberCountByEventRef( 'question', $questionId );
 
@@ -201,6 +206,11 @@ class SubscriberService extends AbstractService {
 	 */
 	public function subscribeToAnswer( int $answerId, ?int $userId = null ): SubscriberModel {
 		$postParent = get_post_field( 'post_parent', $answerId );
+		$answer     = get_post( $answerId );
+
+		// Check if user has access to view answer.
+		Auth::currentUserCan( 'answer:view', array( 'answer' => $answer ) );
+
 		$event      = 'answer_' . $postParent;
 		$subscriber = $this->subscribe( $answerId, $event, $userId );
 

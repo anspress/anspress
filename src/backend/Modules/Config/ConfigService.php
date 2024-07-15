@@ -9,7 +9,6 @@
 namespace AnsPress\Modules\Config;
 
 use AnsPress\Classes\AbstractService;
-use AnsPress\Classes\Plugin;
 use InvalidArgumentException;
 
 // Exit if accessed directly.

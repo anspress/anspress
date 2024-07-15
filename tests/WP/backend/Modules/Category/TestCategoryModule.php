@@ -33,7 +33,7 @@ class TestCategoryModule extends TestCase {
 		$this->assertEquals( 10, has_filter( 'ap_breadcrumbs', [ $instance, 'ap_breadcrumbs' ] ) );
 		$this->assertEquals( 10, has_action( 'terms_clauses', [ $instance, 'terms_clauses' ] ) );
 		$this->assertEquals( 10, has_filter( 'ap_list_filters', [ $instance, 'ap_list_filters' ] ) );
-		$this->assertEquals( 10, has_action( 'question_category_add_form_fields', [ $instance, 'image_field_new' ] ) );
+		$this->assertEquals( 10, has_action( 'question_category_add_form_fields', [ $instance, 'customFieldsOnNewForm' ] ) );
 		$this->assertEquals( 10, has_action( 'question_category_edit_form_fields', [ $instance, 'image_field_edit' ] ) );
 		$this->assertEquals( 10, has_action( 'create_question_category', [ $instance, 'save_image_field' ] ) );
 		$this->assertEquals( 10, has_action( 'edited_question_category', [ $instance, 'save_image_field' ] ) );
@@ -549,7 +549,7 @@ class TestCategoryModule extends TestCase {
 
 		// Test begins.
 		ob_start();
-		$instance->image_field_new( '' );
+		$instance->customFieldsOnNewForm( '' );
 		$result = ob_get_clean();
 		$this->assertNotEmpty( $result );
 		$this->assertStringContainsString( '<a href="#" id="ap-category-upload" class="button" data-action="ap_media_uplaod" data-title="Upload image" data-urlc="#ap_category_media_url" data-idc="#ap_category_media_id">Upload image</a>', $result );

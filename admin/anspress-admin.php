@@ -102,14 +102,11 @@ class AnsPress_Admin {
 	 * Register and enqueue admin-specific JavaScript.
 	 */
 	public static function enqueue_admin_scripts() {
-		wp_register_script( 'anspress-admin-js', ANSPRESS_URL . 'assets/js/ap-admin.js', array( 'anspress-common' ), AP_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.NotInFooter
-
 		$page = get_current_screen();
 
 		if ( ! ap_load_admin_assets() ) {
 			return;
 		}
-		wp_enqueue_script( 'anspress-admin-js' );
 
 		?>
 			<script type="text/javascript">

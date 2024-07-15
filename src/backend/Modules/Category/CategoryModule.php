@@ -27,36 +27,22 @@ class CategoryModule extends AbstractModule {
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_action( 'rest_api_init', array( $this, 'registerCustomTermMeta' ) );
 
-		add_action( 'ap_settings_menu_features_groups', array( $this, 'load_options' ) );
-		add_filter( 'ap_form_options_features_category', array( $this, 'register_general_settings_form' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'ap_load_admin_assets', array( $this, 'ap_load_admin_assets' ) );
 		add_action( 'ap_admin_menu', array( $this, 'admin_category_menu' ) );
-		add_action( 'ap_display_question_metas', array( $this, 'ap_display_question_metas' ), 10, 2 );
 		add_action( 'ap_enqueue', array( $this, 'ap_assets_js' ) );
 		add_filter( 'term_link', array( $this, 'termLinkFilter' ), 10, 3 );
-		add_action( 'ap_question_form_fields', array( $this, 'ap_question_form_fields' ) );
+		add_action( 'admin_footer', array( $this, 'categoryScripts' ) );
 
 		add_filter( 'ap_breadcrumbs', array( $this, 'ap_breadcrumbs' ) );
-		add_action( 'terms_clauses', array( $this, 'terms_clauses' ), 10, 3 );
-		add_filter( 'ap_list_filters', array( $this, 'ap_list_filters' ) );
-		add_action( 'question_category_add_form_fields', array( $this, 'image_field_new' ) );
-		add_action( 'question_category_edit_form_fields', array( $this, 'image_field_edit' ) );
+		add_action( 'question_category_add_form_fields', array( $this, 'customFieldsOnNewForm' ) );
+		add_action( 'question_category_edit_form_fields', array( $this, 'customFieldsOnEditForm' ) );
 		add_action( 'create_question_category', array( $this, 'save_image_field' ) );
 		add_action( 'edited_question_category', array( $this, 'save_image_field' ) );
 		add_action( 'ap_rewrites', array( $this, 'rewrite_rules' ), 10, 3 );
-		add_filter( 'ap_main_questions_args', array( $this, 'ap_main_questions_args' ) );
-		add_filter( 'ap_question_subscribers_action_id', array( $this, 'subscribers_action_id' ) );
-		add_filter( 'ap_ask_btn_link', array( $this, 'ap_ask_btn_link' ) );
 		add_filter( 'wp_head', array( $this, 'category_feed' ) );
-		// add_filter( 'manage_edit-question_category_columns', array( $this, 'column_header' ) );
 		add_filter( 'manage_question_category_custom_column', array( $this, 'column_content' ), 10, 3 );
 		add_filter( 'ap_current_page', array( $this, 'ap_current_page' ) );
-		add_action( 'posts_pre_query', array( $this, 'modifyQueryCategoryArchive' ), 9999, 2 );
-
-		// List filtering.
-		add_action( 'ap_ajax_load_filter_category', array( $this, 'load_filter_category' ) );
-		add_filter( 'ap_list_filter_active_category', array( $this, 'filter_active_category' ), 10, 2 );
 	}
 
 	/**
@@ -66,16 +52,6 @@ class CategoryModule extends AbstractModule {
 	 * @since 2.0
 	 */
 	public function registerQuestionCategories() {
-		ap_add_default_options(
-			array(
-				'form_category_orderby'   => 'count',
-				'categories_page_order'   => 'DESC',
-				'categories_page_orderby' => 'count',
-				'category_page_slug'      => 'category',
-				'categories_per_page'     => 20,
-				'categories_image_height' => 150,
-			)
-		);
 
 		/**
 		 * Labels for category taxonomy.
@@ -173,87 +149,6 @@ class CategoryModule extends AbstractModule {
 	}
 
 	/**
-	 * Register Categories options.
-	 *
-	 * @param array $options Options.
-	 * @since unknown
-	 * @since 4.2.0 Moved form registration to another method `register_settings_from`.
-	 */
-	public function load_options( $options ) {
-		$options['category'] = array(
-			'label' => __( 'Category', 'anspress-question-answer' ),
-		);
-
-		return $options;
-	}
-
-	/**
-	 * Register category general settings.
-	 *
-	 * @return array
-	 * @since 4.2.0
-	 */
-	public function register_general_settings_form() {
-		$opt = ap_opt();
-
-		return array(
-			'fields' => array(
-				'categories_page_info'    => array(
-					'html' => '<label class="ap-form-label" for="form_options_category_general-categories_page_info">' . __( 'Categories base page', 'anspress-question-answer' ) . '</label>' . __( 'Base page for categories can be configured in general settings of AnsPress.', 'anspress-question-answer' ),
-				),
-				'form_category_orderby'   => array(
-					'label'       => __( 'Ask form category order', 'anspress-question-answer' ),
-					'description' => __( 'Set how you want to order categories in form.', 'anspress-question-answer' ),
-					'type'        => 'select',
-					'options'     => array(
-						'ID'         => __( 'ID', 'anspress-question-answer' ),
-						'name'       => __( 'Name', 'anspress-question-answer' ),
-						'slug'       => __( 'Slug', 'anspress-question-answer' ),
-						'count'      => __( 'Count', 'anspress-question-answer' ),
-						'term_group' => __( 'Group', 'anspress-question-answer' ),
-					),
-					'value'       => $opt['form_category_orderby'],
-				),
-				'categories_page_orderby' => array(
-					'label'       => __( 'Categories page order by', 'anspress-question-answer' ),
-					'description' => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
-					'type'        => 'select',
-					'options'     => array(
-						'ID'         => __( 'ID', 'anspress-question-answer' ),
-						'name'       => __( 'Name', 'anspress-question-answer' ),
-						'slug'       => __( 'Slug', 'anspress-question-answer' ),
-						'count'      => __( 'Count', 'anspress-question-answer' ),
-						'term_group' => __( 'Group', 'anspress-question-answer' ),
-					),
-					'value'       => $opt['categories_page_orderby'],
-				),
-				'categories_page_order'   => array(
-					'label'       => __( 'Categories page order', 'anspress-question-answer' ),
-					'description' => __( 'Set how you want to order categories in categories page.', 'anspress-question-answer' ),
-					'type'        => 'select',
-					'options'     => array(
-						'ASC'  => __( 'Ascending', 'anspress-question-answer' ),
-						'DESC' => __( 'Descending', 'anspress-question-answer' ),
-					),
-					'value'       => $opt['categories_page_order'],
-				),
-				'categories_per_page'     => array(
-					'label'   => __( 'Category per page', 'anspress-question-answer' ),
-					'desc'    => __( 'Category to show per page', 'anspress-question-answer' ),
-					'subtype' => 'number',
-					'value'   => $opt['categories_per_page'],
-				),
-				'categories_image_height' => array(
-					'label'   => __( 'Categories image height', 'anspress-question-answer' ),
-					'desc'    => __( 'Image height in categories page', 'anspress-question-answer' ),
-					'subtype' => 'number',
-					'value'   => $opt['categories_image_height'],
-				),
-			),
-		);
-	}
-
-	/**
 	 * Enqueue required script
 	 */
 	public function admin_enqueue_scripts() {
@@ -289,22 +184,6 @@ class CategoryModule extends AbstractModule {
 	 */
 	public function admin_category_menu() {
 		add_submenu_page( 'anspress', __( 'Question Categories', 'anspress-question-answer' ), __( 'Question Categories', 'anspress-question-answer' ), 'manage_options', 'edit-tags.php?taxonomy=question_category' );
-	}
-
-	/**
-	 * Append meta display.
-	 *
-	 * @param   array   $metas Display meta items.
-	 * @param   integer $question_id  Question id.
-	 * @return  array
-	 * @since   1.0
-	 */
-	public function ap_display_question_metas( $metas, $question_id ) {
-		if ( ap_post_have_terms( $question_id ) ) {
-			$metas['categories'] = ap_question_categories_html( array( 'label' => '<i class="apicon-category"></i>' ) );
-		}
-
-		return $metas;
 	}
 
 	/**
@@ -354,44 +233,6 @@ class CategoryModule extends AbstractModule {
 	}
 
 	/**
-	 * Add category field in ask form.
-	 *
-	 * @param   array $form Ask form arguments.
-	 * @return  array
-	 * @since   4.1.0
-	 */
-	public function ap_question_form_fields( $form ) {
-		if ( wp_count_terms( 'question_category' ) == 0 ) { // phpcs:ignore
-			return $form;
-		}
-
-		$editing_id  = ap_sanitize_unslash( 'id', 'r' );
-		$category_id = ap_sanitize_unslash( 'category', 'r' );
-
-		$form['fields']['category'] = array(
-			'label'    => __( 'Category', 'anspress-question-answer' ),
-			'desc'     => __( 'Select a topic that best fits your question.', 'anspress-question-answer' ),
-			'type'     => 'select',
-			'options'  => 'terms',
-			'order'    => 2,
-			'validate' => 'required,not_zero',
-		);
-
-		// Add value when editing post.
-		if ( ! empty( $editing_id ) ) {
-			$categories = get_the_terms( $editing_id, 'question_category' );
-
-			if ( $categories ) {
-				$form['fields']['category']['value'] = $categories[0]->term_id;
-			}
-		} elseif ( ! empty( $category_id ) ) {
-			$form['fields']['category']['value'] = (int) $category_id;
-		}
-
-		return $form;
-	}
-
-	/**
 	 * Add category nav in AnsPress breadcrumbs.
 	 *
 	 * @param  array $navs Breadcrumbs nav array.
@@ -433,53 +274,12 @@ class CategoryModule extends AbstractModule {
 	}
 
 	/**
-	 * Modify term clauses.
-	 *
-	 * @param array $pieces MySql query parts.
-	 * @param array $taxonomies Taxonomies.
-	 * @param array $args Args.
-	 */
-	public function terms_clauses( $pieces, $taxonomies, $args ) {
-		if ( ! in_array( 'question_category', $taxonomies, true ) || ! isset( $args['ap_query'] ) || 'subscription' !== $args['ap_query'] ) {
-			return $pieces;
-		}
-
-		global $wpdb;
-
-		$pieces['join']  = $pieces['join'] . ' INNER JOIN ' . $wpdb->prefix . 'ap_meta apmeta ON t.term_id = apmeta.apmeta_actionid';
-		$pieces['where'] = $pieces['where'] . " AND apmeta.apmeta_type='subscriber' AND apmeta.apmeta_param='category' AND apmeta.apmeta_userid='" . $args['user_id'] . "'";
-
-		return $pieces;
-	}
-
-	/**
-	 * Add category sorting in list filters.
-	 *
-	 * @param array $filters Filters.
-	 * @return array
-	 */
-	public function ap_list_filters( $filters ) {
-		global $wp;
-
-		if ( ! isset( $wp->query_vars['ap_categories'] ) && ! is_question_category() ) {
-			$filters['category'] = array(
-				'title'    => __( 'Category', 'anspress-question-answer' ),
-				'items'    => array(),
-				'search'   => true,
-				'multiple' => true,
-			);
-		}
-
-		return $filters;
-	}
-
-	/**
 	 * Custom question category fields.
 	 *
 	 * @param  array $term Term.
 	 * @return void
 	 */
-	public function image_field_new( $term ) {
+	public function customFieldsOnNewForm( $term ) {
 		?>
 		<div class='form-field term-image-wrap'>
 			<label for='ap_image'><?php esc_attr_e( 'Image', 'anspress-question-answer' ); ?></label>
@@ -489,6 +289,14 @@ class CategoryModule extends AbstractModule {
 
 			<p class="description"><?php esc_attr_e( 'Category image', 'anspress-question-answer' ); ?></p>
 		</div>
+		<div class='form-field term-color-wrap'>
+			<label for='ap_color'><?php esc_attr_e( 'Background color', 'anspress-question-answer' ); ?></label>
+			<input id="ap-category-color" type="text" name="ap_color" value="">
+			<p class="description"><?php esc_attr_e( 'Set background color to be used when background is not present', 'anspress-question-answer' ); ?></p>
+
+		</div>
+
+
 		<?php
 	}
 
@@ -497,7 +305,7 @@ class CategoryModule extends AbstractModule {
 	 *
 	 * @param object $term Term.
 	 */
-	public function image_field_edit( $term ) {
+	public function customFieldsOnEditForm( $term ) {
 		$term_meta = get_term_meta( $term->term_id, 'ap_category', true );
 		$term_meta = wp_parse_args(
 			$term_meta,
@@ -631,67 +439,6 @@ class CategoryModule extends AbstractModule {
 	}
 
 	/**
-	 * Filter main questions query args. Modify and add category args.
-	 *
-	 * @param  array $args Questions args.
-	 * @return array
-	 */
-	public function ap_main_questions_args( $args ) {
-		global $wp;
-		$query = $wp->query_vars;
-
-		$categories_operator = ! empty( $wp->query_vars['ap_categories_operator'] ) ? $wp->query_vars['ap_categories_operator'] : 'IN';
-		$current_filter      = ap_get_current_list_filters( 'category' );
-
-		if ( isset( $query['ap_categories'] ) && is_array( $query['ap_categories'] ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'question_category',
-				'field'    => 'slug',
-				'terms'    => $query['ap_categories'],
-				'operator' => $categories_operator,
-			);
-		} elseif ( ! empty( $current_filter ) ) {
-			$args['tax_query'][] = array(
-				'taxonomy' => 'question_category',
-				'field'    => 'term_id',
-				'terms'    => explode( ',', sanitize_comma_delimited( $current_filter ) ),
-			);
-		}
-
-		return $args;
-	}
-
-	/**
-	 * Subscriber action ID.
-	 *
-	 * @param  integer $action_id Current action ID.
-	 * @return integer
-	 */
-	public function subscribers_action_id( $action_id ) {
-		if ( is_question_category() ) {
-			global $question_category;
-			$action_id = $question_category->term_id;
-		}
-
-		return $action_id;
-	}
-
-	/**
-	 * Filter ask button link to append current category link.
-	 *
-	 * @param  string $link Ask button link.
-	 * @return string
-	 */
-	public function ap_ask_btn_link( $link ) {
-		if ( is_question_category() ) {
-			$question_category = get_queried_object();
-			return $link . '?category=' . $question_category->term_id;
-		}
-
-		return $link;
-	}
-
-	/**
 	 * Filter canonical URL when in category page.
 	 *
 	 * @param  string $canonical_url url.
@@ -723,63 +470,6 @@ class CategoryModule extends AbstractModule {
 	}
 
 	/**
-	 * Ajax callback for loading order by filter.
-	 *
-	 * @since 4.0.0
-	 */
-	public function load_filter_category() {
-		$filter = ap_sanitize_unslash( 'filter', 'r' );
-		check_ajax_referer( 'filter_' . $filter, '__nonce' );
-
-		$search = (string) ap_sanitize_unslash( 'search', 'r', false );
-		ap_ajax_json(
-			array(
-				'success'  => true,
-				'items'    => ap_get_category_filter( $search ),
-				'multiple' => true,
-				'nonce'    => wp_create_nonce( 'filter_' . $filter ),
-			)
-		);
-	}
-
-	/**
-	 * Output active category in filter
-	 *
-	 * @param object $active Active term.
-	 * @param string $filter Filter.
-	 * @since 4.0.0
-	 */
-	public function filter_active_category( $active, $filter ) {
-		$current_filters = ap_get_current_list_filters( 'category' );
-
-		if ( ! empty( $current_filters ) ) {
-			$args = array(
-				'taxonomy'      => 'question_category',
-				'hierarchical'  => true,
-				'hide_if_empty' => true,
-				'number'        => 2,
-				'include'       => $current_filters,
-			);
-
-			$terms = get_terms( $args );
-
-			if ( $terms ) {
-				$active_terms = array();
-				foreach ( (array) $terms as $t ) {
-					$active_terms[] = $t->name;
-				}
-
-				$count = is_array( $current_filters ) ? count( $current_filters ) : 0;
-
-				// translators: placeholder contains count.
-				$more_label = sprintf( __( ', %d+', 'anspress-question-answer' ), $count - 2 );
-
-				return ': <span class="ap-filter-active">' . implode( ', ', $active_terms ) . ( $count > 2 ? $more_label : '' ) . '</span>';
-			}
-		}
-	}
-
-	/**
 	 * Modify current page to show category archive.
 	 *
 	 * @param string $query_var Current page.
@@ -795,27 +485,55 @@ class CategoryModule extends AbstractModule {
 	}
 
 	/**
-	 * Modify main query.
-	 *
-	 * @param array  $posts  Array of post object.
-	 * @param object $query Wp_Query object.
-	 * @return void|array
-	 * @since 4.1.0
+	 * Add category column in admin.
 	 */
-	public function modifyQueryCategoryArchive( $posts, $query ) {
-		if ( $query->is_main_query() && $query->is_tax( 'question_category' ) && 'category' === get_query_var( 'ap_page' ) ) {
-			$query->found_posts   = 1;
-			$query->max_num_pages = 1;
-			$page                 = get_page( ap_opt( 'categories_page' ) );
+	public function categoryScripts(): void {
+		// Check current screen.
+		$screen = get_current_screen();
 
-			if ( ! $page ) {
-				return $posts;
-			}
+		if ( 'edit-question_category' === $screen->id ) {
+			?>
+			<script type="text/javascript">
+				jQuery(document).ready(function(){
+					jQuery('#ap-category-color').wpColorPicker();
 
-			$page->post_title = get_queried_object()->name;
-			$posts            = array( $page );
+					jQuery('[data-action="ap_media_uplaod"]').on('click', function (e) {
+						e.preventDefault();
+						$btn = jQuery(this);
+						var image = wp.media({
+							title: jQuery(this).data('title'),
+							// mutiple: true if you want to upload multiple files at once
+							multiple: false
+						}).open().on('select', function (e) {
+							// This will return the selected image from the Media Uploader, the result is an object
+							var uploaded_image = image.state().get('selection').first();
+							// We convert uploaded_image to a JSON object to make accessing it easier
+							// Output to the console uploaded_image
+							var image_url = uploaded_image.toJSON().url;
+							var image_id = uploaded_image.toJSON().id;
+
+							// Let's assign the url value to the input field
+							jQuery($btn.data('urlc')).val(image_url);
+							jQuery($btn.data('idc')).val(image_id);
+
+							if (!jQuery($btn.data('urlc')).prev().is('img')) {
+								jQuery($btn.data('urlc')).before('<img id="ap_category_media_preview" data-action="ap_media_value" src="' + image_url + '" />');
+								jQuery($btn.data("idc")).after('<a href="#" id="ap-category-upload-remove" data-action="ap_media_remove">'+ removeImage + "</a>");
+							} else {
+								jQuery($btn.data('urlc')).prev().attr('src', image_url);
+							}
+						});
+					});
+
+					jQuery( document ).on( 'click', '[data-action="ap_media_remove"]', function (e) {
+						e.preventDefault();
+						jQuery('input[data-action="ap_media_value"]').val('');
+						jQuery('img[data-action="ap_media_value"]').remove();
+						jQuery( this ).remove();
+					} );
+				});
+			</script>
+			<?php
 		}
-
-		return $posts;
 	}
 }
