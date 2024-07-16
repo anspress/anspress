@@ -381,10 +381,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @throws \Exception Throws when requested from does not exits.
 		 * @since 4.1.0
 		 * @since 4.2.0 Fixed: Only variable references should be returned by reference.
-		 * @deprecated 5.0.0
 		 */
 		public function &get_form( $name ) {
-			_deprecated_function( __METHOD__, '5.0.0' );
 
 			$name = preg_replace( '/^form_/i', '', $name );
 
@@ -407,11 +405,8 @@ if ( ! class_exists( 'AnsPress' ) ) {
 		 * @param string $name Name of form.
 		 * @return boolean
 		 * @since 4.1.0
-		 * @deprecated 5.0.0
 		 */
 		public function form_exists( $name ) {
-			_deprecated_function( __METHOD__, '5.0.0' );
-
 			$name = preg_replace( '/^form_/i', '', $name );
 
 			if ( isset( $this->forms[ $name ] ) ) {

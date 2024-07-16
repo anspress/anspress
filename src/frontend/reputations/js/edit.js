@@ -2,7 +2,7 @@ import { useBlockProps, InspectorControls, InnerBlocks } from '@wordpress/block-
 import ServerSideRender from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 
-import { ProNoticeComponent } from '../../common/js/ProNoticeComponent';
+// import { ProNoticeComponent } from '../../common/js/ProNoticeComponent';
 
 const Edit = ({ attributes, setAttributes }) => {
   const { currentQuestionId } = attributes;
@@ -12,7 +12,7 @@ const Edit = ({ attributes, setAttributes }) => {
   return (
     <div {...blockProps}>
       <InspectorControls>
-        <ProNoticeComponent />
+        {/* <ProNoticeComponent /> */}
 
       </InspectorControls>
 

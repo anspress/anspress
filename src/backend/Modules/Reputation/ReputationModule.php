@@ -10,6 +10,8 @@ namespace AnsPress\Modules\Reputation;
 
 use AnsPress\Classes\AbstractModule;
 use AnsPress\Classes\Plugin;
+use AnsPress\Classes\PostHelper;
+use AnsPress\Modules\Vote\VoteModel;
 
 /**
  * Reputation module class.
@@ -35,22 +37,19 @@ class ReputationModule extends AbstractModule {
 		add_action( 'ap_settings_menu_features_groups', array( $this, 'add_to_settings_page' ) );
 		add_action( 'ap_form_options_features_reputation', array( $this, 'load_options' ), 20 );
 		add_action( 'wp_ajax_ap_save_events', array( $this, 'ap_save_events' ) );
-		add_action( 'ap_after_new_question', array( $this, 'new_question' ), 10, 2 );
-		add_action( 'ap_after_new_answer', array( $this, 'new_answer' ), 10, 2 );
-		add_action( 'ap_untrash_question', array( $this, 'new_question' ), 10, 2 );
-		add_action( 'ap_trash_question', array( $this, 'trash_question' ), 10, 2 );
-		add_action( 'ap_before_delete_question', array( $this, 'trash_question' ), 10, 2 );
-		add_action( 'ap_untrash_answer', array( $this, 'new_answer' ), 10, 2 );
-		add_action( 'ap_trash_answer', array( $this, 'trash_answer' ), 10, 2 );
-		add_action( 'ap_before_delete_answer', array( $this, 'trash_answer' ), 10, 2 );
+		add_action( 'save_post_question', array( $this, 'newQuestion' ), 10, 3 );
+		add_action( 'save_post_answer', array( $this, 'newAnswer' ), 10, 3 );
+		add_action( 'trashed_post', array( $this, 'trashQuestion' ), 10, 2 );
+		add_action( 'untrashed_post', array( $this, 'untrashedPost' ), 10 );
+		add_action( 'trashed_post', array( $this, 'trashAnswer' ) );
 		add_action( 'ap_select_answer', array( $this, 'select_answer' ) );
 		add_action( 'ap_unselect_answer', array( $this, 'unselect_answer' ) );
-		add_action( 'ap_vote_up', array( $this, 'vote_up' ) );
-		add_action( 'ap_vote_down', array( $this, 'vote_down' ) );
-		add_action( 'ap_undo_vote_up', array( $this, 'undo_vote_up' ) );
-		add_action( 'ap_undo_vote_down', array( $this, 'undo_vote_down' ) );
-		add_action( 'ap_publish_comment', array( $this, 'new_comment' ) );
-		add_action( 'ap_unpublish_comment', array( $this, 'delete_comment' ) );
+		add_action( 'anspress/model/after_insert/ap_votes', array( $this, 'receivedVote' ) );
+		add_action( 'anspress/model/after_delete/ap_votes', array( $this, 'undoVote' ) );
+		add_action( 'comment_post', array( $this, 'commentStatusChange' ), 10, 2 );
+		add_action( 'wp_set_comment_status', array( $this, 'commentStatusChange' ), 10, 2 );
+		add_action( 'delete_comment', array( $this, 'deleteComment' ) );
+		add_action( 'trash_comment', array( $this, 'deleteComment' ) );
 		add_filter( 'user_register', array( $this, 'user_register' ) );
 		add_action( 'delete_user', array( $this, 'delete_user' ) );
 		add_filter( 'ap_user_display_name', array( $this, 'display_name' ), 10, 2 );
@@ -269,8 +268,13 @@ class ReputationModule extends AbstractModule {
 	 *
 	 * @param integer  $post_id Post ID.
 	 * @param \WP_Post $_post Post object.
+	 * @param boolean  $updated Whether post is updated or not.
 	 */
-	public function new_question( $post_id, $_post ) {
+	public function newQuestion( $post_id, $_post, $updated ): void {
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) || $updated ) {
+			return;
+		}
+
 		ap_insert_reputation( 'ask', $post_id, $_post->post_author );
 	}
 
@@ -279,8 +283,13 @@ class ReputationModule extends AbstractModule {
 	 *
 	 * @param integer  $post_id Post ID.
 	 * @param \WP_Post $_post Post object.
+	 * @param boolean  $updated Whether post is updated or not.
 	 */
-	public function new_answer( $post_id, $_post ) {
+	public function newAnswer( $post_id, $_post, $updated ): void {
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) || $updated ) {
+			return;
+		}
+
 		ap_insert_reputation( 'answer', $post_id, $_post->post_author );
 	}
 
@@ -288,20 +297,45 @@ class ReputationModule extends AbstractModule {
 	 * Update reputation when a question is deleted.
 	 *
 	 * @param integer $post_id Post ID.
-	 * @param object  $_post Post object.
 	 */
-	public function trash_question( $post_id, $_post ) {
-		ap_delete_reputation( 'ask', $post_id, $_post->post_author );
+	public function trashQuestion( $post_id ) {
+		if ( ! PostHelper::isQuestion( $post_id ) ) {
+			return;
+		}
+
+		$post = get_post( $post_id );
+
+		ap_delete_reputation( 'ask', $post_id, $post->post_author );
+	}
+
+	/**
+	 * Update reputation when a question is untrashed.
+	 *
+	 * @param integer $postid Post ID.
+	 */
+	public function untrashedPost( $postid ) {
+		$post = get_post( $postid );
+
+		if ( PostHelper::isQuestion( $postid ) ) {
+			ap_insert_reputation( 'ask', $postid, $post->post_author );
+		} elseif ( PostHelper::isAnswer( $postid ) ) {
+			ap_insert_reputation( 'answer', $postid, $post->post_author );
+		}
 	}
 
 	/**
 	 * Update reputation when a answer is deleted.
 	 *
 	 * @param integer $post_id Post ID.
-	 * @param object  $_post   Post object.
 	 */
-	public function trash_answer( $post_id, $_post ) {
-		ap_delete_reputation( 'answer', $post_id, $_post->post_author );
+	public function trashAnswer( $post_id ) {
+		if ( ! PostHelper::isAnswer( $post_id ) ) {
+			return;
+		}
+
+		$post = get_post( $post_id );
+
+		ap_delete_reputation( 'answer', $post_id, $post->post_author );
 	}
 
 	/**
@@ -331,64 +365,89 @@ class ReputationModule extends AbstractModule {
 	}
 
 	/**
-	 * Award reputation when user receive an up vote.
+	 * Award reputation when user receive a vote.
 	 *
-	 * @param integer $post_id Post ID.
+	 * @param VoteModel $vote Vote object.
 	 */
-	public function vote_up( $post_id ) {
-		$_post = get_post( $post_id );
-		ap_insert_reputation( 'received_vote_up', $_post->ID, $_post->post_author );
-		ap_insert_reputation( 'given_vote_up', $_post->ID );
-	}
+	public function receivedVote( VoteModel $vote ) {
+		if ( VoteModel::VOTE !== $vote->vote_type ) {
+			return;
+		}
 
-	/**
-	 * Award reputation when user receive an down vote.
-	 *
-	 * @param integer $post_id Post ID.
-	 */
-	public function vote_down( $post_id ) {
-		$_post = get_post( $post_id );
-		ap_insert_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
-		ap_insert_reputation( 'given_vote_down', $_post->ID );
+		$_post = get_post( $vote->vote_post_id );
+
+		// Also ignore if user is voting on their own post.
+		if ( (int) $vote->vote_user_id === (int) $_post->post_author ) {
+			return;
+		}
+
+		if ( 1 === $vote->vote_value ) {
+			ap_insert_reputation( 'received_vote_up', $_post->ID, $_post->post_author );
+			ap_insert_reputation( 'given_vote_up', $_post->ID );
+		} else {
+			ap_insert_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
+			ap_insert_reputation( 'given_vote_down', $_post->ID );
+		}
 	}
 
 	/**
 	 * Award reputation when user recive an up vote.
 	 *
-	 * @param integer $post_id Post ID.
+	 * @param VoteModel $vote Vote object.
 	 */
-	public function undo_vote_up( $post_id ) {
-		$_post = get_post( $post_id );
-		ap_delete_reputation( 'received_vote_up', $_post->ID, $_post->post_author );
-		ap_delete_reputation( 'given_vote_up', $_post->ID );
-	}
+	public function undoVote( VoteModel $vote ) {
+		if ( VoteModel::VOTE !== $vote->vote_type ) {
+			return;
+		}
 
-	/**
-	 * Award reputation when user recive an down vote.
-	 *
-	 * @param integer $post_id Post ID.
-	 */
-	public function undo_vote_down( $post_id ) {
-		$_post = get_post( $post_id );
-		ap_delete_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
-		ap_delete_reputation( 'given_vote_down', $_post->ID );
+		$_post = get_post( $vote->vote_post_id );
+
+		// Also ignore if user is voting on their own post.
+		if ( (int) $vote->vote_user_id === (int) $_post->post_author ) {
+			return;
+		}
+
+		if ( 1 === $vote->vote_value ) {
+			ap_delete_reputation( 'received_vote_up', $_post->ID, $_post->post_author );
+			ap_delete_reputation( 'given_vote_up', $_post->ID );
+		} else {
+			ap_delete_reputation( 'received_vote_down', $_post->ID, $_post->post_author );
+			ap_delete_reputation( 'given_vote_down', $_post->ID );
+		}
 	}
 
 	/**
 	 * Award reputation on new comment.
 	 *
-	 * @param  object $comment WordPress comment object.
+	 * @param  int    $commentid WordPress comment id.
+	 * @param  string $status  Comment status.
 	 */
-	public function new_comment( $comment ) {
-		ap_insert_reputation( 'comment', $comment->comment_ID, $comment->user_id );
+	public function commentStatusChange( $commentid, $status ) {
+		$comment = get_comment( $commentid );
+
+		if ( 'anspress' !== $comment->comment_type ) {
+			return;
+		}
+
+		if ( in_array( $status, array( '1', 'approve' ) ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
+			ap_insert_reputation( 'comment', $comment->comment_ID, $comment->user_id );
+		} else {
+			ap_delete_reputation( 'comment', $comment->comment_ID, $comment->user_id );
+		}
 	}
 
 	/**
-	 * Undo reputation on deleting comment.
+	 * Delete reputation when comment is deleted.
 	 *
-	 * @param  object $comment Comment object.
+	 * @param integer $comment Comment ID.
 	 */
-	public function delete_comment( $comment ) {
+	public function deleteComment( $comment ) {
+		$comment = get_comment( $comment );
+
+		if ( 'anspress' !== $comment->comment_type ) {
+			return;
+		}
+
 		ap_delete_reputation( 'comment', $comment->comment_ID, $comment->user_id );
 	}
 

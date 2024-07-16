@@ -128,15 +128,8 @@ class ProfileModule extends AbstractModule {
 	 * @return array
 	 */
 	public function rewrite_rules( $rules, $slug, $base_page_id ) {
-		$base_slug = get_page_uri( ap_opt( 'user_page' ) );
-		update_option( 'ap_user_path', $base_slug, true );
-
-		$new_rules = array();
 		$new_rules = array(
-			$base_slug . '/([^/]+)/([^/]+)/page/?([0-9]{1,})/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]&ap_paged=$matches[#]',
-			$base_slug . '/([^/]+)/([^/]+)/?' => 'index.php?author_name=$matches[#]&ap_page=user&user_page=$matches[#]',
-			$base_slug . '/([^/]+)/?'         => 'index.php?author_name=$matches[#]&ap_page=user',
-			$base_slug . '/?'                 => 'index.php?ap_page=user',
+			'author/([^/]+)/([^/]+)/?$' => 'index.php?author_name=$matches[#]&ap_page=$matches[#]',
 		);
 
 		return $new_rules + $rules;

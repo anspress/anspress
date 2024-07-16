@@ -7,7 +7,20 @@
   "category": "anspress",
   "icon": "admin-users",
   "description": "AnsPress block to show user profile navigation.",
-  "attributes": {},
+  "attributes": {
+    "activeTab": {
+      "type": "string",
+      "default": "questions"
+    },
+    "questionsAttributes": {
+      "type": "object",
+      "default": {}
+    },
+    "reputationsAttributes": {
+      "type": "object",
+      "default": {}
+    }
+  },
   "supports": {
     "html": false,
     "align": [
