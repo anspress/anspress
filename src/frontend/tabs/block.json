@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress/tabs",
+  "version": "0.1.0",
+  "title": "(AnsPress) Tabs",
+  "category": "anspress",
+  "icon": "index-card",
+  "description": "Display content in a tabbed layout",
+  "supports": {
+    "html": false
+  },
+  "keywords": [
+    "tab",
+    "tabbed content"
+  ],
+  "providesContext": {
+    "anspress/tabs/tabs": "tabs",
+    "anspress/tabs/urlParamKey": "urlParamKey"
+  },
+  "attributes": {
+    "tabs": {
+      "type": "array",
+      "default": []
+    },
+    "updateChild": {
+      "type": "boolean",
+      "default": false
+    },
+    "sideTabLayout": {
+      "type": "boolean",
+      "default": false
+    },
+    "innerBlocksAttributes": {
+      "type": "array",
+      "default": []
+    },
+    "currentTabIndex": {
+      "type": "number",
+      "default": 0
+    },
+    "urlParamKey": {
+      "type": "string",
+      "default": "appage"
+    },
+    "defaultTabKey": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "file:./index.js",
+  "style": [
+    "file:./style-index.css"
+  ],
+  "render": "file:./tabs.php"
+}

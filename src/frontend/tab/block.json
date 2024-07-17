@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "anspress/tab",
+  "version": "0.1.0",
+  "title": "Tabs",
+  "category": "anspress",
+  "icon": "welcome-add-page",
+  "description": "Single tab for tabbed content",
+  "supports": {
+    "html": false
+  },
+  "keywords": [
+    "tab",
+    "tabbed content"
+  ],
+  "attributes": {
+    "tabIndex": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "usesContext": [
+    "anspress/tabs/tabs",
+    "anspress/tabs/urlParamKey"
+  ],
+  "editorScript": "file:./index.js",
+  "style": [
+    "file:./style-index.css"
+  ],
+  "parent": [
+    "anspress/tabs"
+  ],
+  "render": "file:./tab.php",
+  "textdomain": "anspress-question-answer"
+}

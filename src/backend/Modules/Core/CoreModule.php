@@ -157,6 +157,11 @@ class CoreModule extends AbstractModule {
 			$viewInfo['version'],
 			true
 		);
+
+		register_block_type( Plugin::getPathTo( 'build/frontend/tabs' ) );
+		register_block_type(
+			Plugin::getPathTo( 'build/frontend/tab' )
+		);
 	}
 
 	/**

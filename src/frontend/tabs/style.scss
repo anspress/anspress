@@ -1,0 +1,22 @@
+.anspress-tabs {
+	&-nav {
+		display: flex;
+		margin-bottom: 20px;
+	}
+
+	&-tab {
+		a {
+			color: inherit;
+			display: block;
+			padding: 5px 15px;
+			text-decoration: none;
+			border: 1px solid #000;
+			margin-left: -1px;
+			background: #fff;
+		}
+
+		&-active {
+			background: #ddd !important;
+		}
+	}
+}
