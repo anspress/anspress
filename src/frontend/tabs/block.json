@@ -23,14 +23,6 @@
       "type": "array",
       "default": []
     },
-    "updateChild": {
-      "type": "boolean",
-      "default": false
-    },
-    "sideTabLayout": {
-      "type": "boolean",
-      "default": false
-    },
     "innerBlocksAttributes": {
       "type": "array",
       "default": []

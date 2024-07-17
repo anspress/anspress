@@ -7,7 +7,6 @@ import { ProNoticeComponent } from '../common/js/ProNoticeComponent';
 const ALLOWED_BLOCKS = ['anspress/tab'];
 
 import './editor.scss';
-import { Card } from '@wordpress/components';
 
 export default function Edit(props) {
 
@@ -17,7 +16,7 @@ export default function Edit(props) {
     clientId
   } = props;
 
-  const { tabs = [], defaultTabKey, sideTabLayout, currentTabIndex } = attributes;
+  const { tabs = [], defaultTabKey, currentTabIndex } = attributes;
 
   const hasInnerBlocks = useSelect(() => select('core/block-editor').getBlocks(clientId).length > 0);
 
@@ -64,13 +63,7 @@ export default function Edit(props) {
     <div {...useBlockProps()}>
       <InspectorControls>
         <ProNoticeComponent />
-        <PanelBody title={__('Settings', 'anspress-question-answer')}>
-          <ToggleControl
-            label={__('Switch to side tab layout', 'anspress-question-answer')}
-            checked={sideTabLayout}
-            onChange={(v) => setAttributes({ sideTabLayout: v })}
-          />
-        </PanelBody>
+
         <PanelBody title={__('Tabs', 'anspress-question-answer')}>
           {tabs.map((tab, index) => (
             <div key={index} style={{ marginBottom: '8px', display: 'flex' }}>
